@@ -24,19 +24,27 @@ function populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLeng
   row.end = (rowNumber + 1) * (rowLength - 1);
   row.sequence = sequenceData.sequence.slice(row.start, row.end);
 
-  row.features = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
-  row.parts = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
-  row.orfs = mapAnnotationsToRow(sequenceData.orfs, row, sequenceLength);
-  row.cutsites = mapAnnotationsToRow(sequenceData.cutsites, row, sequenceLength);
+  var {annotations, annotationYOffsetMax} = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
+  row.features = annotations;
+  row.featuresYOffsetMax = annotationYOffsetMax;
+
+  var {annotations, annotationYOffsetMax} = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
+  row.parts = annotations;
+  row.partsYOffsetMax = annotationYOffsetMax;
+  
+  // row.parts = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
+  // row.orfs = mapAnnotationsToRow(sequenceData.orfs, row, sequenceLength);
+  // row.cutsites = mapAnnotationsToRow(sequenceData.cutsites, row, sequenceLength);
 
   return row;
 }
 
 function mapAnnotationsToRow(annotations, row, sequenceLength) {
   var annotationsInRow = {};
-
+  var annotationYOffsetMax = 0; //
   //convert each anotation into 1 or 2 annotationLocations by spliiting on the origin.
   //for each location, add to the row any stetches of the location that overlap the row
+
   _.each(annotations, function(annotation) {
     var annotationLocations = splitAnnotationOnOrigin(annotation, sequenceLength);
     var overlaps;
@@ -52,6 +60,9 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
     if (overlaps) {
       //calculate the yOffset for the new overlaps
       var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsInRow, overlaps);
+      if (yOffset > annotationYOffsetMax) {
+        annotationYOffsetMax = yOffset;
+      }
       //add the annotation to the row
       var annotationId = annotation.id;
       annotationsInRow[annotationId] = {
@@ -61,7 +72,10 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
       };
     }
   }, this);
-  return annotationsInRow;
+  return {
+    annotations: annotationsInRow,
+    annotationYOffsetMax: annotationYOffsetMax
+  };
 }
 
 function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRow, overlaps) {

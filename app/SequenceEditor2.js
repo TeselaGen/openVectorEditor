@@ -14,7 +14,7 @@ var SequenceEditor2 = React.createClass({
       //     return(<RowItem rowData={row} />);
       //   });
       var sequenceData = {
-        sequence: "atatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagag",
+        sequence: "atatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagaatattgagagagagatatattgagagagagatatattgagagaatattgagagagagatatattgagagagagatatattgagagaatattgagagagagatatattgagagagagatatattgagagaatattgagagagagatatattgagagagagatatattgagagaatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagagatatattgagagagag",
         features: {
           12355134: {
             id: "12355134",
@@ -22,7 +22,7 @@ var SequenceEditor2 = React.createClass({
             end: 5,
             name: 'cooljim',
             color: 'orange',
-            direction: "forward",
+            topStrand: true,
             annotationType: "feature"
           },
           1235775134: {
@@ -31,7 +31,7 @@ var SequenceEditor2 = React.createClass({
             end: 4,
             name: 'cooljim',
             color: 'orange',
-            direction: "forward",
+            topStrand: false,
             annotationType: "feature"
           },
           1235515134: {
@@ -40,7 +40,7 @@ var SequenceEditor2 = React.createClass({
             end: 5,
             name: 'cooljim',
             color: 'blue',
-            direction: "forward",
+            topStrand: true,
             annotationType: "feature"
           },
           222: {
@@ -49,7 +49,7 @@ var SequenceEditor2 = React.createClass({
             end: 53,
             name: 'cooljim',
             color: 'orange',
-            direction: "backward",
+            topStrand: true,
             annotationType: "feature"
           }
         },
@@ -60,7 +60,7 @@ var SequenceEditor2 = React.createClass({
             end: 5,
             name: 'cooljim',
             color: 'pink',
-            direction: "forward",
+            topStrand: true,
             annotationType: "part"
           },
           12311321334: {
@@ -69,7 +69,7 @@ var SequenceEditor2 = React.createClass({
             end: 5,
             name: 'cooljim',
             color: 'orange',
-            direction: "forward",
+            topStrand: true,
             annotationType: "part"
           },
           121234134: {
@@ -78,7 +78,7 @@ var SequenceEditor2 = React.createClass({
             end: 53,
             name: 'cooljim',
             color: 'orange',
-            direction: "forward",
+            topStrand: true,
             annotationType: "part"
           }
         }
@@ -96,7 +96,7 @@ var SequenceEditor2 = React.createClass({
         showParts: true,
         showFeatures: true,
         showReverseSequence: true,
-        infiniteContainer: {
+        viewportDimensions: {
           height: 700, //come back and make these dynamic
           width: 400
         }

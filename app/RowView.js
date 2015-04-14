@@ -23,35 +23,26 @@ var RowView = React.createClass({
   },
 
   render: function () {
-    var [a, , b] = [1,2,3];
-    var odds = evens.map(v => v + 1);
-    var o = {p: 42, q: true};
-    var {p, q} = o;
+    var {preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
+    var averageRowHeight = 100;
 
-
-    var {preloadBasepairStart, viewportDimensions, preloadRowStart, sequenceData} = this.props; //start the loading of the sequence with this basepair
-
-    //prepare
-    rowLength = Math.floor(viewportDimensions.width / CHAR_WIDTH);
-    totalRows = Math.ceil(sequenceData.sequence.length / rowLength);
-    preloadRowStart = (Math.floor(preloadBasepairStart / rowLength) - 3) > 0 ? Math.floor(preloadBasepairStart / rowLength) - 3 : 0; //get three below the top row if possible //start the loading of the sequence with this basepair
-    numberOfRowsToDisplay = Math.ceil(viewportDimensions.height / averageRowHeight) + 3 < totalRows ? : totalRows
-    // preloadRowEnd =
-    // {preloadRowStart, preloadRowEnd, rowLength} = get
-    // var sequenceData = this.props.sequenceData;
-    // var visibilityParameters = this.props.visibilityParameters;
-    // var preloadBasepairStart = visibilityParameters.preloadBasepairStart ? visibilityParameters //start the loading of the sequence with this basepair
+    //prepare the infinite container dimension
+    var rowLength = Math.floor(viewportDimensions.width / CHAR_WIDTH);
+    var totalRows = Math.ceil(sequenceData.sequence.length / rowLength);
+    var preloadRowStart = (Math.floor(preloadBasepairStart / rowLength) - 3) > 0 ? Math.floor(preloadBasepairStart / rowLength) - 3 : 0; //get three below the top row if possible //start the loading of the sequence with this basepair
+    var rowsThatFitIntoViewport = Math.ceil(viewportDimensions.height / averageRowHeight);
+    var numberOfRowsToDisplay = preloadRowStart + rowsThatFitIntoViewport + 3 < totalRows ? preloadRowStart + rowsThatFitIntoViewport + 3 < totalRows : totalRows;
+    var preloadRowEnd = preloadRowStart + numberOfRowsToDisplay;
 
     //calculate topSpacer height
-    var topSpacerHeight = visibilityParameters.preloadRowStart*300;
-
+    var topSpacerHeight = preloadRowStart*averageRowHeight;
 
     //calculate the visible rows
     var rows = prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength);
 
     var rowItems = rows.map(function(row) {
       if (row) {
-        return(<RowItem key={row.rowNumber} row={row} visibilityParameters={visibilityParameters} />);
+        return(<RowItem key={row.rowNumber} {...other} row={row} rowLength={rowLength}  />);
       }
     });
     var rowItemHeights = [];
@@ -67,27 +58,16 @@ var RowView = React.createClass({
     };
 
     //calculate bottom spacer height
-    var topSpacerHeight = visibilityParameters.preloadRowEnd*300;
-
-
-
-
-
-
-
-
-
-
-
+    var bottomSpacerHeight = (totalRows - preloadRowEnd)*averageRowHeight;
 
     return (
       <div>
         SequenceEditor2
         <div className="infiniteContainer" style={style} onScroll={this.onScroll}>
-          <div className="topSpacer"/>
-          {rowItems}
-          <div className="bottomSpacer"/> </div>
-
+            <div className="topSpacer" style={{height: topSpacerHeight}}/>
+            {rowItems}
+            <div className="bottomSpacer" style={{height: bottomSpacerHeight}}/> 
+        </div>
       </div>
     );
   }
