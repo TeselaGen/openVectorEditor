@@ -31,15 +31,16 @@ var RowView = React.createClass({
     var totalRows = Math.ceil(sequenceData.sequence.length / rowLength);
     var preloadRowStart = (Math.floor(preloadBasepairStart / rowLength) - 3) > 0 ? Math.floor(preloadBasepairStart / rowLength) - 3 : 0; //get three below the top row if possible //start the loading of the sequence with this basepair
     var rowsThatFitIntoViewport = Math.ceil(viewportDimensions.height / averageRowHeight);
-    var numberOfRowsToDisplay = preloadRowStart + rowsThatFitIntoViewport + 3 < totalRows ? preloadRowStart + rowsThatFitIntoViewport + 3 < totalRows : totalRows;
-    var preloadRowEnd = preloadRowStart + numberOfRowsToDisplay;
+    var numberOfRowsToDisplay = (preloadRowStart + rowsThatFitIntoViewport + 3) < totalRows ? preloadRowStart + rowsThatFitIntoViewport + 3 : totalRows;
+    var preloadRowEnd = preloadRowStart + numberOfRowsToDisplay; 
 
     //calculate topSpacer height
     var topSpacerHeight = preloadRowStart*averageRowHeight;
 
     //calculate the visible rows
     var rows = prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength);
-
+    console.log('rows');
+    console.log(rows); 
     var rowItems = rows.map(function(row) {
       if (row) {
         return(<RowItem key={row.rowNumber} {...other} row={row} rowLength={rowLength}  />);
@@ -49,7 +50,7 @@ var RowView = React.createClass({
 
     rowItems.forEach(function(){
       rowItemHeights.push(100);
-    });
+    }); 
 
     var style = {
       height:viewportDimensions.height,

@@ -86,7 +86,7 @@ var SequenceEditor2 = React.createClass({
 
       var exampleActiveCutsites = {
 
-      }
+      };
       var visibilityParameters = {
         rowLength: 30,
         preloadRowStart: 0,

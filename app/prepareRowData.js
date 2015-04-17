@@ -21,8 +21,17 @@ function populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLeng
   var row = {};
   row.rowNumber = rowNumber;
   row.start = rowNumber * rowLength;
-  row.end = (rowNumber + 1) * (rowLength - 1);
-  row.sequence = sequenceData.sequence.slice(row.start, row.end);
+  row.end = (rowNumber + 1) * (rowLength) - 1;
+  row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
+
+  console.log('row.rowNumber');
+  console.log(row.rowNumber);
+  console.log('row.start');
+  console.log(row.start);
+  console.log('row.end');
+  console.log(row.end);
+  console.log('row.sequence');
+  console.log(row.sequence);
 
   var {annotations, annotationYOffsetMax} = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
   row.features = annotations;
@@ -120,7 +129,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
   //then starting with newYOffset = 0, see if there is space for the location 
   if (blockedYOffsets.length > 0) {
     var sortedBlockedYOffsets = _.sortBy(blockedYOffsets, function(n) {
-      return n
+      return n;
     });
     var sortedUniqueBlockedYOffsets = _.uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
     var stillPotentiallyBlocked = true;
@@ -142,10 +151,10 @@ function splitAnnotationOnOrigin(annotation, sequenceLength) {
   if (annotation.start > annotation.end) {
     annotationLocations.push({
       start: 0,
-      end: annotation.start
+      end: annotation.end
     });
     annotationLocations.push({
-      start: annotation.end,
+      start: annotation.start,
       end: sequenceLength - 1
     });
   } else {
