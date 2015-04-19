@@ -66,6 +66,8 @@ var RowView = React.createClass({
   },
 
   componentDidMount: function (argument) {
+    //tnr, instead of finding the dom nodes and performing calculations, we can add 
+    //a variable to the state/props to determine if we need to scroll down
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
     var heightOfTopSpacer = React.findDOMNode(this.refs.topSpacer).scrollHeight;
     if (heightOfTopSpacer > 0) {
