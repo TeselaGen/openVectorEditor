@@ -1,17 +1,17 @@
 var _ = require('lodash');
 
-function prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength) {
+function prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength, alreadyPreparedRows) {
   var sequenceLength = sequenceData.sequence.length;
   // var totalRows = Math.ceil(sequenceLength/visibilityParameters.rowLength);
-  if (!globalRows) {
-    var globalRows = {};
+  if (!alreadyPreparedRows) {
+    var alreadyPreparedRows = {};
   }
   var requestedRows = [];
   for (var rowNumber = preloadRowStart; rowNumber < preloadRowEnd + 1; rowNumber++) {
-    if (!globalRows[rowNumber]) {
-      globalRows[rowNumber] = populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLength);
+    if (!alreadyPreparedRows[rowNumber]) {
+      alreadyPreparedRows[rowNumber] = populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLength);
     }
-    requestedRows.push(globalRows[rowNumber]);
+    requestedRows.push(alreadyPreparedRows[rowNumber]);
   }
   //return only the requested rows
   return requestedRows;
@@ -33,14 +33,18 @@ function populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLeng
   console.log('row.sequence');
   console.log(row.sequence);
 
-  var {annotations, annotationYOffsetMax} = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
+  var {
+    annotations, annotationYOffsetMax
+  } = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
   row.features = annotations;
   row.featuresYOffsetMax = annotationYOffsetMax;
 
-  var {annotations, annotationYOffsetMax} = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
+  var {
+    annotations, annotationYOffsetMax
+  } = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
   row.parts = annotations;
   row.partsYOffsetMax = annotationYOffsetMax;
-  
+
   // row.parts = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
   // row.orfs = mapAnnotationsToRow(sequenceData.orfs, row, sequenceLength);
   // row.cutsites = mapAnnotationsToRow(sequenceData.cutsites, row, sequenceLength);
@@ -68,7 +72,7 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
     });
     if (overlaps) {
       //calculate the yOffset for the new overlaps
-      var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsInRow, overlaps);
+      var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsInRow, overlaps); 
       if (yOffset > annotationYOffsetMax) {
         annotationYOffsetMax = yOffset;
       }
@@ -124,9 +128,9 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
     });
   });
 
-  var newYOffset = 0;
+  var newYOffset = 1;
   //sort and remove duplicates from the blockedYOffsets array
-  //then starting with newYOffset = 0, see if there is space for the location 
+  //then starting with newYOffset = 1, see if there is space for the location 
   if (blockedYOffsets.length > 0) {
     var sortedBlockedYOffsets = _.sortBy(blockedYOffsets, function(n) {
       return n;
@@ -134,7 +138,10 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
     var sortedUniqueBlockedYOffsets = _.uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
     var stillPotentiallyBlocked = true;
     while (stillPotentiallyBlocked) {
-      if (sortedUniqueBlockedYOffsets[newYOffset] != newYOffset) {
+      //sortedUniqueBlockedYOffsets is an array starting with 1 eg. [1,2,4,5,6]
+      //so we loop through it using the index of newYOffset-1, and if there is a gap 
+      //in the array, we break the loop and that becomes our final newYOffset
+      if (sortedUniqueBlockedYOffsets[newYOffset-1] !== newYOffset) { 
         //the newYOffset isn't blocked
         stillPotentiallyBlocked = false;
       } else {
