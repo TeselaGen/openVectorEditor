@@ -24,14 +24,14 @@ function populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLeng
   row.end = (rowNumber + 1) * (rowLength) - 1;
   row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
 
-  console.log('row.rowNumber');
-  console.log(row.rowNumber);
-  console.log('row.start');
-  console.log(row.start);
-  console.log('row.end');
-  console.log(row.end);
-  console.log('row.sequence');
-  console.log(row.sequence);
+  // console.log('row.rowNumber');
+  // console.log(row.rowNumber);
+  // console.log('row.start');
+  // console.log(row.start);
+  // console.log('row.end');
+  // console.log(row.end);
+  // console.log('row.sequence');
+  // console.log(row.sequence);
 
   var {
     annotations, annotationYOffsetMax
@@ -72,7 +72,7 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
     });
     if (overlaps) {
       //calculate the yOffset for the new overlaps
-      var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsInRow, overlaps); 
+      var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsInRow, overlaps);
       if (yOffset > annotationYOffsetMax) {
         annotationYOffsetMax = yOffset;
       }
@@ -141,7 +141,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
       //sortedUniqueBlockedYOffsets is an array starting with 1 eg. [1,2,4,5,6]
       //so we loop through it using the index of newYOffset-1, and if there is a gap 
       //in the array, we break the loop and that becomes our final newYOffset
-      if (sortedUniqueBlockedYOffsets[newYOffset-1] !== newYOffset) { 
+      if (sortedUniqueBlockedYOffsets[newYOffset - 1] !== newYOffset) {
         //the newYOffset isn't blocked
         stillPotentiallyBlocked = false;
       } else {

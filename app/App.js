@@ -14,7 +14,12 @@ var Authentication = require('./Authentication.js');
 var About = require('./About.js');
 var auth = require('./auth.js');
 
+var baobabMixin = require('baobab-react/mixins').root;
+var baobabTree = require('./baobabTree');
+
 var App = React.createClass({
+
+  mixins: [baobabMixin],
 
   contextTypes: {
     router: React.PropTypes.func.isRequired
@@ -70,5 +75,5 @@ var routes = (
 );
 
 Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.body);
+  React.render(<Handler tree={baobabTree}/>, document.body);
 });

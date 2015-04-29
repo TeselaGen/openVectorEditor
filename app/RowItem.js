@@ -98,7 +98,7 @@ var RowItem = React.createClass({
     // var enclosingTextDivStyle = {
     //   width: "100%"
     // };
-    console.log( (CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
+    // console.log( (CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
     var textHTML = 
     '<text fontFamily="Courier New, Courier, monospace" x="0" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length - 1)) + '" lengthAdjust="spacing">' + row.sequence + '</text>'
 
