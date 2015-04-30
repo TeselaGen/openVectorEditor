@@ -20,7 +20,7 @@
     "webpack": "^1.8.4"
   },
   "scripts": {
-    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base build"
+    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base"
   },
   "author": "",
   "license": "ISC"
