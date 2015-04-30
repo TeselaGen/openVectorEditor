@@ -12,7 +12,7 @@ var RowItem = React.createClass({
       row: {
         features: {
         }
-      }, //start the loading of the sequence with this basepair
+      },
       showFeatures: true,
       showReverseSequence: true,
       rowLength: 30,
@@ -101,13 +101,14 @@ var RowItem = React.createClass({
     // console.log( (CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
     var textHTML = 
     '<text fontFamily="Courier New, Courier, monospace" x="0" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length - 1)) + '" lengthAdjust="spacing">' + row.sequence + '</text>'
-
+    console.log(row);
     return (
       <div className="infinite-list-item">
         <div className="rowContainer">
             {featuresSVG}
             <svg className= "textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}}>
             </svg>
+            {row.start}
 
         </div>
       </div>

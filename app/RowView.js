@@ -178,6 +178,12 @@ var RowView = React.createClass({
 
     return (
       <div>
+        <input> 
+          hey
+        </input>
+        <button onClick={appActions.changeViewportSize.bind(null,{height: 300, width: 600})}> 
+        yoo
+        </button>
         SequenceEditor2
         <div ref="infiniteContainer" className="infiniteContainer" style={style} onScroll={this.onScroll}>
             <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>

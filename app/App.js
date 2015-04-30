@@ -54,7 +54,7 @@ var App = React.createClass({
             <li><Link to="about">About</Link></li>
             <li><Link to="dashboard">Dashboard</Link> (authenticated)</li>
             <li><Link to="sequences">Sequences</Link> (authenticated)</li>
-            <li><Link to="SequenceEditor2">SequenceEditor2</Link> (authenticated)</li>
+            <li><Link to="SequenceEditor2">SequenceEditor5</Link> (authenticated)</li>
           </ul>
         </header>
         <RouteHandler/>
