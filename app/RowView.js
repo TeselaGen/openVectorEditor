@@ -23,6 +23,7 @@ var RowView = React.createClass({
   onScroll: function (event) {
     console.log('scrolled');
     var infiniteContainer = event.currentTarget;
+    var averageRowHeight = this.props.averageRowHeight;
     // var scrollTop = infiniteContainer.scrollTop;
     // this.setState({
     //   oldScrollTop: scrollTop
@@ -48,8 +49,11 @@ var RowView = React.createClass({
     var totalChildCount = event.currentTarget.childElementCount;
     var bottomSpacer = event.currentTarget.children[(totalChildCount-1)];
 
+    // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight));
+    var newStartingRowBasedOnPercentageScrolled = infiniteContainer.scrollTop/averageRowHeight
+
+
     if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 0) {
-      var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
       //scrolling up very quickly
       console.log('//scrolling up very quickly');
       var newRowStart = newStartingRowBasedOnPercentageScrolled - 0 > 0 ? newStartingRowBasedOnPercentageScrolled - 0 : 0;
@@ -82,7 +86,7 @@ var RowView = React.createClass({
     if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 0) {
       //we're scrolling down very quickly
       console.log('//we are scrolling down very quickly');
-      var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
+      // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
       var newRowStart = newStartingRowBasedOnPercentageScrolled
       this.prepareVisibleRows(newRowStart);
     }
@@ -134,10 +138,10 @@ var RowView = React.createClass({
 
   prepareVisibleRows: function (preloadRowStart) {
     // var {preloadRowStart, preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-    var {viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
+    var {averageRowHeight, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
 
-    var averageRowHeight = 100;
-
+    // var averageRowHeight = viewportDimensions.averageRowHeight;
+    // debugger;
     //prepare the infinite container dimension
     var rowLength = Math.floor(viewportDimensions.width / CHAR_WIDTH);
     var totalRows = Math.ceil(sequenceData.sequence.length / rowLength);
