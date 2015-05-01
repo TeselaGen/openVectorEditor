@@ -21,6 +21,7 @@ var RowView = React.createClass({
   //   };
   // }, 
   onScroll: function (event) {
+    console.log('scrolled');
     var infiniteContainer = event.currentTarget;
     // var scrollTop = infiniteContainer.scrollTop;
     // this.setState({
@@ -47,17 +48,24 @@ var RowView = React.createClass({
     var totalChildCount = event.currentTarget.childElementCount;
     var bottomSpacer = event.currentTarget.children[(totalChildCount-1)];
 
-    var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-
-    if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 100) {
+    if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 0) {
+      var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
+      //scrolling up very quickly
+      console.log('//scrolling up very quickly');
+      var newRowStart = newStartingRowBasedOnPercentageScrolled - 0 > 0 ? newStartingRowBasedOnPercentageScrolled - 0 : 0;
+      this.prepareVisibleRows(newRowStart); 
+    }
+    else if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 500) {
       if (this.state.preloadRowStart > 0) {
+        //we're scrolling up slowly
         console.log('hit');
-        if (newStartingRowBasedOnPercentageScrolled < (this.state.preloadRowStart - 10)) {
-          var newRowStart = newStartingRowBasedOnPercentageScrolled;
-          console.log('newStartingRowBasedOnPercentageScrolled');
-        } else {
-          var newRowStart = (this.state.preloadRowStart - 10) > 0 ? (this.state.preloadRowStart - 10) : 0;
-        }
+        // if (infiniteContainer < (this.state.preloadRowStart - 50)) {
+        //   var newRowStart = newStartingRowBasedOnPercentageScrolled - 50 > 0 ? newStartingRowBasedOnPercentageScrolled - 50 : 0;
+        //   console.log('newStartingRowBasedOnPercentageScrolled');
+        // } 
+        // else {
+          var newRowStart = (this.state.preloadRowStart - 50) > 0 ? (this.state.preloadRowStart - 50) : 0;
+        // }
         // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
         console.log(newRowStart);
 
@@ -67,20 +75,33 @@ var RowView = React.createClass({
       // console.log("top true");
 
       // appActions.loadRowsAbove()
-    } 
+    }  
 
     // console.log(infiniteContainer.scrollTop);
     // console.log(bottomSpacer.offsetTop); 
-
-    if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 100) {
+    if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 0) {
+      //we're scrolling down very quickly
+      console.log('//we are scrolling down very quickly');
+      var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
+      var newRowStart = newStartingRowBasedOnPercentageScrolled
+      this.prepareVisibleRows(newRowStart);
+    }
+    else if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 1000) {
+      //we're scrolling down
       if (this.state.totalRows - (this.state.preloadRowStart + this.state.rowsThatFitIntoViewport) > 0) {
-        if (newStartingRowBasedOnPercentageScrolled > (this.state.preloadRowStart + 30)) {
-          var newRowStart = newStartingRowBasedOnPercentageScrolled;
-          console.log('newStartingRowBasedOnPercentageScrolled');
-        } else {
+        // if (newStartingRowBasedOnPercentageScrolled > (this.state.preloadRowStart + 50)) {
+        //   var newRowStart = newStartingRowBasedOnPercentageScrolled;
+        //   console.log('newStartingRowBasedOnPercentageScrolled');
+        // } else {
           // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-          var newRowStart = (this.state.preloadRowStart + 10) < this.state.totalRows ? (this.state.preloadRowStart + 10) : this.state.totalRows;
-        }
+          var newRowStart = (this.state.preloadRowStart + 20) < this.state.totalRows ? (this.state.preloadRowStart + 20) : this.state.totalRows;
+          var lastRow = infiniteContainer.childNodes[infiniteContainer.childNodes.length-2];
+          lastRow.offsetTop;
+          console.log(lastRow.className);
+          var nameAndOffset = {
+            rowName: lastRow.className,
+          };
+        // }
         // console.log('hit');
         // console.log(newRowStart);
         this.prepareVisibleRows(newRowStart);
@@ -126,12 +147,29 @@ var RowView = React.createClass({
     console.log('rowsThatFitIntoViewport');
     console.log(rowsThatFitIntoViewport);
     // var numberOfRowsToDisplay = (preloadRowStart + rowsThatFitIntoViewport + 3) < totalRows ? preloadRowStart + rowsThatFitIntoViewport + 3 : totalRows;
-    var numberOfRowsToDisplay = rowsThatFitIntoViewport + 25;
+    var numberOfRowsToDisplay = rowsThatFitIntoViewport + 100;
 
     var preloadRowEnd = (preloadRowStart + numberOfRowsToDisplay) < totalRows ? (preloadRowStart + numberOfRowsToDisplay) : totalRows; 
 
     //calculate topSpacer height
-    var topSpacerHeight = preloadRowStart*averageRowHeight;
+    if (!this.state || this.state.preloadRowStart === undefined) {
+      var topSpacerHeight = preloadRowStart*averageRowHeight;
+    } else if (this.state.preloadRowStart < preloadRowStart) {
+      //we're scrolling down
+      var numberOfRowsDeep = preloadRowStart - this.state.preloadRowStart
+      var newTopNode = this.refs.infiniteContainer.getDOMNode().childNodes[numberOfRowsDeep+1]
+      if (newTopNode) {
+        var topSpacerHeight = newTopNode.offsetTop - this.refs.infiniteContainer.getDOMNode().offsetTop
+        console.log('topSpacerHeight');
+        console.log(topSpacerHeight);
+      } else {
+        var topSpacerHeight = preloadRowStart*averageRowHeight;
+      }
+    } else {
+      //we're scrolling up
+      var topSpacerHeight = preloadRowStart*averageRowHeight;
+      
+    }
 
     //calculate bottom spacer height
     var bottomSpacerHeight = (totalRows - preloadRowEnd)*averageRowHeight;
@@ -173,9 +211,6 @@ var RowView = React.createClass({
       width: viewportDimensions.width,
       overflowY: "scroll"
     };
-
-    
-
     return (
       <div>
         <input> 
@@ -188,7 +223,7 @@ var RowView = React.createClass({
         <div ref="infiniteContainer" className="infiniteContainer" style={style} onScroll={this.onScroll}>
             <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>
             {rowItems}
-            <div className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
+            <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
         </div>
       </div>
     );
