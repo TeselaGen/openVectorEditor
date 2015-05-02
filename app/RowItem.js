@@ -19,7 +19,7 @@ var RowItem = React.createClass({
     };
   },
   render: function () {
-    var {rowLength, showFeatures, row, showReverseSequence} = this.props;
+    var {rowLength, showFeatures, showParts, row, showReverseSequence} = this.props;
     var combinedHeightOfChildElements = 0;
     function createFeatureRawPath ({xStart, yStart, height, width, direction, type}) {
       var xEnd = xStart + width;
@@ -47,47 +47,60 @@ var RowItem = React.createClass({
         charWidth: CHAR_WIDTH,
         annotationYOffsetMax: row.featuresYOffsetMax,
       });
-
-      function createAnnotationPaths({annotations, annotationYOffsetMax, createAnnotationRawPath, annotationHeight, spaceBetweenAnnotations, charWidth}) {
-        var maxElementHeight = (annotationYOffsetMax + 1) * (annotationHeight + spaceBetweenAnnotations);
-        var annotationsSVG = _.map(annotations, function(annotationRow) {
-          var overlapPaths = annotationRow.overlaps.map(function(overlap) {
-            // console.log(annotationRow);
-            var annotation = annotationRow.annotation; 
-
-            var drawingParameters = {
-              xStart: (overlap.start % rowLength) * charWidth,
-              width: ((overlap.end - overlap.start) % rowLength) * charWidth,
-              yStart: annotationRow.yOffset * (annotationHeight + spaceBetweenAnnotations),
-              height: annotationHeight,
-              type: overlap.type,
-              topStrand: annotation.topStrand,
-            };
-            var path = createAnnotationRawPath(drawingParameters);
-
-            var attributes = {
-              classnames: classnames(annotation.id, annotation.type),
-              strokeColor: annotation.color, 
-              fill: annotation.color,
-              path: path,
-              fillOpacity: .4, //come back and change this to a passed var
-            };
-            var annotationPath = createAnnotationPath(attributes);
-            return annotationPath;
-          });
-          return (overlapPaths);
-
-          function createAnnotationPath ({strokeColor, fill, classnames, path, fillOpacity}) {
-              return(<path className={classnames} d={path} stroke={strokeColor} fill={fillOpacity} fill={fill}/>);
-          };
-        });
-        return (
-          <svg className="annotationContainer" width="100%" height={maxElementHeight} > 
-            {annotationsSVG}
-          </svg>
-          );
-      }
     }
+
+    if (showParts) {
+      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
+      var partsSVG = createAnnotationPaths({
+        annotations: row.parts,
+        createAnnotationRawPath: createFeatureRawPath,
+        annotationHeight: ANNOTATION_HEIGHT,
+        spaceBetweenAnnotations: SPACE_BETWEEN_ANNOTATIONS,
+        charWidth: CHAR_WIDTH,
+        annotationYOffsetMax: row.featuresYOffsetMax,
+      });
+    }
+
+    function createAnnotationPaths({annotations, annotationYOffsetMax, createAnnotationRawPath, annotationHeight, spaceBetweenAnnotations, charWidth}) {
+      var maxElementHeight = (annotationYOffsetMax + 1) * (annotationHeight + spaceBetweenAnnotations);
+      var annotationsSVG = _.map(annotations, function(annotationRow) {
+        var overlapPaths = annotationRow.overlaps.map(function(overlap) {
+          // console.log(annotationRow);
+          var annotation = annotationRow.annotation; 
+
+          var drawingParameters = {
+            xStart: (overlap.start % rowLength) * charWidth,
+            width: ((overlap.end - overlap.start) % rowLength) * charWidth,
+            yStart: annotationRow.yOffset * (annotationHeight + spaceBetweenAnnotations),
+            height: annotationHeight,
+            type: overlap.type,
+            topStrand: annotation.topStrand,
+          };
+          var path = createAnnotationRawPath(drawingParameters);
+
+          var attributes = {
+            classnames: classnames(annotation.id, annotation.type),
+            strokeColor: annotation.color, 
+            fill: annotation.color,
+            path: path,
+            fillOpacity: .4, //come back and change this to a passed var
+          };
+          var annotationPath = createAnnotationPath(attributes);
+          return annotationPath;
+        });
+        return (overlapPaths);
+
+        function createAnnotationPath ({strokeColor, fill, classnames, path, fillOpacity}) {
+            return(<path className={classnames} d={path} stroke={strokeColor} fill={fillOpacity} fill={fill}/>);
+        };
+      });
+      return (
+        <svg className="annotationContainer" width="100%" height={maxElementHeight} > 
+          {annotationsSVG}
+        </svg>
+        );
+    }
+    
     var fontSize = CHAR_WIDTH + "px";
     var textStyle = {
       fontSize: fontSize,
@@ -107,6 +120,7 @@ var RowItem = React.createClass({
       <div className= {className}>
         <div className="rowContainer">
             {featuresSVG}
+            {partsSVG}
             <svg className= "textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}}>
             </svg>
             {row.rowNumber} //

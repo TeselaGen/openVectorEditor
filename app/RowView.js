@@ -50,7 +50,7 @@ var RowView = React.createClass({
     var bottomSpacer = event.currentTarget.children[(totalChildCount-1)];
 
     // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight));
-    var newStartingRowBasedOnPercentageScrolled = infiniteContainer.scrollTop/averageRowHeight
+    var newStartingRowBasedOnPercentageScrolled = Math.floor(infiniteContainer.scrollTop/averageRowHeight)
 
 
     if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 0) {
@@ -72,7 +72,7 @@ var RowView = React.createClass({
         // }
         // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
         console.log(newRowStart);
-
+        
         this.prepareVisibleRows(newRowStart); 
       }
       //we're less than 100 pixels away from hitting the top spacer
@@ -177,7 +177,7 @@ var RowView = React.createClass({
 
     //calculate bottom spacer height
     var bottomSpacerHeight = (totalRows - preloadRowEnd)*averageRowHeight;
-
+    console.log(sequenceData, preloadRowStart, preloadRowEnd, rowLength, this.alreadyPreparedRows);
     //calculate the visible rows
     //tnr: pass any already prepared rows into this function so we don't have to recalculate them
     var visibleRows = prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength, this.alreadyPreparedRows); //this function also pushes any newly calculated rows onto the this.alreadyPreparedRows object
