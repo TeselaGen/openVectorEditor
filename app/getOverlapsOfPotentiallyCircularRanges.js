@@ -1,33 +1,23 @@
 var arePositiveIntegers = require('./arePositiveIntegers');
+//returns an array of the overlaps between two potentially circular ranges
 module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxLength) {
   if (!arePositiveIntegers(rangeA.start, rangeA.end, rangeB.start, rangeB.end)) {
     console.warn("unable to calculate ranges of  inputs");
-    return null;
+    return [];
   }
   var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxLength);
   var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxLength);
 
   var overlaps = [];
   normalizedRangeA.forEach(function(nonCircularRangeA) {
-      normalizedRangeB.forEach(function(nonCircularRangeB) {
-        var overlap = getOverlapOfNonCircularRanges(nonCircularRangeA, nonCircularRangeB);
-        if (overlap) {
-          overlaps.push(overlap);
-        }
-      });
+    normalizedRangeB.forEach(function(nonCircularRangeB) {
+      var overlap = getOverlapOfNonCircularRanges(nonCircularRangeA, nonCircularRangeB);
+      if (overlap) {
+        overlaps.push(overlap);
+      }
     });
-    // if (rangeA.start > rangeA.end) {
-    //   if (rangeB.start > rangeB.end) {
-
-  //   } else {
-
-  //   }
-  // } else {
-  //   if (rangeB.start > rangeB.end) {
-  //   } else {
-
-  //   }
-  // }
+  });
+  return overlaps;
 };
 
 //takes a potentially circular range and returns an array containing the range split on the origin

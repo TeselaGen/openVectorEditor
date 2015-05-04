@@ -50,7 +50,7 @@ var RowView = React.createClass({
     var bottomSpacer = event.currentTarget.children[(totalChildCount-1)];
 
     // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight));
-    var newStartingRowBasedOnPercentageScrolled = Math.floor(infiniteContainer.scrollTop/averageRowHeight)
+    var newStartingRowBasedOnPercentageScrolled = Math.floor(infiniteContainer.scrollTop/averageRowHeight);
 
 
     if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 0) {

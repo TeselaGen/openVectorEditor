@@ -7,7 +7,7 @@ var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentially
 var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
 var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
 var mixin = require('baobab-react/mixins').branch;
-var get
+var appActions = require('./actions/appActions');
 
 
 
@@ -17,6 +17,7 @@ var RowItem = React.createClass({
     visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
+    cursorPosition: ['vectorEditorState', 'cursorPosition'],
   },
 
   getDefaultProps: function() {
@@ -30,10 +31,27 @@ var RowItem = React.createClass({
       rowLength: 30,
     };
   },
+  onClick: function (event) {
+    var clickXPositionRelativeToRowContainer =event.clientX - event.currentTarget.clientLeft
+    var nearestBP = Math.floor(clickXPositionRelativeToRowContainer/CHAR_WIDTH);
+    if (nearestBP < 0) {
+      console.warn("something went wrong, this shouldn't give a negative number ever")
+    }
+    nearestBP+= this.props.row.start;
+    if (nearestBP > this.props.row.end) {
+      nearestBP = this.props.row.end;
+    }
+    appActions.setCursorPosition(nearestBP);
+    // this.props.row.start
+    // console.log(a,b);
+    // var c = this.refs.textContainer.getDomNode();
+  },
+
   render: function () {
     var {rowLength, row} = this.props;
     var visibilityParameters = this.state.visibilityParameters;
     var selectionLayer = this.state.selectionLayer;
+    var cursorPosition = this.state.cursorPosition;
     var combinedHeightOfChildElements = 0;
     function createFeatureRawPath ({xStart, yStart, height, width, direction, type}) {
       var xEnd = xStart + width;
@@ -135,46 +153,72 @@ var RowItem = React.createClass({
       background: 'blue',
       position: "absolute",
       top: "0",
-      // right: "0",
-      fillOpacity: ".3",
+      // left: "0",
+      // fillOpacity: ".3",
       opacity: ".3",
-    }
+    };
     var rowContainerStyle = {
       overflow: "hidden",
       position: "relative",
       width: "100%",
-    }
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, highlightLayerStyle);
+    };
 
-    function getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle) {
+    var cursorStyle = {
+      height: "90%",
+      // width: "100%",
+      background: 'black',
+      position: "absolute",
+      top: "0",
+      width: 2,
+      // left: "0",
+      // fillOpacity: "1",
+      // opacity: ".3",
+    };
+
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle, CHAR_WIDTH);
+    function getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle, charWidth) {
       var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
       var selectionLayers = overlaps.map(function (overlap) {
-        var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, rowLength, charWidth)
-        
-        <div className="selectionLayer"  style={highlightLayerStyle}/>
-      })
+        var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, rowLength, charWidth);
+        highlightLayerStyle.width = width;
+        highlightLayerStyle.left = xStart;
+        return (<div className="selectionLayer" style={highlightLayerStyle}/>);
+      });
+      return selectionLayers;
     }
 
-    
+    var cursor = getCursorForRow(cursorPosition, row, rowLength, cursorStyle, CHAR_WIDTH)
+    function getCursorForRow (cursorPosition, row, rowLength, cursorStyle, charWidth) {
+      if(row.start<= cursorPosition && row.end >= cursorPosition) {
+        cursorStyle.left = (cursorPosition % rowLength) * charWidth;
+        return (<div className="cursor" style={cursorStyle}/>);
+      }
+    }
 
-    
+
+
     // var enclosingTextDivStyle = {
     //   width: "100%"
     // };
     // console.log( (CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
+    //maybe use text-align middle with the x-position in the middle of the block.. something seems just a touch off with the character width stuff...
+    //not sure what it is exactly...
+    //should probably change the row.sequence.length -1 to no -1
+    //text-anchor="middle"
     var textHTML = 
     '<text fontFamily="Courier New, Courier, monospace" x="0" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length - 1)) + '" lengthAdjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
     var className = "row" + row.rowNumber;
     return (
       <div className={className}>
-        <div className="rowContainer" style={rowContainerStyle}>
+        <div className="rowContainer" style={rowContainerStyle} onClick={this.onClick}>
             {featuresSVG}
             {partsSVG}
-            <svg className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+            <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
             {row.rowNumber} //
             {row.start}
             {highlightLayerForRow}
+            {cursor}
         </div>
       </div>
     );

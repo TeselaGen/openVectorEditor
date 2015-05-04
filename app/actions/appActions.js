@@ -6,6 +6,10 @@ var actions = {
 		// tree.select
 		var viewportDimensions = tree.select('vectorEditorState', 'visibilityParameters', 'viewportDimensions');
 		viewportDimensions.set(newSize);
+	},
+	setCursorPosition: function (newPosition) {
+		tree.select('vectorEditorState', 'cursorPosition').set(newPosition);
+		// viewportDimensions.set(newSize);
 	}
 };
 

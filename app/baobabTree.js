@@ -1,7 +1,7 @@
 var baobab = require('baobab');
 var sequenceData = require('./sequenceData');
-var string = "atgtgtgatg"
-var reallyLongFakeSequence = ""
+var string = "atgtgtgatg";
+// var reallyLongFakeSequence = "";
 // for (var i = 0; i < 1000000; i++) {
 // 	reallyLongFakeSequence+=string;
 // };
@@ -29,9 +29,9 @@ var tree = new baobab({
 			start: 46,
 			end: 8900,
 		},
+		cursorPosition: 8,
 		sequenceData: sequenceData,
 	},
-	surname: 'Talbot'
 });
 
 module.exports = tree;

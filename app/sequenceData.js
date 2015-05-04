@@ -3,10 +3,10 @@ var sequenceData = {
         features: {
           12355134: {
             id: "12355134",
-            start: 4,
-            end: 5,
+            start: 0,
+            end: 26,
             name: 'cooljim',
-            color: 'orange',
+            color: 'green',
             topStrand: true,
             annotationType: "feature"
           },
