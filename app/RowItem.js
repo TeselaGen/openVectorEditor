@@ -149,9 +149,9 @@ var RowItem = React.createClass({
     function getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle) {
       var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
       var selectionLayers = overlaps.map(function (overlap) {
-        var left = overlap.start
-        var width = overlap.start
-        <div className="selectionLayer" style={highlightLayerStyle}/>
+        var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, rowLength, charWidth)
+        
+        <div className="selectionLayer"  style={highlightLayerStyle}/>
       })
     }
 
