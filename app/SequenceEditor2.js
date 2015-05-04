@@ -11,41 +11,18 @@ var SequenceEditor2 = React.createClass({
   cursors: {
     visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
     sequenceData: ['vectorEditorState', 'sequenceData'],
+    highlightLayer: ['vectorEditorState', 'highlightLayer'],
   },
 
   render: function() {
-      //   var sequenceData = this.props.sequenceData;
-      // var visibilityParameters = this.props.visibilityParameters;
-      //   var rows = prepareRowData(sequenceData,visibilityParameters);
-      //   var rowItems = rows.map(function(row){
-      //     return(<RowItem rowData={row} />);
-      //   });
-      
-
-      // var exampleActiveCutsites = {
-
-      // };
-      // var visibilityParameters = {
-      //   rowLength: 30,
-      //   preloadRowStart: 0,
-      //   preloadRowEnd: 9,
-      //   showOrfs: true,
-      //   showCutsites: true,
-      //   showParts: true,
-      //   showFeatures: true,
-      //   showReverseSequence: true,
-      //   viewportDimensions: {
-      //     height: 700, //come back and make these dynamic
-      //     width: 400
-      //   }
-      // };
       var visibilityParameters = this.state.visibilityParameters;
+      var highlightLayer = this.state.highlightLayer;
       visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.rowLength;
 
 
     return (
       <div>
-        <RowView {...visibilityParameters} sequenceData={this.state.sequenceData} />
+        <RowView {...visibilityParameters} sequenceData={this.state.sequenceData} highlightLayer={this.state.highlightLayer} />
       </div>
     );
   }

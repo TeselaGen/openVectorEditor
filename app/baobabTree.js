@@ -25,6 +25,10 @@ var tree = new baobab({
 				width: 400
 			}
 		},
+		selectionLayer: {
+			start: 46,
+			end: 8900,
+		},
 		sequenceData: sequenceData,
 	},
 	surname: 'Talbot'

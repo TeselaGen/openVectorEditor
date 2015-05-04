@@ -72,7 +72,8 @@ var RowView = React.createClass({
         // }
         // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
         console.log(newRowStart);
-        
+        //tnr: potential strategy to keep scroll smooth, note the topmost visible item in the infinite container and after the ui has re-rendered, 
+        //make a call to bring it into view. 
         this.prepareVisibleRows(newRowStart); 
       }
       //we're less than 100 pixels away from hitting the top spacer
@@ -194,7 +195,7 @@ var RowView = React.createClass({
   },
 
   render: function () {
-    var {preloadRowStart, preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
+    var {viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
     
     // console.log('rows');
     // console.log(rows); 

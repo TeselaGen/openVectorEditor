@@ -3,10 +3,22 @@ var _ = require('lodash');
 var classnames = require('classnames');
 var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
 var CHAR_HEIGHT = require('./editorConstants').CHAR_HEIGHT;
+var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
 var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
+var mixin = require('baobab-react/mixins').branch;
+var get
+
+
 
 var RowItem = React.createClass({
+  mixins: [mixin],
+  cursors: {
+    visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+    // sequenceData: ['vectorEditorState', 'sequenceData'],
+    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+  },
+
   getDefaultProps: function() {
     return {
       row: {
@@ -19,7 +31,9 @@ var RowItem = React.createClass({
     };
   },
   render: function () {
-    var {rowLength, showFeatures, showParts, row, showReverseSequence} = this.props;
+    var {rowLength, row} = this.props;
+    var visibilityParameters = this.state.visibilityParameters;
+    var selectionLayer = this.state.selectionLayer;
     var combinedHeightOfChildElements = 0;
     function createFeatureRawPath ({xStart, yStart, height, width, direction, type}) {
       var xEnd = xStart + width;
@@ -37,7 +51,7 @@ var RowItem = React.createClass({
     // if (showReverseSequence) {
     //   combinedHeightOfChildElements+= (SPACE_BETWEEN_ANNOTATIONS + ANNOTATION_HEIGHT); //tnrtodo work out these spacing issues
     // }
-    if (showFeatures) {
+    if (visibilityParameters.showFeatures) {
       // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
       var featuresSVG = createAnnotationPaths({
         annotations: row.features,
@@ -49,7 +63,7 @@ var RowItem = React.createClass({
       });
     }
 
-    if (showParts) {
+    if (visibilityParameters.showParts) {
       // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
       var partsSVG = createAnnotationPaths({
         annotations: row.parts,
@@ -59,6 +73,13 @@ var RowItem = React.createClass({
         charWidth: CHAR_WIDTH,
         annotationYOffsetMax: row.featuresYOffsetMax,
       });
+    }
+
+    function getXStartAndWidthOfRowAnnotation(range, rowLength, charWidth) {
+      return {
+        xStart: (range.start % rowLength) * charWidth,
+        width: ((range.end - range.start) % rowLength) * charWidth,
+      }
     }
 
     function createAnnotationPaths({annotations, annotationYOffsetMax, createAnnotationRawPath, annotationHeight, spaceBetweenAnnotations, charWidth}) {
@@ -100,7 +121,7 @@ var RowItem = React.createClass({
         </svg>
         );
     }
-    
+
     var fontSize = CHAR_WIDTH + "px";
     var textStyle = {
       fontSize: fontSize,
@@ -108,6 +129,35 @@ var RowItem = React.createClass({
       // transform: "scale(2,1)",
       // width: "100%"
     };
+    var highlightLayerStyle = {
+      height: "90%",
+      // width: "100%",
+      background: 'blue',
+      position: "absolute",
+      top: "0",
+      // right: "0",
+      fillOpacity: ".3",
+      opacity: ".3",
+    }
+    var rowContainerStyle = {
+      overflow: "hidden",
+      position: "relative",
+      width: "100%",
+    }
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, highlightLayerStyle);
+
+    function getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle) {
+      var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
+      var selectionLayers = overlaps.map(function (overlap) {
+        var left = overlap.start
+        var width = overlap.start
+        <div className="selectionLayer" style={highlightLayerStyle}/>
+      })
+    }
+
+    
+
+    
     // var enclosingTextDivStyle = {
     //   width: "100%"
     // };
@@ -117,15 +167,14 @@ var RowItem = React.createClass({
     // console.log(row);
     var className = "row" + row.rowNumber;
     return (
-      <div className= {className}>
-        <div className="rowContainer">
+      <div className={className}>
+        <div className="rowContainer" style={rowContainerStyle}>
             {featuresSVG}
             {partsSVG}
-            <svg className= "textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}}>
-            </svg>
+            <svg className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
             {row.rowNumber} //
             {row.start}
-
+            {highlightLayerForRow}
         </div>
       </div>
     );
