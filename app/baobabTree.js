@@ -4,8 +4,21 @@ var string = "atgtgtgatg";
 // var reallyLongFakeSequence = "";
 // for (var i = 0; i < 1000000; i++) {
 // 	reallyLongFakeSequence+=string;
+// 	if (i%100 === 0) {
+
+// 		sequenceData.features[i] = {
+// 		            id: "12355134",
+// 		            start: i,
+// 		            end: i+100,
+// 		            name: 'cooljim',
+// 		            color: 'green',
+// 		            topStrand: true,
+// 		            annotationType: "feature"
+// 		          }
+// 		}
 // };
 // sequenceData.sequence = reallyLongFakeSequence
+
 
 var tree = new baobab({
 	vectorEditorState: {

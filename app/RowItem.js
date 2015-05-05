@@ -286,6 +286,7 @@ var RowItem = React.createClass({
             {partsSVG}
             <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
             {row.rowNumber}
+            //
             {row.start}
             {highlightLayerForRow}
             {cursor}
