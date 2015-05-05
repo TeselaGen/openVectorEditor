@@ -1,11 +1,11 @@
 var baobab = require('baobab');
 var sequenceData = require('./sequenceData');
 var string = "atgtgtgatg";
-var reallyLongFakeSequence = "";
-for (var i = 0; i < 1000000; i++) {
-	reallyLongFakeSequence+=string;
-};
-sequenceData.sequence = reallyLongFakeSequence
+// var reallyLongFakeSequence = "";
+// for (var i = 0; i < 1000000; i++) {
+// 	reallyLongFakeSequence+=string;
+// };
+// sequenceData.sequence = reallyLongFakeSequence
 
 var tree = new baobab({
 	vectorEditorState: {
