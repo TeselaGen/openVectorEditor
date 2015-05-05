@@ -5,10 +5,9 @@ clone it,
 
 	git clone https://github.com/tnrich/webpackTrial.git
 
-Then, get the dependencies:
+Then, get the dependencies by running
 
-run 
-	`npm install`
+	npm install
 
 	npm install -g webpack 
 	
