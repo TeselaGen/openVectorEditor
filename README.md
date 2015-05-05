@@ -1,4 +1,4 @@
-###Trying out webpack
+###Trying out reactjs, baobab, and webpack
 
 To use this repo:
 clone it into your folder of choice,
