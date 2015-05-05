@@ -276,7 +276,7 @@ var RowItem = React.createClass({
 
     row.sequence
     var textHTML = 
-    '<text fontFamily="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/2) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" lengthAdjust="spacing">' + row.sequence + '</text>'
+    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
     var className = "row" + row.rowNumber;
     return (
@@ -286,7 +286,6 @@ var RowItem = React.createClass({
             {partsSVG}
             <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
             {row.rowNumber}
-
             {row.start}
             {highlightLayerForRow}
             {cursor}
