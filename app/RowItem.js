@@ -196,7 +196,6 @@ var RowItem = React.createClass({
     }
 
 
-
     // var enclosingTextDivStyle = {
     //   width: "100%"
     // };
@@ -205,6 +204,26 @@ var RowItem = React.createClass({
     //not sure what it is exactly...
     //should probably change the row.sequence.length -1 to no -1
     //text-anchor="middle"
+    sequenceTextStyle = {
+      display: "inline",
+      position: "absolute",
+
+    }
+    // sequenceText = [];
+    // for (var i = 0; i < row.sequence.length; i++) {
+    //   // var left = CHAR_WIDTH * i + (CHAR_WIDTH/2)
+    //   sequenceText.left = CHAR_WIDTH * i + (CHAR_WIDTH/2);
+    //   // {left: CHAR_WIDTH * i + (CHAR_WIDTH/2)}
+    //   sequenceText.push(
+    //     <div style={sequenceTextStyle}> 
+    //       {row.sequence[i]}
+    //     </div>
+    //   )
+    // };
+    // return sequenceText;
+            // {sequenceText}
+    
+    row.sequence
     var textHTML = 
     '<text fontFamily="Courier New, Courier, monospace" x="0" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length - 1)) + '" lengthAdjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
