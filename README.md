@@ -1,6 +1,6 @@
 ###Trying out reactjs, baobab, and webpack
 
-To use this repo:
+#####To use this repo:
 clone it into your folder of choice,
 
 	cd ~/myFolderOfChoice
@@ -24,4 +24,13 @@ after that, you can run
 	npm run dev
 
 to start the development server with live-reload
+
+#####Concepts employed:
+
+View --(triggers)--> Actions --(update)--> State
+
+or in this case: 
+
+React components --(trigger)--> AppActions.js --(update)--> Baobab tree
+
 
