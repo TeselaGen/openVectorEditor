@@ -1,11 +1,13 @@
 ###Trying out webpack
 
 To use this repo:
-clone it,
+clone it into your folder of choice,
+
+	cd ~/myFolderOfChoice
 
 	git clone https://github.com/tnrich/webpackTrial.git
 
-Then, get the dependencies by running
+Then, get the dependencies by running:
 
 	npm install
 
