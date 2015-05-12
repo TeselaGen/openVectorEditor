@@ -6,6 +6,7 @@
   "dependencies": {
     "baobab": "^1.0.2",
     "baobab-react": "^0.1.0",
+    "bson-objectid": "^1.1.1",
     "classnames": "^1.2.0",
     "css-loader": "^0.10.1",
     "jsx-loader": "^0.13.1",

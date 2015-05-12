@@ -157,22 +157,23 @@ var RowView = React.createClass({
     var preloadRowEnd = (preloadRowStart + numberOfRowsToDisplay) < totalRows ? (preloadRowStart + numberOfRowsToDisplay) : totalRows; 
 
     //calculate topSpacer height
+    var topSpacerHeight;
     if (!this.state || this.state.preloadRowStart === undefined) {
-      var topSpacerHeight = preloadRowStart*averageRowHeight;
+      topSpacerHeight = preloadRowStart*averageRowHeight;
     } else if (this.state.preloadRowStart < preloadRowStart) {
       //we're scrolling down
-      var numberOfRowsDeep = preloadRowStart - this.state.preloadRowStart
-      var newTopNode = this.refs.infiniteContainer.getDOMNode().childNodes[numberOfRowsDeep+1]
+      var numberOfRowsDeep = preloadRowStart - this.state.preloadRowStart;
+      var newTopNode = this.refs.infiniteContainer.getDOMNode().childNodes[numberOfRowsDeep+1];
       if (newTopNode) {
-        var topSpacerHeight = newTopNode.offsetTop - this.refs.infiniteContainer.getDOMNode().offsetTop
+        topSpacerHeight = newTopNode.offsetTop - this.refs.infiniteContainer.getDOMNode().offsetTop;
         console.log('topSpacerHeight');
         console.log(topSpacerHeight);
       } else {
-        var topSpacerHeight = preloadRowStart*averageRowHeight;
+        topSpacerHeight = preloadRowStart*averageRowHeight;
       }
     } else {
       //we're scrolling up
-      var topSpacerHeight = preloadRowStart*averageRowHeight;
+      topSpacerHeight = preloadRowStart*averageRowHeight;
       
     }
 
@@ -216,14 +217,9 @@ var RowView = React.createClass({
       width: viewportDimensions.width,
       overflowY: "scroll"
     };
+
     return (
       <div>
-        <input> 
-          hey
-        </input>
-        <button onClick={appActions.changeViewportSize.bind(null,{height: 300, width: 600})}> 
-        yoo
-        </button>
         SequenceEditor2
         <div ref="infiniteContainer" className="infiniteContainer" style={style} onScroll={this.onScroll}>
             <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>

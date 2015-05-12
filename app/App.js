@@ -7,6 +7,8 @@ var Link = Router.Link;
 var Dashboard = require('./Dashboard.js');
 var SequenceLibrary = require('./SequenceLibrary.js');
 var SequenceEditor2 = require('./SequenceEditor2.js');
+var SequenceEditor3 = require('./SequenceEditor3.js');
+var Skeleton = require('./Skeleton.js');
 
 var Login = require('./Login.js');
 var Logout = require('./Logout.js');
@@ -52,9 +54,7 @@ var App = React.createClass({
           <ul>
             <li>{loginOrOut}</li>
             <li><Link to="about">About</Link></li>
-            <li><Link to="dashboard">Dashboard</Link> (authenticated)</li>
-            <li><Link to="sequences">Sequences</Link> (authenticated)</li>
-            <li><Link to="SequenceEditor2">SequenceEditor5</Link> (authenticated)</li>
+            <li><Link to="dashboard">Dashboard</Link></li>
           </ul>
         </header>
         <RouteHandler/>
@@ -62,15 +62,23 @@ var App = React.createClass({
     );
   }
 });
+            // <li><Link to="about">About</Link></li>
+            // <li><Link to="dashboard">Dashboard</Link></li>
+            // <li><Link to="sequences">Sequences</Link></li>
+            // <li><Link to="SequenceEditor2">SequenceEditor5</Link></li>
 
 var routes = (
   <Route handler={App}>
     <Route path="/login" name="login" handler={Login}/>
     <Route path="/logout" name="logout" handler={Logout}/>
     <Route path="/about" name="about" handler={About}/>
-    <Route path="/sequenceLibrary" name="sequences" handler={SequenceLibrary}/>
-    <Route path="/dashboard" name="dashboard" handler={Dashboard}/>
-    <Route path="/sequenceEditor2" name="SequenceEditor2" handler={SequenceEditor2}/>
+
+    <Route path="" name="Skeleton" handler={Skeleton}>
+      <Route path="/sequenceLibrary" name="sequences" handler={SequenceLibrary}/>
+      <Route path="/dashboard" name="dashboard" handler={Dashboard}/>
+      <Route path="/sequenceEditor2" name="SequenceEditor2" handler={SequenceEditor2}/>
+      <Route path="/sequenceEditor3" name="SequenceEditor3" handler={SequenceEditor3}/>
+    </Route>
   </Route>
 );
 

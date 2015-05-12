@@ -15,6 +15,10 @@ var actions = {
 		tree.select('vectorEditorState', 'selectionLayer').set(newPosition);
 		// viewportDimensions.set(newSize);
 	},
+	setMouseIsDown: function (trueOrFalse) {
+		tree.select('vectorEditorState', 'mouse', 'isDown').set(trueOrFalse);
+		// viewportDimensions.set(newSize);
+	},
 	cancelSelection: function () {
 		tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);

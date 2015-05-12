@@ -17,6 +17,7 @@ var RowItem = React.createClass({
     visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
+    mouse: ['vectorEditorState', 'mouse'],
     cursorPosition: ['vectorEditorState', 'cursorPosition'],
   },
 
@@ -38,11 +39,12 @@ var RowItem = React.createClass({
       console.warn("something went wrong, this shouldn't give a negative number ever")
     }
     nearestBP+= this.props.row.start;
-    if (nearestBP > this.props.row.end) {
+    if (nearestBP > this.props.row.end + 1) {
       nearestBP = this.props.row.end;
     }
     return nearestBP;
   },
+
   onClick: function (event) {
     var nearestBp = this.getNearestBPToCursorEvent(event);
     // if (event.)
@@ -53,18 +55,28 @@ var RowItem = React.createClass({
     // var c = this.refs.textContainer.getDomNode();
   },
 
-  onDragOver: function (event) {
-    console.log('dragover');
-    var clickXPositionRelativeToRowContainer =event.clientX - event.currentTarget.clientLeft
-    var nearestBP = Math.floor(clickXPositionRelativeToRowContainer/CHAR_WIDTH);
-    if (nearestBP < 0) {
-      console.warn("something went wrong, this shouldn't give a negative number ever")
-    }
-    nearestBP+= this.props.row.start;
-    if (nearestBP > this.props.row.end) {
-      nearestBP = this.props.row.end;
-    }
-    appActions.setCursorPosition(nearestBP);
+  onMouseDown: function (event) {
+    console.log('onMouseDown');
+    appActions.setMouseIsDown(true);
+    // this.props.row.start
+    // console.log(a,b);
+    // var c = this.refs.textContainer.getDomNode();
+  },
+
+  onMouseUp: function (event) {
+    appActions.setMouseIsDown(false);
+    console.log('onMouseUp');
+    
+    // appActions.setCursorPosition(nearestBP);
+    // this.props.row.start
+    // console.log(a,b);
+    // var c = this.refs.textContainer.getDomNode();
+  },
+
+  onMouseMove: function (event) {
+    console.log('onMouseMove');
+    
+    // appActions.setCursorPosition(nearestBP);
     // this.props.row.start
     // console.log(a,b);
     // var c = this.refs.textContainer.getDomNode();
@@ -281,7 +293,13 @@ var RowItem = React.createClass({
     var className = "row" + row.rowNumber;
     return (
       <div className={className}>
-        <div className="rowContainer" style={rowContainerStyle} onClick={this.onClick} onDragOver={this.onDragOver}>
+        <div className="rowContainer" 
+          style={rowContainerStyle} 
+          onClick={this.onClick} 
+          onMouseMove={this.onMouseMove}
+          onMouseUp={this.onMouseUp}
+          onMouseDown={this.onMouseDown}
+          >
             {featuresSVG}
             {partsSVG}
             <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />

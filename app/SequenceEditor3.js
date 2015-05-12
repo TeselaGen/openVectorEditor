@@ -7,7 +7,7 @@ var mixin = require('baobab-react/mixins').branch;
 var Authentication = require('./Authentication.js');
 
 
-var SequenceEditor2 = React.createClass({
+var SequenceEditor3 = React.createClass({
   mixins: [mixin, Authentication],
   cursors: {
     visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
@@ -29,4 +29,4 @@ var SequenceEditor2 = React.createClass({
   }
 });
 
-module.exports = SequenceEditor2;
+module.exports = SequenceEditor3;
