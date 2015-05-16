@@ -1,16 +1,33 @@
 var React = require('react');
+var Draggable = require('react-draggable');
 var RowItem = require('./RowItem');
 var appActions = require('./actions/appActions');
+var arePositiveIntegers = require('./arePositiveIntegers');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
-var prepareRowData = require('./prepareRowData');
+// var prepareRowData = require('./prepareRowData');
 var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
 // var ReactList = require('react-list');
+var mixin = require('baobab-react/mixins').branch;
 
 var RowView = React.createClass({
-  propTypes: {
-    preloadBasepairStart: React.PropTypes.number.isRequired,
-    viewportDimensions: React.PropTypes.object.isRequired,
+  mixins: [mixin],
+  cursors: {
+    // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+    preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
+    averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
+    rowLength: ['vectorEditorState', 'rowLength'],
+    viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
+    preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
+    highlightLayer: ['vectorEditorState', 'highlightLayer'],
   },
+  facets: {
+    rowData: 'rowData',
+  },
+
+  // propTypes: {
+  //   preloadBasepairStart: React.PropTypes.number.isRequired,
+  //   viewportDimensions: React.PropTypes.object.isRequired,
+  // },
   // getDefaultProps: function() {
   //   return {
   //     preloadBasepairStart: 150, //start the loading of the sequence with this basepair
@@ -21,214 +38,201 @@ var RowView = React.createClass({
   //   };
   // }, 
   onScroll: function (event) {
-    console.log('scrolled');
+    if (this.scollerBeingDragged) return; //don't handle the onScroll event because the user is dragging
+
+    //the basic idea of the scroll is to add a row below if the third row element goes out of view
+    //and to add a row above if the third row element comes into view 
+    //(we use the third element so we have a buffer of 2 rows above that are preloaded..)
+    //after the new row is added, we manually need to set the scrollOffset of the infinite container 
+    //so that the newly added row doesn't change the positions of the already existing rows on the screen
+    //The logic for this is done in componentWillUpdate and componentDidUpdate
+
     var infiniteContainer = event.currentTarget;
-    var averageRowHeight = this.props.averageRowHeight;
-    // var scrollTop = infiniteContainer.scrollTop;
-    // this.setState({
-    //   oldScrollTop: scrollTop
-    // })
-    // if (scrollTop > this.state.oldScrollTop) {
-    //   var scrollDirection = "up";
-    //   console.log('up');
-    // } else {
-    //   var scrollDirection = "down";
-    //   console.log('down'); 
-    // } 
-
-    var totalHeightOfInfiniteContainer = infiniteContainer.scollHeight; //equals the total height of container
-    // console.log(totalHeightOfInfiniteContainer); 
-
-
-
-    //determine if we're scrolling into new territory
-    //below:
-
-    //scrollHeight 
-    var topSpacer = event.currentTarget.children[0];
-    var totalChildCount = event.currentTarget.childElementCount;
-    var bottomSpacer = event.currentTarget.children[(totalChildCount-1)];
-
-    // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight));
-    var newStartingRowBasedOnPercentageScrolled = Math.floor(infiniteContainer.scrollTop/averageRowHeight);
-
-
-    if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 0) {
-      //scrolling up very quickly
-      console.log('//scrolling up very quickly');
-      var newRowStart = newStartingRowBasedOnPercentageScrolled - 0 > 0 ? newStartingRowBasedOnPercentageScrolled - 0 : 0;
-      this.prepareVisibleRows(newRowStart); 
+    var thirdRowElement = infiniteContainer.childNodes[2]; 
+    
+    console.log(infiniteContainer.scrollTop);
+    if ((thirdRowElement.offsetTop - infiniteContainer.offsetTop + thirdRowElement.scrollHeight) < infiniteContainer.scrollTop) {
+      //scrolling down, so add a row below
+      console.log('//scrolling down, so add a row below');
+      this.prepareVisibleRows(this.state.preloadRowStart + 1);
+      // this.thirdRowElement = thirdRowElement;
+      // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
+      this.scrollingUp = false;
+    } else if (thirdRowElement.offsetTop - infiniteContainer.offsetTop > infiniteContainer.scrollTop) {
+      this.prepareVisibleRows(this.state.preloadRowStart - 1);
+      // this.thirdRowElement = thirdRowElement;
+      // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
+      this.scrollingUp = true;
+      console.log('//scrolling up, so add a row above');
+    } else {
+      //we haven't scrolled enough, so do nothing
     }
-    else if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 500) {
-      if (this.state.preloadRowStart > 0) {
-        //we're scrolling up slowly
-        console.log('hit');
-        // if (infiniteContainer < (this.state.preloadRowStart - 50)) {
-        //   var newRowStart = newStartingRowBasedOnPercentageScrolled - 50 > 0 ? newStartingRowBasedOnPercentageScrolled - 50 : 0;
-        //   console.log('newStartingRowBasedOnPercentageScrolled');
-        // } 
-        // else {
-          var newRowStart = (this.state.preloadRowStart - 50) > 0 ? (this.state.preloadRowStart - 50) : 0;
-        // }
-        // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-        console.log(newRowStart);
-        //tnr: potential strategy to keep scroll smooth, note the topmost visible item in the infinite container and after the ui has re-rendered, 
-        //make a call to bring it into view. 
-        this.prepareVisibleRows(newRowStart); 
-      }
-      //we're less than 100 pixels away from hitting the top spacer
-      // console.log("top true");
-
-      // appActions.loadRowsAbove()
-    }  
-
-    // console.log(infiniteContainer.scrollTop);
-    // console.log(bottomSpacer.offsetTop); 
-    if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 0) {
-      //we're scrolling down very quickly
-      console.log('//we are scrolling down very quickly');
-      // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-      var newRowStart = newStartingRowBasedOnPercentageScrolled
-      this.prepareVisibleRows(newRowStart);
-    }
-    else if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 1000) {
-      //we're scrolling down
-      if (this.state.totalRows - (this.state.preloadRowStart + this.state.rowsThatFitIntoViewport) > 0) {
-        // if (newStartingRowBasedOnPercentageScrolled > (this.state.preloadRowStart + 50)) {
-        //   var newRowStart = newStartingRowBasedOnPercentageScrolled;
-        //   console.log('newStartingRowBasedOnPercentageScrolled');
-        // } else {
-          // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-          var newRowStart = (this.state.preloadRowStart + 20) < this.state.totalRows ? (this.state.preloadRowStart + 20) : this.state.totalRows;
-          var lastRow = infiniteContainer.childNodes[infiniteContainer.childNodes.length-2];
-          lastRow.offsetTop;
-          console.log(lastRow.className);
-          var nameAndOffset = {
-            rowName: lastRow.className,
-          };
-        // }
-        // console.log('hit');
-        // console.log(newRowStart);
-        this.prepareVisibleRows(newRowStart);
-      }
-    } 
-
-    // console.log('bottomSpacer.offsetTop');
-    // console.log(bottomSpacer.offsetTop);
-     // console.log(bottomSpacer);
-    // console.log(event.currentTarget.scrollBottom);
-
   },
+
+  componentWillUpdate: function(argument) {
+    //save a reference to the thirdRowElement and its offset from the top of the container
+    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+    this.thirdRowElement = infiniteContainer.children[2];
+    this.thirdRowElementOldOffsetTop = this.thirdRowElement.offsetTop;
+  },
+
+  componentDidUpdate: function(argument) {
+    //if there is no thirdRowElement, we've probably scrolled too far away
+    if (this.thirdRowElement) { 
+      //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
+      var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+      var adjustInfiniteContainerByThisAmount = this.thirdRowElement.offsetTop - this.thirdRowElementOldOffsetTop;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+    }
+  },
+
   componentWillMount: function (argument) {
-    var {preloadRowStart, preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props;
-    // this.setState({
-    //   visibleRowStart: preloadRowStart,
-    // });
-    this.prepareVisibleRows(preloadRowStart);
+    this.alreadyPreparedRows = {};
+    this.prepareVisibleRows(this.state.preloadRowStart);
   },
 
   componentDidMount: function (argument) {
     //tnr, instead of finding the dom nodes and performing calculations, we can add 
     //a variable to the state/props to determine if we need to scroll down
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    var heightOfTopSpacer = React.findDOMNode(this.refs.topSpacer).scrollHeight;
-    if (heightOfTopSpacer > 0) {
-      var thirdRowElement = infiniteContainer.children[3].scrollIntoView();
-    }
+    // var heightOfTopSpacer = React.findDOMNode(this.refs.topSpacer).scrollHeight;
+    // if (heightOfTopSpacer > 0) {
+      var thirdRowElement = infiniteContainer.children[2].scrollIntoView();
+    // }
   },
 
-  prepareVisibleRows: function (preloadRowStart) {
-    // var {preloadRowStart, preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-    var {averageRowHeight, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-
-    // var averageRowHeight = viewportDimensions.averageRowHeight;
-    // debugger;
-    //prepare the infinite container dimension
-    var rowLength = Math.floor(viewportDimensions.width / CHAR_WIDTH);
-    var totalRows = Math.ceil(sequenceData.sequence.length / rowLength);
-    // var preloadRowStart = this.state.preloadRowStart;
-    // var preloadRowStart = (Math.floor(preloadBasepairStart / rowLength) - 3) > 0 ? Math.floor(preloadBasepairStart / rowLength) - 3 : 0; //get three below the top row if possible //start the loading of the sequence with this basepair
-    var rowsThatFitIntoViewport = Math.ceil(viewportDimensions.height / averageRowHeight);
-    console.log('rowsThatFitIntoViewport');
-    console.log(rowsThatFitIntoViewport);
-    // var numberOfRowsToDisplay = (preloadRowStart + rowsThatFitIntoViewport + 3) < totalRows ? preloadRowStart + rowsThatFitIntoViewport + 3 : totalRows;
-    var numberOfRowsToDisplay = rowsThatFitIntoViewport + 100;
-
-    var preloadRowEnd = (preloadRowStart + numberOfRowsToDisplay) < totalRows ? (preloadRowStart + numberOfRowsToDisplay) : totalRows; 
-
-    //calculate topSpacer height
-    var topSpacerHeight;
-    if (!this.state || this.state.preloadRowStart === undefined) {
-      topSpacerHeight = preloadRowStart*averageRowHeight;
-    } else if (this.state.preloadRowStart < preloadRowStart) {
-      //we're scrolling down
-      var numberOfRowsDeep = preloadRowStart - this.state.preloadRowStart;
-      var newTopNode = this.refs.infiniteContainer.getDOMNode().childNodes[numberOfRowsDeep+1];
-      if (newTopNode) {
-        topSpacerHeight = newTopNode.offsetTop - this.refs.infiniteContainer.getDOMNode().offsetTop;
-        console.log('topSpacerHeight');
-        console.log(topSpacerHeight);
-      } else {
-        topSpacerHeight = preloadRowStart*averageRowHeight;
-      }
-    } else {
-      //we're scrolling up
-      topSpacerHeight = preloadRowStart*averageRowHeight;
-      
+  prepareVisibleRows: function (rowStart) {
+    if (!arePositiveIntegers(rowStart)) {
+      return;
+      console.warn('non-integer value passed to prepareVisibleRows');
     }
+    var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
 
-    //calculate bottom spacer height
-    var bottomSpacerHeight = (totalRows - preloadRowEnd)*averageRowHeight;
-    console.log(sequenceData, preloadRowStart, preloadRowEnd, rowLength, this.alreadyPreparedRows);
-    //calculate the visible rows
-    //tnr: pass any already prepared rows into this function so we don't have to recalculate them
-    var visibleRows = prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength, this.alreadyPreparedRows); //this function also pushes any newly calculated rows onto the this.alreadyPreparedRows object
+    // console.log('rowsThatFitIntoViewport');
+    // console.log(rowsThatFitIntoViewport);
+    var numberOfRowsToDisplay = rowsThatFitIntoViewport + 5;
 
+    var preloadRowEnd = (rowStart + numberOfRowsToDisplay) < this.state.rowData.length ? (rowStart + numberOfRowsToDisplay) : this.state.rowData.length; 
+
+    var visibleRows = this.state.rowData.slice(rowStart,preloadRowEnd);
     this.setState({
-      preloadRowStart: preloadRowStart,
+      preloadRowStart: rowStart,
       visibleRows: visibleRows,
-      totalRows: totalRows,
-      rowLength: rowLength,
-      rowsThatFitIntoViewport: rowsThatFitIntoViewport,
-      topSpacerHeight: topSpacerHeight,
-      bottomSpacerHeight: bottomSpacerHeight,
     });
+  },
+
+  handleScrollbarDrag: function(event, ui) {
+    var rowStart = Math.ceil(ui.position.top * this.state.rowData.length / this.state.viewportDimensions.height);
+    // console.log('rowStart just calculated :' + rowStart);
+    this.prepareVisibleRows(rowStart);
+  },
+  handleScrollbarDragStart: function(event, ui) {
+    this.scollerBeingDragged = true;
+  },
+
+  handleScrollbarDragStop: function(event, ui) {
+    this.scollerBeingDragged = false;
+  },
+
+  handleEditorDrag: function(event, ui) {
+    console.log('editorDrag');
+    // event.offsetX
+    // event.offsetY
+    var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
+
+
+    for (var i = 0; i < infiniteContainer.childNodes.length; i++) {
+      var row = infiniteContainer.childNodes[i];
+      console.log('node.offsetX: ' + row);
+      // console.log('node.offsetY: ' + node.offsetY);
+    }
+  },
+  handleEditorDragStart: function(event, ui) {
+    this.editorBeingDragged = true;
+  },
+
+  handleEditorDragStop: function(event, ui) {
+    this.editorBeingDragged = false;
   },
 
   render: function () {
-    var {viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-    
-    // console.log('rows');
-    // console.log(rows); 
     var self = this;
     var rowItems = this.state.visibleRows.map(function(row) {
       if (row) {
-        return(<RowItem key={row.rowNumber} {...other} row={row} rowLength={self.state.rowLength}  />);
+        return(<RowItem key={row.rowNumber} row={row} rowLength={self.state.rowLength}  />);
       }
     });
-    // var rowItemHeights = [];
 
-    // rowItems.forEach(function(){
-    //   rowItemHeights.push(100);
-    // }); 
-
-    var style = {
-      height:viewportDimensions.height,
-      width: viewportDimensions.width,
-      overflowY: "scroll"
+    var infiniteContainerStyle = {
+      height: this.state.viewportDimensions.height,
+      width: this.state.viewportDimensions.width,
+      overflowY: "scroll",
+      float: "left",
+      paddingRight: "20px"
+    };
+    var scrollbarStyle = {
+      height: this.state.viewportDimensions.height,
+      width: 15,
+      top: 0,
+      right: 0,
+      position:"absolute",
+    };
+    var scrollerStyle = {
+      height: 50,
+      background: "black",
+      width: "100%",
+      position: "absolute",
+      top: 0,
     };
 
+    var moveOnStartChange;
+    if (this.scollerBeingDragged) {
+      console.log('scollerBeingDragged');
+      moveOnStartChange = false; //set this to false because the user is dragging
+      // this.newStart = 0;
+      // scrollerStyle.top = this.initialTopOfScoller
+    } else {
+      console.log('newStart');
+      moveOnStartChange = true; //set to true because user is scrolling (without dragging), and we want the scrollbar position to update
+      this.newStart = scrollbarStyle.height*(this.state.preloadRowStart/this.state.rowData.length);
+      // console.log('scrollerStyle.top:  ' + scrollerStyle.top);
+    }
+    console.log('this.newStart:  ' + this.newStart);
     return (
-      <div>
-        SequenceEditor2
-        <div ref="infiniteContainer" className="infiniteContainer" style={style} onScroll={this.onScroll}>
-            <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>
-            {rowItems}
-            <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
+      <div style={{width: infiniteContainerStyle.width + scrollbarStyle.width, position: "relative"}}>
+        <Draggable 
+            zIndex={100} 
+            bounds="parent"
+            onDrag={this.handleEditorDrag} 
+            onStart={this.handleEditorDragStart} 
+            onStop={this.handleEditorDragStop} 
+            >
+          <div style={{width: infiniteContainerStyle.width, overflowX:"hidden"}}>
+            <div ref="infiniteContainer" className="infiniteContainer" style={infiniteContainerStyle} onScroll={this.onScroll}>
+                {rowItems}
+            </div>
+          </div>
+        </Draggable>
+        <div ref="infiniteContainer-scrollbar" className="infiniteContainer-scrollbar" style={scrollbarStyle}>
+          <Draggable 
+            axis="y" 
+            zIndex={100} 
+            bounds="parent"
+            start={{y: this.newStart}}
+            moveOnStartChange={moveOnStartChange}
+            onDrag={this.handleScrollbarDrag} 
+            onStart={this.handleScrollbarDragStart} 
+            onStop={this.handleScrollbarDragStop} 
+            >
+            <div ref="scroller" style={scrollerStyle}>
+            </div>
+          </Draggable>
         </div>
       </div>
     );
   }
 });
+            // <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>
+            // <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
 
 module.exports = RowView;

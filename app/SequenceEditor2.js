@@ -9,21 +9,21 @@ var Authentication = require('./Authentication.js');
 
 var SequenceEditor2 = React.createClass({
   mixins: [mixin, Authentication],
-  cursors: {
-    visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
-    sequenceData: ['vectorEditorState', 'sequenceData'],
-    highlightLayer: ['vectorEditorState', 'highlightLayer'],
-  },
+  // cursors: {
+  //   visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+  //   sequenceData: ['vectorEditorState', 'sequenceData'],
+  //   highlightLayer: ['vectorEditorState', 'highlightLayer'],
+  // },
 
   render: function() {
-      var visibilityParameters = this.state.visibilityParameters;
-      var highlightLayer = this.state.highlightLayer;
-      visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.rowLength;
-
+      // var visibilityParameters = this.state.visibilityParameters;
+      // var highlightLayer = this.state.highlightLayer;
+      // visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.rowLength;
+ 
 
     return (
       <div>
-        <RowView {...visibilityParameters} sequenceData={this.state.sequenceData} highlightLayer={this.state.highlightLayer} />
+        <RowView />
       </div>
     );
   }

@@ -17,6 +17,7 @@ module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB,
       }
     });
   });
+  
   return overlaps;
 };
 

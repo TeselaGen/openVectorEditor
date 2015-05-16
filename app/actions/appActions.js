@@ -4,7 +4,7 @@ var actions = {
 	changeViewportSize: function (newSize) {
 		console.log(newSize);
 		// tree.select
-		var viewportDimensions = tree.select('vectorEditorState', 'visibilityParameters', 'viewportDimensions');
+		var viewportDimensions = tree.select('vectorEditorState', 'viewportDimensions');
 		viewportDimensions.set(newSize);
 	},
 	setCursorPosition: function (newPosition) {

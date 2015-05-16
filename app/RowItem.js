@@ -14,7 +14,9 @@ var appActions = require('./actions/appActions');
 var RowItem = React.createClass({
   mixins: [mixin],
   cursors: {
-    visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+    showFeatures: ['vectorEditorState', 'showFeatures'],
+    showParts: ['vectorEditorState', 'showParts'],
+    showReverseSequence: ['vectorEditorState', 'showReverseSequence'],
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
     mouse: ['vectorEditorState', 'mouse'],
@@ -33,10 +35,10 @@ var RowItem = React.createClass({
     };
   },
   getNearestBPToCursorEvent: function (event) {
-    var clickXPositionRelativeToRowContainer =event.clientX - event.currentTarget.clientLeft
+    var clickXPositionRelativeToRowContainer =event.clientX - event.currentTarget.clientLeft;
     var nearestBP = Math.floor(clickXPositionRelativeToRowContainer/CHAR_WIDTH);
     if (nearestBP < 0) {
-      console.warn("something went wrong, this shouldn't give a negative number ever")
+      console.warn("something went wrong, this shouldn't give a negative number ever");
     }
     nearestBP+= this.props.row.start;
     if (nearestBP > this.props.row.end + 1) {
@@ -74,7 +76,7 @@ var RowItem = React.createClass({
   },
 
   onMouseMove: function (event) {
-    console.log('onMouseMove');
+    // console.log('onMouseMove');
     
     // appActions.setCursorPosition(nearestBP);
     // this.props.row.start
@@ -84,7 +86,9 @@ var RowItem = React.createClass({
 
   render: function () {
     var {rowLength, row} = this.props;
-    var visibilityParameters = this.state.visibilityParameters;
+    var showFeatures = this.state.showFeatures;
+    var showParts = this.state.showParts;
+    var showReverseSequence = this.state.showReverseSequence;
     var selectionLayer = this.state.selectionLayer;
     var cursorPosition = this.state.cursorPosition;
     var combinedHeightOfChildElements = 0;
@@ -104,27 +108,27 @@ var RowItem = React.createClass({
     // if (showReverseSequence) {
     //   combinedHeightOfChildElements+= (SPACE_BETWEEN_ANNOTATIONS + ANNOTATION_HEIGHT); //tnrtodo work out these spacing issues
     // }
-    if (visibilityParameters.showFeatures) {
+    if (showFeatures) {
       // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
       var featuresSVG = createAnnotationPaths({
-        annotations: row.features,
+        annotationRanges: row.features,
         createAnnotationRawPath: createFeatureRawPath,
         annotationHeight: ANNOTATION_HEIGHT,
         spaceBetweenAnnotations: SPACE_BETWEEN_ANNOTATIONS,
         charWidth: CHAR_WIDTH,
-        annotationYOffsetMax: row.featuresYOffsetMax,
+        // annotationYOffsetMax: row.featuresYOffsetMax,
       });
     }
 
-    if (visibilityParameters.showParts) {
+    if (showParts) {
       // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
       var partsSVG = createAnnotationPaths({
-        annotations: row.parts,
+        annotationRanges: row.parts,
         createAnnotationRawPath: createFeatureRawPath,
         annotationHeight: ANNOTATION_HEIGHT,
         spaceBetweenAnnotations: SPACE_BETWEEN_ANNOTATIONS,
         charWidth: CHAR_WIDTH,
-        annotationYOffsetMax: row.featuresYOffsetMax,
+        // annotationYOffsetMax: row.featuresYOffsetMax,
       });
     }
 
@@ -139,19 +143,25 @@ var RowItem = React.createClass({
       };
     }
 
-    function createAnnotationPaths({annotations, annotationYOffsetMax, createAnnotationRawPath, annotationHeight, spaceBetweenAnnotations, charWidth}) {
-      var maxElementHeight = (annotationYOffsetMax + 1) * (annotationHeight + spaceBetweenAnnotations);
-      var annotationsSVG = _.map(annotations, function(annotationRow) {
-        var overlapPaths = annotationRow.overlaps.map(function(overlap) {
-          // console.log(annotationRow);
-          var annotation = annotationRow.annotation; 
+    function createAnnotationPaths({annotationRanges, createAnnotationRawPath, annotationHeight, spaceBetweenAnnotations, charWidth}) {
+      if (annotationRanges.length === 0) {
+        return [];
+      }
+      var maxAnnotationYOffset = 0;
+      var annotationsSVG = _.map(annotationRanges, function(annotationRange) {
+        if (annotationRange.yOffset > maxAnnotationYOffset) {
+          maxAnnotationYOffset = annotationRange.yOffset;
+        }
+        // var overlapPaths = annotationRange.overlaps.map(function(overlap) {
+          // console.log(annotationRange);
+          var annotation = annotationRange.annotation; 
 
           var drawingParameters = {
-            xStart: (overlap.start % rowLength) * charWidth,
-            width: ((overlap.end + 1 - overlap.start)) * charWidth,
-            yStart: annotationRow.yOffset * (annotationHeight + spaceBetweenAnnotations),
+            xStart: (annotationRange.start % rowLength) * charWidth,
+            width: ((annotationRange.end + 1 - annotationRange.start)) * charWidth,
+            yStart: annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations),
             height: annotationHeight,
-            type: overlap.type,
+            type: annotationRange.type,
             topStrand: annotation.topStrand,
           };
           var path = createAnnotationRawPath(drawingParameters);
@@ -161,19 +171,20 @@ var RowItem = React.createClass({
             strokeColor: annotation.color, 
             fill: annotation.color,
             path: path,
-            fillOpacity: .4, //come back and change this to a passed var
+            fillOpacity: 0.4, //come back and change this to a passed var
           };
           var annotationPath = createAnnotationPath(attributes);
           return annotationPath;
-        });
-        return (overlapPaths);
+        // });
+        // return (overlapPaths);
 
         function createAnnotationPath ({strokeColor, fill, classnames, path, fillOpacity}) {
-            return(<path className={classnames} d={path} stroke={strokeColor} fill={fillOpacity} fill={fill}/>);
-        };
+            return(<path className={classnames} d={path} stroke={strokeColor} fillOpacity={fillOpacity} fill={fill}/>);
+        }
       });
+      var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
       return (
-        <svg className="annotationContainer" width="100%" height={maxElementHeight} > 
+        <svg className="annotationContainer" width="100%" height={height} > 
           {annotationsSVG}
         </svg>
         );
@@ -290,9 +301,9 @@ var RowItem = React.createClass({
     var textHTML = 
     '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
-    var className = "row" + row.rowNumber;
+    // var className = "row" + row.rowNumber;
+      // <div className={className}>
     return (
-      <div className={className}>
         <div className="rowContainer" 
           style={rowContainerStyle} 
           onClick={this.onClick} 
@@ -309,7 +320,6 @@ var RowItem = React.createClass({
             {highlightLayerForRow}
             {cursor}
         </div>
-      </div>
     );
   }
 });

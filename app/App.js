@@ -50,6 +50,7 @@ var App = React.createClass({
       <Link to="login">Sign in</Link>;
     return (
       <div>
+       <SequenceEditor2/>
         <header>
           <ul>
             <li>{loginOrOut}</li>
