@@ -5,10 +5,13 @@ var prepareRowData = require('./prepareRowData');
 var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 
 //tnr: this is used to generate a very large, fake, multi-featured sequence
-// var string = "atgtgtgatg";
 
+sequenceData.features = {};
+sequenceData.parts = {};
+
+// var string = "atgtgtgatg";
 // var reallyLongFakeSequence = "";
-// for (var i = 0; i < 100000; i++) {
+// for (var i = 0; i < 10000; i++) {
 // 	reallyLongFakeSequence+=string;
 // 	if (i%100 === 0) {
 
@@ -54,7 +57,7 @@ var tree = new baobab({
 		showFeatures: true,
 		showReverseSequence: true,
 		viewportDimensions: {
-			height: 700, //come back and make these dynamic
+			height: 500, //come back and make these dynamic
 			width: 400
 		},
 		selectionLayer: {
