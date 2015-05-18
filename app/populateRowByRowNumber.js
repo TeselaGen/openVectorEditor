@@ -2,11 +2,11 @@ var _ = require('lodash');
 
 
 
-function populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLength) {
+function populateRowByRowNumber(sequenceData, bpsPerRow, rowNumber, sequenceLength) {
   var row = {};
   row.rowNumber = rowNumber;
-  row.start = rowNumber*rowLength;
-  row.end = (rowNumber+1)*(rowLength-1);
+  row.start = rowNumber*bpsPerRow;
+  row.end = (rowNumber+1)*(bpsPerRow-1);
   row.sequence = sequenceData.sequence.slice(row.start, row.end);
 
   row.features = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);

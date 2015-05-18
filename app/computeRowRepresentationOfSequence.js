@@ -8,15 +8,15 @@ function computeNumberOfCharsThatFitInGivenViewportWidth (viewportDimensions, CH
 function computeRowRepresenationOfSequence(sequenceData, viewportDimensionsWidth, CHAR_WIDTH) {
   debugger;
   
-  var rowLength = computeNumberOfCharsThatFitInGivenViewportWidth(viewportDimensionsWidth, CHAR_WIDTH);
+  var bpsPerRow = computeNumberOfCharsThatFitInGivenViewportWidth(viewportDimensionsWidth, CHAR_WIDTH);
   var sequenceLength = sequenceData.sequence.length;
-  var numberOfRows = Math.ciel(sequenceLength/rowLength);
+  var numberOfRows = Math.ciel(sequenceLength/bpsPerRow);
 
   //prepare the shell of the row
   var rows = [];
   for (var i = 0; i < numberOfRows; i++) {
-    var start = i*rowLength;
-    var end = i*rowLength+rowLength;
+    var start = i*bpsPerRow;
+    var end = i*bpsPerRow+bpsPerRow;
     if (end > sequenceLength-1) { //normalize the end value
       end = sequenceLength-1;
     }
@@ -54,11 +54,11 @@ function mapAnnotationToRows (rows,annotation, rowAnnotationGroup) {
   });
 }
 
-function populateRowByRowNumber(sequenceData, rowLength, rowNumber, sequenceLength) {
+function populateRowByRowNumber(sequenceData, bpsPerRow, rowNumber, sequenceLength) {
   var row = {};
   row.rowNumber = rowNumber;
-  row.start = rowNumber * rowLength;
-  row.end = (rowNumber + 1) * (rowLength) - 1;
+  row.start = rowNumber * bpsPerRow;
+  row.end = (rowNumber + 1) * (bpsPerRow) - 1;
   row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
 
   // console.log('row.rowNumber');

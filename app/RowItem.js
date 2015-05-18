@@ -22,6 +22,10 @@ var RowItem = React.createClass({
     mouse: ['vectorEditorState', 'mouse'],
     cursorPosition: ['vectorEditorState', 'cursorPosition'],
   },
+  facets: {
+    sequenceLength: 'sequenceLength',
+    bpsPerRow: 'bpsPerRow',
+  },
 
   getDefaultProps: function() {
     return {
@@ -31,67 +35,24 @@ var RowItem = React.createClass({
       },
       showFeatures: true,
       showReverseSequence: true,
-      rowLength: 30,
+      
     };
   },
-  getNearestBPToCursorEvent: function (event) {
-    var clickXPositionRelativeToRowContainer =event.clientX - event.currentTarget.clientLeft;
-    var nearestBP = Math.floor(clickXPositionRelativeToRowContainer/CHAR_WIDTH);
-    if (nearestBP < 0) {
-      console.warn("something went wrong, this shouldn't give a negative number ever");
-    }
-    nearestBP+= this.props.row.start;
-    if (nearestBP > this.props.row.end + 1) {
-      nearestBP = this.props.row.end;
-    }
-    return nearestBP;
-  },
-
-  onClick: function (event) {
-    var nearestBp = this.getNearestBPToCursorEvent(event);
-    // if (event.)
-    appActions.setCursorPosition(nearestBp);
-    appActions.cancelSelection();
-    // this.props.row.start
-    // console.log(a,b);
-    // var c = this.refs.textContainer.getDomNode();
-  },
-
-  onMouseDown: function (event) {
-    console.log('onMouseDown');
-    appActions.setMouseIsDown(true);
-    // this.props.row.start
-    // console.log(a,b);
-    // var c = this.refs.textContainer.getDomNode();
-  },
-
-  onMouseUp: function (event) {
-    appActions.setMouseIsDown(false);
-    console.log('onMouseUp');
-    
-    // appActions.setCursorPosition(nearestBP);
-    // this.props.row.start
-    // console.log(a,b);
-    // var c = this.refs.textContainer.getDomNode();
-  },
-
-  onMouseMove: function (event) {
-    // console.log('onMouseMove');
-    
-    // appActions.setCursorPosition(nearestBP);
-    // this.props.row.start
-    // console.log(a,b);
-    // var c = this.refs.textContainer.getDomNode();
-  },
+  
+  // onCursorHover: function (argument) {
+  //   // body...
+  // }
 
   render: function () {
-    var {rowLength, row} = this.props;
+    var {row} = this.props;
+    var bpsPerRow = this.state.bpsPerRow;
     var showFeatures = this.state.showFeatures;
     var showParts = this.state.showParts;
     var showReverseSequence = this.state.showReverseSequence;
     var selectionLayer = this.state.selectionLayer;
     var cursorPosition = this.state.cursorPosition;
     var combinedHeightOfChildElements = 0;
+    var self = this;
     function createFeatureRawPath ({xStart, yStart, height, width, direction, type}) {
       var xEnd = xStart + width;
       var yEnd = yStart  + height;
@@ -132,13 +93,13 @@ var RowItem = React.createClass({
       });
     }
 
-    function getXStartAndWidthOfRowAnnotation(range, rowLength, charWidth) {
+    function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
       // 24 bps long: 
       // 
       // if (range.end + 1 - range.start > 0 && )
-      // (range.end + 1 - range.start) % rowLength
+      // (range.end + 1 - range.start) % bpsPerRow
       return {
-        xStart: (range.start % rowLength) * charWidth,
+        xStart: (range.start % bpsPerRow) * charWidth,
         width: ((range.end + 1 - range.start)) * charWidth,
       };
     }
@@ -157,7 +118,7 @@ var RowItem = React.createClass({
           var annotation = annotationRange.annotation; 
 
           var drawingParameters = {
-            xStart: (annotationRange.start % rowLength) * charWidth,
+            xStart: (annotationRange.start % bpsPerRow) * charWidth,
             width: ((annotationRange.end + 1 - annotationRange.start)) * charWidth,
             yStart: annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations),
             height: annotationHeight,
@@ -207,11 +168,6 @@ var RowItem = React.createClass({
       // fillOpacity: ".3",
       opacity: ".3",
     };
-    var rowContainerStyle = {
-      overflow: "hidden",
-      position: "relative",
-      width: "100%",
-    };
 
     var cursorStyle = {
       height: "90%",
@@ -219,17 +175,26 @@ var RowItem = React.createClass({
       background: 'black',
       position: "absolute",
       top: "0",
-      width: 2,
+      width: "2px",
+      cursor: "ew-resize",
       // left: "0",
       // fillOpacity: "1",
       // opacity: ".3",
     };
-
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle, CHAR_WIDTH);
-    function getHighlightLayerForRow(selectionLayer, row, rowLength, highlightLayerStyle, charWidth) {
+    
+    var selectionCursorStart;
+    var selectionCursorEnd;
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, CHAR_WIDTH, cursorStyle);
+    function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle) {
       var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
       var selectionLayers = overlaps.map(function (overlap) {
-        var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, rowLength, charWidth);
+        if (overlap.start === selectionLayer.start) {
+          selectionCursorStart = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth);
+        }
+        if (overlap.end === selectionLayer.end) {
+          selectionCursorEnd = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth);
+        }
+        var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
         highlightLayerStyle.width = width;
         highlightLayerStyle.left = xStart;
         return (<div className="selectionLayer" style={highlightLayerStyle}/>);
@@ -237,11 +202,15 @@ var RowItem = React.createClass({
       return selectionLayers;
     }
 
-    var cursor = getCursorForRow(cursorPosition, row, rowLength, cursorStyle, CHAR_WIDTH)
-    function getCursorForRow (cursorPosition, row, rowLength, cursorStyle, charWidth) {
-      if(row.start<= cursorPosition && row.end >= cursorPosition) {
-        cursorStyle.left = (cursorPosition % rowLength) * charWidth;
-        return (<div className="cursor" style={cursorStyle}/>);
+    
+
+    var cursor = getCursorForRow(cursorPosition, row, bpsPerRow, cursorStyle, CHAR_WIDTH);
+    function getCursorForRow (cursorPosition, row, bpsPerRow, cursorStyle, charWidth) {
+      if(row.start<= cursorPosition && row.end + 1 >= cursorPosition || (row.end === self.state.sequenceLength - 1 && row.end < cursorPosition) ) {
+        //the second logical operator catches the special case where we're at the very end of the sequence..
+        var newCursorStyle = _.assign({}, cursorStyle, {left: (cursorPosition - row.start) * charWidth});
+        return (<div className="cursor" style={newCursorStyle}  />);
+        // onHover={self.onCursorHover}
       }
     }
 
@@ -296,8 +265,12 @@ var RowItem = React.createClass({
     //   )
     // };
     // return charArray;
+    var rowContainerStyle = {
+      overflow: "hidden",
+      position: "relative",
+      width: "100%",
+    };
 
-    row.sequence
     var textHTML = 
     '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
@@ -318,6 +291,8 @@ var RowItem = React.createClass({
             //
             {row.start}
             {highlightLayerForRow}
+            {selectionCursorStart}
+            {selectionCursorEnd}
             {cursor}
         </div>
     );

@@ -1,19 +1,19 @@
 var _ = require('lodash');
 var arePositiveIntegers = require('./arePositiveIntegers');
 
-function prepareRowData(sequenceData, rowLength) {
+function prepareRowData(sequenceData, bpsPerRow) {
   var sequenceLength = sequenceData.sequence.length;
-  var totalRows = Math.ceil(sequenceLength / rowLength);
+  var totalRows = Math.ceil(sequenceLength / bpsPerRow);
   var rows = [];
 
-  var featuresToRowsMap = mapAnnotationsToRows(sequenceData.features, sequenceLength, rowLength);
-  var partsToRowsMap = mapAnnotationsToRows(sequenceData.parts, sequenceLength, rowLength);
+  var featuresToRowsMap = mapAnnotationsToRows(sequenceData.features, sequenceLength, bpsPerRow);
+  var partsToRowsMap = mapAnnotationsToRows(sequenceData.parts, sequenceLength, bpsPerRow);
 
   for (var rowNumber = 0; rowNumber < totalRows; rowNumber++) {
     var row = {};
     row.rowNumber = rowNumber;
-    row.start = rowNumber * rowLength;
-    row.end = (rowNumber + 1) * (rowLength) - 1;
+    row.start = rowNumber * bpsPerRow;
+    row.end = (rowNumber + 1) * (bpsPerRow) - 1 < sequenceLength ? (rowNumber + 1) * (bpsPerRow) - 1 : sequenceLength-1;
     row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
     row.features = featuresToRowsMap[rowNumber] ? featuresToRowsMap[rowNumber] : [];
     row.parts = partsToRowsMap[rowNumber] ? partsToRowsMap[rowNumber] : [];
@@ -24,20 +24,20 @@ function prepareRowData(sequenceData, rowLength) {
 }
 
 
-function mapAnnotationsToRows(annotations, sequenceLength, rowLength) {
+function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
   var annotationsToRowsMap = {};
   if (!annotations) {
     console.warn("no annotations detected")
   }
 
   _.each(annotations, function(annotation) {
-    mapAnnotationToRows(annotation, sequenceLength, rowLength, annotationsToRowsMap);
+    mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap);
   });
   return annotationsToRowsMap;
 
 }
 
-function mapAnnotationToRows(annotation, sequenceLength, rowLength, annotationsToRowsMap) {
+function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap) {
   if (!annotationsToRowsMap) {
     console.warn("annotationsToRowsMap must be defined");
     return {};
@@ -45,8 +45,8 @@ function mapAnnotationToRows(annotation, sequenceLength, rowLength, annotationsT
   var ranges = splitRangeOnOrigin(annotation, sequenceLength);
   ranges.forEach(function(range) {
     // if (!isPositiveInteger(range.start)) {}
-    var startingRow = Math.floor(range.start / rowLength);
-    var endingRow = Math.floor(range.end / rowLength);
+    var startingRow = Math.floor(range.start / bpsPerRow);
+    var endingRow = Math.floor(range.end / bpsPerRow);
     var numberOfRows = endingRow - startingRow + 1;
     for (var rowNumber = 0; rowNumber < numberOfRows; rowNumber++) {
       if (!annotationsToRowsMap[rowNumber]) {
@@ -67,16 +67,16 @@ function mapAnnotationToRows(annotation, sequenceLength, rowLength, annotationsT
       //     type = range.type;
       //   } else {
       //     // annotation begins but doesn't end on this row
-      //     end = rowNumber * rowLength + rowLength - 1;
+      //     end = rowNumber * bpsPerRow + bpsPerRow - 1;
       //     type = range.type === "end" ? "middle" : "beginning"; //if the range.type is an "end", the type can't be a beginning
       //   }
       // } else {
-      //   start = rowNumber * rowLength;
+      //   start = rowNumber * bpsPerRow;
       //   if (rowNumber === endingRow) {
       //     end = range.end;
 
       //   } else {
-      //     end = rowNumber * rowLength + rowLength - 1;
+      //     end = rowNumber * bpsPerRow + bpsPerRow - 1;
       //     type = "middle";
       //   }
       // }
@@ -84,17 +84,17 @@ function mapAnnotationToRows(annotation, sequenceLength, rowLength, annotationsT
       // if (rowNumber === startingRow) {
       //   start = range.start;
       // } else {
-      //   start = rowNumber * rowLength;
+      //   start = rowNumber * bpsPerRow;
       // }
       // if (rowNumber === endingRow) {
       //   end = range.end;
       // } else {
-      //   end = rowNumber * rowLength + rowLength - 1;
+      //   end = rowNumber * bpsPerRow + bpsPerRow - 1;
       // }
-      // var end = rowNumber === endingRow ? range.end : rowNumber * rowLength + rowLength - 1;
+      // var end = rowNumber === endingRow ? range.end : rowNumber * bpsPerRow + bpsPerRow - 1;
 
-      var start = rowNumber === startingRow ? range.start : rowNumber * rowLength;
-      var end = rowNumber === endingRow ? range.end : rowNumber * rowLength + rowLength - 1;
+      var start = rowNumber === startingRow ? range.start : rowNumber * bpsPerRow;
+      var end = rowNumber === endingRow ? range.end : rowNumber * bpsPerRow + bpsPerRow - 1;
 
       yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsToRowsMap[rowNumber], {
         start: start,

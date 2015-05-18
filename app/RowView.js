@@ -15,10 +15,10 @@ var RowView = React.createClass({
     // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
     preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
     averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
-    rowLength: ['vectorEditorState', 'rowLength'],
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
     preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
-    highlightLayer: ['vectorEditorState', 'highlightLayer'],
+    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+    cursorPosition: ['vectorEditorState', 'cursorPosition'],
   },
   facets: {
     rowData: 'rowData',
@@ -54,12 +54,16 @@ var RowView = React.createClass({
     if ((thirdRowElement.offsetTop - infiniteContainer.offsetTop + thirdRowElement.scrollHeight) < infiniteContainer.scrollTop) {
       //scrolling down, so add a row below
       console.log('//scrolling down, so add a row below');
-      this.prepareVisibleRows(this.state.preloadRowStart + 1);
+      if (this.preloadRowEnd < this.state.rowData.length) {
+        this.prepareVisibleRows(this.state.preloadRowStart + 1);
+      }
       // this.thirdRowElement = thirdRowElement;
       // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
       this.scrollingUp = false;
     } else if (thirdRowElement.offsetTop - infiniteContainer.offsetTop > infiniteContainer.scrollTop) {
-      this.prepareVisibleRows(this.state.preloadRowStart - 1);
+      if (this.state.preloadRowStart > 0) {
+        this.prepareVisibleRows(this.state.preloadRowStart - 1);
+      }
       // this.thirdRowElement = thirdRowElement;
       // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
       this.scrollingUp = true;
@@ -79,6 +83,7 @@ var RowView = React.createClass({
   componentDidUpdate: function(argument) {
     //if there is no thirdRowElement, we've probably scrolled too far away
     if (this.thirdRowElement) { 
+      console.log('thirdRowElement Found');
       //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
       var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
       var adjustInfiniteContainerByThisAmount = this.thirdRowElement.offsetTop - this.thirdRowElementOldOffsetTop;
@@ -112,9 +117,9 @@ var RowView = React.createClass({
     // console.log(rowsThatFitIntoViewport);
     var numberOfRowsToDisplay = rowsThatFitIntoViewport + 5;
 
-    var preloadRowEnd = (rowStart + numberOfRowsToDisplay) < this.state.rowData.length ? (rowStart + numberOfRowsToDisplay) : this.state.rowData.length; 
+    this.preloadRowEnd = (rowStart + numberOfRowsToDisplay) < this.state.rowData.length ? (rowStart + numberOfRowsToDisplay) : this.state.rowData.length; 
 
-    var visibleRows = this.state.rowData.slice(rowStart,preloadRowEnd);
+    var visibleRows = this.state.rowData.slice(rowStart,this.preloadRowEnd);
     this.setState({
       preloadRowStart: rowStart,
       visibleRows: visibleRows,
@@ -122,11 +127,27 @@ var RowView = React.createClass({
   },
 
   handleScrollbarDrag: function(event, ui) {
-    var rowStart = Math.ceil(ui.position.top * this.state.rowData.length / this.state.viewportDimensions.height);
+    var rowStart = Math.floor(ui.position.top * this.state.rowData.length / this.state.viewportDimensions.height);
     // console.log('rowStart just calculated :' + rowStart);
-    this.prepareVisibleRows(rowStart);
+    if (this.preloadRowEnd < this.state.rowData.length && rowStart > 0 && rowStart === this.state.preloadRowStart) {
+      
+      this.prepareVisibleRows(rowStart);
+    } else {
+      //user hasn't dragged far enough to get to a new row, so
+      //scroll the infinite container down or up a lil bit
+      var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
+      infiniteContainer.scrollTop / 1
+      console.log('ui.node.offsetTop ' + ui.node.offsetTop);
+      var changeInScrollerPosition = ui.position.top - this.scrollerTop;
+      console.log('changeInScrollerPosition ' + changeInScrollerPosition);
+      this.scrollerTop = ui.position.top;
+
+      var adjustInfiniteContainerByThisAmount = changeInScrollerPosition;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+    }
   },
   handleScrollbarDragStart: function(event, ui) {
+    this.scrollerTop = ui.position.top;
     this.scollerBeingDragged = true;
   },
 
@@ -134,32 +155,106 @@ var RowView = React.createClass({
     this.scollerBeingDragged = false;
   },
 
-  handleEditorDrag: function(event, ui) {
-    console.log('editorDrag');
-    // event.offsetX
-    // event.offsetY
+  getNearestBPToCursorEvent: function(event) {
+    var rowNotFound = true;
     var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
-
-
-    for (var i = 0; i < infiniteContainer.childNodes.length; i++) {
-      var row = infiniteContainer.childNodes[i];
-      console.log('node.offsetX: ' + row);
-      // console.log('node.offsetY: ' + node.offsetY);
+    //loop through all the rendered rows to see if the click event lands in one of them
+    for (var relativeRowNumber = 0; relativeRowNumber < infiniteContainer.childNodes.length; relativeRowNumber++) {
+      var rowDomNode = infiniteContainer.childNodes[relativeRowNumber];
+      // console.log('rowDomNode.getBoundingClientRect().top: ' + rowDomNode.getBoundingClientRect().top);
+      var boundingRowRect = rowDomNode.getBoundingClientRect();
+      if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
+        //then the click is falls within this row
+        rowNotFound = false;
+        var row = this.state.visibleRows[relativeRowNumber];
+        if (event.clientX - boundingRowRect.left < 0) {
+          console.warn('this should never be 0...');
+          return row.start; //return the first bp in the row
+        } else {
+          var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
+          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + CHAR_WIDTH/2) / CHAR_WIDTH);
+          var nearestBP = numberOfBPsInFromRowStart + row.start;
+          if (nearestBP > row.end + 1) {
+            nearestBP = row.end + 1;
+          }
+          return nearestBP;
+        }
+        break; //break the for loop early because we found the row the click event landed in
+      }
+    }
+    if (rowNotFound) {
+      console.warn('was not able to find the correct row');
+      //return the last bp index in the rendered rows
+      var lastOfRenderedRows = this.state.visibleRows[this.state.visibleRows.length - 1];
+      return lastOfRenderedRows.end;
     }
   },
-  handleEditorDragStart: function(event, ui) {
+
+  onEditorClick: function(event) {
+    //if cursor position is different than the original position, reset the position and clear the selection
+    console.log('onclick!!');
+    var bp = this.getNearestBPToCursorEvent(event);
+    if (this.editorBeingDragged) {
+      //do nothing because the click was triggered by a drag event
+    } else {
+      appActions.setCursorPosition(bp);
+      appActions.setSelectionLayer(false);
+    }
+
+    // console.log('bp: ' + bp);
+  }, 
+
+  handleEditorDrag: function(event, ui) {
+    // console.log('dragging!');
     this.editorBeingDragged = true;
+    var bp = this.getNearestBPToCursorEvent(event);
+    var start;
+    var end;
+    if (bp>this.editorDragStartBp) {
+      start = this.editorDragStartBp;
+      end = bp - 1;
+    } else {
+      start = bp;
+      end = this.editorDragStartBp;
+    }
+    appActions.setSelectionLayer(start, end);
+    appActions.setCursorPosition(-1);
+  },
+
+  handleEditorDragStart: function(event, ui) {
+    console.log('drag start!');
+    console.log('event: ' + event.target);
+    var nearestBP = this.getNearestBPToCursorEvent(event);
+    if (event.target.className === "cursor" && this.state.selectionLayer.sequenceSelected) {
+      if (this.state.selectionLayer.start === nearestBP) {
+        this.editorDragStartBp = this.state.selectionLayer.end;
+      } else {
+        this.editorDragStartBp = this.state.selectionLayer.start;
+      }
+    } else {
+      this.editorDragStartBp = nearestBP
+    }
   },
 
   handleEditorDragStop: function(event, ui) {
-    this.editorBeingDragged = false;
+    var self = this;
+    if (this.editorBeingDragged) { //check to make sure dragging actually occurred 
+      setTimeout(function (argument) { 
+        //we use setTimeout to put the call to change editorBeingDragged to false
+        //on the bottom of the event stack, thus the click event that is fired because of the drag
+        //will be able to check if editorBeingDragged and not trigger if it is
+        self.editorBeingDragged = false;
+      },0);
+    } else {
+      self.editorBeingDragged = false;
+    }
   },
 
   render: function () {
     var self = this;
     var rowItems = this.state.visibleRows.map(function(row) {
       if (row) {
-        return(<RowItem key={row.rowNumber} row={row} rowLength={self.state.rowLength}  />);
+        return(<RowItem key={row.rowNumber} row={row} />);
       }
     });
 
@@ -189,15 +284,15 @@ var RowView = React.createClass({
     if (this.scollerBeingDragged) {
       console.log('scollerBeingDragged');
       moveOnStartChange = false; //set this to false because the user is dragging
-      // this.newStart = 0;
+      // this.newScrollerStart = 0;
       // scrollerStyle.top = this.initialTopOfScoller
     } else {
-      console.log('newStart');
+      console.log('newScrollerStart');
       moveOnStartChange = true; //set to true because user is scrolling (without dragging), and we want the scrollbar position to update
-      this.newStart = scrollbarStyle.height*(this.state.preloadRowStart/this.state.rowData.length);
+      this.newScrollerStart = scrollbarStyle.height*(this.state.preloadRowStart/this.state.rowData.length);
       // console.log('scrollerStyle.top:  ' + scrollerStyle.top);
     }
-    console.log('this.newStart:  ' + this.newStart);
+    console.log('this.newScrollerStart:  ' + this.newScrollerStart);
     return (
       <div style={{width: infiniteContainerStyle.width + scrollbarStyle.width, position: "relative"}}>
         <Draggable 
@@ -208,7 +303,13 @@ var RowView = React.createClass({
             onStop={this.handleEditorDragStop} 
             >
           <div style={{width: infiniteContainerStyle.width, overflowX:"hidden"}}>
-            <div ref="infiniteContainer" className="infiniteContainer" style={infiniteContainerStyle} onScroll={this.onScroll}>
+            <div 
+              ref="infiniteContainer" 
+              className="infiniteContainer" 
+              style={infiniteContainerStyle} 
+              onScroll={this.onScroll}
+              onClick={this.onEditorClick}
+              >
                 {rowItems}
             </div>
           </div>
@@ -218,8 +319,7 @@ var RowView = React.createClass({
             axis="y" 
             zIndex={100} 
             bounds="parent"
-            start={{y: this.newStart}}
-            moveOnStartChange={moveOnStartChange}
+            
             onDrag={this.handleScrollbarDrag} 
             onStart={this.handleScrollbarDragStart} 
             onStop={this.handleScrollbarDragStop} 
@@ -232,6 +332,9 @@ var RowView = React.createClass({
     );
   }
 });
+// start={{y: this.newScrollerStart}}
+//             moveOnStartChange={moveOnStartChange}
+
             // <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>
             // <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
 

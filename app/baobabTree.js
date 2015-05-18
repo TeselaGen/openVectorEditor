@@ -45,8 +45,6 @@ var tree = new baobab({
 		bottomSpacerHeight:0,
 		averageRowHeight: 100,
 		// preloadBasepairStart: 300,
-		rowLength: 30,
-
 		CHAR_WIDTH: 15,
 		preloadRowStart: 0,
 		// preloadRowEnd: 9,
@@ -60,8 +58,9 @@ var tree = new baobab({
 			width: 400
 		},
 		selectionLayer: {
-			start: 46,
-			end: 8900,
+			start: 0,
+			end: 5,
+			sequenceSelected: true,
 		},
 		mouse: {
 			isDown: false,
@@ -82,36 +81,36 @@ var tree = new baobab({
 	},
 }, {
 	facets: {
-		// visibleRows: {
-		// 	cursors: {
-		// 		sequenceData: ['vectorEditorState', 'sequenceData'],
-		// 		viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
-		// 		CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
-		// 	},
-		// 	get: function (state) {
-		// 		return computeRowRepresentationOfSequence(state.sequenceData, state.viewportDimensionsWidth, state.CHAR_WIDTH)
-		// 	}
-		// },
+		bpsPerRow: {
+			cursors: {
+				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
+				CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+			},
+			get: function (state) {
+				return Math.floor(state.viewportDimensionsWidth/state.CHAR_WIDTH);
+			}
+		},
+		sequenceLength: {
+			cursors: {
+				sequenceData: ['vectorEditorState','sequenceData'],
+			},
+			get: function (state) {
+				return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
+			}
+		},
 		rowData: {
 			cursors: {
 				sequenceData: ['vectorEditorState','sequenceData'],
-				rowLength: ['vectorEditorState','rowLength'],
+				// bpsPerRow: ['vectorEditorState','bpsPerRow'],
+			},
+			facets: {
+				bpsPerRow: 'bpsPerRow',
 			},
 			get: function (state) {
-				return prepareRowData(state.sequenceData, state.rowLength);
+				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
 		}
 	}
-});
-
-var facet = tree.facets.rowData;
-
-// Getting value (cached and only computed if needed)
-facet.get();
-
-// Facets are also event emitters
-facet.on('update', function() {
-  console.log('New value:', facet.get());
 });
 
 module.exports = tree;

@@ -11,6 +11,7 @@
     "css-loader": "^0.10.1",
     "jsx-loader": "^0.13.1",
     "lodash": "^3.6.0",
+    "object-assign": "^2.0.0",
     "react": "^0.13.3",
     "react-draggable": "^0.7.3",
     "react-router": "^0.13.3",

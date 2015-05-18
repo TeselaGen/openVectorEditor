@@ -18,11 +18,11 @@ var SequenceEditor2 = React.createClass({
   render: function() {
       // var visibilityParameters = this.state.visibilityParameters;
       // var highlightLayer = this.state.highlightLayer;
-      // visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.rowLength;
+      // visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.bpsPerRow;
  
 
     return (
-      <div>
+      <div style={{float:"right"}}>
         <RowView />
       </div>
     );
