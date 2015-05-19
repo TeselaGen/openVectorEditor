@@ -87,19 +87,7 @@ var RowView = React.createClass({
 
   componentDidUpdate: function(argument) {
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
-    console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
-    var bottomOfInfiniteContainer = infiniteContainer.getBoundingClientRect().bottom;
-    var bottomOfLastRow = infiniteContainer.children[infiniteContainer.children.length-1].getBoundingClientRect().bottom;
-    var bottomOfThirdRow = infiniteContainer.children[3].getBoundingClientRect().bottom;
-    console.log('bottomOfLastRow: ' + bottomOfLastRow);
-    console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
-    // debugger;
-    if (bottomOfLastRow - bottomOfThirdRow <= bottomOfInfiniteContainer) {
-      //we need to add another row below!
-      console.log('this.preloadRowEnd:'+this.preloadRowEnd);
-      this.prepareVisibleRows(this.state.preloadRowStart, this.numberOfRowsToDisplay+1);
-    }
+    
     //if there is no thirdRowElement, we've probably scrolled too far away
     if (this.updateTriggeredByScrollerDrag) {
 
@@ -112,6 +100,19 @@ var RowView = React.createClass({
         var adjustInfiniteContainerByThisAmount = this.thirdRowElement.offsetTop - this.thirdRowElementOldOffsetTop;
         infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
       }
+    }
+    console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
+    console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
+    var bottomOfInfiniteContainer = infiniteContainer.getBoundingClientRect().bottom;
+    var bottomOfLastRow = infiniteContainer.children[infiniteContainer.children.length-1].getBoundingClientRect().bottom;
+    var bottomOfThirdRow = infiniteContainer.children[3].getBoundingClientRect().bottom;
+    console.log('bottomOfLastRow: ' + bottomOfLastRow);
+    console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
+    // debugger;
+    if (bottomOfLastRow - bottomOfThirdRow <= bottomOfInfiniteContainer) {
+      //we need to add another row below!
+      console.log('this.preloadRowEnd:'+this.preloadRowEnd);
+      this.prepareVisibleRows(this.state.preloadRowStart, this.numberOfRowsToDisplay+1);
     }
   },
 
