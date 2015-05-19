@@ -172,14 +172,23 @@ var RowView = React.createClass({
     //the handle should map to an exact scroll position
     //the very top of the drag mapping to the very top of the sequence and same for bottom
     //any given set of row that has been loaded will have a number of positions they can take up
-    var rowStart = Math.floor(ui.position.top * this.state.rowData.length / this.state.viewportDimensions.height);
+    // var this.initialScrollerTop = this.refs.scroller.getDOMNode().getBoundingClientRect().top;
+    console.log('this.initialScrollerTop' + this.initialScrollerTop);
+    var infiniteContainerTop = this.refs.infiniteContainer.getDOMNode().getBoundingClientRect().top;
+    var distanceFromTop = ui.position.top + this.initialScrollerTop - infiniteContainerTop;
+    // var distanceFromTop = ui.position.top + this.initialScrollerTop - infiniteContainerTop;
+    console.log('ui.position.top: ' + ui.position.top);
+    console.log('distanceFromTop: ' + distanceFromTop);
+
+
+    var rowStart = Math.floor(distanceFromTop * this.state.rowData.length / this.state.viewportDimensions.height);
     // console.log('rowStart just calculated :' + rowStart);
     console.log('rowStart:' + rowStart);
     if (rowStart < 0) {
         rowStart = 0;
     }
     if (rowStart + this.state.visibleRows.length <= this.state.rowData.length && rowStart !== this.state.preloadRowStart) {
-      console.log('prepareVisibleRows!');
+      // console.log('prepareVisibleRows!');
       
       this.prepareVisibleRows(rowStart);
     } 
@@ -188,7 +197,7 @@ var RowView = React.createClass({
 
 
     else {
-      console.log('move smoothly!');
+      // console.log('move smoothly!');
       var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
       
       var totalHeightOfInfiniteContainer = infiniteContainer.clientHeight;
@@ -196,20 +205,21 @@ var RowView = React.createClass({
       var incrementToMoveInfinteContainerBy = this.state.rowData.length * averageHeightOfVisibleRows / this.state.viewportDimensions.height;
       //user hasn't dragged far enough to get to a new row, so
       //scroll the infinite container down or up a lil bit
-      infiniteContainer.scrollTop / 1
-      console.log('ui.node.offsetTop ' + ui.node.offsetTop);
-      var changeInScrollerPosition = ui.position.top - this.scrollerTop;
-      console.log('changeInScrollerPosition ' + changeInScrollerPosition);
-      this.scrollerTop = ui.position.top;
+      infiniteContainer.scrollTop / 1;
+      // console.log('ui.node.offsetTop ' + ui.node.offsetTop);
+      var changeInScrollerPosition = ui.position.top - this.uiPositionTop;
+      // console.log('changeInScrollerPosition ' + changeInScrollerPosition);
+      this.uiPositionTop = ui.position.top;
 
       // var adjustInfiniteContainerByThisAmount = changeInScrollerPosition * incrementToMoveInfinteContainerBy;
       var adjustInfiniteContainerByThisAmount = changeInScrollerPosition * this.state.visibleRows.length * totalHeightOfInfiniteContainer / this.state.viewportDimensions.height;
-      console.log('adjustInfiniteContainerByThisAmount:' + adjustInfiniteContainerByThisAmount);
+      // console.log('adjustInfiniteContainerByThisAmount:' + adjustInfiniteContainerByThisAmount);
       infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
     }
   },
   handleScrollbarDragStart: function(event, ui) {
-    this.scrollerTop = ui.position.top;
+    this.uiPositionTop = ui.position.top;
+    this.initialScrollerTop = this.refs.scroller.getDOMNode().getBoundingClientRect().top;
     this.scollerBeingDragged = true;
   },
 
@@ -393,7 +403,6 @@ var RowView = React.createClass({
           <Draggable 
             axis="y" 
             zIndex={100}
-            
             onDrag={this.handleScrollbarDrag} 
             onStart={this.handleScrollbarDragStart} 
             onStop={this.handleScrollbarDragStop} 
@@ -408,8 +417,7 @@ var RowView = React.createClass({
     );
   }
 });
-// start={{y: this.newScrollerStart}}
-//             moveOnStartChange={true}
+
 
 
             // <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>

@@ -6,8 +6,8 @@ var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSe
 
 //tnr: this is used to generate a very large, fake, multi-featured sequence
 
-// sequenceData.features = {};
-// sequenceData.parts = {};
+sequenceData.features = {};
+sequenceData.parts = {};
 
 // var string = "atgtgtgatg";
 // var reallyLongFakeSequence = "";
