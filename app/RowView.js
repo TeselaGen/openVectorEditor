@@ -87,9 +87,18 @@ var RowView = React.createClass({
 
   componentDidUpdate: function(argument) {
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    if (infiniteContainer.clientHeight < this.state.viewportDimensions.height) {
+    console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
+    console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
+    var bottomOfInfiniteContainer = infiniteContainer.getBoundingClientRect().bottom;
+    var bottomOfLastRow = infiniteContainer.children[infiniteContainer.children.length-1].getBoundingClientRect().bottom;
+    var bottomOfThirdRow = infiniteContainer.children[3].getBoundingClientRect().bottom;
+    console.log('bottomOfLastRow: ' + bottomOfLastRow);
+    console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
+    // debugger;
+    if (bottomOfLastRow - bottomOfThirdRow <= bottomOfInfiniteContainer) {
       //we need to add another row below!
-
+      console.log('this.preloadRowEnd:'+this.preloadRowEnd);
+      this.prepareVisibleRows(this.state.preloadRowStart, this.numberOfRowsToDisplay+1);
     }
     //if there is no thirdRowElement, we've probably scrolled too far away
     if (this.updateTriggeredByScrollerDrag) {
@@ -112,34 +121,51 @@ var RowView = React.createClass({
   },
 
   componentDidMount: function (argument) {
-    //tnr, instead of finding the dom nodes and performing calculations, we can add 
-    //a variable to the state/props to determine if we need to scroll down
-    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    // var heightOfTopSpacer = React.findDOMNode(this.refs.topSpacer).scrollHeight;
-    // if (heightOfTopSpacer > 0) {
-      var thirdRowElement = infiniteContainer.children[2].scrollIntoView();
+    this.componentDidUpdate();
+    // //tnr, instead of finding the dom nodes and performing calculations, we can add 
+    // //a variable to the state/props to determine if we need to scroll down
+    // var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+    // console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
+    // console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
+    // if (infiniteContainer.clientHeight < this.state.viewportDimensions.height) {
+    //   //we need to add another row below!
+    //   console.log('this.preloadRowEnd:'+this.preloadRowEnd);
+    //   this.prepareVisibleRows(this.state.preloadRowStart, this.preloadRowEnd++);
     // }
+    // // var heightOfTopSpacer = React.findDOMNode(this.refs.topSpacer).scrollHeight;
+    // // if (heightOfTopSpacer > 0) {
+    //   var thirdRowElement = infiniteContainer.children[2].scrollIntoView();
+    // // }
   },
 
-  prepareVisibleRows: function (rowStart) {
+  prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
     if (!arePositiveIntegers(rowStart)) {
       return;
       console.warn('non-integer value passed to prepareVisibleRows');
     }
-    // var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
 
-    // // console.log('rowsThatFitIntoViewport');
-    // // console.log(rowsThatFitIntoViewport);
-    // var numberOfRowsToDisplay = rowsThatFitIntoViewport + 5;
+    if (arePositiveIntegers(newNumberOfRowsToDisplay)){
+      this.numberOfRowsToDisplay = newNumberOfRowsToDisplay;
+    } 
+    if (!this.numberOfRowsToDisplay) {
+      // var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
 
-    // this.preloadRowEnd = (rowStart + numberOfRowsToDisplay) < this.state.rowData.length ? (rowStart + numberOfRowsToDisplay) : this.state.rowData.length; 
-    if (this.preloadRowEnd this.state.numberOfRowsToPreload)
+      // // console.log('rowsThatFitIntoViewport');
+      // // console.log(rowsThatFitIntoViewport);
+      this.numberOfRowsToDisplay = 4;
+    }
+    this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) < this.state.rowData.length ? (rowStart + this.numberOfRowsToDisplay) : this.state.rowData.length;
+    if (this.preloadRowEnd < this.state.rowData.length) {
+      var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd);
+      this.setState({
+        preloadRowStart: rowStart,
+        visibleRows: visibleRows,
+      });
+    }
 
-    var visibleRows = this.state.rowData.slice(rowStart,this.preloadRowEnd);
-    this.setState({
-      preloadRowStart: rowStart,
-      visibleRows: visibleRows,
-    });
+    // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
+
+    
   },
 
   handleScrollbarDrag: function(event, ui) {
