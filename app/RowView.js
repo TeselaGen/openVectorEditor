@@ -186,18 +186,17 @@ var RowView = React.createClass({
     // console.log('rowStart just calculated :' + rowStart);
     console.log('rowStart:' + rowStart);
     if (rowStart < 0) {
-        rowStart = 0;
+      //check for a valid rowStart
+      rowStart = 0;
     }
-    if (rowStart + this.state.visibleRows.length <= this.state.rowData.length && rowStart !== this.state.preloadRowStart) {
+    var validBottomRow = rowStart + this.state.visibleRows.length <= this.state.rowData.length;
+    var newRowToBeLoaded = rowStart !== this.state.preloadRowStart;
+    if (validBottomRow && newRowToBeLoaded) {
       // console.log('prepareVisibleRows!');
       
       this.prepareVisibleRows(rowStart);
-    } 
+    } else if (rowStart === 0 || rowStart + this.state.visibleRows.length > this.state.rowData.length) {
 
-    
-
-
-    else {
       // console.log('move smoothly!');
       var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
       
@@ -206,7 +205,7 @@ var RowView = React.createClass({
       var incrementToMoveInfinteContainerBy = this.state.rowData.length * averageHeightOfVisibleRows / this.state.viewportDimensions.height;
       //user hasn't dragged far enough to get to a new row, so
       //scroll the infinite container down or up a lil bit
-      infiniteContainer.scrollTop / 1;
+      // infiniteContainer.scrollTop / 1;
       // console.log('ui.node.offsetTop ' + ui.node.offsetTop);
       var changeInScrollerPosition = ui.position.top - this.uiPositionTop;
       // console.log('changeInScrollerPosition ' + changeInScrollerPosition);
@@ -215,7 +214,9 @@ var RowView = React.createClass({
       // var adjustInfiniteContainerByThisAmount = changeInScrollerPosition * incrementToMoveInfinteContainerBy;
       var adjustInfiniteContainerByThisAmount = changeInScrollerPosition * this.state.visibleRows.length * totalHeightOfInfiniteContainer / this.state.viewportDimensions.height;
       // console.log('adjustInfiniteContainerByThisAmount:' + adjustInfiniteContainerByThisAmount);
+      //bound the 
       infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+      console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
     }
   },
   handleScrollbarDragStart: function(event, ui) {
@@ -400,6 +401,7 @@ var RowView = React.createClass({
             </div>
           </div>
         </Draggable>
+
         <div ref="infiniteContainer-scrollbar" className="infiniteContainer-scrollbar" style={scrollbarStyle}>
           <Draggable 
             axis="y" 
