@@ -22,6 +22,7 @@ var RowView = React.createClass({
   },
   facets: {
     rowData: 'rowData',
+    totalRows: 'totalRows'
   },
 
   // propTypes: {
@@ -53,8 +54,8 @@ var RowView = React.createClass({
     // console.log(infiniteContainer.scrollTop);
     if ((thirdRowElement.offsetTop - infiniteContainer.offsetTop + thirdRowElement.scrollHeight) < infiniteContainer.scrollTop) {
       //scrolling down, so add a row below
-      // console.log('//scrolling down, so add a row below');
-      if (this.preloadRowEnd < this.state.rowData.length) {
+      console.log('//scrolling down, so add a row below');
+      if (this.preloadRowEnd < this.state.totalRows) {
         this.prepareVisibleRows(this.state.preloadRowStart + 1);
       }
       // this.thirdRowElement = thirdRowElement;
@@ -67,7 +68,7 @@ var RowView = React.createClass({
       // this.thirdRowElement = thirdRowElement;
       // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
       this.scrollingUp = true;
-      // console.log('//scrolling up, so add a row above');
+      console.log('//scrolling up, so add a row above');
     } else {
       //we haven't scrolled enough, so do nothing
     }
@@ -155,8 +156,8 @@ var RowView = React.createClass({
       // // console.log(rowsThatFitIntoViewport);
       this.numberOfRowsToDisplay = 4;
     }
-    this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) < this.state.rowData.length ? (rowStart + this.numberOfRowsToDisplay) : this.state.rowData.length;
-    if (this.preloadRowEnd < this.state.rowData.length) {
+    this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) < this.state.totalRows ? (rowStart + this.numberOfRowsToDisplay) : this.state.totalRows;
+    if (this.preloadRowEnd < this.state.totalRows) {
       var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd);
       this.setState({
         preloadRowStart: rowStart,
@@ -182,27 +183,27 @@ var RowView = React.createClass({
     console.log('distanceFromTop: ' + distanceFromTop);
 
 
-    var rowStart = Math.floor(distanceFromTop * this.state.rowData.length / this.state.viewportDimensions.height);
+    var rowStart = Math.floor(distanceFromTop * this.state.totalRows / this.state.viewportDimensions.height);
     // console.log('rowStart just calculated :' + rowStart);
     console.log('rowStart:' + rowStart);
     if (rowStart < 0) {
       //check for a valid rowStart
       rowStart = 0;
     }
-    var validBottomRow = rowStart + this.state.visibleRows.length <= this.state.rowData.length;
+    var validBottomRow = rowStart + this.state.visibleRows.length <= this.state.totalRows;
     var newRowToBeLoaded = rowStart !== this.state.preloadRowStart;
     if (validBottomRow && newRowToBeLoaded) {
       // console.log('prepareVisibleRows!');
       
       this.prepareVisibleRows(rowStart);
-    } else if (rowStart === 0 || rowStart + this.state.visibleRows.length > this.state.rowData.length) {
+    } else if (rowStart === 0 || rowStart + this.state.visibleRows.length > this.state.totalRows) {
 
       // console.log('move smoothly!');
       var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
       
       var totalHeightOfInfiniteContainer = infiniteContainer.clientHeight;
       var averageHeightOfVisibleRows = totalHeightOfInfiniteContainer/this.state.visibleRows.length;
-      var incrementToMoveInfinteContainerBy = this.state.rowData.length * averageHeightOfVisibleRows / this.state.viewportDimensions.height;
+      var incrementToMoveInfinteContainerBy = this.state.totalRows * averageHeightOfVisibleRows / this.state.viewportDimensions.height;
       //user hasn't dragged far enough to get to a new row, so
       //scroll the infinite container down or up a lil bit
       // infiniteContainer.scrollTop / 1;
@@ -360,12 +361,18 @@ var RowView = React.createClass({
       right: 0,
       position:"absolute",
     };
+    var scrollerHeight = infiniteContainerStyle.height / this.state.totalRows;
+    if (scrollerHeight < 10) {
+      scrollerHeight = 10;
+    } else if (scrollerHeight > infiniteContainerStyle.height) {
+      scrollerHeight = infiniteContainerStyle.height;
+    }
     var scrollerStyle = {
-      height: 50,
+      height: scrollerHeight,
       background: "black",
       width: "100%",
       position: "absolute",
-      top: scrollbarStyle.height*(this.state.preloadRowStart/this.state.rowData.length),
+      top: (scrollbarStyle.height - scrollerHeight) * (this.state.preloadRowStart/(this.state.totalRows - this.state.visibleRows.length)),
     };
 
     // var moveOnStartChange;
@@ -377,7 +384,7 @@ var RowView = React.createClass({
     // } else {
       // console.log('newScrollerStart');
       // moveOnStartChange = true; //set to true because user is scrolling (without dragging), and we want the scrollbar position to update
-      // this.newScrollerStart = scrollbarStyle.height*(this.state.preloadRowStart/this.state.rowData.length);
+      // this.newScrollerStart = scrollbarStyle.height*(this.state.preloadRowStart/this.state.totalRows);
     // }
     // console.log('this.newScrollerStart:  ' + this.newScrollerStart);
     return (

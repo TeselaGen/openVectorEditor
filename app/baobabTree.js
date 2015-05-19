@@ -112,6 +112,16 @@ var tree = new baobab({
 			get: function (state) {
 				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
+		},
+		totalRows: {
+			facets: {
+				rowData: 'rowData',
+			},
+			get: function (state) {
+				if (state.rowData) {
+					return state.rowData.length;
+				}
+			}
 		}
 	}
 });
