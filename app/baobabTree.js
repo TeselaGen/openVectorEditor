@@ -6,40 +6,42 @@ var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSe
 
 //tnr: this is used to generate a very large, fake, multi-featured sequence
 
-// sequenceData.features = {};
-// sequenceData.parts = {};
 
-var string = "atgtgtgatg";
-var reallyLongFakeSequence = "";
-for (var i = 0; i < 10000; i++) {
-	reallyLongFakeSequence+=string;
-	if (i%100 === 0) {
 
-		sequenceData.features[i] = {
-		            id: i,
-		            start: i,
-		            end: i+100,
-		            name: 'cooljim',
-		            color: 'green',
-		            topStrand: true,
-		            annotationType: "feature"
-		          };
-		}
-};
-sequenceData.sequence = reallyLongFakeSequence;
+// var string = "atgtgtgatg";
+// var reallyLongFakeSequence = "";
+// for (var i = 0; i < 10000; i++) {
+// 	reallyLongFakeSequence+=string;
+// 	if (i%100 === 0) {
 
-var fakeSequences = makeFakeSequences(20);
-console.log(fakeSequences);
+// 		sequenceData.features[i] = {
+// 		            id: i,
+// 		            start: i,
+// 		            end: i+100,
+// 		            name: 'cooljim',
+// 		            color: 'green',
+// 		            topStrand: true,
+// 		            annotationType: "feature"
+// 		          };
+// 		}
+// };
+// sequenceData.sequence = reallyLongFakeSequence;
 
-function makeFakeSequences (numberOfFakesSequencesToGenerate) {
-	var fakeSequences = {};
-	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
-		console.log(ObjectID().str);
-		fakeSequences[ObjectID().str] = sequenceData;
-	}
-	return fakeSequences;
-	console.log(fakeSequences); 
-}
+// var fakeSequences = makeFakeSequences(20);
+// console.log(fakeSequences);
+
+// function makeFakeSequences (numberOfFakesSequencesToGenerate) {
+// 	var fakeSequences = {};
+// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
+// 		console.log(ObjectID().str);
+// 		fakeSequences[ObjectID().str] = sequenceData;
+// 	}
+// 	return fakeSequences;
+// 	console.log(fakeSequences); 
+// }
+
+sequenceData.features = {};
+sequenceData.parts = {};
 
 
 var tree = new baobab({

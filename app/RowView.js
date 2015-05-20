@@ -49,36 +49,46 @@ var RowView = React.createClass({
     //The logic for this is done in componentWillUpdate and componentDidUpdate
 
     var infiniteContainer = event.currentTarget;
-    var thirdRowElement = infiniteContainer.childNodes[2]; 
+    var firstRow = infiniteContainer.childNodes[0]; 
+    var lastRow = infiniteContainer.childNodes[infiniteContainer.childNodes.length-1]; 
+    console.log(infiniteContainer.getBoundingClientRect().bottom);
+    console.log(lastRow.getBoundingClientRect().bottom);
+    // if (infiniteContainer.getBoundingClientRect())
     
     // console.log(infiniteContainer.scrollTop);
-    if ((thirdRowElement.offsetTop - infiniteContainer.offsetTop + thirdRowElement.scrollHeight) < infiniteContainer.scrollTop) {
+    if ((infiniteContainer.getBoundingClientRect().top - firstRow.getBoundingClientRect().top) === 0) {
       //scrolling down, so add a row below
-      console.log('//scrolling down, so add a row below');
+      if (this.state.preloadRowStart > 0) {
+        this.prepareVisibleRows(this.state.preloadRowStart - 1);
+      }
+      // console.log('//scrolling up, so add a row above');
+      this.scrollingUp = true;
+    } 
+    else if ((infiniteContainer.getBoundingClientRect().bottom - lastRow.getBoundingClientRect().bottom) === 0) {
       if (this.preloadRowEnd < this.state.totalRows) {
         this.prepareVisibleRows(this.state.preloadRowStart + 1);
+      // console.log('//scrolling down, so add a row below');
       }
       // this.thirdRowElement = thirdRowElement;
       // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
       this.scrollingUp = false;
-    } else if (thirdRowElement.offsetTop - infiniteContainer.offsetTop > infiniteContainer.scrollTop) {
-      if (this.state.preloadRowStart > 0) {
-        this.prepareVisibleRows(this.state.preloadRowStart - 1);
-      }
-      // this.thirdRowElement = thirdRowElement;
-      // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
-      this.scrollingUp = true;
-      console.log('//scrolling up, so add a row above');
     } else {
       //we haven't scrolled enough, so do nothing
+      // var infiniteContainerTop = infiniteContainer.getBoundingClientRect().top;
+      // infiniteContainer.childNodes.some(function(row, rowIndex) {
+      //   if (row.getBoundingClientRect().top - infiniteContainerTop > 0) {
+      //     this.setState({topMostFullyVisibleRow: })
+      //   }
+      // });
     }
+    
   },
 
   componentWillUpdate: function(argument) {
     //save a reference to the thirdRowElement and its offset from the top of the container
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
     this.thirdRowElement = infiniteContainer.children[2];
-    this.thirdRowElementOldOffsetTop = this.thirdRowElement.offsetTop;
+    this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
     if (this.scollerBeingDragged) {
       this.updateTriggeredByScrollerDrag = true;
     } else {
@@ -98,7 +108,7 @@ var RowView = React.createClass({
         // console.log('thirdRowElement Found');
         //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
         var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-        var adjustInfiniteContainerByThisAmount = this.thirdRowElement.offsetTop - this.thirdRowElementOldOffsetTop;
+        var adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
         infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
       }
     }
@@ -111,7 +121,7 @@ var RowView = React.createClass({
     console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
     // debugger;
     if (bottomOfLastRow - bottomOfThirdRow <= bottomOfInfiniteContainer) {
-      //we need to add another row below!
+      console.log('//we need to add another row below!');
       console.log('this.preloadRowEnd:'+this.preloadRowEnd);
       this.prepareVisibleRows(this.state.preloadRowStart, this.numberOfRowsToDisplay+1);
     }
