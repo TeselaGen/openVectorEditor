@@ -8,46 +8,46 @@ var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSe
 
 
 
-// var string = "atgtgtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 0; i < 10000; i++) {
-// 	reallyLongFakeSequence+=string;
-// 	if (i%100 === 0) {
+var string = "atgtgtgatg";
+var reallyLongFakeSequence = "";
+for (var i = 0; i < 100000; i++) {
+	reallyLongFakeSequence += string;
+	if (i % 100 === 0) {
 
-// 		sequenceData.features[i] = {
-// 		            id: i,
-// 		            start: i,
-// 		            end: i+100,
-// 		            name: 'cooljim',
-// 		            color: 'green',
-// 		            topStrand: true,
-// 		            annotationType: "feature"
-// 		          };
-// 		}
-// };
-// sequenceData.sequence = reallyLongFakeSequence;
+		sequenceData.features[i] = {
+			id: i,
+			start: i,
+			end: i + 100,
+			name: 'cooljim',
+			color: 'green',
+			topStrand: true,
+			annotationType: "feature"
+		};
+	}
+};
+sequenceData.sequence = reallyLongFakeSequence;
 
-// var fakeSequences = makeFakeSequences(20);
-// console.log(fakeSequences);
+var fakeSequences = makeFakeSequences(20);
+console.log(fakeSequences);
 
-// function makeFakeSequences (numberOfFakesSequencesToGenerate) {
-// 	var fakeSequences = {};
-// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
-// 		console.log(ObjectID().str);
-// 		fakeSequences[ObjectID().str] = sequenceData;
-// 	}
-// 	return fakeSequences;
-// 	console.log(fakeSequences); 
-// }
+function makeFakeSequences(numberOfFakesSequencesToGenerate) {
+	var fakeSequences = {};
+	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
+		console.log(ObjectID().str);
+		fakeSequences[ObjectID().str] = sequenceData;
+	}
+	return fakeSequences;
+	console.log(fakeSequences);
+}
 
-sequenceData.features = {};
-sequenceData.parts = {};
+// sequenceData.features = {};
+// sequenceData.parts = {};
 
 
 var tree = new baobab({
 	vectorEditorState: {
 		topSpacerHeight: 0,
-		bottomSpacerHeight:0,
+		bottomSpacerHeight: 0,
 		averageRowHeight: 100,
 		// preloadBasepairStart: 300,
 		CHAR_WIDTH: 15,
@@ -82,7 +82,7 @@ var tree = new baobab({
 		//tnrtodo: make a fake design generator
 	},
 	assemblyMakerState: {
-		
+
 	},
 }, {
 	facets: {
@@ -91,27 +91,27 @@ var tree = new baobab({
 				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
 				CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
 			},
-			get: function (state) {
-				return Math.floor(state.viewportDimensionsWidth/state.CHAR_WIDTH);
+			get: function(state) {
+				return Math.floor(state.viewportDimensionsWidth / state.CHAR_WIDTH);
 			}
 		},
 		sequenceLength: {
 			cursors: {
-				sequenceData: ['vectorEditorState','sequenceData'],
+				sequenceData: ['vectorEditorState', 'sequenceData'],
 			},
-			get: function (state) {
+			get: function(state) {
 				return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
 			}
 		},
 		rowData: {
 			cursors: {
-				sequenceData: ['vectorEditorState','sequenceData'],
+				sequenceData: ['vectorEditorState', 'sequenceData'],
 				// bpsPerRow: ['vectorEditorState','bpsPerRow'],
 			},
 			facets: {
 				bpsPerRow: 'bpsPerRow',
 			},
-			get: function (state) {
+			get: function(state) {
 				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
 		},
@@ -119,7 +119,7 @@ var tree = new baobab({
 			facets: {
 				rowData: 'rowData',
 			},
-			get: function (state) {
+			get: function(state) {
 				if (state.rowData) {
 					return state.rowData.length;
 				}

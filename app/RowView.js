@@ -39,6 +39,10 @@ var RowView = React.createClass({
   //   };
   // }, 
   onScroll: function (event) {
+    if (this.adjustmentScroll) {
+      this.adjustmentScroll = false;
+      return;
+    }
     if (this.scollerBeingDragged) return; //don't handle the onScroll event because the user is dragging
 
     //the basic idea of the scroll is to add a row below if the third row element goes out of view
@@ -50,25 +54,38 @@ var RowView = React.createClass({
 
     var infiniteContainer = event.currentTarget;
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-    var firstRow = visibleRowsContainer.childNodes[0]; 
-    var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]; 
-    console.log(infiniteContainer.getBoundingClientRect().bottom);
-    console.log(lastRow.getBoundingClientRect().bottom);
+    var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRows.length);
+    // var firstRow = visibleRowsContainer.childNodes[0]; 
+    // var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]; 
+    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
+    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
     // if (infiniteContainer.getBoundingClientRect())
     
     // console.log(infiniteContainer.scrollTop);
-    if ((infiniteContainer.getBoundingClientRect().top - firstRow.getBoundingClientRect().top) === 0) {
+    var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
+    var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+    if (distanceFromTopOfVisibleRows < 0) {
       //scrolling down, so add a row below
       if (this.state.preloadRowStart > 0) {
-        this.prepareVisibleRows(this.state.preloadRowStart - 1);
+        var newRowStart = this.state.preloadRowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
+        console.log('newRowStart: '+newRowStart)
+
+        if (newRowStart < 0) newRowStart = 0;
+        console.log('//scrolling up, so add a row above');
+        this.prepareVisibleRows(newRowStart);
       }
       // console.log('//scrolling up, so add a row above');
       this.scrollingUp = true;
     } 
-    else if ((infiniteContainer.getBoundingClientRect().bottom - lastRow.getBoundingClientRect().bottom) === 0) {
-      if (this.preloadRowEnd < this.state.totalRows) {
-        this.prepareVisibleRows(this.state.preloadRowStart + 1);
-      console.log('//scrolling down, so add a row below');
+    else if (distanceFromBottomOfVisibleRows < 0) {
+      var rowsToGiveOnBottom = this.state.totalRows - 1 - this.preloadRowEnd;
+      if (rowsToGiveOnBottom > 0) {
+        var newRowStart = this.state.preloadRowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
+        if (newRowStart + this.state.visibleRows.length >= this.state.totalRows) {
+          newRowStart = this.state.preloadRowStart - rowsToGiveOnBottom;
+        }
+        this.prepareVisibleRows(newRowStart);
+        console.log('//scrolling down, so add a row below');
       }
       // this.thirdRowElement = thirdRowElement;
       // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
@@ -82,7 +99,8 @@ var RowView = React.createClass({
       //   }
       // });
     }
-    
+    this.setState({averageRowHeight: currentAverageRowHeight});
+
   },
 
   componentWillUpdate: function(argument) {
@@ -90,43 +108,75 @@ var RowView = React.createClass({
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
     this.thirdRowElement = visibleRowsContainer.children[2];
     this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
-    if (this.scollerBeingDragged) {
-      this.updateTriggeredByScrollerDrag = true;
-    } else {
-      this.updateTriggeredByScrollerDrag = false;
-    }
+    // if (this.scollerBeingDragged) {
+    //   this.updateTriggeredByScrollerDrag = true;
+    // } else {
+    //   this.updateTriggeredByScrollerDrag = false;
+    // }
   },
 
   componentDidUpdate: function(argument) {
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    
-    //if there is no thirdRowElement, we've probably scrolled too far away
-    if (this.updateTriggeredByScrollerDrag) {
+    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
 
-    } else {
-      console.log('hit!');
-      if (this.thirdRowElement) { 
-        // console.log('thirdRowElement Found');
-        //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
-        var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-        var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-        var adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
-        infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
-      }
-    }
-    console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
-    console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
-    var bottomOfInfiniteContainer = infiniteContainer.getBoundingClientRect().bottom;
-    var bottomOfLastRow = visibleRowsContainer.children[visibleRowsContainer.children.length-1].getBoundingClientRect().bottom;
-    var bottomOfThirdRow = visibleRowsContainer.children[3].getBoundingClientRect().bottom;
-    console.log('bottomOfLastRow: ' + bottomOfLastRow);
-    console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
-    // debugger;
-    if (bottomOfLastRow - bottomOfThirdRow <= bottomOfInfiniteContainer) {
+    var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height; 
+    var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height; 
+    var adjustInfiniteContainerByThisAmount;
+    
+    console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
+    console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
+    // if (visibleRowsContainer.getBoundingClientRect().bottom < -100) {
+    //   debugger;
+    // }
+    if (visibleRowsContainer.getBoundingClientRect().height - firstRowHeight - lastRowHeight <= this.state.viewportDimensions.height) {
       console.log('//we need to add another row below!');
       console.log('this.preloadRowEnd:'+this.preloadRowEnd);
       this.prepareVisibleRows(this.state.preloadRowStart, this.numberOfRowsToDisplay+1);
+    } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
+      //scroll to align the tops of the boxes
+      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top
+      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+      this.adjustmentScroll = true;
+    } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
+      //scroll to align the bottoms of the boxes
+      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom
+      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustInfiniteContainerByThisAmount;
+      this.adjustmentScroll = true;
+    } else {
+      if (this.thirdRowElement) {
+        console.log('thirdrowblind');
+        adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom
+        console.log('adjust: ' + adjustInfiniteContainerByThisAmount)
+        // console.log('thirdRowElement Found');
+        //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
+        adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
+        // console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
+        // infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+        // this.adjustmentScroll = true
+      }
     }
+    
+    //if there is no thirdRowElement, we've probably scrolled too far away
+    // if (this.updateTriggeredByScrollerDrag) {
+
+    // } else {
+    //   console.log('hit!');
+      
+      
+
+
+    // }
+    // console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
+    // console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
+    // var bottomOfInfiniteContainer = infiniteContainer.getBoundingClientRect().bottom;
+    // var bottomOfLastRow = visibleRowsContainer.children[visibleRowsContainer.children.length-1].getBoundingClientRect().bottom;
+    // var bottomOfThirdRow = visibleRowsContainer.children[3].getBoundingClientRect().bottom;
+    // console.log('bottomOfLastRow: ' + bottomOfLastRow);
+    // console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
+    // // debugger;
+    
   },
 
   componentWillMount: function (argument) {
