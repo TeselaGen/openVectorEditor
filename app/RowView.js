@@ -49,8 +49,9 @@ var RowView = React.createClass({
     //The logic for this is done in componentWillUpdate and componentDidUpdate
 
     var infiniteContainer = event.currentTarget;
-    var firstRow = infiniteContainer.childNodes[0]; 
-    var lastRow = infiniteContainer.childNodes[infiniteContainer.childNodes.length-1]; 
+    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+    var firstRow = visibleRowsContainer.childNodes[0]; 
+    var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]; 
     console.log(infiniteContainer.getBoundingClientRect().bottom);
     console.log(lastRow.getBoundingClientRect().bottom);
     // if (infiniteContainer.getBoundingClientRect())
@@ -67,7 +68,7 @@ var RowView = React.createClass({
     else if ((infiniteContainer.getBoundingClientRect().bottom - lastRow.getBoundingClientRect().bottom) === 0) {
       if (this.preloadRowEnd < this.state.totalRows) {
         this.prepareVisibleRows(this.state.preloadRowStart + 1);
-      // console.log('//scrolling down, so add a row below');
+      console.log('//scrolling down, so add a row below');
       }
       // this.thirdRowElement = thirdRowElement;
       // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
@@ -86,8 +87,8 @@ var RowView = React.createClass({
 
   componentWillUpdate: function(argument) {
     //save a reference to the thirdRowElement and its offset from the top of the container
-    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    this.thirdRowElement = infiniteContainer.children[2];
+    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+    this.thirdRowElement = visibleRowsContainer.children[2];
     this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
     if (this.scollerBeingDragged) {
       this.updateTriggeredByScrollerDrag = true;
@@ -108,6 +109,7 @@ var RowView = React.createClass({
         // console.log('thirdRowElement Found');
         //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
         var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+        var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
         var adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
         infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
       }
@@ -115,8 +117,8 @@ var RowView = React.createClass({
     console.log('infiniteContainer.clientHeight: ' + infiniteContainer.clientHeight);
     console.log('this.state.viewportDimensions.height: ' + this.state.viewportDimensions.height);
     var bottomOfInfiniteContainer = infiniteContainer.getBoundingClientRect().bottom;
-    var bottomOfLastRow = infiniteContainer.children[infiniteContainer.children.length-1].getBoundingClientRect().bottom;
-    var bottomOfThirdRow = infiniteContainer.children[3].getBoundingClientRect().bottom;
+    var bottomOfLastRow = visibleRowsContainer.children[visibleRowsContainer.children.length-1].getBoundingClientRect().bottom;
+    var bottomOfThirdRow = visibleRowsContainer.children[3].getBoundingClientRect().bottom;
     console.log('bottomOfLastRow: ' + bottomOfLastRow);
     console.log('bottomOfInfiniteContainer: ' + bottomOfInfiniteContainer);
     // debugger;
@@ -357,6 +359,9 @@ var RowView = React.createClass({
       }
     });
 
+    this.topSpacerHeight = this.state.preloadRowStart * this.state.averageRowHeight;
+    this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * this.state.averageRowHeight;
+
     var infiniteContainerStyle = {
       height: this.state.viewportDimensions.height,
       width: this.state.viewportDimensions.width,
@@ -406,33 +411,20 @@ var RowView = React.createClass({
             onStart={this.handleEditorDragStart} 
             onStop={this.handleEditorDragStop} 
             >
-          <div style={{width: infiniteContainerStyle.width, overflowX:"hidden"}}>
-            <div 
-              ref="infiniteContainer" 
-              className="infiniteContainer" 
-              style={infiniteContainerStyle} 
-              onScroll={this.onScroll}
-              onClick={this.onEditorClick}
-              >
+          <div
+            ref="infiniteContainer" 
+            className="infiniteContainer" 
+            style={infiniteContainerStyle} 
+            onScroll={this.onScroll}
+            onClick={this.onEditorClick}
+            >
+              <div ref="topSpacer" className="topSpacer" style={{height: this.topSpacerHeight}}/>
+              <div ref="visibleRowsContainer" className="visibleRowsContainer">
                 {rowItems}
-            </div>
+              </div>
+              <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.bottomSpacerHeight}}/> 
           </div>
         </Draggable>
-
-        <div ref="infiniteContainer-scrollbar" className="infiniteContainer-scrollbar" style={scrollbarStyle}>
-          <Draggable 
-            axis="y" 
-            zIndex={100}
-            onDrag={this.handleScrollbarDrag} 
-            onStart={this.handleScrollbarDragStart} 
-            onStop={this.handleScrollbarDragStop} 
-            >
-            <span>
-              <div ref="scroller" style={scrollerStyle}>
-              </div>
-            </span>
-          </Draggable>
-        </div>
       </div>
     );
   }
@@ -440,7 +432,5 @@ var RowView = React.createClass({
 
 
 
-            // <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>
-            // <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
 
 module.exports = RowView;
