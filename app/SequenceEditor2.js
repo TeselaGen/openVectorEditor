@@ -9,6 +9,11 @@ var Authentication = require('./Authentication.js');
 
 var SequenceEditor2 = React.createClass({
   mixins: [mixin, Authentication],
+  facets: {
+    sequenceLength: 'sequenceLength',
+    bpsPerRow: 'bpsPerRow',
+    totalRows: 'totalRows',
+  },
   // cursors: {
   //   visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
   //   sequenceData: ['vectorEditorState', 'sequenceData'],
@@ -23,6 +28,11 @@ var SequenceEditor2 = React.createClass({
 
     return (
       <div style={{float:"right"}}>
+        sequence length: {this.state.sequenceLength}
+        <br/>
+        bpsPerRow:  {this.state.bpsPerRow}
+        <br/>
+        totalRows:  {this.state.totalRows}
         <RowView />
       </div>
     );
