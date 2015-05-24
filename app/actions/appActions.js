@@ -20,6 +20,16 @@ var actions = {
 		}
 		// viewportDimensions.set(newSize);
 	},
+	setAverageRowHeight: function (averageRowHeight) {
+		if (arePositiveIntegers(averageRowHeight)) {
+			tree.select('vectorEditorState', 'averageRowHeight').set(averageRowHeight);
+		} 
+	},
+	setPreloadRowStart: function (preloadRowStart) {
+		if (arePositiveIntegers(preloadRowStart)) {
+			tree.select('vectorEditorState', 'preloadRowStart').set(preloadRowStart);
+		} 
+	},
 	setMouseIsDown: function (trueOrFalse) {
 		tree.select('vectorEditorState', 'mouse', 'isDown').set(trueOrFalse);
 		// viewportDimensions.set(newSize);

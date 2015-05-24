@@ -8,25 +8,24 @@ var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSe
 
 
 
-// var string = "atgtgtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 0; i < 100000; i++) {
-// 	reallyLongFakeSequence += string;
-// 	if (i % 100 === 0) {
+var string = "atgtgtgatg";
+var reallyLongFakeSequence = "";
+for (var i = 0; i < 1000; i++) {
+	reallyLongFakeSequence += string;
+	if (i % 100 === 0) {
 
-// 		sequenceData.features[i] = {
-// 			id: i,
-// 			start: i,
-// 			end: i + 100,
-// 			name: 'cooljim',
-// 			color: 'green',
-// 			topStrand: true,
-// 			annotationType: "feature"
-// 		};
-// 	}
-// };
-// sequenceData.sequence = reallyLongFakeSequence;
-
+		sequenceData.features[i] = {
+			id: i,
+			start: i,
+			end: i + 100,
+			name: 'cooljim',
+			color: 'green',
+			topStrand: true,
+			annotationType: "feature"
+		};
+	}
+};
+sequenceData.sequence = reallyLongFakeSequence;
 var fakeSequences = makeFakeSequences(20);
 console.log(fakeSequences);
 
@@ -63,8 +62,8 @@ var tree = new baobab({
 			width: 400
 		},
 		selectionLayer: {
-			start: 0,
-			end: 5,
+			start: 20,
+			end: 19,
 			sequenceSelected: true,
 		},
 		mouse: {

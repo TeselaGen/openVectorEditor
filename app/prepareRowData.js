@@ -47,8 +47,8 @@ function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsT
     // if (!isPositiveInteger(range.start)) {}
     var startingRow = Math.floor(range.start / bpsPerRow);
     var endingRow = Math.floor(range.end / bpsPerRow);
-    var numberOfRows = endingRow - startingRow + 1;
-    for (var rowNumber = 0; rowNumber < numberOfRows; rowNumber++) {
+    // var numberOfRows = endingRow - startingRow + 1;
+    for (var rowNumber = startingRow; rowNumber <= endingRow; rowNumber++) {
       if (!annotationsToRowsMap[rowNumber]) {
         annotationsToRowsMap[rowNumber] = [];
       }

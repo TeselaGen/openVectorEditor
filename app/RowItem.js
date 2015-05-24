@@ -9,7 +9,14 @@ var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOT
 var mixin = require('baobab-react/mixins').branch;
 var appActions = require('./actions/appActions');
 
-
+var SequenceContainer = React.createClass({
+  render: function () {
+    var {sequence, CHAR_WIDTH} = this.props;
+    var textHTML = 
+    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>'
+    return <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+  }
+});
 
 var RowItem = React.createClass({
   mixins: [mixin],
@@ -27,17 +34,17 @@ var RowItem = React.createClass({
     bpsPerRow: 'bpsPerRow',
   },
 
-  getDefaultProps: function() {
-    return {
-      row: {
-        features: {
-        }
-      },
-      showFeatures: true,
-      showReverseSequence: true,
+  // getDefaultProps: function() {
+  //   return {
+  //     row: {
+  //       features: {
+  //       }
+  //     },
+  //     showFeatures: true,
+  //     showReverseSequence: true,
       
-    };
-  },
+  //   };
+  // },
   
   // onCursorHover: function (argument) {
   //   // body...
@@ -48,7 +55,7 @@ var RowItem = React.createClass({
     var bpsPerRow = this.state.bpsPerRow;
     var showFeatures = this.state.showFeatures;
     var showParts = this.state.showParts;
-    var showReverseSequence = this.state.showReverseSequence;
+    // var showReverseSequence = this.state.showReverseSequence;
     var selectionLayer = this.state.selectionLayer;
     var cursorPosition = this.state.cursorPosition;
     var combinedHeightOfChildElements = 0;
@@ -116,6 +123,11 @@ var RowItem = React.createClass({
         // var overlapPaths = annotationRange.overlaps.map(function(overlap) {
           // console.log(annotationRange);
           var annotation = annotationRange.annotation; 
+
+          //get the type of range we're going to be displaying
+          // if (annotationRange.start === annotation.start) {
+          //   var annotationRange.rangeType
+          // }
 
           var drawingParameters = {
             xStart: (annotationRange.start % bpsPerRow) * charWidth,
@@ -273,9 +285,13 @@ var RowItem = React.createClass({
 
     var textHTML = 
     '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
+    var reverseSequenceHTML = 
+    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
     // var className = "row" + row.rowNumber;
       // <div className={className}>
+      // <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+      //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
     return (
         <div className="rowContainer" 
           style={rowContainerStyle} 
@@ -286,7 +302,10 @@ var RowItem = React.createClass({
           >
             {featuresSVG}
             {partsSVG}
-            <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+            <SequenceContainer sequence={row.sequence} CHAR_WIDTH={CHAR_WIDTH}/>
+            {this.state.showReverseSequence &&
+              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} CHAR_WIDTH={CHAR_WIDTH}/>
+            }
             {row.rowNumber}
             //
             {row.start}
@@ -298,6 +317,10 @@ var RowItem = React.createClass({
     );
   }
 });
+
+
+
+
 
 
 // <div style={textStyle}>

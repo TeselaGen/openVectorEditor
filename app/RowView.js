@@ -18,7 +18,7 @@ var RowView = React.createClass({
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
     preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
-    cursorPosition: ['vectorEditorState', 'cursorPosition'],
+    // cursorPosition: ['vectorEditorState', 'cursorPosition'],
   },
   facets: {
     rowData: 'rowData',
@@ -57,38 +57,35 @@ var RowView = React.createClass({
     // console.log(infiniteContainer.scrollTop);
     var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
     var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+    console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
+    console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
     if (distanceFromTopOfVisibleRows < 0) {
       //scrolling down, so add a row below
-      if (this.state.preloadRowStart > 0) {
-        newRowStart = this.state.preloadRowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
+      if (this.rowStart > 0) {
+        newRowStart = this.rowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
         // console.log('newRowStart: '+newRowStart)
 
         if (newRowStart < 0) newRowStart = 0;
         // console.log('//scrolling up, so add a row above');
         this.prepareVisibleRows(newRowStart);
       }
-      // console.log('//scrolling up, so add a row above');
-      // this.scrollingUp = true;
     } 
     else if (distanceFromBottomOfVisibleRows < 0) {
       var rowsToGiveOnBottom = this.state.totalRows - 1 - this.preloadRowEnd;
       if (rowsToGiveOnBottom > 0) {
-        newRowStart = this.state.preloadRowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
+        newRowStart = this.rowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
         if (newRowStart + this.state.visibleRows.length >= this.state.totalRows) {
           //the new row start is too high, so we instead just append the max rowsToGiveOnBottom to our current preloadRowStart
-          newRowStart = this.state.preloadRowStart + rowsToGiveOnBottom; 
+          newRowStart = this.rowStart + rowsToGiveOnBottom; 
         }
         this.prepareVisibleRows(newRowStart);
         // console.log('//scrolling down, so add a row below');
       }
-      // this.thirdRowElement = thirdRowElement;
-      // this.thirdRowElementScrollHeight = thirdRowElement.scrollHeight;
-      // this.scrollingUp = false;
     } else {
       //we haven't scrolled enough, so do nothing
     }
     //set the averageRowHeight to the currentAverageRowHeight
-    this.setState({averageRowHeight: currentAverageRowHeight});
+    // appActions.setAverageRowHeight(currentAverageRowHeight);
 
   },
 
@@ -113,13 +110,14 @@ var RowView = React.createClass({
     
     // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
     // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
-    // if (visibleRowsContainer.getBoundingClientRect().bottom < -100) {
-    //   debugger;
-    // }
     if (visibleRowsContainer.getBoundingClientRect().height - firstRowHeight - lastRowHeight <= this.state.viewportDimensions.height) {
-      // console.log('//we need to add another row below!');
-      // console.log('this.preloadRowEnd:'+this.preloadRowEnd);
-      this.prepareVisibleRows(this.state.preloadRowStart, this.numberOfRowsToDisplay+1);
+      if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
+        //load another row to the bottom
+        this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
+      } else {
+        //there aren't more rows that we can load at the bottom so we load more at the top
+        this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);  
+      }
     } else if (false) {
       //maybe put logic in here to reshrink the number of rows to display... maybe...
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
@@ -151,8 +149,12 @@ var RowView = React.createClass({
   },
 
   componentWillMount: function (argument) {
-    this.alreadyPreparedRows = {};
-    this.prepareVisibleRows(this.state.preloadRowStart);
+    //this is the only place where we use preloadRowStart
+    if (arePositiveIntegers(this.state.preloadRowStart) && this.state.preloadRowStart<this.state.totalRows) {
+      this.prepareVisibleRows(this.state.preloadRowStart);
+    } else {
+      this.prepareVisibleRows(0);
+    }
   },
 
   componentDidMount: function (argument) {
@@ -179,8 +181,9 @@ var RowView = React.createClass({
     if (this.preloadRowEnd < this.state.totalRows) {
       console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
       var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd + 1);
+      // appActions.setPreloadRowStart(rowStart);
+      this.rowStart = rowStart;
       this.setState({
-        preloadRowStart: rowStart,
         visibleRows: visibleRows,
       });
     }
@@ -192,10 +195,10 @@ var RowView = React.createClass({
 
   getNearestCursorPositionToMouseEvent: function(event) {
     var rowNotFound = true;
-    var infiniteContainer = this.refs.infiniteContainer.getDOMNode();
+    var visibleRowsContainer = this.refs.visibleRowsContainer.getDOMNode();
     //loop through all the rendered rows to see if the click event lands in one of them
-    for (var relativeRowNumber = 0; relativeRowNumber < infiniteContainer.childNodes.length; relativeRowNumber++) {
-      var rowDomNode = infiniteContainer.childNodes[relativeRowNumber];
+    for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
+      var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
       // console.log('rowDomNode.getBoundingClientRect().top: ' + rowDomNode.getBoundingClientRect().top);
       var boundingRowRect = rowDomNode.getBoundingClientRect();
       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
@@ -307,8 +310,9 @@ var RowView = React.createClass({
       }
     });
 
-    this.topSpacerHeight = this.state.preloadRowStart * this.state.averageRowHeight;
-    this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * this.state.averageRowHeight;
+    var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
+    this.topSpacerHeight = this.rowStart * rowHeight;
+    this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * rowHeight;
 
     var infiniteContainerStyle = {
       height: this.state.viewportDimensions.height,

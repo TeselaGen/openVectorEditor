@@ -14,6 +14,10 @@ var SequenceEditor2 = React.createClass({
     bpsPerRow: 'bpsPerRow',
     totalRows: 'totalRows',
   },
+  cursors: {
+    cursorPosition: ['vectorEditorState', 'cursorPosition'],
+    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+  },
   // cursors: {
   //   visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
   //   sequenceData: ['vectorEditorState', 'sequenceData'],
@@ -28,6 +32,10 @@ var SequenceEditor2 = React.createClass({
 
     return (
       <div style={{float:"right"}}>
+        selectionLayer: {this.state.selectionLayer.start}  {this.state.selectionLayer.end}
+        <br/>
+        cursorPosition: {this.state.cursorPosition}
+        <br/>
         sequence length: {this.state.sequenceLength}
         <br/>
         bpsPerRow:  {this.state.bpsPerRow}
