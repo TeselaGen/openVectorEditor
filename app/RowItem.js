@@ -1,11 +1,11 @@
 var React = require('react');
 var _ = require('lodash');
 var classnames = require('classnames');
-var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
-var CHAR_HEIGHT = require('./editorConstants').CHAR_HEIGHT;
+// var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
+// var CHAR_HEIGHT = require('./editorConstants').CHAR_HEIGHT;
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
-var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
-var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
+// var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
+// var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
 var mixin = require('baobab-react/mixins').branch;
 var appActions = require('./actions/appActions');
 
@@ -21,6 +21,10 @@ var SequenceContainer = React.createClass({
 var RowItem = React.createClass({
   mixins: [mixin],
   cursors: {
+    CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+    CHAR_HEIGHT: ['vectorEditorState', 'CHAR_HEIGHT'], //potentially unneeded
+    ANNOTATION_HEIGHT: ['vectorEditorState', 'ANNOTATION_HEIGHT'],
+    SPACE_BETWEEN_ANNOTATIONS: ['vectorEditorState', 'SPACE_BETWEEN_ANNOTATIONS'],
     showFeatures: ['vectorEditorState', 'showFeatures'],
     showParts: ['vectorEditorState', 'showParts'],
     showReverseSequence: ['vectorEditorState', 'showReverseSequence'],
@@ -33,22 +37,6 @@ var RowItem = React.createClass({
     sequenceLength: 'sequenceLength',
     bpsPerRow: 'bpsPerRow',
   },
-
-  // getDefaultProps: function() {
-  //   return {
-  //     row: {
-  //       features: {
-  //       }
-  //     },
-  //     showFeatures: true,
-  //     showReverseSequence: true,
-      
-  //   };
-  // },
-  
-  // onCursorHover: function (argument) {
-  //   // body...
-  // }
 
   render: function () {
     var {row} = this.props;
@@ -74,28 +62,28 @@ var RowItem = React.createClass({
     //   var path = pathMaker(xStart, yStart, height, length, direction, strokeColor);
     // }
     // if (showReverseSequence) {
-    //   combinedHeightOfChildElements+= (SPACE_BETWEEN_ANNOTATIONS + ANNOTATION_HEIGHT); //tnrtodo work out these spacing issues
+    //   combinedHeightOfChildElements+= (this.state.SPACE_BETWEEN_ANNOTATIONS + this.state.ANNOTATION_HEIGHT); //tnrtodo work out these spacing issues
     // }
     if (showFeatures) {
-      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
+      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * this.state.ANNOTATION_HEIGHT + this.state.SPACE_BETWEEN_ANNOTATIONS;
       var featuresSVG = createAnnotationPaths({
         annotationRanges: row.features,
         createAnnotationRawPath: createFeatureRawPath,
-        annotationHeight: ANNOTATION_HEIGHT,
-        spaceBetweenAnnotations: SPACE_BETWEEN_ANNOTATIONS,
-        charWidth: CHAR_WIDTH,
+        annotationHeight: this.state.ANNOTATION_HEIGHT,
+        spaceBetweenAnnotations: this.state.SPACE_BETWEEN_ANNOTATIONS,
+        charWidth: this.state.CHAR_WIDTH,
         // annotationYOffsetMax: row.featuresYOffsetMax,
       });
     }
 
     if (showParts) {
-      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * ANNOTATION_HEIGHT + SPACE_BETWEEN_ANNOTATIONS;
+      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * this.state.ANNOTATION_HEIGHT + this.state.SPACE_BETWEEN_ANNOTATIONS;
       var partsSVG = createAnnotationPaths({
         annotationRanges: row.parts,
         createAnnotationRawPath: createFeatureRawPath,
-        annotationHeight: ANNOTATION_HEIGHT,
-        spaceBetweenAnnotations: SPACE_BETWEEN_ANNOTATIONS,
-        charWidth: CHAR_WIDTH,
+        annotationHeight: this.state.ANNOTATION_HEIGHT,
+        spaceBetweenAnnotations: this.state.SPACE_BETWEEN_ANNOTATIONS,
+        charWidth: this.state.CHAR_WIDTH,
         // annotationYOffsetMax: row.featuresYOffsetMax,
       });
     }
@@ -163,7 +151,7 @@ var RowItem = React.createClass({
         );
     }
 
-    var fontSize = CHAR_WIDTH + "px";
+    var fontSize = this.state.CHAR_WIDTH + "px";
     var textStyle = {
       fontSize: fontSize,
       fontFamily: "'Courier New', Courier, monospace", 
@@ -196,7 +184,7 @@ var RowItem = React.createClass({
     
     var selectionCursorStart;
     var selectionCursorEnd;
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, CHAR_WIDTH, cursorStyle);
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.CHAR_WIDTH, cursorStyle);
     function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle) {
       var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
       var selectionLayers = overlaps.map(function (overlap) {
@@ -216,7 +204,7 @@ var RowItem = React.createClass({
 
     
 
-    var cursor = getCursorForRow(cursorPosition, row, bpsPerRow, cursorStyle, CHAR_WIDTH);
+    var cursor = getCursorForRow(cursorPosition, row, bpsPerRow, cursorStyle, this.state.CHAR_WIDTH);
     function getCursorForRow (cursorPosition, row, bpsPerRow, cursorStyle, charWidth) {
       if(row.start<= cursorPosition && row.end + 1 >= cursorPosition || (row.end === self.state.sequenceLength - 1 && row.end < cursorPosition) ) {
         //the second logical operator catches the special case where we're at the very end of the sequence..
@@ -230,7 +218,7 @@ var RowItem = React.createClass({
     // var enclosingTextDivStyle = {
     //   width: "100%"
     // };
-    // console.log( (CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
+    // console.log( (this.state.CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
     //maybe use text-align middle with the x-position in the middle of the block.. something seems just a touch off with the character width stuff...
     //not sure what it is exactly...
     //should probably change the row.sequence.length -1 to no -1
@@ -239,14 +227,14 @@ var RowItem = React.createClass({
     // var sequenceArray = row.sequence.split("");
     // charArray = [];
     // sequenceArray.forEach(function (char, index) {
-    //   var left = CHAR_WIDTH * index - (CHAR_WIDTH/2)
+    //   var left = this.state.CHAR_WIDTH * index - (this.state.CHAR_WIDTH/2)
     //   sequenceTextStyle = {
     //   display: "inline",
     //   position: "absolute",
     //   left: left,
     // }
-    //   // charArray.left = CHAR_WIDTH * i + (CHAR_WIDTH/2);
-    //   // {left: CHAR_WIDTH * i + (CHAR_WIDTH/2)}
+    //   // charArray.left = this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2);
+    //   // {left: this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2)}
     //   charArray.push(
     //     <div style={sequenceTextStyle}> 
     //       {char}
@@ -267,9 +255,9 @@ var RowItem = React.createClass({
 
 
     // for (var i = 0; i < row.sequence.length; i++) {
-    //   // var left = CHAR_WIDTH * i + (CHAR_WIDTH/2)
-    //   charArray.left = CHAR_WIDTH * i + (CHAR_WIDTH/2);
-    //   // {left: CHAR_WIDTH * i + (CHAR_WIDTH/2)}
+    //   // var left = this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2)
+    //   charArray.left = this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2);
+    //   // {left: this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2)}
     //   charArray.push(
     //     <div style={sequenceTextStyle}> 
     //       {row.sequence[i]}
@@ -284,14 +272,14 @@ var RowItem = React.createClass({
     };
 
     var textHTML = 
-    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
+    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.CHAR_WIDTH/4) + '" y="10" textLength="'+ (this.state.CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     var reverseSequenceHTML = 
-    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
+    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.CHAR_WIDTH/4) + '" y="10" textLength="'+ (this.state.CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
     // var className = "row" + row.rowNumber;
       // <div className={className}>
-      // <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
-      //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+      // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+      //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
     return (
         <div className="rowContainer" 
           style={rowContainerStyle} 
@@ -302,9 +290,9 @@ var RowItem = React.createClass({
           >
             {featuresSVG}
             {partsSVG}
-            <SequenceContainer sequence={row.sequence} CHAR_WIDTH={CHAR_WIDTH}/>
+            <SequenceContainer sequence={row.sequence} CHAR_WIDTH={this.state.CHAR_WIDTH}/>
             {this.state.showReverseSequence &&
-              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} CHAR_WIDTH={CHAR_WIDTH}/>
+              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} CHAR_WIDTH={this.state.CHAR_WIDTH}/>
             }
             {row.rowNumber}
             //

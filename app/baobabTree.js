@@ -50,6 +50,11 @@ var tree = new baobab({
 		averageRowHeight: 100,
 		// preloadBasepairStart: 300,
 		CHAR_WIDTH: 15,
+		CHAR_HEIGHT: 15,
+		// FONT_SIZE: 14,
+		ANNOTATION_HEIGHT: 15,
+
+		SPACE_BETWEEN_ANNOTATIONS: 3,
 		preloadRowStart: 0,
 		// preloadRowEnd: 9,
 		showOrfs: true,

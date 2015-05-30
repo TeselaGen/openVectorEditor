@@ -7,12 +7,14 @@ var arePositiveIntegers = require('./arePositiveIntegers');
 // var prepareRowData = require('./prepareRowData');
 var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
 // var ReactList = require('react-list');
-var mixin = require('baobab-react/mixins').branch;
+var baobabBranch = require('baobab-react/mixins').branch;
+Keybinding = require('react-keybinding');
 
 var RowView = React.createClass({
-  mixins: [mixin],
+  mixins: [baobabBranch, Keybinding],
   cursors: {
     // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+    CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
     preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
     averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
@@ -23,6 +25,19 @@ var RowView = React.createClass({
   facets: {
     rowData: 'rowData',
     totalRows: 'totalRows'
+  },
+  keybindings: {
+    '⌘S': function() {
+      console.log('save!');
+      event.preventDefault();
+      debugger;
+    },
+    '⌘C': 'COPY'
+  },
+  keybinding: function(event, action) {
+    debugger;
+    // event is the browser event, action is 'COPY'
+    console.log(arguments);
   },
 
   // propTypes: {
@@ -38,12 +53,13 @@ var RowView = React.createClass({
   //     },
   //   };
   // }, 
-  onScroll: function (event) {
-    if (this.adjustmentScroll) {
-      //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
-      this.adjustmentScroll = false;
-      return;
-    }
+  onEditorScroll: function (event) {
+    // if (this.adjustmentScroll) {
+    //   console.log('adjustmentScroll');
+    //   //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
+    //   this.adjustmentScroll = false;
+    //   return true;
+    // }
 
     var infiniteContainer = event.currentTarget;
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
@@ -57,8 +73,8 @@ var RowView = React.createClass({
     // console.log(infiniteContainer.scrollTop);
     var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
     var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-    console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
-    console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
+    // console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
+    // console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
     if (distanceFromTopOfVisibleRows < 0) {
       //scrolling down, so add a row below
       if (this.rowStart > 0) {
@@ -94,6 +110,7 @@ var RowView = React.createClass({
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
     this.thirdRowElement = visibleRowsContainer.children[2];
     this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
+    console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
     //   this.updateTriggeredByScrollerDrag = true;
     // } else {
     //   this.updateTriggeredByScrollerDrag = false;
@@ -122,26 +139,27 @@ var RowView = React.createClass({
       //maybe put logic in here to reshrink the number of rows to display... maybe...
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
       //scroll to align the tops of the boxes
-      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top
+      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
       // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
-      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
       this.adjustmentScroll = true;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
     } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
       //scroll to align the bottoms of the boxes
-      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom
+      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
       // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
-      infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustInfiniteContainerByThisAmount;
       this.adjustmentScroll = true;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustInfiniteContainerByThisAmount;
     } else {
       if (this.thirdRowElement) {
         // console.log('thirdrowblind');
-        adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom
+        // adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
         // console.log('adjust: ' + adjustInfiniteContainerByThisAmount)
         // console.log('thirdRowElement Found');
         //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
+        this.adjustmentScroll = true;
         adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
-        // console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
-        // infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+        console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
+        infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
         // this.adjustmentScroll = true
       }
     }
@@ -178,15 +196,13 @@ var RowView = React.createClass({
       this.numberOfRowsToDisplay = 4;
     }
     this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) > this.state.totalRows - 1 ? this.state.totalRows - 1: (rowStart + this.numberOfRowsToDisplay);
-    if (this.preloadRowEnd < this.state.totalRows) {
-      console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
-      var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd + 1);
-      // appActions.setPreloadRowStart(rowStart);
-      this.rowStart = rowStart;
-      this.setState({
-        visibleRows: visibleRows,
-      });
-    }
+    console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
+    var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd + 1);
+    // appActions.setPreloadRowStart(rowStart);
+    this.rowStart = rowStart;
+    this.setState({
+      visibleRows: visibleRows,
+    });
 
     // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
 
@@ -240,6 +256,11 @@ var RowView = React.createClass({
     }
 
     // console.log('bp: ' + bp);
+  }, 
+
+  onEditorKeyDown: function(event) {
+    debugger;
+    appActions.keyPressedInEditor(event);
   }, 
 
   handleEditorDrag: function(event, ui) {
@@ -303,6 +324,7 @@ var RowView = React.createClass({
   },
 
   render: function () {
+    console.log('render!');
     var self = this;
     var rowItems = this.state.visibleRows.map(function(row) {
       if (row) {
@@ -328,13 +350,15 @@ var RowView = React.createClass({
             onDrag={this.handleEditorDrag} 
             onStart={this.handleEditorDragStart} 
             onStop={this.handleEditorDragStop} 
+            onKeyDown={this.onEditorKeyDown}
             >
           <div
             ref="infiniteContainer" 
             className="infiniteContainer" 
             style={infiniteContainerStyle} 
-            onScroll={this.onScroll}
+            onScroll={this.onEditorScroll}
             onClick={this.onEditorClick}
+            onKeyPress={this.onEditorKeyDown}
             >
               <div ref="topSpacer" className="topSpacer" style={{height: this.topSpacerHeight}}/>
               <div ref="visibleRowsContainer" className="visibleRowsContainer">
@@ -346,8 +370,5 @@ var RowView = React.createClass({
     );
   }
 });
-
-
-
 
 module.exports = RowView;

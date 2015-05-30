@@ -37,7 +37,15 @@ var actions = {
 	cancelSelection: function () {
 		tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
-	},
+	}, 
+	keyPressedInEditor: function (event) {
+		event.preventDefault();
+		if (event) {
+			debugger;
+		}
+		// tree.select('vectorEditorState', 'selectionLayer').set({});
+		// viewportDimensions.set(newSize);
+	}, 
 };
 
 module.exports = actions;
