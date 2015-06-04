@@ -30,14 +30,20 @@ var RowView = React.createClass({
     '⌘S': function() {
       console.log('save!');
       event.preventDefault();
-      debugger;
     },
-    '⌘C': 'COPY'
+    '⌘C': 'COPY',
+    'T': function() {
+      this.insertSequenceString('t');
+    },
   },
   keybinding: function(event, action) {
     debugger;
     // event is the browser event, action is 'COPY'
     console.log(arguments);
+  },
+  insertSequenceString: function (sequenceString) {
+    //trigger an insert action
+    appActions.insertSequenceString(sequenceString);
   },
 
   // propTypes: {

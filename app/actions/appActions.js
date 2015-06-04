@@ -38,6 +38,21 @@ var actions = {
 		tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
 	}, 
+	insertSequenceString: function (sequenceString) {
+		//check for initial values
+		debugger;
+		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+		var cursorPosition = tree.select('vectorEditorState', 'cursorPosition').get();
+		if (selectionLayer && selectionLayer.sequenceSelected) {
+
+		} else if (arePositiveIntegers(cursorPosition)) {
+
+		} else {
+			console.warn('nowhere to put the inserted sequence..');
+		}
+		tree.select('vectorEditorState', 'selectionLayer').set({});
+		// viewportDimensions.set(newSize);
+	}, 
 	keyPressedInEditor: function (event) {
 		event.preventDefault();
 		if (event) {
