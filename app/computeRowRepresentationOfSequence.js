@@ -1,27 +1,100 @@
 var _ = require('lodash');
+var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 
+function computeNumberOfCharsThatFitInGivenViewportWidth (viewportDimensions, CHAR_WIDTH) {
+  return Math.floor(viewportDimensionsWidth/CHAR_WIDTH);
+}
 
+function computeRowRepresenationOfSequence(sequenceData, viewportDimensionsWidth, CHAR_WIDTH) {
+  debugger;
+  
+  var bpsPerRow = computeNumberOfCharsThatFitInGivenViewportWidth(viewportDimensionsWidth, CHAR_WIDTH);
+  var sequenceLength = sequenceData.sequence.length;
+  var numberOfRows = Math.ciel(sequenceLength/bpsPerRow);
+
+  //prepare the shell of the row
+  var rows = [];
+  for (var i = 0; i < numberOfRows; i++) {
+    var start = i*bpsPerRow;
+    var end = i*bpsPerRow+bpsPerRow;
+    if (end > sequenceLength-1) { //normalize the end value
+      end = sequenceLength-1;
+    }
+    var row = {
+      rowNumber: i,
+      start: start,
+      end: end,
+      sequence: sequenceData.slice(start,end),
+      features: {},
+      parts: {},
+      orfs: {},
+      cutsites: {},
+
+    };
+    rows[i] = row;
+  };
+
+  //add data from features, parts, orfs, cutsites, etc. to the row representation
+  sequenceData.features.forEach(function (annotation) {
+    mapAnnotationToRows(rows,annotation);
+  })
+
+  //return only the requested rows
+  return requestedRows;
+}
+
+function mapAnnotationToRows (rows,annotation, rowAnnotationGroup) {
+  rows.forEach(function (row) {
+    var overlaps = getOverlapsOfPotentiallyCircularRanges(row, annotation);
+    if (overlaps.length > 0) {
+      row.features[annotation.id] = {
+        overlaps:overlaps
+      };
+    }
+  });
+}
 
 function populateRowByRowNumber(sequenceData, bpsPerRow, rowNumber, sequenceLength) {
   var row = {};
   row.rowNumber = rowNumber;
-  row.start = rowNumber*bpsPerRow;
-  row.end = (rowNumber+1)*(bpsPerRow-1);
-  row.sequence = sequenceData.sequence.slice(row.start, row.end);
+  row.start = rowNumber * bpsPerRow;
+  row.end = (rowNumber + 1) * (bpsPerRow) - 1;
+  row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
 
-  row.features = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
-  row.parts = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
-  row.orfs = mapAnnotationsToRow(sequenceData.orfs, row, sequenceLength);
-  row.cutsites = mapAnnotationsToRow(sequenceData.cutsites, row, sequenceLength);
+  // console.log('row.rowNumber');
+  // console.log(row.rowNumber);
+  // console.log('row.start');
+  // console.log(row.start);
+  // console.log('row.end');
+  // console.log(row.end);
+  // console.log('row.sequence');
+  // console.log(row.sequence);
+
+  var {
+    annotations, annotationYOffsetMax
+  } = mapAnnotationsToRow(sequenceData.features, row, sequenceLength);
+  row.features = annotations;
+  row.featuresYOffsetMax = annotationYOffsetMax;
+
+  var {
+    annotations, annotationYOffsetMax
+  } = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
+  row.parts = annotations;
+  row.partsYOffsetMax = annotationYOffsetMax;
+
+  // row.parts = mapAnnotationsToRow(sequenceData.parts, row, sequenceLength);
+  // row.orfs = mapAnnotationsToRow(sequenceData.orfs, row, sequenceLength);
+  // row.cutsites = mapAnnotationsToRow(sequenceData.cutsites, row, sequenceLength);
 
   return row;
 }
 
 function mapAnnotationsToRow(annotations, row, sequenceLength) {
   var annotationsInRow = {};
-  
+  var annotationYOffsetMax = 0; //
   //convert each anotation into 1 or 2 annotationLocations by spliiting on the origin.
   //for each location, add to the row any stetches of the location that overlap the row
+
   _.each(annotations, function(annotation) {
     var annotationLocations = splitAnnotationOnOrigin(annotation, sequenceLength);
     var overlaps;
@@ -37,6 +110,9 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
     if (overlaps) {
       //calculate the yOffset for the new overlaps
       var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsInRow, overlaps);
+      if (yOffset > annotationYOffsetMax) {
+        annotationYOffsetMax = yOffset;
+      }
       //add the annotation to the row
       var annotationId = annotation.id;
       annotationsInRow[annotationId] = {
@@ -46,7 +122,10 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
       };
     }
   }, this);
-  return annotationsInRow;
+  return {
+    annotations: annotationsInRow,
+    annotationYOffsetMax: annotationYOffsetMax
+  };
 }
 
 function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRow, overlaps) {
@@ -86,17 +165,20 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
     });
   });
 
-  var newYOffset = 0;
+  var newYOffset = 1;
   //sort and remove duplicates from the blockedYOffsets array
-  //then starting with newYOffset = 0, see if there is space for the location 
+  //then starting with newYOffset = 1, see if there is space for the location 
   if (blockedYOffsets.length > 0) {
     var sortedBlockedYOffsets = _.sortBy(blockedYOffsets, function(n) {
-      return n
+      return n;
     });
     var sortedUniqueBlockedYOffsets = _.uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
     var stillPotentiallyBlocked = true;
     while (stillPotentiallyBlocked) {
-      if (sortedUniqueBlockedYOffsets[newYOffset] != newYOffset) {
+      //sortedUniqueBlockedYOffsets is an array starting with 1 eg. [1,2,4,5,6]
+      //so we loop through it using the index of newYOffset-1, and if there is a gap 
+      //in the array, we break the loop and that becomes our final newYOffset
+      if (sortedUniqueBlockedYOffsets[newYOffset - 1] !== newYOffset) {
         //the newYOffset isn't blocked
         stillPotentiallyBlocked = false;
       } else {
@@ -108,16 +190,16 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
   return newYOffset;
 }
 
-function splitAnnotationOnOrigin (annotation, sequenceLength) {
+function splitAnnotationOnOrigin(annotation, sequenceLength) {
   var annotationLocations = [];
   if (annotation.start > annotation.end) {
     annotationLocations.push({
       start: 0,
-      end: annotation.start
+      end: annotation.end
     });
     annotationLocations.push({
-      start: annotation.end,
-      end: sequenceLength-1
+      start: annotation.start,
+      end: sequenceLength - 1
     });
   } else {
     annotationLocations.push({
@@ -185,4 +267,4 @@ function getOverlapOfRowWithAnnotationLocation(annotationLocation, annotation, r
   }
 }
 
-module.exports = populateRowByRowNumber;
+module.exports = computeRowRepresenationOfSequence;

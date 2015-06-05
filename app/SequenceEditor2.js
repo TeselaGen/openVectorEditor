@@ -4,25 +4,44 @@ var RowView = require('./RowView');
 var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
 
 var mixin = require('baobab-react/mixins').branch;
+var Authentication = require('./Authentication.js');
 
 
 var SequenceEditor2 = React.createClass({
-  mixins: [mixin],
-  cursors: {
-    visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
-    sequenceData: ['vectorEditorState', 'sequenceData'],
-    highlightLayer: ['vectorEditorState', 'highlightLayer'],
+  mixins: [mixin, Authentication],
+  facets: {
+    sequenceLength: 'sequenceLength',
+    bpsPerRow: 'bpsPerRow',
+    totalRows: 'totalRows',
   },
+  cursors: {
+    cursorPosition: ['vectorEditorState', 'cursorPosition'],
+    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+  },
+  // cursors: {
+  //   visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+  //   sequenceData: ['vectorEditorState', 'sequenceData'],
+  //   highlightLayer: ['vectorEditorState', 'highlightLayer'],
+  // },
 
   render: function() {
-      var visibilityParameters = this.state.visibilityParameters;
-      var highlightLayer = this.state.highlightLayer;
-      visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.rowLength;
-
+      // var visibilityParameters = this.state.visibilityParameters;
+      // var highlightLayer = this.state.highlightLayer;
+      // visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.bpsPerRow;
+ 
 
     return (
-      <div>
-        <RowView {...visibilityParameters} sequenceData={this.state.sequenceData} highlightLayer={this.state.highlightLayer} />
+      <div style={{float:"right"}}>
+        selectionLayer: {this.state.selectionLayer.start}  {this.state.selectionLayer.end}
+        <br/>
+        cursorPosition: {this.state.cursorPosition}
+        <br/>
+        sequence length: {this.state.sequenceLength}
+        <br/>
+        bpsPerRow:  {this.state.bpsPerRow}
+        <br/>
+        totalRows:  {this.state.totalRows}
+        <RowView />
       </div>
     );
   }

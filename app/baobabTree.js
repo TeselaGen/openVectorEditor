@@ -1,50 +1,134 @@
 var baobab = require('baobab');
 var sequenceData = require('./sequenceData');
-var string = "atgtgtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 0; i < 1000000; i++) {
-// 	reallyLongFakeSequence+=string;
-// 	if (i%100 === 0) {
+var ObjectID = require("bson-objectid");
+var prepareRowData = require('./prepareRowData');
+var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 
-// 		sequenceData.features[i] = {
-// 		            id: "12355134",
-// 		            start: i,
-// 		            end: i+100,
-// 		            name: 'cooljim',
-// 		            color: 'green',
-// 		            topStrand: true,
-// 		            annotationType: "feature"
-// 		          }
-// 		}
-// };
-// sequenceData.sequence = reallyLongFakeSequence
+//tnr: this is used to generate a very large, fake, multi-featured sequence
+
+
+
+var string = "atgtgtgatg";
+var reallyLongFakeSequence = "";
+for (var i = 0; i < 1000; i++) {
+	reallyLongFakeSequence += string;
+	if (i % 100 === 0) {
+
+		sequenceData.features[i] = {
+			id: i,
+			start: i,
+			end: i + 100,
+			name: 'cooljim',
+			color: 'green',
+			topStrand: true,
+			annotationType: "feature"
+		};
+	}
+};
+sequenceData.sequence = reallyLongFakeSequence;
+var fakeSequences = makeFakeSequences(20);
+console.log(fakeSequences);
+
+function makeFakeSequences(numberOfFakesSequencesToGenerate) {
+	var fakeSequences = {};
+	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
+		console.log(ObjectID().str);
+		fakeSequences[ObjectID().str] = sequenceData;
+	}
+	return fakeSequences;
+	console.log(fakeSequences);
+}
+
+// sequenceData.features = {};
+// sequenceData.parts = {};
 
 
 var tree = new baobab({
 	vectorEditorState: {
-		visibilityParameters: {
-			averageRowHeight: 100,
-			preloadBasepairStart: 300,
-			rowLength: 30,
-			preloadRowStart: 9,
-			// preloadRowEnd: 9,
-			showOrfs: true,
-			showCutsites: true,
-			showParts: true,
-			showFeatures: true,
-			showReverseSequence: true,
-			viewportDimensions: {
-				height: 700, //come back and make these dynamic
-				width: 400
-			}
+		topSpacerHeight: 0,
+		bottomSpacerHeight: 0,
+		averageRowHeight: 100,
+		// preloadBasepairStart: 300,
+		CHAR_WIDTH: 15,
+		CHAR_HEIGHT: 15,
+		// FONT_SIZE: 14,
+		ANNOTATION_HEIGHT: 15,
+
+		SPACE_BETWEEN_ANNOTATIONS: 3,
+		preloadRowStart: 0,
+		// preloadRowEnd: 9,
+		showOrfs: true,
+		showCutsites: true,
+		showParts: true,
+		showFeatures: true,
+		showReverseSequence: true,
+		viewportDimensions: {
+			height: 500, //come back and make these dynamic
+			width: 400
 		},
 		selectionLayer: {
-			start: 46,
-			end: 8900,
+			start: 20,
+			end: 19,
+			sequenceSelected: true,
+		},
+		mouse: {
+			isDown: false,
+			isSelecting: false,
 		},
 		cursorPosition: 8,
 		sequenceData: sequenceData,
 	},
+	// sequencesMegaStore: fakeSequences,
+	partsMegaStore: { //
+		//tnrtodo: make a fake part generator
+	},
+	designMegaStore: {
+		//tnrtodo: make a fake design generator
+	},
+	assemblyMakerState: {
+
+	},
+}, {
+	facets: {
+		bpsPerRow: {
+			cursors: {
+				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
+				CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+			},
+			get: function(state) {
+				return Math.floor(state.viewportDimensionsWidth / state.CHAR_WIDTH);
+			}
+		},
+		sequenceLength: {
+			cursors: {
+				sequenceData: ['vectorEditorState', 'sequenceData'],
+			},
+			get: function(state) {
+				return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
+			}
+		},
+		rowData: {
+			cursors: {
+				sequenceData: ['vectorEditorState', 'sequenceData'],
+			},
+			facets: {
+				bpsPerRow: 'bpsPerRow',
+			},
+			get: function(state) {
+				return prepareRowData(state.sequenceData, state.bpsPerRow);
+			}
+		},
+		totalRows: {
+			facets: {
+				rowData: 'rowData',
+			},
+			get: function(state) {
+				if (state.rowData) {
+					return state.rowData.length;
+				}
+			}
+		}
+	}
 });
 
 module.exports = tree;

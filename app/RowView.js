@@ -1,16 +1,55 @@
 var React = require('react');
+var Draggable = require('react-draggable');
 var RowItem = require('./RowItem');
 var appActions = require('./actions/appActions');
+var arePositiveIntegers = require('./arePositiveIntegers');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
-var prepareRowData = require('./prepareRowData');
+// var prepareRowData = require('./prepareRowData');
 var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
 // var ReactList = require('react-list');
+var baobabBranch = require('baobab-react/mixins').branch;
+Keybinding = require('react-keybinding');
 
 var RowView = React.createClass({
-  propTypes: {
-    preloadBasepairStart: React.PropTypes.number.isRequired,
-    viewportDimensions: React.PropTypes.object.isRequired,
+  mixins: [baobabBranch, Keybinding],
+  cursors: {
+    // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+    CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+    preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
+    averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
+    viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
+    preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
+    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+    // cursorPosition: ['vectorEditorState', 'cursorPosition'],
   },
+  facets: {
+    rowData: 'rowData',
+    totalRows: 'totalRows'
+  },
+  keybindings: {
+    '⌘S': function() {
+      console.log('save!');
+      event.preventDefault();
+    },
+    '⌘C': 'COPY',
+    'T': function() {
+      this.insertSequenceString('t');
+    },
+  },
+  keybinding: function(event, action) {
+    debugger;
+    // event is the browser event, action is 'COPY'
+    console.log(arguments);
+  },
+  insertSequenceString: function (sequenceString) {
+    //trigger an insert action
+    appActions.insertSequenceString(sequenceString);
+  },
+
+  // propTypes: {
+  //   preloadBasepairStart: React.PropTypes.number.isRequired,
+  //   viewportDimensions: React.PropTypes.object.isRequired,
+  // },
   // getDefaultProps: function() {
   //   return {
   //     preloadBasepairStart: 150, //start the loading of the sequence with this basepair
@@ -20,217 +59,320 @@ var RowView = React.createClass({
   //     },
   //   };
   // }, 
-  onScroll: function (event) {
-    console.log('scrolled');
+  onEditorScroll: function (event) {
+    // if (this.adjustmentScroll) {
+    //   console.log('adjustmentScroll');
+    //   //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
+    //   this.adjustmentScroll = false;
+    //   return true;
+    // }
+
     var infiniteContainer = event.currentTarget;
-    var averageRowHeight = this.props.averageRowHeight;
-    // var scrollTop = infiniteContainer.scrollTop;
-    // this.setState({
-    //   oldScrollTop: scrollTop
-    // })
-    // if (scrollTop > this.state.oldScrollTop) {
-    //   var scrollDirection = "up";
-    //   console.log('up');
-    // } else {
-    //   var scrollDirection = "down";
-    //   console.log('down'); 
-    // } 
-
-    var totalHeightOfInfiniteContainer = infiniteContainer.scollHeight; //equals the total height of container
-    // console.log(totalHeightOfInfiniteContainer); 
-
-
-
-    //determine if we're scrolling into new territory
-    //below:
-
-    //scrollHeight 
-    var topSpacer = event.currentTarget.children[0];
-    var totalChildCount = event.currentTarget.childElementCount;
-    var bottomSpacer = event.currentTarget.children[(totalChildCount-1)];
-
-    // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight));
-    var newStartingRowBasedOnPercentageScrolled = Math.floor(infiniteContainer.scrollTop/averageRowHeight);
-
-
-    if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 0) {
-      //scrolling up very quickly
-      console.log('//scrolling up very quickly');
-      var newRowStart = newStartingRowBasedOnPercentageScrolled - 0 > 0 ? newStartingRowBasedOnPercentageScrolled - 0 : 0;
-      this.prepareVisibleRows(newRowStart); 
-    }
-    else if (infiniteContainer.scrollTop - topSpacer.scrollHeight < 500) {
-      if (this.state.preloadRowStart > 0) {
-        //we're scrolling up slowly
-        console.log('hit');
-        // if (infiniteContainer < (this.state.preloadRowStart - 50)) {
-        //   var newRowStart = newStartingRowBasedOnPercentageScrolled - 50 > 0 ? newStartingRowBasedOnPercentageScrolled - 50 : 0;
-        //   console.log('newStartingRowBasedOnPercentageScrolled');
-        // } 
-        // else {
-          var newRowStart = (this.state.preloadRowStart - 50) > 0 ? (this.state.preloadRowStart - 50) : 0;
-        // }
-        // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-        console.log(newRowStart);
-        //tnr: potential strategy to keep scroll smooth, note the topmost visible item in the infinite container and after the ui has re-rendered, 
-        //make a call to bring it into view. 
-        this.prepareVisibleRows(newRowStart); 
-      }
-      //we're less than 100 pixels away from hitting the top spacer
-      // console.log("top true");
-
-      // appActions.loadRowsAbove()
-    }  
-
+    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+    var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRows.length);
+    // var firstRow = visibleRowsContainer.childNodes[0]; 
+    // var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]; 
+    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
+    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
+    // if (infiniteContainer.getBoundingClientRect())
+    var newRowStart;
     // console.log(infiniteContainer.scrollTop);
-    // console.log(bottomSpacer.offsetTop); 
-    if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 0) {
-      //we're scrolling down very quickly
-      console.log('//we are scrolling down very quickly');
-      // var newStartingRowBasedOnPercentageScrolled = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-      var newRowStart = newStartingRowBasedOnPercentageScrolled
-      this.prepareVisibleRows(newRowStart);
-    }
-    else if (bottomSpacer.offsetTop - infiniteContainer.clientHeight - infiniteContainer.scrollTop < 1000) {
-      //we're scrolling down
-      if (this.state.totalRows - (this.state.preloadRowStart + this.state.rowsThatFitIntoViewport) > 0) {
-        // if (newStartingRowBasedOnPercentageScrolled > (this.state.preloadRowStart + 50)) {
-        //   var newRowStart = newStartingRowBasedOnPercentageScrolled;
-        //   console.log('newStartingRowBasedOnPercentageScrolled');
-        // } else {
-          // var newRowStart = Math.floor(this.state.totalRows * (1 - (infiniteContainer.scrollHeight - infiniteContainer.scrollTop)/infiniteContainer.scrollHeight))
-          var newRowStart = (this.state.preloadRowStart + 20) < this.state.totalRows ? (this.state.preloadRowStart + 20) : this.state.totalRows;
-          var lastRow = infiniteContainer.childNodes[infiniteContainer.childNodes.length-2];
-          lastRow.offsetTop;
-          console.log(lastRow.className);
-          var nameAndOffset = {
-            rowName: lastRow.className,
-          };
-        // }
-        // console.log('hit');
-        // console.log(newRowStart);
+    var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
+    var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+    // console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
+    // console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
+    if (distanceFromTopOfVisibleRows < 0) {
+      //scrolling down, so add a row below
+      if (this.rowStart > 0) {
+        newRowStart = this.rowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
+        // console.log('newRowStart: '+newRowStart)
+
+        if (newRowStart < 0) newRowStart = 0;
+        // console.log('//scrolling up, so add a row above');
         this.prepareVisibleRows(newRowStart);
       }
     } 
-
-    // console.log('bottomSpacer.offsetTop');
-    // console.log(bottomSpacer.offsetTop);
-     // console.log(bottomSpacer);
-    // console.log(event.currentTarget.scrollBottom);
+    else if (distanceFromBottomOfVisibleRows < 0) {
+      var rowsToGiveOnBottom = this.state.totalRows - 1 - this.preloadRowEnd;
+      if (rowsToGiveOnBottom > 0) {
+        newRowStart = this.rowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
+        if (newRowStart + this.state.visibleRows.length >= this.state.totalRows) {
+          //the new row start is too high, so we instead just append the max rowsToGiveOnBottom to our current preloadRowStart
+          newRowStart = this.rowStart + rowsToGiveOnBottom; 
+        }
+        this.prepareVisibleRows(newRowStart);
+        // console.log('//scrolling down, so add a row below');
+      }
+    } else {
+      //we haven't scrolled enough, so do nothing
+    }
+    //set the averageRowHeight to the currentAverageRowHeight
+    // appActions.setAverageRowHeight(currentAverageRowHeight);
 
   },
+
+  componentWillUpdate: function(argument) {
+    //save a reference to the thirdRowElement and its offset from the top of the container
+    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+    this.thirdRowElement = visibleRowsContainer.children[2];
+    this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
+    console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
+    //   this.updateTriggeredByScrollerDrag = true;
+    // } else {
+    //   this.updateTriggeredByScrollerDrag = false;
+    // }
+  },
+
+  componentDidUpdate: function(argument) {
+    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+
+    var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height; 
+    var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height; 
+    var adjustInfiniteContainerByThisAmount;
+    
+    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
+    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
+    if (visibleRowsContainer.getBoundingClientRect().height - firstRowHeight - lastRowHeight <= this.state.viewportDimensions.height) {
+      if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
+        //load another row to the bottom
+        this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
+      } else {
+        //there aren't more rows that we can load at the bottom so we load more at the top
+        this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);  
+      }
+    } else if (false) {
+      //maybe put logic in here to reshrink the number of rows to display... maybe...
+    } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
+      //scroll to align the tops of the boxes
+      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
+      // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
+      this.adjustmentScroll = true;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+    } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
+      //scroll to align the bottoms of the boxes
+      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+      // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
+      this.adjustmentScroll = true;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustInfiniteContainerByThisAmount;
+    } else {
+      if (this.thirdRowElement) {
+        // console.log('thirdrowblind');
+        // adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+        // console.log('adjust: ' + adjustInfiniteContainerByThisAmount)
+        // console.log('thirdRowElement Found');
+        //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
+        this.adjustmentScroll = true;
+        adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
+        console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
+        infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+        // this.adjustmentScroll = true
+      }
+    }
+    
+  },
+
   componentWillMount: function (argument) {
-    var {preloadRowStart, preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props;
-    // this.setState({
-    //   visibleRowStart: preloadRowStart,
-    // });
-    this.prepareVisibleRows(preloadRowStart);
+    //this is the only place where we use preloadRowStart
+    if (arePositiveIntegers(this.state.preloadRowStart) && this.state.preloadRowStart<this.state.totalRows) {
+      this.prepareVisibleRows(this.state.preloadRowStart);
+    } else {
+      this.prepareVisibleRows(0);
+    }
   },
 
   componentDidMount: function (argument) {
-    //tnr, instead of finding the dom nodes and performing calculations, we can add 
-    //a variable to the state/props to determine if we need to scroll down
-    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-    var heightOfTopSpacer = React.findDOMNode(this.refs.topSpacer).scrollHeight;
-    if (heightOfTopSpacer > 0) {
-      var thirdRowElement = infiniteContainer.children[3].scrollIntoView();
+    this.componentDidUpdate();
+  },
+
+  prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
+    if (!arePositiveIntegers(rowStart)) {
+      return;
+      console.warn('non-integer value passed to prepareVisibleRows');
+    }
+
+    if (arePositiveIntegers(newNumberOfRowsToDisplay)){
+      this.numberOfRowsToDisplay = newNumberOfRowsToDisplay;
+    } 
+    if (!this.numberOfRowsToDisplay) {
+      // var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
+
+      // // console.log('rowsThatFitIntoViewport');
+      // // console.log(rowsThatFitIntoViewport);
+      this.numberOfRowsToDisplay = 4;
+    }
+    this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) > this.state.totalRows - 1 ? this.state.totalRows - 1: (rowStart + this.numberOfRowsToDisplay);
+    console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
+    var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd + 1);
+    // appActions.setPreloadRowStart(rowStart);
+    this.rowStart = rowStart;
+    this.setState({
+      visibleRows: visibleRows,
+    });
+
+    // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
+
+    
+  },
+
+  getNearestCursorPositionToMouseEvent: function(event) {
+    var rowNotFound = true;
+    var visibleRowsContainer = this.refs.visibleRowsContainer.getDOMNode();
+    //loop through all the rendered rows to see if the click event lands in one of them
+    for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
+      var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
+      // console.log('rowDomNode.getBoundingClientRect().top: ' + rowDomNode.getBoundingClientRect().top);
+      var boundingRowRect = rowDomNode.getBoundingClientRect();
+      if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
+        //then the click is falls within this row
+        rowNotFound = false;
+        var row = this.state.visibleRows[relativeRowNumber];
+        if (event.clientX - boundingRowRect.left < 0) {
+          console.warn('this should never be 0...');
+          return row.start; //return the first bp in the row
+        } else {
+          var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
+          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + CHAR_WIDTH/2) / CHAR_WIDTH);
+          var nearestBP = numberOfBPsInFromRowStart + row.start;
+          if (nearestBP > row.end + 1) {
+            nearestBP = row.end + 1;
+          }
+          return nearestBP;
+        }
+        break; //break the for loop early because we found the row the click event landed in
+      }
+    }
+    if (rowNotFound) {
+      console.warn('was not able to find the correct row');
+      //return the last bp index in the rendered rows
+      var lastOfRenderedRows = this.state.visibleRows[this.state.visibleRows.length - 1];
+      return lastOfRenderedRows.end;
     }
   },
 
-  prepareVisibleRows: function (preloadRowStart) {
-    // var {preloadRowStart, preloadBasepairStart, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-    var {averageRowHeight, viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-
-    // var averageRowHeight = viewportDimensions.averageRowHeight;
-    // debugger;
-    //prepare the infinite container dimension
-    var rowLength = Math.floor(viewportDimensions.width / CHAR_WIDTH);
-    var totalRows = Math.ceil(sequenceData.sequence.length / rowLength);
-    // var preloadRowStart = this.state.preloadRowStart;
-    // var preloadRowStart = (Math.floor(preloadBasepairStart / rowLength) - 3) > 0 ? Math.floor(preloadBasepairStart / rowLength) - 3 : 0; //get three below the top row if possible //start the loading of the sequence with this basepair
-    var rowsThatFitIntoViewport = Math.ceil(viewportDimensions.height / averageRowHeight);
-    console.log('rowsThatFitIntoViewport');
-    console.log(rowsThatFitIntoViewport);
-    // var numberOfRowsToDisplay = (preloadRowStart + rowsThatFitIntoViewport + 3) < totalRows ? preloadRowStart + rowsThatFitIntoViewport + 3 : totalRows;
-    var numberOfRowsToDisplay = rowsThatFitIntoViewport + 100;
-
-    var preloadRowEnd = (preloadRowStart + numberOfRowsToDisplay) < totalRows ? (preloadRowStart + numberOfRowsToDisplay) : totalRows; 
-
-    //calculate topSpacer height
-    if (!this.state || this.state.preloadRowStart === undefined) {
-      var topSpacerHeight = preloadRowStart*averageRowHeight;
-    } else if (this.state.preloadRowStart < preloadRowStart) {
-      //we're scrolling down
-      var numberOfRowsDeep = preloadRowStart - this.state.preloadRowStart
-      var newTopNode = this.refs.infiniteContainer.getDOMNode().childNodes[numberOfRowsDeep+1]
-      if (newTopNode) {
-        var topSpacerHeight = newTopNode.offsetTop - this.refs.infiniteContainer.getDOMNode().offsetTop
-        console.log('topSpacerHeight');
-        console.log(topSpacerHeight);
-      } else {
-        var topSpacerHeight = preloadRowStart*averageRowHeight;
-      }
+  onEditorClick: function(event) {
+    //if cursor position is different than the original position, reset the position and clear the selection
+    console.log('onclick!!');
+    var bp = this.getNearestCursorPositionToMouseEvent(event);
+    if (this.editorBeingDragged) {
+      //do nothing because the click was triggered by a drag event
     } else {
-      //we're scrolling up
-      var topSpacerHeight = preloadRowStart*averageRowHeight;
-      
+      appActions.setCursorPosition(bp);
+      appActions.setSelectionLayer(false);
     }
 
-    //calculate bottom spacer height
-    var bottomSpacerHeight = (totalRows - preloadRowEnd)*averageRowHeight;
-    console.log(sequenceData, preloadRowStart, preloadRowEnd, rowLength, this.alreadyPreparedRows);
-    //calculate the visible rows
-    //tnr: pass any already prepared rows into this function so we don't have to recalculate them
-    var visibleRows = prepareRowData(sequenceData, preloadRowStart, preloadRowEnd, rowLength, this.alreadyPreparedRows); //this function also pushes any newly calculated rows onto the this.alreadyPreparedRows object
+    // console.log('bp: ' + bp);
+  }, 
 
-    this.setState({
-      preloadRowStart: preloadRowStart,
-      visibleRows: visibleRows,
-      totalRows: totalRows,
-      rowLength: rowLength,
-      rowsThatFitIntoViewport: rowsThatFitIntoViewport,
-      topSpacerHeight: topSpacerHeight,
-      bottomSpacerHeight: bottomSpacerHeight,
-    });
+  onEditorKeyDown: function(event) {
+    debugger;
+    appActions.keyPressedInEditor(event);
+  }, 
+
+  handleEditorDrag: function(event, ui) {
+    // console.log('dragging!');
+    this.editorBeingDragged = true;
+    var cursorPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
+    var start;
+    var end;
+    if (cursorPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
+      appActions.setCursorPosition(cursorPositionOfDrag);
+      appActions.setSelectionLayer(false);
+    } else {
+      if (cursorPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
+        start = this.fixedCursorPositionOnEditorDrag;
+        end = cursorPositionOfDrag - 1;
+      } else {
+        start = cursorPositionOfDrag;
+        end = this.fixedCursorPositionOnEditorDrag - 1;
+        // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
+      }
+      appActions.setSelectionLayer(start, end);
+      appActions.setCursorPosition(-1);
+    }
+  },
+
+  handleEditorDragStart: function(event, ui) {
+    // console.log('drag start!');
+    // console.log('event: ' + event.target);
+    var cursorPosition = this.getNearestCursorPositionToMouseEvent(event);
+    if (event.target.className === "cursor" && this.state.selectionLayer.sequenceSelected) {
+      if (this.state.selectionLayer.start === cursorPosition) {
+        this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.end + 1; 
+        //plus one because the cursor position will be 1 more than the selectionLayer.end
+        //imagine selection from 
+        //0 1 2  <--possible cursor positions
+        // A T G 
+        //if A is selected, selection.start = 0, selection.end = 0
+        //so the cursorPosition for the end of the selection is 1! 
+        //which is selection.end+1
+      } else {
+        this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.start;
+      }
+    } else {
+      this.fixedCursorPositionOnEditorDrag = cursorPosition;
+      // console.log('cursorPosition '+cursorPosition)
+    }
+  },
+
+  handleEditorDragStop: function(event, ui) {
+    var self = this;
+    if (this.editorBeingDragged) { //check to make sure dragging actually occurred 
+      setTimeout(function (argument) { 
+        //we use setTimeout to put the call to change editorBeingDragged to false
+        //on the bottom of the event stack, thus the click event that is fired because of the drag
+        //will be able to check if editorBeingDragged and not trigger if it is
+        self.editorBeingDragged = false;
+      },0);
+    } else {
+      self.editorBeingDragged = false;
+    }
   },
 
   render: function () {
-    var {viewportDimensions, sequenceData, ...other} = this.props; //start the loading of the sequence with this basepair
-    
-    // console.log('rows');
-    // console.log(rows); 
+    console.log('render!');
     var self = this;
     var rowItems = this.state.visibleRows.map(function(row) {
       if (row) {
-        return(<RowItem key={row.rowNumber} {...other} row={row} rowLength={self.state.rowLength}  />);
+        return(<RowItem key={row.rowNumber} row={row} />);
       }
     });
-    // var rowItemHeights = [];
 
-    // rowItems.forEach(function(){
-    //   rowItemHeights.push(100);
-    // }); 
+    var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
+    this.topSpacerHeight = this.rowStart * rowHeight;
+    this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * rowHeight;
 
-    var style = {
-      height:viewportDimensions.height,
-      width: viewportDimensions.width,
-      overflowY: "scroll"
+    var infiniteContainerStyle = {
+      height: this.state.viewportDimensions.height,
+      width: this.state.viewportDimensions.width,
+      overflowY: "scroll",
+      // float: "left",
+      // paddingRight: "20px"
+      padding: 10
     };
     return (
-      <div>
-        <input> 
-          hey
-        </input>
-        <button onClick={appActions.changeViewportSize.bind(null,{height: 300, width: 600})}> 
-        yoo
-        </button>
-        SequenceEditor2
-        <div ref="infiniteContainer" className="infiniteContainer" style={style} onScroll={this.onScroll}>
-            <div ref="topSpacer" className="topSpacer" style={{height: this.state.topSpacerHeight}}/>
-            {rowItems}
-            <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.state.bottomSpacerHeight}}/> 
-        </div>
-      </div>
+        <Draggable 
+            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+            onDrag={this.handleEditorDrag} 
+            onStart={this.handleEditorDragStart} 
+            onStop={this.handleEditorDragStop} 
+            onKeyDown={this.onEditorKeyDown}
+            >
+          <div
+            ref="infiniteContainer" 
+            className="infiniteContainer" 
+            style={infiniteContainerStyle} 
+            onScroll={this.onEditorScroll}
+            onClick={this.onEditorClick}
+            onKeyPress={this.onEditorKeyDown}
+            >
+              <div ref="topSpacer" className="topSpacer" style={{height: this.topSpacerHeight}}/>
+              <div ref="visibleRowsContainer" className="visibleRowsContainer">
+                {rowItems}
+              </div>
+              <div ref="bottomSpacer" className="bottomSpacer" style={{height: this.bottomSpacerHeight}}/> 
+          </div>
+        </Draggable>
     );
   }
 });
