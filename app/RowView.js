@@ -8,10 +8,13 @@ var arePositiveIntegers = require('./arePositiveIntegers');
 var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
 // var ReactList = require('react-list');
 var baobabBranch = require('baobab-react/mixins').branch;
-Keybinding = require('react-keybinding');
+// MoustrapMixin = require('./MoustrapMixin.js');
 
 var RowView = React.createClass({
-  mixins: [baobabBranch, Keybinding],
+  mixins: [baobabBranch],
+  // mixins: [baobabBranch],
+
+    
   cursors: {
     // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
     CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
@@ -20,31 +23,28 @@ var RowView = React.createClass({
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
     preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
-    // cursorPosition: ['vectorEditorState', 'cursorPosition'],
+    // caretPosition: ['vectorEditorState', 'caretPosition'],
   },
   facets: {
     rowData: 'rowData',
     totalRows: 'totalRows'
   },
-  keybindings: {
-    '⌘S': function() {
-      console.log('save!');
-      event.preventDefault();
-    },
-    '⌘C': 'COPY',
-    'T': function() {
-      this.insertSequenceString('t');
-    },
-  },
-  keybinding: function(event, action) {
-    debugger;
-    // event is the browser event, action is 'COPY'
-    console.log(arguments);
-  },
-  insertSequenceString: function (sequenceString) {
-    //trigger an insert action
-    appActions.insertSequenceString(sequenceString);
-  },
+  // keybindings: {
+  //   '⌘S': function() {
+  //     console.log('save!');
+  //     event.preventDefault();
+  //   },
+  //   '⌘C': 'COPY',
+  //   'T': function() {
+  //     this.insertSequenceString('t');
+  //   },
+  // },
+  // keybinding: function(event, action) {
+  //   debugger;
+  //   // event is the browser event, action is 'COPY'
+  //   console.log(arguments);
+  // },
+  
 
   // propTypes: {
   //   preloadBasepairStart: React.PropTypes.number.isRequired,
@@ -182,7 +182,11 @@ var RowView = React.createClass({
   },
 
   componentDidMount: function (argument) {
+    //call componentDidUpdate so that the scroll position will be adjusted properly 
+    //(we may load a random row in the middle of the sequence and not have the infinte container scrolled properly initially, so we scroll to the show the rowContainer)
     this.componentDidUpdate();
+    
+
   },
 
   prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
@@ -211,8 +215,6 @@ var RowView = React.createClass({
     });
 
     // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
-
-    
   },
 
   getNearestCursorPositionToMouseEvent: function(event) {
@@ -264,26 +266,21 @@ var RowView = React.createClass({
     // console.log('bp: ' + bp);
   }, 
 
-  onEditorKeyDown: function(event) {
-    debugger;
-    appActions.keyPressedInEditor(event);
-  }, 
-
   handleEditorDrag: function(event, ui) {
     // console.log('dragging!');
     this.editorBeingDragged = true;
-    var cursorPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
+    var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
     var start;
     var end;
-    if (cursorPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
-      appActions.setCursorPosition(cursorPositionOfDrag);
+    if (caretPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
+      appActions.setCursorPosition(caretPositionOfDrag);
       appActions.setSelectionLayer(false);
     } else {
-      if (cursorPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
+      if (caretPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
         start = this.fixedCursorPositionOnEditorDrag;
-        end = cursorPositionOfDrag - 1;
+        end = caretPositionOfDrag - 1;
       } else {
-        start = cursorPositionOfDrag;
+        start = caretPositionOfDrag;
         end = this.fixedCursorPositionOnEditorDrag - 1;
         // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
       }
@@ -295,23 +292,23 @@ var RowView = React.createClass({
   handleEditorDragStart: function(event, ui) {
     // console.log('drag start!');
     // console.log('event: ' + event.target);
-    var cursorPosition = this.getNearestCursorPositionToMouseEvent(event);
+    var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
     if (event.target.className === "cursor" && this.state.selectionLayer.sequenceSelected) {
-      if (this.state.selectionLayer.start === cursorPosition) {
+      if (this.state.selectionLayer.start === caretPosition) {
         this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.end + 1; 
         //plus one because the cursor position will be 1 more than the selectionLayer.end
         //imagine selection from 
         //0 1 2  <--possible cursor positions
         // A T G 
         //if A is selected, selection.start = 0, selection.end = 0
-        //so the cursorPosition for the end of the selection is 1! 
+        //so the caretPosition for the end of the selection is 1! 
         //which is selection.end+1
       } else {
         this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.start;
       }
     } else {
-      this.fixedCursorPositionOnEditorDrag = cursorPosition;
-      // console.log('cursorPosition '+cursorPosition)
+      this.fixedCursorPositionOnEditorDrag = caretPosition;
+      // console.log('caretPosition '+caretPosition)
     }
   },
 
@@ -356,7 +353,6 @@ var RowView = React.createClass({
             onDrag={this.handleEditorDrag} 
             onStart={this.handleEditorDragStart} 
             onStop={this.handleEditorDragStop} 
-            onKeyDown={this.onEditorKeyDown}
             >
           <div
             ref="infiniteContainer" 
@@ -364,7 +360,6 @@ var RowView = React.createClass({
             style={infiniteContainerStyle} 
             onScroll={this.onEditorScroll}
             onClick={this.onEditorClick}
-            onKeyPress={this.onEditorKeyDown}
             >
               <div ref="topSpacer" className="topSpacer" style={{height: this.topSpacerHeight}}/>
               <div ref="visibleRowsContainer" className="visibleRowsContainer">

@@ -1,4 +1,5 @@
 var arePositiveIntegers = require('./arePositiveIntegers');
+var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 //returns an array of the overlaps between two potentially circular ranges
 module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxLength) {
   if (!arePositiveIntegers(rangeA.start, rangeA.end, rangeB.start, rangeB.end)) {
@@ -20,26 +21,6 @@ module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB,
   
   return overlaps;
 };
-
-//takes a potentially circular range and returns an array containing the range split on the origin
-function splitRangeIntoTwoPartsIfItIsCircular(range, maxLength) {
-  if (range.start <= range.end) {
-    //the range isn't circular, so we just return the range
-    return [{
-      start: range.start,
-      end: range.end
-    }];
-  } else {
-    //the range is cicular, so we return an array of two ranges
-    return [{
-      start: 0,
-      end: range.end
-    }, {
-      start: range.start,
-      end: maxLength - 1
-    }];
-  }
-}
 
 function getOverlapOfNonCircularRanges(rangeA, rangeB) {
   if (!arePositiveIntegers(rangeA.start, rangeA.end, rangeB.start, rangeB.end)) {

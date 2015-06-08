@@ -49,9 +49,7 @@ var App = React.createClass({
       <Link to="logout">Log out</Link> :
       <Link to="login">Sign in</Link>;
     return (
-      <div onKeyDown={function (argument) {
-        debugger;
-      }}>
+      <div>
         <SequenceEditor2/>
         <header>
           <ul>

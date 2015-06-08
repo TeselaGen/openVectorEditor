@@ -31,7 +31,7 @@ var RowItem = React.createClass({
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
     mouse: ['vectorEditorState', 'mouse'],
-    cursorPosition: ['vectorEditorState', 'cursorPosition'],
+    caretPosition: ['vectorEditorState', 'caretPosition'],
   },
   facets: {
     sequenceLength: 'sequenceLength',
@@ -45,7 +45,7 @@ var RowItem = React.createClass({
     var showParts = this.state.showParts;
     // var showReverseSequence = this.state.showReverseSequence;
     var selectionLayer = this.state.selectionLayer;
-    var cursorPosition = this.state.cursorPosition;
+    var caretPosition = this.state.caretPosition;
     var combinedHeightOfChildElements = 0;
     var self = this;
     function createFeatureRawPath ({xStart, yStart, height, width, direction, type}) {
@@ -204,11 +204,11 @@ var RowItem = React.createClass({
 
     
 
-    var cursor = getCursorForRow(cursorPosition, row, bpsPerRow, cursorStyle, this.state.CHAR_WIDTH);
-    function getCursorForRow (cursorPosition, row, bpsPerRow, cursorStyle, charWidth) {
-      if(row.start<= cursorPosition && row.end + 1 >= cursorPosition || (row.end === self.state.sequenceLength - 1 && row.end < cursorPosition) ) {
+    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, this.state.CHAR_WIDTH);
+    function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
+      if(row.start<= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
         //the second logical operator catches the special case where we're at the very end of the sequence..
-        var newCursorStyle = _.assign({}, cursorStyle, {left: (cursorPosition - row.start) * charWidth});
+        var newCursorStyle = _.assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
         return (<div className="cursor" style={newCursorStyle}  />);
         // onHover={self.onCursorHover}
       }

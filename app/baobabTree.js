@@ -75,7 +75,7 @@ var tree = new baobab({
 			isDown: false,
 			isSelecting: false,
 		},
-		cursorPosition: 8,
+		caretPosition: 8,
 		sequenceData: sequenceData,
 	},
 	// sequencesMegaStore: fakeSequences,
@@ -89,6 +89,7 @@ var tree = new baobab({
 
 	},
 }, {
+	syncwrite: true,
 	facets: {
 		bpsPerRow: {
 			cursors: {

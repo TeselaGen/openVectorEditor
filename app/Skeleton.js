@@ -34,7 +34,7 @@ var Skeleton = React.createClass({
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     // selectionLayer: ['vectorEditorState', 'selectionLayer'],
     // mouse: ['vectorEditorState', 'mouse'],
-    // cursorPosition: ['vectorEditorState', 'cursorPosition'],
+    // caretPosition: ['vectorEditorState', 'caretPosition'],
   },
 
 

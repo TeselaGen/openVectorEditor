@@ -345,7 +345,7 @@
 	    // sequenceData: ['vectorEditorState', 'sequenceData'],
 	    // selectionLayer: ['vectorEditorState', 'selectionLayer'],
 	    // mouse: ['vectorEditorState', 'mouse'],
-	    // cursorPosition: ['vectorEditorState', 'cursorPosition'],
+	    // caretPosition: ['vectorEditorState', 'caretPosition'],
 	  },
 
 
@@ -634,7 +634,7 @@
 				isDown: false,
 				isSelecting: false,
 			},
-			cursorPosition: 8,
+			caretPosition: 8,
 			sequenceData: sequenceData,
 		},
 		// sequencesMegaStore: fakeSequences,
@@ -23549,7 +23549,7 @@
 	    viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
 	    preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
 	    selectionLayer: ['vectorEditorState', 'selectionLayer'],
-	    cursorPosition: ['vectorEditorState', 'cursorPosition'],
+	    caretPosition: ['vectorEditorState', 'caretPosition'],
 	  },
 	  facets: {
 	    rowData: 'rowData',
@@ -23811,18 +23811,18 @@
 	  handleEditorDrag: function(event, ui) {
 	    // console.log('dragging!');
 	    this.editorBeingDragged = true;
-	    var cursorPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
+	    var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
 	    var start;
 	    var end;
-	    if (cursorPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
-	      appActions.setCursorPosition(cursorPositionOfDrag);
+	    if (caretPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
+	      appActions.setCursorPosition(caretPositionOfDrag);
 	      appActions.setSelectionLayer(false);
 	    } else {
-	      if (cursorPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
+	      if (caretPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
 	        start = this.fixedCursorPositionOnEditorDrag;
-	        end = cursorPositionOfDrag - 1;
+	        end = caretPositionOfDrag - 1;
 	      } else {
-	        start = cursorPositionOfDrag;
+	        start = caretPositionOfDrag;
 	        end = this.fixedCursorPositionOnEditorDrag - 1;
 	        // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
 	      }
@@ -23834,23 +23834,23 @@
 	  handleEditorDragStart: function(event, ui) {
 	    // console.log('drag start!');
 	    // console.log('event: ' + event.target);
-	    var cursorPosition = this.getNearestCursorPositionToMouseEvent(event);
+	    var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
 	    if (event.target.className === "cursor" && this.state.selectionLayer.sequenceSelected) {
-	      if (this.state.selectionLayer.start === cursorPosition) {
+	      if (this.state.selectionLayer.start === caretPosition) {
 	        this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.end + 1; 
 	        //plus one because the cursor position will be 1 more than the selectionLayer.end
 	        //imagine selection from 
 	        //0 1 2  <--possible cursor positions
 	        // A T G 
 	        //if A is selected, selection.start = 0, selection.end = 0
-	        //so the cursorPosition for the end of the selection is 1! 
+	        //so the caretPosition for the end of the selection is 1! 
 	        //which is selection.end+1
 	      } else {
 	        this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.start;
 	      }
 	    } else {
-	      this.fixedCursorPositionOnEditorDrag = cursorPosition;
-	      // console.log('cursorPosition '+cursorPosition)
+	      this.fixedCursorPositionOnEditorDrag = caretPosition;
+	      // console.log('caretPosition '+caretPosition)
 	    }
 	  },
 
@@ -23989,7 +23989,7 @@
 			viewportDimensions.set(newSize);
 		},
 		setCursorPosition: function (newPosition) {
-			tree.select('vectorEditorState', 'cursorPosition').set(newPosition);
+			tree.select('vectorEditorState', 'caretPosition').set(newPosition);
 			// viewportDimensions.set(newSize);
 		},
 		setSelectionLayer: function (x1,x2) {
@@ -27325,7 +27325,7 @@
 	    // sequenceData: ['vectorEditorState', 'sequenceData'],
 	    selectionLayer: ['vectorEditorState', 'selectionLayer'],
 	    mouse: ['vectorEditorState', 'mouse'],
-	    cursorPosition: ['vectorEditorState', 'cursorPosition'],
+	    caretPosition: ['vectorEditorState', 'caretPosition'],
 	  },
 	  facets: {
 	    sequenceLength: 'sequenceLength',
@@ -27355,7 +27355,7 @@
 	    var showParts = this.state.showParts;
 	    var showReverseSequence = this.state.showReverseSequence;
 	    var selectionLayer = this.state.selectionLayer;
-	    var cursorPosition = this.state.cursorPosition;
+	    var caretPosition = this.state.caretPosition;
 	    var combinedHeightOfChildElements = 0;
 	    var self = this;
 	    function createFeatureRawPath ($__0     ) {var xStart=$__0.xStart,yStart=$__0.yStart,height=$__0.height,width=$__0.width,direction=$__0.direction,type=$__0.type;
@@ -27509,11 +27509,11 @@
 
 	    
 
-	    var cursor = getCursorForRow(cursorPosition, row, bpsPerRow, cursorStyle, CHAR_WIDTH);
-	    function getCursorForRow (cursorPosition, row, bpsPerRow, cursorStyle, charWidth) {
-	      if(row.start<= cursorPosition && row.end + 1 >= cursorPosition || (row.end === self.state.sequenceLength - 1 && row.end < cursorPosition) ) {
+	    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, CHAR_WIDTH);
+	    function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
+	      if(row.start<= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
 	        //the second logical operator catches the special case where we're at the very end of the sequence..
-	        var newCursorStyle = _.assign({}, cursorStyle, {left: (cursorPosition - row.start) * charWidth});
+	        var newCursorStyle = _.assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
 	        return (React.createElement("div", {className: "cursor", style: newCursorStyle}));
 	        // onHover={self.onCursorHover}
 	      }
