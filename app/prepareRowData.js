@@ -24,6 +24,8 @@ function prepareRowData(sequenceData, bpsPerRow) {
 }
 
 
+
+
 function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
   var annotationsToRowsMap = {};
   if (!annotations) {

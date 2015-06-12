@@ -6,7 +6,7 @@ var classnames = require('classnames');
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 // var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
 // var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
-var mixin = require('baobab-react/mixins').branch;
+var baobabBranch = require('baobab-react/mixins').branch;
 var appActions = require('./actions/appActions');
 
 var SequenceContainer = React.createClass({
@@ -19,7 +19,7 @@ var SequenceContainer = React.createClass({
 });
 
 var RowItem = React.createClass({
-  mixins: [mixin],
+  mixins: [baobabBranch],
   cursors: {
     CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
     CHAR_HEIGHT: ['vectorEditorState', 'CHAR_HEIGHT'], //potentially unneeded
@@ -140,7 +140,7 @@ var RowItem = React.createClass({
         // return (overlapPaths);
 
         function createAnnotationPath ({strokeColor, fill, classnames, path, fillOpacity}) {
-            return(<path className={classnames} d={path} stroke={strokeColor} fillOpacity={fillOpacity} fill={fill}/>);
+            return(<path key={annotation.id} className={classnames} d={path} stroke={strokeColor} fillOpacity={fillOpacity} fill={fill}/>);
         }
       });
       var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
@@ -187,7 +187,7 @@ var RowItem = React.createClass({
     var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.CHAR_WIDTH, cursorStyle);
     function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle) {
       var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
-      var selectionLayers = overlaps.map(function (overlap) {
+      var selectionLayers = overlaps.map(function (overlap, index) {
         if (overlap.start === selectionLayer.start) {
           selectionCursorStart = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth);
         }
@@ -197,7 +197,7 @@ var RowItem = React.createClass({
         var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
         highlightLayerStyle.width = width;
         highlightLayerStyle.left = xStart;
-        return (<div className="selectionLayer" style={highlightLayerStyle}/>);
+        return (<div key={index} className="selectionLayer" style={highlightLayerStyle}/>);
       });
       return selectionLayers;
     }

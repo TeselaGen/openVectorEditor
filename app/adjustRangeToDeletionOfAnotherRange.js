@@ -4,7 +4,7 @@ var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
 
 //takes in two potentially circular ranges and returns the first one trimmed by the second one
 //returns null if no range is left after the trimming
-module.exports = function adjustRangeToDeletionOfAnotherRange (rangeToBeAdjusted, anotherRange) {
+module.exports = function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange) {
   var trimmedRange = trimRangeByAnotherRange(rangeToBeAdjusted, anotherRange);
   
   if (trimmedRange) { //if there is a range left after being trimmed, adjust it by the deleted anotherRange
@@ -33,4 +33,5 @@ module.exports = function adjustRangeToDeletionOfAnotherRange (rangeToBeAdjusted
       }
     });
   }
+  return trimmedRange;
 };

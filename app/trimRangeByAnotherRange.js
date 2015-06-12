@@ -3,19 +3,22 @@ var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentially
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 
 //trims range, but does *not* adjust it
+//returns a new range if there is one, or null, if it is trimmed completely
 module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, anotherRange) {
   if (!arePositiveIntegers(rangeToBeTrimmed.start, rangeToBeTrimmed.end)) {
     console.warn('invalid range input');
     return;
   }
-  //returns a new range if there is one, or null, if it is trimmed completely
+  //get the overlaps of the ranges
   var overlaps = getOverlapsOfPotentiallyCircularRanges(rangeToBeTrimmed, anotherRange);
+  //split the range to be trimmed into pieces if necessary
+  //and trim both pieces by the already calculated overlaps
   var splitRangesToBeTrimmed = splitRangeIntoTwoPartsIfItIsCircular(rangeToBeTrimmed);
-  splitRangesToBeTrimmed.forEach(function(rangeToBeTrimmed, index) {
+  splitRangesToBeTrimmed.forEach(function(nonCircularRangeToBeTrimmed, index) {
     overlaps.forEach(function(overlap) {
-      rangeToBeTrimmed = trimNonCicularRangeByAnotherNonCircularRange(rangeToBeTrimmed, overlap);
+      nonCircularRangeToBeTrimmed = trimNonCicularRangeByAnotherNonCircularRange(nonCircularRangeToBeTrimmed, overlap);
     });
-    if (!rangeToBeTrimmed) {
+    if (!nonCircularRangeToBeTrimmed) {
       splitRangesToBeTrimmed.splice(index, 1);
     }
   });
@@ -52,7 +55,7 @@ function trimNonCicularRangeByAnotherNonCircularRange(rangeToBeTrimmed, anotherR
       outputTrimmedRange.end = anotherRange.end;
     }
   } else {
-    if (rangeToBeTrimmed.end < anotherRange.end) {
+    if (rangeToBeTrimmed.end <= anotherRange.end) {
       //fully deleting the range
     } else {
       outputTrimmedRange = {

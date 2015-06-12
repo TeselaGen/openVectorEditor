@@ -26,7 +26,8 @@ var RowView = React.createClass({
     // caretPosition: ['vectorEditorState', 'caretPosition'],
   },
   facets: {
-    rowData: 'rowData',
+    visibleRowsData: 'visibleRowsData',
+    // rowData: 'rowData',
     totalRows: 'totalRows'
   },
   // keybindings: {
@@ -69,7 +70,7 @@ var RowView = React.createClass({
 
     var infiniteContainer = event.currentTarget;
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-    var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRows.length);
+    var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRowsData.length);
     // var firstRow = visibleRowsContainer.childNodes[0]; 
     // var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]; 
     // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
@@ -96,7 +97,7 @@ var RowView = React.createClass({
       var rowsToGiveOnBottom = this.state.totalRows - 1 - this.preloadRowEnd;
       if (rowsToGiveOnBottom > 0) {
         newRowStart = this.rowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
-        if (newRowStart + this.state.visibleRows.length >= this.state.totalRows) {
+        if (newRowStart + this.state.visibleRowsData.length >= this.state.totalRows) {
           //the new row start is too high, so we instead just append the max rowsToGiveOnBottom to our current preloadRowStart
           newRowStart = this.rowStart + rowsToGiveOnBottom; 
         }
@@ -112,11 +113,13 @@ var RowView = React.createClass({
   },
 
   componentWillUpdate: function(argument) {
-    //save a reference to the thirdRowElement and its offset from the top of the container
+    //save a reference to the thirdRowElement and its offset from the top of the container (if it exists)
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
     this.thirdRowElement = visibleRowsContainer.children[2];
-    this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
-    console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
+    if (this.thirdRowElement) {
+      this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
+      console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
+    }
     //   this.updateTriggeredByScrollerDrag = true;
     // } else {
     //   this.updateTriggeredByScrollerDrag = false;
@@ -127,6 +130,10 @@ var RowView = React.createClass({
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
 
+    if (!visibleRowsContainer.childNodes[0]) {
+      //there aren't any rows yet
+      return; 
+    }
     var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height; 
     var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height; 
     var adjustInfiniteContainerByThisAmount;
@@ -207,11 +214,13 @@ var RowView = React.createClass({
     }
     this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) > this.state.totalRows - 1 ? this.state.totalRows - 1: (rowStart + this.numberOfRowsToDisplay);
     console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
-    var visibleRows = this.state.rowData.slice(rowStart, this.preloadRowEnd + 1);
+    // var visibleRows = this.state.visibleRowsDataData.slice(rowStart, this.preloadRowEnd + 1);
+    // rowData.slice(rowStart, this.preloadRowEnd + 1);
     // appActions.setPreloadRowStart(rowStart);
     this.rowStart = rowStart;
-    this.setState({
-      visibleRows: visibleRows,
+    appActions.setVisibleRows({
+      start: rowStart,
+      end: this.preloadRowEnd + 1
     });
 
     // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
@@ -228,7 +237,7 @@ var RowView = React.createClass({
       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
         //then the click is falls within this row
         rowNotFound = false;
-        var row = this.state.visibleRows[relativeRowNumber];
+        var row = this.state.visibleRowsData[relativeRowNumber];
         if (event.clientX - boundingRowRect.left < 0) {
           console.warn('this should never be 0...');
           return row.start; //return the first bp in the row
@@ -247,7 +256,7 @@ var RowView = React.createClass({
     if (rowNotFound) {
       console.warn('was not able to find the correct row');
       //return the last bp index in the rendered rows
-      var lastOfRenderedRows = this.state.visibleRows[this.state.visibleRows.length - 1];
+      var lastOfRenderedRows = this.state.visibleRowsData[this.state.visibleRowsData.length - 1];
       return lastOfRenderedRows.end;
     }
   },
@@ -329,7 +338,7 @@ var RowView = React.createClass({
   render: function () {
     console.log('render!');
     var self = this;
-    var rowItems = this.state.visibleRows.map(function(row) {
+    var rowItems = this.state.visibleRowsData.map(function(row) {
       if (row) {
         return(<RowItem key={row.rowNumber} row={row} />);
       }

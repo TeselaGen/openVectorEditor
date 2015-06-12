@@ -3,45 +3,47 @@ var sequenceData = require('./sequenceData');
 var ObjectID = require("bson-objectid");
 var prepareRowData = require('./prepareRowData');
 var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
+var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
 //tnr: this is used to generate a very large, fake, multi-featured sequence
 
 
 
-var string = "atgtgtgatg";
-var reallyLongFakeSequence = "";
-for (var i = 0; i < 1000; i++) {
-	reallyLongFakeSequence += string;
-	if (i % 100 === 0) {
+// var string = "atgtgtgatg";
+// var reallyLongFakeSequence = "";
+// for (var i = 0; i < 1000; i++) {
+// 	reallyLongFakeSequence += string;
+// 	if (i % 100 === 0) {
 
-		sequenceData.features[i] = {
-			id: i,
-			start: i,
-			end: i + 100,
-			name: 'cooljim',
-			color: 'green',
-			topStrand: true,
-			annotationType: "feature"
-		};
-	}
-};
-sequenceData.sequence = reallyLongFakeSequence;
-var fakeSequences = makeFakeSequences(20);
-console.log(fakeSequences);
+// 		sequenceData.features[i] = {
+// 			id: i,
+// 			start: i,
+// 			end: i + 100,
+// 			name: 'cooljim',
+// 			color: 'green',
+// 			topStrand: true,
+// 			annotationType: "feature"
+// 		};
+// 	}
+// };
+// sequenceData.sequence = reallyLongFakeSequence;
 
-function makeFakeSequences(numberOfFakesSequencesToGenerate) {
-	var fakeSequences = {};
-	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
-		console.log(ObjectID().str);
-		fakeSequences[ObjectID().str] = sequenceData;
-	}
-	return fakeSequences;
-	console.log(fakeSequences);
-}
+
+// var fakeSequences = makeFakeSequences(20);
+// console.log(fakeSequences);
+
+// function makeFakeSequences(numberOfFakesSequencesToGenerate) {
+// 	var fakeSequences = {};
+// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
+// 		console.log(ObjectID().str);
+// 		fakeSequences[ObjectID().str] = sequenceData;
+// 	}
+// 	return fakeSequences;
+// 	console.log(fakeSequences);
+// }
 
 // sequenceData.features = {};
 // sequenceData.parts = {};
-
 
 var tree = new baobab({
 	vectorEditorState: {
@@ -76,7 +78,11 @@ var tree = new baobab({
 			isSelecting: false,
 		},
 		caretPosition: 8,
-		sequenceData: sequenceData,
+		visibleRows: {
+			start: 0,
+			end: 0,
+		},
+		sequenceData: validateAndTidyUpSequenceData(sequenceData),
 	},
 	// sequencesMegaStore: fakeSequences,
 	partsMegaStore: { //
@@ -90,6 +96,8 @@ var tree = new baobab({
 	},
 }, {
 	syncwrite: true,
+	validate: function (tree, gaga) {
+	},
 	facets: {
 		bpsPerRow: {
 			cursors: {
@@ -126,6 +134,20 @@ var tree = new baobab({
 			get: function(state) {
 				if (state.rowData) {
 					return state.rowData.length;
+				}
+			}
+		},
+		visibleRowsData: {
+			cursors: {
+				visibleRows: ['vectorEditorState', 'visibleRows']
+			},
+			facets: {
+				rowData: 'rowData'
+			},
+			get: function(state) {
+					console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
+				if (state.rowData && state.visibleRows) {
+					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end);
 				}
 			}
 		}

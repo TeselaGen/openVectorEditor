@@ -1,9 +1,12 @@
 var tree = require('../baobabTree');
+var _ = require('lodash');
 var arePositiveIntegers = require('../arePositiveIntegers');
 // var splice = require("underscore.string/splice");
 // var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
+var adjustRangeToSequenceInsert = require('../adjustRangeToSequenceInsert');
 var spliceString = require('../spliceString');
+
 var actions = {
 	changeViewportSize: function(newSize) {
 		console.log(newSize);
@@ -17,10 +20,6 @@ var actions = {
 	},
 	//takes in either (int,int) or ({start:int,end:int})
 	setSelectionLayer: function(x1, x2) {
-		if (x1 && arePositiveIntegers(x1.start, x1.end)) {
-			x2 = x1.end;
-			x1 = x1.start;
-		}
 		if (arePositiveIntegers(x1, x2) && arguments.length === 2) {
 			tree.select('vectorEditorState', 'selectionLayer').set({
 				start: x1,
@@ -33,6 +32,16 @@ var actions = {
 				end: -1,
 				sequenceSelected: false,
 			});
+		}
+		// viewportDimensions.set(newSize);
+	},
+	//takes in either (int,int) or ({start:int,end:int})
+	setVisibleRows: function(visibleRows) {
+		if (visibleRows && arePositiveIntegers(visibleRows.start, visibleRows.end)) {
+			console.log('visibleRows: ' + visibleRows);
+			tree.select('vectorEditorState', 'visibleRows').set(visibleRows);
+		} else {
+			console.warn("visibleRows object is missing or invalid")
 		}
 		// viewportDimensions.set(newSize);
 	},
@@ -55,7 +64,6 @@ var actions = {
 		// viewportDimensions.set(newSize);
 	},
 	deleteSequence: function(rangeToDelete) {
-
 		if (!rangeToDelete || !arePositiveIntegers(rangeToDelete.start, rangeToDelete.end)) {
 			console.warn('can\'t delete sequence due to invalid start and end');
 		}
@@ -65,8 +73,10 @@ var actions = {
 		//update selection layer due to sequence deletion
 		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers(selectionLayer.start, selectionLayer.end)) {
 			var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete);
-			this.setSelectionLayer(newSelectionLayerRange);
-			if (!newSelectionLayerRange) {
+			if (newSelectionLayerRange) {
+				this.setSelectionLayer(newSelectionLayerRange.start, newSelectionLayerRange.end);
+			} else {
+				this.setSelectionLayer(false);
 				//update the cursor
 				this.setCursorPosition(rangeToDelete.start);
 			}
@@ -77,33 +87,108 @@ var actions = {
 			console.warn('must have a selection layer or a caretPosition')
 		}
 		var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+		var newSequenceData = {};
 		if (sequenceData.sequence) {
 			//splice the underlying sequence
-			var newSequence = spliceString(sequenceData.sequence, rangeToDelete.start, deletionLength);
-			tree.select('vectorEditorState', 'sequenceData', 'sequence').set(newSequence);
+			newSequenceData.sequence = spliceString(sequenceData.sequence, rangeToDelete.start, deletionLength);
 		}
 		//trim and remove features
-		
+		if (sequenceData.features) {
+			newSequenceData.features = _.map(sequenceData.features, function(annotation) {
+				var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
+				if (newAnnotationRange) {
+					var adjustedAnnotation = annotation;
+					adjustedAnnotation.start = newAnnotationRange.start;
+					adjustedAnnotation.end = newAnnotationRange.end;
+					return adjustedAnnotation;
+				}
+			}).filter(function(annotation) { //strip out deleted (null) annotations
+				if (annotation) {
+					return true;
+				}
+			});
+		}
+		if (sequenceData.parts) {
+			newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
+				var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
+				if (newAnnotationRange) {
+					var adjustedAnnotation = annotation;
+					adjustedAnnotation.start = newAnnotationRange.start;
+					adjustedAnnotation.end = newAnnotationRange.end;
+					return adjustedAnnotation;
+				}
+			}).filter(function(annotation) { //strip out deleted (null) annotations
+				if (annotation) {
+					return true;
+				}
+			});
+		}
+		// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
+		// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
+		tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
 	},
 
 	insertSequenceString: function(sequenceString) {
+		if (!sequenceString || !sequenceString.length) {
+			console.warn("must pass a valid sequence string");
+			return;
+		}
 		//check for initial values
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
+		
+		//delete the any seleted sequence
 		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers(selectionLayer.start, selectionLayer.end)) {
 			this.deleteSequence(selectionLayer);
-		} else if (arePositiveIntegers(caretPosition)) {
-			
+		}
+		//insert new sequence at the caret position
+		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
+		if (arePositiveIntegers(caretPosition)) { 
+			//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
+			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+			var newSequenceData = {};
+			if (sequenceData.sequence) {
+				//splice the underlying sequence
+				newSequenceData.sequence = spliceString(sequenceData.sequence, caretPosition, 0, sequenceString);
+			}
+			if (sequenceData.features) {
+				newSequenceData.features = _.map(sequenceData.features, function(annotation) {
+					var newAnnotationRange = adjustRangeToSequenceInsert(annotation, caretPosition, sequenceString.length);
+					if (newAnnotationRange) {
+						var adjustedAnnotation = annotation;
+						adjustedAnnotation.start = newAnnotationRange.start;
+						adjustedAnnotation.end = newAnnotationRange.end;
+						return adjustedAnnotation;
+					}
+				});
+			}
+			if (sequenceData.parts) {
+				newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
+					var newAnnotationRange = adjustRangeToSequenceInsert(annotation, {start: caretPosition, end: sequenceString.length});
+					if (newAnnotationRange) {
+						var adjustedAnnotation = annotation;
+						adjustedAnnotation.start = newAnnotationRange.start;
+						adjustedAnnotation.end = newAnnotationRange.end;
+						return adjustedAnnotation;
+					}
+				});
+			}
+			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
+			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
+			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+			tree.commit();
 		} else {
 			console.warn('nowhere to put the inserted sequence..');
+			return;
 		}
+		//insert the sequence
+
+
 		// tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
 	},
 	keyPressedInEditor: function(event) {
 		event.preventDefault();
 		if (event) {
-			debugger;
 		}
 		// tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
