@@ -9,24 +9,24 @@ var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
 
 
-// var string = "atgtgtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 0; i < 1000; i++) {
-// 	reallyLongFakeSequence += string;
-// 	if (i % 100 === 0) {
+var string = "atgtgtgatg";
+var reallyLongFakeSequence = "";
+for (var i = 0; i < 1000; i++) {
+	reallyLongFakeSequence += string;
+	if (i % 100 === 0) {
 
-// 		sequenceData.features[i] = {
-// 			id: i,
-// 			start: i,
-// 			end: i + 100,
-// 			name: 'cooljim',
-// 			color: 'green',
-// 			topStrand: true,
-// 			annotationType: "feature"
-// 		};
-// 	}
-// };
-// sequenceData.sequence = reallyLongFakeSequence;
+		sequenceData.features[i] = {
+			id: i,
+			start: i,
+			end: i + 100,
+			name: 'cooljim',
+			color: 'green',
+			topStrand: true,
+			annotationType: "feature"
+		};
+	}
+};
+sequenceData.sequence = reallyLongFakeSequence;
 
 
 // var fakeSequences = makeFakeSequences(20);
@@ -124,6 +124,10 @@ var tree = new baobab({
 				bpsPerRow: 'bpsPerRow',
 			},
 			get: function(state) {
+				// var self = this;
+				// setTimeout(function (argument) {
+				// 	self.tree.commit();
+				// }, 10);
 				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
 		},
@@ -145,6 +149,7 @@ var tree = new baobab({
 				rowData: 'rowData'
 			},
 			get: function(state) {
+				debugger;
 					console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
 				if (state.rowData && state.visibleRows) {
 					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end);

@@ -61,6 +61,7 @@ var RowView = React.createClass({
   //   };
   // }, 
   onEditorScroll: function (event) {
+    //tnr: we should maybe keep this implemented..
     // if (this.adjustmentScroll) {
     //   console.log('adjustmentScroll');
     //   //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
@@ -132,6 +133,7 @@ var RowView = React.createClass({
 
     if (!visibleRowsContainer.childNodes[0]) {
       //there aren't any rows yet
+      console.log('return early');
       return; 
     }
     var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height; 
@@ -140,7 +142,8 @@ var RowView = React.createClass({
     
     // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
     // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
-    if (visibleRowsContainer.getBoundingClientRect().height - firstRowHeight - lastRowHeight <= this.state.viewportDimensions.height) {
+    //check if the visible rows fill up the viewport
+    if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.state.viewportDimensions.height) {
       if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
         //load another row to the bottom
         this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
@@ -150,16 +153,18 @@ var RowView = React.createClass({
       }
     } else if (false) {
       //maybe put logic in here to reshrink the number of rows to display... maybe...
+
+    //check if the visible container
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
       //scroll to align the tops of the boxes
       adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
-      // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
+      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
       this.adjustmentScroll = true;
       infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
     } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
       //scroll to align the bottoms of the boxes
       adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-      // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
+      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
       this.adjustmentScroll = true;
       infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustInfiniteContainerByThisAmount;
     } else {

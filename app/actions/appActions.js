@@ -36,10 +36,13 @@ var actions = {
 		// viewportDimensions.set(newSize);
 	},
 	//takes in either (int,int) or ({start:int,end:int})
-	setVisibleRows: function(visibleRows) {
-		if (visibleRows && arePositiveIntegers(visibleRows.start, visibleRows.end)) {
-			console.log('visibleRows: ' + visibleRows);
-			tree.select('vectorEditorState', 'visibleRows').set(visibleRows);
+	setVisibleRows: function(newVisibleRows) {
+		if (newVisibleRows && arePositiveIntegers(newVisibleRows.start, newVisibleRows.end)) {
+			console.log('newVisibleRows: ' + newVisibleRows);
+			var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
+			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end)
+			tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
+			tree.commit();
 		} else {
 			console.warn("visibleRows object is missing or invalid")
 		}
