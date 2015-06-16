@@ -35,16 +35,17 @@ var actions = {
 		}
 		// viewportDimensions.set(newSize);
 	},
-	//takes in either (int,int) or ({start:int,end:int})
+	//takes in an object like: {start:int,end:int}
 	setVisibleRows: function(newVisibleRows) {
 		if (newVisibleRows && arePositiveIntegers(newVisibleRows.start, newVisibleRows.end)) {
 			console.log('newVisibleRows: ' + newVisibleRows);
 			var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
-			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end)
-			tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
-			tree.commit();
+			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
+				tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
+				tree.commit();
+			}
 		} else {
-			console.warn("visibleRows object is missing or invalid")
+			console.warn("visibleRows object is missing or invalid");
 		}
 		// viewportDimensions.set(newSize);
 	},
@@ -58,14 +59,14 @@ var actions = {
 			tree.select('vectorEditorState', 'preloadRowStart').set(preloadRowStart);
 		}
 	},
-	setMouseIsDown: function(trueOrFalse) {
-		tree.select('vectorEditorState', 'mouse', 'isDown').set(trueOrFalse);
-		// viewportDimensions.set(newSize);
-	},
-	cancelSelection: function() {
-		tree.select('vectorEditorState', 'selectionLayer').set({});
-		// viewportDimensions.set(newSize);
-	},
+	// setMouseIsDown: function(trueOrFalse) {
+	// 	tree.select('vectorEditorState', 'mouse', 'isDown').set(trueOrFalse);
+	// 	// viewportDimensions.set(newSize);
+	// },
+	// cancelSelection: function() {
+	// 	tree.select('vectorEditorState', 'selectionLayer').set({});
+	// 	// viewportDimensions.set(newSize);
+	// },
 	deleteSequence: function(rangeToDelete) {
 		if (!rangeToDelete || !arePositiveIntegers(rangeToDelete.start, rangeToDelete.end)) {
 			console.warn('can\'t delete sequence due to invalid start and end');
@@ -184,18 +185,16 @@ var actions = {
 			return;
 		}
 		//insert the sequence
-
-
 		// tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
 	},
-	keyPressedInEditor: function(event) {
-		event.preventDefault();
-		if (event) {
-		}
-		// tree.select('vectorEditorState', 'selectionLayer').set({});
-		// viewportDimensions.set(newSize);
-	},
+	// keyPressedInEditor: function(event) {
+	// 	event.preventDefault();
+	// 	if (event) {
+	// 	}
+	// 	// tree.select('vectorEditorState', 'selectionLayer').set({});
+	// 	// viewportDimensions.set(newSize);
+	// },
 };
 
 module.exports = actions;

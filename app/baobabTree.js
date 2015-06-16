@@ -25,7 +25,7 @@ for (var i = 0; i < 1000; i++) {
 			annotationType: "feature"
 		};
 	}
-};
+}
 sequenceData.sequence = reallyLongFakeSequence;
 
 
@@ -84,16 +84,16 @@ var tree = new baobab({
 		},
 		sequenceData: validateAndTidyUpSequenceData(sequenceData),
 	},
-	// sequencesMegaStore: fakeSequences,
-	partsMegaStore: { //
-		//tnrtodo: make a fake part generator
-	},
-	designMegaStore: {
-		//tnrtodo: make a fake design generator
-	},
-	assemblyMakerState: {
+	// // sequencesMegaStore: fakeSequences,
+	// partsMegaStore: { //
+	// 	//tnrtodo: make a fake part generator
+	// },
+	// designMegaStore: {
+	// 	//tnrtodo: make a fake design generator
+	// },
+	// assemblyMakerState: {
 
-	},
+	// },
 }, {
 	syncwrite: true,
 	validate: function (tree, gaga) {
@@ -126,7 +126,10 @@ var tree = new baobab({
 			get: function(state) {
 				// var self = this;
 				// setTimeout(function (argument) {
-				// 	self.tree.commit();
+				// var previousVisibleRows = this.tree.select('vectorEditorState', 'visibleRows').get();
+				// this.tree.select('vectorEditorState', 'visibleRows').set(previousVisibleRows);
+				// this.tree.commit();
+
 				// }, 10);
 				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
@@ -149,7 +152,7 @@ var tree = new baobab({
 				rowData: 'rowData'
 			},
 			get: function(state) {
-				debugger;
+				// debugger;
 					console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
 				if (state.rowData && state.visibleRows) {
 					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end);

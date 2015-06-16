@@ -289,6 +289,9 @@ var RowItem = React.createClass({
           onMouseDown={this.onMouseDown}
           >
             {featuresSVG}
+            Thomas Rich <br/>
+            NewCutsite Thing
+
             {partsSVG}
             <SequenceContainer sequence={row.sequence} CHAR_WIDTH={this.state.CHAR_WIDTH}/>
             {this.state.showReverseSequence &&
