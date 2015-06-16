@@ -18,6 +18,15 @@ var SequenceContainer = React.createClass({
   }
 });
 
+var FeaturesContainer = React.createClass({
+  render: function () {
+    var {features, CHAR_WIDTH} = this.props;
+    var textHTML = 
+    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>'
+    return <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+  }
+});
+
 var RowItem = React.createClass({
   mixins: [baobabBranch],
   cursors: {
@@ -288,11 +297,20 @@ var RowItem = React.createClass({
           onMouseUp={this.onMouseUp}
           onMouseDown={this.onMouseDown}
           >
-            {featuresSVG}
-            Thomas Rich <br/>
-            NewCutsite Thing
-
-            {partsSVG}
+            {this.state.showParts &&
+              <PartsContainer 
+                parts={row.parts}
+                CHAR_WIDTH={this.state.CHAR_WIDTH} 
+                annotationHeight={this.state.ANNOTATION_HEIGHT} 
+                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+            }
+            {this.state.showFeatures &&
+              <FeaturesContainer 
+                features={row.features} 
+                CHAR_WIDTH={this.state.CHAR_WIDTH} 
+                annotationHeight={this.state.ANNOTATION_HEIGHT} 
+                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+            }
             <SequenceContainer sequence={row.sequence} CHAR_WIDTH={this.state.CHAR_WIDTH}/>
             {this.state.showReverseSequence &&
               <SequenceContainer sequence={row.sequence.split('').reverse().join('')} CHAR_WIDTH={this.state.CHAR_WIDTH}/>

@@ -5,7 +5,7 @@ var arePositiveIntegers = require('../arePositiveIntegers');
 // var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
 var adjustRangeToSequenceInsert = require('../adjustRangeToSequenceInsert');
-var spliceString = require('../spliceString');
+var spliceString = require('string-splice');
 
 var actions = {
 	changeViewportSize: function(newSize) {
@@ -14,7 +14,7 @@ var actions = {
 		var viewportDimensions = tree.select('vectorEditorState', 'viewportDimensions');
 		viewportDimensions.set(newSize);
 	},
-	setCursorPosition: function(newPosition) {
+	setCaretPosition: function(newPosition) {
 		tree.select('vectorEditorState', 'caretPosition').set(newPosition);
 		// viewportDimensions.set(newSize);
 	},
@@ -67,13 +67,13 @@ var actions = {
 	// 	tree.select('vectorEditorState', 'selectionLayer').set({});
 	// 	// viewportDimensions.set(newSize);
 	// },
+
 	deleteSequence: function(rangeToDelete) {
 		if (!rangeToDelete || !arePositiveIntegers(rangeToDelete.start, rangeToDelete.end)) {
 			console.warn('can\'t delete sequence due to invalid start and end');
 		}
 		var deletionLength = rangeToDelete.end - rangeToDelete.start + 1;
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
 		//update selection layer due to sequence deletion
 		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers(selectionLayer.start, selectionLayer.end)) {
 			var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete);
@@ -82,13 +82,13 @@ var actions = {
 			} else {
 				this.setSelectionLayer(false);
 				//update the cursor
-				this.setCursorPosition(rangeToDelete.start);
+				this.setCaretPosition(rangeToDelete.start);
 			}
 		} else if (tree.select('vectorEditorState', 'caretPosition').get()) {
 			//update the cursor position
-			this.setCursorPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
+			this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
 		} else {
-			console.warn('must have a selection layer or a caretPosition')
+			console.warn('must have a selection layer or a caretPosition');
 		}
 		var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
 		var newSequenceData = {};
@@ -179,6 +179,9 @@ var actions = {
 			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
 			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+			console.log('newdata set')
+			//update the caret position to be at the end of the newly inserted sequence
+			this.setCaretPosition(sequenceString.length + caretPosition);
 			tree.commit();
 		} else {
 			console.warn('nowhere to put the inserted sequence..');

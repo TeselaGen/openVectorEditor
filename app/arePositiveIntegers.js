@@ -1,4 +1,4 @@
-var isPositiveInteger = require('./isPositiveInteger.js');
+var isPositiveInteger = require('validate.io-nonnegative-integer');
 
 module.exports = function arePositiveIntegers() {
   if (arguments) {

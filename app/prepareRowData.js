@@ -184,6 +184,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
 
 function splitRangeOnOrigin(range, sequenceLength) {
   if (!arePositiveIntegers(range.start, range.end, sequenceLength)) {
+    debugger;
     console.error("invalid inputs!!");
   }
   var ranges = [];

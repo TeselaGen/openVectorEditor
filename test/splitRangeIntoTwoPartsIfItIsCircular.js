@@ -20,19 +20,12 @@
 
 var splitRangeIntoTwoPartsIfItIsCircular = require('../app/splitRangeIntoTwoPartsIfItIsCircular.js');
 var assert = require('assert');
-
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(0), true);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(-0), true);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(1), true);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(5704), true);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(100000), true);
-
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(-1), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(-5704), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(-100000), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(1.5), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(400.554), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(null), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular({}), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular([]), false);
-assert.equal(splitRangeIntoTwoPartsIfItIsCircular(undefined), false);
+describe('splitRangeIntoTwoPartsIfItIsCircular', function() {
+  it('returns an array with one range in it if the array is non-circular', function() {
+    assert.deepEqual(splitRangeIntoTwoPartsIfItIsCircular({start: 0, end: 100}, 1000), [{start: 0, end: 100}]);
+    assert.deepEqual(splitRangeIntoTwoPartsIfItIsCircular({start: 10, end: 909}, 1000), [{start: 10, end: 909}]);
+  });
+  it('returns an array with two ranges in it if the array is circular', function() {
+    assert.deepEqual(splitRangeIntoTwoPartsIfItIsCircular({start: 110, end: 100},1000), [{start: 0, end: 100},{start: 110, end: 999}]);
+  });
+});

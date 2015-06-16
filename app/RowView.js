@@ -273,7 +273,7 @@ var RowView = React.createClass({
     if (this.editorBeingDragged) {
       //do nothing because the click was triggered by a drag event
     } else {
-      appActions.setCursorPosition(bp);
+      appActions.setCaretPosition(bp);
       appActions.setSelectionLayer(false);
     }
 
@@ -287,7 +287,7 @@ var RowView = React.createClass({
     var start;
     var end;
     if (caretPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
-      appActions.setCursorPosition(caretPositionOfDrag);
+      appActions.setCaretPosition(caretPositionOfDrag);
       appActions.setSelectionLayer(false);
     } else {
       if (caretPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
@@ -299,7 +299,7 @@ var RowView = React.createClass({
         // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
       }
       appActions.setSelectionLayer(start, end);
-      appActions.setCursorPosition(-1);
+      appActions.setCaretPosition(-1);
     }
   },
 
