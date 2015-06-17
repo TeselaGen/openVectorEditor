@@ -1,6 +1,6 @@
 //#deprecated
 var editorConstants = {
-  CHAR_WIDTH: 15,
+  charWidth: 15,
   CHAR_HEIGHT: 15,
   // FONT_SIZE: 14,
   ANNOTATION_HEIGHT: 15,

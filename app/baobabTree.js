@@ -5,23 +5,19 @@ var prepareRowData = require('./prepareRowData');
 var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
-//tnr: this is used to generate a very large, fake, multi-featured sequence
-
-
-
+//tnr: this is used to generate a very large, multi-featured sequence
 var string = "atgtgtgatg";
 var reallyLongFakeSequence = "";
 for (var i = 0; i < 1000; i++) {
 	reallyLongFakeSequence += string;
 	if (i % 100 === 0) {
-
 		sequenceData.features[i] = {
 			id: i,
 			start: i,
 			end: i + 100,
 			name: 'cooljim',
 			color: 'green',
-			topStrand: true,
+			isForward: true,
 			annotationType: "feature"
 		};
 	}
@@ -51,7 +47,7 @@ var tree = new baobab({
 		bottomSpacerHeight: 0,
 		averageRowHeight: 100,
 		// preloadBasepairStart: 300,
-		CHAR_WIDTH: 15,
+		charWidth: 15,
 		CHAR_HEIGHT: 15,
 		// FONT_SIZE: 14,
 		ANNOTATION_HEIGHT: 15,
@@ -63,6 +59,7 @@ var tree = new baobab({
 		showCutsites: true,
 		showParts: true,
 		showFeatures: true,
+		showAxis: true,
 		showReverseSequence: true,
 		viewportDimensions: {
 			height: 500, //come back and make these dynamic
@@ -102,10 +99,10 @@ var tree = new baobab({
 		bpsPerRow: {
 			cursors: {
 				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
-				CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+				charWidth: ['vectorEditorState', 'charWidth'],
 			},
 			get: function(state) {
-				return Math.floor(state.viewportDimensionsWidth / state.CHAR_WIDTH);
+				return Math.floor(state.viewportDimensionsWidth / state.charWidth);
 			}
 		},
 		sequenceLength: {

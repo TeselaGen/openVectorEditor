@@ -1,14 +1,14 @@
 var _ = require('lodash');
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 
-function computeNumberOfCharsThatFitInGivenViewportWidth (viewportDimensions, CHAR_WIDTH) {
-  return Math.floor(viewportDimensionsWidth/CHAR_WIDTH);
+function computeNumberOfCharsThatFitInGivenViewportWidth (viewportDimensions, charWidth) {
+  return Math.floor(viewportDimensionsWidth/charWidth);
 }
 
-function computeRowRepresenationOfSequence(sequenceData, viewportDimensionsWidth, CHAR_WIDTH) {
+function computeRowRepresenationOfSequence(sequenceData, viewportDimensionsWidth, charWidth) {
   debugger;
   
-  var bpsPerRow = computeNumberOfCharsThatFitInGivenViewportWidth(viewportDimensionsWidth, CHAR_WIDTH);
+  var bpsPerRow = computeNumberOfCharsThatFitInGivenViewportWidth(viewportDimensionsWidth, charWidth);
   var sequenceLength = sequenceData.sequence.length;
   var numberOfRows = Math.ciel(sequenceLength/bpsPerRow);
 

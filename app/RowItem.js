@@ -1,41 +1,206 @@
 var React = require('react');
 var _ = require('lodash');
 var classnames = require('classnames');
-// var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
+// var charWidth = require('./editorConstants').charWidth;
 // var CHAR_HEIGHT = require('./editorConstants').CHAR_HEIGHT;
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 // var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
 // var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
 var baobabBranch = require('baobab-react/mixins').branch;
 var appActions = require('./actions/appActions');
+var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
+var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 
 var SequenceContainer = React.createClass({
   render: function () {
-    var {sequence, CHAR_WIDTH} = this.props;
+    var {sequence, charWidth} = this.props;
     var textHTML = 
-    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>'
-    return <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+    '<text font-family="Courier New, Courier, monospace" x="'+ (charWidth/4) + '" y="10" textLength="'+ (charWidth * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>'
+    return <svg ref="textContainer" className="textContainer" width="100%" height={charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
   }
 });
 
-var FeaturesContainer = React.createClass({
+var AxisContainer = React.createClass({
+  // createAxisPath:  function (annotationRange, bpsPerRow, charWidth, annotationHeight) {
+  //   var annotation = annotationRange.annotation; 
+  //   var {xStart, width} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+  //   var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
+  //   var height = annotationHeight;
+  //   var rangeType = annotationRange.rangeType;
+  //   var isForward = annotation.isForward;
+  //   var xEnd = xStart + width;
+  //   var yEnd = yStart + height;
+
+  //   if (isForward) {
+      
+  //   } else {
+
+  //   }
+  //   //either "beginning", "end" or "beginningAndEnd"
+  //   if (rangeType === 'beginningAndEnd') {
+
+  //   } else {
+
+  //   }
+  //   var path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + xStart + "," + yEnd + " Z";
+  //   return path;
+  // },
+
   render: function () {
-    var {features, CHAR_WIDTH} = this.props;
-    var textHTML = 
-    '<text font-family="Courier New, Courier, monospace" x="'+ (CHAR_WIDTH/4) + '" y="10" textLength="'+ (CHAR_WIDTH * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>'
-    return <svg ref="textContainer" className="textContainer" width="100%" height={CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+    var {row, bpsPerRow, charWidth, annotationHeight} = this.props;
+    var {xStart, width} = getXStartAndWidthOfRowAnnotation(row, bpsPerRow, charWidth);
+    //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
+    //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
+    function calculateTickMarkPositionsForGivenRow (tickSpacing, row) {
+      var rowLength = row.end - row.start;
+      var firstTickOffsetFromRowStart = row.start % tickSpacing;
+      var arrayOfTickMarkPositions = [];
+      for (var tickMarkPositions = firstTickOffsetFromRowStart; tickMarkPositions < rowLength; tickMarkPositions+=tickSpacing) {
+        arrayOfTickMarkPositions.push(tickMarkPositions);
+      }
+      return arrayOfTickMarkPositions;
+    }
+    xEnd = xStart + width;
+    yStart = 0;
+    var tickMarkPositions = calculateTickMarkPositionsForGivenRow(10,row);
+    tickMarkSVG = [];
+    tickMarkPositions.forEach(function (tickMarkPosition) {
+       var xCenter = getXCenterOfRowAnnotation({start: tickMarkPosition, end: tickMarkPosition}, bpsPerRow, charWidth);
+       var yStart = 0;
+       var yEnd = annotationHeight/3;
+       tickMarkSVG.push(<path 
+        key={'axisTickMark ' + row.rowNumber + ' ' + tickMarkPosition} 
+        d={"M" + xCenter + "," + yStart + " L" + xCenter + "," + yEnd} 
+        stroke={'black'} />);
+       tickMarkSVG.push(
+        <text 
+          key={'axisTickMarkText ' + row.rowNumber + ' ' + tickMarkPosition} 
+          stroke={'black'} 
+          x={xCenter}
+          y={annotationHeight}
+          style={{"text-anchor": "middle", "font-size": 10, "font-family": "Verdana"}}
+          >
+          {row.start + tickMarkPosition} 
+        </text>)
+    });
+
+    return (
+      <svg className="annotationContainer" width="100%" height={annotationHeight*1.2} > 
+        {tickMarkSVG}
+        <path 
+        key={'axis ' + row.rowNumber} 
+        d={"M" + xStart + "," + yStart + " L" + xEnd + "," + yStart} 
+        stroke={'black'} />
+      </svg>
+    );
+  }
+});
+
+// var FeatureContainer = React.createClass({
+//   render: function () {
+//     return (
+//       <AnnotationContainer  {...this.props}/>
+//     );
+//   }
+// });
+
+
+var AnnotationContainer = React.createClass({
+  render: function () {
+    var {annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations} = this.props;
+    if (annotationRanges.length === 0) {
+      return null;
+    }
+    var maxAnnotationYOffset = 0;
+    var annotationsSVG = [];
+    annotationRanges.forEach(function(annotationRange) {
+      if (annotationRange.yOffset > maxAnnotationYOffset) {
+        maxAnnotationYOffset = annotationRange.yOffset;
+      }
+      var annotation = annotationRange.annotation; 
+
+      annotationsSVG.push(<path 
+        key={annotation.id} 
+        className={classnames(annotation.id, annotation.type)} 
+        d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)} 
+        stroke={annotation.color} 
+        fillOpacity={0.4} //come back and change this to a passed var} 
+        fill={annotation.color}/>);
+
+      annotationsSVG.push(<path 
+        key={'directionArrow' + annotation.id} 
+        d={createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)} 
+        stroke={'black'} />)
+    });
+    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    return (
+      <svg className="annotationContainer" width="100%" height={height} > 
+        {annotationsSVG}
+      </svg>
+    );
+    function createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
+      var annotation = annotationRange.annotation; 
+      var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
+      var rangeType = annotationRange.rangeType;
+      var isForward = annotation.isForward;
+      var xStart = xCenter - charWidth/2;
+      var xEnd = xCenter + charWidth/2;
+      var yEnd = yStart + annotationHeight;
+      var yMiddle = yStart + annotationHeight/2;
+      var path; 
+      if (isForward) {
+        path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yMiddle + " L" + xStart + "," + yEnd 
+      } else {
+
+      }
+      //either "beginning", "end" or "beginningAndEnd"
+      if (rangeType === 'beginningAndEnd') {
+
+      } else {
+
+      }
+      return path;
+    }
+
+    function createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
+      var annotation = annotationRange.annotation; 
+      var {xStart, width} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
+      var height = annotationHeight;
+      var rangeType = annotationRange.rangeType;
+      var isForward = annotation.isForward;
+      var xEnd = xStart + width;
+      var yEnd = yStart + height;
+
+      if (isForward) {
+        
+      } else {
+
+      }
+      //either "beginning", "end" or "beginningAndEnd"
+      if (rangeType === 'beginningAndEnd') {
+
+      } else {
+
+      }
+      var path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + xStart + "," + yEnd + " Z";
+      return path;
+    }
+    
   }
 });
 
 var RowItem = React.createClass({
   mixins: [baobabBranch],
   cursors: {
-    CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+    charWidth: ['vectorEditorState', 'charWidth'],
     CHAR_HEIGHT: ['vectorEditorState', 'CHAR_HEIGHT'], //potentially unneeded
     ANNOTATION_HEIGHT: ['vectorEditorState', 'ANNOTATION_HEIGHT'],
     SPACE_BETWEEN_ANNOTATIONS: ['vectorEditorState', 'SPACE_BETWEEN_ANNOTATIONS'],
     showFeatures: ['vectorEditorState', 'showFeatures'],
     showParts: ['vectorEditorState', 'showParts'],
+    showAxis: ['vectorEditorState', 'showAxis'],
     showReverseSequence: ['vectorEditorState', 'showReverseSequence'],
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
@@ -50,7 +215,6 @@ var RowItem = React.createClass({
   render: function () {
     var {row} = this.props;
     var bpsPerRow = this.state.bpsPerRow;
-    var showFeatures = this.state.showFeatures;
     var showParts = this.state.showParts;
     // var showReverseSequence = this.state.showReverseSequence;
     var selectionLayer = this.state.selectionLayer;
@@ -67,100 +231,18 @@ var RowItem = React.createClass({
       return path;
     }
 
-    // function makeAnnotation(xStart, yStart, height, length, direction, strokeColor, fill, id, pathMaker) {
-    //   var path = pathMaker(xStart, yStart, height, length, direction, strokeColor);
+    // function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
+    //   // 24 bps long: 
+    //   // 
+    //   // if (range.end + 1 - range.start > 0 && )
+    //   // (range.end + 1 - range.start) % bpsPerRow
+    //   return {
+    //     xStart: (range.start % bpsPerRow) * charWidth,
+    //     width: ((range.end + 1 - range.start)) * charWidth,
+    //   };
     // }
-    // if (showReverseSequence) {
-    //   combinedHeightOfChildElements+= (this.state.SPACE_BETWEEN_ANNOTATIONS + this.state.ANNOTATION_HEIGHT); //tnrtodo work out these spacing issues
-    // }
-    if (showFeatures) {
-      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * this.state.ANNOTATION_HEIGHT + this.state.SPACE_BETWEEN_ANNOTATIONS;
-      var featuresSVG = createAnnotationPaths({
-        annotationRanges: row.features,
-        createAnnotationRawPath: createFeatureRawPath,
-        annotationHeight: this.state.ANNOTATION_HEIGHT,
-        spaceBetweenAnnotations: this.state.SPACE_BETWEEN_ANNOTATIONS,
-        charWidth: this.state.CHAR_WIDTH,
-        // annotationYOffsetMax: row.featuresYOffsetMax,
-      });
-    }
 
-    if (showParts) {
-      // combinedHeightOfChildElements+= (row.featuresYOffsetMax + 1) * this.state.ANNOTATION_HEIGHT + this.state.SPACE_BETWEEN_ANNOTATIONS;
-      var partsSVG = createAnnotationPaths({
-        annotationRanges: row.parts,
-        createAnnotationRawPath: createFeatureRawPath,
-        annotationHeight: this.state.ANNOTATION_HEIGHT,
-        spaceBetweenAnnotations: this.state.SPACE_BETWEEN_ANNOTATIONS,
-        charWidth: this.state.CHAR_WIDTH,
-        // annotationYOffsetMax: row.featuresYOffsetMax,
-      });
-    }
-
-    function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
-      // 24 bps long: 
-      // 
-      // if (range.end + 1 - range.start > 0 && )
-      // (range.end + 1 - range.start) % bpsPerRow
-      return {
-        xStart: (range.start % bpsPerRow) * charWidth,
-        width: ((range.end + 1 - range.start)) * charWidth,
-      };
-    }
-
-    function createAnnotationPaths({annotationRanges, createAnnotationRawPath, annotationHeight, spaceBetweenAnnotations, charWidth}) {
-      if (annotationRanges.length === 0) {
-        return [];
-      }
-      var maxAnnotationYOffset = 0;
-      var annotationsSVG = _.map(annotationRanges, function(annotationRange) {
-        if (annotationRange.yOffset > maxAnnotationYOffset) {
-          maxAnnotationYOffset = annotationRange.yOffset;
-        }
-        // var overlapPaths = annotationRange.overlaps.map(function(overlap) {
-          // console.log(annotationRange);
-          var annotation = annotationRange.annotation; 
-
-          //get the type of range we're going to be displaying
-          // if (annotationRange.start === annotation.start) {
-          //   var annotationRange.rangeType
-          // }
-
-          var drawingParameters = {
-            xStart: (annotationRange.start % bpsPerRow) * charWidth,
-            width: ((annotationRange.end + 1 - annotationRange.start)) * charWidth,
-            yStart: annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations),
-            height: annotationHeight,
-            type: annotationRange.type,
-            topStrand: annotation.topStrand,
-          };
-          var path = createAnnotationRawPath(drawingParameters);
-
-          var attributes = {
-            classnames: classnames(annotation.id, annotation.type),
-            strokeColor: annotation.color, 
-            fill: annotation.color,
-            path: path,
-            fillOpacity: 0.4, //come back and change this to a passed var
-          };
-          var annotationPath = createAnnotationPath(attributes);
-          return annotationPath;
-        // });
-        // return (overlapPaths);
-
-        function createAnnotationPath ({strokeColor, fill, classnames, path, fillOpacity}) {
-            return(<path key={annotation.id} className={classnames} d={path} stroke={strokeColor} fillOpacity={fillOpacity} fill={fill}/>);
-        }
-      });
-      var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
-      return (
-        <svg className="annotationContainer" width="100%" height={height} > 
-          {annotationsSVG}
-        </svg>
-        );
-    }
-
-    var fontSize = this.state.CHAR_WIDTH + "px";
+    var fontSize = this.state.charWidth + "px";
     var textStyle = {
       fontSize: fontSize,
       fontFamily: "'Courier New', Courier, monospace", 
@@ -193,7 +275,7 @@ var RowItem = React.createClass({
     
     var selectionCursorStart;
     var selectionCursorEnd;
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.CHAR_WIDTH, cursorStyle);
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.charWidth, cursorStyle);
     function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle) {
       var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
       var selectionLayers = overlaps.map(function (overlap, index) {
@@ -211,9 +293,7 @@ var RowItem = React.createClass({
       return selectionLayers;
     }
 
-    
-
-    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, this.state.CHAR_WIDTH);
+    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, this.state.charWidth);
     function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
       if(row.start<= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
         //the second logical operator catches the special case where we're at the very end of the sequence..
@@ -222,58 +302,6 @@ var RowItem = React.createClass({
         // onHover={self.onCursorHover}
       }
     }
-
-
-    // var enclosingTextDivStyle = {
-    //   width: "100%"
-    // };
-    // console.log( (this.state.CHAR_WIDTH * (row.sequence.length - 1))); //tnr: -1 because everything else we're drawing is 0-based whereas the length is 1 based
-    //maybe use text-align middle with the x-position in the middle of the block.. something seems just a touch off with the character width stuff...
-    //not sure what it is exactly...
-    //should probably change the row.sequence.length -1 to no -1
-    //text-anchor="middle"
-    
-    // var sequenceArray = row.sequence.split("");
-    // charArray = [];
-    // sequenceArray.forEach(function (char, index) {
-    //   var left = this.state.CHAR_WIDTH * index - (this.state.CHAR_WIDTH/2)
-    //   sequenceTextStyle = {
-    //   display: "inline",
-    //   position: "absolute",
-    //   left: left,
-    // }
-    //   // charArray.left = this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2);
-    //   // {left: this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2)}
-    //   charArray.push(
-    //     <div style={sequenceTextStyle}> 
-    //       {char}
-    //     </div>
-    //   )
-    // })
-    
-
-    // if (charArray.length > 0) {
-    //   var sequenceText = (
-    //     <div>
-    //       {charArray}
-    //     </div>
-    //     )
-    // }
-
-            // {sequenceText}
-
-
-    // for (var i = 0; i < row.sequence.length; i++) {
-    //   // var left = this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2)
-    //   charArray.left = this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2);
-    //   // {left: this.state.CHAR_WIDTH * i + (this.state.CHAR_WIDTH/2)}
-    //   charArray.push(
-    //     <div style={sequenceTextStyle}> 
-    //       {row.sequence[i]}
-    //     </div>
-    //   )
-    // };
-    // return charArray;
     var rowContainerStyle = {
       overflow: "hidden",
       position: "relative",
@@ -281,14 +309,14 @@ var RowItem = React.createClass({
     };
 
     var textHTML = 
-    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.CHAR_WIDTH/4) + '" y="10" textLength="'+ (this.state.CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
+    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     var reverseSequenceHTML = 
-    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.CHAR_WIDTH/4) + '" y="10" textLength="'+ (this.state.CHAR_WIDTH * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
+    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
     // console.log(row);
     // var className = "row" + row.rowNumber;
       // <div className={className}>
-      // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
-      //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.CHAR_WIDTH} dangerouslySetInnerHTML={{__html: textHTML}} />
+      // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
+      //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
     return (
         <div className="rowContainer" 
           style={rowContainerStyle} 
@@ -297,27 +325,49 @@ var RowItem = React.createClass({
           onMouseUp={this.onMouseUp}
           onMouseDown={this.onMouseDown}
           >
-            {this.state.showParts &&
-              <PartsContainer 
-                parts={row.parts}
-                CHAR_WIDTH={this.state.CHAR_WIDTH} 
-                annotationHeight={this.state.ANNOTATION_HEIGHT} 
-                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
-            }
             {this.state.showFeatures &&
-              <FeaturesContainer 
-                features={row.features} 
-                CHAR_WIDTH={this.state.CHAR_WIDTH} 
+              <AnnotationContainer 
+                annotationRanges={row.features} 
+                charWidth={this.state.charWidth} 
                 annotationHeight={this.state.ANNOTATION_HEIGHT} 
+                bpsPerRow={this.state.bpsPerRow}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            <SequenceContainer sequence={row.sequence} CHAR_WIDTH={this.state.CHAR_WIDTH}/>
-            {this.state.showReverseSequence &&
-              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} CHAR_WIDTH={this.state.CHAR_WIDTH}/>
+            {this.state.showTranslations &&
+              <AnnotationContainer 
+                annotationRanges={row.features} 
+                charWidth={this.state.charWidth} 
+                annotationHeight={this.state.ANNOTATION_HEIGHT} 
+                bpsPerRow={this.state.bpsPerRow}
+                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {row.rowNumber}
-            //
-            {row.start}
+            {this.state.showCutsites &&
+              <CutsiteContainer 
+                annotationRanges={row.features} 
+                charWidth={this.state.charWidth} 
+                annotationHeight={this.state.ANNOTATION_HEIGHT} 
+                bpsPerRow={this.state.bpsPerRow}
+                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+            }
+            {this.state.showORFs &&
+              <OrfContainer 
+                annotationRanges={row.features} 
+                charWidth={this.state.charWidth} 
+                annotationHeight={this.state.ANNOTATION_HEIGHT} 
+                bpsPerRow={this.state.bpsPerRow}
+                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+            }
+            <SequenceContainer sequence={row.sequence} charWidth={this.state.charWidth}/>
+            {this.state.showReverseSequence &&
+              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={this.state.charWidth}/>
+            }
+            {this.state.showAxis &&
+              <AxisContainer 
+              row={row}
+              charWidth={this.state.charWidth} 
+              annotationHeight={this.state.ANNOTATION_HEIGHT} 
+              bpsPerRow={this.state.bpsPerRow}/>
+            }
             {highlightLayerForRow}
             {selectionCursorStart}
             {selectionCursorEnd}

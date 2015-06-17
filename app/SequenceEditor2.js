@@ -1,7 +1,7 @@
 var React = require('react');
 
 var RowView = require('./RowView');
-var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
+var charWidth = require('./editorConstants').charWidth;
 
 var baoababBranch = require('baobab-react/mixins').branch;
 var MousetrapMixin = require('./MousetrapMixin');
@@ -44,7 +44,7 @@ var SequenceEditor2 = React.createClass({
   render: function() {
       // var visibilityParameters = this.state.visibilityParameters;
       // var highlightLayer = this.state.highlightLayer;
-      // visibilityParameters.rowWidth = CHAR_WIDTH * visibilityParameters.bpsPerRow;
+      // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
  
 
     return (

@@ -5,7 +5,7 @@ var appActions = require('./actions/appActions');
 var arePositiveIntegers = require('./arePositiveIntegers');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
 // var prepareRowData = require('./prepareRowData');
-var CHAR_WIDTH = require('./editorConstants').CHAR_WIDTH;
+var charWidth = require('./editorConstants').charWidth;
 // var ReactList = require('react-list');
 var baobabBranch = require('baobab-react/mixins').branch;
 // MoustrapMixin = require('./MoustrapMixin.js');
@@ -17,7 +17,7 @@ var RowView = React.createClass({
     
   cursors: {
     // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
-    CHAR_WIDTH: ['vectorEditorState', 'CHAR_WIDTH'],
+    charWidth: ['vectorEditorState', 'charWidth'],
     preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
     averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
@@ -248,7 +248,7 @@ var RowView = React.createClass({
           return row.start; //return the first bp in the row
         } else {
           var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + CHAR_WIDTH/2) / CHAR_WIDTH);
+          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + charWidth/2) / charWidth);
           var nearestBP = numberOfBPsInFromRowStart + row.start;
           if (nearestBP > row.end + 1) {
             nearestBP = row.end + 1;
