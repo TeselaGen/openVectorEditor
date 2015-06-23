@@ -96,6 +96,15 @@ var tree = new baobab({
 	validate: function (tree, gaga) {
 	},
 	facets: {
+		orfData: {
+			cursors: {
+				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+				isCircular: ['vectorEditorState', 'sequenceData', 'isCircular'], //decide on what to call this..
+			},
+			get: function(state) {
+				return findOrfsFromSequence(state.sequence, state.isCircular);
+			}
+		},
 		bpsPerRow: {
 			cursors: {
 				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
