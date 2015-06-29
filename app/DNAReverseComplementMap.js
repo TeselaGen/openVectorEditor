@@ -8,5 +8,5 @@ var DNAReverseComplementMap = {
 	C: 'G',
 	G: 'C',
 	//tnrtodo add more letters here
-}
+};
 module.exports = DNAReverseComplementMap;

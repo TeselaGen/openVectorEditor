@@ -8,6 +8,7 @@ function prepareRowData(sequenceData, bpsPerRow) {
 
   var featuresToRowsMap = mapAnnotationsToRows(sequenceData.features, sequenceLength, bpsPerRow);
   var partsToRowsMap = mapAnnotationsToRows(sequenceData.parts, sequenceLength, bpsPerRow);
+  var orfsToRowsMap = mapAnnotationsToRows(sequenceData.orfs, sequenceLength, bpsPerRow);
 
   for (var rowNumber = 0; rowNumber < totalRows; rowNumber++) {
     var row = {};

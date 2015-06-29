@@ -7,23 +7,23 @@ var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSe
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
 //tnr: this is used to generate a very large, multi-featured sequence
-var string = "atgtgtgatg";
-var reallyLongFakeSequence = "";
-for (var i = 0; i < 1000; i++) {
-	reallyLongFakeSequence += string;
-	if (i % 100 === 0) {
-		sequenceData.features[i] = {
-			id: i,
-			start: i,
-			end: i + 100,
-			name: 'cooljim',
-			color: 'green',
-			forward: true,
-			annotationType: "feature"
-		};
-	}
-}
-sequenceData.sequence = reallyLongFakeSequence;
+// var string = "atgtgtgatg";
+// var reallyLongFakeSequence = "";
+// for (var i = 0; i < 1000; i++) {
+// 	reallyLongFakeSequence += string;
+// 	if (i % 100 === 0) {
+// 		sequenceData.features[i] = {
+// 			id: i,
+// 			start: i,
+// 			end: i + 100,
+// 			name: 'cooljim',
+// 			color: 'green',
+// 			forward: true,
+// 			annotationType: "feature"
+// 		};
+// 	}
+// }
+// sequenceData.sequence = reallyLongFakeSequence;
 
 
 // var fakeSequences = makeFakeSequences(20);
@@ -52,6 +52,7 @@ var tree = new baobab({
 		CHAR_HEIGHT: 15,
 		// FONT_SIZE: 14,
 		ANNOTATION_HEIGHT: 15,
+		minimumOrfSize: 50,
 
 		SPACE_BETWEEN_ANNOTATIONS: 3,
 		preloadRowStart: 0,
@@ -100,10 +101,11 @@ var tree = new baobab({
 		orfData: {
 			cursors: {
 				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-				isCircular: ['vectorEditorState', 'sequenceData', 'isCircular'], //decide on what to call this..
+				circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+				minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
 			},
 			get: function(state) {
-				return findOrfsFromSequence(state.sequence, state.isCircular);
+				return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
 			}
 		},
 		bpsPerRow: {
@@ -129,6 +131,7 @@ var tree = new baobab({
 			},
 			facets: {
 				bpsPerRow: 'bpsPerRow',
+				orfData: 'orfData',
 			},
 			get: function(state) {
 				// var self = this;
@@ -138,6 +141,7 @@ var tree = new baobab({
 				// this.tree.commit();
 
 				// }, 10);
+				state.sequenceData.orfs = state.orfData;
 				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
 		},

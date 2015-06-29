@@ -15,6 +15,7 @@ var SequenceEditor2 = React.createClass({
   facets: {
     sequenceLength: 'sequenceLength',
     bpsPerRow: 'bpsPerRow',
+    orfData: 'orfData',
     totalRows: 'totalRows',
   },
   cursors: {
@@ -56,6 +57,8 @@ var SequenceEditor2 = React.createClass({
         sequence length: {this.state.sequenceLength}
         <br/>
         bpsPerRow:  {this.state.bpsPerRow}
+        <br/>
+        orfData:  {this.state.orfData}
         <br/>
         totalRows:  {this.state.totalRows}
         <RowView />
