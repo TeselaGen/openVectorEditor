@@ -8,7 +8,7 @@ var sequenceData = {
             end: 10,
             name: 'cooljim',
             color: 'green',
-            isForward: true,
+            forward: true,
             annotationType: "feature"
           },
           // 123574144175134: {
@@ -17,7 +17,7 @@ var sequenceData = {
           //   end: 20,
           //   name: 'cooljim',
           //   color: 'gray',
-          //   isForward: false,
+          //   forward: false,
           //   annotationType: "feature"
           // },
           // 1235514141415134: {
@@ -26,7 +26,7 @@ var sequenceData = {
           //   end: 19,
           //   name: 'cooljim',
           //   color: 'purple',
-          //   isForward: true,
+          //   forward: true,
           //   annotationType: "feature"
           // },
           // 2212341234123412342: {
@@ -35,7 +35,7 @@ var sequenceData = {
           //   end: 53,
           //   name: 'cooljim',
           //   color: 'pink',
-          //   isForward: true,
+          //   forward: true,
           //   annotationType: "feature"
           // }
         },
@@ -46,7 +46,7 @@ var sequenceData = {
         //     end: 5,
         //     name: 'cooljim',
         //     color: 'pink',
-        //     isForward: true,
+        //     forward: true,
         //     annotationType: "part"
         //   },
         //   12311314141421334: {
@@ -55,7 +55,7 @@ var sequenceData = {
         //     end: 5,
         //     name: 'cooljim',
         //     color: 'orange',
-        //     isForward: true,
+        //     forward: true,
         //     annotationType: "part"
         //   },
         //   12123141414134: {
@@ -64,7 +64,7 @@ var sequenceData = {
         //     end: 53,
         //     name: 'cooljim',
         //     color: 'orange',
-        //     isForward: true,
+        //     forward: true,
         //     annotationType: "part"
         //   }
         // }

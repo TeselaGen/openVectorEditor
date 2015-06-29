@@ -27,11 +27,11 @@ var AxisContainer = React.createClass({
   //   var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
   //   var height = annotationHeight;
   //   var rangeType = annotationRange.rangeType;
-  //   var isForward = annotation.isForward;
+  //   var forward = annotation.forward;
   //   var xEnd = xStart + width;
   //   var yEnd = yStart + height;
 
-  //   if (isForward) {
+  //   if (forward) {
       
   //   } else {
 
@@ -143,13 +143,13 @@ var AnnotationContainer = React.createClass({
       var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var rangeType = annotationRange.rangeType;
-      var isForward = annotation.isForward;
+      var forward = annotation.forward;
       var xStart = xCenter - charWidth/2;
       var xEnd = xCenter + charWidth/2;
       var yEnd = yStart + annotationHeight;
       var yMiddle = yStart + annotationHeight/2;
       var path; 
-      if (isForward) {
+      if (forward) {
         path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yMiddle + " L" + xStart + "," + yEnd 
       } else {
 
@@ -169,11 +169,11 @@ var AnnotationContainer = React.createClass({
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var height = annotationHeight;
       var rangeType = annotationRange.rangeType;
-      var isForward = annotation.isForward;
+      var forward = annotation.forward;
       var xEnd = xStart + width;
       var yEnd = yStart + height;
 
-      if (isForward) {
+      if (forward) {
         
       } else {
 

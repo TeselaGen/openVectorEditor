@@ -2,6 +2,7 @@ var baobab = require('baobab');
 var sequenceData = require('./sequenceData');
 var ObjectID = require("bson-objectid");
 var prepareRowData = require('./prepareRowData');
+var findOrfsFromSequence = require('./findOrfsFromSequence');
 var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
@@ -17,7 +18,7 @@ for (var i = 0; i < 1000; i++) {
 			end: i + 100,
 			name: 'cooljim',
 			color: 'green',
-			isForward: true,
+			forward: true,
 			annotationType: "feature"
 		};
 	}
