@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var arePositiveIntegers = require('./arePositiveIntegers');
+var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
 
 function prepareRowData(sequenceData, bpsPerRow) {
   var sequenceLength = sequenceData.sequence.length;
@@ -184,7 +184,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
 
 
 function splitRangeOnOrigin(range, sequenceLength) {
-  if (!arePositiveIntegers(range.start, range.end, sequenceLength)) {
+  if (!arePositiveIntegers([range.start, range.end, sequenceLength])) {
     debugger;
     console.error("invalid inputs!!");
   }

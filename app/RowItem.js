@@ -120,7 +120,12 @@ var AnnotationContainer = React.createClass({
       var annotation = annotationRange.annotation; 
 
       annotationsSVG.push(<path 
-        key={annotation.id} 
+        onClick={function (event) {
+          appActions.setCaretPosition(-1);
+          appActions.setSelectionLayer(this);
+          event.stopPropagation();
+        }.bind(annotation)}
+        key={annotation.id + 'start:' + annotationRange.start} 
         className={classnames(annotation.id, annotation.type)} 
         d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)} 
         stroke={annotation.color} 
@@ -128,7 +133,7 @@ var AnnotationContainer = React.createClass({
         fill={annotation.color}/>);
 
       annotationsSVG.push(<path 
-        key={'directionArrow' + annotation.id} 
+        key={'directionArrow' + annotation.id + 'start:' + annotationRange.start} 
         d={createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)} 
         stroke={'black'} />)
     });
@@ -275,9 +280,9 @@ var RowItem = React.createClass({
     
     var selectionCursorStart;
     var selectionCursorEnd;
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.charWidth, cursorStyle);
-    function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle) {
-      var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row);
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.charWidth, cursorStyle, this.state.sequenceLength);
+    function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength) {
+      var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
       var selectionLayers = overlaps.map(function (overlap, index) {
         if (overlap.start === selectionLayer.start) {
           selectionCursorStart = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth);
@@ -286,9 +291,8 @@ var RowItem = React.createClass({
           selectionCursorEnd = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth);
         }
         var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
-        highlightLayerStyle.width = width;
-        highlightLayerStyle.left = xStart;
-        return (<div key={index} className="selectionLayer" style={highlightLayerStyle}/>);
+        var style = _.assign({}, highlightLayerStyle, {width: width, left: xStart});
+        return (<div key={index} className="selectionLayer" style={style}/>);
       });
       return selectionLayers;
     }
@@ -320,7 +324,6 @@ var RowItem = React.createClass({
     return (
         <div className="rowContainer" 
           style={rowContainerStyle} 
-          onClick={this.onClick} 
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
           onMouseDown={this.onMouseDown}
@@ -361,6 +364,7 @@ var RowItem = React.createClass({
             {this.state.showReverseSequence &&
               <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={this.state.charWidth}/>
             }
+            Thomas 
             {this.state.showAxis &&
               <AxisContainer 
               row={row}

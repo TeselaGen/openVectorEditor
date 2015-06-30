@@ -34,3 +34,9 @@ or in this case:
 React components --(trigger)--> AppActions.js --(update)--> Baobab tree
 
 
+#### To run tests:
+npm run test
+
+Tests are written with mocha using nodes built in assertion library.
+To debug tests (in node inspector that is): npm run testDebug
+

@@ -23827,7 +23827,7 @@
 	        // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
 	      }
 	      appActions.setSelectionLayer(start, end);
-	      appActions.setCursorPosition(-1);
+	      // appActions.setCursorPosition(-1);
 	    }
 	  },
 

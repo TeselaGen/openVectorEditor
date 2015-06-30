@@ -6,10 +6,10 @@ var findOrfsFromSequence = require('./findOrfsFromSequence');
 var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
-//tnr: this is used to generate a very large, multi-featured sequence
+// // tnr: this is used to generate a very large, multi-featured sequence
 // var string = "atgtgtgatg";
 // var reallyLongFakeSequence = "";
-// for (var i = 0; i < 1000; i++) {
+// for (var i = 0; i < 10000; i++) { 
 // 	reallyLongFakeSequence += string;
 // 	if (i % 100 === 0) {
 // 		sequenceData.features[i] = {
@@ -68,15 +68,15 @@ var tree = new baobab({
 			width: 400
 		},
 		selectionLayer: {
-			start: 20,
-			end: 19,
+			start: 12,
+			end: 9,
 			sequenceSelected: true,
 		},
 		mouse: {
 			isDown: false,
 			isSelecting: false,
 		},
-		caretPosition: 8,
+		caretPosition: -1,
 		visibleRows: {
 			start: 0,
 			end: 0,

@@ -2,7 +2,7 @@ var React = require('react');
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem');
 var appActions = require('./actions/appActions');
-var arePositiveIntegers = require('./arePositiveIntegers');
+var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
 // var prepareRowData = require('./prepareRowData');
 var charWidth = require('./editorConstants').charWidth;
@@ -186,7 +186,7 @@ var RowView = React.createClass({
 
   componentWillMount: function (argument) {
     //this is the only place where we use preloadRowStart
-    if (arePositiveIntegers(this.state.preloadRowStart) && this.state.preloadRowStart<this.state.totalRows) {
+    if (arePositiveIntegers([this.state.preloadRowStart]) && this.state.preloadRowStart<this.state.totalRows) {
       this.prepareVisibleRows(this.state.preloadRowStart);
     } else {
       this.prepareVisibleRows(0);
@@ -202,12 +202,12 @@ var RowView = React.createClass({
   },
 
   prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
-    if (!arePositiveIntegers(rowStart)) {
+    if (!arePositiveIntegers([rowStart])) {
       return;
       console.warn('non-integer value passed to prepareVisibleRows');
     }
 
-    if (arePositiveIntegers(newNumberOfRowsToDisplay)){
+    if (arePositiveIntegers([newNumberOfRowsToDisplay])){
       this.numberOfRowsToDisplay = newNumberOfRowsToDisplay;
     } 
     if (!this.numberOfRowsToDisplay) {
@@ -299,7 +299,7 @@ var RowView = React.createClass({
         // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
       }
       appActions.setSelectionLayer(start, end);
-      appActions.setCaretPosition(-1);
+      // appActions.setCaretPosition(-1);
     }
   },
 

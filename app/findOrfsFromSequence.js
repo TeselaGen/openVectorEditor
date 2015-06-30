@@ -1,9 +1,8 @@
-var arePositiveIntegers = require('./arePositiveIntegers');
+var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 
 module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
     if (circular) {
-        debugger;
         var forwardSequence = sequence;
         var backwardSequence = getReverseComplementSequenceString(sequence);
 
@@ -117,7 +116,7 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward) {
     if (typeof(forward) === "undefined") {
         throw('no orf StrandType passed');
     }
-    if (!arePositiveIntegers(frame) || frame > 2) {
+    if (!arePositiveIntegers([frame]) || frame > 2) {
         throw('invalid frame passed');
     }
     if (typeof sequence !== 'string') {

@@ -1,6 +1,6 @@
 var tree = require('../baobabTree');
 var _ = require('lodash');
-var arePositiveIntegers = require('../arePositiveIntegers');
+var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
 // var splice = require("underscore.string/splice");
 // var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
@@ -20,12 +20,17 @@ var actions = {
 	},
 	//takes in either (int,int) or ({start:int,end:int})
 	setSelectionLayer: function(x1, x2) {
-		if (arePositiveIntegers(x1, x2) && arguments.length === 2) {
+		if (typeof x1 === 'object' && arePositiveIntegers([x1.start, x1.end])) {
+			x2 = x1.end;
+			x1 = x1.start;
+		}
+		if (arePositiveIntegers([x1, x2])) {
 			tree.select('vectorEditorState', 'selectionLayer').set({
 				start: x1,
 				end: x2,
 				sequenceSelected: true
 			});
+			appActions.setCaretPosition(-1);
 		} else {
 			tree.select('vectorEditorState', 'selectionLayer').set({
 				start: -1,
@@ -37,7 +42,7 @@ var actions = {
 	},
 	//takes in an object like: {start:int,end:int}
 	setVisibleRows: function(newVisibleRows) {
-		if (newVisibleRows && arePositiveIntegers(newVisibleRows.start, newVisibleRows.end)) {
+		if (newVisibleRows && arePositiveIntegers([newVisibleRows.start, newVisibleRows.end])) {
 			console.log('newVisibleRows: ' + newVisibleRows);
 			var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
 			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
@@ -50,12 +55,12 @@ var actions = {
 		// viewportDimensions.set(newSize);
 	},
 	setAverageRowHeight: function(averageRowHeight) {
-		if (arePositiveIntegers(averageRowHeight)) {
+		if (arePositiveIntegers([averageRowHeight])) {
 			tree.select('vectorEditorState', 'averageRowHeight').set(averageRowHeight);
 		}
 	},
 	setPreloadRowStart: function(preloadRowStart) {
-		if (arePositiveIntegers(preloadRowStart)) {
+		if (arePositiveIntegers([preloadRowStart])) {
 			tree.select('vectorEditorState', 'preloadRowStart').set(preloadRowStart);
 		}
 	},
@@ -69,13 +74,15 @@ var actions = {
 	// },
 
 	deleteSequence: function(rangeToDelete) {
-		if (!rangeToDelete || !arePositiveIntegers(rangeToDelete.start, rangeToDelete.end)) {
+		if (!rangeToDelete || !arePositiveIntegers([rangeToDelete.start, rangeToDelete.end])) {
 			console.warn('can\'t delete sequence due to invalid start and end');
 		}
 		var deletionLength = rangeToDelete.end - rangeToDelete.start + 1;
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+		//tnrtodo get the sequence length and pass it to adjust range to deletion..
+		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
 		//update selection layer due to sequence deletion
-		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers(selectionLayer.start, selectionLayer.end)) {
+		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers([selectionLayer.start, selectionLayer.end])) {
 			var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete);
 			if (newSelectionLayerRange) {
 				this.setSelectionLayer(newSelectionLayerRange.start, newSelectionLayerRange.end);
@@ -141,12 +148,12 @@ var actions = {
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
 		
 		//delete the any seleted sequence
-		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers(selectionLayer.start, selectionLayer.end)) {
+		if (selectionLayer && selectionLayer.sequenceSelected && arePositiveIntegers([selectionLayer.start, selectionLayer.end])) {
 			this.deleteSequence(selectionLayer);
 		}
 		//insert new sequence at the caret position
 		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
-		if (arePositiveIntegers(caretPosition)) { 
+		if (arePositiveIntegers([caretPosition])) { 
 			//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
 			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
 			var newSequenceData = {};
