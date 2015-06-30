@@ -121,7 +121,7 @@ var AnnotationContainer = React.createClass({
 
       annotationsSVG.push(<path 
         onClick={function (event) {
-          appActions.setCaretPosition(-1);
+          // appActions.setCaretPosition(-1);
           appActions.setSelectionLayer(this);
           event.stopPropagation();
         }.bind(annotation)}
