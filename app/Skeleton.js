@@ -5,9 +5,9 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Dashboard = require('./Dashboard.js');
-var SequenceLibrary = require('./SequenceLibrary.js');
-var SequenceEditor2 = require('./SequenceEditor2.js');
-var SequenceEditor3 = require('./SequenceEditor3.js');
+// var SequenceLibrary = require('./SequenceLibrary.js');
+var SequenceEditor = require('./SequenceEditor.js');
+// var SequenceEditor3 = require('./SequenceEditor3.js');
 // var Skeleton = require('./Skeleton.js');
 
 var Login = require('./Login.js');
@@ -70,7 +70,7 @@ var Skeleton = React.createClass({
             <li><Link to="sequences">My Parts</Link></li>
             <li><Link to="sequences">My Designs</Link></li>
             <li><Link to="sequences">My Designs</Link></li>
-            <li><Link to="SequenceEditor2">SequenceEditor2</Link></li>
+            <li><Link to="SequenceEditor">SequenceEditor</Link></li>
             <li><Link to="SequenceEditor3">SequenceEditor3</Link></li>
           </ul>
         </header>

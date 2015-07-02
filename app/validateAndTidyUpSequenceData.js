@@ -5,7 +5,7 @@ module.exports = function validateAndTidyUpSequenceData(sequenceData) {
   	sequenceData = {};
   }
   if (!sequenceData.sequence) {
-  	console.log('no bps, not even an empty string!');
+  	console.log('no bps!');
   	sequenceData.sequence = "";
   }
   if (!sequenceData.features) {

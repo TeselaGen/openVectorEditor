@@ -63,10 +63,10 @@ var actions = {
 			}
 		}
 		// if (!deepEqual(selectionLayer, newSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
-			if (getRidOfCursor) {
-				this.setCaretPosition(-1);
-			}
-			tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
+		if (getRidOfCursor) {
+			this.setCaretPosition(-1);
+		}
+		tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
 		// }
 
 		// viewportDimensions.set(newSize);
@@ -75,13 +75,20 @@ var actions = {
 	setVisibleRows: function(newVisibleRows) {
 		if (newVisibleRows && areNonNegativeIntegers([newVisibleRows.start, newVisibleRows.end])) {
 			// console.log('newVisibleRows: ' + newVisibleRows);
+			var totalRows = tree.facets.totalRows.get();
+			if (newVisibleRows.end > totalRows - 1) {
+				newVisibleRows = {
+					start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
+					end: totalRows - 1
+				}
+			}
 			var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
 			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
 				tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
 				tree.commit();
 			}
 		} else {
-			console.warn("visibleRows object is missing or invalid");
+			throw ("visibleRows object is missing or invalid");
 		}
 		// viewportDimensions.set(newSize);
 	},
@@ -124,13 +131,23 @@ var actions = {
 			} else {
 				this.setSelectionLayer(false);
 				//update the cursor
-				this.setCaretPosition(rangeToDelete.start);
+				if (rangeToDelete.start > rangeToDelete.end) {
+					this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
+				} else {
+					this.setCaretPosition(rangeToDelete.start);
+				}
 			}
 		} else if (tree.select('vectorEditorState', 'caretPosition').get()) {
 			//update the cursor position
-			this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
+			if (rangeToDelete.start > rangeToDelete.end) {
+				this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
+			} else {
+				this.setCaretPosition(rangeToDelete.start);
+			}
+			// this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
 		} else {
-			console.warn('must have a selection layer or a caretPosition');
+			throw 'must have a selection layer or a caretPosition'
+			// console.warn('must have a selection layer or a caretPosition');
 		}
 		var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
 		var newSequenceData = {};
@@ -149,7 +166,7 @@ var actions = {
 			newSequenceData.features = _.map(sequenceData.features, function(annotation) {
 				var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
 				if (newAnnotationRange) {
-					var adjustedAnnotation = annotation;
+					var adjustedAnnotation = _.assign({}, annotation);
 					adjustedAnnotation.start = newAnnotationRange.start;
 					adjustedAnnotation.end = newAnnotationRange.end;
 					return adjustedAnnotation;
@@ -164,7 +181,7 @@ var actions = {
 			newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
 				var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
 				if (newAnnotationRange) {
-					var adjustedAnnotation = annotation;
+					var adjustedAnnotation = _.assign({}, annotation);
 					adjustedAnnotation.start = newAnnotationRange.start;
 					adjustedAnnotation.end = newAnnotationRange.end;
 					return adjustedAnnotation;
@@ -207,10 +224,12 @@ var actions = {
 				newSequenceData.features = _.map(sequenceData.features, function(annotation) {
 					var newAnnotationRange = adjustRangeToSequenceInsert(annotation, caretPosition, sequenceString.length);
 					if (newAnnotationRange) {
-						var adjustedAnnotation = annotation;
+						var adjustedAnnotation = _.assign({}, annotation);
 						adjustedAnnotation.start = newAnnotationRange.start;
 						adjustedAnnotation.end = newAnnotationRange.end;
 						return adjustedAnnotation;
+					} else {
+						throw 'no range!'
 					}
 				});
 			}
@@ -221,7 +240,7 @@ var actions = {
 						end: sequenceString.length
 					});
 					if (newAnnotationRange) {
-						var adjustedAnnotation = annotation;
+						var adjustedAnnotation = _.assign({}, annotation);
 						adjustedAnnotation.start = newAnnotationRange.start;
 						adjustedAnnotation.end = newAnnotationRange.end;
 						return adjustedAnnotation;
@@ -266,7 +285,7 @@ var actions = {
 	},
 	moveCaretShiftHeld: function(numberToMove) {
 		console.log('hey: ');
-		var selectionLayer = _.assign({},tree.select('vectorEditorState', 'selectionLayer').get());
+		var selectionLayer = _.assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
 
 		var sequenceLength = tree.facets.sequenceLength.get();
 		var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
@@ -331,6 +350,23 @@ var actions = {
 		var bpsPerRow = tree.facets.bpsPerRow.get();
 		this.moveCaretShiftHeld(bpsPerRow);
 	},
+	backspacePressed: function() {
+		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
+		if (selectionLayer.selected) {
+			this.deleteSequence(selectionLayer);
+		} else {
+			if (areNonNegativeIntegers([caretPosition])) {
+				this.deleteSequence({
+					start: caretPosition - 1,
+					end: caretPosition - 1
+				});
+			} else {
+				throw 'no caret or selection layer to delete!'
+			}
+		}
+	},
+	
 	// keyPressedInEditor: function(event) {
 	// 	event.preventDefault();
 	// 	if (event) {

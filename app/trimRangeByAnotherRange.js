@@ -13,7 +13,10 @@ module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRang
   var overlaps = getOverlapsOfPotentiallyCircularRanges(rangeToBeTrimmed, trimmingRange, sequenceLength);
   //split the range to be trimmed into pieces if necessary
   if (!overlaps.length) {
-    return rangeToBeTrimmed;
+    return {
+      start: rangeToBeTrimmed.start,
+      end: rangeToBeTrimmed.end
+    };
   }
   //and trim both pieces by the already calculated overlaps
   var splitRangesToBeTrimmed = splitRangeIntoTwoPartsIfItIsCircular(rangeToBeTrimmed, sequenceLength);

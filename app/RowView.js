@@ -133,8 +133,7 @@ var RowView = React.createClass({
 
     if (!visibleRowsContainer.childNodes[0]) {
       //there aren't any rows yet
-      console.log('return early');
-      return; 
+      throw 'no visible rows!!'
     }
     var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height; 
     var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height; 
@@ -300,12 +299,25 @@ var RowView = React.createClass({
     var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
     var start;
     var end;
-      if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
-        appActions.setCaretPosition(caretPositionOfDrag);
-        appActions.setSelectionLayer(false);
+    if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
+      appActions.setCaretPosition(caretPositionOfDrag);
+      appActions.setSelectionLayer(false);
+    } else {
+      var newSelectionLayer;
+      if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
+        newSelectionLayer = {
+          start: this.fixedCaretPositionOnEditorDragStart,
+          end: caretPositionOfDrag - 1,
+          cursorAtEnd: true,
+        }
+      } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
+        newSelectionLayer = {
+          start: caretPositionOfDrag,
+          end: this.fixedCaretPositionOnEditorDragStart - 1,
+          cursorAtEnd: false,
+        }
       } else {
-        var newSelectionLayer;
-        if (this.fixedCaretPositionIsStartOnEditorDragStart) {
+        if (caretPositionOfDrag > this.fixedCaretPositionOnEditorDragStart) {
           newSelectionLayer = {
             start: this.fixedCaretPositionOnEditorDragStart,
             end: caretPositionOfDrag - 1,
@@ -318,8 +330,9 @@ var RowView = React.createClass({
             cursorAtEnd: false,
           }
         }
-        appActions.setSelectionLayer(newSelectionLayer);
       }
+      appActions.setSelectionLayer(newSelectionLayer);
+    }
   },
 
   handleEditorDragStart: function(event, ui) {
@@ -330,7 +343,7 @@ var RowView = React.createClass({
       // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
       if (this.state.selectionLayer.start === caretPosition) {
         this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.end + 1; 
-        this.fixedCaretPositionIsStartOnEditorDragStart = false;
+        this.fixedCaretPositionOnEditorDragStartType = 'end';
 
         //plus one because the cursor position will be 1 more than the selectionLayer.end
         //imagine selection from 
@@ -341,12 +354,12 @@ var RowView = React.createClass({
         //which is selection.end+1
       } else {
         this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.start;
-        this.fixedCaretPositionIsStartOnEditorDragStart = true;
+        this.fixedCaretPositionOnEditorDragStartType = 'start';
       }
     } else {
-      this.circularSelectionOnEditorDragStart = false;
+      // this.circularSelectionOnEditorDragStart = false;
       this.fixedCaretPositionOnEditorDragStart = caretPosition;
-      this.fixedCaretPositionIsStartOnEditorDragStart = true;
+      this.fixedCaretPositionOnEditorDragStartType = 'caret';
       // console.log('caretPosition '+caretPosition)
     }
   },
