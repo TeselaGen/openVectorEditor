@@ -15,11 +15,12 @@ var SequenceEditor2 = React.createClass({
   facets: {
     sequenceLength: 'sequenceLength',
     bpsPerRow: 'bpsPerRow',
-    orfData: 'orfData',
+    // orfData: 'orfData',
     totalRows: 'totalRows',
   },
   cursors: {
     caretPosition: ['vectorEditorState', 'caretPosition'],
+    visibleRows: ['vectorEditorState', 'visibleRows'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
   },
   // cursors: {
@@ -28,17 +29,43 @@ var SequenceEditor2 = React.createClass({
   //   highlightLayer: ['vectorEditorState', 'highlightLayer'],
   // },
 
-  componentDidMount: function (argument) {
+  componentDidMount: function () {
     //bind a bunch of keyboard shortcuts we're interested in catching
     //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
-    this.bindShortcut(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',], function (event) { // Handle shortcut 
-
-      console.log(String.fromCharCode(event.charCode));
-      // insertSequenceString: function (sequenceString) {
-    //trigger an insert action
-    appActions.insertSequenceString(String.fromCharCode(event.charCode));
-  // },
-
+    this.bindShortcut(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut 
+      appActions.insertSequenceString(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('left', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretLeftOne(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('right', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretRightOne(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('up', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretUpARow(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('down', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretDownARowShiftHeld(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('shift+left', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretLeftOneShiftHeld(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('shift+right', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretRightOneShiftHeld(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('shift+up', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretUpARowShiftHeld(String.fromCharCode(event.charCode));
+    });
+    this.bindShortcut('shift+down', function(event) { // Handle shortcut 
+      //trigger a caret left
+      appActions.moveCaretDownARowShiftHeld(String.fromCharCode(event.charCode));
     });
   },
 
@@ -56,9 +83,10 @@ var SequenceEditor2 = React.createClass({
         <br/>
         sequence length: {this.state.sequenceLength}
         <br/>
+        visible rows: {this.state.visibleRows.start + ' - ' + this.state.visibleRows.end}
+        <br/>
         bpsPerRow:  {this.state.bpsPerRow}
         <br/>
-        orfData:  {this.state.orfData}
         <br/>
         totalRows:  {this.state.totalRows}
         <RowView />

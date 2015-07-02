@@ -76,7 +76,6 @@ describe('getOverlapsOfPotentiallyCircularRanges', function() {
 		}, 1000), []);
 	});
 	it('does return overlaps for overlapping ranges', function() {
-		debugger;
 		assert.deepEqual(getOverlapsOfPotentiallyCircularRanges({
 			start: 0,
 			end: 100
@@ -95,8 +94,11 @@ describe('getOverlapsOfPotentiallyCircularRanges', function() {
 			start: 0,
 			end: 24
 		}, 25),[{
-			start: 90,
-			end: 100
+			start: 0,
+			end: 9
+		},{
+			start: 12,
+			end: 24
 		}]);
 		assert.deepEqual(getOverlapsOfPotentiallyCircularRanges({
 			start: 900,

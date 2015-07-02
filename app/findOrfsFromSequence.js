@@ -1,8 +1,8 @@
-var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
+var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 
 module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
-    if (circular) {
+    // if (circular) {
         var forwardSequence = sequence;
         var backwardSequence = getReverseComplementSequenceString(sequence);
 
@@ -92,12 +92,12 @@ module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSi
             }
         });
         return orfsWithNoDuplicates;
-    } else {
-        //get the aa's for the 3 frames
-        getAminoAcidsFromSequenceString(sequence);
-        getAminoAcidsFromSequenceString(sequence);
-        getAminoAcidsFromSequenceString(sequence);
-    }
+    // } else {
+    //     //get the aa's for the 3 frames
+    //     getAminoAcidsFromSequenceString(sequence);
+    //     getAminoAcidsFromSequenceString(sequence);
+    //     getAminoAcidsFromSequenceString(sequence);
+    // }
 };
 
 /**
@@ -116,7 +116,7 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward) {
     if (typeof(forward) === "undefined") {
         throw('no orf StrandType passed');
     }
-    if (!arePositiveIntegers([frame]) || frame > 2) {
+    if (!areNonNegativeIntegers([frame]) || frame > 2) {
         throw('invalid frame passed');
     }
     if (typeof sequence !== 'string') {

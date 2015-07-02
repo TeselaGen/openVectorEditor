@@ -1,4 +1,4 @@
-// var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
+// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 
 //note: anotherRange is assumed to be non-circular! (this makes sense because we're never inserting a circular range...)

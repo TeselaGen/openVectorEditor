@@ -10,6 +10,8 @@
     "bson-objectid": "^1.1.1",
     "classnames": "^1.2.0",
     "css-loader": "^0.10.1",
+    "deep-equal": "^1.0.0",
+    "is-integer": "^1.0.4",
     "jsx-loader": "^0.13.1",
     "lodash": "^3.6.0",
     "object-assign": "^2.0.0",

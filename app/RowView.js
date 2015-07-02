@@ -2,7 +2,7 @@ var React = require('react');
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem');
 var appActions = require('./actions/appActions');
-var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
+var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
 // var prepareRowData = require('./prepareRowData');
 var charWidth = require('./editorConstants').charWidth;
@@ -143,17 +143,27 @@ var RowView = React.createClass({
     // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
     // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
     //check if the visible rows fill up the viewport
+    var v = visibleRowsContainer.getBoundingClientRect()
+    var t = infiniteContainer.getBoundingClientRect()
+    console.log('visibleRowsContainer.getBoundingClientRect(): ', 'top', v.top, 'bottom', v.bottom, 'height', v.height);
+    console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
+    console.log('infiniteContainer.getBoundingClientRect(): ', 'top', t.top, 'bottom', t.bottom, 'height', t.height);
+
     if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.state.viewportDimensions.height) {
+      console.log('HEEEEEEEEEEEET')
       if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
         //load another row to the bottom
         this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
       } else {
         //there aren't more rows that we can load at the bottom so we load more at the top
-        this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);  
+        if (this.rowStart - 1 > 0) {
+          this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);  
+        } else {
+          this.prepareVisibleRows(0, this.numberOfRowsToDisplay);  
+        }
       }
     } else if (false) {
       //maybe put logic in here to reshrink the number of rows to display... maybe...
-
     //check if the visible container
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
       //scroll to align the tops of the boxes
@@ -166,7 +176,7 @@ var RowView = React.createClass({
       adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
       console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
       this.adjustmentScroll = true;
-      infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustInfiniteContainerByThisAmount;
+      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
     } else {
       if (this.thirdRowElement) {
         // console.log('thirdrowblind');
@@ -178,15 +188,16 @@ var RowView = React.createClass({
         adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
         console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
         infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
-        // this.adjustmentScroll = true
       }
     }
+      console.log('infiniteContainer.scrollTop2: ' + infiniteContainer.scrollTop);
+
     
   },
 
   componentWillMount: function (argument) {
     //this is the only place where we use preloadRowStart
-    if (arePositiveIntegers([this.state.preloadRowStart]) && this.state.preloadRowStart<this.state.totalRows) {
+    if (areNonNegativeIntegers([this.state.preloadRowStart]) && this.state.preloadRowStart<this.state.totalRows) {
       this.prepareVisibleRows(this.state.preloadRowStart);
     } else {
       this.prepareVisibleRows(0);
@@ -202,12 +213,12 @@ var RowView = React.createClass({
   },
 
   prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
-    if (!arePositiveIntegers([rowStart])) {
+    if (!areNonNegativeIntegers([rowStart])) {
       return;
       console.warn('non-integer value passed to prepareVisibleRows');
     }
 
-    if (arePositiveIntegers([newNumberOfRowsToDisplay])){
+    if (areNonNegativeIntegers([newNumberOfRowsToDisplay])){
       this.numberOfRowsToDisplay = newNumberOfRowsToDisplay;
     } 
     if (!this.numberOfRowsToDisplay) {
@@ -223,10 +234,12 @@ var RowView = React.createClass({
     // rowData.slice(rowStart, this.preloadRowEnd + 1);
     // appActions.setPreloadRowStart(rowStart);
     this.rowStart = rowStart;
-    appActions.setVisibleRows({
-      start: rowStart,
-      end: this.preloadRowEnd + 1
-    });
+    if (!this.state.visibleRows || this.state.visibleRows.start !== rowStart && this.state.visibleRows.end !== this.preloadRowEnd + 1) {
+      appActions.setVisibleRows({
+        start: rowStart,
+        end: this.preloadRowEnd + 1
+      });
+    }
 
     // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
   },
@@ -282,34 +295,43 @@ var RowView = React.createClass({
 
   handleEditorDrag: function(event, ui) {
     // console.log('dragging!');
+    //note this method relies on variables that are set in the handleEditorDragStart method!
     this.editorBeingDragged = true;
     var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
     var start;
     var end;
-    if (caretPositionOfDrag === this.fixedCursorPositionOnEditorDrag) {
-      appActions.setCaretPosition(caretPositionOfDrag);
-      appActions.setSelectionLayer(false);
-    } else {
-      if (caretPositionOfDrag>this.fixedCursorPositionOnEditorDrag) {
-        start = this.fixedCursorPositionOnEditorDrag;
-        end = caretPositionOfDrag - 1;
+      if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
+        appActions.setCaretPosition(caretPositionOfDrag);
+        appActions.setSelectionLayer(false);
       } else {
-        start = caretPositionOfDrag;
-        end = this.fixedCursorPositionOnEditorDrag - 1;
-        // console.log('this.state.selectionLayer.sequenceSelected '+this.state.selectionLayer.sequenceSelected)
+        var newSelectionLayer;
+        if (this.fixedCaretPositionIsStartOnEditorDragStart) {
+          newSelectionLayer = {
+            start: this.fixedCaretPositionOnEditorDragStart,
+            end: caretPositionOfDrag - 1,
+            cursorAtEnd: true,
+          }
+        } else {
+          newSelectionLayer = {
+            start: caretPositionOfDrag,
+            end: this.fixedCaretPositionOnEditorDragStart - 1,
+            cursorAtEnd: false,
+          }
+        }
+        appActions.setSelectionLayer(newSelectionLayer);
       }
-      appActions.setSelectionLayer(start, end);
-      // appActions.setCaretPosition(-1);
-    }
   },
 
   handleEditorDragStart: function(event, ui) {
     // console.log('drag start!');
     // console.log('event: ' + event.target);
     var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
-    if (event.target.className === "cursor" && this.state.selectionLayer.sequenceSelected) {
+    if (event.target.className === "cursor" && this.state.selectionLayer.selected) {
+      // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
       if (this.state.selectionLayer.start === caretPosition) {
-        this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.end + 1; 
+        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.end + 1; 
+        this.fixedCaretPositionIsStartOnEditorDragStart = false;
+
         //plus one because the cursor position will be 1 more than the selectionLayer.end
         //imagine selection from 
         //0 1 2  <--possible cursor positions
@@ -318,10 +340,13 @@ var RowView = React.createClass({
         //so the caretPosition for the end of the selection is 1! 
         //which is selection.end+1
       } else {
-        this.fixedCursorPositionOnEditorDrag = this.state.selectionLayer.start;
+        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.start;
+        this.fixedCaretPositionIsStartOnEditorDragStart = true;
       }
     } else {
-      this.fixedCursorPositionOnEditorDrag = caretPosition;
+      this.circularSelectionOnEditorDragStart = false;
+      this.fixedCaretPositionOnEditorDragStart = caretPosition;
+      this.fixedCaretPositionIsStartOnEditorDragStart = true;
       // console.log('caretPosition '+caretPosition)
     }
   },

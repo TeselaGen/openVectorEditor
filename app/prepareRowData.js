@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
+var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 function prepareRowData(sequenceData, bpsPerRow) {
   var sequenceLength = sequenceData.sequence.length;
@@ -34,6 +34,9 @@ function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
   }
 
   _.each(annotations, function(annotation) {
+    if (!annotation) {
+      throw 'no annotation!'
+    }
     mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap);
   });
   return annotationsToRowsMap;
@@ -184,7 +187,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
 
 
 function splitRangeOnOrigin(range, sequenceLength) {
-  if (!arePositiveIntegers([range.start, range.end, sequenceLength])) {
+  if (!areNonNegativeIntegers([range.start, range.end, sequenceLength])) {
     debugger;
     console.error("invalid inputs!!");
   }

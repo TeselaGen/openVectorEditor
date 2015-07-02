@@ -7,20 +7,20 @@ var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSe
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 
 // // tnr: this is used to generate a very large, multi-featured sequence
-// var string = "atgtgtgatg";
+// var string = "atgtagagagagagaggtgatg";
 // var reallyLongFakeSequence = "";
-// for (var i = 0; i < 10000; i++) { 
+// for (var i = 1; i < 100000; i++) { 
 // 	reallyLongFakeSequence += string;
 // 	if (i % 100 === 0) {
-// 		sequenceData.features[i] = {
+// 		sequenceData.features.push({
 // 			id: i,
-// 			start: i,
-// 			end: i + 100,
+// 			start: i*10,
+// 			end: i*10 + 100,
 // 			name: 'cooljim',
 // 			color: 'green',
 // 			forward: true,
 // 			annotationType: "feature"
-// 		};
+// 		});
 // 	}
 // }
 // sequenceData.sequence = reallyLongFakeSequence;
@@ -53,7 +53,7 @@ var tree = new baobab({
 		// FONT_SIZE: 14,
 		ANNOTATION_HEIGHT: 15,
 		minimumOrfSize: 50,
-
+		tickSpacing: 10,
 		SPACE_BETWEEN_ANNOTATIONS: 3,
 		preloadRowStart: 0,
 		// preloadRowEnd: 9,
@@ -65,12 +65,13 @@ var tree = new baobab({
 		showReverseSequence: true,
 		viewportDimensions: {
 			height: 500, //come back and make these dynamic
-			width: 400
+			width: 500
 		},
 		selectionLayer: {
 			start: 12,
 			end: 9,
-			sequenceSelected: true,
+			selected: true,
+			cursorAtEnd: true
 		},
 		mouse: {
 			isDown: false,
@@ -95,19 +96,20 @@ var tree = new baobab({
 	// },
 }, {
 	syncwrite: true,
+	immutable: true,
 	validate: function (tree, gaga) {
 	},
 	facets: {
-		orfData: {
-			cursors: {
-				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-				circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-				minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
-			},
-			get: function(state) {
-				return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
-			}
-		},
+		// orfData: {
+		// 	cursors: {
+		// 		sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+		// 		circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+		// 		minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
+		// 	},
+		// 	get: function(state) {
+		// 		return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
+		// 	}
+		// },
 		bpsPerRow: {
 			cursors: {
 				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
@@ -131,7 +133,7 @@ var tree = new baobab({
 			},
 			facets: {
 				bpsPerRow: 'bpsPerRow',
-				orfData: 'orfData',
+				// orfData: 'orfData',
 			},
 			get: function(state) {
 				// var self = this;
@@ -141,7 +143,7 @@ var tree = new baobab({
 				// this.tree.commit();
 
 				// }, 10);
-				state.sequenceData.orfs = state.orfData;
+				// state.sequenceData.orfs = state.orfData;
 				return prepareRowData(state.sequenceData, state.bpsPerRow);
 			}
 		},

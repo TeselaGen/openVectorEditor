@@ -1,4 +1,4 @@
-// var arePositiveIntegers = require('validate.io-nonnegative-integer-array');
+// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
 var areRangesValid = require('./areRangesValid');

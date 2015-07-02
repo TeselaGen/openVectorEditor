@@ -47,13 +47,13 @@ var AxisContainer = React.createClass({
   // },
 
   render: function () {
-    var {row, bpsPerRow, charWidth, annotationHeight} = this.props;
+    var {row, bpsPerRow, charWidth, annotationHeight, tickSpacing} = this.props;
     var {xStart, width} = getXStartAndWidthOfRowAnnotation(row, bpsPerRow, charWidth);
     //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
     //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
     function calculateTickMarkPositionsForGivenRow (tickSpacing, row) {
       var rowLength = row.end - row.start;
-      var firstTickOffsetFromRowStart = row.start % tickSpacing;
+      var firstTickOffsetFromRowStart = tickSpacing - (row.start % tickSpacing);
       var arrayOfTickMarkPositions = [];
       for (var tickMarkPositions = firstTickOffsetFromRowStart; tickMarkPositions < rowLength; tickMarkPositions+=tickSpacing) {
         arrayOfTickMarkPositions.push(tickMarkPositions);
@@ -62,7 +62,7 @@ var AxisContainer = React.createClass({
     }
     xEnd = xStart + width;
     yStart = 0;
-    var tickMarkPositions = calculateTickMarkPositionsForGivenRow(10,row);
+    var tickMarkPositions = calculateTickMarkPositionsForGivenRow(tickSpacing,row);
     tickMarkSVG = [];
     tickMarkPositions.forEach(function (tickMarkPosition) {
        var xCenter = getXCenterOfRowAnnotation({start: tickMarkPosition, end: tickMarkPosition}, bpsPerRow, charWidth);
@@ -202,6 +202,7 @@ var RowItem = React.createClass({
     charWidth: ['vectorEditorState', 'charWidth'],
     CHAR_HEIGHT: ['vectorEditorState', 'CHAR_HEIGHT'], //potentially unneeded
     ANNOTATION_HEIGHT: ['vectorEditorState', 'ANNOTATION_HEIGHT'],
+    tickSpacing: ['vectorEditorState', 'tickSpacing'],
     SPACE_BETWEEN_ANNOTATIONS: ['vectorEditorState', 'SPACE_BETWEEN_ANNOTATIONS'],
     showFeatures: ['vectorEditorState', 'showFeatures'],
     showParts: ['vectorEditorState', 'showParts'],
@@ -364,10 +365,10 @@ var RowItem = React.createClass({
             {this.state.showReverseSequence &&
               <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={this.state.charWidth}/>
             }
-            Thomas 
             {this.state.showAxis &&
               <AxisContainer 
               row={row}
+              tickSpacing={this.state.tickSpacing}
               charWidth={this.state.charWidth} 
               annotationHeight={this.state.ANNOTATION_HEIGHT} 
               bpsPerRow={this.state.bpsPerRow}/>
