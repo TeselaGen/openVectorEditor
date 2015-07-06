@@ -1,5 +1,5 @@
 //takes a potentially circular range and returns an array containing the range split on the origin
-module.exports = function splitRangeIntoTwoPartsIfItIsCircular(range, maxLength) {
+module.exports = function splitRangeIntoTwoPartsIfItIsCircular(range, maxRangeLength) {
   if (range.start <= range.end) {
     //the range isn't circular, so we just return the range
     return [{
@@ -13,7 +13,7 @@ module.exports = function splitRangeIntoTwoPartsIfItIsCircular(range, maxLength)
       end: range.end
     }, {
       start: range.start,
-      end: maxLength - 1
+      end: maxRangeLength - 1
     }];
   }
 };

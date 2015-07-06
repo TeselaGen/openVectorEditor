@@ -9,6 +9,10 @@ var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAno
 var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
 var adjustRangeToSequenceInsert = require('../adjustRangeToSequenceInsert');
 var spliceString = require('string-splice');
+var getSubstringByRange = require('get-substring-by-range');
+var areRangesValid = require('../areRangesValid');
+var filterSequenceString = require('../filterSequenceString');
+var validateAndTidyUpSequenceData = require('../validateAndTidyUpSequenceData');
 
 var actions = {
 	changeViewportSize: function(newSize) {
@@ -29,7 +33,7 @@ var actions = {
 		// if (typeof x1 === 'object' && areNonNegativeIntegers([x1.start, x1.end])) {
 		// 	x2 = x1.end;
 		// 	x1 = x1.start;
-		// 	//if the cursor 
+		// 	//if the cursor
 		// 	// cursorAtEnd = true;
 		// }
 		var getRidOfCursor;
@@ -197,9 +201,12 @@ var actions = {
 		tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
 		this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 	},
-
 	insertSequenceString: function(sequenceString) {
-		if (!sequenceString || !sequenceString.length) {
+		this.insertSequenceData({sequence: sequenceString});
+	},
+
+	insertSequenceData: function(sequenceDataToInsert) {
+		if (!sequenceDataToInsert || !sequenceDataToInsert.sequence.length) {
 			console.warn("must pass a valid sequence string");
 			return;
 		}
@@ -215,44 +222,13 @@ var actions = {
 		if (areNonNegativeIntegers([caretPosition])) {
 			//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
 			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-			var newSequenceData = {};
-			if (sequenceData.sequence) {
-				//splice the underlying sequence
-				newSequenceData.sequence = spliceString(sequenceData.sequence, caretPosition, 0, sequenceString);
-			}
-			if (sequenceData.features) {
-				newSequenceData.features = _.map(sequenceData.features, function(annotation) {
-					var newAnnotationRange = adjustRangeToSequenceInsert(annotation, caretPosition, sequenceString.length);
-					if (newAnnotationRange) {
-						var adjustedAnnotation = _.assign({}, annotation);
-						adjustedAnnotation.start = newAnnotationRange.start;
-						adjustedAnnotation.end = newAnnotationRange.end;
-						return adjustedAnnotation;
-					} else {
-						throw 'no range!'
-					}
-				});
-			}
-			if (sequenceData.parts) {
-				newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
-					var newAnnotationRange = adjustRangeToSequenceInsert(annotation, {
-						start: caretPosition,
-						end: sequenceString.length
-					});
-					if (newAnnotationRange) {
-						var adjustedAnnotation = _.assign({}, annotation);
-						adjustedAnnotation.start = newAnnotationRange.start;
-						adjustedAnnotation.end = newAnnotationRange.end;
-						return adjustedAnnotation;
-					}
-				});
-			}
+			var newSequenceData = _.assign({},sequenceData,insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition))
 			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
 			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
 			console.log('newdata set');
 			//update the caret position to be at the end of the newly inserted sequence
-			this.setCaretPosition(sequenceString.length + caretPosition);
+			this.setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
 		} else {
 			console.warn('nowhere to put the inserted sequence..');
 			return;
@@ -261,6 +237,37 @@ var actions = {
 		//insert the sequence
 		// tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
+		function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
+			sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
+			existingSequenceData = validateAndTidyUpSequenceData(existingSequenceData);
+			var newSequenceData = validateAndTidyUpSequenceData({}); //makes a new blank sequence
+
+			var insertLength = sequenceDataToInsert.sequence.length;
+			//splice the underlying sequence
+			newSequenceData.sequence = spliceString(existingSequenceData.sequence, caretPosition, 0, sequenceDataToInsert.sequence);
+			newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(existingSequenceData.features, caretPosition, insertLength));
+			newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(existingSequenceData.parts, caretPosition, insertLength));
+			newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(sequenceDataToInsert.features, 0, caretPosition));
+			newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(sequenceDataToInsert.parts, 0, caretPosition));
+			return newSequenceData;
+		}
+
+		function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
+			if (!annotationsToBeAdjusted) {
+				debugger;
+			}
+			return annotationsToBeAdjusted.map(function(annotation) {
+				var newAnnotationRange = adjustRangeToSequenceInsert(annotation, insertStart, insertLength);
+				if (newAnnotationRange) {
+					var adjustedAnnotation = _.assign({}, annotation);
+					adjustedAnnotation.start = newAnnotationRange.start;
+					adjustedAnnotation.end = newAnnotationRange.end;
+					return adjustedAnnotation;
+				} else {
+					throw 'no range!'
+				}
+			})
+		}
 	},
 	refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
@@ -366,7 +373,67 @@ var actions = {
 			}
 		}
 	},
-	
+	copySelection: function() {
+		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+		var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+		var clipboardDataCursor = tree.select('vectorEditorState', 'clipboardData')
+		if (!clipboardDataCursor) {
+			throw 'no clipboard cursor..'
+		}
+		if (sequenceData && selectionLayer.selected) {
+			clipboardDataCursor.set(copyRangeOfSequenceData(sequenceData, selectionLayer));
+
+			function copyRangeOfSequenceData(sequenceData, rangeToCopy) {
+				if (sequenceData.sequence !== '' && !sequenceData.sequence) {
+					throw 'invalid sequence data'
+				}
+				var sequenceLength = sequenceData.sequence.length;
+				if (!areRangesValid([rangeToCopy], sequenceLength)) {
+					throw 'invalid range passed'
+				}
+				var newSequenceData = {};
+				newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);
+				newSequenceData.features = (sequenceData.features, rangeToCopy, sequenceLength);
+				newSequenceData.parts = (sequenceData.parts, rangeToCopy, sequenceLength);
+
+				function copyAnnotationsByRange(annotations, rangeToCopy, sequenceLength) {
+					var copiedAnnotations = []
+					annotations.forEach(function(annotation) {
+						var overlaps = getOverlapsOfPotentiallyCircularRanges(annotation, rangeToCopy, sequenceLength);
+						var collapsedOverlaps = collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength);
+						if (!allowPartialAnnotationsOnCopy) {
+							//filter out any annotations that aren't whole
+							collapsedOverlaps = collapsedOverlaps.filter(function(overlap) {
+								return (overlap.start === annotation.start && overlap.end === annotation.end);
+							});
+						}
+						if (collapsedOverlaps.length > 1) {
+							//tnrtodo: add a new bson id for the 2nd annotation!
+							console.log('splitting annotation on copy!');
+						}
+						collapsedOverlaps.forEach(function(collapsedOverlap) {
+							copiedAnnotations.push(_.assign({}, annotation, collapsedOverlaps));
+						});
+
+					});
+				}
+				return _.assign({}, sequenceData, newSequenceData); //merge any other properties that exist in sequenceData into newSequenceData
+			}
+		}
+	},
+
+	pasteSequenceString: function(sequenceString) {
+		//compare the sequenceString being pasted in with what's already stored in the clipboard
+		var clipboardData = tree.select('vectorEditorState', 'clipboardData').get();
+		if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
+			// insert clipboardData
+			this.insertSequenceData(clipboardData);
+		} else {
+			//clean up the sequence string and insert it
+			this.insertSequenceString(filterSequenceString(sequenceString));
+		}
+	},
+
 	// keyPressedInEditor: function(event) {
 	// 	event.preventDefault();
 	// 	if (event) {

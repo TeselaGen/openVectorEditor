@@ -2,14 +2,14 @@ var areRangesValid = require('./areRangesValid');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 //returns an array of the overlaps between two potentially circular ranges
-module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxLength) {
-  if (!areRangesValid([rangeA, rangeB], maxLength)) {
+module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
+  if (!areRangesValid([rangeA, rangeB], maxRangeLength)) {
     // console.warn("unable to calculate ranges of  inputs");
     throw 'invalid ranges passed in!'
     // return [];
   }
-  var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxLength);
-  var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxLength);
+  var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
+  var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxRangeLength);
 
   var overlaps = [];
   normalizedRangeA.forEach(function(nonCircularRangeA) {

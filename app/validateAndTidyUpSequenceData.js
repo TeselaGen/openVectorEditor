@@ -8,11 +8,11 @@ module.exports = function validateAndTidyUpSequenceData(sequenceData) {
   	console.log('no bps!');
   	sequenceData.sequence = "";
   }
-  if (!sequenceData.features) {
+  if (!Array.isArray(sequenceData.features)) {
   	console.log('no features array!');
   	sequenceData.features = [];
   }
-  if (!sequenceData.parts) {
+  if (!Array.isArray(sequenceData.parts)) {
   	console.log('no parts array!');
   	sequenceData.parts = [];
   }

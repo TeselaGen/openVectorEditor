@@ -5,25 +5,26 @@ var prepareRowData = require('./prepareRowData');
 var findOrfsFromSequence = require('./findOrfsFromSequence');
 var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
+var getSubstringByRange = require('get-substring-by-range');
 
 // // tnr: this is used to generate a very large, multi-featured sequence
-var string = "atgtagagagagagaggtgatg";
-var reallyLongFakeSequence = "";
-for (var i = 1; i < 1000; i++) { 
-	reallyLongFakeSequence += string;
-	if (i % 100 === 0) {
-		sequenceData.features.push({
-			id: i,
-			start: i*10,
-			end: i*10 + 100,
-			name: 'cooljim',
-			color: 'green',
-			forward: true,
-			annotationType: "feature"
-		});
-	}
-}
-sequenceData.sequence = reallyLongFakeSequence;
+// var string = "atgtagagagagagaggtgatg";
+// var reallyLongFakeSequence = "";
+// for (var i = 1; i < 1000; i++) {
+// 	reallyLongFakeSequence += string;
+// 	if (i % 100 === 0) {
+// 		sequenceData.features.push({
+// 			id: i,
+// 			start: i*10,
+// 			end: i*10 + 100,
+// 			name: 'cooljim',
+// 			color: 'green',
+// 			forward: true,
+// 			annotationType: "feature"
+// 		});
+// 	}
+// }
+// sequenceData.sequence = reallyLongFakeSequence;
 
 
 // var fakeSequences = makeFakeSequences(20);
@@ -83,6 +84,7 @@ var tree = new baobab({
 			end: 0,
 		},
 		sequenceData: validateAndTidyUpSequenceData(sequenceData),
+		clipboardData: null
 	},
 	// // sequencesMegaStore: fakeSequences,
 	// partsMegaStore: { //
@@ -168,7 +170,20 @@ var tree = new baobab({
 				// debugger;
 					console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
 				if (state.rowData && state.visibleRows) {
-					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end);
+					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end + 1);
+				}
+			}
+		},
+		selectedSequenceString: {
+			cursors: {
+				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+				selectionLayer: ['vectorEditorState', 'selectionLayer'],
+			},
+			get: function(state) {
+				if (state.sequence && state.selectionLayer && state.selectionLayer.selected) {
+					return getSubstringByRange(state.sequence,state.selectionLayer);
+				} else {
+					return '';
 				}
 			}
 		}

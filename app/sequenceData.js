@@ -15,7 +15,7 @@ module.exports = {
     "dateModified" : "2015-06-29T03:57:33.235Z",
     "dateCreated" : "2015-06-26T18:31:29.358Z",
     "user_id" : "54220bb6f54aa7432861e7dd",
-    "features" : [ 
+    "features" : [
         {
             "name" : "house",
             "type" : "misc_feature",
@@ -25,7 +25,7 @@ module.exports = {
             "strand" : 1,
             "notes" : [],
             "color": 'green'
-        }, 
+        },
         // {
         //     "name" : "weer",
         //     "type" : "misc_feature",
@@ -56,7 +56,7 @@ module.exports = {
 //     "description" : "",
 //     "name" : "pj5_00001",
 //     "user_id" : "54220bb6f54aa7432861e7dd",
-//     "features" : [ 
+//     "features" : [
 //         {
 //             "notes" : [],
 //             "strand" : -1,
@@ -65,7 +65,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cab5",
 //             "type" : "CDS",
 //             "name" : "araC"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -74,7 +74,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cab6",
 //             "type" : "protein_bind",
 //             "name" : "operator O2"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : -1,
@@ -83,7 +83,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cab7",
 //             "type" : "promoter",
 //             "name" : "araC promoter"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -92,7 +92,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cab8",
 //             "type" : "protein_bind",
 //             "name" : "operator O1"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -101,7 +101,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cab9",
 //             "type" : "misc_binding",
 //             "name" : "CAP site"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -110,7 +110,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14caba",
 //             "type" : "protein_bind",
 //             "name" : "Operator I2 and I1"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -119,7 +119,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cabb",
 //             "type" : "promoter",
 //             "name" : "pBAD promoter"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -128,9 +128,9 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cabc",
 //             "type" : "RBS",
 //             "name" : "RBS"
-//         }, 
+//         },
 //         {
-//             "notes" : [ 
+//             "notes" : [
 //                 {
 //                     "quoted" : true,
 //                     "value" : "4",
@@ -143,7 +143,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cabd",
 //             "type" : "CDS",
 //             "name" : "GFPuv"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -152,7 +152,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cabe",
 //             "type" : "misc_feature",
 //             "name" : "XhoI_silent_mutation"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -161,9 +161,9 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cabf",
 //             "type" : "misc_feature",
 //             "name" : "BamHI_silent_mutation"
-//         }, 
+//         },
 //         {
-//             "notes" : [ 
+//             "notes" : [
 //                 {
 //                     "quoted" : true,
 //                     "value" : "4",
@@ -176,7 +176,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cac0",
 //             "type" : "CDS",
 //             "name" : "signal_peptide"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -185,7 +185,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cac1",
 //             "type" : "terminator",
 //             "name" : "dbl term"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : -1,
@@ -194,7 +194,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cac2",
 //             "type" : "rep_origin",
 //             "name" : "pSC101**"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : 1,
@@ -203,7 +203,7 @@ module.exports = {
 //             "id" : "55944b393ab644000a14cac3",
 //             "type" : "terminator",
 //             "name" : "T0"
-//         }, 
+//         },
 //         {
 //             "notes" : [],
 //             "strand" : -1,

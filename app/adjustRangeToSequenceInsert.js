@@ -1,7 +1,6 @@
 // var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 
-//note: anotherRange is assumed to be non-circular! (this makes sense because we're never inserting a circular range...)
 module.exports = function adjustRangeToSequenceInsert(rangeToBeAdjusted, insertStart, insertLength) {
   var newRange = {
     start: rangeToBeAdjusted.start,
