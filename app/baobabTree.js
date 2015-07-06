@@ -59,6 +59,7 @@ var tree = new baobab({
 		preloadRowStart: 0,
 		// preloadRowEnd: 9,
 		showOrfs: true,
+		allowPartialAnnotationsOnCopy: false,
 		showCutsites: true,
 		showParts: true,
 		showFeatures: true,

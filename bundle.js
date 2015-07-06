@@ -53,16 +53,16 @@
 	var Dashboard = __webpack_require__(198);
 	// var SequenceLibrary = require('./SequenceLibrary.js');
 	var SequenceEditor = __webpack_require__(200);
-	var Skeleton = __webpack_require__(261);
+	var Skeleton = __webpack_require__(287);
 
-	var Login = __webpack_require__(262);
+	var Login = __webpack_require__(288);
 	var Logout = __webpack_require__(1);
 	var Authentication = __webpack_require__(199);
-	var About = __webpack_require__(263);
+	var About = __webpack_require__(289);
 	var auth = __webpack_require__(158);
 
-	var baobabMixin = __webpack_require__(201).root;
-	var baobabTree = __webpack_require__(217);
+	var baobabMixin = __webpack_require__(277).root;
+	var baobabTree = __webpack_require__(203);
 
 	var App = React.createClass({displayName: "App",
 
@@ -94,7 +94,7 @@
 	      React.createElement(Link, {to: "logout"}, "Log out") :
 	      React.createElement(Link, {to: "login"}, "Sign in");
 	    return (
-	      React.createElement("div", null, 
+	      React.createElement("div", {overflow: "scroll"}, 
 	        React.createElement(SequenceEditor, null), 
 	        React.createElement("header", null, 
 	          React.createElement("ul", null, 
@@ -23758,15 +23758,14 @@
 
 	var React = __webpack_require__(2);
 
-	var RowView = __webpack_require__(215);
-	var charWidth = __webpack_require__(258).charWidth;
+	var RowView = __webpack_require__(201);
+	var charWidth = __webpack_require__(283).charWidth;
 
-	var baoababBranch = __webpack_require__(201).branch;
-	var MousetrapMixin = __webpack_require__(259);
-	var appActions = __webpack_require__(216);
-
-	// var Authentication = require('./Authentication.js');
-
+	var baoababBranch = __webpack_require__(277).branch;
+	var MousetrapMixin = __webpack_require__(284);
+	// var Clipboard = require("react-clipboard");
+	var appActions = __webpack_require__(202);
+	var Clipboard = __webpack_require__(286);
 
 	var SequenceEditor = React.createClass({displayName: "SequenceEditor",
 	  mixins: [baoababBranch, MousetrapMixin],
@@ -23775,11 +23774,14 @@
 	    bpsPerRow: 'bpsPerRow',
 	    // orfData: 'orfData',
 	    totalRows: 'totalRows',
+	    selectedSequenceString: 'selectedSequenceString',
 	  },
 	  cursors: {
 	    caretPosition: ['vectorEditorState', 'caretPosition'],
+	    sequenceData: ['vectorEditorState', 'sequenceData'],
 	    visibleRows: ['vectorEditorState', 'visibleRows'],
 	    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+	    clipboardData: ['vectorEditorState', 'clipboardData'],
 	  },
 	  // cursors: {
 	  //   visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
@@ -23791,56 +23793,77 @@
 	    //bind a bunch of keyboard shortcuts we're interested in catching
 	    //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
 	    //documentation: https://craig.is/killing/mice
-	    this.bindShortcut(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut 
+	    this.bindShortcut(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
 	      appActions.insertSequenceString(String.fromCharCode(event.charCode));
 	    });
-	    this.bindShortcut('left', function(event) { // Handle shortcut 
+	    this.bindShortcut('left', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretLeftOne();
 	    });
-	    this.bindShortcut('right', function(event) { // Handle shortcut 
+	    this.bindShortcut('right', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretRightOne();
 	    });
-	    this.bindShortcut('up', function(event) { // Handle shortcut 
+	    this.bindShortcut('up', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretUpARow();
 	    });
-	    this.bindShortcut('down', function(event) { // Handle shortcut 
+	    this.bindShortcut('down', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretDownARowShiftHeld();
 	    });
-	    this.bindShortcut('shift+left', function(event) { // Handle shortcut 
+	    this.bindShortcut('shift+left', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretLeftOneShiftHeld();
 	    });
-	    this.bindShortcut('shift+right', function(event) { // Handle shortcut 
+	    this.bindShortcut('shift+right', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretRightOneShiftHeld();
 	    });
-	    this.bindShortcut('shift+up', function(event) { // Handle shortcut 
+	    this.bindShortcut('shift+up', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretUpARowShiftHeld();
 	    });
-	    this.bindShortcut('shift+down', function(event) { // Handle shortcut 
+	    this.bindShortcut('shift+down', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      appActions.moveCaretDownARowShiftHeld();
 	    });
-	    this.bindShortcut('backspace', function(event) { // Handle shortcut 
+	    this.bindShortcut('backspace', function(event) { // Handle shortcut
 	      //trigger a caret left
 	      event.preventDefault();
 	      appActions.backspacePressed();
 	    });
+	    this.bindShortcut('backspace', function(event) { // Handle shortcut
+	      //trigger a caret left
+	      appActions.backspacePressed();
+	      return false;
+	    });
+	  },
+
+	  handlePaste: function(event) {
+	    console.log('paste!');
+	    event.clipboardData.items[0].getAsString(function(string) {
+	      appActions.pasteSequenceString(string);
+	    });
+	  },
+
+	  handleCopy: function(event) {
+	    console.log('copy!');
+	    appActions.copySelection();
+	    // this.state.selectedSequenceString
 	  },
 
 	  render: function() {
 	      // var visibilityParameters = this.state.visibilityParameters;
 	      // var highlightLayer = this.state.highlightLayer;
 	      // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
-	 
+
+	    var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
 
 	    return (
 	      React.createElement("div", {style: {float:"right"}}, 
+	        "features count: ", featuresCount, 
+	        React.createElement("br", null), 
 	        "selectionLayer: ", this.state.selectionLayer.start, "  ", this.state.selectionLayer.end, 
 	        React.createElement("br", null), 
 	        "caretPosition: ", this.state.caretPosition, 
@@ -23851,6 +23874,10 @@
 	        React.createElement("br", null), 
 	        "bpsPerRow:  ", this.state.bpsPerRow, 
 	        React.createElement("br", null), 
+	        React.createElement(Clipboard, {
+	          value: this.state.selectedSequenceString, 
+	          onCopy: this.handleCopy, 
+	          onPaste: this.handlePaste}), 
 	        React.createElement("br", null), 
 	        "totalRows:  ", this.state.totalRows, 
 	        React.createElement(RowView, null)
@@ -23858,196 +23885,1839 @@
 	    );
 	  }
 	});
+	        // <Clipboard value={this.state.selectedSequenceString}/>
+
 
 	module.exports = SequenceEditor;
+
 
 /***/ },
 /* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(202);
+	var ObjectID = __webpack_require__(223);
+	var React = __webpack_require__(2);
+	var Draggable = __webpack_require__(273);
+	var RowItem = __webpack_require__(276);
+	var appActions = __webpack_require__(202);
+	var areNonNegativeIntegers = __webpack_require__(205);
+	// var InfiniteScrollContainer = require('./InfiniteScrollContainer');
+	// var prepareRowData = require('./prepareRowData');
+	var charWidth = __webpack_require__(283).charWidth;
+	// var ReactList = require('react-list');
+	var baobabBranch = __webpack_require__(277).branch;
+	// MoustrapMixin = require('./MoustrapMixin.js');
+
+	var RowView = React.createClass({displayName: "RowView",
+	  mixins: [baobabBranch],
+	  // mixins: [baobabBranch],
+
+
+	  cursors: {
+	    // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
+	    charWidth: ['vectorEditorState', 'charWidth'],
+	    preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
+	    averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
+	    viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
+	    preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
+	    selectionLayer: ['vectorEditorState', 'selectionLayer'],
+	    // caretPosition: ['vectorEditorState', 'caretPosition'],
+	  },
+	  facets: {
+	    visibleRowsData: 'visibleRowsData',
+	    // rowData: 'rowData',
+	    totalRows: 'totalRows'
+	  },
+	  // keybindings: {
+	  //   '⌘S': function() {
+	  //     console.log('save!');
+	  //     event.preventDefault();
+	  //   },
+	  //   '⌘C': 'COPY',
+	  //   'T': function() {
+	  //     this.insertSequenceString('t');
+	  //   },
+	  // },
+	  // keybinding: function(event, action) {
+	  //   debugger;
+	  //   // event is the browser event, action is 'COPY'
+	  //   console.log(arguments);
+	  // },
+
+
+	  // propTypes: {
+	  //   preloadBasepairStart: React.PropTypes.number.isRequired,
+	  //   viewportDimensions: React.PropTypes.object.isRequired,
+	  // },
+	  // getDefaultProps: function() {
+	  //   return {
+	  //     preloadBasepairStart: 150, //start the loading of the sequence with this basepair
+	  //     viewportDimensions: {
+	  //       height: 700,
+	  //       width: 400
+	  //     },
+	  //   };
+	  // },
+	  onEditorScroll: function (event) {
+	    //tnr: we should maybe keep this implemented..
+	    // if (this.adjustmentScroll) {
+	    //   console.log('adjustmentScroll');
+	    //   //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
+	    //   this.adjustmentScroll = false;
+	    //   return true;
+	    // }
+
+	    var infiniteContainer = event.currentTarget;
+	    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+	    var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRowsData.length);
+	    // var firstRow = visibleRowsContainer.childNodes[0];
+	    // var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1];
+	    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
+	    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
+	    // if (infiniteContainer.getBoundingClientRect())
+	    var newRowStart;
+	    // console.log(infiniteContainer.scrollTop);
+	    var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
+	    var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+	    // console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
+	    // console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
+	    if (distanceFromTopOfVisibleRows < 0) {
+	      //scrolling down, so add a row below
+	      if (this.rowStart > 0) {
+	        newRowStart = this.rowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
+	        // console.log('newRowStart: '+newRowStart)
+
+	        if (newRowStart < 0) newRowStart = 0;
+	        // console.log('//scrolling up, so add a row above');
+	        this.prepareVisibleRows(newRowStart);
+	      }
+	    }
+	    else if (distanceFromBottomOfVisibleRows < 0) {
+	      var rowsToGiveOnBottom = this.state.totalRows - 1 - this.preloadRowEnd;
+	      if (rowsToGiveOnBottom > 0) {
+	        newRowStart = this.rowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
+	        if (newRowStart + this.state.visibleRowsData.length >= this.state.totalRows) {
+	          //the new row start is too high, so we instead just append the max rowsToGiveOnBottom to our current preloadRowStart
+	          newRowStart = this.rowStart + rowsToGiveOnBottom;
+	        }
+	        this.prepareVisibleRows(newRowStart);
+	        // console.log('//scrolling down, so add a row below');
+	      }
+	    } else {
+	      //we haven't scrolled enough, so do nothing
+	    }
+	    //set the averageRowHeight to the currentAverageRowHeight
+	    // appActions.setAverageRowHeight(currentAverageRowHeight);
+
+	  },
+
+	  componentWillUpdate: function(argument) {
+	    //save a reference to the thirdRowElement and its offset from the top of the container (if it exists)
+	    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+	    this.thirdRowElement = visibleRowsContainer.children[2];
+	    if (this.thirdRowElement) {
+	      this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
+	      console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
+	    }
+	    //   this.updateTriggeredByScrollerDrag = true;
+	    // } else {
+	    //   this.updateTriggeredByScrollerDrag = false;
+	    // }
+	  },
+
+	  componentDidUpdate: function(argument) {
+	    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+	    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
+
+	    if (!visibleRowsContainer.childNodes[0]) {
+	      //there aren't any rows yet
+	      throw 'no visible rows!!';
+	    }
+	    var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height;
+	    var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height;
+	    var adjustInfiniteContainerByThisAmount;
+
+	    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
+	    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
+	    //check if the visible rows fill up the viewport
+	    var v = visibleRowsContainer.getBoundingClientRect();
+	    var t = infiniteContainer.getBoundingClientRect();
+	    console.log('visibleRowsContainer.getBoundingClientRect(): ', 'top', v.top, 'bottom', v.bottom, 'height', v.height);
+	    console.log('firstRowHeight', firstRowHeight);
+	    console.log('lastRowHeight', lastRowHeight);
+	    console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
+	    console.log('infiniteContainer.getBoundingClientRect(): ', 'top', t.top, 'bottom', t.bottom, 'height', t.height);
+
+	    if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.state.viewportDimensions.height) {
+	      console.log('HEEEEEteteteEEEEEEET');
+	      if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
+	        //load another row to the bottom
+	        console.log('add row to bottom');
+	        this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
+	      } else {
+	        console.log('add row above');
+	        //there aren't more rows that we can load at the bottom so we load more at the top
+	        if (this.rowStart - 1 > 0) {
+	          this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);
+	        } else {
+	          this.prepareVisibleRows(0, this.numberOfRowsToDisplay);
+	        }
+	      }
+	    } else if (false) {
+	      //maybe put logic in here to reshrink the number of rows to display... maybe...
+	    //check if the visible container
+	    } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
+	      //scroll to align the tops of the boxes
+	      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
+	      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
+	      this.adjustmentScroll = true;
+	      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+	    } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
+	      //scroll to align the bottoms of the boxes
+	      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+	      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
+	      this.adjustmentScroll = true;
+	      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+	    } else {
+	      if (this.thirdRowElement) {
+	        // console.log('thirdrowblind');
+	        // adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
+	        // console.log('adjust: ' + adjustInfiniteContainerByThisAmount)
+	        // console.log('thirdRowElement Found');
+	        //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
+	        this.adjustmentScroll = true;
+	        adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
+	        console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
+	        infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
+	      }
+	    }
+	      console.log('infiniteContainer.scrollTop2: ' + infiniteContainer.scrollTop);
+
+
+	  },
+
+	  componentWillMount: function (argument) {
+	    //this is the only place where we use preloadRowStart
+	    if (areNonNegativeIntegers([this.state.preloadRowStart]) && this.state.preloadRowStart<this.state.totalRows) {
+	      this.prepareVisibleRows(this.state.preloadRowStart);
+	    } else {
+	      this.prepareVisibleRows(0);
+	    }
+	  },
+
+	  componentDidMount: function (argument) {
+	    //call componentDidUpdate so that the scroll position will be adjusted properly
+	    //(we may load a random row in the middle of the sequence and not have the infinte container scrolled properly initially, so we scroll to the show the rowContainer)
+	    this.componentDidUpdate();
+
+
+	  },
+
+	  prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
+	    if (!areNonNegativeIntegers([rowStart])) {
+	      return;
+	      console.warn('non-integer value passed to prepareVisibleRows');
+	    }
+
+	    if (areNonNegativeIntegers([newNumberOfRowsToDisplay])){
+	      this.numberOfRowsToDisplay = newNumberOfRowsToDisplay;
+	    }
+	    if (!this.numberOfRowsToDisplay) {
+	      // var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
+	      // // console.log('rowsThatFitIntoViewport');
+	      // // console.log(rowsThatFitIntoViewport);
+	      this.numberOfRowsToDisplay = 4;
+	    }
+	    if (rowStart + this.numberOfRowsToDisplay - 1 > this.state.totalRows - 1 ) {
+	      this.preloadRowEnd = this.state.totalRows - 1;
+	    } else {
+	      this.preloadRowEnd = rowStart + this.numberOfRowsToDisplay - 1;
+	    }
+	    console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
+	    // var visibleRows = this.state.visibleRowsDataData.slice(rowStart, this.preloadRowEnd + 1);
+	    // rowData.slice(rowStart, this.preloadRowEnd + 1);
+	    // appActions.setPreloadRowStart(rowStart);
+	    this.rowStart = rowStart;
+	    if (!this.state.visibleRows || (this.state.visibleRows.start !== this.rowStart && this.state.visibleRows.end !== this.preloadRowEnd)) {
+	      appActions.setVisibleRows({
+	        start: this.rowStart,
+	        end: this.preloadRowEnd
+	      });
+	    } else {
+	      console.log('blocked rerender!');
+	    }
+
+	    // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
+	  },
+
+	  getNearestCursorPositionToMouseEvent: function(event) {
+	    var rowNotFound = true;
+	    var visibleRowsContainer = this.refs.visibleRowsContainer.getDOMNode();
+	    //loop through all the rendered rows to see if the click event lands in one of them
+	    for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
+	      var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
+	      // console.log('rowDomNode.getBoundingClientRect().top: ' + rowDomNode.getBoundingClientRect().top);
+	      var boundingRowRect = rowDomNode.getBoundingClientRect();
+	      if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
+	        //then the click is falls within this row
+	        rowNotFound = false;
+	        var row = this.state.visibleRowsData[relativeRowNumber];
+	        if (event.clientX - boundingRowRect.left < 0) {
+	          console.warn('this should never be 0...');
+	          return row.start; //return the first bp in the row
+	        } else {
+	          var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
+	          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + charWidth/2) / charWidth);
+	          var nearestBP = numberOfBPsInFromRowStart + row.start;
+	          if (nearestBP > row.end + 1) {
+	            nearestBP = row.end + 1;
+	          }
+	          return nearestBP;
+	        }
+	        break; //break the for loop early because we found the row the click event landed in
+	      }
+	    }
+	    if (rowNotFound) {
+	      console.warn('was not able to find the correct row');
+	      //return the last bp index in the rendered rows
+	      var lastOfRenderedRows = this.state.visibleRowsData[this.state.visibleRowsData.length - 1];
+	      return lastOfRenderedRows.end;
+	    }
+	  },
+
+	  onEditorClick: function(event) {
+	    //if cursor position is different than the original position, reset the position and clear the selection
+	    console.log('onclick!!');
+	    var bp = this.getNearestCursorPositionToMouseEvent(event);
+	    if (this.editorBeingDragged) {
+	      //do nothing because the click was triggered by a drag event
+	    } else {
+	      appActions.setCaretPosition(bp);
+	      appActions.setSelectionLayer(false);
+	    }
+
+	    // console.log('bp: ' + bp);
+	  },
+
+	  handleEditorDrag: function(event, ui) {
+	    // console.log('dragging!');
+	    //note this method relies on variables that are set in the handleEditorDragStart method!
+	    this.editorBeingDragged = true;
+	    var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
+	    var start;
+	    var end;
+	    if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
+	      appActions.setCaretPosition(caretPositionOfDrag);
+	      appActions.setSelectionLayer(false);
+	    } else {
+	      var newSelectionLayer;
+	      if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
+	        newSelectionLayer = {
+	          start: this.fixedCaretPositionOnEditorDragStart,
+	          end: caretPositionOfDrag - 1,
+	          cursorAtEnd: true,
+	        }
+	      } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
+	        newSelectionLayer = {
+	          start: caretPositionOfDrag,
+	          end: this.fixedCaretPositionOnEditorDragStart - 1,
+	          cursorAtEnd: false,
+	        }
+	      } else {
+	        if (caretPositionOfDrag > this.fixedCaretPositionOnEditorDragStart) {
+	          newSelectionLayer = {
+	            start: this.fixedCaretPositionOnEditorDragStart,
+	            end: caretPositionOfDrag - 1,
+	            cursorAtEnd: true,
+	          }
+	        } else {
+	          newSelectionLayer = {
+	            start: caretPositionOfDrag,
+	            end: this.fixedCaretPositionOnEditorDragStart - 1,
+	            cursorAtEnd: false,
+	          }
+	        }
+	      }
+	      appActions.setSelectionLayer(newSelectionLayer);
+	    }
+	  },
+
+	  handleEditorDragStart: function(event, ui) {
+	    // console.log('drag start!');
+	    // console.log('event: ' + event.target);
+	    var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
+	    if (event.target.className === "cursor" && this.state.selectionLayer.selected) {
+	      // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
+	      if (this.state.selectionLayer.start === caretPosition) {
+	        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.end + 1;
+	        this.fixedCaretPositionOnEditorDragStartType = 'end';
+
+	        //plus one because the cursor position will be 1 more than the selectionLayer.end
+	        //imagine selection from
+	        //0 1 2  <--possible cursor positions
+	        // A T G
+	        //if A is selected, selection.start = 0, selection.end = 0
+	        //so the caretPosition for the end of the selection is 1!
+	        //which is selection.end+1
+	      } else {
+	        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.start;
+	        this.fixedCaretPositionOnEditorDragStartType = 'start';
+	      }
+	    } else {
+	      // this.circularSelectionOnEditorDragStart = false;
+	      this.fixedCaretPositionOnEditorDragStart = caretPosition;
+	      this.fixedCaretPositionOnEditorDragStartType = 'caret';
+	      // console.log('caretPosition '+caretPosition)
+	    }
+	  },
+
+	  handleEditorDragStop: function(event, ui) {
+	    var self = this;
+	    if (this.editorBeingDragged) { //check to make sure dragging actually occurred
+	      setTimeout(function (argument) {
+	        //we use setTimeout to put the call to change editorBeingDragged to false
+	        //on the bottom of the event stack, thus the click event that is fired because of the drag
+	        //will be able to check if editorBeingDragged and not trigger if it is
+	        self.editorBeingDragged = false;
+	      },0);
+	    } else {
+	      self.editorBeingDragged = false;
+	    }
+	  },
+
+	  render: function () {
+	    console.log('render!');
+	    var self = this;
+	    var rowItems = this.state.visibleRowsData.map(function(row) {
+	      if (row) {
+	        return(React.createElement(RowItem, {key: row.rowNumber, row: row}));
+	      }
+	    });
+
+	    var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
+	    this.topSpacerHeight = this.rowStart * rowHeight;
+	    this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * rowHeight;
+
+	    var infiniteContainerStyle = {
+	      height: this.state.viewportDimensions.height,
+	      width: this.state.viewportDimensions.width,
+	      overflowY: "scroll",
+	      // float: "left",
+	      // paddingRight: "20px"
+	      padding: 10
+	    };
+	    return (
+	        React.createElement(Draggable, {
+	            bounds: {top: 0, left: 0, right: 0, bottom: 0}, 
+	            onDrag: this.handleEditorDrag, 
+	            onStart: this.handleEditorDragStart, 
+	            onStop: this.handleEditorDragStop
+	            }, 
+	          React.createElement("div", {
+	            ref: "infiniteContainer", 
+	            className: "infiniteContainer", 
+	            style: infiniteContainerStyle, 
+	            onScroll: this.onEditorScroll, 
+	            onClick: this.onEditorClick
+	            }, 
+	              React.createElement("div", {ref: "topSpacer", className: "topSpacer", style: {height: this.topSpacerHeight}}), 
+	              React.createElement("div", {ref: "visibleRowsContainer", className: "visibleRowsContainer"}, 
+	                rowItems
+	              ), 
+	              React.createElement("div", {ref: "bottomSpacer", className: "bottomSpacer", style: {height: this.bottomSpacerHeight}})
+	          )
+	        )
+	    );
+	  }
+	});
+
+	module.exports = RowView;
 
 
 /***/ },
 /* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Baobab-React Mixins
-	 * ====================
-	 *
-	 * Old style react mixins.
-	 */
-	'use strict';
+	var tree = __webpack_require__(203);
+	var assign = __webpack_require__(232);
+	var ObjectID = __webpack_require__(223);
+	var isInteger = __webpack_require__(258);
+	var areNonNegativeIntegers = __webpack_require__(205);
+	// var splice = require("underscore.string/splice");
+	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(228);
+	var collapseOverlapsGeneratedFromRangeComparisonIfPossible = __webpack_require__(266);
+	var adjustRangeToDeletionOfAnotherRange = __webpack_require__(267);
+	var trimNumberToFitWithin0ToAnotherNumber = __webpack_require__(269);
+	var adjustRangeToSequenceInsert = __webpack_require__(270);
+	var spliceString = __webpack_require__(271);
+	var getSubstringByRange = __webpack_require__(257);
+	var areRangesValid = __webpack_require__(229);
+	var filterSequenceString = __webpack_require__(272);
+	var validateAndTidyUpSequenceData = __webpack_require__(231);
 
-	var PropTypes = __webpack_require__(203);
+	var actions = {
+		setCaretPosition: function(newPosition) {
+			if (isInteger(newPosition)) {
+				tree.select('vectorEditorState', 'caretPosition').set(newPosition);
+			} else {
+				tree.select('vectorEditorState', 'caretPosition').set(-1);
+			}
+		},
+		//takes in either (int,int) or ({start:int,end:int})
+		setSelectionLayer: function(newSelectionLayer) {
+			// if (typeof x1 === 'object' && areNonNegativeIntegers([x1.start, x1.end])) {
+			// 	x2 = x1.end;
+			// 	x1 = x1.start;
+			// 	//if the cursor
+			// 	// cursorAtEnd = true;
+			// }
+			var getRidOfCursor;
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+			if (!newSelectionLayer || typeof newSelectionLayer !== 'object') {
+				newSelectionLayer = {
+					start: -1,
+					end: -1,
+					selected: false,
+					cursorAtEnd: true
+				};
+			} else {
+				var $__0=
+					   
+				  newSelectionLayer,start=$__0.start,end=$__0.end,selected=$__0.selected,cursorAtEnd=$__0.cursorAtEnd;
+				if (areNonNegativeIntegers([start, end])) {
+					newSelectionLayer = {
+						start: start,
+						end: end,
+						selected: true,
+						cursorAtEnd: cursorAtEnd
+					};
+					getRidOfCursor = true;
+				} else {
+					newSelectionLayer = {
+						start: -1,
+						end: -1,
+						selected: false,
+						cursorAtEnd: true
+					};
+				}
+			}
+			// if (!deepEqual(selectionLayer, newSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
+			if (getRidOfCursor) {
+				this.setCaretPosition(-1);
+			}
+			tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
+			// }
 
-	/**
-	 * Root mixin
-	 */
-	var RootMixin = {
+			// viewportDimensions.set(newSize);
+		},
+		//takes in an object like: {start:int,end:int}
+		setVisibleRows: function(newVisibleRows) {
+			if (newVisibleRows && areNonNegativeIntegers([newVisibleRows.start, newVisibleRows.end])) {
+				// console.log('newVisibleRows: ' + newVisibleRows);
+				var totalRows = tree.facets.totalRows.get();
+				if (newVisibleRows.end > totalRows - 1) {
+					newVisibleRows = {
+						start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
+						end: totalRows - 1
+					}
+				}
+				var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
+				if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
+					tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
+					tree.commit();
+				}
+			} else {
+				throw ("visibleRows object is missing or invalid");
+			}
+			// viewportDimensions.set(newSize);
+		},
+		setAverageRowHeight: function(averageRowHeight) {
+			if (areNonNegativeIntegers([averageRowHeight])) {
+				tree.select('vectorEditorState', 'averageRowHeight').set(averageRowHeight);
+			}
+		},
+		setPreloadRowStart: function(preloadRowStart) {
+			if (areNonNegativeIntegers([preloadRowStart])) {
+				tree.select('vectorEditorState', 'preloadRowStart').set(preloadRowStart);
+			}
+		},
+		// setMouseIsDown: function(trueOrFalse) {
+		// 	tree.select('vectorEditorState', 'mouse', 'isDown').set(trueOrFalse);
+		// 	// viewportDimensions.set(newSize);
+		// },
+		// cancelSelection: function() {
+		// 	tree.select('vectorEditorState', 'selectionLayer').set({});
+		// 	// viewportDimensions.set(newSize);
+		// },
 
-	  // Component prop Type
-	  propTypes: {
-	    tree: PropTypes.baobab
-	  },
+		deleteSequence: function(rangeToDelete) {
+			if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
+				console.warn('can\'t delete sequence due to invalid start and end');
+			}
+			var sequenceLength = tree.facets.sequenceLength.get();
+			var deletionLength;
+			if (rangeToDelete.start > rangeToDelete.end) {
+				deletionLength = sequenceLength - rangeToDelete.start + rangeToDelete.end + 1;
+			} else {
+				deletionLength = rangeToDelete.end - rangeToDelete.start + 1;
+			}
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+			//update selection layer due to sequence deletion
+			if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
+				var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete, sequenceLength);
+				if (newSelectionLayerRange) {
+					this.setSelectionLayer(newSelectionLayerRange);
+				} else {
+					this.setSelectionLayer(false);
+					//update the cursor
+					if (rangeToDelete.start > rangeToDelete.end) {
+						this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
+					} else {
+						this.setCaretPosition(rangeToDelete.start);
+					}
+				}
+			} else if (tree.select('vectorEditorState', 'caretPosition').get()) {
+				//update the cursor position
+				if (rangeToDelete.start > rangeToDelete.end) {
+					this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
+				} else {
+					this.setCaretPosition(rangeToDelete.start);
+				}
+				// this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
+			} else {
+				throw 'must have a selection layer or a caretPosition'
+				// console.warn('must have a selection layer or a caretPosition');
+			}
+			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+			var newSequenceData = {};
+			if (sequenceData.sequence) {
+				//splice the underlying sequence
+				if (rangeToDelete.start > rangeToDelete.end) {
+					//circular deletion
+					newSequenceData.sequence = sequenceData.sequence.slice(rangeToDelete.end + 1, rangeToDelete.start);
+				} else {
+					//regular deletion
+					newSequenceData.sequence = sequenceData.sequence.slice(0, rangeToDelete.start) + sequenceData.sequence.slice(rangeToDelete.end + 1, sequenceLength);
+				}
+			}
+			//trim and remove features
+			if (sequenceData.features) {
+				newSequenceData.features = sequenceData.features.map(function(annotation) {
+					var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
+					if (newAnnotationRange) {
+						var adjustedAnnotation = assign({}, annotation);
+						adjustedAnnotation.start = newAnnotationRange.start;
+						adjustedAnnotation.end = newAnnotationRange.end;
+						return adjustedAnnotation;
+					}
+				}).filter(function(annotation) { //strip out deleted (null) annotations
+					if (annotation) {
+						return true;
+					}
+				});
+			}
+			if (sequenceData.parts) {
+				newSequenceData.parts = sequenceData.parts.map(function(annotation) {
+					var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
+					if (newAnnotationRange) {
+						var adjustedAnnotation = assign({}, annotation);
+						adjustedAnnotation.start = newAnnotationRange.start;
+						adjustedAnnotation.end = newAnnotationRange.end;
+						return adjustedAnnotation;
+					}
+				}).filter(function(annotation) { //strip out deleted (null) annotations
+					if (annotation) {
+						return true;
+					}
+				});
+			}
+			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
+			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
+			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+			this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+		},
+		insertSequenceString: function(sequenceString) {
+			this.insertSequenceData({sequence: sequenceString});
+		},
 
-	  // Context prop types
-	  childContextTypes: {
-	    tree: PropTypes.baobab
-	  },
+		insertSequenceData: function(sequenceDataToInsert) {
+			if (!sequenceDataToInsert || !sequenceDataToInsert.sequence.length) {
+				console.warn("must pass a valid sequence string");
+				return;
+			}
+			//check for initial values
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
 
-	  // Handling child context
-	  getChildContext: function getChildContext() {
-	    return {
-	      tree: this.props.tree
-	    };
-	  }
+			//delete the any selected sequence
+			if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
+				this.deleteSequence(selectionLayer);
+			}
+			//insert new sequence at the caret position
+			var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
+			if (areNonNegativeIntegers([caretPosition])) {
+				//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
+				var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+				var newSequenceData = assign({},sequenceData,insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition))
+				// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
+				// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
+				tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+				console.log('newdata set');
+				//update the caret position to be at the end of the newly inserted sequence
+				this.setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
+			} else {
+				console.warn('nowhere to put the inserted sequence..');
+				return;
+			}
+			this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+			//insert the sequence
+			// tree.select('vectorEditorState', 'selectionLayer').set({});
+			// viewportDimensions.set(newSize);
+			function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
+				sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
+				existingSequenceData = validateAndTidyUpSequenceData(existingSequenceData);
+				var newSequenceData = validateAndTidyUpSequenceData({}); //makes a new blank sequence
+
+				var insertLength = sequenceDataToInsert.sequence.length;
+				//splice the underlying sequence
+				newSequenceData.sequence = spliceString(existingSequenceData.sequence, caretPosition, 0, sequenceDataToInsert.sequence);
+				newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(existingSequenceData.features, caretPosition, insertLength));
+				newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(existingSequenceData.parts, caretPosition, insertLength));
+				newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(sequenceDataToInsert.features, 0, caretPosition));
+				newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(sequenceDataToInsert.parts, 0, caretPosition));
+				return newSequenceData;
+			}
+
+			function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
+				if (!annotationsToBeAdjusted) {
+					debugger;
+				}
+				return annotationsToBeAdjusted.map(function(annotation) {
+					var newAnnotationRange = adjustRangeToSequenceInsert(annotation, insertStart, insertLength);
+					if (newAnnotationRange) {
+						var adjustedAnnotation = assign({}, annotation);
+						adjustedAnnotation.start = newAnnotationRange.start;
+						adjustedAnnotation.end = newAnnotationRange.end;
+						return adjustedAnnotation;
+					} else {
+						throw 'no range!'
+					}
+				})
+			}
+		},
+		refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+			this.setSelectionLayer(selectionLayer);
+		},
+		moveCaret: function(numberToMove) {
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+			var sequenceLength = tree.facets.sequenceLength.get();
+			var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
+			if (selectionLayer.selected) {
+				if (numberToMove > 0) {
+					tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.end + 1);
+				} else {
+					tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.start);
+				}
+				this.setSelectionLayer(false);
+			} else {
+				caretPosition += numberToMove;
+				caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
+				tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
+			}
+		},
+		moveCaretShiftHeld: function(numberToMove) {
+			console.log('hey: ');
+			var selectionLayer = assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
+
+			var sequenceLength = tree.facets.sequenceLength.get();
+			var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
+			if (selectionLayer.selected) {
+				if (selectionLayer.cursorAtEnd) {
+					selectionLayer.end += numberToMove;
+					selectionLayer.end = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.end, sequenceLength - 1);
+				} else {
+					selectionLayer.start += numberToMove;
+					selectionLayer.start = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.start, sequenceLength - 1);
+				}
+				this.setSelectionLayer(selectionLayer);
+			} else {
+				if (numberToMove > 0) {
+					this.setSelectionLayer({
+						start: caretPosition,
+						end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove - 1, sequenceLength - 1),
+						cursorAtEnd: true
+					});
+				} else {
+					this.setSelectionLayer({
+						start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove + 1, sequenceLength - 1),
+						end: caretPosition,
+						cursorAtEnd: false
+					});
+				}
+				caretPosition += numberToMove;
+				if (caretPosition < 0) {
+					caretPosition = 0;
+				}
+				if (caretPosition > sequenceLength) {
+					caretPosition = sequenceLength;
+				}
+				tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
+			}
+		},
+		moveCaretLeftOne: function() {
+			this.moveCaret(-1);
+		},
+		moveCaretRightOne: function() {
+			this.moveCaret(1);
+		},
+		moveCaretUpARow: function() {
+			var bpsPerRow = tree.facets.bpsPerRow.get();
+			this.moveCaret(-bpsPerRow);
+		},
+		moveCaretDownARow: function() {
+			var bpsPerRow = tree.facets.bpsPerRow.get();
+			this.moveCaret(bpsPerRow);
+		},
+		moveCaretLeftOneShiftHeld: function() {
+			this.moveCaretShiftHeld(-1);
+		},
+		moveCaretRightOneShiftHeld: function() {
+			this.moveCaretShiftHeld(1);
+		},
+		moveCaretUpARowShiftHeld: function() {
+			var bpsPerRow = tree.facets.bpsPerRow.get();
+			this.moveCaretShiftHeld(-bpsPerRow);
+		},
+		moveCaretDownARowShiftHeld: function() {
+			var bpsPerRow = tree.facets.bpsPerRow.get();
+			this.moveCaretShiftHeld(bpsPerRow);
+		},
+		backspacePressed: function() {
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+			var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
+			if (selectionLayer.selected) {
+				this.deleteSequence(selectionLayer);
+			} else {
+				if (areNonNegativeIntegers([caretPosition])) {
+					this.deleteSequence({
+						start: caretPosition - 1,
+						end: caretPosition - 1
+					});
+				} else {
+					throw 'no caret or selection layer to delete!';
+				}
+			}
+		},
+		copySelection: function() {
+			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+			var clipboardDataCursor = tree.select('vectorEditorState', 'clipboardData');
+			var allowPartialAnnotationsOnCopy = tree.select('vectorEditorState', 'allowPartialAnnotationsOnCopy').get();
+			if (!clipboardDataCursor) {
+				throw 'no clipboard cursor..';
+			}
+			if (sequenceData && selectionLayer.selected) {
+				clipboardDataCursor.set(copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
+
+				function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
+					if (sequenceData.sequence !== '' && !sequenceData.sequence) {
+						throw 'invalid sequence data';
+					}
+					var sequenceLength = sequenceData.sequence.length;
+					if (!areRangesValid([rangeToCopy], sequenceLength)) {
+						throw 'invalid range passed';
+					}
+					var newSequenceData = {};
+					newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);
+					newSequenceData.features = copyAnnotationsByRange(sequenceData.features, rangeToCopy, sequenceLength);
+					newSequenceData.parts = copyAnnotationsByRange(sequenceData.parts, rangeToCopy, sequenceLength);
+
+					function copyAnnotationsByRange(annotations, rangeToCopy, sequenceLength) {
+						var copiedAnnotations = [];
+						annotations.forEach(function(annotation) {
+							var overlaps = getOverlapsOfPotentiallyCircularRanges(annotation, rangeToCopy, sequenceLength);
+							var collapsedOverlaps = collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength);
+							if (!allowPartialAnnotationsOnCopy) {
+								//filter out any annotations that aren't whole
+								collapsedOverlaps = collapsedOverlaps.filter(function(overlap) {
+									return (overlap.start === annotation.start && overlap.end === annotation.end);
+								});
+							}
+							if (collapsedOverlaps.length > 1) {
+								//tnrtodo: add a new bson id for the 2nd annotation!
+								console.log('splitting annotation on copy!');
+							}
+							collapsedOverlaps.forEach(function(collapsedOverlap) {
+								copiedAnnotations.push(assign({}, annotation, collapsedOverlap));
+							});
+						});
+						return copiedAnnotations;
+					}
+					return assign({}, sequenceData, newSequenceData); //merge any other properties that exist in sequenceData into newSequenceData
+				}
+			}
+		},
+
+		pasteSequenceString: function(sequenceString) {
+			//compare the sequenceString being pasted in with what's already stored in the clipboard
+			var clipboardData = tree.select('vectorEditorState', 'clipboardData').get();
+			if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
+				// insert clipboardData
+				//assign clipboardData annotations new ids
+				var clipboardDataWithNewIds = generateNewIdsForSequenceAnnotations(clipboardData);
+				this.insertSequenceData(clipboardData);
+			} else {
+				//clean up the sequence string and insert it
+				this.insertSequenceString(filterSequenceString(sequenceString));
+			}
+			function generateNewIdsForSequenceAnnotations(sequenceData) {
+				return assign(sequenceData, {
+					features: generateNewIdsForAnnotations(sequenceData.features),
+					parts: generateNewIdsForAnnotations(sequenceData.parts)
+				});
+			}
+			function generateNewIdsForAnnotations(annotations) {
+				return annotations.map(function (annotation) {
+					return assign(annotation, {id:ObjectID()});
+				});
+			}
+		},
+
+		// keyPressedInEditor: function(event) {
+		// 	event.preventDefault();
+		// 	if (event) {
+		// 	}
+		// 	// tree.select('vectorEditorState', 'selectionLayer').set({});
+		// 	// viewportDimensions.set(newSize);
+		// },
 	};
 
-	/**
-	 * Branch mixin
-	 */
-	var BranchMixin = {
+	module.exports = actions;
 
-	  // Context prop types
-	  contextTypes: {
-	    tree: PropTypes.baobab
-	  },
-
-	  // Building initial state
-	  getInitialState: function getInitialState() {
-
-	    // Setting properties
-	    this.__facet = this.context.tree.createFacet({
-	      cursors: this.cursors,
-	      facets: this.facets
-	    }, [this.props, this.context]);
-
-	    this.cursors = this.__facet.cursors;
-	    this.facets = this.__facet.facets;
-
-	    if (this.__facet) return this.__facet.get();
-	    return {};
-	  },
-
-	  // On component mount
-	  componentWillMount: function componentWillMount() {
-	    if (!this.__facet) return;
-
-	    var handler = (function () {
-	      this.setState(this.__facet.get());
-	    }).bind(this);
-
-	    this.__facet.on('update', handler);
-	  },
-
-	  // On component unmount
-	  componentWillUnmount: function componentWillUnmount() {
-	    if (!this.__facet) return;
-
-	    // Releasing facet
-	    this.__facet.release();
-	    this.__facet = null;
-	  },
-
-	  // On new props
-	  componentWillReceiveProps: function componentWillReceiveProps(props) {
-	    if (!this.__facet) return;
-
-	    this.__facet.refresh([props, this.context]);
-	    this.setState(this.__facet.get());
-	  }
-	};
-
-	// Exporting
-	exports.root = RootMixin;
-	exports.branch = BranchMixin;
 
 /***/ },
 /* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Baobab-React Custom Prop Types
-	 * ===============================
-	 *
-	 * PropTypes used to propagate context safely.
-	 */
-	'use strict';
+	var baobab = __webpack_require__(212);
+	var sequenceData = __webpack_require__(222);
+	var ObjectID = __webpack_require__(223);
+	var prepareRowData = __webpack_require__(224);
+	var findOrfsFromSequence = __webpack_require__(204);
+	var computeRowRepresentationOfSequence = __webpack_require__(227);
+	var validateAndTidyUpSequenceData = __webpack_require__(231);
+	var getSubstringByRange = __webpack_require__(257);
 
-	var type = __webpack_require__(204);
+	// // tnr: this is used to generate a very large, multi-featured sequence
+	// var string = "atgtagagagagagaggtgatg";
+	// var reallyLongFakeSequence = "";
+	// for (var i = 1; i < 1000; i++) {
+	// 	reallyLongFakeSequence += string;
+	// 	if (i % 100 === 0) {
+	// 		sequenceData.features.push({
+	// 			id: i,
+	// 			start: i*10,
+	// 			end: i*10 + 100,
+	// 			name: 'cooljim',
+	// 			color: 'green',
+	// 			forward: true,
+	// 			annotationType: "feature"
+	// 		});
+	// 	}
+	// }
+	// sequenceData.sequence = reallyLongFakeSequence;
 
-	function errorMessage(propName, what) {
-	  return 'prop type `' + propName + '` is invalid; it must be ' + what + '.';
-	}
 
-	var PropTypes = {};
+	// var fakeSequences = makeFakeSequences(20);
+	// console.log(fakeSequences);
 
-	PropTypes.baobab = function (props, propName) {
-	  if (!type.Baobab(props[propName])) return new Error(errorMessage(propName, 'a Baobab tree'));
-	};
+	// function makeFakeSequences(numberOfFakesSequencesToGenerate) {
+	// 	var fakeSequences = {};
+	// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
+	// 		console.log(ObjectID().str);
+	// 		fakeSequences[ObjectID().str] = sequenceData;
+	// 	}
+	// 	return fakeSequences;
+	// 	console.log(fakeSequences);
+	// }
 
-	PropTypes.cursors = function (props, propName) {
-	  var p = props[propName];
+	// sequenceData.features = {};
+	// sequenceData.parts = {};
 
-	  var valid = type.Object(p) && Object.keys(p).every(function (k) {
-	    return type.Cursor(p[k]);
-	  });
+	var tree = new baobab({
+		vectorEditorState: {
+			topSpacerHeight: 0,
+			bottomSpacerHeight: 0,
+			averageRowHeight: 100,
+			// preloadBasepairStart: 300,
+			charWidth: 15,
+			CHAR_HEIGHT: 15,
+			// FONT_SIZE: 14,
+			ANNOTATION_HEIGHT: 15,
+			minimumOrfSize: 50,
+			tickSpacing: 10,
+			SPACE_BETWEEN_ANNOTATIONS: 3,
+			preloadRowStart: 0,
+			// preloadRowEnd: 9,
+			showOrfs: true,
+			allowPartialAnnotationsOnCopy: false,
+			showCutsites: true,
+			showParts: true,
+			showFeatures: true,
+			showAxis: true,
+			showReverseSequence: true,
+			viewportDimensions: {
+				height: 500, //come back and make these dynamic
+				width: 500
+			},
+			selectionLayer: {
+				start: 12,
+				end: 9,
+				selected: true,
+				cursorAtEnd: true
+			},
+			mouse: {
+				isDown: false,
+				isSelecting: false,
+			},
+			caretPosition: -1,
+			visibleRows: {
+				start: 0,
+				end: 0,
+			},
+			sequenceData: validateAndTidyUpSequenceData(sequenceData),
+			clipboardData: null
+		},
+		// // sequencesMegaStore: fakeSequences,
+		// partsMegaStore: { //
+		// 	//tnrtodo: make a fake part generator
+		// },
+		// designMegaStore: {
+		// 	//tnrtodo: make a fake design generator
+		// },
+		// assemblyMakerState: {
 
-	  if (!valid) return new Error(errorMessage(propName, 'Baobab cursors'));
-	};
+		// },
+	}, {
+		syncwrite: true,
+		immutable: true,
+		validate: function (tree, gaga) {
+		},
+		facets: {
+			// orfData: {
+			// 	cursors: {
+			// 		sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+			// 		circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+			// 		minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
+			// 	},
+			// 	get: function(state) {
+			// 		return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
+			// 	}
+			// },
+			bpsPerRow: {
+				cursors: {
+					viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
+					charWidth: ['vectorEditorState', 'charWidth'],
+				},
+				get: function(state) {
+					return Math.floor(state.viewportDimensionsWidth / state.charWidth);
+				}
+			},
+			sequenceLength: {
+				cursors: {
+					sequenceData: ['vectorEditorState', 'sequenceData'],
+				},
+				get: function(state) {
+					return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
+				}
+			},
+			rowData: {
+				cursors: {
+					sequenceData: ['vectorEditorState', 'sequenceData'],
+				},
+				facets: {
+					bpsPerRow: 'bpsPerRow',
+					// orfData: 'orfData',
+				},
+				get: function(state) {
+					// var self = this;
+					// setTimeout(function (argument) {
+					// var previousVisibleRows = this.tree.select('vectorEditorState', 'visibleRows').get();
+					// this.tree.select('vectorEditorState', 'visibleRows').set(previousVisibleRows);
+					// this.tree.commit();
 
-	PropTypes.facets = function (props, propName) {
-	  var p = props[propName];
+					// }, 10);
+					// state.sequenceData.orfs = state.orfData;
+					return prepareRowData(state.sequenceData, state.bpsPerRow);
+				}
+			},
+			totalRows: {
+				facets: {
+					rowData: 'rowData',
+				},
+				get: function(state) {
+					if (state.rowData) {
+						return state.rowData.length;
+					}
+				}
+			},
+			visibleRowsData: {
+				cursors: {
+					visibleRows: ['vectorEditorState', 'visibleRows']
+				},
+				facets: {
+					rowData: 'rowData'
+				},
+				get: function(state) {
+					// debugger;
+						console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
+					if (state.rowData && state.visibleRows) {
+						return state.rowData.slice(state.visibleRows.start, state.visibleRows.end + 1);
+					}
+				}
+			},
+			selectedSequenceString: {
+				cursors: {
+					sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+					selectionLayer: ['vectorEditorState', 'selectionLayer'],
+				},
+				get: function(state) {
+					if (state.sequence && state.selectionLayer && state.selectionLayer.selected) {
+						return getSubstringByRange(state.sequence,state.selectionLayer);
+					} else {
+						return '';
+					}
+				}
+			}
+		}
+	});
 
-	  var valid = type.Object(p) && Object.keys(p).every(function (k) {
-	    return type.Facet(p[k]);
-	  });
+	module.exports = tree;
 
-	  if (!valid) return new Error(errorMessage(propName, 'Baobab facets'));
-	};
-
-	module.exports = PropTypes;
 
 /***/ },
 /* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var areNonNegativeIntegers = __webpack_require__(205);
+	var getReverseComplementSequenceString = __webpack_require__(210);
+
+	module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
+	    // if (circular) {
+	        var forwardSequence = sequence;
+	        var backwardSequence = getReverseComplementSequenceString(sequence);
+
+	        var doubleForwardSequence = forwardSequence + forwardSequence;
+	        var doubleBackwardSequence = backwardSequence + backwardSequence;
+
+	        var orfs1Forward = getOrfsFromSequenceString(0, doubleForwardSequence, mininmumOrfSize, true);
+	        var orfs2Forward = getOrfsFromSequenceString(1, doubleForwardSequence, mininmumOrfSize, true);
+	        var orfs3Forward = getOrfsFromSequenceString(2, doubleForwardSequence, mininmumOrfSize, true);
+
+	        var orfs1Reverse = getOrfsFromSequenceString(0, doubleBackwardSequence, mininmumOrfSize, false);
+	        var orfs2Reverse = getOrfsFromSequenceString(1, doubleBackwardSequence, mininmumOrfSize, false);
+	        var orfs3Reverse = getOrfsFromSequenceString(2, doubleBackwardSequence, mininmumOrfSize, false);
+
+	        var combinedForwardOrfs = orfs1Forward.concat(orfs2Forward, orfs3Forward);
+	        var combinedReverseOrfs = orfs1Reverse.concat(orfs2Reverse, orfs3Reverse);
+
+	        //recalculate the start and end indices for the combinedReverseOrfs 
+	        //(because they were generated using the reverse complement sequence and thus have their indices flipped)
+	        for (var i = 0; i < combinedReverseOrfs.length; i++) {
+	            var orf = combinedReverseOrfs[i];
+
+	            var start = doubleBackwardSequence.length - orf.start - 1;
+	            var end = doubleBackwardSequence.length - orf.end;
+
+	            orf.start(end);
+	            orf.end(start);
+
+	            for (var j = 0; j < orf.startCodons.length; j++) {
+	                orf.startCodons[j] = doubleBackwardSequence.length - orf.startCodons[j] - 1;
+	            }
+
+	            var startCodons = orf.startCodons;
+	            startCodons.sort(this.codonsSort);
+	            orf.startCodons = startCodons;
+	        }
+
+	        var allOrfs = combinedForwardOrfs.concat(combinedReverseOrfs);
+
+	        var maxLength = forwardSequence.length;
+
+	        orfsWithNoDuplicates = [];
+	        var normalOrfs = [];
+	        //        var orf = null;
+
+	        allOrfs.forEach(function(orf) {
+	            if (orf.start >= maxLength) {
+	                //do nothing
+	            } else if (orf.end <= maxLength) {
+	                normalOrfs.push(orf);
+	            } else if (orf.end > maxLength && orf.start < maxLength) {
+	                var startCodons = orf.startCodons;
+
+	                orf.end(orf.end - maxLength);
+
+	                orf.startCodons = (orf.startCodons.map(function(startCodon) {
+	                    if (startCodon >= maxLength) {
+	                        startCodon -= maxLength;
+	                    }
+	                    return startCodon;
+	                }));
+
+	                orfsWithNoDuplicates.push(orf);
+	            }
+	        });
+
+	        // Eliminate the orfs that overlaps with circular orfs.
+	        normalOrfs.forEach(function(normalOrf) {
+	            var skip = false;
+
+	            orfsWithNoDuplicates.forEach(function(circularOrf) {
+	                if (circularOrf.end === normalOrf.end &&
+	                    circularOrf.forward === normalOrf.forward) {
+	                    skip = true;
+	                    return false;
+	                }
+	            });
+
+	            if (!skip) {
+	                orfsWithNoDuplicates.push(normalOrf);
+	            }
+	        });
+	        orfsWithNoDuplicates.forEach(function(orf) {
+	            //the end bps of orfs on the reverse forward were off by 1, so this code fixes that
+	            if (orf.forward === -1) {
+	                orf.end++;
+	            }
+	        });
+	        return orfsWithNoDuplicates;
+	    // } else {
+	    //     //get the aa's for the 3 frames
+	    //     getAminoAcidsFromSequenceString(sequence);
+	    //     getAminoAcidsFromSequenceString(sequence);
+	    //     getAminoAcidsFromSequenceString(sequence);
+	    // }
+	};
+
 	/**
-	 * Baobab-React Type Checking
-	 * ===========================
-	 *
-	 * Some helpers to perform runtime validations.
+	 * @private
+	 * Finds ORFs in a given DNA forward in a given frame.
+	 * @param  {Int} frame The frame to look in.
+	 * @param  {String}sequence The dna sequence.
+	 * @param  {Int} mininmumOrfSize The minimum length of ORF to return.
+	 * @param  {Teselagen.bio.sequence.common.StrandType} forward The forward we are looking at.
+	 * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
 	 */
-	'use strict';
+	function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward) {
+	    if (typeof(mininmumOrfSize) === "undefined") {
+	        throw('no min orf size given');
+	    }
+	    if (typeof(forward) === "undefined") {
+	        throw('no orf StrandType passed');
+	    }
+	    if (!areNonNegativeIntegers([frame]) || frame > 2) {
+	        throw('invalid frame passed');
+	    }
+	    if (typeof sequence !== 'string') {
+	        throw('invalid sequence passed');
+	    }
 
-	var Baobab = __webpack_require__(205),
-	    Cursor = Baobab.Cursor,
-	    Facet = Baobab.Facet;
+	    var allOrfs = [];
+	    var sequenceLength = sequence.length;
 
-	var type = {};
+	    // var index = frame;
+	    var triplet;
+	    var aaSymbol;
+	    var aaString = '';
+	    var startIndex = -1;
+	    var endIndex = -1;
+	    var startCodonIndices = [];
+	    var stopCodonIndices = [];
+	    var possibleStopCodon;
+	    var possibleStartCodon;
+	    // Loop through sequence and generate list of ORFs.
+	    for (var index = frame; index < sequenceLength; index += 3) {
+	        triplet = sequence.slice(index, index + 3);
+	        if (triplet.length ===3) {
+	            aaSymbol = getAminoAcidFromSequenceString(triplet);
+	            aaString+= aaSymbol.value;
+	            possibleStartCodon = isStartCodon(triplet);
+	            possibleStopCodon = isStopCodon(triplet);
 
-	type.Object = function (value) {
-	  return value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date) && !(value instanceof RegExp);
+	            // If we've found a start codon, add its index to startCodonIndices.
+	            if (possibleStartCodon) {
+	                startCodonIndices.push(index);
+	            }
+	            if (possibleStopCodon) {
+	                stopCodonIndices.push(index);
+	            }
+	        }
+	    }
+
+	    //loop through the start codons and see if any of them form orfs
+	    startCodonIndices.forEach(function(startCodonIndex) {
+	        stopCodonIndices.some(function(stopCodonIndex) {
+	            if (stopCodonIndex - startCodonIndex > 0) {
+	                var orf = {
+	                    start: startIndex,
+	                    end: endIndex,
+	                    forward: forward,
+	                    frame: frame,
+	                    startCodons: startCodonIndices
+	                };
+	                allOrfs.push(orf);
+	                return true; //break the some loop
+	            }
+	        });
+	    });
+	    //after this we'll need to do a 'reduce' step to shave off the orfs that don't meet the minimum size requirements 
+	    //as well as the orfs with the same stop bp
+	    var trimmedOrfs = [];
+	    allOrfs.forEach(function(orf) {
+	        if (orf.end - orf.start + 1 >= mininmumOrfSize) { //make sure the orf size is >= to the minimum size
+	            var indexOfOrfWithSameStopBp = _.findIndex(trimmedOrfs, function(trimmedOrf) { //find any orfs with the same stop bp in the trimmed orf array
+	                return trimmedOrf.end === orf.end;
+	            });
+	            if (indexOfOrfWithSameStopBp === -1) {
+	                trimmedOrfs.push(orf);
+	            } else {
+	                if (trimmedOrfs[indexOfOrfWithSameStopBp].start > orf.start) {
+	                    trimmedOrfs[indexOfOrfWithSameStopBp] = orf; //replace the old orf at that position with this new orf because it is longer
+	                }
+	            }
+	        }
+	    });
+	    return trimmedOrfs;
+	}
+
+	function isStartCodon(codon) {
+	    return (codon === 'atg' || codon === 'aug' && codon.indexOf("-") === -1);
+	}
+	/**
+	* {Calculates whether a three character string is a stop codon.
+	  * @param  {String} codon a three character string.
+	  * @return {Boolean} shows whether the nucleotides make up a stop codon
+	  */
+	 function isStopCodon (codon) {
+	    return (codon == 'taa' || codon == 'tag' || codon == 'tga' || codon == 'uaa' || codon == 'uag' || codon == 'uga');
+	 }
+
+	/**
+	 * @private
+	 * Takes three nucleotides and determines if they (and their ambiguous matches) form a stop codon.
+	 * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideOne
+	 * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideTwo
+	 * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideThree
+	 * @return {Boolean} True if the nucleotides given form a stop codon.
+	 */
+	function evaluatePossibleStop(nucleotideOne, nucleotideTwo, nucleotideThree) {
+	    var n1 = this.returnMatches(nucleotideOne);
+	    var n2 = this.returnMatches(nucleotideTwo);
+	    var n3 = this.returnMatches(nucleotideThree);
+
+	    for (var i1 = 0; i1 < n1.length; i1++) {
+	        for (var i2 = 0; i2 < n2.length; i2++) {
+	            for (var i3 = 0; i3 < n3.length; i3++) {
+	                if (Teselagen.TranslationUtils.isStopCodon(n1[i1], n2[i2], n3[i3])) {
+	                    return true;
+	                }
+	            }
+	        }
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * @private
+	 * Helper function to return ambiguous matches of a nucleotide if they exist, and
+	 * otherwise return an array just containing the nucleotide.
+	 * @param {Teselagen.bio.sequence.symbols.NucleotideSymbol} nucleotide The nucleotide to get matches for.
+	 * @return {Teselagen.bio.sequence.symbols.NucleotideSymbol[]} The array containing matches.
+	 */
+	function returnMatches(nucleotide) {
+	    var nucleotideObject = Teselagen.DNAAlphabet[nucleotide];
+	    var ambiguousMatches;
+
+	    if (nucleotideObject && nucleotideObject.getAmbiguousMatches().length !== 0) {
+	        ambiguousMatches = nucleotideObject.getAmbiguousMatches();
+	    } else {
+	        ambiguousMatches = [nucleotide];
+	    }
+
+	    return ambiguousMatches;
+	}
+
+	/**
+	 * @private
+	 * Sorting function for sorting codons.
+	 * @param a
+	 * @param b
+	 * @return {Int} Sort order.
+	 */
+	function codonsSort(a, b) {
+	    if (a > b) {
+	        return 1;
+	    } else if (a < b) {
+	        return -1;
+	    } else {
+	        return 0;
+	    }
+	}
+
+	function getAminoAcidsFromSequenceString(sequenceString) {
+	    var aminoAcidString = '';
+	    for (var i = 3; i < sequenceString.length; i += 3) {
+	        aminoAcidString += getAminoAcidFromSequenceString(sequenceString.slice(i - 3, i + 1));
+	    }
+	    return aminoAcidString;
+	}
+
+	function getAminoAcidFromSequenceString(sequenceString) {
+	    if (typeof sequenceString === 'string') {
+	        sequenceString = sequenceString.toLowerCase();
+	    } else {
+	        throw ('must pass a string to this function');
+	    }
+	    if (sequenceString.length !== 3) {
+	        throw 'must pass a string of length 3';
+	    }
+	    if (threeLetterSequenceStringToAminoAcidMap[sequenceString]) {
+	        return threeLetterSequenceStringToAminoAcidMap[sequenceString];
+	    } else {
+	        return  ({
+	            value: '-',
+	            name: 'Gap',
+	            threeLettersName: 'Gap'
+	        });
+	    }
+	}
+
+	var proteinAlphabet = { //tnrtodo: add stop codons and non-normal codons to these maps as well!!
+		'A': {value: 'A', name:'Alanine', threeLettersName: 'Ala'},
+		'R': {value: 'R', name:'Arginine', threeLettersName: 'Arg'},
+		'N': {value: 'N', name:'Asparagine', threeLettersName: 'Asn'},
+		'D': {value: 'D', name:'Aspartic acid', threeLettersName: 'Asp'},
+		'C': {value: 'C', name:'Cysteine', threeLettersName: 'Cys'},
+		'E': {value: 'E', name:'Glutamic acid', threeLettersName: 'Glu'},
+		'Q': {value: 'Q', name:'Glutamine', threeLettersName: 'Gln'},
+		'G': {value: 'G', name:'Glycine', threeLettersName: 'Gly'},
+		'H': {value: 'H', name:'Histidine', threeLettersName: 'His'},
+		'I': {value: 'I', name:'Isoleucine ', threeLettersName: 'Ile'},
+		'L': {value: 'L', name:'Leucine', threeLettersName: 'Leu'},
+		'K': {value: 'K', name:'Lysine', threeLettersName: 'Lys'},
+		'M': {value: 'M', name:'Methionine', threeLettersName: 'Met'},
+		'F': {value: 'F', name:'Phenylalanine', threeLettersName: 'Phe'},
+		'P': {value: 'P', name:'Proline', threeLettersName: 'Pro'},
+		'S': {value: 'S', name:'Serine', threeLettersName: 'Ser'},
+		'T': {value: 'T', name:'Threonine', threeLettersName: 'Thr'},
+		'W': {value: 'W', name:'Tryptophan', threeLettersName: 'Trp'},
+		'Y': {value: 'Y', name:'Tyrosine', threeLettersName: 'Tyr'},
+		'V': {value: 'V', name:'Valine', threeLettersName: 'Val'},
+		'*': {value: '*', name:'Stop', threeLettersName: 'Stop'},
 	};
 
-	type.Baobab = function (value) {
-	  return value instanceof Baobab;
+	var threeLetterSequenceStringToAminoAcidMap = {
+		gct: proteinAlphabet.A,
+		gcc: proteinAlphabet.A,
+		gca: proteinAlphabet.A,
+		gcg: proteinAlphabet.A,
+		gcu: proteinAlphabet.A,
+		cgt: proteinAlphabet.R,
+		cgc: proteinAlphabet.R,
+		cga: proteinAlphabet.R,
+		cgg: proteinAlphabet.R,
+		aga: proteinAlphabet.R,
+		agg: proteinAlphabet.R,
+		cgu: proteinAlphabet.R,
+		aat: proteinAlphabet.N,
+		aac: proteinAlphabet.N,
+		aau: proteinAlphabet.N,
+		gat: proteinAlphabet.D,
+		gac: proteinAlphabet.D,
+		gau: proteinAlphabet.D,
+		tgt: proteinAlphabet.C,
+		tgc: proteinAlphabet.C,
+		ugu: proteinAlphabet.C,
+		ugc: proteinAlphabet.C,
+		gaa: proteinAlphabet.E,
+		gag: proteinAlphabet.E,
+		caa: proteinAlphabet.Q,
+		cag: proteinAlphabet.Q,
+		ggt: proteinAlphabet.G,
+		ggc: proteinAlphabet.G,
+		gga: proteinAlphabet.G,
+		ggg: proteinAlphabet.G,
+		ggu: proteinAlphabet.G,
+		cat: proteinAlphabet.H,
+		cac: proteinAlphabet.H,
+		cau: proteinAlphabet.H,
+		att: proteinAlphabet.I,
+		atc: proteinAlphabet.I,
+		ata: proteinAlphabet.I,
+		auu: proteinAlphabet.I,
+		auc: proteinAlphabet.I,
+		aua: proteinAlphabet.I,
+		ctt: proteinAlphabet.L,
+		ctc: proteinAlphabet.L,
+		cta: proteinAlphabet.L,
+		ctg: proteinAlphabet.L,
+		tta: proteinAlphabet.L,
+		ttg: proteinAlphabet.L,
+		cuu: proteinAlphabet.L,
+		cuc: proteinAlphabet.L,
+		cua: proteinAlphabet.L,
+		cug: proteinAlphabet.L,
+		uua: proteinAlphabet.L,
+		uug: proteinAlphabet.L,
+		aaa: proteinAlphabet.K,
+		aag: proteinAlphabet.K,
+		atg: proteinAlphabet.M,
+		aug: proteinAlphabet.M,
+		ttt: proteinAlphabet.F,
+		ttc: proteinAlphabet.F,
+		uuu: proteinAlphabet.F,
+		uuc: proteinAlphabet.F,
+		cct: proteinAlphabet.P,
+		ccc: proteinAlphabet.P,
+		cca: proteinAlphabet.P,
+		ccg: proteinAlphabet.P,
+		ccu: proteinAlphabet.P,
+		tct: proteinAlphabet.S,
+		tcc: proteinAlphabet.S,
+		tca: proteinAlphabet.S,
+		tcg: proteinAlphabet.S,
+		agt: proteinAlphabet.S,
+		agc: proteinAlphabet.S,
+		ucu: proteinAlphabet.S,
+		ucc: proteinAlphabet.S,
+		uca: proteinAlphabet.S,
+		ucg: proteinAlphabet.S,
+		agu: proteinAlphabet.S,
+		act: proteinAlphabet.T,
+		acc: proteinAlphabet.T,
+		aca: proteinAlphabet.T,
+		acg: proteinAlphabet.T,
+		acu: proteinAlphabet.T,
+		tgg: proteinAlphabet.W,
+		ugg: proteinAlphabet.W,
+		tat: proteinAlphabet.Y,
+		tac: proteinAlphabet.Y,
+		uau: proteinAlphabet.Y,
+		uac: proteinAlphabet.Y,
+		gtt: proteinAlphabet.V,
+		gtc: proteinAlphabet.V,
+		gta: proteinAlphabet.V,
+		gtg: proteinAlphabet.V,
+		guu: proteinAlphabet.V,
+		guc: proteinAlphabet.V,
+		gua: proteinAlphabet.V,
+		gug: proteinAlphabet.V,
+		taa: proteinAlphabet['*'],
+		tag: proteinAlphabet['*'],
+		tga: proteinAlphabet['*'],
 	};
 
-	type.Cursor = function (value) {
-	  return value instanceof Cursor;
-	};
-
-	type.Facet = function (value) {
-	  return value instanceof Facet;
-	};
-
-	module.exports = type;
 
 /***/ },
 /* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	*
+	*	VALIDATE: nonnegative-integer-array
+	*
+	*
+	*	DESCRIPTION:
+	*		- Validates if a value is a nonnegative integer array.
+	*
+	*
+	*	NOTES:
+	*		[1]
+	*
+	*
+	*	TODO:
+	*		[1]
+	*
+	*
+	*	LICENSE:
+	*		MIT
+	*
+	*	Copyright (c) 2015. Athan Reines.
+	*
+	*
+	*	AUTHOR:
+	*		Athan Reines. kgryte@gmail.com. 2015.
+	*
+	*/
+
+	'use strict';
+
+	// MODULES //
+
+	var isArray = __webpack_require__( 206 ),
+		isNonNegativeInteger = __webpack_require__( 207 );
+
+
+	// IS NONNEGATIVE INTEGER ARRAY //
+
+	/**
+	* FUNCTION: isNonNegativeIntegerArray( value )
+	*	Validates if a value is a nonnegative integer array.
+	*
+	* @param {*} value - value to be validated
+	* @returns {Boolean} boolean indicating if a value is a nonnegative integer array
+	*/
+	function isNonNegativeIntegerArray( value ) {
+		var len;
+		if ( !isArray( value ) ) {
+			return false;
+		}
+		len = value.length;
+		if ( !len ) {
+			return false;
+		}
+		for ( var i = 0; i < len; i++ ) {
+			if ( !isNonNegativeInteger( value[i] ) ) {
+				return false;
+			}
+		}
+		return true;
+	} // end FUNCTION isNonNegativeIntegerArray()
+
+
+	// EXPORTS //
+
+	module.exports = isNonNegativeIntegerArray;
+
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	* FUNCTION: isArray( value )
+	*	Validates if a value is an array.
+	*
+	* @param {*} value - value to be validated
+	* @returns {Boolean} boolean indicating whether value is an array
+	*/
+	function isArray( value ) {
+		return Object.prototype.toString.call( value ) === '[object Array]';
+	} // end FUNCTION isArray()
+
+	// EXPORTS //
+
+	module.exports = Array.isArray || isArray;
+
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	*
+	*	VALIDATE: nonnegative-integer
+	*
+	*
+	*	DESCRIPTION:
+	*		- Validates if a value is a nonnegative integer.
+	*
+	*
+	*	NOTES:
+	*		[1]
+	*
+	*
+	*	TODO:
+	*		[1]
+	*
+	*
+	*	LICENSE:
+	*		MIT
+	*
+	*	Copyright (c) 2015. Athan Reines.
+	*
+	*
+	*	AUTHOR:
+	*		Athan Reines. kgryte@gmail.com. 2015.
+	*
+	*/
+
+	'use strict';
+
+	// MODULES //
+
+	var isInteger = __webpack_require__( 208 );
+
+
+	// IS NONNEGATIVE INTEGER //
+
+	/**
+	* FUNCTION: isNonNegativeInteger( value )
+	*	Validates if a value is a nonnegative integer.
+	*
+	* @param {*} value - value to be validated
+	* @returns {Boolean} boolean indicating if a value is a nonnegative integer
+	*/
+	function isNonNegativeInteger( value ) {
+		return isInteger( value ) && value >= 0;
+	} // end FUNCTION isNonNegativeInteger()
+
+
+	// EXPORTS //
+
+	module.exports = isNonNegativeInteger;
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	*
+	*	VALIDATE: integer
+	*
+	*
+	*	DESCRIPTION:
+	*		- Validates if a value is an integer.
+	*
+	*
+	*	NOTES:
+	*		[1]
+	*
+	*
+	*	TODO:
+	*		[1]
+	*
+	*
+	*	LICENSE:
+	*		MIT
+	*
+	*	Copyright (c) 2014. Athan Reines.
+	*
+	*
+	*	AUTHOR:
+	*		Athan Reines. kgryte@gmail.com. 2014.
+	*
+	*/
+
+	'use strict';
+
+	// MODULES //
+
+	var isNumber = __webpack_require__( 209 );
+
+
+	// ISINTEGER //
+
+	/**
+	* FUNCTION: isInteger( value )
+	*	Validates if a value is an integer.
+	*
+	* @param {Number} value - value to be validated
+	* @returns {Boolean} boolean indicating whether value is an integer
+	*/
+	function isInteger( value ) {
+		return isNumber( value ) && value%1 === 0;
+	} // end FUNCTION isInteger()
+
+
+	// EXPORTS //
+
+	module.exports = isInteger;
+
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	*
+	*	VALIDATE: number
+	*
+	*
+	*	DESCRIPTION:
+	*		- Validates if a value is a number.
+	*
+	*
+	*	NOTES:
+	*		[1]
+	*
+	*
+	*	TODO:
+	*		[1]
+	*
+	*
+	*	LICENSE:
+	*		MIT
+	*
+	*	Copyright (c) 2014. Athan Reines.
+	*
+	*
+	*	AUTHOR:
+	*		Athan Reines. kgryte@gmail.com. 2014.
+	*
+	*/
+
+	'use strict';
+
+	/**
+	* FUNCTION: isNumber( value )
+	*	Validates if a value is a number.
+	*
+	* @param {*} value - value to be validated
+	* @returns {Boolean} boolean indicating whether value is a number
+	*/
+	function isNumber( value ) {
+		return ( typeof value === 'number' || Object.prototype.toString.call( value ) === '[object Number]' ) && value.valueOf() === value.valueOf();
+	} // end FUNCTION isNumber()
+
+
+	// EXPORTS //
+
+	module.exports = isNumber;
+
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DNAReverseComplementMap = __webpack_require__(211);
+	module.exports = function getReverseComplementSequenceString (sequence) {
+		if (!sequence) {
+			console.warn('no sequence passed!');
+			return "";
+		}
+		var reverseComplementSequenceString = "";
+		for (var i = sequence.length - 1; i >= 0; i--) {
+			reverseComplementSequenceString+= DNAReverseComplementMap[sequence[i]];
+		}
+		return reverseComplementSequenceString;
+	};
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DNAReverseComplementMap = {
+		a: 't',
+		t: 'a',
+		c: 'g',
+		g: 'c',
+		A: 'T',
+		T: 'A',
+		C: 'G',
+		G: 'C',
+		//tnrtodo add more letters here
+	};
+	module.exports = DNAReverseComplementMap;
+
+/***/ },
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24056,10 +25726,10 @@
 	 *
 	 * Exposes the main library classes.
 	 */
-	var Baobab = __webpack_require__(206),
-	    Cursor = __webpack_require__(210),
-	    Facet = __webpack_require__(213),
-	    helpers = __webpack_require__(208);
+	var Baobab = __webpack_require__(213),
+	    Cursor = __webpack_require__(217),
+	    Facet = __webpack_require__(220),
+	    helpers = __webpack_require__(215);
 
 	// Non-writable version
 	Object.defineProperty(Baobab, 'version', {
@@ -24078,7 +25748,7 @@
 
 
 /***/ },
-/* 206 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24087,14 +25757,14 @@
 	 *
 	 * A handy data tree with cursors.
 	 */
-	var Cursor = __webpack_require__(210),
-	    EventEmitter = __webpack_require__(211),
-	    Facet = __webpack_require__(213),
-	    helpers = __webpack_require__(208),
-	    update = __webpack_require__(207),
-	    merge = __webpack_require__(214),
-	    defaults = __webpack_require__(212),
-	    type = __webpack_require__(209);
+	var Cursor = __webpack_require__(217),
+	    EventEmitter = __webpack_require__(218),
+	    Facet = __webpack_require__(220),
+	    helpers = __webpack_require__(215),
+	    update = __webpack_require__(214),
+	    merge = __webpack_require__(221),
+	    defaults = __webpack_require__(219),
+	    type = __webpack_require__(216);
 
 	var uniqid = (function() {
 	  var i = 0;
@@ -24340,7 +26010,7 @@
 
 
 /***/ },
-/* 207 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24350,8 +26020,8 @@
 	 * A handy method to mutate an atom according to the given specification.
 	 * Mostly inspired by http://facebook.github.io/react/docs/update.html
 	 */
-	var helpers = __webpack_require__(208),
-	    type = __webpack_require__(209);
+	var helpers = __webpack_require__(215),
+	    type = __webpack_require__(216);
 
 	// Helpers
 	function makeError(path, message) {
@@ -24512,7 +26182,7 @@
 
 
 /***/ },
-/* 208 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -24521,7 +26191,7 @@
 	 *
 	 * Miscellaneous helper functions.
 	 */
-	var type = __webpack_require__(209);
+	var type = __webpack_require__(216);
 
 	// Make a real array of an array-like object
 	function arrayOf(o) {
@@ -24931,7 +26601,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 209 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25032,7 +26702,7 @@
 	    var v = value[k];
 
 	    return type.Path(v, ['String', 'Number', 'Object']) ||
-	           v instanceof __webpack_require__(210);
+	           v instanceof __webpack_require__(217);
 	  });
 	};
 
@@ -25044,7 +26714,7 @@
 	    var v = value[k];
 
 	    return typeof v === 'string' ||
-	           v instanceof __webpack_require__(213);
+	           v instanceof __webpack_require__(220);
 	  });
 	};
 
@@ -25052,7 +26722,7 @@
 
 
 /***/ },
-/* 210 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25061,10 +26731,10 @@
 	 *
 	 * Nested selection into a baobab tree.
 	 */
-	var EventEmitter = __webpack_require__(211),
-	    helpers = __webpack_require__(208),
-	    defaults = __webpack_require__(212),
-	    type = __webpack_require__(209);
+	var EventEmitter = __webpack_require__(218),
+	    helpers = __webpack_require__(215),
+	    defaults = __webpack_require__(219),
+	    type = __webpack_require__(216);
 
 	/**
 	 * Main Class
@@ -25497,7 +27167,7 @@
 
 
 /***/ },
-/* 211 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
@@ -26022,7 +27692,7 @@
 
 
 /***/ },
-/* 212 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26056,7 +27726,7 @@
 
 
 /***/ },
-/* 213 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26065,10 +27735,10 @@
 	 *
 	 * Facets enable the user to define views on a given Baobab tree.
 	 */
-	var EventEmitter = __webpack_require__(211),
-	    Cursor = __webpack_require__(210),
-	    helpers = __webpack_require__(208),
-	    type = __webpack_require__(209);
+	var EventEmitter = __webpack_require__(218),
+	    Cursor = __webpack_require__(217),
+	    helpers = __webpack_require__(215),
+	    type = __webpack_require__(216);
 
 	function Facet(tree, definition, args) {
 	  var self = this;
@@ -26241,7 +27911,7 @@
 
 
 /***/ },
-/* 214 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26250,8 +27920,8 @@
 	 *
 	 * A function used to merge updates in the stack.
 	 */
-	var helpers = __webpack_require__(208),
-	    type = __webpack_require__(209);
+	var helpers = __webpack_require__(215),
+	    type = __webpack_require__(216);
 
 	// Helpers
 	var COMMANDS = ['$unset', '$set', '$apply'];
@@ -26327,1008 +27997,7 @@
 
 
 /***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ObjectID = __webpack_require__(219);
-	var React = __webpack_require__(2);
-	var Draggable = __webpack_require__(252);
-	var RowItem = __webpack_require__(255);
-	var appActions = __webpack_require__(216);
-	var areNonNegativeIntegers = __webpack_require__(223);
-	// var InfiniteScrollContainer = require('./InfiniteScrollContainer');
-	// var prepareRowData = require('./prepareRowData');
-	var charWidth = __webpack_require__(258).charWidth;
-	// var ReactList = require('react-list');
-	var baobabBranch = __webpack_require__(201).branch;
-	// MoustrapMixin = require('./MoustrapMixin.js');
-
-	var RowView = React.createClass({displayName: "RowView",
-	  mixins: [baobabBranch],
-	  // mixins: [baobabBranch],
-
-	    
-	  cursors: {
-	    // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
-	    charWidth: ['vectorEditorState', 'charWidth'],
-	    preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
-	    averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
-	    viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
-	    preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
-	    selectionLayer: ['vectorEditorState', 'selectionLayer'],
-	    // caretPosition: ['vectorEditorState', 'caretPosition'],
-	  },
-	  facets: {
-	    visibleRowsData: 'visibleRowsData',
-	    // rowData: 'rowData',
-	    totalRows: 'totalRows'
-	  },
-	  // keybindings: {
-	  //   '⌘S': function() {
-	  //     console.log('save!');
-	  //     event.preventDefault();
-	  //   },
-	  //   '⌘C': 'COPY',
-	  //   'T': function() {
-	  //     this.insertSequenceString('t');
-	  //   },
-	  // },
-	  // keybinding: function(event, action) {
-	  //   debugger;
-	  //   // event is the browser event, action is 'COPY'
-	  //   console.log(arguments);
-	  // },
-	  
-
-	  // propTypes: {
-	  //   preloadBasepairStart: React.PropTypes.number.isRequired,
-	  //   viewportDimensions: React.PropTypes.object.isRequired,
-	  // },
-	  // getDefaultProps: function() {
-	  //   return {
-	  //     preloadBasepairStart: 150, //start the loading of the sequence with this basepair
-	  //     viewportDimensions: {
-	  //       height: 700,
-	  //       width: 400
-	  //     },
-	  //   };
-	  // }, 
-	  onEditorScroll: function (event) {
-	    //tnr: we should maybe keep this implemented..
-	    // if (this.adjustmentScroll) {
-	    //   console.log('adjustmentScroll');
-	    //   //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
-	    //   this.adjustmentScroll = false;
-	    //   return true;
-	    // }
-
-	    var infiniteContainer = event.currentTarget;
-	    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-	    var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRowsData.length);
-	    // var firstRow = visibleRowsContainer.childNodes[0]; 
-	    // var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]; 
-	    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
-	    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
-	    // if (infiniteContainer.getBoundingClientRect())
-	    var newRowStart;
-	    // console.log(infiniteContainer.scrollTop);
-	    var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
-	    var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-	    // console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
-	    // console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
-	    if (distanceFromTopOfVisibleRows < 0) {
-	      //scrolling down, so add a row below
-	      if (this.rowStart > 0) {
-	        newRowStart = this.rowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
-	        // console.log('newRowStart: '+newRowStart)
-
-	        if (newRowStart < 0) newRowStart = 0;
-	        // console.log('//scrolling up, so add a row above');
-	        this.prepareVisibleRows(newRowStart);
-	      }
-	    } 
-	    else if (distanceFromBottomOfVisibleRows < 0) {
-	      var rowsToGiveOnBottom = this.state.totalRows - 1 - this.preloadRowEnd;
-	      if (rowsToGiveOnBottom > 0) {
-	        newRowStart = this.rowStart + Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageRowHeight);
-	        if (newRowStart + this.state.visibleRowsData.length >= this.state.totalRows) {
-	          //the new row start is too high, so we instead just append the max rowsToGiveOnBottom to our current preloadRowStart
-	          newRowStart = this.rowStart + rowsToGiveOnBottom; 
-	        }
-	        this.prepareVisibleRows(newRowStart);
-	        // console.log('//scrolling down, so add a row below');
-	      }
-	    } else {
-	      //we haven't scrolled enough, so do nothing
-	    }
-	    //set the averageRowHeight to the currentAverageRowHeight
-	    // appActions.setAverageRowHeight(currentAverageRowHeight);
-
-	  },
-
-	  componentWillUpdate: function(argument) {
-	    //save a reference to the thirdRowElement and its offset from the top of the container (if it exists)
-	    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-	    this.thirdRowElement = visibleRowsContainer.children[2];
-	    if (this.thirdRowElement) {
-	      this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
-	      console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
-	    }
-	    //   this.updateTriggeredByScrollerDrag = true;
-	    // } else {
-	    //   this.updateTriggeredByScrollerDrag = false;
-	    // }
-	  },
-
-	  componentDidUpdate: function(argument) {
-	    var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
-	    var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-
-	    if (!visibleRowsContainer.childNodes[0]) {
-	      //there aren't any rows yet
-	      throw 'no visible rows!!'
-	    }
-	    var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height; 
-	    var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height; 
-	    var adjustInfiniteContainerByThisAmount;
-	    
-	    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
-	    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
-	    //check if the visible rows fill up the viewport
-	    var v = visibleRowsContainer.getBoundingClientRect()
-	    var t = infiniteContainer.getBoundingClientRect()
-	    console.log('visibleRowsContainer.getBoundingClientRect(): ', 'top', v.top, 'bottom', v.bottom, 'height', v.height);
-	    console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
-	    console.log('infiniteContainer.getBoundingClientRect(): ', 'top', t.top, 'bottom', t.bottom, 'height', t.height);
-
-	    if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.state.viewportDimensions.height) {
-	      console.log('HEEEEEEEEEEEET')
-	      if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
-	        //load another row to the bottom
-	        this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
-	      } else {
-	        //there aren't more rows that we can load at the bottom so we load more at the top
-	        if (this.rowStart - 1 > 0) {
-	          this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);  
-	        } else {
-	          this.prepareVisibleRows(0, this.numberOfRowsToDisplay);  
-	        }
-	      }
-	    } else if (false) {
-	      //maybe put logic in here to reshrink the number of rows to display... maybe...
-	    //check if the visible container
-	    } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
-	      //scroll to align the tops of the boxes
-	      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
-	      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
-	      this.adjustmentScroll = true;
-	      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
-	    } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
-	      //scroll to align the bottoms of the boxes
-	      adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-	      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
-	      this.adjustmentScroll = true;
-	      infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
-	    } else {
-	      if (this.thirdRowElement) {
-	        // console.log('thirdrowblind');
-	        // adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-	        // console.log('adjust: ' + adjustInfiniteContainerByThisAmount)
-	        // console.log('thirdRowElement Found');
-	        //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
-	        this.adjustmentScroll = true;
-	        adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
-	        console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
-	        infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
-	      }
-	    }
-	      console.log('infiniteContainer.scrollTop2: ' + infiniteContainer.scrollTop);
-
-	    
-	  },
-
-	  componentWillMount: function (argument) {
-	    //this is the only place where we use preloadRowStart
-	    if (areNonNegativeIntegers([this.state.preloadRowStart]) && this.state.preloadRowStart<this.state.totalRows) {
-	      this.prepareVisibleRows(this.state.preloadRowStart);
-	    } else {
-	      this.prepareVisibleRows(0);
-	    }
-	  },
-
-	  componentDidMount: function (argument) {
-	    //call componentDidUpdate so that the scroll position will be adjusted properly 
-	    //(we may load a random row in the middle of the sequence and not have the infinte container scrolled properly initially, so we scroll to the show the rowContainer)
-	    this.componentDidUpdate();
-	    
-
-	  },
-
-	  prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
-	    if (!areNonNegativeIntegers([rowStart])) {
-	      return;
-	      console.warn('non-integer value passed to prepareVisibleRows');
-	    }
-
-	    if (areNonNegativeIntegers([newNumberOfRowsToDisplay])){
-	      this.numberOfRowsToDisplay = newNumberOfRowsToDisplay;
-	    } 
-	    if (!this.numberOfRowsToDisplay) {
-	      // var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
-
-	      // // console.log('rowsThatFitIntoViewport');
-	      // // console.log(rowsThatFitIntoViewport);
-	      this.numberOfRowsToDisplay = 4;
-	    }
-	    this.preloadRowEnd = (rowStart + this.numberOfRowsToDisplay) > this.state.totalRows - 1 ? this.state.totalRows - 1: (rowStart + this.numberOfRowsToDisplay);
-	    console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
-	    // var visibleRows = this.state.visibleRowsDataData.slice(rowStart, this.preloadRowEnd + 1);
-	    // rowData.slice(rowStart, this.preloadRowEnd + 1);
-	    // appActions.setPreloadRowStart(rowStart);
-	    this.rowStart = rowStart;
-	    if (!this.state.visibleRows || this.state.visibleRows.start !== rowStart && this.state.visibleRows.end !== this.preloadRowEnd + 1) {
-	      appActions.setVisibleRows({
-	        start: rowStart,
-	        end: this.preloadRowEnd + 1
-	      });
-	    }
-
-	    // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
-	  },
-
-	  getNearestCursorPositionToMouseEvent: function(event) {
-	    var rowNotFound = true;
-	    var visibleRowsContainer = this.refs.visibleRowsContainer.getDOMNode();
-	    //loop through all the rendered rows to see if the click event lands in one of them
-	    for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
-	      var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
-	      // console.log('rowDomNode.getBoundingClientRect().top: ' + rowDomNode.getBoundingClientRect().top);
-	      var boundingRowRect = rowDomNode.getBoundingClientRect();
-	      if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-	        //then the click is falls within this row
-	        rowNotFound = false;
-	        var row = this.state.visibleRowsData[relativeRowNumber];
-	        if (event.clientX - boundingRowRect.left < 0) {
-	          console.warn('this should never be 0...');
-	          return row.start; //return the first bp in the row
-	        } else {
-	          var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-	          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + charWidth/2) / charWidth);
-	          var nearestBP = numberOfBPsInFromRowStart + row.start;
-	          if (nearestBP > row.end + 1) {
-	            nearestBP = row.end + 1;
-	          }
-	          return nearestBP;
-	        }
-	        break; //break the for loop early because we found the row the click event landed in
-	      }
-	    }
-	    if (rowNotFound) {
-	      console.warn('was not able to find the correct row');
-	      //return the last bp index in the rendered rows
-	      var lastOfRenderedRows = this.state.visibleRowsData[this.state.visibleRowsData.length - 1];
-	      return lastOfRenderedRows.end;
-	    }
-	  },
-
-	  onEditorClick: function(event) {
-	    //if cursor position is different than the original position, reset the position and clear the selection
-	    console.log('onclick!!');
-	    var bp = this.getNearestCursorPositionToMouseEvent(event);
-	    if (this.editorBeingDragged) {
-	      //do nothing because the click was triggered by a drag event
-	    } else {
-	      appActions.setCaretPosition(bp);
-	      appActions.setSelectionLayer(false);
-	    }
-
-	    // console.log('bp: ' + bp);
-	  }, 
-
-	  handleEditorDrag: function(event, ui) {
-	    // console.log('dragging!');
-	    //note this method relies on variables that are set in the handleEditorDragStart method!
-	    this.editorBeingDragged = true;
-	    var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
-	    var start;
-	    var end;
-	    if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
-	      appActions.setCaretPosition(caretPositionOfDrag);
-	      appActions.setSelectionLayer(false);
-	    } else {
-	      var newSelectionLayer;
-	      if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
-	        newSelectionLayer = {
-	          start: this.fixedCaretPositionOnEditorDragStart,
-	          end: caretPositionOfDrag - 1,
-	          cursorAtEnd: true,
-	        }
-	      } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
-	        newSelectionLayer = {
-	          start: caretPositionOfDrag,
-	          end: this.fixedCaretPositionOnEditorDragStart - 1,
-	          cursorAtEnd: false,
-	        }
-	      } else {
-	        if (caretPositionOfDrag > this.fixedCaretPositionOnEditorDragStart) {
-	          newSelectionLayer = {
-	            start: this.fixedCaretPositionOnEditorDragStart,
-	            end: caretPositionOfDrag - 1,
-	            cursorAtEnd: true,
-	          }
-	        } else {
-	          newSelectionLayer = {
-	            start: caretPositionOfDrag,
-	            end: this.fixedCaretPositionOnEditorDragStart - 1,
-	            cursorAtEnd: false,
-	          }
-	        }
-	      }
-	      appActions.setSelectionLayer(newSelectionLayer);
-	    }
-	  },
-
-	  handleEditorDragStart: function(event, ui) {
-	    // console.log('drag start!');
-	    // console.log('event: ' + event.target);
-	    var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
-	    if (event.target.className === "cursor" && this.state.selectionLayer.selected) {
-	      // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
-	      if (this.state.selectionLayer.start === caretPosition) {
-	        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.end + 1; 
-	        this.fixedCaretPositionOnEditorDragStartType = 'end';
-
-	        //plus one because the cursor position will be 1 more than the selectionLayer.end
-	        //imagine selection from 
-	        //0 1 2  <--possible cursor positions
-	        // A T G 
-	        //if A is selected, selection.start = 0, selection.end = 0
-	        //so the caretPosition for the end of the selection is 1! 
-	        //which is selection.end+1
-	      } else {
-	        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.start;
-	        this.fixedCaretPositionOnEditorDragStartType = 'start';
-	      }
-	    } else {
-	      // this.circularSelectionOnEditorDragStart = false;
-	      this.fixedCaretPositionOnEditorDragStart = caretPosition;
-	      this.fixedCaretPositionOnEditorDragStartType = 'caret';
-	      // console.log('caretPosition '+caretPosition)
-	    }
-	  },
-
-	  handleEditorDragStop: function(event, ui) {
-	    var self = this;
-	    if (this.editorBeingDragged) { //check to make sure dragging actually occurred 
-	      setTimeout(function (argument) { 
-	        //we use setTimeout to put the call to change editorBeingDragged to false
-	        //on the bottom of the event stack, thus the click event that is fired because of the drag
-	        //will be able to check if editorBeingDragged and not trigger if it is
-	        self.editorBeingDragged = false;
-	      },0);
-	    } else {
-	      self.editorBeingDragged = false;
-	    }
-	  },
-
-	  render: function () {
-	    console.log('render!');
-	    var self = this;
-	    var rowItems = this.state.visibleRowsData.map(function(row) {
-	      if (row) {
-	        return(React.createElement(RowItem, {key: row.rowNumber, row: row}));
-	      }
-	    });
-
-	    var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
-	    this.topSpacerHeight = this.rowStart * rowHeight;
-	    this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * rowHeight;
-
-	    var infiniteContainerStyle = {
-	      height: this.state.viewportDimensions.height,
-	      width: this.state.viewportDimensions.width,
-	      overflowY: "scroll",
-	      // float: "left",
-	      // paddingRight: "20px"
-	      padding: 10
-	    };
-	    return (
-	        React.createElement(Draggable, {
-	            bounds: {top: 0, left: 0, right: 0, bottom: 0}, 
-	            onDrag: this.handleEditorDrag, 
-	            onStart: this.handleEditorDragStart, 
-	            onStop: this.handleEditorDragStop
-	            }, 
-	          React.createElement("div", {
-	            ref: "infiniteContainer", 
-	            className: "infiniteContainer", 
-	            style: infiniteContainerStyle, 
-	            onScroll: this.onEditorScroll, 
-	            onClick: this.onEditorClick
-	            }, 
-	              React.createElement("div", {ref: "topSpacer", className: "topSpacer", style: {height: this.topSpacerHeight}}), 
-	              React.createElement("div", {ref: "visibleRowsContainer", className: "visibleRowsContainer"}, 
-	                rowItems
-	              ), 
-	              React.createElement("div", {ref: "bottomSpacer", className: "bottomSpacer", style: {height: this.bottomSpacerHeight}})
-	          )
-	        )
-	    );
-	  }
-	});
-
-	module.exports = RowView;
-
-
-/***/ },
-/* 216 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tree = __webpack_require__(217);
-	var _ = __webpack_require__(221);
-	var deepEqual = __webpack_require__(236)
-	var isInteger = __webpack_require__(239);
-	var areNonNegativeIntegers = __webpack_require__(223);
-	// var splice = require("underscore.string/splice");
-	// var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
-	var adjustRangeToDeletionOfAnotherRange = __webpack_require__(247);
-	var trimNumberToFitWithin0ToAnotherNumber = __webpack_require__(249);
-	var adjustRangeToSequenceInsert = __webpack_require__(250);
-	var spliceString = __webpack_require__(251);
-
-	var actions = {
-		changeViewportSize: function(newSize) {
-			console.log(newSize);
-			// tree.select
-			var viewportDimensions = tree.select('vectorEditorState', 'viewportDimensions');
-			viewportDimensions.set(newSize);
-		},
-		setCaretPosition: function(newPosition) {
-			if (isInteger(newPosition)) {
-				tree.select('vectorEditorState', 'caretPosition').set(newPosition);
-			} else {
-				tree.select('vectorEditorState', 'caretPosition').set(-1);
-			}
-		},
-		//takes in either (int,int) or ({start:int,end:int})
-		setSelectionLayer: function(newSelectionLayer) {
-			// if (typeof x1 === 'object' && areNonNegativeIntegers([x1.start, x1.end])) {
-			// 	x2 = x1.end;
-			// 	x1 = x1.start;
-			// 	//if the cursor 
-			// 	// cursorAtEnd = true;
-			// }
-			var getRidOfCursor;
-			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-			if (!newSelectionLayer || typeof newSelectionLayer !== 'object') {
-				newSelectionLayer = {
-					start: -1,
-					end: -1,
-					selected: false,
-					cursorAtEnd: true
-				}
-			} else {
-				var $__0=
-					   
-				  newSelectionLayer,start=$__0.start,end=$__0.end,selected=$__0.selected,cursorAtEnd=$__0.cursorAtEnd;
-				if (areNonNegativeIntegers([start, end])) {
-					newSelectionLayer = {
-						start: start,
-						end: end,
-						selected: true,
-						cursorAtEnd: cursorAtEnd
-					};
-					getRidOfCursor = true;
-				} else {
-					newSelectionLayer = {
-						start: -1,
-						end: -1,
-						selected: false,
-						cursorAtEnd: true
-					};
-				}
-			}
-			// if (!deepEqual(selectionLayer, newSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
-			if (getRidOfCursor) {
-				this.setCaretPosition(-1);
-			}
-			tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
-			// }
-
-			// viewportDimensions.set(newSize);
-		},
-		//takes in an object like: {start:int,end:int}
-		setVisibleRows: function(newVisibleRows) {
-			if (newVisibleRows && areNonNegativeIntegers([newVisibleRows.start, newVisibleRows.end])) {
-				// console.log('newVisibleRows: ' + newVisibleRows);
-				var totalRows = tree.facets.totalRows.get();
-				if (newVisibleRows.end > totalRows - 1) {
-					newVisibleRows = {
-						start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
-						end: totalRows - 1
-					}
-				}
-				var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
-				if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
-					tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
-					tree.commit();
-				}
-			} else {
-				throw ("visibleRows object is missing or invalid");
-			}
-			// viewportDimensions.set(newSize);
-		},
-		setAverageRowHeight: function(averageRowHeight) {
-			if (areNonNegativeIntegers([averageRowHeight])) {
-				tree.select('vectorEditorState', 'averageRowHeight').set(averageRowHeight);
-			}
-		},
-		setPreloadRowStart: function(preloadRowStart) {
-			if (areNonNegativeIntegers([preloadRowStart])) {
-				tree.select('vectorEditorState', 'preloadRowStart').set(preloadRowStart);
-			}
-		},
-		// setMouseIsDown: function(trueOrFalse) {
-		// 	tree.select('vectorEditorState', 'mouse', 'isDown').set(trueOrFalse);
-		// 	// viewportDimensions.set(newSize);
-		// },
-		// cancelSelection: function() {
-		// 	tree.select('vectorEditorState', 'selectionLayer').set({});
-		// 	// viewportDimensions.set(newSize);
-		// },
-
-		deleteSequence: function(rangeToDelete) {
-			if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
-				console.warn('can\'t delete sequence due to invalid start and end');
-			}
-			var sequenceLength = tree.facets.sequenceLength.get();
-			var deletionLength;
-			if (rangeToDelete.start > rangeToDelete.end) {
-				deletionLength = sequenceLength - rangeToDelete.start + rangeToDelete.end + 1;
-			} else {
-				deletionLength = rangeToDelete.end - rangeToDelete.start + 1;
-			}
-			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-			//update selection layer due to sequence deletion
-			if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
-				var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete, sequenceLength);
-				if (newSelectionLayerRange) {
-					this.setSelectionLayer(newSelectionLayerRange);
-				} else {
-					this.setSelectionLayer(false);
-					//update the cursor
-					if (rangeToDelete.start > rangeToDelete.end) {
-						this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
-					} else {
-						this.setCaretPosition(rangeToDelete.start);
-					}
-				}
-			} else if (tree.select('vectorEditorState', 'caretPosition').get()) {
-				//update the cursor position
-				if (rangeToDelete.start > rangeToDelete.end) {
-					this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
-				} else {
-					this.setCaretPosition(rangeToDelete.start);
-				}
-				// this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
-			} else {
-				throw 'must have a selection layer or a caretPosition'
-				// console.warn('must have a selection layer or a caretPosition');
-			}
-			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-			var newSequenceData = {};
-			if (sequenceData.sequence) {
-				//splice the underlying sequence
-				if (rangeToDelete.start > rangeToDelete.end) {
-					//circular deletion
-					newSequenceData.sequence = sequenceData.sequence.slice(rangeToDelete.end + 1, rangeToDelete.start);
-				} else {
-					//regular deletion
-					newSequenceData.sequence = sequenceData.sequence.slice(0, rangeToDelete.start) + sequenceData.sequence.slice(rangeToDelete.end + 1, sequenceLength);
-				}
-			}
-			//trim and remove features
-			if (sequenceData.features) {
-				newSequenceData.features = _.map(sequenceData.features, function(annotation) {
-					var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
-					if (newAnnotationRange) {
-						var adjustedAnnotation = _.assign({}, annotation);
-						adjustedAnnotation.start = newAnnotationRange.start;
-						adjustedAnnotation.end = newAnnotationRange.end;
-						return adjustedAnnotation;
-					}
-				}).filter(function(annotation) { //strip out deleted (null) annotations
-					if (annotation) {
-						return true;
-					}
-				});
-			}
-			if (sequenceData.parts) {
-				newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
-					var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
-					if (newAnnotationRange) {
-						var adjustedAnnotation = _.assign({}, annotation);
-						adjustedAnnotation.start = newAnnotationRange.start;
-						adjustedAnnotation.end = newAnnotationRange.end;
-						return adjustedAnnotation;
-					}
-				}).filter(function(annotation) { //strip out deleted (null) annotations
-					if (annotation) {
-						return true;
-					}
-				});
-			}
-			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
-			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
-			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
-			this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
-		},
-
-		insertSequenceString: function(sequenceString) {
-			if (!sequenceString || !sequenceString.length) {
-				console.warn("must pass a valid sequence string");
-				return;
-			}
-			//check for initial values
-			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-
-			//delete the any selected sequence
-			if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
-				this.deleteSequence(selectionLayer);
-			}
-			//insert new sequence at the caret position
-			var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
-			if (areNonNegativeIntegers([caretPosition])) {
-				//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
-				var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-				var newSequenceData = {};
-				if (sequenceData.sequence) {
-					//splice the underlying sequence
-					newSequenceData.sequence = spliceString(sequenceData.sequence, caretPosition, 0, sequenceString);
-				}
-				if (sequenceData.features) {
-					newSequenceData.features = _.map(sequenceData.features, function(annotation) {
-						var newAnnotationRange = adjustRangeToSequenceInsert(annotation, caretPosition, sequenceString.length);
-						if (newAnnotationRange) {
-							var adjustedAnnotation = _.assign({}, annotation);
-							adjustedAnnotation.start = newAnnotationRange.start;
-							adjustedAnnotation.end = newAnnotationRange.end;
-							return adjustedAnnotation;
-						} else {
-							throw 'no range!'
-						}
-					});
-				}
-				if (sequenceData.parts) {
-					newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
-						var newAnnotationRange = adjustRangeToSequenceInsert(annotation, {
-							start: caretPosition,
-							end: sequenceString.length
-						});
-						if (newAnnotationRange) {
-							var adjustedAnnotation = _.assign({}, annotation);
-							adjustedAnnotation.start = newAnnotationRange.start;
-							adjustedAnnotation.end = newAnnotationRange.end;
-							return adjustedAnnotation;
-						}
-					});
-				}
-				// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
-				// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
-				tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
-				console.log('newdata set');
-				//update the caret position to be at the end of the newly inserted sequence
-				this.setCaretPosition(sequenceString.length + caretPosition);
-			} else {
-				console.warn('nowhere to put the inserted sequence..');
-				return;
-			}
-			this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
-			//insert the sequence
-			// tree.select('vectorEditorState', 'selectionLayer').set({});
-			// viewportDimensions.set(newSize);
-		},
-		refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
-			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-			this.setSelectionLayer(selectionLayer);
-		},
-		moveCaret: function(numberToMove) {
-			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-			var sequenceLength = tree.facets.sequenceLength.get();
-			var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
-			if (selectionLayer.selected) {
-				if (numberToMove > 0) {
-					tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.end + 1);
-				} else {
-					tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.start);
-				}
-				this.setSelectionLayer(false);
-			} else {
-				caretPosition += numberToMove;
-				caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
-				tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
-			}
-		},
-		moveCaretShiftHeld: function(numberToMove) {
-			console.log('hey: ');
-			var selectionLayer = _.assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
-
-			var sequenceLength = tree.facets.sequenceLength.get();
-			var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
-			if (selectionLayer.selected) {
-				if (selectionLayer.cursorAtEnd) {
-					selectionLayer.end += numberToMove;
-					selectionLayer.end = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.end, sequenceLength - 1);
-				} else {
-					selectionLayer.start += numberToMove;
-					selectionLayer.start = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.start, sequenceLength - 1);
-				}
-				this.setSelectionLayer(selectionLayer);
-			} else {
-				if (numberToMove > 0) {
-					this.setSelectionLayer({
-						start: caretPosition,
-						end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove - 1, sequenceLength - 1),
-						cursorAtEnd: true
-					});
-				} else {
-					this.setSelectionLayer({
-						start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove + 1, sequenceLength - 1),
-						end: caretPosition,
-						cursorAtEnd: false
-					});
-				}
-				caretPosition += numberToMove;
-				if (caretPosition < 0) {
-					caretPosition = 0;
-				}
-				if (caretPosition > sequenceLength) {
-					caretPosition = sequenceLength;
-				}
-				tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
-			}
-		},
-		moveCaretLeftOne: function() {
-			this.moveCaret(-1);
-		},
-		moveCaretRightOne: function() {
-			this.moveCaret(1);
-		},
-		moveCaretUpARow: function() {
-			var bpsPerRow = tree.facets.bpsPerRow.get();
-			this.moveCaret(-bpsPerRow);
-		},
-		moveCaretDownARow: function() {
-			var bpsPerRow = tree.facets.bpsPerRow.get();
-			this.moveCaret(bpsPerRow);
-		},
-		moveCaretLeftOneShiftHeld: function() {
-			this.moveCaretShiftHeld(-1);
-		},
-		moveCaretRightOneShiftHeld: function() {
-			this.moveCaretShiftHeld(1);
-		},
-		moveCaretUpARowShiftHeld: function() {
-			var bpsPerRow = tree.facets.bpsPerRow.get();
-			this.moveCaretShiftHeld(-bpsPerRow);
-		},
-		moveCaretDownARowShiftHeld: function() {
-			var bpsPerRow = tree.facets.bpsPerRow.get();
-			this.moveCaretShiftHeld(bpsPerRow);
-		},
-		backspacePressed: function() {
-			var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-			var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
-			if (selectionLayer.selected) {
-				this.deleteSequence(selectionLayer);
-			} else {
-				if (areNonNegativeIntegers([caretPosition])) {
-					this.deleteSequence({
-						start: caretPosition - 1,
-						end: caretPosition - 1
-					});
-				} else {
-					throw 'no caret or selection layer to delete!'
-				}
-			}
-		},
-		
-		// keyPressedInEditor: function(event) {
-		// 	event.preventDefault();
-		// 	if (event) {
-		// 	}
-		// 	// tree.select('vectorEditorState', 'selectionLayer').set({});
-		// 	// viewportDimensions.set(newSize);
-		// },
-	};
-
-	module.exports = actions;
-
-/***/ },
-/* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baobab = __webpack_require__(205);
-	var sequenceData = __webpack_require__(218);
-	var ObjectID = __webpack_require__(219);
-	var prepareRowData = __webpack_require__(220);
-	var findOrfsFromSequence = __webpack_require__(228);
-	var computeRowRepresentationOfSequence = __webpack_require__(231);
-	var validateAndTidyUpSequenceData = __webpack_require__(235);
-
-	// // tnr: this is used to generate a very large, multi-featured sequence
-	var string = "atgtagagagagagaggtgatg";
-	var reallyLongFakeSequence = "";
-	for (var i = 1; i < 1000; i++) { 
-		reallyLongFakeSequence += string;
-		if (i % 100 === 0) {
-			sequenceData.features.push({
-				id: i,
-				start: i*10,
-				end: i*10 + 100,
-				name: 'cooljim',
-				color: 'green',
-				forward: true,
-				annotationType: "feature"
-			});
-		}
-	}
-	sequenceData.sequence = reallyLongFakeSequence;
-
-
-	// var fakeSequences = makeFakeSequences(20);
-	// console.log(fakeSequences);
-
-	// function makeFakeSequences(numberOfFakesSequencesToGenerate) {
-	// 	var fakeSequences = {};
-	// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
-	// 		console.log(ObjectID().str);
-	// 		fakeSequences[ObjectID().str] = sequenceData;
-	// 	}
-	// 	return fakeSequences;
-	// 	console.log(fakeSequences);
-	// }
-
-	// sequenceData.features = {};
-	// sequenceData.parts = {};
-
-	var tree = new baobab({
-		vectorEditorState: {
-			topSpacerHeight: 0,
-			bottomSpacerHeight: 0,
-			averageRowHeight: 100,
-			// preloadBasepairStart: 300,
-			charWidth: 15,
-			CHAR_HEIGHT: 15,
-			// FONT_SIZE: 14,
-			ANNOTATION_HEIGHT: 15,
-			minimumOrfSize: 50,
-			tickSpacing: 10,
-			SPACE_BETWEEN_ANNOTATIONS: 3,
-			preloadRowStart: 0,
-			// preloadRowEnd: 9,
-			showOrfs: true,
-			showCutsites: true,
-			showParts: true,
-			showFeatures: true,
-			showAxis: true,
-			showReverseSequence: true,
-			viewportDimensions: {
-				height: 500, //come back and make these dynamic
-				width: 500
-			},
-			selectionLayer: {
-				start: 12,
-				end: 9,
-				selected: true,
-				cursorAtEnd: true
-			},
-			mouse: {
-				isDown: false,
-				isSelecting: false,
-			},
-			caretPosition: -1,
-			visibleRows: {
-				start: 0,
-				end: 0,
-			},
-			sequenceData: validateAndTidyUpSequenceData(sequenceData),
-		},
-		// // sequencesMegaStore: fakeSequences,
-		// partsMegaStore: { //
-		// 	//tnrtodo: make a fake part generator
-		// },
-		// designMegaStore: {
-		// 	//tnrtodo: make a fake design generator
-		// },
-		// assemblyMakerState: {
-
-		// },
-	}, {
-		syncwrite: true,
-		immutable: true,
-		validate: function (tree, gaga) {
-		},
-		facets: {
-			// orfData: {
-			// 	cursors: {
-			// 		sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-			// 		circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-			// 		minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
-			// 	},
-			// 	get: function(state) {
-			// 		return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
-			// 	}
-			// },
-			bpsPerRow: {
-				cursors: {
-					viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
-					charWidth: ['vectorEditorState', 'charWidth'],
-				},
-				get: function(state) {
-					return Math.floor(state.viewportDimensionsWidth / state.charWidth);
-				}
-			},
-			sequenceLength: {
-				cursors: {
-					sequenceData: ['vectorEditorState', 'sequenceData'],
-				},
-				get: function(state) {
-					return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
-				}
-			},
-			rowData: {
-				cursors: {
-					sequenceData: ['vectorEditorState', 'sequenceData'],
-				},
-				facets: {
-					bpsPerRow: 'bpsPerRow',
-					// orfData: 'orfData',
-				},
-				get: function(state) {
-					// var self = this;
-					// setTimeout(function (argument) {
-					// var previousVisibleRows = this.tree.select('vectorEditorState', 'visibleRows').get();
-					// this.tree.select('vectorEditorState', 'visibleRows').set(previousVisibleRows);
-					// this.tree.commit();
-
-					// }, 10);
-					// state.sequenceData.orfs = state.orfData;
-					return prepareRowData(state.sequenceData, state.bpsPerRow);
-				}
-			},
-			totalRows: {
-				facets: {
-					rowData: 'rowData',
-				},
-				get: function(state) {
-					if (state.rowData) {
-						return state.rowData.length;
-					}
-				}
-			},
-			visibleRowsData: {
-				cursors: {
-					visibleRows: ['vectorEditorState', 'visibleRows']
-				},
-				facets: {
-					rowData: 'rowData'
-				},
-				get: function(state) {
-					// debugger;
-						console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
-					if (state.rowData && state.visibleRows) {
-						return state.rowData.slice(state.visibleRows.start, state.visibleRows.end);
-					}
-				}
-			}
-		}
-	});
-
-	module.exports = tree;
-
-/***/ },
-/* 218 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -27348,7 +28017,7 @@
 	    "dateModified" : "2015-06-29T03:57:33.235Z",
 	    "dateCreated" : "2015-06-26T18:31:29.358Z",
 	    "user_id" : "54220bb6f54aa7432861e7dd",
-	    "features" : [ 
+	    "features" : [
 	        {
 	            "name" : "house",
 	            "type" : "misc_feature",
@@ -27358,7 +28027,7 @@
 	            "strand" : 1,
 	            "notes" : [],
 	            "color": 'green'
-	        }, 
+	        },
 	        // {
 	        //     "name" : "weer",
 	        //     "type" : "misc_feature",
@@ -27389,7 +28058,7 @@
 	//     "description" : "",
 	//     "name" : "pj5_00001",
 	//     "user_id" : "54220bb6f54aa7432861e7dd",
-	//     "features" : [ 
+	//     "features" : [
 	//         {
 	//             "notes" : [],
 	//             "strand" : -1,
@@ -27398,7 +28067,7 @@
 	//             "id" : "55944b393ab644000a14cab5",
 	//             "type" : "CDS",
 	//             "name" : "araC"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27407,7 +28076,7 @@
 	//             "id" : "55944b393ab644000a14cab6",
 	//             "type" : "protein_bind",
 	//             "name" : "operator O2"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : -1,
@@ -27416,7 +28085,7 @@
 	//             "id" : "55944b393ab644000a14cab7",
 	//             "type" : "promoter",
 	//             "name" : "araC promoter"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27425,7 +28094,7 @@
 	//             "id" : "55944b393ab644000a14cab8",
 	//             "type" : "protein_bind",
 	//             "name" : "operator O1"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27434,7 +28103,7 @@
 	//             "id" : "55944b393ab644000a14cab9",
 	//             "type" : "misc_binding",
 	//             "name" : "CAP site"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27443,7 +28112,7 @@
 	//             "id" : "55944b393ab644000a14caba",
 	//             "type" : "protein_bind",
 	//             "name" : "Operator I2 and I1"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27452,7 +28121,7 @@
 	//             "id" : "55944b393ab644000a14cabb",
 	//             "type" : "promoter",
 	//             "name" : "pBAD promoter"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27461,9 +28130,9 @@
 	//             "id" : "55944b393ab644000a14cabc",
 	//             "type" : "RBS",
 	//             "name" : "RBS"
-	//         }, 
+	//         },
 	//         {
-	//             "notes" : [ 
+	//             "notes" : [
 	//                 {
 	//                     "quoted" : true,
 	//                     "value" : "4",
@@ -27476,7 +28145,7 @@
 	//             "id" : "55944b393ab644000a14cabd",
 	//             "type" : "CDS",
 	//             "name" : "GFPuv"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27485,7 +28154,7 @@
 	//             "id" : "55944b393ab644000a14cabe",
 	//             "type" : "misc_feature",
 	//             "name" : "XhoI_silent_mutation"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27494,9 +28163,9 @@
 	//             "id" : "55944b393ab644000a14cabf",
 	//             "type" : "misc_feature",
 	//             "name" : "BamHI_silent_mutation"
-	//         }, 
+	//         },
 	//         {
-	//             "notes" : [ 
+	//             "notes" : [
 	//                 {
 	//                     "quoted" : true,
 	//                     "value" : "4",
@@ -27509,7 +28178,7 @@
 	//             "id" : "55944b393ab644000a14cac0",
 	//             "type" : "CDS",
 	//             "name" : "signal_peptide"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27518,7 +28187,7 @@
 	//             "id" : "55944b393ab644000a14cac1",
 	//             "type" : "terminator",
 	//             "name" : "dbl term"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : -1,
@@ -27527,7 +28196,7 @@
 	//             "id" : "55944b393ab644000a14cac2",
 	//             "type" : "rep_origin",
 	//             "name" : "pSC101**"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : 1,
@@ -27536,7 +28205,7 @@
 	//             "id" : "55944b393ab644000a14cac3",
 	//             "type" : "terminator",
 	//             "name" : "T0"
-	//         }, 
+	//         },
 	//         {
 	//             "notes" : [],
 	//             "strand" : -1,
@@ -27625,8 +28294,9 @@
 
 	//       module.exports = sequenceData;
 
+
 /***/ },
-/* 219 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {
@@ -27813,11 +28483,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 220 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(221);
-	var areNonNegativeIntegers = __webpack_require__(223);
+	var _ = __webpack_require__(225);
+	var areNonNegativeIntegers = __webpack_require__(205);
 
 	function prepareRowData(sequenceData, bpsPerRow) {
 	  var sequenceLength = sequenceData.sequence.length;
@@ -28286,7 +28956,7 @@
 	// }
 
 /***/ },
-/* 221 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -40525,10 +41195,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(222)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(226)(module), (function() { return this; }())))
 
 /***/ },
-/* 222 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module) {
@@ -40544,732 +41214,11 @@
 
 
 /***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	*
-	*	VALIDATE: nonnegative-integer-array
-	*
-	*
-	*	DESCRIPTION:
-	*		- Validates if a value is a nonnegative integer array.
-	*
-	*
-	*	NOTES:
-	*		[1]
-	*
-	*
-	*	TODO:
-	*		[1]
-	*
-	*
-	*	LICENSE:
-	*		MIT
-	*
-	*	Copyright (c) 2015. Athan Reines.
-	*
-	*
-	*	AUTHOR:
-	*		Athan Reines. kgryte@gmail.com. 2015.
-	*
-	*/
-
-	'use strict';
-
-	// MODULES //
-
-	var isArray = __webpack_require__( 224 ),
-		isNonNegativeInteger = __webpack_require__( 225 );
-
-
-	// IS NONNEGATIVE INTEGER ARRAY //
-
-	/**
-	* FUNCTION: isNonNegativeIntegerArray( value )
-	*	Validates if a value is a nonnegative integer array.
-	*
-	* @param {*} value - value to be validated
-	* @returns {Boolean} boolean indicating if a value is a nonnegative integer array
-	*/
-	function isNonNegativeIntegerArray( value ) {
-		var len;
-		if ( !isArray( value ) ) {
-			return false;
-		}
-		len = value.length;
-		if ( !len ) {
-			return false;
-		}
-		for ( var i = 0; i < len; i++ ) {
-			if ( !isNonNegativeInteger( value[i] ) ) {
-				return false;
-			}
-		}
-		return true;
-	} // end FUNCTION isNonNegativeIntegerArray()
-
-
-	// EXPORTS //
-
-	module.exports = isNonNegativeIntegerArray;
-
-
-/***/ },
-/* 224 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	* FUNCTION: isArray( value )
-	*	Validates if a value is an array.
-	*
-	* @param {*} value - value to be validated
-	* @returns {Boolean} boolean indicating whether value is an array
-	*/
-	function isArray( value ) {
-		return Object.prototype.toString.call( value ) === '[object Array]';
-	} // end FUNCTION isArray()
-
-	// EXPORTS //
-
-	module.exports = Array.isArray || isArray;
-
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	*
-	*	VALIDATE: nonnegative-integer
-	*
-	*
-	*	DESCRIPTION:
-	*		- Validates if a value is a nonnegative integer.
-	*
-	*
-	*	NOTES:
-	*		[1]
-	*
-	*
-	*	TODO:
-	*		[1]
-	*
-	*
-	*	LICENSE:
-	*		MIT
-	*
-	*	Copyright (c) 2015. Athan Reines.
-	*
-	*
-	*	AUTHOR:
-	*		Athan Reines. kgryte@gmail.com. 2015.
-	*
-	*/
-
-	'use strict';
-
-	// MODULES //
-
-	var isInteger = __webpack_require__( 226 );
-
-
-	// IS NONNEGATIVE INTEGER //
-
-	/**
-	* FUNCTION: isNonNegativeInteger( value )
-	*	Validates if a value is a nonnegative integer.
-	*
-	* @param {*} value - value to be validated
-	* @returns {Boolean} boolean indicating if a value is a nonnegative integer
-	*/
-	function isNonNegativeInteger( value ) {
-		return isInteger( value ) && value >= 0;
-	} // end FUNCTION isNonNegativeInteger()
-
-
-	// EXPORTS //
-
-	module.exports = isNonNegativeInteger;
-
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	*
-	*	VALIDATE: integer
-	*
-	*
-	*	DESCRIPTION:
-	*		- Validates if a value is an integer.
-	*
-	*
-	*	NOTES:
-	*		[1]
-	*
-	*
-	*	TODO:
-	*		[1]
-	*
-	*
-	*	LICENSE:
-	*		MIT
-	*
-	*	Copyright (c) 2014. Athan Reines.
-	*
-	*
-	*	AUTHOR:
-	*		Athan Reines. kgryte@gmail.com. 2014.
-	*
-	*/
-
-	'use strict';
-
-	// MODULES //
-
-	var isNumber = __webpack_require__( 227 );
-
-
-	// ISINTEGER //
-
-	/**
-	* FUNCTION: isInteger( value )
-	*	Validates if a value is an integer.
-	*
-	* @param {Number} value - value to be validated
-	* @returns {Boolean} boolean indicating whether value is an integer
-	*/
-	function isInteger( value ) {
-		return isNumber( value ) && value%1 === 0;
-	} // end FUNCTION isInteger()
-
-
-	// EXPORTS //
-
-	module.exports = isInteger;
-
-
-/***/ },
 /* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	*
-	*	VALIDATE: number
-	*
-	*
-	*	DESCRIPTION:
-	*		- Validates if a value is a number.
-	*
-	*
-	*	NOTES:
-	*		[1]
-	*
-	*
-	*	TODO:
-	*		[1]
-	*
-	*
-	*	LICENSE:
-	*		MIT
-	*
-	*	Copyright (c) 2014. Athan Reines.
-	*
-	*
-	*	AUTHOR:
-	*		Athan Reines. kgryte@gmail.com. 2014.
-	*
-	*/
-
-	'use strict';
-
-	/**
-	* FUNCTION: isNumber( value )
-	*	Validates if a value is a number.
-	*
-	* @param {*} value - value to be validated
-	* @returns {Boolean} boolean indicating whether value is a number
-	*/
-	function isNumber( value ) {
-		return ( typeof value === 'number' || Object.prototype.toString.call( value ) === '[object Number]' ) && value.valueOf() === value.valueOf();
-	} // end FUNCTION isNumber()
-
-
-	// EXPORTS //
-
-	module.exports = isNumber;
-
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var areNonNegativeIntegers = __webpack_require__(223);
-	var getReverseComplementSequenceString = __webpack_require__(229);
-
-	module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
-	    // if (circular) {
-	        var forwardSequence = sequence;
-	        var backwardSequence = getReverseComplementSequenceString(sequence);
-
-	        var doubleForwardSequence = forwardSequence + forwardSequence;
-	        var doubleBackwardSequence = backwardSequence + backwardSequence;
-
-	        var orfs1Forward = getOrfsFromSequenceString(0, doubleForwardSequence, mininmumOrfSize, true);
-	        var orfs2Forward = getOrfsFromSequenceString(1, doubleForwardSequence, mininmumOrfSize, true);
-	        var orfs3Forward = getOrfsFromSequenceString(2, doubleForwardSequence, mininmumOrfSize, true);
-
-	        var orfs1Reverse = getOrfsFromSequenceString(0, doubleBackwardSequence, mininmumOrfSize, false);
-	        var orfs2Reverse = getOrfsFromSequenceString(1, doubleBackwardSequence, mininmumOrfSize, false);
-	        var orfs3Reverse = getOrfsFromSequenceString(2, doubleBackwardSequence, mininmumOrfSize, false);
-
-	        var combinedForwardOrfs = orfs1Forward.concat(orfs2Forward, orfs3Forward);
-	        var combinedReverseOrfs = orfs1Reverse.concat(orfs2Reverse, orfs3Reverse);
-
-	        //recalculate the start and end indices for the combinedReverseOrfs 
-	        //(because they were generated using the reverse complement sequence and thus have their indices flipped)
-	        for (var i = 0; i < combinedReverseOrfs.length; i++) {
-	            var orf = combinedReverseOrfs[i];
-
-	            var start = doubleBackwardSequence.length - orf.start - 1;
-	            var end = doubleBackwardSequence.length - orf.end;
-
-	            orf.start(end);
-	            orf.end(start);
-
-	            for (var j = 0; j < orf.startCodons.length; j++) {
-	                orf.startCodons[j] = doubleBackwardSequence.length - orf.startCodons[j] - 1;
-	            }
-
-	            var startCodons = orf.startCodons;
-	            startCodons.sort(this.codonsSort);
-	            orf.startCodons = startCodons;
-	        }
-
-	        var allOrfs = combinedForwardOrfs.concat(combinedReverseOrfs);
-
-	        var maxLength = forwardSequence.length;
-
-	        orfsWithNoDuplicates = [];
-	        var normalOrfs = [];
-	        //        var orf = null;
-
-	        allOrfs.forEach(function(orf) {
-	            if (orf.start >= maxLength) {
-	                //do nothing
-	            } else if (orf.end <= maxLength) {
-	                normalOrfs.push(orf);
-	            } else if (orf.end > maxLength && orf.start < maxLength) {
-	                var startCodons = orf.startCodons;
-
-	                orf.end(orf.end - maxLength);
-
-	                orf.startCodons = (orf.startCodons.map(function(startCodon) {
-	                    if (startCodon >= maxLength) {
-	                        startCodon -= maxLength;
-	                    }
-	                    return startCodon;
-	                }));
-
-	                orfsWithNoDuplicates.push(orf);
-	            }
-	        });
-
-	        // Eliminate the orfs that overlaps with circular orfs.
-	        normalOrfs.forEach(function(normalOrf) {
-	            var skip = false;
-
-	            orfsWithNoDuplicates.forEach(function(circularOrf) {
-	                if (circularOrf.end === normalOrf.end &&
-	                    circularOrf.forward === normalOrf.forward) {
-	                    skip = true;
-	                    return false;
-	                }
-	            });
-
-	            if (!skip) {
-	                orfsWithNoDuplicates.push(normalOrf);
-	            }
-	        });
-	        orfsWithNoDuplicates.forEach(function(orf) {
-	            //the end bps of orfs on the reverse forward were off by 1, so this code fixes that
-	            if (orf.forward === -1) {
-	                orf.end++;
-	            }
-	        });
-	        return orfsWithNoDuplicates;
-	    // } else {
-	    //     //get the aa's for the 3 frames
-	    //     getAminoAcidsFromSequenceString(sequence);
-	    //     getAminoAcidsFromSequenceString(sequence);
-	    //     getAminoAcidsFromSequenceString(sequence);
-	    // }
-	};
-
-	/**
-	 * @private
-	 * Finds ORFs in a given DNA forward in a given frame.
-	 * @param  {Int} frame The frame to look in.
-	 * @param  {String}sequence The dna sequence.
-	 * @param  {Int} mininmumOrfSize The minimum length of ORF to return.
-	 * @param  {Teselagen.bio.sequence.common.StrandType} forward The forward we are looking at.
-	 * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
-	 */
-	function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward) {
-	    if (typeof(mininmumOrfSize) === "undefined") {
-	        throw('no min orf size given');
-	    }
-	    if (typeof(forward) === "undefined") {
-	        throw('no orf StrandType passed');
-	    }
-	    if (!areNonNegativeIntegers([frame]) || frame > 2) {
-	        throw('invalid frame passed');
-	    }
-	    if (typeof sequence !== 'string') {
-	        throw('invalid sequence passed');
-	    }
-
-	    var allOrfs = [];
-	    var sequenceLength = sequence.length;
-
-	    // var index = frame;
-	    var triplet;
-	    var aaSymbol;
-	    var aaString = '';
-	    var startIndex = -1;
-	    var endIndex = -1;
-	    var startCodonIndices = [];
-	    var stopCodonIndices = [];
-	    var possibleStopCodon;
-	    var possibleStartCodon;
-	    // Loop through sequence and generate list of ORFs.
-	    for (var index = frame; index < sequenceLength; index += 3) {
-	        triplet = sequence.slice(index, index + 3);
-	        if (triplet.length ===3) {
-	            aaSymbol = getAminoAcidFromSequenceString(triplet);
-	            aaString+= aaSymbol.value;
-	            possibleStartCodon = isStartCodon(triplet);
-	            possibleStopCodon = isStopCodon(triplet);
-
-	            // If we've found a start codon, add its index to startCodonIndices.
-	            if (possibleStartCodon) {
-	                startCodonIndices.push(index);
-	            }
-	            if (possibleStopCodon) {
-	                stopCodonIndices.push(index);
-	            }
-	        }
-	    }
-
-	    //loop through the start codons and see if any of them form orfs
-	    startCodonIndices.forEach(function(startCodonIndex) {
-	        stopCodonIndices.some(function(stopCodonIndex) {
-	            if (stopCodonIndex - startCodonIndex > 0) {
-	                var orf = {
-	                    start: startIndex,
-	                    end: endIndex,
-	                    forward: forward,
-	                    frame: frame,
-	                    startCodons: startCodonIndices
-	                };
-	                allOrfs.push(orf);
-	                return true; //break the some loop
-	            }
-	        });
-	    });
-	    //after this we'll need to do a 'reduce' step to shave off the orfs that don't meet the minimum size requirements 
-	    //as well as the orfs with the same stop bp
-	    var trimmedOrfs = [];
-	    allOrfs.forEach(function(orf) {
-	        if (orf.end - orf.start + 1 >= mininmumOrfSize) { //make sure the orf size is >= to the minimum size
-	            var indexOfOrfWithSameStopBp = _.findIndex(trimmedOrfs, function(trimmedOrf) { //find any orfs with the same stop bp in the trimmed orf array
-	                return trimmedOrf.end === orf.end;
-	            });
-	            if (indexOfOrfWithSameStopBp === -1) {
-	                trimmedOrfs.push(orf);
-	            } else {
-	                if (trimmedOrfs[indexOfOrfWithSameStopBp].start > orf.start) {
-	                    trimmedOrfs[indexOfOrfWithSameStopBp] = orf; //replace the old orf at that position with this new orf because it is longer
-	                }
-	            }
-	        }
-	    });
-	    return trimmedOrfs;
-	}
-
-	function isStartCodon(codon) {
-	    return (codon === 'atg' || codon === 'aug' && codon.indexOf("-") === -1);
-	}
-	/**
-	* {Calculates whether a three character string is a stop codon.
-	  * @param  {String} codon a three character string.
-	  * @return {Boolean} shows whether the nucleotides make up a stop codon
-	  */
-	 function isStopCodon (codon) {
-	    return (codon == 'taa' || codon == 'tag' || codon == 'tga' || codon == 'uaa' || codon == 'uag' || codon == 'uga');
-	 }
-
-	/**
-	 * @private
-	 * Takes three nucleotides and determines if they (and their ambiguous matches) form a stop codon.
-	 * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideOne
-	 * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideTwo
-	 * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideThree
-	 * @return {Boolean} True if the nucleotides given form a stop codon.
-	 */
-	function evaluatePossibleStop(nucleotideOne, nucleotideTwo, nucleotideThree) {
-	    var n1 = this.returnMatches(nucleotideOne);
-	    var n2 = this.returnMatches(nucleotideTwo);
-	    var n3 = this.returnMatches(nucleotideThree);
-
-	    for (var i1 = 0; i1 < n1.length; i1++) {
-	        for (var i2 = 0; i2 < n2.length; i2++) {
-	            for (var i3 = 0; i3 < n3.length; i3++) {
-	                if (Teselagen.TranslationUtils.isStopCodon(n1[i1], n2[i2], n3[i3])) {
-	                    return true;
-	                }
-	            }
-	        }
-	    }
-
-	    return false;
-	}
-
-	/**
-	 * @private
-	 * Helper function to return ambiguous matches of a nucleotide if they exist, and
-	 * otherwise return an array just containing the nucleotide.
-	 * @param {Teselagen.bio.sequence.symbols.NucleotideSymbol} nucleotide The nucleotide to get matches for.
-	 * @return {Teselagen.bio.sequence.symbols.NucleotideSymbol[]} The array containing matches.
-	 */
-	function returnMatches(nucleotide) {
-	    var nucleotideObject = Teselagen.DNAAlphabet[nucleotide];
-	    var ambiguousMatches;
-
-	    if (nucleotideObject && nucleotideObject.getAmbiguousMatches().length !== 0) {
-	        ambiguousMatches = nucleotideObject.getAmbiguousMatches();
-	    } else {
-	        ambiguousMatches = [nucleotide];
-	    }
-
-	    return ambiguousMatches;
-	}
-
-	/**
-	 * @private
-	 * Sorting function for sorting codons.
-	 * @param a
-	 * @param b
-	 * @return {Int} Sort order.
-	 */
-	function codonsSort(a, b) {
-	    if (a > b) {
-	        return 1;
-	    } else if (a < b) {
-	        return -1;
-	    } else {
-	        return 0;
-	    }
-	}
-
-	function getAminoAcidsFromSequenceString(sequenceString) {
-	    var aminoAcidString = '';
-	    for (var i = 3; i < sequenceString.length; i += 3) {
-	        aminoAcidString += getAminoAcidFromSequenceString(sequenceString.slice(i - 3, i + 1));
-	    }
-	    return aminoAcidString;
-	}
-
-	function getAminoAcidFromSequenceString(sequenceString) {
-	    if (typeof sequenceString === 'string') {
-	        sequenceString = sequenceString.toLowerCase();
-	    } else {
-	        throw ('must pass a string to this function');
-	    }
-	    if (sequenceString.length !== 3) {
-	        throw 'must pass a string of length 3';
-	    }
-	    if (threeLetterSequenceStringToAminoAcidMap[sequenceString]) {
-	        return threeLetterSequenceStringToAminoAcidMap[sequenceString];
-	    } else {
-	        return  ({
-	            value: '-',
-	            name: 'Gap',
-	            threeLettersName: 'Gap'
-	        });
-	    }
-	}
-
-	var proteinAlphabet = { //tnrtodo: add stop codons and non-normal codons to these maps as well!!
-		'A': {value: 'A', name:'Alanine', threeLettersName: 'Ala'},
-		'R': {value: 'R', name:'Arginine', threeLettersName: 'Arg'},
-		'N': {value: 'N', name:'Asparagine', threeLettersName: 'Asn'},
-		'D': {value: 'D', name:'Aspartic acid', threeLettersName: 'Asp'},
-		'C': {value: 'C', name:'Cysteine', threeLettersName: 'Cys'},
-		'E': {value: 'E', name:'Glutamic acid', threeLettersName: 'Glu'},
-		'Q': {value: 'Q', name:'Glutamine', threeLettersName: 'Gln'},
-		'G': {value: 'G', name:'Glycine', threeLettersName: 'Gly'},
-		'H': {value: 'H', name:'Histidine', threeLettersName: 'His'},
-		'I': {value: 'I', name:'Isoleucine ', threeLettersName: 'Ile'},
-		'L': {value: 'L', name:'Leucine', threeLettersName: 'Leu'},
-		'K': {value: 'K', name:'Lysine', threeLettersName: 'Lys'},
-		'M': {value: 'M', name:'Methionine', threeLettersName: 'Met'},
-		'F': {value: 'F', name:'Phenylalanine', threeLettersName: 'Phe'},
-		'P': {value: 'P', name:'Proline', threeLettersName: 'Pro'},
-		'S': {value: 'S', name:'Serine', threeLettersName: 'Ser'},
-		'T': {value: 'T', name:'Threonine', threeLettersName: 'Thr'},
-		'W': {value: 'W', name:'Tryptophan', threeLettersName: 'Trp'},
-		'Y': {value: 'Y', name:'Tyrosine', threeLettersName: 'Tyr'},
-		'V': {value: 'V', name:'Valine', threeLettersName: 'Val'},
-		'*': {value: '*', name:'Stop', threeLettersName: 'Stop'},
-	};
-
-	var threeLetterSequenceStringToAminoAcidMap = {
-		gct: proteinAlphabet.A,
-		gcc: proteinAlphabet.A,
-		gca: proteinAlphabet.A,
-		gcg: proteinAlphabet.A,
-		gcu: proteinAlphabet.A,
-		cgt: proteinAlphabet.R,
-		cgc: proteinAlphabet.R,
-		cga: proteinAlphabet.R,
-		cgg: proteinAlphabet.R,
-		aga: proteinAlphabet.R,
-		agg: proteinAlphabet.R,
-		cgu: proteinAlphabet.R,
-		aat: proteinAlphabet.N,
-		aac: proteinAlphabet.N,
-		aau: proteinAlphabet.N,
-		gat: proteinAlphabet.D,
-		gac: proteinAlphabet.D,
-		gau: proteinAlphabet.D,
-		tgt: proteinAlphabet.C,
-		tgc: proteinAlphabet.C,
-		ugu: proteinAlphabet.C,
-		ugc: proteinAlphabet.C,
-		gaa: proteinAlphabet.E,
-		gag: proteinAlphabet.E,
-		caa: proteinAlphabet.Q,
-		cag: proteinAlphabet.Q,
-		ggt: proteinAlphabet.G,
-		ggc: proteinAlphabet.G,
-		gga: proteinAlphabet.G,
-		ggg: proteinAlphabet.G,
-		ggu: proteinAlphabet.G,
-		cat: proteinAlphabet.H,
-		cac: proteinAlphabet.H,
-		cau: proteinAlphabet.H,
-		att: proteinAlphabet.I,
-		atc: proteinAlphabet.I,
-		ata: proteinAlphabet.I,
-		auu: proteinAlphabet.I,
-		auc: proteinAlphabet.I,
-		aua: proteinAlphabet.I,
-		ctt: proteinAlphabet.L,
-		ctc: proteinAlphabet.L,
-		cta: proteinAlphabet.L,
-		ctg: proteinAlphabet.L,
-		tta: proteinAlphabet.L,
-		ttg: proteinAlphabet.L,
-		cuu: proteinAlphabet.L,
-		cuc: proteinAlphabet.L,
-		cua: proteinAlphabet.L,
-		cug: proteinAlphabet.L,
-		uua: proteinAlphabet.L,
-		uug: proteinAlphabet.L,
-		aaa: proteinAlphabet.K,
-		aag: proteinAlphabet.K,
-		atg: proteinAlphabet.M,
-		aug: proteinAlphabet.M,
-		ttt: proteinAlphabet.F,
-		ttc: proteinAlphabet.F,
-		uuu: proteinAlphabet.F,
-		uuc: proteinAlphabet.F,
-		cct: proteinAlphabet.P,
-		ccc: proteinAlphabet.P,
-		cca: proteinAlphabet.P,
-		ccg: proteinAlphabet.P,
-		ccu: proteinAlphabet.P,
-		tct: proteinAlphabet.S,
-		tcc: proteinAlphabet.S,
-		tca: proteinAlphabet.S,
-		tcg: proteinAlphabet.S,
-		agt: proteinAlphabet.S,
-		agc: proteinAlphabet.S,
-		ucu: proteinAlphabet.S,
-		ucc: proteinAlphabet.S,
-		uca: proteinAlphabet.S,
-		ucg: proteinAlphabet.S,
-		agu: proteinAlphabet.S,
-		act: proteinAlphabet.T,
-		acc: proteinAlphabet.T,
-		aca: proteinAlphabet.T,
-		acg: proteinAlphabet.T,
-		acu: proteinAlphabet.T,
-		tgg: proteinAlphabet.W,
-		ugg: proteinAlphabet.W,
-		tat: proteinAlphabet.Y,
-		tac: proteinAlphabet.Y,
-		uau: proteinAlphabet.Y,
-		uac: proteinAlphabet.Y,
-		gtt: proteinAlphabet.V,
-		gtc: proteinAlphabet.V,
-		gta: proteinAlphabet.V,
-		gtg: proteinAlphabet.V,
-		guu: proteinAlphabet.V,
-		guc: proteinAlphabet.V,
-		gua: proteinAlphabet.V,
-		gug: proteinAlphabet.V,
-		taa: proteinAlphabet['*'],
-		tag: proteinAlphabet['*'],
-		tga: proteinAlphabet['*'],
-	};
-
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var DNAReverseComplementMap = __webpack_require__(230);
-	module.exports = function getReverseComplementSequenceString (sequence) {
-		if (!sequence) {
-			console.warn('no sequence passed!');
-			return "";
-		}
-		var reverseComplementSequenceString = "";
-		for (var i = sequence.length - 1; i >= 0; i--) {
-			reverseComplementSequenceString+= DNAReverseComplementMap[sequence[i]];
-		}
-		return reverseComplementSequenceString;
-	};
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var DNAReverseComplementMap = {
-		a: 't',
-		t: 'a',
-		c: 'g',
-		g: 'c',
-		A: 'T',
-		T: 'A',
-		C: 'G',
-		G: 'C',
-		//tnrtodo add more letters here
-	};
-	module.exports = DNAReverseComplementMap;
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(221);
-	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(232);
+	var _ = __webpack_require__(225);
+	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(228);
 
 	function computeNumberOfCharsThatFitInGivenViewportWidth (viewportDimensions, charWidth) {
 	  return Math.floor(viewportDimensionsWidth/charWidth);
@@ -41540,21 +41489,21 @@
 	module.exports = computeRowRepresenationOfSequence;
 
 /***/ },
-/* 232 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var areRangesValid = __webpack_require__(233);
-	var areNonNegativeIntegers = __webpack_require__(223);
-	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(234);
+	var areRangesValid = __webpack_require__(229);
+	var areNonNegativeIntegers = __webpack_require__(205);
+	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(230);
 	//returns an array of the overlaps between two potentially circular ranges
-	module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxLength) {
-	  if (!areRangesValid([rangeA, rangeB], maxLength)) {
+	module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
+	  if (!areRangesValid([rangeA, rangeB], maxRangeLength)) {
 	    // console.warn("unable to calculate ranges of  inputs");
-	    throw 'invalid ranges passed in!'
+	    throw 'invalid ranges passed in!';
 	    // return [];
 	  }
-	  var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxLength);
-	  var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxLength);
+	  var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
+	  var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxRangeLength);
 
 	  var overlaps = [];
 	  normalizedRangeA.forEach(function(nonCircularRangeA) {
@@ -41565,7 +41514,7 @@
 	      }
 	    });
 	  });
-	  
+
 	  return overlaps;
 	};
 
@@ -41609,11 +41558,12 @@
 	  }
 	}
 
+
 /***/ },
-/* 233 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var areNonNegativeIntegers = __webpack_require__(223);
+	var areNonNegativeIntegers = __webpack_require__(205);
 	module.exports = function areRangesValid(arrayOfRanges, maxLength) {
 		if (!areNonNegativeIntegers([maxLength])) {
 			return false;
@@ -41636,11 +41586,11 @@
 	};
 
 /***/ },
-/* 234 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//takes a potentially circular range and returns an array containing the range split on the origin
-	module.exports = function splitRangeIntoTwoPartsIfItIsCircular(range, maxLength) {
+	module.exports = function splitRangeIntoTwoPartsIfItIsCircular(range, maxRangeLength) {
 	  if (range.start <= range.end) {
 	    //the range isn't circular, so we just return the range
 	    return [{
@@ -41654,17 +41604,19 @@
 	      end: range.end
 	    }, {
 	      start: range.start,
-	      end: maxLength - 1
+	      end: maxRangeLength - 1
 	    }];
 	  }
 	};
 
 /***/ },
-/* 235 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// tnrtodo: figure out where to insert this validation exactly..
+	var assign = __webpack_require__(232);
 	module.exports = function validateAndTidyUpSequenceData(sequenceData) {
+	  var sequenceData = assign({},sequenceData); //sequenceData is usually immutable, so we clone it and return it
 	  if (!sequenceData) {
 	  	console.log('no sequenceData at all...!');
 	  	sequenceData = {};
@@ -41673,166 +41625,971 @@
 	  	console.log('no bps!');
 	  	sequenceData.sequence = "";
 	  }
-	  if (!sequenceData.features) {
+	  if (!Array.isArray(sequenceData.features)) {
 	  	console.log('no features array!');
 	  	sequenceData.features = [];
 	  }
-	  if (!sequenceData.parts) {
+	  if (!Array.isArray(sequenceData.parts)) {
 	  	console.log('no parts array!');
 	  	sequenceData.parts = [];
 	  }
 	  return sequenceData;
 	};
 
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assignWith = __webpack_require__(233),
+	    baseAssign = __webpack_require__(250),
+	    createAssigner = __webpack_require__(252);
+
+	/**
+	 * Assigns own enumerable properties of source object(s) to the destination
+	 * object. Subsequent sources overwrite property assignments of previous sources.
+	 * If `customizer` is provided it is invoked to produce the assigned values.
+	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
+	 * (objectValue, sourceValue, key, object, source).
+	 *
+	 * **Note:** This method mutates `object` and is based on
+	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias extend
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @param {Function} [customizer] The function to customize assigned values.
+	 * @param {*} [thisArg] The `this` binding of `customizer`.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
+	 * // => { 'user': 'fred', 'age': 40 }
+	 *
+	 * // using a customizer callback
+	 * var defaults = _.partialRight(_.assign, function(value, other) {
+	 *   return _.isUndefined(value) ? other : value;
+	 * });
+	 *
+	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+	 * // => { 'user': 'barney', 'age': 36 }
+	 */
+	var assign = createAssigner(function(object, source, customizer) {
+	  return customizer
+	    ? assignWith(object, source, customizer)
+	    : baseAssign(object, source);
+	});
+
+	module.exports = assign;
+
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var keys = __webpack_require__(234);
+
+	/**
+	 * A specialized version of `_.assign` for customizing assigned values without
+	 * support for argument juggling, multiple sources, and `this` binding `customizer`
+	 * functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @param {Function} customizer The function to customize assigned values.
+	 * @returns {Object} Returns `object`.
+	 */
+	function assignWith(object, source, customizer) {
+	  var index = -1,
+	      props = keys(source),
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index],
+	        value = object[key],
+	        result = customizer(value, source[key], key, object, source);
+
+	    if ((result === result ? (result !== value) : (value === value)) ||
+	        (value === undefined && !(key in object))) {
+	      object[key] = result;
+	    }
+	  }
+	  return object;
+	}
+
+	module.exports = assignWith;
+
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(235),
+	    isArrayLike = __webpack_require__(240),
+	    isObject = __webpack_require__(244),
+	    shimKeys = __webpack_require__(245);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? null : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	module.exports = keys;
+
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isNative = __webpack_require__(236);
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	module.exports = getNative;
+
+
 /***/ },
 /* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(237);
-	var isArguments = __webpack_require__(238);
+	var escapeRegExp = __webpack_require__(237),
+	    isObjectLike = __webpack_require__(239);
 
-	var deepEqual = module.exports = function (actual, expected, opts) {
-	  if (!opts) opts = {};
-	  // 7.1. All identical values are equivalent, as determined by ===.
-	  if (actual === expected) {
-	    return true;
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
 
-	  } else if (actual instanceof Date && expected instanceof Date) {
-	    return actual.getTime() === expected.getTime();
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-	  // 7.3. Other pairs that do not both pass typeof value == 'object',
-	  // equivalence is determined by ==.
-	  } else if (typeof actual != 'object' && typeof expected != 'object') {
-	    return opts.strict ? actual === expected : actual == expected;
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
 
-	  // 7.4. For all other Object pairs, including Array objects, equivalence is
-	  // determined by having the same number of owned properties (as verified
-	  // with Object.prototype.hasOwnProperty.call), the same set of keys
-	  // (although not necessarily the same order), equivalent values for every
-	  // corresponding key, and an identical 'prototype' property. Note: this
-	  // accounts for both named and indexed properties on Arrays.
-	  } else {
-	    return objEquiv(actual, expected, opts);
-	  }
-	}
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
 
-	function isUndefinedOrNull(value) {
-	  return value === null || value === undefined;
-	}
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
 
-	function isBuffer (x) {
-	  if (!x || typeof x !== 'object' || typeof x.length !== 'number') return false;
-	  if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
+	/**
+	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  escapeRegExp(fnToString.call(hasOwnProperty))
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
 	    return false;
 	  }
-	  if (x.length > 0 && typeof x[0] !== 'number') return false;
-	  return true;
+	  if (objToString.call(value) == funcTag) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
 	}
 
-	function objEquiv(a, b, opts) {
-	  var i, key;
-	  if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
-	    return false;
-	  // an identical 'prototype' property.
-	  if (a.prototype !== b.prototype) return false;
-	  //~~~I've managed to break Object.keys through screwy arguments passing.
-	  //   Converting to array solves the problem.
-	  if (isArguments(a)) {
-	    if (!isArguments(b)) {
-	      return false;
-	    }
-	    a = pSlice.call(a);
-	    b = pSlice.call(b);
-	    return deepEqual(a, b, opts);
-	  }
-	  if (isBuffer(a)) {
-	    if (!isBuffer(b)) {
-	      return false;
-	    }
-	    if (a.length !== b.length) return false;
-	    for (i = 0; i < a.length; i++) {
-	      if (a[i] !== b[i]) return false;
-	    }
-	    return true;
-	  }
-	  try {
-	    var ka = objectKeys(a),
-	        kb = objectKeys(b);
-	  } catch (e) {//happens when one is a string literal and the other isn't
-	    return false;
-	  }
-	  // having the same number of owned properties (keys incorporates
-	  // hasOwnProperty)
-	  if (ka.length != kb.length)
-	    return false;
-	  //the same set of keys (although not necessarily the same order),
-	  ka.sort();
-	  kb.sort();
-	  //~~~cheap key test
-	  for (i = ka.length - 1; i >= 0; i--) {
-	    if (ka[i] != kb[i])
-	      return false;
-	  }
-	  //equivalent values for every corresponding key, and
-	  //~~~possibly expensive deep test
-	  for (i = ka.length - 1; i >= 0; i--) {
-	    key = ka[i];
-	    if (!deepEqual(a[key], b[key], opts)) return false;
-	  }
-	  return typeof a === typeof b;
-	}
+	module.exports = isNative;
 
 
 /***/ },
 /* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = typeof Object.keys === 'function'
-	  ? Object.keys : shim;
+	var baseToString = __webpack_require__(238);
 
-	exports.shim = shim;
-	function shim (obj) {
-	  var keys = [];
-	  for (var key in obj) keys.push(key);
-	  return keys;
+	/**
+	 * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+	 * In addition to special characters the forward slash is escaped to allow for
+	 * easier `eval` use and `Function` compilation.
+	 */
+	var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
+	    reHasRegExpChars = RegExp(reRegExpChars.source);
+
+	/**
+	 * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+	 * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category String
+	 * @param {string} [string=''] The string to escape.
+	 * @returns {string} Returns the escaped string.
+	 * @example
+	 *
+	 * _.escapeRegExp('[lodash](https://lodash.com/)');
+	 * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
+	 */
+	function escapeRegExp(string) {
+	  string = baseToString(string);
+	  return (string && reHasRegExpChars.test(string))
+	    ? string.replace(reRegExpChars, '\\$&')
+	    : string;
 	}
+
+	module.exports = escapeRegExp;
 
 
 /***/ },
 /* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var supportsArgumentsClass = (function(){
-	  return Object.prototype.toString.call(arguments)
-	})() == '[object Arguments]';
+	/**
+	 * Converts `value` to a string if it's not one. An empty string is returned
+	 * for `null` or `undefined` values.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  if (typeof value == 'string') {
+	    return value;
+	  }
+	  return value == null ? '' : (value + '');
+	}
 
-	exports = module.exports = supportsArgumentsClass ? supported : unsupported;
-
-	exports.supported = supported;
-	function supported(object) {
-	  return Object.prototype.toString.call(object) == '[object Arguments]';
-	};
-
-	exports.unsupported = unsupported;
-	function unsupported(object){
-	  return object &&
-	    typeof object == 'object' &&
-	    typeof object.length == 'number' &&
-	    Object.prototype.hasOwnProperty.call(object, 'callee') &&
-	    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
-	    false;
-	};
+	module.exports = baseToString;
 
 
 /***/ },
 /* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getLength = __webpack_require__(241),
+	    isLength = __webpack_require__(243);
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	module.exports = isArrayLike;
+
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseProperty = __webpack_require__(242);
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	module.exports = getLength;
+
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	module.exports = baseProperty;
+
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	module.exports = isLength;
+
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isObject;
+
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArguments = __webpack_require__(246),
+	    isArray = __webpack_require__(247),
+	    isIndex = __webpack_require__(248),
+	    isLength = __webpack_require__(243),
+	    keysIn = __webpack_require__(249);
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = shimKeys;
+
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(240),
+	    isObjectLike = __webpack_require__(239);
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]';
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  return isObjectLike(value) && isArrayLike(value) && objToString.call(value) == argsTag;
+	}
+
+	module.exports = isArguments;
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(235),
+	    isLength = __webpack_require__(243),
+	    isObjectLike = __webpack_require__(239);
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]';
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	module.exports = isIndex;
+
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArguments = __webpack_require__(246),
+	    isArray = __webpack_require__(247),
+	    isIndex = __webpack_require__(248),
+	    isLength = __webpack_require__(243),
+	    isObject = __webpack_require__(244);
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keysIn;
+
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseCopy = __webpack_require__(251),
+	    keys = __webpack_require__(234);
+
+	/**
+	 * The base implementation of `_.assign` without support for argument juggling,
+	 * multiple sources, and `customizer` functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseAssign(object, source) {
+	  return source == null
+	    ? object
+	    : baseCopy(source, keys(source), object);
+	}
+
+	module.exports = baseAssign;
+
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property names to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseCopy(source, props, object) {
+	  object || (object = {});
+
+	  var index = -1,
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index];
+	    object[key] = source[key];
+	  }
+	  return object;
+	}
+
+	module.exports = baseCopy;
+
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var bindCallback = __webpack_require__(253),
+	    isIterateeCall = __webpack_require__(255),
+	    restParam = __webpack_require__(256);
+
+	/**
+	 * Creates a function that assigns properties of source object(s) to a given
+	 * destination object.
+	 *
+	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return restParam(function(object, sources) {
+	    var index = -1,
+	        length = object == null ? 0 : sources.length,
+	        customizer = length > 2 ? sources[length - 2] : undefined,
+	        guard = length > 2 ? sources[2] : undefined,
+	        thisArg = length > 1 ? sources[length - 1] : undefined;
+
+	    if (typeof customizer == 'function') {
+	      customizer = bindCallback(customizer, thisArg, 5);
+	      length -= 2;
+	    } else {
+	      customizer = typeof thisArg == 'function' ? thisArg : undefined;
+	      length -= (customizer ? 1 : 0);
+	    }
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? undefined : customizer;
+	      length = 1;
+	    }
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+
+	module.exports = createAssigner;
+
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var identity = __webpack_require__(254);
+
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = identity;
+
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(240),
+	    isIndex = __webpack_require__(248),
+	    isObject = __webpack_require__(244);
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeMax = Math.max;
+
+	/**
+	 * Creates a function that invokes `func` with the `this` binding of the
+	 * created function and arguments from `start` and beyond provided as an array.
+	 *
+	 * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Function
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var say = _.restParam(function(what, names) {
+	 *   return what + ' ' + _.initial(names).join(', ') +
+	 *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+	 * });
+	 *
+	 * say('hello', 'fred', 'barney', 'pebbles');
+	 * // => 'hello fred, barney, & pebbles'
+	 */
+	function restParam(func, start) {
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
+	  return function() {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax(args.length - start, 0),
+	        rest = Array(length);
+
+	    while (++index < length) {
+	      rest[index] = args[start + index];
+	    }
+	    switch (start) {
+	      case 0: return func.call(this, rest);
+	      case 1: return func.call(this, args[0], rest);
+	      case 2: return func.call(this, args[0], args[1], rest);
+	    }
+	    var otherArgs = Array(start + 1);
+	    index = -1;
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+	    otherArgs[start] = rest;
+	    return func.apply(this, otherArgs);
+	  };
+	}
+
+	module.exports = restParam;
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function getSubstringByRange(string, rangeToCopy) {
+		if (rangeToCopy.start > rangeToCopy.end) {
+			return string.slice(0, rangeToCopy.end + 1) + string.slice(rangeToCopy.start, string.length)
+		} else {
+			return string.slice(rangeToCopy.start, rangeToCopy.end + 1)
+		}
+	}
+
+					
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// https://github.com/paulmillr/es6-shim
 	// http://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.isinteger
-	var isNaN = __webpack_require__(240);
-	var isFinite = __webpack_require__(245);
+	var isNaN = __webpack_require__(259);
+	var isFinite = __webpack_require__(264);
 	module.exports = Number.isInteger || function(val) {
 		return typeof val === "number" &&
 			! isNaN(val) &&
@@ -41842,12 +42599,12 @@
 
 
 /***/ },
-/* 240 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var define = __webpack_require__(241);
+	var define = __webpack_require__(260);
 
 	/* http://www.ecma-international.org/ecma-262/6.0/#sec-number.isnan */
 
@@ -41868,13 +42625,13 @@
 
 
 /***/ },
-/* 241 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var keys = __webpack_require__(242);
-	var foreach = __webpack_require__(244);
+	var keys = __webpack_require__(261);
+	var foreach = __webpack_require__(263);
 
 	var toStr = Object.prototype.toString;
 
@@ -41922,7 +42679,7 @@
 
 
 /***/ },
-/* 242 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41931,7 +42688,7 @@
 	var has = Object.prototype.hasOwnProperty;
 	var toStr = Object.prototype.toString;
 	var slice = Array.prototype.slice;
-	var isArgs = __webpack_require__(243);
+	var isArgs = __webpack_require__(262);
 	var hasDontEnumBug = !({ 'toString': null }).propertyIsEnumerable('toString');
 	var hasProtoEnumBug = function () {}.propertyIsEnumerable('prototype');
 	var dontEnums = [
@@ -42013,7 +42770,7 @@
 
 
 /***/ },
-/* 243 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42036,7 +42793,7 @@
 
 
 /***/ },
-/* 244 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -42064,11 +42821,11 @@
 
 
 /***/ },
-/* 245 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var numberIsNan = __webpack_require__(246);
+	var numberIsNan = __webpack_require__(265);
 
 	module.exports = Number.isFinite || function (val) {
 		return !(typeof val !== 'number' || numberIsNan(val) || val === Infinity || val === -Infinity);
@@ -42076,7 +42833,7 @@
 
 
 /***/ },
-/* 246 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42086,13 +42843,62 @@
 
 
 /***/ },
-/* 247 */
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
+	    //this function is a little confusing, but basically it takes an array of overlaps 
+	    //generated from a range overlaps calculation, and it sews them together if possible
+	    if (overlaps.length === 1) {
+	        return overlaps;
+	    } else if (overlaps.length === 2) {
+	        if (overlaps[0].start === 0 && overlaps[1].end + 1 === sequenceLength) {
+	            return [{
+	                start: overlaps[1].start,
+	                end: overlaps[0].end
+	            }];
+	        } else if (overlaps[1].start === 0 && overlaps[0].end + 1 === sequenceLength) {
+	            return [{
+	                start: overlaps[0].start,
+	                end: overlaps[1].end
+	            }];
+	        } else {
+	            return overlaps;
+	        }
+	    } else if (overlaps.length === 3) {
+	        var firstOverlap = overlaps[0];
+	        var secondOverlap = overlaps[1];
+	        var thirdOverlap = overlaps[2];
+	        var collapsedOverlaps = collapseOverlapsGeneratedFromRangeComparisonIfPossible([firstOverlap, secondOverlap], sequenceLength);
+	        if (collapsedOverlaps.length === 1) {
+	            collapsedOverlaps.push(thirdOverlap);
+	            return collapsedOverlaps;
+	        } else {
+	            collapsedOverlaps = collapseOverlapsGeneratedFromRangeComparisonIfPossible([firstOverlap, thirdOverlap], sequenceLength);
+	            if (collapsedOverlaps.length === 1) {
+	                collapsedOverlaps.push(secondOverlap);
+	                return collapsedOverlaps;
+	            } else {
+	                collapsedOverlaps = collapseOverlapsGeneratedFromRangeComparisonIfPossible([secondOverlap, thirdOverlap], sequenceLength);
+	                if (collapsedOverlaps.length === 1) {
+	                    collapsedOverlaps.push(firstOverlap);
+	                    return collapsedOverlaps;
+	                } else {
+	                    return overlaps;
+	                }
+	            }
+	        }
+	    }
+	};
+
+/***/ },
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(234);
-	var trimRangeByAnotherRange = __webpack_require__(248);
-	var areRangesValid = __webpack_require__(233);
+	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(230);
+	var trimRangeByAnotherRange = __webpack_require__(268);
+	var areRangesValid = __webpack_require__(229);
 
 	//takes in two potentially circular ranges and returns the first one trimmed by the second one
 	//returns null if no range is left after the trimming
@@ -42131,12 +42937,12 @@
 	};
 
 /***/ },
-/* 248 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var areNonNegativeIntegers = __webpack_require__(223);
-	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(232);
-	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(234);
+	var areNonNegativeIntegers = __webpack_require__(205);
+	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(228);
+	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(230);
 
 	//trims range, but does *not* adjust it
 	//returns a new range if there is one, or null, if it is trimmed completely
@@ -42247,7 +43053,7 @@
 	}
 
 /***/ },
-/* 249 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function trimNumberToFitWithin0ToAnotherNumber(numberToBeTrimmed, max) {
@@ -42261,13 +43067,12 @@
 	};
 
 /***/ },
-/* 250 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(234);
+	var splitRangeIntoTwoPartsIfItIsCircular = __webpack_require__(230);
 
-	//note: anotherRange is assumed to be non-circular! (this makes sense because we're never inserting a circular range...)
 	module.exports = function adjustRangeToSequenceInsert(rangeToBeAdjusted, insertStart, insertLength) {
 	  var newRange = {
 	    start: rangeToBeAdjusted.start,
@@ -42298,7 +43103,7 @@
 	};
 
 /***/ },
-/* 251 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function spliceSlice(str, index, count, add) {
@@ -42306,14 +43111,33 @@
 	};
 
 /***/ },
-/* 252 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(253);
+	module.exports = function filterSequenceString(sequenceString) {
+		var index;
+		validDnaChars = ['a', 'c', 'g', 't', 'r', 'y', 's', 'w', 'k', 'm', 'b', 'd', 'h', 'v', 'n', 'A', 'C', 'G', 'T', 'R', 'Y', 'S', 'W', 'K', 'M', 'B', 'D', 'H', 'V', 'N'];
+		var filteredString = '';
+		for (index = 0; index < sequenceString.length; ++index) {
+			// if char is valid...
+			if (validDnaChars.indexOf(sequenceString[index]) != -1) {
+				filteredString += (sequenceString[index]);
+			}
+
+		}
+		return filteredString; //a subset of the original sequenceString containing only valid DNA, or nothing
+	}
 
 
 /***/ },
-/* 253 */
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(274);
+
+
+/***/ },
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42321,7 +43145,7 @@
 	var React = __webpack_require__(2);
 	var emptyFunction = function(){};
 	var assign = __webpack_require__(164);
-	var classNames = __webpack_require__(254);
+	var classNames = __webpack_require__(275);
 
 	//
 	// Helpers. See Element definition below this section.
@@ -42989,7 +43813,7 @@
 
 
 /***/ },
-/* 254 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -43038,34 +43862,33 @@
 
 
 /***/ },
-/* 255 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
-	var _ = __webpack_require__(221);
-	var classnames = __webpack_require__(254);
+	var _ = __webpack_require__(225);
+	var classnames = __webpack_require__(275);
 	// var charWidth = require('./editorConstants').charWidth;
 	// var CHAR_HEIGHT = require('./editorConstants').CHAR_HEIGHT;
-	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(232);
+	var getOverlapsOfPotentiallyCircularRanges = __webpack_require__(228);
 	// var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
 	// var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
-	var baobabBranch = __webpack_require__(201).branch;
-	var appActions = __webpack_require__(216);
-	var getXStartAndWidthOfRowAnnotation = __webpack_require__(256);
-	var getXCenterOfRowAnnotation = __webpack_require__(257);
+	var baobabBranch = __webpack_require__(277).branch;
+	var appActions = __webpack_require__(202);
+	var getXStartAndWidthOfRowAnnotation = __webpack_require__(281);
+	var getXCenterOfRowAnnotation = __webpack_require__(282);
 
 	var SequenceContainer = React.createClass({displayName: "SequenceContainer",
 	  render: function () {
 	    var $__0=   this.props,sequence=$__0.sequence,charWidth=$__0.charWidth;
-	    var textHTML = 
-	    '<text font-family="Courier New, Courier, monospace" x="'+ (charWidth/4) + '" y="10" textLength="'+ (charWidth * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>'
-	    return React.createElement("svg", {ref: "textContainer", className: "textContainer", width: "100%", height: charWidth, dangerouslySetInnerHTML: {__html: textHTML}})
+	    var textHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (charWidth/4) + '" y="10" textLength="'+ (charWidth * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>';
+	    return React.createElement("svg", {ref: "textContainer", className: "textContainer", width: "100%", height: charWidth, dangerouslySetInnerHTML: {__html: textHTML}});
 	  }
 	});
 
 	var AxisContainer = React.createClass({displayName: "AxisContainer",
 	  // createAxisPath:  function (annotationRange, bpsPerRow, charWidth, annotationHeight) {
-	  //   var annotation = annotationRange.annotation; 
+	  //   var annotation = annotationRange.annotation;
 	  //   var {xStart, width} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
 	  //   var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
 	  //   var height = annotationHeight;
@@ -43075,7 +43898,7 @@
 	  //   var yEnd = yStart + height;
 
 	  //   if (forward) {
-	      
+
 	  //   } else {
 
 	  //   }
@@ -43121,14 +43944,14 @@
 	          stroke: 'black', 
 	          x: xCenter, 
 	          y: annotationHeight, 
-	          style: {"text-anchor": "middle", "font-size": 10, "font-family": "Verdana"}
+	          style: {"textAnchor": "middle", "fontSize": 10, "fontFamily": "Verdana"}
 	          }, 
 	          row.start + tickMarkPosition
-	        ))
+	        ));
 	    });
 
 	    return (
-	      React.createElement("svg", {className: "annotationContainer", width: "100%", height: annotationHeight*1.2}, 
+	      React.createElement("svg", {className: "tickMarkContainer", width: "100%", height: annotationHeight*1.2}, 
 	        tickMarkSVG, 
 	        React.createElement("path", {
 	        key: 'axis ' + row.rowNumber, 
@@ -43160,7 +43983,7 @@
 	      if (annotationRange.yOffset > maxAnnotationYOffset) {
 	        maxAnnotationYOffset = annotationRange.yOffset;
 	      }
-	      var annotation = annotationRange.annotation; 
+	      var annotation = annotationRange.annotation;
 
 	      annotationsSVG.push(React.createElement("path", {
 	        onClick: function (event) {
@@ -43172,13 +43995,13 @@
 	        className: classnames(annotation.id, annotation.type), 
 	        d: createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight), 
 	        stroke: annotation.color, 
-	        fillOpacity: 0.4, //come back and change this to a passed var} 
+	        fillOpacity: 0.4, //come back and change this to a passed var}
 	        fill: annotation.color}));
 
 	      annotationsSVG.push(React.createElement("path", {
 	        key: 'directionArrow' + annotation.id + 'start:' + annotationRange.start, 
 	        d: createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight), 
-	        stroke: 'black'}))
+	        stroke: 'black'}));
 	    });
 	    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
 	    return (
@@ -43187,7 +44010,7 @@
 	      )
 	    );
 	    function createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
-	      var annotation = annotationRange.annotation; 
+	      var annotation = annotationRange.annotation;
 	      var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
 	      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
 	      var rangeType = annotationRange.rangeType;
@@ -43196,9 +44019,9 @@
 	      var xEnd = xCenter + charWidth/2;
 	      var yEnd = yStart + annotationHeight;
 	      var yMiddle = yStart + annotationHeight/2;
-	      var path; 
+	      var path;
 	      if (forward) {
-	        path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yMiddle + " L" + xStart + "," + yEnd 
+	        path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yMiddle + " L" + xStart + "," + yEnd;
 	      } else {
 
 	      }
@@ -43212,7 +44035,7 @@
 	    }
 
 	    function createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
-	      var annotation = annotationRange.annotation; 
+	      var annotation = annotationRange.annotation;
 	      var $__0=   getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth),xStart=$__0.xStart,width=$__0.width;
 	      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
 	      var height = annotationHeight;
@@ -43222,7 +44045,7 @@
 	      var yEnd = yStart + height;
 
 	      if (forward) {
-	        
+
 	      } else {
 
 	      }
@@ -43235,7 +44058,7 @@
 	      var path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + xStart + "," + yEnd + " Z";
 	      return path;
 	    }
-	    
+
 	  }
 	});
 
@@ -43281,8 +44104,8 @@
 	    }
 
 	    // function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
-	    //   // 24 bps long: 
-	    //   // 
+	    //   // 24 bps long:
+	    //   //
 	    //   // if (range.end + 1 - range.start > 0 && )
 	    //   // (range.end + 1 - range.start) % bpsPerRow
 	    //   return {
@@ -43294,7 +44117,7 @@
 	    var fontSize = this.state.charWidth + "px";
 	    var textStyle = {
 	      fontSize: fontSize,
-	      fontFamily: "'Courier New', Courier, monospace", 
+	      fontFamily: "'Courier New', Courier, monospace",
 	      // transform: "scale(2,1)",
 	      // width: "100%"
 	    };
@@ -43321,7 +44144,7 @@
 	      // fillOpacity: "1",
 	      // opacity: ".3",
 	    };
-	    
+
 	    var selectionCursorStart;
 	    var selectionCursorEnd;
 	    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.charWidth, cursorStyle, this.state.sequenceLength);
@@ -43356,10 +44179,8 @@
 	      width: "100%",
 	    };
 
-	    var textHTML = 
-	    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
-	    var reverseSequenceHTML = 
-	    '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>'
+	    var textHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>';
+	    var reverseSequenceHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>';
 	    // console.log(row);
 	    // var className = "row" + row.rowNumber;
 	      // <div className={className}>
@@ -43439,13 +44260,199 @@
 	// <svg className= "textContainer" width="100%" height={CHAR_HEIGHT}>
 	//             <text fontSize={fontSize} fontFamily="'Courier New', Courier, monospace" style={{"textLength": 100}} lengthAdjust="spacingAndGlyphs">
 	//               {row.sequence}
-	//             </text> 
+	//             </text>
 	//           </svg>
 
 	module.exports = RowItem;
 
+
 /***/ },
-/* 256 */
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(278);
+
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Baobab-React Mixins
+	 * ====================
+	 *
+	 * Old style react mixins.
+	 */
+	'use strict';
+
+	var PropTypes = __webpack_require__(279);
+
+	/**
+	 * Root mixin
+	 */
+	var RootMixin = {
+
+	  // Component prop Type
+	  propTypes: {
+	    tree: PropTypes.baobab
+	  },
+
+	  // Context prop types
+	  childContextTypes: {
+	    tree: PropTypes.baobab
+	  },
+
+	  // Handling child context
+	  getChildContext: function getChildContext() {
+	    return {
+	      tree: this.props.tree
+	    };
+	  }
+	};
+
+	/**
+	 * Branch mixin
+	 */
+	var BranchMixin = {
+
+	  // Context prop types
+	  contextTypes: {
+	    tree: PropTypes.baobab
+	  },
+
+	  // Building initial state
+	  getInitialState: function getInitialState() {
+
+	    // Setting properties
+	    this.__facet = this.context.tree.createFacet({
+	      cursors: this.cursors,
+	      facets: this.facets
+	    }, [this.props, this.context]);
+
+	    this.cursors = this.__facet.cursors;
+	    this.facets = this.__facet.facets;
+
+	    if (this.__facet) return this.__facet.get();
+	    return {};
+	  },
+
+	  // On component mount
+	  componentWillMount: function componentWillMount() {
+	    if (!this.__facet) return;
+
+	    var handler = (function () {
+	      this.setState(this.__facet.get());
+	    }).bind(this);
+
+	    this.__facet.on('update', handler);
+	  },
+
+	  // On component unmount
+	  componentWillUnmount: function componentWillUnmount() {
+	    if (!this.__facet) return;
+
+	    // Releasing facet
+	    this.__facet.release();
+	    this.__facet = null;
+	  },
+
+	  // On new props
+	  componentWillReceiveProps: function componentWillReceiveProps(props) {
+	    if (!this.__facet) return;
+
+	    this.__facet.refresh([props, this.context]);
+	    this.setState(this.__facet.get());
+	  }
+	};
+
+	// Exporting
+	exports.root = RootMixin;
+	exports.branch = BranchMixin;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Baobab-React Custom Prop Types
+	 * ===============================
+	 *
+	 * PropTypes used to propagate context safely.
+	 */
+	'use strict';
+
+	var type = __webpack_require__(280);
+
+	function errorMessage(propName, what) {
+	  return 'prop type `' + propName + '` is invalid; it must be ' + what + '.';
+	}
+
+	var PropTypes = {};
+
+	PropTypes.baobab = function (props, propName) {
+	  if (!type.Baobab(props[propName])) return new Error(errorMessage(propName, 'a Baobab tree'));
+	};
+
+	PropTypes.cursors = function (props, propName) {
+	  var p = props[propName];
+
+	  var valid = type.Object(p) && Object.keys(p).every(function (k) {
+	    return type.Cursor(p[k]);
+	  });
+
+	  if (!valid) return new Error(errorMessage(propName, 'Baobab cursors'));
+	};
+
+	PropTypes.facets = function (props, propName) {
+	  var p = props[propName];
+
+	  var valid = type.Object(p) && Object.keys(p).every(function (k) {
+	    return type.Facet(p[k]);
+	  });
+
+	  if (!valid) return new Error(errorMessage(propName, 'Baobab facets'));
+	};
+
+	module.exports = PropTypes;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Baobab-React Type Checking
+	 * ===========================
+	 *
+	 * Some helpers to perform runtime validations.
+	 */
+	'use strict';
+
+	var Baobab = __webpack_require__(212),
+	    Cursor = Baobab.Cursor,
+	    Facet = Baobab.Facet;
+
+	var type = {};
+
+	type.Object = function (value) {
+	  return value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date) && !(value instanceof RegExp);
+	};
+
+	type.Baobab = function (value) {
+	  return value instanceof Baobab;
+	};
+
+	type.Cursor = function (value) {
+	  return value instanceof Cursor;
+	};
+
+	type.Facet = function (value) {
+	  return value instanceof Facet;
+	};
+
+	module.exports = type;
+
+/***/ },
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
@@ -43460,17 +44467,17 @@
 	};
 
 /***/ },
-/* 257 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function getXCenterOfRowAnnotation(range, bpsPerRow, charWidth) {
-		var getXStartAndWidthOfRowAnnotation = __webpack_require__(256);
+		var getXStartAndWidthOfRowAnnotation = __webpack_require__(281);
 		var $__0=   getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth),xStart=$__0.xStart,width=$__0.width;
 		return xStart + width/2;
 	};
 
 /***/ },
-/* 258 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//#deprecated
@@ -43486,7 +44493,7 @@
 	module.exports = editorConstants;
 
 /***/ },
-/* 259 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
@@ -43496,7 +44503,7 @@
 
 	var MousetrapMixin,
 
-	    Mousetrap = __webpack_require__(260);
+	    Mousetrap = __webpack_require__(285);
 
 	MousetrapMixin = {
 	    /**
@@ -43556,7 +44563,7 @@
 	module.exports = MousetrapMixin;
 
 /***/ },
-/* 260 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -44377,7 +45384,64 @@
 
 
 /***/ },
-/* 261 */
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2);
+
+	var Clipboard = React.createClass({displayName: "Clipboard",
+
+	  propTypes: {
+	    value: React.PropTypes.string.isRequired
+	  },
+
+	  getDefaultProps: function() {
+	    return {
+	      className: "clipboard"
+	    };
+	  },
+
+	  componentDidMount: function() {
+	    document.addEventListener("keydown", this.handleKeyDown, false);
+	    document.addEventListener("keyup", this.handleKeyUp, false);
+	  },
+
+	  componentWillUnmount: function() {
+	    document.removeEventListener("keydown", this.handleKeyDown, false);
+	    document.removeEventListener("keyup", this.handleKeyUp, false);
+	  },
+	  
+	  handleKeyDown: function(e) {
+	    var metaKeyIsDown = (e.ctrlKey || e.metaKey);
+	    var textIsSelected = window.getSelection().toString();
+
+	    if (!metaKeyIsDown || textIsSelected) {
+	      return;
+	    }
+
+	    var element = this.getDOMNode();
+	    element.focus();
+	    element.select();
+	  },
+
+	  handleKeyUp: function(e) {
+	    var element = this.getDOMNode();
+	    element.blur();
+	  },
+
+	  render: function() {
+	    var value = this.props.value;
+	    return React.createElement("input", {type: "text", readOnly: true, value: value, 
+	    onPaste: this.props.onPaste, 
+	    onCopy: this.props.onCopy}
+	    );
+	  }
+	});
+
+	module.exports = Clipboard;
+
+/***/ },
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
@@ -44392,7 +45456,7 @@
 	// var SequenceEditor3 = require('./SequenceEditor3.js');
 	// var Skeleton = require('./Skeleton.js');
 
-	var Login = __webpack_require__(262);
+	var Login = __webpack_require__(288);
 	var Logout = __webpack_require__(1);
 	var Authentication = __webpack_require__(199);
 	// var About = require('./About.js');
@@ -44400,8 +45464,8 @@
 
 	// var baobabMixin = require('baobab-react/mixins').root;
 	// var baobabTree = require('./baobabTree');
-	var mixin = __webpack_require__(201).branch;
-	var appActions = __webpack_require__(216);
+	var mixin = __webpack_require__(277).branch;
+	var appActions = __webpack_require__(202);
 
 
 
@@ -44466,7 +45530,7 @@
 	module.exports = Skeleton;
 
 /***/ },
-/* 262 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
@@ -44518,7 +45582,7 @@
 	module.exports = Login;
 
 /***/ },
-/* 263 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);

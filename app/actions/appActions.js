@@ -1,10 +1,11 @@
 var tree = require('../baobabTree');
-var _ = require('lodash');
-var deepEqual = require('deep-equal')
+var assign = require('lodash/object/assign');
+var ObjectID = require("bson-objectid");
 var isInteger = require("is-integer");
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 // var splice = require("underscore.string/splice");
-// var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
+var getOverlapsOfPotentiallyCircularRanges = require('../getOverlapsOfPotentiallyCircularRanges');
+var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
 var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
 var adjustRangeToSequenceInsert = require('../adjustRangeToSequenceInsert');
@@ -15,12 +16,6 @@ var filterSequenceString = require('../filterSequenceString');
 var validateAndTidyUpSequenceData = require('../validateAndTidyUpSequenceData');
 
 var actions = {
-	changeViewportSize: function(newSize) {
-		console.log(newSize);
-		// tree.select
-		var viewportDimensions = tree.select('vectorEditorState', 'viewportDimensions');
-		viewportDimensions.set(newSize);
-	},
 	setCaretPosition: function(newPosition) {
 		if (isInteger(newPosition)) {
 			tree.select('vectorEditorState', 'caretPosition').set(newPosition);
@@ -44,7 +39,7 @@ var actions = {
 				end: -1,
 				selected: false,
 				cursorAtEnd: true
-			}
+			};
 		} else {
 			var {
 				start, end, selected, cursorAtEnd
@@ -167,10 +162,10 @@ var actions = {
 		}
 		//trim and remove features
 		if (sequenceData.features) {
-			newSequenceData.features = _.map(sequenceData.features, function(annotation) {
+			newSequenceData.features = sequenceData.features.map(function(annotation) {
 				var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
 				if (newAnnotationRange) {
-					var adjustedAnnotation = _.assign({}, annotation);
+					var adjustedAnnotation = assign({}, annotation);
 					adjustedAnnotation.start = newAnnotationRange.start;
 					adjustedAnnotation.end = newAnnotationRange.end;
 					return adjustedAnnotation;
@@ -182,10 +177,10 @@ var actions = {
 			});
 		}
 		if (sequenceData.parts) {
-			newSequenceData.parts = _.map(sequenceData.parts, function(annotation) {
+			newSequenceData.parts = sequenceData.parts.map(function(annotation) {
 				var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
 				if (newAnnotationRange) {
-					var adjustedAnnotation = _.assign({}, annotation);
+					var adjustedAnnotation = assign({}, annotation);
 					adjustedAnnotation.start = newAnnotationRange.start;
 					adjustedAnnotation.end = newAnnotationRange.end;
 					return adjustedAnnotation;
@@ -222,7 +217,7 @@ var actions = {
 		if (areNonNegativeIntegers([caretPosition])) {
 			//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
 			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-			var newSequenceData = _.assign({},sequenceData,insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition))
+			var newSequenceData = assign({},sequenceData,insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition))
 			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
 			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
@@ -259,7 +254,7 @@ var actions = {
 			return annotationsToBeAdjusted.map(function(annotation) {
 				var newAnnotationRange = adjustRangeToSequenceInsert(annotation, insertStart, insertLength);
 				if (newAnnotationRange) {
-					var adjustedAnnotation = _.assign({}, annotation);
+					var adjustedAnnotation = assign({}, annotation);
 					adjustedAnnotation.start = newAnnotationRange.start;
 					adjustedAnnotation.end = newAnnotationRange.end;
 					return adjustedAnnotation;
@@ -292,7 +287,7 @@ var actions = {
 	},
 	moveCaretShiftHeld: function(numberToMove) {
 		console.log('hey: ');
-		var selectionLayer = _.assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
+		var selectionLayer = assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
 
 		var sequenceLength = tree.facets.sequenceLength.get();
 		var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
@@ -369,35 +364,36 @@ var actions = {
 					end: caretPosition - 1
 				});
 			} else {
-				throw 'no caret or selection layer to delete!'
+				throw 'no caret or selection layer to delete!';
 			}
 		}
 	},
 	copySelection: function() {
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
 		var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-		var clipboardDataCursor = tree.select('vectorEditorState', 'clipboardData')
+		var clipboardDataCursor = tree.select('vectorEditorState', 'clipboardData');
+		var allowPartialAnnotationsOnCopy = tree.select('vectorEditorState', 'allowPartialAnnotationsOnCopy').get();
 		if (!clipboardDataCursor) {
-			throw 'no clipboard cursor..'
+			throw 'no clipboard cursor..';
 		}
 		if (sequenceData && selectionLayer.selected) {
-			clipboardDataCursor.set(copyRangeOfSequenceData(sequenceData, selectionLayer));
+			clipboardDataCursor.set(copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
 
-			function copyRangeOfSequenceData(sequenceData, rangeToCopy) {
+			function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
 				if (sequenceData.sequence !== '' && !sequenceData.sequence) {
-					throw 'invalid sequence data'
+					throw 'invalid sequence data';
 				}
 				var sequenceLength = sequenceData.sequence.length;
 				if (!areRangesValid([rangeToCopy], sequenceLength)) {
-					throw 'invalid range passed'
+					throw 'invalid range passed';
 				}
 				var newSequenceData = {};
 				newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);
-				newSequenceData.features = (sequenceData.features, rangeToCopy, sequenceLength);
-				newSequenceData.parts = (sequenceData.parts, rangeToCopy, sequenceLength);
+				newSequenceData.features = copyAnnotationsByRange(sequenceData.features, rangeToCopy, sequenceLength);
+				newSequenceData.parts = copyAnnotationsByRange(sequenceData.parts, rangeToCopy, sequenceLength);
 
 				function copyAnnotationsByRange(annotations, rangeToCopy, sequenceLength) {
-					var copiedAnnotations = []
+					var copiedAnnotations = [];
 					annotations.forEach(function(annotation) {
 						var overlaps = getOverlapsOfPotentiallyCircularRanges(annotation, rangeToCopy, sequenceLength);
 						var collapsedOverlaps = collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength);
@@ -412,12 +408,12 @@ var actions = {
 							console.log('splitting annotation on copy!');
 						}
 						collapsedOverlaps.forEach(function(collapsedOverlap) {
-							copiedAnnotations.push(_.assign({}, annotation, collapsedOverlaps));
+							copiedAnnotations.push(assign({}, annotation, collapsedOverlap));
 						});
-
 					});
+					return copiedAnnotations;
 				}
-				return _.assign({}, sequenceData, newSequenceData); //merge any other properties that exist in sequenceData into newSequenceData
+				return assign({}, sequenceData, newSequenceData); //merge any other properties that exist in sequenceData into newSequenceData
 			}
 		}
 	},
@@ -427,10 +423,23 @@ var actions = {
 		var clipboardData = tree.select('vectorEditorState', 'clipboardData').get();
 		if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
 			// insert clipboardData
-			this.insertSequenceData(clipboardData);
+			//assign clipboardData annotations new ids
+			var clipboardDataWithNewIds = generateNewIdsForSequenceAnnotations(clipboardData);
+			this.insertSequenceData(clipboardDataWithNewIds);
 		} else {
 			//clean up the sequence string and insert it
 			this.insertSequenceString(filterSequenceString(sequenceString));
+		}
+		function generateNewIdsForSequenceAnnotations(sequenceData) {
+			return assign({}, sequenceData, {
+				features: generateNewIdsForAnnotations(sequenceData.features),
+				parts: generateNewIdsForAnnotations(sequenceData.parts)
+			});
+		}
+		function generateNewIdsForAnnotations(annotations) {
+			return annotations.map(function (annotation) {
+				return assign({},annotation, {id:ObjectID().str});
+			});
 		}
 	},
 

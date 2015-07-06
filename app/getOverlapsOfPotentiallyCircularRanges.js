@@ -5,7 +5,7 @@ var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfIt
 module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
   if (!areRangesValid([rangeA, rangeB], maxRangeLength)) {
     // console.warn("unable to calculate ranges of  inputs");
-    throw 'invalid ranges passed in!'
+    throw 'invalid ranges passed in!';
     // return [];
   }
   var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
@@ -20,7 +20,7 @@ module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB,
       }
     });
   });
-  
+
   return overlaps;
 };
 
