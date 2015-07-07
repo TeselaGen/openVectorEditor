@@ -145,7 +145,7 @@ var actions = {
 			}
 			// this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
 		} else {
-			throw 'must have a selection layer or a caretPosition'
+			throw 'must have a selection layer or a caretPosition';
 			// console.warn('must have a selection layer or a caretPosition');
 		}
 		var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
@@ -249,7 +249,7 @@ var actions = {
 
 		function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
 			if (!annotationsToBeAdjusted) {
-				debugger;
+				throw 'no annotations passed!';
 			}
 			return annotationsToBeAdjusted.map(function(annotation) {
 				var newAnnotationRange = adjustRangeToSequenceInsert(annotation, insertStart, insertLength);
@@ -259,9 +259,9 @@ var actions = {
 					adjustedAnnotation.end = newAnnotationRange.end;
 					return adjustedAnnotation;
 				} else {
-					throw 'no range!'
+					throw 'no range!';
 				}
-			})
+			});
 		}
 	},
 	refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
@@ -408,12 +408,29 @@ var actions = {
 							console.log('splitting annotation on copy!');
 						}
 						collapsedOverlaps.forEach(function(collapsedOverlap) {
-							copiedAnnotations.push(assign({}, annotation, collapsedOverlap));
+							//shift the collapsedOverlaps by the rangeToCopy start if necessary
+							debugger;
+							var collapsedAndShiftedOverlap = shiftCopiedOverlapByRange(collapsedOverlap, rangeToCopy, sequenceLength);
+							copiedAnnotations.push(assign({}, annotation, collapsedAndShiftedOverlap));
 						});
 					});
 					return copiedAnnotations;
 				}
 				return assign({}, sequenceData, newSequenceData); //merge any other properties that exist in sequenceData into newSequenceData
+			}
+			function shiftCopiedOverlapByRange (copiedOverlap, rangeToCopy, sequenceLength) {
+				var end = copiedOverlap.end - rangeToCopy.start;
+				if (end < 0) {
+					end += sequenceLength - 1;
+				}
+				var start = copiedOverlap.start - rangeToCopy.start;
+				if (start < 0) {
+					start += sequenceLength - 1;
+				}
+				return {
+					start: start,
+					end: end
+				};
 			}
 		}
 	},

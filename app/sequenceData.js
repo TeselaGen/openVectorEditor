@@ -20,8 +20,8 @@ module.exports = {
             "name" : "house",
             "type" : "misc_feature",
             "id" : "5590c1978979df000a4f02c7",
-            "start" : 10,
-            "end" : 20,
+            "start" : 20,
+            "end" : 10,
             "strand" : 1,
             "notes" : [],
             "color": 'green'
