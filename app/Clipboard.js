@@ -42,10 +42,24 @@ var Clipboard = React.createClass({
 
   render: function() {
     var value = this.props.value;
-    return <input type="text" readOnly={true} value={value} 
-    onPaste={this.props.onPaste}
-    onCopy={this.props.onCopy}
-    />;
+    var style = {
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      width: 0,
+      height: 0,
+      padding: 0,
+      margin: 0,
+      zIndex: 100,
+      opacity: 0
+    };
+    return <input 
+      style={style}
+      type="text" 
+      readOnly={true} 
+      value={value} 
+      onPaste={this.props.onPaste}
+      onCopy={this.props.onCopy}/>;
   }
 });
 

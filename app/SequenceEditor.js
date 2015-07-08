@@ -32,6 +32,7 @@ var SequenceEditor = React.createClass({
   // },
 
   componentDidMount: function () {
+    var self = this;
     //bind a bunch of keyboard shortcuts we're interested in catching
     //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
     //documentation: https://craig.is/killing/mice
@@ -78,7 +79,11 @@ var SequenceEditor = React.createClass({
     this.bindShortcut('backspace', function(event) { // Handle shortcut
       //trigger a caret left
       appActions.backspacePressed();
-      return false;
+      event.stopPropagation();
+    });
+    this.bindGlobal('command+a', function(event) { // Handle shortcut
+      appActions.selectAll();
+      event.stopPropagation();
     });
   },
 
@@ -94,7 +99,6 @@ var SequenceEditor = React.createClass({
     appActions.copySelection();
     // this.state.selectedSequenceString
   },
-
   render: function() {
       // var visibilityParameters = this.state.visibilityParameters;
       // var highlightLayer = this.state.highlightLayer;
@@ -116,10 +120,10 @@ var SequenceEditor = React.createClass({
         <br/>
         bpsPerRow:  {this.state.bpsPerRow}
         <br/>
-        <Clipboard
-          value={this.state.selectedSequenceString}
-          onCopy={this.handleCopy}
-          onPaste={this.handlePaste}/>
+          <Clipboard
+            value={this.state.selectedSequenceString}
+            onCopy={this.handleCopy}
+            onPaste={this.handlePaste}/>
         <br/>
         totalRows:  {this.state.totalRows}
         <RowView />
@@ -127,7 +131,5 @@ var SequenceEditor = React.createClass({
     );
   }
 });
-        // <Clipboard value={this.state.selectedSequenceString}/>
-
 
 module.exports = SequenceEditor;

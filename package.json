@@ -15,6 +15,7 @@
     "is-integer": "^1.0.4",
     "jsx-loader": "^0.13.1",
     "lodash": "^3.6.0",
+    "mousetrap": "^1.5.3",
     "object-assign": "^2.0.0",
     "react": "^0.13.3",
     "react-clipboard": "^1.1.1",

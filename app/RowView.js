@@ -33,7 +33,6 @@ var RowView = React.createClass({
   },
   // keybindings: {
   //   '⌘S': function() {
-  //     console.log('save!');
   //     event.preventDefault();
   //   },
   //   '⌘C': 'COPY',
@@ -44,7 +43,6 @@ var RowView = React.createClass({
   // keybinding: function(event, action) {
   //   debugger;
   //   // event is the browser event, action is 'COPY'
-  //   console.log(arguments);
   // },
 
 
@@ -64,7 +62,6 @@ var RowView = React.createClass({
   onEditorScroll: function (event) {
     //tnr: we should maybe keep this implemented..
     // if (this.adjustmentScroll) {
-    //   console.log('adjustmentScroll');
     //   //adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
     //   this.adjustmentScroll = false;
     //   return true;
@@ -75,23 +72,16 @@ var RowView = React.createClass({
     var currentAverageRowHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRowsData.length);
     // var firstRow = visibleRowsContainer.childNodes[0];
     // var lastRow = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1];
-    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
-    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
     // if (infiniteContainer.getBoundingClientRect())
     var newRowStart;
-    // console.log(infiniteContainer.scrollTop);
     var distanceFromTopOfVisibleRows = infiniteContainer.getBoundingClientRect().top - visibleRowsContainer.getBoundingClientRect().top;
     var distanceFromBottomOfVisibleRows = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-    // console.log('distanceFromTopOfVisibleRows: ' + distanceFromTopOfVisibleRows);
-    // console.log('distanceFromBottomOfVisibleRows: ' + distanceFromBottomOfVisibleRows);
     if (distanceFromTopOfVisibleRows < 0) {
       //scrolling down, so add a row below
       if (this.rowStart > 0) {
         newRowStart = this.rowStart - Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageRowHeight);
-        // console.log('newRowStart: '+newRowStart)
 
         if (newRowStart < 0) newRowStart = 0;
-        // console.log('//scrolling up, so add a row above');
         this.prepareVisibleRows(newRowStart);
       }
     }
@@ -104,7 +94,6 @@ var RowView = React.createClass({
           newRowStart = this.rowStart + rowsToGiveOnBottom;
         }
         this.prepareVisibleRows(newRowStart);
-        // console.log('//scrolling down, so add a row below');
       }
     } else {
       //we haven't scrolled enough, so do nothing
@@ -120,7 +109,7 @@ var RowView = React.createClass({
     this.thirdRowElement = visibleRowsContainer.children[2];
     if (this.thirdRowElement) {
       this.thirdRowElementOldOffsetTop = this.thirdRowElement.getBoundingClientRect().top;
-      console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
+      // console.log('this.thirdRowElementOldOffsetTop: ' + this.thirdRowElementOldOffsetTop);
     }
     //   this.updateTriggeredByScrollerDrag = true;
     // } else {
@@ -140,25 +129,23 @@ var RowView = React.createClass({
     var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height;
     var adjustInfiniteContainerByThisAmount;
 
-    // console.log('infiniteContainer.getBoundingClientRect().top:    ' + infiniteContainer.getBoundingClientRect().top + '       infiniteContainer.getBoundingClientRect().bottom: ' + infiniteContainer.getBoundingClientRect().bottom);
-    // console.log('visibleRowsContainer.getBoundingClientRect().top: ' + visibleRowsContainer.getBoundingClientRect().top + ' visibleRowsContainer.getBoundingClientRect().bottom: ' + visibleRowsContainer.getBoundingClientRect().bottom);
     //check if the visible rows fill up the viewport
     var v = visibleRowsContainer.getBoundingClientRect();
     var t = infiniteContainer.getBoundingClientRect();
-    console.log('visibleRowsContainer.getBoundingClientRect(): ', 'top', v.top, 'bottom', v.bottom, 'height', v.height);
-    console.log('firstRowHeight', firstRowHeight);
-    console.log('lastRowHeight', lastRowHeight);
-    console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
-    console.log('infiniteContainer.getBoundingClientRect(): ', 'top', t.top, 'bottom', t.bottom, 'height', t.height);
+    // console.log('visibleRowsContainer.getBoundingClientRect(): ', 'top', v.top, 'bottom', v.bottom, 'height', v.height);
+    // console.log('firstRowHeight', firstRowHeight);
+    // console.log('lastRowHeight', lastRowHeight);
+    // console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
+    // console.log('infiniteContainer.getBoundingClientRect(): ', 'top', t.top, 'bottom', t.bottom, 'height', t.height);
 
     if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.state.viewportDimensions.height) {
-      console.log('HEEEEEteteteEEEEEEET');
+      // console.log('HEEEEEteteteEEEEEEET');
       if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
         //load another row to the bottom
-        console.log('add row to bottom');
+        // console.log('add row to bottom');
         this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
       } else {
-        console.log('add row above');
+        // console.log('add row above');
         //there aren't more rows that we can load at the bottom so we load more at the top
         if (this.rowStart - 1 > 0) {
           this.prepareVisibleRows(this.rowStart - 1, this.numberOfRowsToDisplay);
@@ -172,29 +159,26 @@ var RowView = React.createClass({
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
       //scroll to align the tops of the boxes
       adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
-      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
+      // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
       this.adjustmentScroll = true;
       infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
     } else if (visibleRowsContainer.getBoundingClientRect().bottom < infiniteContainer.getBoundingClientRect().bottom) {
       //scroll to align the bottoms of the boxes
       adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-      console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
+      // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
       this.adjustmentScroll = true;
       infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
     } else {
       if (this.thirdRowElement) {
-        // console.log('thirdrowblind');
         // adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().bottom - infiniteContainer.getBoundingClientRect().bottom;
-        // console.log('adjust: ' + adjustInfiniteContainerByThisAmount)
-        // console.log('thirdRowElement Found');
         //there is a thirdRowElement, so we want to make sure its screen position hasn't changed
         this.adjustmentScroll = true;
         adjustInfiniteContainerByThisAmount = this.thirdRowElement.getBoundingClientRect().top - this.thirdRowElementOldOffsetTop;
-        console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
+        // console.log('adjustInfiniteContainerByThisAmount: ' + adjustInfiniteContainerByThisAmount)
         infiniteContainer.scrollTop = infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
       }
     }
-      console.log('infiniteContainer.scrollTop2: ' + infiniteContainer.scrollTop);
+      // console.log('infiniteContainer.scrollTop2: ' + infiniteContainer.scrollTop);
 
 
   },
@@ -227,8 +211,6 @@ var RowView = React.createClass({
     }
     if (!this.numberOfRowsToDisplay) {
       // var rowsThatFitIntoViewport = Math.ceil(this.state.viewportDimensions.height / this.state.averageRowHeight);
-      // // console.log('rowsThatFitIntoViewport');
-      // // console.log(rowsThatFitIntoViewport);
       this.numberOfRowsToDisplay = 4;
     }
     if (rowStart + this.numberOfRowsToDisplay - 1 > this.state.totalRows - 1 ) {
@@ -236,7 +218,7 @@ var RowView = React.createClass({
     } else {
       this.preloadRowEnd = rowStart + this.numberOfRowsToDisplay - 1;
     }
-    console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
+    // console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
     // var visibleRows = this.state.visibleRowsDataData.slice(rowStart, this.preloadRowEnd + 1);
     // rowData.slice(rowStart, this.preloadRowEnd + 1);
     // appActions.setPreloadRowStart(rowStart);
@@ -247,7 +229,7 @@ var RowView = React.createClass({
         end: this.preloadRowEnd
       });
     } else {
-      console.log('blocked rerender!');
+      // console.log('blocked rerender!');
     }
 
     // if (this.preloadRowEnd this.state.numberOfRowsToPreload)
@@ -259,7 +241,6 @@ var RowView = React.createClass({
     //loop through all the rendered rows to see if the click event lands in one of them
     for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
       var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
-      // console.log('rowDomNode.getBoundingClientRect().top: ' + rowDomNode.getBoundingClientRect().top);
       var boundingRowRect = rowDomNode.getBoundingClientRect();
       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
         //then the click is falls within this row
@@ -290,7 +271,7 @@ var RowView = React.createClass({
 
   onEditorClick: function(event) {
     //if cursor position is different than the original position, reset the position and clear the selection
-    console.log('onclick!!');
+    // console.log('onclick!!');
     var bp = this.getNearestCursorPositionToMouseEvent(event);
     if (this.editorBeingDragged) {
       //do nothing because the click was triggered by a drag event
@@ -299,11 +280,9 @@ var RowView = React.createClass({
       appActions.setSelectionLayer(false);
     }
 
-    // console.log('bp: ' + bp);
   },
 
   handleEditorDrag: function(event, ui) {
-    // console.log('dragging!');
     //note this method relies on variables that are set in the handleEditorDragStart method!
     this.editorBeingDragged = true;
     var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
@@ -346,8 +325,6 @@ var RowView = React.createClass({
   },
 
   handleEditorDragStart: function(event, ui) {
-    // console.log('drag start!');
-    // console.log('event: ' + event.target);
     var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
     if (event.target.className === "cursor" && this.state.selectionLayer.selected) {
       // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
@@ -370,7 +347,6 @@ var RowView = React.createClass({
       // this.circularSelectionOnEditorDragStart = false;
       this.fixedCaretPositionOnEditorDragStart = caretPosition;
       this.fixedCaretPositionOnEditorDragStartType = 'caret';
-      // console.log('caretPosition '+caretPosition)
     }
   },
 
@@ -389,7 +365,7 @@ var RowView = React.createClass({
   },
 
   render: function () {
-    console.log('render!');
+    // console.log('render!');
     var self = this;
     var rowItems = this.state.visibleRowsData.map(function(row) {
       if (row) {

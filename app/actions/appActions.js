@@ -217,7 +217,8 @@ var actions = {
 		if (areNonNegativeIntegers([caretPosition])) {
 			//tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
 			var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-			var newSequenceData = assign({},sequenceData,insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition))
+			//tnr: need to handle the splitting up of a sequence
+			var newSequenceData = assign({},sequenceData,insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition));
 			// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
 			// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 			tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
@@ -409,7 +410,6 @@ var actions = {
 						}
 						collapsedOverlaps.forEach(function(collapsedOverlap) {
 							//shift the collapsedOverlaps by the rangeToCopy start if necessary
-							debugger;
 							var collapsedAndShiftedOverlap = shiftCopiedOverlapByRange(collapsedOverlap, rangeToCopy, sequenceLength);
 							copiedAnnotations.push(assign({}, annotation, collapsedAndShiftedOverlap));
 						});
@@ -458,6 +458,14 @@ var actions = {
 				return assign({},annotation, {id:ObjectID().str});
 			});
 		}
+	},
+	selectAll: function() {
+		//compare the sequenceString being pasted in with what's already stored in the clipboard
+		var sequenceLength = tree.facets.sequenceLength.get();
+		this.setSelectionLayer({
+			start: 0,
+			end: sequenceLength - 1
+		});
 	},
 
 	// keyPressedInEditor: function(event) {
