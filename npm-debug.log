@@ -1,0 +1,349 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '--save', 'baobab@dev' ]
+2 info using npm@2.10.1
+3 info using node@v0.12.4
+4 verbose install initial load of /Users/tnrich/Sites/webpackTrial/package.json
+5 warn package.json webpackTrial@1.0.0 No repository field.
+6 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/babel-core/package.json
+7 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/babel-loader/package.json
+8 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/baobab-react/package.json
+9 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/br-mousetrap/package.json
+10 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/bson-objectid/package.json
+11 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/classnames/package.json
+12 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/clipboard-tool/package.json
+13 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/css-loader/package.json
+14 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/deep-equal/package.json
+15 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/emmet/package.json
+16 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/emmett/package.json
+17 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/get-substring-by-range/package.json
+18 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/is-integer/package.json
+19 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/istanbul/package.json
+20 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/jsx-loader/package.json
+21 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/lodash/package.json
+22 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/madge/package.json
+23 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/mocha/package.json
+24 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/mousetrap/package.json
+25 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/node-libs-browser/package.json
+26 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/object-assign/package.json
+27 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react/package.json
+28 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-clipboard/package.json
+29 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-copy-to-clipboard/package.json
+30 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-copyable/package.json
+31 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-draggable/package.json
+32 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-keybinding/package.json
+33 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-router/package.json
+34 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/react-zeroclipboard/package.json
+35 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/str-allow/package.json
+36 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/string-splice/package.json
+37 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/style-loader/package.json
+38 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/underscore.string/package.json
+39 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/validate.io-nonnegative-integer/package.json
+40 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/validate.io-nonnegative-integer-array/package.json
+41 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/webpack/package.json
+42 verbose installManyTop reading scoped package data from /Users/tnrich/Sites/webpackTrial/node_modules/webpack-dev-server/package.json
+43 info package.json bson-objectid@1.1.1 license should be a valid SPDX license expression
+44 info package.json br-mousetrap@1.1.3 No license field.
+45 info package.json css-loader@0.10.1 No license field.
+46 info package.json madge@0.5.0 No license field.
+47 info package.json str-allow@0.0.2 'repositories' (plural) Not supported. Please pick one as the 'repository' field
+48 info package.json str-allow@0.0.2 No license field.
+49 info package.json style-loader@0.10.2 No license field.
+50 info package.json validate.io-nonnegative-integer-array@1.0.1 No license field.
+51 info package.json clipboard-tool@1.0.6 license should be a valid SPDX license expression
+52 info package.json jsx-loader@0.13.2 license should be a valid SPDX license expression
+53 info package.json mousetrap@1.5.3 license should be a valid SPDX license expression
+54 info package.json react-clipboard@1.1.1 No repository field.
+55 info package.json react-keybinding@2.0.0-beta No repository field.
+56 info package.json react-keybinding@2.0.0-beta license should be a valid SPDX license expression
+57 info package.json validate.io-nonnegative-integer@1.0.0 No license field.
+58 verbose readDependencies loading dependencies from /Users/tnrich/Sites/webpackTrial/package.json
+59 silly cache add args [ 'baobab@dev', null ]
+60 verbose cache add spec baobab@dev
+61 silly cache add parsed spec { raw: 'baobab@dev',
+61 silly cache add   scope: null,
+61 silly cache add   name: 'baobab',
+61 silly cache add   rawSpec: 'dev',
+61 silly cache add   spec: 'dev',
+61 silly cache add   type: 'tag' }
+62 silly addNamed baobab@dev
+63 verbose addNamed "dev" is being treated as a dist-tag for baobab
+64 info addNameTag [ 'baobab', 'dev' ]
+65 silly mapToRegistry name baobab
+66 silly mapToRegistry using default registry
+67 silly mapToRegistry registry https://registry.npmjs.org/
+68 silly mapToRegistry uri https://registry.npmjs.org/baobab
+69 verbose addNameTag registry:https://registry.npmjs.org/baobab not in flight; fetching
+70 verbose request uri https://registry.npmjs.org/baobab
+71 verbose request no auth needed
+72 info attempt registry request try #1 at 10:47:10 PM
+73 verbose request using bearer token for auth
+74 verbose request id 6207574e1328ca97
+75 verbose etag "CEOQ3JGWPIBC0NID5ZK2O6H6A"
+76 http request GET https://registry.npmjs.org/baobab
+77 http 304 https://registry.npmjs.org/baobab
+78 silly get cb [ 304,
+78 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+78 silly get     etag: '"CEOQ3JGWPIBC0NID5ZK2O6H6A"',
+78 silly get     'cache-control': 'max-age=60',
+78 silly get     'accept-ranges': 'bytes',
+78 silly get     date: 'Thu, 09 Jul 2015 05:47:10 GMT',
+78 silly get     via: '1.1 varnish',
+78 silly get     connection: 'keep-alive',
+78 silly get     'x-served-by': 'cache-sjc3120-SJC',
+78 silly get     'x-cache': 'MISS',
+78 silly get     'x-cache-hits': '0',
+78 silly get     'x-timer': 'S1436420830.710848,VS0,VE84' } ]
+79 verbose etag https://registry.npmjs.org/baobab from cache
+80 verbose get saving baobab to /Users/tnrich/.npm/registry.npmjs.org/baobab/.cache.json
+81 silly addNameTag next cb for baobab with tag dev
+82 silly addNamed baobab@2.0.0-dev2
+83 verbose addNamed "2.0.0-dev2" is a plain semver version for baobab
+84 silly cache afterAdd baobab@2.0.0-dev2
+85 verbose afterAdd /Users/tnrich/.npm/baobab/2.0.0-dev2/package/package.json not in flight; writing
+86 verbose afterAdd /Users/tnrich/.npm/baobab/2.0.0-dev2/package/package.json written
+87 silly install resolved [ { name: 'baobab',
+87 silly install resolved     version: '2.0.0-dev2',
+87 silly install resolved     description: 'JavaScript persistent data tree with cursors.',
+87 silly install resolved     main: './dist/baobab.js',
+87 silly install resolved     dependencies: { emmett: '^3.1.0' },
+87 silly install resolved     devDependencies:
+87 silly install resolved      { async: '^1.2.1',
+87 silly install resolved        babel: '^5.6.14',
+87 silly install resolved        'babel-eslint': '^3.1.20',
+87 silly install resolved        babelify: '^6.1.2',
+87 silly install resolved        benchmark: '^1.0.0',
+87 silly install resolved        browserify: '^10.2.4',
+87 silly install resolved        eslint: '^0.24.0',
+87 silly install resolved        gulp: '^3.8.10',
+87 silly install resolved        'gulp-header': '^1.2.2',
+87 silly install resolved        'gulp-rename': '^1.2.2',
+87 silly install resolved        'gulp-replace': '^0.5.3',
+87 silly install resolved        'gulp-uglify': '^1.0.2',
+87 silly install resolved        lodash: '^3.6.0',
+87 silly install resolved        mocha: '^2.0.1',
+87 silly install resolved        'vinyl-buffer': '^1.0.0',
+87 silly install resolved        'vinyl-source-stream': '^1.1.0' },
+87 silly install resolved     scripts:
+87 silly install resolved      { benchmark: 'babel-node benchmark.js',
+87 silly install resolved        build: 'gulp build && babel ./src --out-dir dist',
+87 silly install resolved        lint: 'eslint ./*.js && eslint ./src',
+87 silly install resolved        prepublish: 'npm run build',
+87 silly install resolved        test: 'mocha -R spec --compilers js:babel/register ./test/endpoint.js' },
+87 silly install resolved     repository:
+87 silly install resolved      { type: 'git',
+87 silly install resolved        url: 'git+https://github.com/Yomguithereal/baobab.git' },
+87 silly install resolved     keywords: [ 'cursors', 'atom', 'tree', 'react' ],
+87 silly install resolved     author:
+87 silly install resolved      { name: 'Guillaume Plique',
+87 silly install resolved        url: 'http://github.com/Yomguithereal' },
+87 silly install resolved     license: 'MIT',
+87 silly install resolved     bugs: { url: 'https://github.com/Yomguithereal/baobab/issues' },
+87 silly install resolved     homepage: 'https://github.com/Yomguithereal/baobab',
+87 silly install resolved     gitHead: '17199f4e51737ed115feec3fc5f01e092e73d134',
+87 silly install resolved     _id: 'baobab@2.0.0-dev2',
+87 silly install resolved     _shasum: 'a509be7039fa78febb241e143974394e1798ee37',
+87 silly install resolved     _from: 'baobab@dev',
+87 silly install resolved     _npmVersion: '2.7.4',
+87 silly install resolved     _nodeVersion: '0.12.2',
+87 silly install resolved     _npmUser: { name: 'yomguithereal', email: 'kropotkinepiotr@gmail.com' },
+87 silly install resolved     maintainers: [ [Object] ],
+87 silly install resolved     dist:
+87 silly install resolved      { shasum: 'a509be7039fa78febb241e143974394e1798ee37',
+87 silly install resolved        tarball: 'http://registry.npmjs.org/baobab/-/baobab-2.0.0-dev2.tgz' },
+87 silly install resolved     directories: {},
+87 silly install resolved     _resolved: 'https://registry.npmjs.org/baobab/-/baobab-2.0.0-dev2.tgz',
+87 silly install resolved     readme: 'ERROR: No README data found!' } ]
+88 info install baobab@2.0.0-dev2 into /Users/tnrich/Sites/webpackTrial
+89 info installOne baobab@2.0.0-dev2
+90 verbose installOne of baobab to /Users/tnrich/Sites/webpackTrial not in flight; installing
+91 verbose lock using /Users/tnrich/.npm/_locks/baobab-93b19f53ab077157.lock for /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+92 silly install write writing baobab 2.0.0-dev2 to /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+93 verbose unbuild node_modules/baobab
+94 silly gentlyRm /Users/tnrich/Sites/webpackTrial/node_modules/baobab is being purged from base /Users/tnrich/Sites/webpackTrial
+95 verbose gentlyRm don't care about contents; nuking /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+96 verbose tar unpack /Users/tnrich/.npm/baobab/2.0.0-dev2/package.tgz
+97 verbose tar unpacking to /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+98 silly gentlyRm /Users/tnrich/Sites/webpackTrial/node_modules/baobab is being purged
+99 verbose gentlyRm don't care about contents; nuking /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+100 silly gunzTarPerm modes [ '755', '644' ]
+101 silly gunzTarPerm extractEntry package.json
+102 silly gunzTarPerm extractEntry README.md
+103 silly gunzTarPerm extractEntry TODO.md
+104 silly gunzTarPerm extractEntry Issue.md
+105 silly gunzTarPerm extractEntry LICENSE.txt
+106 silly gunzTarPerm extractEntry .eslintrc
+107 silly gunzTarPerm extractEntry .babelrc
+108 silly gunzTarPerm extractEntry bower.json
+109 silly gunzTarPerm extractEntry dist/baobab.js
+110 silly gunzTarPerm extractEntry dist/cursor.js
+111 silly gunzTarPerm extractEntry dist/facet.js
+112 silly gunzTarPerm extractEntry dist/helpers.js
+113 silly gunzTarPerm extractEntry dist/type.js
+114 silly gunzTarPerm extractEntry dist/update.js
+115 silly gunzTarPerm extractEntry src/baobab.js
+116 silly gunzTarPerm extractEntry src/cursor.js
+117 silly gunzTarPerm extractEntry src/facet.js
+118 silly gunzTarPerm extractEntry src/helpers.js
+119 silly gunzTarPerm extractEntry src/type.js
+120 silly gunzTarPerm extractEntry src/update.js
+121 silly gunzTarPerm extractEntry CHANGELOG.md
+122 verbose write writing to /Users/tnrich/Sites/webpackTrial/node_modules/baobab/package.json
+123 info preinstall baobab@2.0.0-dev2
+124 verbose readDependencies loading dependencies from /Users/tnrich/Sites/webpackTrial/node_modules/baobab/package.json
+125 silly prepareForInstallMany adding emmett@^3.1.0 from baobab dependencies
+126 verbose readDependencies loading dependencies from /Users/tnrich/Sites/webpackTrial/node_modules/baobab/package.json
+127 silly cache add args [ 'emmett@^3.1.0', null ]
+128 verbose cache add spec emmett@^3.1.0
+129 silly cache add parsed spec { raw: 'emmett@^3.1.0',
+129 silly cache add   scope: null,
+129 silly cache add   name: 'emmett',
+129 silly cache add   rawSpec: '^3.1.0',
+129 silly cache add   spec: '>=3.1.0 <4.0.0',
+129 silly cache add   type: 'range' }
+130 silly addNamed emmett@>=3.1.0 <4.0.0
+131 verbose addNamed ">=3.1.0 <4.0.0" is a valid semver range for emmett
+132 silly addNameRange { name: 'emmett', range: '>=3.1.0 <4.0.0', hasData: false }
+133 silly mapToRegistry name emmett
+134 silly mapToRegistry using default registry
+135 silly mapToRegistry registry https://registry.npmjs.org/
+136 silly mapToRegistry uri https://registry.npmjs.org/emmett
+137 verbose addNameRange registry:https://registry.npmjs.org/emmett not in flight; fetching
+138 verbose request uri https://registry.npmjs.org/emmett
+139 verbose request no auth needed
+140 info attempt registry request try #1 at 10:47:10 PM
+141 verbose request using bearer token for auth
+142 verbose etag "A78I8QWHUDYHX4E2M9ZT2P6YB"
+143 http request GET https://registry.npmjs.org/emmett
+144 http 304 https://registry.npmjs.org/emmett
+145 silly get cb [ 304,
+145 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+145 silly get     etag: '"A78I8QWHUDYHX4E2M9ZT2P6YB"',
+145 silly get     'cache-control': 'max-age=60',
+145 silly get     'accept-ranges': 'bytes',
+145 silly get     date: 'Thu, 09 Jul 2015 05:47:11 GMT',
+145 silly get     via: '1.1 varnish',
+145 silly get     connection: 'keep-alive',
+145 silly get     'x-served-by': 'cache-sjc3127-SJC',
+145 silly get     'x-cache': 'MISS',
+145 silly get     'x-cache-hits': '0',
+145 silly get     'x-timer': 'S1436420831.151854,VS0,VE83' } ]
+146 verbose etag https://registry.npmjs.org/emmett from cache
+147 verbose get saving emmett to /Users/tnrich/.npm/registry.npmjs.org/emmett/.cache.json
+148 silly addNameRange number 2 { name: 'emmett', range: '>=3.1.0 <4.0.0', hasData: true }
+149 silly addNameRange versions [ 'emmett',
+149 silly addNameRange   [ '1.0.0',
+149 silly addNameRange     '2.0.0',
+149 silly addNameRange     '2.1.0',
+149 silly addNameRange     '2.1.1',
+149 silly addNameRange     '2.1.2',
+149 silly addNameRange     '3.0.0',
+149 silly addNameRange     '3.0.1',
+149 silly addNameRange     '3.1.0' ] ]
+150 silly addNamed emmett@3.1.0
+151 verbose addNamed "3.1.0" is a plain semver version for emmett
+152 silly cache afterAdd emmett@3.1.0
+153 verbose afterAdd /Users/tnrich/.npm/emmett/3.1.0/package/package.json not in flight; writing
+154 verbose afterAdd /Users/tnrich/.npm/emmett/3.1.0/package/package.json written
+155 silly install resolved [ { name: 'emmett',
+155 silly install resolved     version: '3.1.0',
+155 silly install resolved     description: 'A custom event emitter for Node.js and the browser.',
+155 silly install resolved     main: 'emmett.js',
+155 silly install resolved     scripts: { test: 'gulp test', build: 'gulp build' },
+155 silly install resolved     repository:
+155 silly install resolved      { type: 'git',
+155 silly install resolved        url: 'git+ssh://git@github.com/jacomyal/emmett.git' },
+155 silly install resolved     keywords: [ 'events', 'emitter' ],
+155 silly install resolved     contributors: [ [Object], [Object] ],
+155 silly install resolved     license: 'MIT',
+155 silly install resolved     bugs: { url: 'https://github.com/jacomyal/emmett/issues' },
+155 silly install resolved     homepage: 'https://github.com/jacomyal/emmett',
+155 silly install resolved     devDependencies:
+155 silly install resolved      { gulp: '^3.8.9',
+155 silly install resolved        'gulp-browserify': '^0.5.0',
+155 silly install resolved        'gulp-gjslint': '^0.1.4',
+155 silly install resolved        'gulp-header': '^1.2.2',
+155 silly install resolved        'gulp-jshint': '^1.8.6',
+155 silly install resolved        'gulp-mocha': '^1.1.1',
+155 silly install resolved        'gulp-mocha-phantomjs': '^0.5.1',
+155 silly install resolved        'gulp-rename': '^1.2.0',
+155 silly install resolved        'gulp-uglify': '^1.0.1',
+155 silly install resolved        'jshint-stylish': '^1.0.0' },
+155 silly install resolved     gitHead: '0955df95ee8594a628766d0a40e92564bda4f44d',
+155 silly install resolved     _id: 'emmett@3.1.0',
+155 silly install resolved     _shasum: '8517b4eb3f5ae053da81c604c1306f28f40b4a82',
+155 silly install resolved     _from: 'emmett@>=3.1.0 <4.0.0',
+155 silly install resolved     _npmVersion: '2.7.4',
+155 silly install resolved     _nodeVersion: '0.12.2',
+155 silly install resolved     _npmUser: { name: 'yomguithereal', email: 'kropotkinepiotr@gmail.com' },
+155 silly install resolved     maintainers: [ [Object], [Object] ],
+155 silly install resolved     dist:
+155 silly install resolved      { shasum: '8517b4eb3f5ae053da81c604c1306f28f40b4a82',
+155 silly install resolved        tarball: 'http://registry.npmjs.org/emmett/-/emmett-3.1.0.tgz' },
+155 silly install resolved     directories: {},
+155 silly install resolved     _resolved: 'https://registry.npmjs.org/emmett/-/emmett-3.1.0.tgz',
+155 silly install resolved     readme: 'ERROR: No README data found!' } ]
+156 info install emmett@3.1.0 into /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+157 info installOne emmett@3.1.0
+158 verbose installOne of emmett to /Users/tnrich/Sites/webpackTrial/node_modules/baobab not in flight; installing
+159 verbose lock using /Users/tnrich/.npm/_locks/emmett-ffb44d995ce5213b.lock for /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+160 silly install write writing emmett 3.1.0 to /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+161 verbose unbuild node_modules/baobab/node_modules/emmett
+162 silly gentlyRm /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett is being purged from base /Users/tnrich/Sites/webpackTrial
+163 verbose gentlyRm don't care about contents; nuking /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+164 verbose tar unpack /Users/tnrich/.npm/emmett/3.1.0/package.tgz
+165 verbose tar unpacking to /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+166 silly gentlyRm /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett is being purged
+167 verbose gentlyRm don't care about contents; nuking /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+168 silly gunzTarPerm modes [ '755', '644' ]
+169 silly gunzTarPerm extractEntry package.json
+170 silly gunzTarPerm extractEntry README.md
+171 silly gunzTarPerm extractEntry emmett.js
+172 silly gunzTarPerm extractEntry emmett.min.js
+173 silly gunzTarPerm extractEntry LICENSE.txt
+174 verbose write writing to /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett/package.json
+175 info preinstall emmett@3.1.0
+176 verbose readDependencies loading dependencies from /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett/package.json
+177 verbose readDependencies loading dependencies from /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett/package.json
+178 silly install resolved []
+179 verbose about to build /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+180 info build /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+181 info linkStuff emmett@3.1.0
+182 silly linkStuff emmett@3.1.0 has /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules as its parent node_modules
+183 verbose linkBins emmett@3.1.0
+184 verbose linkMans emmett@3.1.0
+185 verbose rebuildBundles emmett@3.1.0
+186 info install emmett@3.1.0
+187 info postinstall emmett@3.1.0
+188 verbose unlock done using /Users/tnrich/.npm/_locks/emmett-ffb44d995ce5213b.lock for /Users/tnrich/Sites/webpackTrial/node_modules/baobab/node_modules/emmett
+189 verbose about to build /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+190 info build /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+191 info linkStuff baobab@2.0.0-dev2
+192 silly linkStuff baobab@2.0.0-dev2 has /Users/tnrich/Sites/webpackTrial/node_modules as its parent node_modules
+193 verbose linkBins baobab@2.0.0-dev2
+194 verbose linkMans baobab@2.0.0-dev2
+195 verbose rebuildBundles baobab@2.0.0-dev2
+196 verbose rebuildBundles [ 'emmett' ]
+197 info install baobab@2.0.0-dev2
+198 info postinstall baobab@2.0.0-dev2
+199 verbose unlock done using /Users/tnrich/.npm/_locks/baobab-93b19f53ab077157.lock for /Users/tnrich/Sites/webpackTrial/node_modules/baobab
+200 verbose validateInstall loading /Users/tnrich/Sites/webpackTrial/package.json for validation
+201 verbose stack Error: The package baobab does not satisfy its siblings' peerDependencies requirements!
+201 verbose stack     at /usr/local/lib/node_modules/npm/lib/install.js:125:32
+201 verbose stack     at /usr/local/lib/node_modules/npm/lib/install.js:267:7
+201 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:138:5
+201 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+201 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+201 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+201 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+201 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+201 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+201 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+202 verbose cwd /Users/tnrich/Sites/webpackTrial
+203 error Darwin 14.3.0
+204 error argv "node" "/usr/local/bin/npm" "install" "--save" "baobab@dev"
+205 error node v0.12.4
+206 error npm  v2.10.1
+207 error code EPEERINVALID
+208 error peerinvalid The package baobab does not satisfy its siblings' peerDependencies requirements!
+208 error peerinvalid Peer baobab-react@0.1.1 wants baobab@>=1.0.3 <2.0.0
+209 verbose exit [ 1, true ]

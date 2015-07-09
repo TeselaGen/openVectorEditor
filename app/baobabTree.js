@@ -3,7 +3,8 @@ var sequenceData = require('./sequenceData');
 var ObjectID = require("bson-objectid");
 var prepareRowData = require('./prepareRowData');
 var findOrfsFromSequence = require('./findOrfsFromSequence');
-var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
+var computeRowRepresentationOfSequence = require(
+	'./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 var getSubstringByRange = require('get-substring-by-range');
 
@@ -87,105 +88,70 @@ var tree = new baobab({
 		sequenceData: validateAndTidyUpSequenceData(sequenceData),
 		clipboardData: null
 	},
-	// // sequencesMegaStore: fakeSequences,
-	// partsMegaStore: { //
-	// 	//tnrtodo: make a fake part generator
-	// },
-	// designMegaStore: {
-	// 	//tnrtodo: make a fake design generator
-	// },
-	// assemblyMakerState: {
-
-	// },
-}, {
-	syncwrite: true,
-	immutable: true,
-	validate: function (tree, gaga) {
+	$bpsPerRow: {
+		cursors: {
+			viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions',
+				'width'
+			],
+			charWidth: ['vectorEditorState', 'charWidth'],
+		},
+		get: function (state) {
+			return Math.floor(state.viewportDimensionsWidth / state.charWidth);
+		}
 	},
-	facets: {
-		// orfData: {
-		// 	cursors: {
-		// 		sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-		// 		circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-		// 		minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
-		// 	},
-		// 	get: function(state) {
-		// 		return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
-		// 	}
-		// },
-		bpsPerRow: {
-			cursors: {
-				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
-				charWidth: ['vectorEditorState', 'charWidth'],
-			},
-			get: function(state) {
-				return Math.floor(state.viewportDimensionsWidth / state.charWidth);
-			}
+	$sequenceLength: {
+		cursors: {
+			sequenceData: ['vectorEditorState', 'sequenceData'],
 		},
-		sequenceLength: {
-			cursors: {
-				sequenceData: ['vectorEditorState', 'sequenceData'],
-			},
-			get: function(state) {
-				return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
-			}
+		get: function (state) {
+			return state.sequenceData.sequence ? state.sequenceData.sequence.length :
+				0;
+		}
+	},
+	$rowData: {
+		cursors: {
+			sequenceData: ['vectorEditorState', 'sequenceData'],
+			bpsPerRow: ['$bpsPerRow'],
 		},
-		rowData: {
-			cursors: {
-				sequenceData: ['vectorEditorState', 'sequenceData'],
-			},
-			facets: {
-				bpsPerRow: 'bpsPerRow',
-				// orfData: 'orfData',
-			},
-			get: function(state) {
-				// var self = this;
-				// setTimeout(function (argument) {
-				// var previousVisibleRows = this.tree.select('vectorEditorState', 'visibleRows').get();
-				// this.tree.select('vectorEditorState', 'visibleRows').set(previousVisibleRows);
-				// this.tree.commit();
-
-				// }, 10);
-				// state.sequenceData.orfs = state.orfData;
-				return prepareRowData(state.sequenceData, state.bpsPerRow);
-			}
+		get: function (state) {
+			return prepareRowData(state.sequenceData, state.bpsPerRow);
+		}
+	},
+	$totalRows: {
+		cursors: {
+			rowData: ['$rowData'],
 		},
-		totalRows: {
-			facets: {
-				rowData: 'rowData',
-			},
-			get: function(state) {
-				if (state.rowData) {
-					return state.rowData.length;
-				}
+		get: function (state) {
+			if (state.rowData) {
+				return state.rowData.length;
 			}
+		}
+	},
+	$visibleRowsData: {
+		cursors: {
+			visibleRows: ['vectorEditorState', 'visibleRows'],
+			rowData: ['$rowData']
 		},
-		visibleRowsData: {
-			cursors: {
-				visibleRows: ['vectorEditorState', 'visibleRows']
-			},
-			facets: {
-				rowData: 'rowData'
-			},
-			get: function(state) {
-				// debugger;
-					console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
-				if (state.rowData && state.visibleRows) {
-					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end + 1);
-				}
+		get: function (state) {
+			// debugger;
+			console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows
+				.end);
+			if (state.rowData && state.visibleRows) {
+				return state.rowData.slice(state.visibleRows.start, state.visibleRows.end +
+					1);
 			}
+		}
+	},
+	$selectedSequenceString: {
+		cursors: {
+			sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+			selectionLayer: ['vectorEditorState', 'selectionLayer'],
 		},
-		selectedSequenceString: {
-			cursors: {
-				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-				selectionLayer: ['vectorEditorState', 'selectionLayer'],
-			},
-			get: function(state) {
-				if (state.sequence && state.selectionLayer && state.selectionLayer.selected) {
-					return getSubstringByRange(state.sequence,state.selectionLayer);
-				} else {
-					return '';
-				}
+		get: function (state) {
+			if (state.sequence && state.selectionLayer && state.selectionLayer.selected) {
+				return getSubstringByRange(state.sequence, state.selectionLayer);
+			} else {
+				return '';
 			}
 		}
 	}
