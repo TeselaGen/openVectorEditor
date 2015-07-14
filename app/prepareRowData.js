@@ -8,7 +8,6 @@ function prepareRowData(sequenceData, bpsPerRow) {
 
   var featuresToRowsMap = mapAnnotationsToRows(sequenceData.features, sequenceLength, bpsPerRow);
   var partsToRowsMap = mapAnnotationsToRows(sequenceData.parts, sequenceLength, bpsPerRow);
-  debugger;
   var orfsToRowsMap = mapAnnotationsToRows(sequenceData.orfs, sequenceLength, bpsPerRow);
 
   for (var rowNumber = 0; rowNumber < totalRows; rowNumber++) {
@@ -189,8 +188,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
 
 function splitRangeOnOrigin(range, sequenceLength) {
   if (!areNonNegativeIntegers([range.start, range.end, sequenceLength])) {
-    debugger;
-    console.error("invalid inputs!!");
+    throw ('invalid inputs!')
   }
   var ranges = [];
   if (range.start > range.end) {
