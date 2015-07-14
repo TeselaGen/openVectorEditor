@@ -4,7 +4,7 @@
   "description": "",
   "main": "app/App.js",
   "dependencies": {
-    "baobab": "^1.1.1",
+    "baobab": "^1.1.2",
     "baobab-react": "^0.1.0",
     "br-mousetrap": "^1.1.3",
     "bson-objectid": "^1.1.1",

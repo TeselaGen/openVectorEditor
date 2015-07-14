@@ -66,8 +66,6 @@ var actions = {
 			this.setCaretPosition(-1);
 		}
 		tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
-		// }
-
 		// viewportDimensions.set(newSize);
 	},
 	//takes in an object like: {start:int,end:int}
@@ -75,16 +73,16 @@ var actions = {
 		if (newVisibleRows && areNonNegativeIntegers([newVisibleRows.start, newVisibleRows.end])) {
 			// console.log('newVisibleRows: ' + newVisibleRows);
 			var totalRows = tree.facets.totalRows.get();
-			if (newVisibleRows.end > totalRows - 1) {
-				newVisibleRows = {
-					start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
-					end: totalRows - 1
-				}
-			}
+			// if (newVisibleRows.end > totalRows - 1) {
+			// 	newVisibleRows = {
+			// 		start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
+			// 		end: totalRows - 1
+			// 	}
+			// }
 			var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
 			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
 				tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
-				tree.commit();
+				// tree.commit();
 			}
 		} else {
 			throw ("visibleRows object is missing or invalid");
@@ -194,7 +192,7 @@ var actions = {
 		// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
 		// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 		tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
-		this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+		// this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 	},
 	insertSequenceString: function(sequenceString) {
 		this.insertSequenceData({sequence: sequenceString});
@@ -229,7 +227,7 @@ var actions = {
 			console.warn('nowhere to put the inserted sequence..');
 			return;
 		}
-		this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+		// this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 		//insert the sequence
 		// tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
@@ -265,10 +263,10 @@ var actions = {
 			});
 		}
 	},
-	refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
-		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-		this.setSelectionLayer(selectionLayer);
-	},
+	// refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+	// 	var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+	// 	this.setSelectionLayer(selectionLayer);
+	// },
 	moveCaret: function(numberToMove) {
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
 		var sequenceLength = tree.facets.sequenceLength.get();

@@ -1,104 +1,113 @@
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 
+
 module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
-    // if (circular) {
-        var forwardSequence = sequence;
-        var backwardSequence = getReverseComplementSequenceString(sequence);
+  // if (circular) {
+  var forwardSequence = sequence;
+  
+  //tnr, we should do the parsing down of the orfs immediately after they're returned from this sequence
+  // var orfs1Forward = eliminateCircularOrfsThatOverlapWithNonCircularOrfs(getOrfsFromSequenceString(0, doubleForwardSequence, mininmumOrfSize, true), maxLength);
+  var orfs1Forward = getOrfsFromSequenceString(0, sequence, mininmumOrfSize, true, circular);
+  var orfs2Forward = getOrfsFromSequenceString(1, sequence, mininmumOrfSize, true, circular);
+  var orfs3Forward = getOrfsFromSequenceString(2, sequence, mininmumOrfSize, true, circular);
 
-        var doubleForwardSequence = forwardSequence + forwardSequence;
-        var doubleBackwardSequence = backwardSequence + backwardSequence;
+  var orfs1Reverse = getOrfsFromSequenceString(0, sequence, mininmumOrfSize, false, circular);
+  var orfs2Reverse = getOrfsFromSequenceString(1, sequence, mininmumOrfSize, false, circular);
+  var orfs3Reverse = getOrfsFromSequenceString(2, sequence, mininmumOrfSize, false, circular);
 
-        var orfs1Forward = getOrfsFromSequenceString(0, doubleForwardSequence, mininmumOrfSize, true);
-        var orfs2Forward = getOrfsFromSequenceString(1, doubleForwardSequence, mininmumOrfSize, true);
-        var orfs3Forward = getOrfsFromSequenceString(2, doubleForwardSequence, mininmumOrfSize, true);
-
-        var orfs1Reverse = getOrfsFromSequenceString(0, doubleBackwardSequence, mininmumOrfSize, false);
-        var orfs2Reverse = getOrfsFromSequenceString(1, doubleBackwardSequence, mininmumOrfSize, false);
-        var orfs3Reverse = getOrfsFromSequenceString(2, doubleBackwardSequence, mininmumOrfSize, false);
-
-        var combinedForwardOrfs = orfs1Forward.concat(orfs2Forward, orfs3Forward);
-        var combinedReverseOrfs = orfs1Reverse.concat(orfs2Reverse, orfs3Reverse);
-
-        //recalculate the start and end indices for the combinedReverseOrfs 
-        //(because they were generated using the reverse complement sequence and thus have their indices flipped)
-        for (var i = 0; i < combinedReverseOrfs.length; i++) {
-            var orf = combinedReverseOrfs[i];
-
-            var start = doubleBackwardSequence.length - orf.start - 1;
-            var end = doubleBackwardSequence.length - orf.end;
-
-            orf.start(end);
-            orf.end(start);
-
-            for (var j = 0; j < orf.startCodons.length; j++) {
-                orf.startCodons[j] = doubleBackwardSequence.length - orf.startCodons[j] - 1;
-            }
-
-            var startCodons = orf.startCodons;
-            startCodons.sort(this.codonsSort);
-            orf.startCodons = startCodons;
-        }
-
-        var allOrfs = combinedForwardOrfs.concat(combinedReverseOrfs);
-
-        var maxLength = forwardSequence.length;
-
-        orfsWithNoDuplicates = [];
-        var normalOrfs = [];
-        //        var orf = null;
-
-        allOrfs.forEach(function(orf) {
-            if (orf.start >= maxLength) {
-                //do nothing
-            } else if (orf.end <= maxLength) {
-                normalOrfs.push(orf);
-            } else if (orf.end > maxLength && orf.start < maxLength) {
-                var startCodons = orf.startCodons;
-
-                orf.end(orf.end - maxLength);
-
-                orf.startCodons = (orf.startCodons.map(function(startCodon) {
-                    if (startCodon >= maxLength) {
-                        startCodon -= maxLength;
-                    }
-                    return startCodon;
-                }));
-
-                orfsWithNoDuplicates.push(orf);
-            }
-        });
-
-        // Eliminate the orfs that overlaps with circular orfs.
-        normalOrfs.forEach(function(normalOrf) {
-            var skip = false;
-
-            orfsWithNoDuplicates.forEach(function(circularOrf) {
-                if (circularOrf.end === normalOrf.end &&
-                    circularOrf.forward === normalOrf.forward) {
-                    skip = true;
-                    return false;
-                }
-            });
-
-            if (!skip) {
-                orfsWithNoDuplicates.push(normalOrf);
-            }
-        });
-        orfsWithNoDuplicates.forEach(function(orf) {
-            //the end bps of orfs on the reverse forward were off by 1, so this code fixes that
-            if (orf.forward === -1) {
-                orf.end++;
-            }
-        });
-        return orfsWithNoDuplicates;
-    // } else {
-    //     //get the aa's for the 3 frames
-    //     getAminoAcidsFromSequenceString(sequence);
-    //     getAminoAcidsFromSequenceString(sequence);
-    //     getAminoAcidsFromSequenceString(sequence);
-    // }
+  var combinedForwardOrfs = orfs1Forward.concat(orfs2Forward, orfs3Forward);
+  var combinedReverseOrfs = orfs1Reverse.concat(orfs2Reverse, orfs3Reverse);
+  var allOrfs = combinedForwardOrfs.concat(combinedReverseOrfs);
+  return allOrfs;
 };
+
+  // function eliminateCircularOrfsThatOverlapWithNonCircularOrfs(potentiallyDuplicatedOrfs, maxLength) {
+  //   debugger;
+  //   var circularOrfs = [];
+  //   var normalOrfs = [];
+  //   var nonDuplicatedOrfs = [];
+  //   potentiallyDuplicatedOrfs.forEach(function(orf) {
+  //     if (orf.start >= maxLength) {
+  //       //eliminate this orf because there must already be a normal orf with the same start bp (just shifted by 1 sequence length)
+  //     } else {
+  //       nonDuplicatedOrfs.push(orf);
+  //     }
+  //     
+  //     // else if (orf.end <= maxLength) {
+  //     //   normalOrfs.push(orf);
+  //     // } else if (orf.end > maxLength && orf.start < maxLength) {
+  //     //   var startCodons = orf.startCodons;
+  //     // 
+  //     //   orf.end(orf.end - maxLength);
+  //     // 
+  //     //   orf.startCodons = (orf.startCodons.map(function(startCodon) {
+  //     //     if (startCodon >= maxLength) {
+  //     //       startCodon -= maxLength;
+  //     //     }
+  //     //     return startCodon;
+  //     //   }));
+  //     // 
+  //     //   circularOrfs.push(orf);
+  //     // }
+  //   });
+  // 
+  //   // Eliminate the orfs that overlaps with circular orfs.
+  //   // normalOrfs.forEach(function(normalOrf) {
+  //   //   var skip = false;
+  //   //   circularOrfs.forEach(function(circularOrf) {
+  //   //     if (circularOrf.end === normalOrf.end) {
+  //   //       skip = true;
+  //   //       return false;
+  //   //     }
+  //   //   });
+  //   // 
+  //   //   if (!skip) {
+  //   //     nonDuplicatedOrfs.push(normalOrf);
+  //   //   }
+  //   // });
+  //   
+  //   
+  //   // orfsWithNoDuplicates.forEach(function(orf) {
+  //   //   //the end bps of orfs on the reverse forward were off by 1, so this code fixes that
+  //   //   if (orf.forward === -1) {
+  //   //     orf.end++;
+  //   //   }
+  //   // });
+  //   return nonDuplicatedOrfs;
+  // }
+  // //recalculate the start and end indices for the combinedReverseOrfs 
+  // //(because they were generated using the reverse complement sequence and thus have their indices flipped)
+  // for (var i = 0; i < combinedReverseOrfs.length; i++) {
+  //   var orf = combinedReverseOrfs[i];
+  // 
+  //   var start = doubleBackwardSequence.length - orf.start - 1;
+  //   var end = doubleBackwardSequence.length - orf.end;
+  // 
+  //   orf.start(end);
+  //   orf.end(start);
+  // 
+  //   for (var j = 0; j < orf.startCodons.length; j++) {
+  //     orf.startCodons[j] = doubleBackwardSequence.length - orf.startCodons[j] - 1;
+  //   }
+  // 
+  //   var startCodons = orf.startCodons;
+  //   startCodons.sort(this.codonsSort);
+  //   orf.startCodons = startCodons;
+  // }
+
+
+  
+  //        var orf = null;
+
+  
+  // } else {
+  //     //get the aa's for the 3 frames
+  //     getAminoAcidsFromSequenceString(sequence);
+  //     getAminoAcidsFromSequenceString(sequence);
+  //     getAminoAcidsFromSequenceString(sequence);
+  // }
+// };
 
 /**
  * @private
@@ -106,23 +115,63 @@ module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSi
  * @param  {Int} frame The frame to look in.
  * @param  {String}sequence The dna sequence.
  * @param  {Int} mininmumOrfSize The minimum length of ORF to return.
- * @param  {Teselagen.bio.sequence.common.StrandType} forward The forward we are looking at.
+ * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
-function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward) {
-    if (typeof(mininmumOrfSize) === "undefined") {
-        throw('no min orf size given');
-    }
-    if (typeof(forward) === "undefined") {
-        throw('no orf StrandType passed');
-    }
-    if (!areNonNegativeIntegers([frame]) || frame > 2) {
-        throw('invalid frame passed');
-    }
-    if (typeof sequence !== 'string') {
-        throw('invalid sequence passed');
-    }
-
+function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, circular) {
+  var ObjectID = require("bson-objectid");
+  if (typeof(mininmumOrfSize) === "undefined") {
+    throw ('no min orf size given');
+  }
+  if (typeof(forward) === "undefined") {
+    throw ('no orf StrandType passed');
+  }
+  if (typeof(circular) === "undefined") {
+    throw ('no orf StrandType passed');
+  }
+  if (!areNonNegativeIntegers([frame]) || frame > 2) {
+    throw ('invalid frame passed');
+  }
+  if (typeof sequence !== 'string') {
+    throw ('invalid sequence passed');
+  }
+  var maxLength = sequence.length;
+  
+  if (!forward) {
+    //we reverse the sequence
+    sequence = getReverseComplementSequenceString(sequence);
+  }
+  
+  if (circular) {
+    //we'll pass in double the sequence and then trim excess orfs
+    sequence += sequence;
+  } 
+  var potentiallyDuplicatedOrfs = calculateOrfs(frame, sequence, mininmumOrfSize, forward);
+  
+  if (!forward) {
+    //we'll reverse the orfs start and end before (potentially) trimming them 
+  } 
+  var nonDuplicatedOrfs;
+  if (circular) {
+    // we'll trim the excess orfs
+    nonDuplicatedOrfs = [];
+    potentiallyDuplicatedOrfs.forEach(function(orf) {
+      if (orf.start >= maxLength) {
+        //eliminate this orf because there must already be a normal orf with the same start bp (just shifted by 1 sequence length)
+      } else {
+        if (orf.end >= maxLength) {
+          orf.end -= maxLength;
+        }
+        nonDuplicatedOrfs.push(orf);
+      }
+    });
+  } else { 
+    //non circular so
+    nonDuplicatedOrfs = potentiallyDuplicatedOrfs;
+  }
+  return nonDuplicatedOrfs;
+  
+  function calculateOrfs(frame, sequence, mininmumOrfSize, forward) {
     var allOrfs = [];
     var sequenceLength = sequence.length;
 
@@ -138,70 +187,74 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward) {
     var possibleStartCodon;
     // Loop through sequence and generate list of ORFs.
     for (var index = frame; index < sequenceLength; index += 3) {
-        triplet = sequence.slice(index, index + 3);
-        if (triplet.length ===3) {
-            aaSymbol = getAminoAcidFromSequenceString(triplet);
-            aaString+= aaSymbol.value;
-            possibleStartCodon = isStartCodon(triplet);
-            possibleStopCodon = isStopCodon(triplet);
+      triplet = sequence.slice(index, index + 3);
+      if (triplet.length === 3) {
+        aaSymbol = getAminoAcidFromSequenceString(triplet);
+        aaString += aaSymbol.value;
+        possibleStartCodon = isStartCodon(triplet);
+        possibleStopCodon = isStopCodon(triplet);
 
-            // If we've found a start codon, add its index to startCodonIndices.
-            if (possibleStartCodon) {
-                startCodonIndices.push(index);
-            }
-            if (possibleStopCodon) {
-                stopCodonIndices.push(index);
-            }
+        // If we've found a start codon, add its index to startCodonIndices.
+        if (possibleStartCodon) {
+          startCodonIndices.push(index);
         }
+        if (possibleStopCodon) {
+          stopCodonIndices.push(index);
+        }
+      }
     }
 
     //loop through the start codons and see if any of them form orfs
     startCodonIndices.forEach(function(startCodonIndex) {
-        stopCodonIndices.some(function(stopCodonIndex) {
-            if (stopCodonIndex - startCodonIndex > 0) {
-                var orf = {
-                    start: startIndex,
-                    end: endIndex,
-                    forward: forward,
-                    frame: frame,
-                    startCodons: startCodonIndices
-                };
-                allOrfs.push(orf);
-                return true; //break the some loop
-            }
-        });
+      stopCodonIndices.some(function(stopCodonIndex) {
+        if (stopCodonIndex - startCodonIndex > 0) {
+          var orf = {
+            start: startCodonIndex,
+            end: stopCodonIndex,
+            forward: forward,
+            frame: frame,
+            startCodons: startCodonIndices,
+            id: ObjectID().str
+          };
+          allOrfs.push(orf);
+          return true; //break the some loop
+        }
+      });
     });
     //after this we'll need to do a 'reduce' step to shave off the orfs that don't meet the minimum size requirements 
     //as well as the orfs with the same stop bp
+    //tnrtodo: inspect this function and make sure it is reducing the orfs correctly!
     var trimmedOrfs = [];
     allOrfs.forEach(function(orf) {
-        if (orf.end - orf.start + 1 >= mininmumOrfSize) { //make sure the orf size is >= to the minimum size
-            var indexOfOrfWithSameStopBp = _.findIndex(trimmedOrfs, function(trimmedOrf) { //find any orfs with the same stop bp in the trimmed orf array
-                return trimmedOrf.end === orf.end;
-            });
-            if (indexOfOrfWithSameStopBp === -1) {
-                trimmedOrfs.push(orf);
-            } else {
-                if (trimmedOrfs[indexOfOrfWithSameStopBp].start > orf.start) {
-                    trimmedOrfs[indexOfOrfWithSameStopBp] = orf; //replace the old orf at that position with this new orf because it is longer
-                }
-            }
+      if (orf.end - orf.start + 1 >= mininmumOrfSize) { //make sure the orf size is >= to the minimum size
+        var indexOfOrfWithSameStopBp = _.findIndex(trimmedOrfs, function(trimmedOrf) { //find any orfs with the same stop bp in the trimmed orf array
+          return trimmedOrf.end === orf.end;
+        });
+        if (indexOfOrfWithSameStopBp === -1) {
+          trimmedOrfs.push(orf);
+        } else {
+          if (trimmedOrfs[indexOfOrfWithSameStopBp].start > orf.start) {
+            trimmedOrfs[indexOfOrfWithSameStopBp] = orf; //replace the old orf at that position with this new orf because it is longer
+          }
         }
+      }
     });
     return trimmedOrfs;
+  }
+
 }
 
 function isStartCodon(codon) {
-    return (codon === 'atg' || codon === 'aug' && codon.indexOf("-") === -1);
+  return (codon === 'atg' || codon === 'aug' && codon.indexOf("-") === -1);
 }
 /**
-* {Calculates whether a three character string is a stop codon.
-  * @param  {String} codon a three character string.
-  * @return {Boolean} shows whether the nucleotides make up a stop codon
-  */
- function isStopCodon (codon) {
-    return (codon == 'taa' || codon == 'tag' || codon == 'tga' || codon == 'uaa' || codon == 'uag' || codon == 'uga');
- }
+ * {Calculates whether a three character string is a stop codon.
+ * @param  {String} codon a three character string.
+ * @return {Boolean} shows whether the nucleotides make up a stop codon
+ */
+function isStopCodon(codon) {
+  return (codon == 'taa' || codon == 'tag' || codon == 'tga' || codon == 'uaa' || codon == 'uag' || codon == 'uga');
+}
 
 /**
  * @private
@@ -212,21 +265,21 @@ function isStartCodon(codon) {
  * @return {Boolean} True if the nucleotides given form a stop codon.
  */
 function evaluatePossibleStop(nucleotideOne, nucleotideTwo, nucleotideThree) {
-    var n1 = this.returnMatches(nucleotideOne);
-    var n2 = this.returnMatches(nucleotideTwo);
-    var n3 = this.returnMatches(nucleotideThree);
+  var n1 = this.returnMatches(nucleotideOne);
+  var n2 = this.returnMatches(nucleotideTwo);
+  var n3 = this.returnMatches(nucleotideThree);
 
-    for (var i1 = 0; i1 < n1.length; i1++) {
-        for (var i2 = 0; i2 < n2.length; i2++) {
-            for (var i3 = 0; i3 < n3.length; i3++) {
-                if (Teselagen.TranslationUtils.isStopCodon(n1[i1], n2[i2], n3[i3])) {
-                    return true;
-                }
-            }
+  for (var i1 = 0; i1 < n1.length; i1++) {
+    for (var i2 = 0; i2 < n2.length; i2++) {
+      for (var i3 = 0; i3 < n3.length; i3++) {
+        if (Teselagen.TranslationUtils.isStopCodon(n1[i1], n2[i2], n3[i3])) {
+          return true;
         }
+      }
     }
+  }
 
-    return false;
+  return false;
 }
 
 /**
@@ -237,16 +290,16 @@ function evaluatePossibleStop(nucleotideOne, nucleotideTwo, nucleotideThree) {
  * @return {Teselagen.bio.sequence.symbols.NucleotideSymbol[]} The array containing matches.
  */
 function returnMatches(nucleotide) {
-    var nucleotideObject = Teselagen.DNAAlphabet[nucleotide];
-    var ambiguousMatches;
+  var nucleotideObject = Teselagen.DNAAlphabet[nucleotide];
+  var ambiguousMatches;
 
-    if (nucleotideObject && nucleotideObject.getAmbiguousMatches().length !== 0) {
-        ambiguousMatches = nucleotideObject.getAmbiguousMatches();
-    } else {
-        ambiguousMatches = [nucleotide];
-    }
+  if (nucleotideObject && nucleotideObject.getAmbiguousMatches().length !== 0) {
+    ambiguousMatches = nucleotideObject.getAmbiguousMatches();
+  } else {
+    ambiguousMatches = [nucleotide];
+  }
 
-    return ambiguousMatches;
+  return ambiguousMatches;
 }
 
 /**
@@ -257,164 +310,248 @@ function returnMatches(nucleotide) {
  * @return {Int} Sort order.
  */
 function codonsSort(a, b) {
-    if (a > b) {
-        return 1;
-    } else if (a < b) {
-        return -1;
-    } else {
-        return 0;
-    }
+  if (a > b) {
+    return 1;
+  } else if (a < b) {
+    return -1;
+  } else {
+    return 0;
+  }
 }
 
 function getAminoAcidsFromSequenceString(sequenceString) {
-    var aminoAcidString = '';
-    for (var i = 3; i < sequenceString.length; i += 3) {
-        aminoAcidString += getAminoAcidFromSequenceString(sequenceString.slice(i - 3, i + 1));
-    }
-    return aminoAcidString;
+  var aminoAcidString = '';
+  for (var i = 3; i < sequenceString.length; i += 3) {
+    aminoAcidString += getAminoAcidFromSequenceString(sequenceString.slice(i - 3, i + 1));
+  }
+  return aminoAcidString;
 }
 
 function getAminoAcidFromSequenceString(sequenceString) {
-    if (typeof sequenceString === 'string') {
-        sequenceString = sequenceString.toLowerCase();
-    } else {
-        throw ('must pass a string to this function');
-    }
-    if (sequenceString.length !== 3) {
-        throw 'must pass a string of length 3';
-    }
-    if (threeLetterSequenceStringToAminoAcidMap[sequenceString]) {
-        return threeLetterSequenceStringToAminoAcidMap[sequenceString];
-    } else {
-        return  ({
-            value: '-',
-            name: 'Gap',
-            threeLettersName: 'Gap'
-        });
-    }
+  if (typeof sequenceString === 'string') {
+    sequenceString = sequenceString.toLowerCase();
+  } else {
+    throw ('must pass a string to this function');
+  }
+  if (sequenceString.length !== 3) {
+    throw 'must pass a string of length 3';
+  }
+  if (threeLetterSequenceStringToAminoAcidMap[sequenceString]) {
+    return threeLetterSequenceStringToAminoAcidMap[sequenceString];
+  } else {
+    return ({
+      value: '-',
+      name: 'Gap',
+      threeLettersName: 'Gap'
+    });
+  }
 }
 
 var proteinAlphabet = { //tnrtodo: add stop codons and non-normal codons to these maps as well!!
-	'A': {value: 'A', name:'Alanine', threeLettersName: 'Ala'},
-	'R': {value: 'R', name:'Arginine', threeLettersName: 'Arg'},
-	'N': {value: 'N', name:'Asparagine', threeLettersName: 'Asn'},
-	'D': {value: 'D', name:'Aspartic acid', threeLettersName: 'Asp'},
-	'C': {value: 'C', name:'Cysteine', threeLettersName: 'Cys'},
-	'E': {value: 'E', name:'Glutamic acid', threeLettersName: 'Glu'},
-	'Q': {value: 'Q', name:'Glutamine', threeLettersName: 'Gln'},
-	'G': {value: 'G', name:'Glycine', threeLettersName: 'Gly'},
-	'H': {value: 'H', name:'Histidine', threeLettersName: 'His'},
-	'I': {value: 'I', name:'Isoleucine ', threeLettersName: 'Ile'},
-	'L': {value: 'L', name:'Leucine', threeLettersName: 'Leu'},
-	'K': {value: 'K', name:'Lysine', threeLettersName: 'Lys'},
-	'M': {value: 'M', name:'Methionine', threeLettersName: 'Met'},
-	'F': {value: 'F', name:'Phenylalanine', threeLettersName: 'Phe'},
-	'P': {value: 'P', name:'Proline', threeLettersName: 'Pro'},
-	'S': {value: 'S', name:'Serine', threeLettersName: 'Ser'},
-	'T': {value: 'T', name:'Threonine', threeLettersName: 'Thr'},
-	'W': {value: 'W', name:'Tryptophan', threeLettersName: 'Trp'},
-	'Y': {value: 'Y', name:'Tyrosine', threeLettersName: 'Tyr'},
-	'V': {value: 'V', name:'Valine', threeLettersName: 'Val'},
-	'*': {value: '*', name:'Stop', threeLettersName: 'Stop'},
+  'A': {
+    value: 'A',
+    name: 'Alanine',
+    threeLettersName: 'Ala'
+  },
+  'R': {
+    value: 'R',
+    name: 'Arginine',
+    threeLettersName: 'Arg'
+  },
+  'N': {
+    value: 'N',
+    name: 'Asparagine',
+    threeLettersName: 'Asn'
+  },
+  'D': {
+    value: 'D',
+    name: 'Aspartic acid',
+    threeLettersName: 'Asp'
+  },
+  'C': {
+    value: 'C',
+    name: 'Cysteine',
+    threeLettersName: 'Cys'
+  },
+  'E': {
+    value: 'E',
+    name: 'Glutamic acid',
+    threeLettersName: 'Glu'
+  },
+  'Q': {
+    value: 'Q',
+    name: 'Glutamine',
+    threeLettersName: 'Gln'
+  },
+  'G': {
+    value: 'G',
+    name: 'Glycine',
+    threeLettersName: 'Gly'
+  },
+  'H': {
+    value: 'H',
+    name: 'Histidine',
+    threeLettersName: 'His'
+  },
+  'I': {
+    value: 'I',
+    name: 'Isoleucine ',
+    threeLettersName: 'Ile'
+  },
+  'L': {
+    value: 'L',
+    name: 'Leucine',
+    threeLettersName: 'Leu'
+  },
+  'K': {
+    value: 'K',
+    name: 'Lysine',
+    threeLettersName: 'Lys'
+  },
+  'M': {
+    value: 'M',
+    name: 'Methionine',
+    threeLettersName: 'Met'
+  },
+  'F': {
+    value: 'F',
+    name: 'Phenylalanine',
+    threeLettersName: 'Phe'
+  },
+  'P': {
+    value: 'P',
+    name: 'Proline',
+    threeLettersName: 'Pro'
+  },
+  'S': {
+    value: 'S',
+    name: 'Serine',
+    threeLettersName: 'Ser'
+  },
+  'T': {
+    value: 'T',
+    name: 'Threonine',
+    threeLettersName: 'Thr'
+  },
+  'W': {
+    value: 'W',
+    name: 'Tryptophan',
+    threeLettersName: 'Trp'
+  },
+  'Y': {
+    value: 'Y',
+    name: 'Tyrosine',
+    threeLettersName: 'Tyr'
+  },
+  'V': {
+    value: 'V',
+    name: 'Valine',
+    threeLettersName: 'Val'
+  },
+  '*': {
+    value: '*',
+    name: 'Stop',
+    threeLettersName: 'Stop'
+  },
 };
 
 var threeLetterSequenceStringToAminoAcidMap = {
-	gct: proteinAlphabet.A,
-	gcc: proteinAlphabet.A,
-	gca: proteinAlphabet.A,
-	gcg: proteinAlphabet.A,
-	gcu: proteinAlphabet.A,
-	cgt: proteinAlphabet.R,
-	cgc: proteinAlphabet.R,
-	cga: proteinAlphabet.R,
-	cgg: proteinAlphabet.R,
-	aga: proteinAlphabet.R,
-	agg: proteinAlphabet.R,
-	cgu: proteinAlphabet.R,
-	aat: proteinAlphabet.N,
-	aac: proteinAlphabet.N,
-	aau: proteinAlphabet.N,
-	gat: proteinAlphabet.D,
-	gac: proteinAlphabet.D,
-	gau: proteinAlphabet.D,
-	tgt: proteinAlphabet.C,
-	tgc: proteinAlphabet.C,
-	ugu: proteinAlphabet.C,
-	ugc: proteinAlphabet.C,
-	gaa: proteinAlphabet.E,
-	gag: proteinAlphabet.E,
-	caa: proteinAlphabet.Q,
-	cag: proteinAlphabet.Q,
-	ggt: proteinAlphabet.G,
-	ggc: proteinAlphabet.G,
-	gga: proteinAlphabet.G,
-	ggg: proteinAlphabet.G,
-	ggu: proteinAlphabet.G,
-	cat: proteinAlphabet.H,
-	cac: proteinAlphabet.H,
-	cau: proteinAlphabet.H,
-	att: proteinAlphabet.I,
-	atc: proteinAlphabet.I,
-	ata: proteinAlphabet.I,
-	auu: proteinAlphabet.I,
-	auc: proteinAlphabet.I,
-	aua: proteinAlphabet.I,
-	ctt: proteinAlphabet.L,
-	ctc: proteinAlphabet.L,
-	cta: proteinAlphabet.L,
-	ctg: proteinAlphabet.L,
-	tta: proteinAlphabet.L,
-	ttg: proteinAlphabet.L,
-	cuu: proteinAlphabet.L,
-	cuc: proteinAlphabet.L,
-	cua: proteinAlphabet.L,
-	cug: proteinAlphabet.L,
-	uua: proteinAlphabet.L,
-	uug: proteinAlphabet.L,
-	aaa: proteinAlphabet.K,
-	aag: proteinAlphabet.K,
-	atg: proteinAlphabet.M,
-	aug: proteinAlphabet.M,
-	ttt: proteinAlphabet.F,
-	ttc: proteinAlphabet.F,
-	uuu: proteinAlphabet.F,
-	uuc: proteinAlphabet.F,
-	cct: proteinAlphabet.P,
-	ccc: proteinAlphabet.P,
-	cca: proteinAlphabet.P,
-	ccg: proteinAlphabet.P,
-	ccu: proteinAlphabet.P,
-	tct: proteinAlphabet.S,
-	tcc: proteinAlphabet.S,
-	tca: proteinAlphabet.S,
-	tcg: proteinAlphabet.S,
-	agt: proteinAlphabet.S,
-	agc: proteinAlphabet.S,
-	ucu: proteinAlphabet.S,
-	ucc: proteinAlphabet.S,
-	uca: proteinAlphabet.S,
-	ucg: proteinAlphabet.S,
-	agu: proteinAlphabet.S,
-	act: proteinAlphabet.T,
-	acc: proteinAlphabet.T,
-	aca: proteinAlphabet.T,
-	acg: proteinAlphabet.T,
-	acu: proteinAlphabet.T,
-	tgg: proteinAlphabet.W,
-	ugg: proteinAlphabet.W,
-	tat: proteinAlphabet.Y,
-	tac: proteinAlphabet.Y,
-	uau: proteinAlphabet.Y,
-	uac: proteinAlphabet.Y,
-	gtt: proteinAlphabet.V,
-	gtc: proteinAlphabet.V,
-	gta: proteinAlphabet.V,
-	gtg: proteinAlphabet.V,
-	guu: proteinAlphabet.V,
-	guc: proteinAlphabet.V,
-	gua: proteinAlphabet.V,
-	gug: proteinAlphabet.V,
-	taa: proteinAlphabet['*'],
-	tag: proteinAlphabet['*'],
-	tga: proteinAlphabet['*'],
+  gct: proteinAlphabet.A,
+  gcc: proteinAlphabet.A,
+  gca: proteinAlphabet.A,
+  gcg: proteinAlphabet.A,
+  gcu: proteinAlphabet.A,
+  cgt: proteinAlphabet.R,
+  cgc: proteinAlphabet.R,
+  cga: proteinAlphabet.R,
+  cgg: proteinAlphabet.R,
+  aga: proteinAlphabet.R,
+  agg: proteinAlphabet.R,
+  cgu: proteinAlphabet.R,
+  aat: proteinAlphabet.N,
+  aac: proteinAlphabet.N,
+  aau: proteinAlphabet.N,
+  gat: proteinAlphabet.D,
+  gac: proteinAlphabet.D,
+  gau: proteinAlphabet.D,
+  tgt: proteinAlphabet.C,
+  tgc: proteinAlphabet.C,
+  ugu: proteinAlphabet.C,
+  ugc: proteinAlphabet.C,
+  gaa: proteinAlphabet.E,
+  gag: proteinAlphabet.E,
+  caa: proteinAlphabet.Q,
+  cag: proteinAlphabet.Q,
+  ggt: proteinAlphabet.G,
+  ggc: proteinAlphabet.G,
+  gga: proteinAlphabet.G,
+  ggg: proteinAlphabet.G,
+  ggu: proteinAlphabet.G,
+  cat: proteinAlphabet.H,
+  cac: proteinAlphabet.H,
+  cau: proteinAlphabet.H,
+  att: proteinAlphabet.I,
+  atc: proteinAlphabet.I,
+  ata: proteinAlphabet.I,
+  auu: proteinAlphabet.I,
+  auc: proteinAlphabet.I,
+  aua: proteinAlphabet.I,
+  ctt: proteinAlphabet.L,
+  ctc: proteinAlphabet.L,
+  cta: proteinAlphabet.L,
+  ctg: proteinAlphabet.L,
+  tta: proteinAlphabet.L,
+  ttg: proteinAlphabet.L,
+  cuu: proteinAlphabet.L,
+  cuc: proteinAlphabet.L,
+  cua: proteinAlphabet.L,
+  cug: proteinAlphabet.L,
+  uua: proteinAlphabet.L,
+  uug: proteinAlphabet.L,
+  aaa: proteinAlphabet.K,
+  aag: proteinAlphabet.K,
+  atg: proteinAlphabet.M,
+  aug: proteinAlphabet.M,
+  ttt: proteinAlphabet.F,
+  ttc: proteinAlphabet.F,
+  uuu: proteinAlphabet.F,
+  uuc: proteinAlphabet.F,
+  cct: proteinAlphabet.P,
+  ccc: proteinAlphabet.P,
+  cca: proteinAlphabet.P,
+  ccg: proteinAlphabet.P,
+  ccu: proteinAlphabet.P,
+  tct: proteinAlphabet.S,
+  tcc: proteinAlphabet.S,
+  tca: proteinAlphabet.S,
+  tcg: proteinAlphabet.S,
+  agt: proteinAlphabet.S,
+  agc: proteinAlphabet.S,
+  ucu: proteinAlphabet.S,
+  ucc: proteinAlphabet.S,
+  uca: proteinAlphabet.S,
+  ucg: proteinAlphabet.S,
+  agu: proteinAlphabet.S,
+  act: proteinAlphabet.T,
+  acc: proteinAlphabet.T,
+  aca: proteinAlphabet.T,
+  acg: proteinAlphabet.T,
+  acu: proteinAlphabet.T,
+  tgg: proteinAlphabet.W,
+  ugg: proteinAlphabet.W,
+  tat: proteinAlphabet.Y,
+  tac: proteinAlphabet.Y,
+  uau: proteinAlphabet.Y,
+  uac: proteinAlphabet.Y,
+  gtt: proteinAlphabet.V,
+  gtc: proteinAlphabet.V,
+  gta: proteinAlphabet.V,
+  gtg: proteinAlphabet.V,
+  guu: proteinAlphabet.V,
+  guc: proteinAlphabet.V,
+  gua: proteinAlphabet.V,
+  gug: proteinAlphabet.V,
+  taa: proteinAlphabet['*'],
+  tag: proteinAlphabet['*'],
+  tga: proteinAlphabet['*'],
 };
