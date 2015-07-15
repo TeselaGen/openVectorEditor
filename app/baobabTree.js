@@ -105,6 +105,15 @@ var tree = new baobab({
 	validate: function (tree, gaga) {
 	},
 	facets: {
+		aminoAcidRepresentationOfSequence: {
+			cursors: {
+				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+				circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+			},
+			get: function(state) {
+				return getAminoAcidRepresentationOfSequence(state.sequence, state.circular); //might not want to pass circular here..
+			}
+		},
 		orfData: {
 			cursors: {
 				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],

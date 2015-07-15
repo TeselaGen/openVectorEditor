@@ -18,6 +18,7 @@ function prepareRowData(sequenceData, bpsPerRow) {
     row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
     row.features = featuresToRowsMap[rowNumber] ? featuresToRowsMap[rowNumber] : [];
     row.parts = partsToRowsMap[rowNumber] ? partsToRowsMap[rowNumber] : [];
+    row.orfs = orfsToRowsMap[rowNumber] ? orfsToRowsMap[rowNumber] : [];
     // row.cutsites = cutsitesToRowsMap[rowNumber];
     rows[rowNumber] = row;
   }

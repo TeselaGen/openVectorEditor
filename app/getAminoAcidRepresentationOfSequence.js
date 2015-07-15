@@ -2,112 +2,38 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 var getAminoAcidFromSequenceString = require('./getAminoAcidFromSequenceString');
 
-module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
-  // if (circular) {
+module.exports = function getAminoAcidRepresentationOfSequence(sequence, circular) {
+  //tnr: I think we should always calculate this assuming a circular sequence
+  //there is no penalty for making this assumption whereas the other way around, we might limit ourselves
+  circular = true; 
   var forwardSequence = sequence;
-  
+
   //tnr, we should do the parsing down of the orfs immediately after they're returned from this sequence
   // var orfs1Forward = eliminateCircularOrfsThatOverlapWithNonCircularOrfs(getOrfsFromSequenceString(0, doubleForwardSequence, mininmumOrfSize, true), maxLength);
-  var orfs1Forward = getOrfsFromSequenceString(0, sequence, mininmumOrfSize, true, circular);
-  var orfs2Forward = getOrfsFromSequenceString(1, sequence, mininmumOrfSize, true, circular);
-  var orfs3Forward = getOrfsFromSequenceString(2, sequence, mininmumOrfSize, true, circular);
+  var aminoAcidsForwardFrame0 = getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(0, sequence, true, circular);
+  var aminoAcidsForwardFrame1 = getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(1, sequence, true, circular);
+  var aminoAcidsForwardFrame2 = getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(2, sequence, true, circular);
 
-  var orfs1Reverse = getOrfsFromSequenceString(0, sequence, mininmumOrfSize, false, circular);
-  var orfs2Reverse = getOrfsFromSequenceString(1, sequence, mininmumOrfSize, false, circular);
-  var orfs3Reverse = getOrfsFromSequenceString(2, sequence, mininmumOrfSize, false, circular);
+  var aminoAcidsReverseFrame0 = getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(0, sequence, false, circular);
+  var aminoAcidsReverseFrame1 = getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(1, sequence, false, circular);
+  var aminoAcidsReverseFrame2 = getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(2, sequence, false, circular);
 
   var combinedForwardOrfs = orfs1Forward.concat(orfs2Forward, orfs3Forward);
   var combinedReverseOrfs = orfs1Reverse.concat(orfs2Reverse, orfs3Reverse);
   var allOrfs = combinedForwardOrfs.concat(combinedReverseOrfs);
-  return allOrfs;
+  return {
+    forward: [
+      aminoAcidsForwardFrame0,
+      aminoAcidsForwardFrame1,
+      aminoAcidsForwardFrame2,
+    ],
+    reverse: [
+      aminoAcidsReverseFrame0,
+      aminoAcidsReverseFrame1,
+      aminoAcidsReverseFrame2,
+    ]
+  };
 };
-
-  // function eliminateCircularOrfsThatOverlapWithNonCircularOrfs(potentiallyDuplicatedOrfs, maxLength) {
-  //   debugger;
-  //   var circularOrfs = [];
-  //   var normalOrfs = [];
-  //   var nonDuplicatedOrfs = [];
-  //   potentiallyDuplicatedOrfs.forEach(function(orf) {
-  //     if (orf.start >= maxLength) {
-  //       //eliminate this orf because there must already be a normal orf with the same start bp (just shifted by 1 sequence length)
-  //     } else {
-  //       nonDuplicatedOrfs.push(orf);
-  //     }
-  //     
-  //     // else if (orf.end <= maxLength) {
-  //     //   normalOrfs.push(orf);
-  //     // } else if (orf.end > maxLength && orf.start < maxLength) {
-  //     //   var startCodons = orf.startCodons;
-  //     // 
-  //     //   orf.end(orf.end - maxLength);
-  //     // 
-  //     //   orf.startCodons = (orf.startCodons.map(function(startCodon) {
-  //     //     if (startCodon >= maxLength) {
-  //     //       startCodon -= maxLength;
-  //     //     }
-  //     //     return startCodon;
-  //     //   }));
-  //     // 
-  //     //   circularOrfs.push(orf);
-  //     // }
-  //   });
-  // 
-  //   // Eliminate the orfs that overlaps with circular orfs.
-  //   // normalOrfs.forEach(function(normalOrf) {
-  //   //   var skip = false;
-  //   //   circularOrfs.forEach(function(circularOrf) {
-  //   //     if (circularOrf.end === normalOrf.end) {
-  //   //       skip = true;
-  //   //       return false;
-  //   //     }
-  //   //   });
-  //   // 
-  //   //   if (!skip) {
-  //   //     nonDuplicatedOrfs.push(normalOrf);
-  //   //   }
-  //   // });
-  //   
-  //   
-  //   // orfsWithNoDuplicates.forEach(function(orf) {
-  //   //   //the end bps of orfs on the reverse forward were off by 1, so this code fixes that
-  //   //   if (orf.forward === -1) {
-  //   //     orf.end++;
-  //   //   }
-  //   // });
-  //   return nonDuplicatedOrfs;
-  // }
-  // //recalculate the start and end indices for the combinedReverseOrfs 
-  // //(because they were generated using the reverse complement sequence and thus have their indices flipped)
-  // for (var i = 0; i < combinedReverseOrfs.length; i++) {
-  //   var orf = combinedReverseOrfs[i];
-  // 
-  //   var start = doubleBackwardSequence.length - orf.start - 1;
-  //   var end = doubleBackwardSequence.length - orf.end;
-  // 
-  //   orf.start(end);
-  //   orf.end(start);
-  // 
-  //   for (var j = 0; j < orf.startCodons.length; j++) {
-  //     orf.startCodons[j] = doubleBackwardSequence.length - orf.startCodons[j] - 1;
-  //   }
-  // 
-  //   var startCodons = orf.startCodons;
-  //   startCodons.sort(this.codonsSort);
-  //   orf.startCodons = startCodons;
-  // }
-
-
-  
-  //        var orf = null;
-
-  
-  // } else {
-  //     //get the aa's for the 3 frames
-  //     getAminoAcidsFromSequenceString(sequence);
-  //     getAminoAcidsFromSequenceString(sequence);
-  //     getAminoAcidsFromSequenceString(sequence);
-  // }
-// };
 
 /**
  * @private
@@ -118,17 +44,14 @@ module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSi
  * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
-function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, circular) {
+function getAminoAcidsFromSequenceStringBasedOnFrameDirectionAndCircularity(frame, sequence, forward, circular) {
   var ObjectID = require("bson-objectid");
-  if (typeof(mininmumOrfSize) === "undefined") {
-    throw ('no min orf size given');
-  }
   if (typeof(forward) === "undefined") {
-    throw ('no orf StrandType passed');
+    throw ('no direction passed');
   }
-  if (typeof(circular) === "undefined") {
-    throw ('no orf StrandType passed');
-  }
+  // if (typeof(circular) === "undefined") {
+  //   throw ('no orf StrandType passed');
+  // }
   if (!areNonNegativeIntegers([frame]) || frame > 2) {
     throw ('invalid frame passed');
   }
@@ -136,7 +59,7 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, ci
     throw ('invalid sequence passed');
   }
   var maxLength = sequence.length;
-  
+
   if (!forward) {
     //we reverse the sequence
     sequence = getReverseComplementSequenceString(sequence);
@@ -145,17 +68,11 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, ci
   if (circular) {
     //we'll pass in double the sequence and then trim excess orfs
     sequence += sequence;
-  } 
-  var potentiallyDuplicatedOrfs = calculateOrfs(frame, sequence, mininmumOrfSize, forward);
+  }
   
   if (!forward) {
     //we'll reverse the orfs start and end before (potentially) trimming them 
-    potentiallyDuplicatedOrfs.forEach(function(orf) {
-      var endHolder = orf.end;
-      orf.end = orf.start;
-      orf.start = orf.end;
-    });
-  } 
+  }
   var nonDuplicatedOrfs;
   if (circular) {
     // we'll trim the excess orfs
@@ -170,12 +87,12 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, ci
         nonDuplicatedOrfs.push(orf);
       }
     });
-  } else { 
+  } else {
     //non circular so
     nonDuplicatedOrfs = potentiallyDuplicatedOrfs;
   }
   return nonDuplicatedOrfs;
-  
+
   function calculateOrfs(frame, sequence, mininmumOrfSize, forward) {
     var allOrfs = [];
     var sequenceLength = sequence.length;
@@ -322,4 +239,29 @@ function codonsSort(a, b) {
   } else {
     return 0;
   }
+}
+
+function getAminoAcidsFromSequenceString(sequenceString, frame) {
+  var aminoAcidStringCorrespondingToEachBaseOfDNA = '';
+  for (var i = 0; i < frame; i++) {
+    aminoAcidStringCorrespondingToEachBaseOfDNA+= '-';
+  }
+  var aminoAcidString = '';
+  //tnr: eventually we're going to want to 
+  for (var i = 3 + frame; i < sequenceString.length; i += 3) {
+    var aminoAcid = getAminoAcidFromSequenceString(sequenceString.slice(i - 3, i + 1));
+    aminoAcidString += aminoAcid;
+    aminoAcidStringCorrespondingToEachBaseOfDNA += aminoAcid + aminoAcid + aminoAcid;
+  }
+  var lengthOfEndBpsNotCoveredByAminoAcids = sequenceString.length - aminoAcidStringCorrespondingToEachBaseOfDNA.length;
+  for (var i = 0; i < lengthOfEndBpsNotCoveredByAminoAcids; i++) {
+    aminoAcidStringCorrespondingToEachBaseOfDNA+= '-';
+  }
+  if (sequenceString.length !== aminoAcidStringCorrespondingToEachBaseOfDNA.length) {
+    throw 'something went wrong!';
+  }
+  return {
+    aminoAcidString: aminoAcidString,
+    aminoAcidStringCorrespondingToEachBaseOfDNA: aminoAcidStringCorrespondingToEachBaseOfDNA
+  };
 }
