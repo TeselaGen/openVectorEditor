@@ -25,11 +25,9 @@ var RowView = React.createClass({
     preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
     // caretPosition: ['vectorEditorState', 'caretPosition'],
-  },
-  facets: {
-    visibleRowsData: 'visibleRowsData',
+    visibleRowsData: ['$visibleRowsData'],
     // rowData: 'rowData',
-    totalRows: 'totalRows'
+    totalRows: ['$totalRows']
   },
   // keybindings: {
   //   '⌘S': function() {

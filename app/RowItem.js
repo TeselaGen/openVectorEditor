@@ -102,7 +102,132 @@ var AxisContainer = React.createClass({
 //     );
 //   }
 // });
+var OrfContainer = React.createClass({
+  render: function () {
+    var {row, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations} = this.props;
+    debugger;
+    
+    if (annotationRanges.length === 0) {
+      return null;
+    }
+    var maxAnnotationYOffset = 0;
+    var annotationsSVG = [];
+    annotationRanges.forEach(function(annotationRange) {
+      if (annotationRange.yOffset > maxAnnotationYOffset) { //tnrtodo: consider abstracting out the code to calculate the necessary height for the annotation container
+        maxAnnotationYOffset = annotationRange.yOffset;
+      }
+      debugger;
+      var annotation = annotationRange.annotation;
+      //based on the orf start, its frame, and whether or not it's forward
+      //we should be able to compute the amino acid frame for the row
+      //
+      if (annotation.forward) {
+        var annotationRangeFrame;
+        if (annotationRange.start > annotation.start) {
+          annotationRangeFrame = (annotationRange.start - annotation.start)%3;
+        } else {
+          annotationRangeFrame = (annotation.start - annotationRange.start)%3;
+        }
+        function yargh (sequence) {
+          //we now need to get a mapping of the sequence to the amino acids they form
+          for (var i = annotationRangeFrame + annotationRange.start; i < array.length; i++) {
+            array[i]
+          }
+        }
+        row.sequence
+      } else {
+        
+      }
+      
+      
+      if (annotation.start > annotation.end) {
+        var annotationStart = annotation.start - sequenceLength;
+      } else {
+        var annotationStart = annotation.start
+      }
+      annotationRange.start % 3
+      if (annotationRange.start > annotationRange.end) {
+        
+      }
+      annotationRange.start
+      getAminoAcidsFromSequenceString()
+      annotation.start
+      annotationsSVG.push(<path
+        onClick={function (event) {
+          // appActions.setCaretPosition(-1);
+          appActions.setSelectionLayer(this);
+          event.stopPropagation();
+        }.bind(annotation)} // 
+        key={annotation.id + 'start:' + annotationRange.start}
+        className={classnames(annotation.id, annotation.type)}
+        d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
+        stroke={annotation.color}
+        fillOpacity={0.4} //come back and change this to a passed var
+        fill={annotation.color}/>);
 
+      annotationsSVG.push(<path
+        key={'directionArrow' + annotation.id + 'start:' + annotationRange.start}
+        d={createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
+        stroke={'black'} />);
+    });
+    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    return (
+      <svg className="annotationContainer" width="100%" height={height} >
+        {annotationsSVG}
+      </svg>
+    );
+    function createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
+      var annotation = annotationRange.annotation;
+      var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
+      var rangeType = annotationRange.rangeType;
+      var forward = annotation.forward;
+      var xStart = xCenter - charWidth/2;
+      var xEnd = xCenter + charWidth/2;
+      var yEnd = yStart + annotationHeight;
+      var yMiddle = yStart + annotationHeight/2;
+      var path;
+      if (forward) {
+        path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yMiddle + " L" + xStart + "," + yEnd;
+      } else {
+
+      }
+      //either "beginning", "end" or "beginningAndEnd"
+      if (rangeType === 'beginningAndEnd') {
+
+      } else {
+
+      }
+      return path;
+    }
+
+    function createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
+      var annotation = annotationRange.annotation;
+      var {xStart, width} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
+      var height = annotationHeight;
+      var rangeType = annotationRange.rangeType;
+      var forward = annotation.forward;
+      var xEnd = xStart + width;
+      var yEnd = yStart + height;
+
+      if (forward) {
+
+      } else {
+
+      }
+      //either "beginning", "end" or "beginningAndEnd"
+      if (rangeType === 'beginningAndEnd') {
+
+      } else {
+
+      }
+      var path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + xStart + "," + yEnd + " Z";
+      return path;
+    }
+
+  }
+});
 
 var AnnotationContainer = React.createClass({
   render: function () {
@@ -128,8 +253,8 @@ var AnnotationContainer = React.createClass({
         className={classnames(annotation.id, annotation.type)}
         d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
         stroke={annotation.color}
-        fillOpacity={0.4} //come back and change this to a passed var}
-        fill={annotation.color}/>);
+        fillOpacity={0.4}
+        fill={annotation.color}/>); //tnrtodo: change fill opacity to a passed variable
 
       annotationsSVG.push(<path
         key={'directionArrow' + annotation.id + 'start:' + annotationRange.start}
@@ -205,16 +330,15 @@ var RowItem = React.createClass({
     SPACE_BETWEEN_ANNOTATIONS: ['vectorEditorState', 'SPACE_BETWEEN_ANNOTATIONS'],
     showFeatures: ['vectorEditorState', 'showFeatures'],
     showParts: ['vectorEditorState', 'showParts'],
+    showOrfs: ['vectorEditorState', 'showOrfs'],
     showAxis: ['vectorEditorState', 'showAxis'],
     showReverseSequence: ['vectorEditorState', 'showReverseSequence'],
     // sequenceData: ['vectorEditorState', 'sequenceData'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
     mouse: ['vectorEditorState', 'mouse'],
     caretPosition: ['vectorEditorState', 'caretPosition'],
-  },
-  facets: {
-    sequenceLength: 'sequenceLength',
-    bpsPerRow: 'bpsPerRow',
+    sequenceLength: ['$sequenceLength'],
+    bpsPerRow: ['$bpsPerRow']
   },
 
   render: function () {
@@ -319,6 +443,7 @@ var RowItem = React.createClass({
       // <div className={className}>
       // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
       //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
+    debugger;
     return (
         <div className="rowContainer"
           style={rowContainerStyle}
@@ -350,9 +475,10 @@ var RowItem = React.createClass({
                 bpsPerRow={this.state.bpsPerRow}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {this.state.showORFs &&
+            {this.state.showOrfs &&
               <OrfContainer
-                annotationRanges={row.features}
+                row={row}
+                annotationRanges={row.orfs}
                 charWidth={this.state.charWidth}
                 annotationHeight={this.state.ANNOTATION_HEIGHT}
                 bpsPerRow={this.state.bpsPerRow}

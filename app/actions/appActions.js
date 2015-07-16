@@ -66,25 +66,23 @@ var actions = {
 			this.setCaretPosition(-1);
 		}
 		tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
-		// }
-
 		// viewportDimensions.set(newSize);
 	},
 	//takes in an object like: {start:int,end:int}
 	setVisibleRows: function(newVisibleRows) {
 		if (newVisibleRows && areNonNegativeIntegers([newVisibleRows.start, newVisibleRows.end])) {
 			// console.log('newVisibleRows: ' + newVisibleRows);
-			var totalRows = tree.facets.totalRows.get();
-			if (newVisibleRows.end > totalRows - 1) {
-				newVisibleRows = {
-					start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
-					end: totalRows - 1
-				}
-			}
+			var totalRows = tree.get(['totalRows']);
+			// if (newVisibleRows.end > totalRows - 1) {
+			// 	newVisibleRows = {
+			// 		start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
+			// 		end: totalRows - 1
+			// 	}
+			// }
 			var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
 			if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
 				tree.select('vectorEditorState', 'visibleRows').set(newVisibleRows);
-				tree.commit();
+				// tree.commit();
 			}
 		} else {
 			throw ("visibleRows object is missing or invalid");
@@ -114,7 +112,7 @@ var actions = {
 		if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
 			console.warn('can\'t delete sequence due to invalid start and end');
 		}
-		var sequenceLength = tree.facets.sequenceLength.get();
+		var sequenceLength = tree.get(['sequenceLength']);
 		var deletionLength;
 		if (rangeToDelete.start > rangeToDelete.end) {
 			deletionLength = sequenceLength - rangeToDelete.start + rangeToDelete.end + 1;
@@ -194,7 +192,7 @@ var actions = {
 		// console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
 		// console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 		tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
-		this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+		// this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 	},
 	insertSequenceString: function(sequenceString) {
 		this.insertSequenceData({sequence: sequenceString});
@@ -229,7 +227,7 @@ var actions = {
 			console.warn('nowhere to put the inserted sequence..');
 			return;
 		}
-		this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+		// this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 		//insert the sequence
 		// tree.select('vectorEditorState', 'selectionLayer').set({});
 		// viewportDimensions.set(newSize);
@@ -265,13 +263,13 @@ var actions = {
 			});
 		}
 	},
-	refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
-		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-		this.setSelectionLayer(selectionLayer);
-	},
+	// refreshEditor: function() { //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+	// 	var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+	// 	this.setSelectionLayer(selectionLayer);
+	// },
 	moveCaret: function(numberToMove) {
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-		var sequenceLength = tree.facets.sequenceLength.get();
+		var sequenceLength = tree.get(['sequenceLength']);
 		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
 		if (selectionLayer.selected) {
 			if (numberToMove > 0) {
@@ -290,7 +288,7 @@ var actions = {
 		console.log('hey: ');
 		var selectionLayer = assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
 
-		var sequenceLength = tree.facets.sequenceLength.get();
+		var sequenceLength = tree.get(['sequenceLength']);
 		var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
 		if (selectionLayer.selected) {
 			if (selectionLayer.cursorAtEnd) {
@@ -332,11 +330,11 @@ var actions = {
 		this.moveCaret(1);
 	},
 	moveCaretUpARow: function() {
-		var bpsPerRow = tree.facets.bpsPerRow.get();
+		var bpsPerRow = tree.get(['bpsPerRow']);
 		this.moveCaret(-bpsPerRow);
 	},
 	moveCaretDownARow: function() {
-		var bpsPerRow = tree.facets.bpsPerRow.get();
+		var bpsPerRow = tree.get(['bpsPerRow']);
 		this.moveCaret(bpsPerRow);
 	},
 	moveCaretLeftOneShiftHeld: function() {
@@ -346,11 +344,11 @@ var actions = {
 		this.moveCaretShiftHeld(1);
 	},
 	moveCaretUpARowShiftHeld: function() {
-		var bpsPerRow = tree.facets.bpsPerRow.get();
+		var bpsPerRow = tree.get(['bpsPerRow']);
 		this.moveCaretShiftHeld(-bpsPerRow);
 	},
 	moveCaretDownARowShiftHeld: function() {
-		var bpsPerRow = tree.facets.bpsPerRow.get();
+		var bpsPerRow = tree.get(['bpsPerRow']);
 		this.moveCaretShiftHeld(bpsPerRow);
 	},
 	backspacePressed: function() {
@@ -461,7 +459,7 @@ var actions = {
 	},
 	selectAll: function() {
 		//compare the sequenceString being pasted in with what's already stored in the clipboard
-		var sequenceLength = tree.facets.sequenceLength.get();
+		var sequenceLength = tree.get(['sequenceLength']);
 		this.setSelectionLayer({
 			start: 0,
 			end: sequenceLength - 1

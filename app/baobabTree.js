@@ -1,5 +1,6 @@
 var baobab = require('baobab');
-var sequenceData = require('./sequenceData');
+// var sequenceData = require('./sequenceData');
+var sequenceData = require('./sequenceDataWithOrfs');
 var ObjectID = require("bson-objectid");
 var prepareRowData = require('./prepareRowData');
 var findOrfsFromSequence = require('./findOrfsFromSequence');
@@ -7,6 +8,7 @@ var computeRowRepresentationOfSequence = require(
 	'./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 var getSubstringByRange = require('get-substring-by-range');
+var assign = require('lodash/object/assign');
 
 // // tnr: this is used to generate a very large, multi-featured sequence
 // var string = "atgtagagagagagaggtgatg";
@@ -108,6 +110,25 @@ var tree = new baobab({
 				0;
 		}
 	},
+	$aminoAcidRepresentationOfSequence: {
+		cursors: {
+			sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+			circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+		},
+		get: function(state) {
+			return getAminoAcidRepresentationOfSequence(state.sequence, state.circular); //might not want to pass circular here..
+		}
+	},
+	$orfData: {
+		cursors: {
+			sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
+			circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+			minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
+		},
+		get: function(state) {
+			return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
+		}
+	},
 	$rowData: {
 		cursors: {
 			sequenceData: ['vectorEditorState', 'sequenceData'],
@@ -125,6 +146,15 @@ var tree = new baobab({
 			if (state.rowData) {
 				return state.rowData.length;
 			}
+		}
+	},
+	$combinedSequenceData: { //holds usual sequence data, plus orfs, plus parts..
+		cursors: {
+			sequenceData: ['vectorEditorState', 'sequenceData'],
+			orfData: ['orfData'],
+		},
+		get: function(state) {
+			return assign({}, state.sequenceData, {orfs: state.orfData});
 		}
 	},
 	$visibleRowsData: {

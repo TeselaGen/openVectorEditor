@@ -72,14 +72,9 @@ var SequenceEditor = React.createClass({
       appActions.moveCaretDownARowShiftHeld();
     });
     this.bindShortcut('backspace', function(event) { // Handle shortcut
-      //trigger a caret left
-      event.preventDefault();
-      appActions.backspacePressed();
-    });
-    this.bindShortcut('backspace', function(event) { // Handle shortcut
-      //trigger a caret left
       appActions.backspacePressed();
       event.stopPropagation();
+      event.preventDefault();
     });
     this.bindGlobal('command+a', function(event) { // Handle shortcut
       appActions.selectAll();

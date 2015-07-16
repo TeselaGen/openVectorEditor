@@ -20,7 +20,7 @@ module.exports = function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted,
           trimmedRange.start-=deletionLength;
           trimmedRange.end-=deletionLength;
         } else if (nonCircularDeletionRange.start < trimmedRange.start) {
-          trimmedRange.end-=deletionLength;
+          trimmedRange.start-=deletionLength;
         } else {
           //do nothing
         }

@@ -4,7 +4,7 @@ var adjustRangeToSequenceInsert = require('../app/adjustRangeToSequenceInsert.js
 // var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
 var assert = require('assert');
 describe('adjustRangeToSequenceInsert', function() {
-	it('shifts start and stop if inserting before non circular range', function() {
+	it('shifts start and end if inserting before non circular range', function() {
 		assert.deepEqual(adjustRangeToSequenceInsert({
 			start: 10,
 			end: 20
@@ -27,7 +27,7 @@ describe('adjustRangeToSequenceInsert', function() {
 			end: 25
 		});
 	});
-	it('shifts stop if inserting in middle of non circular range', function() {
+	it('shifts end if inserting in middle of non circular range', function() {
 		assert.deepEqual(adjustRangeToSequenceInsert({
 			start: 10,
 			end: 20
@@ -43,7 +43,7 @@ describe('adjustRangeToSequenceInsert', function() {
 			end: 25
 		});
 	});
-	it('shifts neither start nor stop if inserting in after stop of non circular range', function() {
+	it('shifts neither start nor end if inserting in after end of non circular range', function() {
 		assert.deepEqual(adjustRangeToSequenceInsert({
 			start: 10,
 			end: 20
@@ -59,7 +59,7 @@ describe('adjustRangeToSequenceInsert', function() {
 			end: 20
 		});
 	});
-	it('shifts neither start nor stop if inserting in after start of circular range', function() {
+	it('shifts neither start nor end if inserting in after start of circular range', function() {
 		assert.deepEqual(adjustRangeToSequenceInsert({
 			start: 20,
 			end: 10
@@ -75,7 +75,7 @@ describe('adjustRangeToSequenceInsert', function() {
 			end: 10
 		});
 	});
-	it('shifts both start and stop if inserting in before stop of circular range', function() {
+	it('shifts both start and end if inserting in before end of circular range', function() {
 		assert.deepEqual(adjustRangeToSequenceInsert({
 			start: 20,
 			end: 10
@@ -91,7 +91,7 @@ describe('adjustRangeToSequenceInsert', function() {
 			end: 15
 		});
 	});
-	it('shifts just start if inserting in after stop but before start of circular range', function() {
+	it('shifts just start if inserting in after end but before start of circular range', function() {
 		assert.deepEqual(adjustRangeToSequenceInsert({
 			start: 20,
 			end: 10

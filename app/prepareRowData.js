@@ -3,7 +3,7 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 function prepareRowData(sequenceData, bpsPerRow) {
   var sequenceLength = sequenceData.sequence.length;
-  var totalRows = Math.ceil(sequenceLength / bpsPerRow);
+  var totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
   var rows = [];
 
   var featuresToRowsMap = mapAnnotationsToRows(sequenceData.features, sequenceLength, bpsPerRow);
@@ -18,6 +18,7 @@ function prepareRowData(sequenceData, bpsPerRow) {
     row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
     row.features = featuresToRowsMap[rowNumber] ? featuresToRowsMap[rowNumber] : [];
     row.parts = partsToRowsMap[rowNumber] ? partsToRowsMap[rowNumber] : [];
+    row.orfs = orfsToRowsMap[rowNumber] ? orfsToRowsMap[rowNumber] : [];
     // row.cutsites = cutsitesToRowsMap[rowNumber];
     rows[rowNumber] = row;
   }
@@ -188,8 +189,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
 
 function splitRangeOnOrigin(range, sequenceLength) {
   if (!areNonNegativeIntegers([range.start, range.end, sequenceLength])) {
-    debugger;
-    console.error("invalid inputs!!");
+    throw ('invalid inputs!')
   }
   var ranges = [];
   if (range.start > range.end) {
