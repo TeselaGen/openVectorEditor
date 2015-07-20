@@ -72,7 +72,7 @@ var actions = {
 	setVisibleRows: function(newVisibleRows) {
 		if (newVisibleRows && areNonNegativeIntegers([newVisibleRows.start, newVisibleRows.end])) {
 			// console.log('newVisibleRows: ' + newVisibleRows);
-			var totalRows = tree.get(['totalRows']);
+			var totalRows = tree.get(['$totalRows']);
 			// if (newVisibleRows.end > totalRows - 1) {
 			// 	newVisibleRows = {
 			// 		start: newVisibleRows.start - (newVisibleRows.end - totalRows - 1),
@@ -112,7 +112,7 @@ var actions = {
 		if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
 			console.warn('can\'t delete sequence due to invalid start and end');
 		}
-		var sequenceLength = tree.get(['sequenceLength']);
+		var sequenceLength = tree.get(['$sequenceLength']);
 		var deletionLength;
 		if (rangeToDelete.start > rangeToDelete.end) {
 			deletionLength = sequenceLength - rangeToDelete.start + rangeToDelete.end + 1;
@@ -269,7 +269,7 @@ var actions = {
 	// },
 	moveCaret: function(numberToMove) {
 		var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-		var sequenceLength = tree.get(['sequenceLength']);
+		var sequenceLength = tree.get(['$sequenceLength']);
 		var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
 		if (selectionLayer.selected) {
 			if (numberToMove > 0) {
@@ -288,7 +288,7 @@ var actions = {
 		console.log('hey: ');
 		var selectionLayer = assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
 
-		var sequenceLength = tree.get(['sequenceLength']);
+		var sequenceLength = tree.get(['$sequenceLength']);
 		var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
 		if (selectionLayer.selected) {
 			if (selectionLayer.cursorAtEnd) {
@@ -330,11 +330,11 @@ var actions = {
 		this.moveCaret(1);
 	},
 	moveCaretUpARow: function() {
-		var bpsPerRow = tree.get(['bpsPerRow']);
+		var bpsPerRow = tree.get(['$bpsPerRow']);
 		this.moveCaret(-bpsPerRow);
 	},
 	moveCaretDownARow: function() {
-		var bpsPerRow = tree.get(['bpsPerRow']);
+		var bpsPerRow = tree.get(['$bpsPerRow']);
 		this.moveCaret(bpsPerRow);
 	},
 	moveCaretLeftOneShiftHeld: function() {
@@ -344,11 +344,11 @@ var actions = {
 		this.moveCaretShiftHeld(1);
 	},
 	moveCaretUpARowShiftHeld: function() {
-		var bpsPerRow = tree.get(['bpsPerRow']);
+		var bpsPerRow = tree.get(['$bpsPerRow']);
 		this.moveCaretShiftHeld(-bpsPerRow);
 	},
 	moveCaretDownARowShiftHeld: function() {
-		var bpsPerRow = tree.get(['bpsPerRow']);
+		var bpsPerRow = tree.get(['$bpsPerRow']);
 		this.moveCaretShiftHeld(bpsPerRow);
 	},
 	backspacePressed: function() {
@@ -459,7 +459,7 @@ var actions = {
 	},
 	selectAll: function() {
 		//compare the sequenceString being pasted in with what's already stored in the clipboard
-		var sequenceLength = tree.get(['sequenceLength']);
+		var sequenceLength = tree.get(['$sequenceLength']);
 		this.setSelectionLayer({
 			start: 0,
 			end: sequenceLength - 1

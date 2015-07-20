@@ -39,7 +39,6 @@ var RowView = React.createClass({
   //   },
   // },
   // keybinding: function(event, action) {
-  //   debugger;
   //   // event is the browser event, action is 'COPY'
   // },
 
@@ -118,7 +117,7 @@ var RowView = React.createClass({
   componentDidUpdate: function(argument) {
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-
+    debugger;
     if (!visibleRowsContainer.childNodes[0]) {
       //there aren't any rows yet
       throw 'no visible rows!!';
@@ -296,26 +295,26 @@ var RowView = React.createClass({
           start: this.fixedCaretPositionOnEditorDragStart,
           end: caretPositionOfDrag - 1,
           cursorAtEnd: true,
-        }
+        };
       } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
         newSelectionLayer = {
           start: caretPositionOfDrag,
           end: this.fixedCaretPositionOnEditorDragStart - 1,
           cursorAtEnd: false,
-        }
+        };
       } else {
         if (caretPositionOfDrag > this.fixedCaretPositionOnEditorDragStart) {
           newSelectionLayer = {
             start: this.fixedCaretPositionOnEditorDragStart,
             end: caretPositionOfDrag - 1,
             cursorAtEnd: true,
-          }
+          };
         } else {
           newSelectionLayer = {
             start: caretPositionOfDrag,
             end: this.fixedCaretPositionOnEditorDragStart - 1,
             cursorAtEnd: false,
-          }
+          };
         }
       }
       appActions.setSelectionLayer(newSelectionLayer);
@@ -364,6 +363,7 @@ var RowView = React.createClass({
 
   render: function () {
     // console.log('render!');
+    // debugger;
     var self = this;
     var rowItems = this.state.visibleRowsData.map(function(row) {
       if (row) {

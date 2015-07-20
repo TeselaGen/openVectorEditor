@@ -41,7 +41,6 @@ var VariableInfiniteList = React.createClass({
         // .map(function(el, i) {
         //     return <ListItem key={i} index={i} height={el} lineHeight={el.toString() + "px"}/>;
         // });
-debugger;
         return <Infinite elementHeight={this.props.elementHeights}
                          containerHeight={this.props.containerHeight}
                          infiniteLoadBeginBottomOffset={200}

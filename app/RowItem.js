@@ -105,7 +105,6 @@ var AxisContainer = React.createClass({
 var OrfContainer = React.createClass({
   render: function () {
     var {row, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations} = this.props;
-    debugger;
     
     if (annotationRanges.length === 0) {
       return null;
@@ -116,7 +115,6 @@ var OrfContainer = React.createClass({
       if (annotationRange.yOffset > maxAnnotationYOffset) { //tnrtodo: consider abstracting out the code to calculate the necessary height for the annotation container
         maxAnnotationYOffset = annotationRange.yOffset;
       }
-      debugger;
       var annotation = annotationRange.annotation;
       //based on the orf start, its frame, and whether or not it's forward
       //we should be able to compute the amino acid frame for the row
@@ -443,7 +441,6 @@ var RowItem = React.createClass({
       // <div className={className}>
       // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
       //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
-    debugger;
     return (
         <div className="rowContainer"
           style={rowContainerStyle}

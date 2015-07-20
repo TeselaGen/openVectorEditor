@@ -6,8 +6,6 @@ function computeNumberOfCharsThatFitInGivenViewportWidth (viewportDimensions, ch
 }
 
 function computeRowRepresenationOfSequence(sequenceData, viewportDimensionsWidth, charWidth) {
-  debugger;
-  
   var bpsPerRow = computeNumberOfCharsThatFitInGivenViewportWidth(viewportDimensionsWidth, charWidth);
   var sequenceLength = sequenceData.sequence.length;
   var numberOfRows = Math.ciel(sequenceLength/bpsPerRow);

@@ -23,7 +23,6 @@ module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSi
 };
 
   // function eliminateCircularOrfsThatOverlapWithNonCircularOrfs(potentiallyDuplicatedOrfs, maxLength) {
-  //   debugger;
   //   var circularOrfs = [];
   //   var normalOrfs = [];
   //   var nonDuplicatedOrfs = [];

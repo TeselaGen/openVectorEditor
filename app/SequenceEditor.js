@@ -11,14 +11,11 @@ var Clipboard = require('./Clipboard');
 
 var SequenceEditor = React.createClass({
   mixins: [baoababBranch, MousetrapMixin],
-  facets: {
-    sequenceLength: 'sequenceLength',
-    bpsPerRow: 'bpsPerRow',
-    // orfData: 'orfData',
-    totalRows: 'totalRows',
-    selectedSequenceString: 'selectedSequenceString',
-  },
   cursors: {
+    sequenceLength: ['$sequenceLength'],
+    bpsPerRow: ['$bpsPerRow'],
+    totalRows: ['$totalRows'],
+    selectedSequenceString: ['$selectedSequenceString'],
     caretPosition: ['vectorEditorState', 'caretPosition'],
     sequenceData: ['vectorEditorState', 'sequenceData'],
     visibleRows: ['vectorEditorState', 'visibleRows'],
