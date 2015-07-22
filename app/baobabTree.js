@@ -130,7 +130,7 @@ var tree = new baobab({
   },
   $rowData: {
     cursors: {
-      sequenceData: ['vectorEditorState', 'sequenceData'],
+      sequenceData: ['$combinedSequenceData'],
       bpsPerRow: ['$bpsPerRow'],
     },
     get: function(state) {
