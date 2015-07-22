@@ -117,7 +117,6 @@ var RowView = React.createClass({
   componentDidUpdate: function(argument) {
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
-    debugger;
     if (!visibleRowsContainer.childNodes[0]) {
       //there aren't any rows yet
       throw 'no visible rows!!';
@@ -363,7 +362,6 @@ var RowView = React.createClass({
 
   render: function () {
     // console.log('render!');
-    // debugger;
     var self = this;
     var rowItems = this.state.visibleRowsData.map(function(row) {
       if (row) {

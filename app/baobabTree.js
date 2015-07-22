@@ -89,100 +89,81 @@ var tree = new baobab({
     sequenceData: validateAndTidyUpSequenceData(sequenceData),
     clipboardData: null
   },
-  $bpsPerRow: {
-    cursors: {
-      viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions',
-        'width'
-      ],
-      charWidth: ['vectorEditorState', 'charWidth'],
-    },
-    get: function(state) {
-      return Math.floor(state.viewportDimensionsWidth / state.charWidth);
+  $bpsPerRow: [
+    ['vectorEditorState', 'viewportDimensions',
+      'width'
+    ],
+    ['vectorEditorState', 'charWidth'],
+    function(viewportDimensionsWidth, charWidth) {
+      return Math.floor(viewportDimensionsWidth / charWidth);
     }
-  },
-  $sequenceLength: {
-    cursors: {
-      sequenceData: ['vectorEditorState', 'sequenceData'],
-    },
-    get: function(state) {
-      return state.sequenceData.sequence ? state.sequenceData.sequence.length :
-        0;
+  ],
+  $sequenceLength: [
+    ['vectorEditorState', 'sequenceData'],
+    function(sequenceData) {
+      return sequenceData.sequence ? sequenceData.sequence.length : 0;
     }
-  },
-  $aminoAcidRepresentationOfSequence: {
-    cursors: {
-      sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-      circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-    },
-    get: function(state) {
-      return getAminoAcidRepresentationOfSequence(state.sequence, state.circular); //might not want to pass circular here..
+  ],
+  $aminoAcidRepresentationOfSequence: [
+    ['vectorEditorState', 'sequenceData', 'sequence'],
+    ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+    function(sequence, circular) {
+      return getAminoAcidRepresentationOfSequence(sequence, circular); //might not want to pass circular here..
     }
-  },
-  $orfData: {
-    cursors: {
-      sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-      circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-      minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
-    },
-    get: function(state) {
-      return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
+  ],
+  $orfData: [
+    ['vectorEditorState', 'sequenceData', 'sequence'],
+    ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+    ['vectorEditorState', 'minimumOrfSize'],
+    function(sequence, circular, minimumOrfSize) {
+      return findOrfsFromSequence(sequence, circular, minimumOrfSize);
     }
-  },
-  $rowData: {
-    cursors: {
-      sequenceData: ['$combinedSequenceData'],
-      bpsPerRow: ['$bpsPerRow'],
-    },
-    get: function(state) {
-      return prepareRowData(state.sequenceData, state.bpsPerRow);
+  ],
+  $rowData: [
+    ['$combinedSequenceData'],
+    ['$bpsPerRow'],
+    function(sequenceData, bpsPerRow) {
+      return prepareRowData(sequenceData, bpsPerRow);
     }
-  },
-  $totalRows: {
-    cursors: {
-      rowData: ['$rowData'],
-    },
-    get: function(state) {
-      if (state.rowData) {
-        return state.rowData.length;
+  ],
+  $totalRows: [
+    ['$rowData'],
+    function(rowData) {
+      if (rowData) {
+        return rowData.length;
       }
     }
-  },
-  $combinedSequenceData: { //holds usual sequence data, plus orfs, plus parts..
-    cursors: {
-      sequenceData: ['vectorEditorState', 'sequenceData'],
-      orfData: ['orfData'],
-    },
-    get: function(state) {
-      return assign({}, state.sequenceData, {
-        orfs: state.orfData
+  ],
+  $combinedSequenceData: [ //holds usual sequence data, plus orfs, plus parts..
+    ['vectorEditorState', 'sequenceData'],
+    ['orfData'],
+    function(sequenceData, orfData) {
+      return assign({}, sequenceData, {
+        orfs: orfData
       });
     }
-  },
-  $visibleRowsData: {
-    cursors: {
-      visibleRows: ['vectorEditorState', 'visibleRows'],
-      rowData: ['$rowData']
-    },
-    get: function(state) {
-      console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
-      if (state.rowData && state.visibleRows) {
-        return state.rowData.slice(state.visibleRows.start, state.visibleRows.end + 1);
+  ],
+  $visibleRowsData: [
+    ['vectorEditorState', 'visibleRows'],
+    ['$rowData'],
+    function(visibleRows, rowData) {
+      console.log('state: ' + visibleRows.start + "  " + visibleRows.end);
+      if (rowData && visibleRows) {
+        return rowData.slice(visibleRows.start, visibleRows.end + 1);
       }
     }
-  },
-  $selectedSequenceString: {
-    cursors: {
-      sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-      selectionLayer: ['vectorEditorState', 'selectionLayer'],
-    },
-    get: function(state) {
-      if (state.sequence && state.selectionLayer && state.selectionLayer.selected) {
-        return getSubstringByRange(state.sequence, state.selectionLayer);
+  ],
+  $selectedSequenceString: [
+    ['vectorEditorState', 'sequenceData', 'sequence'],
+    ['vectorEditorState', 'selectionLayer'],
+    function(sequence, selectionLayer) {
+      if (sequence && selectionLayer && selectionLayer.selected) {
+        return getSubstringByRange(sequence, selectionLayer);
       } else {
         return '';
       }
     }
-  }
+  ]
 });
 
 module.exports = tree;
