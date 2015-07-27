@@ -2,60 +2,31 @@ var ObjectID = require("bson-objectid");
 var React = require('react');
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
-var appActions = require('./actions/appActions');
+var setCaretPosition = require('./actions/setCaretPosition');
+var setSelectionLayer = require('./actions/setSelectionLayer');
+var setVisibleRows = require('./actions/setVisibleRows');
+
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
 // var prepareRowData = require('./prepareRowData');
-var charWidth = require('./editorConstants').charWidth;
+// var charWidth = require('./editorConstants').charWidth;
 // var ReactList = require('react-list');
 var baobabBranch = require('baobab-react/mixins').branch;
 // MoustrapMixin = require('./MoustrapMixin.js');
 
 var RowView = React.createClass({
   mixins: [baobabBranch],
-  // mixins: [baobabBranch],
-
-
   cursors: {
-    // visibilityParameters: ['vectorEditorState', 'visibilityParameters'],
-    charWidth: ['vectorEditorState', 'charWidth'],
     preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
     averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
-    preloadBasepairStart: ['vectorEditorState', 'preloadBasepairStart'],
-    selectionLayer: ['vectorEditorState', 'selectionLayer'],
-    // caretPosition: ['vectorEditorState', 'caretPosition'],
-    visibleRowsData: ['$visibleRowsData'],
-    // rowData: 'rowData',
     totalRows: ['$totalRows']
+    visibleRowsData: ['$visibleRowsData'],
+    
+    charWidth: ['vectorEditorState', 'charWidth'],
+    selectionLayer: ['vectorEditorState', 'selectionLayer'],
   },
-  // keybindings: {
-  //   '⌘S': function() {
-  //     event.preventDefault();
-  //   },
-  //   '⌘C': 'COPY',
-  //   'T': function() {
-  //     this.insertSequenceString('t');
-  //   },
-  // },
-  // keybinding: function(event, action) {
-  //   // event is the browser event, action is 'COPY'
-  // },
-
-
-  // propTypes: {
-  //   preloadBasepairStart: React.PropTypes.number.isRequired,
-  //   viewportDimensions: React.PropTypes.object.isRequired,
-  // },
-  // getDefaultProps: function() {
-  //   return {
-  //     preloadBasepairStart: 150, //start the loading of the sequence with this basepair
-  //     viewportDimensions: {
-  //       height: 700,
-  //       width: 400
-  //     },
-  //   };
-  // },
+ 
   onEditorScroll: function (event) {
     //tnr: we should maybe keep this implemented..
     // if (this.adjustmentScroll) {
@@ -96,7 +67,7 @@ var RowView = React.createClass({
       //we haven't scrolled enough, so do nothing
     }
     //set the averageRowHeight to the currentAverageRowHeight
-    // appActions.setAverageRowHeight(currentAverageRowHeight);
+    // setAverageRowHeight(currentAverageRowHeight);
 
   },
 
@@ -133,12 +104,13 @@ var RowView = React.createClass({
     // console.log('lastRowHeight', lastRowHeight);
     // console.log('infiniteContainer.scrollTop: ' + infiniteContainer.scrollTop);
     // console.log('infiniteContainer.getBoundingClientRect(): ', 'top', t.top, 'bottom', t.bottom, 'height', t.height);
-
+    
+    //tnrtodo: maybe put logic in here to reshrink the number of rows to display... maybe...
     if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.state.viewportDimensions.height) {
       // console.log('HEEEEEteteteEEEEEEET');
       if (this.rowStart + this.numberOfRowsToDisplay < this.state.totalRows) {
         //load another row to the bottom
-        // console.log('add row to bottom');
+        console.log('add row to bottom');
         this.prepareVisibleRows(this.rowStart, this.numberOfRowsToDisplay+1);
       } else {
         // console.log('add row above');
@@ -149,9 +121,6 @@ var RowView = React.createClass({
           this.prepareVisibleRows(0, this.numberOfRowsToDisplay);
         }
       }
-    } else if (false) {
-      //maybe put logic in here to reshrink the number of rows to display... maybe...
-    //check if the visible container
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {
       //scroll to align the tops of the boxes
       adjustInfiniteContainerByThisAmount = visibleRowsContainer.getBoundingClientRect().top - infiniteContainer.getBoundingClientRect().top;
@@ -198,8 +167,8 @@ var RowView = React.createClass({
 
   prepareVisibleRows: function (rowStart, newNumberOfRowsToDisplay) { //note, rowEnd is optional
     if (!areNonNegativeIntegers([rowStart])) {
-      return;
       console.warn('non-integer value passed to prepareVisibleRows');
+      return;
     }
 
     if (areNonNegativeIntegers([newNumberOfRowsToDisplay])){
@@ -217,10 +186,13 @@ var RowView = React.createClass({
     // console.log('this.preloadRowEnd: ' + this.preloadRowEnd);
     // var visibleRows = this.state.visibleRowsDataData.slice(rowStart, this.preloadRowEnd + 1);
     // rowData.slice(rowStart, this.preloadRowEnd + 1);
-    // appActions.setPreloadRowStart(rowStart);
+    // setPreloadRowStart(rowStart);
     this.rowStart = rowStart;
     if (!this.state.visibleRows || (this.state.visibleRows.start !== this.rowStart && this.state.visibleRows.end !== this.preloadRowEnd)) {
-      appActions.setVisibleRows({
+      console.log('setting visible rows')
+      console.log('this.rowStart', this.rowStart);
+      console.log('this.preloadRowEnd', this.preloadRowEnd);
+      setVisibleRows({
         start: this.rowStart,
         end: this.preloadRowEnd
       });
@@ -272,8 +244,8 @@ var RowView = React.createClass({
     if (this.editorBeingDragged) {
       //do nothing because the click was triggered by a drag event
     } else {
-      appActions.setCaretPosition(bp);
-      appActions.setSelectionLayer(false);
+      setCaretPosition(bp);
+      setSelectionLayer(false);
     }
 
   },
@@ -285,8 +257,8 @@ var RowView = React.createClass({
     var start;
     var end;
     if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
-      appActions.setCaretPosition(caretPositionOfDrag);
-      appActions.setSelectionLayer(false);
+      setCaretPosition(caretPositionOfDrag);
+      setSelectionLayer(false);
     } else {
       var newSelectionLayer;
       if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
@@ -316,7 +288,7 @@ var RowView = React.createClass({
           };
         }
       }
-      appActions.setSelectionLayer(newSelectionLayer);
+      setSelectionLayer(newSelectionLayer);
     }
   },
 

@@ -10,12 +10,12 @@ describe('baobabTree visible rows', function() {
 		assert(tree.get('$rowData'));
     });
     it('has visible rows defined', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
         assert(areNonNegativeIntegers([visibleRows.start, visibleRows.end]));
     });
     it('only the subset of visible rows make it into visibleRowsData', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
-        var visibleRowsData = tree.get('$visibleRowsData')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
+        var visibleRowsData = tree.get('$visibleRowsData');
         var computedVisibleRows = tree.get('$rowData').slice(visibleRows.start, visibleRows.end + 1);
         console.log('visibleRows', visibleRows);
         console.log('visibleRowsData', visibleRowsData);
@@ -33,12 +33,12 @@ describe('baobabTree with shifted visible rows! should still pass all tests!', f
 		assert(tree.get('$rowData'));
     });
     it('has visible rows defined', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
         assert(areNonNegativeIntegers([visibleRows.start, visibleRows.end]));
     });
     it('only the subset of visible rows make it into visibleRowsData', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
-        var visibleRowsData = tree.get('$visibleRowsData')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
+        var visibleRowsData = tree.get('$visibleRowsData');
         var computedVisibleRows = tree.get('$rowData').slice(visibleRows.start, visibleRows.end + 1);
         console.log('visibleRows', visibleRows);
         console.log('visibleRowsData', visibleRowsData);
@@ -56,12 +56,12 @@ describe('baobabTree with shifted visible rows! should still pass all tests!', f
 		assert(tree.get('$rowData'));
     });
     it('has visible rows defined', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
         assert(areNonNegativeIntegers([visibleRows.start, visibleRows.end]));
     });
     it('only the subset of visible rows make it into visibleRowsData', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
-        var visibleRowsData = tree.get('$visibleRowsData')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
+        var visibleRowsData = tree.get('$visibleRowsData');
         var computedVisibleRows = tree.get('$rowData').slice(visibleRows.start, visibleRows.end + 1);
         console.log('visibleRows', visibleRows);
         console.log('visibleRowsData', visibleRowsData);
@@ -78,12 +78,12 @@ describe('baobabTree cursor and selection layer', function() {
 		assert(tree.get('$rowData'));
     });
     it('has visible rows defined', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
         assert(areNonNegativeIntegers([visibleRows.start, visibleRows.end]));
     });
     it('only the subset of visible rows make it into visibleRowsData', function() {
-		var visibleRows = tree.get('vectorEditorState','visibleRows')
-        var visibleRowsData = tree.get('$visibleRowsData')
+		var visibleRows = tree.get('vectorEditorState','visibleRows');
+        var visibleRowsData = tree.get('$visibleRowsData');
         var computedVisibleRows = tree.get('$rowData').slice(visibleRows.start, visibleRows.end + 1);
         console.log('visibleRows', visibleRows);
         console.log('visibleRowsData', visibleRowsData);

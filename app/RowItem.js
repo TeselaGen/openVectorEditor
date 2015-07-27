@@ -7,7 +7,7 @@ var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentially
 // var ANNOTATION_HEIGHT = require('./editorConstants').ANNOTATION_HEIGHT;
 // var SPACE_BETWEEN_ANNOTATIONS = require('./editorConstants').SPACE_BETWEEN_ANNOTATIONS;
 var baobabBranch = require('baobab-react/mixins').branch;
-var appActions = require('./actions/appActions');
+var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 
@@ -152,8 +152,7 @@ var OrfContainer = React.createClass({
       annotation.start
       annotationsSVG.push(<path
         onClick={function (event) {
-          // appActions.setCaretPosition(-1);
-          appActions.setSelectionLayer(this);
+          setSelectionLayer(this);
           event.stopPropagation();
         }.bind(annotation)} // 
         key={annotation.id + 'start:' + annotationRange.start}
@@ -244,7 +243,7 @@ var AnnotationContainer = React.createClass({
       annotationsSVG.push(<path
         onClick={function (event) {
           // appActions.setCaretPosition(-1);
-          appActions.setSelectionLayer(this);
+          setSelectionLayer(this);
           event.stopPropagation();
         }.bind(annotation)}
         key={annotation.id + 'start:' + annotationRange.start}
