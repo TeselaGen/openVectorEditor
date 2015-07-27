@@ -4,7 +4,6 @@ var sequenceData = require('./sequenceDataWithOrfs');
 var ObjectID = require("bson-objectid");
 var prepareRowData = require('./prepareRowData');
 var findOrfsFromSequence = require('./findOrfsFromSequence');
-var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 var getSubstringByRange = require('get-substring-by-range');
 var assign = require('lodash/object/assign');
