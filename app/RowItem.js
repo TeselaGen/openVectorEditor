@@ -420,7 +420,7 @@ var RowItem = React.createClass({
 
     var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, this.state.charWidth);
     function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
-      if(row.start<= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
+      if(row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
         //the second logical operator catches the special case where we're at the very end of the sequence..
         var newCursorStyle = _.assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
         return (<div className="cursor" style={newCursorStyle}  />);
@@ -442,6 +442,7 @@ var RowItem = React.createClass({
       //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
     return (
         <div className="rowContainer"
+            key={row.rowNumber}
           style={rowContainerStyle}
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
