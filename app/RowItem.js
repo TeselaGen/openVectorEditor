@@ -442,7 +442,6 @@ var RowItem = React.createClass({
       //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
     return (
         <div className="rowContainer"
-            key={row.rowNumber}
           style={rowContainerStyle}
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}

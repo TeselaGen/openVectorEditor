@@ -18,6 +18,7 @@ module.exports = React.createClass({
     }
 
     var infiniteContainer = event.currentTarget;
+    // console.log('infiniteContainer.scrollTop', infiniteContainer.scrollTop);
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
     var currentAverageElementHeight = (visibleRowsContainer.getBoundingClientRect().height/this.state.visibleRows.length);
     // var firstRow = visibleRowsContainer.childNodes[0];
@@ -36,8 +37,8 @@ module.exports = React.createClass({
         // console.log('Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageElementHeight)', Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageElementHeight));
         var rowsToAdd = Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageElementHeight);
         console.log('rowsToAdd', rowsToAdd);
-        newRowStart = this.rowStart - (rowsToAdd > 4 ? rowsToAdd : 4);
-        // newRowStart = this.rowStart - 4
+        // newRowStart = this.rowStart - (rowsToAdd > 4 ? rowsToAdd : 4);
+        newRowStart = this.rowStart - rowsToAdd;
 
         if (newRowStart < 0) newRowStart = 0;
         
@@ -52,8 +53,8 @@ module.exports = React.createClass({
         //   console.log('Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageElementHeight)', Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageElementHeight));
         var rowsToAdd = Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageElementHeight);
         console.log('rowsToAdd', rowsToAdd);
-        newRowStart = this.rowStart + (rowsToAdd > 4 ? rowsToAdd : 4);
-        // newRowStart = this.rowStart + 4;
+        // newRowStart = this.rowStart + (rowsToAdd > 4 ? rowsToAdd : 4);
+        newRowStart = this.rowStart + rowsToAdd;
         
         if (newRowStart + this.state.visibleRows.length >= this.props.rowData.length) {
           //the new row start is too high, so we instead just append the max rowsToGiveOnBottom to our current preloadRowStart
@@ -75,7 +76,6 @@ module.exports = React.createClass({
     this.numberOfRowsAddedToTop = 0;
     if (this.updateTriggeredByScroll === true) {
         this.updateTriggeredByScroll = false;
-        
         var rowStartDifference = this.oldRowStart - this.rowStart
         console.log('rowStartDifference', rowStartDifference);
         if (rowStartDifference < 0) {
@@ -86,7 +86,7 @@ module.exports = React.createClass({
                     var height = soonToBeRemovedRowElement.getBoundingClientRect().height;
                     console.log('height', height);
                     this.soonToBeRemovedRowElementHeights+= this.props.averageElementHeight - height;
-                    this.soonToBeRemovedRowElementHeights.push(soonToBeRemovedRowElement.getBoundingClientRect().height);
+                    // this.soonToBeRemovedRowElementHeights.push(soonToBeRemovedRowElement.getBoundingClientRect().height);
                 }
             }
         } else if (rowStartDifference > 0) {
@@ -110,8 +110,15 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate: function(argument) {
-      //strategy: as we scroll, we're losing or gaining rows from the top and replacing them with 
+      //strategy: as we scroll, we're losing or gaining rows from the top and replacing them with rows of the "averageRowHeight"
+      //thus we need to adjust the scrollTop positioning of the infinite container so that the UI doesn't jump as we 
+      //make the replacements
+    //   if (this.rowEnd === this.props.rowData.length - 1) {
+    //       debugger;
+    //   }
+    console.log('this.state.visibleRows.length', this.state.visibleRows.length);
       var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
+      console.log('infiniteContainer.scrollTop', infiniteContainer.scrollTop);
       var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
       var self = this;
       if (this.soonToBeRemovedRowElementHeights) {
@@ -119,7 +126,7 @@ module.exports = React.createClass({
         //   this.soonToBeRemovedRowElementHeights.forEach(function(height){
         //     adjustmentScroll+=self.props.averageElementHeight - height;
         //   });
-          console.log('adjustmentScroll', adjustmentScroll);
+          console.log('this.soonToBeRemovedRowElementHeights', this.soonToBeRemovedRowElementHeights);
           infiniteContainer.scrollTop = infiniteContainer.scrollTop + this.soonToBeRemovedRowElementHeights;
       } 
       if (this.numberOfRowsAddedToTop) {
@@ -137,6 +144,7 @@ module.exports = React.createClass({
               }
           }
           console.log('adjustmentScroll', adjustmentScroll);
+          
           infiniteContainer.scrollTop = infiniteContainer.scrollTop - adjustmentScroll;
       }
       
@@ -145,13 +153,13 @@ module.exports = React.createClass({
       //there aren't any rows yet
       throw 'no visible rows!!';
     }
-    var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height;
-    var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height;
+    // var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height;
+    // var lastRowHeight = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1].getBoundingClientRect().height;
     var adjustInfiniteContainerByThisAmount;
     
     //check if the visible rows fill up the viewport
-    var v = visibleRowsContainer.getBoundingClientRect();
-    var t = infiniteContainer.getBoundingClientRect();
+    // var v = visibleRowsContainer.getBoundingClientRect();
+    // var t = infiniteContainer.getBoundingClientRect();
     // console.log('visibleRowsContainer.getBoundingClientRect(): ', 'top', v.top, 'bottom', v.bottom, 'height', v.height);
     // console.log('firstRowHeight', firstRowHeight);
     // console.log('lastRowHeight', lastRowHeight);
@@ -160,7 +168,7 @@ module.exports = React.createClass({
     // console.log('infiniteContainer.scrollTop', infiniteContainer.scrollTop);
     // console.log('this.infiniteContainerOldScrollTop', this.infiniteContainerOldScrollTop);
     //tnrtodo: maybe put logic in here to reshrink the number of rows to display... maybe...
-    if (visibleRowsContainer.getBoundingClientRect().height - 1.5*(firstRowHeight + lastRowHeight) <= this.props.containerHeight) {
+    if (visibleRowsContainer.getBoundingClientRect().height / 2 <= this.props.containerHeight) {
       // console.log('HEEEEEteteteEEEEEEET');
       if (this.rowStart + this.state.visibleRows.length < this.props.rowData.length) {
         //load another row to the bottom
@@ -170,9 +178,9 @@ module.exports = React.createClass({
         // console.log('add row above');
         //there aren't more rows that we can load at the bottom so we load more at the top
         if (this.rowStart - 1 > 0) {
-          this.prepareVisibleRows(this.rowStart - 1, this.state.visibleRows.length);
+          this.prepareVisibleRows(this.rowStart - 1, this.state.visibleRows.length + 1); //don't want to just shift view
         } else {
-          this.prepareVisibleRows(0, this.state.visibleRows.length);
+          this.prepareVisibleRows(0, this.state.visibleRows.length + 1); 
         }
       }
     } else if (visibleRowsContainer.getBoundingClientRect().top > infiniteContainer.getBoundingClientRect().top) {

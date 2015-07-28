@@ -166,7 +166,9 @@ var RowView = React.createClass({
     function renderRows (row) {
         //   if (row) {
             //    key={row.rowNumber}
-            return(<RowItem row={row} />);
+            return(<RowItem 
+                key={row.rowNumber}
+                row={row} />);
         //   }
     }
     // var rowItems = this.state.visibleRowsData.map(function(row) {
