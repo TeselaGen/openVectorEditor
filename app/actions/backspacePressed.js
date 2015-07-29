@@ -1,4 +1,6 @@
+/* @flow */
 var tree = require('../baobabTree');
+var deleteSequence = require('./deleteSequence');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 module.exports = function backspacePressed() {

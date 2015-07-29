@@ -1,7 +1,8 @@
 var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var assign = require('lodash/object/assign');
-
+var deleteSequence = require('./deleteSequence');
+var setCaretPosition = require('./setCaretPosition');
 var adjustRangeToSequenceInsert = require('../adjustRangeToSequenceInsert');
 var spliceString = require('string-splice');
 var validateAndTidyUpSequenceData = require('../validateAndTidyUpSequenceData');
@@ -16,7 +17,7 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
 
     //delete the any selected sequence
     if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
-        this.deleteSequence(selectionLayer);
+        deleteSequence(selectionLayer);
     }
     //insert new sequence at the caret position
     var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
@@ -30,7 +31,7 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
         console.log('newdata set');
         //update the caret position to be at the end of the newly inserted sequence
-        this.setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
+        setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
     } else {
         console.warn('nowhere to put the inserted sequence..');
         return;

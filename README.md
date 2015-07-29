@@ -25,9 +25,6 @@ after that, you can run
 
 to start the development server with live-reload
 
-
-
-
 #### To run tests:
 	
 	npm run test

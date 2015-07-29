@@ -12,7 +12,7 @@ var assign = require('lodash/object/assign');
 // tnr: this is used to generate a very large, multi-featured sequence
 var string = "atgtagagagagagaggtgatg";
 var reallyLongFakeSequence = "";
-for (var i = 1; i < 100000; i++) {
+for (var i = 1; i < 1000; i++) {
 	reallyLongFakeSequence += string;
 	if (i % 100 === 0) {
 		sequenceData.features.push({
@@ -116,7 +116,8 @@ var tree = new baobab({
     ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
     ['vectorEditorState', 'minimumOrfSize'],
     function(sequence, circular, minimumOrfSize) {
-      return findOrfsFromSequence(sequence, circular, minimumOrfSize);
+      return [];
+      // return findOrfsFromSequence(sequence, circular, minimumOrfSize);
     }
   ],
   $rowData: [

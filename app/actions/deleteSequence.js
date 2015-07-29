@@ -2,6 +2,8 @@ var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
 var assign = require('lodash/object/assign');
+var setCaretPosition = require('./setCaretPosition');
+var setSelectionLayer = require('./setSelectionLayer');
 
 module.exports = function deleteSequence(rangeToDelete) {
     if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
@@ -19,24 +21,24 @@ module.exports = function deleteSequence(rangeToDelete) {
     if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
         var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete, sequenceLength);
         if (newSelectionLayerRange) {
-            this.setSelectionLayer(newSelectionLayerRange);
+            setSelectionLayer(newSelectionLayerRange);
         } else {
-            this.setSelectionLayer(false);
+            setSelectionLayer(false);
             //update the cursor
             if (rangeToDelete.start > rangeToDelete.end) {
-                this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
+                setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
             } else {
-                this.setCaretPosition(rangeToDelete.start);
+                setCaretPosition(rangeToDelete.start);
             }
         }
     } else if (tree.select('vectorEditorState', 'caretPosition').get()) {
         //update the cursor position
         if (rangeToDelete.start > rangeToDelete.end) {
-            this.setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
+            setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
         } else {
-            this.setCaretPosition(rangeToDelete.start);
+            setCaretPosition(rangeToDelete.start);
         }
-        // this.setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
+        // setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
     } else {
         throw 'must have a selection layer or a caretPosition';
         // console.warn('must have a selection layer or a caretPosition');
@@ -87,5 +89,5 @@ module.exports = function deleteSequence(rangeToDelete) {
     // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
     // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
     tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
-    // this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+    // refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
 }
