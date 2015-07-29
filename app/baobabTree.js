@@ -5,27 +5,28 @@ var ObjectID = require("bson-objectid");
 var prepareRowData = require('./prepareRowData');
 var findOrfsFromSequence = require('./findOrfsFromSequence');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
+var getAminoAcidRepresentationOfSequence = require('./getAminoAcidRepresentationOfSequence');
 var getSubstringByRange = require('get-substring-by-range');
 var assign = require('lodash/object/assign');
 
-// // tnr: this is used to generate a very large, multi-featured sequence
-// var string = "atgtagagagagagaggtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 1; i < 1000; i++) {
-// 	reallyLongFakeSequence += string;
-// 	if (i % 100 === 0) {
-// 		sequenceData.features.push({
-// 			id: i,
-// 			start: i*10,
-// 			end: i*10 + 100,
-// 			name: 'cooljim',
-// 			color: 'green',
-// 			forward: true,
-// 			annotationType: "feature"
-// 		});
-// 	}
-// }
-// sequenceData.sequence = reallyLongFakeSequence;
+// tnr: this is used to generate a very large, multi-featured sequence
+var string = "atgtagagagagagaggtgatg";
+var reallyLongFakeSequence = "";
+for (var i = 1; i < 100000; i++) {
+	reallyLongFakeSequence += string;
+	if (i % 100 === 0) {
+		sequenceData.features.push({
+			id: i,
+			start: i*10,
+			end: i*10 + 100,
+			name: 'cooljim',
+			color: 'green',
+			forward: true,
+			annotationType: "feature"
+		});
+	}
+}
+sequenceData.sequence = reallyLongFakeSequence;
 
 
 // var fakeSequences = makeFakeSequences(20);
@@ -103,13 +104,13 @@ var tree = new baobab({
       return sequenceData.sequence ? sequenceData.sequence.length : 0;
     }
   ],
-  $aminoAcidRepresentationOfSequence: [
-    ['vectorEditorState', 'sequenceData', 'sequence'],
-    ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-    function(sequence, circular) {
-      return getAminoAcidRepresentationOfSequence(sequence, circular); //might not want to pass circular here..
-    }
-  ],
+  // $aminoAcidRepresentationOfSequence: [
+  //   ['vectorEditorState', 'sequenceData', 'sequence'],
+  //   ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+  //   function(sequence, circular) {
+  //     return getAminoAcidRepresentationOfSequence(sequence, circular); //might not want to pass circular here..
+  //   }
+  // ],
   $orfData: [
     ['vectorEditorState', 'sequenceData', 'sequence'],
     ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 var getAminoAcidFromSequenceString = require('./getAminoAcidFromSequenceString');

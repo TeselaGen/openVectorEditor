@@ -249,6 +249,9 @@ module.exports = React.createClass({
 
     // if (this.rowEnd this.state.numberOfRowsToPreload)
   },
+  getVisibleRowsContainerDomNode: function () {
+    return this.refs.visibleRowsContainer.getDOMNode();
+    },
 
   render: function () {
     var {averageElementHeight, containerHeight, renderFunction, rowData} = this.props;

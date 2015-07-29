@@ -23,7 +23,7 @@ var RowView = React.createClass({
     viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
     totalRows: ['$totalRows'],
     rowData: ['$rowData'],
-    // visibleRowsData: ['$visibleRowsData'],
+    // visibleRows: ['$visibleRows'],
     
     charWidth: ['vectorEditorState', 'charWidth'],
     selectionLayer: ['vectorEditorState', 'selectionLayer'],
@@ -33,25 +33,29 @@ var RowView = React.createClass({
 
   getNearestCursorPositionToMouseEvent: function(event) {
     var rowNotFound = true;
-    var visibleRowsContainer = this.refs.visibleRowsContainer.getDOMNode();
+    var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
     //loop through all the rendered rows to see if the click event lands in one of them
     for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
       var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
       var boundingRowRect = rowDomNode.getBoundingClientRect();
+      console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
+      console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
         //then the click is falls within this row
+        console.log('HGGGG');
         rowNotFound = false;
-        var row = this.state.visibleRowsData[relativeRowNumber];
+        var row = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
         if (event.clientX - boundingRowRect.left < 0) {
           console.warn('this should never be 0...');
           return row.start; //return the first bp in the row
         } else {
           var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + charWidth/2) / charWidth);
+          var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.state.charWidth/2) / this.state.charWidth);
           var nearestBP = numberOfBPsInFromRowStart + row.start;
           if (nearestBP > row.end + 1) {
             nearestBP = row.end + 1;
           }
+          console.log('nearestBP', nearestBP);
           return nearestBP;
         }
         break; //break the for loop early because we found the row the click event landed in
@@ -60,7 +64,7 @@ var RowView = React.createClass({
     if (rowNotFound) {
       console.warn('was not able to find the correct row');
       //return the last bp index in the rendered rows
-      var lastOfRenderedRows = this.state.visibleRowsData[this.state.visibleRowsData.length - 1];
+      var lastOfRenderedRows = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
       return lastOfRenderedRows.end;
     }
   },
@@ -171,7 +175,7 @@ var RowView = React.createClass({
                 row={row} />);
         //   }
     }
-    // var rowItems = this.state.visibleRowsData.map(function(row) {
+    // var rowItems = this.refs.InfiniteScroller.state.visibleRows.map(function(row) {
     //   if (row) {
     //     return(<RowItem key={row.rowNumber} row={row} />);
     //   }
@@ -200,10 +204,10 @@ var RowView = React.createClass({
             ref="allRowsContainer"
             className="allRowsContainer"
             style={infiniteContainerStyle}
-            onScroll={this.onEditorScroll}
             onClick={this.onEditorClick}
             >
             <InfiniteScroller
+                ref={'InfiniteScroller'}
                 averageElementHeight={100}
                 containerHeight={this.state.viewportDimensions.height}
                 renderFunction={renderRows}
