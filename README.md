@@ -25,18 +25,22 @@ after that, you can run
 
 to start the development server with live-reload
 
-#####Concepts employed:
+
+
+
+#### To run tests:
+	
+	npm run test
+
+Tests are written with mocha using node's built in assertion library.
+
+To debug tests in node inspector: npm run testDebug
+
+
+####Concepts employed:
 
 View --(triggers)--> Actions --(update)--> State
 
 or in this case: 
 
 React components --(trigger)--> AppActions.js --(update)--> Baobab tree
-
-
-#### To run tests:
-npm run test
-
-Tests are written with mocha using nodes built in assertion library.
-To debug tests (in node inspector that is): npm run testDebug
-
