@@ -102,7 +102,7 @@ function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsT
       var start = rowNumber === startingRow ? range.start : rowNumber * bpsPerRow;
       var end = rowNumber === endingRow ? range.end : rowNumber * bpsPerRow + bpsPerRow - 1;
 
-      yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsToRowsMap[rowNumber], {
+      var yOffset = calculateNecessaryYOffsetForAnnotationInRow(annotationsToRowsMap[rowNumber], {
         start: start,
         end: end,
         id: annotation.id,

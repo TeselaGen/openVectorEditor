@@ -7,6 +7,7 @@ var adjustRangeToSequenceInsert = require('../adjustRangeToSequenceInsert');
 var spliceString = require('string-splice');
 var validateAndTidyUpSequenceData = require('../validateAndTidyUpSequenceData');
 
+
 module.exports = function insertSequenceData (sequenceDataToInsert) {
     if (!sequenceDataToInsert || !sequenceDataToInsert.sequence.length) {
         console.warn("must pass a valid sequence string");

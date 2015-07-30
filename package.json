@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app/App.js",
+  "repository": "https://github.com/tnrich/webpackTrial",
   "dependencies": {
     "baobab": "^2.0.0-dev10",
     "baobab-react": "^1.0.0-dev",
@@ -29,7 +30,9 @@
     "validate.io-nonnegative-integer-array": "^1.0.1"
   },
   "devDependencies": {
+    "babel": "^5.1.10",
     "babel-core": "^5.0.12",
+    "babel-eslint": "^3.0.1",
     "babel-loader": "^5.0.0",
     "istanbul": "^0.3.15",
     "mocha": "^2.2.5",
@@ -37,8 +40,8 @@
     "webpack-dev-server": "^1.9.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test/*",
-    "testDebug": "./node_modules/mocha/bin/mocha --debug-brk ./test/*",
+    "test": "./node_modules/mocha/bin/mocha ./test/* --compilers jsx:babel/register",
+    "testDebug": "./node_modules/mocha/bin/mocha ./test/* --debug-brk --compilers jsx:babel/register",
     "dev": "webpack-dev-server --devtool eval --progress --colors --content-base",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },

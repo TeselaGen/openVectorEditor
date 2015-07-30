@@ -1,17 +1,23 @@
-var setCaretPosition = require('../../app/actions/insertSequenceData');
-var tree = require('../../app/baobabTree.js');
+//tnr: half finished test. 
+var setCaretPosition = require('../../app/actions/setCaretPosition');
+var insertSequenceData = require('../../app/actions/insertSequenceData');
+var setSelectionLayer = require('../../app/actions/setSelectionLayer');
+var tree = require('../helpers/baobabTestTree.js');
 var assert = require('assert');
-describe('setCaretPosition', function () {
-    it ('changes the caret position from its initial value', function () {
-        assert.notEqual(55,tree.get('vectorEditorState','caretPosition'));
-        setCaretPosition(55);
-        assert.equal(55,tree.get('vectorEditorState','caretPosition'));
-        setCaretPosition(59);
-        assert.equal(59,tree.get('vectorEditorState','caretPosition'));
-    });
-    it ('changes the caret position to -1 if passed anything but a non-negative integer', function () {
-        assert.notEqual(-1,tree.get('vectorEditorState','caretPosition'));
-        setCaretPosition(false);
-        assert.equal(-1,tree.get('vectorEditorState','caretPosition'));
+
+var sequenceToInsert = {
+    sequence: 'atgagagaga',
+};
+describe('insertSequenceData', function () {
+    it ('inserts characters at correct caret position', function () {
+        // console.log('tree!: ' +  JSON.stringify(tree.get(), null, 4));
+        var sequenceLengthPreInsert = tree.get('$sequenceLength');
+        // console.log('sequenceLengthPreInsert: ' + sequenceLengthPreInsert);
+        setSelectionLayer(false);//make sure there's no selection layer
+        setCaretPosition(0);
+        insertSequenceData(sequenceToInsert);
+        var sequenceLengthPostInsert = tree.get('$sequenceLength');
+        // console.log('sequenceLengthPostInsert: ' + sequenceLengthPostInsert);
+        assert.equal(sequenceLengthPostInsert, sequenceLengthPreInsert + sequenceToInsert.sequence.length);
     });
 });
