@@ -1,7 +1,7 @@
 module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
     //this function is a little confusing, but basically it takes an array of overlaps 
     //generated from a range overlaps calculation, and it sews them together if possible
-    if (overlaps.length === 1) {
+    if (overlaps.length === 1 || overlaps.length === 0) {
         return overlaps;
     } else if (overlaps.length === 2) {
         if (overlaps[0].start === 0 && overlaps[1].end + 1 === sequenceLength) {

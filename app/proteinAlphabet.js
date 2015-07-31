@@ -104,4 +104,9 @@ module.exports = { //tnrtodo: add stop codons and non-normal codons to these map
     name: 'Stop',
     threeLettersName: 'Stop'
   },
+  '-': {
+    value: '-',
+    name: 'Gap',
+    threeLettersName: 'Gap'
+  },
 };

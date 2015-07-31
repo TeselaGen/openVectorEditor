@@ -1,4 +1,5 @@
 var tree = require('../baobabTree');
+var setSelectionLayer = require('./setSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
 
 module.exports = function moveCaret(numberToMove) {
@@ -11,10 +12,10 @@ module.exports = function moveCaret(numberToMove) {
         } else {
             tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.start);
         }
-        this.setSelectionLayer(false);
+        setSelectionLayer(false);
     } else {
         caretPosition += numberToMove;
         caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
         tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
     }
-}
+};

@@ -7,10 +7,10 @@ module.exports = function backspacePressed() {
     var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
     var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
     if (selectionLayer.selected) {
-        this.deleteSequence(selectionLayer);
+        deleteSequence(selectionLayer);
     } else {
         if (areNonNegativeIntegers([caretPosition])) {
-            this.deleteSequence({
+            deleteSequence({
                 start: caretPosition - 1,
                 end: caretPosition - 1
             });
@@ -18,4 +18,4 @@ module.exports = function backspacePressed() {
             throw 'no caret or selection layer to delete!';
         }
     }
-}
+};

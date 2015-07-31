@@ -3,19 +3,17 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 var getAminoAcidFromSequenceString = require('./getAminoAcidFromSequenceString');
 
-module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSize) {
-  // if (circular) {
-  var forwardSequence = sequence;
+module.exports = function findOrfsFromAminoAcids(aminoAcidRepresentationOfSequence, circular, mininmumOrfSize) {
   
   //tnr, we should do the parsing down of the orfs immediately after they're returned from this sequence
-  // var orfs1Forward = eliminateCircularOrfsThatOverlapWithNonCircularOrfs(getOrfsFromSequenceString(0, doubleForwardSequence, mininmumOrfSize, true), maxLength);
-  var orfs1Forward = getOrfsFromSequenceString(0, sequence, mininmumOrfSize, true, circular);
-  var orfs2Forward = getOrfsFromSequenceString(1, sequence, mininmumOrfSize, true, circular);
-  var orfs3Forward = getOrfsFromSequenceString(2, sequence, mininmumOrfSize, true, circular);
+  // var orfs1Forward = eliminateCircularOrfsThatOverlapWithNonCircularOrfs(getOrfsFromAminoAcids(0, doubleForwardSequence, mininmumOrfSize, true), maxLength);
+  var orfs1Forward = getOrfsFromAminoAcids(0, aminoAcidRepresentationOfSequence.forward[0], mininmumOrfSize, true, circular);
+  var orfs2Forward = getOrfsFromAminoAcids(1, aminoAcidRepresentationOfSequence.forward[1], mininmumOrfSize, true, circular);
+  var orfs3Forward = getOrfsFromAminoAcids(2, aminoAcidRepresentationOfSequence.forward[2], mininmumOrfSize, true, circular);
 
-  var orfs1Reverse = getOrfsFromSequenceString(0, sequence, mininmumOrfSize, false, circular);
-  var orfs2Reverse = getOrfsFromSequenceString(1, sequence, mininmumOrfSize, false, circular);
-  var orfs3Reverse = getOrfsFromSequenceString(2, sequence, mininmumOrfSize, false, circular);
+  var orfs1Reverse = getOrfsFromAminoAcids(0, aminoAcidRepresentationOfSequence.reverse[0], mininmumOrfSize, false, circular);
+  var orfs2Reverse = getOrfsFromAminoAcids(1, aminoAcidRepresentationOfSequence.reverse[1], mininmumOrfSize, false, circular);
+  var orfs3Reverse = getOrfsFromAminoAcids(2, aminoAcidRepresentationOfSequence.reverse[2], mininmumOrfSize, false, circular);
 
   var combinedForwardOrfs = orfs1Forward.concat(orfs2Forward, orfs3Forward);
   var combinedReverseOrfs = orfs1Reverse.concat(orfs2Reverse, orfs3Reverse);
@@ -118,7 +116,7 @@ module.exports = function findOrfsFromSequence(sequence, circular, mininmumOrfSi
  * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
-function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, circular) {
+function getOrfsFromAminoAcids(frame, aminoAcidsObject, mininmumOrfSize, forward, circular) {
   var ObjectID = require("bson-objectid");
   if (typeof(mininmumOrfSize) === "undefined") {
     throw ('no min orf size given');
@@ -132,21 +130,21 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, ci
   if (!areNonNegativeIntegers([frame]) || frame > 2) {
     throw ('invalid frame passed');
   }
-  if (typeof sequence !== 'string') {
-    throw ('invalid sequence passed');
+  if (typeof aminoAcidsObject !== 'object') {
+    throw ('invalid aminoAcidsObject passed');
   }
-  var maxLength = sequence.length;
+  var maxLength = aminoAcidsObject.aminoAcidStringCorrespondingToEachBaseOfDNA / (circular ? 2 : 1);
   
-  if (!forward) {
-    //we reverse the sequence
-    sequence = getReverseComplementSequenceString(sequence);
-  }
+  // if (!forward) {
+  //   //we reverse the sequence
+  //   sequence = getReverseComplementSequenceString(sequence);
+  // }
   
-  if (circular) {
-    //we'll pass in double the sequence and then trim excess orfs
-    sequence += sequence;
-  } 
-  var potentiallyDuplicatedOrfs = calculateOrfs(frame, sequence, mininmumOrfSize, forward);
+  // if (circular) {
+  //   //we'll pass in double the sequence and then trim excess orfs
+  //   sequence += sequence;
+  // } 
+  var potentiallyDuplicatedOrfs = calculateOrfs(frame, aminoAcidsObject, mininmumOrfSize, forward);
   
   if (!forward) {
     //we'll reverse the orfs start and end before (potentially) trimming them 
@@ -176,49 +174,49 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, ci
   }
   return nonDuplicatedOrfs;
   
-  function calculateOrfs(frame, sequence, mininmumOrfSize, forward) {
+  function calculateOrfs(frame, aminoAcidsObject, mininmumOrfSize, forward) {
     var allOrfs = [];
-    var sequenceLength = sequence.length;
+    // var sequenceLength = sequence.length;
 
-    // var index = frame;
-    var triplet;
-    var aaSymbol;
-    var aaString = '';
-    var startIndex = -1;
-    var endIndex = -1;
-    var startCodonIndices = [];
-    var stopCodonIndices = [];
-    var possibleStopCodon;
-    var possibleStartCodon;
-    // Loop through sequence and generate list of ORFs.
-    for (var index = frame; index < sequenceLength; index += 3) {
-      triplet = sequence.slice(index, index + 3);
-      if (triplet.length === 3) {
-        aaSymbol = getAminoAcidFromSequenceString(triplet);
-        aaString += aaSymbol.value;
-        possibleStartCodon = isStartCodon(triplet);
-        possibleStopCodon = isStopCodon(triplet);
+    // // var index = frame;
+    // var triplet;
+    // var aaSymbol;
+    // var aaString = '';
+    // var startIndex = -1;
+    // var endIndex = -1;
+    // var startCodonIndices = [];
+    // var stopCodonIndices = [];
+    // var possibleStopCodon;
+    // var possibleStartCodon;
+    // // Loop through sequence and generate list of ORFs.
+    // for (var index = frame; index < sequenceLength; index += 3) {
+    //   triplet = sequence.slice(index, index + 3);
+    //   if (triplet.length === 3) {
+    //     aaSymbol = getAminoAcidFromSequenceString(triplet);
+    //     aaString += aaSymbol.value;
+    //     possibleStartCodon = isStartCodon(triplet);
+    //     possibleStopCodon = isStopCodon(triplet);
 
-        // If we've found a start codon, add its index to startCodonIndices.
-        if (possibleStartCodon) {
-          startCodonIndices.push(index);
-        }
-        if (possibleStopCodon) {
-          stopCodonIndices.push(index);
-        }
-      }
-    }
+    //     // If we've found a start codon, add its index to startCodonIndices.
+    //     if (possibleStartCodon) {
+    //       startCodonIndices.push(index);
+    //     }
+    //     if (possibleStopCodon) {
+    //       stopCodonIndices.push(index);
+    //     }
+    //   }
+    // }
 
     //loop through the start codons and see if any of them form orfs
-    startCodonIndices.forEach(function(startCodonIndex) {
-      stopCodonIndices.some(function(stopCodonIndex) {
+    aminoAcidsObject.startCodonIndices.forEach(function(startCodonIndex) {
+      aminoAcidsObject.stopCodonIndices.some(function(stopCodonIndex) {
         if (stopCodonIndex - startCodonIndex > 0) {
           var orf = {
             start: startCodonIndex,
             end: stopCodonIndex,
             forward: forward,
             frame: frame,
-            startCodons: startCodonIndices,
+            startCodons: aminoAcidsObject.startCodonIndices,
             id: ObjectID().str
           };
           allOrfs.push(orf);
@@ -249,63 +247,7 @@ function getOrfsFromSequenceString(frame, sequence, mininmumOrfSize, forward, ci
 
 }
 
-function isStartCodon(codon) {
-  return (codon === 'atg' || codon === 'aug' && codon.indexOf("-") === -1);
-}
-/**
- * {Calculates whether a three character string is a stop codon.
- * @param  {String} codon a three character string.
- * @return {Boolean} shows whether the nucleotides make up a stop codon
- */
-function isStopCodon(codon) {
-  return (codon == 'taa' || codon == 'tag' || codon == 'tga' || codon == 'uaa' || codon == 'uag' || codon == 'uga');
-}
 
-/**
- * @private
- * Takes three nucleotides and determines if they (and their ambiguous matches) form a stop codon.
- * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideOne
- * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideTwo
- * @param  {Teselagen.bio.sequence.symbols.NucleotideSymbol/Teselagen.bio.sequence.symbols.GapSymbol} nucleotideThree
- * @return {Boolean} True if the nucleotides given form a stop codon.
- */
-function evaluatePossibleStop(nucleotideOne, nucleotideTwo, nucleotideThree) {
-  var n1 = this.returnMatches(nucleotideOne);
-  var n2 = this.returnMatches(nucleotideTwo);
-  var n3 = this.returnMatches(nucleotideThree);
-
-  for (var i1 = 0; i1 < n1.length; i1++) {
-    for (var i2 = 0; i2 < n2.length; i2++) {
-      for (var i3 = 0; i3 < n3.length; i3++) {
-        if (Teselagen.TranslationUtils.isStopCodon(n1[i1], n2[i2], n3[i3])) {
-          return true;
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
- * @private
- * Helper function to return ambiguous matches of a nucleotide if they exist, and
- * otherwise return an array just containing the nucleotide.
- * @param {Teselagen.bio.sequence.symbols.NucleotideSymbol} nucleotide The nucleotide to get matches for.
- * @return {Teselagen.bio.sequence.symbols.NucleotideSymbol[]} The array containing matches.
- */
-function returnMatches(nucleotide) {
-  var nucleotideObject = Teselagen.DNAAlphabet[nucleotide];
-  var ambiguousMatches;
-
-  if (nucleotideObject && nucleotideObject.getAmbiguousMatches().length !== 0) {
-    ambiguousMatches = nucleotideObject.getAmbiguousMatches();
-  } else {
-    ambiguousMatches = [nucleotide];
-  }
-
-  return ambiguousMatches;
-}
 
 /**
  * @private
@@ -314,12 +256,12 @@ function returnMatches(nucleotide) {
  * @param b
  * @return {Int} Sort order.
  */
-function codonsSort(a, b) {
-  if (a > b) {
-    return 1;
-  } else if (a < b) {
-    return -1;
-  } else {
-    return 0;
-  }
-}
+// function codonsSort(a, b) {
+//   if (a > b) {
+//     return 1;
+//   } else if (a < b) {
+//     return -1;
+//   } else {
+//     return 0;
+//   }
+// }

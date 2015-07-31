@@ -38,11 +38,11 @@ var RowView = React.createClass({
     for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
       var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
       var boundingRowRect = rowDomNode.getBoundingClientRect();
-      console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
-      console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
+      // console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
+      // console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
         //then the click is falls within this row
-        console.log('HGGGG');
+        // console.log('HGGGG');
         rowNotFound = false;
         var row = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
         if (event.clientX - boundingRowRect.left < 0) {
@@ -55,7 +55,7 @@ var RowView = React.createClass({
           if (nearestBP > row.end + 1) {
             nearestBP = row.end + 1;
           }
-          console.log('nearestBP', nearestBP);
+          // console.log('nearestBP', nearestBP);
           return nearestBP;
         }
         break; //break the for loop early because we found the row the click event landed in
@@ -168,12 +168,14 @@ var RowView = React.createClass({
     // console.log('render!');
     var self = this;
     function renderRows (row) {
-        //   if (row) {
+          if (row) {
             //    key={row.rowNumber}
             return(<RowItem 
                 key={row.rowNumber}
                 row={row} />);
-        //   }
+          } else {
+            return null;
+          }
     }
     // var rowItems = this.refs.InfiniteScroller.state.visibleRows.map(function(row) {
     //   if (row) {
@@ -193,6 +195,7 @@ var RowView = React.createClass({
       // paddingRight: "20px"
     //   padding: 10
     };
+    // console.log('this.state.rowData: ' + JSON.stringify(this.state.rowData,null,4));
     return (
         <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}

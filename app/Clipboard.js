@@ -44,14 +44,14 @@ var Clipboard = React.createClass({
     var value = this.props.value;
     var style = {
       position: 'fixed',
+      // width: 0, //tnr: commented these out because they seem to be messing thing up if used...
+      // height: 0,
+      opacity: 0,
       left: 0,
-      top: 0,
-      width: 0,
-      height: 0,
       padding: 0,
+      top: 0,
       margin: 0,
       zIndex: 100,
-      opacity: 0
     };
     return <input 
       style={style}

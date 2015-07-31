@@ -29,7 +29,8 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         var newSequenceData = assign({}, sequenceData, insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition));
         // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
         // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
-        tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+
+       tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
         console.log('newdata set');
         //update the caret position to be at the end of the newly inserted sequence
         setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
@@ -37,10 +38,6 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         console.warn('nowhere to put the inserted sequence..');
         return;
     }
-    // this.refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
-    //insert the sequence
-    // tree.select('vectorEditorState', 'selectionLayer').set({});
-    // viewportDimensions.set(newSize);
     function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
         sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
         existingSequenceData = validateAndTidyUpSequenceData(existingSequenceData);

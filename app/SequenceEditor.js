@@ -85,14 +85,12 @@ var SequenceEditor = React.createClass({
   },
 
   handlePaste: function(event) {
-    console.log('paste!');
     event.clipboardData.items[0].getAsString(function(string) {
       pasteSequenceString(string);
     });
   },
 
   handleCopy: function(event) {
-    console.log('copy!');
     copySelection();
     // this.state.selectedSequenceString
   },
@@ -102,7 +100,7 @@ var SequenceEditor = React.createClass({
       // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
 
     var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
-
+    
     return (
       <div style={{float:"right"}}>
         features count: {featuresCount}

@@ -1,5 +1,6 @@
 var tree = require('../baobabTree');
 var assign = require('lodash/object/assign');
+var setSelectionLayer = require('./setSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
 
 module.exports = function moveCaretShiftHeld(numberToMove) {
@@ -16,16 +17,16 @@ module.exports = function moveCaretShiftHeld(numberToMove) {
             selectionLayer.start += numberToMove;
             selectionLayer.start = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.start, sequenceLength - 1);
         }
-        this.setSelectionLayer(selectionLayer);
+        setSelectionLayer(selectionLayer);
     } else {
         if (numberToMove > 0) {
-            this.setSelectionLayer({
+            setSelectionLayer({
                 start: caretPosition,
                 end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove - 1, sequenceLength - 1),
                 cursorAtEnd: true
             });
         } else {
-            this.setSelectionLayer({
+            setSelectionLayer({
                 start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove + 1, sequenceLength - 1),
                 end: caretPosition,
                 cursorAtEnd: false
