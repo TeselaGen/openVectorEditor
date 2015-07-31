@@ -1,2 +1,5 @@
 node_modules/
 app/App.js
+./bundle.js
+bundle.js
+stats.json
