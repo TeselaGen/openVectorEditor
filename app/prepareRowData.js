@@ -1,4 +1,6 @@
-var _ = require('lodash');
+var each = require('lodash/collection/each');
+var sortBy = require('lodash/collection/sortBy');
+var uniq = require('lodash/array/uniq');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 function prepareRowData(sequenceData, bpsPerRow) {
@@ -8,6 +10,7 @@ function prepareRowData(sequenceData, bpsPerRow) {
   var featuresToRowsMap = mapAnnotationsToRows(sequenceData.features, sequenceLength, bpsPerRow);
   var partsToRowsMap = mapAnnotationsToRows(sequenceData.parts, sequenceLength, bpsPerRow);
   var orfsToRowsMap = mapAnnotationsToRows(sequenceData.orfs, sequenceLength, bpsPerRow);
+  var translationsToRowsMap = mapAnnotationsToRows(sequenceData.translations, sequenceLength, bpsPerRow);
 
   for (var rowNumber = 0; rowNumber < totalRows; rowNumber++) {
     var row = {};
@@ -18,6 +21,7 @@ function prepareRowData(sequenceData, bpsPerRow) {
     row.features = featuresToRowsMap[rowNumber] ? featuresToRowsMap[rowNumber] : [];
     row.parts = partsToRowsMap[rowNumber] ? partsToRowsMap[rowNumber] : [];
     row.orfs = orfsToRowsMap[rowNumber] ? orfsToRowsMap[rowNumber] : [];
+    row.translations = translationsToRowsMap[rowNumber] ? translationsToRowsMap[rowNumber] : [];
     // row.cutsites = cutsitesToRowsMap[rowNumber];
     rows[rowNumber] = row;
   }
@@ -33,7 +37,7 @@ function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
     console.warn("no annotations detected")
   }
 
-  _.each(annotations, function(annotation) {
+  each(annotations, function(annotation) {
     if (!annotation) {
       throw 'no annotation!'
     }
@@ -126,7 +130,7 @@ function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsT
 function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRow, range) {
   var blockedYOffsets = [];
   //adjust the yOffset of the range being pushed in by checking its range against other ranges already in the row
-  _.each(annotationsAlreadyAddedToRow, function(comparisonRange) {
+  each(annotationsAlreadyAddedToRow, function(comparisonRange) {
 
     // don't push a blocked yOffset if the annotation id is the same as the annotation id of the range being added  
     if (comparisonRange.id === range.id) {
@@ -164,10 +168,10 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
   //sort and remove duplicates from the blockedYOffsets array
   //then starting with newYOffset = 1, see if there is space for the location 
   if (blockedYOffsets.length > 0) {
-    var sortedBlockedYOffsets = _.sortBy(blockedYOffsets, function(n) {
+    var sortedBlockedYOffsets = sortBy(blockedYOffsets, function(n) {
       return n;
     });
-    var sortedUniqueBlockedYOffsets = _.uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
+    var sortedUniqueBlockedYOffsets = uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
     var stillPotentiallyBlocked = true;
     while (stillPotentiallyBlocked) {
       //sortedUniqueBlockedYOffsets is an array starting with 1 eg. [1,2,4,5,6]
@@ -279,7 +283,7 @@ module.exports = prepareRowData;
 //   //convert each anotation into 1 or 2 annotationLocations by spliiting on the origin.
 //   //for each location, add to the row any stetches of the location that overlap the row
 
-//   _.each(annotations, function(annotation) {
+//   each(annotations, function(annotation) {
 //     var annotationLocations = splitRangeOnOrigin(annotation, sequenceLength, sequenceLength);
 //     var overlaps;
 //     annotationLocations.forEach(function(annotationLocation) {
@@ -337,7 +341,7 @@ module.exports = prepareRowData;
 // //assumes the range doesn't not span the origin!
 // function findAnnotationsThatFallWithinRangeBasedOnTheStartAndEndMaps(range, startBPMap, endBPMap) {
 //   var possibleHitsBasedOnStartValue = {};
-//   _.each(startBPMap, function(annotationIds, startBP) {
+//   each(startBPMap, function(annotationIds, startBP) {
 //     if (startBP < range.end) {
 //       annotationIds.forEach(function(annotationId) {
 //         if (!possibleHitsBasedOnStartValue[annotationId]) {
@@ -349,7 +353,7 @@ module.exports = prepareRowData;
 //   });
 
 //   var hitsBasedOnStartAndEndValues = {};
-//   _.each(endBPMap, function(annotationIds, endBP) {
+//   each(endBPMap, function(annotationIds, endBP) {
 //     if (endBP > range.start) {
 //       annotationIds.forEach(function(annotationId) {
 //         if (possibleHitsBasedOnStartValue[annotationId]) {
@@ -407,7 +411,7 @@ module.exports = prepareRowData;
 // function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRow, overlaps) {
 //   var blockedYOffsets = [];
 //   //adjust the yOffset of the location being pushed in by checking its range against other locations in the row
-//   _.each(annotationsAlreadyAddedToRow, function(comparisonAnnotation) {
+//   each(annotationsAlreadyAddedToRow, function(comparisonAnnotation) {
 //     //loop through every location in the comparisonAnnotation (there is a max of two)
 //     //also note that locations cannot be circular
 //     comparisonAnnotation.overlaps.forEach(function(comparisonOverlap) {
@@ -445,10 +449,10 @@ module.exports = prepareRowData;
 //   //sort and remove duplicates from the blockedYOffsets array
 //   //then starting with newYOffset = 1, see if there is space for the location 
 //   if (blockedYOffsets.length > 0) {
-//     var sortedBlockedYOffsets = _.sortBy(blockedYOffsets, function(n) {
+//     var sortedBlockedYOffsets = sortBy(blockedYOffsets, function(n) {
 //       return n;
 //     });
-//     var sortedUniqueBlockedYOffsets = _.uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
+//     var sortedUniqueBlockedYOffsets = uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
 //     var stillPotentiallyBlocked = true;
 //     while (stillPotentiallyBlocked) {
 //       //sortedUniqueBlockedYOffsets is an array starting with 1 eg. [1,2,4,5,6]

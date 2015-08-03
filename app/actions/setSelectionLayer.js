@@ -14,9 +14,13 @@ module.exports = function setSelectionLayer (newSelectionLayer) {
             cursorAtEnd: true
         };
     } else {
-        var {
-            start, end, selected, cursorAtEnd
-        } = newSelectionLayer;
+        var start = newSelectionLayer.start;
+        // var selected = newSelectionLayer.selected;
+        var end = newSelectionLayer.end;
+        var cursorAtEnd = newSelectionLayer.cursorAtEnd;
+        // var {
+        //     start, end, selected, cursorAtEnd
+        // } = newSelectionLayer;
         if (areNonNegativeIntegers([start, end])) {
             newSelectionLayer = {
                 start: start,

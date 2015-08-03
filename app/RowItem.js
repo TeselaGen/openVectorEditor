@@ -1,5 +1,5 @@
 var React = require('react');
-var _ = require('lodash');
+var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var baobabBranch = require('baobab-react/mixins').branch;
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
@@ -7,6 +7,7 @@ var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotati
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
+var TranslationContainer = require('./TranslationContainer');
 var AnnotationContainer = require('./AnnotationContainer');
 
 var RowItem = React.createClass({
@@ -31,7 +32,7 @@ var RowItem = React.createClass({
   },
 
   render: function () {
-    var {row} = this.props;
+    var row = this.props.row;
     var bpsPerRow = this.state.bpsPerRow;
     var showParts = this.state.showParts;
     // var showReverseSequence = this.state.showReverseSequence;
@@ -103,8 +104,11 @@ var RowItem = React.createClass({
         if (overlap.end === selectionLayer.end) {
           selectionCursorEnd = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth);
         }
-        var {xStart, width} = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
-        var style = _.assign({}, highlightLayerStyle, {width: width, left: xStart});
+        var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
+        var xStart = result.xStart;
+        var width = result.width;
+
+        var style = assign({}, highlightLayerStyle, {width: width, left: xStart});
         return (<div key={index} className="selectionLayer" style={style}/>);
       });
       return selectionLayers;
@@ -114,7 +118,7 @@ var RowItem = React.createClass({
     function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
       if(row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
         //the second logical operator catches the special case where we're at the very end of the sequence..
-        var newCursorStyle = _.assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
+        var newCursorStyle = assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
         return (<div className="cursor" style={newCursorStyle}  />);
         // onHover={self.onCursorHover}
       }
@@ -147,14 +151,6 @@ var RowItem = React.createClass({
                 bpsPerRow={this.state.bpsPerRow}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {this.state.showTranslations &&
-              <AnnotationContainer
-                annotationRanges={row.features}
-                charWidth={this.state.charWidth}
-                annotationHeight={this.state.ANNOTATION_HEIGHT}
-                bpsPerRow={this.state.bpsPerRow}
-                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
-            }
             {this.state.showCutsites &&
               <CutsiteContainer
                 annotationRanges={row.features}
@@ -170,6 +166,17 @@ var RowItem = React.createClass({
                 charWidth={this.state.charWidth}
                 annotationHeight={this.state.ANNOTATION_HEIGHT}
                 bpsPerRow={this.state.bpsPerRow}
+                sequenceLength={this.state.sequenceLength}
+                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+            }
+            {this.state.showTranslations &&
+              <OrfContainer
+                row={row}
+                annotationRanges={row.translations}
+                charWidth={this.state.charWidth}
+                annotationHeight={this.state.ANNOTATION_HEIGHT}
+                bpsPerRow={this.state.bpsPerRow}
+                sequenceLength={this.state.sequenceLength}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
             <SequenceContainer sequence={row.sequence} charWidth={this.state.charWidth}/>

@@ -1,4 +1,4 @@
-module.exports = {
+var sequenceData = {
   "_id": "55a34cf01d8e1e8ea7000006",
   "name_lowercase": "pj5_00001",
   "FQDN": "tnrich.pj5_00001",
@@ -14,15 +14,16 @@ module.exports = {
   "hash": "78cfd9da32ffb86af10057c8dd53ac30c607ed1d8991461a0a46cd14442935de",
   "description": "",
   "user_id": "54220bb6f54aa7432861e7dd",
-  "features": [{
+  "translations": [{
     "name": "CAP site",
     "type": "misc_binding",
-    "id": "55a4a061f0c5b5000a8bfaf4",
+    "id": "55a4a061f0c5b5000a8bfafz",
     "start": 1114,
     "end": 1128,
     "strand": 1,
     "notes": []
-  }, {
+  }],
+  "features": [{
     "name": "Operator I2 and I1",
     "type": "protein_bind",
     "id": "55a4a061f0c5b5000a8bfaf5",
@@ -121,4 +122,25 @@ module.exports = {
   }],
   "extraLines": [],
   "__v": 4
-}
+};
+
+// tnr: this is used to generate a very large, multi-featured sequence
+// var string = "atgtagagagagagaggtgatg";
+// var reallyLongFakeSequence = "";
+// for (var i = 1; i < 1000; i++) {
+//  reallyLongFakeSequence += string;
+//  if (i % 100 === 0) {
+//    sequenceData.features.push({
+//      id: i,
+//      start: i*10,
+//      end: i*10 + 100,
+//      name: 'cooljim',
+//      color: 'green',
+//      forward: true,
+//      annotationType: "feature"
+//    });
+//  }
+// }
+// sequenceData.sequence = reallyLongFakeSequence;
+// 
+module.exports = sequenceData;

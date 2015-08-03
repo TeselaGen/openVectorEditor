@@ -5,11 +5,8 @@ var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotati
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 var baobabBranch = require('baobab-react/mixins').branch;
 
-var OrfContainer = React.createClass({
+var TranslationContainer = React.createClass({
   mixins: [baobabBranch],
-  cursors: {
-    aminoAcidRepresentationOfSequence: ['$aminoAcidRepresentationOfSequence']
-  },
   render: function () {
     var row = this.props.row;
     var annotationRanges = this.props.annotationRanges;
@@ -18,7 +15,6 @@ var OrfContainer = React.createClass({
     var annotationHeight = this.props.annotationHeight;
     var spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
     var sequenceLength = this.props.sequenceLength;
-    
 
     if (annotationRanges.length === 0) {
       return null;
@@ -26,9 +22,9 @@ var OrfContainer = React.createClass({
     var maxAnnotationYOffset = 0;
     var annotationsSVG = [];
     return null;
+    debugger;
 
-
-    function getAminoAcidsForSubsectionOfTranslation(sequenceLength, rangeSubsection, fullTranslationRange, frame, forward, aminoAcidRepresentationOfSequence) {
+    function getAminoAcidsForSubsectionOfTranslation(sequenceLength, rangeSubsection, fullTranslationRange, forward, aminoAcidRepresentationOfFullTranslationRange) {
       var comparisonRange;
       if (fullTranslationRange.start > fullTranslationRange.end) { //circular fullTranslationRange
         //0 to fullTranslationRange.start needs to be shifted
@@ -90,7 +86,7 @@ var OrfContainer = React.createClass({
             
           }
         }
-        row.sequence
+        row.sequence;
       } else {
         
       }
@@ -99,9 +95,9 @@ var OrfContainer = React.createClass({
       if (annotation.start > annotation.end) {
         var annotationStart = annotation.start - sequenceLength;
       } else {
-        var annotationStart = annotation.start
+        var annotationStart = annotation.start;
       }
-      annotationRange.start % 3
+      annotationRange.start % 3;
       if (annotationRange.start > annotationRange.end) {
         
       }
@@ -161,7 +157,6 @@ var OrfContainer = React.createClass({
       var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       var xStart = result.xStart;
       var width = result.width;
-
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var height = annotationHeight;
       var rangeType = annotationRange.rangeType;
@@ -186,4 +181,4 @@ var OrfContainer = React.createClass({
 
   }
 });
-module.exports = OrfContainer;
+module.exports = TranslationContainer;

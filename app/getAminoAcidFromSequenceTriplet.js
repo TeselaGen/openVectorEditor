@@ -2,7 +2,7 @@ var threeLetterSequenceStringToAminoAcidMap = require('./threeLetterSequenceStri
 var proteinAlphabet = require('./proteinAlphabet');
 //tnrtodo: expand the threeLetterSequenceStringToAminoAcidMap mappings to include RNA characters. 
 //currently stop bps aren't all mapped!
-module.exports = function getAminoAcidFromSequenceString(sequenceString) {
+module.exports = function getAminoAcidFromSequenceTriplet(sequenceString) {
   if (typeof sequenceString === 'string') {
     sequenceString = sequenceString.toLowerCase();
   } else {

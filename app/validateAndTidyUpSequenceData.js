@@ -5,6 +5,7 @@ var FeatureTypes = require('./FeatureTypes.js');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 module.exports = function validateAndTidyUpSequenceData(sequenceData) {
   var sequenceData = assign({},sequenceData); //sequenceData is usually immutable, so we clone it and return it
+  var response = {messages:[]};
   if (!sequenceData) {
   	console.log('no sequenceData at all...!');
   	sequenceData = {};

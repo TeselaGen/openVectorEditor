@@ -1,49 +1,14 @@
 var baobab = require('baobab');
 // var sequenceData = require('./sequenceData');
-var sequenceData = require('./sequenceDataWithOrfs');
-var ObjectID = require("bson-objectid");
+var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
-var findOrfsFromAminoAcids = require('./findOrfsFromAminoAcids');
+var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
-var getAminoAcidsFromPlasmid = require('./getAminoAcidsFromPlasmid');
+// var getAminoAcidsFromPlasmid = require('./getAminoAcidsFromPlasmid');
 var getSubstringByRange = require('get-substring-by-range');
 var assign = require('lodash/object/assign');
-
-// tnr: this is used to generate a very large, multi-featured sequence
-// var string = "atgtagagagagagaggtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 1; i < 100000; i++) {
-// 	reallyLongFakeSequence += string;
-// 	if (i % 100 === 0) {
-// 		sequenceData.features.push({
-// 			id: i,
-// 			start: i*10,
-// 			end: i*10 + 100,
-// 			name: 'cooljim',
-// 			color: 'green',
-// 			forward: true,
-// 			annotationType: "feature"
-// 		});
-// 	}
-// }
-// sequenceData.sequence = reallyLongFakeSequence;
-
-
-// var fakeSequences = makeFakeSequences(20);
-// console.log(fakeSequences);
-
-// function makeFakeSequences(numberOfFakesSequencesToGenerate) {
-// 	var fakeSequences = {};
-// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
-// 		console.log(ObjectID().str);
-// 		fakeSequences[ObjectID().str] = sequenceData;
-// 	}
-// 	return fakeSequences;
-// 	console.log(fakeSequences);
-// }
-
-// sequenceData.features = {};
-// sequenceData.parts = {};
+var getSequenceWithinRange = require('./getSequenceWithinRange');
+var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
 
 var tree = new baobab({
   vectorEditorState: {
@@ -98,6 +63,18 @@ var tree = new baobab({
       return Math.floor(viewportDimensionsWidth / charWidth);
     }
   ],
+  $translationsWithAminoAcids: [
+    ['vectorEditorState', 'sequenceData','translations'],
+    ['vectorEditorState', 'sequenceData','sequence'],
+    function getTranslationsWithAminoAcids (translations, sequence) {
+      return translations.map(function(translation){
+        var translationWithAminoAcids = assign({},translation);
+        var subseq = getSequenceWithinRange(translation, sequence);
+        translationWithAminoAcids.aminoAcids = getAminoAcidDataForEachBaseOfDna(subseq, (translation.strand == -1 ? false : true));
+        return translationWithAminoAcids;
+      });
+    }
+  ],
   $sequenceLength: [
     ['vectorEditorState', 'sequenceData'],
     function(sequenceData) {
@@ -115,28 +92,26 @@ var tree = new baobab({
       }
     }
   ],
-  $aminoAcidRepresentationOfSequence: [
+  // $aminoAcidRepresentationOfSequence: [
+  //   ['vectorEditorState', 'sequenceData', 'sequence'],
+  //   ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+  //   getAminoAcidsFromPlasmid//might not want to pass circular here..
+  // ],
+  $orfData: [
+    // ['$aminoAcidRepresentationOfSequence'],
     ['vectorEditorState', 'sequenceData', 'sequence'],
     ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-    function(sequence, circular) {
-      return getAminoAcidsFromPlasmid(sequence, circular); //might not want to pass circular here..
-    }
-  ],
-  $orfData: [
-    ['$aminoAcidRepresentationOfSequence'],
-    ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
     ['vectorEditorState', 'minimumOrfSize'],
-    function(aminoAcidRepresentationOfSequence, circular, minimumOrfSize) {
-      return findOrfsFromAminoAcids(aminoAcidRepresentationOfSequence, circular, minimumOrfSize);
-    }
+    findOrfsInPlasmid
   ],
-  
   $combinedSequenceData: [ //holds usual sequence data, plus orfs, plus parts..
     ['vectorEditorState', 'sequenceData'],
     ['$orfData'],
-    function(sequenceData, orfData) {
+    ['$translationsWithAminoAcids'],
+    function(sequenceData, orfData, translations) {
       return assign({}, sequenceData, {
-        orfs: orfData
+        orfs: orfData,
+        translations: translations
       });
     }
   ],

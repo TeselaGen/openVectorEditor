@@ -1,6 +1,5 @@
 
 var React = require('react');
-var _ = require('lodash');
 var classnames = require('classnames');
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var baobabBranch = require('baobab-react/mixins').branch;
@@ -11,13 +10,12 @@ var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 
 var AnnotationContainer = React.createClass({
   render: function () {
-    var {annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations} = this.props;
-    if (annotationRanges.length === 0) {
+    if (this.props.annotationRanges.length === 0) {
       return null;
     }
     var maxAnnotationYOffset = 0;
     var annotationsSVG = [];
-    annotationRanges.forEach(function(annotationRange) {
+    this.props.annotationRanges.forEach(function(annotationRange) {
       if (annotationRange.yOffset > maxAnnotationYOffset) {
         maxAnnotationYOffset = annotationRange.yOffset;
       }
@@ -31,17 +29,17 @@ var AnnotationContainer = React.createClass({
         }.bind(annotation)}
         key={annotation.id + 'start:' + annotationRange.start}
         className={classnames(annotation.id, annotation.type)}
-        d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
+        d={createAnnotationRawPath(annotationRange, this.props.bpsPerRow, this.props.charWidth, this.props.annotationHeight)}
         stroke={annotation.color}
         fillOpacity={0.4}
         fill={annotation.color}/>); //tnrtodo: change fill opacity to a passed variable
 
       annotationsSVG.push(<path
         key={'directionArrow' + annotation.id + 'start:' + annotationRange.start}
-        d={createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
+        d={createAnnotationArrowRawPath(annotationRange, this.props.bpsPerRow, this.props.charWidth, this.props.annotationHeight)}
         stroke={'black'} />);
     });
-    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    var height = (maxAnnotationYOffset + 1) * (this.props.annotationHeight + this.props.spaceBetweenAnnotations);
     return (
       <svg className="annotationContainer" width="100%" height={height} >
         {annotationsSVG}
@@ -74,12 +72,12 @@ var AnnotationContainer = React.createClass({
 
     function createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
       var annotation = annotationRange.annotation;
-      var {xStart, width} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var height = annotationHeight;
       var rangeType = annotationRange.rangeType;
       var forward = annotation.forward;
-      var xEnd = xStart + width;
+      var xEnd = result.xStart + result.width;
       var yEnd = yStart + height;
 
       if (forward) {
@@ -93,7 +91,7 @@ var AnnotationContainer = React.createClass({
       } else {
 
       }
-      var path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + xStart + "," + yEnd + " Z";
+      var path = "M" + result.xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + result.xStart + "," + yEnd + " Z";
       return path;
     }
 
