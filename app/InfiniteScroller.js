@@ -167,7 +167,7 @@ module.exports = React.createClass({
         this.prepareVisibleRows(newRowStart , numberOfRowsToDisplay);
         return; //return early because we need to recompute the visible rows
       } else {
-        throw 'no visible rows!!';
+        throw new Error('no visible rows!!');
       }
     }
     // var firstRowHeight = visibleRowsContainer.childNodes[0].getBoundingClientRect().height;
@@ -259,7 +259,7 @@ module.exports = React.createClass({
     if (!areNonNegativeIntegers([this.rowStart, this.rowEnd])) {
       var e = new Error;
       console.warn('e.trace', e.trace);
-      throw 'Error: row start or end invalid!';
+      throw new Error('Error: row start or end invalid!');
     }
     // if (!this.state || !this.state.visibleRows || (this.state.visibleRows.start !== this.rowStart && this.state.visibleRows.end !== this.rowEnd)) {
     // console.log('setting visible rows')

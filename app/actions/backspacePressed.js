@@ -15,7 +15,7 @@ module.exports = function backspacePressed() {
                 end: caretPosition - 1
             });
         } else {
-            throw 'no caret or selection layer to delete!';
+            throw new Error('no caret or selection layer to delete!');
         }
     }
 };

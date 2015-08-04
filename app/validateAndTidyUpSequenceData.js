@@ -3,8 +3,8 @@ var assign = require('lodash/object/assign');
 var randomColor = require('random-color');
 var FeatureTypes = require('./FeatureTypes.js');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-module.exports = function validateAndTidyUpSequenceData(sequenceData) {
-  var sequenceData = assign({},sequenceData); //sequenceData is usually immutable, so we clone it and return it
+module.exports = function validateAndTidyUpSequenceData(sequence) {
+  var sequenceData = assign({},sequence); //sequence is usually immutable, so we clone it and return it
   var response = {messages:[]};
   if (!sequenceData) {
   	console.log('no sequenceData at all...!');
@@ -14,10 +14,10 @@ module.exports = function validateAndTidyUpSequenceData(sequenceData) {
   	console.log('no bps!');
   	sequenceData.sequence = "";
   }
-  if (!sequenceData.size) {
+  // if (!sequenceData.size) {
     sequenceData.size = sequenceData.sequence.length;
-  }
-  if (sequenceData.circular == 'false' || sequenceData.circular == -1 || !sequenceData.circular) {
+  // }
+  if (sequenceData.circular === 'false' || sequenceData.circular == -1 || !sequenceData.circular) {
     sequenceData.circular = false;
   } else {
     sequenceData.circular = true;
@@ -39,6 +39,9 @@ module.exports = function validateAndTidyUpSequenceData(sequenceData) {
     if (!annotation || typeof annotation !== 'object') {
       response.messages.push('Invalid annotation detected and removed');
       return false;
+    }
+    if (annotation.start == 0) {
+      debugger;
     }
     annotation.start = parseInt(annotation.start);
     annotation.end = parseInt(annotation.end);
@@ -76,6 +79,9 @@ module.exports = function validateAndTidyUpSequenceData(sequenceData) {
       })) {
       response.messages.push('Invalid annotation type detected:  ' + annotation.type + ' for ' + annotation.name + '. set type to misc_feature');
       annotation.type = 'misc_feature';
+    }
+    if (annotation.start == 0) {
+      debugger;
     }
     return true;
   }

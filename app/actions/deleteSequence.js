@@ -40,7 +40,7 @@ module.exports = function deleteSequence(rangeToDelete) {
         }
         // setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
     } else {
-        throw 'must have a selection layer or a caretPosition';
+        throw new Error('must have a selection layer or a caretPosition');
         // console.warn('must have a selection layer or a caretPosition');
     }
     var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();

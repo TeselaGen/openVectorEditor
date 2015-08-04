@@ -17,7 +17,7 @@ module.exports = function setVisibleRows(newVisibleRows) {
             tree.set(['vectorEditorState', 'visibleRows'], newVisibleRows);
         }
     } else {
-        throw ("visibleRows object is missing or invalid");
+        throw new Error("visibleRows object is missing or invalid");
     }
     // viewportDimensions.set(newSize);
 };

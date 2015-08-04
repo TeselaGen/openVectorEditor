@@ -34,12 +34,12 @@ function prepareRowData(sequenceData, bpsPerRow) {
 function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
   var annotationsToRowsMap = {};
   if (!annotations) {
-    console.warn("no annotations detected")
+    console.warn("no annotations detected");
   }
 
   each(annotations, function(annotation) {
     if (!annotation) {
-      throw 'no annotation!'
+      throw new Error('no annotation!');
     }
     mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap);
   });
@@ -192,7 +192,7 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
 
 function splitRangeOnOrigin(range, sequenceLength) {
   if (!areNonNegativeIntegers([range.start, range.end, sequenceLength])) {
-    throw ('invalid inputs!')
+    throw new Error('invalid inputs!')
   }
   var ranges = [];
   if (range.start > range.end) {

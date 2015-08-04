@@ -7,7 +7,7 @@ var areRangesValid = require('./areRangesValid');
 //returns null if no range is left after the trimming
 module.exports = function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange, maxLength) {
   if (!areRangesValid([rangeToBeAdjusted, anotherRange], maxLength)) {
-    throw 'invalid ranges passed';
+    throw new Error('invalid ranges passed');
   }
   var trimmedRange = trimRangeByAnotherRange(rangeToBeAdjusted, anotherRange, maxLength);
   if (trimmedRange) { //if there is a range left after being trimmed, adjust it by the deleted anotherRange

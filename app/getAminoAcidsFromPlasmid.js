@@ -65,16 +65,16 @@
 // function getAminoAcidsForEntirePlasmid(frame, sequence, forward, circular) {
 //   var ObjectID = require("bson-objectid");
 //   if (typeof(forward) === "undefined") {
-//     throw ('no direction passed');
+//     throw new Error('no direction passed');
 //   }
 //   // if (typeof(circular) === "undefined") {
-//   //   throw ('no orf StrandType passed');
+//   //   throw new Error('no orf StrandType passed');
 //   // }
 //   if (!areNonNegativeIntegers([frame]) || frame > 2) {
-//     throw ('invalid frame passed');
+//     throw new Error('invalid frame passed');
 //   }
 //   if (typeof sequence !== 'string') {
-//     throw ('invalid sequence passed');
+//     throw new Error('invalid sequence passed');
 //   }
 //   var maxLength = sequence.length;
 

@@ -69,7 +69,7 @@ var RowItem = React.createClass({
       // width: "100%"
     };
     var highlightLayerStyle = {
-      height: "90%",
+      height: "98%",
       // width: "100%",
       background: 'blue',
       position: "absolute",
@@ -80,7 +80,7 @@ var RowItem = React.createClass({
     };
 
     var cursorStyle = {
-      height: "90%",
+      height: "98%",
       // width: "100%",
       background: 'black',
       position: "absolute",

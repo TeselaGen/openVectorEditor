@@ -1,8 +1,6 @@
 
 var React = require('react');
 var classnames = require('classnames');
-var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
-var baobabBranch = require('baobab-react/mixins').branch;
 var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
@@ -10,12 +8,18 @@ var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 
 var AnnotationContainer = React.createClass({
   render: function () {
-    if (this.props.annotationRanges.length === 0) {
+    var annotationRanges = this.props.annotationRanges;
+    var bpsPerRow = this.props.bpsPerRow;
+    var charWidth = this.props.charWidth;
+    var annotationHeight = this.props.annotationHeight;
+    var spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
+    
+    if (annotationRanges.length === 0) {
       return null;
     }
     var maxAnnotationYOffset = 0;
     var annotationsSVG = [];
-    this.props.annotationRanges.forEach(function(annotationRange) {
+    annotationRanges.forEach(function(annotationRange) {
       if (annotationRange.yOffset > maxAnnotationYOffset) {
         maxAnnotationYOffset = annotationRange.yOffset;
       }
@@ -29,17 +33,17 @@ var AnnotationContainer = React.createClass({
         }.bind(annotation)}
         key={annotation.id + 'start:' + annotationRange.start}
         className={classnames(annotation.id, annotation.type)}
-        d={createAnnotationRawPath(annotationRange, this.props.bpsPerRow, this.props.charWidth, this.props.annotationHeight)}
+        d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
         stroke={annotation.color}
         fillOpacity={0.4}
         fill={annotation.color}/>); //tnrtodo: change fill opacity to a passed variable
 
       annotationsSVG.push(<path
         key={'directionArrow' + annotation.id + 'start:' + annotationRange.start}
-        d={createAnnotationArrowRawPath(annotationRange, this.props.bpsPerRow, this.props.charWidth, this.props.annotationHeight)}
+        d={createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
         stroke={'black'} />);
     });
-    var height = (maxAnnotationYOffset + 1) * (this.props.annotationHeight + this.props.spaceBetweenAnnotations);
+    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
     return (
       <svg className="annotationContainer" width="100%" height={height} >
         {annotationsSVG}

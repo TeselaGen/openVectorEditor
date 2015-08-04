@@ -5,7 +5,6 @@ var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 // var getAminoAcidsFromPlasmid = require('./getAminoAcidsFromPlasmid');
-var getSubstringByRange = require('get-substring-by-range');
 var assign = require('lodash/object/assign');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
@@ -20,7 +19,7 @@ var tree = new baobab({
     CHAR_HEIGHT: 15,
     // FONT_SIZE: 14,
     ANNOTATION_HEIGHT: 15,
-    minimumOrfSize: 50,
+    minimumOrfSize: 300,
     tickSpacing: 10,
     SPACE_BETWEEN_ANNOTATIONS: 3,
     preloadRowStart: 0,
@@ -86,7 +85,7 @@ var tree = new baobab({
     ['vectorEditorState', 'selectionLayer'],
     function(sequence, selectionLayer) {
       if (sequence && selectionLayer && selectionLayer.selected) {
-        return getSubstringByRange(sequence, selectionLayer);
+        return getSequenceWithinRange(selectionLayer, sequence);
       } else {
         return '';
       }
@@ -109,6 +108,7 @@ var tree = new baobab({
     ['$orfData'],
     ['$translationsWithAminoAcids'],
     function(sequenceData, orfData, translations) {
+      debugger;
       return assign({}, sequenceData, {
         orfs: orfData,
         translations: translations

@@ -11,18 +11,18 @@ module.exports = function copySelection() {
     var clipboardDataCursor = tree.select('vectorEditorState', 'clipboardData');
     var allowPartialAnnotationsOnCopy = tree.select('vectorEditorState', 'allowPartialAnnotationsOnCopy').get();
     if (!clipboardDataCursor) {
-        throw 'no clipboard cursor..';
+        throw new Error('no clipboard cursor..');
     }
     if (sequenceData && selectionLayer.selected) {
         clipboardDataCursor.set(copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
 
         function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
             if (sequenceData.sequence !== '' && !sequenceData.sequence) {
-                throw 'invalid sequence data';
+                throw new Error('invalid sequence data');
             }
             var sequenceLength = sequenceData.sequence.length;
             if (!areRangesValid([rangeToCopy], sequenceLength)) {
-                throw 'invalid range passed';
+                throw new Error('invalid range passed');
             }
             var newSequenceData = {};
             newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);

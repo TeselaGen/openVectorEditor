@@ -24,7 +24,9 @@ var TranslationContainer = React.createClass({
     return null;
     debugger;
 
-    function getAminoAcidsForSubsectionOfTranslation(sequenceLength, rangeSubsection, fullTranslationRange, forward, aminoAcidRepresentationOfFullTranslationRange) {
+    
+
+    function getAminoAcidsForSubsectionOfTranslation(sequenceLength, rangeSubsection, fullTranslationRange, forward) {
       var comparisonRange;
       if (fullTranslationRange.start > fullTranslationRange.end) { //circular fullTranslationRange
         //0 to fullTranslationRange.start needs to be shifted

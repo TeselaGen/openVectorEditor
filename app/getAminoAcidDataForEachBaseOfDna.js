@@ -13,10 +13,10 @@ var getAA = require('./getAminoAcidFromSequenceTriplet');
  */
 module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forward) {
   if (typeof(forward) === "undefined") {
-    throw ('no direction passed');
+    throw new Error('no direction passed');
   }
   if (typeof sequenceString !== 'string') {
-    throw ('invalid sequenceString passed');
+    throw new Error('invalid sequenceString passed');
   }
   var aminoAcidDataForEachBaseOfDNA = [];
 
@@ -83,7 +83,7 @@ module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forwa
   }
 
   if (sequenceString.length !== aminoAcidDataForEachBaseOfDNA.length) {
-    throw 'something went wrong!';
+    throw new Error('something went wrong!');
   }
   return aminoAcidDataForEachBaseOfDNA;
 };

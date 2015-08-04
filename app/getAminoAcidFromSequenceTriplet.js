@@ -6,10 +6,10 @@ module.exports = function getAminoAcidFromSequenceTriplet(sequenceString) {
   if (typeof sequenceString === 'string') {
     sequenceString = sequenceString.toLowerCase();
   } else {
-    throw ('must pass a string to this function');
+    throw new Error('must pass a string to this function');
   }
   if (sequenceString.length !== 3) {
-    throw 'must pass a string of length 3';
+    throw new Error('must pass a string of length 3');
   }
   if (threeLetterSequenceStringToAminoAcidMap[sequenceString]) {
     return threeLetterSequenceStringToAminoAcidMap[sequenceString];

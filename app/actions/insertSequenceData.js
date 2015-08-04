@@ -55,7 +55,7 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
 
     function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
         if (!annotationsToBeAdjusted) {
-            throw 'no annotations passed!';
+            throw new Error('no annotations passed!');
         }
         return annotationsToBeAdjusted.map(function(annotation) {
             var newAnnotationRange = adjustRangeToSequenceInsert(annotation, insertStart, insertLength);
@@ -65,7 +65,7 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
                 adjustedAnnotation.end = newAnnotationRange.end;
                 return adjustedAnnotation;
             } else {
-                throw 'no range!';
+                throw new Error('no range!');
             }
         });
     }

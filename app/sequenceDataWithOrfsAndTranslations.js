@@ -125,22 +125,24 @@ var sequenceData = {
 };
 
 // tnr: this is used to generate a very large, multi-featured sequence
-// var string = "atgtagagagagagaggtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 1; i < 1000; i++) {
-//  reallyLongFakeSequence += string;
-//  if (i % 100 === 0) {
-//    sequenceData.features.push({
-//      id: i,
-//      start: i*10,
-//      end: i*10 + 100,
-//      name: 'cooljim',
-//      color: 'green',
-//      forward: true,
-//      annotationType: "feature"
-//    });
-//  }
-// }
-// sequenceData.sequence = reallyLongFakeSequence;
+var string = "ggggcccccgggggccc";
+var reallyLongFakeSequence = "";
+for (var i = 1; i < 100000; i++) {
+  reallyLongFakeSequence += string;
+  if (i % 100 === 0) {
+    reallyLongFakeSequence += 'taafatg';
+    sequenceData.features.push({
+      id: i,
+      start: parseInt(i * 10),
+      end: parseInt(i * 10 + 100),
+      name: 'cooljim',
+      color: 'green',
+      forward: true,
+      annotationType: "feature"
+    });
+  }
+}
+debugger;
+sequenceData.sequence += reallyLongFakeSequence;
 // 
 module.exports = sequenceData;
