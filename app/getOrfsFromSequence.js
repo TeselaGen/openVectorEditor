@@ -91,9 +91,7 @@ module.exports = function getOrfsFromSequence(options) {
     } else {
       orfEnds[orf.end] = index;
       if (!forward) {
-        // debugger;
         // if (originalSequenceLength - orf.end - 1 == 3657) {
-        //   debugger;
         // }
         //this check needs to come after the above assignment of orfEnds
         //flip the start and ends

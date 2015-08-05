@@ -1,5 +1,7 @@
+var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
 /**
- * adjust subRange to "believe" container range starts at 0.
+ * "zeroes" a subrange of a container range by 
+ * adjusting subRange start and end such that it is as if the container range start = 0.
  * @param  {object} subRange  {start:
  *                                 	end:
  *                                 	}
@@ -12,25 +14,19 @@
  *                                 	}
  */
 module.exports = function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
-	//first check to make sure the continer range fully contains the subRange
-	if (containerRange.start > containerRange.end) {
-		if (subRange.start > containerRange.start && subRange.start < containerRange.end) {
-			throw new Error('subRange must be fully contained by containerRange! Otherwise this function does not make sense')
-		}
-		if (subRange.end > containerRange.start && subRange.end < containerRange.end) {
-			throw new Error('subRange must be fully contained by containerRange! Otherwise this function does not make sense')
-		}
-	} else {
-		if (subRange.start < containerRange.start || subRange.end > containerRange.end) {
-			throw new Error('subRange must be fully contained by containerRange! Otherwise this function does not make sense')
-		}
+	//first check to make sure the container range fully contains the subRange
+	var trimmedSubRange = trimRangeByAnotherRange(subRange, containerRange, sequenceLength);
+	if (trimmedSubRange) {
+		throw new Error('subRange must be fully contained by containerRange! Otherwise this function does not make sense')
 	}
-	subRange.start -= containerRange.start;
-	subRange.end -= containerRange.end;
-	if (subRange.start < 0) {
-		subRange.start += sequenceLength;
+	var newSubrange = {};
+	newSubrange.start = subRange.start - containerRange.start;
+	newSubrange.end = subRange.end - containerRange.start;
+	if (newSubrange.start < 0) {
+		newSubrange.start += sequenceLength;
 	}
-	if (subRange.end < 0) {
-		subRange.end += sequenceLength;
+	if (newSubrange.end < 0) {
+		newSubrange.end += sequenceLength;
 	}
+	return newSubrange;
 };

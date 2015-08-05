@@ -29,8 +29,13 @@ var tree = new baobab({
     showCutsites: true,
     showParts: true,
     showFeatures: true,
+    showTranslations: true,
     showAxis: true,
     showReverseSequence: true,
+    rowViewDimensions: {
+      height: 500, //come back and make these dynamic
+      width: 500
+    },
     viewportDimensions: {
       height: 500, //come back and make these dynamic
       width: 500
@@ -54,12 +59,12 @@ var tree = new baobab({
     clipboardData: null
   },
   $bpsPerRow: [
-    ['vectorEditorState', 'viewportDimensions',
+    ['vectorEditorState', 'rowViewDimensions',
       'width'
     ],
     ['vectorEditorState', 'charWidth'],
-    function(viewportDimensionsWidth, charWidth) {
-      return Math.floor(viewportDimensionsWidth / charWidth);
+    function(rowViewDimensionsWidth, charWidth) {
+      return Math.floor(rowViewDimensionsWidth / charWidth);
     }
   ],
   $translationsWithAminoAcids: [
@@ -108,7 +113,6 @@ var tree = new baobab({
     ['$orfData'],
     ['$translationsWithAminoAcids'],
     function(sequenceData, orfData, translations) {
-      debugger;
       return assign({}, sequenceData, {
         orfs: orfData,
         translations: translations

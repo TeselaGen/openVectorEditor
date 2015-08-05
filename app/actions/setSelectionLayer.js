@@ -7,6 +7,7 @@ module.exports = function setSelectionLayer (newSelectionLayer) {
     var getRidOfCursor;
     var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
     if (!newSelectionLayer || typeof newSelectionLayer !== 'object') {
+        //no selection layer passed, so cancel it
         newSelectionLayer = {
             start: -1,
             end: -1,
@@ -22,14 +23,16 @@ module.exports = function setSelectionLayer (newSelectionLayer) {
         //     start, end, selected, cursorAtEnd
         // } = newSelectionLayer;
         if (areNonNegativeIntegers([start, end])) {
+            //valid selection layer passed, so set it.
             newSelectionLayer = {
                 start: start,
                 end: end,
                 selected: true,
-                cursorAtEnd: cursorAtEnd
+                cursorAtEnd: typeof cursorAtEnd === 'undefined' ? true : false //if no cursorAtEnd is passed, auto set it to true
             };
             getRidOfCursor = true;
         } else {
+            //invalid selection layer passed, so cancel it
             newSelectionLayer = {
                 start: -1,
                 end: -1,
@@ -43,5 +46,4 @@ module.exports = function setSelectionLayer (newSelectionLayer) {
         setCaretPosition(-1);
     }
     tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
-    // viewportDimensions.set(newSize);
 };

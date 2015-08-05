@@ -18,7 +18,6 @@ describe('trimRangeByAnotherRange', function() {
 		});
 	});
 	it('it does not trim non circular ranges with overlap contained within it', function() {
-		debugger;
 		assert.deepEqual(trimRangeByAnotherRange({
 			start: 0,
 			end: 10

@@ -40,9 +40,6 @@ module.exports = function validateAndTidyUpSequenceData(sequence) {
       response.messages.push('Invalid annotation detected and removed');
       return false;
     }
-    if (annotation.start == 0) {
-      debugger;
-    }
     annotation.start = parseInt(annotation.start);
     annotation.end = parseInt(annotation.end);
 
@@ -79,9 +76,6 @@ module.exports = function validateAndTidyUpSequenceData(sequence) {
       })) {
       response.messages.push('Invalid annotation type detected:  ' + annotation.type + ' for ' + annotation.name + '. set type to misc_feature');
       annotation.type = 'misc_feature';
-    }
-    if (annotation.start == 0) {
-      debugger;
     }
     return true;
   }

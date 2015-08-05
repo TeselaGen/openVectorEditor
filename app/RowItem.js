@@ -19,6 +19,7 @@ var RowItem = React.createClass({
     tickSpacing: ['vectorEditorState', 'tickSpacing'],
     SPACE_BETWEEN_ANNOTATIONS: ['vectorEditorState', 'SPACE_BETWEEN_ANNOTATIONS'],
     showFeatures: ['vectorEditorState', 'showFeatures'],
+    showTranslations: ['vectorEditorState', 'showTranslations'],
     showParts: ['vectorEditorState', 'showParts'],
     showOrfs: ['vectorEditorState', 'showOrfs'],
     showAxis: ['vectorEditorState', 'showAxis'],
@@ -136,6 +137,9 @@ var RowItem = React.createClass({
       // <div className={className}>
       // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
       //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
+    // if (row.translations.length && showTranslations) {
+    //   debugger;
+    // }
     return (
         <div className="rowContainer"
           style={rowContainerStyle}
@@ -170,7 +174,7 @@ var RowItem = React.createClass({
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
             {this.state.showTranslations &&
-              <OrfContainer
+              <TranslationContainer
                 row={row}
                 annotationRanges={row.translations}
                 charWidth={this.state.charWidth}

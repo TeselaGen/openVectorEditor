@@ -1,13 +1,13 @@
-var ObjectID = require("bson-objectid");
+// var ObjectID = require("bson-objectid");
 var React = require('react');
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('./InfiniteScroller.js');
 var setCaretPosition = require('./actions/setCaretPosition');
 var setSelectionLayer = require('./actions/setSelectionLayer');
-var setVisibleRows = require('./actions/setVisibleRows');
+// var setVisibleRows = require('./actions/setVisibleRows');
 
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 // var InfiniteScrollContainer = require('./InfiniteScrollContainer');
 // var prepareRowData = require('./prepareRowData');
 // var charWidth = require('./editorConstants').charWidth;
@@ -20,7 +20,7 @@ var RowView = React.createClass({
   cursors: {
     preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
     averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
-    viewportDimensions: ['vectorEditorState', 'viewportDimensions'],
+    rowViewDimensions: ['vectorEditorState', 'rowViewDimensions'],
     totalRows: ['$totalRows'],
     rowData: ['$rowData'],
     // visibleRows: ['$visibleRows'],
@@ -188,8 +188,8 @@ var RowView = React.createClass({
     this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * rowHeight;
 
     var infiniteContainerStyle = {
-      height: this.state.viewportDimensions.height,
-      width: this.state.viewportDimensions.width,
+      height: this.state.rowViewDimensions.height,
+      width: this.state.rowViewDimensions.width,
     //   overflowY: "scroll",
       // float: "left",
       // paddingRight: "20px"
@@ -212,7 +212,7 @@ var RowView = React.createClass({
             <InfiniteScroller
                 ref={'InfiniteScroller'}
                 averageElementHeight={100}
-                containerHeight={this.state.viewportDimensions.height}
+                containerHeight={this.state.rowViewDimensions.height}
                 renderFunction={renderRows}
                 rowData={this.state.rowData}
                 preloadRowStart={40}

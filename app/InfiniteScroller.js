@@ -31,16 +31,19 @@ module.exports = React.createClass({
     // console.log('distanceFromTopOfVisibleRows', distanceFromTopOfVisibleRows);
     // console.log('distanceFromBottomOfVisibleRows', distanceFromBottomOfVisibleRows);
     // console.log("heeet");
+    var rowsToAdd;
     if (distanceFromTopOfVisibleRows < 0) {
       if (this.rowStart > 0) {
         // console.log('HET!');
         // console.log('Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageElementHeight)', Math.ceil(-1 * distanceFromTopOfVisibleRows/currentAverageElementHeight));
-        var rowsToAdd = Math.ceil(-1 * distanceFromTopOfVisibleRows / currentAverageElementHeight);
+        rowsToAdd = Math.ceil(-1 * distanceFromTopOfVisibleRows / currentAverageElementHeight);
         // console.log('rowsToAdd', rowsToAdd);
         // newRowStart = this.rowStart - (rowsToAdd > 4 ? rowsToAdd : 4);
         newRowStart = this.rowStart - rowsToAdd;
 
-        if (newRowStart < 0) newRowStart = 0;
+        if (newRowStart < 0) {
+          newRowStart = 0;
+        } 
 
         this.prepareVisibleRows(newRowStart, this.state.visibleRows.length);
       }
@@ -50,7 +53,7 @@ module.exports = React.createClass({
       var rowsToGiveOnBottom = this.props.rowData.length - 1 - this.rowEnd;
       if (rowsToGiveOnBottom > 0) {
         //   console.log('Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageElementHeight)', Math.ceil(-1*distanceFromBottomOfVisibleRows/currentAverageElementHeight));
-        var rowsToAdd = Math.ceil(-1 * distanceFromBottomOfVisibleRows / currentAverageElementHeight);
+        rowsToAdd = Math.ceil(-1 * distanceFromBottomOfVisibleRows / currentAverageElementHeight);
         // console.log('rowsToAdd', rowsToAdd);
         // newRowStart = this.rowStart + (rowsToAdd > 4 ? rowsToAdd : 4);
         newRowStart = this.rowStart + rowsToAdd;
@@ -120,7 +123,6 @@ module.exports = React.createClass({
     //thus we need to adjust the scrollTop positioning of the infinite container so that the UI doesn't jump as we 
     //make the replacements
     //   if (this.rowEnd === this.props.rowData.length - 1) {
-    //       debugger;
     //   }
     // console.log('this.state.visibleRows.length', this.state.visibleRows.length);
     var infiniteContainer = React.findDOMNode(this.refs.infiniteContainer);
@@ -296,11 +298,11 @@ module.exports = React.createClass({
 
     var infiniteContainerStyle = {
       height: this.props.containerHeight,
-      //   width: this.state.viewportDimensions.width,
+      //   width: this.state.rowViewDimensions.width,
       overflowY: "scroll",
       // float: "left",
       // paddingRight: "20px"
-      padding: 10
+      // padding: 10
     };
     // infiniteContainerStyle.pointerEvents = 'none'
     return (

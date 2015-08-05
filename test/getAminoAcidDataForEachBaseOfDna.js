@@ -41,7 +41,6 @@ describe('getAminoAcidDataForEachBaseOfDna tranlates a', function() {
 		}]);
 	});
 	it('> 1 amino acid long sequence', function() {
-		debugger;
 		aaData = getAminoAcidDataForEachBaseOfDna('atgtaat', true);
 		assert.deepEqual(aaData, [{
 			aminoAcid: getAA('atg'),

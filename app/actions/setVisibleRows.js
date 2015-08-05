@@ -19,5 +19,4 @@ module.exports = function setVisibleRows(newVisibleRows) {
     } else {
         throw new Error("visibleRows object is missing or invalid");
     }
-    // viewportDimensions.set(newSize);
 };
