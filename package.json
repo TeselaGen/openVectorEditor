@@ -48,7 +48,8 @@
     "webpack-dev-server": "^1.9.0"
   },
   "scripts": {
-    "test": "tap ./test/* --harmony",
+    "test": "mocha ./test/* --harmony",
+    "tap-test": "tap ./test/* --harmony",
     "testDebug": "./node_modules/mocha/bin/mocha ./test/* --debug-brk --compilers jsx:babel/register",
     "dev": "webpack-dev-server --devtool eval --progress --colors --content-base",
     "printDependencyGraph": "webpack --profile --json > stats.json"

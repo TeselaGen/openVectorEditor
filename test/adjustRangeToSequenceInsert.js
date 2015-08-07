@@ -1,5 +1,5 @@
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 
 var adjustRangeToSequenceInsert = require('../app/adjustRangeToSequenceInsert.js');
 // var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');

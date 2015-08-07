@@ -25,7 +25,6 @@ module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forwa
   if (!forward) {
     //compute the start of the sequence, but only if translating in the reverse direction
     aminoAcidIndex = Math.floor((sequenceString.length - 1)/ 3);
-    console.log('aminoAcidIndex: ' + aminoAcidIndex);
     //because we're translating in the reverse direction, we need to
     //check to see if there are untranslated amino acids at the start of the sequenceString
     revCompGapLength = sequenceString.length % 3;

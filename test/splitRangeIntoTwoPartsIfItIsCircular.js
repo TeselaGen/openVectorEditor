@@ -17,8 +17,8 @@
 //     }];
 //   }
 // };
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 var splitRangeIntoTwoPartsIfItIsCircular = require('../app/splitRangeIntoTwoPartsIfItIsCircular.js');
 var assert = require('assert');
 describe('splitRangeIntoTwoPartsIfItIsCircular', function() {

@@ -1,5 +1,5 @@
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 
 var setCaretPosition = require('../../app/actions/setCaretPosition');
 var tree = require('../../app/baobabTree.js');

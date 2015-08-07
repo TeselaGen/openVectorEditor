@@ -1,5 +1,5 @@
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 
 var getOverlapsOfPotentiallyCircularRanges = require('../app/getOverlapsOfPotentiallyCircularRanges.js');
 // var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');

@@ -1,6 +1,6 @@
 //tnr: half finished test. 
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 var setCaretPosition = require('../../app/actions/setCaretPosition');
 var insertSequenceData = require('../../app/actions/insertSequenceData');
 var setSelectionLayer = require('../../app/actions/setSelectionLayer');

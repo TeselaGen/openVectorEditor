@@ -1,5 +1,5 @@
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 var expect = require('chai').expect;
 var zeroSubrangeByContainerRange = require('../app/zeroSubrangeByContainerRange.js');
 // var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');

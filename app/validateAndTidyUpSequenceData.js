@@ -4,18 +4,20 @@ var randomColor = require('random-color');
 var FeatureTypes = require('./FeatureTypes.js');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 module.exports = function validateAndTidyUpSequenceData(sequence) {
-  var sequenceData = assign({},sequence); //sequence is usually immutable, so we clone it and return it
-  var response = {messages:[]};
+  var sequenceData = assign({}, sequence); //sequence is usually immutable, so we clone it and return it
+  var response = {
+    messages: []
+  };
   if (!sequenceData) {
-  	console.log('no sequenceData at all...!');
-  	sequenceData = {};
+    console.warn('no sequenceData at all...!');
+    sequenceData = {};
   }
   if (!sequenceData.sequence) {
-  	console.log('no bps!');
-  	sequenceData.sequence = "";
+    console.warn('no bps!');
+    sequenceData.sequence = "";
   }
   // if (!sequenceData.size) {
-    sequenceData.size = sequenceData.sequence.length;
+  sequenceData.size = sequenceData.sequence.length;
   // }
   if (sequenceData.circular === 'false' || sequenceData.circular == -1 || !sequenceData.circular) {
     sequenceData.circular = false;
@@ -23,12 +25,16 @@ module.exports = function validateAndTidyUpSequenceData(sequence) {
     sequenceData.circular = true;
   }
   if (!Array.isArray(sequenceData.features)) {
-    console.log('no features array!');
+    console.warn('no features array!');
     sequenceData.features = [];
   }
   if (!Array.isArray(sequenceData.parts)) {
-  	console.log('no parts array!');
-  	sequenceData.parts = [];
+    console.warn('no parts array!');
+    sequenceData.parts = [];
+  }
+  if (!Array.isArray(sequenceData.features)) {
+    console.warn('no parts array!');
+    sequenceData.features = [];
   }
   sequenceData.features = sequenceData.features.filter(cleanUpAnnotation);
 
@@ -60,8 +66,8 @@ module.exports = function validateAndTidyUpSequenceData(sequence) {
       annotation.end = 0;
     }
     if (!annotation.color) {
-        annotation.color = randomColor()
-      }
+      annotation.color = randomColor()
+    }
     annotation.strand = parseInt(annotation.strand);
     if (annotation.strand === -1 || annotation.strand === false || annotation.strand === 'false' || annotation.strand === '-') {
       annotation.strand = -1;

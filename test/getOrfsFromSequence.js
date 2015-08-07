@@ -1,5 +1,5 @@
-var tap = require('tap');
-tap.mochaGlobals();
+// var tap = require('tap');
+// tap.mochaGlobals();
 var expect = require('chai').expect;
 
 var getOrfsFromSequence = require('../app/getOrfsFromSequence.js');
@@ -23,6 +23,7 @@ describe('getOrfsFromSequence', function() {
 		// expect(orf.id).to.be.a('string');
 	});
 	it('finds correct orfs in reverse direction in slightly more complex sequence', function() {
+		debugger;
 		var orfs = getOrfsFromSequence({
 			sequence: 'ttarrrcatcat',
 			//   E       S     S
@@ -44,8 +45,8 @@ describe('getOrfsFromSequence', function() {
 		expect(orfs).to.be.length(1);
 		var orf = orfs[0];
 		expect(orf).to.be.an('object');
-		expect(orf.start).to.equal(11);
-		expect(orf.end).to.equal(0);
+		expect(orf.start).to.equal(0);
+		expect(orf.end).to.equal(11);
 		expect(orf.forward).to.equal(false);
 		expect(orf.frame).to.equal(0);
 		expect(orf.internalStartCodonIndices).to.deep.equal([8]);
@@ -61,8 +62,8 @@ describe('getOrfsFromSequence', function() {
 		expect(orfs).to.be.length(1);
 		var orf = orfs[0];
 		expect(orf).to.be.an('object');
-		expect(orf.start).to.equal(5);
-		expect(orf.end).to.equal(0);
+		expect(orf.start).to.equal(0);
+		expect(orf.end).to.equal(5);
 		expect(orf.forward).to.equal(false);
 		expect(orf.frame).to.equal(0);
 		expect(orf.internalStartCodonIndices).to.deep.equal([]);

@@ -1,5 +1,5 @@
-var tap = require('tap');
-tap.mochaGlobals();
+//var tap = require('tap');
+//tap.mochaGlobals();
 
 var trimRangeByAnotherRange = require('../app/trimRangeByAnotherRange.js');
 // var trimRangeByAnotherRange = require('../app/trimRangeByAnotherRange.js');
