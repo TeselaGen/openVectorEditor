@@ -79,7 +79,7 @@ module.exports = React.createClass({
     this.prepareVisibleRows(rowStart, newNumberOfRowsToDisplay);
   },
 
-  componentWillUpdate: function(argument) {
+  componentWillUpdate: function() {
     var visibleRowsContainer = React.findDOMNode(this.refs.visibleRowsContainer);
     this.soonToBeRemovedRowElementHeights = 0;
     this.numberOfRowsAddedToTop = 0;

@@ -1,12 +1,8 @@
 var React = require('react');
-var classnames = require('classnames');
 var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 var zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
-var randomColor = require('random-color');
-var flatmap = require('flatmap');
 var AASliver = require('./AASliver');
 
 var TranslationContainer = React.createClass({
@@ -31,24 +27,36 @@ var TranslationContainer = React.createClass({
       //   debugger;
       // }
       var annotation = annotationRange.annotation;
-      var aminoAcidRepresentationOfTranslation = annotation.aminoAcids;
+      //we have an amino acid representation of our entire annotation, but it is an array 
+      //starting at 0, even if the annotation starts at some arbitrary point in the sequence
+      var AARepresentationOfTranslation = annotation.aminoAcids;
+      //so we "zero" our subRange by the annotation start
       var zeroedSubrange = zeroSubrangeByContainerRange(annotationRange, annotation, sequenceLength);
-      var aminoAcidsForZeroedSubrange = getSequenceWithinRange(zeroedSubrange, aminoAcidRepresentationOfTranslation);
-      var translationSVG = aminoAcidsForZeroedSubrange.map(function (aminoAcid, index) {
+      //which allows us to then get the amino acids for the subRange
+      var aminoAcidsForSubrange = getSequenceWithinRange(zeroedSubrange, AARepresentationOfTranslation);
+      //we then loop over all the amino acids in the sub range and draw them onto the row
+      var translationSVG = aminoAcidsForSubrange.map(function (aminoAcidSliver, index) {
         var aminoAcidPositionInSequence = annotationRange.start + index;
         var relativeAAPositionInRow = annotationRange.start % bpsPerRow + index;
+        var relativeAAPositionInTranslation = zeroedSubrange.start + index;
+
+        //get the codonIndices relative to 
+        var codonIndices = getCodonIndicesFromAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation);
+
+        
+
         return (
           <AASliver 
                 onClick={function (e) {
                   e.stopPropagation();
-                  setSelectionLayer({start: aminoAcidPositionInSequence, end: aminoAcidPositionInSequence});
+                  setSelectionLayer(codonIndices);
                 }}
                 key={annotation.id + aminoAcidPositionInSequence}
                 forward={false}
                 shift={74*relativeAAPositionInRow}
-                letter={aminoAcid.aminoAcid.value}
-                color={aminoAcid.aminoAcid.color}
-                positionInCodon={aminoAcid.positionInCodon}>
+                letter={aminoAcidSliver.aminoAcid.value}
+                color={aminoAcidSliver.aminoAcid.color}
+                positionInCodon={aminoAcidSliver.positionInCodon}>
           </AASliver>
         );
 
@@ -56,7 +64,7 @@ var TranslationContainer = React.createClass({
       // console.log('translationSVG: ' + translationSVG);
       annotationsSVG = annotationsSVG.concat(translationSVG);
       // console.log('annotationsSVG: ' + annotationsSVG);
-      // console.log('aminoAcidsForZeroedSubrange: ' + aminoAcidsForZeroedSubrange);
+      // console.log('aminoAcidsForSubrange: ' + aminoAcidsForSubrange);
 
 
       
@@ -67,11 +75,11 @@ var TranslationContainer = React.createClass({
       //   stroke={'black'} />);
     });
     // console.log('translationSVG: ' + translationSVG);
-    
+    var transformX = charWidth/75;
     var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
     return (
       <svg className="annotationContainer" width="105%" height={height} >
-        <g transform="scale(.2,.2) ">
+        <g transform={"scale(" + transformX + ",.2) "}>
         {annotationsSVG}
         </g>
       </svg>
@@ -101,6 +109,52 @@ var TranslationContainer = React.createClass({
     //   }
     //   return path;
     // }
+    function getCodonIndicesFromAASliver(aminoAcidPositionInSequence,aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation) {
+          var AASliverOneBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 1];
+          if (AASliverOneBefore && AASliverOneBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
+            var AASliverTwoBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
+            if (AASliverTwoBefore && AASliverTwoBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
+              return {
+                start: aminoAcidPositionInSequence - 2,
+                end: aminoAcidPositionInSequence
+              };
+            } else {
+              if (aminoAcidSliver.fullCodon === true) {
+                return {
+                  start: aminoAcidPositionInSequence - 1,
+                  end: aminoAcidPositionInSequence + 1
+                };
+              } else {
+                return {
+                  start: aminoAcidPositionInSequence - 1,
+                  end: aminoAcidPositionInSequence
+                };
+              }
+            }
+          } else {
+            //no AASliver before with same index
+            if (aminoAcidSliver.fullCodon === true) {
+              //sliver is part of a full codon, so we know the codon will expand 2 more slivers ahead
+              return {
+                start: aminoAcidPositionInSequence,
+                end: aminoAcidPositionInSequence + 2
+              };
+            } else {
+              var AASliverOneAhead = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
+              if (AASliverOneAhead && AASliverOneAhead.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
+                return {
+                  start: aminoAcidPositionInSequence,
+                  end: aminoAcidPositionInSequence + 1
+                };
+              } else {
+                return {
+                  start: aminoAcidPositionInSequence,
+                  end: aminoAcidPositionInSequence + 1
+                };
+              }
+            }
+          }
+        }
 
     function createAminoAcidRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight, aminoAcidPositionInSequence) {
       var annotation = annotationRange.annotation;

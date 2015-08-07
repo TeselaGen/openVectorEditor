@@ -34,7 +34,8 @@ module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forwa
         aminoAcidDataForEachBaseOfDNA.push({
           aminoAcid: getAA('xxx'), //fake xxx triplet returns the gap amino acid
           positionInCodon: revCompGapLength - i - 1,
-          aminoAcidIndex: aminoAcidIndex
+          aminoAcidIndex: aminoAcidIndex,
+          fullCodon: false
         });
       }
       aminoAcidIndex--;
@@ -52,17 +53,20 @@ module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forwa
     aminoAcidDataForEachBaseOfDNA.push({
       aminoAcid: aminoAcid, //gap amino acid
       positionInCodon: forward ? 0 : 2,
-      aminoAcidIndex: aminoAcidIndex
+      aminoAcidIndex: aminoAcidIndex,
+      fullCodon: true
     });
     aminoAcidDataForEachBaseOfDNA.push({
       aminoAcid: aminoAcid, //gap amino acid
       positionInCodon: 1,
-      aminoAcidIndex: aminoAcidIndex
+      aminoAcidIndex: aminoAcidIndex,
+      fullCodon: true
     });
     aminoAcidDataForEachBaseOfDNA.push({
       aminoAcid: aminoAcid, //gap amino acid
       positionInCodon: forward ? 2 : 0,
-      aminoAcidIndex: aminoAcidIndex
+      aminoAcidIndex: aminoAcidIndex,
+      fullCodon: true
     });
     if (forward) {
       aminoAcidIndex++;
@@ -78,7 +82,8 @@ module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forwa
     aminoAcidDataForEachBaseOfDNA.push({
       aminoAcid: getAA('xxx'), //fake xxx triplet returns the gap amino acid
       positionInCodon: j,
-      aminoAcidIndex: aminoAcidIndex
+      aminoAcidIndex: aminoAcidIndex,
+      fullCodon: false
     });
   }
 
