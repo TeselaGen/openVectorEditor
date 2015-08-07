@@ -1,3 +1,5 @@
+var tap = require('tap');
+tap.mochaGlobals();
 // module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
 //     //this function is a little confusing, but basically it takes an array of overlaps 
 //     //generated from a range overlap calculation, and it sews them together if possible
@@ -47,6 +49,19 @@ var getOverlapsOfPotentiallyCircularRanges = require('../app/getOverlapsOfPotent
 var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
 var assert = require('assert');
 describe('collapseOverlapsGeneratedFromRangeComparisonIfPossible', function() {
+	it('returns an empty array if passed an empty array of overlaps', function() {
+		assert.deepEqual(collapseOverlapsGeneratedFromRangeComparisonIfPossible([], 1000), []);
+		assert.deepEqual(collapseOverlapsGeneratedFromRangeComparisonIfPossible(getOverlapsOfPotentiallyCircularRanges({
+			start: 900,
+			end: 100
+		}, {
+			start: 900,
+			end: 100
+		}, 1000), 1000), [{
+			start: 900,
+			end: 100
+		}]);
+	});
 	it('collapses a split circular range', function() {
 		assert.deepEqual(collapseOverlapsGeneratedFromRangeComparisonIfPossible([{
 			start: 0,

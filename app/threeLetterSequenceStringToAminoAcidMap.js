@@ -1,5 +1,5 @@
 var proteinAlphabet = require('./proteinAlphabet');
-module.exports = threeLetterSequenceStringToAminoAcidMap = {
+module.exports = {
   gct: proteinAlphabet.A,
   gcc: proteinAlphabet.A,
   gca: proteinAlphabet.A,

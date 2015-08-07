@@ -6,19 +6,21 @@ var charWidth = require('./editorConstants').charWidth;
 var baoababBranch = require('baobab-react/mixins').branch;
 var MousetrapMixin = require('./MousetrapMixin');
 // var Clipboard = require("react-clipboard");
-var appActions = require('./actions/appActions');
+var insertSequenceString = require('./actions/insertSequenceString');
+var backspacePressed = require('./actions/backspacePressed');
+var pasteSequenceString = require('./actions/pasteSequenceString');
+var copySelection = require('./actions/copySelection');
+var selectAll = require('./actions/selectAll');
+var moveCaretShortcutFunctions = require('./actions/moveCaretShortcutFunctions');
 var Clipboard = require('./Clipboard');
 
 var SequenceEditor = React.createClass({
   mixins: [baoababBranch, MousetrapMixin],
-  facets: {
-    sequenceLength: 'sequenceLength',
-    bpsPerRow: 'bpsPerRow',
-    // orfData: 'orfData',
-    totalRows: 'totalRows',
-    selectedSequenceString: 'selectedSequenceString',
-  },
   cursors: {
+    sequenceLength: ['$sequenceLength'],
+    bpsPerRow: ['$bpsPerRow'],
+    totalRows: ['$totalRows'],
+    selectedSequenceString: ['$selectedSequenceString'],
     caretPosition: ['vectorEditorState', 'caretPosition'],
     sequenceData: ['vectorEditorState', 'sequenceData'],
     visibleRows: ['vectorEditorState', 'visibleRows'],
@@ -37,61 +39,59 @@ var SequenceEditor = React.createClass({
     //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
     //documentation: https://craig.is/killing/mice
     this.bindShortcut(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
-      appActions.insertSequenceString(String.fromCharCode(event.charCode));
+      insertSequenceString(String.fromCharCode(event.charCode));
     });
     this.bindShortcut('left', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretLeftOne();
+      moveCaretShortcutFunctions.moveCaretLeftOne();
     });
     this.bindShortcut('right', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretRightOne();
+      moveCaretShortcutFunctions.moveCaretRightOne();
     });
     this.bindShortcut('up', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretUpARow();
+      moveCaretShortcutFunctions.moveCaretUpARow();
     });
     this.bindShortcut('down', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretDownARowShiftHeld();
+      moveCaretShortcutFunctions.moveCaretDownARowShiftHeld();
     });
     this.bindShortcut('shift+left', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretLeftOneShiftHeld();
+      moveCaretShortcutFunctions.moveCaretLeftOneShiftHeld();
     });
     this.bindShortcut('shift+right', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretRightOneShiftHeld();
+      moveCaretShortcutFunctions.moveCaretRightOneShiftHeld();
     });
     this.bindShortcut('shift+up', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretUpARowShiftHeld();
+      moveCaretShortcutFunctions.moveCaretUpARowShiftHeld();
     });
     this.bindShortcut('shift+down', function(event) { // Handle shortcut
       //trigger a caret left
-      appActions.moveCaretDownARowShiftHeld();
+      moveCaretShortcutFunctions.moveCaretDownARowShiftHeld();
     });
     this.bindShortcut('backspace', function(event) { // Handle shortcut
-      appActions.backspacePressed();
+      backspacePressed();
       event.stopPropagation();
       event.preventDefault();
     });
     this.bindGlobal('command+a', function(event) { // Handle shortcut
-      appActions.selectAll();
+      selectAll();
       event.stopPropagation();
     });
   },
 
   handlePaste: function(event) {
-    console.log('paste!');
     event.clipboardData.items[0].getAsString(function(string) {
-      appActions.pasteSequenceString(string);
+      pasteSequenceString(string);
     });
   },
 
   handleCopy: function(event) {
-    console.log('copy!');
-    appActions.copySelection();
+    copySelection();
     // this.state.selectedSequenceString
   },
   render: function() {
@@ -100,7 +100,7 @@ var SequenceEditor = React.createClass({
       // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
 
     var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
-
+    
     return (
       <div style={{float:"right"}}>
         features count: {featuresCount}

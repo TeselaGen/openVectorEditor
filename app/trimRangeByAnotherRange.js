@@ -2,8 +2,20 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 
-//trims range, but does *not* adjust it
-//returns a new range if there is one, or null, if it is trimmed completely
+/**
+ * trims range, but does *not* adjust it
+ * returns a new range if there is one, or null, if it is trimmed completely
+ * @param  {object} subRange  {start:
+ *                                  end:
+ *                                  }
+ * @param  {object} containerRange {start:
+ *                                  end:
+ *                                  }
+ * @param  {int} sequenceLength 
+ * @return {object} || null        {start:
+ *                                  end:
+ *                                  }
+ */
 module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRange, sequenceLength) {
   if (!areNonNegativeIntegers([rangeToBeTrimmed.start, rangeToBeTrimmed.end])) {
     console.warn('invalid range input');

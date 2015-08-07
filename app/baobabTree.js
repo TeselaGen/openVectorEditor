@@ -1,213 +1,151 @@
 var baobab = require('baobab');
 // var sequenceData = require('./sequenceData');
-var sequenceData = require('./sequenceDataWithOrfs');
-var ObjectID = require("bson-objectid");
+var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
-var findOrfsFromSequence = require('./findOrfsFromSequence');
-var computeRowRepresentationOfSequence = require('./computeRowRepresentationOfSequence');
+var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
-var getSubstringByRange = require('get-substring-by-range');
+// var getAminoAcidsFromPlasmid = require('./getAminoAcidsFromPlasmid');
 var assign = require('lodash/object/assign');
-
-// // tnr: this is used to generate a very large, multi-featured sequence
-// var string = "atgtagagagagagaggtgatg";
-// var reallyLongFakeSequence = "";
-// for (var i = 1; i < 1000; i++) {
-// 	reallyLongFakeSequence += string;
-// 	if (i % 100 === 0) {
-// 		sequenceData.features.push({
-// 			id: i,
-// 			start: i*10,
-// 			end: i*10 + 100,
-// 			name: 'cooljim',
-// 			color: 'green',
-// 			forward: true,
-// 			annotationType: "feature"
-// 		});
-// 	}
-// }
-// sequenceData.sequence = reallyLongFakeSequence;
-
-
-// var fakeSequences = makeFakeSequences(20);
-// console.log(fakeSequences);
-
-// function makeFakeSequences(numberOfFakesSequencesToGenerate) {
-// 	var fakeSequences = {};
-// 	for (var i = 0; i < numberOfFakesSequencesToGenerate; i++) {
-// 		console.log(ObjectID().str);
-// 		fakeSequences[ObjectID().str] = sequenceData;
-// 	}
-// 	return fakeSequences;
-// 	console.log(fakeSequences);
-// }
-
-// sequenceData.features = {};
-// sequenceData.parts = {};
+var getSequenceWithinRange = require('./getSequenceWithinRange');
+var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
 
 var tree = new baobab({
-	vectorEditorState: {
-		topSpacerHeight: 0,
-		bottomSpacerHeight: 0,
-		averageRowHeight: 100,
-		// preloadBasepairStart: 300,
-		charWidth: 15,
-		CHAR_HEIGHT: 15,
-		// FONT_SIZE: 14,
-		ANNOTATION_HEIGHT: 15,
-		minimumOrfSize: 50,
-		tickSpacing: 10,
-		SPACE_BETWEEN_ANNOTATIONS: 3,
-		preloadRowStart: 0,
-		// preloadRowEnd: 9,
-		showOrfs: true,
-		allowPartialAnnotationsOnCopy: false,
-		showCutsites: true,
-		showParts: true,
-		showFeatures: true,
-		showAxis: true,
-		showReverseSequence: true,
-		viewportDimensions: {
-			height: 500, //come back and make these dynamic
-			width: 500
-		},
-		selectionLayer: {
-			start: 12,
-			end: 9,
-			selected: true,
-			cursorAtEnd: true
-		},
-		mouse: {
-			isDown: false,
-			isSelecting: false,
-		},
-		caretPosition: -1,
-		visibleRows: {
-			start: 0,
-			end: 0,
-		},
-		sequenceData: validateAndTidyUpSequenceData(sequenceData),
-		clipboardData: null
-	},
-	// // sequencesMegaStore: fakeSequences,
-	// partsMegaStore: { //
-	// 	//tnrtodo: make a fake part generator
-	// },
-	// designMegaStore: {
-	// 	//tnrtodo: make a fake design generator
-	// },
-	// assemblyMakerState: {
-
-	// },
-}, {
-	syncwrite: true,
-	immutable: true,
-	validate: function (tree, gaga) {
-	},
-	facets: {
-		aminoAcidRepresentationOfSequence: {
-			cursors: {
-				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-				circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-			},
-			get: function(state) {
-				return getAminoAcidRepresentationOfSequence(state.sequence, state.circular); //might not want to pass circular here..
-			}
-		},
-		orfData: {
-			cursors: {
-				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-				circular: ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-				minimumOrfSize: ['vectorEditorState', 'minimumOrfSize'],
-			},
-			get: function(state) {
-				return findOrfsFromSequence(state.sequence, state.circular, state.minimumOrfSize);
-			}
-		},
-		bpsPerRow: {
-			cursors: {
-				viewportDimensionsWidth: ['vectorEditorState', 'viewportDimensions', 'width'],
-				charWidth: ['vectorEditorState', 'charWidth'],
-			},
-			get: function(state) {
-				return Math.floor(state.viewportDimensionsWidth / state.charWidth);
-			}
-		},
-		sequenceLength: {
-			cursors: {
-				sequenceData: ['vectorEditorState', 'sequenceData'],
-			},
-			get: function(state) {
-				return state.sequenceData.sequence ? state.sequenceData.sequence.length : 0;
-			}
-		},
-		combinedSequenceData: { //holds usual sequence data, plus orfs, plus parts..
-			cursors: {
-				sequenceData: ['vectorEditorState', 'sequenceData'],
-			},
-			facets: {
-				orfData: 'orfData',
-			},
-			get: function(state) {
-				return assign({}, state.sequenceData, {orfs: state.orfData});
-			}
-		},
-		rowData: {
-			facets: {
-				bpsPerRow: 'bpsPerRow',
-				combinedSequenceData: 'combinedSequenceData',
-			},
-			get: function(state) {
-				// var self = this;
-				// setTimeout(function (argument) {
-				// var previousVisibleRows = this.tree.select('vectorEditorState', 'visibleRows').get();
-				// this.tree.select('vectorEditorState', 'visibleRows').set(previousVisibleRows);
-				// this.tree.commit();
-
-				// }, 10);
-				// 
-				
-				return prepareRowData(state.combinedSequenceData, state.bpsPerRow);
-			}
-		},
-		totalRows: {
-			facets: {
-				rowData: 'rowData',
-			},
-			get: function(state) {
-				if (state.rowData) {
-					return state.rowData.length;
-				}
-			}
-		},
-		visibleRowsData: {
-			cursors: {
-				visibleRows: ['vectorEditorState', 'visibleRows']
-			},
-			facets: {
-				rowData: 'rowData'
-			},
-			get: function(state) {
-				// console.log('state: ' + state.visibleRows.start + "  " + state.visibleRows.end);
-				if (state.rowData && state.visibleRows) {
-					return state.rowData.slice(state.visibleRows.start, state.visibleRows.end + 1);
-				}
-			}
-		},
-		selectedSequenceString: {
-			cursors: {
-				sequence: ['vectorEditorState', 'sequenceData', 'sequence'],
-				selectionLayer: ['vectorEditorState', 'selectionLayer'],
-			},
-			get: function(state) {
-				if (state.sequence && state.selectionLayer && state.selectionLayer.selected) {
-					return getSubstringByRange(state.sequence,state.selectionLayer);
-				} else {
-					return '';
-				}
-			}
-		}
-	}
+  vectorEditorState: {
+    topSpacerHeight: 0,
+    bottomSpacerHeight: 0,
+    averageRowHeight: 100,
+    // preloadBasepairStart: 300,
+    charWidth: 15,
+    CHAR_HEIGHT: 15,
+    // FONT_SIZE: 14,
+    ANNOTATION_HEIGHT: 15,
+    minimumOrfSize: 300,
+    tickSpacing: 10,
+    SPACE_BETWEEN_ANNOTATIONS: 3,
+    preloadRowStart: 0,
+    // preloadRowEnd: 9,
+    showOrfs: true,
+    allowPartialAnnotationsOnCopy: false,
+    showCutsites: true,
+    showParts: true,
+    showFeatures: true,
+    showTranslations: true,
+    showAxis: true,
+    showReverseSequence: true,
+    rowViewDimensions: {
+      height: 500, //come back and make these dynamic
+      width: 500
+    },
+    viewportDimensions: {
+      height: 500, //come back and make these dynamic
+      width: 500
+    },
+    selectionLayer: {
+      start: 12,
+      end: 9,
+      selected: true,
+      cursorAtEnd: true
+    },
+    mouse: {
+      isDown: false,
+      isSelecting: false,
+    },
+    caretPosition: -1,
+    visibleRows: {
+      start: 0,
+      end: 0,
+    },
+    sequenceData: validateAndTidyUpSequenceData(sequenceData),
+    clipboardData: null
+  },
+  $bpsPerRow: [
+    ['vectorEditorState', 'rowViewDimensions',
+      'width'
+    ],
+    ['vectorEditorState', 'charWidth'],
+    function(rowViewDimensionsWidth, charWidth) {
+      return Math.floor(rowViewDimensionsWidth / charWidth);
+    }
+  ],
+  $translationsWithAminoAcids: [
+    ['vectorEditorState', 'sequenceData','translations'],
+    ['vectorEditorState', 'sequenceData','sequence'],
+    function getTranslationsWithAminoAcids (translations, sequence) {
+      return translations.map(function(translation){
+        var translationWithAminoAcids = assign({},translation);
+        var subseq = getSequenceWithinRange(translation, sequence);
+        translationWithAminoAcids.aminoAcids = getAminoAcidDataForEachBaseOfDna(subseq, (translation.strand == -1 ? false : true));
+        return translationWithAminoAcids;
+      });
+    }
+  ],
+  $sequenceLength: [
+    ['vectorEditorState', 'sequenceData'],
+    function(sequenceData) {
+      return sequenceData.sequence ? sequenceData.sequence.length : 0;
+    }
+  ],
+  $selectedSequenceString: [
+    ['vectorEditorState', 'sequenceData', 'sequence'],
+    ['vectorEditorState', 'selectionLayer'],
+    function(sequence, selectionLayer) {
+      if (sequence && selectionLayer && selectionLayer.selected) {
+        return getSequenceWithinRange(selectionLayer, sequence);
+      } else {
+        return '';
+      }
+    }
+  ],
+  // $aminoAcidRepresentationOfSequence: [
+  //   ['vectorEditorState', 'sequenceData', 'sequence'],
+  //   ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+  //   getAminoAcidsFromPlasmid//might not want to pass circular here..
+  // ],
+  $orfData: [
+    // ['$aminoAcidRepresentationOfSequence'],
+    ['vectorEditorState', 'sequenceData', 'sequence'],
+    ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
+    ['vectorEditorState', 'minimumOrfSize'],
+    findOrfsInPlasmid
+  ],
+  $combinedSequenceData: [ //holds usual sequence data, plus orfs, plus parts..
+    ['vectorEditorState', 'sequenceData'],
+    ['$orfData'],
+    ['$translationsWithAminoAcids'],
+    function(sequenceData, orfData, translations) {
+      return assign({}, sequenceData, {
+        orfs: orfData,
+        translations: translations
+      });
+    }
+  ],
+  $rowData: [
+    ['$combinedSequenceData'],
+    ['$bpsPerRow'],
+    function(sequenceData, bpsPerRow) {
+      console.log('rowDataUpdated!');
+      return prepareRowData(sequenceData, bpsPerRow);
+    }
+  ],
+  $totalRows: [
+    ['$rowData'],
+    function(rowData) {
+      if (rowData) {
+        return rowData.length;
+      }
+    }
+  ],
+  // $visibleRowsData: [
+  //   ['vectorEditorState', 'visibleRows'],
+  //   ['$rowData'],
+  //   function(visibleRows, rowData) {
+  //     console.log('state: ' + visibleRows.start + "  " + visibleRows.end);
+  //     if (rowData && visibleRows) {
+  //       return rowData.slice(visibleRows.start, visibleRows.end + 1);
+  //     }
+  //   }
+  // ],
+  
 });
 
 module.exports = tree;

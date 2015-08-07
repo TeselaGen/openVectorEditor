@@ -1,5 +1,6 @@
-var _ = require('lodash');
-
+var each = require('lodash/collection/each');
+var sortBy = require('lodash/collection/sortBy');
+var uniq = require('lodash/array/uniq');
 
 
 function populateRowByRowNumber(sequenceData, bpsPerRow, rowNumber, sequenceLength) {
@@ -22,7 +23,7 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
   
   //convert each anotation into 1 or 2 annotationLocations by spliiting on the origin.
   //for each location, add to the row any stetches of the location that overlap the row
-  _.each(annotations, function(annotation) {
+  each(annotations, function(annotation) {
     var annotationLocations = splitAnnotationOnOrigin(annotation, sequenceLength);
     var overlaps;
     annotationLocations.forEach(function(annotationLocation) {
@@ -52,7 +53,7 @@ function mapAnnotationsToRow(annotations, row, sequenceLength) {
 function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRow, overlaps) {
   var blockedYOffsets = [];
   //adjust the yOffset of the location being pushed in by checking its range against other locations in the row
-  _.each(annotationsAlreadyAddedToRow, function(comparisonAnnotation) {
+  each(annotationsAlreadyAddedToRow, function(comparisonAnnotation) {
     //loop through every location in the comparisonAnnotation (there is a max of two)
     //also note that locations cannot be circular
     comparisonAnnotation.overlaps.forEach(function(comparisonOverlap) {
@@ -90,10 +91,10 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
   //sort and remove duplicates from the blockedYOffsets array
   //then starting with newYOffset = 0, see if there is space for the location 
   if (blockedYOffsets.length > 0) {
-    var sortedBlockedYOffsets = _.sortBy(blockedYOffsets, function(n) {
+    var sortedBlockedYOffsets = sortBy(blockedYOffsets, function(n) {
       return n
     });
-    var sortedUniqueBlockedYOffsets = _.uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
+    var sortedUniqueBlockedYOffsets = uniq(sortedBlockedYOffsets, true); //true here specifies that the array has already been sorted
     var stillPotentiallyBlocked = true;
     while (stillPotentiallyBlocked) {
       if (sortedUniqueBlockedYOffsets[newYOffset] != newYOffset) {
