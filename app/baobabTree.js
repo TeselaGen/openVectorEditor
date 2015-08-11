@@ -4,7 +4,6 @@ var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
-// var getAminoAcidsFromPlasmid = require('./getAminoAcidsFromPlasmid');
 var assign = require('lodash/object/assign');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');

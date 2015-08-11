@@ -1,11 +1,10 @@
 var React = require('react');
 
 var RowView = require('./RowView');
-var MapView = require('./MapView');
+// var MapView = require('./MapView');
 
 var baoababBranch = require('baobab-react/mixins').branch;
 var MousetrapMixin = require('./MousetrapMixin');
-// var Clipboard = require("react-clipboard");
 var insertSequenceString = require('./actions/insertSequenceString');
 var backspacePressed = require('./actions/backspacePressed');
 var pasteSequenceString = require('./actions/pasteSequenceString');
