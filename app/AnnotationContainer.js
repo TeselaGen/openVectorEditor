@@ -53,7 +53,7 @@ var AnnotationContainer = React.createClass({
       var annotation = annotationRange.annotation;
       var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
-      var rangeType = annotationRange.rangeType;
+      var enclosingRangeType = annotationRange.enclosingRangeType;
       var forward = annotation.forward;
       var xStart = xCenter - charWidth/2;
       var xEnd = xCenter + charWidth/2;
@@ -66,7 +66,7 @@ var AnnotationContainer = React.createClass({
 
       }
       //either "beginning", "end" or "beginningAndEnd"
-      if (rangeType === 'beginningAndEnd') {
+      if (enclosingRangeType === 'beginningAndEnd') {
 
       } else {
 
@@ -79,7 +79,7 @@ var AnnotationContainer = React.createClass({
       var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var height = annotationHeight;
-      var rangeType = annotationRange.rangeType;
+      var enclosingRangeType = annotationRange.enclosingRangeType;
       var forward = annotation.forward;
       var xEnd = result.xStart + result.width;
       var yEnd = yStart + height;
@@ -90,7 +90,7 @@ var AnnotationContainer = React.createClass({
 
       }
       //either "beginning", "end" or "beginningAndEnd"
-      if (rangeType === 'beginningAndEnd') {
+      if (enclosingRangeType === 'beginningAndEnd') {
 
       } else {
 

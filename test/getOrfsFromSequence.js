@@ -23,7 +23,6 @@ describe('getOrfsFromSequence', function() {
 		// expect(orf.id).to.be.a('string');
 	});
 	it('finds correct orfs in reverse direction in slightly more complex sequence', function() {
-		debugger;
 		var orfs = getOrfsFromSequence({
 			sequence: 'ttarrrcatcat',
 			//   E       S     S

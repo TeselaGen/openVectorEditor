@@ -1,7 +1,7 @@
 var React = require('react');
 
 var RowView = require('./RowView');
-var charWidth = require('./editorConstants').charWidth;
+var MapView = require('./MapView');
 
 var baoababBranch = require('baobab-react/mixins').branch;
 var MousetrapMixin = require('./MousetrapMixin');

@@ -14,16 +14,13 @@ var tree = new baobab({
     topSpacerHeight: 0,
     bottomSpacerHeight: 0,
     averageRowHeight: 100,
-    // preloadBasepairStart: 300,
     charWidth: 15,
     CHAR_HEIGHT: 15,
-    // FONT_SIZE: 14,
     ANNOTATION_HEIGHT: 15,
     minimumOrfSize: 300,
-    tickSpacing: 10,
+    tickSpacing: 21,
     SPACE_BETWEEN_ANNOTATIONS: 3,
     preloadRowStart: 0,
-    // preloadRowEnd: 9,
     showOrfs: true,
     allowPartialAnnotationsOnCopy: false,
     showCutsites: true,
@@ -31,7 +28,7 @@ var tree = new baobab({
     showFeatures: true,
     showTranslations: true,
     showAxis: true,
-    showReverseSequence: true,
+    showReverseSequence: false,
     rowViewDimensions: {
       height: 500, //come back and make these dynamic
       width: 500
@@ -96,13 +93,7 @@ var tree = new baobab({
       }
     }
   ],
-  // $aminoAcidRepresentationOfSequence: [
-  //   ['vectorEditorState', 'sequenceData', 'sequence'],
-  //   ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-  //   getAminoAcidsFromPlasmid//might not want to pass circular here..
-  // ],
   $orfData: [
-    // ['$aminoAcidRepresentationOfSequence'],
     ['vectorEditorState', 'sequenceData', 'sequence'],
     ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
     ['vectorEditorState', 'minimumOrfSize'],
@@ -135,17 +126,6 @@ var tree = new baobab({
       }
     }
   ],
-  // $visibleRowsData: [
-  //   ['vectorEditorState', 'visibleRows'],
-  //   ['$rowData'],
-  //   function(visibleRows, rowData) {
-  //     console.log('state: ' + visibleRows.start + "  " + visibleRows.end);
-  //     if (rowData && visibleRows) {
-  //       return rowData.slice(visibleRows.start, visibleRows.end + 1);
-  //     }
-  //   }
-  // ],
-  
 });
 
 module.exports = tree;

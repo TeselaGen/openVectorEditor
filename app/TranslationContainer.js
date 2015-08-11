@@ -89,7 +89,7 @@ var TranslationContainer = React.createClass({
     //   var annotation = annotationRange.annotation;
     //   var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
     //   var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
-    //   var rangeType = annotationRange.rangeType;
+    //   var enclosingRangeType = annotationRange.enclosingRangeType;
     //   var forward = annotation.forward;
     //   var xStart = xCenter - charWidth/2;
     //   var xEnd = xCenter + charWidth/2;
@@ -102,7 +102,7 @@ var TranslationContainer = React.createClass({
 
     //   }
     //   //either "beginning", "end" or "beginningAndEnd"
-    //   if (rangeType === 'beginningAndEnd') {
+    //   if (enclosingRangeType === 'beginningAndEnd') {
 
     //   } else {
 
@@ -163,7 +163,7 @@ var TranslationContainer = React.createClass({
       var width = result.width;
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var height = annotationHeight;
-      var rangeType = annotationRange.rangeType;
+      var enclosingRangeType = annotationRange.enclosingRangeType;
       var forward = annotation.forward;
       var xEnd = xStart + width;
       var yEnd = yStart + height;
@@ -174,7 +174,7 @@ var TranslationContainer = React.createClass({
 
       }
       //either "beginning", "end" or "beginningAndEnd"
-      if (rangeType === 'beginningAndEnd') {
+      if (enclosingRangeType === 'beginningAndEnd') {
 
       } else {
 

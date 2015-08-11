@@ -2,7 +2,11 @@ var tree = require('../baobabTree');
 var setCaretPosition = require('./setCaretPosition');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
-//takes in either (int,int) or ({start:int,end:int})
+/**
+ * sets the selection layer on a plasmid
+ * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
+ * @return {undefined}                   
+ */
 module.exports = function setSelectionLayer (newSelectionLayer) {
     var getRidOfCursor;
     var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
@@ -18,17 +22,21 @@ module.exports = function setSelectionLayer (newSelectionLayer) {
         var start = newSelectionLayer.start;
         // var selected = newSelectionLayer.selected;
         var end = newSelectionLayer.end;
-        var cursorAtEnd = newSelectionLayer.cursorAtEnd;
-        // var {
-        //     start, end, selected, cursorAtEnd
-        // } = newSelectionLayer;
+        var cursorAtEnd;
+        if (newSelectionLayer.cursorAtEnd || typeof newSelectionLayer.cursorAtEnd === 'undefined') {
+            //if cursorAtEnd is passed as true, or if no cursorAtEnd is passed, auto set it to true
+            cursorAtEnd = true;
+        } else {
+            //if cursorAtEnd is explicitely passed as false, set it to false
+            cursorAtEnd = false;
+        }
         if (areNonNegativeIntegers([start, end])) {
             //valid selection layer passed, so set it.
             newSelectionLayer = {
                 start: start,
                 end: end,
                 selected: true,
-                cursorAtEnd: typeof cursorAtEnd === 'undefined' ? true : false //if no cursorAtEnd is passed, auto set it to true
+                cursorAtEnd: cursorAtEnd 
             };
             getRidOfCursor = true;
         } else {

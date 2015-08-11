@@ -3,6 +3,11 @@ var assign = require('lodash/object/assign');
 var setSelectionLayer = require('./setSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
 
+/**
+ * moves the caret while keeping the highlight layer selected
+ * @param  {integer} numberToMove positive/negative number to adjust the caret
+ * @return {undefined}              
+ */
 module.exports = function moveCaretShiftHeld(numberToMove) {
     console.log('hey: ');
     var selectionLayer = assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
@@ -27,18 +32,10 @@ module.exports = function moveCaretShiftHeld(numberToMove) {
             });
         } else {
             setSelectionLayer({
-                start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove + 1, sequenceLength - 1),
-                end: caretPosition,
+                start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove, sequenceLength - 1),
+                end: caretPosition - 1,
                 cursorAtEnd: false
             });
         }
-        caretPosition += numberToMove;
-        if (caretPosition < 0) {
-            caretPosition = 0;
-        }
-        if (caretPosition > sequenceLength) {
-            caretPosition = sequenceLength;
-        }
-        tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
     }
 };

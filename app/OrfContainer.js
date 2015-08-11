@@ -51,7 +51,7 @@ var OrfContainer = React.createClass({
     //   var annotation = annotationRange.annotation;
     //   var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
     //   var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
-    //   var rangeType = annotationRange.rangeType;
+    //   var enclosingRangeType = annotationRange.enclosingRangeType;
     //   var forward = annotation.forward;
     //   var xStart = xCenter - charWidth/2;
     //   var xEnd = xCenter + charWidth/2;
@@ -64,7 +64,7 @@ var OrfContainer = React.createClass({
 
     //   }
     //   //either "beginning", "end" or "beginningAndEnd"
-    //   if (rangeType === 'beginningAndEnd') {
+    //   if (enclosingRangeType === 'beginningAndEnd') {
 
     //   } else {
 
@@ -80,7 +80,7 @@ var OrfContainer = React.createClass({
 
       var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
       var height = annotationHeight / 2;
-      var rangeType = annotationRange.rangeType;
+      var enclosingRangeType = annotationRange.enclosingRangeType;
       var forward = annotation.forward;
       var xEnd = xStart + width;
       var yEnd = yStart + height;
@@ -91,7 +91,7 @@ var OrfContainer = React.createClass({
 
       }
       //either "beginning", "end" or "beginningAndEnd"
-      if (rangeType === 'beginningAndEnd') {
+      if (enclosingRangeType === 'beginningAndEnd') {
 
       } else {
 

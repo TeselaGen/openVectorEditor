@@ -195,6 +195,7 @@ var RowItem = React.createClass({
               annotationHeight={this.state.ANNOTATION_HEIGHT}
               bpsPerRow={this.state.bpsPerRow}/>
             }
+            Thomas
             {highlightLayerForRow}
             {selectionCursorStart}
             {selectionCursorEnd}

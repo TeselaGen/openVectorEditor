@@ -9,7 +9,8 @@ module.exports = function setCaretPosition(newViewportDimensions) {
 				height: newViewportDimensions.height * 0.7,
 				width: newViewportDimensions.width * 0.7
 			});
-			tree.select('vectorEditorState', 'charWidth').set(Math.floor(newViewportDimensions.width/50));
+			//tnr: enable this to get char width resizing as well (probably not desired)
+			// tree.select('vectorEditorState', 'charWidth').set(Math.floor(newViewportDimensions.width/50));
 		}
 	}
 };
