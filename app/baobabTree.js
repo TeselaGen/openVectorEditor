@@ -25,7 +25,7 @@ var tree = new baobab({
     showCutsites: true,
     showParts: true,
     showFeatures: true,
-    showTranslations: true,
+    showTranslations: false,
     showAxis: true,
     showReverseSequence: false,
     rowViewDimensions: {

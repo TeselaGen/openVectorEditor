@@ -26,7 +26,7 @@ var sequenceData = {
     "name": "pBAD promoter",
     "type": "promoter",
     "id": "55a4a061f0c5b500312340a8qqqq",
-    "start": 1160,
+    "start": 1163,
     "end": 1188,
     "strand": 1,
     "notes": []
@@ -42,7 +42,7 @@ var sequenceData = {
     "name": "GFPuv",
     "type": "CDS",
     "id": "55a4a061f0c5b5061100a8qqqq",
-    "start": 1235,
+    "start": 1236,
     "end": 2018,
     "strand": 1,
     "notes": [{

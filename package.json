@@ -16,6 +16,7 @@
     "flatmap": "0.0.3",
     "get-substring-by-range": "^1.0.0",
     "get-viewport-size": "^1.0.0",
+    "interpolate": "^0.1.0",
     "is-integer": "^1.0.4",
     "jsx-loader": "^0.13.1",
     "lodash": "^3.10.0",

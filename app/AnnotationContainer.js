@@ -1,9 +1,9 @@
-
 var React = require('react');
 var classnames = require('classnames');
 var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
+var Feature = require('./Feature');
 
 
 var AnnotationContainer = React.createClass({
@@ -24,55 +24,58 @@ var AnnotationContainer = React.createClass({
         maxAnnotationYOffset = annotationRange.yOffset;
       }
       var annotation = annotationRange.annotation;
-
-      annotationsSVG.push(<path
-        onClick={function (event) {
-          // appActions.setCaretPosition(-1);
-          setSelectionLayer(this);
-          event.stopPropagation();
-        }.bind(annotation)}
-        key={annotation.id + 'start:' + annotationRange.start}
-        className={classnames(annotation.id, annotation.type)}
-        d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
-        stroke={annotation.color}
-        fillOpacity={0.4}
-        fill={annotation.color}/>); //tnrtodo: change fill opacity to a passed variable
-
-      annotationsSVG.push(<path
-        key={'directionArrow' + annotation.id + 'start:' + annotationRange.start}
-        d={createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
-        stroke={'black'} />);
+// <path
+//             onClick={function (event) {
+//               // appActions.setCaretPosition(-1);
+//               setSelectionLayer(this);
+//               event.stopPropagation();
+//             }.bind(annotation)}
+//             key={annotation.id + 'start:' + annotationRange.start}
+//             className={classnames(annotation.id, annotation.type)}
+//             d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
+//             stroke={annotation.color}
+//             fillOpacity={0.4}
+//             fill={annotation.color}>
+//           </path>
+      var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      annotationsSVG.push(
+        <svg 
+          height={annotationHeight} 
+          width={result.width}
+          key={'feature' + annotation.id + 'start:' + annotationRange.start}
+          style = {
+            {
+              display: 'block',
+              float: 'left',
+              left: result.xStart,
+              position: 'absolute',
+              marginBottom: spaceBetweenAnnotations,
+            }
+          }
+          >
+          <Feature
+            onClick={function (event) {
+              setSelectionLayer(this);
+              event.stopPropagation();
+            }.bind(annotation)}
+            className={classnames(annotation.id, annotation.type)}
+            widthInBps={annotationRange.end - annotationRange.start + 1}
+            charWidth={charWidth}
+            forward={annotation.forward}
+            height={annotationHeight}
+            color={annotation.color}
+            fill={annotation.color}>
+          </Feature>
+        </svg>
+      );
     });
     var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
     return (
-      <svg className="annotationContainer" width="100%" height={height} >
+      <div className="annotationContainer" width="100%" style={{position: 'relative', display: 'block'}}>
         {annotationsSVG}
-      </svg>
+      </div>
     );
-    function createAnnotationArrowRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
-      var annotation = annotationRange.annotation;
-      var xCenter = getXCenterOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
-      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
-      var enclosingRangeType = annotationRange.enclosingRangeType;
-      var forward = annotation.forward;
-      var xStart = xCenter - charWidth/2;
-      var xEnd = xCenter + charWidth/2;
-      var yEnd = yStart + annotationHeight;
-      var yMiddle = yStart + annotationHeight/2;
-      var path;
-      if (forward) {
-        path = "M" + xStart + "," + yStart + " L" + xEnd + "," + yMiddle + " L" + xStart + "," + yEnd;
-      } else {
-
-      }
-      //either "beginning", "end" or "beginningAndEnd"
-      if (enclosingRangeType === 'beginningAndEnd') {
-
-      } else {
-
-      }
-      return path;
-    }
+   
 
     function createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
       var annotation = annotationRange.annotation;
