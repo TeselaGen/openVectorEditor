@@ -43,12 +43,14 @@ var AnnotationContainer = React.createClass({
       annotationsSVG.push(
         <svg 
           height={annotationHeight} 
+
           width={result.width}
           key={'feature' + annotation.id + 'start:' + annotationRange.start}
           style = {
             {
-              display: 'inline-block',
+              display: 'block',
               float: 'top',
+              y: annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations),
               left: result.xStart,
               position: 'relative',
               marginBottom: spaceBetweenAnnotations,

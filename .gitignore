@@ -1,5 +1,4 @@
 node_modules/
-app/App.js
 stats.json
 bundle.js
 npm-debug.log
