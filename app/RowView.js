@@ -169,7 +169,6 @@ var RowView = React.createClass({
     var self = this;
     function renderRows (row) {
           if (row) {
-            //    key={row.rowNumber}
             return(<RowItem 
                 key={row.rowNumber}
                 row={row} />);
@@ -177,11 +176,6 @@ var RowView = React.createClass({
             return null;
           }
     }
-    // var rowItems = this.refs.InfiniteScroller.state.visibleRows.map(function(row) {
-    //   if (row) {
-    //     return(<RowItem key={row.rowNumber} row={row} />);
-    //   }
-    // });
 
     var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
     this.topSpacerHeight = this.rowStart * rowHeight;
@@ -222,5 +216,6 @@ var RowView = React.createClass({
     );
   }
 });
+
 
 module.exports = RowView;

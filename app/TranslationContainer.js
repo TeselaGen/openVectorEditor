@@ -4,8 +4,11 @@ var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotati
 var zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var AASliver = require('./AASliver');
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var TranslationContainer = React.createClass({
+  mixins: [PureRenderMixin],
+  
   render: function () {
     // var row = this.props.row;
     var annotationRanges = this.props.annotationRanges;

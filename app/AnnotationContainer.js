@@ -4,9 +4,11 @@ var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 var Feature = require('./Feature');
-
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var AnnotationContainer = React.createClass({
+  mixins: [PureRenderMixin],
+  
   render: function () {
     var annotationRanges = this.props.annotationRanges;
     var bpsPerRow = this.props.bpsPerRow;

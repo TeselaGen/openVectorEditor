@@ -39,36 +39,10 @@ var RowItem = React.createClass({
     // var showReverseSequence = this.state.showReverseSequence;
     var selectionLayer = this.state.selectionLayer;
     var caretPosition = this.state.caretPosition;
-    var combinedHeightOfChildElements = 0;
     var self = this;
-    function createFeatureRawPath ({xStart, yStart, height, width, direction, type}) {
-      var xEnd = xStart + width;
-      var yEnd = yStart  + height;
-      var path = "M"+xStart+","+ yStart
-                      +" L"+xEnd+","+ yStart
-                      +" L"+xEnd+","+ yEnd
-                      +" L"+xStart+","+yEnd+" Z";
-      return path;
-    }
 
-    // function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
-    //   // 24 bps long:
-    //   //
-    //   // if (range.end + 1 - range.start > 0 && )
-    //   // (range.end + 1 - range.start) % bpsPerRow
-    //   return {
-    //     xStart: (range.start % bpsPerRow) * charWidth,
-    //     width: ((range.end + 1 - range.start)) * charWidth,
-    //   };
-    // }
 
     var fontSize = this.state.charWidth + "px";
-    var textStyle = {
-      fontSize: fontSize,
-      fontFamily: "'Courier New', Courier, monospace",
-      // transform: "scale(2,1)",
-      // width: "100%"
-    };
     var highlightLayerStyle = {
       height: "98%",
       // width: "100%",
@@ -132,14 +106,6 @@ var RowItem = React.createClass({
 
     var textHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>';
     var reverseSequenceHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>';
-    // console.log(row);
-    // var className = "row" + row.rowNumber;
-      // <div className={className}>
-      // <svg ref="textContainer" className="textContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
-      //       <svg ref="reverseSequenceContainer" className="reverseSequenceContainer" width="100%" height={this.state.charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
-    // if (row.translations.length && showTranslations) {
-    //   debugger;
-    // }
     return (
         <div className="rowContainer"
           style={rowContainerStyle}
@@ -195,7 +161,6 @@ var RowItem = React.createClass({
               annotationHeight={this.state.ANNOTATION_HEIGHT}
               bpsPerRow={this.state.bpsPerRow}/>
             }
-            Thomas
             {highlightLayerForRow}
             {selectionCursorStart}
             {selectionCursorEnd}

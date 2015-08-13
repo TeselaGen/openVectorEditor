@@ -2,8 +2,11 @@ var React = require('react');
 var classnames = require('classnames');
 var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var OrfContainer = React.createClass({
+  mixins: [PureRenderMixin],
+  
   render: function () {
     var annotationRanges = this.props.annotationRanges;
     var bpsPerRow = this.props.bpsPerRow;

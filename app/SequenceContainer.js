@@ -1,6 +1,8 @@
 var React = require('react');
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var SequenceContainer = React.createClass({
+	mixins: [PureRenderMixin],
   render: function () {
     var sequence = this.props.sequence;
     var charWidth = this.props.charWidth;

@@ -1,9 +1,11 @@
 var React = require('react');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
-
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var AxisContainer = React.createClass({
+  mixins: [PureRenderMixin],
+  
   render: function () {
     var row = this.props.row;
     var tickSpacing = this.props.tickSpacing;
