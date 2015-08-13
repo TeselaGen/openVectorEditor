@@ -47,10 +47,10 @@ var AnnotationContainer = React.createClass({
           key={'feature' + annotation.id + 'start:' + annotationRange.start}
           style = {
             {
-              display: 'block',
-              float: 'left',
+              display: 'inline-block',
+              float: 'top',
               left: result.xStart,
-              position: 'absolute',
+              position: 'relative',
               marginBottom: spaceBetweenAnnotations,
             }
           }
