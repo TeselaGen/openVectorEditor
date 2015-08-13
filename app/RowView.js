@@ -207,7 +207,7 @@ var RowView = React.createClass({
                 ref={'InfiniteScroller'}
                 averageElementHeight={100}
                 containerHeight={this.state.rowViewDimensions.height}
-                renderFunction={renderRows}
+                renderRow={renderRows}
                 rowData={this.state.rowData}
                 preloadRowStart={40}
                 /> 

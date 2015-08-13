@@ -45,26 +45,19 @@ var RowItem = React.createClass({
     var fontSize = this.state.charWidth + "px";
     var highlightLayerStyle = {
       height: "98%",
-      // width: "100%",
       background: 'blue',
       position: "absolute",
       top: "0",
-      // left: "0",
-      // fillOpacity: ".3",
       opacity: ".3",
     };
 
     var cursorStyle = {
       height: "98%",
-      // width: "100%",
       background: 'black',
       position: "absolute",
       top: "0",
       width: "2px",
       cursor: "ew-resize",
-      // left: "0",
-      // fillOpacity: "1",
-      // opacity: ".3",
     };
 
     var selectionCursorStart;
@@ -169,22 +162,5 @@ var RowItem = React.createClass({
     );
   }
 });
-
-
-
-
-
-
-// <div style={textStyle}>
-//             {row.sequence}
-//           </div>
-
-// <div fontSize={fontSize} fontFamily="'Courier New', Courier, monospace">
-
-// <svg className= "textContainer" width="100%" height={CHAR_HEIGHT}>
-//             <text fontSize={fontSize} fontFamily="'Courier New', Courier, monospace" style={{"textLength": 100}} lengthAdjust="spacingAndGlyphs">
-//               {row.sequence}
-//             </text>
-//           </svg>
 
 module.exports = RowItem;
