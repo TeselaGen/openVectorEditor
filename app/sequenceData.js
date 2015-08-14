@@ -5,7 +5,7 @@ module.exports = {
     "hash" : "6580dff42e14e03986393225d08e320eafd52ca12faa20347e149c5327c48bbc",
     "ve_metadata" : "",
     "size" : 25,
-    "sequence" : "asdfasdfa",
+    "sequence" : "asaasdgasdgasdgasdgasgdasgdasdgasdgasgdagasdgasdfasdfdfasdfa",
     // "sequence" : "gacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasagacasdasdasdaasdasdasdasa",
     "circular" : true,
     "sequenceFileName" : "undefined.gb",
@@ -27,16 +27,16 @@ module.exports = {
             "notes" : [],
             "color": 'green'
         },
-        // {
-        //     "name" : "weer",
-        //     "type" : "misc_feature",
-        //     "id" : "5590c1d88979df000a4f02f5",
-        //     "start" : 12,
-        //     "end" : 9,
-        //     "strand" : 1,
-        //     "notes" : [],
-        //     "color": 'red'
-        // }
+        {
+            "name" : "weer",
+            "type" : "misc_feature",
+            "id" : "5590c1d88979df000a4f02f5",
+            "start" : 12,
+            "end" : 9,
+            "strand" : 1,
+            "notes" : [],
+            "color": 'red'
+        }
     ],
     "__v" : 5
 };

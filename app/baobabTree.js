@@ -1,6 +1,6 @@
 var baobab = require('baobab');
-// var sequenceData = require('./sequenceData');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
+var sequenceData = require('./sequenceData');
+// var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');

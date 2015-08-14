@@ -2,7 +2,6 @@ var React = require('react');
 var classnames = require('classnames');
 var setSelectionLayer = require('./actions/setSelectionLayer');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 var Feature = require('./Feature');
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
@@ -41,21 +40,10 @@ var AnnotationContainer = React.createClass({
 //           </path>
       var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       annotationsSVG.push(
-        <svg 
-          height={annotationHeight} 
-
-          width={result.width}
+        <g 
+          y={annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
+          x={result.xStart}
           key={'feature' + annotation.id + 'start:' + annotationRange.start}
-          style = {
-            {
-              display: 'block',
-              float: 'top',
-              y: annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations),
-              left: result.xStart,
-              position: 'relative',
-              marginBottom: spaceBetweenAnnotations,
-            }
-          }
           >
           <Feature
             onClick={function (event) {
@@ -70,14 +58,15 @@ var AnnotationContainer = React.createClass({
             color={annotation.color}
             fill={annotation.color}>
           </Feature>
-        </svg>
+        </g>
       );
     });
-    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    var containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    
     return (
-      <div className="annotationContainer" width="100%" style={{position: 'relative', display: 'block'}}>
+      <svg className="annotationContainer" width="100%" height={containerHeight} >
         {annotationsSVG}
-      </div>
+      </svg>
     );
    
 
