@@ -5,6 +5,9 @@ var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotati
 var Feature = require('./Feature');
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
+var AnnotationContainerHolder = require('./AnnotationContainerHolder');
+var AnnotationPositioner = require('./AnnotationPositioner');
+
 var AnnotationContainer = React.createClass({
   mixins: [PureRenderMixin],
   
@@ -25,25 +28,14 @@ var AnnotationContainer = React.createClass({
         maxAnnotationYOffset = annotationRange.yOffset;
       }
       var annotation = annotationRange.annotation;
-// <path
-//             onClick={function (event) {
-//               // appActions.setCaretPosition(-1);
-//               setSelectionLayer(this);
-//               event.stopPropagation();
-//             }.bind(annotation)}
-//             key={annotation.id + 'start:' + annotationRange.start}
-//             className={classnames(annotation.id, annotation.type)}
-//             d={createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight)}
-//             stroke={annotation.color}
-//             fillOpacity={0.4}
-//             fill={annotation.color}>
-//           </path>
       var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
       annotationsSVG.push(
-        <g 
-          y={annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
-          x={result.xStart}
+        <AnnotationPositioner 
+          height={annotationHeight} 
+          width={result.width}
           key={'feature' + annotation.id + 'start:' + annotationRange.start}
+          top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
+          left= {result.xStart}
           >
           <Feature
             onClick={function (event) {
@@ -56,45 +48,21 @@ var AnnotationContainer = React.createClass({
             forward={annotation.forward}
             height={annotationHeight}
             color={annotation.color}
+            name={annotation.name}
             fill={annotation.color}>
           </Feature>
-        </g>
+        </AnnotationPositioner>
       );
     });
     var containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
-    
+    // height={containerHeight}
     return (
-      <svg className="annotationContainer" width="100%" height={containerHeight} >
+      <AnnotationContainerHolder 
+        containerHeight={containerHeight}>
         {annotationsSVG}
-      </svg>
+      </AnnotationContainerHolder>
     );
    
-
-    function createAnnotationRawPath(annotationRange, bpsPerRow, charWidth, annotationHeight) {
-      var annotation = annotationRange.annotation;
-      var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
-      var yStart = annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations);
-      var height = annotationHeight;
-      var enclosingRangeType = annotationRange.enclosingRangeType;
-      var forward = annotation.forward;
-      var xEnd = result.xStart + result.width;
-      var yEnd = yStart + height;
-
-      if (forward) {
-
-      } else {
-
-      }
-      //either "beginning", "end" or "beginningAndEnd"
-      if (enclosingRangeType === 'beginningAndEnd') {
-
-      } else {
-
-      }
-      var path = "M" + result.xStart + "," + yStart + " L" + xEnd + "," + yStart + " L" + xEnd + "," + yEnd + " L" + result.xStart + "," + yEnd + " Z";
-      return path;
-    }
-
   }
 });
 module.exports = AnnotationContainer;

@@ -1,6 +1,6 @@
 var baobab = require('baobab');
-var sequenceData = require('./sequenceData');
-// var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
+// var sequenceData = require('./sequenceData');
+var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
@@ -25,7 +25,7 @@ var tree = new baobab({
     showCutsites: true,
     showParts: true,
     showFeatures: true,
-    showTranslations: false,
+    showTranslations: true,
     showAxis: true,
     showReverseSequence: false,
     rowViewDimensions: {
