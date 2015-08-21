@@ -1,4 +1,9 @@
-###Trying out reactjs, baobab, and webpack
+###A (soon-to-be) open source Vector Editor
+
+Technology choices:
+reactjs
+baobab
+webpack
 
 #####To use this repo:
 clone it into your folder of choice,
