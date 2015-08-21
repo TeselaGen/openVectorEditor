@@ -1,7 +1,7 @@
 var React = require('react');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
-module.exports = React.createClass({
+var InfiniteScroller = React.createClass({
   propTypes: {
     averageElementHeight: React.PropTypes.number.isRequired,
     containerHeight: React.PropTypes.number.isRequired,
@@ -239,3 +239,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = InfiniteScroller;

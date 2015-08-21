@@ -7,8 +7,8 @@ var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotati
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
-var TranslationContainer = require('./TranslationContainer');
-var AnnotationContainer = require('./AnnotationContainer');
+var TranslationContainer = require('./TranslationContainer2');
+var FeatureContainer = require('./FeatureContainer');
 
 var RowItem = React.createClass({
   mixins: [baobabBranch],
@@ -97,8 +97,6 @@ var RowItem = React.createClass({
       width: "100%",
     };
 
-    var textHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>';
-    var reverseSequenceHTML = '<text font-family="Courier New, Courier, monospace" x="'+ (this.state.charWidth/4) + '" y="10" textLength="'+ (this.state.charWidth * (row.sequence.length)) + '" length-adjust="spacing">' + row.sequence + '</text>';
     return (
         <div className="rowContainer"
           style={rowContainerStyle}
@@ -107,7 +105,7 @@ var RowItem = React.createClass({
           onMouseDown={this.onMouseDown}
           >
             {this.state.showFeatures &&
-              <AnnotationContainer
+              <FeatureContainer
                 annotationRanges={row.features}
                 charWidth={this.state.charWidth}
                 annotationHeight={this.state.ANNOTATION_HEIGHT}

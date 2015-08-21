@@ -2,7 +2,7 @@
 var React = require('react');
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
-var InfiniteScroller = require('./InfiniteScroller.js');
+var InfiniteScroller = require('react-variable-height-infinite-scroller');
 var setCaretPosition = require('./actions/setCaretPosition');
 var setSelectionLayer = require('./actions/setSelectionLayer');
 // var setVisibleRows = require('./actions/setVisibleRows');

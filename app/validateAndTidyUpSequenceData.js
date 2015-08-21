@@ -32,9 +32,9 @@ module.exports = function validateAndTidyUpSequenceData(sequence) {
     console.warn('no parts array!');
     sequenceData.parts = [];
   }
-  if (!Array.isArray(sequenceData.features)) {
-    console.warn('no parts array!');
-    sequenceData.features = [];
+  if (!Array.isArray(sequenceData.translations)) {
+    console.warn('no translations array!');
+    sequenceData.translations = [];
   }
   sequenceData.features = sequenceData.features.filter(cleanUpAnnotation);
 

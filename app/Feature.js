@@ -8,13 +8,13 @@ var Feature = React.createClass({
         var charWidth = this.props.charWidth;
         var height = this.props.height;
         var rangeType = this.props.rangeType;
-
-
         var forward = this.props.forward;
+
         var widthInBpsMinusOne = widthInBps - 1;
         var width = widthInBps * charWidth;
         var widthMinusOne = widthInBpsMinusOne * charWidth;
         var points;
+
         // starting from the top left of the feature
         if (rangeType === 'middle') {
             //draw a rectangle
@@ -34,15 +34,22 @@ var Feature = React.createClass({
         return (
           <g
             onClick={this.props.onClick}
-            transform={forward ? null : "translate("+width+",0) scale(-1,1) "}
             >
             <polyline
-              points={points}
-              strokeWidth="1"
-              stroke={this.props.color}
-              fillOpacity={0.4}
-              fill={this.props.color || 'orange'}>
+                transform={forward ? null : "translate("+width+",2.5) scale(-1,1) "} //tnrtodo: this 2.5 shouldn't be hardcoded. it is in there to make the annotation slightly smaller
+                points={points}
+                strokeWidth="1"
+                stroke={this.props.color}
+                fillOpacity={0.4}
+                fill={this.props.color || 'orange'}>
             </polyline>
+            <text 
+              x="0"  
+              y="0"
+              style={{textAnchor: "middle"}}
+              >
+              {this.props.letter}
+            </text>
           </g>
         );
     }

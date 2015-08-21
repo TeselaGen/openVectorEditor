@@ -66,11 +66,12 @@ function calculateNecessaryYOffsetForAnnotationInRow(annotationsAlreadyAddedToRo
     //tnr: the above scenario should never happen...so we don't need to catch this
     // if (comparisonRange.id === range.id) {
     //   //do nothing
-    // } else {
-      //check for overlap with other annotations
-      if (checkIfNonCircularRangesOverlap(range, comparisonRange)) {
-        blockedYOffsets.push(comparisonRange.yOffset);
-      }
+      
+    // }
+    //check for overlap with other annotations
+    if (checkIfNonCircularRangesOverlap(range, comparisonRange)) {
+      blockedYOffsets.push(comparisonRange.yOffset);
+    }
     // }
   });
 
