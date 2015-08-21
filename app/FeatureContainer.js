@@ -8,7 +8,7 @@ var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 var AnnotationContainerHolder = require('./AnnotationContainerHolder');
 var AnnotationPositioner = require('./AnnotationPositioner');
 
-var AnnotationContainer = React.createClass({
+var FeatureContainer = React.createClass({
   mixins: [PureRenderMixin],
   
   render: function () {
@@ -35,7 +35,7 @@ var AnnotationContainer = React.createClass({
           width={result.width}
           key={'feature' + annotation.id + 'start:' + annotationRange.start}
           top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
-          left= {result.xStart}
+          left={result.xStart}
           >
           <Feature
             onClick={function (event) {
@@ -65,4 +65,4 @@ var AnnotationContainer = React.createClass({
    
   }
 });
-module.exports = AnnotationContainer;
+module.exports = FeatureContainer;

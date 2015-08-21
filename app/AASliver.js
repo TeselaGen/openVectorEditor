@@ -5,7 +5,6 @@ var AASliver = React.createClass({
         var fatness = 24;
         var x1 = 50 - fatness;
         var x2 = 50 + fatness;
-        var shift = this.props.shift;
         // var shift = 0;
         // if (this.props.positionInCodon === 1) {
         //     shift = x2;
@@ -19,10 +18,21 @@ var AASliver = React.createClass({
         //     shift = x2 * 2; 
         //   }
         // }
+        var offset = 0;
+        var offsetStrength = 7;
+        if (this.props.positionInCodon === 0) {
+          offset = -1;
+        } else if (this.props.positionInCodon === 2) {
+          offset = 1;
+        }
+        if (!this.props.forward) {
+          offset = -offset;
+        }
+        offset = offset * offsetStrength;
         return (
           <g
             onClick={this.props.onClick}
-            transform={"translate(" + shift + ",0)"}
+            transform={"scale(" + this.props.width/100 * 1.25 + ", "+ (this.props.height/100 ) + ") translate(" + (this.props.relativeAAPositionInRow*100 / 1.25 + offset) + ",0)" }
             >
             <polyline
               transform={this.props.forward ? null : "translate(100,0) scale(-1,1) "}

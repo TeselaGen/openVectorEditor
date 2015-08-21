@@ -3,6 +3,11 @@ var setSelectionLayer = require('./actions/setSelectionLayer');
 var zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var AASliver = require('./AASliver');
+
+var AnnotationContainerHolder = require('./AnnotationContainerHolder');
+var AnnotationPositioner = require('./AnnotationPositioner');
+var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
+
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var TranslationContainer = React.createClass({
@@ -49,24 +54,41 @@ var TranslationContainer = React.createClass({
                 }}
                 key={annotation.id + aminoAcidPositionInSequence}
                 forward={false}
-                shift={74*relativeAAPositionInRow}
+                width={charWidth}
+                height={annotationHeight}
+                relativeAAPositionInRow={relativeAAPositionInRow}
                 letter={aminoAcidSliver.aminoAcid.value}
                 color={aminoAcidSliver.aminoAcid.color}
                 positionInCodon={aminoAcidSliver.positionInCodon}>
           </AASliver>
         );
       });
+      
+      var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+      annotationsSVG.push(
+        <AnnotationPositioner 
+          height={annotationHeight} 
+          width={result.width}
+          key={'feature' + annotation.id + 'start:' + annotationRange.start}
+          top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
+          left={result.xStart}
+          >
+            <g>
+              {translationSVG}
+            </g>
+        </AnnotationPositioner>
+      );
+      // transform={"scale(" + transformX + ",.2) "}
       // console.log('translationSVG: ' + translationSVG);
-      annotationsSVG = annotationsSVG.concat(translationSVG);
+      // annotationsSVG = annotationsSVG.concat(translationSVG);
     });
-    var transformX = charWidth/75;
-    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    var containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    // height={containerHeight}
     return (
-      <svg className="annotationContainer" width="105%" height={height} >
-        <g transform={"scale(" + transformX + ",.2) "}>
+      <AnnotationContainerHolder 
+        containerHeight={containerHeight}>
         {annotationsSVG}
-        </g>
-      </svg>
+      </AnnotationContainerHolder>
     );
 
     function getCodonIndicesFromAASliver(aminoAcidPositionInSequence,aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation) {

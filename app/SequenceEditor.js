@@ -11,6 +11,7 @@ var pasteSequenceString = require('./actions/pasteSequenceString');
 var copySelection = require('./actions/copySelection');
 var selectAll = require('./actions/selectAll');
 var moveCaretShortcutFunctions = require('./actions/moveCaretShortcutFunctions');
+var setViewportDimensions = require('./actions/setViewportDimensions');
 var Clipboard = require('./Clipboard');
 
 var SequenceEditor = React.createClass({
@@ -114,6 +115,11 @@ var SequenceEditor = React.createClass({
         <br/>
         bpsPerRow:  {this.state.bpsPerRow}
         <br/>
+        <button onClick={function (argument) {
+          setViewportDimensions({height: 800, width: 1500})
+        }}>
+         set viewport dimensions
+        </button>
           <Clipboard
             value={this.state.selectedSequenceString}
             onCopy={this.handleCopy}

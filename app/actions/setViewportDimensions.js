@@ -1,6 +1,6 @@
 var tree = require('../baobabTree');
 var deepEqual = require('deep-equal');
-module.exports = function setCaretPosition(newViewportDimensions) {
+module.exports = function setViewportDimensions (newViewportDimensions) {
 	if (newViewportDimensions.width > 0 && newViewportDimensions.height > 0) {
 		var viewportDimensions = tree.select('vectorEditorState', 'viewportDimensions');
 		if (!deepEqual(viewportDimensions.get(), newViewportDimensions)) {
@@ -10,7 +10,7 @@ module.exports = function setCaretPosition(newViewportDimensions) {
 				width: newViewportDimensions.width * 0.7
 			});
 			//tnr: enable this to get char width resizing as well (probably not desired)
-			// tree.select('vectorEditorState', 'charWidth').set(Math.floor(newViewportDimensions.width/50));
+			tree.select('vectorEditorState', 'charWidth').set(Math.floor(newViewportDimensions.width/50));
 		}
 	}
 };

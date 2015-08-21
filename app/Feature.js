@@ -36,7 +36,7 @@ var Feature = React.createClass({
             onClick={this.props.onClick}
             >
             <polyline
-                transform={forward ? null : "translate("+width+",0) scale(-1,1) "}
+                transform={forward ? null : "translate("+width+",2.5) scale(-1,1) "} //tnrtodo: this 2.5 shouldn't be hardcoded. it is in there to make the annotation slightly smaller
                 points={points}
                 strokeWidth="1"
                 stroke={this.props.color}
