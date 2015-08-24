@@ -13,100 +13,100 @@ var getReverseComplementSequenceString = require('./getReverseComplementSequence
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
 module.exports = function getOrfsFromSequence(options) {
-  // var frame = options.frame;
-  var sequence = options.sequence;
-  var minimumOrfSize = options.minimumOrfSize;
-  var forward = options.forward;
-  var circular = options.circular;
+    // var frame = options.frame;
+    var sequence = options.sequence;
+    var minimumOrfSize = options.minimumOrfSize;
+    var forward = options.forward;
+    var circular = options.circular;
 
-  var ObjectID = require("bson-objectid");
-  if (typeof(minimumOrfSize) === "undefined") {
-    throw new Error('no min orf size given');
-  }
-  if (typeof(forward) === "undefined") {
-    throw new Error('no orf StrandType passed');
-  }
-  if (typeof(circular) === "undefined") {
-    throw new Error('no orf StrandType passed');
-  }
-  if (typeof sequence !== 'string') {
-    throw new Error('invalid sequence passed');
-  }
-  var originalSequenceLength = sequence.length;
-  if (!forward) {
-    //we reverse the sequence
-    sequence = getReverseComplementSequenceString(sequence);
-  }
+    var ObjectID = require("bson-objectid");
+    if (typeof(minimumOrfSize) === "undefined") {
+        throw new Error('no min orf size given');
+    }
+    if (typeof(forward) === "undefined") {
+        throw new Error('no orf StrandType passed');
+    }
+    if (typeof(circular) === "undefined") {
+        throw new Error('no orf StrandType passed');
+    }
+    if (typeof sequence !== 'string') {
+        throw new Error('invalid sequence passed');
+    }
+    var originalSequenceLength = sequence.length;
+    if (!forward) {
+        //we reverse the sequence
+        sequence = getReverseComplementSequenceString(sequence);
+    }
 
-  if (circular) {
-    //we'll pass in double the sequence and then trim excess orfs
-    sequence += sequence;
-  }
-  var re = /(?=((?:A[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/ig;
-  // var str = 'tatgaatgaatgffffffatgfftaaftaafatgfatgfffffsdfatgffatgfffstaafftaafffffffffffffffatgtaaataa\n\natgffftaaf\n\natgffatgftaafftaa\n\natgatgftaafftaa\n\natgatgtaataa\n\ntttttttttttttaatgatgfffffffffftaa';
-  var m;
-  var orfRanges = [];
-  //loop through orf hits!
-  while ((m = re.exec(sequence)) !== null) {
-    //stuff to get the regex to work
-    if (m.index === re.lastIndex) {
-      re.lastIndex++;
+    if (circular) {
+        //we'll pass in double the sequence and then trim excess orfs
+        sequence += sequence;
     }
-    //orf logic: 
-    var orfLength = m[1].length;
-    if (orfLength >= minimumOrfSize) {
-      //only keep orfs >= to the minimum size
-      var start = m.index;
-      var end = orfLength + start - 1;
-      //normalize the end if it is greater than the original sequence length
-      if (end >= originalSequenceLength) {
-        end -= originalSequenceLength;
-      }
-      if (start < originalSequenceLength) {
-        //only keep orfs that *begin* before the original sequence length (only the case when dealing with circular orfs)
-        orfRanges.push({
-          start: start,
-          end: end,
-          length: m[1].length,
-          internalStartCodonIndices: [],
-          frame: start % 3,
-          forward: forward,
-          id: ObjectId().str
-        });
-      }
+    var re = /(?=((?:A[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/ig;
+    // var str = 'tatgaatgaatgffffffatgfftaaftaafatgfatgfffffsdfatgffatgfffstaafftaafffffffffffffffatgtaaataa\n\natgffftaaf\n\natgffatgftaafftaa\n\natgatgftaafftaa\n\natgatgtaataa\n\ntttttttttttttaatgatgfffffffffftaa';
+    var m;
+    var orfRanges = [];
+    //loop through orf hits!
+    while ((m = re.exec(sequence)) !== null) {
+        //stuff to get the regex to work
+        if (m.index === re.lastIndex) {
+            re.lastIndex++;
+        }
+        //orf logic: 
+        var orfLength = m[1].length;
+        if (orfLength >= minimumOrfSize) {
+            //only keep orfs >= to the minimum size
+            var start = m.index;
+            var end = orfLength + start - 1;
+            //normalize the end if it is greater than the original sequence length
+            if (end >= originalSequenceLength) {
+                end -= originalSequenceLength;
+            }
+            if (start < originalSequenceLength) {
+                //only keep orfs that *begin* before the original sequence length (only the case when dealing with circular orfs)
+                orfRanges.push({
+                    start: start,
+                    end: end,
+                    length: m[1].length,
+                    internalStartCodonIndices: [],
+                    frame: start % 3,
+                    forward: forward,
+                    id: ObjectId().str
+                });
+            }
+        }
     }
-  }
-  // pair down the orfs to remove duplicates
-  // and deal with revComp orfs
-  var orfEnds = {};
-  orfRanges.forEach(function(orf, index) {
-    var indexOfAlreadyExistingOrf = orfEnds[orf.end];
+    // pair down the orfs to remove duplicates
+    // and deal with revComp orfs
+    var orfEnds = {};
+    orfRanges.forEach(function(orf, index) {
+        var indexOfAlreadyExistingOrf = orfEnds[orf.end];
 
-    if (typeof indexOfAlreadyExistingOrf !== 'undefined') {
-      var internalStartCodonIndex = forward ? orf.start : originalSequenceLength - orf.start - 1;//use either the start or the end depending on the direction of the orf
-      //we know because of how the regex works that larger orfs come first in the array
-      orfRanges[indexOfAlreadyExistingOrf].internalStartCodonIndices.push(internalStartCodonIndex);
-      //set a flag that we'll use to remove all these shorter, duplicated orfs
-      orf.remove = true;
-    } else {
-      orfEnds[orf.end] = index;
-      if (!forward) {
-        // if (originalSequenceLength - orf.end - 1 == 3657) {
-        // }
-        //this check needs to come after the above assignment of orfEnds
-        //flip the start and ends
-        var endHolder = orf.end; //temp variable
-        orf.end = originalSequenceLength - orf.start - 1;
-        orf.start = originalSequenceLength - endHolder - 1;
-      }
-    }
-  });
-  var nonDuplicatedOrfRanges = orfRanges.filter(function(orf) {
-    if (!orf.remove) {
-      return true;
-    }
-  });
-  return nonDuplicatedOrfRanges;
+        if (typeof indexOfAlreadyExistingOrf !== 'undefined') {
+            var internalStartCodonIndex = forward ? orf.start : originalSequenceLength - orf.start - 1; //use either the start or the end depending on the direction of the orf
+            //we know because of how the regex works that larger orfs come first in the array
+            orfRanges[indexOfAlreadyExistingOrf].internalStartCodonIndices.push(internalStartCodonIndex);
+            //set a flag that we'll use to remove all these shorter, duplicated orfs
+            orf.remove = true;
+        } else {
+            orfEnds[orf.end] = index;
+            if (!forward) {
+                // if (originalSequenceLength - orf.end - 1 == 3657) {
+                // }
+                //this check needs to come after the above assignment of orfEnds
+                //flip the start and ends
+                var endHolder = orf.end; //temp variable
+                orf.end = originalSequenceLength - orf.start - 1;
+                orf.start = originalSequenceLength - endHolder - 1;
+            }
+        }
+    });
+    var nonDuplicatedOrfRanges = orfRanges.filter(function(orf) {
+        if (!orf.remove) {
+            return true;
+        }
+    });
+    return nonDuplicatedOrfRanges;
 };
 
 

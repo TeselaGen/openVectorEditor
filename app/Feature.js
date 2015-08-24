@@ -2,6 +2,16 @@ var React = require('react');
 var interpolate = require('interpolate');
 
 var Feature = React.createClass({
+    
+    propTypes: {
+        widthInBps: React.PropTypes.number.isRequired,
+        charWidth: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired,
+        rangeType: React.PropTypes.string.isRequired,
+        color: React.PropTypes.string.isRequired,
+        name: React.PropTypes.string.isRequired,
+        forward: React.PropTypes.bool.isRequired
+    },
 
     render: function() {
         var widthInBps = this.props.widthInBps;
@@ -22,6 +32,12 @@ var Feature = React.createClass({
                 width: width,
                 height: height
             });
+        } else if (rangeType === 'middle') {
+            //draw a rectangle
+            points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
+                width: width,
+                height: height
+            });
         } else {
             points = interpolate('0,0 {widthMinusOne},0 {width},{heightHalved} {widthMinusOne},{height} 0,{height} 0,0', {
                 width: width,
@@ -30,9 +46,8 @@ var Feature = React.createClass({
                 heightHalved: height / 2
             });
         }
-
         return (
-          <g
+            <g
             onClick={this.props.onClick}
             >
             <polyline

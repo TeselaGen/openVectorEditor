@@ -28,7 +28,7 @@
     "react-component-resizable": "^0.2.3",
     "react-draggable": "^0.7.3",
     "react-router": "^0.13.3",
-    "react-variable-height-infinite-scroller": "^0.2.0",
+    "react-variable-height-infinite-scroller": "x.x.x",
     "react-window-mixins": "0.0.6",
     "str-allow": "0.0.2",
     "string-splice": "^1.3.0",

@@ -12,6 +12,7 @@ var copySelection = require('./actions/copySelection');
 var selectAll = require('./actions/selectAll');
 var moveCaretShortcutFunctions = require('./actions/moveCaretShortcutFunctions');
 var setViewportDimensions = require('./actions/setViewportDimensions');
+var jumpToRow = require('./actions/jumpToRow');
 var Clipboard = require('./Clipboard');
 
 var SequenceEditor = React.createClass({
@@ -20,6 +21,7 @@ var SequenceEditor = React.createClass({
     sequenceLength: ['$sequenceLength'],
     bpsPerRow: ['$bpsPerRow'],
     totalRows: ['$totalRows'],
+    newRandomRowToJumpTo: ['$newRandomRowToJumpTo'],
     selectedSequenceString: ['$selectedSequenceString'],
     caretPosition: ['vectorEditorState', 'caretPosition'],
     sequenceData: ['vectorEditorState', 'sequenceData'],
@@ -94,11 +96,14 @@ var SequenceEditor = React.createClass({
     copySelection();
     // this.state.selectedSequenceString
   },
+  
+  
+
   render: function() {
       // var visibilityParameters = this.state.visibilityParameters;
       // var highlightLayer = this.state.highlightLayer;
       // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
-
+    var self = this;
     var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
     
     return (
@@ -115,11 +120,22 @@ var SequenceEditor = React.createClass({
         <br/>
         bpsPerRow:  {this.state.bpsPerRow}
         <br/>
+
         <button onClick={function (argument) {
           setViewportDimensions({height: 800, width: 1500})
         }}>
          set viewport dimensions
         </button>
+
+        <button onClick={function (argument) {
+          jumpToRow(self.state.newRandomRowToJumpTo)
+        }}>
+         Jump to a random row: Row #{self.state.newRandomRowToJumpTo.row}
+        </button>
+        
+        
+
+        
           <Clipboard
             value={this.state.selectedSequenceString}
             onCopy={this.handleCopy}
@@ -131,5 +147,11 @@ var SequenceEditor = React.createClass({
     );
   }
 });
+
+// <button onClick={function () {
+//           jumpToRow(self.state.newRandomRowToJumpTo),
+//         }}>
+//           Jump to a random row: Row #{self.state.newRandomRowToJumpTo.row}
+//         </button>
 
 module.exports = SequenceEditor;
