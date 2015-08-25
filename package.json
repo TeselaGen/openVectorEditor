@@ -53,7 +53,7 @@
     "test": "mocha ./test/* --harmony",
     "tap-test": "tap ./test/* --harmony",
     "testDebug": "./node_modules/mocha/bin/mocha ./test/* --debug-brk --compilers jsx:babel/register",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base",
+    "start": "webpack-dev-server --devtool eval --progress --colors --content-base",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "author": "",
