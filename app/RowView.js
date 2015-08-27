@@ -44,7 +44,8 @@ var RowView = React.createClass({
                 //then the click is falls within this row
                 // console.log('HGGGG');
                 rowNotFound = false;
-                var row = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
+                var rowNumber = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
+                var row = this.state.rowData[rowNumber];
                 if (event.clientX - boundingRowRect.left < 0) {
                     console.warn('this should never be 0...');
                     return row.start; //return the first bp in the row
@@ -64,7 +65,8 @@ var RowView = React.createClass({
         if (rowNotFound) {
             console.warn('was not able to find the correct row');
             //return the last bp index in the rendered rows
-            var lastOfRenderedRows = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
+            var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
+            var lastOfRenderedRows = this.state.rowData[lastOfRenderedRowsNumber];
             return lastOfRenderedRows.end;
         }
     },
@@ -167,11 +169,10 @@ var RowView = React.createClass({
     render: function() {
         // console.log('render!');
         var self = this;
-
         function renderRows(rowNumber) {
             return (<RowItem 
-          key={rowNumber}
-          row={self.state.rowData[rowNumber]} />);
+              key={rowNumber}
+              row={self.state.rowData[rowNumber]} />);
         }
 
         var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
@@ -194,26 +195,27 @@ var RowView = React.createClass({
             onStart={this.handleEditorDragStart}
             onStop={this.handleEditorDragStop}
             >
-          <div
-            ref="allRowsContainer"
-            className="allRowsContainer"
-            style={infiniteContainerStyle}
-            onClick={this.onEditorClick}
-            >
-            <InfiniteScroller
-                ref={'InfiniteScroller'}
-                averageElementHeight={100}
-                containerHeight={this.state.rowViewDimensions.height}
-                renderRow={renderRows}
-                totalNumberOfRows={this.state.rowData.length}
-                preloadRowStart={40}
-                rowToJumpTo={this.state.rowToJumpTo}
-                /> 
-          </div>
-        </Draggable>
+              <div
+                ref="allRowsContainer"
+                className="allRowsContainer"
+                style={infiniteContainerStyle}
+                onClick={this.onEditorClick}
+                >
+                <InfiniteScroller
+                    ref={'InfiniteScroller'}
+                    averageElementHeight={100}
+                    containerHeight={this.state.rowViewDimensions.height}
+                    renderRow={renderRows}
+                    totalNumberOfRows={this.state.rowData.length}
+                    preloadRowStart={40}
+                    rowToJumpTo={this.state.rowToJumpTo}
+                    /> 
+              </div>
+            </Draggable>
         );
     }
 });
+
 
 
 module.exports = RowView;
