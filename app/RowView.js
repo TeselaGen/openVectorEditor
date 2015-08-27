@@ -18,15 +18,15 @@ var baobabBranch = require('baobab-react/mixins').branch;
 var RowView = React.createClass({
     mixins: [baobabBranch],
     cursors: {
-        preloadRowStart: ['vectorEditorState', 'preloadRowStart'],
-        averageRowHeight: ['vectorEditorState', 'averageRowHeight'],
-        rowViewDimensions: ['vectorEditorState', 'rowViewDimensions'],
+        preloadRowStart: ['preloadRowStart'],
+        averageRowHeight: ['averageRowHeight'],
+        rowViewDimensions: ['rowViewDimensions'],
         totalRows: ['$totalRows'],
         rowData: ['$rowData'],
         // visibleRows: ['$visibleRows'],
-        rowToJumpTo: ['vectorEditorState', 'rowToJumpTo'],
-        charWidth: ['vectorEditorState', 'charWidth'],
-        selectionLayer: ['vectorEditorState', 'selectionLayer'],
+        rowToJumpTo: ['rowToJumpTo'],
+        charWidth: ['charWidth'],
+        selectionLayer: ['selectionLayer'],
     },
 
 

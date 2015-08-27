@@ -13,8 +13,8 @@ describe('moveCaretShiftHeld', function() {
         setSelectionLayer(false);
         setCaretPosition(10);
         moveCaretShiftHeld(1);
-        expect(tree.get('vectorEditorState', 'caretPosition')).to.equal(-1);
-        expect(tree.get('vectorEditorState', 'selectionLayer')).to.deep.equal({
+        expect(tree.get('caretPosition')).to.equal(-1);
+        expect(tree.get('selectionLayer')).to.deep.equal({
             start: 10,
             end: 10,
             selected: true,
@@ -26,8 +26,8 @@ describe('moveCaretShiftHeld', function() {
         setSelectionLayer(false);
         setCaretPosition(10);
         moveCaretShiftHeld(-1);
-        expect(tree.get('vectorEditorState', 'caretPosition')).to.equal(-1);
-        expect(tree.get('vectorEditorState', 'selectionLayer')).to.deep.equal({
+        expect(tree.get('caretPosition')).to.equal(-1);
+        expect(tree.get('selectionLayer')).to.deep.equal({
             start: 9,
             end: 9,
             selected: true,

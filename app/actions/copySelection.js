@@ -6,10 +6,10 @@ var getSubstringByRange = require('get-substring-by-range');
 var areRangesValid = require('../areRangesValid');
 
 module.exports = function copySelection() {
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-    var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
-    var clipboardDataCursor = tree.select('vectorEditorState', 'clipboardData');
-    var allowPartialAnnotationsOnCopy = tree.select('vectorEditorState', 'allowPartialAnnotationsOnCopy').get();
+    var selectionLayer = tree.select('selectionLayer').get();
+    var sequenceData = tree.select('sequenceData').get();
+    var clipboardDataCursor = tree.select('clipboardData');
+    var allowPartialAnnotationsOnCopy = tree.select('allowPartialAnnotationsOnCopy').get();
     if (!clipboardDataCursor) {
         throw new Error('no clipboard cursor..');
     }

@@ -7,7 +7,7 @@ var insertSequenceData = require('./insertSequenceData');
 
 module.exports = function pasteSequenceString(sequenceString) {
     //compare the sequenceString being pasted in with what's already stored in the clipboard
-    var clipboardData = tree.select('vectorEditorState', 'clipboardData').get();
+    var clipboardData = tree.select('clipboardData').get();
     if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
         // insert clipboardData
         //assign clipboardData annotations new ids

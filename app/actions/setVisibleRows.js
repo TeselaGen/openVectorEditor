@@ -11,10 +11,10 @@ module.exports = function setVisibleRows(newVisibleRows) {
         // 		end: totalRows - 1
         // 	}
         // }
-        var previousVisibleRows = tree.select('vectorEditorState', 'visibleRows').get();
+        var previousVisibleRows = tree.select('visibleRows').get();
         if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
             console.log('newVisibleRows: ' + JSON.stringify(newVisibleRows,null,4));
-            tree.set(['vectorEditorState', 'visibleRows'], newVisibleRows);
+            tree.set(['visibleRows'], newVisibleRows);
         }
     } else {
         throw new Error("visibleRows object is missing or invalid");

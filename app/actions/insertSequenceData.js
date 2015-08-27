@@ -14,23 +14,23 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         return;
     }
     //check for initial values
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+    var selectionLayer = tree.select('selectionLayer').get();
 
     //delete the any selected sequence
     if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
         deleteSequence(selectionLayer);
     }
     //insert new sequence at the caret position
-    var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
+    var caretPosition = tree.select('caretPosition').get(); //important that we get the caret position only after the deletion occurs!
     if (areNonNegativeIntegers([caretPosition])) {
         //tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
-        var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+        var sequenceData = tree.select('sequenceData').get();
         //tnr: need to handle the splitting up of a sequence
         var newSequenceData = assign({}, sequenceData, insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition));
         // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
         // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 
-       tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+       tree.select('sequenceData').set(newSequenceData);
         console.log('newdata set');
         //update the caret position to be at the end of the newly inserted sequence
         setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);

@@ -9,7 +9,7 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
  */
 module.exports = function setSelectionLayer (newSelectionLayer) {
     var getRidOfCursor;
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+    var selectionLayer = tree.select('selectionLayer').get();
     if (!newSelectionLayer || typeof newSelectionLayer !== 'object') {
         //no selection layer passed, so cancel it
         newSelectionLayer = {
@@ -53,5 +53,5 @@ module.exports = function setSelectionLayer (newSelectionLayer) {
     if (getRidOfCursor) {
         setCaretPosition(-1);
     }
-    tree.select('vectorEditorState', 'selectionLayer').set(newSelectionLayer);
+    tree.select('selectionLayer').set(newSelectionLayer);
 };

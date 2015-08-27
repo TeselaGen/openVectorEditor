@@ -10,10 +10,10 @@ var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0To
  */
 module.exports = function moveCaretShiftHeld(numberToMove) {
     console.log('hey: ');
-    var selectionLayer = assign({}, tree.select('vectorEditorState', 'selectionLayer').get());
+    var selectionLayer = assign({}, tree.select('selectionLayer').get());
 
     var sequenceLength = tree.get(['$sequenceLength']);
-    var caretPosition = JSON.parse(JSON.stringify(tree.select('vectorEditorState', 'caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
+    var caretPosition = JSON.parse(JSON.stringify(tree.select('caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
     if (selectionLayer.selected) {
         if (selectionLayer.cursorAtEnd) {
             selectionLayer.end += numberToMove;
