@@ -5,7 +5,8 @@ var setCaretPosition = require('../../app/actions/setCaretPosition');
 var moveCaretShiftHeld = require('../../app/actions/moveCaretShiftHeld');
 var setSelectionLayer = require('../../app/actions/setSelectionLayer');
 var expect = require('chai').expect;
-var tree = require('../../app/baobabTree.js');
+var tree = require('../helpers/baobabTestTree.js');
+// var tree = require('../../app/baobabTree.js');
 
 describe('moveCaretShiftHeld', function() {
     it('sets a selection layer in the positive direction when there is no selection layer', function() {
