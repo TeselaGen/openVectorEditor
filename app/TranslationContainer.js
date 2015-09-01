@@ -1,46 +1,45 @@
-var React = require('react');
-var setSelectionLayer = require('./actions/setSelectionLayer');
-var zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
-var getSequenceWithinRange = require('./getSequenceWithinRange');
-var AASliver = require('./AASliver');
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+const React = require('react');
+const setSelectionLayer = require('./actions/setSelectionLayer');
+const zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
+const getSequenceWithinRange = require('./getSequenceWithinRange');
+const AASliver = require('./AASliver');
+const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
-var TranslationContainer = React.createClass({
+const TranslationContainer = React.createClass({
   mixins: [PureRenderMixin],
-  
   render: function () {
-    // var row = this.props.row;
-    var annotationRanges = this.props.annotationRanges;
-    var bpsPerRow = this.props.bpsPerRow;
-    var charWidth = this.props.charWidth;
-    var annotationHeight = this.props.annotationHeight;
-    var spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
-    var sequenceLength = this.props.sequenceLength;
+    // const row = this.props.row;
+    const annotationRanges = this.props.annotationRanges;
+    const bpsPerRow = this.props.bpsPerRow;
+    const charWidth = this.props.charWidth;
+    const annotationHeight = this.props.annotationHeight;
+    const spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
+    const sequenceLength = this.props.sequenceLength;
     if (annotationRanges.length === 0) {
       return null;
     }
-    var maxAnnotationYOffset = 0;
-    var annotationsSVG = [];
+    const maxAnnotationYOffset = 0;
+    const annotationsSVG = [];
     annotationRanges.forEach(function(annotationRange) {
       if (annotationRange.yOffset > maxAnnotationYOffset) { //tnrtodo: consider abstracting out the code to calculate the necessary height for the annotation container
         maxAnnotationYOffset = annotationRange.yOffset;
       }
-      var annotation = annotationRange.annotation;
+      const annotation = annotationRange.annotation;
       //we have an amino acid representation of our entire annotation, but it is an array 
       //starting at 0, even if the annotation starts at some arbitrary point in the sequence
-      var AARepresentationOfTranslation = annotation.aminoAcids;
+      const AARepresentationOfTranslation = annotation.aminoAcids;
       //so we "zero" our subRange by the annotation start
-      var zeroedSubrange = zeroSubrangeByContainerRange(annotationRange, annotation, sequenceLength);
+      const zeroedSubrange = zeroSubrangeByContainerRange(annotationRange, annotation, sequenceLength);
       //which allows us to then get the amino acids for the subRange
-      var aminoAcidsForSubrange = getSequenceWithinRange(zeroedSubrange, AARepresentationOfTranslation);
+      const aminoAcidsForSubrange = getSequenceWithinRange(zeroedSubrange, AARepresentationOfTranslation);
       //we then loop over all the amino acids in the sub range and draw them onto the row
-      var translationSVG = aminoAcidsForSubrange.map(function (aminoAcidSliver, index) {
-        var aminoAcidPositionInSequence = annotationRange.start + index;
-        var relativeAAPositionInRow = annotationRange.start % bpsPerRow + index;
-        var relativeAAPositionInTranslation = zeroedSubrange.start + index;
+      const translationSVG = aminoAcidsForSubrange.map(function (aminoAcidSliver, index) {
+        const aminoAcidPositionInSequence = annotationRange.start + index;
+        const relativeAAPositionInRow = annotationRange.start % bpsPerRow + index;
+        const relativeAAPositionInTranslation = zeroedSubrange.start + index;
 
         //get the codonIndices relative to 
-        var codonIndices = getCodonIndicesFromAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation);
+        const codonIndices = getCodonIndicesFromAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation);
         return (
           <AASliver 
                 onClick={function (e) {
@@ -59,8 +58,8 @@ var TranslationContainer = React.createClass({
       // console.log('translationSVG: ' + translationSVG);
       annotationsSVG = annotationsSVG.concat(translationSVG);
     });
-    var transformX = charWidth/75;
-    var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+    const transformX = charWidth/75;
+    const height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
     return (
       <svg className="annotationContainer" width="105%" height={height} >
         <g transform={"scale(" + transformX + ",.2) "}>
@@ -70,9 +69,9 @@ var TranslationContainer = React.createClass({
     );
 
     function getCodonIndicesFromAASliver(aminoAcidPositionInSequence,aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation) {
-          var AASliverOneBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 1];
+          const AASliverOneBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 1];
           if (AASliverOneBefore && AASliverOneBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
-            var AASliverTwoBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
+            const AASliverTwoBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
             if (AASliverTwoBefore && AASliverTwoBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
               return {
                 start: aminoAcidPositionInSequence - 2,
@@ -100,7 +99,7 @@ var TranslationContainer = React.createClass({
                 end: aminoAcidPositionInSequence + 2
               };
             } else {
-              var AASliverOneAhead = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
+              const AASliverOneAhead = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
               if (AASliverOneAhead && AASliverOneAhead.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
                 return {
                   start: aminoAcidPositionInSequence,
