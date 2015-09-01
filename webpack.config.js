@@ -8,11 +8,17 @@ module.exports = {
         loaders: [{
                 test: /\.css$/,
                 loader: "style!css"
-            }, {
+            },
+            // {
+            //     test: /\.js$/,
+            //     exclude: /node_modules/,
+            //     loader: 'jsx-loader?harmony'
+            // },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: 'jsx-loader?harmony'
-            },
+                loader: "babel-loader"
+            }
             // { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
         ]
     },

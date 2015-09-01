@@ -3,19 +3,19 @@ var setSelectionLayer = require('./setSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
 
 module.exports = function moveCaret(numberToMove) {
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+    var selectionLayer = tree.select('selectionLayer').get();
     var sequenceLength = tree.get(['$sequenceLength']);
-    var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
+    var caretPosition = tree.select('caretPosition').get();
     if (selectionLayer.selected) {
         if (numberToMove > 0) {
-            tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.end + 1);
+            tree.select('caretPosition').set(selectionLayer.end + 1);
         } else {
-            tree.select('vectorEditorState', 'caretPosition').set(selectionLayer.start);
+            tree.select('caretPosition').set(selectionLayer.start);
         }
         setSelectionLayer(false);
     } else {
         caretPosition += numberToMove;
         caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
-        tree.select('vectorEditorState', 'caretPosition').set(caretPosition);
+        tree.select('caretPosition').set(caretPosition);
     }
 };

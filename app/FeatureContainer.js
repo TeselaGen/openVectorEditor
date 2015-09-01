@@ -1,15 +1,15 @@
-var React = require('react');
-var classnames = require('classnames');
-var setSelectionLayer = require('./actions/setSelectionLayer');
-var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var getAnnotationRangeType = require('./getAnnotationRangeType');
-var Feature = require('./Feature');
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+let React = require('react');
+let classnames = require('classnames');
+let setSelectionLayer = require('./actions/setSelectionLayer');
+let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
+let getAnnotationRangeType = require('./getAnnotationRangeType');
+let Feature = require('./Feature');
+let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
-var AnnotationContainerHolder = require('./AnnotationContainerHolder');
-var AnnotationPositioner = require('./AnnotationPositioner');
+let AnnotationContainerHolder = require('./AnnotationContainerHolder');
+let AnnotationPositioner = require('./AnnotationPositioner');
 
-var FeatureContainer = React.createClass({
+let FeatureContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         annotationRanges: React.PropTypes.array.isRequired,
@@ -19,23 +19,23 @@ var FeatureContainer = React.createClass({
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
     },
     render: function() {
-        var annotationRanges = this.props.annotationRanges;
-        var bpsPerRow = this.props.bpsPerRow;
-        var charWidth = this.props.charWidth;
-        var annotationHeight = this.props.annotationHeight;
-        var spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
+        let annotationRanges = this.props.annotationRanges;
+        let bpsPerRow = this.props.bpsPerRow;
+        let charWidth = this.props.charWidth;
+        let annotationHeight = this.props.annotationHeight;
+        let spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
 
         if (annotationRanges.length === 0) {
             return null;
         }
-        var maxAnnotationYOffset = 0;
-        var annotationsSVG = [];
+        let maxAnnotationYOffset = 0;
+        let annotationsSVG = [];
         annotationRanges.forEach(function(annotationRange) {
             if (annotationRange.yOffset > maxAnnotationYOffset) {
                 maxAnnotationYOffset = annotationRange.yOffset;
             }
-            var annotation = annotationRange.annotation;
-            var result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+            let annotation = annotationRange.annotation;
+            let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             annotationsSVG.push(
                 <AnnotationPositioner 
                     height={annotationHeight} 
@@ -60,7 +60,7 @@ var FeatureContainer = React.createClass({
                 </AnnotationPositioner>
             );
         });
-        var containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+        let containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
         return (
             <AnnotationContainerHolder 
                 containerHeight={containerHeight}>

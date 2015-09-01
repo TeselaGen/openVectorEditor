@@ -14,23 +14,23 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         return;
     }
     //check for initial values
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+    var selectionLayer = tree.select('selectionLayer').get();
 
     //delete the any selected sequence
     if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
         deleteSequence(selectionLayer);
     }
     //insert new sequence at the caret position
-    var caretPosition = tree.select('vectorEditorState', 'caretPosition').get(); //important that we get the caret position only after the deletion occurs!
+    var caretPosition = tree.select('caretPosition').get(); //important that we get the caret position only after the deletion occurs!
     if (areNonNegativeIntegers([caretPosition])) {
         //tnr: maybe refactor the following so that it doesn't rely on caret position directly, instead just pass in the bp position as a param to a more generic function
-        var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+        var sequenceData = tree.select('sequenceData').get();
         //tnr: need to handle the splitting up of a sequence
         var newSequenceData = assign({}, sequenceData, insertSequenceDataAtPosition(sequenceDataToInsert, sequenceData, caretPosition));
         // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
         // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 
-       tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
+       tree.select('sequenceData').set(newSequenceData);
         console.log('newdata set');
         //update the caret position to be at the end of the newly inserted sequence
         setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
@@ -40,7 +40,7 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
     }
     function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
         sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
-        existingSequenceData = validateAndTidyUpSequenceData(existingSequenceData);
+        existingSequenceData = existingSequenceData;
         var newSequenceData = validateAndTidyUpSequenceData({}); //makes a new blank sequence
 
         var insertLength = sequenceDataToInsert.sequence.length;
@@ -48,9 +48,11 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         newSequenceData.sequence = spliceString(existingSequenceData.sequence, caretPosition, 0, sequenceDataToInsert.sequence);
         newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(existingSequenceData.features, caretPosition, insertLength));
         newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(existingSequenceData.parts, caretPosition, insertLength));
+        newSequenceData.translations = newSequenceData.translations.concat(adjustAnnotationsToInsert(existingSequenceData.translations, caretPosition, insertLength));
         newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(sequenceDataToInsert.features, 0, caretPosition));
         newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(sequenceDataToInsert.parts, 0, caretPosition));
-        return newSequenceData;
+        newSequenceData.translations = newSequenceData.translations.concat(adjustAnnotationsToInsert(sequenceDataToInsert.translations, 0, caretPosition));
+        return validateAndTidyUpSequenceData(newSequenceData, true);
     }
 
     function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {

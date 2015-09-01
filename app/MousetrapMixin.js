@@ -1,57 +1,55 @@
-/** @jsx React.DOM */
-
 // NOTE: This file is formatted for React.js + Browserify
 // You might need to make some changes to use it without Browserify
 
 var MousetrapMixin,
 
     Mousetrap = require('mousetrap');
-    
-    /**
-     * adds a bindGlobal method to Mousetrap that allows you to
-     * bind specific keyboard shortcuts that will still work
-     * inside a text input field
-     *
-     * usage:
-     * Mousetrap.bindGlobal('ctrl+s', _saveChanges);
-     */
-    /* global Mousetrap:true */
-    (function(Mousetrap) {
-        var _globalCallbacks = {};
-        var _originalStopCallback = Mousetrap.prototype.stopCallback;
 
-        Mousetrap.prototype.stopCallback = function(e, element, combo, sequence) {
-            console.log('combo', combo);
-            console.log('sequence', sequence);
-            var self = this;
+/**
+ * adds a bindGlobal method to Mousetrap that allows you to
+ * bind specific keyboard shortcuts that will still work
+ * inside a text input field
+ *
+ * usage:
+ * Mousetrap.bindGlobal('ctrl+s', _saveChanges);
+ */
+/* global Mousetrap:true */
+(function(Mousetrap) {
+    var _globalCallbacks = {};
+    var _originalStopCallback = Mousetrap.prototype.stopCallback;
 
-            if (self.paused) {
-                return true;
+    Mousetrap.prototype.stopCallback = function(e, element, combo, sequence) {
+        console.log('combo', combo);
+        console.log('sequence', sequence);
+        var self = this;
+
+        if (self.paused) {
+            return true;
+        }
+
+        if (_globalCallbacks[combo] || _globalCallbacks[sequence]) {
+            return false;
+        }
+
+        return _originalStopCallback.call(self, e, element, combo);
+    };
+
+    Mousetrap.prototype.bindGlobal = function(keys, callback, action) {
+        var self = this;
+        self.bind(keys, callback, action);
+
+        if (keys instanceof Array) {
+            for (var i = 0; i < keys.length; i++) {
+                _globalCallbacks[keys[i]] = true;
             }
+            return;
+        }
 
-            if (_globalCallbacks[combo] || _globalCallbacks[sequence]) {
-                return false;
-            }
+        _globalCallbacks[keys] = true;
+    };
 
-            return _originalStopCallback.call(self, e, element, combo);
-        };
-
-        Mousetrap.prototype.bindGlobal = function(keys, callback, action) {
-            var self = this;
-            self.bind(keys, callback, action);
-
-            if (keys instanceof Array) {
-                for (var i = 0; i < keys.length; i++) {
-                    _globalCallbacks[keys[i]] = true;
-                }
-                return;
-            }
-
-            _globalCallbacks[keys] = true;
-        };
-
-        Mousetrap.init();
-    }) (Mousetrap);
+    Mousetrap.init();
+})(Mousetrap);
 
 MousetrapMixin = {
     /**

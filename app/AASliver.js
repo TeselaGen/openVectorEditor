@@ -1,51 +1,40 @@
-var React = require('react');
-var AASliver = React.createClass({
+import React, {PropTypes} from 'react';
+let AASliver = React.createClass({
     propTypes: {
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired,
-        color: React.PropTypes.string.isRequired,
-        forward: React.PropTypes.bool.isRequired,
-        positionInCodon: React.PropTypes.number.isRequired,
-        letter: React.PropTypes.string.isRequired,
-        onClick: React.PropTypes.func.isRequired
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
+        color: PropTypes.string.isRequired,
+        forward: PropTypes.bool.isRequired,
+        positionInCodon: PropTypes.number.isRequired,
+        letter: PropTypes.string.isRequired,
+        onClick: PropTypes.func.isRequired,
+        onDoubleClick: PropTypes.func.isRequired,
+        relativeAAPositionInRow: PropTypes.number.isRequired
     },
-    render: function() {
-        // return null
-        var fatness = 24;
-        var x1 = 50 - fatness;
-        var x2 = 50 + fatness;
-        // var shift = 0;
-        // if (this.props.positionInCodon === 1) {
-        //     shift = x2;
-        // }
-        // if (this.props.forward) {
-        //   if (this.props.positionInCodon === 2) {
-        //     shift = x2 * 2; 
-        //   }
-        // } else {
-        //   if (this.props.positionInCodon === 0) {
-        //     shift = x2 * 2; 
-        //   }
-        // }
-        var offset = 0;
-        var offsetStrength = 7;
+    render() {
+        let fatness = 24;
+        let x1 = 50 - fatness;
+        let x2 = 50 + fatness;
+        let offset = 0;
+        let offsetStrength = 7;
         if (this.props.positionInCodon === 0) {
             offset = -1;
         } else if (this.props.positionInCodon === 2) {
             offset = 1;
         }
-        if (!this.props.forward) {
+        if (this.props.forward) {
             offset = -offset;
         }
         offset = offset * offsetStrength;
         return (
             <g
-                onClick={this.props.onClick}
-                transform={"scale(" + this.props.width/100 * 1.25 + ", "+ (this.props.height/100 ) + ") translate(" + (this.props.relativeAAPositionInRow*100 / 1.25 + offset) + ",0)" }
+                onClick={getClickHandler(this.props.onClick, this.props.onDoubleClick, 250)}
+                onDoubleClick={this.props.onDoubleClick}
+                transform={"scale(" + this.props.width / 100 * 1.25 + ", " + (this.props.height / 100 ) + ") translate(" + (this.props.relativeAAPositionInRow * 100 / 1.25 + offset) + ",0)" }
                 >
                 <polyline
                     transform={this.props.forward ? null : "translate(100,0) scale(-1,1) "}
-                    points={"0,0 " + x2 + ",0 100,50 " + x2 + ",100 0,100 "+x1+",50 0,0"}
+                    points={"0,0 " + x2 + ",0 100,50 " + x2 + ",100 0,100 " + x1 + ",50 0,0"}
                     strokeWidth="5"
                     // stroke="black"
                     opacity={0.5}
@@ -63,6 +52,25 @@ var AASliver = React.createClass({
                 }
             </g>
         );
+        function getClickHandler(onClick, onDblClick, pDelay) {
+            let timeoutID = null;
+            const delay = pDelay || 250;
+            return function(event) {
+                let singleClicking = true;
+                if (!timeoutID) {
+                    timeoutID = setTimeout(function() {
+                        if (singleClicking) {
+                            onClick(event);
+                        }
+                        timeoutID = null;
+                    }, delay);
+                } else {
+                    singleClicking = false;
+                    timeoutID = clearTimeout(timeoutID);
+                    onDblClick(event);
+                }
+            };
+        }
     }
 });
 module.exports = AASliver;

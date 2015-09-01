@@ -1,4 +1,3 @@
-
 //var tap = require('tap');
 //tap.mochaGlobals();
 var getAminoAcidDataForEachBaseOfDna = require('../app/getAminoAcidDataForEachBaseOfDna.js');

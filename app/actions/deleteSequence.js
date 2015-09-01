@@ -1,6 +1,7 @@
 var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
+var validateAndTidyUpSequenceData = require('../validateAndTidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var setCaretPosition = require('./setCaretPosition');
 var setSelectionLayer = require('./setSelectionLayer');
@@ -16,7 +17,7 @@ module.exports = function deleteSequence(rangeToDelete) {
     } else {
         deletionLength = rangeToDelete.end - rangeToDelete.start + 1;
     }
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
+    var selectionLayer = tree.select('selectionLayer').get();
     //update selection layer due to sequence deletion
     if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
         var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete, sequenceLength);
@@ -31,19 +32,19 @@ module.exports = function deleteSequence(rangeToDelete) {
                 setCaretPosition(rangeToDelete.start);
             }
         }
-    } else if (tree.select('vectorEditorState', 'caretPosition').get()) {
+    } else if (tree.select('caretPosition').get()) {
         //update the cursor position
         if (rangeToDelete.start > rangeToDelete.end) {
             setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
         } else {
             setCaretPosition(rangeToDelete.start);
         }
-        // setCaretPosition(tree.select('vectorEditorState', 'caretPosition').get() - rangeToDelete.start);
+        // setCaretPosition(tree.select('caretPosition').get() - rangeToDelete.start);
     } else {
-        throw new Error('must have a selection layer or a caretPosition');
-        // console.warn('must have a selection layer or a caretPosition');
+        // throw new Error('must have a selection layer or a caretPosition');
+        console.warn('must have a selection layer or a caretPosition');
     }
-    var sequenceData = tree.select('vectorEditorState', 'sequenceData').get();
+    var sequenceData = tree.select('sequenceData').get();
     var newSequenceData = {};
     if (sequenceData.sequence) {
         //splice the underlying sequence
@@ -56,38 +57,27 @@ module.exports = function deleteSequence(rangeToDelete) {
         }
     }
     //trim and remove features
-    if (sequenceData.features) {
-        newSequenceData.features = sequenceData.features.map(function(annotation) {
-            var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
-            if (newAnnotationRange) {
-                var adjustedAnnotation = assign({}, annotation);
-                adjustedAnnotation.start = newAnnotationRange.start;
-                adjustedAnnotation.end = newAnnotationRange.end;
-                return adjustedAnnotation;
-            }
-        }).filter(function(annotation) { //strip out deleted (null) annotations
-            if (annotation) {
-                return true;
-            }
-        });
+    newSequenceData.features = applyDeleteToAnnotations(sequenceData.features);
+    newSequenceData.parts = applyDeleteToAnnotations(sequenceData.parts);
+    newSequenceData.translations = applyDeleteToAnnotations(sequenceData.translations);
+    function applyDeleteToAnnotations(annotations) {
+        if (annotations) {
+            return annotations.map(function(annotation) {
+                var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
+                if (newAnnotationRange) {
+                    var adjustedAnnotation = assign({}, annotation);
+                    adjustedAnnotation.start = newAnnotationRange.start;
+                    adjustedAnnotation.end = newAnnotationRange.end;
+                    return adjustedAnnotation;
+                }
+            }).filter(function(annotation) { //strip out deleted (null) annotations
+                if (annotation) {
+                    return true;
+                }
+            });
+        } else {
+            return [];
+        }
     }
-    if (sequenceData.parts) {
-        newSequenceData.parts = sequenceData.parts.map(function(annotation) {
-            var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
-            if (newAnnotationRange) {
-                var adjustedAnnotation = assign({}, annotation);
-                adjustedAnnotation.start = newAnnotationRange.start;
-                adjustedAnnotation.end = newAnnotationRange.end;
-                return adjustedAnnotation;
-            }
-        }).filter(function(annotation) { //strip out deleted (null) annotations
-            if (annotation) {
-                return true;
-            }
-        });
-    }
-    // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
-    // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
-    tree.select('vectorEditorState', 'sequenceData').set(newSequenceData);
-    // refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+    tree.select('sequenceData').set(validateAndTidyUpSequenceData(newSequenceData, true));
 }

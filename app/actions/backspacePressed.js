@@ -4,8 +4,8 @@ var deleteSequence = require('./deleteSequence');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 module.exports = function backspacePressed() {
-    var selectionLayer = tree.select('vectorEditorState', 'selectionLayer').get();
-    var caretPosition = tree.select('vectorEditorState', 'caretPosition').get();
+    var selectionLayer = tree.select('selectionLayer').get();
+    var caretPosition = tree.select('caretPosition').get();
     if (selectionLayer.selected) {
         deleteSequence(selectionLayer);
     } else {

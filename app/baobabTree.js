@@ -9,64 +9,62 @@ var getSequenceWithinRange = require('./getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
 
 var tree = new baobab({
-    vectorEditorState: {
-        rowToJumpTo: null,
-        topSpacerHeight: 0,
-        bottomSpacerHeight: 0,
-        averageRowHeight: 100,
-        charWidth: 15,
-        CHAR_HEIGHT: 15,
-        ANNOTATION_HEIGHT: 15,
-        minimumOrfSize: 300,
-        tickSpacing: 21,
-        SPACE_BETWEEN_ANNOTATIONS: 3,
-        preloadRowStart: 0,
-        showOrfs: true,
-        allowPartialAnnotationsOnCopy: false,
-        showCutsites: true,
-        showParts: true,
-        showFeatures: true,
-        showTranslations: true,
-        showAxis: true,
-        showReverseSequence: false,
-        rowViewDimensions: {
-            height: 500, //come back and make these dynamic
-            width: 500
-        },
-        viewportDimensions: {
-            height: 500, //come back and make these dynamic
-            width: 500
-        },
-        selectionLayer: {
-            start: 12,
-            end: 9,
-            selected: true,
-            cursorAtEnd: true
-        },
-        mouse: {
-            isDown: false,
-            isSelecting: false,
-        },
-        caretPosition: -1,
-        visibleRows: {
-            start: 0,
-            end: 0,
-        },
-        sequenceData: validateAndTidyUpSequenceData(sequenceData),
-        clipboardData: null
+    rowToJumpTo: null,
+    topSpacerHeight: 0,
+    bottomSpacerHeight: 0,
+    averageRowHeight: 100,
+    charWidth: 15,
+    CHAR_HEIGHT: 15,
+    ANNOTATION_HEIGHT: 15,
+    minimumOrfSize: 20,
+    tickSpacing: 21,
+    SPACE_BETWEEN_ANNOTATIONS: 3,
+    preloadRowStart: 0,
+    showOrfs: true,
+    allowPartialAnnotationsOnCopy: false,
+    showCutsites: true,
+    showParts: true,
+    showFeatures: true,
+    showTranslations: true,
+    showAxis: true,
+    showReverseSequence: false,
+    rowViewDimensions: {
+        height: 500, //come back and make these dynamic
+        width: 500
     },
+    viewportDimensions: {
+        height: 500, //come back and make these dynamic
+        width: 500
+    },
+    selectionLayer: {
+        start: 12,
+        end: 9,
+        selected: true,
+        cursorAtEnd: true
+    },
+    mouse: {
+        isDown: false,
+        isSelecting: false,
+    },
+    caretPosition: -1,
+    visibleRows: {
+        start: 0,
+        end: 0,
+    },
+    sequenceData: validateAndTidyUpSequenceData(sequenceData),
+    clipboardData: null,
     $bpsPerRow: [
-        ['vectorEditorState', 'rowViewDimensions',
+        ['rowViewDimensions',
             'width'
         ],
-        ['vectorEditorState', 'charWidth'],
+        ['charWidth'],
         function(rowViewDimensionsWidth, charWidth) {
             return Math.floor(rowViewDimensionsWidth / charWidth);
         }
     ],
     $translationsWithAminoAcids: [
-        ['vectorEditorState', 'sequenceData', 'translations'],
-        ['vectorEditorState', 'sequenceData', 'sequence'],
+        ['sequenceData', 'translations'],
+        ['sequenceData', 'sequence'],
         function getTranslationsWithAminoAcids(translations, sequence) {
             return translations.map(function(translation) {
                 var translationWithAminoAcids = assign({}, translation);
@@ -77,14 +75,14 @@ var tree = new baobab({
         }
     ],
     $sequenceLength: [
-        ['vectorEditorState', 'sequenceData'],
+        ['sequenceData'],
         function(sequenceData) {
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
         }
     ],
     $selectedSequenceString: [
-        ['vectorEditorState', 'sequenceData', 'sequence'],
-        ['vectorEditorState', 'selectionLayer'],
+        ['sequenceData', 'sequence'],
+        ['selectionLayer'],
         function(sequence, selectionLayer) {
             if (sequence && selectionLayer && selectionLayer.selected) {
                 return getSequenceWithinRange(selectionLayer, sequence);
@@ -94,13 +92,13 @@ var tree = new baobab({
         }
     ],
     $orfData: [
-        ['vectorEditorState', 'sequenceData', 'sequence'],
-        ['vectorEditorState', 'sequenceData', 'circular'], //decide on what to call this..
-        ['vectorEditorState', 'minimumOrfSize'],
+        ['sequenceData', 'sequence'],
+        ['sequenceData', 'circular'], //decide on what to call this..
+        ['minimumOrfSize'],
         findOrfsInPlasmid
     ],
     $combinedSequenceData: [ //holds usual sequence data, plus orfs, plus parts..
-        ['vectorEditorState', 'sequenceData'],
+        ['sequenceData'],
         ['$orfData'],
         ['$translationsWithAminoAcids'],
         function(sequenceData, orfData, translations) {
@@ -128,7 +126,7 @@ var tree = new baobab({
     ],
     $newRandomRowToJumpTo: [
         ['$totalRows'],
-        ['vectorEditorState', 'rowToJumpTo'],
+        ['rowToJumpTo'],
         function(totalRows) {
             return {
                 row: Math.floor(totalRows * Math.random())
