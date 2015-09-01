@@ -1,7 +1,6 @@
-var tree = require('../baobabTree');
-var addAnnotations = require('./addAnnotations');
+// var addAnnotations = require('./addAnnotations');
 
-module.exports = function addFeatures (annotationsToInsert) {
-    var annotationsCursor = tree.select('sequenceData', 'features');
-    addAnnotations(annotationsCursor, annotationsToInsert);
-}
+// module.exports = function addFeatures (annotationsToInsert) {
+//     var annotationsCursor = tree.select('sequenceData', 'features');
+//     addAnnotations(annotationsCursor, annotationsToInsert);
+// };

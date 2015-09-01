@@ -16,7 +16,7 @@ var tree = new baobab({
     charWidth: 15,
     CHAR_HEIGHT: 15,
     ANNOTATION_HEIGHT: 15,
-    minimumOrfSize: 300,
+    minimumOrfSize: 20,
     tickSpacing: 21,
     SPACE_BETWEEN_ANNOTATIONS: 3,
     preloadRowStart: 0,

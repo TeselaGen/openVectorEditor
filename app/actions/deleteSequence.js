@@ -1,6 +1,7 @@
 var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var adjustRangeToDeletionOfAnotherRange = require('../adjustRangeToDeletionOfAnotherRange');
+var validateAndTidyUpSequenceData = require('../validateAndTidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var setCaretPosition = require('./setCaretPosition');
 var setSelectionLayer = require('./setSelectionLayer');
@@ -40,8 +41,8 @@ module.exports = function deleteSequence(rangeToDelete) {
         }
         // setCaretPosition(tree.select('caretPosition').get() - rangeToDelete.start);
     } else {
-        throw new Error('must have a selection layer or a caretPosition');
-        // console.warn('must have a selection layer or a caretPosition');
+        // throw new Error('must have a selection layer or a caretPosition');
+        console.warn('must have a selection layer or a caretPosition');
     }
     var sequenceData = tree.select('sequenceData').get();
     var newSequenceData = {};
@@ -56,38 +57,27 @@ module.exports = function deleteSequence(rangeToDelete) {
         }
     }
     //trim and remove features
-    if (sequenceData.features) {
-        newSequenceData.features = sequenceData.features.map(function(annotation) {
-            var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
-            if (newAnnotationRange) {
-                var adjustedAnnotation = assign({}, annotation);
-                adjustedAnnotation.start = newAnnotationRange.start;
-                adjustedAnnotation.end = newAnnotationRange.end;
-                return adjustedAnnotation;
-            }
-        }).filter(function(annotation) { //strip out deleted (null) annotations
-            if (annotation) {
-                return true;
-            }
-        });
+    newSequenceData.features = applyDeleteToAnnotations(sequenceData.features);
+    newSequenceData.parts = applyDeleteToAnnotations(sequenceData.parts);
+    newSequenceData.translations = applyDeleteToAnnotations(sequenceData.translations);
+    function applyDeleteToAnnotations(annotations) {
+        if (annotations) {
+            return annotations.map(function(annotation) {
+                var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete, sequenceLength);
+                if (newAnnotationRange) {
+                    var adjustedAnnotation = assign({}, annotation);
+                    adjustedAnnotation.start = newAnnotationRange.start;
+                    adjustedAnnotation.end = newAnnotationRange.end;
+                    return adjustedAnnotation;
+                }
+            }).filter(function(annotation) { //strip out deleted (null) annotations
+                if (annotation) {
+                    return true;
+                }
+            });
+        } else {
+            return [];
+        }
     }
-    if (sequenceData.parts) {
-        newSequenceData.parts = sequenceData.parts.map(function(annotation) {
-            var newAnnotationRange = adjustRangeToDeletionOfAnotherRange(annotation, rangeToDelete);
-            if (newAnnotationRange) {
-                var adjustedAnnotation = assign({}, annotation);
-                adjustedAnnotation.start = newAnnotationRange.start;
-                adjustedAnnotation.end = newAnnotationRange.end;
-                return adjustedAnnotation;
-            }
-        }).filter(function(annotation) { //strip out deleted (null) annotations
-            if (annotation) {
-                return true;
-            }
-        });
-    }
-    // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
-    // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
-    tree.select('sequenceData').set(newSequenceData);
-    // refreshEditor(); //tnrtodo: hacky hack until baobab is fixed completely... this causes the editor to update itself..
+    tree.select('sequenceData').set(validateAndTidyUpSequenceData(newSequenceData, true));
 }

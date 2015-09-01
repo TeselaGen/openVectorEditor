@@ -34,6 +34,9 @@ var RowItem = React.createClass({
 
   render: function () {
     var row = this.props.row;
+    if (!row) {
+      return null;
+    }
     var bpsPerRow = this.state.bpsPerRow;
     var showParts = this.state.showParts;
     // var showReverseSequence = this.state.showReverseSequence;

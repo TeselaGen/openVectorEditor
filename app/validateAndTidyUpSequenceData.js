@@ -3,17 +3,25 @@ var assign = require('lodash/object/assign');
 var randomColor = require('random-color');
 var FeatureTypes = require('./FeatureTypes.js');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-module.exports = function validateAndTidyUpSequenceData(sequence) {
+module.exports = function validateAndTidyUpSequenceData(sequence, throwErrors) {
     var sequenceData = assign({}, sequence); //sequence is usually immutable, so we clone it and return it
     var response = {
         messages: []
     };
     if (!sequenceData) {
-        console.warn('no sequenceData at all...!');
+        if (throwErrors) {
+            throw new Error('no sequenceData at all...!');
+        } else {
+            console.warn('no sequenceData at all...!');
+        }
         sequenceData = {};
     }
-    if (!sequenceData.sequence) {
-        console.warn('no bps!');
+    if (!sequenceData.sequence && sequenceData.sequence !== '') {
+        if (throwErrors) {
+            throw new Error('no bps!');
+        } else {
+            console.warn('no bps!');
+        }
         sequenceData.sequence = "";
     }
     // if (!sequenceData.size) {
@@ -25,15 +33,27 @@ module.exports = function validateAndTidyUpSequenceData(sequence) {
         sequenceData.circular = true;
     }
     if (!Array.isArray(sequenceData.features)) {
-        console.warn('no features array!');
+        if (throwErrors) {
+            throw new Error('no features array!');
+        } else {
+            console.warn('no features array!');
+        }
         sequenceData.features = [];
     }
     if (!Array.isArray(sequenceData.parts)) {
-        console.warn('no parts array!');
+        if (throwErrors) {
+            throw new Error('no parts array!');
+        } else {
+            console.warn('no parts array!');
+        }
         sequenceData.parts = [];
     }
     if (!Array.isArray(sequenceData.translations)) {
-        console.warn('no translations array!');
+        if (throwErrors) {
+            throw new Error('no translations array!');
+        } else {
+            console.warn('no translations array!');
+        }
         sequenceData.translations = [];
     }
     
