@@ -1,4 +1,4 @@
-const React = require('react');
+import React, { PropTypes } from 'react';
 const setSelectionLayer = require('./actions/setSelectionLayer');
 const zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
 const getSequenceWithinRange = require('./getSequenceWithinRange');
@@ -13,12 +13,22 @@ const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 const TranslationContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
-        annotationRanges: React.PropTypes.array.isRequired,
-        charWidth: React.PropTypes.number.isRequired,
-        bpsPerRow: React.PropTypes.number.isRequired,
-        annotationHeight: React.PropTypes.number.isRequired,
-        spaceBetweenAnnotations: React.PropTypes.number.isRequired,
-        sequenceLength: React.PropTypes.number.isRequired
+        annotationRanges: PropTypes.arrayOf(PropTypes.shape({
+            start: PropTypes.number.isRequired,
+            end: PropTypes.number.isRequired,
+            yOffset: PropTypes.number.isRequired,
+            annotation: PropTypes.shape({
+              start: PropTypes.number.isRequired,
+              end: PropTypes.number.isRequired,
+              forward: PropTypes.bool.isRequired,
+              id: PropTypes.string.isRequired
+            })
+        })),
+        charWidth: PropTypes.number.isRequired,
+        bpsPerRow: PropTypes.number.isRequired,
+        annotationHeight: PropTypes.number.isRequired,
+        spaceBetweenAnnotations: PropTypes.number.isRequired,
+        sequenceLength: PropTypes.number.isRequired
     },
     render() {
           const annotationRanges = this.props.annotationRanges;
@@ -55,9 +65,15 @@ const TranslationContainer = React.createClass({
               return (
                   <AASliver 
                         onClick={function(e) {
-                          e.stopPropagation();
+                          // e.stopPropagation();
                           setSelectionLayer(codonIndices);
                         }}
+                        onDoubleClick = {
+                            function(e) {
+                                e.stopPropagation();
+                                setSelectionLayer(annotation);
+                            }
+                        }
                         key={annotation.id + aminoAcidPositionInSequence}
                         forward={annotation.forward}
                         width={charWidth}
