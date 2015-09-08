@@ -1,8 +1,11 @@
+var ac = require('./apiCheck'); 
+    // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require( 'validate.io-boolean' );
 
 module.exports = function addAnnotations (annotationType, annotationsToInsert, throwErrors) {
+    ac.throw([ac.string, ac.arrayOf(ac.range), ac.bool], arguments);
 	if (['features', 'parts', 'translations'].indexOf(annotationType) === -1) {
         throw new Error('invalid annotation type passed')
     }

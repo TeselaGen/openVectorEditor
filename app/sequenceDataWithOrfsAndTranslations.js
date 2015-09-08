@@ -1,4 +1,4 @@
-var seqString = "gacgtcttatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
+var seqString = "gacgtctggatcctatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
 for (var i = 0; i < 10; i++) {
   seqString += seqString
 }; 

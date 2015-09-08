@@ -1,11 +1,15 @@
+var ac = require('./apiCheck'); 
+    // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 // var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 
 module.exports = function adjustRangeToSequenceInsert(rangeToBeAdjusted, insertStart, insertLength) {
+    ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
     var newRange = {
         start: rangeToBeAdjusted.start,
         end: rangeToBeAdjusted.end
-    }
+    };
     if (rangeToBeAdjusted.start > rangeToBeAdjusted.end) {
         //circular range
         if (rangeToBeAdjusted.end >= insertStart) {

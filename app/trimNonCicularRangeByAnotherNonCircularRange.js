@@ -1,4 +1,7 @@
+var ac = require('./apiCheck'); 
+  // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 module.exports = function trimNonCicularRangeByAnotherNonCircularRange(rangeToBeTrimmed, trimmingRange) {
+  ac.throw([ac.range, ac.range], arguments);
   var outputTrimmedRange;
   if (!rangeToBeTrimmed) {
     return outputTrimmedRange;

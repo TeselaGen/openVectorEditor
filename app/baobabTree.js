@@ -7,6 +7,8 @@ var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
+var getCutsitesFromSequence = require('./getCutsitesFromSequence');
+var enzymeList = require('./enzymeList');
 
 var tree = new baobab({
     rowToJumpTo: null,
@@ -32,6 +34,30 @@ var tree = new baobab({
         height: 500, //come back and make these dynamic
         width: 500
     },
+    userEnzymeList: [
+        'RspLKII',
+        'Bme216I',
+        'Uba1229I',
+        'MaeK81I', "EspHK22I",
+        "Slu1777I",
+        "BshHI",
+        "Ssp2I",
+        "CspAI",
+        "BtsI",
+        "AspMI",
+        "NgoEII",
+        "Bsu1532I",
+        "DsaI",
+        "BstRI",
+        "Pru2I",
+        "Uba1439I",
+        "BsrFI",
+        "BseRI",
+        "MizI",
+        "HgiBI",
+        "BarI",
+        "NsiCI"
+    ],
     viewportDimensions: {
         height: 500, //come back and make these dynamic
         width: 500
@@ -61,6 +87,20 @@ var tree = new baobab({
         function(rowViewDimensionsWidth, charWidth) {
             return Math.floor(rowViewDimensionsWidth / charWidth);
         }
+    ],
+    $userEnzymes: [
+        ['userEnzymeList'],
+        function(userEnzymeList) {
+            return userEnzymeList.map(function(enzymeName) {
+                return enzymeList[enzymeName];
+            });
+        }
+    ],
+    $cutsites: [
+        ['sequenceData', 'sequence'],
+        ['sequenceData', 'circular'],
+        ['$userEnzymes'],
+        getCutsitesFromSequence
     ],
     $translationsWithAminoAcids: [
         ['sequenceData', 'translations'],
