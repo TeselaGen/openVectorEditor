@@ -5,6 +5,7 @@ var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 var assign = require('lodash/object/assign');
+var each = require('lodash/collection/each');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
 var getCutsitesFromSequence = require('./getCutsitesFromSequence');
@@ -96,11 +97,21 @@ var tree = new baobab({
             });
         }
     ],
-    $cutsites: [
+    $cutsitesByName: [
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
         ['$userEnzymes'],
         getCutsitesFromSequence
+    ],
+    $cutsitesAsArray: [
+        ['$cutsitesByName'],
+        function (cutsitesByName) {
+            var cutsitesArray = [];
+            Object.keys(cutsitesByName).forEach(function (key) {
+                cutsitesArray.concat(cutsitesByName[key]);
+            });
+            return cutsitesArray;
+        }
     ],
     $translationsWithAminoAcids: [
         ['sequenceData', 'translations'],

@@ -66,23 +66,26 @@ var RowItem = React.createClass({
     var selectionCursorStart;
     var selectionCursorEnd;
     var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.charWidth, cursorStyle, this.state.sequenceLength);
+    
     function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength) {
-      var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
-      var selectionLayers = overlaps.map(function (overlap, index) {
-        if (overlap.start === selectionLayer.start) {
-          selectionCursorStart = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth);
-        }
-        if (overlap.end === selectionLayer.end) {
-          selectionCursorEnd = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth);
-        }
-        var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
-        var xStart = result.xStart;
-        var width = result.width;
+      if (selectionLayer.selected) {
+        var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
+        var selectionLayers = overlaps.map(function (overlap, index) {
+          if (overlap.start === selectionLayer.start) {
+            selectionCursorStart = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth);
+          }
+          if (overlap.end === selectionLayer.end) {
+            selectionCursorEnd = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth);
+          }
+          var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
+          var xStart = result.xStart;
+          var width = result.width;
 
-        var style = assign({}, highlightLayerStyle, {width: width, left: xStart});
-        return (<div key={index} className="selectionLayer" style={style}/>);
-      });
-      return selectionLayers;
+          var style = assign({}, highlightLayerStyle, {width: width, left: xStart});
+          return (<div key={index} className="selectionLayer" style={style}/>);
+        });
+        return selectionLayers;
+      }
     }
 
     var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, this.state.charWidth);
