@@ -1,13 +1,11 @@
-var areRangesValid = require('./areRangesValid');
 var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
 var getOverlapOfNonCircularRanges = require('./getOverlapOfNonCircularRanges');
 //returns an array of the overlaps between two potentially circular ranges
+var ac = require('./apiCheck'); 
+// ac.throw([ac.string,ac.bool],arguments);
 module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
-  if (!areRangesValid([rangeA, rangeB], maxRangeLength)) {
-    // console.warn("unable to calculate ranges of  inputs");
-    throw new Error('invalid ranges passed in!');
-    // return [];
-  }
+  ac.throw([ac.range,ac.range,ac.posInt],arguments);
+
   var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
   var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxRangeLength);
 

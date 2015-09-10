@@ -5,8 +5,11 @@ var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('./findOrfsInPlasmid');
 var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
 var assign = require('lodash/object/assign');
+var each = require('lodash/collection/each');
 var getSequenceWithinRange = require('./getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
+var getCutsitesFromSequence = require('./getCutsitesFromSequence');
+var enzymeList = require('./enzymeList');
 
 var tree = new baobab({
     rowToJumpTo: null,
@@ -32,6 +35,30 @@ var tree = new baobab({
         height: 500, //come back and make these dynamic
         width: 500
     },
+    userEnzymeList: [
+        'rsplkii',
+        'bme216i',
+        'uba1229i',
+        'maek81i', "esphk22i",
+        "slu1777i",
+        "bshhi",
+        "ssp2i",
+        "cspai",
+        "btsi",
+        "aspmi",
+        "ngoeii",
+        "bsu1532i",
+        "dsai",
+        "bstri",
+        "pru2i",
+        "uba1439i",
+        "bsrfi",
+        "bseri",
+        "mizi",
+        "hgibi",
+        "bari",
+        "nsici"
+    ],
     viewportDimensions: {
         height: 500, //come back and make these dynamic
         width: 500
@@ -60,6 +87,30 @@ var tree = new baobab({
         ['charWidth'],
         function(rowViewDimensionsWidth, charWidth) {
             return Math.floor(rowViewDimensionsWidth / charWidth);
+        }
+    ],
+    $userEnzymes: [
+        ['userEnzymeList'],
+        function(userEnzymeList) {
+            return userEnzymeList.map(function(enzymeName) {
+                return enzymeList[enzymeName];
+            });
+        }
+    ],
+    $cutsitesByName: [
+        ['sequenceData', 'sequence'],
+        ['sequenceData', 'circular'],
+        ['$userEnzymes'],
+        getCutsitesFromSequence
+    ],
+    $cutsitesAsArray: [
+        ['$cutsitesByName'],
+        function (cutsitesByName) {
+            var cutsitesArray = [];
+            Object.keys(cutsitesByName).forEach(function (key) {
+                cutsitesArray.concat(cutsitesByName[key]);
+            });
+            return cutsitesArray;
         }
     ],
     $translationsWithAminoAcids: [

@@ -1,5 +1,7 @@
 var revComp = require('./getReverseComplementSequenceString');
 var getAA = require('./getAminoAcidFromSequenceTriplet');
+var ac = require('./apiCheck'); 
+// ac.throw([ac.string,ac.bool],arguments);
 /**
  * @private
  * Gets aminoAcid data, including position in string and position in codon
@@ -12,12 +14,7 @@ var getAA = require('./getAminoAcidFromSequenceTriplet');
       }]
  */
 module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forward) {
-  if (typeof(forward) === "undefined") {
-    throw new Error('no direction passed');
-  }
-  if (typeof sequenceString !== 'string') {
-    throw new Error('invalid sequenceString passed');
-  }
+  ac.throw([ac.string,ac.bool],arguments);
   var aminoAcidDataForEachBaseOfDNA = [];
 
   var revCompGapLength = 0;

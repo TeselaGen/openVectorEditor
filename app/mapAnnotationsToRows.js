@@ -1,3 +1,5 @@
+var ac = require('./apiCheck');
+// ac.throw([ac.string,ac.bool],arguments);
 var each = require('lodash/collection/each');
 var sortBy = require('lodash/collection/sortBy');
 var uniq = require('lodash/array/uniq');
@@ -5,10 +7,8 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var checkIfNonCircularRangesOverlap = require('./checkIfNonCircularRangesOverlap');
 
 module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
+  ac.throw([ac.array, ac.posInt,ac.posInt],arguments);
   var annotationsToRowsMap = {};
-  if (!annotations) {
-    console.warn("no annotations detected");
-  }
 
   each(annotations, function(annotation) {
     if (!annotation) {
@@ -20,10 +20,7 @@ module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsP
 };
 
 function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap) {
-  if (!annotationsToRowsMap) {
-    console.warn("annotationsToRowsMap must be defined");
-    return {};
-  }
+  ac.throw([ac.range, ac.posInt, ac.posInt, ac.object], arguments);
   var ranges = splitRangeOnOrigin(annotation, sequenceLength);
   ranges.forEach(function(range) {
     // if (!isPositiveInteger(range.start)) {}

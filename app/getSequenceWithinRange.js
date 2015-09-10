@@ -1,4 +1,6 @@
+var ac = require('./apiCheck');	
 module.exports = function getSequenceWithinRange(range, sequence) {
+	ac.throw([ac.range, ac.string], arguments);
 	if (range.start > range.end) {
 		//circular range 
 		var subSequence = sequence.slice(range.start, sequence.length);
