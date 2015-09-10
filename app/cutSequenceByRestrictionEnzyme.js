@@ -3,13 +3,7 @@ var ac = require('./apiCheck');
 var normalizePositionByRangeLength = require('./normalizePositionByRangeLength.js');
 var reversePositionInRange = require('./reversePositionInRange.js');
 
-/**
- * Cut sequence with one restriction enzyme. See Teselagen.bio.enzymes.RestrictionCutSite.
- * @param {RestrictionEnzyme} restrictionEnzyme Restriction enzyme to cut the sequence with.
- * @param {sequence} sequence DNA sequence.
- * @return {Array} List of RestrictionCutSite's.
- */
-module.exports = function cutSequenceByRestrictionEnzyme(sequence, circular, restrictionEnzyme) {
+module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, restrictionEnzyme) {
     ac.throw([
         ac.string,
         ac.bool,
@@ -26,68 +20,87 @@ module.exports = function cutSequenceByRestrictionEnzyme(sequence, circular, res
         })
     ], arguments);
     var reverseRegExpPattern = new RegExp(restrictionEnzyme.reverseRegex, "ig");
-
     var forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");
-    var cutSitesForward = cutSequence(forwardRegExpPattern, restrictionEnzyme, sequence);
-    var cutSitesReverse = [];
+    var sequence = pSequence;
+
+    var cutsitesForward = cutSequence(forwardRegExpPattern, restrictionEnzyme, sequence, circular);
+    var cutsitesReverse = [];
     if (restrictionEnzyme.forwardRegex !== restrictionEnzyme.reverseRegex) {
         var revSequence = getReverseComplementSequenceString(sequence);
-        cutSitesReverse = cutSequence(forwardRegExpPattern, restrictionEnzyme, revSequence);
-        cutSitesReverse.forEach(function(cutsite) {
-            cutsite = reverseAllPositionsOfCutsite(cutsite);
+        cutsitesReverse = cutSequence(forwardRegExpPattern, restrictionEnzyme, revSequence, circular);
+        cutsitesReverse = cutsitesReverse.map(function(cutsite) {
+            return reverseAllPositionsOfCutsite(cutsite, sequence.length);
         });
     }
-    return (cutSitesForward.concat(cutSitesReverse));
+    return (cutsitesForward.concat(cutsitesReverse));
 
     function reverseAllPositionsOfCutsite(cutsite, rangeLength) {
-        cutsite.start = reversePositionInRange(cutsite.start, rangeLength);
-        cutsite.end = reversePositionInRange(cutsite.end, rangeLength);
-        cutsite.downStreamTopSnip = reversePositionInRange(cutsite.downStreamTopSnip, rangeLength);
-        cutsite.downStreamBottomSnip = reversePositionInRange(cutsite.downStreamBottomSnip, rangeLength);
-        cutsite.upstreamTopSnip = reversePositionInRange(cutsite.upstreamTopSnip, rangeLength);
-        cutsite.upstreamBottomSnip = reversePositionInRange(cutsite.upstreamBottomSnip, rangeLength);
-        cutsite.recognitionSiteRange.start = reversePositionInRange(cutsite.recognitionSiteRange.start, rangeLength);
-        cutsite.recognitionSiteRange.end = reversePositionInRange(cutsite.recognitionSiteRange.end, rangeLength);
-        return cutsite;
+        debugger;
+        cutsite.start = reversePositionInRange(cutsite.start, rangeLength, false);
+        cutsite.end = reversePositionInRange(cutsite.end, rangeLength, false);
+        cutsite.downstreamTopSnip = reversePositionInRange(cutsite.downstreamTopSnip, rangeLength, true);
+        cutsite.downstreamBottomSnip = reversePositionInRange(cutsite.downstreamBottomSnip, rangeLength, true);
+        if (cutsite.cutType === 1) {
+            cutsite.upstreamTopSnip = reversePositionInRange(cutsite.upstreamTopSnip, rangeLength, true);
+            cutsite.upstreamBottomSnip = reversePositionInRange(cutsite.upstreamBottomSnip, rangeLength, true);
+        }
+        cutsite.recognitionSiteRange.start = reversePositionInRange(cutsite.recognitionSiteRange.start, rangeLength, false);
+        cutsite.recognitionSiteRange.end = reversePositionInRange(cutsite.recognitionSiteRange.end, rangeLength, false);
+        return {
+            start: cutsite.end,
+            end: cutsite.start,
+            downstreamTopSnip: cutsite.downstreamBottomSnip,
+            downstreamBottomSnip: cutsite.downstreamTopSnip,
+            upstreamTopSnip: cutsite.upstreamBottomSnip,
+            upstreamBottomSnip: cutsite.upstreamTopSnip,
+            recognitionSiteRange: {
+                start: cutsite.recognitionSiteRange.end,
+                end: cutsite.recognitionSiteRange.start
+            },
+            forward: false,
+            restrictionEnzyme: cutsite.restrictionEnzyme
+        };
     }
 
-    function cutSequence(regExpPattern, restrictionEnzyme, sequence) {
+    function cutSequence(regExpPattern, restrictionEnzyme, sequence, circular) {
         var restrictionCutSites = [];
         var restrictionCutSite;
-        var reLength = restrictionEnzyme.site.length;
-        // if (reLength != restrictionEnzyme.dsForward + restrictionEnzyme.dsReverse) {
-        //     reLength = restrictionEnzyme.dsForward;
-        // }
-
-        sequence = sequence;
-        var sequenceLength = sequence.length;
+        var recognitionSiteLength = restrictionEnzyme.site.length;
+        var originalSequenceLength = sequence.length;
+        if (circular) {
+            //if the sequence is circular, we send in double the sequence
+            //we'll deduplicate the results afterwards!
+            sequence += sequence;
+        }
+        var currentSequenceLength = sequence.length;
 
         var matchIndex = sequence.search(forwardRegExpPattern);
         var startIndex = 0;
         var subSequence = sequence;
 
-        var recognitionSiteRange = {};
-        var start; //start and end should fully enclose the enzyme snips and the recognition site!
-        var end;
-        var upstreamTopSnip; //upstream top snip position
-        var upstreamBottomSnip; //upstream bottom snip position
-        var downStreamTopSnip; //downstream top snip position
-        var downStreamBottomSnip; //downstream bottom snip position
 
         while (matchIndex != -1) {
-            // if (matchIndex + startIndex + reLength - 1 >= sequence.length) { // subSequence is too short
+            var recognitionSiteRange = {};
+            var start; //start and end should fully enclose the enzyme snips and the recognition site!
+            var end;
+            var upstreamTopSnip; //upstream top snip position
+            var upstreamBottomSnip; //upstream bottom snip position
+            var downstreamTopSnip; //downstream top snip position
+            var downstreamBottomSnip; //downstream bottom snip position
+            // if (matchIndex + startIndex + recognitionSiteLength - 1 >= sequence.length) { // subSequence is too short
             //     break;
             // }
 
             recognitionSiteRange.start = matchIndex + startIndex;
             start = recognitionSiteRange.start; //this might change later on!
-            recognitionSiteRange.end = matchIndex + reLength + startIndex;
+
+            recognitionSiteRange.end = matchIndex + recognitionSiteLength - 1 + startIndex;
             end = recognitionSiteRange.end; //this might change later on!
 
             //we need to get the snip sites, top and bottom for each of these cut sites
             //as well as all of the bp's between the snip sites
 
-            //if the cutSite is type 1, it cuts both upstream and downstream of its recognition site (cutSite type 0's cut only downstream)
+            //if the cutsite is type 1, it cuts both upstream and downstream of its recognition site (cutsite type 0's cut only downstream)
             if (restrictionEnzyme.cutType == 1) { //double cutter, add upstream cutsite here
                 upstreamTopSnip = recognitionSiteRange.start - restrictionEnzyme.usForward;
                 upstreamBottomSnip = recognitionSiteRange.start - restrictionEnzyme.usReverse;
@@ -96,46 +109,48 @@ module.exports = function cutSequenceByRestrictionEnzyme(sequence, circular, res
                 } else {
                     start = upstreamBottomSnip;
                 }
-                upstreamTopSnip = normalizePositionByRangeLength(upstreamTopSnip, sequenceLength);
-                upstreamBottomSnip = normalizePositionByRangeLength(upstreamBottomSnip, sequenceLength);
+                upstreamTopSnip = normalizePositionByRangeLength(upstreamTopSnip, originalSequenceLength, true);
+                upstreamBottomSnip = normalizePositionByRangeLength(upstreamBottomSnip, originalSequenceLength, true);
             }
+
 
             //add downstream cutsite here
-            downStreamTopSnip = recognitionSiteRange.start + restrictionEnzyme.dsForward;
-            downStreamBottomSnip = recognitionSiteRange.start + restrictionEnzyme.dsReverse;
-            if (downStreamTopSnip > downStreamBottomSnip) {
-                if (downStreamTopSnip > recognitionSiteRange.end) {
-                    end = downStreamTopSnip;
+            downstreamTopSnip = recognitionSiteRange.start + restrictionEnzyme.dsForward;
+            downstreamBottomSnip = recognitionSiteRange.start + restrictionEnzyme.dsReverse;
+            if (downstreamTopSnip > downstreamBottomSnip) {
+                if (downstreamTopSnip > recognitionSiteRange.end) {
+                    end = downstreamTopSnip - 1;
                 }
             } else {
-                if (downStreamBottomSnip > recognitionSiteRange.end) {
-                    end = downStreamBottomSnip;
+                if (downstreamBottomSnip > recognitionSiteRange.end) {
+                    end = downstreamBottomSnip - 1;
                 }
             }
 
-            if (start < 0 || end < 0 || start >= sequenceLength || end >= sequenceLength && !circular) {
-                return; //return early because the cutsite does not fully fit within the boundownStream of the sequence!
+            if (start >= 0 && end >= 0 && start < originalSequenceLength && end < currentSequenceLength) {
+                //only push cutsites onto the array if they are fully contained within the boundaries of the sequence!
+                //and they aren't duplicated
+                downstreamTopSnip = normalizePositionByRangeLength(downstreamTopSnip, originalSequenceLength, true);
+                downstreamBottomSnip = normalizePositionByRangeLength(downstreamBottomSnip, originalSequenceLength, true);
+                start = normalizePositionByRangeLength(start, originalSequenceLength, false);
+                end = normalizePositionByRangeLength(end, originalSequenceLength, false);
+                recognitionSiteRange.start = normalizePositionByRangeLength(recognitionSiteRange.start, originalSequenceLength, false);
+                recognitionSiteRange.end = normalizePositionByRangeLength(recognitionSiteRange.end, originalSequenceLength, false);
+
+                restrictionCutSite = {
+                    start: start,
+                    end: end,
+                    downstreamTopSnip: downstreamTopSnip,
+                    downstreamBottomSnip: downstreamBottomSnip,
+                    upstreamTopSnip: upstreamTopSnip,
+                    upstreamBottomSnip: upstreamBottomSnip,
+                    recognitionSiteRange: recognitionSiteRange,
+                    forward: true,
+                    restrictionEnzyme: restrictionEnzyme
+                };
+                restrictionCutSites.push(restrictionCutSite);
             }
 
-            start = normalizePositionByRangeLength(start, sequenceLength);
-            end = normalizePositionByRangeLength(end, sequenceLength);
-            downStreamTopSnip = normalizePositionByRangeLength(downStreamTopSnip, sequenceLength);
-            downStreamBottomSnip = normalizePositionByRangeLength(downStreamBottomSnip, sequenceLength);
-            recognitionSiteRange.start = normalizePositionByRangeLength(recognitionSiteRange.start, sequenceLength);
-            recognitionSiteRange.end = normalizePositionByRangeLength(recognitionSiteRange.end, sequenceLength);
-
-            restrictionCutSite = {
-                start: start,
-                end: end,
-                downStreamTopSnip: downStreamTopSnip,
-                downStreamBottomSnip: downStreamBottomSnip,
-                upstreamTopSnip: upstreamTopSnip,
-                upstreamBottomSnip: upstreamBottomSnip,
-                recognitionSiteRange: recognitionSiteRange,
-                forward: true,
-                restrictionEnzyme: restrictionEnzyme
-            };
-            restrictionCutSites.push(restrictionCutSite);
 
             // Make sure that we always store the previous match index to ensure
             // that we are always storing indices relative to the whole sequence,
@@ -148,39 +163,4 @@ module.exports = function cutSequenceByRestrictionEnzyme(sequence, circular, res
         }
         return restrictionCutSites;
     }
-
-    // if (!restrictionEnzyme.forwardRegex !== restrictionEnzyme.reverseRegex) {
-    //     matchIndex = sequence.search(reverseRegExpPattern);
-    //     startIndex = 0;
-    //     subSequence = sequence;
-    //     while (matchIndex != -1) {
-    //         if (matchIndex + startIndex + reLength - 1 >= sequence.length) { // subSequence is too short
-    //             break;
-    //         }
-
-    //         recognitionSiteRange.start = matchIndex + startIndex -
-    //             (restrictionEnzyme.dsForward - restrictionEnzyme.site.length);
-    //         recognitionSiteRange.end = recognitionSiteRange.start + reLength;
-
-    //         if (recognitionSiteRange.start >= 0) {
-    //             restrictionCutSite = {
-    //                 recognitionSiteRange: recognitionSiteRange,
-    //                 forward: false,
-    //                 restrictionEnzyme: restrictionEnzyme
-    //             };
-
-    //             restrictionCutSites.push(restrictionCutSite);
-    //         }
-
-    //         // Make sure that we always store the previous match index to ensure
-    //         // that we are always storing indices relative to the whole sequence,
-    //         // not just the subSequence.
-    //         startIndex = startIndex + matchIndex + 1;
-
-    //         // Search again on subSequence, starting from the index of the last match + 1.
-    //         subSequence = sequence.substring(startIndex, sequence.length);
-    //         matchIndex = subSequence.search(reverseRegExpPattern);
-    //     }
-    // }
-    return restrictionCutSites;
 }

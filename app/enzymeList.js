@@ -1,5 +1,5 @@
 module.exports = {
-    "Bme216I": {
+    "bme216i": {
         "name": "Bme216I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -10,7 +10,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1229I": {
+    "uba1229i": {
         "name": "Uba1229I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -21,7 +21,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MaeK81I": {
+    "maek81i": {
         "name": "MaeK81I",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -32,7 +32,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl37I": {
+    "ecl37i": {
         "name": "Ecl37I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -43,7 +43,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1380I": {
+    "uba1380i": {
         "name": "Uba1380I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -54,7 +54,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiAI": {
+    "hgiai": {
         "name": "HgiAI",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -65,7 +65,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl16I": {
+    "pfl16i": {
         "name": "Pfl16I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -76,7 +76,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF29I": {
+    "hpyf29i": {
         "name": "HpyF29I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -87,7 +87,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspCI": {
+    "bspci": {
         "name": "BspCI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -98,7 +98,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AauI": {
+    "aaui": {
         "name": "AauI",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -109,7 +109,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KoyI": {
+    "koyi": {
         "name": "KoyI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -120,7 +120,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK22I": {
+    "esphk22i": {
         "name": "EspHK22I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -131,7 +131,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Slu1777I": {
+    "slu1777i": {
         "name": "Slu1777I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -142,7 +142,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshHI": {
+    "bshhi": {
         "name": "BshHI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -153,7 +153,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp2I": {
+    "ssp2i": {
         "name": "Ssp2I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -164,7 +164,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CspAI": {
+    "cspai": {
         "name": "CspAI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -175,7 +175,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtsI": {
+    "btsi": {
         "name": "BtsI",
         "site": "gcagtg",
         "forwardRegex": "gcagtg",
@@ -186,7 +186,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspMI": {
+    "aspmi": {
         "name": "AspMI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -197,7 +197,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoEII": {
+    "ngoeii": {
         "name": "NgoEII",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -208,7 +208,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1532I": {
+    "bsu1532i": {
         "name": "Bsu1532I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -219,7 +219,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DsaI": {
+    "dsai": {
         "name": "DsaI",
         "site": "ccrygg",
         "forwardRegex": "c{2}[agr][cty]g{2}",
@@ -230,7 +230,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstRI": {
+    "bstri": {
         "name": "BstRI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -241,7 +241,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pru2I": {
+    "pru2i": {
         "name": "Pru2I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -252,7 +252,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1439I": {
+    "uba1439i": {
         "name": "Uba1439I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -263,7 +263,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrFI": {
+    "bsrfi": {
         "name": "BsrFI",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -274,7 +274,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseRI": {
+    "bseri": {
         "name": "BseRI",
         "site": "gaggag",
         "forwardRegex": "gag{2}ag",
@@ -285,7 +285,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MizI": {
+    "mizi": {
         "name": "MizI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -296,7 +296,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiBI": {
+    "hgibi": {
         "name": "HgiBI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -307,7 +307,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BarI": {
+    "bari": {
         "name": "BarI",
         "site": "gaagnnnnnntac",
         "forwardRegex": "ga{2}g[abcdghkmnrstvwy]{6}tac",
@@ -318,7 +318,7 @@ module.exports = {
         "usForward": 25,
         "usReverse": 20
     },
-    "NsiCI": {
+    "nsici": {
         "name": "NsiCI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -329,7 +329,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuAI": {
+    "bpuai": {
         "name": "BpuAI",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -340,7 +340,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EciDI": {
+    "ecidi": {
         "name": "EciDI",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -351,7 +351,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspFNI": {
+    "bspfni": {
         "name": "BspFNI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -362,7 +362,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MthAI": {
+    "mthai": {
         "name": "MthAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -373,7 +373,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp33I": {
+    "psp33i": {
         "name": "Psp33I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -384,7 +384,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmlI": {
+    "xmli": {
         "name": "XmlI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -395,7 +395,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ral8I": {
+    "ral8i": {
         "name": "Ral8I",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -406,7 +406,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BveI": {
+    "bvei": {
         "name": "BveI",
         "site": "acctgc",
         "forwardRegex": "ac{2}tgc",
@@ -417,7 +417,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BauI": {
+    "baui": {
         "name": "BauI",
         "site": "cacgag",
         "forwardRegex": "cacgag",
@@ -428,7 +428,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1122I": {
+    "uba1122i": {
         "name": "Uba1122I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -439,7 +439,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp139I": {
+    "bsp139i": {
         "name": "Bsp139I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -450,7 +450,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvrBI": {
+    "avrbi": {
         "name": "AvrBI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -461,7 +461,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstB7SI": {
+    "bstb7si": {
         "name": "BstB7SI",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -472,7 +472,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1415I": {
+    "uba1415i": {
         "name": "Uba1415I",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -483,7 +483,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco241I": {
+    "eco241i": {
         "name": "Eco241I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -494,7 +494,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmuI": {
+    "bmui": {
         "name": "BmuI",
         "site": "actggg",
         "forwardRegex": "actg{3}",
@@ -505,7 +505,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NflAII": {
+    "nflaii": {
         "name": "NflAII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -516,7 +516,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SwaI": {
+    "swai": {
         "name": "SwaI",
         "site": "atttaaat",
         "forwardRegex": "at{3}a{3}t",
@@ -527,7 +527,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl61DI": {
+    "srl61di": {
         "name": "Srl61DI",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -538,7 +538,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TthHB8I": {
+    "tthhb8i": {
         "name": "TthHB8I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -549,7 +549,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoPI": {
+    "ecopi": {
         "name": "EcoPI",
         "site": "agacc",
         "forwardRegex": "agac{2}",
@@ -560,7 +560,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauNI": {
+    "sauni": {
         "name": "SauNI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -571,7 +571,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuB5I": {
+    "bpub5i": {
         "name": "BpuB5I",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -582,7 +582,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DsaVI": {
+    "dsavi": {
         "name": "DsaVI",
         "site": "gtmkac",
         "forwardRegex": "gt[acm][gkt]ac",
@@ -593,7 +593,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmFI": {
+    "bsmfi": {
         "name": "BsmFI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -604,7 +604,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp71I": {
+    "bsp71i": {
         "name": "Bsp71I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -615,7 +615,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1403I": {
+    "uba1403i": {
         "name": "Uba1403I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -626,7 +626,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtgAI": {
+    "btgai": {
         "name": "BtgAI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -637,7 +637,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Bbu297I": {
+    "m.bbu297i": {
         "name": "M.Bbu297I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -648,7 +648,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco240I": {
+    "eco240i": {
         "name": "Eco240I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -659,7 +659,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtsCI": {
+    "btsci": {
         "name": "BtsCI",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -670,7 +670,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XphI": {
+    "xphi": {
         "name": "XphI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -681,7 +681,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspA2I": {
+    "bspa2i": {
         "name": "BspA2I",
         "site": "cctagg",
         "forwardRegex": "c{2}tag{2}",
@@ -692,7 +692,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstHI": {
+    "bsthi": {
         "name": "BstHI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -703,7 +703,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoVIII": {
+    "ecoviii": {
         "name": "EcoVIII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -714,7 +714,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FdiII": {
+    "fdiii": {
         "name": "FdiII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -725,7 +725,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoICRI": {
+    "ecoicri": {
         "name": "EcoICRI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -736,7 +736,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF13III": {
+    "hpyf13iii": {
         "name": "HpyF13III",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -747,7 +747,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoTII": {
+    "ngotii": {
         "name": "NgoTII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -758,7 +758,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MsiI": {
+    "msii": {
         "name": "MsiI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -769,7 +769,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NocI": {
+    "noci": {
         "name": "NocI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -780,7 +780,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcoKI": {
+    "bcoki": {
         "name": "BcoKI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -791,7 +791,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba41I": {
+    "uba41i": {
         "name": "Uba41I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -802,7 +802,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutJI": {
+    "vpakutji": {
         "name": "VpaKutJI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -813,7 +813,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp70I": {
+    "bsp70i": {
         "name": "Bsp70I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -824,7 +824,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1093I": {
+    "uba1093i": {
         "name": "Uba1093I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -835,7 +835,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SuiI": {
+    "suii": {
         "name": "SuiI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -846,7 +846,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO66I": {
+    "vcho66i": {
         "name": "VchO66I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -857,7 +857,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp35HI": {
+    "asp35hi": {
         "name": "Asp35HI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -868,7 +868,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CeqI": {
+    "ceqi": {
         "name": "CeqI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -879,7 +879,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu90I": {
+    "bsu90i": {
         "name": "Bsu90I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -890,7 +890,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp5I": {
+    "psp5i": {
         "name": "Psp5I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -901,7 +901,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba42I": {
+    "uba42i": {
         "name": "Uba42I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -912,7 +912,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BdiI": {
+    "bdii": {
         "name": "BdiI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -923,7 +923,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1437I": {
+    "uba1437i": {
         "name": "Uba1437I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -934,7 +934,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp4009I": {
+    "bsp4009i": {
         "name": "Bsp4009I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -945,7 +945,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccEBI": {
+    "accebi": {
         "name": "AccEBI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -956,7 +956,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1160I": {
+    "uba1160i": {
         "name": "Uba1160I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -967,7 +967,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoDVIII": {
+    "ngodviii": {
         "name": "NgoDVIII",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -978,7 +978,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF36I": {
+    "hpyf36i": {
         "name": "HpyF36I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -989,7 +989,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AtsI": {
+    "atsi": {
         "name": "AtsI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -1000,7 +1000,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvBI": {
+    "bbvbi": {
         "name": "BbvBI",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -1011,7 +1011,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp713I": {
+    "asp713i": {
         "name": "Asp713I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -1022,7 +1022,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ple214I": {
+    "ple214i": {
         "name": "Ple214I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -1033,7 +1033,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PsuNI": {
+    "psuni": {
         "name": "PsuNI",
         "site": "crccggyg",
         "forwardRegex": "c[agr]c{2}g{2}[cty]g",
@@ -1044,7 +1044,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SbaI": {
+    "sbai": {
         "name": "SbaI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -1055,7 +1055,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgbI": {
+    "ngbi": {
         "name": "NgbI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -1066,7 +1066,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfaAIII": {
+    "pfaaiii": {
         "name": "PfaAIII",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -1077,7 +1077,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiWI": {
+    "bsiwi": {
         "name": "BsiWI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -1088,7 +1088,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaIV": {
+    "nlaiv": {
         "name": "NlaIV",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -1099,7 +1099,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RspLKI": {
+    "rsplki": {
         "name": "RspLKI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -1110,7 +1110,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF21I": {
+    "hpyf21i": {
         "name": "HpyF21I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -1121,7 +1121,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK115731I": {
+    "sflhk115731i": {
         "name": "SflHK115731I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -1132,7 +1132,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF62I": {
+    "hpyf62i": {
         "name": "HpyF62I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -1143,7 +1143,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF19II": {
+    "hpyf19ii": {
         "name": "HpyF19II",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -1154,7 +1154,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XcyI": {
+    "xcyi": {
         "name": "XcyI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -1165,7 +1165,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1095I": {
+    "uba1095i": {
         "name": "Uba1095I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -1176,7 +1176,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP95I": {
+    "ccop95i": {
         "name": "CcoP95I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -1187,7 +1187,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcsI": {
+    "acsi": {
         "name": "AcsI",
         "site": "raatty",
         "forwardRegex": "[agr]a{2}t{2}[cty]",
@@ -1198,7 +1198,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco93I": {
+    "eco93i": {
         "name": "Eco93I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -1209,7 +1209,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TscI": {
+    "tsci": {
         "name": "TscI",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -1220,7 +1220,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CpaAI": {
+    "cpaai": {
         "name": "CpaAI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -1231,7 +1231,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoO109I": {
+    "ecoo109i": {
         "name": "EcoO109I",
         "site": "rggnccy",
         "forwardRegex": "[agr]g{2}[abcdghkmnrstvwy]c{2}[cty]",
@@ -1242,7 +1242,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN13I": {
+    "uban13i": {
         "name": "UbaN13I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -1253,7 +1253,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Nsp29132I": {
+    "nsp29132i": {
         "name": "Nsp29132I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -1264,7 +1264,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjuII": {
+    "cjuii": {
         "name": "CjuII",
         "site": "caynnnnnctc",
         "forwardRegex": "ca[cty][abcdghkmnrstvwy]{5}ctc",
@@ -1275,7 +1275,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1440I": {
+    "uba1440i": {
         "name": "Uba1440I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -1286,7 +1286,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstLI": {
+    "bstli": {
         "name": "BstLI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -1297,7 +1297,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstIZ316I": {
+    "bstiz316i": {
         "name": "BstIZ316I",
         "site": "cacnnngtg",
         "forwardRegex": "cac[abcdghkmnrstvwy]{3}gtg",
@@ -1308,7 +1308,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae17kI": {
+    "pae17ki": {
         "name": "Pae17kI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -1319,7 +1319,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr6I": {
+    "cfr6i": {
         "name": "Cfr6I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -1330,7 +1330,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CspCI": {
+    "cspci": {
         "name": "CspCI",
         "site": "caannnnngtgg",
         "forwardRegex": "ca{2}[abcdghkmnrstvwy]{5}gtg{2}",
@@ -1341,7 +1341,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 22
     },
-    "Mph1103II": {
+    "mph1103ii": {
         "name": "Mph1103II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -1352,7 +1352,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba89I": {
+    "uba89i": {
         "name": "Uba89I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -1363,7 +1363,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba36I": {
+    "uba36i": {
         "name": "Uba36I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -1374,7 +1374,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco247I": {
+    "eco247i": {
         "name": "Eco247I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -1385,7 +1385,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr45I": {
+    "cfr45i": {
         "name": "Cfr45I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -1396,7 +1396,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.PmuDam": {
+    "m.pmudam": {
         "name": "M.PmuDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -1407,7 +1407,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CciNI": {
+    "ccini": {
         "name": "CciNI",
         "site": "gcggccgc",
         "forwardRegex": "gcg{2}c{2}gc",
@@ -1418,7 +1418,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaVI": {
+    "bsavi": {
         "name": "BsaVI",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -1429,7 +1429,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp105I": {
+    "bsp105i": {
         "name": "Bsp105I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -1440,7 +1440,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoprrI": {
+    "ecoprri": {
         "name": "EcoprrI",
         "site": "ccannnnnnnrtgc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}[agr]tgc",
@@ -1451,7 +1451,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco211I": {
+    "eco211i": {
         "name": "Eco211I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -1462,7 +1462,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XhoI": {
+    "xhoi": {
         "name": "XhoI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -1473,7 +1473,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pca17AI": {
+    "pca17ai": {
         "name": "Pca17AI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -1484,7 +1484,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Atu1I": {
+    "atu1i": {
         "name": "Atu1I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -1495,7 +1495,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF28I": {
+    "hpyf28i": {
         "name": "HpyF28I",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -1506,7 +1506,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psb9879I": {
+    "psb9879i": {
         "name": "Psb9879I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -1517,7 +1517,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco246I": {
+    "eco246i": {
         "name": "Eco246I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -1528,7 +1528,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NdaI": {
+    "ndai": {
         "name": "NdaI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -1539,7 +1539,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EheI": {
+    "ehei": {
         "name": "EheI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -1550,7 +1550,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BnaI": {
+    "bnai": {
         "name": "BnaI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -1561,7 +1561,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NovII": {
+    "novii": {
         "name": "NovII",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -1572,7 +1572,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoBVIII": {
+    "ngobviii": {
         "name": "NgoBVIII",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -1583,7 +1583,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoFI": {
+    "bsofi": {
         "name": "BsoFI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -1594,7 +1594,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1371I": {
+    "uba1371i": {
         "name": "Uba1371I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -1605,7 +1605,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp31I": {
+    "psp31i": {
         "name": "Psp31I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -1616,7 +1616,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TauII": {
+    "tauii": {
         "name": "TauII",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -1627,7 +1627,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu8565I": {
+    "bsu8565i": {
         "name": "Bsu8565I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -1638,7 +1638,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF65I": {
+    "hpyf65i": {
         "name": "HpyF65I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -1649,7 +1649,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Atu1II": {
+    "atu1ii": {
         "name": "Atu1II",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -1660,7 +1660,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr47I": {
+    "cfr47i": {
         "name": "Cfr47I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -1671,7 +1671,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco68I": {
+    "eco68i": {
         "name": "Eco68I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -1682,7 +1682,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyII": {
+    "hpyii": {
         "name": "HpyII",
         "site": "gaaga",
         "forwardRegex": "ga{2}ga",
@@ -1693,7 +1693,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuBI": {
+    "bsubi": {
         "name": "BsuBI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -1704,7 +1704,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspH106II": {
+    "bsph106ii": {
         "name": "BspH106II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -1715,7 +1715,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1187I": {
+    "uba1187i": {
         "name": "Uba1187I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -1726,7 +1726,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TfiI": {
+    "tfii": {
         "name": "TfiI",
         "site": "gawtc",
         "forwardRegex": "ga[atw]tc",
@@ -1737,7 +1737,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1224I": {
+    "uba1224i": {
         "name": "Uba1224I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -1748,7 +1748,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SprLI": {
+    "sprli": {
         "name": "SprLI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -1759,7 +1759,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiHKCI": {
+    "bsihkci": {
         "name": "BsiHKCI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -1770,7 +1770,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiJI": {
+    "hgiji": {
         "name": "HgiJI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -1781,7 +1781,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SdeAI": {
+    "sdeai": {
         "name": "SdeAI",
         "site": "cagrag",
         "forwardRegex": "cag[agr]ag",
@@ -1792,7 +1792,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp8I": {
+    "bsp8i": {
         "name": "Bsp8I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -1803,7 +1803,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SexI": {
+    "sexi": {
         "name": "SexI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -1814,7 +1814,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstMAI": {
+    "bstmai": {
         "name": "BstMAI",
         "site": "gtctc",
         "forwardRegex": "gtctc",
@@ -1825,7 +1825,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1332I": {
+    "uba1332i": {
         "name": "Uba1332I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -1836,7 +1836,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyNSH57II": {
+    "hpynsh57ii": {
         "name": "HpyNSH57II",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -1847,7 +1847,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmeBI": {
+    "bmebi": {
         "name": "BmeBI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -1858,7 +1858,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OxaI": {
+    "oxai": {
         "name": "OxaI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -1869,7 +1869,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AviII": {
+    "aviii": {
         "name": "AviII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -1880,7 +1880,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspGHA1I": {
+    "bspgha1i": {
         "name": "BspGHA1I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -1891,7 +1891,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst1126I": {
+    "bst1126i": {
         "name": "Bst1126I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -1902,7 +1902,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr46I": {
+    "cfr46i": {
         "name": "Cfr46I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -1913,7 +1913,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp7I": {
+    "bsp7i": {
         "name": "Bsp7I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -1924,7 +1924,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HaeII": {
+    "haeii": {
         "name": "HaeII",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -1935,7 +1935,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcuI": {
+    "acui": {
         "name": "AcuI",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -1946,7 +1946,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SunI": {
+    "suni": {
         "name": "SunI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -1957,7 +1957,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CpfAI": {
+    "cpfai": {
         "name": "CpfAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -1968,7 +1968,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1333I": {
+    "uba1333i": {
         "name": "Uba1333I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -1979,7 +1979,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SalCI": {
+    "salci": {
         "name": "SalCI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -1990,7 +1990,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK1794I": {
+    "sflhk1794i": {
         "name": "SflHK1794I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -2001,7 +2001,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RrhI": {
+    "rrhi": {
         "name": "RrhI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -2012,7 +2012,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcoSI": {
+    "bcosi": {
         "name": "BcoSI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -2023,7 +2023,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF68I": {
+    "hpyf68i": {
         "name": "HpyF68I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -2034,7 +2034,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn2kI": {
+    "kpn2ki": {
         "name": "Kpn2kI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -2045,7 +2045,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmCI": {
+    "bsmci": {
         "name": "BsmCI",
         "site": "acnnnnnctcc",
         "forwardRegex": "ac[abcdghkmnrstvwy]{5}ctc{2}",
@@ -2056,7 +2056,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuAI": {
+    "nmuai": {
         "name": "NmuAI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -2067,7 +2067,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr14I": {
+    "cfr14i": {
         "name": "Cfr14I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -2078,7 +2078,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauAI": {
+    "sauai": {
         "name": "SauAI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -2089,7 +2089,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr92I": {
+    "cfr92i": {
         "name": "Cfr92I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -2100,7 +2100,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspEI": {
+    "pspei": {
         "name": "PspEI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -2111,7 +2111,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin4II": {
+    "hin4ii": {
         "name": "Hin4II",
         "site": "ccttc",
         "forwardRegex": "c{2}t{2}c",
@@ -2122,7 +2122,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MwhI": {
+    "mwhi": {
         "name": "MwhI",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -2133,7 +2133,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SbfI": {
+    "sbfi": {
         "name": "SbfI",
         "site": "cctgcagg",
         "forwardRegex": "c{2}tgcag{2}",
@@ -2144,7 +2144,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FaqI": {
+    "faqi": {
         "name": "FaqI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -2155,7 +2155,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn378I": {
+    "kpn378i": {
         "name": "Kpn378I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -2166,7 +2166,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscWI": {
+    "bscwi": {
         "name": "BscWI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -2177,7 +2177,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF69I": {
+    "hpyf69i": {
         "name": "HpyF69I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -2188,7 +2188,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ10II": {
+    "bstz10ii": {
         "name": "BstZ10II",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -2199,7 +2199,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT93I": {
+    "ecot93i": {
         "name": "EcoT93I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -2210,7 +2210,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmDI": {
+    "bsmdi": {
         "name": "BsmDI",
         "site": "acnnnnnctcc",
         "forwardRegex": "ac[abcdghkmnrstvwy]{5}ctc{2}",
@@ -2221,7 +2221,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MaeIII": {
+    "maeiii": {
         "name": "MaeIII",
         "site": "gtnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]ac",
@@ -2232,7 +2232,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba54I": {
+    "uba54i": {
         "name": "Uba54I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -2243,7 +2243,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1154I": {
+    "uba1154i": {
         "name": "Uba1154I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -2254,7 +2254,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1383I": {
+    "eco1383i": {
         "name": "Eco1383I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -2265,7 +2265,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1334I": {
+    "uba1334i": {
         "name": "Uba1334I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -2276,7 +2276,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VhaI": {
+    "vhai": {
         "name": "VhaI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -2287,7 +2287,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstNI": {
+    "bstni": {
         "name": "BstNI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -2298,7 +2298,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1418I": {
+    "uba1418i": {
         "name": "Uba1418I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -2309,7 +2309,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MauAI": {
+    "mauai": {
         "name": "MauAI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -2320,7 +2320,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MnoI": {
+    "mnoi": {
         "name": "MnoI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -2331,7 +2331,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1241I": {
+    "uba1241i": {
         "name": "Uba1241I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -2342,7 +2342,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AocII": {
+    "aocii": {
         "name": "AocII",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -2353,7 +2353,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba71I": {
+    "uba71i": {
         "name": "Uba71I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2364,7 +2364,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpaI": {
+    "hpai": {
         "name": "HpaI",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -2375,7 +2375,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiEI": {
+    "hgiei": {
         "name": "HgiEI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -2386,7 +2386,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp46I": {
+    "psp46i": {
         "name": "Psp46I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2397,7 +2397,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstOI": {
+    "bstoi": {
         "name": "BstOI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -2408,7 +2408,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeDI": {
+    "nmedi": {
         "name": "NmeDI",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -2419,7 +2419,7 @@ module.exports = {
         "usForward": 13,
         "usReverse": 18
     },
-    "SpaHI": {
+    "spahi": {
         "name": "SpaHI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -2430,7 +2430,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SdiI": {
+    "sdii": {
         "name": "SdiI",
         "site": "ggccnnnnnggcc",
         "forwardRegex": "g{2}c{2}[abcdghkmnrstvwy]{5}g{2}c{2}",
@@ -2441,7 +2441,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuNHI": {
+    "asunhi": {
         "name": "AsuNHI",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -2452,7 +2452,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MltI": {
+    "mlti": {
         "name": "MltI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -2463,7 +2463,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy26I": {
+    "hpy26i": {
         "name": "Hpy26I",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -2474,7 +2474,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF9II": {
+    "hpyf9ii": {
         "name": "HpyF9II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -2485,7 +2485,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SacAI": {
+    "sacai": {
         "name": "SacAI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -2496,7 +2496,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshMI": {
+    "bshmi": {
         "name": "BshMI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -2507,7 +2507,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT95I": {
+    "ecot95i": {
         "name": "EcoT95I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -2518,7 +2518,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NgoGII": {
+    "m.ngogii": {
         "name": "M.NgoGII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -2529,7 +2529,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DraRI": {
+    "drari": {
         "name": "DraRI",
         "site": "caagnac",
         "forwardRegex": "ca{2}g[abcdghkmnrstvwy]ac",
@@ -2540,7 +2540,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoBI": {
+    "ecobi": {
         "name": "EcoBI",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -2551,7 +2551,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MsaI": {
+    "msai": {
         "name": "MsaI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -2562,7 +2562,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba72I": {
+    "uba72i": {
         "name": "Uba72I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2573,7 +2573,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cac8I": {
+    "cac8i": {
         "name": "Cac8I",
         "site": "gcnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{2}gc",
@@ -2584,7 +2584,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF35IV": {
+    "hpyf35iv": {
         "name": "HpyF35IV",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -2595,7 +2595,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspHI": {
+    "asphi": {
         "name": "AspHI",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -2606,7 +2606,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco27kI": {
+    "eco27ki": {
         "name": "Eco27kI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -2617,7 +2617,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EsaBC3I": {
+    "esabc3i": {
         "name": "EsaBC3I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -2628,7 +2628,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae8I": {
+    "pae8i": {
         "name": "Pae8I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2639,7 +2639,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PstNHI": {
+    "pstnhi": {
         "name": "PstNHI",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -2650,7 +2650,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1387I": {
+    "uba1387i": {
         "name": "Uba1387I",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -2661,7 +2661,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco53kI": {
+    "eco53ki": {
         "name": "Eco53kI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -2672,7 +2672,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspMII": {
+    "bspmii": {
         "name": "BspMII",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -2683,7 +2683,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AtuII": {
+    "atuii": {
         "name": "AtuII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -2694,7 +2694,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MxaI": {
+    "mxai": {
         "name": "MxaI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -2705,7 +2705,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NliI": {
+    "nlii": {
         "name": "NliI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -2716,7 +2716,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1394I": {
+    "eco1394i": {
         "name": "Eco1394I",
         "site": "aacnnnnnngtgc",
         "forwardRegex": "a{2}c[abcdghkmnrstvwy]{6}gtgc",
@@ -2727,7 +2727,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Umi5I": {
+    "umi5i": {
         "name": "Umi5I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -2738,7 +2738,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ama87I": {
+    "ama87i": {
         "name": "Ama87I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -2749,7 +2749,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmHI": {
+    "bsmhi": {
         "name": "BsmHI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -2760,7 +2760,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae9I": {
+    "pae9i": {
         "name": "Pae9I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2771,7 +2771,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce170I": {
+    "bce170i": {
         "name": "Bce170I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2782,7 +2782,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sal1974I": {
+    "sal1974i": {
         "name": "Sal1974I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -2793,7 +2793,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NcuI": {
+    "ncui": {
         "name": "NcuI",
         "site": "gaaga",
         "forwardRegex": "ga{2}ga",
@@ -2804,7 +2804,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF33I": {
+    "hpyf33i": {
         "name": "HpyF33I",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -2815,7 +2815,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1192I": {
+    "uba1192i": {
         "name": "Uba1192I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -2826,7 +2826,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvrI": {
+    "mvri": {
         "name": "MvrI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -2837,7 +2837,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstXII": {
+    "bstxii": {
         "name": "BstXII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -2848,7 +2848,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr32I": {
+    "cfr32i": {
         "name": "Cfr32I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -2859,7 +2859,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StsI": {
+    "stsi": {
         "name": "StsI",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -2870,7 +2870,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco99I": {
+    "eco99i": {
         "name": "Eco99I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -2881,7 +2881,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1283I": {
+    "uba1283i": {
         "name": "Uba1283I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -2892,7 +2892,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1400I": {
+    "uba1400i": {
         "name": "Uba1400I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -2903,7 +2903,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1297I": {
+    "uba1297i": {
         "name": "Uba1297I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -2914,7 +2914,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MscAI": {
+    "mscai": {
         "name": "MscAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -2925,7 +2925,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp78I": {
+    "bsp78i": {
         "name": "Bsp78I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2936,7 +2936,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1339I": {
+    "uba1339i": {
         "name": "Uba1339I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -2947,7 +2947,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1149I": {
+    "uba1149i": {
         "name": "Uba1149I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -2958,7 +2958,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF19III": {
+    "hpyf19iii": {
         "name": "HpyF19III",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -2969,7 +2969,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1190I": {
+    "uba1190i": {
         "name": "Uba1190I",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -2980,7 +2980,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco21kI": {
+    "eco21ki": {
         "name": "Eco21kI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -2991,7 +2991,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspAI": {
+    "pspai": {
         "name": "PspAI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -3002,7 +3002,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1327I": {
+    "uba1327i": {
         "name": "Uba1327I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -3013,7 +3013,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin3I": {
+    "hin3i": {
         "name": "Hin3I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -3024,7 +3024,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SexCI": {
+    "sexci": {
         "name": "SexCI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3035,7 +3035,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbtI": {
+    "bbti": {
         "name": "BbtI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -3046,7 +3046,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoKDam": {
+    "m.ecokdam": {
         "name": "M.EcoKDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -3057,7 +3057,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmdI": {
+    "pmdi": {
         "name": "PmdI",
         "site": "cctcagc",
         "forwardRegex": "c{2}tcagc",
@@ -3068,7 +3068,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcefI": {
+    "bcefi": {
         "name": "BcefI",
         "site": "acggc",
         "forwardRegex": "acg{2}c",
@@ -3079,7 +3079,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SenPT16I": {
+    "senpt16i": {
         "name": "SenPT16I",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -3090,7 +3090,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1453I": {
+    "uba1453i": {
         "name": "Uba1453I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -3101,7 +3101,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MeuI": {
+    "meui": {
         "name": "MeuI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -3112,7 +3112,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco115I": {
+    "eco115i": {
         "name": "Eco115I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -3123,7 +3123,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Alw26I": {
+    "alw26i": {
         "name": "Alw26I",
         "site": "gtctc",
         "forwardRegex": "gtctc",
@@ -3134,7 +3134,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseDI": {
+    "bsedi": {
         "name": "BseDI",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -3145,7 +3145,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmlAI": {
+    "xmlai": {
         "name": "XmlAI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -3156,7 +3156,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FspI": {
+    "fspi": {
         "name": "FspI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -3167,7 +3167,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RcaI": {
+    "rcai": {
         "name": "RcaI",
         "site": "tcatga",
         "forwardRegex": "tcatga",
@@ -3178,7 +3178,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RigI": {
+    "rigi": {
         "name": "RigI",
         "site": "ggccggcc",
         "forwardRegex": "g{2}c{2}g{2}c{2}",
@@ -3189,7 +3189,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1191I": {
+    "uba1191i": {
         "name": "Uba1191I",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -3200,7 +3200,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF22III": {
+    "hpyf22iii": {
         "name": "HpyF22III",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -3211,7 +3211,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MwoI": {
+    "mwoi": {
         "name": "MwoI",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -3222,7 +3222,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjePI": {
+    "cjepi": {
         "name": "CjePI",
         "site": "ccannnnnnntc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}tc",
@@ -3233,7 +3233,7 @@ module.exports = {
         "usForward": 26,
         "usReverse": 20
     },
-    "Eco182I": {
+    "eco182i": {
         "name": "Eco182I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3244,7 +3244,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SexBI": {
+    "sexbi": {
         "name": "SexBI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3255,7 +3255,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy99IV": {
+    "hpy99iv": {
         "name": "Hpy99IV",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -3266,7 +3266,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AfeI": {
+    "afei": {
         "name": "AfeI",
         "site": "agcgct",
         "forwardRegex": "agcgct",
@@ -3277,7 +3277,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1165I": {
+    "uba1165i": {
         "name": "Uba1165I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -3288,7 +3288,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SchI": {
+    "schi": {
         "name": "SchI",
         "site": "gagtc",
         "forwardRegex": "gagtc",
@@ -3299,7 +3299,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hsp2I": {
+    "hsp2i": {
         "name": "Hsp2I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -3310,7 +3310,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoJI": {
+    "bsoji": {
         "name": "BsoJI",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -3321,7 +3321,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1323I": {
+    "uba1323i": {
         "name": "Uba1323I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -3332,7 +3332,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF48II": {
+    "hpyf48ii": {
         "name": "HpyF48II",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -3343,7 +3343,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspOMI": {
+    "pspomi": {
         "name": "PspOMI",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -3354,7 +3354,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF67II": {
+    "hpyf67ii": {
         "name": "HpyF67II",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -3365,7 +3365,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviQI": {
+    "cviqi": {
         "name": "CviQI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -3376,7 +3376,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaDII": {
+    "lladii": {
         "name": "LlaDII",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -3387,7 +3387,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspTI": {
+    "bspti": {
         "name": "BspTI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -3398,7 +3398,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1451I": {
+    "uba1451i": {
         "name": "Uba1451I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -3409,7 +3409,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaLI": {
+    "bsali": {
         "name": "BsaLI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -3420,7 +3420,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthCI": {
+    "bthci": {
         "name": "BthCI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -3431,7 +3431,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1113I": {
+    "uba1113i": {
         "name": "Uba1113I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3442,7 +3442,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuB763I": {
+    "bsub763i": {
         "name": "BsuB763I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -3453,7 +3453,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCH4II": {
+    "hpych4ii": {
         "name": "HpyCH4II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -3464,7 +3464,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF14III": {
+    "hpyf14iii": {
         "name": "HpyF14III",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -3475,7 +3475,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvsI": {
+    "mvsi": {
         "name": "MvsI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -3486,7 +3486,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sal13I": {
+    "sal13i": {
         "name": "Sal13I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -3497,7 +3497,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco40I": {
+    "eco40i": {
         "name": "Eco40I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -3508,7 +3508,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SelAI": {
+    "selai": {
         "name": "SelAI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -3519,7 +3519,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NgoBIX": {
+    "m.ngobix": {
         "name": "M.NgoBIX",
         "site": "gtannnnnctc",
         "forwardRegex": "gta[abcdghkmnrstvwy]{5}ctc",
@@ -3530,7 +3530,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcaIV": {
+    "acaiv": {
         "name": "AcaIV",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -3541,7 +3541,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF66I": {
+    "hpyf66i": {
         "name": "HpyF66I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -3552,7 +3552,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP84I": {
+    "ccop84i": {
         "name": "CcoP84I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -3563,7 +3563,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF45I": {
+    "hpyf45i": {
         "name": "HpyF45I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -3574,7 +3574,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TruI": {
+    "trui": {
         "name": "TruI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -3585,7 +3585,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MjaV": {
+    "mjav": {
         "name": "MjaV",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -3596,7 +3596,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBake1I": {
+    "bspbake1i": {
         "name": "BspBake1I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -3607,7 +3607,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce243I": {
+    "bce243i": {
         "name": "Bce243I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -3618,7 +3618,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NcoI": {
+    "ncoi": {
         "name": "NcoI",
         "site": "ccatgg",
         "forwardRegex": "c{2}atg{2}",
@@ -3629,7 +3629,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfoI": {
+    "sfoi": {
         "name": "SfoI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -3640,7 +3640,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF22II": {
+    "hpyf22ii": {
         "name": "HpyF22II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -3651,7 +3651,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp148I": {
+    "bsp148i": {
         "name": "Bsp148I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -3662,7 +3662,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AclI": {
+    "acli": {
         "name": "AclI",
         "site": "aacgtt",
         "forwardRegex": "a{2}cgt{2}",
@@ -3673,7 +3673,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HalII": {
+    "halii": {
         "name": "HalII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -3684,7 +3684,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BanAI": {
+    "banai": {
         "name": "BanAI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -3695,7 +3695,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1098I": {
+    "uba1098i": {
         "name": "Uba1098I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -3706,7 +3706,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AosIII": {
+    "aosiii": {
         "name": "AosIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3717,7 +3717,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy8II": {
+    "hpy8ii": {
         "name": "Hpy8II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -3728,7 +3728,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp19I": {
+    "esp19i": {
         "name": "Esp19I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -3739,7 +3739,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco239I": {
+    "eco239i": {
         "name": "Eco239I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -3750,7 +3750,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstTS5I": {
+    "bstts5i": {
         "name": "BstTS5I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -3761,7 +3761,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp6HI": {
+    "asp6hi": {
         "name": "Asp6HI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -3772,7 +3772,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RroI": {
+    "rroi": {
         "name": "RroI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -3783,7 +3783,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cas2I": {
+    "cas2i": {
         "name": "Cas2I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -3794,7 +3794,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtuI": {
+    "btui": {
         "name": "BtuI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -3805,7 +3805,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjeI": {
+    "cjei": {
         "name": "CjeI",
         "site": "ccannnnnngt",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{6}gt",
@@ -3816,7 +3816,7 @@ module.exports = {
         "usForward": 26,
         "usReverse": 20
     },
-    "Bsp28I": {
+    "bsp28i": {
         "name": "Bsp28I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -3827,7 +3827,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RpaB5I": {
+    "rpab5i": {
         "name": "RpaB5I",
         "site": "cgrggac",
         "forwardRegex": "cg[agr]g{2}ac",
@@ -3838,7 +3838,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PhaI": {
+    "phai": {
         "name": "PhaI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -3849,7 +3849,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli736I": {
+    "bli736i": {
         "name": "Bli736I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -3860,7 +3860,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asi256I": {
+    "asi256i": {
         "name": "Asi256I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -3871,7 +3871,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HapII": {
+    "hapii": {
         "name": "HapII",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -3882,7 +3882,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CauIII": {
+    "cauiii": {
         "name": "CauIII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -3893,7 +3893,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ15I": {
+    "bstz15i": {
         "name": "BstZ15I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -3904,7 +3904,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspYI": {
+    "mspyi": {
         "name": "MspYI",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -3915,7 +3915,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1111I": {
+    "uba1111i": {
         "name": "Uba1111I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3926,7 +3926,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco102II": {
+    "bco102ii": {
         "name": "Bco102II",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -3937,7 +3937,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco168I": {
+    "eco168i": {
         "name": "Eco168I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -3948,7 +3948,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF61II": {
+    "hpyf61ii": {
         "name": "HpyF61II",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -3959,7 +3959,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EciCI": {
+    "ecici": {
         "name": "EciCI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -3970,7 +3970,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst1473II": {
+    "bst1473ii": {
         "name": "Bst1473II",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -3981,7 +3981,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SabI": {
+    "sabi": {
         "name": "SabI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -3992,7 +3992,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu1106I": {
+    "mlu1106i": {
         "name": "Mlu1106I",
         "site": "rggwccy",
         "forwardRegex": "[agr]g{2}[atw]c{2}[cty]",
@@ -4003,7 +4003,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.StyLT2Dam": {
+    "m.stylt2dam": {
         "name": "M.StyLT2Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -4014,7 +4014,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeI": {
+    "paei": {
         "name": "PaeI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -4025,7 +4025,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsc4I": {
+    "bsc4i": {
         "name": "Bsc4I",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -4036,7 +4036,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLU4I": {
+    "bsplu4i": {
         "name": "BspLU4I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -4047,7 +4047,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy501I": {
+    "hpy501i": {
         "name": "Hpy501I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -4058,7 +4058,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu5044I": {
+    "bsu5044i": {
         "name": "Bsu5044I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -4069,7 +4069,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoP1Dam": {
+    "m.ecop1dam": {
         "name": "M.EcoP1Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -4080,7 +4080,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco41I": {
+    "eco41i": {
         "name": "Eco41I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4091,7 +4091,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF42III": {
+    "hpyf42iii": {
         "name": "HpyF42III",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -4102,7 +4102,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst31NI": {
+    "bst31ni": {
         "name": "Bst31NI",
         "site": "ccgctc",
         "forwardRegex": "c{2}gctc",
@@ -4113,7 +4113,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R2.Ssu11318I": {
+    "r2.ssu11318i": {
         "name": "R2.Ssu11318I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -4124,7 +4124,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma496II": {
+    "rma496ii": {
         "name": "Rma496II",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -4135,7 +4135,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLU11II": {
+    "bsplu11ii": {
         "name": "BspLU11II",
         "site": "tctaga",
         "forwardRegex": "tctaga",
@@ -4146,7 +4146,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhlI": {
+    "ahli": {
         "name": "AhlI",
         "site": "actagt",
         "forwardRegex": "actagt",
@@ -4157,7 +4157,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XceI": {
+    "xcei": {
         "name": "XceI",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -4168,7 +4168,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp20I": {
+    "msp20i": {
         "name": "Msp20I",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -4179,7 +4179,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmgI": {
+    "bmgi": {
         "name": "BmgI",
         "site": "gkgccc",
         "forwardRegex": "g[gkt]gc{3}",
@@ -4190,7 +4190,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp226I": {
+    "bsp226i": {
         "name": "Bsp226I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -4201,7 +4201,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst100I": {
+    "bst100i": {
         "name": "Bst100I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4212,7 +4212,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AosI": {
+    "aosi": {
         "name": "AosI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -4223,7 +4223,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoO65I": {
+    "ecoo65i": {
         "name": "EcoO65I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -4234,7 +4234,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspMACI": {
+    "nspmaci": {
         "name": "NspMACI",
         "site": "agatct",
         "forwardRegex": "agatct",
@@ -4245,7 +4245,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SaaI": {
+    "saai": {
         "name": "SaaI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -4256,7 +4256,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SynI": {
+    "syni": {
         "name": "SynI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -4267,7 +4267,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CthI": {
+    "cthi": {
         "name": "CthI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -4278,7 +4278,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin8II": {
+    "hin8ii": {
         "name": "Hin8II",
         "site": "catg",
         "forwardRegex": "catg",
@@ -4289,7 +4289,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XamI": {
+    "xami": {
         "name": "XamI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -4300,7 +4300,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco169I": {
+    "eco169i": {
         "name": "Eco169I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -4311,7 +4311,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl137II": {
+    "ecl137ii": {
         "name": "Ecl137II",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4322,7 +4322,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoFVII": {
+    "ngofvii": {
         "name": "NgoFVII",
         "site": "gcsgc",
         "forwardRegex": "gc[cgs]gc",
@@ -4333,7 +4333,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MnnII": {
+    "mnnii": {
         "name": "MnnII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -4344,7 +4344,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspM2II": {
+    "sspm2ii": {
         "name": "SspM2II",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -4355,7 +4355,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspWI": {
+    "bspwi": {
         "name": "BspWI",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -4366,7 +4366,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp130I": {
+    "asp130i": {
         "name": "Asp130I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -4377,7 +4377,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MlyI": {
+    "mlyi": {
         "name": "MlyI",
         "site": "gagtc",
         "forwardRegex": "gagtc",
@@ -4388,7 +4388,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspI": {
+    "nspi": {
         "name": "NspI",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -4399,7 +4399,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpaXI": {
+    "spaxi": {
         "name": "SpaXI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -4410,7 +4410,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst1107I": {
+    "bst1107i": {
         "name": "Bst1107I",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -4421,7 +4421,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpeI": {
+    "spei": {
         "name": "SpeI",
         "site": "actagt",
         "forwardRegex": "actagt",
@@ -4432,7 +4432,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba81I": {
+    "uba81i": {
         "name": "Uba81I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4443,7 +4443,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BaeGI": {
+    "baegi": {
         "name": "BaeGI",
         "site": "gkgcmc",
         "forwardRegex": "g[gkt]gc[acm]c",
@@ -4454,7 +4454,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutAI": {
+    "vpakutai": {
         "name": "VpaKutAI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -4465,7 +4465,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma485I": {
+    "rma485i": {
         "name": "Rma485I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -4476,7 +4476,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SelI": {
+    "seli": {
         "name": "SelI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -4487,7 +4487,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp5I": {
+    "csp5i": {
         "name": "Csp5I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -4498,7 +4498,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eae2I": {
+    "eae2i": {
         "name": "Eae2I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -4509,7 +4509,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtgAII": {
+    "btgaii": {
         "name": "BtgAII",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -4520,7 +4520,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfrI": {
+    "bfri": {
         "name": "BfrI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -4531,7 +4531,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1238I": {
+    "uba1238i": {
         "name": "Uba1238I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -4542,7 +4542,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AmaSI": {
+    "amasi": {
         "name": "AmaSI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -4553,7 +4553,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AosII": {
+    "aosii": {
         "name": "AosII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -4564,7 +4564,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp3I": {
+    "psp3i": {
         "name": "Psp3I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -4575,7 +4575,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtgZI": {
+    "btgzi": {
         "name": "BtgZI",
         "site": "gcgatg",
         "forwardRegex": "gcgatg",
@@ -4586,7 +4586,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LpnI": {
+    "lpni": {
         "name": "LpnI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -4597,7 +4597,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr9I": {
+    "cfr9i": {
         "name": "Cfr9I",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -4608,7 +4608,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma486I": {
+    "rma486i": {
         "name": "Rma486I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -4619,7 +4619,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba82I": {
+    "uba82i": {
         "name": "Uba82I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4630,7 +4630,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse118I": {
+    "bse118i": {
         "name": "Bse118I",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -4641,7 +4641,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1524I": {
+    "eco1524i": {
         "name": "Eco1524I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -4652,7 +4652,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp89I": {
+    "psp89i": {
         "name": "Psp89I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -4663,7 +4663,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AtuBI": {
+    "atubi": {
         "name": "AtuBI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4674,7 +4674,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MfoAI": {
+    "mfoai": {
         "name": "MfoAI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -4685,7 +4685,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AfaI": {
+    "afai": {
         "name": "AfaI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -4696,7 +4696,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PatAI": {
+    "patai": {
         "name": "PatAI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -4707,7 +4707,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AprI": {
+    "apri": {
         "name": "AprI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -4718,7 +4718,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sci1831I": {
+    "sci1831i": {
         "name": "Sci1831I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -4729,7 +4729,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DsaIII": {
+    "dsaiii": {
         "name": "DsaIII",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -4740,7 +4740,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CglAI": {
+    "cglai": {
         "name": "CglAI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -4751,7 +4751,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KspI": {
+    "kspi": {
         "name": "KspI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -4762,7 +4762,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1101I": {
+    "uba1101i": {
         "name": "Uba1101I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -4773,7 +4773,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CdiAI": {
+    "cdiai": {
         "name": "CdiAI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -4784,7 +4784,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BslFI": {
+    "bslfi": {
         "name": "BslFI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -4795,7 +4795,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1307I": {
+    "uba1307i": {
         "name": "Uba1307I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -4806,7 +4806,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NsuI": {
+    "nsui": {
         "name": "NsuI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -4817,7 +4817,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp510I": {
+    "tsp510i": {
         "name": "Tsp510I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -4828,7 +4828,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba65I": {
+    "uba65i": {
         "name": "Uba65I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -4839,7 +4839,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchN100I": {
+    "vchn100i": {
         "name": "VchN100I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -4850,7 +4850,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1593I": {
+    "bsp1593i": {
         "name": "Bsp1593I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -4861,7 +4861,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1256I": {
+    "uba1256i": {
         "name": "Uba1256I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -4872,7 +4872,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl1DI": {
+    "srl1di": {
         "name": "Srl1DI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -4883,7 +4883,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco90I": {
+    "eco90i": {
         "name": "Eco90I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -4894,7 +4894,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF19I": {
+    "hpyf19i": {
         "name": "HpyF19I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -4905,7 +4905,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutBI": {
+    "vpakutbi": {
         "name": "VpaKutBI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -4916,7 +4916,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae177I": {
+    "pae177i": {
         "name": "Pae177I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -4927,7 +4927,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sbo13I": {
+    "sbo13i": {
         "name": "Sbo13I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -4938,7 +4938,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rme21I": {
+    "rme21i": {
         "name": "Rme21I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -4949,7 +4949,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SniI": {
+    "snii": {
         "name": "SniI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -4960,7 +4960,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaNII": {
+    "bsanii": {
         "name": "BsaNII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -4971,7 +4971,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF5II": {
+    "hpyf5ii": {
         "name": "HpyF5II",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -4982,7 +4982,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Lsp1109I": {
+    "lsp1109i": {
         "name": "Lsp1109I",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -4993,7 +4993,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AciI": {
+    "acii": {
         "name": "AciI",
         "site": "ccgc",
         "forwardRegex": "c{2}gc",
@@ -5004,7 +5004,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae39I": {
+    "pae39i": {
         "name": "Pae39I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -5015,7 +5015,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp519I": {
+    "bsp519i": {
         "name": "Bsp519I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -5026,7 +5026,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PasI": {
+    "pasi": {
         "name": "PasI",
         "site": "cccwggg",
         "forwardRegex": "c{3}[atw]g{3}",
@@ -5037,7 +5037,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1591II": {
+    "bsp1591ii": {
         "name": "Bsp1591II",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -5048,7 +5048,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp39I": {
+    "psp39i": {
         "name": "Psp39I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -5059,7 +5059,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PsuI": {
+    "psui": {
         "name": "PsuI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -5070,7 +5070,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsh45I": {
+    "bsh45i": {
         "name": "Bsh45I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -5081,7 +5081,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyAV": {
+    "hpyav": {
         "name": "HpyAV",
         "site": "ccttc",
         "forwardRegex": "c{2}t{2}c",
@@ -5092,7 +5092,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1233I": {
+    "uba1233i": {
         "name": "Uba1233I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -5103,7 +5103,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy99II": {
+    "hpy99ii": {
         "name": "Hpy99II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -5114,7 +5114,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiI": {
+    "hgii": {
         "name": "HgiI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -5125,7 +5125,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsm6I": {
+    "bsm6i": {
         "name": "Bsm6I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -5136,7 +5136,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp37I": {
+    "asp37i": {
         "name": "Asp37I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -5147,7 +5147,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TseCI": {
+    "tseci": {
         "name": "TseCI",
         "site": "aatt",
         "forwardRegex": "a{2}t{2}",
@@ -5158,7 +5158,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LcaI": {
+    "lcai": {
         "name": "LcaI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -5169,7 +5169,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvAIII": {
+    "bbvaiii": {
         "name": "BbvAIII",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -5180,7 +5180,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshTI": {
+    "bshti": {
         "name": "BshTI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -5191,7 +5191,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PsrI": {
+    "psri": {
         "name": "PsrI",
         "site": "gaacnnnnnntac",
         "forwardRegex": "ga{2}c[abcdghkmnrstvwy]{6}tac",
@@ -5202,7 +5202,7 @@ module.exports = {
         "usForward": 25,
         "usReverse": 20
     },
-    "BinSI": {
+    "binsi": {
         "name": "BinSI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -5213,7 +5213,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspTI": {
+    "aspti": {
         "name": "AspTI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -5224,7 +5224,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1293I": {
+    "uba1293i": {
         "name": "Uba1293I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -5235,7 +5235,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MjaIV": {
+    "mjaiv": {
         "name": "MjaIV",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -5246,7 +5246,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu37I": {
+    "btu37i": {
         "name": "Btu37I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5257,7 +5257,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu6633I": {
+    "bsu6633i": {
         "name": "Bsu6633I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -5268,7 +5268,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EagBI": {
+    "eagbi": {
         "name": "EagBI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -5279,7 +5279,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BglI": {
+    "bgli": {
         "name": "BglI",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -5290,7 +5290,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhaIII": {
+    "ahaiii": {
         "name": "AhaIII",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -5301,7 +5301,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvII": {
+    "bbvii": {
         "name": "BbvII",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -5312,7 +5312,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FblI": {
+    "fbli": {
         "name": "FblI",
         "site": "gtmkac",
         "forwardRegex": "gt[acm][gkt]ac",
@@ -5323,7 +5323,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmaI": {
+    "xmai": {
         "name": "XmaI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -5334,7 +5334,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MssI": {
+    "mssi": {
         "name": "MssI",
         "site": "gtttaaac",
         "forwardRegex": "gt{3}a{3}c",
@@ -5345,7 +5345,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstUI": {
+    "bstui": {
         "name": "BstUI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -5356,7 +5356,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutGI": {
+    "vpakutgi": {
         "name": "VpaKutGI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -5367,7 +5367,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp87I": {
+    "bsp87i": {
         "name": "Bsp87I",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -5378,7 +5378,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1394I": {
+    "uba1394i": {
         "name": "Uba1394I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -5389,7 +5389,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AstWI": {
+    "astwi": {
         "name": "AstWI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -5400,7 +5400,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse21I": {
+    "bse21i": {
         "name": "Bse21I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -5411,7 +5411,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspLII": {
+    "nsplii": {
         "name": "NspLII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -5422,7 +5422,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TsoI": {
+    "tsoi": {
         "name": "TsoI",
         "site": "tarcca",
         "forwardRegex": "ta[agr]c{2}a",
@@ -5433,7 +5433,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Taq52I": {
+    "taq52i": {
         "name": "Taq52I",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -5444,7 +5444,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp9I": {
+    "bsp9i": {
         "name": "Bsp9I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5455,7 +5455,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspH103I": {
+    "bsph103i": {
         "name": "BspH103I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -5466,7 +5466,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PdiI": {
+    "pdii": {
         "name": "PdiI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -5477,7 +5477,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.VchK139I": {
+    "m.vchk139i": {
         "name": "M.VchK139I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5488,7 +5488,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1148I": {
+    "uba1148i": {
         "name": "Uba1148I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -5499,7 +5499,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Sty14028Dam": {
+    "m.sty14028dam": {
         "name": "M.Sty14028Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5510,7 +5510,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acc36I": {
+    "acc36i": {
         "name": "Acc36I",
         "site": "acctgc",
         "forwardRegex": "ac{2}tgc",
@@ -5521,7 +5521,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1443I": {
+    "uba1443i": {
         "name": "Uba1443I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -5532,7 +5532,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspT104I": {
+    "bspt104i": {
         "name": "BspT104I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -5543,7 +5543,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplIII": {
+    "spliii": {
         "name": "SplIII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -5554,7 +5554,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp508I": {
+    "bsp508i": {
         "name": "Bsp508I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -5565,7 +5565,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph14I": {
+    "pph14i": {
         "name": "Pph14I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -5576,7 +5576,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssm5II": {
+    "ssm5ii": {
         "name": "Ssm5II",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -5587,7 +5587,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau3AI": {
+    "sau3ai": {
         "name": "Sau3AI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5598,7 +5598,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce83I": {
+    "bce83i": {
         "name": "Bce83I",
         "site": "cttgag",
         "forwardRegex": "ct{2}gag",
@@ -5609,7 +5609,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1094I": {
+    "uba1094i": {
         "name": "Uba1094I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -5620,7 +5620,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bac36I": {
+    "bac36i": {
         "name": "Bac36I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -5631,7 +5631,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspKT6I": {
+    "bspkt6i": {
         "name": "BspKT6I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5642,7 +5642,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy166I": {
+    "hpy166i": {
         "name": "Hpy166I",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -5653,7 +5653,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfeI": {
+    "sfei": {
         "name": "SfeI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -5664,7 +5664,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjeP338I": {
+    "cjep338i": {
         "name": "CjeP338I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5675,7 +5675,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpeI": {
+    "bpei": {
         "name": "BpeI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -5686,7 +5686,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SaqAI": {
+    "saqai": {
         "name": "SaqAI",
         "site": "ttaa",
         "forwardRegex": "t{2}a{2}",
@@ -5697,7 +5697,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1315I": {
+    "uba1315i": {
         "name": "Uba1315I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -5708,7 +5708,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SciBI": {
+    "scibi": {
         "name": "SciBI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -5719,7 +5719,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoT4Dam": {
+    "m.ecot4dam": {
         "name": "M.EcoT4Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5730,7 +5730,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflFI": {
+    "pflfi": {
         "name": "PflFI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -5741,7 +5741,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco121I": {
+    "eco121i": {
         "name": "Eco121I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -5752,7 +5752,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XhoII": {
+    "xhoii": {
         "name": "XhoII",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -5763,7 +5763,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau90I": {
+    "sau90i": {
         "name": "Sau90I",
         "site": "ctyrag",
         "forwardRegex": "ct[cty][agr]ag",
@@ -5774,7 +5774,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma490I": {
+    "rma490i": {
         "name": "Rma490I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -5785,7 +5785,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu36I": {
+    "btu36i": {
         "name": "Btu36I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -5796,7 +5796,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1292I": {
+    "uba1292i": {
         "name": "Uba1292I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -5807,7 +5807,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp5I": {
+    "bsp5i": {
         "name": "Bsp5I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -5818,7 +5818,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp11I": {
+    "msp11i": {
         "name": "Msp11I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -5829,7 +5829,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy178VII": {
+    "hpy178vii": {
         "name": "Hpy178VII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -5840,7 +5840,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco118I": {
+    "bco118i": {
         "name": "Bco118I",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -5851,7 +5851,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK6873I": {
+    "sflhk6873i": {
         "name": "SflHK6873I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -5862,7 +5862,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bim19II": {
+    "bim19ii": {
         "name": "Bim19II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -5873,7 +5873,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpaAII": {
+    "ppaaii": {
         "name": "PpaAII",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -5884,7 +5884,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcuAI": {
+    "bcuai": {
         "name": "BcuAI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -5895,7 +5895,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspNI": {
+    "tspni": {
         "name": "TspNI",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -5906,7 +5906,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1422I": {
+    "uba1422i": {
         "name": "Uba1422I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -5917,7 +5917,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp132I": {
+    "bsp132i": {
         "name": "Bsp132I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -5928,7 +5928,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseT10I": {
+    "bset10i": {
         "name": "BseT10I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -5939,7 +5939,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RsaI": {
+    "rsai": {
         "name": "RsaI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -5950,7 +5950,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp36HI": {
+    "asp36hi": {
         "name": "Asp36HI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -5961,7 +5961,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpaPII": {
+    "spapii": {
         "name": "SpaPII",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -5972,7 +5972,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspI": {
+    "aspi": {
         "name": "AspI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -5983,7 +5983,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuMI": {
+    "bsumi": {
         "name": "BsuMI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -5994,7 +5994,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp68KI": {
+    "csp68ki": {
         "name": "Csp68KI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6005,7 +6005,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp45I": {
+    "csp45i": {
         "name": "Csp45I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -6016,7 +6016,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsSII": {
+    "trssii": {
         "name": "TrsSII",
         "site": "gacnnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{6}gtc",
@@ -6027,7 +6027,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp133I": {
+    "bsp133i": {
         "name": "Bsp133I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6038,7 +6038,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp68KII": {
+    "csp68kii": {
         "name": "Csp68KII",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -6049,7 +6049,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BlfI": {
+    "blfi": {
         "name": "BlfI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -6060,7 +6060,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspXII": {
+    "bspxii": {
         "name": "BspXII",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -6071,7 +6071,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BimI": {
+    "bimi": {
         "name": "BimI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -6082,7 +6082,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiMI": {
+    "bsimi": {
         "name": "BsiMI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -6093,7 +6093,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr54I": {
+    "cfr54i": {
         "name": "Cfr54I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -6104,7 +6104,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF11I": {
+    "hpyf11i": {
         "name": "HpyF11I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -6115,7 +6115,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco88I": {
+    "eco88i": {
         "name": "Eco88I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -6126,7 +6126,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu39I": {
+    "btu39i": {
         "name": "Btu39I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -6137,7 +6137,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspH106I": {
+    "bsph106i": {
         "name": "BspH106I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -6148,7 +6148,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RflFII": {
+    "rflfii": {
         "name": "RflFII",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -6159,7 +6159,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK10790I": {
+    "sflhk10790i": {
         "name": "SflHK10790I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -6170,7 +6170,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TtrI": {
+    "ttri": {
         "name": "TtrI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -6181,7 +6181,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth455I": {
+    "sth455i": {
         "name": "Sth455I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -6192,7 +6192,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AacLI": {
+    "aacli": {
         "name": "AacLI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -6203,7 +6203,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuDIII": {
+    "fnudiii": {
         "name": "FnuDIII",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -6214,7 +6214,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CsiBI": {
+    "csibi": {
         "name": "CsiBI",
         "site": "gcggccgc",
         "forwardRegex": "gcg{2}c{2}gc",
@@ -6225,7 +6225,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinAI": {
+    "sinai": {
         "name": "SinAI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6236,7 +6236,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspKMI": {
+    "bspkmi": {
         "name": "BspKMI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -6247,7 +6247,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp50HI": {
+    "asp50hi": {
         "name": "Asp50HI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -6258,7 +6258,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MrhI": {
+    "mrhi": {
         "name": "MrhI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -6269,7 +6269,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoSI": {
+    "bsosi": {
         "name": "BsoSI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -6280,7 +6280,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsKTI": {
+    "trskti": {
         "name": "TrsKTI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -6291,7 +6291,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp61I": {
+    "psp61i": {
         "name": "Psp61I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -6302,7 +6302,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspII": {
+    "nspii": {
         "name": "NspII",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -6313,7 +6313,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflI": {
+    "sfli": {
         "name": "SflI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -6324,7 +6324,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StyLTI": {
+    "stylti": {
         "name": "StyLTI",
         "site": "cagag",
         "forwardRegex": "cagag",
@@ -6335,7 +6335,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmaAIV": {
+    "smaaiv": {
         "name": "SmaAIV",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -6346,7 +6346,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bci29I": {
+    "bci29i": {
         "name": "Bci29I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -6357,7 +6357,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiOI": {
+    "bsioi": {
         "name": "BsiOI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -6368,7 +6368,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu1268I": {
+    "bpu1268i": {
         "name": "Bpu1268I",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -6379,7 +6379,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr52I": {
+    "cfr52i": {
         "name": "Cfr52I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -6390,7 +6390,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinBI": {
+    "sinbi": {
         "name": "SinBI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6401,7 +6401,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpaPI": {
+    "spapi": {
         "name": "SpaPI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -6412,7 +6412,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce22I": {
+    "bce22i": {
         "name": "Bce22I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -6423,7 +6423,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinCI": {
+    "sinci": {
         "name": "SinCI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6434,7 +6434,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CglI": {
+    "cgli": {
         "name": "CglI",
         "site": "gcsgc",
         "forwardRegex": "gc[cgs]gc",
@@ -6445,7 +6445,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1455I": {
+    "eco1455i": {
         "name": "Eco1455I",
         "site": "gcannnnnnctga",
         "forwardRegex": "gca[abcdghkmnrstvwy]{6}ctga",
@@ -6456,7 +6456,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1331I": {
+    "uba1331i": {
         "name": "Uba1331I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -6467,7 +6467,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpeI": {
+    "ppei": {
         "name": "PpeI",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -6478,7 +6478,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco61I": {
+    "eco61i": {
         "name": "Eco61I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -6489,7 +6489,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseQI": {
+    "bseqi": {
         "name": "BseQI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -6500,7 +6500,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstBAII": {
+    "bstbaii": {
         "name": "BstBAII",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -6511,7 +6511,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoSII": {
+    "ngosii": {
         "name": "NgoSII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -6522,7 +6522,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF54I": {
+    "hpyf54i": {
         "name": "HpyF54I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -6533,7 +6533,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PinAI": {
+    "pinai": {
         "name": "PinAI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -6544,7 +6544,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MosI": {
+    "mosi": {
         "name": "MosI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -6555,7 +6555,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco48I": {
+    "eco48i": {
         "name": "Eco48I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -6566,7 +6566,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspGWII": {
+    "tspgwii": {
         "name": "TspGWII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -6577,7 +6577,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseSI": {
+    "bsesi": {
         "name": "BseSI",
         "site": "gkgcmc",
         "forwardRegex": "g[gkt]gc[acm]c",
@@ -6588,7 +6588,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF18I": {
+    "hpyf18i": {
         "name": "HpyF18I",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -6599,7 +6599,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco191I": {
+    "eco191i": {
         "name": "Eco191I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -6610,7 +6610,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ7I": {
+    "bstz7i": {
         "name": "BstZ7I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -6621,7 +6621,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1168I": {
+    "uba1168i": {
         "name": "Uba1168I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -6632,7 +6632,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinDI": {
+    "sindi": {
         "name": "SinDI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6643,7 +6643,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KpnBI": {
+    "kpnbi": {
         "name": "KpnBI",
         "site": "caaannnnnnrtca",
         "forwardRegex": "ca{3}[abcdghkmnrstvwy]{6}[agr]tca",
@@ -6654,7 +6654,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp142I": {
+    "bsp142i": {
         "name": "Bsp142I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -6665,7 +6665,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OchI": {
+    "ochi": {
         "name": "OchI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -6676,7 +6676,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst30I": {
+    "bst30i": {
         "name": "Bst30I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -6687,7 +6687,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acc113I": {
+    "acc113i": {
         "name": "Acc113I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -6698,7 +6698,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl54kI": {
+    "ecl54ki": {
         "name": "Ecl54kI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -6709,7 +6709,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SrifpI": {
+    "srifpi": {
         "name": "SrifpI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -6720,7 +6720,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscDI": {
+    "bscdi": {
         "name": "BscDI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -6731,7 +6731,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UnbI": {
+    "unbi": {
         "name": "UnbI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -6742,7 +6742,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF55I": {
+    "hpyf55i": {
         "name": "HpyF55I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -6753,7 +6753,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF59III": {
+    "hpyf59iii": {
         "name": "HpyF59III",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -6764,7 +6764,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BheI": {
+    "bhei": {
         "name": "BheI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -6775,7 +6775,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstBI": {
+    "bstbi": {
         "name": "BstBI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -6786,7 +6786,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BliRI": {
+    "bliri": {
         "name": "BliRI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -6797,7 +6797,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp141I": {
+    "bsp141i": {
         "name": "Bsp141I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -6808,7 +6808,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau98I": {
+    "sau98i": {
         "name": "Sau98I",
         "site": "ctyrag",
         "forwardRegex": "ct[cty][agr]ag",
@@ -6819,7 +6819,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinEI": {
+    "sinei": {
         "name": "SinEI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6830,7 +6830,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SrlII": {
+    "srlii": {
         "name": "SrlII",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -6841,7 +6841,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "YenAI": {
+    "yenai": {
         "name": "YenAI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -6852,7 +6852,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RtrI": {
+    "rtri": {
         "name": "RtrI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -6863,7 +6863,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoR124I": {
+    "ecor124i": {
         "name": "EcoR124I",
         "site": "gaannnnnnrtcg",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{6}[agr]tcg",
@@ -6874,7 +6874,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba61I": {
+    "uba61i": {
         "name": "Uba61I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -6885,7 +6885,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF46IV": {
+    "hpyf46iv": {
         "name": "HpyF46IV",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -6896,7 +6896,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp140I": {
+    "bsp140i": {
         "name": "Bsp140I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -6907,7 +6907,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinFI": {
+    "sinfi": {
         "name": "SinFI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -6918,7 +6918,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psc2I": {
+    "psc2i": {
         "name": "Psc2I",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -6929,7 +6929,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1338I": {
+    "uba1338i": {
         "name": "Uba1338I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -6940,7 +6940,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF30II": {
+    "hpyf30ii": {
         "name": "HpyF30II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -6951,7 +6951,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco60I": {
+    "eco60i": {
         "name": "Eco60I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -6962,7 +6962,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CpoI": {
+    "cpoi": {
         "name": "CpoI",
         "site": "cggwccg",
         "forwardRegex": "cg{2}[atw]c{2}g",
@@ -6973,7 +6973,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu54I": {
+    "bsu54i": {
         "name": "Bsu54I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -6984,7 +6984,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco92I": {
+    "eco92i": {
         "name": "Eco92I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -6995,7 +6995,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF24I": {
+    "hpyf24i": {
         "name": "HpyF24I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -7006,7 +7006,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp22I": {
+    "bsp22i": {
         "name": "Bsp22I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -7017,7 +7017,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pun14627II": {
+    "pun14627ii": {
         "name": "Pun14627II",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -7028,7 +7028,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy87AI": {
+    "hpy87ai": {
         "name": "Hpy87AI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -7039,7 +7039,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco49I": {
+    "eco49i": {
         "name": "Eco49I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -7050,7 +7050,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgsI": {
+    "sgsi": {
         "name": "SgsI",
         "site": "ggcgcgcc",
         "forwardRegex": "g{2}cgcgc{2}",
@@ -7061,7 +7061,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoPI": {
+    "bsopi": {
         "name": "BsoPI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -7072,7 +7072,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN11I": {
+    "uban11i": {
         "name": "UbaN11I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -7083,7 +7083,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspBI": {
+    "sspbi": {
         "name": "SspBI",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -7094,7 +7094,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1192I": {
+    "bsu1192i": {
         "name": "Bsu1192I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -7105,7 +7105,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcmI": {
+    "bcmi": {
         "name": "BcmI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -7116,7 +7116,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "YenCI": {
+    "yenci": {
         "name": "YenCI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -7127,7 +7127,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DriI": {
+    "drii": {
         "name": "DriI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -7138,7 +7138,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspCHE15I": {
+    "bspche15i": {
         "name": "BspCHE15I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -7149,7 +7149,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1284I": {
+    "uba1284i": {
         "name": "Uba1284I",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -7160,7 +7160,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhaII": {
+    "ahaii": {
         "name": "AhaII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -7171,7 +7171,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuCI": {
+    "bpuci": {
         "name": "BpuCI",
         "site": "ggcgga",
         "forwardRegex": "g{2}cg{2}a",
@@ -7182,7 +7182,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN11II": {
+    "uban11ii": {
         "name": "UbaN11II",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -7193,7 +7193,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba38I": {
+    "uba38i": {
         "name": "Uba38I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -7204,7 +7204,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CelII": {
+    "celii": {
         "name": "CelII",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -7215,7 +7215,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinGI": {
+    "singi": {
         "name": "SinGI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -7226,7 +7226,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1456I": {
+    "eco1456i": {
         "name": "Eco1456I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -7237,7 +7237,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sgr1841I": {
+    "sgr1841i": {
         "name": "Sgr1841I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -7248,7 +7248,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco64I": {
+    "eco64i": {
         "name": "Eco64I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -7259,7 +7259,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaePI": {
+    "paepi": {
         "name": "PaePI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -7270,7 +7270,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgrBI": {
+    "sgrbi": {
         "name": "SgrBI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -7281,7 +7281,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu33I": {
+    "btu33i": {
         "name": "Btu33I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7292,7 +7292,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF58I": {
+    "hpyf58i": {
         "name": "HpyF58I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -7303,7 +7303,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF71III": {
+    "hpyf71iii": {
         "name": "HpyF71III",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -7314,7 +7314,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SseAI": {
+    "sseai": {
         "name": "SseAI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -7325,7 +7325,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "YenBI": {
+    "yenbi": {
         "name": "YenBI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -7336,7 +7336,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba4I": {
+    "uba4i": {
         "name": "Uba4I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7347,7 +7347,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SakI": {
+    "saki": {
         "name": "SakI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -7358,7 +7358,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1282I": {
+    "uba1282i": {
         "name": "Uba1282I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -7369,7 +7369,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RsrII": {
+    "rsrii": {
         "name": "RsrII",
         "site": "cggwccg",
         "forwardRegex": "cg{2}[atw]c{2}g",
@@ -7380,7 +7380,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R2.Ssu2479I": {
+    "r2.ssu2479i": {
         "name": "R2.Ssu2479I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7391,7 +7391,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin1161II": {
+    "hin1161ii": {
         "name": "Hin1161II",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -7402,7 +7402,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1429I": {
+    "uba1429i": {
         "name": "Uba1429I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -7413,7 +7413,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco179I": {
+    "eco179i": {
         "name": "Eco179I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -7424,7 +7424,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinHI": {
+    "sinhi": {
         "name": "SinHI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -7435,7 +7435,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp124BI": {
+    "psp124bi": {
         "name": "Psp124BI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -7446,7 +7446,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuDI": {
+    "fnudi": {
         "name": "FnuDI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -7457,7 +7457,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RheI": {
+    "rhei": {
         "name": "RheI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -7468,7 +7468,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu34I": {
+    "btu34i": {
         "name": "Btu34I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7479,7 +7479,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp30I": {
+    "psp30i": {
         "name": "Psp30I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -7490,7 +7490,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstNSI": {
+    "bstnsi": {
         "name": "BstNSI",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -7501,7 +7501,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF25II": {
+    "hpyf25ii": {
         "name": "HpyF25II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -7512,7 +7512,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli576II": {
+    "bli576ii": {
         "name": "Bli576II",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -7523,7 +7523,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GluI": {
+    "glui": {
         "name": "GluI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -7534,7 +7534,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco118I": {
+    "eco118i": {
         "name": "Eco118I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -7545,7 +7545,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "YenEI": {
+    "yenei": {
         "name": "YenEI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -7556,7 +7556,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp2095I": {
+    "bsp2095i": {
         "name": "Bsp2095I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7567,7 +7567,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BliHKI": {
+    "blihki": {
         "name": "BliHKI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -7578,7 +7578,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae18kI": {
+    "pae18ki": {
         "name": "Pae18kI",
         "site": "agatct",
         "forwardRegex": "agatct",
@@ -7589,7 +7589,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R1.Ssu4109I": {
+    "r1.ssu4109i": {
         "name": "R1.Ssu4109I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7600,7 +7600,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ArsI": {
+    "arsi": {
         "name": "ArsI",
         "site": "gacnnnnnnttyg",
         "forwardRegex": "gac[abcdghkmnrstvwy]{6}t{2}[cty]g",
@@ -7611,7 +7611,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 19
     },
-    "Eco1344II": {
+    "eco1344ii": {
         "name": "Eco1344II",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -7622,7 +7622,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfrBI": {
+    "bfrbi": {
         "name": "BfrBI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -7633,7 +7633,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpoAI": {
+    "bpoai": {
         "name": "BpoAI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -7644,7 +7644,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme1390I": {
+    "bme1390i": {
         "name": "Bme1390I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -7655,7 +7655,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst170II": {
+    "bst170ii": {
         "name": "Bst170II",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -7666,7 +7666,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspANI": {
+    "bspani": {
         "name": "BspANI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -7677,7 +7677,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF56I": {
+    "hpyf56i": {
         "name": "HpyF56I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -7688,7 +7688,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaBI": {
+    "llabi": {
         "name": "LlaBI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -7699,7 +7699,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AviI": {
+    "avii": {
         "name": "AviI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -7710,7 +7710,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyAII": {
+    "hpyaii": {
         "name": "HpyAII",
         "site": "gaaga",
         "forwardRegex": "ga{2}ga",
@@ -7721,7 +7721,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplAIII": {
+    "splaiii": {
         "name": "SplAIII",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -7732,7 +7732,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AquI": {
+    "aqui": {
         "name": "AquI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -7743,7 +7743,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuFI": {
+    "bpufi": {
         "name": "BpuFI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -7754,7 +7754,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp44II": {
+    "bsp44ii": {
         "name": "Bsp44II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -7765,7 +7765,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstMCI": {
+    "bstmci": {
         "name": "BstMCI",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -7776,7 +7776,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiGI": {
+    "bsigi": {
         "name": "BsiGI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -7787,7 +7787,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco96I": {
+    "eco96i": {
         "name": "Eco96I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -7798,7 +7798,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbrAI": {
+    "bbrai": {
         "name": "BbrAI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -7809,7 +7809,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau93I": {
+    "sau93i": {
         "name": "Sau93I",
         "site": "ctyrag",
         "forwardRegex": "ct[cty][agr]ag",
@@ -7820,7 +7820,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinJI": {
+    "sinji": {
         "name": "SinJI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -7831,7 +7831,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "YenDI": {
+    "yendi": {
         "name": "YenDI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -7842,7 +7842,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TscAI": {
+    "tscai": {
         "name": "TscAI",
         "site": "castgnn",
         "forwardRegex": "ca[cgs]tg[abcdghkmnrstvwy]{2}",
@@ -7853,7 +7853,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfrCI": {
+    "bfrci": {
         "name": "BfrCI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -7864,7 +7864,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco237I": {
+    "eco237i": {
         "name": "Eco237I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -7875,7 +7875,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MnnIV": {
+    "mnniv": {
         "name": "MnnIV",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -7886,7 +7886,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PagI": {
+    "pagi": {
         "name": "PagI",
         "site": "tcatga",
         "forwardRegex": "tcatga",
@@ -7897,7 +7897,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ScoNI": {
+    "sconi": {
         "name": "ScoNI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -7908,7 +7908,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NbaI": {
+    "nbai": {
         "name": "NbaI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -7919,7 +7919,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco91I": {
+    "eco91i": {
         "name": "Eco91I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -7930,7 +7930,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfuNI": {
+    "pfuni": {
         "name": "PfuNI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -7941,7 +7941,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SenPT14bI": {
+    "senpt14bi": {
         "name": "SenPT14bI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -7952,7 +7952,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CacI": {
+    "caci": {
         "name": "CacI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -7963,7 +7963,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF30I": {
+    "hpyf30i": {
         "name": "HpyF30I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -7974,7 +7974,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp6I": {
+    "esp6i": {
         "name": "Esp6I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -7985,7 +7985,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrCI": {
+    "bsrci": {
         "name": "BsrCI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -7996,7 +7996,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CdiI": {
+    "cdii": {
         "name": "CdiI",
         "site": "catcg",
         "forwardRegex": "catcg",
@@ -8007,7 +8007,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsKTIII": {
+    "trsktiii": {
         "name": "TrsKTIII",
         "site": "catatg",
         "forwardRegex": "catatg",
@@ -8018,7 +8018,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJI": {
+    "bspji": {
         "name": "BspJI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -8029,7 +8029,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyJP26II": {
+    "hpyjp26ii": {
         "name": "HpyJP26II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -8040,7 +8040,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoKI": {
+    "bsoki": {
         "name": "BsoKI",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -8051,7 +8051,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FinI": {
+    "fini": {
         "name": "FinI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -8062,7 +8062,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfiI": {
+    "bfii": {
         "name": "BfiI",
         "site": "actggg",
         "forwardRegex": "actg{3}",
@@ -8073,7 +8073,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SynII": {
+    "synii": {
         "name": "SynII",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -8084,7 +8084,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseB631II": {
+    "bseb631ii": {
         "name": "BseB631II",
         "site": "agatct",
         "forwardRegex": "agatct",
@@ -8095,7 +8095,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoMIII": {
+    "ngomiii": {
         "name": "NgoMIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -8106,7 +8106,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1343I": {
+    "uba1343i": {
         "name": "Uba1343I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -8117,7 +8117,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbrI": {
+    "bbri": {
         "name": "BbrI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -8128,7 +8128,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplAI": {
+    "splai": {
         "name": "SplAI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -8139,7 +8139,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SacI": {
+    "saci": {
         "name": "SacI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -8150,7 +8150,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstT10I": {
+    "bstt10i": {
         "name": "BstT10I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -8161,7 +8161,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MniII": {
+    "mniii": {
         "name": "MniII",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -8172,7 +8172,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtkII": {
+    "btkii": {
         "name": "BtkII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -8183,7 +8183,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuEII": {
+    "nmueii": {
         "name": "NmuEII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -8194,7 +8194,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuDI": {
+    "nmudi": {
         "name": "NmuDI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -8205,7 +8205,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth302II": {
+    "sth302ii": {
         "name": "Sth302II",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -8216,7 +8216,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp18I": {
+    "bsp18i": {
         "name": "Bsp18I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -8227,7 +8227,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseHI": {
+    "bsehi": {
         "name": "BseHI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -8238,7 +8238,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DraII": {
+    "draii": {
         "name": "DraII",
         "site": "rggnccy",
         "forwardRegex": "[agr]g{2}[abcdghkmnrstvwy]c{2}[cty]",
@@ -8249,7 +8249,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae41I": {
+    "pae41i": {
         "name": "Pae41I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -8260,7 +8260,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvcI": {
+    "avci": {
         "name": "AvcI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -8271,7 +8271,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF62II": {
+    "hpyf62ii": {
         "name": "HpyF62II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -8282,7 +8282,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspTII": {
+    "asptii": {
         "name": "AspTII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -8293,7 +8293,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BslI": {
+    "bsli": {
         "name": "BslI",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -8304,7 +8304,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF6I": {
+    "hpyf6i": {
         "name": "HpyF6I",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -8315,7 +8315,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1325I": {
+    "uba1325i": {
         "name": "Uba1325I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -8326,7 +8326,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OfoI": {
+    "ofoi": {
         "name": "OfoI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -8337,7 +8337,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse9I": {
+    "bse9i": {
         "name": "Bse9I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -8348,7 +8348,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1367I": {
+    "uba1367i": {
         "name": "Uba1367I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -8359,7 +8359,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco47I": {
+    "eco47i": {
         "name": "Eco47I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -8370,7 +8370,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN5I": {
+    "uban5i": {
         "name": "UbaN5I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -8381,7 +8381,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaF13I": {
+    "ubaf13i": {
         "name": "UbaF13I",
         "site": "gagnnnnnnctgg",
         "forwardRegex": "gag[abcdghkmnrstvwy]{6}ctg{2}",
@@ -8392,7 +8392,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiXI": {
+    "bsixi": {
         "name": "BsiXI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -8403,7 +8403,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau96I": {
+    "sau96i": {
         "name": "Sau96I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -8414,7 +8414,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp763I": {
+    "asp763i": {
         "name": "Asp763I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -8425,7 +8425,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstVI": {
+    "bstvi": {
         "name": "BstVI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -8436,7 +8436,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp707I": {
+    "asp707i": {
         "name": "Asp707I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -8447,7 +8447,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu23I": {
+    "bsu23i": {
         "name": "Bsu23I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -8458,7 +8458,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AluI": {
+    "alui": {
         "name": "AluI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -8469,7 +8469,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp30I": {
+    "bsp30i": {
         "name": "Bsp30I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -8480,7 +8480,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin8I": {
+    "hin8i": {
         "name": "Hin8I",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -8491,7 +8491,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco228I": {
+    "eco228i": {
         "name": "Eco228I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -8502,7 +8502,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae40I": {
+    "pae40i": {
         "name": "Pae40I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -8513,7 +8513,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplII": {
+    "splii": {
         "name": "SplII",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -8524,7 +8524,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco14444I": {
+    "eco14444i": {
         "name": "Eco14444I",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -8535,7 +8535,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF40III": {
+    "hpyf40iii": {
         "name": "HpyF40III",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -8546,7 +8546,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sse232I": {
+    "sse232i": {
         "name": "Sse232I",
         "site": "cgccggcg",
         "forwardRegex": "cgc{2}g{2}cg",
@@ -8557,7 +8557,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1324I": {
+    "uba1324i": {
         "name": "Uba1324I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -8568,7 +8568,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst40I": {
+    "bst40i": {
         "name": "Bst40I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -8579,7 +8579,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RhpI": {
+    "rhpi": {
         "name": "RhpI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -8590,7 +8590,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DraIII": {
+    "draiii": {
         "name": "DraIII",
         "site": "cacnnngtg",
         "forwardRegex": "cac[abcdghkmnrstvwy]{3}gtg",
@@ -8601,7 +8601,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ClmI": {
+    "clmi": {
         "name": "ClmI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -8612,7 +8612,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspIDSI": {
+    "tspidsi": {
         "name": "TspIDSI",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -8623,7 +8623,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1386I": {
+    "uba1386i": {
         "name": "Uba1386I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -8634,7 +8634,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoKI": {
+    "ecoki": {
         "name": "EcoKI",
         "site": "aacnnnnnngtgc",
         "forwardRegex": "a{2}c[abcdghkmnrstvwy]{6}gtgc",
@@ -8645,7 +8645,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ1I": {
+    "bstz1i": {
         "name": "BstZ1I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -8656,7 +8656,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp423I": {
+    "bsp423i": {
         "name": "Bsp423I",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -8667,7 +8667,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae181I": {
+    "pae181i": {
         "name": "Pae181I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -8678,7 +8678,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy8III": {
+    "hpy8iii": {
         "name": "Hpy8III",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -8689,7 +8689,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu31I": {
+    "mlu31i": {
         "name": "Mlu31I",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -8700,7 +8700,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1262I": {
+    "uba1262i": {
         "name": "Uba1262I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -8711,7 +8711,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SseBI": {
+    "ssebi": {
         "name": "SseBI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -8722,7 +8722,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu22I": {
+    "bsu22i": {
         "name": "Bsu22I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -8733,7 +8733,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SdyI": {
+    "sdyi": {
         "name": "SdyI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -8744,7 +8744,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK19BI": {
+    "vpak19bi": {
         "name": "VpaK19BI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -8755,7 +8755,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceAI": {
+    "bceai": {
         "name": "BceAI",
         "site": "acggc",
         "forwardRegex": "acg{2}c",
@@ -8766,7 +8766,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1299I": {
+    "uba1299i": {
         "name": "Uba1299I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -8777,7 +8777,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoGIII": {
+    "ngogiii": {
         "name": "NgoGIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -8788,7 +8788,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MlsI": {
+    "mlsi": {
         "name": "MlsI",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -8799,7 +8799,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvAII": {
+    "bbvaii": {
         "name": "BbvAII",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -8810,7 +8810,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CstMI": {
+    "cstmi": {
         "name": "CstMI",
         "site": "aaggag",
         "forwardRegex": "a{2}g{2}ag",
@@ -8821,7 +8821,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp1I": {
+    "esp1i": {
         "name": "Esp1I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -8832,7 +8832,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspFI": {
+    "bspfi": {
         "name": "BspFI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -8843,7 +8843,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhyI": {
+    "ahyi": {
         "name": "AhyI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -8854,7 +8854,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrJ5I": {
+    "cfrj5i": {
         "name": "CfrJ5I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -8865,7 +8865,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mva1269I": {
+    "mva1269i": {
         "name": "Mva1269I",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -8876,7 +8876,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauI": {
+    "saui": {
         "name": "SauI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -8887,7 +8887,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF35I": {
+    "hpyf35i": {
         "name": "HpyF35I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -8898,7 +8898,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF52III": {
+    "hpyf52iii": {
         "name": "HpyF52III",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -8909,7 +8909,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp742I": {
+    "asp742i": {
         "name": "Asp742I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -8920,7 +8920,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceSIII": {
+    "bcesiii": {
         "name": "BceSIII",
         "site": "acggc",
         "forwardRegex": "acg{2}c",
@@ -8931,7 +8931,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF62III": {
+    "hpyf62iii": {
         "name": "HpyF62III",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -8942,7 +8942,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DdsI": {
+    "ddsi": {
         "name": "DdsI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -8953,7 +8953,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1164II": {
+    "uba1164ii": {
         "name": "Uba1164II",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -8964,7 +8964,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF46III": {
+    "hpyf46iii": {
         "name": "HpyF46III",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -8975,7 +8975,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rsr2I": {
+    "rsr2i": {
         "name": "Rsr2I",
         "site": "cggwccg",
         "forwardRegex": "cg{2}[atw]c{2}g",
@@ -8986,7 +8986,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp199I": {
+    "msp199i": {
         "name": "Msp199I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -8997,7 +8997,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhaB8I": {
+    "ahab8i": {
         "name": "AhaB8I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -9008,7 +9008,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MmuP2I": {
+    "mmup2i": {
         "name": "MmuP2I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -9019,7 +9019,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sru30DI": {
+    "sru30di": {
         "name": "Sru30DI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -9030,7 +9030,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK2731I": {
+    "sflhk2731i": {
         "name": "SflHK2731I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -9041,7 +9041,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R2.Ssu8074I": {
+    "r2.ssu8074i": {
         "name": "R2.Ssu8074I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -9052,7 +9052,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ3I": {
+    "bstz3i": {
         "name": "BstZ3I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -9063,7 +9063,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DsaIV": {
+    "dsaiv": {
         "name": "DsaIV",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -9074,7 +9074,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstH9I": {
+    "bsth9i": {
         "name": "BstH9I",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -9085,7 +9085,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ChuEII": {
+    "chueii": {
         "name": "ChuEII",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -9096,7 +9096,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspGI": {
+    "bspgi": {
         "name": "BspGI",
         "site": "ctggac",
         "forwardRegex": "ctg{2}ac",
@@ -9107,7 +9107,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuEI": {
+    "nmuei": {
         "name": "NmuEI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -9118,7 +9118,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba31I": {
+    "uba31i": {
         "name": "Uba31I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -9129,7 +9129,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfuII": {
+    "cfuii": {
         "name": "CfuII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -9140,7 +9140,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfaGUI": {
+    "sfagui": {
         "name": "SfaGUI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -9151,7 +9151,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XpaI": {
+    "xpai": {
         "name": "XpaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -9162,7 +9162,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu1102I": {
+    "bpu1102i": {
         "name": "Bpu1102I",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -9173,7 +9173,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1404I": {
+    "uba1404i": {
         "name": "Uba1404I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -9184,7 +9184,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp505I": {
+    "tsp505i": {
         "name": "Tsp505I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -9195,7 +9195,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspCNI": {
+    "bspcni": {
         "name": "BspCNI",
         "site": "ctcag",
         "forwardRegex": "ctcag",
@@ -9206,7 +9206,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst28I": {
+    "bst28i": {
         "name": "Bst28I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -9217,7 +9217,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp153AI": {
+    "bsp153ai": {
         "name": "Bsp153AI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -9228,7 +9228,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK19AI": {
+    "vpak19ai": {
         "name": "VpaK19AI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -9239,7 +9239,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoVT2Dam": {
+    "m.ecovt2dam": {
         "name": "M.EcoVT2Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -9250,7 +9250,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth117I": {
+    "sth117i": {
         "name": "Sth117I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -9261,7 +9261,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AeuI": {
+    "aeui": {
         "name": "AeuI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -9272,7 +9272,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MfeI": {
+    "mfei": {
         "name": "MfeI",
         "site": "caattg",
         "forwardRegex": "ca{2}t{2}g",
@@ -9283,7 +9283,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySBLI": {
+    "stysbli": {
         "name": "StySBLI",
         "site": "cgannnnnntacc",
         "forwardRegex": "cga[abcdghkmnrstvwy]{6}tac{2}",
@@ -9294,7 +9294,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoI": {
+    "ccoi": {
         "name": "CcoI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -9305,7 +9305,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1207I": {
+    "uba1207i": {
         "name": "Uba1207I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9316,7 +9316,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl19I": {
+    "pfl19i": {
         "name": "Pfl19I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -9327,7 +9327,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba24I": {
+    "uba24i": {
         "name": "Uba24I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -9338,7 +9338,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstSFI": {
+    "bstsfi": {
         "name": "BstSFI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -9349,7 +9349,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TaiI": {
+    "taii": {
         "name": "TaiI",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -9360,7 +9360,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin173I": {
+    "hin173i": {
         "name": "Hin173I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -9371,7 +9371,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK57I": {
+    "vpak57i": {
         "name": "VpaK57I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -9382,7 +9382,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XspI": {
+    "xspi": {
         "name": "XspI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -9393,7 +9393,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma497I": {
+    "rma497i": {
         "name": "Rma497I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -9404,7 +9404,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1162I": {
+    "uba1162i": {
         "name": "Uba1162I",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -9415,7 +9415,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AaeI": {
+    "aaei": {
         "name": "AaeI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -9426,7 +9426,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psu161I": {
+    "psu161i": {
         "name": "Psu161I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -9437,7 +9437,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaHKAI": {
+    "ubahkai": {
         "name": "UbaHKAI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -9448,7 +9448,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DsaV": {
+    "dsav": {
         "name": "DsaV",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -9459,7 +9459,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF46V": {
+    "hpyf46v": {
         "name": "HpyF46V",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9470,7 +9470,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TglI": {
+    "tgli": {
         "name": "TglI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -9481,7 +9481,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinGUII": {
+    "hinguii": {
         "name": "HinGUII",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -9492,7 +9492,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tth111I": {
+    "tth111i": {
         "name": "Tth111I",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -9503,7 +9503,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EsaWC1I": {
+    "esawc1i": {
         "name": "EsaWC1I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9514,7 +9514,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseYI": {
+    "bseyi": {
         "name": "BseYI",
         "site": "cccagc",
         "forwardRegex": "c{3}agc",
@@ -9525,7 +9525,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1405I": {
+    "uba1405i": {
         "name": "Uba1405I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -9536,7 +9536,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspAI": {
+    "bspai": {
         "name": "BspAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -9547,7 +9547,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl2DI": {
+    "srl2di": {
         "name": "Srl2DI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -9558,7 +9558,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT22I": {
+    "ecot22i": {
         "name": "EcoT22I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -9569,7 +9569,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Fsp1604I": {
+    "fsp1604i": {
         "name": "Fsp1604I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -9580,7 +9580,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ShyI": {
+    "shyi": {
         "name": "ShyI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -9591,7 +9591,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1208I": {
+    "uba1208i": {
         "name": "Uba1208I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9602,7 +9602,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF71II": {
+    "hpyf71ii": {
         "name": "HpyF71II",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -9613,7 +9613,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpa34I": {
+    "bpa34i": {
         "name": "Bpa34I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -9624,7 +9624,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin1I": {
+    "hin1i": {
         "name": "Hin1I",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -9635,7 +9635,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssAI": {
+    "bssai": {
         "name": "BssAI",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -9646,7 +9646,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GoxI": {
+    "goxi": {
         "name": "GoxI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -9657,7 +9657,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MaeI": {
+    "maei": {
         "name": "MaeI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -9668,7 +9668,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma522I": {
+    "rma522i": {
         "name": "Rma522I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -9679,7 +9679,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoO128I": {
+    "ecoo128i": {
         "name": "EcoO128I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -9690,7 +9690,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TelI": {
+    "teli": {
         "name": "TelI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -9701,7 +9701,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco37I": {
+    "eco37i": {
         "name": "Eco37I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -9712,7 +9712,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmaAI": {
+    "bmaai": {
         "name": "BmaAI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -9723,7 +9723,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmoI": {
+    "smoi": {
         "name": "SmoI",
         "site": "ctyrag",
         "forwardRegex": "ct[cty][agr]ag",
@@ -9734,7 +9734,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin2I": {
+    "hin2i": {
         "name": "Hin2I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -9745,7 +9745,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TasI": {
+    "tasi": {
         "name": "TasI",
         "site": "aatt",
         "forwardRegex": "a{2}t{2}",
@@ -9756,7 +9756,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco47II": {
+    "eco47ii": {
         "name": "Eco47II",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -9767,7 +9767,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kox165I": {
+    "kox165i": {
         "name": "Kox165I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -9778,7 +9778,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tru28I": {
+    "tru28i": {
         "name": "Tru28I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -9789,7 +9789,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SepI": {
+    "sepi": {
         "name": "SepI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -9800,7 +9800,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CseI": {
+    "csei": {
         "name": "CseI",
         "site": "gacgc",
         "forwardRegex": "gacgc",
@@ -9811,7 +9811,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1209I": {
+    "uba1209i": {
         "name": "Uba1209I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9822,7 +9822,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrJ4I": {
+    "cfrj4i": {
         "name": "CfrJ4I",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -9833,7 +9833,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstSNI": {
+    "bstsni": {
         "name": "BstSNI",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -9844,7 +9844,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmsI": {
+    "bmsi": {
         "name": "BmsI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -9855,7 +9855,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba22I": {
+    "uba22i": {
         "name": "Uba22I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -9866,7 +9866,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmBI": {
+    "bsmbi": {
         "name": "BsmBI",
         "site": "cgtctc",
         "forwardRegex": "cgtctc",
@@ -9877,7 +9877,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr7I": {
+    "cfr7i": {
         "name": "Cfr7I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -9888,7 +9888,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrWI": {
+    "bsrwi": {
         "name": "BsrWI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -9899,7 +9899,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FspMSI": {
+    "fspmsi": {
         "name": "FspMSI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -9910,7 +9910,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Gst1588II": {
+    "gst1588ii": {
         "name": "Gst1588II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -9921,7 +9921,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinSAFI": {
+    "hinsafi": {
         "name": "HinSAFI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -9932,7 +9932,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PstII": {
+    "pstii": {
         "name": "PstII",
         "site": "ctgatg",
         "forwardRegex": "ctgatg",
@@ -9943,7 +9943,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin5I": {
+    "hin5i": {
         "name": "Hin5I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -9954,7 +9954,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1288I": {
+    "uba1288i": {
         "name": "Uba1288I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9965,7 +9965,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1158I": {
+    "eco1158i": {
         "name": "Eco1158I",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -9976,7 +9976,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1386I": {
+    "eco1386i": {
         "name": "Eco1386I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -9987,7 +9987,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN2I": {
+    "uban2i": {
         "name": "UbaN2I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -9998,7 +9998,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP76I": {
+    "ccop76i": {
         "name": "CcoP76I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10009,7 +10009,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BliAI": {
+    "bliai": {
         "name": "BliAI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10020,7 +10020,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccB7I": {
+    "accb7i": {
         "name": "AccB7I",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -10031,7 +10031,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp47I": {
+    "asp47i": {
         "name": "Asp47I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -10042,7 +10042,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli86I": {
+    "bli86i": {
         "name": "Bli86I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10053,7 +10053,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RceI": {
+    "rcei": {
         "name": "RceI",
         "site": "catcgac",
         "forwardRegex": "catcgac",
@@ -10064,7 +10064,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1373I": {
+    "uba1373i": {
         "name": "Uba1373I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -10075,7 +10075,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma497II": {
+    "rma497ii": {
         "name": "Rma497II",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -10086,7 +10086,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN14I": {
+    "uban14i": {
         "name": "UbaN14I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -10097,7 +10097,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DdeI": {
+    "ddei": {
         "name": "DdeI",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -10108,7 +10108,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EciBI": {
+    "ecibi": {
         "name": "EciBI",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -10119,7 +10119,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1436I": {
+    "uba1436i": {
         "name": "Uba1436I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -10130,7 +10130,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PvuI": {
+    "pvui": {
         "name": "PvuI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -10141,7 +10141,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1246I": {
+    "uba1246i": {
         "name": "Uba1246I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10152,7 +10152,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco261I": {
+    "eco261i": {
         "name": "Eco261I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10163,7 +10163,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DaqI": {
+    "daqi": {
         "name": "DaqI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -10174,7 +10174,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse631I": {
+    "bse631i": {
         "name": "Bse631I",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -10185,7 +10185,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1227I": {
+    "uba1227i": {
         "name": "Uba1227I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -10196,7 +10196,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr58I": {
+    "cfr58i": {
         "name": "Cfr58I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -10207,7 +10207,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF42I": {
+    "hpyf42i": {
         "name": "HpyF42I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -10218,7 +10218,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmaHI": {
+    "bmahi": {
         "name": "BmaHI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -10229,7 +10229,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cin1467I": {
+    "cin1467i": {
         "name": "Cin1467I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10240,7 +10240,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySJI": {
+    "stysji": {
         "name": "StySJI",
         "site": "gagnnnnnngtrc",
         "forwardRegex": "gag[abcdghkmnrstvwy]{6}gt[agr]c",
@@ -10251,7 +10251,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LfeI": {
+    "lfei": {
         "name": "LfeI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -10262,7 +10262,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FgoI": {
+    "fgoi": {
         "name": "FgoI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -10273,7 +10273,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1444I": {
+    "uba1444i": {
         "name": "Uba1444I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -10284,7 +10284,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse15I": {
+    "bse15i": {
         "name": "Bse15I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -10295,7 +10295,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MlaAI": {
+    "mlaai": {
         "name": "MlaAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -10306,7 +10306,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SenpCI": {
+    "senpci": {
         "name": "SenpCI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -10317,7 +10317,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco260I": {
+    "eco260i": {
         "name": "Eco260I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10328,7 +10328,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BloHII": {
+    "blohii": {
         "name": "BloHII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10339,7 +10339,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AceI": {
+    "acei": {
         "name": "AceI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -10350,7 +10350,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin1056I": {
+    "hin1056i": {
         "name": "Hin1056I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -10361,7 +10361,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco31I": {
+    "eco31i": {
         "name": "Eco31I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -10372,7 +10372,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfcI": {
+    "sfci": {
         "name": "SfcI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -10383,7 +10383,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uth554I": {
+    "uth554i": {
         "name": "Uth554I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -10394,7 +10394,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma495I": {
+    "rma495i": {
         "name": "Rma495I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -10405,7 +10405,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco101I": {
+    "eco101i": {
         "name": "Eco101I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -10416,7 +10416,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBSE18I": {
+    "bspbse18i": {
         "name": "BspBSE18I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -10427,7 +10427,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp63I": {
+    "bsp63i": {
         "name": "Bsp63I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10438,7 +10438,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoRV": {
+    "ecorv": {
         "name": "EcoRV",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -10449,7 +10449,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp5II": {
+    "esp5ii": {
         "name": "Esp5II",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10460,7 +10460,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfnI": {
+    "sfni": {
         "name": "SfnI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -10471,7 +10471,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst19I": {
+    "bst19i": {
         "name": "Bst19I",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -10482,7 +10482,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK30I": {
+    "esphk30i": {
         "name": "EspHK30I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -10493,7 +10493,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TstI": {
+    "tsti": {
         "name": "TstI",
         "site": "cacnnnnnntcc",
         "forwardRegex": "cac[abcdghkmnrstvwy]{6}tc{2}",
@@ -10504,7 +10504,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 19
     },
-    "Uba1220I": {
+    "uba1220i": {
         "name": "Uba1220I",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -10515,7 +10515,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst31I": {
+    "bst31i": {
         "name": "Bst31I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -10526,7 +10526,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmlI": {
+    "smli": {
         "name": "SmlI",
         "site": "ctyrag",
         "forwardRegex": "ct[cty][agr]ag",
@@ -10537,7 +10537,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp123I": {
+    "asp123i": {
         "name": "Asp123I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10548,7 +10548,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1188I": {
+    "uba1188i": {
         "name": "Uba1188I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -10559,7 +10559,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BctI": {
+    "bcti": {
         "name": "BctI",
         "site": "acggc",
         "forwardRegex": "acg{2}c",
@@ -10570,7 +10570,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma496I": {
+    "rma496i": {
         "name": "Rma496I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -10581,7 +10581,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NbrI": {
+    "nbri": {
         "name": "NbrI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -10592,7 +10592,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NopI": {
+    "nopi": {
         "name": "NopI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -10603,7 +10603,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PauI": {
+    "paui": {
         "name": "PauI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -10614,7 +10614,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StyLTIII": {
+    "styltiii": {
         "name": "StyLTIII",
         "site": "gagnnnnnnrtayg",
         "forwardRegex": "gag[abcdghkmnrstvwy]{6}[agr]ta[cty]g",
@@ -10625,7 +10625,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EsaBC4I": {
+    "esabc4i": {
         "name": "EsaBC4I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -10636,7 +10636,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SapI": {
+    "sapi": {
         "name": "SapI",
         "site": "gctcttc",
         "forwardRegex": "gctct{2}c",
@@ -10647,7 +10647,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco135I": {
+    "eco135i": {
         "name": "Eco135I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -10658,7 +10658,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiJII": {
+    "hgijii": {
         "name": "HgiJII",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -10669,7 +10669,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp8I": {
+    "esp8i": {
         "name": "Esp8I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -10680,7 +10680,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "YenI": {
+    "yeni": {
         "name": "YenI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10691,7 +10691,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SstIV": {
+    "sstiv": {
         "name": "SstIV",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -10702,7 +10702,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ6I": {
+    "bstz6i": {
         "name": "BstZ6I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -10713,7 +10713,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uth549I": {
+    "uth549i": {
         "name": "Uth549I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -10724,7 +10724,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ8I": {
+    "bstz8i": {
         "name": "BstZ8I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -10735,7 +10735,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XorKII": {
+    "xorkii": {
         "name": "XorKII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -10746,7 +10746,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ4I": {
+    "bstz4i": {
         "name": "BstZ4I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -10757,7 +10757,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba30I": {
+    "uba30i": {
         "name": "Uba30I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10768,7 +10768,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MkrAI": {
+    "mkrai": {
         "name": "MkrAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10779,7 +10779,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1318I": {
+    "uba1318i": {
         "name": "Uba1318I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -10790,7 +10790,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp106I": {
+    "bsp106i": {
         "name": "Bsp106I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10801,7 +10801,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StaAI": {
+    "staai": {
         "name": "StaAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -10812,7 +10812,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstBAI": {
+    "bstbai": {
         "name": "BstBAI",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -10823,7 +10823,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp7I": {
+    "esp7i": {
         "name": "Esp7I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -10834,7 +10834,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp16HI": {
+    "asp16hi": {
         "name": "Asp16HI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -10845,7 +10845,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseBI": {
+    "bsebi": {
         "name": "BseBI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -10856,7 +10856,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SdaI": {
+    "sdai": {
         "name": "SdaI",
         "site": "cctgcagg",
         "forwardRegex": "c{2}tgcag{2}",
@@ -10867,7 +10867,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaKR2I": {
+    "llakr2i": {
         "name": "LlaKR2I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10878,7 +10878,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mth1047I": {
+    "mth1047i": {
         "name": "Mth1047I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10889,7 +10889,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco152I": {
+    "eco152i": {
         "name": "Eco152I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -10900,7 +10900,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscSI": {
+    "bscsi": {
         "name": "BscSI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -10911,7 +10911,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AagI": {
+    "aagi": {
         "name": "AagI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -10922,7 +10922,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF49IV": {
+    "hpyf49iv": {
         "name": "HpyF49IV",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -10933,7 +10933,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp53I": {
+    "bsp53i": {
         "name": "Bsp53I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -10944,7 +10944,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP219I": {
+    "ccop219i": {
         "name": "CcoP219I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10955,7 +10955,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BniI": {
+    "bnii": {
         "name": "BniI",
         "site": "gcnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{2}gc",
@@ -10966,7 +10966,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoDR2": {
+    "ecodr2": {
         "name": "EcoDR2",
         "site": "tcannnnnngtcg",
         "forwardRegex": "tca[abcdghkmnrstvwy]{6}gtcg",
@@ -10977,7 +10977,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspMI": {
+    "bspmi": {
         "name": "BspMI",
         "site": "acctgc",
         "forwardRegex": "ac{2}tgc",
@@ -10988,7 +10988,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoT1Dam": {
+    "m.ecot1dam": {
         "name": "M.EcoT1Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -10999,7 +10999,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1417I": {
+    "uba1417i": {
         "name": "Uba1417I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -11010,7 +11010,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NasBI": {
+    "nasbi": {
         "name": "NasBI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -11021,7 +11021,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl8I": {
+    "pfl8i": {
         "name": "Pfl8I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -11032,7 +11032,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Lsp1109II": {
+    "lsp1109ii": {
         "name": "Lsp1109II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11043,7 +11043,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mho2111I": {
+    "mho2111i": {
         "name": "Mho2111I",
         "site": "agct",
         "forwardRegex": "agct",
@@ -11054,7 +11054,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmAI": {
+    "bsmai": {
         "name": "BsmAI",
         "site": "gtctc",
         "forwardRegex": "gtctc",
@@ -11065,7 +11065,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TssI": {
+    "tssi": {
         "name": "TssI",
         "site": "gagnnnctc",
         "forwardRegex": "gag[abcdghkmnrstvwy]{3}ctc",
@@ -11076,7 +11076,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba39I": {
+    "uba39i": {
         "name": "Uba39I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -11087,7 +11087,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NflBI": {
+    "nflbi": {
         "name": "NflBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11098,7 +11098,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tth111II": {
+    "tth111ii": {
         "name": "Tth111II",
         "site": "caarca",
         "forwardRegex": "ca{2}[agr]ca",
@@ -11109,7 +11109,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuEII": {
+    "bsueii": {
         "name": "BsuEII",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -11120,7 +11120,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp10I": {
+    "esp10i": {
         "name": "Esp10I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -11131,7 +11131,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco134I": {
+    "eco134i": {
         "name": "Eco134I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -11142,7 +11142,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco153I": {
+    "eco153i": {
         "name": "Eco153I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -11153,7 +11153,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp93I": {
+    "bsp93i": {
         "name": "Bsp93I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -11164,7 +11164,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstSLI": {
+    "bstsli": {
         "name": "BstSLI",
         "site": "gkgcmc",
         "forwardRegex": "g[gkt]gc[acm]c",
@@ -11175,7 +11175,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1172I": {
+    "uba1172i": {
         "name": "Uba1172I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -11186,7 +11186,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspAI": {
+    "nspai": {
         "name": "NspAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11197,7 +11197,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspH43I": {
+    "bsph43i": {
         "name": "BspH43I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -11208,7 +11208,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK16I": {
+    "esphk16i": {
         "name": "EspHK16I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -11219,7 +11219,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApeKI": {
+    "apeki": {
         "name": "ApeKI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -11230,7 +11230,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco110kI": {
+    "eco110ki": {
         "name": "Eco110kI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -11241,7 +11241,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspKI": {
+    "sspki": {
         "name": "SspKI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -11252,7 +11252,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1177I": {
+    "uba1177i": {
         "name": "Uba1177I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11263,7 +11263,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco263I": {
+    "eco263i": {
         "name": "Eco263I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -11274,7 +11274,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1242I": {
+    "uba1242i": {
         "name": "Uba1242I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -11285,7 +11285,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PlaAI": {
+    "plaai": {
         "name": "PlaAI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -11296,7 +11296,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscBI": {
+    "bscbi": {
         "name": "BscBI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -11307,7 +11307,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp51I": {
+    "bsp51i": {
         "name": "Bsp51I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11318,7 +11318,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AbeI": {
+    "abei": {
         "name": "AbeI",
         "site": "cctcagc",
         "forwardRegex": "c{2}tcagc",
@@ -11329,7 +11329,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF10II": {
+    "hpyf10ii": {
         "name": "HpyF10II",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -11340,7 +11340,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspZNI": {
+    "tspzni": {
         "name": "TspZNI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -11351,7 +11351,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1422I": {
+    "eco1422i": {
         "name": "Eco1422I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -11362,7 +11362,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp90I": {
+    "bsp90i": {
         "name": "Bsp90I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -11373,7 +11373,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp11I": {
+    "esp11i": {
         "name": "Esp11I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -11384,7 +11384,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsc91I": {
+    "bsc91i": {
         "name": "Bsc91I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -11395,7 +11395,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.PgiI": {
+    "m.pgii": {
         "name": "M.PgiI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11406,7 +11406,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1173I": {
+    "uba1173i": {
         "name": "Uba1173I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -11417,7 +11417,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiKI": {
+    "bsiki": {
         "name": "BsiKI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -11428,7 +11428,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1720I": {
+    "bsp1720i": {
         "name": "Bsp1720I",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -11439,7 +11439,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin1160II": {
+    "hin1160ii": {
         "name": "Hin1160II",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -11450,7 +11450,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin1076III": {
+    "hin1076iii": {
         "name": "Hin1076III",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -11461,7 +11461,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspAAI": {
+    "bspaai": {
         "name": "BspAAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -11472,7 +11472,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ThaI": {
+    "thai": {
         "name": "ThaI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -11483,7 +11483,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoPIII": {
+    "ngopiii": {
         "name": "NgoPIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -11494,7 +11494,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst29I": {
+    "bst29i": {
         "name": "Bst29I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -11505,7 +11505,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspHI": {
+    "nsphi": {
         "name": "NspHI",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -11516,7 +11516,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1117I": {
+    "uba1117i": {
         "name": "Uba1117I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -11527,7 +11527,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp12I": {
+    "esp12i": {
         "name": "Esp12I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -11538,7 +11538,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF72II": {
+    "hpyf72ii": {
         "name": "HpyF72II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -11549,7 +11549,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1441I": {
+    "uba1441i": {
         "name": "Uba1441I",
         "site": "agct",
         "forwardRegex": "agct",
@@ -11560,7 +11560,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbfI": {
+    "bbfi": {
         "name": "BbfI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -11571,7 +11571,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF6III": {
+    "hpyf6iii": {
         "name": "HpyF6III",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -11582,7 +11582,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco143I": {
+    "eco143i": {
         "name": "Eco143I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -11593,7 +11593,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CstI": {
+    "csti": {
         "name": "CstI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -11604,7 +11604,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bbi24I": {
+    "bbi24i": {
         "name": "Bbi24I",
         "site": "acgcgt",
         "forwardRegex": "acgcgt",
@@ -11615,7 +11615,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssBI": {
+    "bssbi": {
         "name": "BssBI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -11626,7 +11626,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce31293I": {
+    "bce31293i": {
         "name": "Bce31293I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -11637,7 +11637,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Taq20I": {
+    "taq20i": {
         "name": "Taq20I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -11648,7 +11648,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CviSII": {
+    "m.cvisii": {
         "name": "M.CviSII",
         "site": "catg",
         "forwardRegex": "catg",
@@ -11659,7 +11659,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco76I": {
+    "eco76i": {
         "name": "Eco76I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -11670,7 +11670,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauHPI": {
+    "sauhpi": {
         "name": "SauHPI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -11681,7 +11681,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst4QI": {
+    "bst4qi": {
         "name": "Bst4QI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -11692,7 +11692,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1424I": {
+    "eco1424i": {
         "name": "Eco1424I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -11703,7 +11703,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJ76I": {
+    "bspj76i": {
         "name": "BspJ76I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -11714,7 +11714,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp24I": {
+    "bsp24i": {
         "name": "Bsp24I",
         "site": "gacnnnnnntgg",
         "forwardRegex": "gac[abcdghkmnrstvwy]{6}tg{2}",
@@ -11725,7 +11725,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 19
     },
-    "Esp13I": {
+    "esp13i": {
         "name": "Esp13I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -11736,7 +11736,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth134I": {
+    "sth134i": {
         "name": "Sth134I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -11747,7 +11747,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AfiI": {
+    "afii": {
         "name": "AfiI",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -11758,7 +11758,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MnlI": {
+    "mnli": {
         "name": "MnlI",
         "site": "cctc",
         "forwardRegex": "c{2}tc",
@@ -11769,7 +11769,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtuMI": {
+    "btumi": {
         "name": "BtuMI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -11780,7 +11780,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF67III": {
+    "hpyf67iii": {
         "name": "HpyF67III",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -11791,7 +11791,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseLI": {
+    "bseli": {
         "name": "BseLI",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -11802,7 +11802,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspAI": {
+    "mspai": {
         "name": "MspAI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -11813,7 +11813,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspD5I": {
+    "sspd5i": {
         "name": "SspD5I",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -11824,7 +11824,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse634I": {
+    "bse634i": {
         "name": "Bse634I",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -11835,7 +11835,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvrBII": {
+    "avrbii": {
         "name": "AvrBII",
         "site": "cctagg",
         "forwardRegex": "c{2}tag{2}",
@@ -11846,7 +11846,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Zsp2I": {
+    "zsp2i": {
         "name": "Zsp2I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -11857,7 +11857,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sse8387I": {
+    "sse8387i": {
         "name": "Sse8387I",
         "site": "cctgcagg",
         "forwardRegex": "c{2}tgcag{2}",
@@ -11868,7 +11868,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp52I": {
+    "bsp52i": {
         "name": "Bsp52I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11879,7 +11879,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MmeII": {
+    "mmeii": {
         "name": "MmeII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -11890,7 +11890,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcuI": {
+    "ccui": {
         "name": "CcuI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -11901,7 +11901,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp123I": {
+    "bsp123i": {
         "name": "Bsp123I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -11912,7 +11912,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp14I": {
+    "esp14i": {
         "name": "Esp14I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -11923,7 +11923,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF36II": {
+    "hpyf36ii": {
         "name": "HpyF36II",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -11934,7 +11934,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspCNI": {
+    "aspcni": {
         "name": "AspCNI",
         "site": "gccgc",
         "forwardRegex": "gc{2}gc",
@@ -11945,7 +11945,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NliII": {
+    "nliii": {
         "name": "NliII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -11956,7 +11956,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HsuI": {
+    "hsui": {
         "name": "HsuI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -11967,7 +11967,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu2300I": {
+    "mlu2300i": {
         "name": "Mlu2300I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -11978,7 +11978,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsrI": {
+    "ssri": {
         "name": "SsrI",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -11989,7 +11989,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1199I": {
+    "uba1199i": {
         "name": "Uba1199I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -12000,7 +12000,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AloI": {
+    "aloi": {
         "name": "AloI",
         "site": "gaacnnnnnntcc",
         "forwardRegex": "ga{2}c[abcdghkmnrstvwy]{6}tc{2}",
@@ -12011,7 +12011,7 @@ module.exports = {
         "usForward": 25,
         "usReverse": 20
     },
-    "Bli643I": {
+    "bli643i": {
         "name": "Bli643I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -12022,7 +12022,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1130I": {
+    "uba1130i": {
         "name": "Uba1130I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -12033,7 +12033,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SalPI": {
+    "salpi": {
         "name": "SalPI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12044,7 +12044,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl32DI": {
+    "srl32di": {
         "name": "Srl32DI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12055,7 +12055,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PxyJKI": {
+    "pxyjki": {
         "name": "PxyJKI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -12066,7 +12066,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RrhJ1I": {
+    "rrhj1i": {
         "name": "RrhJ1I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -12077,7 +12077,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MchAII": {
+    "mchaii": {
         "name": "MchAII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -12088,7 +12088,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspUI": {
+    "bspui": {
         "name": "BspUI",
         "site": "gcsgc",
         "forwardRegex": "gc[cgs]gc",
@@ -12099,7 +12099,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1411I": {
+    "uba1411i": {
         "name": "Uba1411I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12110,7 +12110,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJII": {
+    "bspjii": {
         "name": "BspJII",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -12121,7 +12121,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp54I": {
+    "bsp54i": {
         "name": "Bsp54I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12132,7 +12132,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1198I": {
+    "uba1198i": {
         "name": "Uba1198I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -12143,7 +12143,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl77I": {
+    "ecl77i": {
         "name": "Ecl77I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12154,7 +12154,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae5kI": {
+    "pae5ki": {
         "name": "Pae5kI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -12165,7 +12165,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl699kI": {
+    "ecl699ki": {
         "name": "Ecl699kI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12176,7 +12176,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Afa22MI": {
+    "afa22mi": {
         "name": "Afa22MI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -12187,7 +12187,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sfr303I": {
+    "sfr303i": {
         "name": "Sfr303I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -12198,7 +12198,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF12II": {
+    "hpyf12ii": {
         "name": "HpyF12II",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -12209,7 +12209,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SboI": {
+    "sboi": {
         "name": "SboI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -12220,7 +12220,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp1396I": {
+    "esp1396i": {
         "name": "Esp1396I",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -12231,7 +12231,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstV1I": {
+    "bstv1i": {
         "name": "BstV1I",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -12242,7 +12242,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccBSI": {
+    "accbsi": {
         "name": "AccBSI",
         "site": "ccgctc",
         "forwardRegex": "c{2}gctc",
@@ -12253,7 +12253,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp9I": {
+    "esp9i": {
         "name": "Esp9I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -12264,7 +12264,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF46I": {
+    "hpyf46i": {
         "name": "HpyF46I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -12275,7 +12275,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp128I": {
+    "bsp128i": {
         "name": "Bsp128I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -12286,7 +12286,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp57I": {
+    "bsp57i": {
         "name": "Bsp57I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12297,7 +12297,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bal228I": {
+    "bal228i": {
         "name": "Bal228I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -12308,7 +12308,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspLKI": {
+    "nsplki": {
         "name": "NspLKI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -12319,7 +12319,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu15I": {
+    "bsu15i": {
         "name": "Bsu15I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -12330,7 +12330,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CjeNIII": {
+    "m.cjeniii": {
         "name": "M.CjeNIII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12341,7 +12341,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbeI": {
+    "bbei": {
         "name": "BbeI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -12352,7 +12352,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1381I": {
+    "uba1381i": {
         "name": "Uba1381I",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -12363,7 +12363,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1408II": {
+    "uba1408ii": {
         "name": "Uba1408II",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -12374,7 +12374,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgiI": {
+    "sgii": {
         "name": "SgiI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12385,7 +12385,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF40II": {
+    "hpyf40ii": {
         "name": "HpyF40II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -12396,7 +12396,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco232I": {
+    "eco232i": {
         "name": "Eco232I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -12407,7 +12407,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmeRI": {
+    "bmeri": {
         "name": "BmeRI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -12418,7 +12418,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GsuI": {
+    "gsui": {
         "name": "GsuI",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -12429,7 +12429,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PseI": {
+    "psei": {
         "name": "PseI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -12440,7 +12440,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstBZ153I": {
+    "bstbz153i": {
         "name": "BstBZ153I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -12451,7 +12451,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcnI": {
+    "bcni": {
         "name": "BcnI",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -12462,7 +12462,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1412I": {
+    "eco1412i": {
         "name": "Eco1412I",
         "site": "ggannnnnntatc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{6}tatc",
@@ -12473,7 +12473,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TceI": {
+    "tcei": {
         "name": "TceI",
         "site": "gaaga",
         "forwardRegex": "ga{2}ga",
@@ -12484,7 +12484,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspST5I": {
+    "bspst5i": {
         "name": "BspST5I",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -12495,7 +12495,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauBMKI": {
+    "saubmki": {
         "name": "SauBMKI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -12506,7 +12506,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1272I": {
+    "uba1272i": {
         "name": "Uba1272I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -12517,7 +12517,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SshAI": {
+    "sshai": {
         "name": "SshAI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -12528,7 +12528,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF40I": {
+    "hpyf40i": {
         "name": "HpyF40I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -12539,7 +12539,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssECI": {
+    "bsseci": {
         "name": "BssECI",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -12550,7 +12550,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau10I": {
+    "sau10i": {
         "name": "Sau10I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -12561,7 +12561,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp59I": {
+    "bsp59i": {
         "name": "Bsp59I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12572,7 +12572,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF66II": {
+    "hpyf66ii": {
         "name": "HpyF66II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -12583,7 +12583,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sst12I": {
+    "sst12i": {
         "name": "Sst12I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12594,7 +12594,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Csp68KV": {
+    "m.csp68kv": {
         "name": "M.Csp68KV",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -12605,7 +12605,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp78I": {
+    "asp78i": {
         "name": "Asp78I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -12616,7 +12616,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AerAI": {
+    "aerai": {
         "name": "AerAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -12627,7 +12627,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AgsI": {
+    "agsi": {
         "name": "AgsI",
         "site": "ttsaa",
         "forwardRegex": "t{2}[cgs]a{2}",
@@ -12638,7 +12638,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl137I": {
+    "ecl137i": {
         "name": "Ecl137I",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -12649,7 +12649,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstBS32I": {
+    "bstbs32i": {
         "name": "BstBS32I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -12660,7 +12660,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspQI": {
+    "bspqi": {
         "name": "BspQI",
         "site": "gctcttc",
         "forwardRegex": "gctct{2}c",
@@ -12671,7 +12671,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OcoI": {
+    "ocoi": {
         "name": "OcoI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -12682,7 +12682,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn12I": {
+    "kpn12i": {
         "name": "Kpn12I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12693,7 +12693,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp58I": {
+    "bsp58i": {
         "name": "Bsp58I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12704,7 +12704,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AaqI": {
+    "aaqi": {
         "name": "AaqI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -12715,7 +12715,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GseII": {
+    "gseii": {
         "name": "GseII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -12726,7 +12726,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF41I": {
+    "hpyf41i": {
         "name": "HpyF41I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -12737,7 +12737,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rle69I": {
+    "rle69i": {
         "name": "Rle69I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -12748,7 +12748,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1278I": {
+    "uba1278i": {
         "name": "Uba1278I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -12759,7 +12759,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssT1I": {
+    "bsst1i": {
         "name": "BssT1I",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -12770,7 +12770,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeBL859I": {
+    "nmebl859i": {
         "name": "NmeBL859I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12781,7 +12781,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco377I": {
+    "eco377i": {
         "name": "Eco377I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -12792,7 +12792,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AlwFI": {
+    "alwfi": {
         "name": "AlwFI",
         "site": "gaaaynnnnnrtg",
         "forwardRegex": "ga{3}[cty][abcdghkmnrstvwy]{5}[agr]tg",
@@ -12803,7 +12803,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PinI": {
+    "pini": {
         "name": "PinI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -12814,7 +12814,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu41I": {
+    "btu41i": {
         "name": "Btu41I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -12825,7 +12825,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN4I": {
+    "uban4i": {
         "name": "UbaN4I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -12836,7 +12836,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CltI": {
+    "clti": {
         "name": "CltI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -12847,7 +12847,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF44III": {
+    "hpyf44iii": {
         "name": "HpyF44III",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -12858,7 +12858,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TaqI": {
+    "taqi": {
         "name": "TaqI",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -12869,7 +12869,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviSIII": {
+    "cvisiii": {
         "name": "CviSIII",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -12880,7 +12880,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspSAIII": {
+    "nspsaiii": {
         "name": "NspSAIII",
         "site": "ccatgg",
         "forwardRegex": "c{2}atg{2}",
@@ -12891,7 +12891,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiDII": {
+    "hgidii": {
         "name": "HgiDII",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -12902,7 +12902,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MhoI": {
+    "mhoi": {
         "name": "MhoI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -12913,7 +12913,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstNZ169I": {
+    "bstnz169i": {
         "name": "BstNZ169I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -12924,7 +12924,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.SPBetaI": {
+    "m.spbetai": {
         "name": "M.SPBetaI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -12935,7 +12935,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr23I": {
+    "cfr23i": {
         "name": "Cfr23I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -12946,7 +12946,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Gst1588I": {
+    "gst1588i": {
         "name": "Gst1588I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -12957,7 +12957,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ScoI": {
+    "scoi": {
         "name": "ScoI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -12968,7 +12968,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PbuMZI": {
+    "pbumzi": {
         "name": "PbuMZI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -12979,7 +12979,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SstI": {
+    "ssti": {
         "name": "SstI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -12990,7 +12990,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GdiI": {
+    "gdii": {
         "name": "GdiI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -13001,7 +13001,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NtaI": {
+    "ntai": {
         "name": "NtaI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -13012,7 +13012,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl8DI": {
+    "srl8di": {
         "name": "Srl8DI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -13023,7 +13023,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HindIII": {
+    "hindiii": {
         "name": "HindIII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -13034,7 +13034,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sgr20I": {
+    "sgr20i": {
         "name": "Sgr20I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -13045,7 +13045,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspXI": {
+    "bspxi": {
         "name": "BspXI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -13056,7 +13056,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtcI": {
+    "btci": {
         "name": "BtcI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13067,7 +13067,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcaIII": {
+    "acaiii": {
         "name": "AcaIII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -13078,7 +13078,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NmaPhiCh1I": {
+    "m.nmaphich1i": {
         "name": "M.NmaPhiCh1I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13089,7 +13089,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SexAI": {
+    "sexai": {
         "name": "SexAI",
         "site": "accwggt",
         "forwardRegex": "ac{2}[atw]g{2}t",
@@ -13100,7 +13100,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpsI": {
+    "bpsi": {
         "name": "BpsI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -13111,7 +13111,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiEII": {
+    "hgieii": {
         "name": "HgiEII",
         "site": "accnnnnnnggt",
         "forwardRegex": "ac{2}[abcdghkmnrstvwy]{6}g{2}t",
@@ -13122,7 +13122,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp21I": {
+    "bsp21i": {
         "name": "Bsp21I",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -13133,7 +13133,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1398I": {
+    "uba1398i": {
         "name": "Uba1398I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -13144,7 +13144,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1391I": {
+    "uba1391i": {
         "name": "Uba1391I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -13155,7 +13155,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmYI": {
+    "bsmyi": {
         "name": "BsmYI",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -13166,7 +13166,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssGII": {
+    "bssgii": {
         "name": "BssGII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13177,7 +13177,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaPI": {
+    "bsapi": {
         "name": "BsaPI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13188,7 +13188,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstOZ616I": {
+    "bstoz616i": {
         "name": "BstOZ616I",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -13199,7 +13199,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfaAII": {
+    "pfaaii": {
         "name": "PfaAII",
         "site": "catatg",
         "forwardRegex": "catatg",
@@ -13210,7 +13210,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel2TI": {
+    "mel2ti": {
         "name": "Mel2TI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13221,7 +13221,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1326I": {
+    "uba1326i": {
         "name": "Uba1326I",
         "site": "rggnccy",
         "forwardRegex": "[agr]g{2}[abcdghkmnrstvwy]c{2}[cty]",
@@ -13232,7 +13232,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth945I": {
+    "bth945i": {
         "name": "Bth945I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13243,7 +13243,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstBSI": {
+    "bstbsi": {
         "name": "BstBSI",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -13254,7 +13254,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssNI": {
+    "bssni": {
         "name": "BssNI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -13265,7 +13265,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Vha1168I": {
+    "vha1168i": {
         "name": "Vha1168I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -13276,7 +13276,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcyI": {
+    "acyi": {
         "name": "AcyI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -13287,7 +13287,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsh1285I": {
+    "bsh1285i": {
         "name": "Bsh1285I",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -13298,7 +13298,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstHPI": {
+    "bsthpi": {
         "name": "BstHPI",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -13309,7 +13309,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco56I": {
+    "eco56i": {
         "name": "Eco56I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -13320,7 +13320,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF45II": {
+    "hpyf45ii": {
         "name": "HpyF45II",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -13331,7 +13331,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp68KIII": {
+    "csp68kiii": {
         "name": "Csp68KIII",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -13342,7 +13342,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FinII": {
+    "finii": {
         "name": "FinII",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -13353,7 +13353,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp46I": {
+    "bsp46i": {
         "name": "Bsp46I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -13364,7 +13364,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MluNI": {
+    "mluni": {
         "name": "MluNI",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -13375,7 +13375,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiS21I": {
+    "hgis21i": {
         "name": "HgiS21I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -13386,7 +13386,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsnI": {
+    "bsni": {
         "name": "BsnI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -13397,7 +13397,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmI": {
+    "bsmi": {
         "name": "BsmI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -13408,7 +13408,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MjaIII": {
+    "mjaiii": {
         "name": "MjaIII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13419,7 +13419,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Nli3877II": {
+    "nli3877ii": {
         "name": "Nli3877II",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -13430,7 +13430,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp1470I": {
+    "csp1470i": {
         "name": "Csp1470I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -13441,7 +13441,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco63I": {
+    "bco63i": {
         "name": "Bco63I",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -13452,7 +13452,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pac1110I": {
+    "pac1110i": {
         "name": "Pac1110I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -13463,7 +13463,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstGI": {
+    "bstgi": {
         "name": "BstGI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -13474,7 +13474,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NtaSII": {
+    "ntasii": {
         "name": "NtaSII",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -13485,7 +13485,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MstI": {
+    "msti": {
         "name": "MstI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -13496,7 +13496,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgfI": {
+    "sgfi": {
         "name": "SgfI",
         "site": "gcgatcgc",
         "forwardRegex": "gcgatcgc",
@@ -13507,7 +13507,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ShaI": {
+    "shai": {
         "name": "ShaI",
         "site": "gggtc",
         "forwardRegex": "g{3}tc",
@@ -13518,7 +13518,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvCI": {
+    "bbvci": {
         "name": "BbvCI",
         "site": "cctcagc",
         "forwardRegex": "c{2}tcagc",
@@ -13529,7 +13529,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mho2965I": {
+    "mho2965i": {
         "name": "Mho2965I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -13540,7 +13540,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl1108I": {
+    "pfl1108i": {
         "name": "Pfl1108I",
         "site": "tcgtag",
         "forwardRegex": "tcgtag",
@@ -13551,7 +13551,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcoI": {
+    "acoi": {
         "name": "AcoI",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -13562,7 +13562,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssMI": {
+    "bssmi": {
         "name": "BssMI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -13573,7 +13573,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuHPI": {
+    "asuhpi": {
         "name": "AsuHPI",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -13584,7 +13584,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bim19I": {
+    "bim19i": {
         "name": "Bim19I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -13595,7 +13595,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco29kI": {
+    "eco29ki": {
         "name": "Eco29kI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -13606,7 +13606,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SecIII": {
+    "seciii": {
         "name": "SecIII",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -13617,7 +13617,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba84I": {
+    "uba84i": {
         "name": "Uba84I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -13628,7 +13628,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GceGLI": {
+    "gcegli": {
         "name": "GceGLI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -13639,7 +13639,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmyI": {
+    "bmyi": {
         "name": "BmyI",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -13650,7 +13650,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl19I": {
+    "srl19i": {
         "name": "Srl19I",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -13661,7 +13661,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1413I": {
+    "uba1413i": {
         "name": "Uba1413I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -13672,7 +13672,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu9273II": {
+    "mlu9273ii": {
         "name": "Mlu9273II",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -13683,7 +13683,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmiI": {
+    "smii": {
         "name": "SmiI",
         "site": "atttaaat",
         "forwardRegex": "at{3}a{3}t",
@@ -13694,7 +13694,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Shy1766I": {
+    "shy1766i": {
         "name": "Shy1766I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -13705,7 +13705,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.BssHIII": {
+    "m.bsshiii": {
         "name": "M.BssHIII",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -13716,7 +13716,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiHII": {
+    "hgihii": {
         "name": "HgiHII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -13727,7 +13727,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApiI": {
+    "apii": {
         "name": "ApiI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -13738,7 +13738,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmGII": {
+    "bsmgii": {
         "name": "BsmGII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -13749,7 +13749,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspLI": {
+    "pspli": {
         "name": "PspLI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -13760,7 +13760,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1123I": {
+    "uba1123i": {
         "name": "Uba1123I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -13771,7 +13771,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstPZ740I": {
+    "bstpz740i": {
         "name": "BstPZ740I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -13782,7 +13782,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspHI": {
+    "bsphi": {
         "name": "BspHI",
         "site": "tcatga",
         "forwardRegex": "tcatga",
@@ -13793,7 +13793,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshI": {
+    "bshi": {
         "name": "BshI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -13804,7 +13804,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF64I": {
+    "hpyf64i": {
         "name": "HpyF64I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -13815,7 +13815,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscNI": {
+    "bscni": {
         "name": "BscNI",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -13826,7 +13826,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK7I": {
+    "esphk7i": {
         "name": "EspHK7I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -13837,7 +13837,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthP35I": {
+    "bthp35i": {
         "name": "BthP35I",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -13848,7 +13848,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mph1103I": {
+    "mph1103i": {
         "name": "Mph1103I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -13859,7 +13859,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoAIII": {
+    "ngoaiii": {
         "name": "NgoAIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -13870,7 +13870,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco125I": {
+    "eco125i": {
         "name": "Eco125I",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -13881,7 +13881,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmeT110I": {
+    "bmet110i": {
         "name": "BmeT110I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -13892,7 +13892,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviRII": {
+    "cvirii": {
         "name": "CviRII",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -13903,7 +13903,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsiGI": {
+    "asigi": {
         "name": "AsiGI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -13914,7 +13914,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstHZ55I": {
+    "bsthz55i": {
         "name": "BstHZ55I",
         "site": "ccannnnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{6}tg{2}",
@@ -13925,7 +13925,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApaORI": {
+    "apaori": {
         "name": "ApaORI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -13936,7 +13936,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshVI": {
+    "bshvi": {
         "name": "BshVI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -13947,7 +13947,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu20I": {
+    "ppu20i": {
         "name": "Ppu20I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -13958,7 +13958,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco826I": {
+    "eco826i": {
         "name": "Eco826I",
         "site": "gcannnnnnctga",
         "forwardRegex": "gca[abcdghkmnrstvwy]{6}ctga",
@@ -13969,7 +13969,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1353I": {
+    "uba1353i": {
         "name": "Uba1353I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -13980,7 +13980,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu6I": {
+    "ppu6i": {
         "name": "Ppu6I",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -13991,7 +13991,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst224I": {
+    "bst224i": {
         "name": "Bst224I",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -14002,7 +14002,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF73III": {
+    "hpyf73iii": {
         "name": "HpyF73III",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14013,7 +14013,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PntI": {
+    "pnti": {
         "name": "PntI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -14024,7 +14024,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco82I": {
+    "eco82i": {
         "name": "Eco82I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -14035,7 +14035,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF26I": {
+    "hpyf26i": {
         "name": "HpyF26I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -14046,7 +14046,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma519I": {
+    "rma519i": {
         "name": "Rma519I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -14057,7 +14057,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssKI": {
+    "bsski": {
         "name": "BssKI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -14068,7 +14068,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.PmuADam": {
+    "m.pmuadam": {
         "name": "M.PmuADam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -14079,7 +14079,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuRI": {
+    "bsuri": {
         "name": "BsuRI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14090,7 +14090,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pme55I": {
+    "pme55i": {
         "name": "Pme55I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -14101,7 +14101,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpvUI": {
+    "bpvui": {
         "name": "BpvUI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -14112,7 +14112,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse59I": {
+    "bse59i": {
         "name": "Bse59I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -14123,7 +14123,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1134I": {
+    "uba1134i": {
         "name": "Uba1134I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -14134,7 +14134,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstKI": {
+    "bstki": {
         "name": "BstKI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -14145,7 +14145,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiCII": {
+    "hgicii": {
         "name": "HgiCII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -14156,7 +14156,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Alw21I": {
+    "alw21i": {
         "name": "Alw21I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -14167,7 +14167,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoR124II": {
+    "ecor124ii": {
         "name": "EcoR124II",
         "site": "gaannnnnnnrtcg",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{7}[agr]tcg",
@@ -14178,7 +14178,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsh1365I": {
+    "bsh1365i": {
         "name": "Bsh1365I",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -14189,7 +14189,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp4I": {
+    "csp4i": {
         "name": "Csp4I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -14200,7 +14200,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ2I": {
+    "bstz2i": {
         "name": "BstZ2I",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -14211,7 +14211,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FseI": {
+    "fsei": {
         "name": "FseI",
         "site": "ggccggcc",
         "forwardRegex": "g{2}c{2}g{2}c{2}",
@@ -14222,7 +14222,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1100I": {
+    "uba1100i": {
         "name": "Uba1100I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -14233,7 +14233,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrEI": {
+    "bsrei": {
         "name": "BsrEI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -14244,7 +14244,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma518I": {
+    "rma518i": {
         "name": "Rma518I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -14255,7 +14255,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1430I": {
+    "uba1430i": {
         "name": "Uba1430I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -14266,7 +14266,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF38II": {
+    "hpyf38ii": {
         "name": "HpyF38II",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -14277,7 +14277,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcrI": {
+    "ccri": {
         "name": "CcrI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -14288,7 +14288,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sru4DI": {
+    "sru4di": {
         "name": "Sru4DI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -14299,7 +14299,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.TpaI": {
+    "m.tpai": {
         "name": "M.TpaI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -14310,7 +14310,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.H2I": {
+    "m.h2i": {
         "name": "M.H2I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14321,7 +14321,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BvuI": {
+    "bvui": {
         "name": "BvuI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -14332,7 +14332,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AatII": {
+    "aatii": {
         "name": "AatII",
         "site": "gacgtc",
         "forwardRegex": "gacgtc",
@@ -14343,7 +14343,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp881I": {
+    "bsp881i": {
         "name": "Bsp881I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14354,7 +14354,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1140I": {
+    "uba1140i": {
         "name": "Uba1140I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14365,7 +14365,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme361I": {
+    "bme361i": {
         "name": "Bme361I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14376,7 +14376,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EciEI": {
+    "eciei": {
         "name": "EciEI",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -14387,7 +14387,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AorI": {
+    "aori": {
         "name": "AorI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14398,7 +14398,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.StyDam": {
+    "m.stydam": {
         "name": "M.StyDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -14409,7 +14409,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr20I": {
+    "cfr20i": {
         "name": "Cfr20I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14420,7 +14420,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Lla497I": {
+    "lla497i": {
         "name": "Lla497I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14431,7 +14431,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AlwFII": {
+    "alwfii": {
         "name": "AlwFII",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -14442,7 +14442,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmiMBI": {
+    "smimbi": {
         "name": "SmiMBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -14453,7 +14453,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FbrI": {
+    "fbri": {
         "name": "FbrI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -14464,7 +14464,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma517I": {
+    "rma517i": {
         "name": "Rma517I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -14475,7 +14475,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco13kI": {
+    "eco13ki": {
         "name": "Eco13kI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -14486,7 +14486,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp15I": {
+    "esp15i": {
         "name": "Esp15I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -14497,7 +14497,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BptI": {
+    "bpti": {
         "name": "BptI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14508,7 +14508,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoMAI": {
+    "bsomai": {
         "name": "BsoMAI",
         "site": "gtctc",
         "forwardRegex": "gtctc",
@@ -14519,7 +14519,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyBI": {
+    "hpybi": {
         "name": "HpyBI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -14530,7 +14530,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco158II": {
+    "eco158ii": {
         "name": "Eco158II",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -14541,7 +14541,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseI": {
+    "bsei": {
         "name": "BseI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14552,7 +14552,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF53I": {
+    "hpyf53i": {
         "name": "HpyF53I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -14563,7 +14563,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfaNI": {
+    "sfani": {
         "name": "SfaNI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -14574,7 +14574,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MaqI": {
+    "maqi": {
         "name": "MaqI",
         "site": "crttgac",
         "forwardRegex": "c[agr]t{2}gac",
@@ -14585,7 +14585,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjeNII": {
+    "cjenii": {
         "name": "CjeNII",
         "site": "gagnnnnngt",
         "forwardRegex": "gag[abcdghkmnrstvwy]{5}gt",
@@ -14596,7 +14596,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma516I": {
+    "rma516i": {
         "name": "Rma516I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -14607,7 +14607,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaDI": {
+    "bsadi": {
         "name": "BsaDI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -14618,7 +14618,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspVI": {
+    "bspvi": {
         "name": "BspVI",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -14629,7 +14629,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmaAII": {
+    "smaaii": {
         "name": "SmaAII",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -14640,7 +14640,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KpnAI": {
+    "kpnai": {
         "name": "KpnAI",
         "site": "gaannnnnntgcc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{6}tgc{2}",
@@ -14651,7 +14651,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK57AI": {
+    "vpak57ai": {
         "name": "VpaK57AI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -14662,7 +14662,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NotI": {
+    "noti": {
         "name": "NotI",
         "site": "gcggccgc",
         "forwardRegex": "gcg{2}c{2}gc",
@@ -14673,7 +14673,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoRII": {
+    "ecorii": {
         "name": "EcoRII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14684,7 +14684,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsc107I": {
+    "bsc107i": {
         "name": "Bsc107I",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -14695,7 +14695,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1329I": {
+    "uba1329i": {
         "name": "Uba1329I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -14706,7 +14706,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcoI": {
+    "bcoi": {
         "name": "BcoI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -14717,7 +14717,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae15I": {
+    "pae15i": {
         "name": "Pae15I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -14728,7 +14728,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr22I": {
+    "cfr22i": {
         "name": "Cfr22I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14739,7 +14739,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1428I": {
+    "uba1428i": {
         "name": "Uba1428I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14750,7 +14750,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp14I": {
+    "asp14i": {
         "name": "Asp14I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -14761,7 +14761,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma515I": {
+    "rma515i": {
         "name": "Rma515I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -14772,7 +14772,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BavBII": {
+    "bavbii": {
         "name": "BavBII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -14783,7 +14783,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FauI": {
+    "faui": {
         "name": "FauI",
         "site": "cccgc",
         "forwardRegex": "c{3}gc",
@@ -14794,7 +14794,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstM6I": {
+    "bstm6i": {
         "name": "BstM6I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14805,7 +14805,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1163I": {
+    "uba1163i": {
         "name": "Uba1163I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -14816,7 +14816,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1182I": {
+    "uba1182i": {
         "name": "Uba1182I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -14827,7 +14827,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp32HI": {
+    "asp32hi": {
         "name": "Asp32HI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -14838,7 +14838,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pei9403I": {
+    "pei9403i": {
         "name": "Pei9403I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -14849,7 +14849,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK11572I": {
+    "sflhk11572i": {
         "name": "SflHK11572I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -14860,7 +14860,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1447I": {
+    "eco1447i": {
         "name": "Eco1447I",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -14871,7 +14871,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1432I": {
+    "eco1432i": {
         "name": "Eco1432I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -14882,7 +14882,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PglI": {
+    "pgli": {
         "name": "PglI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -14893,7 +14893,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmuI": {
+    "smui": {
         "name": "SmuI",
         "site": "cccgc",
         "forwardRegex": "c{3}gc",
@@ -14904,7 +14904,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MjaI": {
+    "mjai": {
         "name": "MjaI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -14915,7 +14915,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MaeII": {
+    "maeii": {
         "name": "MaeII",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -14926,7 +14926,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MavI": {
+    "mavi": {
         "name": "MavI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -14937,7 +14937,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae14I": {
+    "pae14i": {
         "name": "Pae14I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -14948,7 +14948,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CbiI": {
+    "cbii": {
         "name": "CbiI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -14959,7 +14959,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclS39I": {
+    "ecls39i": {
         "name": "EclS39I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -14970,7 +14970,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BinSII": {
+    "binsii": {
         "name": "BinSII",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -14981,7 +14981,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK4BI": {
+    "vpak4bi": {
         "name": "VpaK4BI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -14992,7 +14992,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsiAI": {
+    "asiai": {
         "name": "AsiAI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -15003,7 +15003,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp4I": {
+    "esp4i": {
         "name": "Esp4I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -15014,7 +15014,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CauII": {
+    "cauii": {
         "name": "CauII",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -15025,7 +15025,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1310I": {
+    "uba1310i": {
         "name": "Uba1310I",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -15036,7 +15036,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp86I": {
+    "asp86i": {
         "name": "Asp86I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -15047,7 +15047,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TaqII": {
+    "taqii": {
         "name": "TaqII",
         "site": "caccca",
         "forwardRegex": "cac{3}a",
@@ -15058,7 +15058,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstSWI": {
+    "bstswi": {
         "name": "BstSWI",
         "site": "atttaaat",
         "forwardRegex": "at{3}a{3}t",
@@ -15069,7 +15069,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1183I": {
+    "uba1183i": {
         "name": "Uba1183I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -15080,7 +15080,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN9I": {
+    "uban9i": {
         "name": "UbaN9I",
         "site": "aacgtt",
         "forwardRegex": "a{2}cgt{2}",
@@ -15091,7 +15091,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl66I": {
+    "ecl66i": {
         "name": "Ecl66I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -15102,7 +15102,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1147I": {
+    "uba1147i": {
         "name": "Uba1147I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -15113,7 +15113,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspNI": {
+    "aspni": {
         "name": "AspNI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -15124,7 +15124,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco81I": {
+    "eco81i": {
         "name": "Eco81I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -15135,7 +15135,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr24I": {
+    "cfr24i": {
         "name": "Cfr24I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -15146,7 +15146,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK4AI": {
+    "vpak4ai": {
         "name": "VpaK4AI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -15157,7 +15157,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MisI": {
+    "misi": {
         "name": "MisI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -15168,7 +15168,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco42I": {
+    "eco42i": {
         "name": "Eco42I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -15179,7 +15179,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspI": {
+    "pspi": {
         "name": "PspI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -15190,7 +15190,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdII": {
+    "drdii": {
         "name": "DrdII",
         "site": "gaacca",
         "forwardRegex": "ga{2}c{2}a",
@@ -15201,7 +15201,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstXI": {
+    "bstxi": {
         "name": "BstXI",
         "site": "ccannnnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{6}tg{2}",
@@ -15212,7 +15212,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco71KI": {
+    "eco71ki": {
         "name": "Eco71KI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -15223,7 +15223,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiI": {
+    "bsii": {
         "name": "BsiI",
         "site": "cacgag",
         "forwardRegex": "cacgag",
@@ -15234,7 +15234,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspEI": {
+    "tspei": {
         "name": "TspEI",
         "site": "aatt",
         "forwardRegex": "a{2}t{2}",
@@ -15245,7 +15245,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GseIII": {
+    "gseiii": {
         "name": "GseIII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -15256,7 +15256,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp697I": {
+    "asp697i": {
         "name": "Asp697I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -15267,7 +15267,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfuI": {
+    "cfui": {
         "name": "CfuI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -15278,7 +15278,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GalI": {
+    "gali": {
         "name": "GalI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -15289,7 +15289,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba34I": {
+    "uba34i": {
         "name": "Uba34I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -15300,7 +15300,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuTUI": {
+    "bsutui": {
         "name": "BsuTUI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -15311,7 +15311,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF57I": {
+    "hpyf57i": {
         "name": "HpyF57I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -15322,7 +15322,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseXI": {
+    "bsexi": {
         "name": "BseXI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -15333,7 +15333,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1146I": {
+    "uba1146i": {
         "name": "Uba1146I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -15344,7 +15344,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Btu34II": {
+    "btu34ii": {
         "name": "Btu34II",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -15355,7 +15355,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr25I": {
+    "cfr25i": {
         "name": "Cfr25I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -15366,7 +15366,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme142I": {
+    "bme142i": {
         "name": "Bme142I",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -15377,7 +15377,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Phi3TII": {
+    "m.phi3tii": {
         "name": "M.Phi3TII",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -15388,7 +15388,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EaeAI": {
+    "eaeai": {
         "name": "EaeAI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -15399,7 +15399,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp560I": {
+    "tsp560i": {
         "name": "Tsp560I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -15410,7 +15410,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfuI": {
+    "sfui": {
         "name": "SfuI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -15421,7 +15421,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp133I": {
+    "tsp133i": {
         "name": "Tsp133I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -15432,7 +15432,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutHI": {
+    "vpakuthi": {
         "name": "VpaKutHI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -15443,7 +15443,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaDCHI": {
+    "lladchi": {
         "name": "LlaDCHI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -15454,7 +15454,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VneAI": {
+    "vneai": {
         "name": "VneAI",
         "site": "rggnccy",
         "forwardRegex": "[agr]g{2}[abcdghkmnrstvwy]c{2}[cty]",
@@ -15465,7 +15465,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO90I": {
+    "vcho90i": {
         "name": "VchO90I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -15476,7 +15476,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiS22I": {
+    "hgis22i": {
         "name": "HgiS22I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -15487,7 +15487,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF27II": {
+    "hpyf27ii": {
         "name": "HpyF27II",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -15498,7 +15498,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspTIII": {
+    "asptiii": {
         "name": "AspTIII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -15509,7 +15509,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tth24I": {
+    "tth24i": {
         "name": "Tth24I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -15520,7 +15520,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AarI": {
+    "aari": {
         "name": "AarI",
         "site": "cacctgc",
         "forwardRegex": "cac{2}tgc",
@@ -15531,7 +15531,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SrfI": {
+    "srfi": {
         "name": "SrfI",
         "site": "gcccgggc",
         "forwardRegex": "gc{3}g{3}c",
@@ -15542,7 +15542,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthAI": {
+    "bthai": {
         "name": "BthAI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -15553,7 +15553,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl21I": {
+    "pfl21i": {
         "name": "Pfl21I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -15564,7 +15564,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FauBII": {
+    "faubii": {
         "name": "FauBII",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -15575,7 +15575,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1244I": {
+    "uba1244i": {
         "name": "Uba1244I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -15586,7 +15586,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AssI": {
+    "assi": {
         "name": "AssI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -15597,7 +15597,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TatI": {
+    "tati": {
         "name": "TatI",
         "site": "wgtacw",
         "forwardRegex": "[atw]gtac[atw]",
@@ -15608,7 +15608,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrI": {
+    "cfri": {
         "name": "CfrI",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -15619,7 +15619,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1167I": {
+    "uba1167i": {
         "name": "Uba1167I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -15630,7 +15630,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaZI": {
+    "bsazi": {
         "name": "BsaZI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -15641,7 +15641,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr27I": {
+    "cfr27i": {
         "name": "Cfr27I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -15652,7 +15652,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoDXXI": {
+    "ecodxxi": {
         "name": "EcoDXXI",
         "site": "tcannnnnnnrttc",
         "forwardRegex": "tca[abcdghkmnrstvwy]{7}[agr]t{2}c",
@@ -15663,7 +15663,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinJCI": {
+    "hinjci": {
         "name": "HinJCI",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -15674,7 +15674,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba17I": {
+    "uba17i": {
         "name": "Uba17I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -15685,7 +15685,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HjaI": {
+    "hjai": {
         "name": "HjaI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -15696,7 +15696,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcpII": {
+    "acpii": {
         "name": "AcpII",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -15707,7 +15707,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SvoI": {
+    "svoi": {
         "name": "SvoI",
         "site": "crccggyg",
         "forwardRegex": "c[agr]c{2}g{2}[cty]g",
@@ -15718,7 +15718,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma510I": {
+    "rma510i": {
         "name": "Rma510I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -15729,7 +15729,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrDI": {
+    "bsrdi": {
         "name": "BsrDI",
         "site": "gcaatg",
         "forwardRegex": "gca{2}tg",
@@ -15740,7 +15740,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl55DI": {
+    "srl55di": {
         "name": "Srl55DI",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -15751,7 +15751,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJ106I": {
+    "bspj106i": {
         "name": "BspJ106I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -15762,7 +15762,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bbf7411I": {
+    "bbf7411i": {
         "name": "Bbf7411I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -15773,7 +15773,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy166III": {
+    "hpy166iii": {
         "name": "Hpy166III",
         "site": "cctc",
         "forwardRegex": "c{2}tc",
@@ -15784,7 +15784,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FspAI": {
+    "fspai": {
         "name": "FspAI",
         "site": "rtgcgcay",
         "forwardRegex": "[agr]tgcgca[cty]",
@@ -15795,7 +15795,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF31I": {
+    "hpyf31i": {
         "name": "HpyF31I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -15806,7 +15806,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspS122I": {
+    "bsps122i": {
         "name": "BspS122I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -15817,7 +15817,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco585I": {
+    "eco585i": {
         "name": "Eco585I",
         "site": "gccnnnnnntgcg",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{6}tgcg",
@@ -15828,7 +15828,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NheI": {
+    "nhei": {
         "name": "NheI",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -15839,7 +15839,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp4I": {
+    "bsp4i": {
         "name": "Bsp4I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -15850,7 +15850,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspDI": {
+    "pspdi": {
         "name": "PspDI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -15861,7 +15861,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF13IV": {
+    "hpyf13iv": {
         "name": "HpyF13IV",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -15872,7 +15872,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu36I": {
+    "bsu36i": {
         "name": "Bsu36I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -15883,7 +15883,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BluII": {
+    "bluii": {
         "name": "BluII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -15894,7 +15894,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PlaDI": {
+    "pladi": {
         "name": "PlaDI",
         "site": "catcag",
         "forwardRegex": "catcag",
@@ -15905,7 +15905,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApuI": {
+    "apui": {
         "name": "ApuI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -15916,7 +15916,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba43I": {
+    "uba43i": {
         "name": "Uba43I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -15927,7 +15927,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvsCI": {
+    "mvsci": {
         "name": "MvsCI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -15938,7 +15938,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Xgl3217I": {
+    "xgl3217i": {
         "name": "Xgl3217I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -15949,7 +15949,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp21I": {
+    "esp21i": {
         "name": "Esp21I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -15960,7 +15960,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TtoI": {
+    "ttoi": {
         "name": "TtoI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -15971,7 +15971,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy188I": {
+    "hpy188i": {
         "name": "Hpy188I",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -15982,7 +15982,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph288I": {
+    "pph288i": {
         "name": "Pph288I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -15993,7 +15993,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpaAI": {
+    "ppaai": {
         "name": "PpaAI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -16004,7 +16004,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaKI": {
+    "bsaki": {
         "name": "BsaKI",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -16015,7 +16015,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.VvuDam": {
+    "m.vvudam": {
         "name": "M.VvuDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -16026,7 +16026,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MunI": {
+    "muni": {
         "name": "MunI",
         "site": "caattg",
         "forwardRegex": "ca{2}t{2}g",
@@ -16037,7 +16037,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco158I": {
+    "eco158i": {
         "name": "Eco158I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -16048,7 +16048,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CliI": {
+    "clii": {
         "name": "CliI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -16059,7 +16059,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLU11I": {
+    "bsplu11i": {
         "name": "BspLU11I",
         "site": "acatgt",
         "forwardRegex": "acatgt",
@@ -16070,7 +16070,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco80I": {
+    "eco80i": {
         "name": "Eco80I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -16081,7 +16081,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1131I": {
+    "uba1131i": {
         "name": "Uba1131I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -16092,7 +16092,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstCI": {
+    "bstci": {
         "name": "BstCI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -16103,7 +16103,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspSAIV": {
+    "nspsaiv": {
         "name": "NspSAIV",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -16114,7 +16114,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DsaII": {
+    "dsaii": {
         "name": "DsaII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -16125,7 +16125,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MphI": {
+    "mphi": {
         "name": "MphI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16136,7 +16136,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SnaI": {
+    "snai": {
         "name": "SnaI",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -16147,7 +16147,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgaI": {
+    "sgai": {
         "name": "SgaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -16158,7 +16158,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Xgl3218I": {
+    "xgl3218i": {
         "name": "Xgl3218I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -16169,7 +16169,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VniI": {
+    "vnii": {
         "name": "VniI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -16180,7 +16180,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvsBI": {
+    "mvsbi": {
         "name": "MvsBI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -16191,7 +16191,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn30I": {
+    "kpn30i": {
         "name": "Kpn30I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -16202,7 +16202,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SciNI": {
+    "scini": {
         "name": "SciNI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -16213,7 +16213,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NasSI": {
+    "nassi": {
         "name": "NasSI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -16224,7 +16224,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp81I": {
+    "bsp81i": {
         "name": "Bsp81I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -16235,7 +16235,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TneI": {
+    "tnei": {
         "name": "TneI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -16246,7 +16246,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AleI": {
+    "alei": {
         "name": "AleI",
         "site": "cacnnnngtg",
         "forwardRegex": "cac[abcdghkmnrstvwy]{4}gtg",
@@ -16257,7 +16257,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp22I": {
+    "esp22i": {
         "name": "Esp22I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -16268,7 +16268,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspJII": {
+    "sspjii": {
         "name": "SspJII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -16279,7 +16279,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GlaI": {
+    "glai": {
         "name": "GlaI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -16290,7 +16290,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp2I": {
+    "bsp2i": {
         "name": "Bsp2I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -16301,7 +16301,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp129I": {
+    "bsp129i": {
         "name": "Bsp129I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -16312,7 +16312,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PsuAI": {
+    "psuai": {
         "name": "PsuAI",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -16323,7 +16323,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Xgl3219I": {
+    "xgl3219i": {
         "name": "Xgl3219I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -16334,7 +16334,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HspAI": {
+    "hspai": {
         "name": "HspAI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -16345,7 +16345,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1125I": {
+    "uba1125i": {
         "name": "Uba1125I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16356,7 +16356,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst71I": {
+    "bst71i": {
         "name": "Bst71I",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -16367,7 +16367,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr29I": {
+    "cfr29i": {
         "name": "Cfr29I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16378,7 +16378,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvsEI": {
+    "mvsei": {
         "name": "MvsEI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -16389,7 +16389,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpaII": {
+    "hpaii": {
         "name": "HpaII",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -16400,7 +16400,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PxyARI": {
+    "pxyari": {
         "name": "PxyARI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -16411,7 +16411,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstTI": {
+    "bstti": {
         "name": "BstTI",
         "site": "ccannnnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{6}tg{2}",
@@ -16422,7 +16422,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1205II": {
+    "uba1205ii": {
         "name": "Uba1205II",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -16433,7 +16433,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hal22I": {
+    "hal22i": {
         "name": "Hal22I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -16444,7 +16444,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1245I": {
+    "uba1245i": {
         "name": "Uba1245I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -16455,7 +16455,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sgh1835I": {
+    "sgh1835i": {
         "name": "Sgh1835I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -16466,7 +16466,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthI": {
+    "sthi": {
         "name": "SthI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -16477,7 +16477,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr28I": {
+    "cfr28i": {
         "name": "Cfr28I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16488,7 +16488,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstENII": {
+    "bstenii": {
         "name": "BstENII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -16499,7 +16499,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco79I": {
+    "bco79i": {
         "name": "Bco79I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -16510,7 +16510,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvsDI": {
+    "mvsdi": {
         "name": "MvsDI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -16521,7 +16521,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrPII": {
+    "bsrpii": {
         "name": "BsrPII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -16532,7 +16532,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF48I": {
+    "hpyf48i": {
         "name": "HpyF48I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -16543,7 +16543,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpaI": {
+    "spai": {
         "name": "SpaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -16554,7 +16554,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MhaI": {
+    "mhai": {
         "name": "MhaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -16565,7 +16565,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Van91I": {
+    "van91i": {
         "name": "Van91I",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -16576,7 +16576,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SviI": {
+    "svii": {
         "name": "SviI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -16587,7 +16587,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1413I": {
+    "eco1413i": {
         "name": "Eco1413I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -16598,7 +16598,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsiI": {
+    "ssii": {
         "name": "SsiI",
         "site": "ccgc",
         "forwardRegex": "c{2}gc",
@@ -16609,7 +16609,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1271I": {
+    "uba1271i": {
         "name": "Uba1271I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -16620,7 +16620,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl28I": {
+    "ecl28i": {
         "name": "Ecl28I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -16631,7 +16631,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst2464I": {
+    "bst2464i": {
         "name": "Bst2464I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -16642,7 +16642,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DmaI": {
+    "dmai": {
         "name": "DmaI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -16653,7 +16653,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1323I": {
+    "eco1323i": {
         "name": "Eco1323I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -16664,7 +16664,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO87I": {
+    "vcho87i": {
         "name": "VchO87I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -16675,7 +16675,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF33II": {
+    "hpyf33ii": {
         "name": "HpyF33II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -16686,7 +16686,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssNAI": {
+    "bssnai": {
         "name": "BssNAI",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -16697,7 +16697,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspHII": {
+    "nsphii": {
         "name": "NspHII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -16708,7 +16708,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BadI": {
+    "badi": {
         "name": "BadI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -16719,7 +16719,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaCI": {
+    "bsaci": {
         "name": "BsaCI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -16730,7 +16730,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp55I": {
+    "bsp55i": {
         "name": "Bsp55I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -16741,7 +16741,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco85I": {
+    "eco85i": {
         "name": "Eco85I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -16752,7 +16752,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp25I": {
+    "esp25i": {
         "name": "Esp25I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -16763,7 +16763,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PalAI": {
+    "palai": {
         "name": "PalAI",
         "site": "ggcgcgcc",
         "forwardRegex": "g{2}cgcgc{2}",
@@ -16774,7 +16774,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoAI": {
+    "bsoai": {
         "name": "BsoAI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -16785,7 +16785,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT88I": {
+    "ecot88i": {
         "name": "EcoT88I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -16796,7 +16796,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco193I": {
+    "eco193i": {
         "name": "Eco193I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16807,7 +16807,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Nsp7121I": {
+    "nsp7121i": {
         "name": "Nsp7121I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -16818,7 +16818,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TaaI": {
+    "taai": {
         "name": "TaaI",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -16829,7 +16829,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MthI": {
+    "mthi": {
         "name": "MthI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -16840,7 +16840,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl37kI": {
+    "ecl37ki": {
         "name": "Ecl37kI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -16851,7 +16851,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp219I": {
+    "tsp219i": {
         "name": "Tsp219I",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -16862,7 +16862,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1443I": {
+    "eco1443i": {
         "name": "Eco1443I",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -16873,7 +16873,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK3BI": {
+    "vpak3bi": {
         "name": "VpaK3BI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -16884,7 +16884,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstT7I": {
+    "bstt7i": {
         "name": "BstT7I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -16895,7 +16895,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AceIII": {
+    "aceiii": {
         "name": "AceIII",
         "site": "cagctc",
         "forwardRegex": "cagctc",
@@ -16906,7 +16906,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoGI": {
+    "bsogi": {
         "name": "BsoGI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16917,7 +16917,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco254I": {
+    "eco254i": {
         "name": "Eco254I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -16928,7 +16928,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyVIII": {
+    "hpyviii": {
         "name": "HpyVIII",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -16939,7 +16939,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1306I": {
+    "uba1306i": {
         "name": "Uba1306I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -16950,7 +16950,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp745I": {
+    "asp745i": {
         "name": "Asp745I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -16961,7 +16961,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvsAI": {
+    "mvsai": {
         "name": "MvsAI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -16972,7 +16972,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst11I": {
+    "bst11i": {
         "name": "Bst11I",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -16983,7 +16983,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl23II": {
+    "pfl23ii": {
         "name": "Pfl23II",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -16994,7 +16994,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SscL1I": {
+    "sscl1i": {
         "name": "SscL1I",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -17005,7 +17005,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ksp22I": {
+    "ksp22i": {
         "name": "Ksp22I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -17016,7 +17016,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1330I": {
+    "uba1330i": {
         "name": "Uba1330I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -17027,7 +17027,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstYI": {
+    "bstyi": {
         "name": "BstYI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -17038,7 +17038,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK3AI": {
+    "vpak3ai": {
         "name": "VpaK3AI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -17049,7 +17049,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmXI": {
+    "bsmxi": {
         "name": "BsmXI",
         "site": "acnnnnnctcc",
         "forwardRegex": "ac[abcdghkmnrstvwy]{5}ctc{2}",
@@ -17060,7 +17060,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspAI": {
+    "tspai": {
         "name": "TspAI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -17071,7 +17071,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinJCII": {
+    "hinjcii": {
         "name": "HinJCII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -17082,7 +17082,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1096I": {
+    "uba1096i": {
         "name": "Uba1096I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -17093,7 +17093,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sag23I": {
+    "sag23i": {
         "name": "Sag23I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -17104,7 +17104,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R1.Ssu2479I": {
+    "r1.ssu2479i": {
         "name": "R1.Ssu2479I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17115,7 +17115,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1441I": {
+    "eco1441i": {
         "name": "Eco1441I",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -17126,7 +17126,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1295I": {
+    "uba1295i": {
         "name": "Uba1295I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -17137,7 +17137,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst19II": {
+    "bst19ii": {
         "name": "Bst19II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17148,7 +17148,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn10I": {
+    "kpn10i": {
         "name": "Kpn10I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -17159,7 +17159,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1393I": {
+    "uba1393i": {
         "name": "Uba1393I",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -17170,7 +17170,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CviBII": {
+    "m.cvibii": {
         "name": "M.CviBII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17181,7 +17181,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco256I": {
+    "eco256i": {
         "name": "Eco256I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -17192,7 +17192,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BvuBI": {
+    "bvubi": {
         "name": "BvuBI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -17203,7 +17203,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshNI": {
+    "bshni": {
         "name": "BshNI",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -17214,7 +17214,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme74I": {
+    "bme74i": {
         "name": "Bme74I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17225,7 +17225,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1377I": {
+    "uba1377i": {
         "name": "Uba1377I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17236,7 +17236,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GspI": {
+    "gspi": {
         "name": "GspI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -17247,7 +17247,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba19I": {
+    "uba19i": {
         "name": "Uba19I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -17258,7 +17258,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjuI": {
+    "cjui": {
         "name": "CjuI",
         "site": "caynnnnnrtg",
         "forwardRegex": "ca[cty][abcdghkmnrstvwy]{5}[agr]tg",
@@ -17269,7 +17269,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bfi57I": {
+    "bfi57i": {
         "name": "Bfi57I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17280,7 +17280,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco163I": {
+    "bco163i": {
         "name": "Bco163I",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -17291,7 +17291,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmaCI": {
+    "xmaci": {
         "name": "XmaCI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -17302,7 +17302,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau2I": {
+    "sau2i": {
         "name": "Sau2I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -17313,7 +17313,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse3DI": {
+    "bse3di": {
         "name": "Bse3DI",
         "site": "gcaatg",
         "forwardRegex": "gca{2}tg",
@@ -17324,7 +17324,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FalII": {
+    "falii": {
         "name": "FalII",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -17335,7 +17335,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscQI": {
+    "bscqi": {
         "name": "BscQI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17346,7 +17346,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp47I": {
+    "bsp47i": {
         "name": "Bsp47I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -17357,7 +17357,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr10I": {
+    "cfr10i": {
         "name": "Cfr10I",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -17368,7 +17368,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco171I": {
+    "eco171i": {
         "name": "Eco171I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -17379,7 +17379,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF3I": {
+    "hpyf3i": {
         "name": "HpyF3I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -17390,7 +17390,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BanIII": {
+    "baniii": {
         "name": "BanIII",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -17401,7 +17401,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspIS4I": {
+    "bspis4i": {
         "name": "BspIS4I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -17412,7 +17412,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco5I": {
+    "bco5i": {
         "name": "Bco5I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -17423,7 +17423,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF11II": {
+    "hpyf11ii": {
         "name": "HpyF11II",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -17434,7 +17434,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mpr154I": {
+    "mpr154i": {
         "name": "Mpr154I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -17445,7 +17445,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1419I": {
+    "uba1419i": {
         "name": "Uba1419I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -17456,7 +17456,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XniI": {
+    "xnii": {
         "name": "XniI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -17467,7 +17467,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MkiI": {
+    "mkii": {
         "name": "MkiI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -17478,7 +17478,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpuI": {
+    "ppui": {
         "name": "PpuI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17489,7 +17489,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco33I": {
+    "bco33i": {
         "name": "Bco33I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17500,7 +17500,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvI": {
+    "bbvi": {
         "name": "BbvI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -17511,7 +17511,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uth555I": {
+    "uth555i": {
         "name": "Uth555I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17522,7 +17522,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstACI": {
+    "bstaci": {
         "name": "BstACI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -17533,7 +17533,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrGI": {
+    "bsrgi": {
         "name": "BsrGI",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -17544,7 +17544,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MauI": {
+    "maui": {
         "name": "MauI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -17555,7 +17555,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco39I": {
+    "eco39i": {
         "name": "Eco39I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -17566,7 +17566,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco208I": {
+    "eco208i": {
         "name": "Eco208I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -17577,7 +17577,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceCI": {
+    "bceci": {
         "name": "BceCI",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -17588,7 +17588,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PsiI": {
+    "psii": {
         "name": "PsiI",
         "site": "ttataa",
         "forwardRegex": "t{2}ata{2}",
@@ -17599,7 +17599,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaHI": {
+    "bsahi": {
         "name": "BsaHI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -17610,7 +17610,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HsoI": {
+    "hsoi": {
         "name": "HsoI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -17621,7 +17621,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1430I": {
+    "eco1430i": {
         "name": "Eco1430I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -17632,7 +17632,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySPI": {
+    "styspi": {
         "name": "StySPI",
         "site": "aacnnnnnngtrc",
         "forwardRegex": "a{2}c[abcdghkmnrstvwy]{6}gt[agr]c",
@@ -17643,7 +17643,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1408I": {
+    "uba1408i": {
         "name": "Uba1408I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17654,7 +17654,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF34II": {
+    "hpyf34ii": {
         "name": "HpyF34II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -17665,7 +17665,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp14HI": {
+    "asp14hi": {
         "name": "Asp14HI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -17676,7 +17676,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscGI": {
+    "bscgi": {
         "name": "BscGI",
         "site": "cccgt",
         "forwardRegex": "c{3}gt",
@@ -17687,7 +17687,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MstII": {
+    "mstii": {
         "name": "MstII",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -17698,7 +17698,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuDII": {
+    "fnudii": {
         "name": "FnuDII",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -17709,7 +17709,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCH4III": {
+    "hpych4iii": {
         "name": "HpyCH4III",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -17720,7 +17720,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp273II": {
+    "tsp273ii": {
         "name": "Tsp273II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -17731,7 +17731,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco151I": {
+    "eco151i": {
         "name": "Eco151I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -17742,7 +17742,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCI": {
+    "hpyci": {
         "name": "HpyCI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -17753,7 +17753,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pde137I": {
+    "pde137i": {
         "name": "Pde137I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -17764,7 +17764,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.HinHP2Dam": {
+    "m.hinhp2dam": {
         "name": "M.HinHP2Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17775,7 +17775,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuSAI": {
+    "asusai": {
         "name": "AsuSAI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -17786,7 +17786,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp48I": {
+    "bsp48i": {
         "name": "Bsp48I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -17797,7 +17797,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspM1III": {
+    "sspm1iii": {
         "name": "SspM1III",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -17808,7 +17808,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KspHK14I": {
+    "ksphk14i": {
         "name": "KspHK14I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -17819,7 +17819,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1226I": {
+    "uba1226i": {
         "name": "Uba1226I",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -17830,7 +17830,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp49I": {
+    "bsp49i": {
         "name": "Bsp49I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17841,7 +17841,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsiAI": {
+    "ssiai": {
         "name": "SsiAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17852,7 +17852,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstFI": {
+    "bstfi": {
         "name": "BstFI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -17863,7 +17863,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HhaII": {
+    "hhaii": {
         "name": "HhaII",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -17874,7 +17874,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CprJK722I": {
+    "cprjk722i": {
         "name": "CprJK722I",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -17885,7 +17885,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy99I": {
+    "hpy99i": {
         "name": "Hpy99I",
         "site": "cgwcg",
         "forwardRegex": "cg[atw]cg",
@@ -17896,7 +17896,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF7I": {
+    "hpyf7i": {
         "name": "HpyF7I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -17907,7 +17907,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeSI": {
+    "nmesi": {
         "name": "NmeSI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -17918,7 +17918,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl55DII": {
+    "srl55dii": {
         "name": "Srl55DII",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -17929,7 +17929,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Vha44I": {
+    "vha44i": {
         "name": "Vha44I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17940,7 +17940,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceSI": {
+    "bcesi": {
         "name": "BceSI",
         "site": "mmcgaag",
         "forwardRegex": "[acm]{2}cga{2}g",
@@ -17951,7 +17951,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsiBI": {
+    "ssibi": {
         "name": "SsiBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -17962,7 +17962,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmaI": {
+    "bmai": {
         "name": "BmaI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -17973,7 +17973,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinfII": {
+    "hinfii": {
         "name": "HinfII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -17984,7 +17984,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RaqI": {
+    "raqi": {
         "name": "RaqI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -17995,7 +17995,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FalI": {
+    "fali": {
         "name": "FalI",
         "site": "aagnnnnnctt",
         "forwardRegex": "a{2}g[abcdghkmnrstvwy]{5}ct{2}",
@@ -18006,7 +18006,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 19
     },
-    "VchO49I": {
+    "vcho49i": {
         "name": "VchO49I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -18017,7 +18017,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RflFI": {
+    "rflfi": {
         "name": "RflFI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -18028,7 +18028,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspDII": {
+    "aspdii": {
         "name": "AspDII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -18039,7 +18039,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco180I": {
+    "eco180i": {
         "name": "Eco180I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -18050,7 +18050,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sve194I": {
+    "sve194i": {
         "name": "Sve194I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -18061,7 +18061,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseKI": {
+    "bseki": {
         "name": "BseKI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -18072,7 +18072,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KspHK12I": {
+    "ksphk12i": {
         "name": "KspHK12I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18083,7 +18083,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp108I": {
+    "bsp108i": {
         "name": "Bsp108I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -18094,7 +18094,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PscI": {
+    "psci": {
         "name": "PscI",
         "site": "acatgt",
         "forwardRegex": "acatgt",
@@ -18105,7 +18105,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HaeI": {
+    "haei": {
         "name": "HaeI",
         "site": "wggccw",
         "forwardRegex": "[atw]g{2}c{2}[atw]",
@@ -18116,7 +18116,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1308I": {
+    "uba1308i": {
         "name": "Uba1308I",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -18127,7 +18127,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SecI": {
+    "seci": {
         "name": "SecI",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -18138,7 +18138,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1317I": {
+    "uba1317i": {
         "name": "Uba1317I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -18149,7 +18149,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1121I": {
+    "uba1121i": {
         "name": "Uba1121I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18160,7 +18160,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF5I": {
+    "hpyf5i": {
         "name": "HpyF5I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -18171,7 +18171,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr33I": {
+    "cfr33i": {
         "name": "Cfr33I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -18182,7 +18182,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF49I": {
+    "hpyf49i": {
         "name": "HpyF49I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -18193,7 +18193,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau5I": {
+    "sau5i": {
         "name": "Sau5I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -18204,7 +18204,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspPRI": {
+    "psppri": {
         "name": "PspPRI",
         "site": "ccycag",
         "forwardRegex": "c{2}[cty]cag",
@@ -18215,7 +18215,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1389I": {
+    "uba1389i": {
         "name": "Uba1389I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -18226,7 +18226,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HphI": {
+    "hphi": {
         "name": "HphI",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -18237,7 +18237,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaI": {
+    "bsai": {
         "name": "BsaI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -18248,7 +18248,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1309I": {
+    "uba1309i": {
         "name": "Uba1309I",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -18259,7 +18259,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1120I": {
+    "uba1120i": {
         "name": "Uba1120I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18270,7 +18270,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uth557I": {
+    "uth557i": {
         "name": "Uth557I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -18281,7 +18281,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu23I": {
+    "mlu23i": {
         "name": "Mlu23I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -18292,7 +18292,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Xgl3216I": {
+    "xgl3216i": {
         "name": "Xgl3216I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -18303,7 +18303,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FokI": {
+    "foki": {
         "name": "FokI",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -18314,7 +18314,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscJI": {
+    "bscji": {
         "name": "BscJI",
         "site": "ccannnnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{6}tg{2}",
@@ -18325,7 +18325,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssI": {
+    "bssi": {
         "name": "BssI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -18336,7 +18336,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GinI": {
+    "gini": {
         "name": "GinI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -18347,7 +18347,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLAII": {
+    "bsplaii": {
         "name": "BspLAII",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -18358,7 +18358,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco112I": {
+    "eco112i": {
         "name": "Eco112I",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -18369,7 +18369,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1427I": {
+    "eco1427i": {
         "name": "Eco1427I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -18380,7 +18380,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FssI": {
+    "fssi": {
         "name": "FssI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -18391,7 +18391,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco216I": {
+    "eco216i": {
         "name": "Eco216I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -18402,7 +18402,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp92I": {
+    "bsp92i": {
         "name": "Bsp92I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -18413,7 +18413,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce1247I": {
+    "bce1247i": {
         "name": "Bce1247I",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -18424,7 +18424,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AflI": {
+    "afli": {
         "name": "AflI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -18435,7 +18435,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccB2I": {
+    "accb2i": {
         "name": "AccB2I",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -18446,7 +18446,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DseDI": {
+    "dsedi": {
         "name": "DseDI",
         "site": "gacnnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{6}gtc",
@@ -18457,7 +18457,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspSAII": {
+    "nspsaii": {
         "name": "NspSAII",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -18468,7 +18468,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco149I": {
+    "eco149i": {
         "name": "Eco149I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -18479,7 +18479,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sse9I": {
+    "sse9i": {
         "name": "Sse9I",
         "site": "aatt",
         "forwardRegex": "a{2}t{2}",
@@ -18490,7 +18490,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CbrI": {
+    "cbri": {
         "name": "CbrI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18501,7 +18501,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspDI": {
+    "bspdi": {
         "name": "BspDI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -18512,7 +18512,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLU11III": {
+    "bsplu11iii": {
         "name": "BspLU11III",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -18523,7 +18523,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoKIII": {
+    "ngokiii": {
         "name": "NgoKIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -18534,7 +18534,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MpuI": {
+    "mpui": {
         "name": "MpuI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -18545,7 +18545,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssHII": {
+    "bsshii": {
         "name": "BssHII",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -18556,7 +18556,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.SssI": {
+    "m.sssi": {
         "name": "M.SssI",
         "site": "cg",
         "forwardRegex": "cg",
@@ -18567,7 +18567,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OspI": {
+    "ospi": {
         "name": "OspI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -18578,7 +18578,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PliI": {
+    "plii": {
         "name": "PliI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -18589,7 +18589,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BhaII": {
+    "bhaii": {
         "name": "BhaII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -18600,7 +18600,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PauAII": {
+    "pauaii": {
         "name": "PauAII",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -18611,7 +18611,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1155I": {
+    "uba1155i": {
         "name": "Uba1155I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -18622,7 +18622,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeCI": {
+    "nmeci": {
         "name": "NmeCI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -18633,7 +18633,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GstI": {
+    "gsti": {
         "name": "GstI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -18644,7 +18644,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgoI": {
+    "sgoi": {
         "name": "SgoI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -18655,7 +18655,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MnnI": {
+    "mnni": {
         "name": "MnnI",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -18666,7 +18666,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PvuII": {
+    "pvuii": {
         "name": "PvuII",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -18677,7 +18677,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstF5I": {
+    "bstf5i": {
         "name": "BstF5I",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -18688,7 +18688,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF61III": {
+    "hpyf61iii": {
         "name": "HpyF61III",
         "site": "cgwcg",
         "forwardRegex": "cg[atw]cg",
@@ -18699,7 +18699,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AflIII": {
+    "afliii": {
         "name": "AflIII",
         "site": "acrygt",
         "forwardRegex": "ac[agr][cty]gt",
@@ -18710,7 +18710,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpcI": {
+    "bpci": {
         "name": "BpcI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -18721,7 +18721,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp38I": {
+    "psp38i": {
         "name": "Psp38I",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -18732,7 +18732,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rlu3I": {
+    "rlu3i": {
         "name": "Rlu3I",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -18743,7 +18743,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrMI": {
+    "bsrmi": {
         "name": "BsrMI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -18754,7 +18754,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CpfI": {
+    "cpfi": {
         "name": "CpfI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -18765,7 +18765,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclII": {
+    "eclii": {
         "name": "EclII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18776,7 +18776,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK65I": {
+    "vpak65i": {
         "name": "VpaK65I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -18787,7 +18787,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco215I": {
+    "eco215i": {
         "name": "Eco215I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -18798,7 +18798,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KpnK14I": {
+    "kpnk14i": {
         "name": "KpnK14I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -18809,7 +18809,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstAFI": {
+    "bstafi": {
         "name": "BstAFI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -18820,7 +18820,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba83I": {
+    "uba83i": {
         "name": "Uba83I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -18831,7 +18831,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AclWI": {
+    "aclwi": {
         "name": "AclWI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -18842,7 +18842,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl56DI": {
+    "srl56di": {
         "name": "Srl56DI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -18853,7 +18853,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr56I": {
+    "cfr56i": {
         "name": "Cfr56I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -18864,7 +18864,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth9415I": {
+    "bth9415i": {
         "name": "Bth9415I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -18875,7 +18875,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiSI": {
+    "bsisi": {
         "name": "BsiSI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -18886,7 +18886,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1196I": {
+    "uba1196i": {
         "name": "Uba1196I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -18897,7 +18897,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ZanI": {
+    "zani": {
         "name": "ZanI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18908,7 +18908,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr30I": {
+    "cfr30i": {
         "name": "Cfr30I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -18919,7 +18919,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcrI": {
+    "acri": {
         "name": "AcrI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -18930,7 +18930,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp119I": {
+    "bsp119i": {
         "name": "Bsp119I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -18941,7 +18941,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FbaI": {
+    "fbai": {
         "name": "FbaI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -18952,7 +18952,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1153I": {
+    "uba1153i": {
         "name": "Uba1153I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -18963,7 +18963,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrSI": {
+    "bsrsi": {
         "name": "BsrSI",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -18974,7 +18974,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy401I": {
+    "hpy401i": {
         "name": "Hpy401I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -18985,7 +18985,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1197I": {
+    "uba1197i": {
         "name": "Uba1197I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -18996,7 +18996,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ClcI": {
+    "clci": {
         "name": "ClcI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -19007,7 +19007,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma506I": {
+    "rma506i": {
         "name": "Rma506I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -19018,7 +19018,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF46II": {
+    "hpyf46ii": {
         "name": "HpyF46II",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -19029,7 +19029,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1302I": {
+    "uba1302i": {
         "name": "Uba1302I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -19040,7 +19040,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmiI": {
+    "nmii": {
         "name": "NmiI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -19051,7 +19051,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF26II": {
+    "hpyf26ii": {
         "name": "HpyF26II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19062,7 +19062,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeRI": {
+    "nmeri": {
         "name": "NmeRI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -19073,7 +19073,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstMZ611I": {
+    "bstmz611i": {
         "name": "BstMZ611I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -19084,7 +19084,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpl79I": {
+    "kpl79i": {
         "name": "Kpl79I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -19095,7 +19095,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bal475I": {
+    "bal475i": {
         "name": "Bal475I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19106,7 +19106,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1286I": {
+    "bsp1286i": {
         "name": "Bsp1286I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -19117,7 +19117,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr31I": {
+    "cfr31i": {
         "name": "Cfr31I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19128,7 +19128,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme585I": {
+    "bme585i": {
         "name": "Bme585I",
         "site": "cccgc",
         "forwardRegex": "c{3}gc",
@@ -19139,7 +19139,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TdeI": {
+    "tdei": {
         "name": "TdeI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -19150,7 +19150,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF51I": {
+    "hpyf51i": {
         "name": "HpyF51I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -19161,7 +19161,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1152I": {
+    "uba1152i": {
         "name": "Uba1152I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19172,7 +19172,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PdmI": {
+    "pdmi": {
         "name": "PdmI",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -19183,7 +19183,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF63I": {
+    "hpyf63i": {
         "name": "HpyF63I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19194,7 +19194,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ChaI": {
+    "chai": {
         "name": "ChaI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -19205,7 +19205,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BamNxI": {
+    "bamnxi": {
         "name": "BamNxI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -19216,7 +19216,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli5508I": {
+    "bli5508i": {
         "name": "Bli5508I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -19227,7 +19227,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ZhoI": {
+    "zhoi": {
         "name": "ZhoI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -19238,7 +19238,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma509I": {
+    "rma509i": {
         "name": "Rma509I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -19249,7 +19249,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl57kI": {
+    "ecl57ki": {
         "name": "Ecl57kI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19260,7 +19260,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae14kI": {
+    "pae14ki": {
         "name": "Pae14kI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -19271,7 +19271,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1312I": {
+    "uba1312i": {
         "name": "Uba1312I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -19282,7 +19282,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApyI": {
+    "apyi": {
         "name": "ApyI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19293,7 +19293,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspEI": {
+    "nspei": {
         "name": "NspEI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -19304,7 +19304,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF52I": {
+    "hpyf52i": {
         "name": "HpyF52I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -19315,7 +19315,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoEI": {
+    "ecoei": {
         "name": "EcoEI",
         "site": "gagnnnnnnnatgc",
         "forwardRegex": "gag[abcdghkmnrstvwy]{7}atgc",
@@ -19326,7 +19326,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MpsI": {
+    "mpsi": {
         "name": "MpsI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19337,7 +19337,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsoI": {
+    "ssoi": {
         "name": "SsoI",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -19348,7 +19348,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoJVIII": {
+    "ngojviii": {
         "name": "NgoJVIII",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -19359,7 +19359,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmSI": {
+    "bsmsi": {
         "name": "BsmSI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -19370,7 +19370,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco116I": {
+    "bco116i": {
         "name": "Bco116I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -19381,7 +19381,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco173I": {
+    "eco173i": {
         "name": "Eco173I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -19392,7 +19392,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tbr51I": {
+    "tbr51i": {
         "name": "Tbr51I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -19403,7 +19403,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1383I": {
+    "uba1383i": {
         "name": "Uba1383I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -19414,7 +19414,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1313I": {
+    "uba1313i": {
         "name": "Uba1313I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -19425,7 +19425,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbiI": {
+    "bbii": {
         "name": "BbiI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -19436,7 +19436,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1195I": {
+    "uba1195i": {
         "name": "Uba1195I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -19447,7 +19447,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FsuI": {
+    "fsui": {
         "name": "FsuI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -19458,7 +19458,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu40I": {
+    "mlu40i": {
         "name": "Mlu40I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -19469,7 +19469,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1150I": {
+    "uba1150i": {
         "name": "Uba1150I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19480,7 +19480,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sgr1839I": {
+    "sgr1839i": {
         "name": "Sgr1839I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -19491,7 +19491,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1287I": {
+    "uba1287i": {
         "name": "Uba1287I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -19502,7 +19502,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PamII": {
+    "pamii": {
         "name": "PamII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -19513,7 +19513,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.BbvSI": {
+    "m.bbvsi": {
         "name": "M.BbvSI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -19524,7 +19524,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eae46I": {
+    "eae46i": {
         "name": "Eae46I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -19535,7 +19535,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BasI": {
+    "basi": {
         "name": "BasI",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -19546,7 +19546,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscCI": {
+    "bscci": {
         "name": "BscCI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -19557,7 +19557,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy178VI": {
+    "hpy178vi": {
         "name": "Hpy178VI",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -19568,7 +19568,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl37I": {
+    "pfl37i": {
         "name": "Pfl37I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -19579,7 +19579,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FisI": {
+    "fisi": {
         "name": "FisI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -19590,7 +19590,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauSI": {
+    "sausi": {
         "name": "SauSI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -19601,7 +19601,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XbaI": {
+    "xbai": {
         "name": "XbaI",
         "site": "tctaga",
         "forwardRegex": "tctaga",
@@ -19612,7 +19612,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn13I": {
+    "kpn13i": {
         "name": "Kpn13I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19623,7 +19623,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssXI": {
+    "bssxi": {
         "name": "BssXI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -19634,7 +19634,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MbiI": {
+    "mbii": {
         "name": "MbiI",
         "site": "ccgctc",
         "forwardRegex": "c{2}gctc",
@@ -19645,7 +19645,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaBI": {
+    "bsabi": {
         "name": "BsaBI",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -19656,7 +19656,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaFI": {
+    "bsafi": {
         "name": "BsaFI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -19667,7 +19667,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy178III": {
+    "hpy178iii": {
         "name": "Hpy178III",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -19678,7 +19678,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma503I": {
+    "rma503i": {
         "name": "Rma503I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -19689,7 +19689,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco38I": {
+    "eco38i": {
         "name": "Eco38I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19700,7 +19700,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO85I": {
+    "vcho85i": {
         "name": "VchO85I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -19711,7 +19711,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BdiSI": {
+    "bdisi": {
         "name": "BdiSI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -19722,7 +19722,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.YpsADam": {
+    "m.ypsadam": {
         "name": "M.YpsADam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -19733,7 +19733,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF69II": {
+    "hpyf69ii": {
         "name": "HpyF69II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19744,7 +19744,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspPI": {
+    "bsppi": {
         "name": "BspPI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -19755,7 +19755,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FauNDI": {
+    "faundi": {
         "name": "FauNDI",
         "site": "catatg",
         "forwardRegex": "catatg",
@@ -19766,7 +19766,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae26I": {
+    "pae26i": {
         "name": "Pae26I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -19777,7 +19777,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PbrTI": {
+    "pbrti": {
         "name": "PbrTI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -19788,7 +19788,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AjuI": {
+    "ajui": {
         "name": "AjuI",
         "site": "gaannnnnnnttgg",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{7}t{2}g{2}",
@@ -19799,7 +19799,7 @@ module.exports = {
         "usForward": 25,
         "usReverse": 20
     },
-    "Asp3065I": {
+    "asp3065i": {
         "name": "Asp3065I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -19810,7 +19810,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr35I": {
+    "cfr35i": {
         "name": "Cfr35I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -19821,7 +19821,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspDI": {
+    "nspdi": {
         "name": "NspDI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -19832,7 +19832,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp8EI": {
+    "tsp8ei": {
         "name": "Tsp8EI",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -19843,7 +19843,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BisI": {
+    "bisi": {
         "name": "BisI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -19854,7 +19854,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PstI": {
+    "psti": {
         "name": "PstI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -19865,7 +19865,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtgI": {
+    "btgi": {
         "name": "BtgI",
         "site": "ccrygg",
         "forwardRegex": "c{2}[agr][cty]g{2}",
@@ -19876,7 +19876,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pac1110II": {
+    "pac1110ii": {
         "name": "Pac1110II",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -19887,7 +19887,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp211I": {
+    "bsp211i": {
         "name": "Bsp211I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -19898,7 +19898,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R1.Ssu8074I": {
+    "r1.ssu8074i": {
         "name": "R1.Ssu8074I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -19909,7 +19909,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauBI": {
+    "saubi": {
         "name": "SauBI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -19920,7 +19920,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst77I": {
+    "bst77i": {
         "name": "Bst77I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -19931,7 +19931,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco113I": {
+    "eco113i": {
         "name": "Eco113I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -19942,7 +19942,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco159I": {
+    "eco159i": {
         "name": "Eco159I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -19953,7 +19953,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "McaTI": {
+    "mcati": {
         "name": "McaTI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -19964,7 +19964,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaSII": {
+    "nlasii": {
         "name": "NlaSII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -19975,7 +19975,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AaaI": {
+    "aaai": {
         "name": "AaaI",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -19986,7 +19986,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1433I": {
+    "uba1433i": {
         "name": "Uba1433I",
         "site": "agct",
         "forwardRegex": "agct",
@@ -19997,7 +19997,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApeI": {
+    "apei": {
         "name": "ApeI",
         "site": "acgcgt",
         "forwardRegex": "acgcgt",
@@ -20008,7 +20008,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspNCI": {
+    "bspnci": {
         "name": "BspNCI",
         "site": "ccaga",
         "forwardRegex": "c{2}aga",
@@ -20019,7 +20019,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ClmII": {
+    "clmii": {
         "name": "ClmII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -20030,7 +20030,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp509I": {
+    "tsp509i": {
         "name": "Tsp509I",
         "site": "aatt",
         "forwardRegex": "a{2}t{2}",
@@ -20041,7 +20041,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce4I": {
+    "bce4i": {
         "name": "Bce4I",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -20052,7 +20052,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BavAII": {
+    "bavaii": {
         "name": "BavAII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -20063,7 +20063,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsiI": {
+    "asii": {
         "name": "AsiI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -20074,7 +20074,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspKT5I": {
+    "bspkt5i": {
         "name": "BspKT5I",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -20085,7 +20085,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmrI": {
+    "bmri": {
         "name": "BmrI",
         "site": "actggg",
         "forwardRegex": "actg{3}",
@@ -20096,7 +20096,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseT9I": {
+    "bset9i": {
         "name": "BseT9I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -20107,7 +20107,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl593I": {
+    "ecl593i": {
         "name": "Ecl593I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -20118,7 +20118,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn49kII": {
+    "kpn49kii": {
         "name": "Kpn49kII",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -20129,7 +20129,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PleI": {
+    "plei": {
         "name": "PleI",
         "site": "gagtc",
         "forwardRegex": "gagtc",
@@ -20140,7 +20140,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BciVI": {
+    "bcivi": {
         "name": "BciVI",
         "site": "gtatcc",
         "forwardRegex": "gtatc{2}",
@@ -20151,7 +20151,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TthHB27I": {
+    "tthhb27i": {
         "name": "TthHB27I",
         "site": "caarca",
         "forwardRegex": "ca{2}[agr]ca",
@@ -20162,7 +20162,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp82I": {
+    "bsp82i": {
         "name": "Bsp82I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -20173,7 +20173,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF44V": {
+    "hpyf44v": {
         "name": "HpyF44V",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -20184,7 +20184,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp27144I": {
+    "ssp27144i": {
         "name": "Ssp27144I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -20195,7 +20195,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn14I": {
+    "kpn14i": {
         "name": "Kpn14I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20206,7 +20206,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvaIII": {
+    "avaiii": {
         "name": "AvaIII",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -20217,7 +20217,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli49I": {
+    "bli49i": {
         "name": "Bli49I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -20228,7 +20228,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba90I": {
+    "uba90i": {
         "name": "Uba90I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -20239,7 +20239,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspXI": {
+    "pspxi": {
         "name": "PspXI",
         "site": "vctcgagb",
         "forwardRegex": "[acgmrsv]ctcgag[bcgksty]",
@@ -20250,7 +20250,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiBI": {
+    "bsibi": {
         "name": "BsiBI",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -20261,7 +20261,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstJI": {
+    "bstji": {
         "name": "BstJI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -20272,7 +20272,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sag16I": {
+    "sag16i": {
         "name": "Sag16I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -20283,7 +20283,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspEI": {
+    "bspei": {
         "name": "BspEI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -20294,7 +20294,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF35II": {
+    "hpyf35ii": {
         "name": "HpyF35II",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -20305,7 +20305,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RgaI": {
+    "rgai": {
         "name": "RgaI",
         "site": "gcgatcgc",
         "forwardRegex": "gcgatcgc",
@@ -20316,7 +20316,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba62I": {
+    "uba62i": {
         "name": "Uba62I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -20327,7 +20327,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TthRQI": {
+    "tthrqi": {
         "name": "TthRQI",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -20338,7 +20338,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bso31I": {
+    "bso31i": {
         "name": "Bso31I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -20349,7 +20349,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth2350I": {
+    "bth2350i": {
         "name": "Bth2350I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -20360,7 +20360,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuMI": {
+    "bpumi": {
         "name": "BpuMI",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -20371,7 +20371,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OmiBI": {
+    "omibi": {
         "name": "OmiBI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -20382,7 +20382,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaCI": {
+    "llaci": {
         "name": "LlaCI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -20393,7 +20393,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae22I": {
+    "pae22i": {
         "name": "Pae22I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -20404,7 +20404,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PxyMZI": {
+    "pxymzi": {
         "name": "PxyMZI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -20415,7 +20415,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspD6II": {
+    "bspd6ii": {
         "name": "BspD6II",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -20426,7 +20426,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco51I": {
+    "eco51i": {
         "name": "Eco51I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -20437,7 +20437,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF70I": {
+    "hpyf70i": {
         "name": "HpyF70I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -20448,7 +20448,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp52I": {
+    "asp52i": {
         "name": "Asp52I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -20459,7 +20459,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Lsp1270I": {
+    "lsp1270i": {
         "name": "Lsp1270I",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -20470,7 +20470,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.TaeII": {
+    "m.taeii": {
         "name": "M.TaeII",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -20481,7 +20481,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CviBIII": {
+    "m.cvibiii": {
         "name": "M.CviBIII",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -20492,7 +20492,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AliI": {
+    "alii": {
         "name": "AliI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -20503,7 +20503,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau3239I": {
+    "sau3239i": {
         "name": "Sau3239I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -20514,7 +20514,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthEI": {
+    "bthei": {
         "name": "BthEI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20525,7 +20525,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco32I": {
+    "eco32i": {
         "name": "Eco32I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -20536,7 +20536,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn16I": {
+    "kpn16i": {
         "name": "Kpn16I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20547,7 +20547,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrHI": {
+    "bsrhi": {
         "name": "BsrHI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -20558,7 +20558,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StaI": {
+    "stai": {
         "name": "StaI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -20569,7 +20569,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BccI": {
+    "bcci": {
         "name": "BccI",
         "site": "ccatc",
         "forwardRegex": "c{2}atc",
@@ -20580,7 +20580,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OmiAI": {
+    "omiai": {
         "name": "OmiAI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -20591,7 +20591,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae25I": {
+    "pae25i": {
         "name": "Pae25I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -20602,7 +20602,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLAIII": {
+    "bsplaiii": {
         "name": "BspLAIII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -20613,7 +20613,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel3JI": {
+    "mel3ji": {
         "name": "Mel3JI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -20624,7 +20624,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmPI": {
+    "bsmpi": {
         "name": "BsmPI",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -20635,7 +20635,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco164I": {
+    "eco164i": {
         "name": "Eco164I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -20646,7 +20646,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme12I": {
+    "bme12i": {
         "name": "Bme12I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -20657,7 +20657,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asi372I": {
+    "asi372i": {
         "name": "Asi372I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -20668,7 +20668,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthDI": {
+    "bthdi": {
         "name": "BthDI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20679,7 +20679,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sfl2aI": {
+    "sfl2ai": {
         "name": "Sfl2aI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20690,7 +20690,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdDI": {
+    "drddi": {
         "name": "DrdDI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -20701,7 +20701,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AtuSI": {
+    "atusi": {
         "name": "AtuSI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -20712,7 +20712,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma523I": {
+    "rma523i": {
         "name": "Rma523I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -20723,7 +20723,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1410I": {
+    "uba1410i": {
         "name": "Uba1410I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20734,7 +20734,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1234I": {
+    "uba1234i": {
         "name": "Uba1234I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -20745,7 +20745,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma501I": {
+    "rma501i": {
         "name": "Rma501I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -20756,7 +20756,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF49II": {
+    "hpyf49ii": {
         "name": "HpyF49II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -20767,7 +20767,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HincII": {
+    "hincii": {
         "name": "HincII",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -20778,7 +20778,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp137I": {
+    "bsp137i": {
         "name": "Bsp137I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -20789,7 +20789,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspF53I": {
+    "bspf53i": {
         "name": "BspF53I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -20800,7 +20800,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae24I": {
+    "pae24i": {
         "name": "Pae24I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -20811,7 +20811,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco102I": {
+    "bco102i": {
         "name": "Bco102I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -20822,7 +20822,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AglI": {
+    "agli": {
         "name": "AglI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20833,7 +20833,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuIII": {
+    "asuiii": {
         "name": "AsuIII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -20844,7 +20844,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF61I": {
+    "hpyf61i": {
         "name": "HpyF61I",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -20855,7 +20855,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau15I": {
+    "sau15i": {
         "name": "Sau15I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -20866,7 +20866,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco200I": {
+    "eco200i": {
         "name": "Eco200I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -20877,7 +20877,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ScaI": {
+    "scai": {
         "name": "ScaI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -20888,7 +20888,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sfl2bI": {
+    "sfl2bi": {
         "name": "Sfl2bI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -20899,7 +20899,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfaI": {
+    "sfai": {
         "name": "SfaI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -20910,7 +20910,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp5230I": {
+    "ssp5230i": {
         "name": "Ssp5230I",
         "site": "gacgtc",
         "forwardRegex": "gacgtc",
@@ -20921,7 +20921,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma500I": {
+    "rma500i": {
         "name": "Rma500I",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -20932,7 +20932,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CatHI": {
+    "cathi": {
         "name": "CatHI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -20943,7 +20943,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseMII": {
+    "bsemii": {
         "name": "BseMII",
         "site": "ctcag",
         "forwardRegex": "ctcag",
@@ -20954,7 +20954,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MleI": {
+    "mlei": {
         "name": "MleI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -20965,7 +20965,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspTS514I": {
+    "bspts514i": {
         "name": "BspTS514I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -20976,7 +20976,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XagI": {
+    "xagi": {
         "name": "XagI",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -20987,7 +20987,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstQI": {
+    "bstqi": {
         "name": "BstQI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -20998,7 +20998,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstDZ247I": {
+    "bstdz247i": {
         "name": "BstDZ247I",
         "site": "cccgt",
         "forwardRegex": "c{3}gt",
@@ -21009,7 +21009,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OtuNI": {
+    "otuni": {
         "name": "OtuNI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -21020,7 +21020,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba40I": {
+    "uba40i": {
         "name": "Uba40I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -21031,7 +21031,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF16II": {
+    "hpyf16ii": {
         "name": "HpyF16II",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -21042,7 +21042,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspVi4AI": {
+    "tspvi4ai": {
         "name": "TspVi4AI",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -21053,7 +21053,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfmI": {
+    "bfmi": {
         "name": "BfmI",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -21064,7 +21064,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp130I": {
+    "bsp130i": {
         "name": "Bsp130I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -21075,7 +21075,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstGII": {
+    "bstgii": {
         "name": "BstGII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -21086,7 +21086,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1382I": {
+    "uba1382i": {
         "name": "Uba1382I",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -21097,7 +21097,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1446I": {
+    "eco1446i": {
         "name": "Eco1446I",
         "site": "gagnnnnnnngtca",
         "forwardRegex": "gag[abcdghkmnrstvwy]{7}gtca",
@@ -21108,7 +21108,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy99III": {
+    "hpy99iii": {
         "name": "Hpy99III",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -21119,7 +21119,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseGI": {
+    "bsegi": {
         "name": "BseGI",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -21130,7 +21130,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BciBII": {
+    "bcibii": {
         "name": "BciBII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -21141,7 +21141,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sol3335I": {
+    "sol3335i": {
         "name": "Sol3335I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -21152,7 +21152,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PtaI": {
+    "ptai": {
         "name": "PtaI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -21163,7 +21163,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssFI": {
+    "bssfi": {
         "name": "BssFI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -21174,7 +21174,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1416I": {
+    "uba1416i": {
         "name": "Uba1416I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -21185,7 +21185,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MmeI": {
+    "mmei": {
         "name": "MmeI",
         "site": "tccrac",
         "forwardRegex": "tc{2}[agr]ac",
@@ -21196,7 +21196,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp1HI": {
+    "asp1hi": {
         "name": "Asp1HI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -21207,7 +21207,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp131I": {
+    "bsp131i": {
         "name": "Bsp131I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -21218,7 +21218,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApoI": {
+    "apoi": {
         "name": "ApoI",
         "site": "raatty",
         "forwardRegex": "[agr]a{2}t{2}[cty]",
@@ -21229,7 +21229,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1376I": {
+    "uba1376i": {
         "name": "Uba1376I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -21240,7 +21240,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1124I": {
+    "uba1124i": {
         "name": "Uba1124I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -21251,7 +21251,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspM90I": {
+    "bspm90i": {
         "name": "BspM90I",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -21262,7 +21262,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse126I": {
+    "bse126i": {
         "name": "Bse126I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21273,7 +21273,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp301I": {
+    "tsp301i": {
         "name": "Tsp301I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -21284,7 +21284,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CvnI": {
+    "cvni": {
         "name": "CvnI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -21295,7 +21295,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtrI": {
+    "btri": {
         "name": "BtrI",
         "site": "cacgtc",
         "forwardRegex": "cacgtc",
@@ -21306,7 +21306,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SkaI": {
+    "skai": {
         "name": "SkaI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -21317,7 +21317,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SceAI": {
+    "sceai": {
         "name": "SceAI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -21328,7 +21328,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sph1719I": {
+    "sph1719i": {
         "name": "Sph1719I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -21339,7 +21339,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TtnI": {
+    "ttni": {
         "name": "TtnI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21350,7 +21350,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmgBI": {
+    "bmgbi": {
         "name": "BmgBI",
         "site": "cacgtc",
         "forwardRegex": "cacgtc",
@@ -21361,7 +21361,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssm5I": {
+    "ssm5i": {
         "name": "Ssm5I",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -21372,7 +21372,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp121I": {
+    "bsp121i": {
         "name": "Bsp121I",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -21383,7 +21383,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RsaNI": {
+    "rsani": {
         "name": "RsaNI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -21394,7 +21394,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1401I": {
+    "uba1401i": {
         "name": "Uba1401I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -21405,7 +21405,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AlfI": {
+    "alfi": {
         "name": "AlfI",
         "site": "gcannnnnntgc",
         "forwardRegex": "gca[abcdghkmnrstvwy]{6}tgc",
@@ -21416,7 +21416,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 22
     },
-    "RspXI": {
+    "rspxi": {
         "name": "RspXI",
         "site": "tcatga",
         "forwardRegex": "tcatga",
@@ -21427,7 +21427,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PauAI": {
+    "pauai": {
         "name": "PauAI",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -21438,7 +21438,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PshEI": {
+    "pshei": {
         "name": "PshEI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -21449,7 +21449,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1342I": {
+    "uba1342i": {
         "name": "Uba1342I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -21460,7 +21460,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssm4I": {
+    "ssm4i": {
         "name": "Ssm4I",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -21471,7 +21471,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MaeK81II": {
+    "maek81ii": {
         "name": "MaeK81II",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -21482,7 +21482,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MnoIII": {
+    "mnoiii": {
         "name": "MnoIII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -21493,7 +21493,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF64IV": {
+    "hpyf64iv": {
         "name": "HpyF64IV",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -21504,7 +21504,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NanII": {
+    "nanii": {
         "name": "NanII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -21515,7 +21515,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BlsI": {
+    "blsi": {
         "name": "BlsI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -21526,7 +21526,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1378I": {
+    "uba1378i": {
         "name": "Uba1378I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -21537,7 +21537,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AdeI": {
+    "adei": {
         "name": "AdeI",
         "site": "cacnnngtg",
         "forwardRegex": "cac[abcdghkmnrstvwy]{3}gtg",
@@ -21548,7 +21548,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst98I": {
+    "bst98i": {
         "name": "Bst98I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -21559,7 +21559,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AbaI": {
+    "abai": {
         "name": "AbaI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -21570,7 +21570,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Smo40529I": {
+    "smo40529i": {
         "name": "Smo40529I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -21581,7 +21581,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BclI": {
+    "bcli": {
         "name": "BclI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -21592,7 +21592,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BanII": {
+    "banii": {
         "name": "BanII",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -21603,7 +21603,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MhlI": {
+    "mhli": {
         "name": "MhlI",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -21614,7 +21614,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmyI": {
+    "pmyi": {
         "name": "PmyI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -21625,7 +21625,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau12I": {
+    "sau12i": {
         "name": "Sau12I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -21636,7 +21636,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1335I": {
+    "uba1335i": {
         "name": "Uba1335I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -21647,7 +21647,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rrh4273I": {
+    "rrh4273i": {
         "name": "Rrh4273I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -21658,7 +21658,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EaeI": {
+    "eaei": {
         "name": "EaeI",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -21669,7 +21669,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmGI": {
+    "bsmgi": {
         "name": "BsmGI",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -21680,7 +21680,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1412I": {
+    "uba1412i": {
         "name": "Uba1412I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -21691,7 +21691,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ChuEI": {
+    "chuei": {
         "name": "ChuEI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -21702,7 +21702,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstFNI": {
+    "bstfni": {
         "name": "BstFNI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -21713,7 +21713,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FspBI": {
+    "fspbi": {
         "name": "FspBI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -21724,7 +21724,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaiI": {
+    "paii": {
         "name": "PaiI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21735,7 +21735,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviHI": {
+    "cvihi": {
         "name": "CviHI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -21746,7 +21746,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaM39I": {
+    "ubam39i": {
         "name": "UbaM39I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -21757,7 +21757,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstDI": {
+    "bstdi": {
         "name": "BstDI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -21768,7 +21768,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspJI": {
+    "sspji": {
         "name": "SspJI",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -21779,7 +21779,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1076I": {
+    "bsu1076i": {
         "name": "Bsu1076I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21790,7 +21790,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp241I": {
+    "bsp241i": {
         "name": "Bsp241I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -21801,7 +21801,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinbIII": {
+    "hinbiii": {
         "name": "HinbIII",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -21812,7 +21812,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeQI": {
+    "paeqi": {
         "name": "PaeQI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -21823,7 +21823,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KoxI": {
+    "koxi": {
         "name": "KoxI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -21834,7 +21834,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl23I": {
+    "pfl23i": {
         "name": "Pfl23I",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -21845,7 +21845,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmeTI": {
+    "bmeti": {
         "name": "BmeTI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -21856,7 +21856,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BteI": {
+    "btei": {
         "name": "BteI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21867,7 +21867,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy8I": {
+    "hpy8i": {
         "name": "Hpy8I",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -21878,7 +21878,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySKI": {
+    "styski": {
         "name": "StySKI",
         "site": "cgatnnnnnnngtta",
         "forwardRegex": "cgat[abcdghkmnrstvwy]{7}gt{2}a",
@@ -21889,7 +21889,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssGI": {
+    "bssgi": {
         "name": "BssGI",
         "site": "ccannnnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{6}tg{2}",
@@ -21900,7 +21900,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstSI": {
+    "bstsi": {
         "name": "BstSI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -21911,7 +21911,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBDG2I": {
+    "bspbdg2i": {
         "name": "BspBDG2I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21922,7 +21922,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspI": {
+    "bspi": {
         "name": "BspI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -21933,7 +21933,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme2494I": {
+    "bme2494i": {
         "name": "Bme2494I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -21944,7 +21944,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK8401I": {
+    "sflhk8401i": {
         "name": "SflHK8401I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -21955,7 +21955,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco105I": {
+    "eco105i": {
         "name": "Eco105I",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -21966,7 +21966,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pun14627I": {
+    "pun14627i": {
         "name": "Pun14627I",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -21977,7 +21977,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn2I": {
+    "kpn2i": {
         "name": "Kpn2I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -21988,7 +21988,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflKI": {
+    "pflki": {
         "name": "PflKI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -21999,7 +21999,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuSI": {
+    "nmusi": {
         "name": "NmuSI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -22010,7 +22010,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp29I": {
+    "psp29i": {
         "name": "Psp29I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22021,7 +22021,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CelI": {
+    "celi": {
         "name": "CelI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -22032,7 +22032,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLRI": {
+    "bsplri": {
         "name": "BspLRI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22043,7 +22043,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF66IV": {
+    "hpyf66iv": {
         "name": "HpyF66IV",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -22054,7 +22054,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvaII": {
+    "avaii": {
         "name": "AvaII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -22065,7 +22065,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco65I": {
+    "eco65i": {
         "name": "Eco65I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -22076,7 +22076,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rtr63I": {
+    "rtr63i": {
         "name": "Rtr63I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -22087,7 +22087,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp16I": {
+    "esp16i": {
         "name": "Esp16I",
         "site": "cgtctc",
         "forwardRegex": "cgtctc",
@@ -22098,7 +22098,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmaI": {
+    "smai": {
         "name": "SmaI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -22109,7 +22109,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rlu1I": {
+    "rlu1i": {
         "name": "Rlu1I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -22120,7 +22120,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1178I": {
+    "uba1178i": {
         "name": "Uba1178I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22131,7 +22131,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco75KI": {
+    "eco75ki": {
         "name": "Eco75KI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -22142,7 +22142,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ5I": {
+    "bstz5i": {
         "name": "BstZ5I",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -22153,7 +22153,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp5HI": {
+    "asp5hi": {
         "name": "Asp5HI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -22164,7 +22164,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr41I": {
+    "cfr41i": {
         "name": "Cfr41I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -22175,7 +22175,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ17I": {
+    "bstz17i": {
         "name": "BstZ17I",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -22186,7 +22186,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1193I": {
+    "uba1193i": {
         "name": "Uba1193I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -22197,7 +22197,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco129I": {
+    "eco129i": {
         "name": "Eco129I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -22208,7 +22208,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpuAI": {
+    "ppuai": {
         "name": "PpuAI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -22219,7 +22219,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba57I": {
+    "uba57i": {
         "name": "Uba57I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -22230,7 +22230,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspWI": {
+    "nspwi": {
         "name": "NspWI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -22241,7 +22241,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstFZ438I": {
+    "bstfz438i": {
         "name": "BstFZ438I",
         "site": "cccgc",
         "forwardRegex": "c{3}gc",
@@ -22252,7 +22252,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjaI": {
+    "cjai": {
         "name": "CjaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -22263,7 +22263,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CglAII": {
+    "cglaii": {
         "name": "CglAII",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -22274,7 +22274,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1388I": {
+    "uba1388i": {
         "name": "Uba1388I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22285,7 +22285,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1179I": {
+    "uba1179i": {
         "name": "Uba1179I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22296,7 +22296,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tmu1I": {
+    "tmu1i": {
         "name": "Tmu1I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -22307,7 +22307,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BgiI": {
+    "bgii": {
         "name": "BgiI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -22318,7 +22318,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp90II": {
+    "bsp90ii": {
         "name": "Bsp90II",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -22329,7 +22329,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLS2I": {
+    "bspls2i": {
         "name": "BspLS2I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -22340,7 +22340,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyJP26I": {
+    "hpyjp26i": {
         "name": "HpyJP26I",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -22351,7 +22351,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK29I": {
+    "esphk29i": {
         "name": "EspHK29I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -22362,7 +22362,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NasI": {
+    "nasi": {
         "name": "NasI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22373,7 +22373,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PalI": {
+    "pali": {
         "name": "PalI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22384,7 +22384,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmgT120I": {
+    "bmgt120i": {
         "name": "BmgT120I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -22395,7 +22395,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mmu5I": {
+    "mmu5i": {
         "name": "Mmu5I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -22406,7 +22406,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CpaPI": {
+    "cpapi": {
         "name": "CpaPI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -22417,7 +22417,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcvI": {
+    "acvi": {
         "name": "AcvI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -22428,7 +22428,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MroNI": {
+    "mroni": {
         "name": "MroNI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -22439,7 +22439,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr43I": {
+    "cfr43i": {
         "name": "Cfr43I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -22450,7 +22450,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF12I": {
+    "hpyf12i": {
         "name": "HpyF12I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -22461,7 +22461,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mva16I": {
+    "mva16i": {
         "name": "Mva16I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -22472,7 +22472,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AjoI": {
+    "ajoi": {
         "name": "AjoI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22483,7 +22483,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl2zI": {
+    "ecl2zi": {
         "name": "Ecl2zI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22494,7 +22494,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1114I": {
+    "uba1114i": {
         "name": "Uba1114I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -22505,7 +22505,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp104I": {
+    "bsp104i": {
         "name": "Bsp104I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -22516,7 +22516,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco208II": {
+    "eco208ii": {
         "name": "Eco208II",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -22527,7 +22527,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MabI": {
+    "mabi": {
         "name": "MabI",
         "site": "accwggt",
         "forwardRegex": "ac{2}[atw]g{2}t",
@@ -22538,7 +22538,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp141I": {
+    "esp141i": {
         "name": "Esp141I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22549,7 +22549,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1370I": {
+    "uba1370i": {
         "name": "Uba1370I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -22560,7 +22560,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinP1I": {
+    "hinp1i": {
         "name": "HinP1I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -22571,7 +22571,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr42I": {
+    "cfr42i": {
         "name": "Cfr42I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -22582,7 +22582,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscPI": {
+    "bscpi": {
         "name": "BscPI",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -22593,7 +22593,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BhaI": {
+    "bhai": {
         "name": "BhaI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -22604,7 +22604,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspDI": {
+    "sspdi": {
         "name": "SspDI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -22615,7 +22615,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CspI": {
+    "cspi": {
         "name": "CspI",
         "site": "cggwccg",
         "forwardRegex": "cg{2}[atw]c{2}g",
@@ -22626,7 +22626,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1321I": {
+    "uba1321i": {
         "name": "Uba1321I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -22637,7 +22637,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bca1259I": {
+    "bca1259i": {
         "name": "Bca1259I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -22648,7 +22648,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaJI": {
+    "bsaji": {
         "name": "BsaJI",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -22659,7 +22659,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1174I": {
+    "uba1174i": {
         "name": "Uba1174I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22670,7 +22670,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp16I": {
+    "bsp16i": {
         "name": "Bsp16I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -22681,7 +22681,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.HindDam": {
+    "m.hinddam": {
         "name": "M.HindDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -22692,7 +22692,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PluI": {
+    "plui": {
         "name": "PluI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -22703,7 +22703,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp102I": {
+    "bsp102i": {
         "name": "Bsp102I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -22714,7 +22714,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoAVIII": {
+    "ngoaviii": {
         "name": "NgoAVIII",
         "site": "gacnnnnntga",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}tga",
@@ -22725,7 +22725,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 22
     },
-    "Uba1216I": {
+    "uba1216i": {
         "name": "Uba1216I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22736,7 +22736,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfrI": {
+    "sfri": {
         "name": "SfrI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -22747,7 +22747,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspAI": {
+    "sspai": {
         "name": "SspAI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -22758,7 +22758,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth213I": {
+    "bth213i": {
         "name": "Bth213I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -22769,7 +22769,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ese6I": {
+    "ese6i": {
         "name": "Ese6I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -22780,7 +22780,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1372I": {
+    "uba1372i": {
         "name": "Uba1372I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -22791,7 +22791,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FmuI": {
+    "fmui": {
         "name": "FmuI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -22802,7 +22802,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1175I": {
+    "uba1175i": {
         "name": "Uba1175I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -22813,7 +22813,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF42IV": {
+    "hpyf42iv": {
         "name": "HpyF42IV",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -22824,7 +22824,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1215I": {
+    "uba1215i": {
         "name": "Uba1215I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22835,7 +22835,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmiMI": {
+    "smimi": {
         "name": "SmiMI",
         "site": "caynnnnrtg",
         "forwardRegex": "ca[cty][abcdghkmnrstvwy]{4}[agr]tg",
@@ -22846,7 +22846,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth1795I": {
+    "bth1795i": {
         "name": "Bth1795I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -22857,7 +22857,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspALI": {
+    "pspali": {
         "name": "PspALI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -22868,7 +22868,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst295I": {
+    "bst295i": {
         "name": "Bst295I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -22879,7 +22879,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth617I": {
+    "bth617i": {
         "name": "Bth617I",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -22890,7 +22890,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1366I": {
+    "uba1366i": {
         "name": "Uba1366I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -22901,7 +22901,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp152I": {
+    "ssp152i": {
         "name": "Ssp152I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -22912,7 +22912,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccII": {
+    "accii": {
         "name": "AccII",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -22923,7 +22923,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutFI": {
+    "vpakutfi": {
         "name": "VpaKutFI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -22934,7 +22934,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp107I": {
+    "bsp107i": {
         "name": "Bsp107I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -22945,7 +22945,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Vha464I": {
+    "vha464i": {
         "name": "Vha464I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -22956,7 +22956,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspAAIII": {
+    "bspaaiii": {
         "name": "BspAAIII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -22967,7 +22967,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba6I": {
+    "uba6i": {
         "name": "Uba6I",
         "site": "acgcgt",
         "forwardRegex": "acgcgt",
@@ -22978,7 +22978,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApcTR183I": {
+    "apctr183i": {
         "name": "ApcTR183I",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -22989,7 +22989,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ese3I": {
+    "ese3i": {
         "name": "Ese3I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -23000,7 +23000,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst6I": {
+    "bst6i": {
         "name": "Bst6I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -23011,7 +23011,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1341I": {
+    "eco1341i": {
         "name": "Eco1341I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -23022,7 +23022,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SlbI": {
+    "slbi": {
         "name": "SlbI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -23033,7 +23033,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1099I": {
+    "uba1099i": {
         "name": "Uba1099I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -23044,7 +23044,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SslI": {
+    "ssli": {
         "name": "SslI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -23055,7 +23055,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NruI": {
+    "nrui": {
         "name": "NruI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -23066,7 +23066,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1176I": {
+    "uba1176i": {
         "name": "Uba1176I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -23077,7 +23077,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstKTI": {
+    "bstkti": {
         "name": "BstKTI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23088,7 +23088,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviAI": {
+    "cviai": {
         "name": "CviAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23099,7 +23099,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspPI": {
+    "psppi": {
         "name": "PspPI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -23110,7 +23110,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1328I": {
+    "uba1328i": {
         "name": "Uba1328I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -23121,7 +23121,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy166II": {
+    "hpy166ii": {
         "name": "Hpy166II",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -23132,7 +23132,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HindII": {
+    "hindii": {
         "name": "HindII",
         "site": "gtyrac",
         "forwardRegex": "gt[cty][agr]ac",
@@ -23143,7 +23143,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcrI": {
+    "bcri": {
         "name": "BcrI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -23154,7 +23154,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy51I": {
+    "hpy51i": {
         "name": "Hpy51I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -23165,7 +23165,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp13I": {
+    "bsp13i": {
         "name": "Bsp13I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -23176,7 +23176,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BazI": {
+    "bazi": {
         "name": "BazI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -23187,7 +23187,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiHIII": {
+    "hgihiii": {
         "name": "HgiHIII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -23198,7 +23198,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HaeIV": {
+    "haeiv": {
         "name": "HaeIV",
         "site": "gaynnnnnrtc",
         "forwardRegex": "ga[cty][abcdghkmnrstvwy]{5}[agr]tc",
@@ -23209,7 +23209,7 @@ module.exports = {
         "usForward": 25,
         "usReverse": 20
     },
-    "SstII": {
+    "sstii": {
         "name": "SstII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -23220,7 +23220,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfuAI": {
+    "bfuai": {
         "name": "BfuAI",
         "site": "acctgc",
         "forwardRegex": "ac{2}tgc",
@@ -23231,7 +23231,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF31II": {
+    "hpyf31ii": {
         "name": "HpyF31II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -23242,7 +23242,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuFI": {
+    "bsufi": {
         "name": "BsuFI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -23253,7 +23253,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp32II": {
+    "tsp32ii": {
         "name": "Tsp32II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -23264,7 +23264,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp101I": {
+    "bsp101i": {
         "name": "Bsp101I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -23275,7 +23275,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PciI": {
+    "pcii": {
         "name": "PciI",
         "site": "acatgt",
         "forwardRegex": "acatgt",
@@ -23286,7 +23286,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme05I": {
+    "bme05i": {
         "name": "Bme05I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -23297,7 +23297,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp6I": {
+    "csp6i": {
         "name": "Csp6I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -23308,7 +23308,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeBI": {
+    "paebi": {
         "name": "PaeBI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -23319,7 +23319,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1211I": {
+    "uba1211i": {
         "name": "Uba1211I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -23330,7 +23330,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VfiI": {
+    "vfii": {
         "name": "VfiI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -23341,7 +23341,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HhdI": {
+    "hhdi": {
         "name": "HhdI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -23352,7 +23352,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrA4I": {
+    "cfra4i": {
         "name": "CfrA4I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -23363,7 +23363,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuJI": {
+    "bpuji": {
         "name": "BpuJI",
         "site": "cccgt",
         "forwardRegex": "c{3}gt",
@@ -23374,7 +23374,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau33I": {
+    "sau33i": {
         "name": "Sau33I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -23385,7 +23385,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth221I": {
+    "bth221i": {
         "name": "Bth221I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23396,7 +23396,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF7III": {
+    "hpyf7iii": {
         "name": "HpyF7III",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -23407,7 +23407,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssCI": {
+    "bssci": {
         "name": "BssCI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -23418,7 +23418,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiDI": {
+    "hgidi": {
         "name": "HgiDI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -23429,7 +23429,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF9I": {
+    "hpyf9i": {
         "name": "HpyF9I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -23440,7 +23440,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceDI": {
+    "bcedi": {
         "name": "BceDI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -23451,7 +23451,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp5I": {
+    "esp5i": {
         "name": "Esp5I",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -23462,7 +23462,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1402I": {
+    "uba1402i": {
         "name": "Uba1402I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -23473,7 +23473,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp231I": {
+    "csp231i": {
         "name": "Csp231I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -23484,7 +23484,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspPPI": {
+    "pspppi": {
         "name": "PspPPI",
         "site": "rggwccy",
         "forwardRegex": "[agr]g{2}[atw]c{2}[cty]",
@@ -23495,7 +23495,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1189I": {
+    "uba1189i": {
         "name": "Uba1189I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -23506,7 +23506,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstPI": {
+    "bstpi": {
         "name": "BstPI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -23517,7 +23517,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp2362I": {
+    "bsp2362i": {
         "name": "Bsp2362I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -23528,7 +23528,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK9AI": {
+    "vpak9ai": {
         "name": "VpaK9AI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -23539,7 +23539,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AitI": {
+    "aiti": {
         "name": "AitI",
         "site": "agcgct",
         "forwardRegex": "agcgct",
@@ -23550,7 +23550,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1212I": {
+    "uba1212i": {
         "name": "Uba1212I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -23561,7 +23561,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmiI": {
+    "xmii": {
         "name": "XmiI",
         "site": "gtmkac",
         "forwardRegex": "gt[acm][gkt]ac",
@@ -23572,7 +23572,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmNI": {
+    "bsmni": {
         "name": "BsmNI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -23583,7 +23583,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp100I": {
+    "bsp100i": {
         "name": "Bsp100I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -23594,7 +23594,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN10I": {
+    "uban10i": {
         "name": "UbaN10I",
         "site": "wccggw",
         "forwardRegex": "[atw]c{2}g{2}[atw]",
@@ -23605,7 +23605,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu6I": {
+    "bsu6i": {
         "name": "Bsu6I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -23616,7 +23616,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp281I": {
+    "tsp281i": {
         "name": "Tsp281I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -23627,7 +23627,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstV2I": {
+    "bstv2i": {
         "name": "BstV2I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -23638,7 +23638,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau6782I": {
+    "sau6782i": {
         "name": "Sau6782I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23649,7 +23649,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviBI": {
+    "cvibi": {
         "name": "CviBI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -23660,7 +23660,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acs1373I": {
+    "acs1373i": {
         "name": "Acs1373I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -23671,7 +23671,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1213I": {
+    "uba1213i": {
         "name": "Uba1213I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -23682,7 +23682,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspGI": {
+    "pspgi": {
         "name": "PspGI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -23693,7 +23693,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EagMI": {
+    "eagmi": {
         "name": "EagMI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -23704,7 +23704,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FinSI": {
+    "finsi": {
         "name": "FinSI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -23715,7 +23715,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr59I": {
+    "cfr59i": {
         "name": "Cfr59I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -23726,7 +23726,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaKutEI": {
+    "vpakutei": {
         "name": "VpaKutEI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -23737,7 +23737,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco912I": {
+    "eco912i": {
         "name": "Eco912I",
         "site": "cacnnnnntggc",
         "forwardRegex": "cac[abcdghkmnrstvwy]{5}tg{2}c",
@@ -23748,7 +23748,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst7QII": {
+    "bst7qii": {
         "name": "Bst7QII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -23759,7 +23759,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsmI": {
+    "ssmi": {
         "name": "SsmI",
         "site": "ctgatg",
         "forwardRegex": "ctgatg",
@@ -23770,7 +23770,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EsaSSI": {
+    "esassi": {
         "name": "EsaSSI",
         "site": "gaccac",
         "forwardRegex": "gac{2}ac",
@@ -23781,7 +23781,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoDI": {
+    "ecodi": {
         "name": "EcoDI",
         "site": "ttannnnnnngtcy",
         "forwardRegex": "t{2}a[abcdghkmnrstvwy]{7}gtc[cty]",
@@ -23792,7 +23792,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acs1372I": {
+    "acs1372i": {
         "name": "Acs1372I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -23803,7 +23803,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco47III": {
+    "eco47iii": {
         "name": "Eco47III",
         "site": "agcgct",
         "forwardRegex": "agcgct",
@@ -23814,7 +23814,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1230I": {
+    "uba1230i": {
         "name": "Uba1230I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -23825,7 +23825,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP95II": {
+    "ccop95ii": {
         "name": "CcoP95II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23836,7 +23836,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EciAI": {
+    "eciai": {
         "name": "EciAI",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -23847,7 +23847,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspV": {
+    "nspv": {
         "name": "NspV",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -23858,7 +23858,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau32I": {
+    "sau32i": {
         "name": "Sau32I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -23869,7 +23869,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn49kI": {
+    "kpn49ki": {
         "name": "Kpn49kI",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -23880,7 +23880,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaEI": {
+    "bsaei": {
         "name": "BsaEI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -23891,7 +23891,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acs1371I": {
+    "acs1371i": {
         "name": "Acs1371I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -23902,7 +23902,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli1904II": {
+    "bli1904ii": {
         "name": "Bli1904II",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -23913,7 +23913,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinGUI": {
+    "hingui": {
         "name": "HinGUI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -23924,7 +23924,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiGI": {
+    "hgigi": {
         "name": "HgiGI",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -23935,7 +23935,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstAUI": {
+    "bstaui": {
         "name": "BstAUI",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -23946,7 +23946,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel4OI": {
+    "mel4oi": {
         "name": "Mel4OI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23957,7 +23957,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R1.Ssu4961I": {
+    "r1.ssu4961i": {
         "name": "R1.Ssu4961I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -23968,7 +23968,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscHI": {
+    "bschi": {
         "name": "BscHI",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -23979,7 +23979,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AanI": {
+    "aani": {
         "name": "AanI",
         "site": "ttataa",
         "forwardRegex": "t{2}ata{2}",
@@ -23990,7 +23990,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli585I": {
+    "bli585i": {
         "name": "Bli585I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -24001,7 +24001,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ScrFI": {
+    "scrfi": {
         "name": "ScrFI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -24012,7 +24012,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuC2I": {
+    "asuc2i": {
         "name": "AsuC2I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -24023,7 +24023,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeBI": {
+    "nmebi": {
         "name": "NmeBI",
         "site": "gacgc",
         "forwardRegex": "gacgc",
@@ -24034,7 +24034,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiQI": {
+    "bsiqi": {
         "name": "BsiQI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -24045,7 +24045,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1448I": {
+    "uba1448i": {
         "name": "Uba1448I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -24056,7 +24056,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1184II": {
+    "uba1184ii": {
         "name": "Uba1184II",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -24067,7 +24067,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiEI": {
+    "bsiei": {
         "name": "BsiEI",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -24078,7 +24078,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1831I": {
+    "eco1831i": {
         "name": "Eco1831I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -24089,7 +24089,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoHAI": {
+    "ecohai": {
         "name": "EcoHAI",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -24100,7 +24100,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK10695I": {
+    "sflhk10695i": {
         "name": "SflHK10695I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -24111,7 +24111,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmaAI": {
+    "smaai": {
         "name": "SmaAI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -24122,7 +24122,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BalI": {
+    "bali": {
         "name": "BalI",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -24133,7 +24133,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp132I": {
+    "tsp132i": {
         "name": "Tsp132I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24144,7 +24144,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF22I": {
+    "hpyf22i": {
         "name": "HpyF22I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -24155,7 +24155,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sbi68I": {
+    "sbi68i": {
         "name": "Sbi68I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -24166,7 +24166,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1316I": {
+    "uba1316i": {
         "name": "Uba1316I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -24177,7 +24177,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl76DI": {
+    "srl76di": {
         "name": "Srl76DI",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -24188,7 +24188,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspA1I": {
+    "mspa1i": {
         "name": "MspA1I",
         "site": "cmgckg",
         "forwardRegex": "c[acm]gc[gkt]g",
@@ -24199,7 +24199,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sfr382I": {
+    "sfr382i": {
         "name": "Sfr382I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -24210,7 +24210,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaHKBI": {
+    "ubahkbi": {
         "name": "UbaHKBI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -24221,7 +24221,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1279I": {
+    "uba1279i": {
         "name": "Uba1279I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -24232,7 +24232,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcaI": {
+    "bcai": {
         "name": "BcaI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -24243,7 +24243,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CdiCD6II": {
+    "cdicd6ii": {
         "name": "CdiCD6II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24254,7 +24254,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1261I": {
+    "bsp1261i": {
         "name": "Bsp1261I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24265,7 +24265,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MhaAI": {
+    "mhaai": {
         "name": "MhaAI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -24276,7 +24276,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmWI": {
+    "bsmwi": {
         "name": "BsmWI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -24287,7 +24287,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP215I": {
+    "ccop215i": {
         "name": "CcoP215I",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -24298,7 +24298,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp10HII": {
+    "asp10hii": {
         "name": "Asp10HII",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -24309,7 +24309,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1450I": {
+    "uba1450i": {
         "name": "Uba1450I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24320,7 +24320,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfeI": {
+    "pfei": {
         "name": "PfeI",
         "site": "gawtc",
         "forwardRegex": "ga[atw]tc",
@@ -24331,7 +24331,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoO44I": {
+    "ecoo44i": {
         "name": "EcoO44I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -24342,7 +24342,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae2kI": {
+    "pae2ki": {
         "name": "Pae2kI",
         "site": "agatct",
         "forwardRegex": "agatct",
@@ -24353,7 +24353,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CpeI": {
+    "cpei": {
         "name": "CpeI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -24364,7 +24364,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssSI": {
+    "bsssi": {
         "name": "BssSI",
         "site": "cacgag",
         "forwardRegex": "cacgag",
@@ -24375,7 +24375,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoPII": {
+    "ngopii": {
         "name": "NgoPII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24386,7 +24386,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspSAI": {
+    "nspsai": {
         "name": "NspSAI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -24397,7 +24397,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF20I": {
+    "hpyf20i": {
         "name": "HpyF20I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -24408,7 +24408,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsc4aI": {
+    "tsc4ai": {
         "name": "Tsc4aI",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -24419,7 +24419,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1118I": {
+    "uba1118i": {
         "name": "Uba1118I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -24430,7 +24430,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmgAI": {
+    "bmgai": {
         "name": "BmgAI",
         "site": "gkgcmc",
         "forwardRegex": "g[gkt]gc[acm]c",
@@ -24441,7 +24441,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NflI": {
+    "nfli": {
         "name": "NflI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24452,7 +24452,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cte1180I": {
+    "cte1180i": {
         "name": "Cte1180I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24463,7 +24463,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpoI": {
+    "spoi": {
         "name": "SpoI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -24474,7 +24474,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsh1236I": {
+    "bsh1236i": {
         "name": "Bsh1236I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -24485,7 +24485,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1235I": {
+    "uba1235i": {
         "name": "Uba1235I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24496,7 +24496,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp76I": {
+    "bsp76i": {
         "name": "Bsp76I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24507,7 +24507,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba87I": {
+    "uba87i": {
         "name": "Uba87I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -24518,7 +24518,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspAK16D24I": {
+    "tspak16d24i": {
         "name": "TspAK16D24I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -24529,7 +24529,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CciI": {
+    "ccii": {
         "name": "CciI",
         "site": "tcatga",
         "forwardRegex": "tcatga",
@@ -24540,7 +24540,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1438I": {
+    "uba1438i": {
         "name": "Uba1438I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -24551,7 +24551,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeAIII": {
+    "nmeaiii": {
         "name": "NmeAIII",
         "site": "gccgag",
         "forwardRegex": "gc{2}gag",
@@ -24562,7 +24562,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CliII": {
+    "cliii": {
         "name": "CliII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -24573,7 +24573,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae42I": {
+    "pae42i": {
         "name": "Pae42I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -24584,7 +24584,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba88I": {
+    "uba88i": {
         "name": "Uba88I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -24595,7 +24595,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuAII": {
+    "fnuaii": {
         "name": "FnuAII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24606,7 +24606,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin5II": {
+    "hin5ii": {
         "name": "Hin5II",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -24617,7 +24617,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1275I": {
+    "uba1275i": {
         "name": "Uba1275I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -24628,7 +24628,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp73I": {
+    "bsp73i": {
         "name": "Bsp73I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -24639,7 +24639,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP216I": {
+    "ccop216i": {
         "name": "CcoP216I",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -24650,7 +24650,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PinBI": {
+    "pinbi": {
         "name": "PinBI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -24661,7 +24661,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdIV": {
+    "drdiv": {
         "name": "DrdIV",
         "site": "tacgac",
         "forwardRegex": "tacgac",
@@ -24672,7 +24672,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuAmI": {
+    "bpuami": {
         "name": "BpuAmI",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -24683,7 +24683,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF47I": {
+    "hpyf47i": {
         "name": "HpyF47I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -24694,7 +24694,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp228I": {
+    "bsp228i": {
         "name": "Bsp228I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -24705,7 +24705,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp147I": {
+    "bsp147i": {
         "name": "Bsp147I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24716,7 +24716,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF72I": {
+    "hpyf72i": {
         "name": "HpyF72I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24727,7 +24727,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp125I": {
+    "bsp125i": {
         "name": "Bsp125I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -24738,7 +24738,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcaII": {
+    "ecaii": {
         "name": "EcaII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -24749,7 +24749,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MarI": {
+    "mari": {
         "name": "MarI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -24760,7 +24760,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp10HI": {
+    "asp10hi": {
         "name": "Asp10HI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -24771,7 +24771,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF64V": {
+    "hpyf64v": {
         "name": "HpyF64V",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -24782,7 +24782,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Xgl3220I": {
+    "xgl3220i": {
         "name": "Xgl3220I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -24793,7 +24793,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae43I": {
+    "pae43i": {
         "name": "Pae43I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -24804,7 +24804,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviGI": {
+    "cvigi": {
         "name": "CviGI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -24815,7 +24815,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp17HI": {
+    "asp17hi": {
         "name": "Asp17HI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -24826,7 +24826,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscQII": {
+    "bscqii": {
         "name": "BscQII",
         "site": "gtctc",
         "forwardRegex": "gtctc",
@@ -24837,7 +24837,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco162I": {
+    "eco162i": {
         "name": "Eco162I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -24848,7 +24848,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF41II": {
+    "hpyf41ii": {
         "name": "HpyF41II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -24859,7 +24859,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp22I": {
+    "asp22i": {
         "name": "Asp22I",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -24870,7 +24870,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaRI": {
+    "bsari": {
         "name": "BsaRI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -24881,7 +24881,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AbsI": {
+    "absi": {
         "name": "AbsI",
         "site": "cctcgagg",
         "forwardRegex": "c{2}tcgag{2}",
@@ -24892,7 +24892,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp74I": {
+    "bsp74i": {
         "name": "Bsp74I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -24903,7 +24903,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp03I": {
+    "psp03i": {
         "name": "Psp03I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -24914,7 +24914,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp126I": {
+    "bsp126i": {
         "name": "Bsp126I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -24925,7 +24925,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MluCI": {
+    "mluci": {
         "name": "MluCI",
         "site": "aatt",
         "forwardRegex": "a{2}t{2}",
@@ -24936,7 +24936,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba85I": {
+    "uba85i": {
         "name": "Uba85I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -24947,7 +24947,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae44I": {
+    "pae44i": {
         "name": "Pae44I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -24958,7 +24958,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco35I": {
+    "eco35i": {
         "name": "Eco35I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -24969,7 +24969,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco10278I": {
+    "bco10278i": {
         "name": "Bco10278I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -24980,7 +24980,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspM2I": {
+    "sspm2i": {
         "name": "SspM2I",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -24991,7 +24991,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Nsp29132II": {
+    "nsp29132ii": {
         "name": "Nsp29132II",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -25002,7 +25002,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KasI": {
+    "kasi": {
         "name": "KasI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -25013,7 +25013,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvrI": {
+    "avri": {
         "name": "AvrI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -25024,7 +25024,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApaCI": {
+    "apaci": {
         "name": "ApaCI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -25035,7 +25035,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1298I": {
+    "uba1298i": {
         "name": "Uba1298I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -25046,7 +25046,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuAII": {
+    "nmuaii": {
         "name": "NmuAII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -25057,7 +25057,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba86I": {
+    "uba86i": {
         "name": "Uba86I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -25068,7 +25068,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF67I": {
+    "hpyf67i": {
         "name": "HpyF67I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -25079,7 +25079,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinI": {
+    "sini": {
         "name": "SinI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -25090,7 +25090,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplI": {
+    "spli": {
         "name": "SplI",
         "site": "cgtacg",
         "forwardRegex": "cgtacg",
@@ -25101,7 +25101,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp507I": {
+    "tsp507i": {
         "name": "Tsp507I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -25112,7 +25112,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp127I": {
+    "bsp127i": {
         "name": "Bsp127I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -25123,7 +25123,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplAIV": {
+    "splaiv": {
         "name": "SplAIV",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -25134,7 +25134,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl37kII": {
+    "ecl37kii": {
         "name": "Ecl37kII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -25145,7 +25145,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst4CI": {
+    "bst4ci": {
         "name": "Bst4CI",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -25156,7 +25156,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspM39I": {
+    "bspm39i": {
         "name": "BspM39I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -25167,7 +25167,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1141I": {
+    "uba1141i": {
         "name": "Uba1141I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -25178,7 +25178,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspM1I": {
+    "sspm1i": {
         "name": "SspM1I",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -25189,7 +25189,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RspI": {
+    "rspi": {
         "name": "RspI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -25200,7 +25200,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SriI": {
+    "srii": {
         "name": "SriI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -25211,7 +25211,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pde12I": {
+    "pde12i": {
         "name": "Pde12I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -25222,7 +25222,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaOI": {
+    "bsaoi": {
         "name": "BsaOI",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -25233,7 +25233,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PunAI": {
+    "punai": {
         "name": "PunAI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -25244,7 +25244,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Afl83I": {
+    "afl83i": {
         "name": "Afl83I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -25255,7 +25255,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AceII": {
+    "aceii": {
         "name": "AceII",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -25266,7 +25266,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoI": {
+    "bsoi": {
         "name": "BsoI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -25277,7 +25277,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco72I": {
+    "eco72i": {
         "name": "Eco72I",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -25288,7 +25288,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1231I": {
+    "uba1231i": {
         "name": "Uba1231I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -25299,7 +25299,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp72I": {
+    "bsp72i": {
         "name": "Bsp72I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25310,7 +25310,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF64II": {
+    "hpyf64ii": {
         "name": "HpyF64II",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -25321,7 +25321,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RshI": {
+    "rshi": {
         "name": "RshI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -25332,7 +25332,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviDI": {
+    "cvidi": {
         "name": "CviDI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -25343,7 +25343,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp317I": {
+    "bsp317i": {
         "name": "Bsp317I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -25354,7 +25354,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DpnII": {
+    "dpnii": {
         "name": "DpnII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25365,7 +25365,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.SmeI": {
+    "m.smei": {
         "name": "M.SmeI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -25376,7 +25376,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1202I": {
+    "uba1202i": {
         "name": "Uba1202I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -25387,7 +25387,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SaiI": {
+    "saii": {
         "name": "SaiI",
         "site": "gggtc",
         "forwardRegex": "g{3}tc",
@@ -25398,7 +25398,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GsaI": {
+    "gsai": {
         "name": "GsaI",
         "site": "cccagc",
         "forwardRegex": "c{3}agc",
@@ -25409,7 +25409,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp1I": {
+    "tsp1i": {
         "name": "Tsp1I",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -25420,7 +25420,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl5DI": {
+    "srl5di": {
         "name": "Srl5DI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -25431,7 +25431,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp143I": {
+    "bsp143i": {
         "name": "Bsp143I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25442,7 +25442,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviCI": {
+    "cvici": {
         "name": "CviCI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -25453,7 +25453,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ10I": {
+    "bstz10i": {
         "name": "BstZ10I",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -25464,7 +25464,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcrII": {
+    "acrii": {
         "name": "AcrII",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -25475,7 +25475,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp4I": {
+    "ssp4i": {
         "name": "Ssp4I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -25486,7 +25486,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr55I": {
+    "cfr55i": {
         "name": "Cfr55I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -25497,7 +25497,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NruGI": {
+    "nrugi": {
         "name": "NruGI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -25508,7 +25508,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FatII": {
+    "fatii": {
         "name": "FatII",
         "site": "catg",
         "forwardRegex": "catg",
@@ -25519,7 +25519,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1259I": {
+    "uba1259i": {
         "name": "Uba1259I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25530,7 +25530,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviFI": {
+    "cvifi": {
         "name": "CviFI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -25541,7 +25541,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaF9I": {
+    "ubaf9i": {
         "name": "UbaF9I",
         "site": "tacnnnnnrtgt",
         "forwardRegex": "tac[abcdghkmnrstvwy]{5}[agr]tgt",
@@ -25552,7 +25552,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp21HI": {
+    "asp21hi": {
         "name": "Asp21HI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -25563,7 +25563,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph1773I": {
+    "pph1773i": {
         "name": "Pph1773I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -25574,7 +25574,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1854I": {
+    "bsu1854i": {
         "name": "Bsu1854I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -25585,7 +25585,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SciAII": {
+    "sciaii": {
         "name": "SciAII",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -25596,7 +25596,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspNI": {
+    "pspni": {
         "name": "PspNI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -25607,7 +25607,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN15I": {
+    "uban15i": {
         "name": "UbaN15I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -25618,7 +25618,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviEI": {
+    "cviei": {
         "name": "CviEI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -25629,7 +25629,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF26III": {
+    "hpyf26iii": {
         "name": "HpyF26III",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -25640,7 +25640,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NunII": {
+    "nunii": {
         "name": "NunII",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -25651,7 +25651,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1369I": {
+    "uba1369i": {
         "name": "Uba1369I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -25662,7 +25662,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCH4I": {
+    "hpych4i": {
         "name": "HpyCH4I",
         "site": "catg",
         "forwardRegex": "catg",
@@ -25673,7 +25673,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF60I": {
+    "hpyf60i": {
         "name": "HpyF60I",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -25684,7 +25684,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bbr7I": {
+    "bbr7i": {
         "name": "Bbr7I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -25695,7 +25695,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoHI": {
+    "ecohi": {
         "name": "EcoHI",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -25706,7 +25706,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpaI": {
+    "ppai": {
         "name": "PpaI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -25717,7 +25717,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TruII": {
+    "truii": {
         "name": "TruII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25728,7 +25728,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfaI": {
+    "pfai": {
         "name": "PfaI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25739,7 +25739,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpiI": {
+    "bpii": {
         "name": "BpiI",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -25750,7 +25750,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1395I": {
+    "uba1395i": {
         "name": "Uba1395I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -25761,7 +25761,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspF105I": {
+    "bspf105i": {
         "name": "BspF105I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -25772,7 +25772,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PssI": {
+    "pssi": {
         "name": "PssI",
         "site": "rggnccy",
         "forwardRegex": "[agr]g{2}[abcdghkmnrstvwy]c{2}[cty]",
@@ -25783,7 +25783,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpmI": {
+    "spmi": {
         "name": "SpmI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -25794,7 +25794,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph1579I": {
+    "pph1579i": {
         "name": "Pph1579I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -25805,7 +25805,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1200I": {
+    "uba1200i": {
         "name": "Uba1200I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -25816,7 +25816,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr5I": {
+    "cfr5i": {
         "name": "Cfr5I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -25827,7 +25827,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstGZ53I": {
+    "bstgz53i": {
         "name": "BstGZ53I",
         "site": "cgtctc",
         "forwardRegex": "cgtctc",
@@ -25838,7 +25838,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TfiA3I": {
+    "tfia3i": {
         "name": "TfiA3I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -25849,7 +25849,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mgl14481I": {
+    "mgl14481i": {
         "name": "Mgl14481I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -25860,7 +25860,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SecII": {
+    "secii": {
         "name": "SecII",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -25871,7 +25871,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cte1179I": {
+    "cte1179i": {
         "name": "Cte1179I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -25882,7 +25882,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp6I": {
+    "psp6i": {
         "name": "Psp6I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -25893,7 +25893,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SarI": {
+    "sari": {
         "name": "SarI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -25904,7 +25904,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco249I": {
+    "eco249i": {
         "name": "Eco249I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -25915,7 +25915,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SbvI": {
+    "sbvi": {
         "name": "SbvI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -25926,7 +25926,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1119I": {
+    "uba1119i": {
         "name": "Uba1119I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -25937,7 +25937,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstLVI": {
+    "bstlvi": {
         "name": "BstLVI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -25948,7 +25948,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst1473I": {
+    "bst1473i": {
         "name": "Bst1473I",
         "site": "wccggw",
         "forwardRegex": "[atw]c{2}g{2}[atw]",
@@ -25959,7 +25959,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ParI": {
+    "pari": {
         "name": "ParI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -25970,7 +25970,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eam1105I": {
+    "eam1105i": {
         "name": "Eam1105I",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -25981,7 +25981,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EagKI": {
+    "eagki": {
         "name": "EagKI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -25992,7 +25992,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AinII": {
+    "ainii": {
         "name": "AinII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -26003,7 +26003,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1425I": {
+    "uba1425i": {
         "name": "Uba1425I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -26014,7 +26014,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcuII": {
+    "acuii": {
         "name": "AcuII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -26025,7 +26025,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CsiI": {
+    "csii": {
         "name": "CsiI",
         "site": "accwggt",
         "forwardRegex": "ac{2}[atw]g{2}t",
@@ -26036,7 +26036,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp15I": {
+    "asp15i": {
         "name": "Asp15I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -26047,7 +26047,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse64I": {
+    "bse64i": {
         "name": "Bse64I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -26058,7 +26058,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eam1104I": {
+    "eam1104i": {
         "name": "Eam1104I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -26069,7 +26069,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth84I": {
+    "bth84i": {
         "name": "Bth84I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -26080,7 +26080,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kzo49I": {
+    "kzo49i": {
         "name": "Kzo49I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -26091,7 +26091,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pde133I": {
+    "pde133i": {
         "name": "Pde133I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26102,7 +26102,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1427I": {
+    "uba1427i": {
         "name": "Uba1427I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -26113,7 +26113,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MthBI": {
+    "mthbi": {
         "name": "MthBI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -26124,7 +26124,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl77DI": {
+    "srl77di": {
         "name": "Srl77DI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -26135,7 +26135,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoKDcm": {
+    "m.ecokdcm": {
         "name": "M.EcoKDcm",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -26146,7 +26146,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF53II": {
+    "hpyf53ii": {
         "name": "HpyF53II",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -26157,7 +26157,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF6II": {
+    "hpyf6ii": {
         "name": "HpyF6II",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -26168,7 +26168,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1392I": {
+    "uba1392i": {
         "name": "Uba1392I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26179,7 +26179,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BflI": {
+    "bfli": {
         "name": "BflI",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -26190,7 +26190,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OxaNI": {
+    "oxani": {
         "name": "OxaNI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -26201,7 +26201,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiHI": {
+    "bsihi": {
         "name": "BsiHI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26212,7 +26212,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF67IV": {
+    "hpyf67iv": {
         "name": "HpyF67IV",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -26223,7 +26223,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PshAI": {
+    "pshai": {
         "name": "PshAI",
         "site": "gacnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{4}gtc",
@@ -26234,7 +26234,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp24I": {
+    "esp24i": {
         "name": "Esp24I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -26245,7 +26245,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp23I": {
+    "msp23i": {
         "name": "Msp23I",
         "site": "tctaga",
         "forwardRegex": "tctaga",
@@ -26256,7 +26256,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R2.Ssu4961I": {
+    "r2.ssu4961i": {
         "name": "R2.Ssu4961I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -26267,7 +26267,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bfu1570I": {
+    "bfu1570i": {
         "name": "Bfu1570I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -26278,7 +26278,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp144I": {
+    "bsp144i": {
         "name": "Bsp144I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -26289,7 +26289,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pac25I": {
+    "pac25i": {
         "name": "Pac25I",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -26300,7 +26300,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhaB1I": {
+    "ahab1i": {
         "name": "AhaB1I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -26311,7 +26311,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp4I": {
+    "psp4i": {
         "name": "Psp4I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -26322,7 +26322,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "McrI": {
+    "mcri": {
         "name": "McrI",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -26333,7 +26333,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF9III": {
+    "hpyf9iii": {
         "name": "HpyF9III",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -26344,7 +26344,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1364I": {
+    "uba1364i": {
         "name": "Uba1364I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -26355,7 +26355,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco195I": {
+    "eco195i": {
         "name": "Eco195I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -26366,7 +26366,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BliI": {
+    "blii": {
         "name": "BliI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26377,7 +26377,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SchZI": {
+    "schzi": {
         "name": "SchZI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -26388,7 +26388,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoNI": {
+    "econi": {
         "name": "EcoNI",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -26399,7 +26399,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP31I": {
+    "ccop31i": {
         "name": "CcoP31I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -26410,7 +26410,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvoI": {
+    "avoi": {
         "name": "AvoI",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -26421,7 +26421,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuI": {
+    "nmui": {
         "name": "NmuI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -26432,7 +26432,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhyAI": {
+    "ahyai": {
         "name": "AhyAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -26443,7 +26443,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FriOI": {
+    "frioi": {
         "name": "FriOI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -26454,7 +26454,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco43I": {
+    "eco43i": {
         "name": "Eco43I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -26465,7 +26465,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaMI": {
+    "bsami": {
         "name": "BsaMI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -26476,7 +26476,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgrDI": {
+    "sgrdi": {
         "name": "SgrDI",
         "site": "cgtcgacg",
         "forwardRegex": "cgtcgacg",
@@ -26487,7 +26487,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaDI": {
+    "lladi": {
         "name": "LlaDI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -26498,7 +26498,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF14II": {
+    "hpyf14ii": {
         "name": "HpyF14II",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -26509,7 +26509,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBII": {
+    "bspbii": {
         "name": "BspBII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -26520,7 +26520,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF35III": {
+    "hpyf35iii": {
         "name": "HpyF35III",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -26531,7 +26531,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BlnI": {
+    "blni": {
         "name": "BlnI",
         "site": "cctagg",
         "forwardRegex": "c{2}tag{2}",
@@ -26542,7 +26542,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaAI": {
+    "llaai": {
         "name": "LlaAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -26553,7 +26553,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1186I": {
+    "uba1186i": {
         "name": "Uba1186I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -26564,7 +26564,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1206I": {
+    "uba1206i": {
         "name": "Uba1206I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -26575,7 +26575,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF73I": {
+    "hpyf73i": {
         "name": "HpyF73I",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -26586,7 +26586,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SimI": {
+    "simi": {
         "name": "SimI",
         "site": "gggtc",
         "forwardRegex": "g{3}tc",
@@ -26597,7 +26597,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr11I": {
+    "cfr11i": {
         "name": "Cfr11I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -26608,7 +26608,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCH4IV": {
+    "hpych4iv": {
         "name": "HpyCH4IV",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -26619,7 +26619,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tru9I": {
+    "tru9i": {
         "name": "Tru9I",
         "site": "ttaa",
         "forwardRegex": "t{2}a{2}",
@@ -26630,7 +26630,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1217I": {
+    "uba1217i": {
         "name": "Uba1217I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -26641,7 +26641,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst2BI": {
+    "bst2bi": {
         "name": "Bst2BI",
         "site": "cacgag",
         "forwardRegex": "cacgag",
@@ -26652,7 +26652,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst16I": {
+    "bst16i": {
         "name": "Bst16I",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -26663,7 +26663,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1319I": {
+    "uba1319i": {
         "name": "Uba1319I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26674,7 +26674,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1258I": {
+    "uba1258i": {
         "name": "Uba1258I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -26685,7 +26685,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclXI": {
+    "eclxi": {
         "name": "EclXI",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -26696,7 +26696,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp117I": {
+    "bsp117i": {
         "name": "Bsp117I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -26707,7 +26707,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SciAI": {
+    "sciai": {
         "name": "SciAI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -26718,7 +26718,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1127I": {
+    "uba1127i": {
         "name": "Uba1127I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -26729,7 +26729,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF10VI": {
+    "hpyf10vi": {
         "name": "HpyF10VI",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -26740,7 +26740,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RleAI": {
+    "rleai": {
         "name": "RleAI",
         "site": "cccaca",
         "forwardRegex": "c{3}aca",
@@ -26751,7 +26751,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl18kI": {
+    "ecl18ki": {
         "name": "Ecl18kI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -26762,7 +26762,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SalDI": {
+    "saldi": {
         "name": "SalDI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -26773,7 +26773,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoNII": {
+    "ngonii": {
         "name": "NgoNII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26784,7 +26784,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaTI": {
+    "bsati": {
         "name": "BsaTI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -26795,7 +26795,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvaI": {
+    "avai": {
         "name": "AvaI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -26806,7 +26806,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspH22I": {
+    "bsph22i": {
         "name": "BspH22I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -26817,7 +26817,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstT9I": {
+    "bstt9i": {
         "name": "BstT9I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -26828,7 +26828,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OliI": {
+    "olii": {
         "name": "OliI",
         "site": "cacnnnngtg",
         "forwardRegex": "cac[abcdghkmnrstvwy]{4}gtg",
@@ -26839,7 +26839,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AluBI": {
+    "alubi": {
         "name": "AluBI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -26850,7 +26850,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EscI": {
+    "esci": {
         "name": "EscI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -26861,7 +26861,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco170I": {
+    "eco170i": {
         "name": "Eco170I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -26872,7 +26872,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CdiCD6I": {
+    "cdicd6i": {
         "name": "CdiCD6I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -26883,7 +26883,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstWI": {
+    "bstwi": {
         "name": "BstWI",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -26894,7 +26894,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LplI": {
+    "lpli": {
         "name": "LplI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -26905,7 +26905,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiCIII": {
+    "hgiciii": {
         "name": "HgiCIII",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -26916,7 +26916,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF36IV": {
+    "hpyf36iv": {
         "name": "HpyF36IV",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -26927,7 +26927,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.FspVDam": {
+    "m.fspvdam": {
         "name": "M.FspVDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -26938,7 +26938,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OmiBII": {
+    "omibii": {
         "name": "OmiBII",
         "site": "gtmkac",
         "forwardRegex": "gt[acm][gkt]ac",
@@ -26949,7 +26949,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1169I": {
+    "uba1169i": {
         "name": "Uba1169I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -26960,7 +26960,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF73II": {
+    "hpyf73ii": {
         "name": "HpyF73II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -26971,7 +26971,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp56I": {
+    "psp56i": {
         "name": "Psp56I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -26982,7 +26982,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuEI": {
+    "bpuei": {
         "name": "BpuEI",
         "site": "cttgag",
         "forwardRegex": "ct{2}gag",
@@ -26993,7 +26993,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiAI": {
+    "bsiai": {
         "name": "BsiAI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -27004,7 +27004,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfaAI": {
+    "sfaai": {
         "name": "SfaAI",
         "site": "gcgatcgc",
         "forwardRegex": "gcgatcgc",
@@ -27015,7 +27015,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ZrmI": {
+    "zrmi": {
         "name": "ZrmI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -27026,7 +27026,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiHKAI": {
+    "bsihkai": {
         "name": "BsiHKAI",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -27037,7 +27037,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba77I": {
+    "uba77i": {
         "name": "Uba77I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -27048,7 +27048,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1337I": {
+    "uba1337i": {
         "name": "Uba1337I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27059,7 +27059,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspBI": {
+    "aspbi": {
         "name": "AspBI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -27070,7 +27070,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF4I": {
+    "hpyf4i": {
         "name": "HpyF4I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -27081,7 +27081,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AinI": {
+    "aini": {
         "name": "AinI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27092,7 +27092,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoEc67Dam": {
+    "m.ecoec67dam": {
         "name": "M.EcoEc67Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -27103,7 +27103,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp504I": {
+    "tsp504i": {
         "name": "Tsp504I",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -27114,7 +27114,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RhsI": {
+    "rhsi": {
         "name": "RhsI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -27125,7 +27125,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PsyI": {
+    "psyi": {
         "name": "PsyI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -27136,7 +27136,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst38I": {
+    "bst38i": {
         "name": "Bst38I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -27147,7 +27147,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCH4VI": {
+    "hpych4vi": {
         "name": "HpyCH4VI",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -27158,7 +27158,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.HinHP1Dam": {
+    "m.hinhp1dam": {
         "name": "M.HinHP1Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -27169,7 +27169,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1203I": {
+    "uba1203i": {
         "name": "Uba1203I",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -27180,7 +27180,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AscI": {
+    "asci": {
         "name": "AscI",
         "site": "ggcgcgcc",
         "forwardRegex": "g{2}cgcgc{2}",
@@ -27191,7 +27191,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Fnu4HI": {
+    "fnu4hi": {
         "name": "Fnu4HI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -27202,7 +27202,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NsiHI": {
+    "nsihi": {
         "name": "NsiHI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -27213,7 +27213,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psc28I": {
+    "psc28i": {
         "name": "Psc28I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -27224,7 +27224,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF15I": {
+    "hpyf15i": {
         "name": "HpyF15I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -27235,7 +27235,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl18I": {
+    "pfl18i": {
         "name": "Pfl18I",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -27246,7 +27246,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF1I": {
+    "hpyf1i": {
         "name": "HpyF1I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -27257,7 +27257,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba48I": {
+    "uba48i": {
         "name": "Uba48I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -27268,7 +27268,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl1zI": {
+    "ecl1zi": {
         "name": "Ecl1zI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27279,7 +27279,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK11087I": {
+    "sflhk11087i": {
         "name": "SflHK11087I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -27290,7 +27290,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco55I": {
+    "eco55i": {
         "name": "Eco55I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -27301,7 +27301,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1266I": {
+    "uba1266i": {
         "name": "Uba1266I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -27312,7 +27312,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspSI": {
+    "pspsi": {
         "name": "PspSI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27323,7 +27323,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoDI": {
+    "bsodi": {
         "name": "BsoDI",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -27334,7 +27334,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp120I": {
+    "bsp120i": {
         "name": "Bsp120I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -27345,7 +27345,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FsiI": {
+    "fsii": {
         "name": "FsiI",
         "site": "raatty",
         "forwardRegex": "[agr]a{2}t{2}[cty]",
@@ -27356,7 +27356,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AliAJI": {
+    "aliaji": {
         "name": "AliAJI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27367,7 +27367,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PshBI": {
+    "pshbi": {
         "name": "PshBI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -27378,7 +27378,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psc27I": {
+    "psc27i": {
         "name": "Psc27I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -27389,7 +27389,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1296I": {
+    "uba1296i": {
         "name": "Uba1296I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27400,7 +27400,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp1I": {
+    "asp1i": {
         "name": "Asp1I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -27411,7 +27411,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PovI": {
+    "povi": {
         "name": "PovI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -27422,7 +27422,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BciBI": {
+    "bcibi": {
         "name": "BciBI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -27433,7 +27433,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpa36II": {
+    "bpa36ii": {
         "name": "Bpa36II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -27444,7 +27444,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspR7I": {
+    "bspr7i": {
         "name": "BspR7I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -27455,7 +27455,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF14I": {
+    "hpyf14i": {
         "name": "HpyF14I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -27466,7 +27466,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1294II": {
+    "uba1294ii": {
         "name": "Uba1294II",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -27477,7 +27477,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspDI": {
+    "aspdi": {
         "name": "AspDI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -27488,7 +27488,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LguI": {
+    "lgui": {
         "name": "LguI",
         "site": "gctcttc",
         "forwardRegex": "gctct{2}c",
@@ -27499,7 +27499,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK11086I": {
+    "sflhk11086i": {
         "name": "SflHK11086I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -27510,7 +27510,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bbv16II": {
+    "bbv16ii": {
         "name": "Bbv16II",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -27521,7 +27521,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse24I": {
+    "bse24i": {
         "name": "Bse24I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -27532,7 +27532,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmaCI": {
+    "pmaci": {
         "name": "PmaCI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -27543,7 +27543,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco35I": {
+    "bco35i": {
         "name": "Bco35I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -27554,7 +27554,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK24I": {
+    "esphk24i": {
         "name": "EspHK24I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -27565,7 +27565,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst2UI": {
+    "bst2ui": {
         "name": "Bst2UI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -27576,7 +27576,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspI": {
+    "mspi": {
         "name": "MspI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -27587,7 +27587,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscFI": {
+    "bscfi": {
         "name": "BscFI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -27598,7 +27598,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PhoI": {
+    "phoi": {
         "name": "PhoI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -27609,7 +27609,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO2I": {
+    "vcho2i": {
         "name": "VchO2I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -27620,7 +27620,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EciI": {
+    "ecii": {
         "name": "EciI",
         "site": "ggcgga",
         "forwardRegex": "g{2}cg{2}a",
@@ -27631,7 +27631,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshKI": {
+    "bshki": {
         "name": "BshKI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -27642,7 +27642,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BdaI": {
+    "bdai": {
         "name": "BdaI",
         "site": "tgannnnnntca",
         "forwardRegex": "tga[abcdghkmnrstvwy]{6}tca",
@@ -27653,7 +27653,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 22
     },
-    "SflHK2374I": {
+    "sflhk2374i": {
         "name": "SflHK2374I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -27664,7 +27664,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscEI": {
+    "bscei": {
         "name": "BscEI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -27675,7 +27675,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspMI": {
+    "nspmi": {
         "name": "NspMI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -27686,7 +27686,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp1I": {
+    "ssp1i": {
         "name": "Ssp1I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -27697,7 +27697,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GceI": {
+    "gcei": {
         "name": "GceI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -27708,7 +27708,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Rho11sI": {
+    "m.rho11si": {
         "name": "M.Rho11sI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -27719,7 +27719,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco57MI": {
+    "eco57mi": {
         "name": "Eco57MI",
         "site": "ctgrag",
         "forwardRegex": "ctg[agr]ag",
@@ -27730,7 +27730,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1192II": {
+    "bsu1192ii": {
         "name": "Bsu1192II",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -27741,7 +27741,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF52II": {
+    "hpyf52ii": {
         "name": "HpyF52II",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -27752,7 +27752,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoAIV": {
+    "ngoaiv": {
         "name": "NgoAIV",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -27763,7 +27763,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SalI": {
+    "sali": {
         "name": "SalI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -27774,7 +27774,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EsaBS9I": {
+    "esabs9i": {
         "name": "EsaBS9I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -27785,7 +27785,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu1253I": {
+    "ppu1253i": {
         "name": "Ppu1253I",
         "site": "gacgtc",
         "forwardRegex": "gacgtc",
@@ -27796,7 +27796,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsKTII": {
+    "trsktii": {
         "name": "TrsKTII",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -27807,7 +27807,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfuI": {
+    "bfui": {
         "name": "BfuI",
         "site": "gtatcc",
         "forwardRegex": "gtatc{2}",
@@ -27818,7 +27818,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Fsp4HI": {
+    "fsp4hi": {
         "name": "Fsp4HI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -27829,7 +27829,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspACI": {
+    "bspaci": {
         "name": "BspACI",
         "site": "ccgc",
         "forwardRegex": "c{2}gc",
@@ -27840,7 +27840,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApaI": {
+    "apai": {
         "name": "ApaI",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -27851,7 +27851,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AniMI": {
+    "animi": {
         "name": "AniMI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -27862,7 +27862,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaDIII": {
+    "nladiii": {
         "name": "NlaDIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -27873,7 +27873,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Lmu60I": {
+    "lmu60i": {
         "name": "Lmu60I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -27884,7 +27884,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SinMI": {
+    "sinmi": {
         "name": "SinMI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -27895,7 +27895,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiDI": {
+    "bsidi": {
         "name": "BsiDI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -27906,7 +27906,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaF11I": {
+    "ubaf11i": {
         "name": "UbaF11I",
         "site": "tcgta",
         "forwardRegex": "tcgta",
@@ -27917,7 +27917,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF48III": {
+    "hpyf48iii": {
         "name": "HpyF48III",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -27928,7 +27928,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RsrI": {
+    "rsri": {
         "name": "RsrI",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -27939,7 +27939,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1250I": {
+    "uba1250i": {
         "name": "Uba1250I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -27950,7 +27950,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FunI": {
+    "funi": {
         "name": "FunI",
         "site": "agcgct",
         "forwardRegex": "agcgct",
@@ -27961,7 +27961,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstHHI": {
+    "bsthhi": {
         "name": "BstHHI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -27972,7 +27972,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SetI": {
+    "seti": {
         "name": "SetI",
         "site": "asst",
         "forwardRegex": "a[cgs]{2}t",
@@ -27983,7 +27983,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tru1I": {
+    "tru1i": {
         "name": "Tru1I",
         "site": "ttaa",
         "forwardRegex": "t{2}a{2}",
@@ -27994,7 +27994,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp17I": {
+    "msp17i": {
         "name": "Msp17I",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -28005,7 +28005,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy312I": {
+    "hpy312i": {
         "name": "Hpy312I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -28016,7 +28016,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbsI": {
+    "bbsi": {
         "name": "BbsI",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -28027,7 +28027,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshLI": {
+    "bshli": {
         "name": "BshLI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -28038,7 +28038,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel5JI": {
+    "mel5ji": {
         "name": "Mel5JI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28049,7 +28049,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuII": {
+    "asuii": {
         "name": "AsuII",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -28060,7 +28060,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth211I": {
+    "bth211i": {
         "name": "Bth211I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28071,7 +28071,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrXI": {
+    "bsrxi": {
         "name": "BsrXI",
         "site": "tctaga",
         "forwardRegex": "tctaga",
@@ -28082,7 +28082,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstEIII": {
+    "bsteiii": {
         "name": "BstEIII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28093,7 +28093,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1225I": {
+    "uba1225i": {
         "name": "Uba1225I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -28104,7 +28104,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspTNI": {
+    "bsptni": {
         "name": "BspTNI",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -28115,7 +28115,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF71I": {
+    "hpyf71i": {
         "name": "HpyF71I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -28126,7 +28126,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp84I": {
+    "bsp84i": {
         "name": "Bsp84I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -28137,7 +28137,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco137kI": {
+    "eco137ki": {
         "name": "Eco137kI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -28148,7 +28148,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PciSI": {
+    "pcisi": {
         "name": "PciSI",
         "site": "gctcttc",
         "forwardRegex": "gctct{2}c",
@@ -28159,7 +28159,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspOMII": {
+    "pspomii": {
         "name": "PspOMII",
         "site": "cgcccar",
         "forwardRegex": "cgc{3}a[agr]",
@@ -28170,7 +28170,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsxI": {
+    "bsxi": {
         "name": "BsxI",
         "site": "actggg",
         "forwardRegex": "actg{3}",
@@ -28181,7 +28181,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsmII": {
+    "ssmii": {
         "name": "SsmII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -28192,7 +28192,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbuI": {
+    "bbui": {
         "name": "BbuI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -28203,7 +28203,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp1009I": {
+    "psp1009i": {
         "name": "Psp1009I",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -28214,7 +28214,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1193I": {
+    "bsu1193i": {
         "name": "Bsu1193I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -28225,7 +28225,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp23II": {
+    "msp23ii": {
         "name": "Msp23II",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -28236,7 +28236,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli576I": {
+    "bli576i": {
         "name": "Bli576I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -28247,7 +28247,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse16I": {
+    "bse16i": {
         "name": "Bse16I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -28258,7 +28258,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF44IV": {
+    "hpyf44iv": {
         "name": "HpyF44IV",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -28269,7 +28269,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse17I": {
+    "bse17i": {
         "name": "Bse17I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -28280,7 +28280,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco394I": {
+    "eco394i": {
         "name": "Eco394I",
         "site": "gacnnnnnrtaay",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}[agr]ta{2}[cty]",
@@ -28291,7 +28291,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco157I": {
+    "eco157i": {
         "name": "Eco157I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -28302,7 +28302,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp17I": {
+    "bsp17i": {
         "name": "Bsp17I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -28313,7 +28313,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssIMI": {
+    "bssimi": {
         "name": "BssIMI",
         "site": "gggtc",
         "forwardRegex": "g{3}tc",
@@ -28324,7 +28324,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstJZ301I": {
+    "bstjz301i": {
         "name": "BstJZ301I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -28335,7 +28335,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF4II": {
+    "hpyf4ii": {
         "name": "HpyF4II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -28346,7 +28346,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kaz48kI": {
+    "kaz48ki": {
         "name": "Kaz48kI",
         "site": "rggnccy",
         "forwardRegex": "[agr]g{2}[abcdghkmnrstvwy]c{2}[cty]",
@@ -28357,7 +28357,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SphI": {
+    "sphi": {
         "name": "SphI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -28368,7 +28368,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XciI": {
+    "xcii": {
         "name": "XciI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -28379,7 +28379,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eci125I": {
+    "eci125i": {
         "name": "Eci125I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -28390,7 +28390,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyNSH57I": {
+    "hpynsh57i": {
         "name": "HpyNSH57I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -28401,7 +28401,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApyPI": {
+    "apypi": {
         "name": "ApyPI",
         "site": "atcgac",
         "forwardRegex": "atcgac",
@@ -28412,7 +28412,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcoP73I": {
+    "ccop73i": {
         "name": "CcoP73I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -28423,7 +28423,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme1580I": {
+    "bme1580i": {
         "name": "Bme1580I",
         "site": "gkgcmc",
         "forwardRegex": "g[gkt]gc[acm]c",
@@ -28434,7 +28434,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BavCI": {
+    "bavci": {
         "name": "BavCI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -28445,7 +28445,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK7234I": {
+    "sflhk7234i": {
         "name": "SflHK7234I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -28456,7 +28456,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr8I": {
+    "cfr8i": {
         "name": "Cfr8I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -28467,7 +28467,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba46I": {
+    "uba46i": {
         "name": "Uba46I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -28478,7 +28478,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspLI": {
+    "nspli": {
         "name": "NspLI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -28489,7 +28489,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ali12258I": {
+    "ali12258i": {
         "name": "Ali12258I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -28500,7 +28500,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GobAI": {
+    "gobai": {
         "name": "GobAI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -28511,7 +28511,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FtnUIV": {
+    "ftnuiv": {
         "name": "FtnUIV",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28522,7 +28522,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu86I": {
+    "bpu86i": {
         "name": "Bpu86I",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -28533,7 +28533,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae36I": {
+    "pae36i": {
         "name": "Pae36I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -28544,7 +28544,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pme35I": {
+    "pme35i": {
         "name": "Pme35I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -28555,7 +28555,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp66I": {
+    "bsp66i": {
         "name": "Bsp66I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28566,7 +28566,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF50II": {
+    "hpyf50ii": {
         "name": "HpyF50II",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -28577,7 +28577,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcuI": {
+    "bcui": {
         "name": "BcuI",
         "site": "actagt",
         "forwardRegex": "actagt",
@@ -28588,7 +28588,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AclNI": {
+    "aclni": {
         "name": "AclNI",
         "site": "actagt",
         "forwardRegex": "actagt",
@@ -28599,7 +28599,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp136I": {
+    "bsp136i": {
         "name": "Bsp136I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28610,7 +28610,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel5OI": {
+    "mel5oi": {
         "name": "Mel5OI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28621,7 +28621,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CaiI": {
+    "caii": {
         "name": "CaiI",
         "site": "cagnnnctg",
         "forwardRegex": "cag[abcdghkmnrstvwy]{3}ctg",
@@ -28632,7 +28632,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvnI": {
+    "mvni": {
         "name": "MvnI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -28643,7 +28643,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ali12257I": {
+    "ali12257i": {
         "name": "Ali12257I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -28654,7 +28654,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1133I": {
+    "uba1133i": {
         "name": "Uba1133I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -28665,7 +28665,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr13I": {
+    "cfr13i": {
         "name": "Cfr13I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -28676,7 +28676,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp18HI": {
+    "asp18hi": {
         "name": "Asp18HI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -28687,7 +28687,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspBII": {
+    "nspbii": {
         "name": "NspBII",
         "site": "cmgckg",
         "forwardRegex": "c[acm]gc[gkt]g",
@@ -28698,7 +28698,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth9411I": {
+    "bth9411i": {
         "name": "Bth9411I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -28709,7 +28709,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1407I": {
+    "bsp1407i": {
         "name": "Bsp1407I",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -28720,7 +28720,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp67I": {
+    "bsp67i": {
         "name": "Bsp67I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28731,7 +28731,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeAI": {
+    "paeai": {
         "name": "PaeAI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -28742,7 +28742,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OkrAI": {
+    "okrai": {
         "name": "OkrAI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -28753,7 +28753,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NamI": {
+    "nami": {
         "name": "NamI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -28764,7 +28764,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TsuI": {
+    "tsui": {
         "name": "TsuI",
         "site": "gcgac",
         "forwardRegex": "gcgac",
@@ -28775,7 +28775,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sfu1762I": {
+    "sfu1762i": {
         "name": "Sfu1762I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -28786,7 +28786,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sfr274I": {
+    "sfr274i": {
         "name": "Sfr274I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -28797,7 +28797,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoRI": {
+    "ecori": {
         "name": "EcoRI",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -28808,7 +28808,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco51II": {
+    "eco51ii": {
         "name": "Eco51II",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -28819,7 +28819,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MfoI": {
+    "mfoi": {
         "name": "MfoI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -28830,7 +28830,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BetI": {
+    "beti": {
         "name": "BetI",
         "site": "wccggw",
         "forwardRegex": "[atw]c{2}g{2}[atw]",
@@ -28841,7 +28841,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "McaAI": {
+    "mcaai": {
         "name": "McaAI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -28852,7 +28852,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MboII": {
+    "mboii": {
         "name": "MboII",
         "site": "gaaga",
         "forwardRegex": "ga{2}ga",
@@ -28863,7 +28863,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NsiI": {
+    "nsii": {
         "name": "NsiI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -28874,7 +28874,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SulI": {
+    "suli": {
         "name": "SulI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -28885,7 +28885,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoAII": {
+    "ngoaii": {
         "name": "NgoAII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -28896,7 +28896,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstPAI": {
+    "bstpai": {
         "name": "BstPAI",
         "site": "gacnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{4}gtc",
@@ -28907,7 +28907,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoDR3": {
+    "ecodr3": {
         "name": "EcoDR3",
         "site": "tcannnnnnnatcg",
         "forwardRegex": "tca[abcdghkmnrstvwy]{7}atcg",
@@ -28918,7 +28918,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp138I": {
+    "bsp138i": {
         "name": "Bsp138I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -28929,7 +28929,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySENI": {
+    "styseni": {
         "name": "StySENI",
         "site": "cgannnnnntacc",
         "forwardRegex": "cga[abcdghkmnrstvwy]{6}tac{2}",
@@ -28940,7 +28940,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF74II": {
+    "hpyf74ii": {
         "name": "HpyF74II",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -28951,7 +28951,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpiI": {
+    "ppii": {
         "name": "PpiI",
         "site": "gaacnnnnnctc",
         "forwardRegex": "ga{2}c[abcdghkmnrstvwy]{5}ctc",
@@ -28962,7 +28962,7 @@ module.exports = {
         "usForward": 25,
         "usReverse": 20
     },
-    "BcgI": {
+    "bcgi": {
         "name": "BcgI",
         "site": "cgannnnnntgc",
         "forwardRegex": "cga[abcdghkmnrstvwy]{6}tgc",
@@ -28973,7 +28973,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 22
     },
-    "MraI": {
+    "mrai": {
         "name": "MraI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -28984,7 +28984,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KteAI": {
+    "kteai": {
         "name": "KteAI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -28995,7 +28995,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VspI": {
+    "vspi": {
         "name": "VspI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -29006,7 +29006,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr4I": {
+    "cfr4i": {
         "name": "Cfr4I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -29017,7 +29017,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscTI": {
+    "bscti": {
         "name": "BscTI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -29028,7 +29028,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse23I": {
+    "bse23i": {
         "name": "Bse23I",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -29039,7 +29039,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SgrAI": {
+    "sgrai": {
         "name": "SgrAI",
         "site": "crccggyg",
         "forwardRegex": "c[agr]c{2}g{2}[cty]g",
@@ -29050,7 +29050,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli41I": {
+    "bli41i": {
         "name": "Bli41I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -29061,7 +29061,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ChyI": {
+    "chyi": {
         "name": "ChyI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -29072,7 +29072,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NarI": {
+    "nari": {
         "name": "NarI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -29083,7 +29083,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseX3I": {
+    "bsex3i": {
         "name": "BseX3I",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -29094,7 +29094,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NasWI": {
+    "naswi": {
         "name": "NasWI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -29105,7 +29105,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1112I": {
+    "uba1112i": {
         "name": "Uba1112I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -29116,7 +29116,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspAI": {
+    "aspai": {
         "name": "AspAI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -29127,7 +29127,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthCanI": {
+    "bthcani": {
         "name": "BthCanI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29138,7 +29138,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse1I": {
+    "bse1i": {
         "name": "Bse1I",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -29149,7 +29149,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1446I": {
+    "uba1446i": {
         "name": "Uba1446I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -29160,7 +29160,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmnI": {
+    "pmni": {
         "name": "PmnI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -29171,7 +29171,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SseII": {
+    "sseii": {
         "name": "SseII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -29182,7 +29182,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp12I": {
+    "ssp12i": {
         "name": "Ssp12I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -29193,7 +29193,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ItaI": {
+    "itai": {
         "name": "ItaI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -29204,7 +29204,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspEI": {
+    "aspei": {
         "name": "AspEI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -29215,7 +29215,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BanI": {
+    "bani": {
         "name": "BanI",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -29226,7 +29226,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuGI": {
+    "bpugi": {
         "name": "BpuGI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -29237,7 +29237,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NgoMXV": {
+    "m.ngomxv": {
         "name": "M.NgoMXV",
         "site": "gcchr",
         "forwardRegex": "gc{2}[achmtwy][agr]",
@@ -29248,7 +29248,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ1II": {
+    "bstz1ii": {
         "name": "BstZ1II",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -29259,7 +29259,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1158I": {
+    "uba1158i": {
         "name": "Uba1158I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -29270,7 +29270,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuI": {
+    "bpui": {
         "name": "BpuI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -29281,7 +29281,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp23I": {
+    "esp23i": {
         "name": "Esp23I",
         "site": "cgtctc",
         "forwardRegex": "cgtctc",
@@ -29292,7 +29292,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel5TI": {
+    "mel5ti": {
         "name": "Mel5TI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29303,7 +29303,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rlu4I": {
+    "rlu4i": {
         "name": "Rlu4I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -29314,7 +29314,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaAI": {
+    "bsaai": {
         "name": "BsaAI",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -29325,7 +29325,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1305I": {
+    "uba1305i": {
         "name": "Uba1305I",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -29336,7 +29336,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1137I": {
+    "uba1137i": {
         "name": "Uba1137I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -29347,7 +29347,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco6I": {
+    "bco6i": {
         "name": "Bco6I",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -29358,7 +29358,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoCI": {
+    "bsoci": {
         "name": "BsoCI",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -29369,7 +29369,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco24I": {
+    "eco24i": {
         "name": "Eco24I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -29380,7 +29380,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Dsp1I": {
+    "dsp1i": {
         "name": "Dsp1I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -29391,7 +29391,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspSI": {
+    "bspsi": {
         "name": "BspSI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -29402,7 +29402,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pgl34I": {
+    "pgl34i": {
         "name": "Pgl34I",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -29413,7 +29413,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyAIII": {
+    "hpyaiii": {
         "name": "HpyAIII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29424,7 +29424,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst2902I": {
+    "bst2902i": {
         "name": "Bst2902I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -29435,7 +29435,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp49I": {
+    "tsp49i": {
         "name": "Tsp49I",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -29446,7 +29446,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco128I": {
+    "eco128i": {
         "name": "Eco128I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -29457,7 +29457,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmnI": {
+    "xmni": {
         "name": "XmnI",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -29468,7 +29468,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AatI": {
+    "aati": {
         "name": "AatI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -29479,7 +29479,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfoI": {
+    "cfoi": {
         "name": "CfoI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -29490,7 +29490,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R1.SsuDAT1I": {
+    "r1.ssudat1i": {
         "name": "R1.SsuDAT1I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29501,7 +29501,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp64I": {
+    "bsp64i": {
         "name": "Bsp64I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29512,7 +29512,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1218I": {
+    "uba1218i": {
         "name": "Uba1218I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -29523,7 +29523,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco178I": {
+    "eco178i": {
         "name": "Eco178I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -29534,7 +29534,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DinI": {
+    "dini": {
         "name": "DinI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -29545,7 +29545,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseCI": {
+    "bseci": {
         "name": "BseCI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -29556,7 +29556,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae7I": {
+    "pae7i": {
         "name": "Pae7I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -29567,7 +29567,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth1202I": {
+    "bth1202i": {
         "name": "Bth1202I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -29578,7 +29578,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NanI": {
+    "nani": {
         "name": "NanI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -29589,7 +29589,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1303I": {
+    "uba1303i": {
         "name": "Uba1303I",
         "site": "cgrycg",
         "forwardRegex": "cg[agr][cty]cg",
@@ -29600,7 +29600,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseAI": {
+    "bseai": {
         "name": "BseAI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -29611,7 +29611,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp14I": {
+    "ssp14i": {
         "name": "Ssp14I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -29622,7 +29622,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspWAM8AI": {
+    "tspwam8ai": {
         "name": "TspWAM8AI",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -29633,7 +29633,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1136I": {
+    "uba1136i": {
         "name": "Uba1136I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -29644,7 +29644,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrI": {
+    "bsri": {
         "name": "BsrI",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -29655,7 +29655,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp718I": {
+    "asp718i": {
         "name": "Asp718I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -29666,7 +29666,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco25I": {
+    "eco25i": {
         "name": "Eco25I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -29677,7 +29677,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstSCI": {
+    "bstsci": {
         "name": "BstSCI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -29688,7 +29688,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp135I": {
+    "bsp135i": {
         "name": "Bsp135I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29699,7 +29699,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp358I": {
+    "tsp358i": {
         "name": "Tsp358I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -29710,7 +29710,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF68II": {
+    "hpyf68ii": {
         "name": "HpyF68II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -29721,7 +29721,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp65I": {
+    "bsp65i": {
         "name": "Bsp65I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29732,7 +29732,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscLI": {
+    "bscli": {
         "name": "BscLI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -29743,7 +29743,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoRD2": {
+    "ecord2": {
         "name": "EcoRD2",
         "site": "gaannnnnnrttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{6}[agr]t{2}c",
@@ -29754,7 +29754,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaDII": {
+    "nladii": {
         "name": "NlaDII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -29765,7 +29765,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pvu84II": {
+    "pvu84ii": {
         "name": "Pvu84II",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -29776,7 +29776,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba76I": {
+    "uba76i": {
         "name": "Uba76I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -29787,7 +29787,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmiI": {
+    "bmii": {
         "name": "BmiI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -29798,7 +29798,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SacNI": {
+    "sacni": {
         "name": "SacNI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -29809,7 +29809,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TaqXI": {
+    "taqxi": {
         "name": "TaqXI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -29820,7 +29820,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco17I": {
+    "eco17i": {
         "name": "Eco17I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -29831,7 +29831,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspGWI": {
+    "tspgwi": {
         "name": "TspGWI",
         "site": "acgga",
         "forwardRegex": "acg{2}a",
@@ -29842,7 +29842,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco26I": {
+    "eco26i": {
         "name": "Eco26I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -29853,7 +29853,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1116I": {
+    "uba1116i": {
         "name": "Uba1116I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -29864,7 +29864,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspV281I": {
+    "mspv281i": {
         "name": "MspV281I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -29875,7 +29875,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmeI": {
+    "pmei": {
         "name": "PmeI",
         "site": "gtttaaac",
         "forwardRegex": "gt{3}a{3}c",
@@ -29886,7 +29886,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SuaI": {
+    "suai": {
         "name": "SuaI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -29897,7 +29897,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstI": {
+    "bsti": {
         "name": "BstI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -29908,7 +29908,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp233I": {
+    "bsp233i": {
         "name": "Bsp233I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -29919,7 +29919,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NsiAI": {
+    "nsiai": {
         "name": "NsiAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -29930,7 +29930,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1421I": {
+    "uba1421i": {
         "name": "Uba1421I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -29941,7 +29941,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr51I": {
+    "cfr51i": {
         "name": "Cfr51I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -29952,7 +29952,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Aor13HI": {
+    "aor13hi": {
         "name": "Aor13HI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -29963,7 +29963,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco205I": {
+    "eco205i": {
         "name": "Eco205I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -29974,7 +29974,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PceI": {
+    "pcei": {
         "name": "PceI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -29985,7 +29985,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CauI": {
+    "caui": {
         "name": "CauI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -29996,7 +29996,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco155I": {
+    "eco155i": {
         "name": "Eco155I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -30007,7 +30007,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyHII": {
+    "hpyhii": {
         "name": "HpyHII",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -30018,7 +30018,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy421I": {
+    "hpy421i": {
         "name": "Hpy421I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -30029,7 +30029,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.SmaII": {
+    "m.smaii": {
         "name": "M.SmaII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -30040,7 +30040,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspNI": {
+    "bspni": {
         "name": "BspNI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30051,7 +30051,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshGI": {
+    "bshgi": {
         "name": "BshGI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30062,7 +30062,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco646I": {
+    "eco646i": {
         "name": "Eco646I",
         "site": "ccannnnnnncttc",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{7}ct{2}c",
@@ -30073,7 +30073,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu11I": {
+    "ppu11i": {
         "name": "Ppu11I",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -30084,7 +30084,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AteI": {
+    "atei": {
         "name": "AteI",
         "site": "ccatgg",
         "forwardRegex": "c{2}atg{2}",
@@ -30095,7 +30095,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BplI": {
+    "bpli": {
         "name": "BplI",
         "site": "gagnnnnnctc",
         "forwardRegex": "gag[abcdghkmnrstvwy]{5}ctc",
@@ -30106,7 +30106,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 19
     },
-    "BoxI": {
+    "boxi": {
         "name": "BoxI",
         "site": "gacnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{4}gtc",
@@ -30117,7 +30117,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF59I": {
+    "hpyf59i": {
         "name": "HpyF59I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -30128,7 +30128,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyBII": {
+    "hpybii": {
         "name": "HpyBII",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -30139,7 +30139,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsuB519I": {
+    "bsub519i": {
         "name": "BsuB519I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -30150,7 +30150,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp103I": {
+    "bsp103i": {
         "name": "Bsp103I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30161,7 +30161,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AjnI": {
+    "ajni": {
         "name": "AjnI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30172,7 +30172,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CviSI": {
+    "m.cvisi": {
         "name": "M.CviSI",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -30183,7 +30183,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp514I": {
+    "tsp514i": {
         "name": "Tsp514I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -30194,7 +30194,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco204I": {
+    "eco204i": {
         "name": "Eco204I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -30205,7 +30205,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NphI": {
+    "nphi": {
         "name": "NphI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -30216,7 +30216,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1286I": {
+    "uba1286i": {
         "name": "Uba1286I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -30227,7 +30227,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco156I": {
+    "eco156i": {
         "name": "Eco156I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -30238,7 +30238,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyCH4V": {
+    "hpych4v": {
         "name": "HpyCH4V",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -30249,7 +30249,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SceIII": {
+    "sceiii": {
         "name": "SceIII",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -30260,7 +30260,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseG73I": {
+    "bseg73i": {
         "name": "BseG73I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -30271,7 +30271,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1267I": {
+    "uba1267i": {
         "name": "Uba1267I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -30282,7 +30282,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmaI": {
+    "pmai": {
         "name": "PmaI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -30293,7 +30293,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF49III": {
+    "hpyf49iii": {
         "name": "HpyF49III",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -30304,7 +30304,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FsfI": {
+    "fsfi": {
         "name": "FsfI",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -30315,7 +30315,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R2.SsuDAT1I": {
+    "r2.ssudat1i": {
         "name": "R2.SsuDAT1I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -30326,7 +30326,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BlpI": {
+    "blpi": {
         "name": "BlpI",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -30337,7 +30337,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthII": {
+    "bthii": {
         "name": "BthII",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -30348,7 +30348,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspHIII": {
+    "nsphiii": {
         "name": "NspHIII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -30359,7 +30359,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco203I": {
+    "eco203i": {
         "name": "Eco203I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -30370,7 +30370,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth302I": {
+    "sth302i": {
         "name": "Sth302I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30381,7 +30381,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspB4I": {
+    "mspb4i": {
         "name": "MspB4I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -30392,7 +30392,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1374I": {
+    "uba1374i": {
         "name": "Uba1374I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -30403,7 +30403,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1357I": {
+    "uba1357i": {
         "name": "Uba1357I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -30414,7 +30414,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uur960I": {
+    "uur960i": {
         "name": "Uur960I",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -30425,7 +30425,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF60II": {
+    "hpyf60ii": {
         "name": "HpyF60II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -30436,7 +30436,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PamI": {
+    "pami": {
         "name": "PamI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -30447,7 +30447,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBI": {
+    "bspbi": {
         "name": "BspBI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -30458,7 +30458,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp60I": {
+    "bsp60i": {
         "name": "Bsp60I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -30469,7 +30469,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1138I": {
+    "uba1138i": {
         "name": "Uba1138I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -30480,7 +30480,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ClaI": {
+    "clai": {
         "name": "ClaI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -30491,7 +30491,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy423I": {
+    "hpy423i": {
         "name": "Hpy423I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -30502,7 +30502,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstMI": {
+    "bstmi": {
         "name": "BstMI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -30513,7 +30513,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr40I": {
+    "cfr40i": {
         "name": "Cfr40I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -30524,7 +30524,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp61I": {
+    "bsp61i": {
         "name": "Bsp61I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -30535,7 +30535,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EarI": {
+    "eari": {
         "name": "EarI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -30546,7 +30546,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmaJI": {
+    "xmaji": {
         "name": "XmaJI",
         "site": "cctagg",
         "forwardRegex": "c{2}tag{2}",
@@ -30557,7 +30557,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1115I": {
+    "uba1115i": {
         "name": "Uba1115I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -30568,7 +30568,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN16I": {
+    "uban16i": {
         "name": "UbaN16I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30579,7 +30579,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BepI": {
+    "bepi": {
         "name": "BepI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -30590,7 +30590,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviAII": {
+    "cviaii": {
         "name": "CviAII",
         "site": "catg",
         "forwardRegex": "catg",
@@ -30601,7 +30601,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst7QI": {
+    "bst7qi": {
         "name": "Bst7QI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -30612,7 +30612,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuNI": {
+    "bpuni": {
         "name": "BpuNI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -30623,7 +30623,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1423I": {
+    "uba1423i": {
         "name": "Uba1423I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -30634,7 +30634,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspRI": {
+    "bspri": {
         "name": "BspRI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -30645,7 +30645,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspBI": {
+    "pspbi": {
         "name": "PspBI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -30656,7 +30656,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1260I": {
+    "bsp1260i": {
         "name": "Bsp1260I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -30667,7 +30667,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaWI": {
+    "bsawi": {
         "name": "BsaWI",
         "site": "wccggw",
         "forwardRegex": "[atw]c{2}g{2}[atw]",
@@ -30678,7 +30678,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StyD4I": {
+    "styd4i": {
         "name": "StyD4I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -30689,7 +30689,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeCI": {
+    "paeci": {
         "name": "PaeCI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -30700,7 +30700,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MziI": {
+    "mzii": {
         "name": "MziI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -30711,7 +30711,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bka1125I": {
+    "bka1125i": {
         "name": "Bka1125I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -30722,7 +30722,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflBI": {
+    "pflbi": {
         "name": "PflBI",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -30733,7 +30733,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoJIII": {
+    "ngojiii": {
         "name": "NgoJIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -30744,7 +30744,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmcAI": {
+    "bmcai": {
         "name": "BmcAI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -30755,7 +30755,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1424I": {
+    "uba1424i": {
         "name": "Uba1424I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -30766,7 +30766,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CboI": {
+    "cboi": {
         "name": "CboI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -30777,7 +30777,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1164I": {
+    "uba1164i": {
         "name": "Uba1164I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -30788,7 +30788,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MroI": {
+    "mroi": {
         "name": "MroI",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -30799,7 +30799,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hsp92II": {
+    "hsp92ii": {
         "name": "Hsp92II",
         "site": "catg",
         "forwardRegex": "catg",
@@ -30810,7 +30810,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp23I": {
+    "psp23i": {
         "name": "Psp23I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -30821,7 +30821,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XcmI": {
+    "xcmi": {
         "name": "XcmI",
         "site": "ccannnnnnnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{9}tg{2}",
@@ -30832,7 +30832,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1290I": {
+    "uba1290i": {
         "name": "Uba1290I",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -30843,7 +30843,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst31TI": {
+    "bst31ti": {
         "name": "Bst31TI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -30854,7 +30854,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvaAI": {
+    "mvaai": {
         "name": "MvaAI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -30865,7 +30865,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NcaI": {
+    "ncai": {
         "name": "NcaI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -30876,7 +30876,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoRD3": {
+    "ecord3": {
         "name": "EcoRD3",
         "site": "gaannnnnnnrttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{7}[agr]t{2}c",
@@ -30887,7 +30887,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp40HI": {
+    "asp40hi": {
         "name": "Asp40HI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -30898,7 +30898,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AbrI": {
+    "abri": {
         "name": "AbrI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -30909,7 +30909,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SleI": {
+    "slei": {
         "name": "SleI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -30920,7 +30920,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstH2I": {
+    "bsth2i": {
         "name": "BstH2I",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -30931,7 +30931,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpoDI": {
+    "spodi": {
         "name": "SpoDI",
         "site": "gcggrag",
         "forwardRegex": "gcg{2}[agr]ag",
@@ -30942,7 +30942,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN12I": {
+    "uban12i": {
         "name": "UbaN12I",
         "site": "cacgag",
         "forwardRegex": "cacgag",
@@ -30953,7 +30953,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspFI": {
+    "pspfi": {
         "name": "PspFI",
         "site": "cccagc",
         "forwardRegex": "c{3}agc",
@@ -30964,7 +30964,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco231I": {
+    "eco231i": {
         "name": "Eco231I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -30975,7 +30975,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF64III": {
+    "hpyf64iii": {
         "name": "HpyF64III",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -30986,7 +30986,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CflI": {
+    "cfli": {
         "name": "CflI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -30997,7 +30997,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfoI": {
+    "pfoi": {
         "name": "PfoI",
         "site": "tccngga",
         "forwardRegex": "tc{2}[abcdghkmnrstvwy]g{2}a",
@@ -31008,7 +31008,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO44I": {
+    "vcho44i": {
         "name": "VchO44I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -31019,7 +31019,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MseI": {
+    "msei": {
         "name": "MseI",
         "site": "ttaa",
         "forwardRegex": "t{2}a{2}",
@@ -31030,7 +31030,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBRI": {
+    "bspbri": {
         "name": "BspBRI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -31041,7 +31041,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspCI": {
+    "pspci": {
         "name": "PspCI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -31052,7 +31052,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspD5II": {
+    "sspd5ii": {
         "name": "SspD5II",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -31063,7 +31063,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sse8647I": {
+    "sse8647i": {
         "name": "Sse8647I",
         "site": "aggwcct",
         "forwardRegex": "ag{2}[atw]c{2}t",
@@ -31074,7 +31074,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SlaI": {
+    "slai": {
         "name": "SlaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -31085,7 +31085,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspR9I": {
+    "mspr9i": {
         "name": "MspR9I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -31096,7 +31096,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sna3286I": {
+    "sna3286i": {
         "name": "Sna3286I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -31107,7 +31107,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF13II": {
+    "hpyf13ii": {
         "name": "HpyF13II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -31118,7 +31118,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SdiAI": {
+    "sdiai": {
         "name": "SdiAI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -31129,7 +31129,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl136II": {
+    "ecl136ii": {
         "name": "Ecl136II",
         "site": "gagctc",
         "forwardRegex": "gagctc",
@@ -31140,7 +31140,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspOVII": {
+    "bspovii": {
         "name": "BspOVII",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -31151,7 +31151,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SanDI": {
+    "sandi": {
         "name": "SanDI",
         "site": "gggwccc",
         "forwardRegex": "g{3}[atw]c{3}",
@@ -31162,7 +31162,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspJI": {
+    "aspji": {
         "name": "AspJI",
         "site": "gacgtc",
         "forwardRegex": "gacgtc",
@@ -31173,7 +31173,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VanI": {
+    "vani": {
         "name": "VanI",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -31184,7 +31184,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr57I": {
+    "cfr57i": {
         "name": "Cfr57I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -31195,7 +31195,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth132I": {
+    "sth132i": {
         "name": "Sth132I",
         "site": "cccg",
         "forwardRegex": "c{3}g",
@@ -31206,7 +31206,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO70I": {
+    "vcho70i": {
         "name": "VchO70I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -31217,7 +31217,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF37I": {
+    "hpyf37i": {
         "name": "HpyF37I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -31228,7 +31228,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyIV": {
+    "hpyiv": {
         "name": "HpyIV",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -31239,7 +31239,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1447I": {
+    "uba1447i": {
         "name": "Uba1447I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -31250,7 +31250,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiVI": {
+    "bsivi": {
         "name": "BsiVI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -31261,7 +31261,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp273I": {
+    "tsp273i": {
         "name": "Tsp273I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -31272,7 +31272,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF10V": {
+    "hpyf10v": {
         "name": "HpyF10V",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -31283,7 +31283,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp28I": {
+    "psp28i": {
         "name": "Psp28I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -31294,7 +31294,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp45I": {
+    "tsp45i": {
         "name": "Tsp45I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -31305,7 +31305,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp43I": {
+    "ssp43i": {
         "name": "Ssp43I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -31316,7 +31316,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspCI": {
+    "mspci": {
         "name": "MspCI",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -31327,7 +31327,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1248I": {
+    "uba1248i": {
         "name": "Uba1248I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -31338,7 +31338,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshFI": {
+    "bshfi": {
         "name": "BshFI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -31349,7 +31349,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspF4I": {
+    "bspf4i": {
         "name": "BspF4I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -31360,7 +31360,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MflI": {
+    "mfli": {
         "name": "MflI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -31371,7 +31371,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PlaAII": {
+    "plaaii": {
         "name": "PlaAII",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -31382,7 +31382,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp146I": {
+    "bsp146i": {
         "name": "Bsp146I",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -31393,7 +31393,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AmeII": {
+    "ameii": {
         "name": "AmeII",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -31404,7 +31404,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CspBI": {
+    "cspbi": {
         "name": "CspBI",
         "site": "gcggccgc",
         "forwardRegex": "gcg{2}c{2}gc",
@@ -31415,7 +31415,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp268I": {
+    "bsp268i": {
         "name": "Bsp268I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -31426,7 +31426,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstEZ359I": {
+    "bstez359i": {
         "name": "BstEZ359I",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -31437,7 +31437,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp42I": {
+    "ssp42i": {
         "name": "Ssp42I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -31448,7 +31448,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SkaII": {
+    "skaii": {
         "name": "SkaII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -31459,7 +31459,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RruI": {
+    "rrui": {
         "name": "RruI",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -31470,7 +31470,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspBI": {
+    "nspbi": {
         "name": "NspBI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -31481,7 +31481,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MlaI": {
+    "mlai": {
         "name": "MlaI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -31492,7 +31492,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpaPIV": {
+    "spapiv": {
         "name": "SpaPIV",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -31503,7 +31503,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaXI": {
+    "bsaxi": {
         "name": "BsaXI",
         "site": "acnnnnnctcc",
         "forwardRegex": "ac[abcdghkmnrstvwy]{5}ctc{2}",
@@ -31514,7 +31514,7 @@ module.exports = {
         "usForward": 21,
         "usReverse": 18
     },
-    "Bsp1894I": {
+    "bsp1894i": {
         "name": "Bsp1894I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -31525,7 +31525,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GspAII": {
+    "gspaii": {
         "name": "GspAII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -31536,7 +31536,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp68KVI": {
+    "csp68kvi": {
         "name": "Csp68KVI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -31547,7 +31547,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PshCI": {
+    "pshci": {
         "name": "PshCI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -31558,7 +31558,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF2II": {
+    "hpyf2ii": {
         "name": "HpyF2II",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -31569,7 +31569,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp91I": {
+    "bsp91i": {
         "name": "Bsp91I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -31580,7 +31580,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoDXIV": {
+    "ngodxiv": {
         "name": "NgoDXIV",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -31591,7 +31591,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp2013I": {
+    "bsp2013i": {
         "name": "Bsp2013I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -31602,7 +31602,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1243I": {
+    "uba1243i": {
         "name": "Uba1243I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -31613,7 +31613,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp45I": {
+    "ssp45i": {
         "name": "Ssp45I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -31624,7 +31624,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLI": {
+    "bspli": {
         "name": "BspLI",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -31635,7 +31635,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiUI": {
+    "bsiui": {
         "name": "BsiUI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -31646,7 +31646,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauLPI": {
+    "saulpi": {
         "name": "SauLPI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -31657,7 +31657,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco225I": {
+    "eco225i": {
         "name": "Eco225I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -31668,7 +31668,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PshDI": {
+    "pshdi": {
         "name": "PshDI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -31679,7 +31679,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NsuDI": {
+    "nsudi": {
         "name": "NsuDI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -31690,7 +31690,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1291I": {
+    "uba1291i": {
         "name": "Uba1291I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -31701,7 +31701,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoDIII": {
+    "ngodiii": {
         "name": "NgoDIII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -31712,7 +31712,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MboI": {
+    "mboi": {
         "name": "MboI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -31723,7 +31723,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KspHK15I": {
+    "ksphk15i": {
         "name": "KspHK15I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -31734,7 +31734,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK25I": {
+    "vpak25i": {
         "name": "VpaK25I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -31745,7 +31745,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu95I": {
+    "bpu95i": {
         "name": "Bpu95I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -31756,7 +31756,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco27I": {
+    "bco27i": {
         "name": "Bco27I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -31767,7 +31767,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1142I": {
+    "uba1142i": {
         "name": "Uba1142I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -31778,7 +31778,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CdpI": {
+    "cdpi": {
         "name": "CdpI",
         "site": "gcggag",
         "forwardRegex": "gcg{2}ag",
@@ -31789,7 +31789,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp703I": {
+    "asp703i": {
         "name": "Asp703I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -31800,7 +31800,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp90I": {
+    "asp90i": {
         "name": "Asp90I",
         "site": "acrygt",
         "forwardRegex": "ac[agr][cty]gt",
@@ -31811,7 +31811,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyV": {
+    "hpyv": {
         "name": "HpyV",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -31822,7 +31822,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF23I": {
+    "hpyf23i": {
         "name": "HpyF23I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -31833,7 +31833,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco50I": {
+    "eco50i": {
         "name": "Eco50I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -31844,7 +31844,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CviPI": {
+    "m.cvipi": {
         "name": "M.CviPI",
         "site": "gc",
         "forwardRegex": "gc",
@@ -31855,7 +31855,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpuI": {
+    "spui": {
         "name": "SpuI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -31866,7 +31866,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmaBI": {
+    "bmabi": {
         "name": "BmaBI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -31877,7 +31877,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauLPII": {
+    "saulpii": {
         "name": "SauLPII",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -31888,7 +31888,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu1831I": {
+    "bpu1831i": {
         "name": "Bpu1831I",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -31899,7 +31899,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshCI": {
+    "bshci": {
         "name": "BshCI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -31910,7 +31910,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsuRBI": {
+    "ssurbi": {
         "name": "SsuRBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -31921,7 +31921,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MgoI": {
+    "mgoi": {
         "name": "MgoI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -31932,7 +31932,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmaIII": {
+    "xmaiii": {
         "name": "XmaIII",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -31943,7 +31943,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviRI": {
+    "cviri": {
         "name": "CviRI",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -31954,7 +31954,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MslI": {
+    "msli": {
         "name": "MslI",
         "site": "caynnnnrtg",
         "forwardRegex": "ca[cty][abcdghkmnrstvwy]{4}[agr]tg",
@@ -31965,7 +31965,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1320I": {
+    "uba1320i": {
         "name": "Uba1320I",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -31976,7 +31976,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp67I": {
+    "msp67i": {
         "name": "Msp67I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -31987,7 +31987,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MauBI": {
+    "maubi": {
         "name": "MauBI",
         "site": "cgcgcgcg",
         "forwardRegex": "cgcgcgcg",
@@ -31998,7 +31998,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspI": {
+    "tspi": {
         "name": "TspI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -32009,7 +32009,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AflIV": {
+    "afliv": {
         "name": "AflIV",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -32020,7 +32020,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspLAI": {
+    "bsplai": {
         "name": "BspLAI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -32031,7 +32031,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Umi7I": {
+    "umi7i": {
         "name": "Umi7I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -32042,7 +32042,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF2I": {
+    "hpyf2i": {
         "name": "HpyF2I",
         "site": "ctryag",
         "forwardRegex": "ct[agr][cty]ag",
@@ -32053,7 +32053,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmaCI": {
+    "bmaci": {
         "name": "BmaCI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -32064,7 +32064,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp68I": {
+    "bsp68i": {
         "name": "Bsp68I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -32075,7 +32075,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BamFI": {
+    "bamfi": {
         "name": "BamFI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32086,7 +32086,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DpaI": {
+    "dpai": {
         "name": "DpaI",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -32097,7 +32097,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshBI": {
+    "bshbi": {
         "name": "BshBI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32108,7 +32108,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SurI": {
+    "suri": {
         "name": "SurI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32119,7 +32119,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PctI": {
+    "pcti": {
         "name": "PctI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -32130,7 +32130,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EaePI": {
+    "eaepi": {
         "name": "EaePI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -32141,7 +32141,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspFI": {
+    "nspfi": {
         "name": "NspFI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -32152,7 +32152,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrBRI": {
+    "bsrbri": {
         "name": "BsrBRI",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -32163,7 +32163,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FspII": {
+    "fspii": {
         "name": "FspII",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -32174,7 +32174,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbiII": {
+    "bbiii": {
         "name": "BbiII",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -32185,7 +32185,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Van91III": {
+    "van91iii": {
         "name": "Van91III",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32196,7 +32196,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1171I": {
+    "uba1171i": {
         "name": "Uba1171I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -32207,7 +32207,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy178II": {
+    "hpy178ii": {
         "name": "Hpy178II",
         "site": "gaaga",
         "forwardRegex": "ga{2}ga",
@@ -32218,7 +32218,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF55II": {
+    "hpyf55ii": {
         "name": "HpyF55II",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -32229,7 +32229,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco78I": {
+    "eco78i": {
         "name": "Eco78I",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -32240,7 +32240,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kzo9I": {
+    "kzo9i": {
         "name": "Kzo9I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -32251,7 +32251,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NaeI": {
+    "naei": {
         "name": "NaeI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -32262,7 +32262,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmaDI": {
+    "bmadi": {
         "name": "BmaDI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -32273,7 +32273,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshEI": {
+    "bshei": {
         "name": "BshEI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32284,7 +32284,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK32I": {
+    "vpak32i": {
         "name": "VpaK32I",
         "site": "gctcttc",
         "forwardRegex": "gctct{2}c",
@@ -32295,7 +32295,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1240I": {
+    "uba1240i": {
         "name": "Uba1240I",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -32306,7 +32306,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl133I": {
+    "ecl133i": {
         "name": "Ecl133I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -32317,7 +32317,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin4I": {
+    "hin4i": {
         "name": "Hin4I",
         "site": "gaynnnnnvtc",
         "forwardRegex": "ga[cty][abcdghkmnrstvwy]{5}[acgmrsv]tc",
@@ -32328,7 +32328,7 @@ module.exports = {
         "usForward": 24,
         "usReverse": 19
     },
-    "Apu16I": {
+    "apu16i": {
         "name": "Apu16I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -32339,7 +32339,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RspLKII": {
+    "rsplkii": {
         "name": "RspLKII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32350,7 +32350,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BamHI": {
+    "bamhi": {
         "name": "BamHI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32361,7 +32361,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma376I": {
+    "rma376i": {
         "name": "Rma376I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -32372,7 +32372,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu13I": {
+    "ppu13i": {
         "name": "Ppu13I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -32383,7 +32383,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrVI": {
+    "bsrvi": {
         "name": "BsrVI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -32394,7 +32394,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseMI": {
+    "bsemi": {
         "name": "BseMI",
         "site": "gcaatg",
         "forwardRegex": "gca{2}tg",
@@ -32405,7 +32405,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrAI": {
+    "cfrai": {
         "name": "CfrAI",
         "site": "gcannnnnnnngtgg",
         "forwardRegex": "gca[abcdghkmnrstvwy]{8}gtg{2}",
@@ -32416,7 +32416,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1205I": {
+    "uba1205i": {
         "name": "Uba1205I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32427,7 +32427,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcpI": {
+    "acpi": {
         "name": "AcpI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -32438,7 +32438,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau16I": {
+    "sau16i": {
         "name": "Sau16I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -32449,7 +32449,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshDI": {
+    "bshdi": {
         "name": "BshDI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32460,7 +32460,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpsI": {
+    "ppsi": {
         "name": "PpsI",
         "site": "gagtc",
         "forwardRegex": "gagtc",
@@ -32471,7 +32471,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy471I": {
+    "hpy471i": {
         "name": "Hpy471I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -32482,7 +32482,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcrAI": {
+    "bcrai": {
         "name": "BcrAI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -32493,7 +32493,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco851I": {
+    "eco851i": {
         "name": "Eco851I",
         "site": "gtcannnnnntgay",
         "forwardRegex": "gtca[abcdghkmnrstvwy]{6}tga[cty]",
@@ -32504,7 +32504,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyC1I": {
+    "hpyc1i": {
         "name": "HpyC1I",
         "site": "ccatc",
         "forwardRegex": "c{2}atc",
@@ -32515,7 +32515,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StuI": {
+    "stui": {
         "name": "StuI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -32526,7 +32526,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RmaI": {
+    "rmai": {
         "name": "RmaI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -32537,7 +32537,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1385I": {
+    "uba1385i": {
         "name": "Uba1385I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -32548,7 +32548,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscAI": {
+    "bscai": {
         "name": "BscAI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -32559,7 +32559,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AlwI": {
+    "alwi": {
         "name": "AlwI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -32570,7 +32570,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmuCI": {
+    "smuci": {
         "name": "SmuCI",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -32581,7 +32581,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srr17I": {
+    "srr17i": {
         "name": "Srr17I",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -32592,7 +32592,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsgI": {
+    "bsgi": {
         "name": "BsgI",
         "site": "gtgcag",
         "forwardRegex": "gtgcag",
@@ -32603,7 +32603,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspOI": {
+    "bspoi": {
         "name": "BspOI",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -32614,7 +32614,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba4009I": {
+    "uba4009i": {
         "name": "Uba4009I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32625,7 +32625,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cdi27I": {
+    "cdi27i": {
         "name": "Cdi27I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -32636,7 +32636,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspSWI": {
+    "mspswi": {
         "name": "MspSWI",
         "site": "atttaaat",
         "forwardRegex": "at{3}a{3}t",
@@ -32647,7 +32647,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AquIV": {
+    "aquiv": {
         "name": "AquIV",
         "site": "grggaag",
         "forwardRegex": "g[agr]g{2}a{2}g",
@@ -32658,7 +32658,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AocI": {
+    "aoci": {
         "name": "AocI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -32669,7 +32669,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1157I": {
+    "uba1157i": {
         "name": "Uba1157I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -32680,7 +32680,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1265I": {
+    "eco1265i": {
         "name": "Eco1265I",
         "site": "tgannnnnnnntgct",
         "forwardRegex": "tga[abcdghkmnrstvwy]{8}tgct",
@@ -32691,7 +32691,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EsaLHCI": {
+    "esalhci": {
         "name": "EsaLHCI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -32702,7 +32702,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstC8I": {
+    "bstc8i": {
         "name": "BstC8I",
         "site": "gcnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{2}gc",
@@ -32713,7 +32713,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin7I": {
+    "hin7i": {
         "name": "Hin7I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -32724,7 +32724,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclI": {
+    "ecli": {
         "name": "EclI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -32735,7 +32735,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspJI": {
+    "nspji": {
         "name": "NspJI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -32746,7 +32746,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba66I": {
+    "uba66i": {
         "name": "Uba66I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -32757,7 +32757,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF24II": {
+    "hpyf24ii": {
         "name": "HpyF24II",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -32768,7 +32768,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BamKI": {
+    "bamki": {
         "name": "BamKI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32779,7 +32779,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ple19I": {
+    "ple19i": {
         "name": "Ple19I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -32790,7 +32790,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sca1827I": {
+    "sca1827i": {
         "name": "Sca1827I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -32801,7 +32801,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BshAI": {
+    "bshai": {
         "name": "BshAI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32812,7 +32812,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin6I": {
+    "hin6i": {
         "name": "Hin6I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -32823,7 +32823,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspMI": {
+    "tspmi": {
         "name": "TspMI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -32834,7 +32834,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MniI": {
+    "mnii": {
         "name": "MniI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32845,7 +32845,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PgaI": {
+    "pgai": {
         "name": "PgaI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -32856,7 +32856,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF66III": {
+    "hpyf66iii": {
         "name": "HpyF66III",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -32867,7 +32867,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN8I": {
+    "uban8i": {
         "name": "UbaN8I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -32878,7 +32878,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MecI": {
+    "meci": {
         "name": "MecI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -32889,7 +32889,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SciI": {
+    "scii": {
         "name": "SciI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -32900,7 +32900,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1156I": {
+    "uba1156i": {
         "name": "Uba1156I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -32911,7 +32911,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN3I": {
+    "uban3i": {
         "name": "UbaN3I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -32922,7 +32922,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy188III": {
+    "hpy188iii": {
         "name": "Hpy188III",
         "site": "tcnnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]{2}ga",
@@ -32933,7 +32933,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1139I": {
+    "uba1139i": {
         "name": "Uba1139I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -32944,7 +32944,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PteI": {
+    "ptei": {
         "name": "PteI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -32955,7 +32955,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acc65I": {
+    "acc65i": {
         "name": "Acc65I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -32966,7 +32966,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bba179I": {
+    "bba179i": {
         "name": "Bba179I",
         "site": "wccggw",
         "forwardRegex": "[atw]c{2}g{2}[atw]",
@@ -32977,7 +32977,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bac465I": {
+    "bac465i": {
         "name": "Bac465I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -32988,7 +32988,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsc217I": {
+    "bsc217i": {
         "name": "Bsc217I",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -32999,7 +32999,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK11AI": {
+    "vpak11ai": {
         "name": "VpaK11AI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -33010,7 +33010,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspI": {
+    "espi": {
         "name": "EspI",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -33021,7 +33021,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl1I": {
+    "ecl1i": {
         "name": "Ecl1I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -33032,7 +33032,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviKI-1": {
+    "cviki-1": {
         "name": "CviKI-1",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -33043,7 +33043,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoMIV": {
+    "ngomiv": {
         "name": "NgoMIV",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -33054,7 +33054,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspRI": {
+    "tspri": {
         "name": "TspRI",
         "site": "castgnn",
         "forwardRegex": "ca[cgs]tg[abcdghkmnrstvwy]{2}",
@@ -33065,7 +33065,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauMI": {
+    "saumi": {
         "name": "SauMI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33076,7 +33076,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdI": {
+    "drdi": {
         "name": "DrdI",
         "site": "gacnnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{6}gtc",
@@ -33087,7 +33087,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GdoI": {
+    "gdoi": {
         "name": "GdoI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -33098,7 +33098,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph2059I": {
+    "pph2059i": {
         "name": "Pph2059I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -33109,7 +33109,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sse1825I": {
+    "sse1825i": {
         "name": "Sse1825I",
         "site": "gggwccc",
         "forwardRegex": "g{3}[atw]c{3}",
@@ -33120,7 +33120,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph3215I": {
+    "pph3215i": {
         "name": "Pph3215I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -33131,7 +33131,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BamNI": {
+    "bamni": {
         "name": "BamNI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -33142,7 +33142,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FspMI": {
+    "fspmi": {
         "name": "FspMI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -33153,7 +33153,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu111I": {
+    "ppu111i": {
         "name": "Ppu111I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -33164,7 +33164,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaMI": {
+    "llami": {
         "name": "LlaMI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -33175,7 +33175,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp145I": {
+    "bsp145i": {
         "name": "Bsp145I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -33186,7 +33186,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1304I": {
+    "uba1304i": {
         "name": "Uba1304I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -33197,7 +33197,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiYI": {
+    "bsiyi": {
         "name": "BsiYI",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -33208,7 +33208,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SflHK7462I": {
+    "sflhk7462i": {
         "name": "SflHK7462I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -33219,7 +33219,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bco631I": {
+    "bco631i": {
         "name": "Bco631I",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -33230,7 +33230,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmrFI": {
+    "bmrfi": {
         "name": "BmrFI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -33241,7 +33241,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp36I": {
+    "asp36i": {
         "name": "Asp36I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -33252,7 +33252,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaUI": {
+    "bsaui": {
         "name": "BsaUI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -33263,7 +33263,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1232I": {
+    "uba1232i": {
         "name": "Uba1232I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -33274,7 +33274,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ali2882I": {
+    "ali2882i": {
         "name": "Ali2882I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -33285,7 +33285,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StrI": {
+    "stri": {
         "name": "StrI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -33296,7 +33296,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MkrI": {
+    "mkri": {
         "name": "MkrI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -33307,7 +33307,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth1141I": {
+    "bth1141i": {
         "name": "Bth1141I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33318,7 +33318,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspT107I": {
+    "bspt107i": {
         "name": "BspT107I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -33329,7 +33329,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TfiTok4A2I": {
+    "tfitok4a2i": {
         "name": "TfiTok4A2I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -33340,7 +33340,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BinI": {
+    "bini": {
         "name": "BinI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -33351,7 +33351,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PmlI": {
+    "pmli": {
         "name": "PmlI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -33362,7 +33362,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmXII": {
+    "bsmxii": {
         "name": "BsmXII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33373,7 +33373,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK11CI": {
+    "vpak11ci": {
         "name": "VpaK11CI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -33384,7 +33384,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst22I": {
+    "bst22i": {
         "name": "Bst22I",
         "site": "ccnnnnnnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{7}g{2}",
@@ -33395,7 +33395,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsa29I": {
+    "bsa29i": {
         "name": "Bsa29I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -33406,7 +33406,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr39I": {
+    "cfr39i": {
         "name": "Cfr39I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -33417,7 +33417,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DpnI": {
+    "dpni": {
         "name": "DpnI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33428,7 +33428,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstNSII": {
+    "bstnsii": {
         "name": "BstNSII",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -33439,7 +33439,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspKI": {
+    "nspki": {
         "name": "NspKI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -33450,7 +33450,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1294I": {
+    "uba1294i": {
         "name": "Uba1294I",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -33461,7 +33461,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pma44I": {
+    "pma44i": {
         "name": "Pma44I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -33472,7 +33472,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1144I": {
+    "uba1144i": {
         "name": "Uba1144I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -33483,7 +33483,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1128I": {
+    "uba1128i": {
         "name": "Uba1128I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -33494,7 +33494,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseNI": {
+    "bseni": {
         "name": "BseNI",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -33505,7 +33505,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaSI": {
+    "nlasi": {
         "name": "NlaSI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -33516,7 +33516,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1257I": {
+    "uba1257i": {
         "name": "Uba1257I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -33527,7 +33527,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NcrI": {
+    "ncri": {
         "name": "NcrI",
         "site": "agatct",
         "forwardRegex": "agatct",
@@ -33538,7 +33538,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF42II": {
+    "hpyf42ii": {
         "name": "HpyF42II",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -33549,7 +33549,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1363I": {
+    "uba1363i": {
         "name": "Uba1363I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -33560,7 +33560,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF16I": {
+    "hpyf16i": {
         "name": "HpyF16I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -33571,7 +33571,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco196II": {
+    "eco196ii": {
         "name": "Eco196II",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -33582,7 +33582,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth1140I": {
+    "bth1140i": {
         "name": "Bth1140I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33593,7 +33593,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Alw44I": {
+    "alw44i": {
         "name": "Alw44I",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -33604,7 +33604,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO25I": {
+    "vcho25i": {
         "name": "VchO25I",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -33615,7 +33615,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK11BI": {
+    "vpak11bi": {
         "name": "VpaK11BI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -33626,7 +33626,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TtmI": {
+    "ttmi": {
         "name": "TtmI",
         "site": "acgt",
         "forwardRegex": "acgt",
@@ -33637,7 +33637,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsTII": {
+    "trstii": {
         "name": "TrsTII",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -33648,7 +33648,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr38I": {
+    "cfr38i": {
         "name": "Cfr38I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -33659,7 +33659,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MluB2I": {
+    "mlub2i": {
         "name": "MluB2I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -33670,7 +33670,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bca77I": {
+    "bca77i": {
         "name": "Bca77I",
         "site": "wccggw",
         "forwardRegex": "[atw]c{2}g{2}[atw]",
@@ -33681,7 +33681,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LlaG2I": {
+    "llag2i": {
         "name": "LlaG2I",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -33692,7 +33692,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CauB3I": {
+    "caub3i": {
         "name": "CauB3I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -33703,7 +33703,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MroXI": {
+    "mroxi": {
         "name": "MroXI",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -33714,7 +33714,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NblI": {
+    "nbli": {
         "name": "NblI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -33725,7 +33725,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1145I": {
+    "uba1145i": {
         "name": "Uba1145I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -33736,7 +33736,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SaoI": {
+    "saoi": {
         "name": "SaoI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -33747,7 +33747,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AitAI": {
+    "aitai": {
         "name": "AitAI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -33758,7 +33758,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF10IV": {
+    "hpyf10iv": {
         "name": "HpyF10IV",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -33769,7 +33769,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TteI": {
+    "ttei": {
         "name": "TteI",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -33780,7 +33780,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl1108II": {
+    "pfl1108ii": {
         "name": "Pfl1108II",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -33791,7 +33791,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1166I": {
+    "uba1166i": {
         "name": "Uba1166I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -33802,7 +33802,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstMWI": {
+    "bstmwi": {
         "name": "BstMWI",
         "site": "gcnnnnnnngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]{7}gc",
@@ -33813,7 +33813,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmeAII": {
+    "nmeaii": {
         "name": "NmeAII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33824,7 +33824,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Csp2I": {
+    "csp2i": {
         "name": "Csp2I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -33835,7 +33835,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco777I": {
+    "eco777i": {
         "name": "Eco777I",
         "site": "ggannnnnntatc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{6}tatc",
@@ -33846,7 +33846,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sth368I": {
+    "sth368i": {
         "name": "Sth368I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -33857,7 +33857,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu14I": {
+    "bpu14i": {
         "name": "Bpu14I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -33868,7 +33868,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl27I": {
+    "pfl27i": {
         "name": "Pfl27I",
         "site": "rggwccy",
         "forwardRegex": "[agr]g{2}[atw]c{2}[cty]",
@@ -33879,7 +33879,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SatI": {
+    "sati": {
         "name": "SatI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -33890,7 +33890,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp2500I": {
+    "bsp2500i": {
         "name": "Bsp2500I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -33901,7 +33901,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscVI": {
+    "bscvi": {
         "name": "BscVI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -33912,7 +33912,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SluI": {
+    "slui": {
         "name": "SluI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -33923,7 +33923,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN17I": {
+    "uban17i": {
         "name": "UbaN17I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -33934,7 +33934,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspD6I": {
+    "bspd6i": {
         "name": "BspD6I",
         "site": "gactc",
         "forwardRegex": "gactc",
@@ -33945,7 +33945,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbrPI": {
+    "bbrpi": {
         "name": "BbrPI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -33956,7 +33956,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RseI": {
+    "rsei": {
         "name": "RseI",
         "site": "caynnnnrtg",
         "forwardRegex": "ca[cty][abcdghkmnrstvwy]{4}[agr]tg",
@@ -33967,7 +33967,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse54I": {
+    "bse54i": {
         "name": "Bse54I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -33978,7 +33978,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtiI": {
+    "btii": {
         "name": "BtiI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -33989,7 +33989,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CthII": {
+    "cthii": {
         "name": "CthII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -34000,7 +34000,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme46I": {
+    "bme46i": {
         "name": "Bme46I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -34011,7 +34011,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJ67I": {
+    "bspj67i": {
         "name": "BspJ67I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -34022,7 +34022,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BavI": {
+    "bavi": {
         "name": "BavI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -34033,7 +34033,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy303I": {
+    "hpy303i": {
         "name": "Hpy303I",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -34044,7 +34044,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FatI": {
+    "fati": {
         "name": "FatI",
         "site": "catg",
         "forwardRegex": "catg",
@@ -34055,7 +34055,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspGI": {
+    "nspgi": {
         "name": "NspGI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -34066,7 +34066,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SnaBI": {
+    "snabi": {
         "name": "SnaBI",
         "site": "tacgta",
         "forwardRegex": "tacgta",
@@ -34077,7 +34077,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspBS31I": {
+    "bspbs31i": {
         "name": "BspBS31I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -34088,7 +34088,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK11I": {
+    "vpak11i": {
         "name": "VpaK11I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -34099,7 +34099,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1445I": {
+    "uba1445i": {
         "name": "Uba1445I",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -34110,7 +34110,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF36III": {
+    "hpyf36iii": {
         "name": "HpyF36III",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -34121,7 +34121,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau96mI": {
+    "sau96mi": {
         "name": "Sau96mI",
         "site": "ctyrag",
         "forwardRegex": "ct[cty][agr]ag",
@@ -34132,7 +34132,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AjiI": {
+    "ajii": {
         "name": "AjiI",
         "site": "cacgtc",
         "forwardRegex": "cacgtc",
@@ -34143,7 +34143,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaQI": {
+    "bsaqi": {
         "name": "BsaQI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -34154,7 +34154,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclRI": {
+    "eclri": {
         "name": "EclRI",
         "site": "cccggg",
         "forwardRegex": "c{3}g{3}",
@@ -34165,7 +34165,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RluI": {
+    "rlui": {
         "name": "RluI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -34176,7 +34176,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ZraI": {
+    "zrai": {
         "name": "ZraI",
         "site": "gacgtc",
         "forwardRegex": "gacgtc",
@@ -34187,7 +34187,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuHI": {
+    "bpuhi": {
         "name": "BpuHI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -34198,7 +34198,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1219I": {
+    "uba1219i": {
         "name": "Uba1219I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -34209,7 +34209,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TflI": {
+    "tfli": {
         "name": "TflI",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -34220,7 +34220,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1170I": {
+    "uba1170i": {
         "name": "Uba1170I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -34231,7 +34231,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspA2I": {
+    "aspa2i": {
         "name": "AspA2I",
         "site": "cctagg",
         "forwardRegex": "c{2}tag{2}",
@@ -34242,7 +34242,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspMAI": {
+    "bspmai": {
         "name": "BspMAI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -34253,7 +34253,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1201I": {
+    "uba1201i": {
         "name": "Uba1201I",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -34264,7 +34264,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cte1I": {
+    "cte1i": {
         "name": "Cte1I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -34275,7 +34275,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ16I": {
+    "bstz16i": {
         "name": "BstZ16I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -34286,7 +34286,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoAI": {
+    "ecoai": {
         "name": "EcoAI",
         "site": "gagnnnnnnngtca",
         "forwardRegex": "gag[abcdghkmnrstvwy]{7}gtca",
@@ -34297,7 +34297,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp67II": {
+    "msp67ii": {
         "name": "Msp67II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34308,7 +34308,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SalHI": {
+    "salhi": {
         "name": "SalHI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34319,7 +34319,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FscI": {
+    "fsci": {
         "name": "FscI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -34330,7 +34330,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hsp92I": {
+    "hsp92i": {
         "name": "Hsp92I",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -34341,7 +34341,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba59I": {
+    "uba59i": {
         "name": "Uba59I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34352,7 +34352,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ese6II": {
+    "ese6ii": {
         "name": "Ese6II",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -34363,7 +34363,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinfIII": {
+    "hinfiii": {
         "name": "HinfIII",
         "site": "cgaat",
         "forwardRegex": "cga{2}t",
@@ -34374,7 +34374,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau14I": {
+    "sau14i": {
         "name": "Sau14I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -34385,7 +34385,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MluI": {
+    "mlui": {
         "name": "MluI",
         "site": "acgcgt",
         "forwardRegex": "acgcgt",
@@ -34396,7 +34396,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.BabI": {
+    "m.babi": {
         "name": "M.BabI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -34407,7 +34407,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauEI": {
+    "sauei": {
         "name": "SauEI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34418,7 +34418,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau13I": {
+    "sau13i": {
         "name": "Sau13I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -34429,7 +34429,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AasI": {
+    "aasi": {
         "name": "AasI",
         "site": "gacnnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{6}gtc",
@@ -34440,7 +34440,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpuXI": {
+    "ppuxi": {
         "name": "PpuXI",
         "site": "rggwccy",
         "forwardRegex": "[agr]g{2}[atw]c{2}[cty]",
@@ -34451,7 +34451,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1397I": {
+    "uba1397i": {
         "name": "Uba1397I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -34462,7 +34462,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstENI": {
+    "bsteni": {
         "name": "BstENI",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -34473,7 +34473,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PvuHKUI": {
+    "pvuhkui": {
         "name": "PvuHKUI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -34484,7 +34484,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp4800I": {
+    "ssp4800i": {
         "name": "Ssp4800I",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -34495,7 +34495,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp47I": {
+    "ssp47i": {
         "name": "Ssp47I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -34506,7 +34506,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AflII": {
+    "aflii": {
         "name": "AflII",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -34517,7 +34517,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfrAI": {
+    "bfrai": {
         "name": "BfrAI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -34528,7 +34528,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaF12I": {
+    "ubaf12i": {
         "name": "UbaF12I",
         "site": "ctacnnngtc",
         "forwardRegex": "ctac[abcdghkmnrstvwy]{3}gtc",
@@ -34539,7 +34539,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauDI": {
+    "saudi": {
         "name": "SauDI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34550,7 +34550,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu10I": {
+    "ppu10i": {
         "name": "Ppu10I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -34561,7 +34561,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuCI": {
+    "nmuci": {
         "name": "NmuCI",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -34572,7 +34572,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PspN4I": {
+    "pspn4i": {
         "name": "PspN4I",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -34583,7 +34583,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PunAII": {
+    "punaii": {
         "name": "PunAII",
         "site": "rcatgy",
         "forwardRegex": "[agr]catg[cty]",
@@ -34594,7 +34594,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RshII": {
+    "rshii": {
         "name": "RshII",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -34605,7 +34605,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1322I": {
+    "uba1322i": {
         "name": "Uba1322I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -34616,7 +34616,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin5III": {
+    "hin5iii": {
         "name": "Hin5III",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -34627,7 +34627,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApaBI": {
+    "apabi": {
         "name": "ApaBI",
         "site": "gcannnnntgc",
         "forwardRegex": "gca[abcdghkmnrstvwy]{5}tgc",
@@ -34638,7 +34638,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco255I": {
+    "eco255i": {
         "name": "Eco255I",
         "site": "agtact",
         "forwardRegex": "agtact",
@@ -34649,7 +34649,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspBII": {
+    "aspbii": {
         "name": "AspBII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -34660,7 +34660,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuGCI": {
+    "bpugci": {
         "name": "BpuGCI",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -34671,7 +34671,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp548I": {
+    "bsp548i": {
         "name": "Bsp548I",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -34682,7 +34682,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1442I": {
+    "uba1442i": {
         "name": "Uba1442I",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -34693,7 +34693,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyNI": {
+    "hpyni": {
         "name": "HpyNI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -34704,7 +34704,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DraI": {
+    "drai": {
         "name": "DraI",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -34715,7 +34715,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco217I": {
+    "eco217i": {
         "name": "Eco217I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -34726,7 +34726,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MspBI": {
+    "mspbi": {
         "name": "MspBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34737,7 +34737,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp48I": {
+    "ssp48i": {
         "name": "Ssp48I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -34748,7 +34748,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrNI": {
+    "cfrni": {
         "name": "CfrNI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -34759,7 +34759,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmeU1594I": {
+    "bmeu1594i": {
         "name": "BmeU1594I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -34770,7 +34770,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceRI": {
+    "bceri": {
         "name": "BceRI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -34781,7 +34781,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauGI": {
+    "saugi": {
         "name": "SauGI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34792,7 +34792,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CjeEDam": {
+    "m.cjeedam": {
         "name": "M.CjeEDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34803,7 +34803,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsiSI": {
+    "asisi": {
         "name": "AsiSI",
         "site": "gcgatcgc",
         "forwardRegex": "gcgatcgc",
@@ -34814,7 +34814,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp44I": {
+    "bsp44i": {
         "name": "Bsp44I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -34825,7 +34825,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse19I": {
+    "bse19i": {
         "name": "Bse19I",
         "site": "ccatgg",
         "forwardRegex": "c{2}atg{2}",
@@ -34836,7 +34836,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp6II": {
+    "bsp6ii": {
         "name": "Bsp6II",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -34847,7 +34847,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mly113I": {
+    "mly113i": {
         "name": "Mly113I",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -34858,7 +34858,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ava458I": {
+    "ava458i": {
         "name": "Ava458I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -34869,7 +34869,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HhaI": {
+    "hhai": {
         "name": "HhaI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -34880,7 +34880,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoMVIII": {
+    "ngomviii": {
         "name": "NgoMVIII",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -34891,7 +34891,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspH226I": {
+    "bsph226i": {
         "name": "BspH226I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -34902,7 +34902,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Afl83II": {
+    "afl83ii": {
         "name": "Afl83II",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -34913,7 +34913,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp26HI": {
+    "asp26hi": {
         "name": "Asp26HI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -34924,7 +34924,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauFI": {
+    "saufi": {
         "name": "SauFI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -34935,7 +34935,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1210I": {
+    "uba1210i": {
         "name": "Uba1210I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -34946,7 +34946,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmpI": {
+    "bmpi": {
         "name": "BmpI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -34957,7 +34957,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AitII": {
+    "aitii": {
         "name": "AitII",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -34968,7 +34968,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1435I": {
+    "uba1435i": {
         "name": "Uba1435I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -34979,7 +34979,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF13I": {
+    "hpyf13i": {
         "name": "HpyF13I",
         "site": "gtsac",
         "forwardRegex": "gt[cgs]ac",
@@ -34990,7 +34990,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NhaXI": {
+    "nhaxi": {
         "name": "NhaXI",
         "site": "caagrag",
         "forwardRegex": "ca{2}g[agr]ag",
@@ -35001,7 +35001,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstDSI": {
+    "bstdsi": {
         "name": "BstDSI",
         "site": "ccrygg",
         "forwardRegex": "c{2}[agr][cty]g{2}",
@@ -35012,7 +35012,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscRI": {
+    "bscri": {
         "name": "BscRI",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -35023,7 +35023,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acs1421I": {
+    "acs1421i": {
         "name": "Acs1421I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -35034,7 +35034,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco185I": {
+    "eco185i": {
         "name": "Eco185I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -35045,7 +35045,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MreI": {
+    "mrei": {
         "name": "MreI",
         "site": "cgccggcg",
         "forwardRegex": "cgc{2}g{2}cg",
@@ -35056,7 +35056,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco201I": {
+    "eco201i": {
         "name": "Eco201I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -35067,7 +35067,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FdiI": {
+    "fdii": {
         "name": "FdiI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -35078,7 +35078,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba20I": {
+    "uba20i": {
         "name": "Uba20I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -35089,7 +35089,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstEII": {
+    "bsteii": {
         "name": "BstEII",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -35100,7 +35100,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp122I": {
+    "bsp122i": {
         "name": "Bsp122I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35111,7 +35111,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PlaI": {
+    "plai": {
         "name": "PlaI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -35122,7 +35122,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1452I": {
+    "uba1452i": {
         "name": "Uba1452I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -35133,7 +35133,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TteAI": {
+    "tteai": {
         "name": "TteAI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -35144,7 +35144,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuSI": {
+    "bpusi": {
         "name": "BpuSI",
         "site": "gggac",
         "forwardRegex": "g{3}ac",
@@ -35155,7 +35155,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiZI": {
+    "bsizi": {
         "name": "BsiZI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -35166,7 +35166,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acs1422I": {
+    "acs1422i": {
         "name": "Acs1422I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -35177,7 +35177,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrBI": {
+    "bsrbi": {
         "name": "BsrBI",
         "site": "ccgctc",
         "forwardRegex": "c{2}gctc",
@@ -35188,7 +35188,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BglII": {
+    "bglii": {
         "name": "BglII",
         "site": "agatct",
         "forwardRegex": "agatct",
@@ -35199,7 +35199,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1289I": {
+    "uba1289i": {
         "name": "Uba1289I",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -35210,7 +35210,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AxyI": {
+    "axyi": {
         "name": "AxyI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -35221,7 +35221,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtkI": {
+    "btki": {
         "name": "BtkI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -35232,7 +35232,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bbv12I": {
+    "bbv12i": {
         "name": "Bbv12I",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -35243,7 +35243,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF49V": {
+    "hpyf49v": {
         "name": "HpyF49V",
         "site": "tgca",
         "forwardRegex": "tgca",
@@ -35254,7 +35254,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BtsPI": {
+    "btspi": {
         "name": "BtsPI",
         "site": "gggtc",
         "forwardRegex": "g{3}tc",
@@ -35265,7 +35265,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF59II": {
+    "hpyf59ii": {
         "name": "HpyF59II",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -35276,7 +35276,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco57I": {
+    "eco57i": {
         "name": "Eco57I",
         "site": "ctgaag",
         "forwardRegex": "ctga{2}g",
@@ -35287,7 +35287,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NgoBXII": {
+    "m.ngobxii": {
         "name": "M.NgoBXII",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -35298,7 +35298,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ppu21I": {
+    "ppu21i": {
         "name": "Ppu21I",
         "site": "yacgtr",
         "forwardRegex": "[cty]acgt[agr]",
@@ -35309,7 +35309,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SalAI": {
+    "salai": {
         "name": "SalAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35320,7 +35320,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R1.Ssu11318I": {
+    "r1.ssu11318i": {
         "name": "R1.Ssu11318I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35331,7 +35331,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bfi105I": {
+    "bfi105i": {
         "name": "Bfi105I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -35342,7 +35342,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Ssp6803Dam": {
+    "m.ssp6803dam": {
         "name": "M.Ssp6803Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35353,7 +35353,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PabI": {
+    "pabi": {
         "name": "PabI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -35364,7 +35364,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK11DI": {
+    "vpak11di": {
         "name": "VpaK11DI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -35375,7 +35375,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN7I": {
+    "uban7i": {
         "name": "UbaN7I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -35386,7 +35386,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstMBI": {
+    "bstmbi": {
         "name": "BstMBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35397,7 +35397,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SseI": {
+    "ssei": {
         "name": "SseI",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -35408,7 +35408,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst158I": {
+    "bst158i": {
         "name": "Bst158I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -35419,7 +35419,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce751I": {
+    "bce751i": {
         "name": "Bce751I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -35430,7 +35430,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscI": {
+    "bsci": {
         "name": "BscI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -35441,7 +35441,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF44II": {
+    "hpyf44ii": {
         "name": "HpyF44II",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -35452,7 +35452,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GseI": {
+    "gsei": {
         "name": "GseI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -35463,7 +35463,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MliI": {
+    "mlii": {
         "name": "MliI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -35474,7 +35474,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RalF40I": {
+    "ralf40i": {
         "name": "RalF40I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35485,7 +35485,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KoxII": {
+    "koxii": {
         "name": "KoxII",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -35496,7 +35496,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp1406I": {
+    "psp1406i": {
         "name": "Psp1406I",
         "site": "aacgtt",
         "forwardRegex": "a{2}cgt{2}",
@@ -35507,7 +35507,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauCI": {
+    "sauci": {
         "name": "SauCI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -35518,7 +35518,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstX2I": {
+    "bstx2i": {
         "name": "BstX2I",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -35529,7 +35529,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaNI": {
+    "bsani": {
         "name": "BsaNI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -35540,7 +35540,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp266I": {
+    "tsp266i": {
         "name": "Tsp266I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -35551,7 +35551,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp143II": {
+    "bsp143ii": {
         "name": "Bsp143II",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -35562,7 +35562,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KflI": {
+    "kfli": {
         "name": "KflI",
         "site": "gggwccc",
         "forwardRegex": "g{3}[atw]c{3}",
@@ -35573,7 +35573,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiLI": {
+    "bsili": {
         "name": "BsiLI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -35584,7 +35584,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau17I": {
+    "sau17i": {
         "name": "Sau17I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -35595,7 +35595,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJ74I": {
+    "bspj74i": {
         "name": "BspJ74I",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -35606,7 +35606,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsoII": {
+    "ssoii": {
         "name": "SsoII",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -35617,7 +35617,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst170I": {
+    "bst170i": {
         "name": "Bst170I",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -35628,7 +35628,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF21II": {
+    "hpyf21ii": {
         "name": "HpyF21II",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -35639,7 +35639,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1348I": {
+    "eco1348i": {
         "name": "Eco1348I",
         "site": "ggannnnnntatc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{6}tatc",
@@ -35650,7 +35650,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr19I": {
+    "cfr19i": {
         "name": "Cfr19I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -35661,7 +35661,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1214I": {
+    "uba1214i": {
         "name": "Uba1214I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -35672,7 +35672,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp50I": {
+    "bsp50i": {
         "name": "Bsp50I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -35683,7 +35683,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst12I": {
+    "bst12i": {
         "name": "Bst12I",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -35694,7 +35694,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp8HI": {
+    "asp8hi": {
         "name": "Asp8HI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -35705,7 +35705,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sau557I": {
+    "sau557i": {
         "name": "Sau557I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -35716,7 +35716,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1184I": {
+    "uba1184i": {
         "name": "Uba1184I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -35727,7 +35727,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco98I": {
+    "eco98i": {
         "name": "Eco98I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -35738,7 +35738,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpvI": {
+    "spvi": {
         "name": "SpvI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -35749,7 +35749,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr45II": {
+    "cfr45ii": {
         "name": "Cfr45II",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -35760,7 +35760,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF65II": {
+    "hpyf65ii": {
         "name": "HpyF65II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -35771,7 +35771,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdCI": {
+    "drdci": {
         "name": "DrdCI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -35782,7 +35782,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceSII": {
+    "bcesii": {
         "name": "BceSII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -35793,7 +35793,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BamGI": {
+    "bamgi": {
         "name": "BamGI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -35804,7 +35804,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp98I": {
+    "bsp98i": {
         "name": "Bsp98I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -35815,7 +35815,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsiCI": {
+    "bsici": {
         "name": "BsiCI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -35826,7 +35826,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1347I": {
+    "uba1347i": {
         "name": "Uba1347I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -35837,7 +35837,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmuEI": {
+    "smuei": {
         "name": "SmuEI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -35848,7 +35848,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyAIV": {
+    "hpyaiv": {
         "name": "HpyAIV",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -35859,7 +35859,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PinBII": {
+    "pinbii": {
         "name": "PinBII",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -35870,7 +35870,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Sol10179I": {
+    "sol10179i": {
         "name": "Sol10179I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -35881,7 +35881,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcoDI": {
+    "bcodi": {
         "name": "BcoDI",
         "site": "gtctc",
         "forwardRegex": "gtctc",
@@ -35892,7 +35892,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FunII": {
+    "funii": {
         "name": "FunII",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -35903,7 +35903,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsePI": {
+    "bsepi": {
         "name": "BsePI",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -35914,7 +35914,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco167I": {
+    "eco167i": {
         "name": "Eco167I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -35925,7 +35925,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1097I": {
+    "uba1097i": {
         "name": "Uba1097I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -35936,7 +35936,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HindI": {
+    "hindi": {
         "name": "HindI",
         "site": "cac",
         "forwardRegex": "cac",
@@ -35947,7 +35947,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AseII": {
+    "aseii": {
         "name": "AseII",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -35958,7 +35958,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthHI": {
+    "sthhi": {
         "name": "SthHI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -35969,7 +35969,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AlwNI": {
+    "alwni": {
         "name": "AlwNI",
         "site": "cagnnnctg",
         "forwardRegex": "cag[abcdghkmnrstvwy]{3}ctg",
@@ -35980,7 +35980,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TtmII": {
+    "ttmii": {
         "name": "TtmII",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -35991,7 +35991,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfaI": {
+    "cfai": {
         "name": "CfaI",
         "site": "raatty",
         "forwardRegex": "[agr]a{2}t{2}[cty]",
@@ -36002,7 +36002,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1311I": {
+    "uba1311i": {
         "name": "Uba1311I",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -36013,7 +36013,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdIII": {
+    "drdiii": {
         "name": "DrdIII",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -36024,7 +36024,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiCI": {
+    "hgici": {
         "name": "HgiCI",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -36035,7 +36035,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApaLI": {
+    "apali": {
         "name": "ApaLI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -36046,7 +36046,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1239I": {
+    "uba1239i": {
         "name": "Uba1239I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -36057,7 +36057,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TmaI": {
+    "tmai": {
         "name": "TmaI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -36068,7 +36068,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp23I": {
+    "bsp23i": {
         "name": "Bsp23I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -36079,7 +36079,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EagI": {
+    "eagi": {
         "name": "EagI",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -36090,7 +36090,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco233I": {
+    "eco233i": {
         "name": "Eco233I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -36101,7 +36101,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthGI": {
+    "sthgi": {
         "name": "SthGI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -36112,7 +36112,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdAI": {
+    "drdai": {
         "name": "DrdAI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -36123,7 +36123,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspRFI": {
+    "ssprfi": {
         "name": "SspRFI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -36134,7 +36134,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccI": {
+    "acci": {
         "name": "AccI",
         "site": "gtmkac",
         "forwardRegex": "gt[acm][gkt]ac",
@@ -36145,7 +36145,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FaeI": {
+    "faei": {
         "name": "FaeI",
         "site": "catg",
         "forwardRegex": "catg",
@@ -36156,7 +36156,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CsiAI": {
+    "csiai": {
         "name": "CsiAI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -36167,7 +36167,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscUI": {
+    "bscui": {
         "name": "BscUI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -36178,7 +36178,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp29I": {
+    "bsp29i": {
         "name": "Bsp29I",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -36189,7 +36189,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.EcoT2Dam": {
+    "m.ecot2dam": {
         "name": "M.EcoT2Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -36200,7 +36200,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrS37I": {
+    "cfrs37i": {
         "name": "CfrS37I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -36211,7 +36211,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba11I": {
+    "uba11i": {
         "name": "Uba11I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -36222,7 +36222,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1228I": {
+    "uba1228i": {
         "name": "Uba1228I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -36233,7 +36233,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcaII": {
+    "acaii": {
         "name": "AcaII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -36244,7 +36244,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgaI": {
+    "hgai": {
         "name": "HgaI",
         "site": "gacgc",
         "forwardRegex": "gacgc",
@@ -36255,7 +36255,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfiSHI": {
+    "bfishi": {
         "name": "BfiSHI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -36266,7 +36266,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BloHIII": {
+    "blohiii": {
         "name": "BloHIII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -36277,7 +36277,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NciAI": {
+    "nciai": {
         "name": "NciAI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -36288,7 +36288,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthFI": {
+    "sthfi": {
         "name": "SthFI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -36299,7 +36299,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdBI": {
+    "drdbi": {
         "name": "DrdBI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -36310,7 +36310,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Csp68KIV": {
+    "m.csp68kiv": {
         "name": "M.Csp68KIV",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -36321,7 +36321,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LspI": {
+    "lspi": {
         "name": "LspI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -36332,7 +36332,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bse8I": {
+    "bse8i": {
         "name": "Bse8I",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -36343,7 +36343,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF65III": {
+    "hpyf65iii": {
         "name": "HpyF65III",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -36354,7 +36354,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpmI": {
+    "bpmi": {
         "name": "BpmI",
         "site": "ctggag",
         "forwardRegex": "ctg{2}ag",
@@ -36365,7 +36365,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SpaPIII": {
+    "spapiii": {
         "name": "SpaPIII",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -36376,7 +36376,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bfi458I": {
+    "bfi458i": {
         "name": "Bfi458I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -36387,7 +36387,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.PhiMx8I": {
+    "m.phimx8i": {
         "name": "M.PhiMx8I",
         "site": "ctssag",
         "forwardRegex": "ct[cgs]{2}ag",
@@ -36398,7 +36398,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp748I": {
+    "asp748i": {
         "name": "Asp748I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -36409,7 +36409,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviJI": {
+    "cviji": {
         "name": "CviJI",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -36420,7 +36420,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TliI": {
+    "tlii": {
         "name": "TliI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -36431,7 +36431,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NdeII": {
+    "ndeii": {
         "name": "NdeII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -36442,7 +36442,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseII": {
+    "bseii": {
         "name": "BseII",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -36453,7 +36453,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "OtuI": {
+    "otui": {
         "name": "OtuI",
         "site": "agct",
         "forwardRegex": "agct",
@@ -36464,7 +36464,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsvI": {
+    "ssvi": {
         "name": "SsvI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -36475,7 +36475,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoBI": {
+    "bsobi": {
         "name": "BsoBI",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -36486,7 +36486,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HgiHI": {
+    "hgihi": {
         "name": "HgiHI",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -36497,7 +36497,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthMI": {
+    "sthmi": {
         "name": "SthMI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -36508,7 +36508,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1237I": {
+    "uba1237i": {
         "name": "Uba1237I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -36519,7 +36519,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1336I": {
+    "uba1336i": {
         "name": "Uba1336I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -36530,7 +36530,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MalI": {
+    "mali": {
         "name": "MalI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -36541,7 +36541,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaO5I": {
+    "vpao5i": {
         "name": "VpaO5I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -36552,7 +36552,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsrAI": {
+    "bsrai": {
         "name": "BsrAI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -36563,7 +36563,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst2I": {
+    "bst2i": {
         "name": "Bst2I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -36574,7 +36574,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acc38I": {
+    "acc38i": {
         "name": "Acc38I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -36585,7 +36585,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba13I": {
+    "uba13i": {
         "name": "Uba13I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -36596,7 +36596,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1379I": {
+    "uba1379i": {
         "name": "Uba1379I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -36607,7 +36607,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EgeI": {
+    "egei": {
         "name": "EgeI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -36618,7 +36618,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF27I": {
+    "hpyf27i": {
         "name": "HpyF27I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -36629,7 +36629,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SplAII": {
+    "splaii": {
         "name": "SplAII",
         "site": "gacnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{3}gtc",
@@ -36640,7 +36640,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MchAI": {
+    "mchai": {
         "name": "MchAI",
         "site": "gcggccgc",
         "forwardRegex": "gcg{2}c{2}gc",
@@ -36651,7 +36651,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XorKI": {
+    "xorki": {
         "name": "XorKI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -36662,7 +36662,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TseI": {
+    "tsei": {
         "name": "TseI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -36673,7 +36673,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthLI": {
+    "sthli": {
         "name": "SthLI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -36684,7 +36684,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco83I": {
+    "eco83i": {
         "name": "Eco83I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -36695,7 +36695,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "LweI": {
+    "lwei": {
         "name": "LweI",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -36706,7 +36706,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TdeIII": {
+    "tdeiii": {
         "name": "TdeIII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -36717,7 +36717,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bfi89I": {
+    "bfi89i": {
         "name": "Bfi89I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -36728,7 +36728,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp4CI": {
+    "tsp4ci": {
         "name": "Tsp4CI",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -36739,7 +36739,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BloHI": {
+    "blohi": {
         "name": "BloHI",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -36750,7 +36750,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XcaI": {
+    "xcai": {
         "name": "XcaI",
         "site": "gtatac",
         "forwardRegex": "gtatac",
@@ -36761,7 +36761,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "RhcI": {
+    "rhci": {
         "name": "RhcI",
         "site": "tcatga",
         "forwardRegex": "tcatga",
@@ -36772,7 +36772,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst1I": {
+    "bst1i": {
         "name": "Bst1I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -36783,7 +36783,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KpnI": {
+    "kpni": {
         "name": "KpnI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -36794,7 +36794,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuCI": {
+    "fnuci": {
         "name": "FnuCI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -36805,7 +36805,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BcoAI": {
+    "bcoai": {
         "name": "BcoAI",
         "site": "cacgtg",
         "forwardRegex": "cacgtg",
@@ -36816,7 +36816,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SblCI": {
+    "sblci": {
         "name": "SblCI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -36827,7 +36827,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SenPI": {
+    "senpi": {
         "name": "SenPI",
         "site": "ccngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]g{2}",
@@ -36838,7 +36838,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ApeAI": {
+    "apeai": {
         "name": "ApeAI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -36849,7 +36849,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspDII": {
+    "nspdii": {
         "name": "NspDII",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -36860,7 +36860,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspO4I": {
+    "bspo4i": {
         "name": "BspO4I",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -36871,7 +36871,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TseAI": {
+    "tseai": {
         "name": "TseAI",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -36882,7 +36882,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbeAI": {
+    "bbeai": {
         "name": "BbeAI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -36893,7 +36893,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccB1I": {
+    "accb1i": {
         "name": "AccB1I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -36904,7 +36904,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthKI": {
+    "sthki": {
         "name": "SthKI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -36915,7 +36915,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BchI": {
+    "bchi": {
         "name": "BchI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -36926,7 +36926,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1280I": {
+    "uba1280i": {
         "name": "Uba1280I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -36937,7 +36937,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdEI": {
+    "drdei": {
         "name": "DrdEI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -36948,7 +36948,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Afa24RI": {
+    "afa24ri": {
         "name": "Afa24RI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -36959,7 +36959,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl32DII": {
+    "srl32dii": {
         "name": "Srl32DII",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -36970,7 +36970,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspBI": {
+    "tspbi": {
         "name": "TspBI",
         "site": "ccrygg",
         "forwardRegex": "c{2}[agr][cty]g{2}",
@@ -36981,7 +36981,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rtr20I": {
+    "rtr20i": {
         "name": "Rtr20I",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -36992,7 +36992,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr37I": {
+    "cfr37i": {
         "name": "Cfr37I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -37003,7 +37003,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspIII": {
+    "nspiii": {
         "name": "NspIII",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -37014,7 +37014,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF25I": {
+    "hpyf25i": {
         "name": "HpyF25I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -37025,7 +37025,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu1114I": {
+    "bsu1114i": {
         "name": "Bsu1114I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -37036,7 +37036,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HalI": {
+    "hali": {
         "name": "HalI",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -37047,7 +37047,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Van91II": {
+    "van91ii": {
         "name": "Van91II",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -37058,7 +37058,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco161I": {
+    "eco161i": {
         "name": "Eco161I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -37069,7 +37069,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1263I": {
+    "uba1263i": {
         "name": "Uba1263I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -37080,7 +37080,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XorII": {
+    "xorii": {
         "name": "XorII",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -37091,7 +37091,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF10III": {
+    "hpyf10iii": {
         "name": "HpyF10III",
         "site": "ccnngg",
         "forwardRegex": "c{2}[abcdghkmnrstvwy]{2}g{2}",
@@ -37102,7 +37102,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ClcII": {
+    "clcii": {
         "name": "ClcII",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -37113,7 +37113,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthJI": {
+    "sthji": {
         "name": "SthJI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -37124,7 +37124,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DrdFI": {
+    "drdfi": {
         "name": "DrdFI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -37135,7 +37135,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoHK31I": {
+    "ecohk31i": {
         "name": "EcoHK31I",
         "site": "yggccr",
         "forwardRegex": "[cty]g{2}c{2}[agr]",
@@ -37146,7 +37146,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuEI": {
+    "fnuei": {
         "name": "FnuEI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -37157,7 +37157,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco147I": {
+    "eco147i": {
         "name": "Eco147I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -37168,7 +37168,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ksp632I": {
+    "ksp632i": {
         "name": "Ksp632I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -37179,7 +37179,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssu220I": {
+    "ssu220i": {
         "name": "Ssu220I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -37190,7 +37190,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NmuFI": {
+    "nmufi": {
         "name": "NmuFI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -37201,7 +37201,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1264I": {
+    "uba1264i": {
         "name": "Uba1264I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -37212,7 +37212,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1159I": {
+    "uba1159i": {
         "name": "Uba1159I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -37223,7 +37223,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Kpn19I": {
+    "kpn19i": {
         "name": "Kpn19I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -37234,7 +37234,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HaeIII": {
+    "haeiii": {
         "name": "HaeIII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -37245,7 +37245,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1161I": {
+    "uba1161i": {
         "name": "Uba1161I",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -37256,7 +37256,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba58I": {
+    "uba58i": {
         "name": "Uba58I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -37267,7 +37267,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK15I": {
+    "vpak15i": {
         "name": "VpaK15I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -37278,7 +37278,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BceBI": {
+    "bcebi": {
         "name": "BceBI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -37289,7 +37289,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu10I": {
+    "bpu10i": {
         "name": "Bpu10I",
         "site": "cctnagc",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]agc",
@@ -37300,7 +37300,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1399I": {
+    "uba1399i": {
         "name": "Uba1399I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -37311,7 +37311,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthAI": {
+    "sthai": {
         "name": "SthAI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -37322,7 +37322,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoP15I": {
+    "ecop15i": {
         "name": "EcoP15I",
         "site": "cagcag",
         "forwardRegex": "cagcag",
@@ -37333,7 +37333,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Nli3877I": {
+    "nli3877i": {
         "name": "Nli3877I",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -37344,7 +37344,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinS2I": {
+    "hins2i": {
         "name": "HinS2I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -37355,7 +37355,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp3I": {
+    "esp3i": {
         "name": "Esp3I",
         "site": "cgtctc",
         "forwardRegex": "cgtctc",
@@ -37366,7 +37366,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoHI": {
+    "bsohi": {
         "name": "BsoHI",
         "site": "actgg",
         "forwardRegex": "actg{2}",
@@ -37377,7 +37377,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstD102I": {
+    "bstd102i": {
         "name": "BstD102I",
         "site": "ccgctc",
         "forwardRegex": "c{2}gctc",
@@ -37388,7 +37388,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mel7JI": {
+    "mel7ji": {
         "name": "Mel7JI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -37399,7 +37399,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF74I": {
+    "hpyf74i": {
         "name": "HpyF74I",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -37410,7 +37410,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EccI": {
+    "ecci": {
         "name": "EccI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -37421,7 +37421,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SblBI": {
+    "sblbi": {
         "name": "SblBI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -37432,7 +37432,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1375I": {
+    "uba1375i": {
         "name": "Uba1375I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -37443,7 +37443,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuMBI": {
+    "asumbi": {
         "name": "AsuMBI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -37454,7 +37454,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZ9I": {
+    "bstz9i": {
         "name": "BstZ9I",
         "site": "acgcgt",
         "forwardRegex": "acgcgt",
@@ -37465,7 +37465,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1185I": {
+    "uba1185i": {
         "name": "Uba1185I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -37476,7 +37476,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpu1811I": {
+    "bpu1811i": {
         "name": "Bpu1811I",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -37487,7 +37487,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco67I": {
+    "eco67i": {
         "name": "Eco67I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -37498,7 +37498,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MjaII": {
+    "mjaii": {
         "name": "MjaII",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -37509,7 +37509,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BssHI": {
+    "bsshi": {
         "name": "BssHI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -37520,7 +37520,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1221I": {
+    "uba1221i": {
         "name": "Uba1221I",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -37531,7 +37531,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1362I": {
+    "uba1362i": {
         "name": "Uba1362I",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -37542,7 +37542,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySEAI": {
+    "styseai": {
         "name": "StySEAI",
         "site": "acannnnnntyca",
         "forwardRegex": "aca[abcdghkmnrstvwy]{6}t[cty]ca",
@@ -37553,7 +37553,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF51II": {
+    "hpyf51ii": {
         "name": "HpyF51II",
         "site": "acngt",
         "forwardRegex": "ac[abcdghkmnrstvwy]gt",
@@ -37564,7 +37564,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.CviAIV": {
+    "m.cviaiv": {
         "name": "M.CviAIV",
         "site": "rgcb",
         "forwardRegex": "[agr]gc[bcgksty]",
@@ -37575,7 +37575,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CjeP338II": {
+    "cjep338ii": {
         "name": "CjeP338II",
         "site": "gcatc",
         "forwardRegex": "gcatc",
@@ -37586,7 +37586,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AmeI": {
+    "amei": {
         "name": "AmeI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -37597,7 +37597,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco100I": {
+    "eco100i": {
         "name": "Eco100I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -37608,7 +37608,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BavBI": {
+    "bavbi": {
         "name": "BavBI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -37619,7 +37619,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF73IV": {
+    "hpyf73iv": {
         "name": "HpyF73IV",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -37630,7 +37630,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NspIV": {
+    "nspiv": {
         "name": "NspIV",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -37641,7 +37641,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.SPRI": {
+    "m.spri": {
         "name": "M.SPRI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -37652,7 +37652,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SblAI": {
+    "sblai": {
         "name": "SblAI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -37663,7 +37663,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BpuDI": {
+    "bpudi": {
         "name": "BpuDI",
         "site": "cctnagc",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]agc",
@@ -37674,7 +37674,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfl67I": {
+    "pfl67i": {
         "name": "Pfl67I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -37685,7 +37685,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK7AI": {
+    "vpak7ai": {
         "name": "VpaK7AI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -37696,7 +37696,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1222I": {
+    "uba1222i": {
         "name": "Uba1222I",
         "site": "gctnagc",
         "forwardRegex": "gct[abcdghkmnrstvwy]agc",
@@ -37707,7 +37707,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT14I": {
+    "ecot14i": {
         "name": "EcoT14I",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -37718,7 +37718,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HhgI": {
+    "hhgi": {
         "name": "HhgI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -37729,7 +37729,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BavAI": {
+    "bavai": {
         "name": "BavAI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -37740,7 +37740,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinS1I": {
+    "hins1i": {
         "name": "HinS1I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -37751,7 +37751,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcaI": {
+    "ecai": {
         "name": "EcaI",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -37762,7 +37762,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco252I": {
+    "eco252i": {
         "name": "Eco252I",
         "site": "gaattc",
         "forwardRegex": "ga{2}t{2}c",
@@ -37773,7 +37773,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PolI": {
+    "poli": {
         "name": "PolI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -37784,7 +37784,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1449I": {
+    "uba1449i": {
         "name": "Uba1449I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -37795,7 +37795,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF44I": {
+    "hpyf44i": {
         "name": "HpyF44I",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -37806,7 +37806,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AlwXI": {
+    "alwxi": {
         "name": "AlwXI",
         "site": "gcagc",
         "forwardRegex": "gcagc",
@@ -37817,7 +37817,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp151I": {
+    "bsp151i": {
         "name": "Bsp151I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -37828,7 +37828,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsh108AI": {
+    "bsh108ai": {
         "name": "Bsh108AI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -37839,7 +37839,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth1786I": {
+    "bth1786i": {
         "name": "Bth1786I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -37850,7 +37850,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BaeI": {
+    "baei": {
         "name": "BaeI",
         "site": "acnnnngtayc",
         "forwardRegex": "ac[abcdghkmnrstvwy]{4}gta[cty]c",
@@ -37861,7 +37861,7 @@ module.exports = {
         "usForward": 23,
         "usReverse": 18
     },
-    "SspCI": {
+    "sspci": {
         "name": "SspCI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -37872,7 +37872,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaI": {
+    "nlai": {
         "name": "NlaI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -37883,7 +37883,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflWI": {
+    "pflwi": {
         "name": "PflWI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -37894,7 +37894,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoWI": {
+    "ngowi": {
         "name": "NgoWI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -37905,7 +37905,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "KspAI": {
+    "kspai": {
         "name": "KspAI",
         "site": "gttaac",
         "forwardRegex": "gt{2}a{2}c",
@@ -37916,7 +37916,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme18I": {
+    "bme18i": {
         "name": "Bme18I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -37927,7 +37927,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp16I": {
+    "msp16i": {
         "name": "Msp16I",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -37938,7 +37938,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp12I": {
+    "bsp12i": {
         "name": "Bsp12I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -37949,7 +37949,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1355I": {
+    "uba1355i": {
         "name": "Uba1355I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -37960,7 +37960,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthEI": {
+    "sthei": {
         "name": "SthEI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -37971,7 +37971,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SauHI": {
+    "sauhi": {
         "name": "SauHI",
         "site": "cctnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]ag{2}",
@@ -37982,7 +37982,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp43I": {
+    "bsp43i": {
         "name": "Bsp43I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -37993,7 +37993,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CcyI": {
+    "ccyi": {
         "name": "CcyI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -38004,7 +38004,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tsp32I": {
+    "tsp32i": {
         "name": "Tsp32I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -38015,7 +38015,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HineI": {
+    "hinei": {
         "name": "HineI",
         "site": "cgaat",
         "forwardRegex": "cga{2}t",
@@ -38026,7 +38026,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SasI": {
+    "sasi": {
         "name": "SasI",
         "site": "gaggag",
         "forwardRegex": "gag{2}ag",
@@ -38037,7 +38037,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Acc16I": {
+    "acc16i": {
         "name": "Acc16I",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -38048,7 +38048,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1420I": {
+    "uba1420i": {
         "name": "Uba1420I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -38059,7 +38059,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BluI": {
+    "blui": {
         "name": "BluI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -38070,7 +38070,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MthZI": {
+    "mthzi": {
         "name": "MthZI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -38081,7 +38081,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba9I": {
+    "uba9i": {
         "name": "Uba9I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -38092,7 +38092,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthDI": {
+    "sthdi": {
         "name": "SthDI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -38103,7 +38103,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN6I": {
+    "uban6i": {
         "name": "UbaN6I",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -38114,7 +38114,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AquIII": {
+    "aquiii": {
         "name": "AquIII",
         "site": "gaggag",
         "forwardRegex": "gag{2}ag",
@@ -38125,7 +38125,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PpuMI": {
+    "ppumi": {
         "name": "PpuMI",
         "site": "rggwccy",
         "forwardRegex": "[agr]g{2}[atw]c{2}[cty]",
@@ -38136,7 +38136,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EacI": {
+    "eaci": {
         "name": "EacI",
         "site": "ggatc",
         "forwardRegex": "g{2}atc",
@@ -38147,7 +38147,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp19I": {
+    "bsp19i": {
         "name": "Bsp19I",
         "site": "ccatgg",
         "forwardRegex": "c{2}atg{2}",
@@ -38158,7 +38158,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1181I": {
+    "uba1181i": {
         "name": "Uba1181I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -38169,7 +38169,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bth1997I": {
+    "bth1997i": {
         "name": "Bth1997I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -38180,7 +38180,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TauI": {
+    "taui": {
         "name": "TauI",
         "site": "gcsgc",
         "forwardRegex": "gc[cgs]gc",
@@ -38191,7 +38191,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco104I": {
+    "eco104i": {
         "name": "Eco104I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -38202,7 +38202,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CtyI": {
+    "ctyi": {
         "name": "CtyI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -38213,7 +38213,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco262I": {
+    "eco262i": {
         "name": "Eco262I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -38224,7 +38224,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseB631I": {
+    "bseb631i": {
         "name": "BseB631I",
         "site": "gccnnnnnggc",
         "forwardRegex": "gc{2}[abcdghkmnrstvwy]{5}g{2}c",
@@ -38235,7 +38235,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cac824I": {
+    "cac824i": {
         "name": "Cac824I",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -38246,7 +38246,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MvaI": {
+    "mvai": {
         "name": "MvaI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -38257,7 +38257,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SsbI": {
+    "ssbi": {
         "name": "SsbI",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -38268,7 +38268,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthCI": {
+    "sthci": {
         "name": "SthCI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -38279,7 +38279,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SruI": {
+    "srui": {
         "name": "SruI",
         "site": "tttaaa",
         "forwardRegex": "t{3}a{3}",
@@ -38290,7 +38290,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FaiI": {
+    "faii": {
         "name": "FaiI",
         "site": "yatr",
         "forwardRegex": "[cty]at[agr]",
@@ -38301,7 +38301,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HacI": {
+    "haci": {
         "name": "HacI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -38312,7 +38312,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1129I": {
+    "uba1129i": {
         "name": "Uba1129I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -38323,7 +38323,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1249I": {
+    "uba1249i": {
         "name": "Uba1249I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -38334,7 +38334,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflAI": {
+    "pflai": {
         "name": "PflAI",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -38345,7 +38345,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthBI": {
+    "sthbi": {
         "name": "SthBI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -38356,7 +38356,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF43I": {
+    "hpyf43i": {
         "name": "HpyF43I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -38367,7 +38367,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ScuI": {
+    "scui": {
         "name": "ScuI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -38378,7 +38378,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco207I": {
+    "eco207i": {
         "name": "Eco207I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -38389,7 +38389,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1384I": {
+    "uba1384i": {
         "name": "Uba1384I",
         "site": "atgcat",
         "forwardRegex": "atgcat",
@@ -38400,7 +38400,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hpy26II": {
+    "hpy26ii": {
         "name": "Hpy26II",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -38411,7 +38411,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspM1II": {
+    "sspm1ii": {
         "name": "SspM1II",
         "site": "grcgyc",
         "forwardRegex": "g[agr]cg[cty]c",
@@ -38422,7 +38422,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PfaAI": {
+    "pfaai": {
         "name": "PfaAI",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -38433,7 +38433,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseZI": {
+    "bsezi": {
         "name": "BseZI",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -38444,7 +38444,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeHI": {
+    "paehi": {
         "name": "PaeHI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -38455,7 +38455,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PlaII": {
+    "plaii": {
         "name": "PlaII",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -38466,7 +38466,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF50I": {
+    "hpyf50i": {
         "name": "HpyF50I",
         "site": "gtnnac",
         "forwardRegex": "gt[abcdghkmnrstvwy]{2}ac",
@@ -38477,7 +38477,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp2HI": {
+    "asp2hi": {
         "name": "Asp2HI",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -38488,7 +38488,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ErpI": {
+    "erpi": {
         "name": "ErpI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -38499,7 +38499,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsbI": {
+    "bsbi": {
         "name": "BsbI",
         "site": "caacac",
         "forwardRegex": "ca{2}cac",
@@ -38510,7 +38510,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoGV": {
+    "ngogv": {
         "name": "NgoGV",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -38521,7 +38521,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TdeII": {
+    "tdeii": {
         "name": "TdeII",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -38532,7 +38532,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco206I": {
+    "eco206i": {
         "name": "Eco206I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -38543,7 +38543,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoCI": {
+    "ngoci": {
         "name": "NgoCI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -38554,7 +38554,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco127I": {
+    "eco127i": {
         "name": "Eco127I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -38565,7 +38565,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhdI": {
+    "ahdi": {
         "name": "AhdI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -38576,7 +38576,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ErhI": {
+    "erhi": {
         "name": "ErhI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -38587,7 +38587,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco130I": {
+    "eco130i": {
         "name": "Eco130I",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -38598,7 +38598,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF7II": {
+    "hpyf7ii": {
         "name": "HpyF7II",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -38609,7 +38609,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp708I": {
+    "asp708i": {
         "name": "Asp708I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -38620,7 +38620,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1344I": {
+    "eco1344i": {
         "name": "Eco1344I",
         "site": "aacnnnnnngtgc",
         "forwardRegex": "a{2}c[abcdghkmnrstvwy]{6}gtgc",
@@ -38631,7 +38631,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BseJI": {
+    "bseji": {
         "name": "BseJI",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -38642,7 +38642,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfaI": {
+    "bfai": {
         "name": "BfaI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -38653,7 +38653,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyHI": {
+    "hpyhi": {
         "name": "HpyHI",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -38664,7 +38664,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT38I": {
+    "ecot38i": {
         "name": "EcoT38I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -38675,7 +38675,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NgoEI": {
+    "m.ngoei": {
         "name": "M.NgoEI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -38686,7 +38686,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SdeOSI": {
+    "sdeosi": {
         "name": "SdeOSI",
         "site": "gacnnnnrtga",
         "forwardRegex": "gac[abcdghkmnrstvwy]{4}[agr]tga",
@@ -38697,7 +38697,7 @@ module.exports = {
         "usForward": 23,
         "usReverse": 21
     },
-    "SrlI": {
+    "srli": {
         "name": "SrlI",
         "site": "gccggc",
         "forwardRegex": "gc{2}g{2}c",
@@ -38708,7 +38708,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "McaI": {
+    "mcai": {
         "name": "McaI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -38719,7 +38719,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp116I": {
+    "bsp116i": {
         "name": "Bsp116I",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -38730,7 +38730,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN6II": {
+    "uban6ii": {
         "name": "UbaN6II",
         "site": "cycgrg",
         "forwardRegex": "c[cty]cg[agr]g",
@@ -38741,7 +38741,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1180I": {
+    "uba1180i": {
         "name": "Uba1180I",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -38752,7 +38752,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsu8646I": {
+    "bsu8646i": {
         "name": "Bsu8646I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -38763,7 +38763,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaII": {
+    "nlaii": {
         "name": "NlaII",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -38774,7 +38774,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF38I": {
+    "hpyf38i": {
         "name": "HpyF38I",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -38785,7 +38785,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstRZ246I": {
+    "bstrz246i": {
         "name": "BstRZ246I",
         "site": "atttaaat",
         "forwardRegex": "at{3}a{3}t",
@@ -38796,7 +38796,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bal3006I": {
+    "bal3006i": {
         "name": "Bal3006I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -38807,7 +38807,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GspAI": {
+    "gspai": {
         "name": "GspAI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -38818,7 +38818,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF10I": {
+    "hpyf10i": {
         "name": "HpyF10I",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -38829,7 +38829,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspMKI": {
+    "bspmki": {
         "name": "BspMKI",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -38840,7 +38840,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp32I": {
+    "psp32i": {
         "name": "Psp32I",
         "site": "gtcgac",
         "forwardRegex": "gtcgac",
@@ -38851,7 +38851,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaN1I": {
+    "uban1i": {
         "name": "UbaN1I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -38862,7 +38862,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AseI": {
+    "asei": {
         "name": "AseI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -38873,7 +38873,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco71I": {
+    "eco71i": {
         "name": "Eco71I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -38884,7 +38884,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SagI": {
+    "sagi": {
         "name": "SagI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -38895,7 +38895,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1346I": {
+    "uba1346i": {
         "name": "Uba1346I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -38906,7 +38906,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VneI": {
+    "vnei": {
         "name": "VneI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -38917,7 +38917,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1409I": {
+    "uba1409i": {
         "name": "Uba1409I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -38928,7 +38928,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbiIII": {
+    "bbiiii": {
         "name": "BbiIII",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -38939,7 +38939,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BacI": {
+    "baci": {
         "name": "BacI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -38950,7 +38950,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp29HI": {
+    "asp29hi": {
         "name": "Asp29HI",
         "site": "gtac",
         "forwardRegex": "gtac",
@@ -38961,7 +38961,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoT104I": {
+    "ecot104i": {
         "name": "EcoT104I",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -38972,7 +38972,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp1725I": {
+    "ssp1725i": {
         "name": "Ssp1725I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -38983,7 +38983,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Srl65DI": {
+    "srl65di": {
         "name": "Srl65DI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -38994,7 +38994,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflNI": {
+    "pflni": {
         "name": "PflNI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -39005,7 +39005,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PflMI": {
+    "pflmi": {
         "name": "PflMI",
         "site": "ccannnnntgg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tg{2}",
@@ -39016,7 +39016,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Kpn43816Dam": {
+    "m.kpn43816dam": {
         "name": "M.Kpn43816Dam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39027,7 +39027,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco70I": {
+    "eco70i": {
         "name": "Eco70I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -39038,7 +39038,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsTI": {
+    "trsti": {
         "name": "TrsTI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39049,7 +39049,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AhaI": {
+    "ahai": {
         "name": "AhaI",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -39060,7 +39060,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pae17I": {
+    "pae17i": {
         "name": "Pae17I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -39071,7 +39071,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinfI": {
+    "hinfi": {
         "name": "HinfI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -39082,7 +39082,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscMI": {
+    "bscmi": {
         "name": "BscMI",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -39093,7 +39093,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SduI": {
+    "sdui": {
         "name": "SduI",
         "site": "gdgchc",
         "forwardRegex": "g[adgkrtw]gc[achmtwy]c",
@@ -39104,7 +39104,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SolI": {
+    "soli": {
         "name": "SolI",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -39115,7 +39115,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Afa16RI": {
+    "afa16ri": {
         "name": "Afa16RI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -39126,7 +39126,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspZEI": {
+    "bspzei": {
         "name": "BspZEI",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -39137,7 +39137,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF17I": {
+    "hpyf17i": {
         "name": "HpyF17I",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -39148,7 +39148,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Rma495II": {
+    "rma495ii": {
         "name": "Rma495II",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -39159,7 +39159,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaSI": {
+    "bsasi": {
         "name": "BsaSI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -39170,7 +39170,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1314I": {
+    "uba1314i": {
         "name": "Uba1314I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -39181,7 +39181,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BbvAI": {
+    "bbvai": {
         "name": "BbvAI",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -39192,7 +39192,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaDI": {
+    "nladi": {
         "name": "NlaDI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39203,7 +39203,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1426I": {
+    "uba1426i": {
         "name": "Uba1426I",
         "site": "cttaag",
         "forwardRegex": "ct{2}a{2}g",
@@ -39214,7 +39214,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TseDI": {
+    "tsedi": {
         "name": "TseDI",
         "site": "rccggy",
         "forwardRegex": "[agr]c{2}g{2}[cty]",
@@ -39225,7 +39225,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF72III": {
+    "hpyf72iii": {
         "name": "HpyF72III",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -39236,7 +39236,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PbuJKI": {
+    "pbujki": {
         "name": "PbuJKI",
         "site": "ggatg",
         "forwardRegex": "g{2}atg",
@@ -39247,7 +39247,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pph2066I": {
+    "pph2066i": {
         "name": "Pph2066I",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -39258,7 +39258,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "DdeII": {
+    "ddeii": {
         "name": "DdeII",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -39269,7 +39269,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoAV": {
+    "ngoav": {
         "name": "NgoAV",
         "site": "gcannnnnnnntgc",
         "forwardRegex": "gca[abcdghkmnrstvwy]{8}tgc",
@@ -39280,7 +39280,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PanI": {
+    "pani": {
         "name": "PanI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -39291,7 +39291,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XveI": {
+    "xvei": {
         "name": "XveI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -39302,7 +39302,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bst1274I": {
+    "bst1274i": {
         "name": "Bst1274I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39313,7 +39313,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1204I": {
+    "uba1204i": {
         "name": "Uba1204I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39324,7 +39324,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoCII": {
+    "ngocii": {
         "name": "NgoCII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -39335,7 +39335,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp17I": {
+    "asp17i": {
         "name": "Asp17I",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -39346,7 +39346,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstAPI": {
+    "bstapi": {
         "name": "BstAPI",
         "site": "gcannnnntgc",
         "forwardRegex": "gca[abcdghkmnrstvwy]{5}tgc",
@@ -39357,7 +39357,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoBI": {
+    "ngobi": {
         "name": "NgoBI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -39368,7 +39368,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaIII": {
+    "nlaiii": {
         "name": "NlaIII",
         "site": "catg",
         "forwardRegex": "catg",
@@ -39379,7 +39379,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Tru201I": {
+    "tru201i": {
         "name": "Tru201I",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -39390,7 +39390,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK13AI": {
+    "vpak13ai": {
         "name": "VpaK13AI",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -39401,7 +39401,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba153AI": {
+    "uba153ai": {
         "name": "Uba153AI",
         "site": "cagctg",
         "forwardRegex": "cagctg",
@@ -39412,7 +39412,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ese4I": {
+    "ese4i": {
         "name": "Ese4I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -39423,7 +39423,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1414I": {
+    "uba1414i": {
         "name": "Uba1414I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -39434,7 +39434,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bce71I": {
+    "bce71i": {
         "name": "Bce71I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -39445,7 +39445,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Hin1II": {
+    "hin1ii": {
         "name": "Hin1II",
         "site": "catg",
         "forwardRegex": "catg",
@@ -39456,7 +39456,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstDEI": {
+    "bstdei": {
         "name": "BstDEI",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -39467,7 +39467,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp1591I": {
+    "bsp1591i": {
         "name": "Bsp1591I",
         "site": "ggtnacc",
         "forwardRegex": "g{2}t[abcdghkmnrstvwy]ac{2}",
@@ -39478,7 +39478,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Esp2I": {
+    "esp2i": {
         "name": "Esp2I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -39489,7 +39489,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.PhaTDam": {
+    "m.phatdam": {
         "name": "M.PhaTDam",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39500,7 +39500,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsuI": {
+    "asui": {
         "name": "AsuI",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -39511,7 +39511,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Psp5II": {
+    "psp5ii": {
         "name": "Psp5II",
         "site": "rggwccy",
         "forwardRegex": "[agr]g{2}[atw]c{2}[cty]",
@@ -39522,7 +39522,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TseBI": {
+    "tsebi": {
         "name": "TseBI",
         "site": "gcwgc",
         "forwardRegex": "gc[atw]gc",
@@ -39533,7 +39533,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1476I": {
+    "eco1476i": {
         "name": "Eco1476I",
         "site": "ggannnnnnnnatgc",
         "forwardRegex": "g{2}a[abcdghkmnrstvwy]{8}atgc",
@@ -39544,7 +39544,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmRI": {
+    "bsmri": {
         "name": "BsmRI",
         "site": "tgtaca",
         "forwardRegex": "tgtaca",
@@ -39555,7 +39555,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TrsSI": {
+    "trssi": {
         "name": "TrsSI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39566,7 +39566,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscKI": {
+    "bscki": {
         "name": "BscKI",
         "site": "gaagac",
         "forwardRegex": "ga{2}gac",
@@ -39577,7 +39577,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco1342I": {
+    "eco1342i": {
         "name": "Eco1342I",
         "site": "aacnnnnnngtgc",
         "forwardRegex": "a{2}c[abcdghkmnrstvwy]{6}gtgc",
@@ -39588,7 +39588,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoAI": {
+    "ngoai": {
         "name": "NgoAI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -39599,7 +39599,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MchI": {
+    "mchi": {
         "name": "MchI",
         "site": "ggcgcc",
         "forwardRegex": "g{2}cgc{2}",
@@ -39610,7 +39610,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.AtuCI": {
+    "m.atuci": {
         "name": "M.AtuCI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -39621,7 +39621,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "R2.Ssu4109I": {
+    "r2.ssu4109i": {
         "name": "R2.Ssu4109I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39632,7 +39632,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SfiI": {
+    "sfii": {
         "name": "SfiI",
         "site": "ggccnnnnnggcc",
         "forwardRegex": "g{2}c{2}[abcdghkmnrstvwy]{5}g{2}c{2}",
@@ -39643,7 +39643,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Rho11sII": {
+    "m.rho11sii": {
         "name": "M.Rho11sII",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -39654,7 +39654,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsmEI": {
+    "bsmei": {
         "name": "BsmEI",
         "site": "gagtc",
         "forwardRegex": "gagtc",
@@ -39665,7 +39665,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco120I": {
+    "eco120i": {
         "name": "Eco120I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -39676,7 +39676,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspKT8I": {
+    "bspkt8i": {
         "name": "BspKT8I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -39687,7 +39687,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1276I": {
+    "uba1276i": {
         "name": "Uba1276I",
         "site": "ctcttc",
         "forwardRegex": "ctct{2}c",
@@ -39698,7 +39698,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ErhB9II": {
+    "erhb9ii": {
         "name": "ErhB9II",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -39709,7 +39709,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspS9I": {
+    "asps9i": {
         "name": "AspS9I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -39720,7 +39720,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VpaK29AI": {
+    "vpak29ai": {
         "name": "VpaK29AI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -39731,7 +39731,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF34I": {
+    "hpyf34i": {
         "name": "HpyF34I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -39742,7 +39742,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp56I": {
+    "bsp56i": {
         "name": "Bsp56I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -39753,7 +39753,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Msp24I": {
+    "msp24i": {
         "name": "Msp24I",
         "site": "ggncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]c{2}",
@@ -39764,7 +39764,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NflAI": {
+    "nflai": {
         "name": "NflAI",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -39775,7 +39775,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BscOI": {
+    "bscoi": {
         "name": "BscOI",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -39786,7 +39786,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NcuII": {
+    "ncuii": {
         "name": "NcuII",
         "site": "cccg",
         "forwardRegex": "c{3}g",
@@ -39797,7 +39797,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CceI": {
+    "ccei": {
         "name": "CceI",
         "site": "ccgg",
         "forwardRegex": "c{2}g{2}",
@@ -39808,7 +39808,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspOVI": {
+    "bspovi": {
         "name": "BspOVI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -39819,7 +39819,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ScoAI": {
+    "scoai": {
         "name": "ScoAI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -39830,7 +39830,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.Phi3TI": {
+    "m.phi3ti": {
         "name": "M.Phi3TI",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -39841,7 +39841,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF15II": {
+    "hpyf15ii": {
         "name": "HpyF15II",
         "site": "tcnga",
         "forwardRegex": "tc[abcdghkmnrstvwy]ga",
@@ -39852,7 +39852,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviOI": {
+    "cvioi": {
         "name": "CviOI",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -39863,7 +39863,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssu211I": {
+    "ssu211i": {
         "name": "Ssu211I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39874,7 +39874,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bpa36I": {
+    "bpa36i": {
         "name": "Bpa36I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -39885,7 +39885,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspVil3I": {
+    "tspvil3i": {
         "name": "TspVil3I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -39896,7 +39896,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cfr48I": {
+    "cfr48i": {
         "name": "Cfr48I",
         "site": "grgcyc",
         "forwardRegex": "g[agr]gc[cty]c",
@@ -39907,7 +39907,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AccIII": {
+    "acciii": {
         "name": "AccIII",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -39918,7 +39918,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfuCI": {
+    "bfuci": {
         "name": "BfuCI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -39929,7 +39929,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HinHI": {
+    "hinhi": {
         "name": "HinHI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -39940,7 +39940,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XorI": {
+    "xori": {
         "name": "XorI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -39951,7 +39951,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bla7920I": {
+    "bla7920i": {
         "name": "Bla7920I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -39962,7 +39962,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XmaII": {
+    "xmaii": {
         "name": "XmaII",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -39973,7 +39973,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "XapI": {
+    "xapi": {
         "name": "XapI",
         "site": "raatty",
         "forwardRegex": "[agr]a{2}t{2}[cty]",
@@ -39984,7 +39984,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AcaI": {
+    "acai": {
         "name": "AcaI",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -39995,7 +39995,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BstZI": {
+    "bstzi": {
         "name": "BstZI",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -40006,7 +40006,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bli161I": {
+    "bli161i": {
         "name": "Bli161I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -40017,7 +40017,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssp34I": {
+    "ssp34i": {
         "name": "Ssp34I",
         "site": "ttcgaa",
         "forwardRegex": "t{2}cga{2}",
@@ -40028,7 +40028,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ssu212I": {
+    "ssu212i": {
         "name": "Ssu212I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -40039,7 +40039,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Aor51HI": {
+    "aor51hi": {
         "name": "Aor51HI",
         "site": "agcgct",
         "forwardRegex": "agcgct",
@@ -40050,7 +40050,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AgeI": {
+    "agei": {
         "name": "AgeI",
         "site": "accggt",
         "forwardRegex": "ac{2}g{2}t",
@@ -40061,7 +40061,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspKI": {
+    "bspki": {
         "name": "BspKI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -40072,7 +40072,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyF32I": {
+    "hpyf32i": {
         "name": "HpyF32I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -40083,7 +40083,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl1zII": {
+    "ecl1zii": {
         "name": "Ecl1zII",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -40094,7 +40094,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba69I": {
+    "uba69i": {
         "name": "Uba69I",
         "site": "gcgcgc",
         "forwardRegex": "gcgcgc",
@@ -40105,7 +40105,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AsnI": {
+    "asni": {
         "name": "AsnI",
         "site": "attaat",
         "forwardRegex": "at{2}a{2}t",
@@ -40116,7 +40116,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySGI": {
+    "stysgi": {
         "name": "StySGI",
         "site": "taannnnnnrtcg",
         "forwardRegex": "ta{2}[abcdghkmnrstvwy]{6}[agr]tcg",
@@ -40127,7 +40127,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SthNI": {
+    "sthni": {
         "name": "SthNI",
         "site": "ggtacc",
         "forwardRegex": "g{2}tac{2}",
@@ -40138,7 +40138,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bme2095I": {
+    "bme2095i": {
         "name": "Bme2095I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -40149,7 +40149,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PaeR7I": {
+    "paer7i": {
         "name": "PaeR7I",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -40160,7 +40160,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NciI": {
+    "ncii": {
         "name": "NciI",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -40171,7 +40171,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1431I": {
+    "uba1431i": {
         "name": "Uba1431I",
         "site": "tgatca",
         "forwardRegex": "tgatca",
@@ -40182,7 +40182,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Cpa1150I": {
+    "cpa1150i": {
         "name": "Cpa1150I",
         "site": "cgcg",
         "forwardRegex": "cgcg",
@@ -40193,7 +40193,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pvu84I": {
+    "pvu84i": {
         "name": "Pvu84I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -40204,7 +40204,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoMI": {
+    "ngomi": {
         "name": "NgoMI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -40215,7 +40215,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclJI": {
+    "eclji": {
         "name": "EclJI",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -40226,7 +40226,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CscI": {
+    "csci": {
         "name": "CscI",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -40237,7 +40237,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StyI": {
+    "styi": {
         "name": "StyI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -40248,7 +40248,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspMDI": {
+    "aspmdi": {
         "name": "AspMDI",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -40259,7 +40259,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.BamHII": {
+    "m.bamhii": {
         "name": "M.BamHII",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -40270,7 +40270,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyHPK5I": {
+    "hpyhpk5i": {
         "name": "HpyHPK5I",
         "site": "ctnag",
         "forwardRegex": "ct[abcdghkmnrstvwy]ag",
@@ -40281,7 +40281,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmiMII": {
+    "smimii": {
         "name": "SmiMII",
         "site": "gatatc",
         "forwardRegex": "gatatc",
@@ -40292,7 +40292,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsaGI": {
+    "bsagi": {
         "name": "BsaGI",
         "site": "gwgcwc",
         "forwardRegex": "g[atw]gc[atw]c",
@@ -40303,7 +40303,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "M.NgoHVIII": {
+    "m.ngohviii": {
         "name": "M.NgoHVIII",
         "site": "ggtga",
         "forwardRegex": "g{2}tga",
@@ -40314,7 +40314,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1432I": {
+    "uba1432i": {
         "name": "Uba1432I",
         "site": "rgatcy",
         "forwardRegex": "[agr]gatc[cty]",
@@ -40325,7 +40325,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1126I": {
+    "uba1126i": {
         "name": "Uba1126I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -40336,7 +40336,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviLI": {
+    "cvili": {
         "name": "CviLI",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -40347,7 +40347,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspAK13D21I": {
+    "tspak13d21i": {
         "name": "TspAK13D21I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -40358,7 +40358,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Bsp6I": {
+    "bsp6i": {
         "name": "Bsp6I",
         "site": "gcngc",
         "forwardRegex": "gc[abcdghkmnrstvwy]gc",
@@ -40369,7 +40369,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspAAII": {
+    "bspaaii": {
         "name": "BspAAII",
         "site": "tctaga",
         "forwardRegex": "tctaga",
@@ -40380,7 +40380,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SteI": {
+    "stei": {
         "name": "SteI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -40391,7 +40391,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BfoI": {
+    "bfoi": {
         "name": "BfoI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -40402,7 +40402,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MamI": {
+    "mami": {
         "name": "MamI",
         "site": "gatnnnnatc",
         "forwardRegex": "gat[abcdghkmnrstvwy]{4}atc",
@@ -40413,7 +40413,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaF14I": {
+    "ubaf14i": {
         "name": "UbaF14I",
         "site": "ccannnnntcg",
         "forwardRegex": "c{2}a[abcdghkmnrstvwy]{5}tcg",
@@ -40424,7 +40424,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MthTI": {
+    "mthti": {
         "name": "MthTI",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -40435,7 +40435,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Scg2I": {
+    "scg2i": {
         "name": "Scg2I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -40446,7 +40446,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoBV": {
+    "ngobv": {
         "name": "NgoBV",
         "site": "ggnncc",
         "forwardRegex": "g{2}[abcdghkmnrstvwy]{2}c{2}",
@@ -40457,7 +40457,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MscI": {
+    "msci": {
         "name": "MscI",
         "site": "tggcca",
         "forwardRegex": "tg{2}c{2}a",
@@ -40468,7 +40468,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1366II": {
+    "uba1366ii": {
         "name": "Uba1366II",
         "site": "atcgat",
         "forwardRegex": "atcgat",
@@ -40479,7 +40479,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviKI": {
+    "cviki": {
         "name": "CviKI",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -40490,7 +40490,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco52I": {
+    "eco52i": {
         "name": "Eco52I",
         "site": "cggccg",
         "forwardRegex": "cg{2}c{2}g",
@@ -40501,7 +40501,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Ecl136I": {
+    "ecl136i": {
         "name": "Ecl136I",
         "site": "ccwgg",
         "forwardRegex": "c{2}[atw]g{2}",
@@ -40512,7 +40512,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BecAII": {
+    "becaii": {
         "name": "BecAII",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -40523,7 +40523,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CfrBI": {
+    "cfrbi": {
         "name": "CfrBI",
         "site": "ccwwgg",
         "forwardRegex": "c{2}[atw]{2}g{2}",
@@ -40534,7 +40534,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SnoI": {
+    "snoi": {
         "name": "SnoI",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -40545,7 +40545,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "UbaPI": {
+    "ubapi": {
         "name": "UbaPI",
         "site": "cgaacg",
         "forwardRegex": "cga{2}cg",
@@ -40556,7 +40556,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EclHKI": {
+    "eclhki": {
         "name": "EclHKI",
         "site": "gacnnnnngtc",
         "forwardRegex": "gac[abcdghkmnrstvwy]{5}gtc",
@@ -40567,7 +40567,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TspDTI": {
+    "tspdti": {
         "name": "TspDTI",
         "site": "atgaa",
         "forwardRegex": "atga{2}",
@@ -40578,7 +40578,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "ErhB9I": {
+    "erhb9i": {
         "name": "ErhB9I",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -40589,7 +40589,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SacII": {
+    "sacii": {
         "name": "SacII",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -40600,7 +40600,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SspI": {
+    "sspi": {
         "name": "SspI",
         "site": "aatatt",
         "forwardRegex": "a{2}tat{2}",
@@ -40611,7 +40611,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoGI": {
+    "ngogi": {
         "name": "NgoGI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -40622,7 +40622,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJ105I": {
+    "bspj105i": {
         "name": "BspJ105I",
         "site": "ggwcc",
         "forwardRegex": "g{2}[atw]c{2}",
@@ -40633,7 +40633,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco95I": {
+    "eco95i": {
         "name": "Eco95I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -40644,7 +40644,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BthI": {
+    "bthi": {
         "name": "BthI",
         "site": "ctcgag",
         "forwardRegex": "ctcgag",
@@ -40655,7 +40655,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "VchO68I": {
+    "vcho68i": {
         "name": "VchO68I",
         "site": "gcatgc",
         "forwardRegex": "gcatgc",
@@ -40666,7 +40666,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AvrII": {
+    "avrii": {
         "name": "AvrII",
         "site": "cctagg",
         "forwardRegex": "c{2}tag{2}",
@@ -40677,7 +40677,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "FnuAI": {
+    "fnuai": {
         "name": "FnuAI",
         "site": "gantc",
         "forwardRegex": "ga[abcdghkmnrstvwy]tc",
@@ -40688,7 +40688,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviNI": {
+    "cvini": {
         "name": "CviNI",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -40699,7 +40699,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Pfr12I": {
+    "pfr12i": {
         "name": "Pfr12I",
         "site": "gtgcac",
         "forwardRegex": "gtgcac",
@@ -40710,7 +40710,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NgoJI": {
+    "ngoji": {
         "name": "NgoJI",
         "site": "rgcgcy",
         "forwardRegex": "[agr]gcgc[cty]",
@@ -40721,7 +40721,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco188I": {
+    "eco188i": {
         "name": "Eco188I",
         "site": "aagctt",
         "forwardRegex": "a{2}gct{2}",
@@ -40732,7 +40732,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp700I": {
+    "asp700i": {
         "name": "Asp700I",
         "site": "gaannnnttc",
         "forwardRegex": "ga{2}[abcdghkmnrstvwy]{4}t{2}c",
@@ -40743,7 +40743,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "GdiII": {
+    "gdiii": {
         "name": "GdiII",
         "site": "cggccr",
         "forwardRegex": "cg{2}c{2}[agr]",
@@ -40754,7 +40754,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EcoA4I": {
+    "ecoa4i": {
         "name": "EcoA4I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -40765,7 +40765,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "AspLEI": {
+    "asplei": {
         "name": "AspLEI",
         "site": "gcgc",
         "forwardRegex": "gcgc",
@@ -40776,7 +40776,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1368I": {
+    "uba1368i": {
         "name": "Uba1368I",
         "site": "gggccc",
         "forwardRegex": "g{3}c{3}",
@@ -40787,7 +40787,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "StySQI": {
+    "stysqi": {
         "name": "StySQI",
         "site": "aacnnnnnnrtayg",
         "forwardRegex": "a{2}c[abcdghkmnrstvwy]{6}[agr]ta[cty]g",
@@ -40798,7 +40798,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco190I": {
+    "eco190i": {
         "name": "Eco190I",
         "site": "ccsgg",
         "forwardRegex": "c{2}[cgs]g{2}",
@@ -40809,7 +40809,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "EspHK26I": {
+    "esphk26i": {
         "name": "EspHK26I",
         "site": "tccgga",
         "forwardRegex": "tc{2}g{2}a",
@@ -40820,7 +40820,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco196I": {
+    "eco196i": {
         "name": "Eco196I",
         "site": "ccgcgg",
         "forwardRegex": "c{2}gcg{2}",
@@ -40831,7 +40831,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba1223I": {
+    "uba1223i": {
         "name": "Uba1223I",
         "site": "ggcc",
         "forwardRegex": "g{2}c{2}",
@@ -40842,7 +40842,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "HpyHPK5II": {
+    "hpyhpk5ii": {
         "name": "HpyHPK5II",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -40853,7 +40853,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NtaSI": {
+    "ntasi": {
         "name": "NtaSI",
         "site": "aggcct",
         "forwardRegex": "ag{2}c{2}t",
@@ -40864,7 +40864,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MthFI": {
+    "mthfi": {
         "name": "MthFI",
         "site": "ctag",
         "forwardRegex": "ctag",
@@ -40875,7 +40875,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "CviMI": {
+    "cvimi": {
         "name": "CviMI",
         "site": "rgcy",
         "forwardRegex": "[agr]gc[cty]",
@@ -40886,7 +40886,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Mlu9273I": {
+    "mlu9273i": {
         "name": "Mlu9273I",
         "site": "tcgcga",
         "forwardRegex": "tcgcga",
@@ -40897,7 +40897,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Vsp2246I": {
+    "vsp2246i": {
         "name": "Vsp2246I",
         "site": "ggyrcc",
         "forwardRegex": "g{2}[cty][agr]c{2}",
@@ -40908,7 +40908,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BmtI": {
+    "bmti": {
         "name": "BmtI",
         "site": "gctagc",
         "forwardRegex": "gctagc",
@@ -40919,7 +40919,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NlaCI": {
+    "nlaci": {
         "name": "NlaCI",
         "site": "catcac",
         "forwardRegex": "catcac",
@@ -40930,7 +40930,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "TfiTok6A1I": {
+    "tfitok6a1i": {
         "name": "TfiTok6A1I",
         "site": "tcga",
         "forwardRegex": "tcga",
@@ -40941,7 +40941,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Uba51I": {
+    "uba51i": {
         "name": "Uba51I",
         "site": "ggatcc",
         "forwardRegex": "g{2}atc{2}",
@@ -40952,7 +40952,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Asp27HI": {
+    "asp27hi": {
         "name": "Asp27HI",
         "site": "gaatgc",
         "forwardRegex": "ga{2}tgc",
@@ -40963,7 +40963,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BspJ64I": {
+    "bspj64i": {
         "name": "BspJ64I",
         "site": "gatc",
         "forwardRegex": "gatc",
@@ -40974,7 +40974,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NsbI": {
+    "nsbi": {
         "name": "NsbI",
         "site": "tgcgca",
         "forwardRegex": "tgcgca",
@@ -40985,7 +40985,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "Eco97I": {
+    "eco97i": {
         "name": "Eco97I",
         "site": "ggtctc",
         "forwardRegex": "g{2}tctc",
@@ -40996,7 +40996,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "BsoEI": {
+    "bsoei": {
         "name": "BsoEI",
         "site": "cctnnnnnagg",
         "forwardRegex": "c{2}t[abcdghkmnrstvwy]{5}ag{2}",
@@ -41007,7 +41007,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "SmaAIII": {
+    "smaaiii": {
         "name": "SmaAIII",
         "site": "cgatcg",
         "forwardRegex": "cgatcg",
@@ -41018,7 +41018,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "MmaI": {
+    "mmai": {
         "name": "MmaI",
         "site": "ctgcag",
         "forwardRegex": "ctgcag",
@@ -41029,7 +41029,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "NdeI": {
+    "ndei": {
         "name": "NdeI",
         "site": "catatg",
         "forwardRegex": "catatg",
@@ -41040,7 +41040,7 @@ module.exports = {
         "usForward": 0,
         "usReverse": 0
     },
-    "PacI": {
+    "paci": {
         "name": "PacI",
         "site": "ttaattaa",
         "forwardRegex": "t{2}a{2}t{2}a{2}",
