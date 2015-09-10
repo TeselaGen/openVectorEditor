@@ -1,4 +1,4 @@
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 module.exports = function normalizePositionByRangeLength(pPosition, sequenceLength, isInBetweenPositions) {
     //isInBetweenPositions refers to:

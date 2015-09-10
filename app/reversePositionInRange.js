@@ -1,4 +1,4 @@
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 module.exports = function reversePositionInRange(position, rangeLength, isInBetweenPositions) {
     //isInBetweenPositions refers to:
     // A T G C

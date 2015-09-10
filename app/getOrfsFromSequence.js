@@ -2,7 +2,7 @@
 // var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var ObjectId = require("bson-objectid");
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 /**
  * @private
  * Finds ORFs in a given DNA forward in a given frame.

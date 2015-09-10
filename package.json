@@ -31,7 +31,9 @@
     "string-splice": "^1.3.0",
     "validate.io-boolean": "^1.0.4",
     "validate.io-nonnegative-integer": "^1.0.0",
-    "validate.io-nonnegative-integer-array": "^1.0.1"
+    "validate.io-nonnegative-integer-array": "^1.0.1",
+    "ve-api-check": "file:app/ve-api-check",
+    "ve-range-utils": "file:app/ve-range-utils"
   },
   "devDependencies": {
     "babel": "^5.1.10",

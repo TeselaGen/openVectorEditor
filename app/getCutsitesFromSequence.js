@@ -1,4 +1,4 @@
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 var cutSequenceByRestrictionEnzyme = require('./cutSequenceByRestrictionEnzyme');
 
 module.exports = function cutsitesFromSequence(sequence, circular, restrictionEnzymes) {

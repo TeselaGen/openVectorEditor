@@ -1,5 +1,5 @@
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 var normalizePositionByRangeLength = require('./normalizePositionByRangeLength.js');
 var reversePositionInRange = require('./reversePositionInRange.js');
 

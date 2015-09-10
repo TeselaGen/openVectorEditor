@@ -1,4 +1,4 @@
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 // ac.throw([ac.string,ac.bool],arguments);
 var each = require('lodash/collection/each');
 var sortBy = require('lodash/collection/sortBy');

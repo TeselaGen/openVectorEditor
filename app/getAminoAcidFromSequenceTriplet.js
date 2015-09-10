@@ -1,6 +1,6 @@
 var threeLetterSequenceStringToAminoAcidMap = require('./threeLetterSequenceStringToAminoAcidMap');
 var proteinAlphabet = require('./proteinAlphabet');
-var ac = require('./apiCheck'); 
+var ac = require('ve-api-check'); 
 // ac.throw([ac.string,ac.bool],arguments);
 //tnrtodo: expand the threeLetterSequenceStringToAminoAcidMap mappings to include RNA characters. 
 //currently stop bps aren't all mapped!

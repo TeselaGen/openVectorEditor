@@ -1,6 +1,6 @@
 var revComp = require('./getReverseComplementSequenceString');
 var getAA = require('./getAminoAcidFromSequenceTriplet');
-var ac = require('./apiCheck'); 
+var ac = require('ve-api-check'); 
 // ac.throw([ac.string,ac.bool],arguments);
 /**
  * @private

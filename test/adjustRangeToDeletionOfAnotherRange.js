@@ -1,6 +1,6 @@
 //var tap = require('tap');
 //tap.mochaGlobals();
-var adjustRangeToDeletionOfAnotherRange = require('../app/adjustRangeToDeletionOfAnotherRange.js');
+var adjustRangeToDeletionOfAnotherRange = require('ve-range-utils/adjustRangeToDeletionOfAnotherRange.js');
 // var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
 var assert = require('assert');
 describe('adjustRangeToDeletionOfAnotherRange', function() {
