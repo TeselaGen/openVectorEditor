@@ -1,9 +1,9 @@
 var tree = require('../baobabTree');
 var assign = require('lodash/object/assign');
-var getOverlapsOfPotentiallyCircularRanges = require('../getOverlapsOfPotentiallyCircularRanges');
-var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../collapseOverlapsGeneratedFromRangeComparisonIfPossible');
+var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
+var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-utils/collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var getSubstringByRange = require('get-substring-by-range');
-var areRangesValid = require('../areRangesValid');
+var areRangesValid = require('ve-range-utils/areRangesValid');
 
 module.exports = function copySelection() {
     var selectionLayer = tree.select('selectionLayer').get();

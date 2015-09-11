@@ -1,6 +1,6 @@
 var tree = require('../baobabTree');
 var setSelectionLayer = require('./setSelectionLayer.js');
-var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
+var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 
 module.exports = function moveCaret(numberToMove) {
     var selectionLayer = tree.select('selectionLayer').get();

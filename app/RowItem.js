@@ -1,6 +1,6 @@
 var React = require('react');
 var assign = require('lodash/object/assign');
-var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
+var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 var baobabBranch = require('baobab-react/mixins').branch;
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 

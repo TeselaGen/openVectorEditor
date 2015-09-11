@@ -3,9 +3,9 @@
 var chai = require("chai");
 chai.should();
 var expect = chai.expect;
-var cutSequenceByRestrictionEnzyme = require('../app/cutSequenceByRestrictionEnzyme.js');
-var enzymeList = require('../app/enzymeList.js');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
+var cutSequenceByRestrictionEnzyme = require('./cutSequenceByRestrictionEnzyme.js');
+var enzymeList = require('./enzymeList.js');
+// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
 describe('a simple, palindromic enzyme', function() {
     //bamhi
     // "bamhi": {

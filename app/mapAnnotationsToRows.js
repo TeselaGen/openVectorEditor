@@ -4,7 +4,7 @@ var each = require('lodash/collection/each');
 var sortBy = require('lodash/collection/sortBy');
 var uniq = require('lodash/array/uniq');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var checkIfNonCircularRangesOverlap = require('./checkIfNonCircularRangesOverlap');
+var checkIfNonCircularRangesOverlap = require('ve-range-utils/checkIfNonCircularRangesOverlap');
 
 module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
   ac.throw([ac.array, ac.posInt,ac.posInt],arguments);

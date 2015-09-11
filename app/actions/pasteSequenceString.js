@@ -1,7 +1,7 @@
 var tree = require('../baobabTree');
 var ObjectID = require("bson-objectid");
 var assign = require('lodash/object/assign');
-var filterSequenceString = require('../filterSequenceString');
+var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 var insertSequenceString = require('./insertSequenceString.js');
 var insertSequenceData = require('./insertSequenceData');
 

@@ -2,7 +2,7 @@ let React = require('react');
 let classnames = require('classnames');
 let setSelectionLayer = require('./actions/setSelectionLayer');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-let getAnnotationRangeType = require('./getAnnotationRangeType');
+let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Feature = require('./Feature');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 

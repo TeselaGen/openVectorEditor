@@ -2,14 +2,14 @@ var baobab = require('baobab');
 // var sequenceData = require('./sequenceData');
 var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
-var findOrfsInPlasmid = require('./findOrfsInPlasmid');
-var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
+var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
+var validateAndTidyUpSequenceData = require('ve-sequence-utils/validateAndTidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var each = require('lodash/collection/each');
-var getSequenceWithinRange = require('./getSequenceWithinRange');
-var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna');
-var getCutsitesFromSequence = require('./getCutsitesFromSequence');
-var enzymeList = require('./enzymeList');
+var getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
+var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDataForEachBaseOfDna');
+var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence');
+var enzymeList = require('ve-sequence-utils/enzymeList');
 
 var tree = new baobab({
     rowToJumpTo: null,

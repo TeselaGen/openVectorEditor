@@ -35,7 +35,9 @@ module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRang
   var splitRangesToBeTrimmed = splitRangeIntoTwoPartsIfItIsCircular(rangeToBeTrimmed, sequenceLength);
   splitRangesToBeTrimmed.forEach(function(nonCircularRangeToBeTrimmed, index) {
     overlaps.forEach(function(overlap) {
-      nonCircularRangeToBeTrimmed = trimNonCicularRangeByAnotherNonCircularRange(nonCircularRangeToBeTrimmed, overlap);
+      if (nonCircularRangeToBeTrimmed) {
+        nonCircularRangeToBeTrimmed = trimNonCicularRangeByAnotherNonCircularRange(nonCircularRangeToBeTrimmed, overlap);
+      }
     });
     splitRangesToBeTrimmed[index] = nonCircularRangeToBeTrimmed;
   });

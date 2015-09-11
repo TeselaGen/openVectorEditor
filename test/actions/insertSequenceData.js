@@ -1,6 +1,6 @@
 //tnr: half finished test. 
-//var tap = require('tap');
-//tap.mochaGlobals();
+// var tap = require('tap');
+// tap.mochaGlobals();
 var setCaretPosition = require('../../app/actions/setCaretPosition');
 var insertSequenceData = require('../../app/actions/insertSequenceData');
 var setSelectionLayer = require('../../app/actions/setSelectionLayer');
@@ -8,7 +8,7 @@ var setCaretPosition = require('../../app/actions/setCaretPosition');
 var addAnnotations = require('../../app/actions/addAnnotations');
 var setSelectionLayer = require('../../app/actions/setSelectionLayer');
 var tree = require('../helpers/baobabTestTree.js');
-var tree = require('../helpers/seedTreeWithSimpleSequenceData.js');
+var seedTreeWithSimpleSequenceData = require('../helpers/seedTreeWithSimpleSequenceData.js');
 var chai = require("chai");
 chai.should();
 var chaiSubset = require('chai-subset');
@@ -59,6 +59,7 @@ describe('insertSequenceData', function () {
         var sequenceLengthPreInsert = tree.get('$sequenceLength');
         setSelectionLayer(false);//make sure there's no selection layer
         setCaretPosition(0);
+        debugger;
         insertSequenceData(sequenceToInsert);
         var sequenceLengthPostInsert = tree.get('$sequenceLength');
         sequenceLengthPostInsert.should.equal(sequenceLengthPreInsert + sequenceToInsert.sequence.length);

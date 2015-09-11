@@ -1,8 +1,8 @@
 //var tap = require('tap');
 //tap.mochaGlobals();
-var getAminoAcidDataForEachBaseOfDna = require('../app/getAminoAcidDataForEachBaseOfDna.js');
-var getAA = require('../app/getAminoAcidFromSequenceTriplet');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('../app/collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
+var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna.js');
+var getAA = require('./getAminoAcidFromSequenceTriplet');
+// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
 var assert = require('assert');
 var aaData;
 describe('getAminoAcidDataForEachBaseOfDna tranlates a', function() {

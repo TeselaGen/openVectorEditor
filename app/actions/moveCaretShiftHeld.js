@@ -1,7 +1,7 @@
 var tree = require('../baobabTree');
 var assign = require('lodash/object/assign');
 var setSelectionLayer = require('./setSelectionLayer.js');
-var trimNumberToFitWithin0ToAnotherNumber = require('../trimNumberToFitWithin0ToAnotherNumber');
+var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 
 /**
  * moves the caret while keeping the highlight layer selected

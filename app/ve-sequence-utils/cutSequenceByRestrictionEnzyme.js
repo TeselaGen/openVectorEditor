@@ -1,7 +1,7 @@
 var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
 var ac = require('ve-api-check');
-var normalizePositionByRangeLength = require('./normalizePositionByRangeLength.js');
-var reversePositionInRange = require('./reversePositionInRange.js');
+var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength.js');
+var reversePositionInRange = require('ve-range-utils/reversePositionInRange.js');
 
 module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, restrictionEnzyme) {
     ac.throw([

@@ -2,7 +2,7 @@
 // tap.mochaGlobals();
 var expect = require('chai').expect;
 
-var getOrfsFromSequence = require('../app/getOrfsFromSequence.js');
+var getOrfsFromSequence = require('./getOrfsFromSequence.js');
 // getOrfsFromSequence(frame, sequence, minimumOrfSize, forward, circular)
 describe('getOrfsFromSequence', function() {
 	it('finds correct orfs in reverse direction in slightly more complex sequence', function() {
