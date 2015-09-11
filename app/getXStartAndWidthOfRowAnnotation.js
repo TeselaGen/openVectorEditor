@@ -1,4 +1,4 @@
-var ac = require('./apiCheck');
+var ac = require('ve-api-check');
 // ac.throw([ac.string,ac.bool],arguments);
 module.exports = function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
     ac.throw([ac.range, ac.posInt, ac.posInt], arguments);

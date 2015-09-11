@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 const setSelectionLayer = require('./actions/setSelectionLayer');
-const zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange');
-const getSequenceWithinRange = require('./getSequenceWithinRange');
+const zeroSubrangeByContainerRange = require('ve-range-utils/zeroSubrangeByContainerRange');
+const getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 const AASliver = require('./AASliver');
 
 const AnnotationContainerHolder = require('./AnnotationContainerHolder');

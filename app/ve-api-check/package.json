@@ -1,0 +1,11 @@
+{
+  "name": "ve-api-check",
+  "version": "1.0.0",
+  "description": "our ve-specific implementation of api-check",
+  "main": "apiCheck.js",
+  "scripts": {
+    "test": "mocha *.test.js --harmony"
+  },
+  "author": "",
+  "license": "ISC"
+}
