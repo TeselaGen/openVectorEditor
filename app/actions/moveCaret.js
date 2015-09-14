@@ -4,7 +4,7 @@ var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberTo
 
 module.exports = function moveCaret(numberToMove) {
     var selectionLayer = tree.select('selectionLayer').get();
-    var sequenceLength = tree.get(['$sequenceLength']);
+    var sequenceLength = tree.get(['sequenceLength']);
     var caretPosition = tree.select('caretPosition').get();
     if (selectionLayer.selected) {
         if (numberToMove > 0) {

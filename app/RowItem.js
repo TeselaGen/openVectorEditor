@@ -28,8 +28,8 @@ var RowItem = React.createClass({
     selectionLayer: ['selectionLayer'],
     mouse: ['mouse'],
     caretPosition: ['caretPosition'],
-    sequenceLength: ['$sequenceLength'],
-    bpsPerRow: ['$bpsPerRow']
+    sequenceLength: ['sequenceLength'],
+    bpsPerRow: ['bpsPerRow']
   },
 
   render: function () {

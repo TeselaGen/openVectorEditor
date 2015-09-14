@@ -10,11 +10,11 @@ const moveCaretShortcutFunctions = {
             moveCaret(1);
         },
         moveCaretUpARow() {
-            var bpsPerRow = tree.get(['$bpsPerRow']);
+            var bpsPerRow = tree.get(['bpsPerRow']);
             moveCaret(-bpsPerRow);
         },
         moveCaretDownARow() {
-            var bpsPerRow = tree.get(['$bpsPerRow']);
+            var bpsPerRow = tree.get(['bpsPerRow']);
             moveCaret(bpsPerRow);
         },
         moveCaretLeftOneShiftHeld() {
@@ -24,11 +24,11 @@ const moveCaretShortcutFunctions = {
             moveCaretShiftHeld(1);
         },
         moveCaretUpARowShiftHeld() {
-            var bpsPerRow = tree.get(['$bpsPerRow']);
+            var bpsPerRow = tree.get(['bpsPerRow']);
             moveCaretShiftHeld(-bpsPerRow);
         },
         moveCaretDownARowShiftHeld() {
-            var bpsPerRow = tree.get(['$bpsPerRow']);
+            var bpsPerRow = tree.get(['bpsPerRow']);
             moveCaretShiftHeld(bpsPerRow);
         },
 };

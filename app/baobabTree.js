@@ -1,4 +1,5 @@
-var baobab = require('baobab');
+var Baobab = require('baobab');
+var monkey = Baobab.monkey
 // var sequenceData = require('./sequenceData');
 var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
@@ -11,7 +12,7 @@ var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDa
 var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence');
 var enzymeList = require('ve-sequence-utils/enzymeList');
 
-var tree = new baobab({
+var tree = new Baobab({
     rowToJumpTo: null,
     topSpacerHeight: 0,
     bottomSpacerHeight: 0,
@@ -71,16 +72,16 @@ var tree = new baobab({
     },
     mouse: {
         isDown: false,
-        isSelecting: false,
+        isSelecting: false
     },
     caretPosition: -1,
     visibleRows: {
         start: 0,
-        end: 0,
+        end: 0
     },
     sequenceData: validateAndTidyUpSequenceData(sequenceData),
     clipboardData: null,
-    $bpsPerRow: [
+    bpsPerRow: monkey([
         ['rowViewDimensions',
             'width'
         ],
@@ -88,23 +89,23 @@ var tree = new baobab({
         function(rowViewDimensionsWidth, charWidth) {
             return Math.floor(rowViewDimensionsWidth / charWidth);
         }
-    ],
-    $userEnzymes: [
+    ]),
+    userEnzymes: monkey([
         ['userEnzymeList'],
         function(userEnzymeList) {
             return userEnzymeList.map(function(enzymeName) {
                 return enzymeList[enzymeName];
             });
         }
-    ],
-    $cutsitesByName: [
+    ]),
+    cutsitesByName: monkey([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
-        ['$userEnzymes'],
+        ['userEnzymes'],
         getCutsitesFromSequence
-    ],
-    $cutsitesAsArray: [
-        ['$cutsitesByName'],
+    ]),
+    cutsitesAsArray: monkey([
+        ['cutsitesByName'],
         function (cutsitesByName) {
             var cutsitesArray = [];
             Object.keys(cutsitesByName).forEach(function (key) {
@@ -112,8 +113,8 @@ var tree = new baobab({
             });
             return cutsitesArray;
         }
-    ],
-    $translationsWithAminoAcids: [
+    ]),
+    translationsWithAminoAcids: monkey([
         ['sequenceData', 'translations'],
         ['sequenceData', 'sequence'],
         function getTranslationsWithAminoAcids(translations, sequence) {
@@ -124,14 +125,14 @@ var tree = new baobab({
                 return translationWithAminoAcids;
             });
         }
-    ],
-    $sequenceLength: [
+    ]),
+    sequenceLength: monkey([
         ['sequenceData'],
         function(sequenceData) {
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
         }
-    ],
-    $selectedSequenceString: [
+    ]),
+    selectedSequenceString: monkey([
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
         function(sequence, selectionLayer) {
@@ -141,49 +142,49 @@ var tree = new baobab({
                 return '';
             }
         }
-    ],
-    $orfData: [
+    ]),
+    orfData: monkey([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'], //decide on what to call this..
         ['minimumOrfSize'],
         findOrfsInPlasmid
-    ],
-    $combinedSequenceData: [ //holds usual sequence data, plus orfs, plus parts..
+    ]),
+    combinedSequenceData: monkey([ //holds usual sequence data, plus orfs, plus parts..
         ['sequenceData'],
-        ['$orfData'],
-        ['$translationsWithAminoAcids'],
+        ['orfData'],
+        ['translationsWithAminoAcids'],
         function(sequenceData, orfData, translations) {
             return assign({}, sequenceData, {
                 orfs: orfData,
                 translations: translations
             });
         }
-    ],
-    $rowData: [
-        ['$combinedSequenceData'],
-        ['$bpsPerRow'],
+    ]),
+    rowData: monkey([
+        ['combinedSequenceData'],
+        ['bpsPerRow'],
         function(sequenceData, bpsPerRow) {
             console.log('rowDataUpdated!');
             return prepareRowData(sequenceData, bpsPerRow);
         }
-    ],
-    $totalRows: [
-        ['$rowData'],
+    ]),
+    totalRows: monkey([
+        ['rowData'],
         function(rowData) {
             if (rowData) {
                 return rowData.length;
             }
         }
-    ],
-    $newRandomRowToJumpTo: [
-        ['$totalRows'],
+    ]),
+    newRandomRowToJumpTo: monkey([
+        ['totalRows'],
         ['rowToJumpTo'],
         function(totalRows) {
             return {
                 row: Math.floor(totalRows * Math.random())
             };
         }
-    ],
+    ]),
 });
 
 module.exports = tree;

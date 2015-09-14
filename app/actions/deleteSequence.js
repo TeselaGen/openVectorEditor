@@ -10,7 +10,7 @@ module.exports = function deleteSequence(rangeToDelete) {
     if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
         console.warn('can\'t delete sequence due to invalid start and end');
     }
-    var sequenceLength = tree.get(['$sequenceLength']);
+    var sequenceLength = tree.get(['sequenceLength']);
     var deletionLength;
     if (rangeToDelete.start > rangeToDelete.end) {
         deletionLength = sequenceLength - rangeToDelete.start + rangeToDelete.end + 1;

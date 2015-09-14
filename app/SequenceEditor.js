@@ -18,11 +18,11 @@ var Clipboard = require('./Clipboard');
 var SequenceEditor = React.createClass({
   mixins: [baoababBranch, MousetrapMixin],
   cursors: {
-    sequenceLength: ['$sequenceLength'],
-    bpsPerRow: ['$bpsPerRow'],
-    totalRows: ['$totalRows'],
-    newRandomRowToJumpTo: ['$newRandomRowToJumpTo'],
-    selectedSequenceString: ['$selectedSequenceString'],
+    sequenceLength: ['sequenceLength'],
+    bpsPerRow: ['bpsPerRow'],
+    totalRows: ['totalRows'],
+    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
+    selectedSequenceString: ['selectedSequenceString'],
     caretPosition: ['caretPosition'],
     sequenceData: ['sequenceData'],
     visibleRows: ['visibleRows'],
@@ -92,7 +92,7 @@ var SequenceEditor = React.createClass({
     });
   },
 
-  handleCopy: function(event) {
+  handleCopy: function() {
     copySelection();
     // this.state.selectedSequenceString
   },
@@ -133,13 +133,10 @@ var SequenceEditor = React.createClass({
          Jump to a random row: Row #{self.state.newRandomRowToJumpTo.row}
         </button>
         
-        
-
-        
-          <Clipboard
-            value={this.state.selectedSequenceString}
-            onCopy={this.handleCopy}
-            onPaste={this.handlePaste}/>
+        <Clipboard
+          value={this.state.selectedSequenceString}
+          onCopy={this.handleCopy}
+          onPaste={this.handlePaste}/>
         <br/>
         totalRows:  {this.state.totalRows}
         <RowView />

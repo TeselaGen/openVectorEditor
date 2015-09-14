@@ -20,11 +20,11 @@ describe('insertSequenceData', function () {
         var sequenceToInsert = {
             sequence: 'atgagagaga'
         };
-        var sequenceLengthPreInsert = tree.get('$sequenceLength');
+        var sequenceLengthPreInsert = tree.get('sequenceLength');
         setSelectionLayer(false);//make sure there's no selection layer
         setCaretPosition(0);
         insertSequenceData(sequenceToInsert);
-        var sequenceLengthPostInsert = tree.get('$sequenceLength');
+        var sequenceLengthPostInsert = tree.get('sequenceLength');
         sequenceLengthPostInsert.should.equal(sequenceLengthPreInsert + sequenceToInsert.sequence.length);
     });
 });
@@ -53,11 +53,11 @@ describe('insertSequenceData', function () {
             start: 0,
             end: 3
         }]);
-        var sequenceLengthPreInsert = tree.get('$sequenceLength');
+        var sequenceLengthPreInsert = tree.get('sequenceLength');
         setSelectionLayer(false);//make sure there's no selection layer
         setCaretPosition(0);
         insertSequenceData(sequenceToInsert);
-        var sequenceLengthPostInsert = tree.get('$sequenceLength');
+        var sequenceLengthPostInsert = tree.get('sequenceLength');
         sequenceLengthPostInsert.should.equal(sequenceLengthPreInsert + sequenceToInsert.sequence.length);
         tree.get('sequenceData', 'features').should.containSubset([{
             start: 10,

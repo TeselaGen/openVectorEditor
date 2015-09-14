@@ -34,14 +34,14 @@ describe('deleteSequence', function() {
             start: 0,
             end: 3
         }]);
-        var sequenceLengthPreInsert = tree.get('$sequenceLength');
+        var sequenceLengthPreInsert = tree.get('sequenceLength');
         setSelectionLayer(false); //make sure there's no selection layer
         setCaretPosition(0);
         deleteSequence({
             start: 0,
             end: 3
         });
-        var sequenceLengthPostInsert = tree.get('$sequenceLength');
+        var sequenceLengthPostInsert = tree.get('sequenceLength');
         sequenceLengthPostInsert.should.equal(0);
         tree.get('sequenceData', 'features').should.deep.equal([])
         tree.get('sequenceData', 'parts').should.deep.equal([])
@@ -66,14 +66,14 @@ describe('deleteSequence', function() {
             start: 0,
             end: 3
         }]);
-        var sequenceLengthPreInsert = tree.get('$sequenceLength');
+        var sequenceLengthPreInsert = tree.get('sequenceLength');
         setSelectionLayer(false); //make sure there's no selection layer
         setCaretPosition(0);
         deleteSequence({
             start: 3,
             end: 3
         });
-        var sequenceLengthPostInsert = tree.get('$sequenceLength');
+        var sequenceLengthPostInsert = tree.get('sequenceLength');
         sequenceLengthPostInsert.should.equal(3);
         tree.get('sequenceData', 'parts').should.containSubset([{
             start: 0,

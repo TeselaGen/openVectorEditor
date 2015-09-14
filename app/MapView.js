@@ -10,7 +10,7 @@ var RowView = React.createClass({
     preloadRowStart: ['preloadRowStart'],
     averageRowHeight: ['averageRowHeight'],
     rowViewDimensions: ['rowViewDimensions'],
-    sequenceData: ['$combinedSequenceData'],
+    sequenceData: ['combinedSequenceData'],
     selectionLayer: ['selectionLayer'],
   },
  
