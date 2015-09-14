@@ -8,6 +8,7 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
     //     ac.sequenceData,
     //     ac.posInt
     // ], arguments);
+    // tnrtodo: add more validation here!
     ac.throw(ac.postInt, caretPosition);
     sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
     
