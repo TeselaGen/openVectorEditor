@@ -4,7 +4,7 @@ var monkey = Baobab.monkey
 var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
-var validateAndTidyUpSequenceData = require('ve-sequence-utils/validateAndTidyUpSequenceData');
+var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var each = require('lodash/collection/each');
 var getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
@@ -39,6 +39,7 @@ var tree = new Baobab({
     userEnzymeList: [
         'rsplkii',
         'bme216i',
+        'bsmbi',
         'uba1229i',
         'maek81i', "esphk22i",
         "slu1777i",
@@ -79,7 +80,7 @@ var tree = new Baobab({
         start: 0,
         end: 0
     },
-    sequenceData: validateAndTidyUpSequenceData(sequenceData),
+    sequenceData: tidyUpSequenceData(sequenceData),
     clipboardData: null,
     bpsPerRow: monkey([
         ['rowViewDimensions',
@@ -153,10 +154,12 @@ var tree = new Baobab({
         ['sequenceData'],
         ['orfData'],
         ['translationsWithAminoAcids'],
-        function(sequenceData, orfData, translations) {
+        ['cutsitesAsArray'],
+        function(sequenceData, orfData, translations, cutsitesAsArray) {
             return assign({}, sequenceData, {
                 orfs: orfData,
-                translations: translations
+                translations: translations,
+                cutsites: cutsitesAsArray
             });
         }
     ]),

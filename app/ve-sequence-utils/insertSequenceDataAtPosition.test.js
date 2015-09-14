@@ -6,7 +6,7 @@ chai.should();
 var chaiSubset = require('chai-subset');
 chai.use(chaiSubset);
 
-var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
+var tidyUpSequenceData = require('./tidyUpSequenceData');
 var insertSequenceDataAtPosition = require('./insertSequenceDataAtPosition');
 
 describe('insertSequenceData', function() {
@@ -17,9 +17,9 @@ describe('insertSequenceData', function() {
         var preInsertSeq = {
             sequence: '0'
         };
-        seqToInsert = validateAndTidyUpSequenceData(seqToInsert);
+        seqToInsert = tidyUpSequenceData(seqToInsert);
         var caretPosition = 0;
-        preInsertSeq = validateAndTidyUpSequenceData({});
+        preInsertSeq = tidyUpSequenceData({});
         var postInsertSeq = insertSequenceDataAtPosition(seqToInsert, preInsertSeq, caretPosition)
         postInsertSeq.sequence.length.should.equal(preInsertSeq.sequence.length + seqToInsert.sequence.length);
     });
@@ -31,8 +31,8 @@ describe('insertSequenceData', function() {
             sequence: 'atgagagaga',
             features: [{start: 0, end: 9}]
         };
-        seqToInsert = validateAndTidyUpSequenceData(seqToInsert);
-        preInsertSeq = validateAndTidyUpSequenceData(preInsertSeq);
+        seqToInsert = tidyUpSequenceData(seqToInsert);
+        preInsertSeq = tidyUpSequenceData(preInsertSeq);
         var caretPosition = 0;
         var postInsertSeq = insertSequenceDataAtPosition(seqToInsert, preInsertSeq, caretPosition)
         postInsertSeq.sequence.length.should.equal(preInsertSeq.sequence.length + seqToInsert.sequence.length);

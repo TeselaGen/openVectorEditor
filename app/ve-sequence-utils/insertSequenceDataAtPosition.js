@@ -1,6 +1,6 @@
 var adjustRangeToInsert = require('ve-range-utils/adjustRangeToInsert');
 var spliceString = require('string-splice');
-var validateAndTidyUpSequenceData = require('./validateAndTidyUpSequenceData');
+var tidyUpSequenceData = require('./tidyUpSequenceData');
 var ac = require('ve-api-check');
 module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
     // ac.throw([
@@ -10,9 +10,9 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
     // ], arguments);
     // tnrtodo: add more validation here!
     ac.throw(ac.postInt, caretPosition);
-    sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
+    sequenceDataToInsert = tidyUpSequenceData(sequenceDataToInsert);
     
-    var newSequenceData = validateAndTidyUpSequenceData({}); //makes a new blank sequence
+    var newSequenceData = tidyUpSequenceData({}); //makes a new blank sequence
 
     var insertLength = sequenceDataToInsert.sequence.length;
     //splice the underlying sequence

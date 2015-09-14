@@ -3,22 +3,23 @@ let classnames = require('classnames');
 let setSelectionLayer = require('./actions/setSelectionLayer');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
-let Feature = require('./Feature');
+let Cutsite = require('./Cutsite');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
 let AnnotationPositioner = require('./AnnotationPositioner');
 
-let FeatureContainer = React.createClass({
+let CutsiteContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         annotationRanges: React.PropTypes.array.isRequired,
         charWidth: React.PropTypes.number.isRequired,
         bpsPerRow: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
-        spaceBetweenAnnotations: React.PropTypes.number.isRequired,
+        spaceBetweenAnnotations: React.PropTypes.number.isRequired
     },
     render: function() {
+        debugger;
         let annotationRanges = this.props.annotationRanges;
         let bpsPerRow = this.props.bpsPerRow;
         let charWidth = this.props.charWidth;
@@ -40,11 +41,11 @@ let FeatureContainer = React.createClass({
                 <AnnotationPositioner 
                     height={annotationHeight} 
                     width={result.width}
-                    key={'feature' + annotation.id + 'start:' + annotationRange.start}
+                    key={'Cutsite' + annotation.id + 'start:' + annotationRange.start}
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
                     left={result.xStart}
                     >
-                    <Feature
+                    <Cutsite
                         onClick={function (event) {
                           setSelectionLayer(this);
                           event.stopPropagation();
@@ -56,14 +57,14 @@ let FeatureContainer = React.createClass({
                         height={annotationHeight}
                         color={annotation.color}
                         name={annotation.name}>
-                    </Feature>
+                    </Cutsite>
                 </AnnotationPositioner>
             );
         });
         let containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
         return (
-            <AnnotationContainerHolder 
-                className='featureContainer'
+            <AnnotationContainerHolder
+                className='cutsiteContainer'
                 containerHeight={containerHeight}>
                 {annotationsSVG}
             </AnnotationContainerHolder>
@@ -71,4 +72,4 @@ let FeatureContainer = React.createClass({
 
     }
 });
-module.exports = FeatureContainer;
+module.exports = CutsiteContainer;

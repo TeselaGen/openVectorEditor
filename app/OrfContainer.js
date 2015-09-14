@@ -46,7 +46,7 @@ var OrfContainer = React.createClass({
     });
     var height = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
     return (
-      <svg className="annotationContainer" width="100%" height={height} >
+      <svg className="orfContainer" width="100%" height={height} >
         {annotationsSVG}
       </svg>
     );

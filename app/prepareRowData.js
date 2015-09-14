@@ -3,12 +3,7 @@ var ac = require('ve-api-check');
 var mapAnnotationsToRows = require('./mapAnnotationsToRows');
 
 module.exports = function prepareRowData(sequenceData, bpsPerRow) {
-    ac.throw([ac.shape({
-        features: ac.array,
-        parts: ac.array,
-        orfs: ac.array,
-        translations: ac.array,
-    }), ac.posInt], arguments);
+    ac.throw([ac.sequenceData, ac.posInt], arguments);
     var sequenceLength = sequenceData.sequence.length;
     var totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
     var rows = [];
@@ -16,6 +11,7 @@ module.exports = function prepareRowData(sequenceData, bpsPerRow) {
     var partsToRowsMap = mapAnnotationsToRows(sequenceData.parts, sequenceLength, bpsPerRow);
     var orfsToRowsMap = mapAnnotationsToRows(sequenceData.orfs, sequenceLength, bpsPerRow);
     var translationsToRowsMap = mapAnnotationsToRows(sequenceData.translations, sequenceLength, bpsPerRow);
+    var cutsitesToRowsMap = mapAnnotationsToRows(sequenceData.cutsites, sequenceLength, bpsPerRow);
 
     for (var rowNumber = 0; rowNumber < totalRows; rowNumber++) {
         var row = {};
@@ -26,6 +22,7 @@ module.exports = function prepareRowData(sequenceData, bpsPerRow) {
         row.features = featuresToRowsMap[rowNumber] ? featuresToRowsMap[rowNumber] : [];
         row.parts = partsToRowsMap[rowNumber] ? partsToRowsMap[rowNumber] : [];
         row.orfs = orfsToRowsMap[rowNumber] ? orfsToRowsMap[rowNumber] : [];
+        row.cutsites = cutsitesToRowsMap[rowNumber] ? cutsitesToRowsMap[rowNumber] : [];
         row.translations = translationsToRowsMap[rowNumber] ? translationsToRowsMap[rowNumber] : [];
         // row.cutsites = cutsitesToRowsMap[rowNumber];
         rows[rowNumber] = row;

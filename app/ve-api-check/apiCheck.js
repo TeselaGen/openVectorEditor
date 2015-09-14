@@ -7,16 +7,17 @@ var ac = require('api-check')({
         suffix: 'Good luck!',
         docsBaseUrl: 'no docs yet!'
     },
-    verbose: false
+    verbose: false,
+    disabled: true,
 }, {
     /* custom checkers! */
     posInt: posInt,
     posIntArray: posIntArray,
     range: range
-    // sequenceData: function (val, name, location) {
-    //     if (!val || !areNonNegativeIntegers([val.start, val.end])) {
-    //         return ac.utils.getError(name, location, 'val is not a valid range!');
-    //     }
+        // sequenceData: function (val, name, location) {
+        //     if (!val || !areNonNegativeIntegers([val.start, val.end])) {
+        //         return ac.utils.getError(name, location, 'val is not a valid range!');
+        //     }
 
     //     ac.shape({
     //             "name": ac.string,
@@ -32,23 +33,36 @@ var ac = require('api-check')({
     // }
 });
 
-function posInt (val, name, location) {
+function posInt(val, name, location) {
     if (!isNonNegativeInteger(val)) {
         return ac.utils.getError(name, location, posInt.type);
     }
 }
 posInt.type = 'non-negative integer!';
-function posIntArray (val, name, location) {
+
+function posIntArray(val, name, location) {
     if (!areNonNegativeIntegers(val)) {
         return ac.utils.getError(name, location, posIntArray.type);
     }
 }
 posIntArray.type = 'array of non-negative integers!';
-function range (val, name, location) {
+
+function range(val, name, location) {
     if (!val || !areNonNegativeIntegers([val.start, val.end])) {
         return ac.utils.getError(name, location, range.type);
     }
 }
-range.type = 'valid range with start and end!'
+ac.range = ac.shape({
+    start: ac.posInt,
+    end: ac.posInt
+})
+
+ac.sequenceData = ac.shape({
+    features: ac.arrayOf(ac.range),
+    parts: ac.arrayOf(ac.range),
+    orfs: ac.arrayOf(ac.range),
+    translations: ac.arrayOf(ac.range),
+    cutsites: ac.arrayOf(ac.range)
+});
 
 module.exports = ac;

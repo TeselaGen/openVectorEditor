@@ -3,64 +3,43 @@ var assign = require('lodash/object/assign');
 var randomColor = require('random-color');
 var FeatureTypes = require('./FeatureTypes.js');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-module.exports = function validateAndTidyUpSequenceData(sequence, throwErrors) {
+module.exports = function tidyUpSequenceData(sequence) {
     var sequenceData = assign({}, sequence); //sequence is usually immutable, so we clone it and return it
     var response = {
         messages: []
     };
     if (!sequenceData) {
-        if (throwErrors) {
-            throw new Error('no sequenceData at all...!');
-        } else {
-            console.warn('no sequenceData at all...!');
-        }
         sequenceData = {};
     }
     if (!sequenceData.sequence && sequenceData.sequence !== '') {
-        if (throwErrors) {
-            throw new Error('no bps!');
-        } else {
-            console.warn('no bps!');
-        }
         sequenceData.sequence = "";
     }
-    // if (!sequenceData.size) {
     sequenceData.size = sequenceData.sequence.length;
-    // }
     if (sequenceData.circular === 'false' || sequenceData.circular == -1 || !sequenceData.circular) {
         sequenceData.circular = false;
     } else {
         sequenceData.circular = true;
     }
     if (!Array.isArray(sequenceData.features)) {
-        if (throwErrors) {
-            throw new Error('no features array!');
-        } else {
-            console.warn('no features array!');
-        }
         sequenceData.features = [];
     }
     if (!Array.isArray(sequenceData.parts)) {
-        if (throwErrors) {
-            throw new Error('no parts array!');
-        } else {
-            console.warn('no parts array!');
-        }
         sequenceData.parts = [];
     }
     if (!Array.isArray(sequenceData.translations)) {
-        if (throwErrors) {
-            throw new Error('no translations array!');
-        } else {
-            console.warn('no translations array!');
-        }
         sequenceData.translations = [];
     }
-    
+    if (!Array.isArray(sequenceData.cutsites)) {
+        sequenceData.cutsites = [];
+    }
+    if (!Array.isArray(sequenceData.orfs)) {
+        sequenceData.orfs = [];
+    }
+
     sequenceData.features = sequenceData.features.filter(cleanUpAnnotation);
     sequenceData.parts = sequenceData.parts.filter(cleanUpAnnotation);
     sequenceData.translations = sequenceData.translations.filter(cleanUpAnnotation);
-    
+
     return sequenceData;
 
     function cleanUpAnnotation(annotation) {
@@ -94,9 +73,9 @@ module.exports = function validateAndTidyUpSequenceData(sequence, throwErrors) {
         if (annotation.forward === true || annotation.forward === 'true' || annotation.strand === 1 || annotation.strand === '1' || annotation.strand === '+') {
             annotation.forward = true;
         } else {
-          annotation.forward = false;
+            annotation.forward = false;
         }
-        
+
         if (!annotation.type || typeof annotation.type !== 'string' || FeatureTypes.some(function(featureType) {
                 if (featureType.toLowerCase === annotation.type.toLowerCase()) {
                     annotation.type = featureType; //this makes sure the annotation.type is being set to the exact value of the accepted featureType

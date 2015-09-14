@@ -1,7 +1,7 @@
 var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var adjustRangeToDeletionOfAnotherRange = require('ve-range-utils/adjustRangeToDeletionOfAnotherRange');
-var validateAndTidyUpSequenceData = require('ve-sequence-utils/validateAndTidyUpSequenceData');
+var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var setCaretPosition = require('./setCaretPosition');
 var setSelectionLayer = require('./setSelectionLayer');
@@ -79,5 +79,5 @@ module.exports = function deleteSequence(rangeToDelete) {
             return [];
         }
     }
-    tree.select('sequenceData').set(validateAndTidyUpSequenceData(newSequenceData, true));
+    tree.select('sequenceData').set(tidyUpSequenceData(newSequenceData, true));
 }

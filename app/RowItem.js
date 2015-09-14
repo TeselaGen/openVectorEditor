@@ -9,6 +9,7 @@ var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
 var TranslationContainer = require('./TranslationContainer2');
 var FeatureContainer = require('./FeatureContainer');
+var CutsiteContainer = require('./CutsiteContainer');
 
 var RowItem = React.createClass({
   mixins: [baobabBranch],
@@ -23,6 +24,7 @@ var RowItem = React.createClass({
     showParts: ['showParts'],
     showOrfs: ['showOrfs'],
     showAxis: ['showAxis'],
+    showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
     // sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
@@ -110,7 +112,7 @@ var RowItem = React.createClass({
           onMouseUp={this.onMouseUp}
           onMouseDown={this.onMouseDown}
           >
-            {this.state.showFeatures &&
+            {(this.state.showFeatures && row.features.length > 0) &&
               <FeatureContainer
                 annotationRanges={row.features}
                 charWidth={this.state.charWidth}
@@ -118,15 +120,15 @@ var RowItem = React.createClass({
                 bpsPerRow={this.state.bpsPerRow}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {this.state.showCutsites &&
+            {(this.state.showCutsites && row.cutsites.length > 0) &&
               <CutsiteContainer
-                annotationRanges={row.features}
+                annotationRanges={row.cutsites}
                 charWidth={this.state.charWidth}
                 annotationHeight={this.state.ANNOTATION_HEIGHT}
                 bpsPerRow={this.state.bpsPerRow}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {this.state.showOrfs &&
+            {(this.state.showOrfs && row.orfs.length > 0) &&
               <OrfContainer
                 row={row}
                 annotationRanges={row.orfs}
@@ -136,7 +138,7 @@ var RowItem = React.createClass({
                 sequenceLength={this.state.sequenceLength}
                 spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {this.state.showTranslations &&
+            {(this.state.showTranslations && row.translations.length > 0) &&
               <TranslationContainer
                 row={row}
                 annotationRanges={row.translations}

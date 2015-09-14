@@ -1,7 +1,8 @@
-var seqString = "gacgtctggatcctatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
-for (var i = 0; i < 10; i++) {
-  seqString += seqString
-}; 
+var seqString1 = "gacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
+var seqString = "";
+for (var i = 0; i < 100; i++) {
+  seqString += seqString1
+}
 var sequenceData = {
   "_id": "55a34cf01d8e1e8ea7000006",
   "name_lowercase": "pj5_00001",
