@@ -6,7 +6,7 @@ var setCaretPosition = require('./setCaretPosition');
 var insertSequenceDataAtPosition = require('ve-sequence-utils/insertSequenceDataAtPosition');
 
 
-module.exports = function insertSequenceData (sequenceDataToInsert) {
+module.exports = function insertSequenceData(sequenceDataToInsert) {
     if (!sequenceDataToInsert || !sequenceDataToInsert.sequence.length) {
         console.warn("must pass a valid sequence string");
         return;
@@ -28,8 +28,7 @@ module.exports = function insertSequenceData (sequenceDataToInsert) {
         // console.log('sequenceData.sequence.length: ' + sequenceData.sequence.length);
         // console.log('newSequenceData.sequence.length: ' + newSequenceData.sequence.length);
 
-       tree.select('sequenceData').set(newSequenceData);
-        console.log('newdata set');
+        tree.select('sequenceData').set(newSequenceData);
         //update the caret position to be at the end of the newly inserted sequence
         setCaretPosition(sequenceDataToInsert.sequence.length + caretPosition);
     } else {

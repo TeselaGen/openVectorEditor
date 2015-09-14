@@ -48,7 +48,7 @@
     "eslint-config-airbnb": "^0.0.8",
     "eslint-plugin-babel": "^2.1.1",
     "eslint-plugin-react": "^3.3.0",
-    "istanbul": "^0.3.15",
+    "istanbul": "^0.3.19",
     "linklocal": "^2.5.2",
     "mocha": "^2.2.5",
     "nestest": "0.0.4",
@@ -58,7 +58,8 @@
     "webpack-dev-server": "^1.9.0"
   },
   "scripts": {
-    "test": "mocha ./test/* --harmony  && nestest",
+    "test": "mocha app/**/*.test.js --harmony",
+    "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "nestest": "nestest",
     "linklocal": "linklocal",
     "testDebug": "mocha ./test/* --debug-brk --compilers jsx:babel/register",

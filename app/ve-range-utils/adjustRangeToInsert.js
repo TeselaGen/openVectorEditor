@@ -25,5 +25,4 @@ module.exports = function adjustRangeToInsert(rangeToBeAdjusted, insertStart, in
         }
     }
     return newRange;
-    //we can make some awesome logical simplifications because we know that the two ranges do not overlap (since we've already trimmed the rangeToBeAdjusted)
 };

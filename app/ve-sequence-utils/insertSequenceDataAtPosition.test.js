@@ -15,7 +15,7 @@ describe('insertSequenceData', function() {
             sequence: 'atgagagaga'
         };
         var preInsertSeq = {
-            sequence: '0',
+            sequence: '0'
         };
         seqToInsert = validateAndTidyUpSequenceData(seqToInsert);
         var caretPosition = 0;
@@ -37,6 +37,6 @@ describe('insertSequenceData', function() {
         var postInsertSeq = insertSequenceDataAtPosition(seqToInsert, preInsertSeq, caretPosition)
         postInsertSeq.sequence.length.should.equal(preInsertSeq.sequence.length + seqToInsert.sequence.length);
         postInsertSeq.features.length.should.equal(1);
-        postInsertSeq.features[0].start.should.equal(preInsertSeq.sequence.features.start + seqToInsert.sequence.length);
+        postInsertSeq.features[0].start.should.equal(preInsertSeq.features[0].start + seqToInsert.sequence.length);
     });
 });

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for ve-range-utils/trimNonCicularRangeByAnotherNonCircularRange.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">ve-range-utils/trimNonCicularRangeByAnotherNonCircularRange.js</span></h1>
+    <h2>
+        Statements: <span class="metric">11.76% <small>(2 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">0% <small>(0 / 1)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">11.76% <small>(2 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">ve-range-utils/</a> &#187; trimNonCicularRangeByAnotherNonCircularRange.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var ac = require('ve-api-check'); 
+module.exports = <span class="fstat-no" title="function not covered" >function trimNonCicularRangeByAnotherNonCircularRange(rangeToBeTrimmed, trimmingRange) {</span>
+<span class="cstat-no" title="statement not covered" >  ac.throw([ac.range, ac.range], arguments);</span>
+<span class="cstat-no" title="statement not covered" >  var outputTrimmedRange;</span>
+<span class="cstat-no" title="statement not covered" >  if (!rangeToBeTrimmed) {</span>
+<span class="cstat-no" title="statement not covered" >    return outputTrimmedRange;</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (rangeToBeTrimmed.start &lt; trimmingRange.start) {</span>
+<span class="cstat-no" title="statement not covered" >    if (rangeToBeTrimmed.end &lt; trimmingRange.start) {</span>
+      // rrr   &lt;range to be trimmed
+      //    ttt  &lt;trimming range
+<span class="cstat-no" title="statement not covered" >      outputTrimmedRange = {</span>
+        start: rangeToBeTrimmed.start,
+        end: rangeToBeTrimmed.end
+      };
+    } else {
+<span class="cstat-no" title="statement not covered" >      if (rangeToBeTrimmed.end &gt; trimmingRange.end) {</span>
+        // rrrrrr   &lt;range to be trimmed
+        //   ttt  &lt;trimming range
+<span class="cstat-no" title="statement not covered" >        outputTrimmedRange = {</span>
+          start: rangeToBeTrimmed.start,
+          end: rangeToBeTrimmed.end
+        };
+      } else {
+        // rrrrrr   &lt;range to be trimmed
+        //   ttt  &lt;trimming range
+<span class="cstat-no" title="statement not covered" >        outputTrimmedRange = {</span>
+          start: rangeToBeTrimmed.start,
+          end: trimmingRange.start - 1
+        };
+      }
+    }
+  } else {
+<span class="cstat-no" title="statement not covered" >    if (rangeToBeTrimmed.end &lt;= trimmingRange.end) {</span>
+      //   rrr   &lt;range to be trimmed
+      //  ttttt  &lt;trimming range
+      //fully deleting the range, so do nothing
+    } else {
+<span class="cstat-no" title="statement not covered" >      if (rangeToBeTrimmed.start &gt; trimmingRange.end) {</span>
+        //     rrrrrr   &lt;range to be trimmed
+        //  ttt  &lt;trimming range
+<span class="cstat-no" title="statement not covered" >        outputTrimmedRange = {</span>
+          end: rangeToBeTrimmed.end,
+          start: rangeToBeTrimmed.start
+        };
+      } else {
+        //    rrrrrr   &lt;range to be trimmed
+        //  ttt  &lt;trimming range
+<span class="cstat-no" title="statement not covered" >        outputTrimmedRange = {</span>
+          end: rangeToBeTrimmed.end,
+          start: trimmingRange.end + 1
+        };
+      }
+    }
+  }
+<span class="cstat-no" title="statement not covered" >  return outputTrimmedRange;</span>
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Sep 13 2015 15:01:04 GMT-0700 (PDT)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

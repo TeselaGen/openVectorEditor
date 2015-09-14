@@ -9,7 +9,6 @@ var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberTo
  * @return {undefined}              
  */
 module.exports = function moveCaretShiftHeld(numberToMove) {
-    console.log('hey: ');
     var selectionLayer = assign({}, tree.select('selectionLayer').get());
 
     var sequenceLength = tree.get(['$sequenceLength']);

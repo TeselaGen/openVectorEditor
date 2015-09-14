@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for ve-sequence-utils/getOrfsFromSequence.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">ve-sequence-utils/getOrfsFromSequence.js</span></h1>
+    <h2>
+        Statements: <span class="metric">8.89% <small>(4 / 45)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 20)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">0% <small>(0 / 3)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">8.89% <small>(4 / 45)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">ve-sequence-utils/</a> &#187; getOrfsFromSequence.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// var findIndex = require('lodash/array/findIndex');
+// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+var ObjectId = require("bson-objectid");
+var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
+var ac = require('ve-api-check');
+/**
+ * @private
+ * Finds ORFs in a given DNA forward in a given frame.
+ * @param  {Int} frame The frame to look in.
+ * @param  {String}sequence The dna sequence.
+ * @param  {Int} minimumOrfSize The minimum length of ORF to return.
+ * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
+ * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
+ */
+module.exports = <span class="fstat-no" title="function not covered" >function getOrfsFromSequence(options) {</span>
+<span class="cstat-no" title="statement not covered" >    ac.throw([ac.shape({</span>
+        sequence: ac.string,
+        minimumOrfSize: ac.posInt,
+        forward: ac.bool,
+        circular: ac.bool
+    })], arguments);
+    
+    // var frame = options.frame;
+<span class="cstat-no" title="statement not covered" >    var sequence = options.sequence;</span>
+<span class="cstat-no" title="statement not covered" >    var minimumOrfSize = options.minimumOrfSize;</span>
+<span class="cstat-no" title="statement not covered" >    var forward = options.forward;</span>
+<span class="cstat-no" title="statement not covered" >    var circular = options.circular;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var ObjectID = require("bson-objectid");</span>
+<span class="cstat-no" title="statement not covered" >    var originalSequenceLength = sequence.length;</span>
+<span class="cstat-no" title="statement not covered" >    if (!forward) {</span>
+        //we reverse the sequence
+<span class="cstat-no" title="statement not covered" >        sequence = getReverseComplementSequenceString(sequence);</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (circular) {</span>
+        //we'll pass in double the sequence and then trim excess orfs
+<span class="cstat-no" title="statement not covered" >        sequence += sequence;</span>
+    }
+<span class="cstat-no" title="statement not covered" >    var re = /(?=((?:A[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/ig;</span>
+    // var str = 'tatgaatgaatgffffffatgfftaaftaafatgfatgfffffsdfatgffatgfffstaafftaafffffffffffffffatgtaaataa\n\natgffftaaf\n\natgffatgftaafftaa\n\natgatgftaafftaa\n\natgatgtaataa\n\ntttttttttttttaatgatgfffffffffftaa';
+<span class="cstat-no" title="statement not covered" >    var m;</span>
+<span class="cstat-no" title="statement not covered" >    var orfRanges = [];</span>
+    //loop through orf hits!
+<span class="cstat-no" title="statement not covered" >    while ((m = re.exec(sequence)) !== null) {</span>
+        //stuff to get the regex to work
+<span class="cstat-no" title="statement not covered" >        if (m.index === re.lastIndex) {</span>
+<span class="cstat-no" title="statement not covered" >            re.lastIndex++;</span>
+        }
+        //orf logic: 
+<span class="cstat-no" title="statement not covered" >        var orfLength = m[1].length;</span>
+<span class="cstat-no" title="statement not covered" >        if (orfLength &gt;= minimumOrfSize) {</span>
+            //only keep orfs &gt;= to the minimum size
+<span class="cstat-no" title="statement not covered" >            var start = m.index;</span>
+<span class="cstat-no" title="statement not covered" >            var end = orfLength + start - 1;</span>
+            //normalize the end if it is greater than the original sequence length
+<span class="cstat-no" title="statement not covered" >            if (end &gt;= originalSequenceLength) {</span>
+<span class="cstat-no" title="statement not covered" >                end -= originalSequenceLength;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (start &lt; originalSequenceLength) {</span>
+                //only keep orfs that *begin* before the original sequence length (only the case when dealing with circular orfs)
+<span class="cstat-no" title="statement not covered" >                orfRanges.push({</span>
+                    start: start,
+                    end: end,
+                    length: m[1].length,
+                    internalStartCodonIndices: [],
+                    frame: start % 3,
+                    forward: forward,
+                    id: ObjectId().str
+                });
+            }
+        }
+    }
+    // pair down the orfs to remove duplicates
+    // and deal with revComp orfs
+<span class="cstat-no" title="statement not covered" >    var orfEnds = {};</span>
+<span class="cstat-no" title="statement not covered" >    orfRanges.forEach(<span class="fstat-no" title="function not covered" >function(orf, index) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var indexOfAlreadyExistingOrf = orfEnds[orf.end];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (typeof indexOfAlreadyExistingOrf !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >            var internalStartCodonIndex = forward ? orf.start : originalSequenceLength - orf.start - 1; </span>//use either the start or the end depending on the direction of the orf
+            //we know because of how the regex works that larger orfs come first in the array
+<span class="cstat-no" title="statement not covered" >            orfRanges[indexOfAlreadyExistingOrf].internalStartCodonIndices.push(internalStartCodonIndex);</span>
+            //set a flag that we'll use to remove all these shorter, duplicated orfs
+<span class="cstat-no" title="statement not covered" >            orf.remove = true;</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >            orfEnds[orf.end] = index;</span>
+<span class="cstat-no" title="statement not covered" >            if (!forward) {</span>
+                // if (originalSequenceLength - orf.end - 1 == 3657) {
+                // }
+                //this check needs to come after the above assignment of orfEnds
+                //flip the start and ends
+<span class="cstat-no" title="statement not covered" >                var endHolder = orf.end; </span>//temp variable
+<span class="cstat-no" title="statement not covered" >                orf.end = originalSequenceLength - orf.start - 1;</span>
+<span class="cstat-no" title="statement not covered" >                orf.start = originalSequenceLength - endHolder - 1;</span>
+            }
+        }
+    });
+<span class="cstat-no" title="statement not covered" >    var nonDuplicatedOrfRanges = orfRanges.filter(<span class="fstat-no" title="function not covered" >function(orf) {</span></span>
+<span class="cstat-no" title="statement not covered" >        if (!orf.remove) {</span>
+<span class="cstat-no" title="statement not covered" >            return true;</span>
+        }
+    });
+<span class="cstat-no" title="statement not covered" >    return nonDuplicatedOrfRanges;</span>
+};
+&nbsp;
+&nbsp;
+//   var potentiallyDuplicatedOrfs = calculateOrfs(frame, sequence, minimumOrfSize, forward);
+&nbsp;
+//   if (!forward) {
+//     //we'll reverse the orfs start and end before (potentially) trimming them 
+//     potentiallyDuplicatedOrfs.forEach(function(orf) {
+//       var endHolder = orf.end;
+//       orf.end = orf.start;
+//       orf.start = endHolder;
+//     });
+//   } 
+//   var nonDuplicatedOrfs;
+//   if (circular) {
+//     // we'll trim the excess orfs
+//     nonDuplicatedOrfs = [];
+//     potentiallyDuplicatedOrfs.forEach(function(orf) {
+//       if (orf.start &gt;= originalSequenceLength) {
+//         //eliminate this orf because there must already be a normal orf with the same start bp (just shifted by 1 sequence length)
+//       } else {
+//         if (orf.end &gt;= originalSequenceLength) {
+//           orf.end -= originalSequenceLength;
+//         }
+//         nonDuplicatedOrfs.push(orf);
+//       }
+//     });
+//   } else { 
+//     //non circular so
+//     nonDuplicatedOrfs = potentiallyDuplicatedOrfs;
+//   }
+//   return nonDuplicatedOrfs;
+&nbsp;
+//   function calculateOrfs(frame, sequence, minimumOrfSize, forward) {
+//     var allOrfs = [];
+//     var sequenceLength = sequence.length;
+&nbsp;
+//     // var index = frame;
+//     var triplet;
+//     // var aaSymbol;
+//     // var aaString = '';
+//     // var startIndex = -1;
+//     // var endIndex = -1;
+//     var startCodonIndices = [];
+//     var stopCodonIndices = [];
+//     var possibleStopCodon;
+//     var possibleStartCodon;
+//     // Loop through sequence and generate list of ORFs.
+//     for (var index = frame; index &lt; sequenceLength; index += 3) {
+//       triplet = sequence.slice(index, index + 3);
+//       if (triplet.length === 3) {
+//         // aaSymbol = getAminoAcidFromSequenceTriplet(triplet);
+//         // aaString += aaSymbol.value;
+//         possibleStartCodon = isStartCodon(triplet);
+//         possibleStopCodon = isStopCodon(triplet);
+&nbsp;
+//         // If we've found a start codon, add its index to startCodonIndices.
+//         if (possibleStartCodon) {
+//           startCodonIndices.push(index);
+//         }
+//         if (possibleStopCodon) {
+//           stopCodonIndices.push(index);
+//         }
+//       }
+//     }
+&nbsp;
+//     //loop through the start codons and see if any of them form orfs
+//     startCodonIndices.forEach(function(startCodonIndex) {
+//       stopCodonIndices.some(function(stopCodonIndex) {
+//         if (stopCodonIndex - startCodonIndex &gt; 0) {
+//           var orf = {
+//             start: startCodonIndex,
+//             end: stopCodonIndex,
+//             forward: forward,
+//             frame: frame,
+//             startCodonIndices: startCodonIndices,
+//             id: ObjectID().str
+//           };
+//           allOrfs.push(orf);
+//           return true; //break the some loop
+//         }
+//       });
+//     });
+//     //after this we'll need to do a 'reduce' step to shave off the orfs that don't meet the minimum size requirements 
+//     //as well as the orfs with the same stop bp
+//     //tnrtodo: inspect this function and make sure it is reducing the orfs correctly!
+//     var trimmedOrfs = [];
+//     allOrfs.forEach(function(orf) {
+//       if (orf.end - orf.start + 1 &gt;= minimumOrfSize) { //make sure the orf size is &gt;= to the minimum size
+//         var indexOfOrfWithSameStopBp = findIndex(trimmedOrfs, function(trimmedOrf) { //find any orfs with the same stop bp in the trimmed orf array
+//           return trimmedOrf.end === orf.end;
+//         });
+//         if (indexOfOrfWithSameStopBp === -1) {
+//           trimmedOrfs.push(orf);
+//         } else {
+//           if (trimmedOrfs[indexOfOrfWithSameStopBp].start &gt; orf.start) {
+//             trimmedOrfs[indexOfOrfWithSameStopBp] = orf; //replace the old orf at that position with this new orf because it is longer
+//           }
+//         }
+//       }
+//     });
+//     return trimmedOrfs;
+//   }
+// };
+&nbsp;
+// function isStartCodon(codon) {
+//   return (codon == 'atg' || codon == 'aug' &amp;&amp; codon.indexOf("-") === -1);
+// }
+// /**
+//  * {Calculates whether a three character string is a stop codon.
+//  * @param  {String} codon a three character string.
+//  * @return {Boolean} shows whether the nucleotides make up a stop codon
+//  */
+// function isStopCodon(codon) {
+//   return (codon == 'taa' || codon == 'tag' || codon == 'tga' || codon == 'uaa' || codon == 'uag' || codon == 'uga');
+// }
+&nbsp;
+&nbsp;
+/**
+ * @private
+ * Sorting function for sorting codons.
+ * @param a
+ * @param b
+ * @return {Int} Sort order.
+ */
+// function codonsSort(a, b) {
+//   if (a &gt; b) {
+//     return 1;
+//   } else if (a &lt; b) {
+//     return -1;
+//   } else {
+//     return 0;
+//   }
+// }</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Sep 13 2015 15:01:04 GMT-0700 (PDT)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

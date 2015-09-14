@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for ve-sequence-utils/cutSequenceByRestrictionEnzyme.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">ve-sequence-utils/cutSequenceByRestrictionEnzyme.js</span></h1>
+    <h2>
+        Statements: <span class="metric">8.75% <small>(7 / 80)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 22)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">0% <small>(0 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">8.75% <small>(7 / 80)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">ve-sequence-utils/</a> &#187; cutSequenceByRestrictionEnzyme.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
+var ac = require('ve-api-check');
+var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength.js');
+var reversePositionInRange = require('ve-range-utils/reversePositionInRange.js');
+&nbsp;
+module.exports = <span class="fstat-no" title="function not covered" >function cutSequenceByRestrictionEnzyme(pSequence, circular, restrictionEnzyme) {</span>
+<span class="cstat-no" title="statement not covered" >    ac.throw([</span>
+        ac.string,
+        ac.bool,
+        ac.shape({
+            "name": ac.string,
+            "site": ac.string,
+            "forwardRegex": ac.string,
+            "reverseRegex": ac.string,
+            "cutType": ac.number,
+            "dsForward": ac.number,
+            "dsReverse": ac.number,
+            "usForward": ac.number,
+            "usReverse": ac.number
+        })
+    ], arguments);
+<span class="cstat-no" title="statement not covered" >    var reverseRegExpPattern = new RegExp(restrictionEnzyme.reverseRegex, "ig");</span>
+<span class="cstat-no" title="statement not covered" >    var forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");</span>
+<span class="cstat-no" title="statement not covered" >    var sequence = pSequence;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var cutsitesForward = cutSequence(forwardRegExpPattern, restrictionEnzyme, sequence, circular);</span>
+<span class="cstat-no" title="statement not covered" >    var cutsitesReverse = [];</span>
+<span class="cstat-no" title="statement not covered" >    if (restrictionEnzyme.forwardRegex !== restrictionEnzyme.reverseRegex) {</span>
+<span class="cstat-no" title="statement not covered" >        var revSequence = getReverseComplementSequenceString(sequence);</span>
+<span class="cstat-no" title="statement not covered" >        cutsitesReverse = cutSequence(forwardRegExpPattern, restrictionEnzyme, revSequence, circular);</span>
+<span class="cstat-no" title="statement not covered" >        cutsitesReverse = cutsitesReverse.map(<span class="fstat-no" title="function not covered" >function(cutsite) {</span></span>
+<span class="cstat-no" title="statement not covered" >            return reverseAllPositionsOfCutsite(cutsite, sequence.length);</span>
+        });
+    }
+<span class="cstat-no" title="statement not covered" >    return (cutsitesForward.concat(cutsitesReverse));</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function reverseAllPositionsOfCutsite(cutsite, rangeLength) {</span>
+<span class="cstat-no" title="statement not covered" >        debugger;</span>
+<span class="cstat-no" title="statement not covered" >        cutsite.start = reversePositionInRange(cutsite.start, rangeLength, false);</span>
+<span class="cstat-no" title="statement not covered" >        cutsite.end = reversePositionInRange(cutsite.end, rangeLength, false);</span>
+<span class="cstat-no" title="statement not covered" >        cutsite.downstreamTopSnip = reversePositionInRange(cutsite.downstreamTopSnip, rangeLength, true);</span>
+<span class="cstat-no" title="statement not covered" >        cutsite.downstreamBottomSnip = reversePositionInRange(cutsite.downstreamBottomSnip, rangeLength, true);</span>
+<span class="cstat-no" title="statement not covered" >        if (cutsite.cutType === 1) {</span>
+<span class="cstat-no" title="statement not covered" >            cutsite.upstreamTopSnip = reversePositionInRange(cutsite.upstreamTopSnip, rangeLength, true);</span>
+<span class="cstat-no" title="statement not covered" >            cutsite.upstreamBottomSnip = reversePositionInRange(cutsite.upstreamBottomSnip, rangeLength, true);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        cutsite.recognitionSiteRange.start = reversePositionInRange(cutsite.recognitionSiteRange.start, rangeLength, false);</span>
+<span class="cstat-no" title="statement not covered" >        cutsite.recognitionSiteRange.end = reversePositionInRange(cutsite.recognitionSiteRange.end, rangeLength, false);</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            start: cutsite.end,
+            end: cutsite.start,
+            downstreamTopSnip: cutsite.downstreamBottomSnip,
+            downstreamBottomSnip: cutsite.downstreamTopSnip,
+            upstreamTopSnip: cutsite.upstreamBottomSnip,
+            upstreamBottomSnip: cutsite.upstreamTopSnip,
+            recognitionSiteRange: {
+                start: cutsite.recognitionSiteRange.end,
+                end: cutsite.recognitionSiteRange.start
+            },
+            forward: false,
+            restrictionEnzyme: cutsite.restrictionEnzyme
+        };
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function cutSequence(regExpPattern, restrictionEnzyme, sequence, circular) {</span>
+<span class="cstat-no" title="statement not covered" >        var restrictionCutSites = [];</span>
+<span class="cstat-no" title="statement not covered" >        var restrictionCutSite;</span>
+<span class="cstat-no" title="statement not covered" >        var recognitionSiteLength = restrictionEnzyme.site.length;</span>
+<span class="cstat-no" title="statement not covered" >        var originalSequenceLength = sequence.length;</span>
+<span class="cstat-no" title="statement not covered" >        if (circular) {</span>
+            //if the sequence is circular, we send in double the sequence
+            //we'll deduplicate the results afterwards!
+<span class="cstat-no" title="statement not covered" >            sequence += sequence;</span>
+        }
+<span class="cstat-no" title="statement not covered" >        var currentSequenceLength = sequence.length;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var matchIndex = sequence.search(forwardRegExpPattern);</span>
+<span class="cstat-no" title="statement not covered" >        var startIndex = 0;</span>
+<span class="cstat-no" title="statement not covered" >        var subSequence = sequence;</span>
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        while (matchIndex != -1) {</span>
+<span class="cstat-no" title="statement not covered" >            var recognitionSiteRange = {};</span>
+<span class="cstat-no" title="statement not covered" >            var start; </span>//start and end should fully enclose the enzyme snips and the recognition site!
+<span class="cstat-no" title="statement not covered" >            var end;</span>
+<span class="cstat-no" title="statement not covered" >            var upstreamTopSnip; </span>//upstream top snip position
+<span class="cstat-no" title="statement not covered" >            var upstreamBottomSnip; </span>//upstream bottom snip position
+<span class="cstat-no" title="statement not covered" >            var downstreamTopSnip; </span>//downstream top snip position
+<span class="cstat-no" title="statement not covered" >            var downstreamBottomSnip; </span>//downstream bottom snip position
+            // if (matchIndex + startIndex + recognitionSiteLength - 1 &gt;= sequence.length) { // subSequence is too short
+            //     break;
+            // }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            recognitionSiteRange.start = matchIndex + startIndex;</span>
+<span class="cstat-no" title="statement not covered" >            start = recognitionSiteRange.start; </span>//this might change later on!
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            recognitionSiteRange.end = matchIndex + recognitionSiteLength - 1 + startIndex;</span>
+<span class="cstat-no" title="statement not covered" >            end = recognitionSiteRange.end; </span>//this might change later on!
+&nbsp;
+            //we need to get the snip sites, top and bottom for each of these cut sites
+            //as well as all of the bp's between the snip sites
+&nbsp;
+            //if the cutsite is type 1, it cuts both upstream and downstream of its recognition site (cutsite type 0's cut only downstream)
+<span class="cstat-no" title="statement not covered" >            if (restrictionEnzyme.cutType == 1) { //double cutter, add upstream cutsite here</span>
+<span class="cstat-no" title="statement not covered" >                upstreamTopSnip = recognitionSiteRange.start - restrictionEnzyme.usForward;</span>
+<span class="cstat-no" title="statement not covered" >                upstreamBottomSnip = recognitionSiteRange.start - restrictionEnzyme.usReverse;</span>
+<span class="cstat-no" title="statement not covered" >                if (upstreamTopSnip &lt; upstreamBottomSnip) {</span>
+<span class="cstat-no" title="statement not covered" >                    start = upstreamTopSnip;</span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                    start = upstreamBottomSnip;</span>
+                }
+<span class="cstat-no" title="statement not covered" >                upstreamTopSnip = normalizePositionByRangeLength(upstreamTopSnip, originalSequenceLength, true);</span>
+<span class="cstat-no" title="statement not covered" >                upstreamBottomSnip = normalizePositionByRangeLength(upstreamBottomSnip, originalSequenceLength, true);</span>
+            }
+&nbsp;
+&nbsp;
+            //add downstream cutsite here
+<span class="cstat-no" title="statement not covered" >            downstreamTopSnip = recognitionSiteRange.start + restrictionEnzyme.dsForward;</span>
+<span class="cstat-no" title="statement not covered" >            downstreamBottomSnip = recognitionSiteRange.start + restrictionEnzyme.dsReverse;</span>
+<span class="cstat-no" title="statement not covered" >            if (downstreamTopSnip &gt; downstreamBottomSnip) {</span>
+<span class="cstat-no" title="statement not covered" >                if (downstreamTopSnip &gt; recognitionSiteRange.end) {</span>
+<span class="cstat-no" title="statement not covered" >                    end = downstreamTopSnip - 1;</span>
+                }
+            } else {
+<span class="cstat-no" title="statement not covered" >                if (downstreamBottomSnip &gt; recognitionSiteRange.end) {</span>
+<span class="cstat-no" title="statement not covered" >                    end = downstreamBottomSnip - 1;</span>
+                }
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if (start &gt;= 0 &amp;&amp; end &gt;= 0 &amp;&amp; start &lt; originalSequenceLength &amp;&amp; end &lt; currentSequenceLength) {</span>
+                //only push cutsites onto the array if they are fully contained within the boundaries of the sequence!
+                //and they aren't duplicated
+<span class="cstat-no" title="statement not covered" >                downstreamTopSnip = normalizePositionByRangeLength(downstreamTopSnip, originalSequenceLength, true);</span>
+<span class="cstat-no" title="statement not covered" >                downstreamBottomSnip = normalizePositionByRangeLength(downstreamBottomSnip, originalSequenceLength, true);</span>
+<span class="cstat-no" title="statement not covered" >                start = normalizePositionByRangeLength(start, originalSequenceLength, false);</span>
+<span class="cstat-no" title="statement not covered" >                end = normalizePositionByRangeLength(end, originalSequenceLength, false);</span>
+<span class="cstat-no" title="statement not covered" >                recognitionSiteRange.start = normalizePositionByRangeLength(recognitionSiteRange.start, originalSequenceLength, false);</span>
+<span class="cstat-no" title="statement not covered" >                recognitionSiteRange.end = normalizePositionByRangeLength(recognitionSiteRange.end, originalSequenceLength, false);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                restrictionCutSite = {</span>
+                    start: start,
+                    end: end,
+                    downstreamTopSnip: downstreamTopSnip,
+                    downstreamBottomSnip: downstreamBottomSnip,
+                    upstreamTopSnip: upstreamTopSnip,
+                    upstreamBottomSnip: upstreamBottomSnip,
+                    recognitionSiteRange: recognitionSiteRange,
+                    forward: true,
+                    restrictionEnzyme: restrictionEnzyme
+                };
+<span class="cstat-no" title="statement not covered" >                restrictionCutSites.push(restrictionCutSite);</span>
+            }
+&nbsp;
+&nbsp;
+            // Make sure that we always store the previous match index to ensure
+            // that we are always storing indices relative to the whole sequence,
+            // not just the subSequence.
+<span class="cstat-no" title="statement not covered" >            startIndex = startIndex + matchIndex + 1;</span>
+&nbsp;
+            // Search again on subSequence, starting from the index of the last match + 1.
+<span class="cstat-no" title="statement not covered" >            subSequence = sequence.substring(startIndex, sequence.length);</span>
+<span class="cstat-no" title="statement not covered" >            matchIndex = subSequence.search(forwardRegExpPattern);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return restrictionCutSites;</span>
+    }
+}</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Sep 13 2015 15:01:04 GMT-0700 (PDT)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

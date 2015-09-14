@@ -13,7 +13,6 @@ module.exports = function setVisibleRows(newVisibleRows) {
         // }
         var previousVisibleRows = tree.select('visibleRows').get();
         if (previousVisibleRows.start !== newVisibleRows.start || previousVisibleRows.end !== newVisibleRows.end) {
-            console.log('newVisibleRows: ' + JSON.stringify(newVisibleRows,null,4));
             tree.set(['visibleRows'], newVisibleRows);
         }
     } else {

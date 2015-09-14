@@ -8,12 +8,9 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
     //     ac.sequenceData,
     //     ac.posInt
     // ], arguments);
-    // sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
+    ac.throw(ac.postInt, caretPosition);
+    sequenceDataToInsert = validateAndTidyUpSequenceData(sequenceDataToInsert);
     
-    if (caretPosition > existingSequenceData.sequence.length) {
-        throw new Error('invalid caret position passed!')
-    }
-
     var newSequenceData = validateAndTidyUpSequenceData({}); //makes a new blank sequence
 
     var insertLength = sequenceDataToInsert.sequence.length;
@@ -30,7 +27,7 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
 }
 
 function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
-    ac.throw([ac.range, ac.posInt, ac.posInt], arguments)
+    ac.throw([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
     return annotationsToBeAdjusted.map(function(annotation) {
         return adjustRangeToInsert(annotation, insertStart, insertLength);
     });
