@@ -4,13 +4,27 @@ Technology choices:
 reactjs
 baobab
 webpack
+api-check
+npm modules
 
-#####To use this repo:
+#### To use this repo:
 clone it into your folder of choice,
 
 	cd ~/myFolderOfChoice
 
 	git clone https://github.com/tnrich/webpackTrial.git
+	
+Because this repo uses local npm packages, you'll need to have npm version >2
+
+Check this by doing
+
+	npm -v
+
+if necessary, run 
+
+	sudo npm install -g npm 
+
+to update your version of npm
 
 Then, get the dependencies by running:
 
@@ -26,20 +40,15 @@ For the first run, you need to build the bundle by running:
 
 after that, you can run 
 
-	npm run dev
+	npm start
 
 to start the development server with live-reload
 
 #### To run tests:
 	
-	npm run test
+	npm test
 
-Tests are written with mocha using node's built in assertion library.
-
-To debug tests in node inspector: npm run testDebug
-
-
-####Concepts employed:
+#### Concepts employed:
 
 View --(triggers)--> Actions --(update)--> State
 
