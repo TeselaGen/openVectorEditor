@@ -5,7 +5,7 @@ module.exports = function normalizePositionByRangeLength(pPosition, sequenceLeng
     // A T G C
     // 0 1 2 3    <--  isInBetweenPositions = false is counting the positions themselves
     //0 1 2 3 4   <--  isInBetweenPositions = true is counting the spaces between positions
-    ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
+    ac.throw([ac.number, ac.posInt, ac.bool], arguments);
     var position = pPosition;
     if (position < 0) {
         position += sequenceLength;

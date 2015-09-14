@@ -83,10 +83,11 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
             var recognitionSiteRange = {};
             var start; //start and end should fully enclose the enzyme snips and the recognition site!
             var end;
-            var upstreamTopSnip; //upstream top snip position
-            var upstreamBottomSnip; //upstream bottom snip position
-            var downstreamTopSnip; //downstream top snip position
-            var downstreamBottomSnip; //downstream bottom snip position
+            var upstreamTopSnip = null; //upstream top snip position
+            var upstreamBottomSnip = null; //upstream bottom snip position
+            var downstreamTopSnip = null; //downstream top snip position
+            var downstreamBottomSnip = null; //downstream bottom snip position
+            var fitsWithinSequence = false;
             // if (matchIndex + startIndex + recognitionSiteLength - 1 >= sequence.length) { // subSequence is too short
             //     break;
             // }
@@ -102,36 +103,52 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
 
             //if the cutsite is type 1, it cuts both upstream and downstream of its recognition site (cutsite type 0's cut only downstream)
             if (restrictionEnzyme.cutType == 1) { //double cutter, add upstream cutsite here
-                upstreamTopSnip = recognitionSiteRange.start - restrictionEnzyme.usForward;
-                upstreamBottomSnip = recognitionSiteRange.start - restrictionEnzyme.usReverse;
-                if (upstreamTopSnip < upstreamBottomSnip) {
-                    start = upstreamTopSnip;
+                upstreamTopSnip = recognitionSiteRange.end - restrictionEnzyme.usForward;
+                upstreamBottomSnip = recognitionSiteRange.end - restrictionEnzyme.usReverse;
+                if (upstreamTopSnip >= 0 && upstreamBottomSnip >= 0) {
+                    fitsWithinSequence = true;
+                    if (upstreamTopSnip < upstreamBottomSnip) {
+                        if (start > upstreamTopSnip) {
+                            start = upstreamTopSnip + 1;
+                        }
+                    } else {
+                        if (start > upstreamBottomSnip) {
+                            start = upstreamBottomSnip + 1;
+                        }
+                    }
+                    upstreamTopSnip = normalizePositionByRangeLength(upstreamTopSnip, originalSequenceLength, true);
+                    upstreamBottomSnip = normalizePositionByRangeLength(upstreamBottomSnip, originalSequenceLength, true);
                 } else {
-                    start = upstreamBottomSnip;
+                    upstreamTopSnip = null;
+                    upstreamBottomSnip = null;
                 }
-                upstreamTopSnip = normalizePositionByRangeLength(upstreamTopSnip, originalSequenceLength, true);
-                upstreamBottomSnip = normalizePositionByRangeLength(upstreamBottomSnip, originalSequenceLength, true);
             }
 
 
             //add downstream cutsite here
             downstreamTopSnip = recognitionSiteRange.start + restrictionEnzyme.dsForward;
             downstreamBottomSnip = recognitionSiteRange.start + restrictionEnzyme.dsReverse;
-            if (downstreamTopSnip > downstreamBottomSnip) {
-                if (downstreamTopSnip > recognitionSiteRange.end) {
-                    end = downstreamTopSnip - 1;
+            if (downstreamBottomSnip <= currentSequenceLength && downstreamTopSnip <= currentSequenceLength) {
+                fitsWithinSequence = true;
+                if (downstreamTopSnip > downstreamBottomSnip) {
+                    if (downstreamTopSnip > recognitionSiteRange.end) {
+                        end = downstreamTopSnip - 1;
+                    }
+                } else {
+                    if (downstreamBottomSnip > recognitionSiteRange.end) {
+                        end = downstreamBottomSnip - 1;
+                    }
                 }
-            } else {
-                if (downstreamBottomSnip > recognitionSiteRange.end) {
-                    end = downstreamBottomSnip - 1;
-                }
-            }
-
-            if (start >= 0 && end >= 0 && start < originalSequenceLength && end < currentSequenceLength) {
-                //only push cutsites onto the array if they are fully contained within the boundaries of the sequence!
-                //and they aren't duplicated
                 downstreamTopSnip = normalizePositionByRangeLength(downstreamTopSnip, originalSequenceLength, true);
                 downstreamBottomSnip = normalizePositionByRangeLength(downstreamBottomSnip, originalSequenceLength, true);
+            } else {
+                downstreamTopSnip = null;
+                downstreamBottomSnip = null;
+            }
+
+            if (fitsWithinSequence && start >= 0 && end >= 0 && start < originalSequenceLength && end < currentSequenceLength) {
+                //only push cutsites onto the array if they are fully contained within the boundaries of the sequence!
+                //and they aren't duplicated
                 start = normalizePositionByRangeLength(start, originalSequenceLength, false);
                 end = normalizePositionByRangeLength(end, originalSequenceLength, false);
                 recognitionSiteRange.start = normalizePositionByRangeLength(recognitionSiteRange.start, originalSequenceLength, false);
