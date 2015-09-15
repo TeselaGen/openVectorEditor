@@ -1,7 +1,7 @@
 var React = require('react');
 var interpolate = require('interpolate');
 
-var Feature = React.createClass({
+var Orf = React.createClass({
     
     propTypes: {
         widthInBps: React.PropTypes.number.isRequired,
@@ -25,7 +25,7 @@ var Feature = React.createClass({
         var widthMinusOne = widthInBpsMinusOne * charWidth;
         var points;
 
-        // starting from the top left of the feature
+        // starting from the top left of the orf
         if (rangeType === 'middle') {
             //draw a rectangle
             points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
@@ -69,4 +69,4 @@ var Feature = React.createClass({
         );
     }
 });
-module.exports = Feature;
+module.exports = Orf;

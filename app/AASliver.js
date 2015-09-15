@@ -1,3 +1,4 @@
+var ac = require('ve-api-check');
 import React, {PropTypes} from 'react';
 let AASliver = React.createClass({
     propTypes: {
@@ -9,7 +10,7 @@ let AASliver = React.createClass({
         letter: PropTypes.string.isRequired,
         onClick: PropTypes.func.isRequired,
         onDoubleClick: PropTypes.func.isRequired,
-        relativeAAPositionInRow: PropTypes.number.isRequired
+        relativeAAPositionInTranslation: PropTypes.number.isRequired
     },
     render() {
         let fatness = 24;
@@ -26,11 +27,14 @@ let AASliver = React.createClass({
             offset = -offset;
         }
         offset = offset * offsetStrength;
+        if (this.props.letter === '-') {
+            return null;
+        }
         return (
             <g
                 onClick={getClickHandler(this.props.onClick, this.props.onDoubleClick, 250)}
                 onDoubleClick={this.props.onDoubleClick}
-                transform={"scale(" + this.props.width / 100 * 1.25 + ", " + (this.props.height / 100 ) + ") translate(" + (this.props.relativeAAPositionInRow * 100 / 1.25 + offset) + ",0)" }
+                transform={"scale(" + this.props.width / 100 * 1.25 + ", " + (this.props.height / 100 ) + ") translate(" + (this.props.relativeAAPositionInTranslation * 100 / 1.25 + offset) + ",0)" }
                 >
                 <polyline
                     transform={this.props.forward ? null : "translate(100,0) scale(-1,1) "}

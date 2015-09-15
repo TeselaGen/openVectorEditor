@@ -7,7 +7,7 @@ var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotati
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
-var TranslationContainer = require('./TranslationContainer2');
+var TranslationContainer = require('./TranslationContainer');
 var FeatureContainer = require('./FeatureContainer');
 var CutsiteContainer = require('./CutsiteContainer');
 
