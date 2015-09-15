@@ -1,12 +1,11 @@
 var Baobab = require('baobab');
 var monkey = Baobab.monkey
 // var sequenceData = require('./sequenceData');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
+var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
-var each = require('lodash/collection/each');
 var getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDataForEachBaseOfDna');
 var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence');

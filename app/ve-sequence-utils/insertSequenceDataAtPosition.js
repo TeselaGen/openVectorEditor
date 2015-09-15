@@ -11,7 +11,7 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
     // tnrtodo: add more validation here!
     ac.throw(ac.posInt, caretPosition);
     sequenceDataToInsert = tidyUpSequenceData(sequenceDataToInsert);
-    
+
     var newSequenceData = tidyUpSequenceData({}); //makes a new blank sequence
 
     var insertLength = sequenceDataToInsert.sequence.length;
@@ -28,12 +28,7 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
 }
 
 function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
-    debugger;
-    try {
-        ac.throw([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
-    } catch (e) {
-        debugger;
-    }
+    ac.throw([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
     return annotationsToBeAdjusted.map(function(annotation) {
         return adjustRangeToInsert(annotation, insertStart, insertLength);
     });

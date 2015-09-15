@@ -1,63 +1,57 @@
 var React = require('react');
-var interpolate = require('interpolate');
-
+let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 var Orf = React.createClass({
+    mixins: [PureRenderMixin],
     
     propTypes: {
-        widthInBps: React.PropTypes.number.isRequired,
+        width: React.PropTypes.number.isRequired,
         charWidth: React.PropTypes.number.isRequired,
         height: React.PropTypes.number.isRequired,
         rangeType: React.PropTypes.string.isRequired,
         color: React.PropTypes.string.isRequired,
         name: React.PropTypes.string.isRequired,
-        forward: React.PropTypes.bool.isRequired
+        forward: React.PropTypes.bool.isRequired,
+        lineThickness: React.PropTypes.number
     },
 
-    render: function() {
-        var widthInBps = this.props.widthInBps;
-        var charWidth = this.props.charWidth;
-        var height = this.props.height;
-        var rangeType = this.props.rangeType;
-        var forward = this.props.forward;
-
-        var widthInBpsMinusOne = widthInBps - 1;
-        var width = widthInBps * charWidth;
-        var widthMinusOne = widthInBpsMinusOne * charWidth;
-        var points;
-
-        // starting from the top left of the orf
-        if (rangeType === 'middle') {
-            //draw a rectangle
-            points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
-                width: width,
-                height: height
-            });
-        } else if (rangeType === 'middle') {
-            //draw a rectangle
-            points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
-                width: width,
-                height: height
-            });
-        } else {
-            points = interpolate('0,0 {widthMinusOne},0 {width},{heightHalved} {widthMinusOne},{height} 0,{height} 0,0', {
-                width: width,
-                widthMinusOne: widthMinusOne,
-                height: height,
-                heightHalved: height / 2
-            });
+    render() {
+        var {height, rangeType, forward, width, charWidth} = this.props;
+        var arrowOrCircle = null;
+        if (rangeType === 'end') {
+            arrowOrCircle = (<path 
+                transform={`translate(${width - charWidth},0) scale(${charWidth/64},${height/64})`}
+                d= {rangeType === 'start' 
+                    ? 'M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z' 
+                    : 'M0 64 L64 32 L0 0 Z'} 
+                strokeWidth="1"
+                stroke={this.props.color}
+                fillOpacity={0.9}
+                fill={this.props.color || 'orange'}/>)
+        } else if (rangeType === 'start') {
+            arrowOrCircle = (<path 
+                transform={`scale(${charWidth/64},${height/64})`}
+                d= 'M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z' 
+                strokeWidth="1"
+                stroke={this.props.color}
+                fillOpacity={0.9}
+                fill={this.props.color || 'orange'}/>)
         }
         return (
             <g
             onClick={this.props.onClick}
             >
-            <polyline
-                transform={forward ? null : "translate("+width+",2.5) scale(-1,1) "} //tnrtodo: this 2.5 shouldn't be hardcoded. it is in there to make the annotation slightly smaller
-                points={points}
-                strokeWidth="1"
-                stroke={this.props.color}
-                fillOpacity={0.4}
-                fill={this.props.color || 'orange'}>
-            </polyline>
+            <g transform={forward ? null : `translate(${width},0) scale(-1,1)`}
+                >
+                <path
+                    transform={(rangeType === 'start' ? `translate(${charWidth},0)` : '') + `scale(${(width - (rangeType === 'middle' ? 0 : charWidth))/64},${height/64})`}
+                    d='M0 40 L64 40 L64 20 L0 20 Z'
+                    strokeWidth="1"
+                    stroke={this.props.color}
+                    fillOpacity={0.9}
+                    fill={this.props.color || 'orange'}>
+                </path>
+                {arrowOrCircle}
+            </g>
             <text 
               x="0"  
               y="0"

@@ -12,9 +12,9 @@ module.exports = function getAnnotationRangeType(annotationRange, enclosingRange
     } else {
         if (annotationRange.end === enclosingRangeType.end) {
             if (forward) {
-                return 'start';
-            } else {
                 return 'end';
+            } else {
+                return 'start';
             }
         } else {
             return 'middle';

@@ -35,7 +35,6 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
     return (cutsitesForward.concat(cutsitesReverse));
 
     function reverseAllPositionsOfCutsite(cutsite, rangeLength) {
-        debugger;
         cutsite.start = reversePositionInRange(cutsite.start, rangeLength, false);
         cutsite.end = reversePositionInRange(cutsite.end, rangeLength, false);
         cutsite.downstreamTopSnip = reversePositionInRange(cutsite.downstreamTopSnip, rangeLength, true);

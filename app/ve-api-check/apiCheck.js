@@ -58,6 +58,7 @@ ac.range = ac.shape({
 })
 
 ac.sequenceData = ac.shape({
+    sequence: ac.string,
     features: ac.arrayOf(ac.range),
     parts: ac.arrayOf(ac.range),
     orfs: ac.arrayOf(ac.range),

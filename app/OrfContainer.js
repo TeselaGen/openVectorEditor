@@ -4,11 +4,9 @@ let setSelectionLayer = require('./actions/setSelectionLayer');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Orf = require('./Orf');
-let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
 let AnnotationPositioner = require('./AnnotationPositioner');
-
+let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 let OrfContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
@@ -40,7 +38,7 @@ let OrfContainer = React.createClass({
                 <AnnotationPositioner 
                     height={annotationHeight} 
                     width={result.width}
-                    key={'feature' + annotation.id + 'start:' + annotationRange.start}
+                    key={'orf' + annotation.id + 'start:' + annotationRange.start}
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
                     left={result.xStart}
                     >
@@ -49,7 +47,7 @@ let OrfContainer = React.createClass({
                           setSelectionLayer(this);
                           event.stopPropagation();
                         }.bind(annotation)}
-                        widthInBps={annotationRange.end - annotationRange.start + 1}
+                        width={result.width}
                         charWidth={charWidth}
                         forward={annotation.forward}
                         rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
@@ -63,7 +61,7 @@ let OrfContainer = React.createClass({
         let containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
         return (
             <AnnotationContainerHolder 
-                className='featureContainer'
+                className='orfContainer'
                 containerHeight={containerHeight}>
                 {annotationsSVG}
             </AnnotationContainerHolder>
