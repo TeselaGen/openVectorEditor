@@ -13,6 +13,7 @@ var selectAll = require('./actions/selectAll');
 var moveCaretShortcutFunctions = require('./actions/moveCaretShortcutFunctions');
 var setViewportDimensions = require('./actions/setViewportDimensions');
 var jumpToRow = require('./actions/jumpToRow');
+var toggleAnnotationDisplay = require('./actions/toggleAnnotationDisplay');
 var Clipboard = require('./Clipboard');
 
 var SequenceEditor = React.createClass({
@@ -105,7 +106,15 @@ var SequenceEditor = React.createClass({
       // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
     var self = this;
     var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
-    
+    var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
+    var toggleButtons = annotationList.map(function(annotationType){
+      return (<button onClick={function () {
+          toggleAnnotationDisplay(annotationType);
+        }}>
+         toggle {annotationType}
+        </button>)
+    });
+
     return (
       <div style={{float:"right"}}>
         features count: {featuresCount}
@@ -121,13 +130,15 @@ var SequenceEditor = React.createClass({
         bpsPerRow:  {this.state.bpsPerRow}
         <br/>
 
-        <button onClick={function (argument) {
+        <button onClick={function () {
           setViewportDimensions({height: 800, width: 1500})
         }}>
          set viewport dimensions
         </button>
 
-        <button onClick={function (argument) {
+        {toggleButtons}
+
+        <button onClick={function () {
           jumpToRow(self.state.newRandomRowToJumpTo)
         }}>
          Jump to a random row: Row #{self.state.newRandomRowToJumpTo.row}

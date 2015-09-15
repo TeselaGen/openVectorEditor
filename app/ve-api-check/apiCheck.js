@@ -13,7 +13,8 @@ var ac = require('api-check')({
     /* custom checkers! */
     posInt: posInt,
     posIntArray: posIntArray,
-    range: range
+    range: range,
+    annotationType: annotationType
         // sequenceData: function (val, name, location) {
         //     if (!val || !areNonNegativeIntegers([val.start, val.end])) {
         //         return ac.utils.getError(name, location, 'val is not a valid range!');
@@ -39,6 +40,13 @@ function posInt(val, name, location) {
     }
 }
 posInt.type = 'non-negative integer!';
+
+function annotationType(val, name, location) {
+    if (['features', 'parts', 'translations', 'orfs', 'cutsites'].indexOf(val) === -1) {
+        return ac.utils.getError(name, location, annotationType.type);
+    }
+}
+annotationType.type = 'non-negative integer!';
 
 function posIntArray(val, name, location) {
     if (!areNonNegativeIntegers(val)) {

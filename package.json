@@ -10,6 +10,7 @@
     "baobab-react": "^1.0.0-dev",
     "br-mousetrap": "^1.1.3",
     "bson-objectid": "^1.1.1",
+    "capitalize": "^1.0.0",
     "classnames": "^1.2.0",
     "color-scale": "^1.1.0",
     "css-loader": "^0.10.1",

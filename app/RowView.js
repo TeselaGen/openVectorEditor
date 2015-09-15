@@ -26,7 +26,7 @@ var RowView = React.createClass({
         // visibleRows: ['visibleRows'],
         rowToJumpTo: ['rowToJumpTo'],
         charWidth: ['charWidth'],
-        selectionLayer: ['selectionLayer'],
+        selectionLayer: ['selectionLayer']
     },
 
 
@@ -170,9 +170,13 @@ var RowView = React.createClass({
         // console.log('render!');
         var self = this;
         function renderRows(rowNumber) {
-            return (<RowItem 
-              key={rowNumber}
-              row={self.state.rowData[rowNumber]} />);
+            if (self.state.rowData[rowNumber]) {
+                return (<RowItem 
+                  key={rowNumber}
+                  row={self.state.rowData[rowNumber]} />);
+            } else {
+                return null
+            }
         }
 
         var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;

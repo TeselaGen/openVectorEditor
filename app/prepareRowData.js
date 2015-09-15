@@ -18,6 +18,9 @@ module.exports = function prepareRowData(sequenceData, bpsPerRow) {
         row.rowNumber = rowNumber;
         row.start = rowNumber * bpsPerRow;
         row.end = (rowNumber + 1) * (bpsPerRow) - 1 < sequenceLength ? (rowNumber + 1) * (bpsPerRow) - 1 : sequenceLength - 1;
+        if (row.end < 0) {
+            row.end = 0
+        }
         row.sequence = sequenceData.sequence.slice(row.start, (row.end + 1));
         row.features = featuresToRowsMap[rowNumber] ? featuresToRowsMap[rowNumber] : [];
         row.parts = partsToRowsMap[rowNumber] ? partsToRowsMap[rowNumber] : [];
