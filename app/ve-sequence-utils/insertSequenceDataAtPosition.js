@@ -9,7 +9,7 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
     //     ac.posInt
     // ], arguments);
     // tnrtodo: add more validation here!
-    ac.throw(ac.postInt, caretPosition);
+    ac.throw(ac.posInt, caretPosition);
     sequenceDataToInsert = tidyUpSequenceData(sequenceDataToInsert);
     
     var newSequenceData = tidyUpSequenceData({}); //makes a new blank sequence
@@ -28,7 +28,12 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
 }
 
 function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
-    ac.throw([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
+    debugger;
+    try {
+        ac.throw([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
+    } catch (e) {
+        debugger;
+    }
     return annotationsToBeAdjusted.map(function(annotation) {
         return adjustRangeToInsert(annotation, insertStart, insertLength);
     });

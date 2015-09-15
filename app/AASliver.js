@@ -1,4 +1,3 @@
-var ac = require('ve-api-check');
 import React, {PropTypes} from 'react';
 let AASliver = React.createClass({
     propTypes: {
