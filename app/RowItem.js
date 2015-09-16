@@ -1,7 +1,7 @@
 var React = require('react');
 var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-var baobabBranch = require('baobab-react/mixins').branch;
+// var baobabBranch = require('baobab-react/mixins').branch;
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 
 var SequenceContainer = require('./SequenceContainer');
@@ -12,42 +12,32 @@ var FeatureContainer = require('./FeatureContainer');
 var CutsiteContainer = require('./CutsiteContainer');
 
 var RowItem = React.createClass({
-  mixins: [baobabBranch],
-  cursors: {
-    charWidth: ['charWidth'],
-    CHAR_HEIGHT: ['CHAR_HEIGHT'], //potentially unneeded
-    ANNOTATION_HEIGHT: ['ANNOTATION_HEIGHT'],
-    tickSpacing: ['tickSpacing'],
-    SPACE_BETWEEN_ANNOTATIONS: ['SPACE_BETWEEN_ANNOTATIONS'],
-    showFeatures: ['showFeatures'],
-    showTranslations: ['showTranslations'],
-    showParts: ['showParts'],
-    showOrfs: ['showOrfs'],
-    showAxis: ['showAxis'],
-    showCutsites: ['showCutsites'],
-    showReverseSequence: ['showReverseSequence'],
-    // sequenceData: ['sequenceData'],
-    selectionLayer: ['selectionLayer'],
-    mouse: ['mouse'],
-    caretPosition: ['caretPosition'],
-    sequenceLength: ['sequenceLength'],
-    bpsPerRow: ['bpsPerRow']
-  },
-
   render: function () {
-    var row = this.props.row;
+    var {
+            charWidth, 
+            selectionLayer, 
+            ANNOTATION_HEIGHT,
+            tickSpacing,
+            SPACE_BETWEEN_ANNOTATIONS,
+            showFeatures,
+            showTranslations,
+            showParts,
+            showOrfs,
+            showAxis,
+            showCutsites,
+            showReverseSequence,
+            caretPosition,
+            sequenceLength,
+            bpsPerRow,
+            row
+        } = this.props;
     if (!row) {
       return null;
     }
-    var bpsPerRow = this.state.bpsPerRow;
-    var showParts = this.state.showParts;
-    // var showReverseSequence = this.state.showReverseSequence;
-    var selectionLayer = this.state.selectionLayer;
-    var caretPosition = this.state.caretPosition;
     var self = this;
 
 
-    var fontSize = this.state.charWidth + "px";
+    var fontSize = charWidth + "px";
     var highlightLayerStyle = {
       height: "98%",
       background: 'blue',
@@ -67,7 +57,7 @@ var RowItem = React.createClass({
 
     var selectionCursorStart;
     var selectionCursorEnd;
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, this.state.charWidth, cursorStyle, this.state.sequenceLength);
+    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength);
     
     function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength) {
       if (selectionLayer.selected) {
@@ -90,9 +80,9 @@ var RowItem = React.createClass({
       }
     }
 
-    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, this.state.charWidth);
+    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, charWidth);
     function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
-      if(row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === self.state.sequenceLength - 1 && row.end < caretPosition) ) {
+      if(row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === sequenceLength - 1 && row.end < caretPosition) ) {
         //the second logical operator catches the special case where we're at the very end of the sequence..
         var newCursorStyle = assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
         return (<div className="cursor" style={newCursorStyle}  />);
@@ -112,53 +102,53 @@ var RowItem = React.createClass({
           onMouseUp={this.onMouseUp}
           onMouseDown={this.onMouseDown}
           >
-            {(this.state.showFeatures && row.features.length > 0) &&
+            {(showFeatures && row.features.length > 0) &&
               <FeatureContainer
                 annotationRanges={row.features}
-                charWidth={this.state.charWidth}
-                annotationHeight={this.state.ANNOTATION_HEIGHT}
-                bpsPerRow={this.state.bpsPerRow}
-                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+                charWidth={charWidth}
+                annotationHeight={ANNOTATION_HEIGHT}
+                bpsPerRow={bpsPerRow}
+                spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {(this.state.showCutsites && row.cutsites.length > 0) &&
+            {(showCutsites && row.cutsites.length > 0) &&
               <CutsiteContainer
                 annotationRanges={row.cutsites}
-                charWidth={this.state.charWidth}
-                annotationHeight={this.state.ANNOTATION_HEIGHT}
-                bpsPerRow={this.state.bpsPerRow}
-                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+                charWidth={charWidth}
+                annotationHeight={ANNOTATION_HEIGHT}
+                bpsPerRow={bpsPerRow}
+                spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {(this.state.showOrfs && row.orfs.length > 0) &&
+            {(showOrfs && row.orfs.length > 0) &&
               <OrfContainer
                 row={row}
                 annotationRanges={row.orfs}
-                charWidth={this.state.charWidth}
-                annotationHeight={this.state.ANNOTATION_HEIGHT}
-                bpsPerRow={this.state.bpsPerRow}
-                sequenceLength={this.state.sequenceLength}
-                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+                charWidth={charWidth}
+                annotationHeight={ANNOTATION_HEIGHT}
+                bpsPerRow={bpsPerRow}
+                sequenceLength={sequenceLength}
+                spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {(this.state.showTranslations && row.translations.length > 0) &&
+            {(showTranslations && row.translations.length > 0) &&
               <TranslationContainer
                 row={row}
                 annotationRanges={row.translations}
-                charWidth={this.state.charWidth}
-                annotationHeight={this.state.ANNOTATION_HEIGHT}
-                bpsPerRow={this.state.bpsPerRow}
-                sequenceLength={this.state.sequenceLength}
-                spaceBetweenAnnotations={this.state.SPACE_BETWEEN_ANNOTATIONS}/>
+                charWidth={charWidth}
+                annotationHeight={ANNOTATION_HEIGHT}
+                bpsPerRow={bpsPerRow}
+                sequenceLength={sequenceLength}
+                spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            <SequenceContainer sequence={row.sequence} charWidth={this.state.charWidth}/>
-            {this.state.showReverseSequence &&
-              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={this.state.charWidth}/>
+            <SequenceContainer sequence={row.sequence} charWidth={charWidth}/>
+            {showReverseSequence &&
+              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={charWidth}/>
             }
-            {this.state.showAxis &&
+            {showAxis &&
               <AxisContainer
               row={row}
-              tickSpacing={this.state.tickSpacing}
-              charWidth={this.state.charWidth}
-              annotationHeight={this.state.ANNOTATION_HEIGHT}
-              bpsPerRow={this.state.bpsPerRow}/>
+              tickSpacing={tickSpacing}
+              charWidth={charWidth}
+              annotationHeight={ANNOTATION_HEIGHT}
+              bpsPerRow={bpsPerRow}/>
             }
             {highlightLayerForRow}
             {selectionCursorStart}
