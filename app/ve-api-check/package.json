@@ -1,6 +1,6 @@
 {
   "name": "ve-api-check",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "our ve-specific implementation of api-check",
   "main": "apiCheck.js",
   "scripts": {
