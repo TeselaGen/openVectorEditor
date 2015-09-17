@@ -7,5 +7,11 @@
     "test": "mocha *.test.js --harmony"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ve-api-check": "0.0.0"
+  },
+  "dependencies": {
+    "ve-range-utils": "0.0.0"
+  }
 }
