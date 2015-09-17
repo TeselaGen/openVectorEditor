@@ -6,7 +6,7 @@ var areRangesValid = require('./areRangesValid');
 //takes in two potentially circular ranges and returns the first one trimmed by the second one
 //returns null if no range is left after the trimming
 module.exports = function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange, maxLength) {
-  if (!areRangesValid([rangeToBeAdjusted, anotherRange], maxLength)) {
+  if (!areRangesValid([rangeToBeAdjusted, anotherRange], maxLength)) { //tnrtodo: convert this to use api-check
     throw new Error('invalid ranges passed');
   }
   var trimmedRange = trimRangeByAnotherRange(rangeToBeAdjusted, anotherRange, maxLength);

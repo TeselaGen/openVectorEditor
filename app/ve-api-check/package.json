@@ -9,6 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "validate.io-nonnegative-integer": "^1.0.0",
+    "validate.io-nonnegative-integer-array": "^1.0.1",
     "ve-sequence-utils": "^0.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0"
   }
 }

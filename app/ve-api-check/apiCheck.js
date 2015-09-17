@@ -8,7 +8,7 @@ var ac = require('api-check')({
         docsBaseUrl: 'no docs yet!'
     },
     verbose: false,
-    disabled: false //tnr: set this to true to disable it!
+    disabled: process.env.NODE_ENV === 'production' //tnr: build with NODE_ENV equal to 'production' to disable api-check
 }, {
     /* custom checkers! */
     posInt: posInt,

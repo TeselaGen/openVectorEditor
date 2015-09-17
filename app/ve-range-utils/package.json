@@ -8,7 +8,12 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "validate.io-nonnegative-integer-array": "^1.0.1",
     "ve-api-check": "^0.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0"
   }
 }
