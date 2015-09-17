@@ -8,7 +8,7 @@ var ac = require('api-check')({
         docsBaseUrl: 'no docs yet!'
     },
     verbose: false,
-    disabled: false
+    disabled: false //tnr: set this to true to disable it!
 }, {
     /* custom checkers! */
     posInt: posInt,

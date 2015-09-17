@@ -1,4 +1,8 @@
-var React = require('react');
+import React, {
+    PropTypes
+}
+from 'react';
+var Blink = require('react-blink');
 var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 // var baobabBranch = require('baobab-react/mixins').branch;
@@ -10,12 +14,15 @@ var OrfContainer = require('./OrfContainer');
 var TranslationContainer = require('./TranslationContainer');
 var FeatureContainer = require('./FeatureContainer');
 var CutsiteContainer = require('./CutsiteContainer');
+var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var RowItem = React.createClass({
-  render: function () {
-    var {
-            charWidth, 
-            selectionLayer, 
+    mixins: [PureRenderMixin],
+    render: function() {
+        var {
+            charWidth,
+            selectionLayer,
             ANNOTATION_HEIGHT,
             tickSpacing,
             SPACE_BETWEEN_ANNOTATIONS,
@@ -31,72 +38,80 @@ var RowItem = React.createClass({
             bpsPerRow,
             row
         } = this.props;
-    if (!row) {
-      return null;
-    }
-    var self = this;
+        if (!row) {
+            return null;
+        }
+        var fontSize = charWidth + "px";
+        var highlightLayerStyle = {
+            height: "98%",
+            background: 'blue',
+            position: "absolute",
+            top: "0",
+            opacity: ".3",
+        };
 
+        var cursorStyle = {
+            height: "98%",
+            background: 'black',
+            position: "absolute",
+            top: "0",
+            width: "2px",
+            cursor: "ew-resize",
+        };
 
-    var fontSize = charWidth + "px";
-    var highlightLayerStyle = {
-      height: "98%",
-      background: 'blue',
-      position: "absolute",
-      top: "0",
-      opacity: ".3",
-    };
+        var startSelectionCursor;
+        var endSelectionCursor;
+        var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength);
 
-    var cursorStyle = {
-      height: "98%",
-      background: 'black',
-      position: "absolute",
-      top: "0",
-      width: "2px",
-      cursor: "ew-resize",
-    };
+        function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength) {
+            if (selectionLayer.selected) {
+                var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
+                var selectionLayers = overlaps.map(function(overlap, index) {
+                    if (overlap.start === selectionLayer.start) {
+                        startSelectionCursor = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth, !selectionLayer.cursorAtEnd);
+                    }
+                    if (overlap.end === selectionLayer.end) {
+                        endSelectionCursor = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth, selectionLayer.cursorAtEnd);
+                    }
+                    var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
+                    var xStart = result.xStart;
+                    var width = result.width;
 
-    var selectionCursorStart;
-    var selectionCursorEnd;
-    var highlightLayerForRow = getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength);
-    
-    function getHighlightLayerForRow(selectionLayer, row, bpsPerRow, highlightLayerStyle, charWidth, cursorStyle, sequenceLength) {
-      if (selectionLayer.selected) {
-        var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
-        var selectionLayers = overlaps.map(function (overlap, index) {
-          if (overlap.start === selectionLayer.start) {
-            selectionCursorStart = getCursorForRow(overlap.start, row, bpsPerRow, cursorStyle, charWidth);
-          }
-          if (overlap.end === selectionLayer.end) {
-            selectionCursorEnd = getCursorForRow(overlap.end + 1, row, bpsPerRow, cursorStyle, charWidth);
-          }
-          var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
-          var xStart = result.xStart;
-          var width = result.width;
+                    var style = assign({}, highlightLayerStyle, {
+                        width: width,
+                        left: xStart
+                    });
+                    return (<div key={index} className="selectionLayer" style={style}/>);
+                });
+                return selectionLayers;
+            }
+        }
 
-          var style = assign({}, highlightLayerStyle, {width: width, left: xStart});
-          return (<div key={index} className="selectionLayer" style={style}/>);
-        });
-        return selectionLayers;
-      }
-    }
+        var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, charWidth, true);
 
-    var cursor = getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, charWidth);
-    function getCursorForRow (caretPosition, row, bpsPerRow, cursorStyle, charWidth) {
-      if(row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === sequenceLength - 1 && row.end < caretPosition) ) {
-        //the second logical operator catches the special case where we're at the very end of the sequence..
-        var newCursorStyle = assign({}, cursorStyle, {left: (caretPosition - row.start) * charWidth});
-        return (<div className="cursor" style={newCursorStyle}  />);
-        // onHover={self.onCursorHover}
-      }
-    }
-    var rowContainerStyle = {
-      overflow: "hidden",
-      position: "relative",
-      width: "100%",
-    };
+        function getCursorForRow(caretPosition, row, bpsPerRow, cursorStyle, charWidth, shouldBlink) {
+            if (row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === sequenceLength - 1 && row.end < caretPosition)) {
+                //the second logical operator catches the special case where we're at the very end of the sequence..
+                var newCursorStyle = assign({}, cursorStyle, {
+                    left: (caretPosition - row.start) * charWidth
+                });
+                var cursorEl = <div className="cursor" style={newCursorStyle}/>
+                if (shouldBlink) {
+                    return (<Blink duration={600}>{cursorEl}</Blink>);
+                } else {
+                    return (cursorEl);
+                }
+                // onHover={self.onCursorHover}
+            }
+        }
+        var rowContainerStyle = {
+            overflow: "hidden",
+            position: "relative",
+            width: "100%",
+        };
 
-    return (
-        <div className="rowContainer"
+        return (
+            <div className="rowContainer"
           style={rowContainerStyle}
           onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
@@ -110,14 +125,7 @@ var RowItem = React.createClass({
                 bpsPerRow={bpsPerRow}
                 spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            {(showCutsites && row.cutsites.length > 0) &&
-              <CutsiteContainer
-                annotationRanges={row.cutsites}
-                charWidth={charWidth}
-                annotationHeight={ANNOTATION_HEIGHT}
-                bpsPerRow={bpsPerRow}
-                spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
-            }
+            
             {(showOrfs && row.orfs.length > 0) &&
               <OrfContainer
                 row={row}
@@ -138,25 +146,55 @@ var RowItem = React.createClass({
                 sequenceLength={sequenceLength}
                 spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
             }
-            <SequenceContainer sequence={row.sequence} charWidth={charWidth}/>
+
+            {(showCutsites && row.cutsites.length > 0) &&
+              <CutsiteContainer
+                annotationRanges={row.cutsites}
+                charWidth={charWidth}
+                annotationHeight={ANNOTATION_HEIGHT}
+                bpsPerRow={bpsPerRow}
+                spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+            }
+            <SequenceContainer 
+                sequence={row.sequence} 
+                charWidth={charWidth}>
+                <CutsiteSnipsContainer
+                    row={row}
+                    sequenceLength={sequenceLength}
+                    annotationRanges={row.cutsites}
+                    charWidth={charWidth}
+                    bpsPerRow={bpsPerRow}
+                    topStrand={true}
+                    />
+            </SequenceContainer>
+
             {showReverseSequence &&
-              <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={charWidth}/>
+                <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={charWidth}>
+                    <CutsiteSnipsContainer
+                        row={row}
+                        sequenceLength={sequenceLength}
+                        annotationRanges={row.cutsites}
+                        charWidth={charWidth}
+                        bpsPerRow={bpsPerRow}
+                        topStrand={false}
+                        />
+                </SequenceContainer>
             }
             {showAxis &&
-              <AxisContainer
-              row={row}
-              tickSpacing={tickSpacing}
-              charWidth={charWidth}
-              annotationHeight={ANNOTATION_HEIGHT}
-              bpsPerRow={bpsPerRow}/>
+                <AxisContainer
+                row={row}
+                tickSpacing={tickSpacing}
+                charWidth={charWidth}
+                annotationHeight={ANNOTATION_HEIGHT}
+                bpsPerRow={bpsPerRow}/>
             }
             {highlightLayerForRow}
-            {selectionCursorStart}
-            {selectionCursorEnd}
+            {startSelectionCursor}
+            {endSelectionCursor}
             {cursor}
         </div>
-    );
-  }
+        );
+    }
 });
 
 module.exports = RowItem;

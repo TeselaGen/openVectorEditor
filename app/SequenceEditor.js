@@ -1,10 +1,12 @@
 var React = require('react');
+var Combokeys = require("combokeys");
+var combokeys;
+var bindGlobalPlugin = require('combokeys/plugins/global-bind')
 
 var RowView = require('./RowView');
 // var MapView = require('./MapView');
 
 var baoababBranch = require('baobab-react/mixins').branch;
-var MousetrapMixin = require('./MousetrapMixin');
 var insertSequenceString = require('./actions/insertSequenceString');
 var backspacePressed = require('./actions/backspacePressed');
 var pasteSequenceString = require('./actions/pasteSequenceString');
@@ -17,7 +19,7 @@ var toggleAnnotationDisplay = require('./actions/toggleAnnotationDisplay');
 var Clipboard = require('./Clipboard');
 
 var SequenceEditor = React.createClass({
-    mixins: [baoababBranch, MousetrapMixin],
+    mixins: [baoababBranch],
     cursors: {
         sequenceLength: ['sequenceLength'],
         bpsPerRow: ['bpsPerRow'],
@@ -57,50 +59,54 @@ var SequenceEditor = React.createClass({
 
     componentDidMount: function() {
         var self = this;
+        combokeys = new Combokeys(document.documentElement);
+        // combokeys = new Combokeys(React.findDOMNode(this.refs.sequenceEditor));
+        bindGlobalPlugin(combokeys);
+
         //bind a bunch of keyboard shortcuts we're interested in catching
         //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
         //documentation: https://craig.is/killing/mice
-        this.bindShortcut(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
+        combokeys.bind(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
             insertSequenceString(String.fromCharCode(event.charCode));
         });
-        this.bindShortcut('left', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretLeftOne();
+        combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretLeftOne(event.shiftKey);
         });
-        this.bindShortcut('right', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretRightOne();
+        combokeys.bind(['right','shift+right'] , function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretRightOne(event.shiftKey);
         });
-        this.bindShortcut('up', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretUpARow();
+        combokeys.bind(['up','shift+up'] , function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretUpARow(event.shiftKey);
         });
-        this.bindShortcut('down', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretDownARowShiftHeld();
+        combokeys.bindGlobal(['down','shift+down'] , function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretDownARow(event.shiftKey);
         });
-        this.bindShortcut('shift+left', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretLeftOneShiftHeld();
+        combokeys.bindGlobal(['mod+right','mod+shift+right'], function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretToEndOfRow(event.shiftKey);
+            event.stopPropagation();
+            event.preventDefault();
         });
-        this.bindShortcut('shift+right', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretRightOneShiftHeld();
+        combokeys.bindGlobal(['mod+left','mod+shift+left'], function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretToStartOfRow(event.shiftKey);
+            event.stopPropagation();
+            event.preventDefault();
         });
-        this.bindShortcut('shift+up', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretUpARowShiftHeld();
+        combokeys.bindGlobal(['mod+up','mod+shift+up'], function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretToStartOfSequence(event.shiftKey);
+            event.stopPropagation();
+            event.preventDefault();
         });
-        this.bindShortcut('shift+down', function(event) { // Handle shortcut
-            //trigger a caret left
-            moveCaretShortcutFunctions.moveCaretDownARowShiftHeld();
+        combokeys.bindGlobal(['mod+down','mod+shift+down'], function(event) { // Handle shortcut
+            moveCaretShortcutFunctions.moveCaretToEndOfSequence(event.shiftKey);
+            event.stopPropagation();
+            event.preventDefault();
         });
-        this.bindShortcut('backspace', function(event) { // Handle shortcut
+        combokeys.bind('backspace', function(event) { // Handle shortcut
             backspacePressed();
             event.stopPropagation();
             event.preventDefault();
         });
-        this.bindGlobal('command+a', function(event) { // Handle shortcut
+        combokeys.bindGlobal('command+a', function(event) { // Handle shortcut
             selectAll();
             event.stopPropagation();
         });
@@ -115,6 +121,11 @@ var SequenceEditor = React.createClass({
     handleCopy: function() {
         copySelection();
         // this.state.selectedSequenceString
+    },
+
+    componentWillUnmount: function() {
+        // Remove any Mousetrap bindings before unmounting.detach()
+        combokeys.detach()
     },
   
   
@@ -146,7 +157,9 @@ var SequenceEditor = React.createClass({
             mouse,
             caretPosition,
             sequenceLength,
-            bpsPerRow
+            bpsPerRow,
+            selectedSequenceString,
+            visibleRows,
         } = this.state;
     var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
     var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
@@ -159,18 +172,19 @@ var SequenceEditor = React.createClass({
     });
 
     return (
-      <div style={{float:"right"}}>
+      <div ref="sequenceEditor"
+        style={{float:"right"}}>
         features count: {featuresCount}
         <br/>
-        selectionLayer: {this.state.selectionLayer.start}  {this.state.selectionLayer.end}
+        selectionLayer: {selectionLayer.start}  {selectionLayer.end}
         <br/>
-        caretPosition: {this.state.caretPosition}
+        caretPosition: {caretPosition}
         <br/>
-        sequence length: {this.state.sequenceLength}
+        sequence length: {sequenceLength}
         <br/>
-        visible rows: {this.state.visibleRows.start + ' - ' + this.state.visibleRows.end}
+        visible rows: {visibleRows.start + ' - ' + visibleRows.end}
         <br/>
-        bpsPerRow:  {this.state.bpsPerRow}
+        bpsPerRow:  {bpsPerRow}
         <br/>
 
         <button onClick={function () {
@@ -188,11 +202,11 @@ var SequenceEditor = React.createClass({
         </button>
         
         <Clipboard
-          value={this.state.selectedSequenceString}
+          value={selectedSequenceString}
           onCopy={this.handleCopy}
           onPaste={this.handlePaste}/>
         <br/>
-        totalRows:  {this.state.totalRows}
+        totalRows:  {totalRows}
         <RowView 
           charWidth={charWidth}
           CHAR_HEIGHT={CHAR_HEIGHT}
@@ -217,8 +231,6 @@ var SequenceEditor = React.createClass({
           totalRows={totalRows}
           rowData={rowData}
           rowToJumpTo={rowToJumpTo}
-          charWidth={charWidth}
-          selectionLayer={selectionLayer}
           />
       </div>
     );

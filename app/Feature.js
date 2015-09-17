@@ -15,11 +15,13 @@ var Feature = React.createClass({
     },
 
     render: function() {
-        var widthInBps = this.props.widthInBps;
-        var charWidth = this.props.charWidth;
-        var height = this.props.height;
-        var rangeType = this.props.rangeType;
-        var forward = this.props.forward;
+        var {
+            widthInBps, charWidth,
+            height,
+            rangeType,
+            forward,
+            name
+        } = this.props;
 
         var widthInBpsMinusOne = widthInBps - 1;
         var width = widthInBps * charWidth;
@@ -60,11 +62,12 @@ var Feature = React.createClass({
                 fill={this.props.color || 'orange'}>
             </polyline>
             <text 
-              x="0"  
-              y="0"
-              style={{textAnchor: "middle"}}
-              >
-              {this.props.letter}
+                transform={"translate("+width/2+",0)"}
+                x="0"  
+                y="13"
+                style={{textAnchor: "middle"}}
+                >
+                {name}
             </text>
           </g>
         );

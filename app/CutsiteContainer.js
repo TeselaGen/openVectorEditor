@@ -19,7 +19,6 @@ let CutsiteContainer = React.createClass({
         spaceBetweenAnnotations: React.PropTypes.number.isRequired
     },
     render: function() {
-        debugger;
         let annotationRanges = this.props.annotationRanges;
         let bpsPerRow = this.props.bpsPerRow;
         let charWidth = this.props.charWidth;
@@ -56,7 +55,7 @@ let CutsiteContainer = React.createClass({
                         rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
                         height={annotationHeight}
                         color={annotation.color}
-                        name={annotation.name}>
+                        name={annotation.restrictionEnzyme.name}>
                     </Cutsite>
                 </AnnotationPositioner>
             );
@@ -69,7 +68,6 @@ let CutsiteContainer = React.createClass({
                 {annotationsSVG}
             </AnnotationContainerHolder>
         );
-
     }
 });
 module.exports = CutsiteContainer;

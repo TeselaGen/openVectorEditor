@@ -1,8 +1,8 @@
 var React = require('react');
 var interpolate = require('interpolate');
 
-var Feature = React.createClass({
-    
+var Cutsite = React.createClass({
+
     propTypes: {
         widthInBps: React.PropTypes.number.isRequired,
         charWidth: React.PropTypes.number.isRequired,
@@ -14,38 +14,22 @@ var Feature = React.createClass({
     },
 
     render: function() {
-        var widthInBps = this.props.widthInBps;
-        var charWidth = this.props.charWidth;
-        var height = this.props.height;
-        var rangeType = this.props.rangeType;
-        var forward = this.props.forward;
+        var {
+            widthInBps, charWidth,
+            height,
+            rangeType,
+            forward, 
+            name
+        } = this.props;
 
-        var widthInBpsMinusOne = widthInBps - 1;
         var width = widthInBps * charWidth;
-        var widthMinusOne = widthInBpsMinusOne * charWidth;
         var points;
-
-        // starting from the top left of the feature
-        if (rangeType === 'middle') {
-            //draw a rectangle
-            points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
-                width: width,
-                height: height
-            });
-        } else if (rangeType === 'middle') {
-            //draw a rectangle
-            points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
-                width: width,
-                height: height
-            });
-        } else {
-            points = interpolate('0,0 {widthMinusOne},0 {width},{heightHalved} {widthMinusOne},{height} 0,{height} 0,0', {
-                width: width,
-                widthMinusOne: widthMinusOne,
-                height: height,
-                heightHalved: height / 2
-            });
-        }
+        // starting from the top left of the Cutsite
+        //draw a rectangle
+        points = interpolate('0,0 {width},0 {width},{height} 0,{height} 0,0', {
+            width: width,
+            height: height
+        });
         return (
             <g
             onClick={this.props.onClick}
@@ -59,14 +43,15 @@ var Feature = React.createClass({
                 fill={this.props.color || 'orange'}>
             </polyline>
             <text 
-              x="0"  
-              y="0"
-              style={{textAnchor: "middle"}}
-              >
-              {this.props.letter}
+                transform={"translate("+width/2+",0)"}
+                x="0"  
+                y="13"
+                style={{textAnchor: "middle"}}
+                >
+                {name}
             </text>
           </g>
         );
     }
 });
-module.exports = Feature;
+module.exports = Cutsite;
