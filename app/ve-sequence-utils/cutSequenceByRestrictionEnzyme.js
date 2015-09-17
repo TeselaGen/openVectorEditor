@@ -19,7 +19,6 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
             "usReverse": ac.number
         })
     ], arguments);
-    var reverseRegExpPattern = new RegExp(restrictionEnzyme.reverseRegex, "ig");
     var forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");
     var sequence = pSequence;
 
@@ -52,6 +51,8 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
             downstreamBottomSnip: cutsite.downstreamTopSnip,
             upstreamTopSnip: cutsite.upstreamBottomSnip,
             upstreamBottomSnip: cutsite.upstreamTopSnip,
+            upstreamTopBeforeBottom: cutsite.upstreamTopBeforeBottom ? true : false,
+            downstreamTopBeforeBottom: cutsite.downstreamTopBeforeBottom ? true : false,
             recognitionSiteRange: {
                 start: cutsite.recognitionSiteRange.end,
                 end: cutsite.recognitionSiteRange.start
@@ -84,8 +85,11 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
             var end;
             var upstreamTopSnip = null; //upstream top snip position
             var upstreamBottomSnip = null; //upstream bottom snip position
+            var upstreamTopBeforeBottom = false;
             var downstreamTopSnip = null; //downstream top snip position
             var downstreamBottomSnip = null; //downstream bottom snip position
+            var downstreamTopBeforeBottom = false;
+
             var fitsWithinSequence = false;
             // if (matchIndex + startIndex + recognitionSiteLength - 1 >= sequence.length) { // subSequence is too short
             //     break;
@@ -110,6 +114,7 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
                         if (start > upstreamTopSnip) {
                             start = upstreamTopSnip + 1;
                         }
+                        upstreamTopBeforeBottom = true;
                     } else {
                         if (start > upstreamBottomSnip) {
                             start = upstreamBottomSnip + 1;
@@ -137,6 +142,7 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
                     if (downstreamBottomSnip > recognitionSiteRange.end) {
                         end = downstreamBottomSnip - 1;
                     }
+                    downstreamTopBeforeBottom = true;
                 }
                 downstreamTopSnip = normalizePositionByRangeLength(downstreamTopSnip, originalSequenceLength, true);
                 downstreamBottomSnip = normalizePositionByRangeLength(downstreamBottomSnip, originalSequenceLength, true);
@@ -158,6 +164,8 @@ module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, re
                     end: end,
                     downstreamTopSnip: downstreamTopSnip,
                     downstreamBottomSnip: downstreamBottomSnip,
+                    upstreamTopBeforeBottom: upstreamTopBeforeBottom,
+                    downstreamTopBeforeBottom: downstreamTopBeforeBottom,
                     upstreamTopSnip: upstreamTopSnip,
                     upstreamBottomSnip: upstreamBottomSnip,
                     recognitionSiteRange: recognitionSiteRange,

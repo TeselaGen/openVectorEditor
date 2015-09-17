@@ -1,36 +1,11 @@
-// var ObjectID = require("bson-objectid");
 var React = require('react');
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
 var setCaretPosition = require('./actions/setCaretPosition');
 var setSelectionLayer = require('./actions/setSelectionLayer');
-// var setVisibleRows = require('./actions/setVisibleRows');
-
-// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-// var InfiniteScrollContainer = require('./InfiniteScrollContainer');
-// var prepareRowData = require('./prepareRowData');
-// var charWidth = require('./editorConstants').charWidth;
-// var ReactList = require('react-list');
-var baobabBranch = require('baobab-react/mixins').branch;
-// MoustrapMixin = require('./MoustrapMixin.js');
 
 var RowView = React.createClass({
-    mixins: [baobabBranch],
-    cursors: {
-        preloadRowStart: ['preloadRowStart'],
-        averageRowHeight: ['averageRowHeight'],
-        rowViewDimensions: ['rowViewDimensions'],
-        totalRows: ['totalRows'],
-        rowData: ['rowData'],
-        // visibleRows: ['visibleRows'],
-        rowToJumpTo: ['rowToJumpTo'],
-        charWidth: ['charWidth'],
-        selectionLayer: ['selectionLayer']
-    },
-
-
-
     getNearestCursorPositionToMouseEvent: function(event) {
         var rowNotFound = true;
         var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
@@ -45,13 +20,13 @@ var RowView = React.createClass({
                 // console.log('HGGGG');
                 rowNotFound = false;
                 var rowNumber = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
-                var row = this.state.rowData[rowNumber];
+                var row = this.props.rowData[rowNumber];
                 if (event.clientX - boundingRowRect.left < 0) {
                     console.warn('this should never be 0...');
                     return row.start; //return the first bp in the row
                 } else {
                     var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-                    var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.state.charWidth / 2) / this.state.charWidth);
+                    var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
                     var nearestBP = numberOfBPsInFromRowStart + row.start;
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;
@@ -66,7 +41,7 @@ var RowView = React.createClass({
             console.warn('was not able to find the correct row');
             //return the last bp index in the rendered rows
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
-            var lastOfRenderedRows = this.state.rowData[lastOfRenderedRowsNumber];
+            var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
             return lastOfRenderedRows.end;
         }
     },
@@ -128,10 +103,10 @@ var RowView = React.createClass({
 
     handleEditorDragStart: function(event, ui) {
         var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
-        if (event.target.className === "cursor" && this.state.selectionLayer.selected) {
-            // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
-            if (this.state.selectionLayer.start === caretPosition) {
-                this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.end + 1;
+        if (event.target.className === "cursor" && this.props.selectionLayer.selected) {
+            // this.circularSelectionOnEditorDragStart = (this.props.selectionLayer.start > this.props.selectionLayer.end);
+            if (this.props.selectionLayer.start === caretPosition) {
+                this.fixedCaretPositionOnEditorDragStart = this.props.selectionLayer.end + 1;
                 this.fixedCaretPositionOnEditorDragStartType = 'end';
 
                 //plus one because the cursor position will be 1 more than the selectionLayer.end
@@ -142,7 +117,7 @@ var RowView = React.createClass({
                 //so the caretPosition for the end of the selection is 1!
                 //which is selection.end+1
             } else {
-                this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.start;
+                this.fixedCaretPositionOnEditorDragStart = this.props.selectionLayer.start;
                 this.fixedCaretPositionOnEditorDragStartType = 'start';
             }
         } else {
@@ -168,30 +143,72 @@ var RowView = React.createClass({
 
     render: function() {
         // console.log('render!');
+        // 
+        var {
+            preloadRowStart, 
+            averageRowHeight, 
+            rowViewDimensions, 
+            totalRows, rowData, 
+            rowToJumpTo, 
+            charWidth, 
+            selectionLayer, 
+            CHAR_HEIGHT,
+            ANNOTATION_HEIGHT,
+            tickSpacing,
+            SPACE_BETWEEN_ANNOTATIONS,
+            showFeatures,
+            showTranslations,
+            showParts,
+            showOrfs,
+            showAxis,
+            showCutsites,
+            showReverseSequence,
+            mouse,
+            caretPosition,
+            sequenceLength,
+            bpsPerRow
+        } = this.props;
         var self = this;
         function renderRows(rowNumber) {
-            if (self.state.rowData[rowNumber]) {
-                return (<RowItem 
+            if (rowData[rowNumber]) {
+                return (<RowItem
+                    charWidth={charWidth}
+                      CHAR_HEIGHT={CHAR_HEIGHT}
+                      ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
+                      tickSpacing={tickSpacing}
+                      SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
+                      showFeatures={showFeatures}
+                      showTranslations={showTranslations}
+                      showParts={showParts}
+                      showOrfs={showOrfs}
+                      showAxis={showAxis}
+                      showCutsites={showCutsites}
+                      showReverseSequence={showReverseSequence}
+                      selectionLayer={selectionLayer}
+                      mouse={mouse}
+                      caretPosition={caretPosition}
+                      sequenceLength={sequenceLength}
+                      bpsPerRow={bpsPerRow}
                   key={rowNumber}
-                  row={self.state.rowData[rowNumber]} />);
+                  row={rowData[rowNumber]} />);
             } else {
                 return null
             }
         }
 
-        var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : this.state.averageRowHeight;
+        var rowHeight = this.currentAverageRowHeight ? this.currentAverageRowHeight : averageRowHeight;
         this.topSpacerHeight = this.rowStart * rowHeight;
-        this.bottomSpacerHeight = (this.state.totalRows - 1 - this.preloadRowEnd) * rowHeight;
+        this.bottomSpacerHeight = (totalRows - 1 - this.preloadRowEnd) * rowHeight;
 
         var infiniteContainerStyle = {
-            height: this.state.rowViewDimensions.height,
-            width: this.state.rowViewDimensions.width,
+            height: rowViewDimensions.height,
+            width: rowViewDimensions.width,
             //   overflowY: "scroll",
             // float: "left",
             // paddingRight: "20px"
             //   padding: 10
         };
-        // console.log('this.state.rowData: ' + JSON.stringify(this.state.rowData,null,4));
+        // console.log('rowData: ' + JSON.stringify(rowData,null,4));
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
@@ -208,11 +225,11 @@ var RowView = React.createClass({
                 <InfiniteScroller
                     ref={'InfiniteScroller'}
                     averageElementHeight={100}
-                    containerHeight={this.state.rowViewDimensions.height}
+                    containerHeight={rowViewDimensions.height}
                     renderRow={renderRows}
-                    totalNumberOfRows={this.state.rowData.length}
+                    totalNumberOfRows={rowData.length}
                     preloadRowStart={40}
-                    rowToJumpTo={this.state.rowToJumpTo}
+                    rowToJumpTo={rowToJumpTo}
                     /> 
               </div>
             </Draggable>

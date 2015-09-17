@@ -1,6 +1,7 @@
 var Baobab = require('baobab');
 var monkey = Baobab.monkey
 // var sequenceData = require('./sequenceData');
+// var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
 var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
@@ -19,7 +20,7 @@ var tree = new Baobab({
     charWidth: 15,
     CHAR_HEIGHT: 15,
     ANNOTATION_HEIGHT: 15,
-    minimumOrfSize: 20,
+    minimumOrfSize: 200,
     tickSpacing: 21,
     SPACE_BETWEEN_ANNOTATIONS: 3,
     preloadRowStart: 0,
@@ -30,7 +31,7 @@ var tree = new Baobab({
     showFeatures: true,
     showTranslations: true,
     showAxis: true,
-    showReverseSequence: false,
+    showReverseSequence: true,
     rowViewDimensions: {
         height: 500, //come back and make these dynamic
         width: 500
@@ -104,12 +105,13 @@ var tree = new Baobab({
         ['userEnzymes'],
         getCutsitesFromSequence
     ]),
-    cutsitesAsArray: monkey([
+    cutsites: monkey([
         ['cutsitesByName'],
         function (cutsitesByName) {
             var cutsitesArray = [];
             Object.keys(cutsitesByName).forEach(function (key) {
-                cutsitesArray.concat(cutsitesByName[key]);
+                // return cutsitesByName[key]
+                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
             });
             return cutsitesArray;
         }
@@ -153,12 +155,12 @@ var tree = new Baobab({
         ['sequenceData'],
         ['orfData'],
         ['translationsWithAminoAcids'],
-        ['cutsitesAsArray'],
-        function(sequenceData, orfData, translations, cutsitesAsArray) {
+        ['cutsites'],
+        function(sequenceData, orfData, translations, cutsites) {
             return assign({}, sequenceData, {
                 orfs: orfData,
                 translations: translations,
-                cutsites: cutsitesAsArray
+                cutsites: cutsites
             });
         }
     ]),

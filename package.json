@@ -13,6 +13,7 @@
     "capitalize": "^1.0.0",
     "classnames": "^1.2.0",
     "color-scale": "^1.1.0",
+    "combokeys": "^2.4.3",
     "css-loader": "^0.10.1",
     "deep-equal": "^1.0.0",
     "flatmap": "0.0.3",
