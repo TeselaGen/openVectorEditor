@@ -1,6 +1,6 @@
 {
   "name": "ve-range-utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "range utility functions",
   "main": "none",
   "scripts": {
@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ve-api-check": "0.0.0"
+    "ve-api-check": "^0.0.0"
   }
 }

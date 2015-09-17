@@ -1,6 +1,6 @@
 {
   "name": "ve-sequence-utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "sequence utility functions",
   "main": "none",
   "scripts": {
@@ -12,6 +12,6 @@
     "ve-api-check": "0.0.0"
   },
   "dependencies": {
-    "ve-range-utils": "0.0.0"
+    "ve-range-utils": "^0.0.0"
   }
 }

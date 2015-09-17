@@ -1,6 +1,6 @@
 {
   "name": "ve-api-check",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "our ve-specific implementation of api-check",
   "main": "apiCheck.js",
   "scripts": {
@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ve-sequence-utils": "0.0.0"
+    "ve-sequence-utils": "^0.0.0"
   }
 }
