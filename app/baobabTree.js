@@ -39,36 +39,36 @@ var tree = new Baobab({
     userEnzymeList: [
         'rsplkii',
         'bme216i',
-        'bsmbi',
-        'uba1229i',
-        'maek81i', "esphk22i",
-        "slu1777i",
-        "bshhi",
-        "ssp2i",
-        "cspai",
-        "btsi",
-        "aspmi",
-        "ngoeii",
-        "bsu1532i",
-        "dsai",
-        "bstri",
-        "pru2i",
-        "uba1439i",
-        "bsrfi",
-        "bseri",
-        "mizi",
-        "hgibi",
-        "bari",
-        "nsici"
+        // 'bsmbi',
+        // 'uba1229i',
+        // 'maek81i', "esphk22i",
+        // "slu1777i",
+        // "bshhi",
+        // "ssp2i",
+        // "cspai",
+        // "btsi",
+        // "aspmi",
+        // "ngoeii",
+        // "bsu1532i",
+        // "dsai",
+        // "bstri",
+        // "pru2i",
+        // "uba1439i",
+        // "bsrfi",
+        // "bseri",
+        // "mizi",
+        // "hgibi",
+        // "bari",
+        // "nsici"
     ],
     viewportDimensions: {
         height: 500, //come back and make these dynamic
         width: 500
     },
     selectionLayer: {
-        start: 12,
-        end: 9,
-        selected: true,
+        start: -1,
+        end: -1,
+        selected: false,
         cursorAtEnd: true
     },
     mouse: {
@@ -103,6 +103,9 @@ var tree = new Baobab({
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
         ['userEnzymes'],
+        // function (argument) {
+        //     return {}
+        // }
         getCutsitesFromSequence
     ]),
     cutsites: monkey([

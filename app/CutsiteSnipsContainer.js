@@ -3,7 +3,6 @@ let React = require('react');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-
 var snipStyle = {
     height: "100%",
     background: 'black',
