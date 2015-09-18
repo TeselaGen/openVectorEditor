@@ -4,9 +4,6 @@ let React = require('react');
 var Caret = require('./Caret');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
-let MenuDivider = require('material-ui/lib/menus/menu-divider');
 
 var highlightLayerStyle = {
     height: "98%",
@@ -16,16 +13,6 @@ var highlightLayerStyle = {
     opacity: ".3",
 };
 
-var cursorStyle = {
-    height: "98%",
-    background: 'black',
-    position: "absolute",
-    top: "0",
-    width: "2px",
-    cursor: "ew-resize",
-};
-
-
 let HighlightLayer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
@@ -34,11 +21,6 @@ let HighlightLayer = React.createClass({
         row: React.PropTypes.object.isRequired,
         sequenceLength: React.PropTypes.number.isRequired,
         selectionLayer: React.PropTypes.object.isRequired,
-    },
-    handleContextMenu: function (event) {
-        debugger;
-        event.preventDefault();
-        event.stopPropagation();
     },
     render: function() {
         var {
@@ -80,10 +62,10 @@ let HighlightLayer = React.createClass({
                 return (<div key={index} className="selectionLayer" style={style}/>);
             });
             return (
-                <div onContextMenu={function (argument) {
+                <div onContextMenu={function (event) {
+                    //tnrtodo: add context menu here
                     event.preventDefault();
                     event.stopPropagation();
-                    this.setState({showContext: true})
                 }}>
                     {startSelectionCursor}
                     {selectionLayers}
