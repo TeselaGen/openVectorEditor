@@ -1,10 +1,10 @@
 {
   "name": "ve-range-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "range utility functions",
   "main": "none",
   "scripts": {
-  	"patchAndPublish": "npm version patch && npm publish",
+    "patchAndPublish": "npm version patch && npm publish",
     "test": "mocha *.test.js --harmony"
   },
   "author": "",
@@ -12,7 +12,7 @@
   "dependencies": {
     "lodash": "^3.10.1",
     "validate.io-nonnegative-integer-array": "^1.0.1",
-    "ve-api-check": "^0.0.0"
+    "ve-api-check": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^3.2.0"

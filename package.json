@@ -5,7 +5,6 @@
   "main": "app/App.js",
   "repository": "https://github.com/TeselaGen/openVectorEditor",
   "dependencies": {
-    "api-check": "^7.5.0",
     "baobab": "^2.0.0-dev13",
     "baobab-react": "^1.0.0-dev",
     "br-mousetrap": "^1.1.3",
