@@ -1,9 +1,10 @@
 {
   "name": "ve-range-utils",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "range utility functions",
   "main": "none",
   "scripts": {
+  	"patchAndPublish": "npm version patch && npm publish",
     "test": "mocha *.test.js --harmony"
   },
   "author": "",

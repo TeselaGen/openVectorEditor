@@ -1,9 +1,10 @@
 {
   "name": "ve-api-check",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "our ve-specific implementation of api-check",
   "main": "apiCheck.js",
   "scripts": {
+  	"patchAndPublish": "npm version patch && npm publish",
     "test": "mocha *.test.js --harmony"
   },
   "author": "",
