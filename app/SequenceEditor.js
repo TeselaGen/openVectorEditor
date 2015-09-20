@@ -4,6 +4,7 @@ var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind')
 
 var RowView = require('./RowView');
+var MapView = require('./MapView');
 // var MapView = require('./MapView');
 
 var baoababBranch = require('baobab-react/mixins').branch;
@@ -17,6 +18,8 @@ var setViewportDimensions = require('./actions/setViewportDimensions');
 var jumpToRow = require('./actions/jumpToRow');
 var toggleAnnotationDisplay = require('./actions/toggleAnnotationDisplay');
 var Clipboard = require('./Clipboard');
+var setCaretPosition = require('./actions/setCaretPosition');
+var setSelectionLayer = require('./actions/setSelectionLayer');
 
 var SequenceEditor = React.createClass({
     mixins: [baoababBranch],
@@ -34,13 +37,17 @@ var SequenceEditor = React.createClass({
         preloadRowStart: ['preloadRowStart'],
         averageRowHeight: ['averageRowHeight'],
         rowViewDimensions: ['rowViewDimensions'],
+        mapViewDimensions: ['mapViewDimensions'],
         rowData: ['rowData'],
+        mapViewRowData: ['mapViewRowData'],
         // visibleRows: ['visibleRows'],
         rowToJumpTo: ['rowToJumpTo'],
         charWidth: ['charWidth'],
+        mapViewCharWidth: ['mapViewCharWidth'],
         CHAR_HEIGHT: ['CHAR_HEIGHT'], //potentially unneeded
         ANNOTATION_HEIGHT: ['ANNOTATION_HEIGHT'],
         tickSpacing: ['tickSpacing'],
+        mapViewTickSpacing: ['mapViewTickSpacing'],
         SPACE_BETWEEN_ANNOTATIONS: ['SPACE_BETWEEN_ANNOTATIONS'],
         showFeatures: ['showFeatures'],
         showTranslations: ['showTranslations'],
@@ -49,7 +56,6 @@ var SequenceEditor = React.createClass({
         showAxis: ['showAxis'],
         showCutsites: ['showCutsites'],
         showReverseSequence: ['showReverseSequence'],
-        mouse: ['mouse'],
     },
     // cursors: {
     //   visibilityParameters: ['visibilityParameters'],
@@ -127,6 +133,102 @@ var SequenceEditor = React.createClass({
         // Remove any Mousetrap bindings before unmounting.detach()
         combokeys.detach()
     },
+
+    handleEditorClick: function(caretPosition) {
+        //if cursor position is different than the original position, reset the position and clear the selection
+        // console.log('onclick!!');
+        // var bp = this.getNearestCursorPositionToMouseEvent(event);
+        if (this.editorBeingDragged) {
+            //do nothing because the click was triggered by a drag event
+        } else {
+            setCaretPosition(caretPosition);
+            setSelectionLayer(false);
+        }
+
+    },
+
+    handleEditorDrag: function(caretPosition) {
+        //note this method relies on variables that are set in the handleEditorDragStart method!
+        this.editorBeingDragged = true;
+        // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
+        var start;
+        var end;
+        if (caretPosition === this.fixedCaretPositionOnEditorDragStart) {
+            setCaretPosition(caretPosition);
+            setSelectionLayer(false);
+        } else {
+            var newSelectionLayer;
+            if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
+                newSelectionLayer = {
+                    start: this.fixedCaretPositionOnEditorDragStart,
+                    end: caretPosition - 1,
+                    cursorAtEnd: true,
+                };
+            } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
+                newSelectionLayer = {
+                    start: caretPosition,
+                    end: this.fixedCaretPositionOnEditorDragStart - 1,
+                    cursorAtEnd: false,
+                };
+            } else {
+                if (caretPosition > this.fixedCaretPositionOnEditorDragStart) {
+                    newSelectionLayer = {
+                        start: this.fixedCaretPositionOnEditorDragStart,
+                        end: caretPosition - 1,
+                        cursorAtEnd: true,
+                    };
+                } else {
+                    newSelectionLayer = {
+                        start: caretPosition,
+                        end: this.fixedCaretPositionOnEditorDragStart - 1,
+                        cursorAtEnd: false,
+                    };
+                }
+            }
+            setSelectionLayer(newSelectionLayer);
+        }
+    },
+
+    handleEditorDragStart: function(caretPosition) {
+      var {selectionLayer} = this.state;
+        // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
+        if (event.target.className === "cursor" && selectionLayer.selected) {
+            // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
+            if (selectionLayer.start === caretPosition) {
+                this.fixedCaretPositionOnEditorDragStart = selectionLayer.end + 1;
+                this.fixedCaretPositionOnEditorDragStartType = 'end';
+
+                //plus one because the cursor position will be 1 more than the selectionLayer.end
+                //imagine selection from
+                //0 1 2  <--possible cursor positions
+                // A T G
+                //if A is selected, selection.start = 0, selection.end = 0
+                //so the caretPosition for the end of the selection is 1!
+                //which is selection.end+1
+            } else {
+                this.fixedCaretPositionOnEditorDragStart = selectionLayer.start;
+                this.fixedCaretPositionOnEditorDragStartType = 'start';
+            }
+        } else {
+            // this.circularSelectionOnEditorDragStart = false;
+            this.fixedCaretPositionOnEditorDragStart = caretPosition;
+            this.fixedCaretPositionOnEditorDragStartType = 'caret';
+        }
+    },
+
+    handleEditorDragStop: function(event, ui) {
+        var self = this;
+        if (this.editorBeingDragged) { //check to make sure dragging actually occurred
+            setTimeout(function() {
+                //we use setTimeout to put the call to change editorBeingDragged to false
+                //on the bottom of the event stack, thus the click event that is fired because of the drag
+                //will be able to check if editorBeingDragged and not trigger if it is
+                self.editorBeingDragged = false;
+            }, 0);
+        } else {
+            self.editorBeingDragged = false;
+        }
+    },
   
   
 
@@ -146,6 +248,7 @@ var SequenceEditor = React.createClass({
             CHAR_HEIGHT,
             ANNOTATION_HEIGHT,
             tickSpacing,
+            mapViewTickSpacing,
             SPACE_BETWEEN_ANNOTATIONS,
             showFeatures,
             showTranslations,
@@ -154,22 +257,24 @@ var SequenceEditor = React.createClass({
             showAxis,
             showCutsites,
             showReverseSequence,
-            mouse,
             caretPosition,
             sequenceLength,
             bpsPerRow,
             selectedSequenceString,
             visibleRows,
+            mapViewCharWidth,
+            mapViewDimensions,
+            mapViewRowData,
         } = this.state;
     var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
     var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
-    var toggleButtons = annotationList.map(function(annotationType){
-      return (<button onClick={function () {
-          toggleAnnotationDisplay(annotationType);
-        }}>
-         toggle {annotationType}
-        </button>)
-    });
+    var toggleButtons = annotationList.map(function(annotationType, index){
+      return (<button key={index} onClick={function () {
+            toggleAnnotationDisplay(annotationType);
+          }}>
+           toggle {annotationType}
+          </button>)
+      });
 
     return (
       <div ref="sequenceEditor"
@@ -207,11 +312,43 @@ var SequenceEditor = React.createClass({
           onPaste={this.handlePaste}/>
         <br/>
         totalRows:  {totalRows}
-        <RowView 
-          charWidth={charWidth}
+        
+          <RowView 
+             charWidth={charWidth}
+             CHAR_HEIGHT={CHAR_HEIGHT}
+             ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
+             tickSpacing={tickSpacing}
+             SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
+             showFeatures={showFeatures}
+             showTranslations={showTranslations}
+             showParts={showParts}
+             showOrfs={showOrfs}
+             showAxis={showAxis}
+             showCutsites={showCutsites}
+             showReverseSequence={showReverseSequence}
+             selectionLayer={selectionLayer}
+             caretPosition={caretPosition}
+             sequenceLength={sequenceLength}
+             bpsPerRow={bpsPerRow}
+             preloadRowStart={preloadRowStart}
+             averageRowHeight={averageRowHeight}
+             rowViewDimensions={rowViewDimensions}
+             totalRows={totalRows}
+             rowData={rowData}
+             rowToJumpTo={rowToJumpTo}
+             handleEditorDrag={this.handleEditorDrag}
+             handleEditorDragStart={this.handleEditorDragStart}
+             handleEditorDragStop={this.handleEditorDragStop}
+             handleEditorClick={this.handleEditorClick}
+             />
+             <br/>
+             <br/>
+             <br/>
+        <MapView 
+          charWidth={mapViewCharWidth}
           CHAR_HEIGHT={CHAR_HEIGHT}
           ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-          tickSpacing={tickSpacing}
+          tickSpacing={mapViewTickSpacing}
           SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
           showFeatures={showFeatures}
           showTranslations={showTranslations}
@@ -221,21 +358,25 @@ var SequenceEditor = React.createClass({
           showCutsites={showCutsites}
           showReverseSequence={showReverseSequence}
           selectionLayer={selectionLayer}
-          mouse={mouse}
           caretPosition={caretPosition}
           sequenceLength={sequenceLength}
-          bpsPerRow={bpsPerRow}
+          bpsPerRow={sequenceLength}
           preloadRowStart={preloadRowStart}
-          averageRowHeight={averageRowHeight}
-          rowViewDimensions={rowViewDimensions}
-          totalRows={totalRows}
-          rowData={rowData}
+          mapViewDimensions={mapViewDimensions}
+          rowData={mapViewRowData}
           rowToJumpTo={rowToJumpTo}
+          handleEditorDrag={this.handleEditorDrag}
+          handleEditorDragStart={this.handleEditorDragStart}
+          handleEditorDragStop={this.handleEditorDragStop}
+          handleEditorClick={this.handleEditorClick}
           />
+          
       </div>
     );
   }
 });
+
+
 
 // <button onClick={function () {
 //           jumpToRow(self.state.newRandomRowToJumpTo),

@@ -22,6 +22,7 @@ var tree = new Baobab({
     ANNOTATION_HEIGHT: 15,
     minimumOrfSize: 200,
     tickSpacing: 21,
+    mapViewTickSpacing: 40, //tnr: we should dynamically calculate this number
     SPACE_BETWEEN_ANNOTATIONS: 3,
     preloadRowStart: 0,
     showOrfs: true,
@@ -33,6 +34,10 @@ var tree = new Baobab({
     showAxis: true,
     showReverseSequence: true,
     rowViewDimensions: {
+        height: 500, //come back and make these dynamic
+        width: 500
+    },
+    mapViewDimensions: {
         height: 500, //come back and make these dynamic
         width: 500
     },
@@ -71,10 +76,6 @@ var tree = new Baobab({
         selected: false,
         cursorAtEnd: true
     },
-    mouse: {
-        isDown: false,
-        isSelecting: false
-    },
     caretPosition: -1,
     visibleRows: {
         start: 0,
@@ -91,6 +92,7 @@ var tree = new Baobab({
             return Math.floor(rowViewDimensionsWidth / charWidth);
         }
     ]),
+    
     userEnzymes: monkey([
         ['userEnzymeList'],
         function(userEnzymeList) {
@@ -137,6 +139,15 @@ var tree = new Baobab({
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
         }
     ]),
+    mapViewCharWidth: monkey([
+        ['mapViewDimensions',
+            'width'
+        ],
+        ['sequenceLength'],
+        function(mapViewDimensionsWidth, sequenceLength) {
+            return mapViewDimensionsWidth / sequenceLength;
+        }
+    ]),
     selectedSequenceString: monkey([
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
@@ -173,6 +184,14 @@ var tree = new Baobab({
         function(sequenceData, bpsPerRow) {
             console.log('rowDataUpdated!');
             return prepareRowData(sequenceData, bpsPerRow);
+        }
+    ]),
+    mapViewRowData: monkey([
+        ['combinedSequenceData'],
+        ['sequenceLength'],
+        function(sequenceData, sequenceLength) {
+            console.log('mapDataUpdated!');
+            return prepareRowData(sequenceData, sequenceLength);
         }
     ]),
     totalRows: monkey([
