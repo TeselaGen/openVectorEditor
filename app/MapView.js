@@ -1,133 +1,161 @@
-var React = require('react');
+import React, {PropTypes} from 'react';
 var Draggable = require('react-draggable');
-var setCaretPosition = require('./actions/setCaretPosition');
-var setSelectionLayer = require('./actions/setSelectionLayer');
-var baobabBranch = require('baobab-react/mixins').branch;
+var RowItem = require('./RowItem.js');
+
 
 var RowView = React.createClass({
-  mixins: [baobabBranch],
-  cursors: {
-    preloadRowStart: ['preloadRowStart'],
-    averageRowHeight: ['averageRowHeight'],
-    rowViewDimensions: ['rowViewDimensions'],
-    sequenceData: ['combinedSequenceData'],
-    selectionLayer: ['selectionLayer'],
-  },
- 
-  
-
-  onEditorClick: function(event) {
-    //if cursor position is different than the original position, reset the position and clear the selection
-    // console.log('onclick!!');
-    var bp = this.getNearestCursorPositionToMouseEvent(event);
-    if (this.editorBeingDragged) {
-      //do nothing because the click was triggered by a drag event
-    } else {
-      setCaretPosition(bp);
-      setSelectionLayer(false);
-    }
-
-  },
-
-  handleEditorDrag: function(event, ui) {
-    //note this method relies on variables that are set in the handleEditorDragStart method!
-    this.editorBeingDragged = true;
-    var caretPositionOfDrag = this.getNearestCursorPositionToMouseEvent(event);
-    var start;
-    var end;
-    if (caretPositionOfDrag === this.fixedCaretPositionOnEditorDragStart) {
-      setCaretPosition(caretPositionOfDrag);
-      setSelectionLayer(false);
-    } else {
-      var newSelectionLayer;
-      if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
-        newSelectionLayer = {
-          start: this.fixedCaretPositionOnEditorDragStart,
-          end: caretPositionOfDrag - 1,
-          cursorAtEnd: true,
-        };
-      } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
-        newSelectionLayer = {
-          start: caretPositionOfDrag,
-          end: this.fixedCaretPositionOnEditorDragStart - 1,
-          cursorAtEnd: false,
-        };
-      } else {
-        if (caretPositionOfDrag > this.fixedCaretPositionOnEditorDragStart) {
-          newSelectionLayer = {
-            start: this.fixedCaretPositionOnEditorDragStart,
-            end: caretPositionOfDrag - 1,
-            cursorAtEnd: true,
-          };
-        } else {
-          newSelectionLayer = {
-            start: caretPositionOfDrag,
-            end: this.fixedCaretPositionOnEditorDragStart - 1,
-            cursorAtEnd: false,
-          };
+    propTypes: {
+        mapViewDimensions: PropTypes.object.isRequired,
+        rowData: PropTypes.array.isRequired,
+        charWidth: PropTypes.number.isRequired,
+        selectionLayer: PropTypes.object.isRequired,
+        CHAR_HEIGHT: PropTypes.number.isRequired,
+        ANNOTATION_HEIGHT: PropTypes.number.isRequired,
+        tickSpacing: PropTypes.number.isRequired,
+        SPACE_BETWEEN_ANNOTATIONS: PropTypes.number.isRequired,
+        showFeatures: PropTypes.bool.isRequired,
+        showTranslations: PropTypes.bool.isRequired,
+        showParts: PropTypes.bool.isRequired,
+        showOrfs: PropTypes.bool.isRequired,
+        showAxis: PropTypes.bool.isRequired,
+        showCutsites: PropTypes.bool.isRequired,
+        showReverseSequence: PropTypes.bool.isRequired,
+        caretPosition: PropTypes.number.isRequired,
+        sequenceLength: PropTypes.number.isRequired,
+        bpsPerRow: PropTypes.number.isRequired,
+        handleEditorDrag: PropTypes.func.isRequired,
+        handleEditorDragStart: PropTypes.func.isRequired,
+        handleEditorDragStop: PropTypes.func.isRequired,
+        handleEditorClick: PropTypes.func.isRequired,
+    },
+    getNearestCursorPositionToMouseEvent: function(event, callback) {
+        callback(0);
+        var rowNotFound = true;
+        var rowDomNode = this.refs.mapView.getDOMNode();
+        var boundingRowRect = rowDomNode.getBoundingClientRect();
+        // console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
+        // console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
+        if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
+            //then the click is falls within this row
+            // console.log('HGGGG');
+            rowNotFound = false;
+            if (event.clientX - boundingRowRect.left < 0) {
+                console.warn('this should never be 0...');
+                callback(0); //return the first bp in the row
+            } else {
+                var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
+                var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
+                var nearestBP = numberOfBPsInFromRowStart;
+                if (nearestBP > this.props.sequenceLength + 1) {
+                    nearestBP = this.props.sequenceLength + 1;
+                }
+                // console.log('nearestBP', nearestBP);
+                callback(nearestBP);
+            }
+            // break; //break the for loop early because we found the row the click event landed in
         }
-      }
-      setSelectionLayer(newSelectionLayer);
-    }
-  },
+        // }
+        if (rowNotFound) {
+            console.warn('was not able to find the correct row');
+            //return the last bp index in the rendered rows
+            var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
+            var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
+            callback(lastOfRenderedRows.end);
+        }
+    },
 
-  handleEditorDragStart: function(event, ui) {
-    var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
-    if (event.target.className === "cursor" && this.state.selectionLayer.selected) {
-      // this.circularSelectionOnEditorDragStart = (this.state.selectionLayer.start > this.state.selectionLayer.end);
-      if (this.state.selectionLayer.start === caretPosition) {
-        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.end + 1;
-        this.fixedCaretPositionOnEditorDragStartType = 'end';
+    
 
-        //plus one because the cursor position will be 1 more than the selectionLayer.end
-        //imagine selection from
-        //0 1 2  <--possible cursor positions
-        // A T G
-        //if A is selected, selection.start = 0, selection.end = 0
-        //so the caretPosition for the end of the selection is 1!
-        //which is selection.end+1
-      } else {
-        this.fixedCaretPositionOnEditorDragStart = this.state.selectionLayer.start;
-        this.fixedCaretPositionOnEditorDragStartType = 'start';
-      }
-    } else {
-      // this.circularSelectionOnEditorDragStart = false;
-      this.fixedCaretPositionOnEditorDragStart = caretPosition;
-      this.fixedCaretPositionOnEditorDragStartType = 'caret';
-    }
-  },
+    render: function() {
+        // console.log('render!');
+        // 
+        var {
+            mapViewDimensions, 
+            rowData, 
+            charWidth, 
+            selectionLayer, 
+            CHAR_HEIGHT,
+            ANNOTATION_HEIGHT,
+            tickSpacing,
+            SPACE_BETWEEN_ANNOTATIONS,
+            showFeatures,
+            showTranslations,
+            showParts,
+            showOrfs,
+            showAxis,
+            showCutsites,
+            showReverseSequence,
+            mouse,
+            caretPosition,
+            sequenceLength,
+            bpsPerRow,
+            handleEditorDrag,
+            handleEditorDragStart,
+            handleEditorDragStop,
+            handleEditorClick,
+        } = this.props;
+        var self = this;
+        // function renderRows(rowNumber) {
+        //     if (rowData[rowNumber]) {
+        //         return ();
+        //     } else {
+        //         return null
+        //     }
+        // }
 
-  handleEditorDragStop: function(event, ui) {
-    var self = this;
-    if (this.editorBeingDragged) { //check to make sure dragging actually occurred
-      setTimeout(function (argument) {
-        //we use setTimeout to put the call to change editorBeingDragged to false
-        //on the bottom of the event stack, thus the click event that is fired because of the drag
-        //will be able to check if editorBeingDragged and not trigger if it is
-        self.editorBeingDragged = false;
-      },0);
-    } else {
-      self.editorBeingDragged = false;
-    }
-  },
-
-  render: function () {
-    return (
-        <Draggable
+        var mapViewStyle = {
+            height: mapViewDimensions.height,
+            width: mapViewDimensions.width,
+            transform: "rotate(7deg)"
+            //   overflowY: "scroll",
+            // float: "left",
+            // paddingRight: "20px"
+            //   padding: 10
+        };
+        // console.log('rowData: ' + JSON.stringify(rowData,null,4));
+        return (
+            <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-            onDrag={this.handleEditorDrag}
-            onStart={this.handleEditorDragStart}
-            onStop={this.handleEditorDragStop}
+            onDrag={(event) => {
+                this.getNearestCursorPositionToMouseEvent(event, handleEditorDrag)}   
+            }
+            onStart={(event) => {
+                this.getNearestCursorPositionToMouseEvent(event, handleEditorDragStart)}   
+            }
+            onStop={handleEditorDragStop}
             >
-          <div
-            ref="mapContainer"
-            className="mapContainer"
-            onClick={this.onEditorClick}
-            >
-          </div>
-        </Draggable>
-    );
-  }
+              <div
+                ref="mapView"
+                className="mapView"
+                style={mapViewStyle}
+                onClick={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, handleEditorClick)}   
+                }
+                >
+                <RowItem
+                    charWidth={charWidth}
+                      CHAR_HEIGHT={CHAR_HEIGHT}
+                      ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
+                      tickSpacing={tickSpacing}
+                      SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
+                      showFeatures={showFeatures}
+                      showTranslations={showTranslations}
+                      showParts={showParts}
+                      showOrfs={showOrfs}
+                      showAxis={showAxis}
+                      showCutsites={showCutsites}
+                      showReverseSequence={showReverseSequence}
+                      selectionLayer={selectionLayer}
+                      caretPosition={caretPosition}
+                      sequenceLength={sequenceLength}
+                      bpsPerRow={bpsPerRow}
+                    row={rowData[0]} />
+              </div>
+            </Draggable>
+        );
+    }
 });
+
+
 
 module.exports = RowView;

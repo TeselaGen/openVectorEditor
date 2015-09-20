@@ -131,7 +131,6 @@ var RowItem = React.createClass({
                     selectionLayer={selectionLayer}
                 >
                 </HighlightLayer>
-    -
                 <Caret 
                     caretPosition={caretPosition} 
                     charWidth={charWidth}
