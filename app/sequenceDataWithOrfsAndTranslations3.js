@@ -1,4 +1,4 @@
-var seqString1 = "gacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
+var seqString1 = "gacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
 var seqString = "";
 for (var i = 0; i < 1; i++) {
   seqString += seqString1
