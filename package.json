@@ -67,6 +67,7 @@
     "testDebug": "mocha ./test/* --debug-brk --compilers jsx:babel/register",
     "testDebug2": "mocha ./test/* --debug -w --compilers jsx:babel/register",
     "start": "npm run linklocal && webpack-dev-server --devtool eval --progress --colors --content-base",
+    "buildProduction": "npm run linklocal && webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "author": "",
