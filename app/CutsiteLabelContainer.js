@@ -64,22 +64,22 @@ let CutsiteContainer = React.createClass({
             
             annotationsSVG.push(
                 <div left={xStart}
-                onClick={function (event) {
-                          setSelectionLayer(this);
-                          event.stopPropagation();
-                        }.bind(annotation)}
-                style = {
-                    {
-                        // left: xStart,
-                        position: 'absolute',
-                        top: height,
-                        // display: 'inline-block',
-                        // position: (relative) ? 'relative' : 'absolute',
-                        // // float: 'left',
-                        'left':  xStart,
-                        // left: '100 % ',
+                    onClick={function (event) {
+                              setSelectionLayer(this);
+                              event.stopPropagation();
+                            }.bind(annotation)}
+                    style={
+                        {
+                            // left: xStart,
+                            position: 'absolute',
+                            top: height,
+                            // display: 'inline-block',
+                            // position: (relative) ? 'relative' : 'absolute',
+                            // // float: 'left',
+                            'left': xStart,
+                            // left: '100 % ',
+                        }
                     }
-                }
                 >
                     {annotation.restrictionEnzyme.name}
                 </div>
