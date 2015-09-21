@@ -7,7 +7,7 @@ var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
 var TranslationContainer = require('./TranslationContainer');
 var FeatureContainer = require('./FeatureContainer');
-var CutsiteContainer = require('./CutsiteContainer');
+var CutsiteLabelContainer = require('./CutsiteLabelContainer');
 var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
 var HighlightLayer = require('./HighlightLayer');
 var Caret = require('./Caret');
@@ -83,7 +83,7 @@ var RowItem = React.createClass({
                 }
 
                 {(showCutsites && row.cutsites.length > 0) &&
-                  <CutsiteContainer
+                  <CutsiteLabelContainer
                     annotationRanges={row.cutsites}
                     charWidth={charWidth}
                     annotationHeight={ANNOTATION_HEIGHT}

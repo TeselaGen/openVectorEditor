@@ -19,6 +19,7 @@
     "get-substring-by-range": "^1.0.0",
     "get-viewport-size": "^1.0.0",
     "interpolate": "^0.1.0",
+    "interval-tree": "^0.1.0",
     "is-integer": "^1.0.4",
     "lodash": "^3.10.0",
     "mousetrap": "^1.5.3",

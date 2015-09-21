@@ -1,8 +1,8 @@
 var Baobab = require('baobab');
 var monkey = Baobab.monkey
 // var sequenceData = require('./sequenceData');
-// var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
+// var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
+var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
@@ -44,6 +44,8 @@ var tree = new Baobab({
     userEnzymeList: [
         'rsplkii',
         'bme216i',
+        'uba1229i',
+        'ecl37i',
         // 'bsmbi',
         // 'uba1229i',
         // 'maek81i', "esphk22i",
