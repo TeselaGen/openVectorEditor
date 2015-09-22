@@ -59,3 +59,7 @@ React components --(trigger)--> AppActions.js --(update)--> Baobab tree
 #### Drawing Tool: 
 http://jxnblk.com/paths/?d=M0%2040%20L64%2040%20L64%2020%20L0%2020%20Z
 
+#React JSbin/jsFiddle minimal examples:
+http://jsbin.com/kexiwarako/1/edit?html,js,console,output
+https://jsfiddle.net/majorBummer/3rm95bpv/1/
+
