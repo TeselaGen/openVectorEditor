@@ -1,4 +1,4 @@
-var setCaretPosition = require('./setCaretPosition');
+var ac = require('ve-api-check'); 
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 /**
@@ -6,11 +6,13 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-module.exports = function _setSelectionLayer (newSelectionLayer) {
+module.exports = function setSelectionLayerHelper (newSelectionLayer) {
+    ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
     var getRidOfCursor;
+    var updatedSelectionLayer;
     if (!newSelectionLayer || typeof newSelectionLayer !== 'object') {
         //no selection layer passed, so cancel it
-        newSelectionLayer = {
+        updatedSelectionLayer = {
             start: -1,
             end: -1,
             selected: false,
@@ -30,7 +32,7 @@ module.exports = function _setSelectionLayer (newSelectionLayer) {
         }
         if (areNonNegativeIntegers([start, end])) {
             //valid selection layer passed, so set it.
-            newSelectionLayer = {
+            updatedSelectionLayer = {
                 start: start,
                 end: end,
                 selected: true,
@@ -39,7 +41,7 @@ module.exports = function _setSelectionLayer (newSelectionLayer) {
             getRidOfCursor = true;
         } else {
             //invalid selection layer passed, so cancel it
-            newSelectionLayer = {
+            updatedSelectionLayer = {
                 start: -1,
                 end: -1,
                 selected: false,
@@ -47,9 +49,5 @@ module.exports = function _setSelectionLayer (newSelectionLayer) {
             };
         }
     }
-    // if (!deepEqual(selectionLayer, newSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
-    if (getRidOfCursor) {
-        setCaretPosition(-1);
-    }
-    return({newSelectionLayer, newCaretPosition});
+    return({updatedSelectionLayer, getRidOfCursor});
 };

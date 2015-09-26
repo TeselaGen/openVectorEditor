@@ -14,7 +14,7 @@
     "color-scale": "^1.1.0",
     "combokeys": "^2.4.3",
     "css-loader": "^0.18.0",
-    "deep-equal": "^1.0.0",
+    "deep-equal": "^1.0.1",
     "flatmap": "^0.0.3",
     "get-substring-by-range": "^1.0.0",
     "get-viewport-size": "^1.0.0",
