@@ -1,5 +1,5 @@
 var Baobab = require('baobab');
-var monkey = Baobab.monkey
+var deriveData = Baobab.monkey
 // var sequenceData = require('./sequenceData');
 // var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
@@ -22,7 +22,7 @@ var tree = new Baobab({
     ANNOTATION_HEIGHT: 15,
     minimumOrfSize: 200,
     tickSpacing: 21,
-    mapViewTickSpacing: 40, //tnr: we should dynamically calculate this number
+    mapViewTickSpacing: 40,
     SPACE_BETWEEN_ANNOTATIONS: 3,
     preloadRowStart: 0,
     showOrfs: true,
@@ -34,42 +34,21 @@ var tree = new Baobab({
     showAxis: true,
     showReverseSequence: true,
     rowViewDimensions: {
-        height: 500, //come back and make these dynamic
+        height: 500,
         width: 500
     },
     mapViewDimensions: {
-        height: 500, //come back and make these dynamic
+        height: 500,
         width: 500
     },
     userEnzymeList: [
         'rsplkii',
         'bme216i',
         'uba1229i',
-        'ecl37i',
-        // 'bsmbi',
-        // 'uba1229i',
-        // 'maek81i', "esphk22i",
-        // "slu1777i",
-        // "bshhi",
-        // "ssp2i",
-        // "cspai",
-        // "btsi",
-        // "aspmi",
-        // "ngoeii",
-        // "bsu1532i",
-        // "dsai",
-        // "bstri",
-        // "pru2i",
-        // "uba1439i",
-        // "bsrfi",
-        // "bseri",
-        // "mizi",
-        // "hgibi",
-        // "bari",
-        // "nsici"
+        'ecl37i'
     ],
     viewportDimensions: {
-        height: 500, //come back and make these dynamic
+        height: 500,
         width: 500
     },
     selectionLayer: {
@@ -85,7 +64,7 @@ var tree = new Baobab({
     },
     sequenceData: tidyUpSequenceData(sequenceData),
     clipboardData: null,
-    bpsPerRow: monkey([
+    bpsPerRow: deriveData([
         ['rowViewDimensions',
             'width'
         ],
@@ -95,7 +74,7 @@ var tree = new Baobab({
         }
     ]),
     
-    userEnzymes: monkey([
+    userEnzymes: deriveData([
         ['userEnzymeList'],
         function(userEnzymeList) {
             return userEnzymeList.map(function(enzymeName) {
@@ -103,7 +82,7 @@ var tree = new Baobab({
             });
         }
     ]),
-    cutsitesByName: monkey([
+    cutsitesByName: deriveData([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
         ['userEnzymes'],
@@ -112,7 +91,7 @@ var tree = new Baobab({
         // }
         getCutsitesFromSequence
     ]),
-    cutsites: monkey([
+    cutsites: deriveData([
         ['cutsitesByName'],
         function (cutsitesByName) {
             var cutsitesArray = [];
@@ -123,7 +102,7 @@ var tree = new Baobab({
             return cutsitesArray;
         }
     ]),
-    translationsWithAminoAcids: monkey([
+    translationsWithAminoAcids: deriveData([
         ['sequenceData', 'translations'],
         ['sequenceData', 'sequence'],
         function getTranslationsWithAminoAcids(translations, sequence) {
@@ -135,13 +114,13 @@ var tree = new Baobab({
             });
         }
     ]),
-    sequenceLength: monkey([
+    sequenceLength: deriveData([
         ['sequenceData'],
         function(sequenceData) {
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
         }
     ]),
-    mapViewCharWidth: monkey([
+    mapViewCharWidth: deriveData([
         ['mapViewDimensions',
             'width'
         ],
@@ -150,7 +129,7 @@ var tree = new Baobab({
             return mapViewDimensionsWidth / sequenceLength;
         }
     ]),
-    selectedSequenceString: monkey([
+    selectedSequenceString: deriveData([
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
         function(sequence, selectionLayer) {
@@ -161,13 +140,13 @@ var tree = new Baobab({
             }
         }
     ]),
-    orfData: monkey([
+    orfData: deriveData([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'], //decide on what to call this..
         ['minimumOrfSize'],
         findOrfsInPlasmid
     ]),
-    combinedSequenceData: monkey([ //holds usual sequence data, plus orfs, plus parts..
+    combinedSequenceData: deriveData([ //holds usual sequence data, plus orfs, plus parts..
         ['sequenceData'],
         ['orfData'],
         ['translationsWithAminoAcids'],
@@ -180,7 +159,7 @@ var tree = new Baobab({
             });
         }
     ]),
-    rowData: monkey([
+    rowData: deriveData([
         ['combinedSequenceData'],
         ['bpsPerRow'],
         function(sequenceData, bpsPerRow) {
@@ -188,7 +167,7 @@ var tree = new Baobab({
             return prepareRowData(sequenceData, bpsPerRow);
         }
     ]),
-    mapViewRowData: monkey([
+    mapViewRowData: deriveData([
         ['combinedSequenceData'],
         ['sequenceLength'],
         function(sequenceData, sequenceLength) {
@@ -196,7 +175,7 @@ var tree = new Baobab({
             return prepareRowData(sequenceData, sequenceLength);
         }
     ]),
-    totalRows: monkey([
+    totalRows: deriveData([
         ['rowData'],
         function(rowData) {
             if (rowData) {
@@ -204,7 +183,7 @@ var tree = new Baobab({
             }
         }
     ]),
-    newRandomRowToJumpTo: monkey([
+    newRandomRowToJumpTo: deriveData([
         ['totalRows'],
         ['rowToJumpTo'],
         function(totalRows) {

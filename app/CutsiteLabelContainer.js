@@ -61,13 +61,20 @@ let CutsiteContainer = React.createClass({
                 maxAnnotationYOffset = level;
             }
             let height = (level) * (annotationHeight + spaceBetweenAnnotations);
-            
             annotationsSVG.push(
                 <div left={xStart}
                     onClick={function (event) {
                               setSelectionLayer(this);
                               event.stopPropagation();
                             }.bind(annotation)}
+                    onMouseOver={function (event) {
+                      setSelectionLayer(this);
+                      event.stopPropagation();
+                    }.bind(annotation)}
+                    onMouseOut={function (event) {
+                      setSelectionLayer(false);
+                      event.stopPropagation();
+                    }.bind(annotation)}
                     style={
                         {
                             // left: xStart,
@@ -77,6 +84,7 @@ let CutsiteContainer = React.createClass({
                             // position: (relative) ? 'relative' : 'absolute',
                             // // float: 'left',
                             'left': xStart,
+                            'zIndex': 10
                             // left: '100 % ',
                         }
                     }
