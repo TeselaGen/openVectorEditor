@@ -7,7 +7,6 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
  * @return {undefined}                   
  */
 module.exports = function setSelectionLayerHelper (newSelectionLayer) {
-    ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
     var getRidOfCursor;
     var updatedSelectionLayer;
     if (!newSelectionLayer || typeof newSelectionLayer !== 'object') {
@@ -19,6 +18,8 @@ module.exports = function setSelectionLayerHelper (newSelectionLayer) {
             cursorAtEnd: true
         };
     } else {
+        //only do type checking if the argument is not falsey
+        ac.throw([ac.range], arguments);
         var start = newSelectionLayer.start;
         // var selected = newSelectionLayer.selected;
         var end = newSelectionLayer.end;

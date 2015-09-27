@@ -10,10 +10,11 @@ module.exports = function setSelectionLayer(newSelectionLayer) {
     var {
         updatedSelectionLayer, getRidOfCursor
     } = setSelectionLayerHelper(newSelectionLayer);
-    if (!deepEqual(selectionLayer, updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
-        tree.select('selectionLayer').set(updatedSelectionLayer);
+    var selectionCursor = tree.select('selectionLayer');
+    if (!deepEqual(selectionCursor.get(), updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
+        selectionCursor.set(updatedSelectionLayer);
     }
     if (getRidOfCursor) {
-        tree.select('selectionLayer').set(updatedSelectionLayer);
+        tree.select('caretPosition').set(-1);
     }
 };

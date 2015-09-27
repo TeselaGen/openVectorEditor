@@ -61,7 +61,7 @@
     "webpack-dev-server": "^1.9.0"
   },
   "scripts": {
-    "test": "mocha app/**/*.test.js --harmony",
+    "test": "mocha app/**/*.test.js --harmony --compilers js:babel/register",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "nestest": "nestest",
     "linklocal": "linklocal",
