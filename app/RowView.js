@@ -29,6 +29,7 @@ var RowView = React.createClass({
         handleEditorDragStart: PropTypes.func.isRequired,
         handleEditorDragStop: PropTypes.func.isRequired,
         handleEditorClick: PropTypes.func.isRequired,
+        setSelectionLayer: PropTypes.func.isRequired,
     },
     getNearestCursorPositionToMouseEvent: function(event, callback) {
         callback(0);
@@ -78,7 +79,8 @@ var RowView = React.createClass({
             preloadRowStart, 
             averageRowHeight, 
             rowViewDimensions, 
-            totalRows, rowData, 
+            totalRows, 
+            rowData, 
             rowToJumpTo, 
             charWidth, 
             selectionLayer, 
@@ -96,6 +98,7 @@ var RowView = React.createClass({
             caretPosition,
             sequenceLength,
             bpsPerRow,
+            setSelectionLayer,
             handleEditorDrag,
             handleEditorDragStart,
             handleEditorDragStop,
@@ -117,6 +120,7 @@ var RowView = React.createClass({
                       showAxis={showAxis}
                       showCutsites={showCutsites}
                       showReverseSequence={showReverseSequence}
+                      setSelectionLayer={setSelectionLayer}
                       selectionLayer={selectionLayer}
                       caretPosition={caretPosition}
                       sequenceLength={sequenceLength}

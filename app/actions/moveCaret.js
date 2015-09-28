@@ -1,10 +1,9 @@
-var tree = require('../baobabTree');
 var setSelectionLayer = require('./setSelectionLayer.js');
 var moveCaretShiftHeld = require('./moveCaretShiftHeld.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var ac = require('ve-api-check');
 
-module.exports = function moveCaret(numberToMove, shiftHeld) {
+export default function moveCaret({numberToMove, shiftHeld}, tree, output) {
     ac.warn(ac.number, numberToMove);
     ac.warn(ac.bool.optional, shiftHeld);
     if (shiftHeld) {

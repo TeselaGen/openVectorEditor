@@ -1,4 +1,3 @@
-var tree = require('../baobabTree');
 var setSelectionLayerHelper = require('./setSelectionLayerHelper');
 var deepEqual = require('deep-equal');
 /**
@@ -6,7 +5,7 @@ var deepEqual = require('deep-equal');
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-module.exports = function setSelectionLayer(newSelectionLayer) {
+export default function setSelectionLayer({newSelectionLayer}, tree, output) {
     var {
         updatedSelectionLayer, getRidOfCursor
     } = setSelectionLayerHelper(newSelectionLayer);

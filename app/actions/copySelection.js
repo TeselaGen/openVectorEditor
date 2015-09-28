@@ -1,20 +1,13 @@
-var tree = require('../baobabTree');
 var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-utils/collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var getSubstringByRange = require('get-substring-by-range');
 var areRangesValid = require('ve-range-utils/areRangesValid');
 
-module.exports = function copySelection() {
-    var selectionLayer = tree.select('selectionLayer').get();
-    var sequenceData = tree.select('sequenceData').get();
-    var clipboardDataCursor = tree.select('clipboardData');
+export default function copySelection({selectionLayer, sequenceData}, tree, output) {
     var allowPartialAnnotationsOnCopy = tree.select('allowPartialAnnotationsOnCopy').get();
-    if (!clipboardDataCursor) {
-        throw new Error('no clipboard cursor..');
-    }
     if (sequenceData && selectionLayer.selected) {
-        clipboardDataCursor.set(copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
+        clipboardDataCursor.set(['clipboardData'],copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
 
         function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
             if (sequenceData.sequence !== '' && !sequenceData.sequence) {
@@ -70,4 +63,4 @@ module.exports = function copySelection() {
             };
         }
     }
-};
+}

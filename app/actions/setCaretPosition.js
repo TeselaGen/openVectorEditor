@@ -1,9 +1,8 @@
-var tree = require('../baobabTree');
 var isInteger = require("is-integer");
-module.exports = function setCaretPosition(newPosition) {
+export default function setCaretPosition({newPosition}, tree, output) {
     if (isInteger(newPosition)) {
         tree.select('caretPosition').set(newPosition);
     } else {
         tree.select('caretPosition').set(-1);
     }
-};
+}

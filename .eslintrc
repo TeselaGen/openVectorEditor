@@ -26,7 +26,7 @@
         "comma-dangle": [2, "always-multiline"],
         "prefer-const": 0,
         "vars-on-top": 0,
-        "babel/object-shorthand": 2,
+        "babel/object-shorthand": 0,
         "react/jsx-boolean-value": [2, "never"],
         "react/jsx-no-duplicate-props": 2,
         "react/sort-comp": 0,

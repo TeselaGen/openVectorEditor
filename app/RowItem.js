@@ -29,6 +29,7 @@ var RowItem = React.createClass({
             showAxis,
             showCutsites,
             showReverseSequence,
+            setSelectionLayer,
             caretPosition,
             sequenceLength,
             bpsPerRow,
@@ -54,6 +55,7 @@ var RowItem = React.createClass({
                 >
                 {(showFeatures && row.features.length > 0) &&
                   <FeatureContainer
+                    setSelectionLayer={setSelectionLayer}
                     annotationRanges={row.features}
                     charWidth={charWidth}
                     annotationHeight={ANNOTATION_HEIGHT}
@@ -63,6 +65,7 @@ var RowItem = React.createClass({
             
                 {(showOrfs && row.orfs.length > 0) &&
                   <OrfContainer
+                    setSelectionLayer={setSelectionLayer}
                     row={row}
                     annotationRanges={row.orfs}
                     charWidth={charWidth}
@@ -73,6 +76,7 @@ var RowItem = React.createClass({
                 }
                 {(showTranslations && row.translations.length > 0) &&
                   <TranslationContainer
+                    setSelectionLayer={setSelectionLayer}
                     row={row}
                     annotationRanges={row.translations}
                     charWidth={charWidth}
@@ -84,6 +88,7 @@ var RowItem = React.createClass({
 
                 {(showCutsites && row.cutsites.length > 0) &&
                   <CutsiteLabelContainer
+                    setSelectionLayer={setSelectionLayer}
                     annotationRanges={row.cutsites}
                     charWidth={charWidth}
                     annotationHeight={ANNOTATION_HEIGHT}
@@ -91,9 +96,11 @@ var RowItem = React.createClass({
                     spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
                 }
                 <SequenceContainer 
+                    setSelectionLayer={setSelectionLayer}
                     sequence={row.sequence} 
                     charWidth={charWidth}>
                     {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
+                            setSelectionLayer={setSelectionLayer}
                         row={row}
                         sequenceLength={sequenceLength}
                         annotationRanges={row.cutsites}

@@ -1,5 +1,3 @@
-var tree = require('../baobabTree');
-
-module.exports = function moveCaret(rowToJumpTo) {
+export default function insertSequenceData({rowToJumpTo}, tree, output) {
     tree.set(['rowToJumpTo'], rowToJumpTo);
 };

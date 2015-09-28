@@ -1,6 +1,5 @@
-var tree = require('../baobabTree');
 var deepEqual = require('deep-equal');
-module.exports = function setViewportDimensions (newViewportDimensions) {
+export default function setViewportDimensions({newViewportDimensions}, tree, output) {
 	if (newViewportDimensions.width > 0 && newViewportDimensions.height > 0) {
 		var viewportDimensions = tree.select('viewportDimensions');
 		if (!deepEqual(viewportDimensions.get(), newViewportDimensions)) {

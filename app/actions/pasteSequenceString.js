@@ -1,11 +1,10 @@
-var tree = require('../baobabTree');
 var ObjectID = require("bson-objectid");
 var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 var insertSequenceString = require('./insertSequenceString.js');
 var insertSequenceData = require('./insertSequenceData');
 
-module.exports = function pasteSequenceString(sequenceString) {
+export default function pasteSequenceString({sequenceString}, tree, output) {
     //compare the sequenceString being pasted in with what's already stored in the clipboard
     var clipboardData = tree.select('clipboardData').get();
     if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {

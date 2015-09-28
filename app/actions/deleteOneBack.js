@@ -1,11 +1,7 @@
-/* @flow */
-var tree = require('../baobabTree');
 var deleteSequence = require('./deleteSequence');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
-module.exports = function backspacePressed() {
-    var selectionLayer = tree.select('selectionLayer').get();
-    var caretPosition = tree.select('caretPosition').get();
+export default function backspacePressed({selectionLayer, caretPosition}, tree, output) {
     if (selectionLayer.selected) {
         deleteSequence(selectionLayer);
     } else {

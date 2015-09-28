@@ -1,6 +1,4 @@
-var tree = require('../baobabTree');
 var moveCaret = require('./moveCaret');
-var moveCaretShiftHeld = require('./moveCaretShiftHeld');
 
 const moveCaretShortcutFunctions = {
     moveCaretLeftOne(shiftHeld) {

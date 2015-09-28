@@ -1,5 +1,4 @@
-var Baobab = require('baobab');
-var deriveData = Baobab.monkey
+var deriveData = require('baobab').monkey
 // var sequenceData = require('./sequenceData');
 // var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
 var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
@@ -12,7 +11,7 @@ var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDa
 var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence');
 var enzymeList = require('ve-sequence-utils/enzymeList');
 
-var tree = new Baobab({
+export default {
     rowToJumpTo: null,
     topSpacerHeight: 0,
     bottomSpacerHeight: 0,
@@ -192,6 +191,4 @@ var tree = new Baobab({
             };
         }
     ]),
-});
-
-module.exports = tree;
+};

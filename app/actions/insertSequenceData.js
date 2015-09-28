@@ -1,4 +1,3 @@
-var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var assign = require('lodash/object/assign');
 var deleteSequence = require('./deleteSequence');
@@ -6,7 +5,7 @@ var setCaretPosition = require('./setCaretPosition');
 var insertSequenceDataAtPosition = require('ve-sequence-utils/insertSequenceDataAtPosition');
 
 
-module.exports = function insertSequenceData(sequenceDataToInsert) {
+export default function insertSequenceData({sequenceDataToInsert}, tree, output) {
     if (!sequenceDataToInsert || !sequenceDataToInsert.sequence.length) {
         console.warn("must pass a valid sequence string");
         return;

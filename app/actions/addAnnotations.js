@@ -1,13 +1,13 @@
 var ac = require('ve-api-check');
-// ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require('validate.io-boolean');
 
-module.exports = function addAnnotations(annotationType, annotationsToInsert, throwErrors) {
-    ac.throw([ac.annotationType, ac.arrayOf(ac.range), ac.bool.optional], arguments);
+export default function addAnnotations({annotationType, annotationsToInsert, throwErrors}, state, output) {
+    ac.throw(ac.annotationType, annotationType);
+    ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
+    ac.throw(ac.bool.optional, throwErrors);
     
-    var annotationsCursor = tree.select('sequenceData', annotationType);
+    var annotationsCursor = state.select('sequenceData', annotationType);
     annotationsToInsert.forEach(function(annotationToInsert) {
         if (!isBoolean(annotationToInsert.forward)) {
             if (throwErrors) {
@@ -35,4 +35,4 @@ module.exports = function addAnnotations(annotationType, annotationsToInsert, th
         }
         annotationsCursor.push(annotationToInsert);
     });
-};
+}

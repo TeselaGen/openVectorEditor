@@ -3,7 +3,6 @@ const zeroSubrangeByContainerRange = require('ve-range-utils/zeroSubrangeByConta
 const getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 const AASliver = require('./AASliver');
 
-var setSelectionLayer = require('./actions/setSelectionLayer');
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var Translation = React.createClass({
@@ -16,11 +15,18 @@ var Translation = React.createClass({
         rangeType: React.PropTypes.string.isRequired,
         color: React.PropTypes.string.isRequired,
         name: React.PropTypes.string.isRequired,
-        forward: React.PropTypes.bool.isRequired
+        forward: React.PropTypes.bool.isRequired,
+        setSelectionLayer: React.PropTypes.func.isRequired,
     },
 
     render: function() {
-        var {annotationRange, height, charWidth, sequenceLength} = this.props;
+        var {
+            annotationRange, 
+            height, 
+            charWidth, 
+            setSelectionLayer, 
+            sequenceLength
+        } = this.props;
         var annotation = annotationRange.annotation;
         //we have an amino acid representation of our entire annotation, but it is an array
         //starting at 0, even if the annotation starts at some arbitrary point in the sequence

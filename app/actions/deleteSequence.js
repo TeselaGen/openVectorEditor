@@ -1,4 +1,3 @@
-var tree = require('../baobabTree');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var adjustRangeToDeletionOfAnotherRange = require('ve-range-utils/adjustRangeToDeletionOfAnotherRange');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
@@ -6,7 +5,7 @@ var assign = require('lodash/object/assign');
 var setCaretPosition = require('./setCaretPosition');
 var setSelectionLayer = require('./setSelectionLayer');
 
-module.exports = function deleteSequence(rangeToDelete) {
+export default function deleteSequence({rangeToDelete}, tree, output) {
     if (!rangeToDelete || !areNonNegativeIntegers([rangeToDelete.start, rangeToDelete.end])) {
         console.warn('can\'t delete sequence due to invalid start and end');
     }
@@ -17,7 +16,7 @@ module.exports = function deleteSequence(rangeToDelete) {
     } else {
         deletionLength = rangeToDelete.end - rangeToDelete.start + 1;
     }
-    var selectionLayer = tree.select('selectionLayer').get();
+    var selectionLayer = tree.get('selectionLayer');
     //update selection layer due to sequence deletion
     if (selectionLayer && selectionLayer.selected && areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
         var newSelectionLayerRange = adjustRangeToDeletionOfAnotherRange(selectionLayer, rangeToDelete, sequenceLength);

@@ -1,4 +1,3 @@
-var tree = require('../baobabTree');
 var assign = require('lodash/object/assign');
 var setSelectionLayer = require('./setSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
@@ -8,7 +7,7 @@ var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberTo
  * @param  {integer} numberToMove positive/negative number to adjust the caret
  * @return {undefined}              
  */
-module.exports = function moveCaretShiftHeld(numberToMove) {
+export default function moveCaretShiftHeld({numberToMove}, tree, output) {
     var selectionLayer = assign({}, tree.select('selectionLayer').get());
 
     var sequenceLength = tree.get(['sequenceLength']);
