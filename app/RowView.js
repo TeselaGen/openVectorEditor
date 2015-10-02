@@ -32,7 +32,6 @@ var RowView = React.createClass({
         setSelectionLayer: PropTypes.func.isRequired,
     },
     getNearestCursorPositionToMouseEvent: function(event, callback) {
-        callback(0);
         var rowNotFound = true;
         var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
         //loop through all the rendered rows to see if the click event lands in one of them
@@ -74,39 +73,20 @@ var RowView = React.createClass({
 
     render: function() {
         var {
-            preloadRowStart, 
-            averageRowHeight, 
             rowViewDimensions, 
-            totalRows, 
             rowData, 
             rowToJumpTo, 
-            charWidth, 
-            selectionLayer, 
-            charHeight,
-            annotationHeight,
-            tickSpacing,
-            spaceBetweenAnnotations,
-            showFeatures,
-            showTranslations,
-            showParts,
-            showOrfs,
-            showAxis,
-            showCutsites,
-            showReverseSequence,
-            caretPosition,
-            sequenceLength,
-            bpsPerRow,
-            setSelectionLayer,
             handleEditorDrag,
             handleEditorDragStart,
             handleEditorDragStop,
             handleEditorClick,
         } = this.props;
+        var pProps = this.props;
         var self = this;
         function renderRows(rowNumber) {
             if (rowData[rowNumber]) {
                 return (<RowItem
-                    {this.props}
+                    {...pProps}
                     key={rowNumber}
                     row={rowData[rowNumber]} 
                     />);
@@ -124,6 +104,7 @@ var RowView = React.createClass({
             //   padding: 10
         };
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
+        debugger;
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}

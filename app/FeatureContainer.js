@@ -32,7 +32,7 @@ let FeatureContainer = Component({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            setSelectionLayer
+            signals: {setSelectionLayer}
         } = this.props;
 
         if (annotationRanges.length === 0) {

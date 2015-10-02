@@ -8,10 +8,10 @@ var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberTo
  * @return {undefined}              
  */
 export default function moveCaretShiftHeld({numberToMove}, tree, output) {
-    var selectionLayer = assign({}, tree.select('selectionLayer').get());
+    var selectionLayer = assign({}, tree.get('selectionLayer'));
 
     var sequenceLength = tree.get(['sequenceLength']);
-    var caretPosition = JSON.parse(JSON.stringify(tree.select('caretPosition').get())); //tnrtodo: this json stringify stuff is probably unneeded
+    var caretPosition = JSON.parse(JSON.stringify(tree.get('caretPosition'))); //tnrtodo: this json stringify stuff is probably unneeded
     if (selectionLayer.selected) {
         if (selectionLayer.cursorAtEnd) {
             selectionLayer.end += numberToMove;

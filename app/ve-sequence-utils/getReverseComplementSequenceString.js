@@ -1,8 +1,8 @@
 var DNAReverseComplementMap = require('./DNAReverseComplementMap');
 var ac = require('ve-api-check'); 
-// ac.throw([ac.string,ac.bool],arguments);
+// ac.warn([ac.string,ac.bool],arguments);
 module.exports = function getReverseComplementSequenceString (sequence) {
-	ac.throw([ac.string],arguments);
+	ac.warn([ac.string],arguments);
 	var reverseComplementSequenceString = "";
 	for (var i = sequence.length - 1; i >= 0; i--) {
 		var revChar = DNAReverseComplementMap[sequence[i]];

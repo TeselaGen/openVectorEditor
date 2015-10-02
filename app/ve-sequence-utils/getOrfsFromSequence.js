@@ -13,7 +13,7 @@ var ac = require('ve-api-check');
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
 module.exports = function getOrfsFromSequence(options) {
-    ac.throw([ac.shape({
+    ac.warn([ac.shape({
         sequence: ac.string,
         minimumOrfSize: ac.posInt,
         forward: ac.bool,

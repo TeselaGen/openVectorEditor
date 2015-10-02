@@ -9,20 +9,20 @@ export default function moveCaret({numberToMove, shiftHeld}, tree, output) {
     if (shiftHeld) {
         moveCaretShiftHeld(numberToMove);
     } else {
-        var selectionLayer = tree.select('selectionLayer').get();
-        var sequenceLength = tree.get(['sequenceLength']);
-        var caretPosition = tree.select('caretPosition').get();
+        var selectionLayer = tree.get('selectionLayer');
+        var sequenceLength = tree.get('sequenceLength');
+        var caretPosition = tree.get('caretPosition');
         if (selectionLayer.selected) {
             if (numberToMove > 0) {
-                tree.select('caretPosition').set(selectionLayer.end + 1);
+                tree.set('caretPosition', selectionLayer.end + 1);
             } else {
-                tree.select('caretPosition').set(selectionLayer.start);
+                tree.set('caretPosition', selectionLayer.start);
             }
             setSelectionLayer(false);
         } else {
             caretPosition += numberToMove;
             caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
-            tree.select('caretPosition').set(caretPosition);
+            tree.set('caretPosition', caretPosition);
         }
     }
 };

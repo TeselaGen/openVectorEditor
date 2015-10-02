@@ -3,9 +3,9 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require('validate.io-boolean');
 
 export default function addAnnotations({annotationType, annotationsToInsert, throwErrors}, state, output) {
-    ac.throw(ac.annotationType, annotationType);
-    ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
-    ac.throw(ac.bool.optional, throwErrors);
+    ac.warn(ac.annotationType, annotationType);
+    ac.warn(ac.arrayOf(ac.range), annotationsToInsert);
+    ac.warn(ac.bool.optional, throwErrors);
     
     var annotationsCursor = state.select('sequenceData', annotationType);
     annotationsToInsert.forEach(function(annotationToInsert) {

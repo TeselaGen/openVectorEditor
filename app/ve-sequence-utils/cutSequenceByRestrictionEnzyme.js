@@ -4,7 +4,7 @@ var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionBy
 var reversePositionInRange = require('ve-range-utils/reversePositionInRange.js');
 
 module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, restrictionEnzyme) {
-    ac.throw([
+    ac.warn([
         ac.string,
         ac.bool,
         ac.shape({

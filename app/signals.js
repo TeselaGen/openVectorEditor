@@ -25,13 +25,13 @@ var editorSignals = {
   backspacePressed: [a.getCaretPosition, a.getSelectionLayer, a.deleteOneBack],
   copySelection: [a.getSelectionLayer, a.copySelection],
   deleteSequence: [a.deleteSequence],
-  setSelectionLayer: [a.setSelectionLayer],
   insertSequenceString: [a.setCaretPosition],
-  selectAll: [a.setCaretPosition],
+  jumpToRow: [a.setCaretPosition],
   moveCaretShortcutFunctions: [a.setCaretPosition],
   pasteSequenceString: [a.setCaretPosition],
+  selectAll: [a.setCaretPosition],
   setCaretPosition: [a.setCaretPosition],
-  jumpToRow: [a.setCaretPosition],
+  setSelectionLayer: [a.setSelectionLayer],
   toggleAnnotationDisplay: [a.setCaretPosition],
 }
 

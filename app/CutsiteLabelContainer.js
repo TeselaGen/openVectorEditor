@@ -1,9 +1,10 @@
+var debug = require('debug')('CutsiteLabelContainer');
 let React = require('react');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 var IntervalTree = require('interval-tree');
 
-let CutsiteContainer = React.createClass({
+let CutsiteLabelContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         annotationRanges: React.PropTypes.array.isRequired,
@@ -29,23 +30,23 @@ let CutsiteContainer = React.createClass({
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
         var annotationLevels = {};
-        // console.log('annotationRanges: ' + JSON.stringify(annotationRanges,null,4));
-        console.log('annotationRanges:');
+        // debug('annotationRanges: ' + JSON.stringify(annotationRanges,null,4));
+        debug('annotationRanges:');
         annotationRanges.forEach(function(annotationRange, index) {
             let annotation = annotationRange.annotation;
             var textWidth = 15; //tnr: update this so it isn't just a guess
             var annotationLength = annotation.restrictionEnzyme.name.length * textWidth
             let {xStart} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             var xEnd = xStart + annotationLength;
-            console.log('xStart,xEnd: ' + xStart,xEnd);
+            debug('xStart,xEnd: ' + xStart,xEnd);
             var rowCenter = bpsPerRow * textWidth / 2;
             var fits = false;
             
             var level = 0;
             while (!fits) {
-                console.log('level', level);
+                debug('level', level);
                 if (!annotationLevels[level]) {
-                    console.log('adding new level');
+                    debug('adding new level');
                     annotationLevels[level] = new IntervalTree(rowCenter);
                     annotationLevels[level].add([xStart, xEnd, 'index'])
                     fits = true;
@@ -109,4 +110,4 @@ let CutsiteContainer = React.createClass({
         );
     }
 });
-module.exports = CutsiteContainer;
+module.exports = CutsiteLabelContainer;

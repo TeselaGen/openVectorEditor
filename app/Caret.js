@@ -29,12 +29,13 @@ let HighlightLayer = React.createClass({
             caretPosition,
             shouldBlink
         } = this.props;
+        debugger;
         if (row.start <= caretPosition && row.end + 1 >= caretPosition || (row.end === sequenceLength - 1 && row.end < caretPosition)) {
             //the second logical operator catches the special case where we're at the very end of the sequence..
             var newCursorStyle = assign({}, cursorStyle, {
                 left: (caretPosition - row.start) * charWidth
             });
-            var cursorEl = <div className="cursor" style={newCursorStyle}/>
+            var cursorEl = <div className="cursor" style={newCursorStyle}/>;
             if (shouldBlink) {
                 return (<Blink duration={600}>{cursorEl}</Blink>);
             } else {
@@ -42,7 +43,7 @@ let HighlightLayer = React.createClass({
             }
             // onHover={self.onCursorHover}
         } else {
-            return null
+            return null;
         }
     }
 });

@@ -298,18 +298,24 @@ var SequenceEditor = Component({
         
         <RowView 
           {...this.props}
+          handleEditorDrag={this.handleEditorDrag}
+          handleEditorDragStart={this.handleEditorDragStart}
+          handleEditorDragStop={this.handleEditorDragStop}
+          handleEditorClick={this.handleEditorClick}
            />
              <br/>
              <br/>
              <br/>
-        <MapView 
-          {...this.props}
-          />
+        
       </div>
     );
   }
 });
 
+
+// <MapView 
+//           {...this.props}
+//           />
 
 
 // <button onClick={function () {

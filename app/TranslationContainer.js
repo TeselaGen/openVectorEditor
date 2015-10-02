@@ -31,7 +31,6 @@ const TranslationContainer = React.createClass({
         setSelectionLayer: PropTypes.func.isRequired
     },
     render() {
-        debugger;
         var {setSelectionLayer, row, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations, sequenceLength} = this.props;
           if (annotationRanges.length === 0) {
             return null;

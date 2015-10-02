@@ -5,7 +5,7 @@ var getSubstringByRange = require('get-substring-by-range');
 var areRangesValid = require('ve-range-utils/areRangesValid');
 
 export default function copySelection({selectionLayer, sequenceData}, tree, output) {
-    var allowPartialAnnotationsOnCopy = tree.select('allowPartialAnnotationsOnCopy').get();
+    var allowPartialAnnotationsOnCopy = tree.get('allowPartialAnnotationsOnCopy');
     if (sequenceData && selectionLayer.selected) {
         clipboardDataCursor.set(['clipboardData'],copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
 

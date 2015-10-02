@@ -5,15 +5,14 @@ var deepEqual = require('deep-equal');
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-export default function setSelectionLayer({newSelectionLayer}, tree, output) {
+export default function setSelectionLayer(newSelectionLayer, tree, output) {
     var {
         updatedSelectionLayer, getRidOfCursor
     } = setSelectionLayerHelper(newSelectionLayer);
-    var selectionCursor = tree.select('selectionLayer');
-    if (!deepEqual(selectionCursor.get(), updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
-        selectionCursor.set(updatedSelectionLayer);
+    if (!deepEqual(tree.get('selectionLayer'), updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
+        tree.get('selectionLayer', updatedSelectionLayer);
     }
     if (getRidOfCursor) {
-        tree.select('caretPosition').set(-1);
+        tree.set('caretPosition', -1);
     }
 };

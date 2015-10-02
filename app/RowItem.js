@@ -29,13 +29,14 @@ var RowItem = React.createClass({
             showAxis,
             showCutsites,
             showReverseSequence,
-            setSelectionLayer,
             caretPosition,
             sequenceLength,
             bpsPerRow,
             row
         } = this.props;
-        debugger;
+        var {
+            setSelectionLayer
+        } = this.props.signals;
         if (!row) {
             return null;
         }
@@ -56,12 +57,8 @@ var RowItem = React.createClass({
                 >
                 {(showFeatures && row.features.length > 0) &&
                   <FeatureContainer
-                    setSelectionLayer={setSelectionLayer}
                     annotationRanges={row.features}
-                    charWidth={charWidth}
-                    annotationHeight={annotationHeight}
-                    bpsPerRow={bpsPerRow}
-                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
+                    />
                 }
             
                 {(showOrfs && row.orfs.length > 0) &&

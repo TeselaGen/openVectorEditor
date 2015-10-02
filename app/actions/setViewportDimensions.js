@@ -1,10 +1,9 @@
 var deepEqual = require('deep-equal');
 export default function setViewportDimensions({newViewportDimensions}, tree, output) {
 	if (newViewportDimensions.width > 0 && newViewportDimensions.height > 0) {
-		var viewportDimensions = tree.select('viewportDimensions');
-		if (!deepEqual(viewportDimensions.get(), newViewportDimensions)) {
-			viewportDimensions.set(newViewportDimensions);
-			tree.select('rowViewDimensions').set({
+		if (!deepEqual(tree.get('viewportDimensions'), newViewportDimensions)) {
+			tree.set('viewportDimensions', newViewportDimensions);
+			tree.set('rowViewDimensions', {
 				height: newViewportDimensions.height * 0.7,
 				width: newViewportDimensions.width * 0.7
 			});

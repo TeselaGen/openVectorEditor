@@ -31,19 +31,18 @@ export default function deleteSequence({rangeToDelete}, tree, output) {
                 setCaretPosition(rangeToDelete.start);
             }
         }
-    } else if (tree.select('caretPosition').get()) {
+    } else if (tree.get(['caretPosition'])) {
         //update the cursor position
         if (rangeToDelete.start > rangeToDelete.end) {
             setCaretPosition(rangeToDelete.start - rangeToDelete.end - 1);
         } else {
             setCaretPosition(rangeToDelete.start);
         }
-        // setCaretPosition(tree.select('caretPosition').get() - rangeToDelete.start);
     } else {
         // throw new Error('must have a selection layer or a caretPosition');
         console.warn('must have a selection layer or a caretPosition');
     }
-    var sequenceData = tree.select('sequenceData').get();
+    var sequenceData = tree.get(['sequenceData']);
     var newSequenceData = {};
     if (sequenceData.sequence) {
         //splice the underlying sequence
@@ -78,5 +77,5 @@ export default function deleteSequence({rangeToDelete}, tree, output) {
             return [];
         }
     }
-    tree.select('sequenceData').set(tidyUpSequenceData(newSequenceData, true));
+    tree.set('sequenceData', tidyUpSequenceData(newSequenceData, true));
 }
