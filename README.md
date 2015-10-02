@@ -1,4 +1,4 @@
-###A (soon-to-be) open source Vector Editor
+###An open source Vector Editor
 
 [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
