@@ -11,10 +11,10 @@ var RowView = React.createClass({
         rowData: PropTypes.array.isRequired,
         charWidth: PropTypes.number.isRequired,
         selectionLayer: PropTypes.object.isRequired,
-        CHAR_HEIGHT: PropTypes.number.isRequired,
-        ANNOTATION_HEIGHT: PropTypes.number.isRequired,
+        charHeight: PropTypes.number.isRequired,
+        annotationHeight: PropTypes.number.isRequired,
         tickSpacing: PropTypes.number.isRequired,
-        SPACE_BETWEEN_ANNOTATIONS: PropTypes.number.isRequired,
+        spaceBetweenAnnotations: PropTypes.number.isRequired,
         showFeatures: PropTypes.bool.isRequired,
         showTranslations: PropTypes.bool.isRequired,
         showParts: PropTypes.bool.isRequired,
@@ -73,8 +73,6 @@ var RowView = React.createClass({
     },
 
     render: function() {
-        // console.log('render!');
-        // 
         var {
             preloadRowStart, 
             averageRowHeight, 
@@ -84,10 +82,10 @@ var RowView = React.createClass({
             rowToJumpTo, 
             charWidth, 
             selectionLayer, 
-            CHAR_HEIGHT,
-            ANNOTATION_HEIGHT,
+            charHeight,
+            annotationHeight,
             tickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
+            spaceBetweenAnnotations,
             showFeatures,
             showTranslations,
             showParts,
@@ -108,25 +106,10 @@ var RowView = React.createClass({
         function renderRows(rowNumber) {
             if (rowData[rowNumber]) {
                 return (<RowItem
-                    charWidth={charWidth}
-                      CHAR_HEIGHT={CHAR_HEIGHT}
-                      ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-                      tickSpacing={tickSpacing}
-                      SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
-                      showFeatures={showFeatures}
-                      showTranslations={showTranslations}
-                      showParts={showParts}
-                      showOrfs={showOrfs}
-                      showAxis={showAxis}
-                      showCutsites={showCutsites}
-                      showReverseSequence={showReverseSequence}
-                      setSelectionLayer={setSelectionLayer}
-                      selectionLayer={selectionLayer}
-                      caretPosition={caretPosition}
-                      sequenceLength={sequenceLength}
-                      bpsPerRow={bpsPerRow}
-                  key={rowNumber}
-                  row={rowData[rowNumber]} />);
+                    {this.props}
+                    key={rowNumber}
+                    row={rowData[rowNumber]} 
+                    />);
             } else {
                 return null
             }

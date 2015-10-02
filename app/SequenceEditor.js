@@ -6,8 +6,8 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind')
 var RowView = require('./RowView');
 var MapView = require('./MapView');
 
-import {Component} from 'cerebral-react';
 var Clipboard = require('./Clipboard');
+import {Component} from 'cerebral-react';
 
 var SequenceEditor = Component({
     sequenceLength: ['sequenceLength'],
@@ -29,11 +29,11 @@ var SequenceEditor = Component({
     rowToJumpTo: ['rowToJumpTo'],
     charWidth: ['charWidth'],
     mapViewCharWidth: ['mapViewCharWidth'],
-    CHAR_HEIGHT: ['CHAR_HEIGHT'], //potentially unneeded
-    ANNOTATION_HEIGHT: ['ANNOTATION_HEIGHT'],
+    charHeight: ['charHeight'], //potentially unneeded
+    annotationHeight: ['annotationHeight'],
     tickSpacing: ['tickSpacing'],
     mapViewTickSpacing: ['mapViewTickSpacing'],
-    SPACE_BETWEEN_ANNOTATIONS: ['SPACE_BETWEEN_ANNOTATIONS'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showParts: ['showParts'],
@@ -42,7 +42,6 @@ var SequenceEditor = Component({
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
   }, {
-
     componentDidMount: function() {
         var {
             insertSequenceString,
@@ -235,42 +234,22 @@ var SequenceEditor = Component({
             setViewportDimensions,
             jumpToRow,
             toggleAnnotationDisplay,
+            selectedSequenceString,
         } = this.props.signals;
       // var visibilityParameters = this.props.visibilityParameters;
       // var highlightLayer = this.props.highlightLayer;
       // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
     var self = this;
         var {
-            preloadRowStart, 
-            averageRowHeight, 
-            rowViewDimensions, 
-            totalRows, rowData, 
-            rowToJumpTo, 
-            charWidth, 
-            selectionLayer, 
-            CHAR_HEIGHT,
-            ANNOTATION_HEIGHT,
-            tickSpacing,
-            mapViewTickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
-            showFeatures,
-            showTranslations,
-            showParts,
-            showOrfs,
-            showAxis,
-            showCutsites,
-            showReverseSequence,
+            selectionLayer,
             caretPosition,
             sequenceLength,
-            setSelectionLayer,
-            bpsPerRow,
-            selectedSequenceString,
             visibleRows,
-            mapViewCharWidth,
-            mapViewDimensions,
-            mapViewRowData,
+            bpsPerRow,
+            totalRows,
+            sequenceData
         } = this.props;
-    var featuresCount = this.props.sequenceData.features ? this.props.sequenceData.features.length : 0;
+    var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
     var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
     var toggleButtons = annotationList.map(function(annotationType, index){
       return (<button key={index} onClick={function () {
@@ -317,64 +296,14 @@ var SequenceEditor = Component({
         <br/>
         totalRows:  {totalRows}
         
-          <RowView 
-             ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-             averageRowHeight={averageRowHeight}
-             bpsPerRow={bpsPerRow}
-             caretPosition={caretPosition}
-             CHAR_HEIGHT={CHAR_HEIGHT}
-             charWidth={charWidth}
-             handleEditorClick={this.handleEditorClick}
-             handleEditorDrag={this.handleEditorDrag}
-             handleEditorDragStart={this.handleEditorDragStart}
-             handleEditorDragStop={this.handleEditorDragStop}
-             preloadRowStart={preloadRowStart}
-             rowData={rowData}
-             rowToJumpTo={rowToJumpTo}
-             rowViewDimensions={rowViewDimensions}
-             selectionLayer={selectionLayer}
-             sequenceLength={sequenceLength}
-             setSelectionLayer={setSelectionLayer}
-             showAxis={showAxis}
-             showCutsites={showCutsites}
-             showFeatures={showFeatures}
-             showOrfs={showOrfs}
-             showParts={showParts}
-             showReverseSequence={showReverseSequence}
-             showTranslations={showTranslations}
-             SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
-             tickSpacing={tickSpacing}
-             totalRows={totalRows}
-             />
+        <RowView 
+          {...this.props}
+           />
              <br/>
              <br/>
              <br/>
         <MapView 
-          ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-          bpsPerRow={sequenceLength}
-          caretPosition={caretPosition}
-          CHAR_HEIGHT={CHAR_HEIGHT}
-          charWidth={mapViewCharWidth}
-          handleEditorClick={this.handleEditorClick}
-          handleEditorDrag={this.handleEditorDrag}
-          handleEditorDragStart={this.handleEditorDragStart}
-          handleEditorDragStop={this.handleEditorDragStop}
-          mapViewDimensions={mapViewDimensions}
-          preloadRowStart={preloadRowStart}
-          rowData={mapViewRowData}
-          rowToJumpTo={rowToJumpTo}
-          selectionLayer={selectionLayer}
-          sequenceLength={sequenceLength}
-          setSelectionLayer={setSelectionLayer}
-          showAxis={showAxis}
-          showCutsites={showCutsites}
-          showFeatures={showFeatures}
-          showOrfs={showOrfs}
-          showParts={showParts}
-          showReverseSequence={showReverseSequence}
-          showTranslations={showTranslations}
-          SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
-          tickSpacing={mapViewTickSpacing}
+          {...this.props}
           />
       </div>
     );

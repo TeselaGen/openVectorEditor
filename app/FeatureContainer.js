@@ -7,12 +7,20 @@ let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
 let AnnotationPositioner = require('./AnnotationPositioner');
 
-let FeatureContainer = React.createClass({
+import {Component} from 'cerebral-react';
+
+let FeatureContainer = Component({
+    charWidth: ['charWidth'],
+    bpsPerRow: ['bpsPerRow'],
+    annotationHeight: ['annotationHeight'],
+    sequenceLength: ['sequenceLength'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
+  }, {
     mixins: [PureRenderMixin],
     propTypes: {
         annotationRanges: React.PropTypes.array.isRequired,
-        charWidth: React.PropTypes.number.isRequired,
         bpsPerRow: React.PropTypes.number.isRequired,
+        charWidth: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
         setSelectionLayer: React.PropTypes.func.isRequired,

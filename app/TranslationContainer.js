@@ -27,10 +27,12 @@ const TranslationContainer = React.createClass({
         bpsPerRow: PropTypes.number.isRequired,
         annotationHeight: PropTypes.number.isRequired,
         spaceBetweenAnnotations: PropTypes.number.isRequired,
-        sequenceLength: PropTypes.number.isRequired
+        sequenceLength: PropTypes.number.isRequired,
+        setSelectionLayer: PropTypes.func.isRequired
     },
     render() {
-        var {row, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations, sequenceLength} = this.props;
+        debugger;
+        var {setSelectionLayer, row, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations, sequenceLength} = this.props;
           if (annotationRanges.length === 0) {
             return null;
           }
@@ -53,6 +55,7 @@ const TranslationContainer = React.createClass({
                     <Translation
                         annotationRange={annotationRange}
                         sequenceLength={sequenceLength}
+                        setSelectionLayer={setSelectionLayer}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}

@@ -19,9 +19,9 @@ var RowItem = React.createClass({
         var {
             charWidth,
             selectionLayer,
-            ANNOTATION_HEIGHT,
+            annotationHeight,
             tickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
+            spaceBetweenAnnotations,
             showFeatures,
             showTranslations,
             showParts,
@@ -35,6 +35,7 @@ var RowItem = React.createClass({
             bpsPerRow,
             row
         } = this.props;
+        debugger;
         if (!row) {
             return null;
         }
@@ -58,9 +59,9 @@ var RowItem = React.createClass({
                     setSelectionLayer={setSelectionLayer}
                     annotationRanges={row.features}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
             
                 {(showOrfs && row.orfs.length > 0) &&
@@ -69,10 +70,10 @@ var RowItem = React.createClass({
                     row={row}
                     annotationRanges={row.orfs}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
                     sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
                 {(showTranslations && row.translations.length > 0) &&
                   <TranslationContainer
@@ -80,10 +81,10 @@ var RowItem = React.createClass({
                     row={row}
                     annotationRanges={row.translations}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
                     sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
 
                 {(showCutsites && row.cutsites.length > 0) &&
@@ -91,9 +92,9 @@ var RowItem = React.createClass({
                     setSelectionLayer={setSelectionLayer}
                     annotationRanges={row.cutsites}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
                 <SequenceContainer 
                     setSelectionLayer={setSelectionLayer}
@@ -127,7 +128,7 @@ var RowItem = React.createClass({
                     row={row}
                     tickSpacing={tickSpacing}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}/>
                 }
                 <HighlightLayer
