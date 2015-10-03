@@ -3,6 +3,11 @@
 
 [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+####Workflowy: 
+(a searchable, flexible list of resources. Email/chat me for editing permissions)
+
+https://workflowy.com/s/AMpvp1km0o
+
 Technology choices:
 ```
 reactjs
