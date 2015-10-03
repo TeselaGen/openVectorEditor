@@ -1,7 +1,7 @@
 import React from 'react';
 var Combokeys = require("combokeys");
 var combokeys;
-var bindGlobalPlugin = require('combokeys/plugins/global-bind')
+var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
 var RowView = require('./RowView');
 var MapView = require('./MapView');
@@ -20,27 +20,6 @@ var SequenceEditor = Component({
     visibleRows: ['visibleRows'],
     selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
-    preloadRowStart: ['preloadRowStart'],
-    averageRowHeight: ['averageRowHeight'],
-    rowViewDimensions: ['rowViewDimensions'],
-    mapViewDimensions: ['mapViewDimensions'],
-    rowData: ['rowData'],
-    mapViewRowData: ['mapViewRowData'],
-    rowToJumpTo: ['rowToJumpTo'],
-    charWidth: ['charWidth'],
-    mapViewCharWidth: ['mapViewCharWidth'],
-    charHeight: ['charHeight'], //potentially unneeded
-    annotationHeight: ['annotationHeight'],
-    tickSpacing: ['tickSpacing'],
-    mapViewTickSpacing: ['mapViewTickSpacing'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
-    showFeatures: ['showFeatures'],
-    showTranslations: ['showTranslations'],
-    showParts: ['showParts'],
-    showOrfs: ['showOrfs'],
-    showAxis: ['showAxis'],
-    showCutsites: ['showCutsites'],
-    showReverseSequence: ['showReverseSequence'],
   }, {
     componentDidMount: function() {
         var {
@@ -238,7 +217,6 @@ var SequenceEditor = Component({
         } = this.props.signals;
       // var visibilityParameters = this.props.visibilityParameters;
       // var highlightLayer = this.props.highlightLayer;
-      // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
     var self = this;
         var {
             selectionLayer,
@@ -297,7 +275,6 @@ var SequenceEditor = Component({
         totalRows:  {totalRows}
         
         <RowView 
-          {...this.props}
           handleEditorDrag={this.handleEditorDrag}
           handleEditorDragStart={this.handleEditorDragStart}
           handleEditorDragStop={this.handleEditorDragStop}

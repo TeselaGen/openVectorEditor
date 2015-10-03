@@ -1,35 +1,24 @@
 import React, {PropTypes} from 'react';
+import {Component} from 'cerebral-react';
+
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
 
-var RowView = React.createClass({
+var RowView = Component({
+        rowViewDimensions: ['rowViewDimensions'],
+        rowData: ['rowData'],
+        charWidth: ['charWidth']
+    }, {
     propTypes: {
-        averageRowHeight: PropTypes.number.isRequired,
         rowViewDimensions: PropTypes.object.isRequired,
-        totalRows: PropTypes.number.isRequired,
         rowData: PropTypes.array.isRequired,
         charWidth: PropTypes.number.isRequired,
-        selectionLayer: PropTypes.object.isRequired,
-        charHeight: PropTypes.number.isRequired,
-        annotationHeight: PropTypes.number.isRequired,
-        tickSpacing: PropTypes.number.isRequired,
-        spaceBetweenAnnotations: PropTypes.number.isRequired,
-        showFeatures: PropTypes.bool.isRequired,
-        showTranslations: PropTypes.bool.isRequired,
-        showParts: PropTypes.bool.isRequired,
-        showOrfs: PropTypes.bool.isRequired,
-        showAxis: PropTypes.bool.isRequired,
-        showCutsites: PropTypes.bool.isRequired,
-        showReverseSequence: PropTypes.bool.isRequired,
-        caretPosition: PropTypes.number.isRequired,
-        sequenceLength: PropTypes.number.isRequired,
-        bpsPerRow: PropTypes.number.isRequired,
+
         handleEditorDrag: PropTypes.func.isRequired,
         handleEditorDragStart: PropTypes.func.isRequired,
         handleEditorDragStop: PropTypes.func.isRequired,
-        handleEditorClick: PropTypes.func.isRequired,
-        setSelectionLayer: PropTypes.func.isRequired,
+        handleEditorClick: PropTypes.func.isRequired
     },
     getNearestCursorPositionToMouseEvent: function(event, callback) {
         var rowNotFound = true;
@@ -81,12 +70,9 @@ var RowView = React.createClass({
             handleEditorDragStop,
             handleEditorClick,
         } = this.props;
-        var pProps = this.props;
-        var self = this;
         function renderRows(rowNumber) {
             if (rowData[rowNumber]) {
                 return (<RowItem
-                    {...pProps}
                     key={rowNumber}
                     row={rowData[rowNumber]} 
                     />);

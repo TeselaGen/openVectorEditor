@@ -1,7 +1,6 @@
-import React, {
-    PropTypes
-}
-from 'react';
+import React, {PropTypes} from 'react';
+import {Component} from 'cerebral-react';
+
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
@@ -13,7 +12,43 @@ var HighlightLayer = require('./HighlightLayer');
 var Caret = require('./Caret');
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
-var RowItem = React.createClass({
+var RowItem = Component({
+        charWidth: ['charWidth'],
+        selectionLayer: ['selectionLayer'],
+        annotationHeight: ['annotationHeight'],
+        tickSpacing: ['tickSpacing'],
+        spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
+        showFeatures: ['showFeatures'],
+        showTranslations: ['showTranslations'],
+        showParts: ['showParts'],
+        showOrfs: ['showOrfs'],
+        showAxis: ['showAxis'],
+        showCutsites: ['showCutsites'],
+        showReverseSequence: ['showReverseSequence'],
+        caretPosition: ['caretPosition'],
+        sequenceLength: ['sequenceLength'],
+        bpsPerRow: ['bpsPerRow']
+    },
+    {
+    propTypes: {
+        charWidth: PropTypes.number.isRequired,
+        selectionLayer: PropTypes.number.isRequired,
+        annotationHeight: PropTypes.number.isRequired,
+        tickSpacing: PropTypes.number.isRequired,
+        spaceBetweenAnnotations: PropTypes.number.isRequired,
+        showFeatures: PropTypes.number.isRequired,
+        showTranslations: PropTypes.number.isRequired,
+        showParts: PropTypes.number.isRequired,
+        showOrfs: PropTypes.number.isRequired,
+        showAxis: PropTypes.number.isRequired,
+        showCutsites: PropTypes.number.isRequired,
+        showReverseSequence: PropTypes.number.isRequired,
+        caretPosition: PropTypes.number.isRequired,
+        sequenceLength: PropTypes.number.isRequired,
+        bpsPerRow: PropTypes.number.isRequired,
+        
+        row: PropTypes.number.isRequired
+    },
     mixins: [PureRenderMixin],
     render: function() {
         var {
@@ -32,11 +67,9 @@ var RowItem = React.createClass({
             caretPosition,
             sequenceLength,
             bpsPerRow,
-            row
+            row,
+            signals,
         } = this.props;
-        var {
-            setSelectionLayer
-        } = this.props.signals;
         if (!row) {
             return null;
         }
@@ -57,14 +90,21 @@ var RowItem = React.createClass({
                 >
                 {(showFeatures && row.features.length > 0) &&
                   <FeatureContainer
+                    row={row}
+                    signals={signals}
                     annotationRanges={row.features}
+                    charWidth={charWidth}
+                    annotationHeight={annotationHeight}
+                    bpsPerRow={bpsPerRow}
+                    sequenceLength={sequenceLength}
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}
                     />
                 }
             
                 {(showOrfs && row.orfs.length > 0) &&
                   <OrfContainer
-                    setSelectionLayer={setSelectionLayer}
                     row={row}
+                    signals={signals}
                     annotationRanges={row.orfs}
                     charWidth={charWidth}
                     annotationHeight={annotationHeight}
@@ -74,8 +114,8 @@ var RowItem = React.createClass({
                 }
                 {(showTranslations && row.translations.length > 0) &&
                   <TranslationContainer
-                    setSelectionLayer={setSelectionLayer}
                     row={row}
+                    signals={signals}
                     annotationRanges={row.translations}
                     charWidth={charWidth}
                     annotationHeight={annotationHeight}
@@ -86,7 +126,6 @@ var RowItem = React.createClass({
 
                 {(showCutsites && row.cutsites.length > 0) &&
                   <CutsiteLabelContainer
-                    setSelectionLayer={setSelectionLayer}
                     annotationRanges={row.cutsites}
                     charWidth={charWidth}
                     annotationHeight={annotationHeight}
@@ -94,12 +133,11 @@ var RowItem = React.createClass({
                     spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
                 <SequenceContainer 
-                    setSelectionLayer={setSelectionLayer}
                     sequence={row.sequence} 
                     charWidth={charWidth}>
                     {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
-                            setSelectionLayer={setSelectionLayer}
                         row={row}
+                        signals={signals}
                         sequenceLength={sequenceLength}
                         annotationRanges={row.cutsites}
                         charWidth={charWidth}
@@ -112,6 +150,7 @@ var RowItem = React.createClass({
                     <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={charWidth}>
                         {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                                                 row={row}
+                                                signals={signals}
                                                 sequenceLength={sequenceLength}
                                                 annotationRanges={row.cutsites}
                                                 charWidth={charWidth}
@@ -123,6 +162,7 @@ var RowItem = React.createClass({
                 {showAxis &&
                     <AxisContainer
                     row={row}
+                    signals={signals}
                     tickSpacing={tickSpacing}
                     charWidth={charWidth}
                     annotationHeight={annotationHeight}
@@ -132,6 +172,7 @@ var RowItem = React.createClass({
                     charWidth={charWidth}
                     bpsPerRow={bpsPerRow}
                     row={row}
+                    signals={signals}
                     sequenceLength={sequenceLength}
                     selectionLayer={selectionLayer}
                 >
@@ -140,6 +181,7 @@ var RowItem = React.createClass({
                     caretPosition={caretPosition} 
                     charWidth={charWidth}
                     row={row}
+                    signals={signals}
                     sequenceLength={sequenceLength}
                     shouldBlink={true}
                     />
