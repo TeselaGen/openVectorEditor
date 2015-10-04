@@ -238,7 +238,7 @@ class SequenceEditor extends React.Component {
     return (
       <div ref="sequenceEditor"
         style={{float:"right"}}>
-        features count: {featuresCount}
+        features 7 count: {featuresCount}
         <br/>
         selectionLayer: {selectionLayer.start}  {selectionLayer.end}
         <br/>

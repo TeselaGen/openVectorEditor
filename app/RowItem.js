@@ -139,6 +139,7 @@ class RowItem extends React.Component {
                     selectionLayer={selectionLayer}
                 >
                 </HighlightLayer>
+                Hey
                 <Caret 
                     caretPosition={caretPosition} 
                     charWidth={charWidth}

@@ -1,7 +1,7 @@
 var deriveData = require('baobab').monkey
 // var sequenceData = require('./sequenceData');
 // var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations2');
+var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
 var prepareRowData = require('./prepareRowData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
