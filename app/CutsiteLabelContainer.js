@@ -12,7 +12,7 @@ let CutsiteLabelContainer = React.createClass({
         bpsPerRow: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
-        setSelectionLayer: React.PropTypes.func.isRequired,
+        signals: React.PropTypes.object.isRequired,
     },
     render: function() {
         var {
@@ -21,7 +21,7 @@ let CutsiteLabelContainer = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            setSelectionLayer
+            signals
         } = this.props;
 
         if (annotationRanges.length === 0) {
@@ -68,15 +68,15 @@ let CutsiteLabelContainer = React.createClass({
             annotationsSVG.push(
                 <div left={xStart}
                     onClick={function (event) {
-                              setSelectionLayer(this);
+                              signals.setSelectionLayer(this);
                               event.stopPropagation();
                             }.bind(annotation)}
                     onMouseOver={function (event) {
-                      setSelectionLayer(this);
+                      signals.setSelectionLayer(this);
                       event.stopPropagation();
                     }.bind(annotation)}
                     onMouseOut={function (event) {
-                      setSelectionLayer(false);
+                      signals.setSelectionLayer(false);
                       event.stopPropagation();
                     }.bind(annotation)}
                     style={

@@ -1,26 +1,31 @@
 import React, {PropTypes} from 'react';
-import {Component} from 'cerebral-react';
+import {Decorator as Cerebral} from 'cerebral-react';
 
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
 
-var RowView = Component({
-        rowViewDimensions: ['rowViewDimensions'],
-        rowData: ['rowData'],
-        charWidth: ['charWidth']
-    }, {
-    propTypes: {
-        rowViewDimensions: PropTypes.object.isRequired,
-        rowData: PropTypes.array.isRequired,
-        charWidth: PropTypes.number.isRequired,
-
-        handleEditorDrag: PropTypes.func.isRequired,
-        handleEditorDragStart: PropTypes.func.isRequired,
-        handleEditorDragStop: PropTypes.func.isRequired,
-        handleEditorClick: PropTypes.func.isRequired
-    },
-    getNearestCursorPositionToMouseEvent: function(event, callback) {
+@Cerebral({
+    rowViewDimensions: ['rowViewDimensions'],
+    rowData: ['rowData'],
+    charWidth: ['charWidth'],
+    selectionLayer: ['selectionLayer'],
+    annotationHeight: ['annotationHeight'],
+    tickSpacing: ['tickSpacing'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
+    showFeatures: ['showFeatures'],
+    showTranslations: ['showTranslations'],
+    showParts: ['showParts'],
+    showOrfs: ['showOrfs'],
+    showAxis: ['showAxis'],
+    showCutsites: ['showCutsites'],
+    showReverseSequence: ['showReverseSequence'],
+    caretPosition: ['caretPosition'],
+    sequenceLength: ['sequenceLength'],
+    bpsPerRow: ['bpsPerRow']
+})
+class RowView extends React.Component {
+    getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
         var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
         //loop through all the rendered rows to see if the click event lands in one of them
@@ -58,9 +63,9 @@ var RowView = Component({
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
             callback(lastOfRenderedRows.end);
         }
-    },
+    }
 
-    render: function() {
+    render() {
         var {
             rowViewDimensions, 
             rowData, 
@@ -69,10 +74,42 @@ var RowView = Component({
             handleEditorDragStart,
             handleEditorDragStop,
             handleEditorClick,
+            charWidth,
+            selectionLayer,
+            annotationHeight,
+            tickSpacing,
+            spaceBetweenAnnotations,
+            showFeatures,
+            showTranslations,
+            showParts,
+            showOrfs,
+            showAxis,
+            showCutsites,
+            showReverseSequence,
+            caretPosition,
+            sequenceLength,
+            bpsPerRow,
+            signals
         } = this.props;
         function renderRows(rowNumber) {
             if (rowData[rowNumber]) {
                 return (<RowItem
+                    charWidth={charWidth}
+                    selectionLayer={selectionLayer}
+                    annotationHeight={annotationHeight}
+                    tickSpacing={tickSpacing}
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    showFeatures={showFeatures}
+                    showTranslations={showTranslations}
+                    showParts={showParts}
+                    showOrfs={showOrfs}
+                    showAxis={showAxis}
+                    showCutsites={showCutsites}
+                    showReverseSequence={showReverseSequence}
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    bpsPerRow={bpsPerRow}
+                    signals={signals}
                     key={rowNumber}
                     row={rowData[rowNumber]} 
                     />);
@@ -90,7 +127,6 @@ var RowView = Component({
             //   padding: 10
         };
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
-        debugger;
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
@@ -123,7 +159,18 @@ var RowView = Component({
             </Draggable>
         );
     }
-});
+}
+
+RowView.propTypes = {
+    // rowViewDimensions: PropTypes.object.isRequired,
+    // rowData: PropTypes.array.isRequired,
+    // charWidth: PropTypes.number.isRequired,
+
+    handleEditorDrag: PropTypes.func.isRequired,
+    handleEditorDragStart: PropTypes.func.isRequired,
+    handleEditorDragStop: PropTypes.func.isRequired,
+    handleEditorClick: PropTypes.func.isRequired
+};
 
 
 

@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import {Component} from 'cerebral-react';
 
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
@@ -10,47 +9,9 @@ var CutsiteLabelContainer = require('./CutsiteLabelContainer');
 var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
 var HighlightLayer = require('./HighlightLayer');
 var Caret = require('./Caret');
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
-var RowItem = Component({
-        charWidth: ['charWidth'],
-        selectionLayer: ['selectionLayer'],
-        annotationHeight: ['annotationHeight'],
-        tickSpacing: ['tickSpacing'],
-        spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
-        showFeatures: ['showFeatures'],
-        showTranslations: ['showTranslations'],
-        showParts: ['showParts'],
-        showOrfs: ['showOrfs'],
-        showAxis: ['showAxis'],
-        showCutsites: ['showCutsites'],
-        showReverseSequence: ['showReverseSequence'],
-        caretPosition: ['caretPosition'],
-        sequenceLength: ['sequenceLength'],
-        bpsPerRow: ['bpsPerRow']
-    },
-    {
-    propTypes: {
-        charWidth: PropTypes.number.isRequired,
-        selectionLayer: PropTypes.number.isRequired,
-        annotationHeight: PropTypes.number.isRequired,
-        tickSpacing: PropTypes.number.isRequired,
-        spaceBetweenAnnotations: PropTypes.number.isRequired,
-        showFeatures: PropTypes.number.isRequired,
-        showTranslations: PropTypes.number.isRequired,
-        showParts: PropTypes.number.isRequired,
-        showOrfs: PropTypes.number.isRequired,
-        showAxis: PropTypes.number.isRequired,
-        showCutsites: PropTypes.number.isRequired,
-        showReverseSequence: PropTypes.number.isRequired,
-        caretPosition: PropTypes.number.isRequired,
-        sequenceLength: PropTypes.number.isRequired,
-        bpsPerRow: PropTypes.number.isRequired,
-        
-        row: PropTypes.number.isRequired
-    },
-    mixins: [PureRenderMixin],
-    render: function() {
+class RowItem extends React.Component {
+    render() {
         var {
             charWidth,
             selectionLayer,
@@ -126,6 +87,7 @@ var RowItem = Component({
 
                 {(showCutsites && row.cutsites.length > 0) &&
                   <CutsiteLabelContainer
+                    signals={signals}
                     annotationRanges={row.cutsites}
                     charWidth={charWidth}
                     annotationHeight={annotationHeight}
@@ -188,6 +150,25 @@ var RowItem = Component({
             </div>
         );
     }
-});
+}
+
+RowItem.propTypes = {
+    charWidth: PropTypes.number.isRequired,
+    selectionLayer: PropTypes.object.isRequired,
+    annotationHeight: PropTypes.number.isRequired,
+    tickSpacing: PropTypes.number.isRequired,
+    spaceBetweenAnnotations: PropTypes.number.isRequired,
+    showFeatures: PropTypes.bool.isRequired,
+    showTranslations: PropTypes.bool.isRequired,
+    showParts: PropTypes.bool.isRequired,
+    showOrfs: PropTypes.bool.isRequired,
+    showAxis: PropTypes.bool.isRequired,
+    showCutsites: PropTypes.bool.isRequired,
+    showReverseSequence: PropTypes.bool.isRequired,
+    caretPosition: PropTypes.number.isRequired,
+    sequenceLength: PropTypes.number.isRequired,
+    bpsPerRow: PropTypes.number.isRequired,
+    row: PropTypes.object.isRequired
+};
 
 module.exports = RowItem;

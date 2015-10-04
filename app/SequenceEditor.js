@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 var Combokeys = require("combokeys");
 var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
@@ -7,9 +7,9 @@ var RowView = require('./RowView');
 var MapView = require('./MapView');
 
 var Clipboard = require('./Clipboard');
-import {Component} from 'cerebral-react';
+import {Decorator as Cerebral} from 'cerebral-react';
 
-var SequenceEditor = Component({
+@Cerebral({
     sequenceLength: ['sequenceLength'],
     bpsPerRow: ['bpsPerRow'],
     totalRows: ['totalRows'],
@@ -17,11 +17,11 @@ var SequenceEditor = Component({
     selectedSequenceString: ['selectedSequenceString'],
     caretPosition: ['caretPosition'],
     sequenceData: ['sequenceData'],
-    visibleRows: ['visibleRows'],
     selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
-  }, {
-    componentDidMount: function() {
+})
+class SequenceEditor extends React.Component {
+    componentDidMount() {
         var {
             insertSequenceString,
             backspacePressed,
@@ -79,32 +79,32 @@ var SequenceEditor = Component({
             selectAll();
             event.stopPropagation();
         });
-    },
+    }
 
-    handlePaste: function(event) {
+    handlePaste(event) {
       var {
             pasteSequenceString,
         } = this.props.signals;
         event.clipboardData.items[0].getAsString(function(string) {
             pasteSequenceString(string);
         });
-    },
+    }
 
-    handleCopy: function() {
+    handleCopy() {
       var {
             copySelection,
         } = this.props.signals;
         copySelection();
         // this.props.selectedSequenceString
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
 
         // Remove any Mousetrap bindings before unmounting.detach()
         combokeys.detach()
-    },
+    }
 
-    handleEditorClick: function(caretPosition) {
+    handleEditorClick(caretPosition) {
       var {
             setCaretPosition,
             setSelectionLayer
@@ -119,9 +119,9 @@ var SequenceEditor = Component({
             setSelectionLayer(false);
         }
 
-    },
+    }
 
-    handleEditorDrag: function(caretPosition) {
+    handleEditorDrag(caretPosition) {
       var {
             setCaretPosition,
             setSelectionLayer
@@ -162,10 +162,9 @@ var SequenceEditor = Component({
             }
             setSelectionLayer(newSelectionLayer);
         }
-    },
+    }
 
-    handleEditorDragStart: function(caretPosition) {
-
+    handleEditorDragStart(caretPosition) {
       var {selectionLayer} = this.props;
         // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
         if (event.target.className === "cursor" && selectionLayer.selected) {
@@ -190,9 +189,9 @@ var SequenceEditor = Component({
             this.fixedCaretPositionOnEditorDragStart = caretPosition;
             this.fixedCaretPositionOnEditorDragStartType = 'caret';
         }
-    },
+    }
 
-    handleEditorDragStop: function(event, ui) {
+    handleEditorDragStop(event, ui) {
         var self = this;
         if (this.editorBeingDragged) { //check to make sure dragging actually occurred
             setTimeout(function() {
@@ -204,11 +203,11 @@ var SequenceEditor = Component({
         } else {
             self.editorBeingDragged = false;
         }
-    },
+    }
   
   
 
-  render: function() {
+  render() {
     var {
             setViewportDimensions,
             jumpToRow,
@@ -222,7 +221,6 @@ var SequenceEditor = Component({
             selectionLayer,
             caretPosition,
             sequenceLength,
-            visibleRows,
             bpsPerRow,
             totalRows,
             sequenceData
@@ -248,8 +246,6 @@ var SequenceEditor = Component({
         <br/>
         sequence length: {sequenceLength}
         <br/>
-        visible rows: {visibleRows.start + ' - ' + visibleRows.end}
-        <br/>
         bpsPerRow:  {bpsPerRow}
         <br/>
 
@@ -269,16 +265,16 @@ var SequenceEditor = Component({
         
         <Clipboard
           value={selectedSequenceString}
-          onCopy={this.handleCopy}
-          onPaste={this.handlePaste}/>
+          onCopy={this.handleCopy.bind(this)}
+          onPaste={this.handlePaste.bind(this)}/>
         <br/>
         totalRows:  {totalRows}
         
         <RowView 
-          handleEditorDrag={this.handleEditorDrag}
-          handleEditorDragStart={this.handleEditorDragStart}
-          handleEditorDragStop={this.handleEditorDragStop}
-          handleEditorClick={this.handleEditorClick}
+          handleEditorDrag={this.handleEditorDrag.bind(this)}
+          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+          handleEditorClick={this.handleEditorClick.bind(this)}
            />
              <br/>
              <br/>
@@ -287,7 +283,19 @@ var SequenceEditor = Component({
       </div>
     );
   }
-});
+}
+
+SequenceEditor.propTypes = {
+    sequenceLength: PropTypes.number.isRequired,
+    bpsPerRow: PropTypes.number.isRequired,
+    totalRows: PropTypes.number.isRequired,
+    newRandomRowToJumpTo: PropTypes.object,
+    selectedSequenceString: PropTypes.string.isRequired,
+    caretPosition: PropTypes.number.isRequired,
+    sequenceData: PropTypes.object.isRequired,
+    selectionLayer: PropTypes.object.isRequired,
+    clipboardData: PropTypes.object.isRequired,
+}
 
 
 // <MapView 

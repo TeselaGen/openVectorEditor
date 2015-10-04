@@ -1,4 +1,4 @@
-let React = require('react');
+import React, { PropTypes } from 'react';
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Feature = require('./Feature');
@@ -7,23 +7,26 @@ let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
 let AnnotationPositioner = require('./AnnotationPositioner');
 
-import {Component} from 'cerebral-react';
-
-let FeatureContainer = Component({
-    charWidth: ['charWidth'],
-    bpsPerRow: ['bpsPerRow'],
-    annotationHeight: ['annotationHeight'],
-    sequenceLength: ['sequenceLength'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
-  }, {
+let FeatureContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
-        annotationRanges: React.PropTypes.array.isRequired,
-        bpsPerRow: React.PropTypes.number.isRequired,
-        charWidth: React.PropTypes.number.isRequired,
-        annotationHeight: React.PropTypes.number.isRequired,
-        spaceBetweenAnnotations: React.PropTypes.number.isRequired,
-        setSelectionLayer: React.PropTypes.func.isRequired,
+        annotationRanges: PropTypes.arrayOf(PropTypes.shape({
+            start: PropTypes.number.isRequired,
+            end: PropTypes.number.isRequired,
+            yOffset: PropTypes.number.isRequired,
+            annotation: PropTypes.shape({
+              start: PropTypes.number.isRequired,
+              end: PropTypes.number.isRequired,
+              forward: PropTypes.bool.isRequired,
+              id: PropTypes.string.isRequired
+            })
+        })),
+        charWidth: PropTypes.number.isRequired,
+        bpsPerRow: PropTypes.number.isRequired,
+        annotationHeight: PropTypes.number.isRequired,
+        spaceBetweenAnnotations: PropTypes.number.isRequired,
+        sequenceLength: PropTypes.number.isRequired,
+        signals: PropTypes.object.isRequired
     },
     render: function() {
         var {
@@ -32,7 +35,7 @@ let FeatureContainer = Component({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            signals: {setSelectionLayer}
+            signals
         } = this.props;
 
         if (annotationRanges.length === 0) {
@@ -56,7 +59,7 @@ let FeatureContainer = Component({
                     >
                     <Feature
                         onClick={function (event) {
-                          setSelectionLayer(this);
+                          signals.setSelectionLayer(this);
                           event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}

@@ -16,7 +16,7 @@ var Translation = React.createClass({
         color: React.PropTypes.string.isRequired,
         name: React.PropTypes.string.isRequired,
         forward: React.PropTypes.bool.isRequired,
-        setSelectionLayer: React.PropTypes.func.isRequired,
+        signals: React.PropTypes.object.isRequired,
     },
 
     render: function() {
@@ -24,7 +24,7 @@ var Translation = React.createClass({
             annotationRange, 
             height, 
             charWidth, 
-            setSelectionLayer, 
+            signals, 
             sequenceLength
         } = this.props;
         var annotation = annotationRange.annotation;
@@ -47,12 +47,12 @@ var Translation = React.createClass({
               <AASliver 
                     onClick={function(e) {
                       // e.stopPropagation();
-                      setSelectionLayer(codonIndices);
+                      signals.setSelectionLayer(codonIndices);
                     }}
                     onDoubleClick = {
                         function(e) {
                             e.stopPropagation();
-                            setSelectionLayer(annotation);
+                            signals.setSelectionLayer(annotation);
                         }
                     }
                     key={annotation.id + aminoAcidPositionInSequence}
