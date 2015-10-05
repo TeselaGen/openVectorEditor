@@ -15,6 +15,7 @@ class RowItem extends React.Component {
         var {
             charWidth,
             selectionLayer,
+            cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
             spaceBetweenAnnotations,
@@ -139,7 +140,16 @@ class RowItem extends React.Component {
                     selectionLayer={selectionLayer}
                 >
                 </HighlightLayer>
-                Hey
+                <HighlightLayer
+                    charWidth={charWidth}
+                    bpsPerRow={bpsPerRow}
+                    row={row}
+                    color={'green'}
+                    signals={signals}
+                    sequenceLength={sequenceLength}
+                    selectionLayer={cutsiteLabelSelectionLayer}
+                >
+                </HighlightLayer>
                 <Caret 
                     caretPosition={caretPosition} 
                     charWidth={charWidth}
@@ -156,6 +166,7 @@ class RowItem extends React.Component {
 RowItem.propTypes = {
     charWidth: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
+    cutsiteLabelSelectionLayer: PropTypes.object.isRequired,
     annotationHeight: PropTypes.number.isRequired,
     tickSpacing: PropTypes.number.isRequired,
     spaceBetweenAnnotations: PropTypes.number.isRequired,

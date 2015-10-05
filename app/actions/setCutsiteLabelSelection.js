@@ -5,14 +5,11 @@ var deepEqual = require('deep-equal');
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-export default function setSelectionLayer(newSelectionLayer, tree, output) {
+export default function setCutsiteLabelSelection(newSelectionLayer, tree, output) {
     var {
         updatedSelectionLayer, getRidOfCursor
     } = setSelectionLayerHelper(newSelectionLayer);
-    if (!deepEqual(tree.get('selectionLayer'), updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
-        tree.set('selectionLayer', updatedSelectionLayer);
+    if (!deepEqual(tree.get('cutsiteLabelSelectionLayer'), updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
+        tree.set('cutsiteLabelSelectionLayer', updatedSelectionLayer);
     }
-    if (getRidOfCursor) {
-        tree.set('caretPosition', -1);
-    }
-}
+};

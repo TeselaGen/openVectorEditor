@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 module.exports = {
-
+    devtool: 'eval',
     entry: [
         'webpack-hot-middleware/client',
         "./app/App.js"

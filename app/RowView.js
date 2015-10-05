@@ -10,6 +10,7 @@ var InfiniteScroller = require('react-variable-height-infinite-scroller');
     rowData: ['rowData'],
     charWidth: ['charWidth'],
     selectionLayer: ['selectionLayer'],
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     annotationHeight: ['annotationHeight'],
     tickSpacing: ['tickSpacing'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
@@ -76,6 +77,7 @@ class RowView extends React.Component {
             handleEditorClick,
             charWidth,
             selectionLayer,
+            cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
             spaceBetweenAnnotations,
@@ -96,6 +98,7 @@ class RowView extends React.Component {
                 return (<RowItem
                     charWidth={charWidth}
                     selectionLayer={selectionLayer}
+                    cutsiteLabelSelectionLayer={cutsiteLabelSelectionLayer}
                     annotationHeight={annotationHeight}
                     tickSpacing={tickSpacing}
                     spaceBetweenAnnotations={spaceBetweenAnnotations}

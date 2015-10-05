@@ -1,6 +1,7 @@
 var React = require('react');
 const zeroSubrangeByContainerRange = require('ve-range-utils/zeroSubrangeByContainerRange');
 const getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
+const getCodonRangeForAASliver = require('ve-sequence-utils/getCodonRangeForAASliver');
 const AASliver = require('./AASliver');
 
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
@@ -62,7 +63,7 @@ var Translation = React.createClass({
                     relativeAAPositionInTranslation={relativeAAPositionInTranslation}
                     letter={aminoAcidSliver.aminoAcid.value}
                     color={aminoAcidSliver.aminoAcid.color}
-                    positionInCodon={aminoAcidSliver.positionInCodon}>
+                positionInCodon={aminoAcidSliver.positionInCodon}>
               </AASliver>
           );
         });
@@ -76,52 +77,6 @@ var Translation = React.createClass({
     }
 });
 
-function getCodonRangeForAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation) {
-    var AASliverOneBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 1];
-    if (AASliverOneBefore && AASliverOneBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
-        var AASliverTwoBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
-        if (AASliverTwoBefore && AASliverTwoBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
-            return {
-                start: aminoAcidPositionInSequence - 2,
-                end: aminoAcidPositionInSequence
-            };
-        } else {
-            if (aminoAcidSliver.fullCodon === true) {
-                return {
-                    start: aminoAcidPositionInSequence - 1,
-                    end: aminoAcidPositionInSequence + 1
-                };
-            } else {
-                return {
-                    start: aminoAcidPositionInSequence - 1,
-                    end: aminoAcidPositionInSequence
-                };
-            }
-        }
-    } else {
-        //no AASliver before with same index
-        if (aminoAcidSliver.fullCodon === true) {
-            //sliver is part of a full codon, so we know the codon will expand 2 more slivers ahead
-            return {
-                start: aminoAcidPositionInSequence,
-                end: aminoAcidPositionInSequence + 2
-            };
-        } else {
-            var AASliverOneAhead = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
-            if (AASliverOneAhead && AASliverOneAhead.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
-                return {
-                    start: aminoAcidPositionInSequence,
-                    end: aminoAcidPositionInSequence + 1
-                };
-            } else {
-                return {
-                    start: aminoAcidPositionInSequence,
-                    end: aminoAcidPositionInSequence + 1
-                };
-            }
-        }
-    }
-}
 
 
 module.exports = Translation;

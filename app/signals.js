@@ -32,6 +32,7 @@ var editorSignals = {
   selectAll: [a.setCaretPosition],
   setCaretPosition: [a.setCaretPosition],
   setSelectionLayer: [a.setSelectionLayer],
+  setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
   toggleAnnotationDisplay: [a.setCaretPosition],
 }
 

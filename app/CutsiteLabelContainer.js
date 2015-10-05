@@ -1,4 +1,3 @@
-var debug = require('debug')('CutsiteLabelContainer');
 let React = require('react');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
@@ -30,23 +29,23 @@ let CutsiteLabelContainer = React.createClass({
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
         var annotationLevels = {};
-        // debug('annotationRanges: ' + JSON.stringify(annotationRanges,null,4));
-        debug('annotationRanges:');
+        // console.log('annotationRanges: ' + JSON.stringify(annotationRanges,null,4));
+        console.log('annotationRanges:');
         annotationRanges.forEach(function(annotationRange, index) {
             let annotation = annotationRange.annotation;
             var textWidth = 15; //tnr: update this so it isn't just a guess
             var annotationLength = annotation.restrictionEnzyme.name.length * textWidth
             let {xStart} = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             var xEnd = xStart + annotationLength;
-            debug('xStart,xEnd: ' + xStart,xEnd);
+            console.log('xStart,xEnd: ' + xStart,xEnd);
             var rowCenter = bpsPerRow * textWidth / 2;
             var fits = false;
             
             var level = 0;
             while (!fits) {
-                debug('level', level);
+                console.log('level', level);
                 if (!annotationLevels[level]) {
-                    debug('adding new level');
+                    console.log('adding new level');
                     annotationLevels[level] = new IntervalTree(rowCenter);
                     annotationLevels[level].add([xStart, xEnd, 'index'])
                     fits = true;
@@ -72,11 +71,11 @@ let CutsiteLabelContainer = React.createClass({
                               event.stopPropagation();
                             }.bind(annotation)}
                     onMouseOver={function (event) {
-                      signals.setSelectionLayer(this);
+                      signals.setCutsiteLabelSelection(this);
                       event.stopPropagation();
                     }.bind(annotation)}
                     onMouseOut={function (event) {
-                      signals.setSelectionLayer(false);
+                      signals.setCutsiteLabelSelection(false);
                       event.stopPropagation();
                     }.bind(annotation)}
                     style={

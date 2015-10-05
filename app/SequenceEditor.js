@@ -208,23 +208,24 @@ class SequenceEditor extends React.Component {
   
 
   render() {
-    var {
-            setViewportDimensions,
-            jumpToRow,
-            toggleAnnotationDisplay,
-            selectedSequenceString,
-        } = this.props.signals;
+    console.log('selectedSequenceString: ' + JSON.stringify(selectedSequenceString,null,4));
       // var visibilityParameters = this.props.visibilityParameters;
       // var highlightLayer = this.props.highlightLayer;
     var self = this;
-        var {
-            selectionLayer,
-            caretPosition,
-            sequenceLength,
-            bpsPerRow,
-            totalRows,
-            sequenceData
-        } = this.props;
+    var {
+        selectionLayer,
+        caretPosition,
+        sequenceLength,
+        bpsPerRow,
+        totalRows,
+        sequenceData,
+        selectedSequenceString,
+        signals: {
+            setViewportDimensions,
+            jumpToRow,
+            toggleAnnotationDisplay
+        }
+    } = this.props;
     var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
     var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
     var toggleButtons = annotationList.map(function(annotationType, index){
@@ -285,17 +286,17 @@ class SequenceEditor extends React.Component {
   }
 }
 
-SequenceEditor.propTypes = {
-    sequenceLength: PropTypes.number.isRequired,
-    bpsPerRow: PropTypes.number.isRequired,
-    totalRows: PropTypes.number.isRequired,
-    newRandomRowToJumpTo: PropTypes.object,
-    selectedSequenceString: PropTypes.string.isRequired,
-    caretPosition: PropTypes.number.isRequired,
-    sequenceData: PropTypes.object.isRequired,
-    selectionLayer: PropTypes.object.isRequired,
-    clipboardData: PropTypes.object.isRequired,
-}
+// SequenceEditor.propTypes = {
+//     sequenceLength: PropTypes.number.isRequired,
+//     bpsPerRow: PropTypes.number.isRequired,
+//     totalRows: PropTypes.number.isRequired,
+//     newRandomRowToJumpTo: PropTypes.object,
+//     selectedSequenceString: PropTypes.string.isRequired,
+//     caretPosition: PropTypes.number.isRequired,
+//     sequenceData: PropTypes.object.isRequired,
+//     selectionLayer: PropTypes.object.isRequired,
+//     clipboardData: PropTypes.object.isRequired,
+// }
 
 
 // <MapView 

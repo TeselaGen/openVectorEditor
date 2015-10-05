@@ -56,6 +56,12 @@ export default {
         selected: false,
         cursorAtEnd: true
     },
+    cutsiteLabelSelectionLayer: {
+        start: -1,
+        end: -1,
+        selected: false,
+        cursorAtEnd: true
+    },
     caretPosition: -1,
     visibleRows: {
         start: 0,
@@ -132,6 +138,7 @@ export default {
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
         function(sequence, selectionLayer) {
+            console.log('sequence: ' + JSON.stringify(sequence,null,4));
             if (sequence && selectionLayer && selectionLayer.selected) {
                 return getSequenceWithinRange(selectionLayer, sequence);
             } else {
