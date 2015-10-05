@@ -3,12 +3,10 @@
 
 [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-####Workflowy: 
-(a searchable, flexible list of resources. Email/chat me for editing permissions)
 
-https://workflowy.com/s/AMpvp1km0o
 
-Technology choices:
+
+##### Technology choices:
 ```
 reactjs
 baobab
@@ -67,6 +65,9 @@ or in this case:
 React components --(trigger)--> AppActions.js --(update)--> Baobab tree
 
 #Resources:
+
+### [Workflowy list] (https://workflowy.com/s/AMpvp1km0o) with lots more detailed info:
+https://workflowy.com/s/AMpvp1km0o
 
 #### Drawing Tool: 
 http://jxnblk.com/paths/?d=M0%2040%20L64%2040%20L64%2020%20L0%2020%20Z
