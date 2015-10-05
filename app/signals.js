@@ -25,11 +25,11 @@ var editorSignals = {
   backspacePressed: [a.getCaretPosition, a.getSelectionLayer, a.deleteOneBack],
   copySelection: [a.getSelectionLayer, a.copySelection],
   deleteSequence: [a.deleteSequence],
-  insertSequenceString: [a.setCaretPosition],
-  jumpToRow: [a.setCaretPosition],
-  moveCaretShortcutFunctions: [a.setCaretPosition],
-  pasteSequenceString: [a.setCaretPosition],
-  selectAll: [a.setCaretPosition],
+  insertSequenceString: [a.insertSequenceString],
+  jumpToRow: [a.jumpToRow],
+  moveCaretShortcutFunctions: [a.moveCaretShortcutFunctions],
+  pasteSequenceString: [a.pasteSequenceString],
+  selectAll: [a.selectAll, a.setSelectionLayer],
   setCaretPosition: [a.setCaretPosition],
   setSelectionLayer: [a.setSelectionLayer],
   setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
@@ -38,6 +38,7 @@ var editorSignals = {
 
 var modules = [editorSignals];
 
+//add all the signals to the cerebral controller here
 export default function registerSignals (controller) {
   for (var signals of modules) {
     for (var signalName in signals) {
