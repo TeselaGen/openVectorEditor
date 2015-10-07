@@ -1,3 +1,4 @@
+//tnr: deprecated/just for show
 var deepEqual = require('deep-equal');
 export default function setViewportDimensions({newViewportDimensions}, tree, output) {
 	if (newViewportDimensions.width > 0 && newViewportDimensions.height > 0) {
