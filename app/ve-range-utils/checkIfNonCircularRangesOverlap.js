@@ -1,7 +1,7 @@
 var ac = require('ve-api-check'); 
-  // ac.warn([ac.posInt, ac.posInt, ac.bool], arguments);
+  // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 module.exports = function checkIfNonCircularRangesOverlap(range, comparisonRange) {
-  ac.warn([ac.range, ac.range], arguments);
+  ac.throw([ac.range, ac.range], arguments);
   if (range.start < comparisonRange.start) {
     if (range.end < comparisonRange.start) {
       //----llll

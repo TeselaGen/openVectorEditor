@@ -3,13 +3,13 @@ var spliceString = require('string-splice');
 var tidyUpSequenceData = require('./tidyUpSequenceData');
 var ac = require('ve-api-check');
 module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
-    // ac.warn([
+    // ac.throw([
     //     ac.sequenceData,
     //     ac.sequenceData,
     //     ac.posInt
     // ], arguments);
     // tnrtodo: add more validation here!
-    ac.warn(ac.posInt, caretPosition);
+    ac.throw(ac.posInt, caretPosition);
     sequenceDataToInsert = tidyUpSequenceData(sequenceDataToInsert);
 
     var newSequenceData = tidyUpSequenceData({}); //makes a new blank sequence
@@ -23,12 +23,12 @@ module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, exi
     newSequenceData.features = newSequenceData.features.concat(adjustAnnotationsToInsert(sequenceDataToInsert.features, 0, caretPosition));
     newSequenceData.parts = newSequenceData.parts.concat(adjustAnnotationsToInsert(sequenceDataToInsert.parts, 0, caretPosition));
     newSequenceData.translations = newSequenceData.translations.concat(adjustAnnotationsToInsert(sequenceDataToInsert.translations, 0, caretPosition));
-    // ac.warn(ac.sequenceData, newSequenceData) //tnr: passing it through this check before returning just to make sure everything is still okay
+    // ac.throw(ac.sequenceData, newSequenceData) //tnr: passing it through this check before returning just to make sure everything is still okay
     return newSequenceData;
 }
 
 function adjustAnnotationsToInsert(annotationsToBeAdjusted, insertStart, insertLength) {
-    ac.warn([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
+    ac.throw([ac.arrayOf(ac.range), ac.posInt, ac.posInt], arguments)
     return annotationsToBeAdjusted.map(function(annotation) {
         return adjustRangeToInsert(annotation, insertStart, insertLength);
     });

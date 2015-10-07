@@ -1,7 +1,7 @@
 var moveCaret = require('./moveCaret');
 
 const moveCaretShortcutFunctions = {
-    moveCaretLeftOne(shiftHeld) {
+        moveCaretLeftOne(shiftHeld) {
             moveCaret(-1, shiftHeld);
         },
         moveCaretRightOne(shiftHeld) {

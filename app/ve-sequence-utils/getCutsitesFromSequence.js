@@ -3,7 +3,7 @@ var cutSequenceByRestrictionEnzyme = require('./cutSequenceByRestrictionEnzyme')
 
 module.exports = function cutsitesFromSequence(sequence, circular, restrictionEnzymes) {
     //validate args!
-    ac.warn([
+    ac.throw([
         ac.string,
         ac.bool,
         ac.array

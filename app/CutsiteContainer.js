@@ -15,7 +15,7 @@ let CutsiteContainer = React.createClass({
         bpsPerRow: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
-        setSelectionLayer: React.PropTypes.func.isRequired,
+        setOrClearSelectionLayer: React.PropTypes.func.isRequired,
     },
     render: function() {
         var {
@@ -24,7 +24,7 @@ let CutsiteContainer = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            setSelectionLayer
+            setOrClearSelectionLayer
         } = this.props;
        
         if (annotationRanges.length === 0) {
@@ -48,7 +48,7 @@ let CutsiteContainer = React.createClass({
                     >
                     <Cutsite
                         onClick={function (event) {
-                          setSelectionLayer(this);
+                          setOrClearSelectionLayer({selectionLayer: this});
                           event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}

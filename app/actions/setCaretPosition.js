@@ -1,7 +1,7 @@
 var isInteger = require("is-integer");
-export default function setCaretPosition(newPosition, tree, output) {
-    if (isInteger(newPosition)) {
-        tree.set('caretPosition', newPosition);
+export default function setCaretPosition({caretPosition}, tree, output) {
+    if (isInteger(caretPosition)) {
+        tree.set('caretPosition', caretPosition);
     } else {
         tree.set('caretPosition', -1);
     }

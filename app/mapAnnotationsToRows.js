@@ -1,5 +1,5 @@
 var ac = require('ve-api-check');
-// ac.warn([ac.string,ac.bool],arguments);
+// ac.throw([ac.string,ac.bool],arguments);
 var each = require('lodash/collection/each');
 var sortBy = require('lodash/collection/sortBy');
 var uniq = require('lodash/array/uniq');
@@ -7,7 +7,7 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var checkIfNonCircularRangesOverlap = require('ve-range-utils/checkIfNonCircularRangesOverlap');
 
 module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
-  ac.warn([ac.array, ac.posInt,ac.posInt],arguments);
+  ac.throw([ac.array, ac.posInt,ac.posInt],arguments);
   var annotationsToRowsMap = {};
 
   each(annotations, function(annotation) {
@@ -20,7 +20,7 @@ module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsP
 };
 
 function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap) {
-  ac.warn([ac.range, ac.posInt, ac.posInt, ac.object], arguments);
+  ac.throw([ac.range, ac.posInt, ac.posInt, ac.object], arguments);
   var ranges = splitRangeOnOrigin(annotation, sequenceLength);
   ranges.forEach(function(range) {
     // if (!isPositiveInteger(range.start)) {}

@@ -33,7 +33,7 @@ reqContext.keys().forEach(function(key) {
 //     // backspacePressed: [a.getCaretPosition, a.getSelection, a.deleteOneBack],
 //     // copyTriggered: [a.getSelection, a.copySelection],
 //     // deleteTriggered: [a.deleteSequence],
-//     // selectionLayerChanged: [a.setSelectionLayer],
+//     // selectionLayerChanged: [a.setOrClearSelectionLayer],
 //     addAnnotations: [a.addAnnotations],
 //     backspacePressed: [a.getCaretPosition, a.getSelectionLayer, a.deleteOneBack],
 //     copySelection: [a.getSelectionLayer, a.copySelection],
@@ -47,9 +47,9 @@ reqContext.keys().forEach(function(key) {
 //     jumpToRow: [a.jumpToRow],
 //     moveCaretShortcutFunctions: [a.moveCaretShortcutFunctions],
 //     pasteSequenceString: [a.pasteSequenceString],
-//     selectAll: [a.selectAll, a.setSelectionLayer],
+//     selectAll: [a.selectAll, a.setOrClearSelectionLayer],
 //     setCaretPosition: [a.setCaretPosition],
-//     setSelectionLayer: [a.setSelectionLayer],
+//     setOrClearSelectionLayer: [a.setOrClearSelectionLayer],
 //     setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
 //     toggleAnnotationDisplay: [a.setCaretPosition],
 // }
@@ -70,11 +70,12 @@ export default function registerSignals(controller) {
             success: [a.deleteSequence]
         }, a.getCaretPosition, a.insertSequenceData); 
     controller.signal('jumpToRow', a.jumpToRow);
-    controller.signal('moveCaretShortcutFunctions', a.moveCaretShortcutFunctions);
+    controller.signal('moveCaret', a.moveCaretShortcutFunctions);
     controller.signal('pasteSequenceString', a.pasteSequenceString);
-    controller.signal('selectAll', a.selectAll, a.setSelectionLayer);
+    controller.signal('selectAll', a.selectAll, a.setOrClearSelectionLayer);
     controller.signal('setCaretPosition', a.setCaretPosition);
-    controller.signal('setSelectionLayer', a.setSelectionLayer);
+    controller.signal('setOrClearSelectionLayer', a.setOrClearSelectionLayer);
+    controller.signal('editorClicked', a.setCaretPosition, a.setOrClearSelectionLayer);
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
     controller.signal('toggleAnnotationDisplay', a.setCaretPosition);
     // for (var signals of modules) {

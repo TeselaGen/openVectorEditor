@@ -1,4 +1,4 @@
-var setSelectionLayerHelper = require('./setSelectionLayerHelper');
+var setOrClearSelectionLayerHelper = require('./setOrClearSelectionLayerHelper');
 var deepEqual = require('deep-equal');
 /**
  * sets the selection layer on a plasmid
@@ -8,7 +8,7 @@ var deepEqual = require('deep-equal');
 export default function setCutsiteLabelSelection(newSelectionLayer, tree, output) {
     var {
         updatedSelectionLayer, getRidOfCursor
-    } = setSelectionLayerHelper(newSelectionLayer);
+    } = setOrClearSelectionLayerHelper(newSelectionLayer);
     if (!deepEqual(tree.get('cutsiteLabelSelectionLayer'), updatedSelectionLayer)) { //tnrtodo come back here and reinstate this check once baobab has been fixed
         tree.set('cutsiteLabelSelectionLayer', updatedSelectionLayer);
     }

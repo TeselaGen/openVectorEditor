@@ -1,5 +1,5 @@
 var assign = require('lodash/object/assign');
-var setSelectionLayer = require('./setSelectionLayer.js');
+var setOrClearSelectionLayer = require('./setOrClearSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 
 /**
@@ -7,7 +7,7 @@ var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberTo
  * @param  {integer} numberToMove positive/negative number to adjust the caret
  * @return {undefined}              
  */
-export default function moveCaretShiftHeld({numberToMove}, tree, output) {
+export default function moveCaretShiftHeld({numberToMove}, tree) {
     var selectionLayer = assign({}, tree.get('selectionLayer'));
 
     var sequenceLength = tree.get(['sequenceLength']);
@@ -20,20 +20,20 @@ export default function moveCaretShiftHeld({numberToMove}, tree, output) {
             selectionLayer.start += numberToMove;
             selectionLayer.start = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.start, sequenceLength - 1);
         }
-        setSelectionLayer(selectionLayer);
+        setOrClearSelectionLayer(selectionLayer);
     } else {
         if (numberToMove > 0) {
-            setSelectionLayer({
-                start: caretPosition,
-                end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove - 1, sequenceLength - 1),
-                cursorAtEnd: true
-            });
+            setOrClearSelectionLayer({selectionLayer: {
+                            start: caretPosition,
+                            end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove - 1, sequenceLength - 1),
+                            cursorAtEnd: true
+                        }}, tree);
         } else {
-            setSelectionLayer({
+            setOrClearSelectionLayer({selectionLayer: {
                 start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + numberToMove, sequenceLength - 1),
                 end: caretPosition - 1,
                 cursorAtEnd: false
-            });
+            }}, tree);
         }
     }
-};
+}

@@ -4,7 +4,7 @@
 var setCaretPosition = require('../../app/actions/setCaretPosition');
 var deleteSequence = require('../../app/actions/deleteSequence');
 var addAnnotations = require('../../app/actions/addAnnotations');
-var setSelectionLayer = require('../../app/actions/setSelectionLayer');
+var setOrClearSelectionLayer = require('../../app/actions/setOrClearSelectionLayer');
 var tree = require('../testHelpers/baobabTestTree.js');
 var chai = require("chai");
 chai.should();
@@ -35,7 +35,7 @@ describe('deleteSequence', function() {
             end: 3
         }]);
         var sequenceLengthPreInsert = tree.get('sequenceLength');
-        setSelectionLayer(false); //make sure there's no selection layer
+        setOrClearSelectionLayer(false); //make sure there's no selection layer
         setCaretPosition(0);
         deleteSequence({
             start: 0,
@@ -67,7 +67,7 @@ describe('deleteSequence', function() {
             end: 3
         }]);
         var sequenceLengthPreInsert = tree.get('sequenceLength');
-        setSelectionLayer(false); //make sure there's no selection layer
+        setOrClearSelectionLayer(false); //make sure there's no selection layer
         setCaretPosition(0);
         deleteSequence({
             start: 3,

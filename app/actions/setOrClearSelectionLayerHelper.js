@@ -1,5 +1,3 @@
-var ac = require('ve-api-check'); 
-var deepEqual = require('deep-equal');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 /**
@@ -7,10 +5,11 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-module.exports = function setSelectionLayerHelper (newSelectionLayer) {
+module.exports = function setOrClearSelectionLayerHelper (newSelectionLayer) {
     var getRidOfCursor;
     var updatedSelectionLayer;
-    if (!newSelectionLayer || typeof newSelectionLayer !== 'object' || deepEqual(newSelectionLayer, {})) {
+    console.log('newSelectionLayer: ' + JSON.stringify(newSelectionLayer,null,4));
+    if (!newSelectionLayer || typeof newSelectionLayer !== 'object' || !areNonNegativeIntegers([newSelectionLayer.start, newSelectionLayer.end])) {
         //no selection layer passed, so cancel it
         updatedSelectionLayer = {
             start: -1,
@@ -20,7 +19,6 @@ module.exports = function setSelectionLayerHelper (newSelectionLayer) {
         };
     } else {
         //only do type checking if the argument is not falsey
-        ac.warn([ac.range], arguments);
         var start = newSelectionLayer.start;
         // var selected = newSelectionLayer.selected;
         var end = newSelectionLayer.end;

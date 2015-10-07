@@ -26,7 +26,7 @@ class SequenceEditor extends React.Component {
             sequenceDataInserted,
             backspacePressed,
             selectAll,
-            moveCaretShortcutFunctions,
+            moveCaret,
         } = this.props.signals;
         combokeys = new Combokeys(document.documentElement);
         // combokeys = new Combokeys(React.findDOMNode(this.refs.sequenceEditor));
@@ -39,34 +39,34 @@ class SequenceEditor extends React.Component {
             sequenceDataInserted({sequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
         combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretLeftOne(event.shiftKey);
+            moveCaret.moveCaretLeftOne(event.shiftKey);
         });
         combokeys.bind(['right','shift+right'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretRightOne(event.shiftKey);
+            moveCaret.moveCaretRightOne(event.shiftKey);
         });
         combokeys.bind(['up','shift+up'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretUpARow(event.shiftKey);
+            moveCaret.moveCaretUpARow(event.shiftKey);
         });
         combokeys.bindGlobal(['down','shift+down'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretDownARow(event.shiftKey);
+            moveCaret.moveCaretDownARow(event.shiftKey);
         });
         combokeys.bindGlobal(['mod+right','mod+shift+right'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToEndOfRow(event.shiftKey);
+            moveCaret.moveCaretToEndOfRow(event.shiftKey);
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+left','mod+shift+left'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToStartOfRow(event.shiftKey);
+            moveCaret.moveCaretToStartOfRow(event.shiftKey);
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+up','mod+shift+up'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToStartOfSequence(event.shiftKey);
+            moveCaret.moveCaretToStartOfSequence(event.shiftKey);
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+down','mod+shift+down'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToEndOfSequence(event.shiftKey);
+            moveCaret.moveCaretToEndOfSequence(event.shiftKey);
             event.stopPropagation();
             event.preventDefault();
         });
@@ -113,7 +113,7 @@ class SequenceEditor extends React.Component {
         } else {
             this.props.signals.editorClicked({caretPosition: caretPosition})
             // setCaretPosition(caretPosition);
-            // setSelectionLayer(false);
+            // setOrClearSelectionLayer(false);
         }
 
     }
@@ -121,13 +121,13 @@ class SequenceEditor extends React.Component {
     handleEditorDrag(caretPosition) {
       var {
             setCaretPosition,
-            setSelectionLayer
+            setOrClearSelectionLayer
         } = this.props.signals;
         //note this method relies on variables that are set in the handleEditorDragStart method!
         this.editorBeingDragged = true;
         if (caretPosition === this.fixedCaretPositionOnEditorDragStart) {
             setCaretPosition(caretPosition);
-            setSelectionLayer(false);
+            setOrClearSelectionLayer(false);
         } else {
             var newSelectionLayer;
             if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
@@ -157,7 +157,7 @@ class SequenceEditor extends React.Component {
                     };
                 }
             }
-            setSelectionLayer(newSelectionLayer);
+            setOrClearSelectionLayer({selectionLayer: newSelectionLayer});
         }
     }
 

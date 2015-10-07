@@ -7,13 +7,13 @@ var ac = require('./apiCheck.js');
 describe('apiCheck range!', function() {
     it('does not throw range errors if passed a valid range', function() {
         function throwError () {
-            ac.warn(ac.range, {start: 1, end: 10});
+            ac.throw(ac.range, {start: 1, end: 10});
         }
         throwError.should.not.throw()
     });
     it('does throw range errors if passed an invalid range', function() {
         function throwError () {
-            ac.warn(ac.range, {start: -1, end: 10});
+            ac.throw(ac.range, {start: -1, end: 10});
         }
         throwError.should.throw()
     });
@@ -22,7 +22,7 @@ describe('sequenceData!', function() {
     it('does not throw errors if passed a valid sequenceData object', function() {
         var newSeq = tidyUpSequenceData({});
         function throwError () {
-            ac.warn(ac.sequenceData, newSeq);
+            ac.throw(ac.sequenceData, newSeq);
         }
         throwError.should.not.throw()
     });
@@ -30,7 +30,7 @@ describe('sequenceData!', function() {
         var newSeq = tidyUpSequenceData({});
         newSeq.cutsites[0] = {start: 1, end : 10};
         function throwError () {
-            ac.warn(ac.sequenceData, newSeq);
+            ac.throw(ac.sequenceData, newSeq);
         }
         throwError.should.not.throw()
     });
@@ -38,7 +38,7 @@ describe('sequenceData!', function() {
         var newSeq = tidyUpSequenceData({});
         delete newSeq.cutsites;
         function throwError () {
-            ac.warn(ac.sequenceData, newSeq);
+            ac.throw(ac.sequenceData, newSeq);
         }
         throwError.should.throw()
     });
@@ -46,7 +46,7 @@ describe('sequenceData!', function() {
         var newSeq = tidyUpSequenceData({});
         newSeq.cutsites[0] = {start: -1, end : 10};
         function throwError () {
-            ac.warn(ac.sequenceData, newSeq);
+            ac.throw(ac.sequenceData, newSeq);
         }
         throwError.should.throw()
     });

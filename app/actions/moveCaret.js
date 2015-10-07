@@ -1,13 +1,13 @@
-var setSelectionLayer = require('./setSelectionLayer.js');
+var setOrClearSelectionLayer = require('./setOrClearSelectionLayer.js');
 var moveCaretShiftHeld = require('./moveCaretShiftHeld.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var ac = require('ve-api-check');
 
 export default function moveCaret({numberToMove, shiftHeld}, tree, output) {
-    ac.warn(ac.number, numberToMove);
-    ac.warn(ac.bool.optional, shiftHeld);
+    ac.throw(ac.number, numberToMove);
+    ac.throw(ac.bool.optional, shiftHeld);
     if (shiftHeld) {
-        moveCaretShiftHeld(numberToMove);
+        moveCaretShiftHeld({numberToMove}, tree);
     } else {
         var selectionLayer = tree.get('selectionLayer');
         var sequenceLength = tree.get('sequenceLength');
@@ -18,7 +18,7 @@ export default function moveCaret({numberToMove, shiftHeld}, tree, output) {
             } else {
                 tree.set('caretPosition', selectionLayer.start);
             }
-            setSelectionLayer(false);
+            setOrClearSelectionLayer(false,tree);
         } else {
             caretPosition += numberToMove;
             caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
