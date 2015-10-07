@@ -258,7 +258,7 @@ class SequenceEditor extends React.Component {
         <button onClick={function () {
           jumpToRow(self.props.newRandomRowToJumpTo)
         }}>
-         Jump to a random row: Row #{self.props.newRandomRowToJumpTo.row}
+         Jump to a random row!: Row #{self.props.newRandomRowToJumpTo.row}
         </button>
         
         <Clipboard
