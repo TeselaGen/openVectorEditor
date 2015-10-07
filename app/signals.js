@@ -14,6 +14,8 @@ export default function registerSignals(controller) {
             success: [a.deleteSequence]
         }, a.getCaretPosition, a.insertSequenceData); 
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
+    controller.signal('editorClicked', a.setCaretPosition, a.setOrClearSelectionLayer);
+    controller.signal('setCaretPosition', a.setCaretPosition);
     //tnr: MOSTLY WORKING: 
     controller.signal('backspacePressed', a.getSelectionLayer, {
         success: [a.deleteSequence],
@@ -21,13 +23,14 @@ export default function registerSignals(controller) {
     });
 
     //tnr: NOT YET WORKING:
-    controller.signal('jumpToRow', a.jumpToRow);
+    //higher priority
     controller.signal('deleteSequence', a.deleteSequence);
     controller.signal('moveCaret', a.moveCaretShortcutFunctions);
     controller.signal('pasteSequenceString', a.pasteSequenceString);
-    controller.signal('setCaretPosition', a.setCaretPosition);
     controller.signal('setOrClearSelectionLayer', a.setOrClearSelectionLayer);
-    controller.signal('editorClicked', a.setCaretPosition, a.setOrClearSelectionLayer);
     controller.signal('toggleAnnotationDisplay', a.setCaretPosition);
+
+    //lower priority
     controller.signal('addAnnotations', a.addAnnotations);
+    controller.signal('jumpToRow', a.jumpToRow);
 }
