@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = {
     devtool: 'eval',
     entry: [
-        'webpack-hot-middleware/client',
+        'webpack-hot-middleware/client?reload=true',
         "./app/App.js"
     ],
     output: {

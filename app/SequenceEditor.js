@@ -23,7 +23,7 @@ import {Decorator as Cerebral} from 'cerebral-react';
 class SequenceEditor extends React.Component {
     componentDidMount() {
         var {
-            insertSequenceString,
+            sequenceDataInserted,
             backspacePressed,
             selectAll,
             moveCaretShortcutFunctions,
@@ -36,7 +36,7 @@ class SequenceEditor extends React.Component {
         //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
         //documentation: https://craig.is/killing/mice
         combokeys.bind(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
-            insertSequenceString(String.fromCharCode(event.charCode));
+            sequenceDataInserted({sequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
         combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
             moveCaretShortcutFunctions.moveCaretLeftOne(event.shiftKey);
@@ -105,18 +105,15 @@ class SequenceEditor extends React.Component {
     }
 
     handleEditorClick(caretPosition) {
-      var {
-            setCaretPosition,
-            setSelectionLayer
-        } = this.props.signals;
         //if cursor position is different than the original position, reset the position and clear the selection
         // console.log('onclick!!');
         // var bp = this.getNearestCursorPositionToMouseEvent(event);
         if (this.editorBeingDragged) {
             //do nothing because the click was triggered by a drag event
         } else {
-            setCaretPosition(caretPosition);
-            setSelectionLayer(false);
+            this.props.signals.editorClicked({caretPosition: caretPosition})
+            // setCaretPosition(caretPosition);
+            // setSelectionLayer(false);
         }
 
     }
