@@ -25,4 +25,4 @@ export default function moveCaret({moveBy, shiftHeld}, tree, output) {
             tree.set('caretPosition', caretPosition);
         }
     }
-};
+}

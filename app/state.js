@@ -138,7 +138,6 @@ export default {
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
         function(sequence, selectionLayer) {
-            console.log('sequence: ' + JSON.stringify(sequence,null,4));
             if (sequence && selectionLayer && selectionLayer.selected) {
                 return getSequenceWithinRange(selectionLayer, sequence);
             } else {
@@ -169,7 +168,6 @@ export default {
         ['combinedSequenceData'],
         ['bpsPerRow'],
         function(sequenceData, bpsPerRow) {
-            console.log('rowDataUpdated!');
             return prepareRowData(sequenceData, bpsPerRow);
         }
     ]),
@@ -177,7 +175,6 @@ export default {
         ['combinedSequenceData'],
         ['sequenceLength'],
         function(sequenceData, sequenceLength) {
-            console.log('mapDataUpdated!');
             return prepareRowData(sequenceData, sequenceLength);
         }
     ]),

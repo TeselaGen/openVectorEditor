@@ -52,6 +52,7 @@
     "validate.io-boolean": "^1.0.4",
     "validate.io-nonnegative-integer": "^1.0.0",
     "validate.io-nonnegative-integer-array": "^1.0.1",
+    "api-check": "^7.5.0",
     "ve-api-check": "./app/ve-api-check",
     "ve-range-utils": "./app/ve-range-utils",
     "ve-sequence-utils": "./app/ve-sequence-utils"
