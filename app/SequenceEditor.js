@@ -226,12 +226,13 @@ class SequenceEditor extends React.Component {
     var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
     var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
     var toggleButtons = annotationList.map(function(annotationType, index){
+      // console.log(">>> " + annotationType + " " + index);
       return (<button key={index} onClick={function () {
-            toggleAnnotationDisplay(annotationType);
+            toggleAnnotationDisplay(String(annotationType));
           }}>
            toggle {annotationType}
           </button>)
-      });
+    });
 
     return (
       <div ref="sequenceEditor"

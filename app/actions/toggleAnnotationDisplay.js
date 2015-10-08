@@ -1,10 +1,15 @@
 var ac = require('ve-api-check');
-var capitalize = require('capitalize')
+var capitalize = require('capitalize');
 export default function toggleAnnotationDisplay({annotationType}, tree, output) {
     ac.throw(ac.annotationType, annotationType);
-    if (tree.get('show' + capitalize(annotationType))) {
-        tree.get('show' + capitalize(annotationType), false);
+    var capitalizedType = capitalize(annotationType);
+    console.log(capitalizedType);
+
+    if (tree.get('show' + capitalizedType)) {
+        tree.set('show' + capitalizedType, false);
+        console.log("set false");
     } else {
-        tree.get('show' + capitalize(annotationType), true);
+        tree.set('show' + capitalizedType, true);
+        console.log("set true");
     }
 }
