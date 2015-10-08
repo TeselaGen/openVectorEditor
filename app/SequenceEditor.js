@@ -26,8 +26,8 @@ class SequenceEditor extends React.Component {
             sequenceDataInserted,
             backspacePressed,
             selectAll,
-            moveCaret,
         } = this.props.signals;
+        var self = this;
         combokeys = new Combokeys(document.documentElement);
         // combokeys = new Combokeys(React.findDOMNode(this.refs.sequenceEditor));
         bindGlobalPlugin(combokeys);
@@ -39,34 +39,34 @@ class SequenceEditor extends React.Component {
             sequenceDataInserted({sequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
         combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
-            moveCaret.moveCaretLeftOne(event.shiftKey);
+            self.props.signals.moveCaretLeftOne({shiftHeld: event.shiftKey});
         });
         combokeys.bind(['right','shift+right'] , function(event) { // Handle shortcut
-            moveCaret.moveCaretRightOne(event.shiftKey);
+            self.props.signals.moveCaretRightOne({shiftHeld: event.shiftKey});
         });
         combokeys.bind(['up','shift+up'] , function(event) { // Handle shortcut
-            moveCaret.moveCaretUpARow(event.shiftKey);
+            self.props.signals.moveCaretUpARow({shiftHeld: event.shiftKey});
         });
         combokeys.bindGlobal(['down','shift+down'] , function(event) { // Handle shortcut
-            moveCaret.moveCaretDownARow(event.shiftKey);
+            self.props.signals.moveCaretDownARow({shiftHeld: event.shiftKey});
         });
         combokeys.bindGlobal(['mod+right','mod+shift+right'], function(event) { // Handle shortcut
-            moveCaret.moveCaretToEndOfRow(event.shiftKey);
+            self.props.signals.moveCaretToEndOfRow({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+left','mod+shift+left'], function(event) { // Handle shortcut
-            moveCaret.moveCaretToStartOfRow(event.shiftKey);
+            self.props.signals.moveCaretToStartOfRow({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+up','mod+shift+up'], function(event) { // Handle shortcut
-            moveCaret.moveCaretToStartOfSequence(event.shiftKey);
+            self.props.signals.moveCaretToStartOfSequence({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+down','mod+shift+down'], function(event) { // Handle shortcut
-            moveCaret.moveCaretToEndOfSequence(event.shiftKey);
+            self.props.signals.moveCaretToEndOfSequence({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });

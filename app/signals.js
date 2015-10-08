@@ -21,11 +21,26 @@ export default function registerSignals(controller) {
         success: [a.deleteSequence],
         error: [a.getCaretPosition, a.prepDeleteOneBack, a.deleteSequence]
     });
+    // controller.signal('moveCaretLeftOne', 
+    //     a.isShiftHeld, {
+    //         success: [a.getSelectionLayer, a.moveSelectionLayer(-1)],
+    //         error: [a.clearSelectionLayer, a.moveCaret(-1)]
+    //     } 
+    // );
+    // controller.signal('moveCaretDownARow', 
+    //     a.isShiftHeld, {
+    //         success: [a.getSelectionLayer, a.moveSelectionLayer(-1)],
+    //         error: [a.clearSelectionLayer, a.moveCaret(-1)]
+    //     } 
+    // );
+    //caret functions
+    for (var signalName in a.moveCaretShortcutFunctions) {
+        var action = a.moveCaretShortcutFunctions[signalName]
+        controller.signal(signalName, action)
+    }
 
     //tnr: NOT YET WORKING:
     //higher priority
-    controller.signal('deleteSequence', a.deleteSequence);
-    controller.signal('moveCaret', a.moveCaretShortcutFunctions);
     controller.signal('pasteSequenceString', a.pasteSequenceString);
     controller.signal('setOrClearSelectionLayer', a.setOrClearSelectionLayer);
     controller.signal('toggleAnnotationDisplay', a.setCaretPosition);
@@ -33,4 +48,6 @@ export default function registerSignals(controller) {
     //lower priority
     controller.signal('addAnnotations', a.addAnnotations);
     controller.signal('jumpToRow', a.jumpToRow);
+
+
 }
