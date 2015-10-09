@@ -7,24 +7,27 @@ reqContext.keys().forEach(function(key) {
 //add all the signals to the cerebral controller here
 export default function registerSignals(controller) {
     //tnr:  WORKING: 
-    controller.signal('copySelection', a.getSelectionLayer, a.copySelection);
+    controller.signal('copySelection', a.getData('selectionLayer'), a.copySelection);
     controller.signal('selectAll', a.selectAll, a.setSelectionLayer);
     controller.signal('sequenceDataInserted', 
-        a.getSelectionLayer, {
-            success: [a.deleteSequence]
-        }, a.getCaretPosition, a.insertSequenceData); 
+        a.getData('selectionLayer'),
+        a.checkLayerIsSelected, {
+            success: [a.deleteSequence],
+            error: []
+        }, a.getData('caretPosition'), a.insertSequenceData);
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
     controller.signal('setCaretPosition', a.setCaretPosition);
     controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
     //tnr: MOSTLY WORKING: 
-    controller.signal('backspacePressed', a.getSelectionLayer, {
-        success: [a.deleteSequence],
-        error: [a.getCaretPosition, a.prepDeleteOneBack, a.deleteSequence]
-    });
+    controller.signal('backspacePressed', 
+        a.getData('selectionLayer'),
+        a.checkLayerIsSelected, {
+            success: [a.deleteSequence],
+            error: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
+        });
     controller.signal('caretMoved', 
         a.getData('selectionLayer'),
-        a.getCaretPosition,
-        // a.getSequenceLength,
+        a.getData('caretPosition'),
         a.getData('sequenceLength'),
         a.checkCaretMoveType, {
             shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
