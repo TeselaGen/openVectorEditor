@@ -5,6 +5,7 @@
   "main": "app/App.js",
   "repository": "https://github.com/TeselaGen/openVectorEditor",
   "scripts": {
+    "lint": "eslint ./app/**/*.js",
     "test": "mocha app/**/*.test.js --harmony --compilers js:babel/register",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "nestest": "nestest",
@@ -73,6 +74,7 @@
     "eslint-plugin-react": "^3.3.0",
     "express": "^4.13.3",
     "istanbul": "^0.3.19",
+    "json-loader": "^0.5.3",
     "linklocal": "^2.5.2",
     "mocha": "^2.2.5",
     "nestest": "0.0.4",
