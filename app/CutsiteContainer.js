@@ -1,6 +1,4 @@
 let React = require('react');
-let classnames = require('classnames');
-let setSelectionLayer = require('./actions/setSelectionLayer');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Cutsite = require('./Cutsite');
@@ -16,15 +14,19 @@ let CutsiteContainer = React.createClass({
         charWidth: React.PropTypes.number.isRequired,
         bpsPerRow: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
-        spaceBetweenAnnotations: React.PropTypes.number.isRequired
+        spaceBetweenAnnotations: React.PropTypes.number.isRequired,
+        setOrClearSelectionLayer: React.PropTypes.func.isRequired,
     },
     render: function() {
-        let annotationRanges = this.props.annotationRanges;
-        let bpsPerRow = this.props.bpsPerRow;
-        let charWidth = this.props.charWidth;
-        let annotationHeight = this.props.annotationHeight;
-        let spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
-
+        var {
+            annotationRanges,
+            bpsPerRow,
+            charWidth,
+            annotationHeight,
+            spaceBetweenAnnotations, 
+            setOrClearSelectionLayer
+        } = this.props;
+       
         if (annotationRanges.length === 0) {
             return null;
         }
@@ -46,7 +48,7 @@ let CutsiteContainer = React.createClass({
                     >
                     <Cutsite
                         onClick={function (event) {
-                          setSelectionLayer(this);
+                          setOrClearSelectionLayer({selectionLayer: this});
                           event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}

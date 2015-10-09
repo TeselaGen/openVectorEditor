@@ -23,14 +23,14 @@ const TranslationContainer = React.createClass({
             })
         })),
         charWidth: PropTypes.number.isRequired,
-        row: PropTypes.object.isRequired,
         bpsPerRow: PropTypes.number.isRequired,
         annotationHeight: PropTypes.number.isRequired,
         spaceBetweenAnnotations: PropTypes.number.isRequired,
-        sequenceLength: PropTypes.number.isRequired
+        sequenceLength: PropTypes.number.isRequired,
+        signals: PropTypes.object.isRequired
     },
     render() {
-        var {row, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations, sequenceLength} = this.props;
+        var {signals, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations, sequenceLength} = this.props;
           if (annotationRanges.length === 0) {
             return null;
           }
@@ -53,12 +53,14 @@ const TranslationContainer = React.createClass({
                     <Translation
                         annotationRange={annotationRange}
                         sequenceLength={sequenceLength}
+                        signals={signals}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}
                         height={annotationHeight}
                         color={annotation.color}
-                        name={annotation.name}>
+                        name={annotation.name}
+                        >
                     </Translation>
                 </AnnotationPositioner>
             );

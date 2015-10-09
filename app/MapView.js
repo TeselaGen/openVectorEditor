@@ -9,10 +9,10 @@ var RowView = React.createClass({
         rowData: PropTypes.array.isRequired,
         charWidth: PropTypes.number.isRequired,
         selectionLayer: PropTypes.object.isRequired,
-        CHAR_HEIGHT: PropTypes.number.isRequired,
-        ANNOTATION_HEIGHT: PropTypes.number.isRequired,
+        charHeight: PropTypes.number.isRequired,
+        annotationHeight: PropTypes.number.isRequired,
         tickSpacing: PropTypes.number.isRequired,
-        SPACE_BETWEEN_ANNOTATIONS: PropTypes.number.isRequired,
+        spaceBetweenAnnotations: PropTypes.number.isRequired,
         showFeatures: PropTypes.bool.isRequired,
         showTranslations: PropTypes.bool.isRequired,
         showParts: PropTypes.bool.isRequired,
@@ -74,10 +74,10 @@ var RowView = React.createClass({
             rowData, 
             charWidth, 
             selectionLayer, 
-            CHAR_HEIGHT,
-            ANNOTATION_HEIGHT,
+            charHeight,
+            annotationHeight,
             tickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
+            spaceBetweenAnnotations,
             showFeatures,
             showTranslations,
             showParts,
@@ -134,10 +134,10 @@ var RowView = React.createClass({
                 >
                 <RowItem
                     charWidth={charWidth}
-                      CHAR_HEIGHT={CHAR_HEIGHT}
-                      ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
+                      charHeight={charHeight}
+                      annotationHeight={annotationHeight}
                       tickSpacing={tickSpacing}
-                      SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
+                      spaceBetweenAnnotations={spaceBetweenAnnotations}
                       showFeatures={showFeatures}
                       showTranslations={showTranslations}
                       showParts={showParts}

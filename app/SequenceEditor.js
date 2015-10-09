@@ -1,69 +1,32 @@
-var React = require('react');
+import React, {PropTypes} from 'react';
 var Combokeys = require("combokeys");
 var combokeys;
-var bindGlobalPlugin = require('combokeys/plugins/global-bind')
+var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
 var RowView = require('./RowView');
 var MapView = require('./MapView');
-// var MapView = require('./MapView');
 
-var baoababBranch = require('baobab-react/mixins').branch;
-var insertSequenceString = require('./actions/insertSequenceString');
-var backspacePressed = require('./actions/backspacePressed');
-var pasteSequenceString = require('./actions/pasteSequenceString');
-var copySelection = require('./actions/copySelection');
-var selectAll = require('./actions/selectAll');
-var moveCaretShortcutFunctions = require('./actions/moveCaretShortcutFunctions');
-var setViewportDimensions = require('./actions/setViewportDimensions');
-var jumpToRow = require('./actions/jumpToRow');
-var toggleAnnotationDisplay = require('./actions/toggleAnnotationDisplay');
 var Clipboard = require('./Clipboard');
-var setCaretPosition = require('./actions/setCaretPosition');
-var setSelectionLayer = require('./actions/setSelectionLayer');
+import {Decorator as Cerebral} from 'cerebral-react';
 
-var SequenceEditor = React.createClass({
-    mixins: [baoababBranch],
-    cursors: {
-        sequenceLength: ['sequenceLength'],
-        bpsPerRow: ['bpsPerRow'],
-        totalRows: ['totalRows'],
-        newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
-        selectedSequenceString: ['selectedSequenceString'],
-        caretPosition: ['caretPosition'],
-        sequenceData: ['sequenceData'],
-        visibleRows: ['visibleRows'],
-        selectionLayer: ['selectionLayer'],
-        clipboardData: ['clipboardData'],
-        preloadRowStart: ['preloadRowStart'],
-        averageRowHeight: ['averageRowHeight'],
-        rowViewDimensions: ['rowViewDimensions'],
-        mapViewDimensions: ['mapViewDimensions'],
-        rowData: ['rowData'],
-        mapViewRowData: ['mapViewRowData'],
-        // visibleRows: ['visibleRows'],
-        rowToJumpTo: ['rowToJumpTo'],
-        charWidth: ['charWidth'],
-        mapViewCharWidth: ['mapViewCharWidth'],
-        CHAR_HEIGHT: ['CHAR_HEIGHT'], //potentially unneeded
-        ANNOTATION_HEIGHT: ['ANNOTATION_HEIGHT'],
-        tickSpacing: ['tickSpacing'],
-        mapViewTickSpacing: ['mapViewTickSpacing'],
-        SPACE_BETWEEN_ANNOTATIONS: ['SPACE_BETWEEN_ANNOTATIONS'],
-        showFeatures: ['showFeatures'],
-        showTranslations: ['showTranslations'],
-        showParts: ['showParts'],
-        showOrfs: ['showOrfs'],
-        showAxis: ['showAxis'],
-        showCutsites: ['showCutsites'],
-        showReverseSequence: ['showReverseSequence'],
-    },
-    // cursors: {
-    //   visibilityParameters: ['visibilityParameters'],
-    //   sequenceData: ['sequenceData'],
-    //   highlightLayer: ['highlightLayer'],
-    // },
-
-    componentDidMount: function() {
+@Cerebral({
+    sequenceLength: ['sequenceLength'],
+    bpsPerRow: ['bpsPerRow'],
+    totalRows: ['totalRows'],
+    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
+    selectedSequenceString: ['selectedSequenceString'],
+    caretPosition: ['caretPosition'],
+    sequenceData: ['sequenceData'],
+    selectionLayer: ['selectionLayer'],
+    clipboardData: ['clipboardData'],
+})
+class SequenceEditor extends React.Component {
+    componentDidMount() {
+        var {
+            sequenceDataInserted,
+            backspacePressed,
+            selectAll,
+        } = this.props.signals;
         var self = this;
         combokeys = new Combokeys(document.documentElement);
         // combokeys = new Combokeys(React.findDOMNode(this.refs.sequenceEditor));
@@ -73,37 +36,37 @@ var SequenceEditor = React.createClass({
         //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
         //documentation: https://craig.is/killing/mice
         combokeys.bind(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
-            insertSequenceString(String.fromCharCode(event.charCode));
+            sequenceDataInserted({sequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
         combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretLeftOne(event.shiftKey);
+            self.props.signals.moveCaretLeftOne({shiftHeld: event.shiftKey});
         });
         combokeys.bind(['right','shift+right'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretRightOne(event.shiftKey);
+            self.props.signals.moveCaretRightOne({shiftHeld: event.shiftKey});
         });
         combokeys.bind(['up','shift+up'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretUpARow(event.shiftKey);
+            self.props.signals.moveCaretUpARow({shiftHeld: event.shiftKey});
         });
         combokeys.bindGlobal(['down','shift+down'] , function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretDownARow(event.shiftKey);
+            self.props.signals.moveCaretDownARow({shiftHeld: event.shiftKey});
         });
         combokeys.bindGlobal(['mod+right','mod+shift+right'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToEndOfRow(event.shiftKey);
+            self.props.signals.moveCaretToEndOfRow({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+left','mod+shift+left'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToStartOfRow(event.shiftKey);
+            self.props.signals.moveCaretToStartOfRow({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+up','mod+shift+up'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToStartOfSequence(event.shiftKey);
+            self.props.signals.moveCaretToStartOfSequence({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
         combokeys.bindGlobal(['mod+down','mod+shift+down'], function(event) { // Handle shortcut
-            moveCaretShortcutFunctions.moveCaretToEndOfSequence(event.shiftKey);
+            self.props.signals.moveCaretToEndOfSequence({shiftHeld: event.shiftKey});
             event.stopPropagation();
             event.preventDefault();
         });
@@ -116,46 +79,55 @@ var SequenceEditor = React.createClass({
             selectAll();
             event.stopPropagation();
         });
-    },
+    }
 
-    handlePaste: function(event) {
+    handlePaste(event) {
+      var {
+            pasteSequenceString,
+        } = this.props.signals;
         event.clipboardData.items[0].getAsString(function(string) {
             pasteSequenceString(string);
         });
-    },
+    }
 
-    handleCopy: function() {
+    handleCopy() {
+      var {
+            copySelection,
+        } = this.props.signals;
         copySelection();
-        // this.state.selectedSequenceString
-    },
+        // this.props.selectedSequenceString
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
+
         // Remove any Mousetrap bindings before unmounting.detach()
         combokeys.detach()
-    },
+    }
 
-    handleEditorClick: function(caretPosition) {
+    handleEditorClick(caretPosition) {
         //if cursor position is different than the original position, reset the position and clear the selection
         // console.log('onclick!!');
         // var bp = this.getNearestCursorPositionToMouseEvent(event);
         if (this.editorBeingDragged) {
             //do nothing because the click was triggered by a drag event
         } else {
-            setCaretPosition(caretPosition);
-            setSelectionLayer(false);
+            this.props.signals.editorClicked({caretPosition: caretPosition})
+            // setCaretPosition(caretPosition);
+            // setOrClearSelectionLayer(false);
         }
 
-    },
+    }
 
-    handleEditorDrag: function(caretPosition) {
+    handleEditorDrag(caretPosition) {
+      var {
+            setCaretPosition,
+            setOrClearSelectionLayer
+        } = this.props.signals;
         //note this method relies on variables that are set in the handleEditorDragStart method!
         this.editorBeingDragged = true;
-        // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
-        var start;
-        var end;
         if (caretPosition === this.fixedCaretPositionOnEditorDragStart) {
             setCaretPosition(caretPosition);
-            setSelectionLayer(false);
+            setOrClearSelectionLayer(false);
         } else {
             var newSelectionLayer;
             if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
@@ -185,12 +157,12 @@ var SequenceEditor = React.createClass({
                     };
                 }
             }
-            setSelectionLayer(newSelectionLayer);
+            setOrClearSelectionLayer({selectionLayer: newSelectionLayer});
         }
-    },
+    }
 
-    handleEditorDragStart: function(caretPosition) {
-      var {selectionLayer} = this.state;
+    handleEditorDragStart(caretPosition) {
+      var {selectionLayer} = this.props;
         // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
         if (event.target.className === "cursor" && selectionLayer.selected) {
             // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
@@ -214,9 +186,9 @@ var SequenceEditor = React.createClass({
             this.fixedCaretPositionOnEditorDragStart = caretPosition;
             this.fixedCaretPositionOnEditorDragStartType = 'caret';
         }
-    },
+    }
 
-    handleEditorDragStop: function(event, ui) {
+    handleEditorDragStop(event, ui) {
         var self = this;
         if (this.editorBeingDragged) { //check to make sure dragging actually occurred
             setTimeout(function() {
@@ -228,45 +200,30 @@ var SequenceEditor = React.createClass({
         } else {
             self.editorBeingDragged = false;
         }
-    },
+    }
   
   
 
-  render: function() {
-      // var visibilityParameters = this.state.visibilityParameters;
-      // var highlightLayer = this.state.highlightLayer;
-      // visibilityParameters.rowWidth = charWidth * visibilityParameters.bpsPerRow;
+  render() {
+    console.log('selectedSequenceString: ' + JSON.stringify(selectedSequenceString,null,4));
+      // var visibilityParameters = this.props.visibilityParameters;
+      // var highlightLayer = this.props.highlightLayer;
     var self = this;
-        var {
-            preloadRowStart, 
-            averageRowHeight, 
-            rowViewDimensions, 
-            totalRows, rowData, 
-            rowToJumpTo, 
-            charWidth, 
-            selectionLayer, 
-            CHAR_HEIGHT,
-            ANNOTATION_HEIGHT,
-            tickSpacing,
-            mapViewTickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
-            showFeatures,
-            showTranslations,
-            showParts,
-            showOrfs,
-            showAxis,
-            showCutsites,
-            showReverseSequence,
-            caretPosition,
-            sequenceLength,
-            bpsPerRow,
-            selectedSequenceString,
-            visibleRows,
-            mapViewCharWidth,
-            mapViewDimensions,
-            mapViewRowData,
-        } = this.state;
-    var featuresCount = this.state.sequenceData.features ? this.state.sequenceData.features.length : 0;
+    var {
+        selectionLayer,
+        caretPosition,
+        sequenceLength,
+        bpsPerRow,
+        totalRows,
+        sequenceData,
+        selectedSequenceString,
+        signals: {
+            setViewportDimensions,
+            jumpToRow,
+            toggleAnnotationDisplay
+        }
+    } = this.props;
+    var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
     var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
     var toggleButtons = annotationList.map(function(annotationType, index){
       return (<button key={index} onClick={function () {
@@ -279,15 +236,13 @@ var SequenceEditor = React.createClass({
     return (
       <div ref="sequenceEditor"
         style={{float:"right"}}>
-        features count: {featuresCount}
+        features 7 count: {featuresCount}
         <br/>
         selectionLayer: {selectionLayer.start}  {selectionLayer.end}
         <br/>
         caretPosition: {caretPosition}
         <br/>
         sequence length: {sequenceLength}
-        <br/>
-        visible rows: {visibleRows.start + ' - ' + visibleRows.end}
         <br/>
         bpsPerRow:  {bpsPerRow}
         <br/>
@@ -301,87 +256,55 @@ var SequenceEditor = React.createClass({
         {toggleButtons}
 
         <button onClick={function () {
-          jumpToRow(self.state.newRandomRowToJumpTo)
+          jumpToRow(self.props.newRandomRowToJumpTo)
         }}>
-         Jump to a random row: Row #{self.state.newRandomRowToJumpTo.row}
+         Jump to a random row!: Row #{self.props.newRandomRowToJumpTo.row}
         </button>
         
         <Clipboard
           value={selectedSequenceString}
-          onCopy={this.handleCopy}
-          onPaste={this.handlePaste}/>
+          onCopy={this.handleCopy.bind(this)}
+          onPaste={this.handlePaste.bind(this)}/>
         <br/>
         totalRows:  {totalRows}
         
-          <RowView 
-             charWidth={charWidth}
-             CHAR_HEIGHT={CHAR_HEIGHT}
-             ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-             tickSpacing={tickSpacing}
-             SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
-             showFeatures={showFeatures}
-             showTranslations={showTranslations}
-             showParts={showParts}
-             showOrfs={showOrfs}
-             showAxis={showAxis}
-             showCutsites={showCutsites}
-             showReverseSequence={showReverseSequence}
-             selectionLayer={selectionLayer}
-             caretPosition={caretPosition}
-             sequenceLength={sequenceLength}
-             bpsPerRow={bpsPerRow}
-             preloadRowStart={preloadRowStart}
-             averageRowHeight={averageRowHeight}
-             rowViewDimensions={rowViewDimensions}
-             totalRows={totalRows}
-             rowData={rowData}
-             rowToJumpTo={rowToJumpTo}
-             handleEditorDrag={this.handleEditorDrag}
-             handleEditorDragStart={this.handleEditorDragStart}
-             handleEditorDragStop={this.handleEditorDragStop}
-             handleEditorClick={this.handleEditorClick}
-             />
+        <RowView 
+          handleEditorDrag={this.handleEditorDrag.bind(this)}
+          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+          handleEditorClick={this.handleEditorClick.bind(this)}
+           />
              <br/>
              <br/>
              <br/>
-        <MapView 
-          charWidth={mapViewCharWidth}
-          CHAR_HEIGHT={CHAR_HEIGHT}
-          ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-          tickSpacing={mapViewTickSpacing}
-          SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
-          showFeatures={showFeatures}
-          showTranslations={showTranslations}
-          showParts={showParts}
-          showOrfs={showOrfs}
-          showAxis={showAxis}
-          showCutsites={showCutsites}
-          showReverseSequence={showReverseSequence}
-          selectionLayer={selectionLayer}
-          caretPosition={caretPosition}
-          sequenceLength={sequenceLength}
-          bpsPerRow={sequenceLength}
-          preloadRowStart={preloadRowStart}
-          mapViewDimensions={mapViewDimensions}
-          rowData={mapViewRowData}
-          rowToJumpTo={rowToJumpTo}
-          handleEditorDrag={this.handleEditorDrag}
-          handleEditorDragStart={this.handleEditorDragStart}
-          handleEditorDragStop={this.handleEditorDragStop}
-          handleEditorClick={this.handleEditorClick}
-          />
-          
+        
       </div>
     );
   }
-});
+}
 
+// SequenceEditor.propTypes = {
+//     sequenceLength: PropTypes.number.isRequired,
+//     bpsPerRow: PropTypes.number.isRequired,
+//     totalRows: PropTypes.number.isRequired,
+//     newRandomRowToJumpTo: PropTypes.object,
+//     selectedSequenceString: PropTypes.string.isRequired,
+//     caretPosition: PropTypes.number.isRequired,
+//     sequenceData: PropTypes.object.isRequired,
+//     selectionLayer: PropTypes.object.isRequired,
+//     clipboardData: PropTypes.object.isRequired,
+// }
+
+
+// <MapView 
+//           {...this.props}
+//           />
 
 
 // <button onClick={function () {
-//           jumpToRow(self.state.newRandomRowToJumpTo),
+//           jumpToRow(self.props.newRandomRowToJumpTo),
 //         }}>
-//           Jump to a random row: Row #{self.state.newRandomRowToJumpTo.row}
+//           Jump to a random row: Row #{self.props.newRandomRowToJumpTo.row}
 //         </button>
 
 module.exports = SequenceEditor;

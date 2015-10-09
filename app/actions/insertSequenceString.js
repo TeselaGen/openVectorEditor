@@ -1,7 +1,6 @@
 var insertSequenceData = require('./insertSequenceData');
-
-module.exports = function insertSequenceString(sequenceString) {
+export default function insertSequenceString({sequenceString}, tree, output) {
     insertSequenceData({
         sequence: sequenceString
     });
-};
+}

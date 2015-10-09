@@ -1,6 +1,4 @@
-let React = require('react');
-let classnames = require('classnames');
-let setSelectionLayer = require('./actions/setSelectionLayer');
+import React, { PropTypes } from 'react';
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Feature = require('./Feature');
@@ -12,18 +10,33 @@ let AnnotationPositioner = require('./AnnotationPositioner');
 let FeatureContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
-        annotationRanges: React.PropTypes.array.isRequired,
-        charWidth: React.PropTypes.number.isRequired,
-        bpsPerRow: React.PropTypes.number.isRequired,
-        annotationHeight: React.PropTypes.number.isRequired,
-        spaceBetweenAnnotations: React.PropTypes.number.isRequired,
+        annotationRanges: PropTypes.arrayOf(PropTypes.shape({
+            start: PropTypes.number.isRequired,
+            end: PropTypes.number.isRequired,
+            yOffset: PropTypes.number.isRequired,
+            annotation: PropTypes.shape({
+              start: PropTypes.number.isRequired,
+              end: PropTypes.number.isRequired,
+              forward: PropTypes.bool.isRequired,
+              id: PropTypes.string.isRequired
+            })
+        })),
+        charWidth: PropTypes.number.isRequired,
+        bpsPerRow: PropTypes.number.isRequired,
+        annotationHeight: PropTypes.number.isRequired,
+        spaceBetweenAnnotations: PropTypes.number.isRequired,
+        sequenceLength: PropTypes.number.isRequired,
+        signals: PropTypes.object.isRequired
     },
     render: function() {
-        let annotationRanges = this.props.annotationRanges;
-        let bpsPerRow = this.props.bpsPerRow;
-        let charWidth = this.props.charWidth;
-        let annotationHeight = this.props.annotationHeight;
-        let spaceBetweenAnnotations = this.props.spaceBetweenAnnotations;
+        var {
+            annotationRanges,
+            bpsPerRow,
+            charWidth,
+            annotationHeight,
+            spaceBetweenAnnotations, 
+            signals
+        } = this.props;
 
         if (annotationRanges.length === 0) {
             return null;
@@ -46,7 +59,7 @@ let FeatureContainer = React.createClass({
                     >
                     <Feature
                         onClick={function (event) {
-                          setSelectionLayer(this);
+                          signals.setOrClearSelectionLayer({selectionLayer: this});
                           event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}

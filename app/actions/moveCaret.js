@@ -1,29 +1,28 @@
-var tree = require('../baobabTree');
-var setSelectionLayer = require('./setSelectionLayer.js');
+var setOrClearSelectionLayer = require('./setOrClearSelectionLayer.js');
 var moveCaretShiftHeld = require('./moveCaretShiftHeld.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var ac = require('ve-api-check');
 
-module.exports = function moveCaret(numberToMove, shiftHeld) {
-    ac.warn(ac.number, numberToMove);
-    ac.warn(ac.bool.optional, shiftHeld);
+export default function moveCaret({moveBy, shiftHeld}, tree, output) {
+    ac.throw(ac.number, moveBy);
+    ac.throw(ac.bool.optional, shiftHeld);
     if (shiftHeld) {
-        moveCaretShiftHeld(numberToMove);
+        moveCaretShiftHeld({moveBy}, tree, output);
     } else {
-        var selectionLayer = tree.select('selectionLayer').get();
-        var sequenceLength = tree.get(['sequenceLength']);
-        var caretPosition = tree.select('caretPosition').get();
+        var selectionLayer = tree.get('selectionLayer');
+        var sequenceLength = tree.get('sequenceLength');
+        var caretPosition = tree.get('caretPosition');
         if (selectionLayer.selected) {
-            if (numberToMove > 0) {
-                tree.select('caretPosition').set(selectionLayer.end + 1);
+            if (moveBy > 0) {
+                tree.set('caretPosition', selectionLayer.end + 1);
             } else {
-                tree.select('caretPosition').set(selectionLayer.start);
+                tree.set('caretPosition', selectionLayer.start);
             }
-            setSelectionLayer(false);
+            setOrClearSelectionLayer(false,tree);
         } else {
-            caretPosition += numberToMove;
+            caretPosition += moveBy;
             caretPosition = trimNumberToFitWithin0ToAnotherNumber(caretPosition, sequenceLength);
-            tree.select('caretPosition').set(caretPosition);
+            tree.set('caretPosition', caretPosition);
         }
     }
-};
+}

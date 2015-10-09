@@ -1,48 +1,46 @@
-var tree = require('../baobabTree');
 var moveCaret = require('./moveCaret');
-var moveCaretShiftHeld = require('./moveCaretShiftHeld');
 
 const moveCaretShortcutFunctions = {
-    moveCaretLeftOne(shiftHeld) {
-            moveCaret(-1, shiftHeld);
+        moveCaretLeftOne({shiftHeld}, tree, output) {
+            moveCaret({moveBy: -1, shiftHeld}, tree, output);
         },
-        moveCaretRightOne(shiftHeld) {
-            moveCaret(1, shiftHeld);
+        moveCaretRightOne({shiftHeld}, tree, output) {
+            moveCaret({moveBy: 1, shiftHeld}, tree, output);
         },
-        moveCaretUpARow(shiftHeld) {
+        moveCaretUpARow({shiftHeld}, tree, output) {
             var bpsPerRow = tree.get(['bpsPerRow']);
-            moveCaret(-bpsPerRow, shiftHeld);
+            moveCaret({moveBy: -bpsPerRow, shiftHeld}, tree, output);
         },
-        moveCaretDownARow(shiftHeld) {
+        moveCaretDownARow({shiftHeld}, tree, output) {
             var bpsPerRow = tree.get(['bpsPerRow']);
-            moveCaret(bpsPerRow, shiftHeld);
+            moveCaret({moveBy: bpsPerRow, shiftHeld}, tree, output);
         },
-        moveCaretToEndOfRow(shiftHeld) {
+        moveCaretToEndOfRow({shiftHeld}, tree, output) {
             var bpsPerRow = tree.get(['bpsPerRow']);
-            var caretPosition = getCaretPosition();
+            var caretPosition = getCaretPosition(tree);
             var moveBy = bpsPerRow - caretPosition % bpsPerRow;
-            moveCaret(moveBy, shiftHeld);
+            moveCaret({moveBy: moveBy, shiftHeld}, tree, output);
         },
-        moveCaretToStartOfRow(shiftHeld) {
+        moveCaretToStartOfRow({shiftHeld}, tree, output) {
             var bpsPerRow = tree.get(['bpsPerRow']);
-            var caretPosition = getCaretPosition();
+            var caretPosition = getCaretPosition(tree);
             var moveBy = -1 * caretPosition % bpsPerRow;
-            moveCaret(moveBy, shiftHeld);
+            moveCaret({moveBy: moveBy, shiftHeld}, tree, output);
         },
-        moveCaretToStartOfSequence(shiftHeld) {
-            var caretPosition = getCaretPosition();
+        moveCaretToStartOfSequence({shiftHeld}, tree, output) {
+            var caretPosition = getCaretPosition(tree);
             var moveBy = -1 * caretPosition;
-            moveCaret(moveBy, shiftHeld);
+            moveCaret({moveBy: moveBy, shiftHeld}, tree, output);
         },
-        moveCaretToEndOfSequence(shiftHeld) {
-            var caretPosition = getCaretPosition();
+        moveCaretToEndOfSequence({shiftHeld}, tree, output) {
+            var caretPosition = getCaretPosition(tree);
             var sequenceLength = tree.get('sequenceLength');
             var moveBy = sequenceLength - caretPosition;
-            moveCaret(moveBy, shiftHeld);
+            moveCaret({moveBy: moveBy, shiftHeld}, tree, output);
         },
 };
 
-function getCaretPosition() {
+function getCaretPosition(tree) {
     var caretPosition = tree.get(['caretPosition']);
     if (caretPosition === -1) {
         var selectionLayer = tree.get(['selectionLayer']);

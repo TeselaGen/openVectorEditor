@@ -34,7 +34,7 @@ let HighlightLayer = React.createClass({
             var newCursorStyle = assign({}, cursorStyle, {
                 left: (caretPosition - row.start) * charWidth
             });
-            var cursorEl = <div className="cursor" style={newCursorStyle}/>
+            var cursorEl = (<div className="cursor" style={newCursorStyle}/>);
             if (shouldBlink) {
                 return (<Blink duration={600}>{cursorEl}</Blink>);
             } else {
@@ -42,7 +42,7 @@ let HighlightLayer = React.createClass({
             }
             // onHover={self.onCursorHover}
         } else {
-            return null
+            return null;
         }
     }
 });

@@ -1,14 +1,10 @@
 var ac = require('ve-api-check');
 var capitalize = require('capitalize')
-// ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-var tree = require('../baobabTree');
-
-module.exports = function toggleAnnotationDisplay(annotationType) {
+export default function toggleAnnotationDisplay({annotationType}, tree, output) {
     ac.throw(ac.annotationType, annotationType);
-    var showCursor = tree.select('show' + capitalize(annotationType));
-    if (showCursor.get()) {
-        showCursor.set(false);
+    if (tree.get('show' + capitalize(annotationType))) {
+        tree.get('show' + capitalize(annotationType), false);
     } else {
-        showCursor.set(true);
+        tree.get('show' + capitalize(annotationType), true);
     }
-};
+}

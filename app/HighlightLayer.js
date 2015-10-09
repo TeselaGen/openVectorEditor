@@ -7,7 +7,6 @@ let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var highlightLayerStyle = {
     height: "98%",
-    background: 'blue',
     position: "absolute",
     top: "0",
     opacity: ".3",
@@ -18,6 +17,7 @@ let HighlightLayer = React.createClass({
     propTypes: {
         charWidth: React.PropTypes.number.isRequired,
         bpsPerRow: React.PropTypes.number.isRequired,
+        color: React.PropTypes.string,
         row: React.PropTypes.object.isRequired,
         sequenceLength: React.PropTypes.number.isRequired,
         selectionLayer: React.PropTypes.object.isRequired,
@@ -29,6 +29,7 @@ let HighlightLayer = React.createClass({
             row,
             sequenceLength,
             selectionLayer,
+            color
         } = this.props;
         if (selectionLayer.selected) {
             var startSelectionCursor;
@@ -57,7 +58,8 @@ let HighlightLayer = React.createClass({
 
                 var style = assign({}, highlightLayerStyle, {
                     width: width,
-                    left: xStart
+                    left: xStart,
+                    background: color ? color : 'blue' 
                 });
                 return (<div key={index} className="selectionLayer" style={style}/>);
             });

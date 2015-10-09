@@ -1,7 +1,5 @@
-import React, {
-    PropTypes
-}
-from 'react';
+import React, {PropTypes} from 'react';
+
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
@@ -11,17 +9,16 @@ var CutsiteLabelContainer = require('./CutsiteLabelContainer');
 var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
 var HighlightLayer = require('./HighlightLayer');
 var Caret = require('./Caret');
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
-var RowItem = React.createClass({
-    mixins: [PureRenderMixin],
-    render: function() {
+class RowItem extends React.Component {
+    render() {
         var {
             charWidth,
             selectionLayer,
-            ANNOTATION_HEIGHT,
+            cutsiteLabelSelectionLayer,
+            annotationHeight,
             tickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
+            spaceBetweenAnnotations,
             showFeatures,
             showTranslations,
             showParts,
@@ -32,7 +29,8 @@ var RowItem = React.createClass({
             caretPosition,
             sequenceLength,
             bpsPerRow,
-            row
+            row,
+            signals,
         } = this.props;
         if (!row) {
             return null;
@@ -54,47 +52,55 @@ var RowItem = React.createClass({
                 >
                 {(showFeatures && row.features.length > 0) &&
                   <FeatureContainer
+                    row={row}
+                    signals={signals}
                     annotationRanges={row.features}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    sequenceLength={sequenceLength}
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    />
                 }
             
                 {(showOrfs && row.orfs.length > 0) &&
                   <OrfContainer
                     row={row}
+                    signals={signals}
                     annotationRanges={row.orfs}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
                     sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
                 {(showTranslations && row.translations.length > 0) &&
                   <TranslationContainer
                     row={row}
+                    signals={signals}
                     annotationRanges={row.translations}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
                     sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
 
                 {(showCutsites && row.cutsites.length > 0) &&
                   <CutsiteLabelContainer
+                    signals={signals}
                     annotationRanges={row.cutsites}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}
-                    spaceBetweenAnnotations={SPACE_BETWEEN_ANNOTATIONS}/>
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
                 <SequenceContainer 
                     sequence={row.sequence} 
                     charWidth={charWidth}>
                     {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                         row={row}
+                        signals={signals}
                         sequenceLength={sequenceLength}
                         annotationRanges={row.cutsites}
                         charWidth={charWidth}
@@ -107,6 +113,7 @@ var RowItem = React.createClass({
                     <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={charWidth}>
                         {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                                                 row={row}
+                                                signals={signals}
                                                 sequenceLength={sequenceLength}
                                                 annotationRanges={row.cutsites}
                                                 charWidth={charWidth}
@@ -118,29 +125,62 @@ var RowItem = React.createClass({
                 {showAxis &&
                     <AxisContainer
                     row={row}
+                    signals={signals}
                     tickSpacing={tickSpacing}
                     charWidth={charWidth}
-                    annotationHeight={ANNOTATION_HEIGHT}
+                    annotationHeight={annotationHeight}
                     bpsPerRow={bpsPerRow}/>
                 }
                 <HighlightLayer
                     charWidth={charWidth}
                     bpsPerRow={bpsPerRow}
                     row={row}
+                    signals={signals}
                     sequenceLength={sequenceLength}
                     selectionLayer={selectionLayer}
+                >
+                </HighlightLayer>
+                <HighlightLayer
+                    charWidth={charWidth}
+                    bpsPerRow={bpsPerRow}
+                    row={row}
+                    color={'green'}
+                    signals={signals}
+                    sequenceLength={sequenceLength}
+                    selectionLayer={cutsiteLabelSelectionLayer}
                 >
                 </HighlightLayer>
                 <Caret 
                     caretPosition={caretPosition} 
                     charWidth={charWidth}
                     row={row}
+                    signals={signals}
                     sequenceLength={sequenceLength}
                     shouldBlink={true}
                     />
             </div>
         );
     }
-});
+}
+
+RowItem.propTypes = {
+    charWidth: PropTypes.number.isRequired,
+    selectionLayer: PropTypes.object.isRequired,
+    cutsiteLabelSelectionLayer: PropTypes.object.isRequired,
+    annotationHeight: PropTypes.number.isRequired,
+    tickSpacing: PropTypes.number.isRequired,
+    spaceBetweenAnnotations: PropTypes.number.isRequired,
+    showFeatures: PropTypes.bool.isRequired,
+    showTranslations: PropTypes.bool.isRequired,
+    showParts: PropTypes.bool.isRequired,
+    showOrfs: PropTypes.bool.isRequired,
+    showAxis: PropTypes.bool.isRequired,
+    showCutsites: PropTypes.bool.isRequired,
+    showReverseSequence: PropTypes.bool.isRequired,
+    caretPosition: PropTypes.number.isRequired,
+    sequenceLength: PropTypes.number.isRequired,
+    bpsPerRow: PropTypes.number.isRequired,
+    row: PropTypes.object.isRequired
+};
 
 module.exports = RowItem;

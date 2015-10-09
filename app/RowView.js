@@ -1,37 +1,32 @@
 import React, {PropTypes} from 'react';
+import {Decorator as Cerebral} from 'cerebral-react';
+
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
 
-var RowView = React.createClass({
-    propTypes: {
-        averageRowHeight: PropTypes.number.isRequired,
-        rowViewDimensions: PropTypes.object.isRequired,
-        totalRows: PropTypes.number.isRequired,
-        rowData: PropTypes.array.isRequired,
-        charWidth: PropTypes.number.isRequired,
-        selectionLayer: PropTypes.object.isRequired,
-        CHAR_HEIGHT: PropTypes.number.isRequired,
-        ANNOTATION_HEIGHT: PropTypes.number.isRequired,
-        tickSpacing: PropTypes.number.isRequired,
-        SPACE_BETWEEN_ANNOTATIONS: PropTypes.number.isRequired,
-        showFeatures: PropTypes.bool.isRequired,
-        showTranslations: PropTypes.bool.isRequired,
-        showParts: PropTypes.bool.isRequired,
-        showOrfs: PropTypes.bool.isRequired,
-        showAxis: PropTypes.bool.isRequired,
-        showCutsites: PropTypes.bool.isRequired,
-        showReverseSequence: PropTypes.bool.isRequired,
-        caretPosition: PropTypes.number.isRequired,
-        sequenceLength: PropTypes.number.isRequired,
-        bpsPerRow: PropTypes.number.isRequired,
-        handleEditorDrag: PropTypes.func.isRequired,
-        handleEditorDragStart: PropTypes.func.isRequired,
-        handleEditorDragStop: PropTypes.func.isRequired,
-        handleEditorClick: PropTypes.func.isRequired,
-    },
-    getNearestCursorPositionToMouseEvent: function(event, callback) {
-        callback(0);
+@Cerebral({
+    rowViewDimensions: ['rowViewDimensions'],
+    rowData: ['rowData'],
+    charWidth: ['charWidth'],
+    selectionLayer: ['selectionLayer'],
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
+    annotationHeight: ['annotationHeight'],
+    tickSpacing: ['tickSpacing'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
+    showFeatures: ['showFeatures'],
+    showTranslations: ['showTranslations'],
+    showParts: ['showParts'],
+    showOrfs: ['showOrfs'],
+    showAxis: ['showAxis'],
+    showCutsites: ['showCutsites'],
+    showReverseSequence: ['showReverseSequence'],
+    caretPosition: ['caretPosition'],
+    sequenceLength: ['sequenceLength'],
+    bpsPerRow: ['bpsPerRow']
+})
+class RowView extends React.Component {
+    getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
         var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
         //loop through all the rendered rows to see if the click event lands in one of them
@@ -69,23 +64,23 @@ var RowView = React.createClass({
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
             callback(lastOfRenderedRows.end);
         }
-    },
+    }
 
-    render: function() {
-        // console.log('render!');
-        // 
+    render() {
         var {
-            preloadRowStart, 
-            averageRowHeight, 
             rowViewDimensions, 
-            totalRows, rowData, 
+            rowData, 
             rowToJumpTo, 
-            charWidth, 
-            selectionLayer, 
-            CHAR_HEIGHT,
-            ANNOTATION_HEIGHT,
+            handleEditorDrag,
+            handleEditorDragStart,
+            handleEditorDragStop,
+            handleEditorClick,
+            charWidth,
+            selectionLayer,
+            cutsiteLabelSelectionLayer,
+            annotationHeight,
             tickSpacing,
-            SPACE_BETWEEN_ANNOTATIONS,
+            spaceBetweenAnnotations,
             showFeatures,
             showTranslations,
             showParts,
@@ -96,33 +91,31 @@ var RowView = React.createClass({
             caretPosition,
             sequenceLength,
             bpsPerRow,
-            handleEditorDrag,
-            handleEditorDragStart,
-            handleEditorDragStop,
-            handleEditorClick,
+            signals
         } = this.props;
-        var self = this;
         function renderRows(rowNumber) {
             if (rowData[rowNumber]) {
                 return (<RowItem
                     charWidth={charWidth}
-                      CHAR_HEIGHT={CHAR_HEIGHT}
-                      ANNOTATION_HEIGHT={ANNOTATION_HEIGHT}
-                      tickSpacing={tickSpacing}
-                      SPACE_BETWEEN_ANNOTATIONS={SPACE_BETWEEN_ANNOTATIONS}
-                      showFeatures={showFeatures}
-                      showTranslations={showTranslations}
-                      showParts={showParts}
-                      showOrfs={showOrfs}
-                      showAxis={showAxis}
-                      showCutsites={showCutsites}
-                      showReverseSequence={showReverseSequence}
-                      selectionLayer={selectionLayer}
-                      caretPosition={caretPosition}
-                      sequenceLength={sequenceLength}
-                      bpsPerRow={bpsPerRow}
-                  key={rowNumber}
-                  row={rowData[rowNumber]} />);
+                    selectionLayer={selectionLayer}
+                    cutsiteLabelSelectionLayer={cutsiteLabelSelectionLayer}
+                    annotationHeight={annotationHeight}
+                    tickSpacing={tickSpacing}
+                    spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    showFeatures={showFeatures}
+                    showTranslations={showTranslations}
+                    showParts={showParts}
+                    showOrfs={showOrfs}
+                    showAxis={showAxis}
+                    showCutsites={showCutsites}
+                    showReverseSequence={showReverseSequence}
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    bpsPerRow={bpsPerRow}
+                    signals={signals}
+                    key={rowNumber}
+                    row={rowData[rowNumber]} 
+                    />);
             } else {
                 return null
             }
@@ -169,7 +162,18 @@ var RowView = React.createClass({
             </Draggable>
         );
     }
-});
+}
+
+RowView.propTypes = {
+    // rowViewDimensions: PropTypes.object.isRequired,
+    // rowData: PropTypes.array.isRequired,
+    // charWidth: PropTypes.number.isRequired,
+
+    handleEditorDrag: PropTypes.func.isRequired,
+    handleEditorDragStart: PropTypes.func.isRequired,
+    handleEditorDragStop: PropTypes.func.isRequired,
+    handleEditorClick: PropTypes.func.isRequired
+};
 
 
 
