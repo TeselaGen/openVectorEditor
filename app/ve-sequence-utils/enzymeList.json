@@ -1,4 +1,4 @@
-module.exports = {
+{
     "bme216i": {
         "name": "Bme216I",
         "site": "ggwcc",

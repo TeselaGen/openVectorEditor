@@ -1,11 +1,20 @@
-###A (soon-to-be) open source Vector Editor
+[![Stories in Ready](https://badge.waffle.io/TeselaGen/openVectorEditor.png?label=ready&title=Ready)](https://waffle.io/TeselaGen/openVectorEditor)
+#openVectorEditor
+###An open source vector/plasmid/dna editor
 
-Technology choices:
+[![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
+
+
+##### Technology choices:
+```
 reactjs
 baobab
 webpack
 api-check
 npm modules
+```
 
 #### To use this repo:
 clone it into your folder of choice,
@@ -56,10 +65,19 @@ or in this case:
 
 React components --(trigger)--> AppActions.js --(update)--> Baobab tree
 
+#Resources:
+
+### [Workflowy list] (https://workflowy.com/s/AMpvp1km0o) with lots more detailed info:
+https://workflowy.com/s/AMpvp1km0o
+
 #### Drawing Tool: 
 http://jxnblk.com/paths/?d=M0%2040%20L64%2040%20L64%2020%20L0%2020%20Z
 
-#React JSbin/jsFiddle minimal examples:
+#### React JSbin/jsFiddle minimal examples:
 http://jsbin.com/kexiwarako/1/edit?html,js,console,output
 https://jsfiddle.net/majorBummer/3rm95bpv/1/
 
+#### Beginner Resources:
+http://tylermcginnis.com/reactjs-tutorial-a-comprehensive-guide-to-building-apps-with-react/
+https://scotch.io/tutorials/learning-react-getting-started-and-concepts
+http://www.christianalfoni.com/articles/2015_02_06_Plant-a-Baobab-tree-in-your-flux-application
