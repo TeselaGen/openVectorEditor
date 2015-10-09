@@ -68,7 +68,7 @@ let CutsiteLabelContainer = React.createClass({
             annotationsSVG.push(
                 <div left={xStart}
                     onClick={function (event) {
-                              signals.setOrClearSelectionLayer({selectionLayer: this});
+                              signals.setSelectionLayer({selectionLayer: this});
                               event.stopPropagation();
                             }.bind(annotation)}
                     onMouseOver={function (event) {

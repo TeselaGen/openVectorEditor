@@ -1,5 +1,4 @@
 var assign = require('lodash/object/assign');
-var setOrClearSelectionLayer = require('./setOrClearSelectionLayer.js');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 
 /**
@@ -7,33 +6,30 @@ var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberTo
  * @param  {integer} moveBy positive/negative number to adjust the caret
  * @return {undefined}              
  */
-export default function moveCaretShiftHeld({moveBy}, tree) {
-    var selectionLayer = assign({}, tree.get('selectionLayer'));
-
-    var sequenceLength = tree.get(['sequenceLength']);
-    var caretPosition = JSON.parse(JSON.stringify(tree.get('caretPosition'))); //tnrtodo: this json stringify stuff is probably unneeded
+export default function moveCaretShiftHeld({sequenceLength, selectionLayer, caretPosition, moveBy}, tree, output) {
+    var newSelectionLayer = assign({}, selectionLayer);
     if (selectionLayer.selected) {
-        if (selectionLayer.cursorAtEnd) {
-            selectionLayer.end += moveBy;
-            selectionLayer.end = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.end, sequenceLength - 1);
+        if (newSelectionLayer.cursorAtEnd) {
+            newSelectionLayer.end += moveBy;
+            newSelectionLayer.end = trimNumberToFitWithin0ToAnotherNumber(newSelectionLayer.end, sequenceLength - 1);
         } else {
-            selectionLayer.start += moveBy;
-            selectionLayer.start = trimNumberToFitWithin0ToAnotherNumber(selectionLayer.start, sequenceLength - 1);
+            newSelectionLayer.start += moveBy;
+            newSelectionLayer.start = trimNumberToFitWithin0ToAnotherNumber(newSelectionLayer.start, sequenceLength - 1);
         }
-        setOrClearSelectionLayer({selectionLayer}, tree);
+        output({selectionLayer: newSelectionLayer});
     } else {
         if (moveBy > 0) {
-            setOrClearSelectionLayer({selectionLayer: {
+            output({selectionLayer: {
                             start: caretPosition,
                             end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + moveBy - 1, sequenceLength - 1),
                             cursorAtEnd: true
-                        }}, tree);
+                        }});
         } else {
-            setOrClearSelectionLayer({selectionLayer: {
+            output({selectionLayer: {
                 start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + moveBy, sequenceLength - 1),
                 end: caretPosition - 1,
                 cursorAtEnd: false
-            }}, tree);
+            }});
         }
     }
 }

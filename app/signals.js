@@ -8,41 +8,34 @@ reqContext.keys().forEach(function(key) {
 export default function registerSignals(controller) {
     //tnr:  WORKING: 
     controller.signal('copySelection', a.getSelectionLayer, a.copySelection);
-    controller.signal('selectAll', a.selectAll, a.setOrClearSelectionLayer);
+    controller.signal('selectAll', a.selectAll, a.setSelectionLayer);
     controller.signal('sequenceDataInserted', 
         a.getSelectionLayer, {
             success: [a.deleteSequence]
         }, a.getCaretPosition, a.insertSequenceData); 
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
-    controller.signal('editorClicked', a.setCaretPosition, a.setOrClearSelectionLayer);
     controller.signal('setCaretPosition', a.setCaretPosition);
+    controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
     //tnr: MOSTLY WORKING: 
     controller.signal('backspacePressed', a.getSelectionLayer, {
         success: [a.deleteSequence],
         error: [a.getCaretPosition, a.prepDeleteOneBack, a.deleteSequence]
     });
-    // controller.signal('moveCaretLeftOne', 
-    //     a.isShiftHeld, {
-    //         success: [a.getSelectionLayer, a.moveSelectionLayer(-1)],
-    //         error: [a.clearSelectionLayer, a.moveCaret(-1)]
-    //     } 
-    // );
-    // controller.signal('moveCaretDownARow', 
-    //     a.isShiftHeld, {
-    //         success: [a.getSelectionLayer, a.moveSelectionLayer(-1)],
-    //         error: [a.clearSelectionLayer, a.moveCaret(-1)]
-    //     } 
-    // );
-    //caret functions
-    for (var signalName in a.moveCaretShortcutFunctions) {
-        var action = a.moveCaretShortcutFunctions[signalName]
-        controller.signal(signalName, action)
-    }
+    controller.signal('caretMoved', 
+        a.getData('selectionLayer'),
+        a.getCaretPosition,
+        // a.getSequenceLength,
+        a.getData('sequenceLength'),
+        a.checkCaretMoveType, {
+            shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
+            noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
+        },
+    );
 
     //tnr: NOT YET WORKING:
     //higher priority
     controller.signal('pasteSequenceString', a.pasteSequenceString);
-    controller.signal('setOrClearSelectionLayer', a.setOrClearSelectionLayer);
+    controller.signal('setSelectionLayer', a.setSelectionLayer);
     controller.signal('toggleAnnotationDisplay', a.setCaretPosition);
 
     //lower priority

@@ -13,7 +13,7 @@ let OrfContainer = React.createClass({
         bpsPerRow: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
-        setOrClearSelectionLayer: React.PropTypes.func.isRequired,
+        setSelectionLayer: React.PropTypes.func.isRequired,
     },
     render: function() {
         var {
@@ -22,7 +22,7 @@ let OrfContainer = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            setOrClearSelectionLayer
+            setSelectionLayer
         } = this.props;
 
         if (annotationRanges.length === 0) {
@@ -46,7 +46,7 @@ let OrfContainer = React.createClass({
                     >
                     <Orf
                         onClick={function (event) {
-                          setOrClearSelectionLayer(this);
+                          setSelectionLayer(this);
                           event.stopPropagation();
                         }.bind(annotation)}
                         width={result.width}

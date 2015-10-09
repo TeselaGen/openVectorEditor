@@ -59,7 +59,7 @@ let FeatureContainer = React.createClass({
                     >
                     <Feature
                         onClick={function (event) {
-                          signals.setOrClearSelectionLayer({selectionLayer: this});
+                          signals.setSelectionLayer({selectionLayer: this});
                           event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}

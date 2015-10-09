@@ -48,12 +48,12 @@ var Translation = React.createClass({
               <AASliver 
                     onClick={function(e) {
                       // e.stopPropagation();
-                      signals.setOrClearSelectionLayer({selectionLayer: codonIndices});
+                      signals.setSelectionLayer({selectionLayer: codonIndices});
                     }}
                     onDoubleClick = {
                         function(e) {
                             e.stopPropagation();
-                            signals.setOrClearSelectionLayer({selectionLayer: annotation});
+                            signals.setSelectionLayer({selectionLayer: annotation});
                         }
                     }
                     key={annotation.id + aminoAcidPositionInSequence}
