@@ -48,13 +48,13 @@ export default function registerSignals(controller) {
 
     //tnr: NOT YET WORKING:
     //higher priority
-    controller.signal('pasteSequenceString', a.pasteSequenceString);
-    controller.signal('setSelectionLayer', a.setSelectionLayer);
-    controller.signal('toggleAnnotationDisplay', a.setCaretPosition);
+    controller.signal('pasteSequenceString', [a.pasteSequenceString]);
+    controller.signal('setSelectionLayer', [a.setSelectionLayer]);
+    controller.signal('toggleAnnotationDisplay', [a.setCaretPosition]);
 
     //lower priority
-    controller.signal('addAnnotations', a.addAnnotations);
-    controller.signal('jumpToRow', a.jumpToRow);
+    controller.signal('addAnnotations', [a.addAnnotations]);
+    controller.signal('jumpToRow', [a.jumpToRow]);
 
 
 }
