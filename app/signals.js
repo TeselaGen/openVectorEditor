@@ -17,7 +17,7 @@ export default function registerSignals(controller) {
         }, a.getData('caretPosition'), a.insertSequenceData);
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
     controller.signal('setCaretPosition', a.setCaretPosition);
-    controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
+    // controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
     //tnr: MOSTLY WORKING: 
     controller.signal('backspacePressed', 
         a.getData('selectionLayer'),
@@ -28,6 +28,17 @@ export default function registerSignals(controller) {
     controller.signal('caretMoved', 
         a.getData('selectionLayer'),
         a.getData('caretPosition'),
+        a.checkLayerIsSelected, {
+            success: [a.checkShiftHeld, {
+                shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
+                noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
+            }],
+            error: [a.checkShiftHeld, {
+                shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
+                noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
+            }],
+        },
+        
         a.getData('sequenceLength'),
         a.checkCaretMoveType, {
             shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],

@@ -111,9 +111,11 @@ class SequenceEditor extends React.Component {
         if (this.editorBeingDragged) {
             //do nothing because the click was triggered by a drag event
         } else {
-            this.props.signals.editorClicked({caretPosition: caretPosition})
-            // setCaretPosition(caretPosition);
-            // setSelectionLayer(false);
+            this.props.signals.editorClicked({
+                shiftHeld: event.shiftKey,
+                type: 'editorClick',
+                caretPosition: caretPosition
+            })
         }
 
     }
