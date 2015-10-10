@@ -33,7 +33,7 @@ export default function registerSignals(controller) {
             shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
             noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
         },
-    ]);
+    );
 
     //tnr: NOT YET WORKING:
     //higher priority
