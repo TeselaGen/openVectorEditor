@@ -1,13 +1,17 @@
+var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var ac = require('ve-api-check');
-export default function checkMoveType({caretPosition, selectionLayer, shiftHeld, type}, tree, output) {
+export default function handleCaretMovedNoSelectedNoShift({sequenceLength, bpsPerRow, caretPosition, newCaretPosition, selectionLayer, shiftHeld, type}, tree, output) {
     ac.throw(ac.number, caretPosition);
     ac.throw(ac.bool.optional, shiftHeld);
     ac.throw(ac.object, selectionLayer);
+    ac.throw(ac.number.optional, newCaretPosition);
     ac.throw(ac.string, type);
-    var bpsPerRow = tree.get(['bpsPerRow']);
+    
     var moveBy;
-
     switch (type) {
+        case ('editorClick') :
+            moveBy = newCaretPosition - caretPosition
+            break;
         case ('moveCaretLeftOne') :
             moveBy = -1;
             break;
@@ -30,21 +34,23 @@ export default function checkMoveType({caretPosition, selectionLayer, shiftHeld,
             moveBy = -1 * caretPosition;
             break;
         case ('moveCaretToEndOfSequence') :
-            var sequenceLength = tree.get('sequenceLength');
             moveBy = sequenceLength - caretPosition;
     }
-
-    if (shiftHeld) {
-        output.shiftHeld({moveBy})
+    if (moveBy > 0) {
+        output({
+            selectionLayer: {
+                start: caretPosition,
+                end: trimNumberToFitWithin0ToAnotherNumber(caretPosition + moveBy - 1, sequenceLength - 1),
+                cursorAtEnd: true
+            }
+        });
     } else {
-        output.noShift({moveBy})
+        output({
+            selectionLayer: {
+                start: trimNumberToFitWithin0ToAnotherNumber(caretPosition + moveBy, sequenceLength - 1),
+                end: caretPosition - 1,
+                cursorAtEnd: false
+            }
+        });
     }
 }
-
-//
-checkMoveType.outputs = [
-    'shiftHeld',
-    'noShift'
-]
-
-

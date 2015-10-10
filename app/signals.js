@@ -28,22 +28,22 @@ export default function registerSignals(controller) {
     controller.signal('caretMoved', 
         a.getData('selectionLayer'),
         a.getData('caretPosition'),
+        a.getData('sequenceLength'),
+        a.getData('bpsPerRow'),
         a.checkLayerIsSelected, {
             success: [a.checkShiftHeld, {
-                shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
-                noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
+                shiftHeld: [a.handleCaretMovedSelectedShift, a.moveCaretShiftHeld, a.setSelectionLayer],
+                noShift: [a.handleCaretMovedSelectedNoShift, a.clearSelectionLayer]
             }],
             error: [a.checkShiftHeld, {
-                shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
-                noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
+                shiftHeld: [a.handleCaretMovedNoSelectedShift, a.setSelectionLayer],
+                noShift: [a.handleCaretMovedNoSelectedNoShift, a.clearSelectionLayer, a.setCaretPosition]
             }],
         },
-        
-        a.getData('sequenceLength'),
-        a.checkCaretMoveType, {
-            shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
-            noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
-        },
+        // a.checkCaretMoveType, {
+        //     shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
+        //     noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
+        // },
     );
 
     //tnr: NOT YET WORKING:
