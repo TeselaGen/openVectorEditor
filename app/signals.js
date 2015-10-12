@@ -9,41 +9,34 @@ export default function registerSignals(controller) {
     //tnr:  WORKING: 
     controller.signal('copySelection', a.getData('selectionLayer'), a.copySelection);
     controller.signal('selectAll', a.selectAll, a.setSelectionLayer);
-    controller.signal('sequenceDataInserted', 
-        a.getData('selectionLayer'),
+    controller.signal('sequenceDataInserted',
+        a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
             success: [a.deleteSequence],
-            error: []
-        }, a.getData('caretPosition'), a.insertSequenceData);
+            error: [a.getData('caretPosition')]
+        },
+        a.insertSequenceData,
+        a.setData('caretPosition', 'sequenceData'));
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
     controller.signal('setCaretPosition', a.setCaretPosition);
     // controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
     //tnr: MOSTLY WORKING: 
-    controller.signal('backspacePressed', 
-        a.getData('selectionLayer'),
+    controller.signal('backspacePressed',
+        a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
             success: [a.deleteSequence],
             error: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
         });
-    controller.signal('caretMoved', 
-        a.getData('selectionLayer'),
-        a.getData('caretPosition'),
-        a.getData('sequenceLength'),
-        a.getData('bpsPerRow'),
-        a.checkLayerIsSelected, {
-            success: [a.checkShiftHeld, {
-                shiftHeld: [a.handleCaretMovedSelectedShift, a.moveCaretShiftHeld, a.setSelectionLayer],
-                noShift: [a.handleCaretMovedSelectedNoShift, a.clearSelectionLayer]
+    controller.signal('caretMoved',
+        a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow'),
+        a.updateCaretPosByMoveType,
+        a.checkShiftHeld, {
+            success: [a.checkLayerIsSelected, {
+                success: [a.updateSelectionShiftHeldAndPreviousSelection, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
+                error: [a.updateSelNoPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition]
             }],
-            error: [a.checkShiftHeld, {
-                shiftHeld: [a.handleCaretMovedNoSelectedShift, a.setSelectionLayer],
-                noShift: [a.handleCaretMovedNoSelectedNoShift, a.clearSelectionLayer, a.setCaretPosition]
-            }],
+            error: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
         },
-        // a.checkCaretMoveType, {
-        //     shiftHeld: [a.moveCaretShiftHeld, a.setSelectionLayer],
-        //     noShift: [a.moveCaretNoShift, a.clearSelectionLayer]
-        // },
     );
 
     //tnr: NOT YET WORKING:

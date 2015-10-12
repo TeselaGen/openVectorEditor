@@ -36,7 +36,7 @@ class SequenceEditor extends React.Component {
         //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
         //documentation: https://craig.is/killing/mice
         combokeys.bind(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ], function(event) { // Handle shortcut
-            sequenceDataInserted({sequenceData: {sequence: String.fromCharCode(event.charCode)}});
+            sequenceDataInserted({newSequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
         combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
             self.props.signals.caretMoved({shiftHeld: event.shiftKey, type: 'moveCaretLeftOne'});
@@ -104,7 +104,7 @@ class SequenceEditor extends React.Component {
         combokeys.detach()
     }
 
-    handleEditorClick(newCaretPosition) {
+    handleEditorClick(newCaretPosition, event) {
         //if cursor position is different than the original position, reset the position and clear the selection
         // console.log('onclick!!');
         // var bp = this.getNearestCursorPositionToMouseEvent(event);
