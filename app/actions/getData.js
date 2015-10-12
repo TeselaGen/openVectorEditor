@@ -1,3 +1,7 @@
-export default function getData({path, name}, tree, output) {
-    output[name] = tree.get(path);
+export default function getData(path) {
+    return function({}, tree, output) {
+        var data = {};
+        data[path] = tree.get(path);
+        output(data);
+    }
 }

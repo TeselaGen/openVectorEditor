@@ -3,10 +3,10 @@
 // tap.mochaGlobals();
 var setCaretPosition = require('./setCaretPosition');
 var insertSequenceData = require('./insertSequenceData');
-var setOrClearSelectionLayer = require('./setOrClearSelectionLayer');
+var setSelectionLayer = require('./setSelectionLayer');
 var setCaretPosition = require('./setCaretPosition');
 var addAnnotations = require('./addAnnotations');
-var setOrClearSelectionLayer = require('./setOrClearSelectionLayer');
+var setSelectionLayer = require('./setSelectionLayer');
 var tree = require('../testHelpers/baobabTestTree');
 var seedTreeWithSimpleSequenceData = require('../testHelpers/seedTreeWithSimpleSequenceData');
 var chai = require("chai");
@@ -21,7 +21,7 @@ describe('insertSequenceData', function () {
             sequence: 'atgagagaga'
         };
         var sequenceLengthPreInsert = tree.get('sequenceLength');
-        setOrClearSelectionLayer(false);//make sure there's no selection layer
+        setSelectionLayer(false);//make sure there's no selection layer
         setCaretPosition(0);
         insertSequenceData(sequenceToInsert);
         var sequenceLengthPostInsert = tree.get('sequenceLength');
@@ -54,7 +54,7 @@ describe('insertSequenceData', function () {
             end: 3
         }]);
         var sequenceLengthPreInsert = tree.get('sequenceLength');
-        setOrClearSelectionLayer(false);//make sure there's no selection layer
+        setSelectionLayer(false);//make sure there's no selection layer
         setCaretPosition(0);
         insertSequenceData(sequenceToInsert);
         var sequenceLengthPostInsert = tree.get('sequenceLength');

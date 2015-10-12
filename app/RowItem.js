@@ -150,14 +150,16 @@ class RowItem extends React.Component {
                     selectionLayer={cutsiteLabelSelectionLayer}
                 >
                 </HighlightLayer>
-                <Caret 
-                    caretPosition={caretPosition} 
-                    charWidth={charWidth}
-                    row={row}
-                    signals={signals}
-                    sequenceLength={sequenceLength}
-                    shouldBlink={true}
-                    />
+                {!selectionLayer.selected && 
+                    <Caret 
+                        caretPosition={caretPosition} 
+                        charWidth={charWidth}
+                        row={row}
+                        signals={signals}
+                        sequenceLength={sequenceLength}
+                        shouldBlink={true}
+                        />
+                }
             </div>
         );
     }

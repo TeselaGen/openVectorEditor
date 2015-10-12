@@ -1,12 +1,13 @@
 import controller from './controller.js';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Container} from 'cerebral-react';
 import SequenceEditor from './SequenceEditor.js';
 
 const app = document.createElement('div');
 document.body.appendChild(app);
 
-React.render(<Container controller={controller} app={SequenceEditor}/>, app);
+ReactDOM.render(<Container controller={controller} app={SequenceEditor}/>, app);
 
 //tnrtodo: add back this functionality to watch for before unload
 // window.addEventListener('beforeunload', function(e) {
