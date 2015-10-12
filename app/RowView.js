@@ -43,7 +43,7 @@ class RowView extends React.Component {
                 var row = this.props.rowData[rowNumber];
                 if (event.clientX - boundingRowRect.left < 0) {
                     console.warn('this should never be 0...');
-                    callback(row.start); //return the first bp in the row
+                    callback(row.start, event); //return the first bp in the row
                 } else {
                     var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
                     var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
@@ -52,7 +52,7 @@ class RowView extends React.Component {
                         nearestBP = row.end + 1;
                     }
                     // console.log('nearestBP', nearestBP);
-                    callback(nearestBP);
+                    callback(nearestBP, event);
                 }
                 break; //break the for loop early because we found the row the click event landed in
             }
@@ -62,7 +62,7 @@ class RowView extends React.Component {
             //return the last bp index in the rendered rows
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
-            callback(lastOfRenderedRows.end);
+            callback(lastOfRenderedRows.end, event);
         }
     }
 
