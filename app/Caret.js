@@ -1,4 +1,3 @@
-var Blink = require('react-blink');
 var assign = require('lodash/object/assign');
 let React = require('react');
 let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
@@ -35,11 +34,7 @@ let HighlightLayer = React.createClass({
                 left: (caretPosition - row.start) * charWidth
             });
             var cursorEl = (<div className="cursor" style={newCursorStyle}/>);
-            if (shouldBlink) {
-                return (<Blink duration={600}>{cursorEl}</Blink>);
-            } else {
-                return (cursorEl);
-            }
+            return (cursorEl);
             // onHover={self.onCursorHover}
         } else {
             return null;
