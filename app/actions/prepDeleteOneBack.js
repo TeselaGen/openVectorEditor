@@ -1,9 +1,6 @@
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-
-
 export default function prepSelectionLayer (numberToMove, caretAtEnd) {
 	return function prepSelectionLayer({caretPosition, selectionLayer}, tree, output) {
-        if (areNonNegativeIntegers([caretPosition])) {
+        if (caretPosition > 0) {
             output({
                 selectionLayer: {
                     start: caretPosition - 1,
