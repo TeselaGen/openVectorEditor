@@ -10,8 +10,8 @@ export default function insertSequenceData({
     ac.throw(ac.sequenceData, newSequenceData)
     //insert new sequence at the caret position
     output({
-        sequenceData: assign({}, sequenceData, insertSequenceDataAtPosition(newSequenceData, sequenceData, caretPosition));,
-        caretPosition: sequenceData.sequence.length + caretPosition //update the caret position to be at the end of the newly inserted sequence
+        sequenceData: assign({}, sequenceData, insertSequenceDataAtPosition(newSequenceData, sequenceData, caretPosition)),
+        caretPosition: newSequenceData.sequence.length + caretPosition //update the caret position to be at the end of the newly inserted sequence
     })
 
 }

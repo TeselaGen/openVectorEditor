@@ -1,34 +1,34 @@
 require('../../testSetup.js');
 var deleteSequence = require('./deleteSequence.js');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
-
+var sequenceData = tidyUpSequenceData({
+    sequence: 'atgc',
+    features: [{
+        start: 0,
+        end: 3
+    }, {
+        start: 1,
+        end: 1
+    }],
+    parts: [{
+        start: 0,
+        end: 3
+    }, {
+        start: 1,
+        end: 1
+    }],
+    translations: [{
+        start: 0,
+        end: 3
+    }, {
+        start: 1,
+        end: 1
+    }]
+});
 describe('deleteSequence', function() {
     it('deletes entire sequence and annotations correctly', function() {
         deleteSequence({
-            sequenceData: tidyUpSequenceData({
-                sequence: 'atgc',
-                features: [{
-                    start: 0,
-                    end: 3
-                }, {
-                    start: 1,
-                    end: 1
-                }],
-                parts: [{
-                    start: 0,
-                    end: 3
-                }, {
-                    start: 1,
-                    end: 1
-                }],
-                translations: [{
-                    start: 0,
-                    end: 3
-                }, {
-                    start: 1,
-                    end: 1
-                }]
-            }),
+            sequenceData: sequenceData,
             selectionLayer: {
                 start: 0,
                 end: 3,
@@ -43,29 +43,9 @@ describe('deleteSequence', function() {
             caretPosition.should.equal(0);
         });
     });
-    it('adjusts entire sequence and annotations correctly', function() {
+    it('deletes end of sequence and adjusts annotations correctly', function() {
         deleteSequence({
-            sequenceData: tidyUpSequenceData({
-                sequence: 'atgc',
-                features: [{
-                    start: 0,
-                    end: 3
-                }, {
-                    start: 1,
-                    end: 1
-                }],
-                parts: [{
-                    start: 0,
-                    end: 3
-                }, {
-                    start: 1,
-                    end: 1
-                }],
-                translations: [{
-                    start: 3,
-                    end: 3
-                }]
-            }),
+            sequenceData: sequenceData,
             selectionLayer: {
                 start: 3,
                 end: 3,
@@ -73,7 +53,9 @@ describe('deleteSequence', function() {
         }, {}, function({
             caretPosition, sequenceData
         }) {
-            sequenceData.sequence.length.should.equal(0);
+            console.log('sequenceData: ' + JSON.stringify(sequenceData.features,null,4));
+            sequenceData.sequence.length.should.equal(3);
+            
             sequenceData.features.should.should.containSubset([{
                 start: 0,
                 end: 2
