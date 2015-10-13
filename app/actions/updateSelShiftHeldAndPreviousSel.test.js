@@ -1,4 +1,4 @@
-import '../../testSetup.js'
+import '../../test/testSetup.js'
 import updateSelShiftHeldAndPreviousSel from './updateSelShiftHeldAndPreviousSel.js'
 describe('updateSelShiftHeldAndPreviousSel', function() {
     it('expands selection layer when possible, cursor at end', function(done) {

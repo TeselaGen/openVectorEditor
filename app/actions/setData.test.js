@@ -1,6 +1,3 @@
-describe('setData fix me', function () {
-    throw new Error('fix me!')
-});
 // //var tap = require('tap');
 // //tap.mochaGlobals();
 

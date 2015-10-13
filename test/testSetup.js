@@ -6,7 +6,7 @@ chai.use(require('chai-things'));
 
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 
-export var testSequenceData = tidyUpSequenceData({
+var testSequenceData = tidyUpSequenceData({
     sequence: 'atgc',
     features: [{
         start: 0,
@@ -31,9 +31,15 @@ export var testSequenceData = tidyUpSequenceData({
     }]
 });
 
-export var testBlankSelectionLayer = {
+var testBlankSelectionLayer = {
 	selected: false,
 	start: -1,
 	end: -1,
 	cursorAtEnd: false
 }
+
+module.exports = {
+    testSequenceData: testSequenceData,
+    testBlankSelectionLayer: testBlankSelectionLayer
+}
+

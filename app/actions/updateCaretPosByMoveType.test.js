@@ -1,4 +1,4 @@
-require('../../testSetup.js');
+require('../../test/testSetup.js');
 var updateCaretPosByMoveType = require('./updateCaretPosByMoveType.js');
 
 describe('updateCaretPosByMoveType', function() {

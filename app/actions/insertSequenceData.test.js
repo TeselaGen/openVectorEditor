@@ -1,4 +1,4 @@
-import {testSequenceData} from '../../testSetup.js';
+import {testSequenceData} from '../../test/testSetup.js';
 var insertSequenceData = require('./insertSequenceData.js');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 
@@ -38,9 +38,10 @@ describe('insertSequenceData', function() {
             caretPosition.should.equal(10);
         });
     });
+
     it('inserts mid-sequence and adjusts entire sequence and annotations correctly', function() {
         insertSequenceData({
-            sequenceData: sequenceData,
+            sequenceData: testSequenceData,
             newSequenceData: tidyUpSequenceData({
                 sequence: 'atgagagaga',
                 features: [{
