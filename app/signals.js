@@ -34,7 +34,7 @@ export default function registerSignals(controller) {
         a.updateCaretPosByMoveType,
         a.checkShiftHeld, {
             success: [a.checkLayerIsSelected, {
-                success: [a.updateSelectionShiftHeldAndPreviousSelection, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
+                success: [a.updateSelShiftHeldAndPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
                 error: [a.updateSelNoPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition]
             }],
             error: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],

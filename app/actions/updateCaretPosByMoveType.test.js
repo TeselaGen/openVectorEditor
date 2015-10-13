@@ -1,4 +1,4 @@
-require('../../testSetup.js');
+require('../../test/testSetup.js');
 var updateCaretPosByMoveType = require('./updateCaretPosByMoveType.js');
 
 describe('updateCaretPosByMoveType', function() {
@@ -7,7 +7,7 @@ describe('updateCaretPosByMoveType', function() {
         var bpsPerRow = 5;
         var caretPosition = 0;
         var newCaretPosition = 7;
-        var selectionLayer = {start: 4, end: 3, selected: true, caretAtEnd: true};
+        var selectionLayer = {start: 4, end: 3, selected: true, cursorAtEnd: true};
         var shiftHeld = false;
         var type = 'moveCaretLeftOne';
         
