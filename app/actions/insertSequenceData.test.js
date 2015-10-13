@@ -1,34 +1,11 @@
-require('../../testSetup.js');
+import {testSequenceData} from '../../testSetup.js';
 var insertSequenceData = require('./insertSequenceData.js');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
-var sequenceData = tidyUpSequenceData({
-    sequence: 'atgc',
-    features: [{
-        start: 0,
-        end: 3
-    }, {
-        start: 1,
-        end: 1
-    }],
-    parts: [{
-        start: 0,
-        end: 3
-    }, {
-        start: 1,
-        end: 1
-    }],
-    translations: [{
-        start: 3,
-        end: 3
-    }, {
-        start: 0,
-        end: 0
-    }]
-});
+
 describe('insertSequenceData', function() {
     it('inserts sequence sequence at start of sequence and adjusts annotations correctly', function() {
         insertSequenceData({
-            sequenceData: sequenceData,
+            sequenceData: testSequenceData,
             newSequenceData: tidyUpSequenceData({
                 sequence: 'atgagagaga'
             }),

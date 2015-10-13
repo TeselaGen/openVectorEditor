@@ -1,12 +1,11 @@
 var assign = require('lodash/object/assign');
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var ac = require('ve-api-check');
-export default function updateSelectionShiftHeldAndPreviousSelection({updatedCaretPos, sequenceLength, bpsPerRow, caretPosition, newCaretPosition, selectionLayer, shiftHeld, type}, tree, output) {
-    ac.throw(ac.number, caretPosition);
-    ac.throw(ac.bool.optional, shiftHeld);
+export default function updateSelShiftHeldAndPreviousSel({updatedCaretPos, sequenceLength, selectionLayer}, tree, output) {
     ac.throw(ac.object, selectionLayer);
-    ac.throw(ac.number.optional, newCaretPosition);
-    ac.throw(ac.string, type);
+    ac.throw(ac.number.optional, updatedCaretPos);
+    ac.throw(ac.number.optional, sequenceLength);
+
     var oldCaretPos = getCaretFromSelection(selectionLayer);
 
     function getCaretFromSelection (selectionLayer) {
