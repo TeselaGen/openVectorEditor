@@ -2,5 +2,5 @@
 node_modules/
 stats.json
 bundle.js
-.DS_store
+.DS_Store
 npm-debug.log
