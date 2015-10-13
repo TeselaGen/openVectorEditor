@@ -42,8 +42,8 @@ export default function registerSignals(controller) {
     //tnr: NOT YET WORKING:
     //higher priority
     controller.signal('pasteSequenceString', [a.pasteSequenceString]);
-    controller.signal('setSelectionLayer', [a.setSelectionLayer]);
-    controller.signal('toggleAnnotationDisplay', [a.setCaretPosition]);
+    controller.signal('setOrClearSelectionLayer', [a.setSelectionLayer]);
+    controller.signal('toggleAnnotationDisplay', [a.toggleAnnotationDisplay]); // in progress - SL
 
     //lower priority
     controller.signal('addAnnotations', [a.addAnnotations]);
