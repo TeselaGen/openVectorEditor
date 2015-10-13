@@ -19,6 +19,8 @@ export default function registerSignals(controller) {
         a.setData('caretPosition', 'sequenceData'));
     controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
     controller.signal('setCaretPosition', a.setCaretPosition);
+    // SL: working but may need to be more robust
+    controller.signal('toggleAnnotationDisplay', [a.toggleAnnotationDisplay]);
     // controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
     //tnr: MOSTLY WORKING: 
     controller.signal('backspacePressed',
@@ -43,7 +45,6 @@ export default function registerSignals(controller) {
     //higher priority
     controller.signal('pasteSequenceString', [a.pasteSequenceString]);
     controller.signal('setSelectionLayer', [a.setSelectionLayer]);
-    controller.signal('toggleAnnotationDisplay', [a.setCaretPosition]);
 
     //lower priority
     controller.signal('addAnnotations', [a.addAnnotations]);
