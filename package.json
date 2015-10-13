@@ -6,7 +6,7 @@
   "repository": "https://github.com/TeselaGen/openVectorEditor",
   "scripts": {
     "lint": "eslint ./app/**/*.js",
-    "test": "mocha app/**/*.test.js --harmony --compilers js:babel/register",
+    "test": "karma start",
     "checkDeps": "npm-check-updates",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "nestest": "nestest",
