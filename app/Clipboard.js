@@ -1,4 +1,5 @@
 var React = require("react");
+import ReactDOM from 'react-dom';
 
 var Clipboard = React.createClass({
 
@@ -30,13 +31,13 @@ var Clipboard = React.createClass({
       return;
     }
 
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     element.focus();
     element.select();
   },
 
   handleKeyUp: function(e) {
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     element.blur();
   },
 
