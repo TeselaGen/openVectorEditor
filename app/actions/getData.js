@@ -6,6 +6,10 @@ export default function getData() {
     var getData = function({}, tree, output) {
         var data = {};
         paths.forEach(function(path) {
+            var info = tree.get(path);
+            if (info === undefined) {
+                throw new Error ('tnr: this probably should not be coming back as undefined, make sure you are passing in the arguments as individual strings')
+            }
             data[path] = tree.get(path);
         });
         output(data);

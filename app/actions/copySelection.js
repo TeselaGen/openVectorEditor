@@ -9,18 +9,17 @@ export default function copySelection({
 }, tree, output) {
     ac.throw(ac.sequenceData, sequenceData)
     var allowPartialAnnotationsOnCopy = tree.get('allowPartialAnnotationsOnCopy');
-    if (sequenceData && selectionLayer.selected) {
+    if (selectionLayer.selected) {
         output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
     } else {
         output.error();
     }
 
-
     function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
         var newSequenceData = {};
         newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);
-        newSequenceData.features = copyAnnotationsByRange(sequenceData.features, rangeToCopy, sequenceLength);
-        newSequenceData.parts = copyAnnotationsByRange(sequenceData.parts, rangeToCopy, sequenceLength);
+        newSequenceData.features = copyAnnotationsByRange(sequenceData.features, rangeToCopy, sequenceData.sequence.length);
+        newSequenceData.parts = copyAnnotationsByRange(sequenceData.parts, rangeToCopy, sequenceData.sequence.length);
 
         function copyAnnotationsByRange(annotations, rangeToCopy, sequenceLength) {
             var copiedAnnotations = [];
