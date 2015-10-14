@@ -21,7 +21,7 @@ module.exports = {
         }, {
             test: /\.js$/,
             exclude: /node_modules/,
-            include: path.join(__dirname, 'app'),
+            // include: path.join(__dirname, 'app'),
             loader: ['babel'],
             query: {
                 stage: 1

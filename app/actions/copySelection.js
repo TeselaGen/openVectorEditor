@@ -2,24 +2,21 @@ var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-utils/collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var getSubstringByRange = require('get-substring-by-range');
-var areRangesValid = require('ve-range-utils/areRangesValid');
+var ac = require('ve-api-check');
 
 export default function copySelection({
     selectionLayer, sequenceData
-}, tree) {
+}, tree, output) {
+    ac.throw(ac.sequenceData, sequenceData)
     var allowPartialAnnotationsOnCopy = tree.get('allowPartialAnnotationsOnCopy');
     if (sequenceData && selectionLayer.selected) {
-        tree.set(['clipboardData'], copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy));
+        output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
+    } else {
+        output.error();
     }
 
+
     function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
-        if (sequenceData.sequence !== '' && !sequenceData.sequence) {
-            throw new Error('invalid sequence data');
-        }
-        var sequenceLength = sequenceData.sequence.length;
-        if (!areRangesValid([rangeToCopy], sequenceLength)) {
-            throw new Error('invalid range passed');
-        }
         var newSequenceData = {};
         newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);
         newSequenceData.features = copyAnnotationsByRange(sequenceData.features, rangeToCopy, sequenceLength);
