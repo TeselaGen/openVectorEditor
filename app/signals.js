@@ -37,13 +37,21 @@ export default function registerSignals(controller) {
     ]);
     controller.signal('caretMoved', [
         a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow'),
-        a.updateCaretPosByMoveType,
         a.checkShiftHeld, {
             success: [a.checkLayerIsSelected, {
-                success: [a.updateSelShiftHeldAndPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
-                error: [a.updateSelNoPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition]
-            }],
-            error: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
+                    success: [a.updateCaretPosByMoveType, a.updateSelShiftHeldAndPreviousSel],
+                    error: [a.updateCaretPosByMoveType, a.updateSelNoPreviousSel]
+                },
+                a.setSelectionLayer,
+                a.updateOutput('updatedCaretPos', 'caretPosition'),
+                a.setCaretPosition
+            ],
+            error: [a.checkLayerIsSelected, {
+                    success: [a.updateCaretPosByMoveTypeCancelSel, ],
+                    error: [a.updateCaretPosByMoveType]
+                },
+                a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition
+            ],
         }
     ]);
 
