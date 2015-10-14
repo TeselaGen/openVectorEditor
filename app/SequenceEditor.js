@@ -1,4 +1,12 @@
 import React, {PropTypes} from 'react';
+var assign = require('lodash/object/assign');
+// import { propTypes, defaultProps } from 'tnrich/react-props-decorators';
+function propTypes(param) {
+  return function(clazz) {
+    clazz.propTypes = assign({}, clazz.propTypes || {}, param);
+    return clazz;
+  };
+}
 var Combokeys = require("combokeys");
 var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
