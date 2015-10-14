@@ -67,6 +67,7 @@ let CutsiteLabelContainer = React.createClass({
             let height = (level) * (annotationHeight + spaceBetweenAnnotations);
             annotationsSVG.push(
                 <div left={xStart}
+                    key={index}
                     onClick={function (event) {
                               signals.setSelectionLayer({selectionLayer: this});
                               event.stopPropagation();

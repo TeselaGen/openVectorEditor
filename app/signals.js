@@ -7,29 +7,31 @@ reqContext.keys().forEach(function(key) {
 //add all the signals to the cerebral controller here
 export default function registerSignals(controller) {
     //tnr:  WORKING: 
-    controller.signal('copySelection', a.getData('selectionLayer'), a.copySelection);
-    controller.signal('selectAll', a.selectAll, a.setSelectionLayer);
-    controller.signal('sequenceDataInserted',
+    controller.signal('copySelection', [a.getData('selectionLayer'), a.copySelection]);
+    controller.signal('selectAll', [a.selectAll, a.setSelectionLayer]);
+    controller.signal('sequenceDataInserted', [
         a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
             success: [a.deleteSequence],
             error: [a.getData('caretPosition')]
         },
         a.insertSequenceData,
-        a.setData('caretPosition', 'sequenceData'));
-    controller.signal('setCutsiteLabelSelection', a.setCutsiteLabelSelection);
-    controller.signal('setCaretPosition', a.setCaretPosition);
+        a.setData('caretPosition', 'sequenceData')
+    ]);
+    controller.signal('setCutsiteLabelSelection', [a.setCutsiteLabelSelection]);
+    controller.signal('setCaretPosition', [a.setCaretPosition]);
     // SL: working but may need to be more robust
     controller.signal('toggleAnnotationDisplay', [a.toggleAnnotationDisplay]);
-    // controller.signal('editorClicked', a.setCaretPosition, a.setSelectionLayer);
+    // controller.signal(]'editorClicked', [ a.setCaretPosition, a.setSelectionLayer);
     //tnr: MOSTLY WORKING: 
-    controller.signal('backspacePressed',
+    controller.signal('backspacePressed', [
         a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
             success: [a.deleteSequence],
             error: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
-        });
-    controller.signal('caretMoved',
+        }
+    ]);
+    controller.signal('caretMoved', [
         a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow'),
         a.updateCaretPosByMoveType,
         a.checkShiftHeld, {
@@ -38,8 +40,8 @@ export default function registerSignals(controller) {
                 error: [a.updateSelNoPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition]
             }],
             error: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
-        },
-    );
+        }
+    ]);
 
     //tnr: NOT YET WORKING:
     //higher priority
