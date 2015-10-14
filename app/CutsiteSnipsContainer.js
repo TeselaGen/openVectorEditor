@@ -2,7 +2,7 @@ var assign = require('lodash/object/assign');
 let React = require('react');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+let PureRenderMixin = require('react-addons-pure-render-mixin');
 var snipStyle = {
     height: "100%",
     background: 'black',

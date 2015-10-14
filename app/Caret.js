@@ -1,6 +1,6 @@
 var assign = require('lodash/object/assign');
 let React = require('react');
-let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+let PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var cursorStyle = {
     height: "98%",
