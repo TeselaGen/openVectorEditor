@@ -11,10 +11,11 @@
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "nestest": "nestest",
     "linklocal": "linklocal",
-    "testDebug": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
-    "start_old": "npm run linklocal && webpack-dev-server --devtool eval --progress --colors --content-base",
+    "bundleTests": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
+    "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
+    "bot": "npm run bundleTests & npm run openTestPage",
     "start": "npm run linklocal && node devServer.js",
-    "buildProduction": "npm run linklocal && webpack -p --config webpack.config.production.js",
+    "buildProduction_OUTDATED_FIX_ME!": "npm run linklocal && webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "dependencies": {
