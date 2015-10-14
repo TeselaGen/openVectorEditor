@@ -44,6 +44,7 @@
     "object-assign": "^4.0.1",
     "random-color": "0.0.1",
     "react": "^0.14.0",
+    "react-addons-pure-render-mixin": "^0.14.0",
     "react-clipboard": "^1.1.1",
     "react-dom": "^0.14.0",
     "react-draggable": "^0.8.2",

@@ -2,7 +2,7 @@ let React = require('react');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Cutsite = require('./Cutsite');
-let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+let PureRenderMixin = require('react-addons-pure-render-mixin');
 
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
 let AnnotationPositioner = require('./AnnotationPositioner');
