@@ -1,7 +1,9 @@
 export default function checkShiftHeld({ shiftHeld }, tree, output) {
     if (shiftHeld) {
-        output.success();
+        output.shiftHeld();
     } else {
-        output.error();
+        output.shiftNotHeld();
     }
 }
+
+checkShiftHeld.outputs = ['shiftHeld', 'shiftNotHeld'];

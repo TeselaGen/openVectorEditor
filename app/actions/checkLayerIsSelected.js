@@ -1,7 +1,8 @@
 export default function checkLayerIsSelected({ selectionLayer }, tree, output) {
     if (selectionLayer.selected) {
-        output.success();
+        output.selected();
     } else {
-        output.error()
+        output.notSelected()
     }
 }
+checkLayerIsSelected.outputs = ['selected', 'notSelected'];

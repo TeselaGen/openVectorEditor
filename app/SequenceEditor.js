@@ -104,17 +104,17 @@ class SequenceEditor extends React.Component {
         combokeys.detach()
     }
 
-    handleEditorClick(newCaretPosition, event) {
+    handleEditorClick(updatedCaretPos, event) {
         //if cursor position is different than the original position, reset the position and clear the selection
         // console.log('onclick!!');
         // var bp = this.getNearestCursorPositionToMouseEvent(event);
         if (this.editorBeingDragged) {
             //do nothing because the click was triggered by a drag event
         } else {
-            this.props.signals.caretMoved({
+            this.props.signals.editorClicked({
                 shiftHeld: event.shiftKey,
                 type: 'editorClick',
-                newCaretPosition: newCaretPosition
+                updatedCaretPos: updatedCaretPos
             })
         }
 

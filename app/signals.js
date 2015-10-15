@@ -12,8 +12,8 @@ export default function registerSignals(controller) {
     controller.signal('sequenceDataInserted', [
         a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
-            success: [a.deleteSequence],
-            error: [a.getData('caretPosition')]
+            selected: [a.deleteSequence],
+            notSelected: [a.getData('caretPosition')]
         },
         a.insertSequenceData,
         a.setData('caretPosition', 'sequenceData')
@@ -22,26 +22,42 @@ export default function registerSignals(controller) {
     controller.signal('setCaretPosition', [a.setCaretPosition]);
     // SL: working but may need to be more robust
     controller.signal('toggleAnnotationDisplay', [a.toggleAnnotationDisplay]);
-    // controller.signal(]'editorClicked', [ a.setCaretPosition, a.setSelectionLayer);
+
     //tnr: MOSTLY WORKING: 
     controller.signal('backspacePressed', [
         a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
-            success: [a.deleteSequence],
-            error: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
+            selected: [a.deleteSequence],
+            notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
         }
     ]);
-    controller.signal('caretMoved', [
-        a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow'),
-        a.updateCaretPosByMoveType,
+
+    controller.signal('editorClicked', [
+        a.getData('selectionLayer', 'sequenceLength', 'bpsPerRow', 'caretPosition'),
         a.checkShiftHeld, {
-            success: [a.checkLayerIsSelected, {
-                success: [a.updateSelShiftHeldAndPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
-                error: [a.updateSelNoPreviousSel, a.setSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition]
+            shiftHeld: [a.checkLayerIsSelected, {
+                selected: [a.updateSelectionShiftClick, a.setSelectionLayer],
+                notSelected: [a.createSelectionShiftClick, {
+                    updateSelection: [a.setSelectionLayer],
+                    doNothing: []
+                }]
             }],
-            error: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
+            shiftNotHeld: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
         }
     ]);
+
+    controller.signal('caretMoved', [
+        a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+            path: ['sequenceData', 'circular'],
+            name: 'circular'
+        }),
+        a.moveCaret,
+        a.handleCaretMoved, {
+            caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+            selectionUpdated: [a.setSelectionLayer],
+        }
+    ]);
+
 
     //tnr: NOT YET WORKING:
     //higher priority

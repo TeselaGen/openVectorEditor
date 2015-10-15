@@ -6,7 +6,11 @@ export default function getData() {
     var getData = function({}, tree, output) {
         var data = {};
         paths.forEach(function(path) {
-            data[path] = tree.get(path);
+            if (path.path) {
+                data[path.name] = tree.get(path.path);
+            } else {
+                data[path] = tree.get(path);
+            }
         });
         output(data);
     }

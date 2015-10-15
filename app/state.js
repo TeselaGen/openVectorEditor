@@ -63,7 +63,7 @@ export default {
         selected: false,
         cursorAtEnd: true
     },
-    caretPosition: -1,
+    caretPosition: 0,
     visibleRows: {
         start: 0,
         end: 0

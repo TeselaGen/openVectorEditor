@@ -15,6 +15,7 @@ let CutsiteLabelContainer = React.createClass({
         signals: React.PropTypes.object.isRequired,
     },
     render: function() {
+        return null; //tnr: commenting this out because interval tree is being buggy
         var {
             annotationRanges,
             bpsPerRow,
