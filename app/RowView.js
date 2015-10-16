@@ -4,6 +4,7 @@ import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this 
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
+var log = require('debug-logger')('RowView');
 
 @Cerebral({
     rowViewDimensions: ['rowViewDimensions'],
@@ -57,16 +58,16 @@ class RowView extends React.Component {
         for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
             var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
             var boundingRowRect = rowDomNode.getBoundingClientRect();
-            // console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
-            // console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
+            log.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
+            log.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
             if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
                 //then the click is falls within this row
-                // console.log('HGGGG');
+                log.log('HGGGG');
                 rowNotFound = false;
                 var rowNumber = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
                 var row = this.props.rowData[rowNumber];
                 if (event.clientX - boundingRowRect.left < 0) {
-                    console.warn('this should never be 0...');
+                    log.warn('this should never be 0...');
                     callback(row.start, event); //return the first bp in the row
                 } else {
                     var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
@@ -75,14 +76,14 @@ class RowView extends React.Component {
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;
                     }
-                    // console.log('nearestBP', nearestBP);
+                    log.log('nearestBP', nearestBP);
                     callback(nearestBP, event);
                 }
                 break; //break the for loop early because we found the row the click event landed in
             }
         }
         if (rowNotFound) {
-            console.warn('was not able to find the correct row');
+            log.warn('was not able to find the correct row');
             //return the last bp index in the rendered rows
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
@@ -153,7 +154,7 @@ class RowView extends React.Component {
             // paddingRight: "20px"
             //   padding: 10
         };
-        // console.log('rowData: ' + JSON.stringify(rowData,null,4));
+        log.log('rowData: ' + JSON.stringify(rowData,null,4));
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
