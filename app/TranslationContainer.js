@@ -6,7 +6,7 @@ const AnnotationPositioner = require('./AnnotationPositioner');
 const Translation = require('./Translation');
 const getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 
-const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+const PureRenderMixin = require('react-addons-pure-render-mixin');
 
 const TranslationContainer = React.createClass({
     mixins: [PureRenderMixin],

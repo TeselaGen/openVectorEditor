@@ -4,7 +4,7 @@ let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
 let Orf = require('./Orf');
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
 let AnnotationPositioner = require('./AnnotationPositioner');
-let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+let PureRenderMixin = require('react-addons-pure-render-mixin');
 let OrfContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {

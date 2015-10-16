@@ -1,6 +1,6 @@
 var React = require('react');
 var interpolate = require('interpolate');
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var Feature = React.createClass({
     mixins: [PureRenderMixin],
