@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-react';
-
+import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
@@ -24,6 +24,30 @@ var InfiniteScroller = require('react-variable-height-infinite-scroller');
     caretPosition: ['caretPosition'],
     sequenceLength: ['sequenceLength'],
     bpsPerRow: ['bpsPerRow']
+})
+@propTypes({
+    rowViewDimensions: PropTypes.object.isRequired,
+    rowData: PropTypes.array.isRequired,
+    charWidth: PropTypes.number.isRequired,
+    selectionLayer: PropTypes.object.isRequired,
+    cutsiteLabelSelectionLayer: PropTypes.object.isRequired,
+    annotationHeight: PropTypes.number.isRequired,
+    tickSpacing: PropTypes.number.isRequired,
+    spaceBetweenAnnotations: PropTypes.number.isRequired,
+    showFeatures: PropTypes.bool.isRequired,
+    showTranslations: PropTypes.bool.isRequired,
+    showParts: PropTypes.bool.isRequired,
+    showOrfs: PropTypes.bool.isRequired,
+    showAxis: PropTypes.bool.isRequired,
+    showCutsites: PropTypes.bool.isRequired,
+    showReverseSequence: PropTypes.bool.isRequired,
+    caretPosition: PropTypes.number.isRequired,
+    sequenceLength: PropTypes.number.isRequired,
+    bpsPerRow: PropTypes.number.isRequired,
+    handleEditorDrag: PropTypes.func.isRequired,
+    handleEditorDragStart: PropTypes.func.isRequired,
+    handleEditorDragStop: PropTypes.func.isRequired,
+    handleEditorClick: PropTypes.func.isRequired,
 })
 class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
@@ -163,18 +187,5 @@ class RowView extends React.Component {
         );
     }
 }
-
-RowView.propTypes = {
-    // rowViewDimensions: PropTypes.object.isRequired,
-    // rowData: PropTypes.array.isRequired,
-    // charWidth: PropTypes.number.isRequired,
-
-    handleEditorDrag: PropTypes.func.isRequired,
-    handleEditorDragStart: PropTypes.func.isRequired,
-    handleEditorDragStop: PropTypes.func.isRequired,
-    handleEditorClick: PropTypes.func.isRequired
-};
-
-
 
 module.exports = RowView;

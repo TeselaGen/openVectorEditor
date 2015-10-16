@@ -1,15 +1,20 @@
 export default function getData() {
-    // if (!Array.isArray(paths)) {
-    //     paths = [paths]
-    // }
+    //takes in a path to data,
+    //or an object with a path to the data and a desired name 
     var paths = Array.prototype.slice.call(arguments);
     var getData = function({}, tree, output) {
         var data = {};
         paths.forEach(function(path) {
-            if (path.path) {
-                data[path.name] = tree.get(path.path);
+            var info;
+            if (path.path) { 
+                info = tree.get(path.path);
+                data[path.name] = info
             } else {
-                data[path] = tree.get(path);
+                info = tree.get(path);
+                data[path] = info
+            }
+            if (info === undefined) {
+                throw new Error ('tnr: this probably should not be coming back as undefined, make sure you are passing in the correct arguments')
             }
         });
         output(data);

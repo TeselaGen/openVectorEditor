@@ -3,7 +3,7 @@ var assign = require('lodash/object/assign');
 let React = require('react');
 var Caret = require('./Caret');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-let PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+let PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var highlightLayerStyle = {
     height: "98%",
