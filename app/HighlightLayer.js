@@ -69,8 +69,8 @@ let HighlightLayer = React.createClass({
                     event.preventDefault();
                     event.stopPropagation();
                 }}>
-                    {startSelectionCursor}
                     {selectionLayers}
+                    {startSelectionCursor}
                     {endSelectionCursor}
                 </div>
             );

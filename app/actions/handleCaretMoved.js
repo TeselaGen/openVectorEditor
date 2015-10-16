@@ -8,10 +8,12 @@ export default function handleCaretMoved({
     ac.throw(ac.bool.optional, shiftHeld);
     ac.throw(ac.object, selectionLayer);
     ac.throw(ac.string, type);
-    var newCaretPosition = normalizeNewCaretPos(Number(caretPosition + moveBy), sequenceLength, circular);
+    var newCaretPosition;
     if (selectionLayer.selected) {
         if (shiftHeld) {
-            if (selectionLayer.start < selectionLayer.end) {
+            newCaretPosition = normalizeNewCaretPos(Number(caretPosition + moveBy), sequenceLength, circular);
+            var anchorPos;
+            if (selectionLayer.start <= selectionLayer.end) {
                 //define an anchor pos
                 //tnr: in progress
                 if (selectionLayer.cursorAtEnd) {
@@ -19,63 +21,86 @@ export default function handleCaretMoved({
                         return output.caretMoved({
                             caretPosition: newCaretPosition
                         });
-
                     }
+                    anchorPos = selectionLayer.start;
                 } else {
-                    if (newCaretPosition === selectionLayer.start && moveBy < 0) {
+                    if (newCaretPosition === selectionLayer.end + 1 && moveBy > 0) {
                         return output.caretMoved({
                             caretPosition: newCaretPosition
                         });
                     }
+                    anchorPos = selectionLayer.end + 1;
                 }
-                    if (newCaretPosition === selectionLayer.start && moveBy < 0) {
-                        output.caretMoved({
-                            caretPosition: newCaretPosition
-                        });
-                    } else {
-                        if (selectionLayer.start < newCaretPosition) {
-                            output.selectionUpdated({
-                                selectionLayer: {
-                                    start: selectionLayer.start,
-                                    end: newCaretPosition - 1,
-                                    cursorAtEnd: true
-                                }
-                            })
-                        } else {
-                            output.selectionUpdated({
-                                selectionLayer: {
-                                    start: newCaretPosition,
-                                    end: selectionLayer.start - 1,
-                                    cursorAtEnd: true
-                                }
-                            })
+                if (newCaretPosition > anchorPos) {
+                    output.selectionUpdated({
+                        selectionLayer: {
+                            start: anchorPos,
+                            end: newCaretPosition - 1,
+                            cursorAtEnd: true
                         }
-                    }
+                    });
                 } else {
-                    if (newCaretPosition - 1 === selectionLayer.end && moveBy > 0) {
-                        output.caretMoved({
-                            caretPosition: newCaretPosition
-                        });
-                    } else {
-
-                        output.selectionUpdated({
-                            selectionLayer: {
-                                start: newCaretPosition,
-                                end: selectionLayer.end,
-                                cursorAtEnd: false
-                            }
-                        })
-                    }
+                    output.selectionUpdated({
+                        selectionLayer: {
+                            start: newCaretPosition,
+                            end: anchorPos - 1,
+                            cursorAtEnd: false
+                        }
+                    });
                 }
-            } else {
+            } else { //circular selection
+                if (selectionLayer.cursorAtEnd) {
+                    anchorPos = selectionLayer.start;
+                } else {
+                    anchorPos = selectionLayer.end + 1;
+                }
+                if (newCaretPosition <= anchorPos) {
+                    output.selectionUpdated({
+                        selectionLayer: {
+                            start: anchorPos,
+                            end: newCaretPosition - 1,
+                            cursorAtEnd: true
+                        }
+                    });
+                } else {
+                    output.selectionUpdated({
+                        selectionLayer: {
+                            start: newCaretPosition,
+                            end: anchorPos - 1,
+                            cursorAtEnd: false
+                        }
+                    });
+                }
 
             }
-        } else {
-            output.caretMoved({
-                caretPosition: newCaretPosition
-            });
+        } else { //no shiftHeld
+            //handle special cases
+            if (moveBy === 0) {
+                if (type === 'moveCaretRightOne') {
+                    return output.caretMoved({
+                        caretPosition: selectionLayer.end + 1
+                    });
+                } else if (type === 'moveCaretLeftOne') {
+                    return output.caretMoved({
+                        caretPosition: selectionLayer.start
+                    });
+                } else {
+                    throw new Error('this case should not be hit...')
+                }
+            } else if (moveBy > 0) {
+                newCaretPosition = normalizeNewCaretPos(Number(selectionLayer.end + moveBy), sequenceLength, circular);
+                output.caretMoved({
+                    caretPosition: newCaretPosition + 1
+                });
+            } else {
+                newCaretPosition = normalizeNewCaretPos(Number(selectionLayer.start + moveBy), sequenceLength, circular);
+                output.caretMoved({
+                    caretPosition: newCaretPosition
+                });
+            }
         }
-    } else {
+    } else { //no selection layer
+        newCaretPosition = normalizeNewCaretPos(Number(caretPosition + moveBy), sequenceLength, circular);
         if (shiftHeld) {
             if (moveBy > 0) {
                 if (newCaretPosition === caretPosition) {
@@ -91,7 +116,7 @@ export default function handleCaretMoved({
                         }
                     })
                 }
-            } else {
+            } else { //moving to the left
                 if (newCaretPosition === caretPosition) {
                     output.caretMoved({
                         caretPosition: newCaretPosition
@@ -106,7 +131,7 @@ export default function handleCaretMoved({
                     })
                 }
             }
-        } else {
+        } else { //no shiftHeld
             output.caretMoved({
                 caretPosition: newCaretPosition
             });

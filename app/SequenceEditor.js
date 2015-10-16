@@ -163,7 +163,7 @@ class SequenceEditor extends React.Component {
         }
     }
 
-    handleEditorDragStart(caretPosition) {
+    handleEditorDragStart(caretPosition, event) {
       var {selectionLayer} = this.props;
         // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
         if (event.target.className === "cursor" && selectionLayer.selected) {

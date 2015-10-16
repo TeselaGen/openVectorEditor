@@ -1,33 +1,37 @@
 var ac = require('ve-api-check');
 var handleMoves = {
-    'moveCaretLeftOne': function ({selectionLayer, shiftHeld}) {
+    moveCaretLeftOne: function ({selectionLayer, shiftHeld}) {
         if (selectionLayer.selected && !shiftHeld) {
             return 0;
         }
         return - 1;
     },
-    'moveCaretRightOne': function ({selectionLayer, shiftHeld}) {
+    moveCaretRightOne: function ({selectionLayer, shiftHeld}) {
         if (selectionLayer.selected && !shiftHeld) {
             return 0;
         }
         return 1;
     },
-    'moveCaretUpARow': function ({bpsPerRow}) {
+    moveCaretUpARow: function ({bpsPerRow}) {
         return  - bpsPerRow;
     },
-    'moveCaretDownARow': function ({bpsPerRow}) {
+    moveCaretDownARow: function ({bpsPerRow}) {
         return  bpsPerRow;
     },
-    'moveCaretToEndOfRow': function ({bpsPerRow, caretPosition}) {
-        return  (caretPosition % (bpsPerRow - 1));
+    moveCaretToEndOfRow: function ({bpsPerRow, caretPosition}) {
+        return  (bpsPerRow - (caretPosition % bpsPerRow));
     },
-    'moveCaretToStartOfRow': function ({bpsPerRow, caretPosition}) {
-        return  - (caretPosition % (bpsPerRow - 1));
+    moveCaretToStartOfRow: function ({bpsPerRow, caretPosition}) {
+        var moveBy = -caretPosition % bpsPerRow;
+        if (moveBy === 0) {
+            moveBy = -bpsPerRow
+        }
+        return moveBy;
     },
-    'moveCaretToStartOfSequence': function ({caretPosition}) {
+    moveCaretToStartOfSequence: function ({caretPosition}) {
         return -caretPosition
     },
-    'moveCaretToEndOfSequence': function ({caretPosition, sequenceLength}) {
+    moveCaretToEndOfSequence: function ({caretPosition, sequenceLength}) {
         return sequenceLength - caretPosition;
     },
 }
