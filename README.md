@@ -9,6 +9,5 @@
 Google hangout [link](https://hangouts.google.com/call/jhgq63wgvimabmjjct5526dnl4a)
 
 ## Project Info: [Workflowy list] (https://workflowy.com/s/AMpvp1km0o)
-https://workflowy.com/s/AMpvp1km0o
 
 
