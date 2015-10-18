@@ -7,19 +7,24 @@ module.exports = {
     },
     module: {
         loaders: [{
-                test: /\.css$/,
-                loader: "style!css"
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: "babel-loader"
+            test: /\.json$/,
+            loader: "json-loader"
+        }, {
+            test: /\.css$/,
+            loader: "style!css"
+        }, {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            // include: path.join(__dirname, 'app'),
+            loader: ['babel-loader'],
+            query: {
+                stage: 1
             }
-        ]
+        }]
     },
     plugins: [
         //tnr: this plugin sets the NODE_ENV variable to production which deactivates both react proptypes and api-check!
-        new webpack.DefinePlugin({ 
+        new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify('production')
             }

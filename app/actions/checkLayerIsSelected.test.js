@@ -1,25 +1,29 @@
-var checkShiftHeld = require('./checkShiftHeld');
-describe('checkShiftHeld', function() {
-    it('should call success when shiftHeld = true', function(done) {
-        checkShiftHeld({
-            shiftHeld: true
+var checkLayerIsSelected = require('./checkLayerIsSelected');
+describe('checkLayerIsSelected', function() {
+    it('should call success when selectionLayer.selected = true', function(done) {
+        checkLayerIsSelected({
+            selectionLayer: {
+                selected: true
+            }
         }, {}, {
-            success: function() {
+            selected: function() {
                 done()
             },
-            error: function() {
+            notSelected: function() {
                 throw new Error();
             }
         });
     });
-    it('should call error when shiftHeld = false', function(done) {
-        checkShiftHeld({
-            shiftHeld: false
+    it('should call error when selectionLayer.selected = false', function(done) {
+        checkLayerIsSelected({
+            selectionLayer: {
+                selected: false
+            }
         }, {}, {
-            success: function() {
+            selected: function() {
                 throw new Error();
             },
-            error: function() {
+            notSelected: function() {
                 done()
             }
         });

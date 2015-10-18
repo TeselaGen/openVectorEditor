@@ -1,5 +1,5 @@
 //tnr: little webpack trick to require all the action files and add them to the 'a' object
-var reqContext = require.context('./actions/', false, /^((?!test).)*$/);
+var reqContext = require.context('./actions/', true, /^((?!test).)*$/);
 var a = {};
 reqContext.keys().forEach(function(key) {
     a[key.substring(2)] = reqContext(key)

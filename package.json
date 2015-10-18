@@ -9,13 +9,10 @@
     "test": "karma start",
     "checkDeps": "npm-check-updates",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
-    "nestest": "nestest",
     "linklocal": "linklocal",
-    "bundleTests": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
-    "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
-    "bot": "npm run bundleTests & sleep 1 && npm run openTestPage",
+    "testServer": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
     "start": "npm run linklocal && node devServer.js",
-    "buildProduction_OUTDATED_FIX_ME!": "npm run linklocal && webpack -p --config webpack.config.production.js",
+    "build": "npm run linklocal && webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "dependencies": {
