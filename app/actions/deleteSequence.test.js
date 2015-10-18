@@ -56,22 +56,21 @@ describe('deleteSequence', function() {
             console.log('sequenceData: ' + JSON.stringify(sequenceData.features,null,4));
             sequenceData.sequence.length.should.equal(3);
             
-            sequenceData.features.should.should.containSubset([{
+            sequenceData.features.should.containSubset([{
                 start: 0,
                 end: 2
             }, {
                 start: 1,
                 end: 1
             }])
-            sequenceData.parts.should.should.containSubset([{
+            sequenceData.parts.should.containSubset([{
                 start: 0,
                 end: 2
             }, {
                 start: 1,
                 end: 1
             }])
-            sequenceData.translations.should.deep.equal([])
-            caretPosition.should.equal(0);
+            caretPosition.should.equal(3);
         });
     });
 });

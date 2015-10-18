@@ -35,7 +35,6 @@ export default function registerSignals(controller) {
             notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
         }
     ]);
-
     controller.signal('editorClicked', [
         a.getData('selectionLayer', 'sequenceLength', 'bpsPerRow', 'caretPosition'),
         a.checkShiftHeld, {

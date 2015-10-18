@@ -13,7 +13,7 @@
     "linklocal": "linklocal",
     "bundleTests": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
     "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
-    "bot": "npm run bundleTests & npm run openTestPage",
+    "bot": "npm run bundleTests & sleep 1 && npm run openTestPage",
     "start": "npm run linklocal && node devServer.js",
     "buildProduction_OUTDATED_FIX_ME!": "npm run linklocal && webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
