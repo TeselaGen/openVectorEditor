@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-
+var getComplementSequenceString = require('ve-sequence-utils/getComplementSequenceString');
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
 var OrfContainer = require('./OrfContainer');
@@ -42,7 +42,6 @@ class RowItem extends React.Component {
             position: "relative",
             width: "100%",
         };
-
         return (
             <div className="rowContainer"
                 style={rowContainerStyle}
@@ -110,7 +109,7 @@ class RowItem extends React.Component {
                 </SequenceContainer>
 
                 {showReverseSequence &&
-                    <SequenceContainer sequence={row.sequence.split('').reverse().join('')} charWidth={charWidth}>
+                    <SequenceContainer sequence={ getComplementSequenceString(row.sequence)} charWidth={charWidth}>
                         {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                                                 row={row}
                                                 signals={signals}

@@ -1,4 +1,4 @@
-var DNAReverseComplementMap = {
+var DNAComplementMap = {
 	a: 't',
 	t: 'a',
 	c: 'g',
@@ -9,4 +9,4 @@ var DNAReverseComplementMap = {
 	G: 'C',
 	//tnrtodo add more letters here
 };
-module.exports = DNAReverseComplementMap;
+module.exports = DNAComplementMap;
