@@ -10,6 +10,8 @@
     "checkDeps": "npm-check-updates",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "linklocal": "linklocal",
+    "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
+    "bot": "npm run testServer & sleep 1 && npm run openTestPage",
     "testServer": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
     "start": "npm run linklocal && node devServer.js",
     "build": "npm run linklocal && webpack -p --config webpack.config.production.js",
