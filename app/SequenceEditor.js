@@ -6,6 +6,7 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
 var RowView = require('./RowView');
 var MapView = require('./MapView');
+var BottomStatusBar = require('./BottomStatusBar');
 
 var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-react';
@@ -289,6 +290,7 @@ class SequenceEditor extends React.Component {
           handleEditorDragStop={this.handleEditorDragStop.bind(this)}
           handleEditorClick={this.handleEditorClick.bind(this)}
            />
+        <BottomStatusBar/>
              <br/>
              <br/>
              <br/>
@@ -297,16 +299,5 @@ class SequenceEditor extends React.Component {
     );
   }
 }
-
-// <MapView 
-//           {...this.props}
-//           />
-
-
-// <button onClick={function () {
-//           jumpToRow(self.props.newRandomRowToJumpTo),
-//         }}>
-//           Jump to a random row: Row #{self.props.newRandomRowToJumpTo.row}
-//         </button>
 
 module.exports = SequenceEditor;
