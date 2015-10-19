@@ -1,13 +1,10 @@
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+var ac = require('ve-api-check'); 
 var adjustRangeToDeletionOfAnotherRange = require('ve-range-utils/adjustRangeToDeletionOfAnotherRange');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
 
 export default function deleteSequence({selectionLayer, sequenceData}, tree, output) {
-    if (!selectionLayer || !areNonNegativeIntegers([selectionLayer.start, selectionLayer.end])) {
-        throw new Error('can\'t delete sequence due to invalid start and end');
-        // return;
-    }
+    ac.throw(ac.range, selectionLayer)
     var newCaretPosition = selectionLayer.start;
     if (selectionLayer.start > selectionLayer.end) {
         newCaretPosition = selectionLayer.start - selectionLayer.end - 1;
