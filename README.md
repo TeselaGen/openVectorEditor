@@ -10,6 +10,7 @@ Issue Tracking: [![Stories in Ready](https://badge.waffle.io/TeselaGen/openVecto
 
 Google hangout [link](https://hangouts.google.com/call/jhgq63wgvimabmjjct5526dnl4a)
 
+See a [demo] (http://teselagen.github.io/openVectorEditor/)
 
 
 
