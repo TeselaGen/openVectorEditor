@@ -4,10 +4,10 @@ describe('checkShiftHeld', function() {
         checkShiftHeld({
             shiftHeld: true
         }, {}, {
-            success: function() {
+            shiftHeld: function() {
                 done()
             },
-            error: function() {
+            shiftNotHeld: function() {
                 throw new Error();
             }
         });
@@ -16,10 +16,10 @@ describe('checkShiftHeld', function() {
         checkShiftHeld({
             shiftHeld: false
         }, {}, {
-            success: function() {
+            shiftHeld: function() {
                 throw new Error();
             },
-            error: function() {
+            shiftNotHeld: function() {
                 done()
             }
         });
