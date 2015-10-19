@@ -146,6 +146,14 @@ export default {
             }
         }
     ]),
+    selectedSeqMeltingTemp: deriveData([
+        ['selectedSequenceString'],
+        function(selectedSequenceString) {
+            //tnr: we need to actually implement/find an algorithm to calculate melting temp
+            return selectedSequenceString.length * 10
+        }
+    ]),
+
     orfData: deriveData([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'], //decide on what to call this..
