@@ -8,12 +8,3 @@ const app = document.createElement('div');
 document.body.appendChild(app);
 
 ReactDOM.render(<Container controller={controller} app={SequenceEditor}/>, app);
-
-//tnrtodo: add back this functionality to watch for before unload
-// window.addEventListener('beforeunload', function(e) {
-//  var confirmationMessage = 'It looks like you have been editing something.';
-//  confirmationMessage += 'If you leave before saving, your changes will be lost.';
-
-//  (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-//  return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-// });
