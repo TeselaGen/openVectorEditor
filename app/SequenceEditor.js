@@ -284,6 +284,16 @@ class SequenceEditor extends React.Component {
           onPaste={this.handlePaste.bind(this)}/>
         <br/>
         totalRows:  {totalRows}
+
+        <CircularView 
+          handleEditorDrag={this.handleEditorDrag.bind(this)}
+          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+          handleEditorClick={this.handleEditorClick.bind(this)}
+           />
+
+           <div height={300}>
+           </div>
         
         <RowView 
           handleEditorDrag={this.handleEditorDrag.bind(this)}
@@ -291,12 +301,7 @@ class SequenceEditor extends React.Component {
           handleEditorDragStop={this.handleEditorDragStop.bind(this)}
           handleEditorClick={this.handleEditorClick.bind(this)}
            />
-        <CircularView 
-          handleEditorDrag={this.handleEditorDrag.bind(this)}
-          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-          handleEditorClick={this.handleEditorClick.bind(this)}
-           />
+        
         <BottomStatusBar/>
              <br/>
              <br/>

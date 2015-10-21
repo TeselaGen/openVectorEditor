@@ -50,7 +50,7 @@ var Draggable = require('react-draggable');
     handleEditorDragStop: PropTypes.func.isRequired,
     handleEditorClick: PropTypes.func.isRequired,
 })
-class RowView extends React.Component {
+class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
         var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
@@ -130,14 +130,6 @@ class RowView extends React.Component {
         };
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
         var annotationHeightRunningCount = 30;
-        var path = Path()
-            .moveto(0, 0)
-            .arc(3, 3, 2, 0, 1, 10, 10)
-            .lineto(30, 50)
-            .lineto(25, 28)
-            .qcurveto(27, 30, 32, 27)
-            .arc(3, 3, 2, 0, 1, 6, -3)
-            .closepath();
 
         var center = {x: 250, y:250}
         var radius = 100;
@@ -145,13 +137,18 @@ class RowView extends React.Component {
         var startAngle = 0;
         var endAngle = 1;
         var direction = 1;
-        var path2 = arcUtils.drawDirectedPiePiece(center, radius, thickness, startAngle, endAngle, direction)
-        
 
-        console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
+        function getAngleStartAndEndForRange (range, sequenceLength) {
+            return {
+                startAngle: 2 * Math.PI *(range.start / sequenceLength),
+                endAngle: 2 * Math.PI * range.end / sequenceLength
+            }
+        }
+
         var annotations = [];
         if (showFeatures) {
             rowData[0].features.forEach(function (feature) {
+                var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
                 console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
                 var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
                 annotations.push(<path d={path} fill="blue" />)
@@ -159,41 +156,49 @@ class RowView extends React.Component {
             annotationHeightRunningCount += rowData[0].features.length * thickness
         }
         if (showParts) {
-            rowData[0].features.forEach(function (feature) {
-                console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
+            rowData[0].parts.forEach(function (feature) {
+                var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
                 var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
-                annotations.push(<path d={path} fill="blue" />)
+                annotations.push(<path d={path} fill="orange" />)
             })
-            annotationHeightRunningCount += rowData[0].features.length * thickness
+            annotationHeightRunningCount += rowData[0].parts.length * thickness
+        }
+        if (showTranslations) {
+            rowData[0].translations.forEach(function (feature) {
+                var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
+                annotations.push(<path d={path} fill="orange" />)
+            })
+            annotationHeightRunningCount += rowData[0].translations.length * thickness
         }
 
         if (showReverseSequence) {
             rowData[0].features.forEach(function (feature) {
-                console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
                 var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
-                annotations.push(<path d={path} fill="blue" />)
+                annotations.push(<path d={path} fill="green" />)
             })
             annotationHeightRunningCount += rowData[0].features.length * thickness
         }
-        console.log('assign: ' + JSON.stringify(assign,null,4));
-        console.log('rowViewDimensions: ' + JSON.stringify(rowViewDimensions,null,4));
+
+        if (selectionLayer.selected) {
+            var {startAngle, endAngle} = getAngleStartAndEndForRange(selectionLayer, sequenceLength)
+            var path = arcUtils.drawPiePiece(center, 150, annotationHeightRunningCount, startAngle, endAngle, direction)
+            annotations.push(<path style={{opacity: .4}} d={path} fill="blue" />)
+        }
         var circViewStyle = assign({},rowViewDimensions, {
-            // overflowX: 'none',
+            height: rowViewDimensions.height + 200
             // overflowY: 'none'
         })
-        console.log('circViewStyle: ' + JSON.stringify(circViewStyle,null,4));
         return (
             <div style={circViewStyle}>
                <svg width={annotationHeightRunningCount + 500} height={annotationHeightRunningCount + 500}>
                <g transform={"translate("+annotationHeightRunningCount/2+","+annotationHeightRunningCount/2+")"}>
                 {annotations}
                </g>
-               <path d={path.print()} fill="blue" />
-                
                </svg>
             </div>
         );
     }
 }
 
-module.exports = RowView;
+module.exports = CircularView;
