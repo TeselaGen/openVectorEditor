@@ -6,6 +6,7 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
 var RowView = require('./RowView');
 var MapView = require('./MapView');
+var CircularView = require('./CircularView');
 var BottomStatusBar = require('./BottomStatusBar');
 
 var Clipboard = require('./Clipboard');
@@ -285,6 +286,12 @@ class SequenceEditor extends React.Component {
         totalRows:  {totalRows}
         
         <RowView 
+          handleEditorDrag={this.handleEditorDrag.bind(this)}
+          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+          handleEditorClick={this.handleEditorClick.bind(this)}
+           />
+        <CircularView 
           handleEditorDrag={this.handleEditorDrag.bind(this)}
           handleEditorDragStart={this.handleEditorDragStart.bind(this)}
           handleEditorDragStop={this.handleEditorDragStop.bind(this)}

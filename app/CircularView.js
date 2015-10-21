@@ -1,3 +1,6 @@
+var arcUtils = require('./graphic-helpers/arcUtils.js');
+var Path = require('paths-js/path');
+import assign from 'lodash/object/assign'
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
@@ -126,41 +129,69 @@ class RowView extends React.Component {
             //   padding: 10
         };
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
+        var annotationHeightRunningCount = 30;
+        var path = Path()
+            .moveto(0, 0)
+            .arc(3, 3, 2, 0, 1, 10, 10)
+            .lineto(30, 50)
+            .lineto(25, 28)
+            .qcurveto(27, 30, 32, 27)
+            .arc(3, 3, 2, 0, 1, 6, -3)
+            .closepath();
+
+        var center = {x: 250, y:250}
+        var radius = 100;
+        var thickness = 30;
+        var startAngle = 0;
+        var endAngle = 1;
+        var direction = 1;
+        var path2 = arcUtils.drawDirectedPiePiece(center, radius, thickness, startAngle, endAngle, direction)
+        
+
+        console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
+        var annotations = [];
+        if (showFeatures) {
+            rowData[0].features.forEach(function (feature) {
+                console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
+                annotations.push(<path d={path} fill="blue" />)
+            })
+            annotationHeightRunningCount += rowData[0].features.length * thickness
+        }
+        if (showParts) {
+            rowData[0].features.forEach(function (feature) {
+                console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
+                annotations.push(<path d={path} fill="blue" />)
+            })
+            annotationHeightRunningCount += rowData[0].features.length * thickness
+        }
+
+        if (showReverseSequence) {
+            rowData[0].features.forEach(function (feature) {
+                console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
+                annotations.push(<path d={path} fill="blue" />)
+            })
+            annotationHeightRunningCount += rowData[0].features.length * thickness
+        }
+        console.log('assign: ' + JSON.stringify(assign,null,4));
+        console.log('rowViewDimensions: ' + JSON.stringify(rowViewDimensions,null,4));
+        var circViewStyle = assign({},rowViewDimensions, {
+            // overflowX: 'none',
+            // overflowY: 'none'
+        })
+        console.log('circViewStyle: ' + JSON.stringify(circViewStyle,null,4));
         return (
-            <Draggable
-            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-            onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDrag)}   
-            }
-            onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDragStart)}   
-            }
-            onStop={handleEditorDragStop}
-            >
-              <RowItem
-                    charWidth={charWidth}
-                    selectionLayer={selectionLayer}
-                    cutsiteLabelSelectionLayer={cutsiteLabelSelectionLayer}
-                    annotationHeight={annotationHeight}
-                    tickSpacing={tickSpacing}
-                    spaceBetweenAnnotations={spaceBetweenAnnotations}
-                    showFeatures={showFeatures}
-                    showTranslations={showTranslations}
-                    showParts={showParts}
-                    showOrfs={showOrfs}
-                    showAxis={showAxis}
-                    showCutsites={showCutsites}
-                    showReverseSequence={showReverseSequence}
-                    caretPosition={caretPosition}
-                    sequenceLength={sequenceLength}
-                    bpsPerRow={bpsPerRow}
-                    signals={signals}
-                    key={rowNumber}
-                    row={rowData[rowNumber]} 
-                    />
+            <div style={circViewStyle}>
+               <svg width={annotationHeightRunningCount + 500} height={annotationHeightRunningCount + 500}>
+               <g transform={"translate("+annotationHeightRunningCount/2+","+annotationHeightRunningCount/2+")"}>
+                {annotations}
+               </g>
+               <path d={path.print()} fill="blue" />
                 
-              </div>
-            </Draggable>
+               </svg>
+            </div>
         );
     }
 }
