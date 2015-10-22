@@ -46,8 +46,8 @@ let OrfContainer = React.createClass({
                     >
                     <Orf
                         onClick={function (event) {
-                          setSelectionLayer(this);
-                          event.stopPropagation();
+                            setSelectionLayer(this);
+                            event.stopPropagation();
                         }.bind(annotation)}
                         width={result.width}
                         charWidth={charWidth}

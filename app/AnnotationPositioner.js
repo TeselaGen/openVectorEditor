@@ -2,9 +2,9 @@ var React = require('react');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var AnnotationPositioner = React.createClass({
-  mixins: [PureRenderMixin],
-  render: function () {
-    return (
+    mixins: [PureRenderMixin],
+    render: function () {
+        return (
       <svg 
         transform={this.props.transform || null}
         height={this.props.height + 5} 
@@ -13,12 +13,12 @@ var AnnotationPositioner = React.createClass({
             position: 'absolute',
             top: this.props.top,
             left: (this.props.left),
-          }}
+        }}
         >
         {this.props.children}
       </svg>
     );
-  }
+    }
 });
 module.exports = AnnotationPositioner;
 

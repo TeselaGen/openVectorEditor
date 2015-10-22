@@ -1,5 +1,5 @@
 export default function prepSelectionLayer (numberToMove, cursorAtEnd) {
-	return function prepSelectionLayer({caretPosition, selectionLayer}, tree, output) {
+    return function prepSelectionLayer({caretPosition, selectionLayer}, tree, output) {
         if (caretPosition > 0) {
             output({
                 selectionLayer: {
@@ -11,6 +11,6 @@ export default function prepSelectionLayer (numberToMove, cursorAtEnd) {
         } else {
             throw new Error('no caret or selection layer to delete!');
         }
-	}
+    }
 }
 
