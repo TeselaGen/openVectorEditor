@@ -13,7 +13,7 @@
         "babel"
     ],
     "rules": {
-        "indent": [0,4],
+        "indent": [1,4],
         "no-else-return": 0,
         "spaced-comment": 0,
         "func-names": 0,
@@ -165,7 +165,6 @@
         "guard-for-in": 0,
         "handle-callback-err": 0,
         "id-length": 0,
-        "indent": 0,
         "init-declarations": 0,
         "jsx-quotes": [0, "prefer-double"],
         "key-spacing": [0, { "beforeColon": false, "afterColon": true }],
