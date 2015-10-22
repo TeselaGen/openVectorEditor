@@ -77,11 +77,11 @@ module.exports = function tidyUpSequenceData(sequence) {
         }
 
         if (!annotation.type || typeof annotation.type !== 'string' || FeatureTypes.some(function(featureType) {
-                if (featureType.toLowerCase === annotation.type.toLowerCase()) {
-                    annotation.type = featureType; //this makes sure the annotation.type is being set to the exact value of the accepted featureType
-                    return true;
-                }
-            })) {
+            if (featureType.toLowerCase === annotation.type.toLowerCase()) {
+                annotation.type = featureType; //this makes sure the annotation.type is being set to the exact value of the accepted featureType
+                return true;
+            }
+        })) {
             response.messages.push('Invalid annotation type detected:  ' + annotation.type + ' for ' + annotation.name + '. set type to misc_feature');
             annotation.type = 'misc_feature';
         }

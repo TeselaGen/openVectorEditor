@@ -48,8 +48,8 @@ let CutsiteContainer = React.createClass({
                     >
                     <Cutsite
                         onClick={function (event) {
-                          setSelectionLayer({selectionLayer: this});
-                          event.stopPropagation();
+                            setSelectionLayer({selectionLayer: this});
+                            event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}

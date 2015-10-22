@@ -16,10 +16,10 @@ const TranslationContainer = React.createClass({
             end: PropTypes.number.isRequired,
             yOffset: PropTypes.number.isRequired,
             annotation: PropTypes.shape({
-              start: PropTypes.number.isRequired,
-              end: PropTypes.number.isRequired,
-              forward: PropTypes.bool.isRequired,
-              id: PropTypes.string.isRequired
+                start: PropTypes.number.isRequired,
+                end: PropTypes.number.isRequired,
+                forward: PropTypes.bool.isRequired,
+                id: PropTypes.string.isRequired
             })
         })),
         charWidth: PropTypes.number.isRequired,
@@ -31,14 +31,14 @@ const TranslationContainer = React.createClass({
     },
     render() {
         var {signals, annotationRanges, bpsPerRow, charWidth, annotationHeight, spaceBetweenAnnotations, sequenceLength} = this.props;
-          if (annotationRanges.length === 0) {
+        if (annotationRanges.length === 0) {
             return null;
-          }
-          let maxAnnotationYOffset = 0;
-          const annotationsSVG = [];
-          annotationRanges.forEach(function(annotationRange) {
+        }
+        let maxAnnotationYOffset = 0;
+        const annotationsSVG = [];
+        annotationRanges.forEach(function(annotationRange) {
             if (annotationRange.yOffset > maxAnnotationYOffset) { //tnrtodo: consider abstracting out the code to calculate the necessary height for the annotation container
-              maxAnnotationYOffset = annotationRange.yOffset;
+                maxAnnotationYOffset = annotationRange.yOffset;
             }
             const annotation = annotationRange.annotation;
             const result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
@@ -67,10 +67,10 @@ const TranslationContainer = React.createClass({
             // transform={"scale(" + transformX + ",.2) "}
             // console.log('translationSVG: ' + translationSVG);
             // annotationsSVG = annotationsSVG.concat(translationSVG);
-          });
-          const containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+        });
+        const containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
           // height={containerHeight}
-          return (
+        return (
               <AnnotationContainerHolder 
                 containerHeight={containerHeight}>
                 {annotationsSVG}

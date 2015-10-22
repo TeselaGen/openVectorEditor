@@ -12,4 +12,4 @@ export default function setViewportDimensions({newViewportDimensions}, tree, out
             tree.select('charWidth').set(Math.floor(newViewportDimensions.width/50));
         }
     }
-};
+}

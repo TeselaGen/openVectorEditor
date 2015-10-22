@@ -70,16 +70,16 @@ let CutsiteLabelContainer = React.createClass({
                 <div left={xStart}
                     key={index}
                     onClick={function (event) {
-                              signals.setSelectionLayer({selectionLayer: this});
-                              event.stopPropagation();
-                            }.bind(annotation)}
+                        signals.setSelectionLayer({selectionLayer: this});
+                        event.stopPropagation();
+                    }.bind(annotation)}
                     onMouseOver={function (event) {
-                      signals.setCutsiteLabelSelection(this);
-                      event.stopPropagation();
+                        signals.setCutsiteLabelSelection(this);
+                        event.stopPropagation();
                     }.bind(annotation)}
                     onMouseOut={function (event) {
-                      signals.setCutsiteLabelSelection(false);
-                      event.stopPropagation();
+                        signals.setCutsiteLabelSelection(false);
+                        event.stopPropagation();
                     }.bind(annotation)}
                     style={
                         {

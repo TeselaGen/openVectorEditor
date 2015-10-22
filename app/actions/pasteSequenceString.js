@@ -31,4 +31,4 @@ export default function pasteSequenceString({sequenceString}, tree, output) {
             });
         });
     }
-};
+}
