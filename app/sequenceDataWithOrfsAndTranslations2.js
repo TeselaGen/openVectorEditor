@@ -40,7 +40,6 @@ function generateAnnotation(endBp) {
     return {
         "name": getRandomInt(0, 100000).toString(),
         "type": "misc_feature",
-        "id": getRandomInt(0, 100000000),
         start,
         end,
         id: objectid().str,
