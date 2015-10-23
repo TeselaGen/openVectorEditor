@@ -1,8 +1,8 @@
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
-var getSequenceWithinRange = require('./getSequenceWithinRange.js');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
-var assert = require('assert');
+import getSequenceWithinRange from './getSequenceWithinRange.js';
+// import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
+import assert from 'assert';
 var subseq;
 
 describe('getSequenceWithinRange', function() {

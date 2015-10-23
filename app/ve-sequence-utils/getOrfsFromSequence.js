@@ -1,8 +1,8 @@
-// var findIndex = require('lodash/array/findIndex');
-// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+// import findIndex from 'lodash/array/findIndex';
+// import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
 var ObjectId = require("bson-objectid");
-var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
-var ac = require('ve-api-check');
+import getReverseComplementSequenceString from './getReverseComplementSequenceString';
+import ac from 've-api-check';
 /**
  * @private
  * Finds ORFs in a given DNA forward in a given frame.

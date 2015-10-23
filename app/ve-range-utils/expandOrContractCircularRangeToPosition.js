@@ -1,5 +1,5 @@
-var normalizePositionByRangeLength = require('./normalizePositionByRangeLength');
-var assign = require('lodash/object/assign');
+import normalizePositionByRangeLength from './normalizePositionByRangeLength';
+import assign from 'lodash/object/assign';
 module.exports = function expandOrContractCircularRangeToPosition(range, position, maxLength) {
 
     // 0 1 2 3 4 5 6 7 8 9

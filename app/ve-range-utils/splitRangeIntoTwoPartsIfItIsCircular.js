@@ -1,4 +1,4 @@
-var ac = require('ve-api-check'); 
+import ac from 've-api-check'; 
   // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 //takes a potentially circular range and returns an array containing the range split on the origin
 module.exports = function splitRangeIntoTwoPartsIfItIsCircular(range, maxRangeLength) {

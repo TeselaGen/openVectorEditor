@@ -1,6 +1,6 @@
-var ac = require('ve-api-check');
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var isBoolean = require('validate.io-boolean');
+import ac from 've-api-check';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import isBoolean from 'validate.io-boolean';
 
 export default function addAnnotations({annotationType, annotationsToInsert, throwErrors}, state, output) {
     ac.throw(ac.annotationType, annotationType);

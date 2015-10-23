@@ -1,9 +1,9 @@
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
 
-var adjustRangeToInsert = require('./adjustRangeToInsert.js');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
-var assert = require('assert');
+import adjustRangeToInsert from './adjustRangeToInsert.js';
+// import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
+import assert from 'assert';
 describe('adjustRangeToInsert', function() {
     it('shifts start and end if inserting before non circular range', function() {
         assert.deepEqual(adjustRangeToInsert({

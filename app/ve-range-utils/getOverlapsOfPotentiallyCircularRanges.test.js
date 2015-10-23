@@ -1,9 +1,9 @@
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
 
-var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges.js');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
-var assert = require('assert');
+import getOverlapsOfPotentiallyCircularRanges from './getOverlapsOfPotentiallyCircularRanges.js';
+// import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
+import assert from 'assert';
 describe('getOverlapsOfPotentiallyCircularRanges', function() {
     it('doesnt return an overlap for non overlapping ranges', function() {
         assert.deepEqual(getOverlapsOfPotentiallyCircularRanges({

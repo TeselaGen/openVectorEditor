@@ -1,4 +1,4 @@
-var checkLayerIsSelected = require('./checkLayerIsSelected');
+import checkLayerIsSelected from './checkLayerIsSelected';
 describe('checkLayerIsSelected', function() {
     it('should call success when selectionLayer.selected = true', function(done) {
         checkLayerIsSelected({

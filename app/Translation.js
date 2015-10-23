@@ -1,10 +1,10 @@
-var React = require('react');
+import React from 'react';
 const zeroSubrangeByContainerRange = require('ve-range-utils/zeroSubrangeByContainerRange');
 const getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 const getCodonRangeForAASliver = require('ve-sequence-utils/getCodonRangeForAASliver');
 const AASliver = require('./AASliver');
 
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 var Translation = React.createClass({
     mixins: [PureRenderMixin],

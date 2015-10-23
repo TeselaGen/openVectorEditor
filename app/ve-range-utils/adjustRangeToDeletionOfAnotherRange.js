@@ -1,7 +1,7 @@
-// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
-var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
-var ac = require('ve-api-check'); 
+// import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import splitRangeIntoTwoPartsIfItIsCircular from './splitRangeIntoTwoPartsIfItIsCircular';
+import trimRangeByAnotherRange from './trimRangeByAnotherRange';
+import ac from 've-api-check'; 
 
 //takes in two potentially circular ranges and returns the first one trimmed by the second one
 //returns null if no range is left after the trimming

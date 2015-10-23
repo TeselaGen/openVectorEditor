@@ -1,5 +1,5 @@
-var assign = require('lodash/object/assign');
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+import assign from 'lodash/object/assign';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
 
 /**
  * sets the selection layer on a plasmid

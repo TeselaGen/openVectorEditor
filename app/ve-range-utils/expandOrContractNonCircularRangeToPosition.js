@@ -1,4 +1,4 @@
-var assign = require('lodash/object/assign');
+import assign from 'lodash/object/assign';
 module.exports = function expandOrContractNonCircularRangeToPosition (range, position) {
     var newRange = assign({},range);
     var endMoved = true;

@@ -1,14 +1,14 @@
 import React, {PropTypes} from 'react';
-var getComplementSequenceString = require('ve-sequence-utils/getComplementSequenceString');
-var SequenceContainer = require('./SequenceContainer');
-var AxisContainer = require('./AxisContainer');
-var OrfContainer = require('./OrfContainer');
-var TranslationContainer = require('./TranslationContainer');
-var FeatureContainer = require('./FeatureContainer');
-var CutsiteLabelContainer = require('./CutsiteLabelContainer');
-var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
-var HighlightLayer = require('./HighlightLayer');
-var Caret = require('./Caret');
+import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
+import SequenceContainer from './SequenceContainer';
+import AxisContainer from './AxisContainer';
+import OrfContainer from './OrfContainer';
+import TranslationContainer from './TranslationContainer';
+import FeatureContainer from './FeatureContainer';
+import CutsiteLabelContainer from './CutsiteLabelContainer';
+import CutsiteSnipsContainer from './CutsiteSnipsContainer';
+import HighlightLayer from './HighlightLayer';
+import Caret from './Caret';
 
 class RowItem extends React.Component {
     render() {

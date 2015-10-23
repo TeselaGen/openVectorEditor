@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
-var Draggable = require('react-draggable');
-var RowItem = require('./RowItem.js');
+import Draggable from 'react-draggable';
+import RowItem from './RowItem.js';
 
 
 var RowView = React.createClass({

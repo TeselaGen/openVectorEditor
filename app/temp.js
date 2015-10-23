@@ -1,6 +1,6 @@
-var proteinAlphabet = require('./proteinAlphabet');
-var AAHydrophobicityMap = require('./AAHydrophobicityMap');
-var ColorScale = require('color-scale');
+import proteinAlphabet from './proteinAlphabet';
+import AAHydrophobicityMap from './AAHydrophobicityMap';
+import ColorScale from 'color-scale';
 module.exports = function generateAminoAcidColorScale() {
     var cs = ColorScale({
         color: 'red',

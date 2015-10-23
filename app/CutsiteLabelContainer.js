@@ -1,7 +1,7 @@
 let React = require('react');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let PureRenderMixin = require('react-addons-pure-render-mixin');
-var IntervalTree = require('interval-tree');
+import IntervalTree from 'interval-tree';
 var debug = require('debug')('cutsiteContainer');
 
 let CutsiteLabelContainer = React.createClass({

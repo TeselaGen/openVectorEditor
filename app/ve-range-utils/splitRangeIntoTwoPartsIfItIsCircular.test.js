@@ -17,10 +17,10 @@
 //     }];
 //   }
 // };
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
-var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular.js');
-var assert = require('assert');
+import splitRangeIntoTwoPartsIfItIsCircular from './splitRangeIntoTwoPartsIfItIsCircular.js';
+import assert from 'assert';
 describe('splitRangeIntoTwoPartsIfItIsCircular', function() {
     it('returns an array with one range in it if the array is non-circular', function() {
         assert.deepEqual(splitRangeIntoTwoPartsIfItIsCircular({start: 0, end: 100}, 1000), [{start: 0, end: 100}]);

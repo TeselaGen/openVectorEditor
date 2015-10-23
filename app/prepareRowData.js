@@ -1,6 +1,6 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-var mapAnnotationsToRows = require('./mapAnnotationsToRows');
+import mapAnnotationsToRows from './mapAnnotationsToRows';
 module.exports = function prepareRowData(sequenceData, bpsPerRow) {
     ac.throw([ac.sequenceData, ac.posInt], arguments);
     var sequenceLength = sequenceData.sequence.length;

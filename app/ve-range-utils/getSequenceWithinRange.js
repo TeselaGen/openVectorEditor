@@ -1,4 +1,4 @@
-var ac = require('ve-api-check');    
+import ac from 've-api-check';    
 module.exports = function getSequenceWithinRange(range, sequence) {
     ac.throw([ac.range, ac.oneOfType([ac.array, ac.string])], arguments);
     if (range.start > range.end) {

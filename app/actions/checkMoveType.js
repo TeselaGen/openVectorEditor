@@ -1,6 +1,6 @@
 import assign from 'lodash/object/assign'
-var ac = require('ve-api-check');
-var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
+import ac from 've-api-check';
+import trimNumberToFitWithin0ToAnotherNumber from 've-range-utils/trimNumberToFitWithin0ToAnotherNumber';
 import handleCaretMoves from './handleCaretMoves'
 
 module.exports = function checkMoveType({

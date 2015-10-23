@@ -1,7 +1,7 @@
-var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var assign = require('lodash/object/assign');
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import assign from 'lodash/object/assign';
 let React = require('react');
-var Caret = require('./Caret');
+import Caret from './Caret';
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 let PureRenderMixin = require('react-addons-pure-render-mixin');
 

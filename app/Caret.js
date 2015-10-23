@@ -1,4 +1,4 @@
-var assign = require('lodash/object/assign');
+import assign from 'lodash/object/assign';
 let React = require('react');
 let PureRenderMixin = require('react-addons-pure-render-mixin');
 

@@ -1,9 +1,9 @@
-// var tap = require('tap');
+// import tap from 'tap';
 // tap.mochaGlobals();
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
+import tidyUpSequenceData from 've-sequence-utils/tidyUpSequenceData';
 var chai = require("chai");
 chai.should();
-var ac = require('./apiCheck.js');
+import ac from './apiCheck.js';
 describe('apiCheck range!', function() {
     it('does not throw range errors if passed a valid range', function() {
         function throwError () {

@@ -1,6 +1,6 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
+import trimRangeByAnotherRange from './trimRangeByAnotherRange';
 /**
  * "zeroes" a subrange of a container range by 
  * adjusting subRange start and end such that it is as if the container range start = 0.

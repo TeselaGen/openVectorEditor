@@ -1,8 +1,8 @@
 var ObjectID = require("bson-objectid");
-var assign = require('lodash/object/assign');
-var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
-var insertSequenceString = require('./insertSequenceString.js');
-var insertSequenceData = require('./insertSequenceData');
+import assign from 'lodash/object/assign';
+import filterSequenceString from 've-sequence-utils/filterSequenceString';
+import insertSequenceString from './insertSequenceString.js';
+import insertSequenceData from './insertSequenceData';
 
 export default function pasteSequenceString({sequenceString}, tree, output) {
     //compare the sequenceString being pasted in with what's already stored in the clipboard

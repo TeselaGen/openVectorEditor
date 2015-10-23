@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
-var Draggable = require('react-draggable');
-var RowItem = require('./RowItem.js');
-var InfiniteScroller = require('react-variable-height-infinite-scroller');
+import Draggable from 'react-draggable';
+import RowItem from './RowItem.js';
+import InfiniteScroller from 'react-variable-height-infinite-scroller';
 
 @Cerebral({
     rowViewDimensions: ['rowViewDimensions'],

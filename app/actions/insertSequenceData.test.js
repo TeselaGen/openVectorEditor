@@ -1,6 +1,6 @@
 import {testSequenceData} from '../../test/testSetup.js';
-var insertSequenceData = require('./insertSequenceData.js');
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
+import insertSequenceData from './insertSequenceData.js';
+import tidyUpSequenceData from 've-sequence-utils/tidyUpSequenceData';
 
 describe('insertSequenceData', function() {
     it('inserts sequence sequence at start of sequence and adjusts annotations correctly', function() {

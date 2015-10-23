@@ -1,5 +1,5 @@
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var ac = require('ve-api-check'); 
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
 module.exports = function getOverlapOfNonCircularRanges(rangeA, rangeB) {
     ac.throw([ac.range,ac.range],arguments);

@@ -1,6 +1,6 @@
-// var addAnnotations = require('../../app/actions/addAnnotations');
+// import addAnnotations from '../../app/actions/addAnnotations';
 // var expect = require('chai').expect;
-// var tree = require('../testHelpers/baobabTestTree.js');
+// import tree from '../testHelpers/baobabTestTree.js';
 
 // describe('addAnnotations', function() {
 //     it('adds features to sequence object', function() {

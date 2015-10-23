@@ -1,5 +1,5 @@
-var tree = require('../baobabTree');
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData.js');
+import tree from '../baobabTree';
+import tidyUpSequenceData from 've-sequence-utils/tidyUpSequenceData.js';
 
 module.exports = function (simpleSequenceData) {
     if (!simpleSequenceData) {

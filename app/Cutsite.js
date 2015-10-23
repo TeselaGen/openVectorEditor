@@ -1,5 +1,5 @@
-var React = require('react');
-var interpolate = require('interpolate');
+import React from 'react';
+import interpolate from 'interpolate';
 
 var Cutsite = React.createClass({
 

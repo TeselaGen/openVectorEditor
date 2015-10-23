@@ -1,4 +1,4 @@
-var proteinAlphabet = require('./proteinAlphabet');
+import proteinAlphabet from './proteinAlphabet';
 module.exports = {
     gct: proteinAlphabet.A,
     gcc: proteinAlphabet.A,
