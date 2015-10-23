@@ -186,4 +186,4 @@ function getOverlapOfRowWithAnnotationLocation(annotationLocation, annotation, r
     }
 }
 
-module.exports = populateRowByRowNumber;
+export default populateRowByRowNumber;

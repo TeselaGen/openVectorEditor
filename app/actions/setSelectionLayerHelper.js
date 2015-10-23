@@ -6,7 +6,7 @@ import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-module.exports = function setSelectionLayerHelper (newSelectionLayer) {
+export default function setSelectionLayerHelper (newSelectionLayer) {
     var updatedSelectionLayer = {};
     if (!newSelectionLayer || typeof newSelectionLayer !== 'object' || !areNonNegativeIntegers([newSelectionLayer.start, newSelectionLayer.end])) {
         //no selection layer passed, so cancel it

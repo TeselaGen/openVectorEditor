@@ -158,4 +158,4 @@ var RowView = React.createClass({
 
 
 
-module.exports = RowView;
+export default RowView;

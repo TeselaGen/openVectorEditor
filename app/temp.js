@@ -1,7 +1,7 @@
 import proteinAlphabet from './proteinAlphabet';
 import AAHydrophobicityMap from './AAHydrophobicityMap';
 import ColorScale from 'color-scale';
-module.exports = function generateAminoAcidColorScale() {
+export default function generateAminoAcidColorScale() {
     var cs = ColorScale({
         color: 'red',
         variance: 20

@@ -12,7 +12,7 @@ import ac from 've-api-check';
  * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
-module.exports = function getOrfsFromSequence(options) {
+export default function getOrfsFromSequence(options) {
     ac.throw([ac.shape({
         sequence: ac.string,
         minimumOrfSize: ac.posInt,

@@ -1,6 +1,6 @@
 import ac from 've-api-check';
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-module.exports = function normalizePositionByRangeLength(pPosition, sequenceLength, isInBetweenPositions) {
+export default function normalizePositionByRangeLength(pPosition, sequenceLength, isInBetweenPositions) {
     //isInBetweenPositions refers to:
     // A T G C
     // 0 1 2 3    <--  isInBetweenPositions = false is counting the positions themselves

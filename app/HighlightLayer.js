@@ -81,4 +81,4 @@ let HighlightLayer = React.createClass({
 });
 
 
-module.exports = HighlightLayer;
+export default HighlightLayer;

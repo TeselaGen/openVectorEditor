@@ -1,6 +1,6 @@
 import ac from 've-api-check'; 
   // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-module.exports = function checkIfNonCircularRangesOverlap(range, comparisonRange) {
+export default function checkIfNonCircularRangesOverlap(range, comparisonRange) {
     ac.throw([ac.range, ac.range], arguments);
     if (range.start < comparisonRange.start) {
         if (range.end < comparisonRange.start) {

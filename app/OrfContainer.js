@@ -71,4 +71,4 @@ let OrfContainer = React.createClass({
 
     }
 });
-module.exports = OrfContainer;
+export default OrfContainer;

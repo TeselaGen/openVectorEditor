@@ -1,6 +1,6 @@
 //import tap from 'tap';
 //tap.mochaGlobals();
-// module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
+// export default function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
 //     //this function is a little confusing, but basically it takes an array of overlaps 
 //     //generated from a range overlap calculation, and it sews them together if possible
 //     if (overlaps.length === 1) {

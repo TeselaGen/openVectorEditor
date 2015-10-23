@@ -54,4 +54,4 @@ var Cutsite = React.createClass({
         );
     }
 });
-module.exports = Cutsite;
+export default Cutsite;

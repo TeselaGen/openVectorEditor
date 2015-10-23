@@ -143,4 +143,4 @@ let CutsiteSnipsContainer = React.createClass({
 });
 
 
-module.exports = CutsiteSnipsContainer;
+export default CutsiteSnipsContainer;

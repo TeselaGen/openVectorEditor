@@ -3,7 +3,7 @@ import ac from 've-api-check';
 import trimNumberToFitWithin0ToAnotherNumber from 've-range-utils/trimNumberToFitWithin0ToAnotherNumber';
 import handleCaretMoves from './handleCaretMoves'
 
-module.exports = function checkMoveType({
+export default function checkMoveType({
     sequenceLength, bpsPerRow, caretPosition, newCaretPosition, selectionLayer, shiftHeld, type
 }, tree, output) {
     ac.throw(ac.number, caretPosition);

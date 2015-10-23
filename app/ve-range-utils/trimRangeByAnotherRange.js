@@ -17,7 +17,7 @@ import trimNonCicularRangeByAnotherNonCircularRange from './trimNonCicularRangeB
  *                                  end:
  *                                  }
  */
-module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRange, sequenceLength) {
+export default function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRange, sequenceLength) {
     if (!areNonNegativeIntegers([rangeToBeTrimmed.start, rangeToBeTrimmed.end])) {
         console.warn('invalid range input');
         return;

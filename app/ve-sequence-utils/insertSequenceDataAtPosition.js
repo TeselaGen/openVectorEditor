@@ -2,7 +2,7 @@ import adjustRangeToInsert from 've-range-utils/adjustRangeToInsert';
 import spliceString from 'string-splice';
 import tidyUpSequenceData from './tidyUpSequenceData';
 import ac from 've-api-check';
-module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
+export default function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
     // ac.throw([
     //     ac.sequenceData,
     //     ac.sequenceData,

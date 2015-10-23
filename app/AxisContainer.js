@@ -77,4 +77,4 @@ var AxisContainer = React.createClass({
     }
 });
 
-module.exports = AxisContainer;
+export default AxisContainer;

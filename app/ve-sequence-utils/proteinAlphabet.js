@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     "A": {
         "value": "A",
         "name": "Alanine",

@@ -15,7 +15,7 @@ import trimRangeByAnotherRange from './trimRangeByAnotherRange';
  *                                     end:
  *                                     }
  */
-module.exports = function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
+export default function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
     ac.throw([ac.range, ac.range, ac.posInt], arguments);
     //first check to make sure the container range fully contains the subRange
     var trimmedSubRange = trimRangeByAnotherRange(subRange, containerRange, sequenceLength);

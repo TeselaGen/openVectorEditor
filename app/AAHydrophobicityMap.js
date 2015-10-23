@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     'Ile':4.5,
     'Val':4.2,
     'Leu':3.8,

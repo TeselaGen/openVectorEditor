@@ -300,4 +300,4 @@ class SequenceEditor extends React.Component {
   }
 }
 
-module.exports = SequenceEditor;
+export default SequenceEditor;

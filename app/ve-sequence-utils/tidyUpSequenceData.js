@@ -3,7 +3,7 @@ import assign from 'lodash/object/assign';
 import randomColor from 'random-color';
 import FeatureTypes from './FeatureTypes.js';
 import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
-module.exports = function tidyUpSequenceData(sequence) {
+export default function tidyUpSequenceData(sequence) {
     var sequenceData = assign({}, sequence); //sequence is usually immutable, so we clone it and return it
     var response = {
         messages: []

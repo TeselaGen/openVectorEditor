@@ -5,7 +5,7 @@ import ac from 've-api-check';
 
 //takes in two potentially circular ranges and returns the first one trimmed by the second one
 //returns null if no range is left after the trimming
-module.exports = function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange, maxLength) {
+export default function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange, maxLength) {
     ac.throw(ac.range, rangeToBeAdjusted)
     ac.throw(ac.range, anotherRange)
     ac.throw(ac.posInt, maxLength)

@@ -184,4 +184,4 @@ RowItem.propTypes = {
     row: PropTypes.object.isRequired
 };
 
-module.exports = RowItem;
+export default RowItem;

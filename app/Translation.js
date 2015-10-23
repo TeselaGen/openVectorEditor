@@ -79,4 +79,4 @@ var Translation = React.createClass({
 
 
 
-module.exports = Translation;
+export default Translation;

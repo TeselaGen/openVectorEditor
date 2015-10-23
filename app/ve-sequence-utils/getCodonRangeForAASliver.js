@@ -1,4 +1,4 @@
-module.exports = function getCodonRangeForAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation) {
+export default function getCodonRangeForAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation) {
     var AASliverOneBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 1];
     if (AASliverOneBefore && AASliverOneBefore.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex) {
         var AASliverTwoBefore = AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];

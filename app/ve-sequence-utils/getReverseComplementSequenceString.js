@@ -1,7 +1,7 @@
 import DNAComplementMap from './DNAComplementMap';
 import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
-module.exports = function getReverseComplementSequenceString (sequence) {
+export default function getReverseComplementSequenceString (sequence) {
     ac.throw([ac.string],arguments);
     var reverseComplementSequenceString = "";
     for (var i = sequence.length - 1; i >= 0; i--) {

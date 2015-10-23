@@ -3,7 +3,7 @@ import getOverlapOfNonCircularRanges from './getOverlapOfNonCircularRanges';
 //returns an array of the overlaps between two potentially circular ranges
 import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
-module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
+export default function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
     ac.throw([ac.range,ac.range,ac.posInt],arguments);
 
     var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);

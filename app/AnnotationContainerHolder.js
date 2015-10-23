@@ -15,4 +15,4 @@ var AnnotationContainerHolder = React.createClass({
     );
     }
 });
-module.exports = AnnotationContainerHolder;
+export default AnnotationContainerHolder;

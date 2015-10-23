@@ -78,4 +78,4 @@ let AASliver = React.createClass({
         }
     }
 });
-module.exports = AASliver;
+export default AASliver;

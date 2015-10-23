@@ -32,4 +32,4 @@ var SequenceContainer = React.createClass({
     }
 });
 
-module.exports = SequenceContainer;
+export default SequenceContainer;

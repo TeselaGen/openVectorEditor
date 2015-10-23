@@ -44,4 +44,4 @@ var sequenceData = {
   
 };
 
-module.exports = sequenceData;
+export default sequenceData;

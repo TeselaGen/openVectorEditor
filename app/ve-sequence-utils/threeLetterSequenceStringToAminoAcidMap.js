@@ -1,5 +1,5 @@
 import proteinAlphabet from './proteinAlphabet';
-module.exports = {
+export default {
     gct: proteinAlphabet.A,
     gcc: proteinAlphabet.A,
     gca: proteinAlphabet.A,

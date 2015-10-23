@@ -84,4 +84,4 @@ let FeatureContainer = React.createClass({
 
     }
 });
-module.exports = FeatureContainer;
+export default FeatureContainer;

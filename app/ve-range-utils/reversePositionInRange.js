@@ -1,5 +1,5 @@
 import ac from 've-api-check';
-module.exports = function reversePositionInRange(position, rangeLength, isInBetweenPositions) {
+export default function reversePositionInRange(position, rangeLength, isInBetweenPositions) {
     //isInBetweenPositions refers to:
     // A T G C
     // 0 1 2 3    <--  isInBetweenPositions = false is counting the positions themselves

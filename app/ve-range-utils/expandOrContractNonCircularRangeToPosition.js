@@ -1,5 +1,5 @@
 import assign from 'lodash/object/assign';
-module.exports = function expandOrContractNonCircularRangeToPosition (range, position) {
+export default function expandOrContractNonCircularRangeToPosition (range, position) {
     var newRange = assign({},range);
     var endMoved = true;
     if (range.start > position) {

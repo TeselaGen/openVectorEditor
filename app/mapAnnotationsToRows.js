@@ -6,7 +6,7 @@ import uniq from 'lodash/array/uniq';
 import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
 import checkIfNonCircularRangesOverlap from 've-range-utils/checkIfNonCircularRangesOverlap';
 
-module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
+export default function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
     ac.throw([ac.array, ac.posInt,ac.posInt],arguments);
     var annotationsToRowsMap = {};
 

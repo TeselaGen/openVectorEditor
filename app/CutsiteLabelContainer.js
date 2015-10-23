@@ -114,4 +114,4 @@ let CutsiteLabelContainer = React.createClass({
  */
     }
 });
-module.exports = CutsiteLabelContainer;
+export default CutsiteLabelContainer;

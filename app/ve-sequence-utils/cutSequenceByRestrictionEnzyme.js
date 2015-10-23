@@ -3,7 +3,7 @@ import ac from 've-api-check';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength.js';
 import reversePositionInRange from 've-range-utils/reversePositionInRange.js';
 
-module.exports = function cutSequenceByRestrictionEnzyme(pSequence, circular, restrictionEnzyme) {
+export default function cutSequenceByRestrictionEnzyme(pSequence, circular, restrictionEnzyme) {
     ac.throw([
         ac.string,
         ac.bool,

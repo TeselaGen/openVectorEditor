@@ -1,7 +1,7 @@
 import ac from 've-api-check';
 import cutSequenceByRestrictionEnzyme from './cutSequenceByRestrictionEnzyme';
 
-module.exports = function cutsitesFromSequence(sequence, circular, restrictionEnzymes) {
+export default function cutsitesFromSequence(sequence, circular, restrictionEnzymes) {
     //validate args!
     ac.throw([
         ac.string,

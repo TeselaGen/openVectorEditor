@@ -1,7 +1,7 @@
 import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
 import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
-module.exports = function getOverlapOfNonCircularRanges(rangeA, rangeB) {
+export default function getOverlapOfNonCircularRanges(rangeA, rangeB) {
     ac.throw([ac.range,ac.range],arguments);
     if (rangeA.start < rangeB.start) {
         if (rangeA.end < rangeB.start) {

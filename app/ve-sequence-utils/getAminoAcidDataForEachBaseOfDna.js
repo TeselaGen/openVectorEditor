@@ -13,7 +13,7 @@ import ac from 've-api-check';
         positionInCodon: 
       }]
  */
-module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forward) {
+export default function getAminoAcidDataForEachBaseOfDna(sequenceString, forward) {
     ac.throw([ac.string,ac.bool],arguments);
     var aminoAcidDataForEachBaseOfDNA = [];
 

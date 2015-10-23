@@ -188,4 +188,4 @@ class RowView extends React.Component {
     }
 }
 
-module.exports = RowView;
+export default RowView;

@@ -72,4 +72,4 @@ let CutsiteContainer = React.createClass({
         );
     }
 });
-module.exports = CutsiteContainer;
+export default CutsiteContainer;

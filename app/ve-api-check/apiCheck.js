@@ -74,4 +74,4 @@ ac.sequenceData = ac.shape({
     cutsites: ac.arrayOf(ac.range)
 });
 
-module.exports = ac;
+export default ac;
