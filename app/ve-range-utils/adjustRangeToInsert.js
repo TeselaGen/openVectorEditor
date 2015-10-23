@@ -25,4 +25,4 @@ export default function adjustRangeToInsert(rangeToBeAdjusted, insertStart, inse
         }
     }
     return newRange;
-};
+}

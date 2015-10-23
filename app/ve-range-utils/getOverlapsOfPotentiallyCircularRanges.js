@@ -19,6 +19,6 @@ export default function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, m
         });
     });
     return overlaps;
-};
+}
 
 

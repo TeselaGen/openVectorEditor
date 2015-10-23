@@ -13,4 +13,4 @@ export default function getReverseComplementSequenceString (sequence) {
         reverseComplementSequenceString+= revChar;
     }
     return reverseComplementSequenceString;
-};
+}

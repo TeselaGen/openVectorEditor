@@ -87,4 +87,4 @@ export default function getAminoAcidDataForEachBaseOfDna(sequenceString, forward
         throw new Error('something went wrong!');
     }
     return aminoAcidDataForEachBaseOfDNA;
-};
+}

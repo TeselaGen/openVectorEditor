@@ -102,7 +102,7 @@ export default function getOrfsFromSequence(options) {
         }
     });
     return nonDuplicatedOrfRanges;
-};
+}
 
 
 //   var potentiallyDuplicatedOrfs = calculateOrfs(frame, sequence, minimumOrfSize, forward);

@@ -31,4 +31,4 @@ export default function setSelectionLayerHelper (newSelectionLayer) {
         }
     }
     return(updatedSelectionLayer);
-};
+}

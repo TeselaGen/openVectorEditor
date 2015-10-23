@@ -13,4 +13,4 @@ export default function normalizePositionByRangeLength(pPosition, sequenceLength
         position -= sequenceLength;
     }
     return position;
-};
+}

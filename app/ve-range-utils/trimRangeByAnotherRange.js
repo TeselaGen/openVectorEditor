@@ -67,5 +67,5 @@ export default function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRange,
         }
     }
     return outputTrimmedRange;
-};
+}
 

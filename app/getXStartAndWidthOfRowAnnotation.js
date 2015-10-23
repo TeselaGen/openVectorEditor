@@ -10,4 +10,4 @@ export default function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charW
         xStart: (range.start % bpsPerRow) * charWidth,
         width: ((range.end + 1 - range.start)) * charWidth,
     };
-};
+}

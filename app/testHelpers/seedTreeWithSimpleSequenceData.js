@@ -7,5 +7,5 @@ export default function (simpleSequenceData) {
         simpleSequenceData = {sequence: 'atgc'};
     }
     tree.set(['sequenceData'], tidyUpSequenceData(simpleSequenceData));
-};
+}
 

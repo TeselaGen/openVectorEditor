@@ -27,4 +27,4 @@ export default function checkIfNonCircularRangesOverlap(range, comparisonRange) 
             return true;
         }
     }
-};
+}

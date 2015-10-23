@@ -9,4 +9,4 @@ export default function trimNumberToFitWithin0ToAnotherNumber(numberToBeTrimmed,
         numberToBeTrimmed = max;
     }
     return numberToBeTrimmed;
-};
+}

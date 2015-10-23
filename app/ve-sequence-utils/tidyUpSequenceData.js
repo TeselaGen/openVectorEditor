@@ -87,4 +87,4 @@ export default function tidyUpSequenceData(sequence) {
         }
         return true;
     }
-};
+}

@@ -16,4 +16,4 @@ export default function cutsitesFromSequence(sequence, circular, restrictionEnzy
         cutsitesByName[re.name] = cutSequenceByRestrictionEnzyme(sequence, circular, re);
     }
     return cutsitesByName;
-};
+}

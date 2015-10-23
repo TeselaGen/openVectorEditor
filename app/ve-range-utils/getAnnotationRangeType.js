@@ -20,4 +20,4 @@ export default function getAnnotationRangeType(annotationRange, enclosingRangeTy
             return 'middle';
         }
     }
-};
+}

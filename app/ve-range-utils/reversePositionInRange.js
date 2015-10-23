@@ -10,4 +10,4 @@ export default function reversePositionInRange(position, rangeLength, isInBetwee
         ac.bool
     ], arguments);
     return rangeLength - position - (isInBetweenPositions ? 0 : 1);
-};
+}

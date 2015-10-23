@@ -15,4 +15,4 @@ export default function findOrfsInPlasmid(sequence, circular, minimumOrfSize) {
         circular: circular,
     });
     return forwardOrfs.concat(reverseOrfs);
-};
+}

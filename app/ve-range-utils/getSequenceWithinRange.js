@@ -13,4 +13,4 @@ export default function getSequenceWithinRange(range, sequence) {
     } else {
         return sequence.slice(range.start, range.end + 1);
     }
-};
+}

@@ -17,7 +17,7 @@ export default function mapAnnotationsToRows(annotations, sequenceLength, bpsPer
         mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap);
     });
     return annotationsToRowsMap;
-};
+}
 
 function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap) {
     ac.throw([ac.range, ac.posInt, ac.posInt, ac.object], arguments);

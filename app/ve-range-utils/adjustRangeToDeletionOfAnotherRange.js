@@ -37,4 +37,4 @@ export default function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, a
         });
     }
     return trimmedRange;
-};
+}

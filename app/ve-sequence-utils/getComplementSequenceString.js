@@ -13,4 +13,4 @@ export default function getComplementSequenceString (sequence) {
         complementSeqString+= complementChar;
     }
     return complementSeqString;
-};
+}

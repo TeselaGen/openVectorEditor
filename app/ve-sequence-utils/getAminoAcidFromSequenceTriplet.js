@@ -15,4 +15,4 @@ export default function getAminoAcidFromSequenceTriplet(sequenceString) {
     } else {
         return (proteinAlphabet['-']); //return a gap/undefined character
     }
-};
+}

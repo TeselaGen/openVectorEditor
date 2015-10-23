@@ -19,4 +19,4 @@ export default function splitRangeIntoTwoPartsIfItIsCircular(range, maxRangeLeng
             end: maxRangeLength - 1
         }];
     }
-};
+}

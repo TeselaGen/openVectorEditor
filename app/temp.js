@@ -15,4 +15,4 @@ export default function generateAminoAcidColorScale() {
         prot.color = cs(prot.hydrophobicity)
     });
     console.log('proteinAlphabet: ' + JSON.stringify(proteinAlphabet, null, 4));
-}();
+}()

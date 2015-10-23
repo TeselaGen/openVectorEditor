@@ -32,4 +32,4 @@ export default function zeroSubrangeByContainerRange(subRange, containerRange, s
         newSubrange.end += sequenceLength;
     }
     return newSubrange;
-};
+}
