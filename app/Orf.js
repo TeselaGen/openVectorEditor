@@ -1,5 +1,5 @@
 import React from 'react';
-let PureRenderMixin = require('react-addons-pure-render-mixin');
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 var Orf = React.createClass({
     mixins: [PureRenderMixin],
     
