@@ -38,17 +38,17 @@ var Translation = React.createClass({
         var aminoAcidsForSubrange = getSequenceWithinRange(subrangeStartRelativeToAnnotationStart, AARepresentationOfTranslation);
         //we then loop over all the amino acids in the sub range and draw them onto the row
         var translationSVG = aminoAcidsForSubrange.map(function(aminoAcidSliver, index) {
-          var aminoAcidPositionInSequence = annotationRange.start + index;
+            var aminoAcidPositionInSequence = annotationRange.start + index;
           // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
-          var relativeAAPositionInTranslation = index;
+            var relativeAAPositionInTranslation = index;
 
           //get the codonIndices relative to 
-          var codonIndices = getCodonRangeForAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation);
-          return (
+            var codonIndices = getCodonRangeForAASliver(aminoAcidPositionInSequence, aminoAcidSliver, AARepresentationOfTranslation, relativeAAPositionInTranslation);
+            return (
               <AASliver 
                     onClick={function(e) {
                       // e.stopPropagation();
-                      signals.setSelectionLayer({selectionLayer: codonIndices});
+                        signals.setSelectionLayer({selectionLayer: codonIndices});
                     }}
                     onDoubleClick = {
                         function(e) {

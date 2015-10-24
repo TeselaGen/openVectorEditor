@@ -31,16 +31,15 @@ function generateAnnotation(endBp) {
     let start = getRandomInt(0, endBp);
     let end = getRandomInt(0, endBp);
     if (start > end) {
-      if (Math.random() < 0.95) {
-        var endHolder = end;
-        end = start;
-        start = endHolder;
-      }
+        if (Math.random() < 0.95) {
+            var endHolder = end;
+            end = start;
+            start = endHolder;
+        }
     }
     return {
         "name": getRandomInt(0, 100000).toString(),
         "type": "misc_feature",
-        "id": getRandomInt(0, 100000000),
         start,
         end,
         id: objectid().str,

@@ -4,21 +4,21 @@ var getOverlapOfNonCircularRanges = require('./getOverlapOfNonCircularRanges');
 var ac = require('ve-api-check'); 
 // ac.throw([ac.string,ac.bool],arguments);
 module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
-  ac.throw([ac.range,ac.range,ac.posInt],arguments);
+    ac.throw([ac.range,ac.range,ac.posInt],arguments);
 
-  var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
-  var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxRangeLength);
+    var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
+    var normalizedRangeB = splitRangeIntoTwoPartsIfItIsCircular(rangeB, maxRangeLength);
 
-  var overlaps = [];
-  normalizedRangeA.forEach(function(nonCircularRangeA) {
-    normalizedRangeB.forEach(function(nonCircularRangeB) {
-      var overlap = getOverlapOfNonCircularRanges(nonCircularRangeA, nonCircularRangeB);
-      if (overlap) {
-        overlaps.push(overlap);
-      }
+    var overlaps = [];
+    normalizedRangeA.forEach(function(nonCircularRangeA) {
+        normalizedRangeB.forEach(function(nonCircularRangeB) {
+            var overlap = getOverlapOfNonCircularRanges(nonCircularRangeA, nonCircularRangeB);
+            if (overlap) {
+                overlaps.push(overlap);
+            }
+        });
     });
-  });
-  return overlaps;
+    return overlaps;
 };
 
 

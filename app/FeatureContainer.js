@@ -15,10 +15,10 @@ let FeatureContainer = React.createClass({
             end: PropTypes.number.isRequired,
             yOffset: PropTypes.number.isRequired,
             annotation: PropTypes.shape({
-              start: PropTypes.number.isRequired,
-              end: PropTypes.number.isRequired,
-              forward: PropTypes.bool.isRequired,
-              id: PropTypes.string.isRequired
+                start: PropTypes.number.isRequired,
+                end: PropTypes.number.isRequired,
+                forward: PropTypes.bool.isRequired,
+                id: PropTypes.string.isRequired
             })
         })),
         charWidth: PropTypes.number.isRequired,
@@ -59,8 +59,8 @@ let FeatureContainer = React.createClass({
                     >
                     <Feature
                         onClick={function (event) {
-                          signals.setSelectionLayer({selectionLayer: this});
-                          event.stopPropagation();
+                            signals.setSelectionLayer({selectionLayer: this});
+                            event.stopPropagation();
                         }.bind(annotation)}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}

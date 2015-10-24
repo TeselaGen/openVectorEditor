@@ -96,7 +96,7 @@ class SequenceEditor extends React.Component {
     }
 
     handlePaste(event) {
-      var {
+        var {
             pasteSequenceString,
         } = this.props.signals;
         event.clipboardData.items[0].getAsString(function(string) {
@@ -105,7 +105,7 @@ class SequenceEditor extends React.Component {
     }
 
     handleCopy() {
-      var {
+        var {
             copySelection,
         } = this.props.signals;
         copySelection();
@@ -135,7 +135,7 @@ class SequenceEditor extends React.Component {
     }
 
     handleEditorDrag(caretPosition) {
-      var {
+        var {
             setCaretPosition,
             setSelectionLayer
         } = this.props.signals;
@@ -178,7 +178,7 @@ class SequenceEditor extends React.Component {
     }
 
     handleEditorDragStart(caretPosition, event) {
-      var {selectionLayer} = this.props;
+        var {selectionLayer} = this.props;
         // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
         if (event.target.className === "cursor" && selectionLayer.selected) {
             // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
@@ -221,11 +221,11 @@ class SequenceEditor extends React.Component {
   
 
   render() {
-    console.log('selectedSequenceString: ' + JSON.stringify(selectedSequenceString,null,4));
+      console.log('selectedSequenceString: ' + JSON.stringify(selectedSequenceString,null,4));
       // var visibilityParameters = this.props.visibilityParameters;
       // var highlightLayer = this.props.highlightLayer;
-    var self = this;
-    var {
+      var self = this;
+      var {
         selectionLayer,
         caretPosition,
         sequenceLength,
@@ -239,18 +239,18 @@ class SequenceEditor extends React.Component {
             toggleAnnotationDisplay
         }
     } = this.props;
-    var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
-    var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
-    var toggleButtons = annotationList.map(function(annotationType, index){
+      var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
+      var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
+      var toggleButtons = annotationList.map(function(annotationType, index){
       // console.log(">>> " + annotationType + " " + index);
-      return (<button key={index} onClick={function () {
-            toggleAnnotationDisplay(String(annotationType));
+          return (<button key={index} onClick={function () {
+              toggleAnnotationDisplay(String(annotationType));
           }}>
            toggle {annotationType}
           </button>)
-    });
+      });
 
-    return (
+      return (
       <div ref="sequenceEditor"
         style={{float:"right"}}>
         features 7 count: {featuresCount}
@@ -265,7 +265,7 @@ class SequenceEditor extends React.Component {
         <br/>
 
         <button onClick={function () {
-          setViewportDimensions({height: 800, width: 1500})
+            setViewportDimensions({height: 800, width: 1500})
         }}>
          set viewport dimensions
         </button>
@@ -273,7 +273,7 @@ class SequenceEditor extends React.Component {
         {toggleButtons}
 
         <button onClick={function () {
-          jumpToRow(self.props.newRandomRowToJumpTo)
+            jumpToRow(self.props.newRandomRowToJumpTo)
         }}>
          Jump to a random row!: Row #{self.props.newRandomRowToJumpTo.row}
         </button>

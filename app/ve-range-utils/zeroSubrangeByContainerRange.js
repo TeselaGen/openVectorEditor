@@ -5,18 +5,18 @@ var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
  * "zeroes" a subrange of a container range by 
  * adjusting subRange start and end such that it is as if the container range start = 0.
  * @param  {object} subRange  {start:
- *                                 	end:
- *                                 	}
+ *                                     end:
+ *                                     }
  * @param  {object} containerRange {start:
- *                                 	end:
- *                                 	}
+ *                                     end:
+ *                                     }
  * @param  {int} sequenceLength 
  * @return {object}                {start:
- *                                 	end:
- *                                 	}
+ *                                     end:
+ *                                     }
  */
 module.exports = function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
-	ac.throw([ac.range, ac.range, ac.posInt], arguments);
+    ac.throw([ac.range, ac.range, ac.posInt], arguments);
     //first check to make sure the container range fully contains the subRange
     var trimmedSubRange = trimRangeByAnotherRange(subRange, containerRange, sequenceLength);
     if (trimmedSubRange) {
