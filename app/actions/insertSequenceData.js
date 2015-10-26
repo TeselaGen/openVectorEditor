@@ -1,6 +1,6 @@
-var assign = require('lodash/object/assign');
-var insertSequenceDataAtPosition = require('ve-sequence-utils/insertSequenceDataAtPosition');
-var ac = require('ve-api-check');
+import assign from 'lodash/object/assign';
+import insertSequenceDataAtPosition from 've-sequence-utils/insertSequenceDataAtPosition';
+import ac from 've-api-check';
 
 export default function insertSequenceData({
     sequenceData, newSequenceData, caretPosition, 

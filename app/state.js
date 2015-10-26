@@ -1,16 +1,16 @@
 var deriveData = require('baobab').monkey
-// var sequenceData = require('./sequenceData');
-// var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
-var prepareRowData = require('./prepareRowData');
-var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
-var assign = require('lodash/object/assign');
-var getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
-var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDataForEachBaseOfDna');
-var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence');
+// import sequenceData from './sequenceData';
+// import sequenceData from './sequenceDataWithOrfsAndTranslations';
+import sequenceData from './sequenceDataWithOrfsAndTranslations3';
+import prepareRowData from './prepareRowData';
+import findOrfsInPlasmid from 've-sequence-utils/findOrfsInPlasmid';
+import tidyUpSequenceData from 've-sequence-utils/tidyUpSequenceData';
+import assign from 'lodash/object/assign';
+import getSequenceWithinRange from 've-range-utils/getSequenceWithinRange';
+import getAminoAcidDataForEachBaseOfDna from 've-sequence-utils/getAminoAcidDataForEachBaseOfDna';
+import getCutsitesFromSequence from 've-sequence-utils/getCutsitesFromSequence';
 //tnr: this json file is being loaded with a special json webpack loader. it will break if run from another environment (eg. node, browserify)
-var enzymeList = require('ve-sequence-utils/enzymeList.json'); 
+import enzymeList from 've-sequence-utils/enzymeList.json'; 
 
 export default {
     rowToJumpTo: null,

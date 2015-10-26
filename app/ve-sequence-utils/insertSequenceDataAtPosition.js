@@ -1,8 +1,8 @@
-var adjustRangeToInsert = require('ve-range-utils/adjustRangeToInsert');
-var spliceString = require('string-splice');
-var tidyUpSequenceData = require('./tidyUpSequenceData');
-var ac = require('ve-api-check');
-module.exports = function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
+import adjustRangeToInsert from 've-range-utils/adjustRangeToInsert';
+import spliceString from 'string-splice';
+import tidyUpSequenceData from './tidyUpSequenceData';
+import ac from 've-api-check';
+export default function insertSequenceDataAtPosition(sequenceDataToInsert, existingSequenceData, caretPosition) {
     // ac.throw([
     //     ac.sequenceData,
     //     ac.sequenceData,

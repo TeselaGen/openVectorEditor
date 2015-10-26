@@ -1,9 +1,9 @@
-// // var tap = require('tap');
+// // import tap from 'tap';
 // // tap.mochaGlobals();
 
-// var setSelectionLayer = require('../../app/actions/setSelectionLayer');
+// import setSelectionLayer from '../../app/actions/setSelectionLayer';
 // var expect = require('chai').expect;
-// var tree = require('../../app/baobabTree.js');
+// import tree from '../../app/baobabTree.js';
 
 // describe('setSelectionLayer', function() {
 //     it('clears the selection layer when called with false', function() {

@@ -1,13 +1,13 @@
 //tnr: half finished test. 
-// var tap = require('tap');
+// import tap from 'tap';
 // tap.mochaGlobals();
 var chai = require("chai");
 chai.should();
-var chaiSubset = require('chai-subset');
+import chaiSubset from 'chai-subset';
 chai.use(chaiSubset);
 
-var tidyUpSequenceData = require('./tidyUpSequenceData');
-var insertSequenceDataAtPosition = require('./insertSequenceDataAtPosition');
+import tidyUpSequenceData from './tidyUpSequenceData';
+import insertSequenceDataAtPosition from './insertSequenceDataAtPosition';
 
 describe('insertSequenceData', function() {
     it('inserts characters at correct caret position', function() {

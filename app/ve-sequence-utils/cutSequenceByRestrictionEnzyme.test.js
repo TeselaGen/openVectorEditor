@@ -1,10 +1,10 @@
-// var tap = require('tap');
+// import tap from 'tap';
 // tap.mochaGlobals();
 var chai = require("chai");
 var should = chai.should();
-var cutSequenceByRestrictionEnzyme = require('./cutSequenceByRestrictionEnzyme.js');
-var enzymeList = require('./enzymeList.json');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
+import cutSequenceByRestrictionEnzyme from './cutSequenceByRestrictionEnzyme.js';
+import enzymeList from './enzymeList.json';
+// import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
 describe('a simple, palindromic enzyme', function() {
     //bamhi
     // "bamhi": {

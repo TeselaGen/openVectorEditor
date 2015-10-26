@@ -1,9 +1,9 @@
-var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
-var getOverlapOfNonCircularRanges = require('./getOverlapOfNonCircularRanges');
+import splitRangeIntoTwoPartsIfItIsCircular from './splitRangeIntoTwoPartsIfItIsCircular';
+import getOverlapOfNonCircularRanges from './getOverlapOfNonCircularRanges';
 //returns an array of the overlaps between two potentially circular ranges
-var ac = require('ve-api-check'); 
+import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
-module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
+export default function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB, maxRangeLength) {
     ac.throw([ac.range,ac.range,ac.posInt],arguments);
 
     var normalizedRangeA = splitRangeIntoTwoPartsIfItIsCircular(rangeA, maxRangeLength);
@@ -19,6 +19,6 @@ module.exports = function getOverlapsOfPotentiallyCircularRanges(rangeA, rangeB,
         });
     });
     return overlaps;
-};
+}
 
 

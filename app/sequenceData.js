@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     "id" : "558d9a81f721c6b110000025",
     "name_lowercase" : "pbbs8c-rfp",
     "FQDN" : "tnrich.pBbS8c-RFP",
@@ -41,7 +41,7 @@ module.exports = {
     "__v" : 5
 };
 
-// module.exports = {
+// export default {
 //     "_id" : "55944b825018b8e21600003c",
 //     "name_lowercase" : "pj5_00001",
 //     "FQDN" : "tnrich.pj5_00001",
@@ -291,4 +291,4 @@ module.exports = {
 //         // }
 //       };
 
-//       module.exports = sequenceData;
+//       export default sequenceData;

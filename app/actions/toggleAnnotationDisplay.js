@@ -1,5 +1,5 @@
-var ac = require('ve-api-check');
-var capitalize = require('capitalize');
+import ac from 've-api-check';
+import capitalize from 'capitalize';
 export default function toggleAnnotationDisplay(annotationType, tree, output) {
     ac.throw(ac.annotationType, annotationType);
     var capitalizedType = capitalize(annotationType);

@@ -1,5 +1,5 @@
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var isNonNegativeInteger = require('validate.io-nonnegative-integer');
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import isNonNegativeInteger from 'validate.io-nonnegative-integer';
 var ac = require('api-check')({
     /* config options */
     output: {
@@ -74,4 +74,4 @@ ac.sequenceData = ac.shape({
     cutsites: ac.arrayOf(ac.range)
 });
 
-module.exports = ac;
+export default ac;

@@ -1,7 +1,7 @@
-var ac = require('ve-api-check'); 
-var assign = require('lodash/object/assign');
+import ac from 've-api-check'; 
+import assign from 'lodash/object/assign';
 
-module.exports = function adjustRangeToInsert(rangeToBeAdjusted, insertStart, insertLength) {
+export default function adjustRangeToInsert(rangeToBeAdjusted, insertStart, insertLength) {
     ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
     var newRange = assign({}, rangeToBeAdjusted);
     if (rangeToBeAdjusted.start > rangeToBeAdjusted.end) {
@@ -25,4 +25,4 @@ module.exports = function adjustRangeToInsert(rangeToBeAdjusted, insertStart, in
         }
     }
     return newRange;
-};
+}

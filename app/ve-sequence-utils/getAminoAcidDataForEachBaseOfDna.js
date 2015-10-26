@@ -1,6 +1,6 @@
-var revComp = require('./getReverseComplementSequenceString');
-var getAA = require('./getAminoAcidFromSequenceTriplet');
-var ac = require('ve-api-check'); 
+import revComp from './getReverseComplementSequenceString';
+import getAA from './getAminoAcidFromSequenceTriplet';
+import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
 /**
  * @private
@@ -13,7 +13,7 @@ var ac = require('ve-api-check');
         positionInCodon: 
       }]
  */
-module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forward) {
+export default function getAminoAcidDataForEachBaseOfDna(sequenceString, forward) {
     ac.throw([ac.string,ac.bool],arguments);
     var aminoAcidDataForEachBaseOfDNA = [];
 
@@ -87,4 +87,4 @@ module.exports = function getAminoAcidDataForEachBaseOfDna(sequenceString, forwa
         throw new Error('something went wrong!');
     }
     return aminoAcidDataForEachBaseOfDNA;
-};
+}

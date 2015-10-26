@@ -1,4 +1,4 @@
-module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
+export default function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength) {
     //this function is a little confusing, but basically it takes an array of overlaps 
     //generated from a range overlaps calculation, and it sews them together if possible
     if (overlaps.length === 1 || overlaps.length === 0) {
@@ -41,4 +41,4 @@ module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible
             }
         }
     }
-};
+}

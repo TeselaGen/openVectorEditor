@@ -1,9 +1,9 @@
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
 
-var trimRangeByAnotherRange = require('./trimRangeByAnotherRange.js');
-// var trimRangeByAnotherRange = require('./trimRangeByAnotherRange.js');
-var assert = require('assert');
+import trimRangeByAnotherRange from './trimRangeByAnotherRange.js';
+// import trimRangeByAnotherRange from './trimRangeByAnotherRange.js';
+import assert from 'assert';
 describe('trimRangeByAnotherRange', function() {
     it('trims non circular ranges that dont fully overlap', function() {
         assert.deepEqual(trimRangeByAnotherRange({

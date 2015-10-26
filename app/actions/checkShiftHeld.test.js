@@ -1,4 +1,4 @@
-var checkShiftHeld = require('./checkShiftHeld');
+import checkShiftHeld from './checkShiftHeld';
 describe('checkShiftHeld', function() {
     it('should call success when shiftHeld = true', function(done) {
         checkShiftHeld({

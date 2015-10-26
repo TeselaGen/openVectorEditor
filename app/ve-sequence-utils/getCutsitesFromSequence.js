@@ -1,7 +1,7 @@
-var ac = require('ve-api-check');
-var cutSequenceByRestrictionEnzyme = require('./cutSequenceByRestrictionEnzyme');
+import ac from 've-api-check';
+import cutSequenceByRestrictionEnzyme from './cutSequenceByRestrictionEnzyme';
 
-module.exports = function cutsitesFromSequence(sequence, circular, restrictionEnzymes) {
+export default function cutsitesFromSequence(sequence, circular, restrictionEnzymes) {
     //validate args!
     ac.throw([
         ac.string,
@@ -16,4 +16,4 @@ module.exports = function cutsitesFromSequence(sequence, circular, restrictionEn
         cutsitesByName[re.name] = cutSequenceByRestrictionEnzyme(sequence, circular, re);
     }
     return cutsitesByName;
-};
+}

@@ -1,6 +1,6 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
+import trimRangeByAnotherRange from './trimRangeByAnotherRange';
 /**
  * "zeroes" a subrange of a container range by 
  * adjusting subRange start and end such that it is as if the container range start = 0.
@@ -15,7 +15,7 @@ var trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
  *                                     end:
  *                                     }
  */
-module.exports = function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
+export default function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
     ac.throw([ac.range, ac.range, ac.posInt], arguments);
     //first check to make sure the container range fully contains the subRange
     var trimmedSubRange = trimRangeByAnotherRange(subRange, containerRange, sequenceLength);
@@ -32,4 +32,4 @@ module.exports = function zeroSubrangeByContainerRange(subRange, containerRange,
         newSubrange.end += sequenceLength;
     }
     return newSubrange;
-};
+}

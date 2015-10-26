@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
-var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import getXCenterOfRowAnnotation from './getXCenterOfRowAnnotation';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 var AxisContainer = React.createClass({
     mixins: [PureRenderMixin],
@@ -77,4 +77,4 @@ var AxisContainer = React.createClass({
     }
 });
 
-module.exports = AxisContainer;
+export default AxisContainer;

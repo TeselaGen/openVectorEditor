@@ -80,4 +80,4 @@ const TranslationContainer = React.createClass({
           
     }
 });
-module.exports = TranslationContainer;
+export default TranslationContainer;

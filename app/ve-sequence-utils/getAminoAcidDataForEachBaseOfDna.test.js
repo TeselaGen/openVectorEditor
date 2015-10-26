@@ -1,9 +1,9 @@
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
-var getAminoAcidDataForEachBaseOfDna = require('./getAminoAcidDataForEachBaseOfDna.js');
-var getAA = require('./getAminoAcidFromSequenceTriplet');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
-var assert = require('assert');
+import getAminoAcidDataForEachBaseOfDna from './getAminoAcidDataForEachBaseOfDna.js';
+import getAA from './getAminoAcidFromSequenceTriplet';
+// import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
+import assert from 'assert';
 var aaData;
 describe('getAminoAcidDataForEachBaseOfDna tranlates a', function() {
     //: It gets correct amino acid mapping and position in codon for each basepair in sequence

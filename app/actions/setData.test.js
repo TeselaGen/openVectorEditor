@@ -1,9 +1,9 @@
-// //var tap = require('tap');
+// //import tap from 'tap';
 // //tap.mochaGlobals();
 
-// var setCaretPosition = require('../../app/actions/setCaretPosition');
-// var tree = require('../../app/baobabTree.js');
-// var assert = require('assert');
+// import setCaretPosition from '../../app/actions/setCaretPosition';
+// import tree from '../../app/baobabTree.js';
+// import assert from 'assert';
 // describe('setCaretPosition', function () {
 //     it ('changes the caret position from its initial value', function () {
 //         assert.notEqual(55,tree.get('caretPosition'));

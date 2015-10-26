@@ -1,7 +1,7 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-var mapAnnotationsToRows = require('./mapAnnotationsToRows');
-module.exports = function prepareRowData(sequenceData, bpsPerRow) {
+import mapAnnotationsToRows from './mapAnnotationsToRows';
+export default function prepareRowData(sequenceData, bpsPerRow) {
     ac.throw([ac.sequenceData, ac.posInt], arguments);
     var sequenceLength = sequenceData.sequence.length;
     var totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!

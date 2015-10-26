@@ -1,12 +1,12 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 // ac.throw([ac.string,ac.bool],arguments);
-var each = require('lodash/collection/each');
-var sortBy = require('lodash/collection/sortBy');
-var uniq = require('lodash/array/uniq');
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var checkIfNonCircularRangesOverlap = require('ve-range-utils/checkIfNonCircularRangesOverlap');
+import each from 'lodash/collection/each';
+import sortBy from 'lodash/collection/sortBy';
+import uniq from 'lodash/array/uniq';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import checkIfNonCircularRangesOverlap from 've-range-utils/checkIfNonCircularRangesOverlap';
 
-module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
+export default function mapAnnotationsToRows(annotations, sequenceLength, bpsPerRow) {
     ac.throw([ac.array, ac.posInt,ac.posInt],arguments);
     var annotationsToRowsMap = {};
 
@@ -17,7 +17,7 @@ module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsP
         mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap);
     });
     return annotationsToRowsMap;
-};
+}
 
 function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsToRowsMap) {
     ac.throw([ac.range, ac.posInt, ac.posInt, ac.object], arguments);

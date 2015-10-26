@@ -1,6 +1,6 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 // ac.throw([ac.string,ac.bool],arguments);
-module.exports = function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
+export default function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
     ac.throw([ac.range, ac.posInt, ac.number], arguments);
     // 24 bps long: 
     // 
@@ -10,4 +10,4 @@ module.exports = function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, cha
         xStart: (range.start % bpsPerRow) * charWidth,
         width: ((range.end + 1 - range.start)) * charWidth,
     };
-};
+}

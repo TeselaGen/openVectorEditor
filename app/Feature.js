@@ -1,6 +1,6 @@
-var React = require('react');
-var interpolate = require('interpolate');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import React from 'react';
+import interpolate from 'interpolate';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 var Feature = React.createClass({
     mixins: [PureRenderMixin],
@@ -82,4 +82,4 @@ var Feature = React.createClass({
 //                 >
 //                 {name}
 //             </text>
-module.exports = Feature;
+export default Feature;

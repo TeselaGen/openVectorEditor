@@ -1,5 +1,5 @@
-var React = require('react');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 var AnnotationContainerHolder = React.createClass({
     mixins: [PureRenderMixin],
@@ -15,4 +15,4 @@ var AnnotationContainerHolder = React.createClass({
     );
     }
 });
-module.exports = AnnotationContainerHolder;
+export default AnnotationContainerHolder;

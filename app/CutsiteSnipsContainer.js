@@ -1,8 +1,8 @@
-var assign = require('lodash/object/assign');
-let React = require('react');
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
+import assign from 'lodash/object/assign';
+import React from 'react';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import getOverlapsOfPotentiallyCircularRanges from 've-range-utils/getOverlapsOfPotentiallyCircularRanges';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 var snipStyle = {
     height: "100%",
     background: 'black',
@@ -143,4 +143,4 @@ let CutsiteSnipsContainer = React.createClass({
 });
 
 
-module.exports = CutsiteSnipsContainer;
+export default CutsiteSnipsContainer;

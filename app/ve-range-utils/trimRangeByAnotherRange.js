@@ -1,7 +1,7 @@
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-var getOverlapsOfPotentiallyCircularRanges = require('./getOverlapsOfPotentiallyCircularRanges');
-var splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
-var trimNonCicularRangeByAnotherNonCircularRange = require('./trimNonCicularRangeByAnotherNonCircularRange');
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import getOverlapsOfPotentiallyCircularRanges from './getOverlapsOfPotentiallyCircularRanges';
+import splitRangeIntoTwoPartsIfItIsCircular from './splitRangeIntoTwoPartsIfItIsCircular';
+import trimNonCicularRangeByAnotherNonCircularRange from './trimNonCicularRangeByAnotherNonCircularRange';
 
 /**
  * trims range, but does *not* adjust it
@@ -17,7 +17,7 @@ var trimNonCicularRangeByAnotherNonCircularRange = require('./trimNonCicularRang
  *                                  end:
  *                                  }
  */
-module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRange, sequenceLength) {
+export default function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRange, sequenceLength) {
     if (!areNonNegativeIntegers([rangeToBeTrimmed.start, rangeToBeTrimmed.end])) {
         console.warn('invalid range input');
         return;
@@ -67,5 +67,5 @@ module.exports = function trimRangeByAnotherRange(rangeToBeTrimmed, trimmingRang
         }
     }
     return outputTrimmedRange;
-};
+}
 

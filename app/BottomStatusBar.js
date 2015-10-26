@@ -54,4 +54,4 @@ class BottomStatusBar extends React.Component {
     }
 }
 
-module.exports = BottomStatusBar;
+export default BottomStatusBar;

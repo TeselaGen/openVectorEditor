@@ -1,6 +1,6 @@
 require('../../test/testSetup.js');
-var deleteSequence = require('./deleteSequence.js');
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
+import deleteSequence from './deleteSequence.js';
+import tidyUpSequenceData from 've-sequence-utils/tidyUpSequenceData';
 var sequenceData = tidyUpSequenceData({
     sequence: 'atgc',
     features: [{

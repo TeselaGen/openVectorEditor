@@ -1,6 +1,6 @@
-var each = require('lodash/collection/each');
-var sortBy = require('lodash/collection/sortBy');
-var uniq = require('lodash/array/uniq');
+import each from 'lodash/collection/each';
+import sortBy from 'lodash/collection/sortBy';
+import uniq from 'lodash/array/uniq';
 
 
 function populateRowByRowNumber(sequenceData, bpsPerRow, rowNumber, sequenceLength) {
@@ -186,4 +186,4 @@ function getOverlapOfRowWithAnnotationLocation(annotationLocation, annotation, r
     }
 }
 
-module.exports = populateRowByRowNumber;
+export default populateRowByRowNumber;

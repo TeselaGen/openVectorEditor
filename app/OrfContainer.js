@@ -1,10 +1,10 @@
-let React = require('react');
-let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
-let Orf = require('./Orf');
-let AnnotationContainerHolder = require('./AnnotationContainerHolder');
-let AnnotationPositioner = require('./AnnotationPositioner');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
+import React from 'react';
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import getAnnotationRangeType from 've-range-utils/getAnnotationRangeType';
+import Orf from './Orf';
+import AnnotationContainerHolder from './AnnotationContainerHolder';
+import AnnotationPositioner from './AnnotationPositioner';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 let OrfContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
@@ -71,4 +71,4 @@ let OrfContainer = React.createClass({
 
     }
 });
-module.exports = OrfContainer;
+export default OrfContainer;

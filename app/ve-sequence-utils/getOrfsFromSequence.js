@@ -1,8 +1,8 @@
-// var findIndex = require('lodash/array/findIndex');
-// var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+// import findIndex from 'lodash/array/findIndex';
+// import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
 var ObjectId = require("bson-objectid");
-var getReverseComplementSequenceString = require('./getReverseComplementSequenceString');
-var ac = require('ve-api-check');
+import getReverseComplementSequenceString from './getReverseComplementSequenceString';
+import ac from 've-api-check';
 /**
  * @private
  * Finds ORFs in a given DNA forward in a given frame.
@@ -12,7 +12,7 @@ var ac = require('ve-api-check');
  * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
  * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
  */
-module.exports = function getOrfsFromSequence(options) {
+export default function getOrfsFromSequence(options) {
     ac.throw([ac.shape({
         sequence: ac.string,
         minimumOrfSize: ac.posInt,
@@ -102,7 +102,7 @@ module.exports = function getOrfsFromSequence(options) {
         }
     });
     return nonDuplicatedOrfRanges;
-};
+}
 
 
 //   var potentiallyDuplicatedOrfs = calculateOrfs(frame, sequence, minimumOrfSize, forward);

@@ -1,5 +1,5 @@
-var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
-var ac = require('ve-api-check');
+import trimNumberToFitWithin0ToAnotherNumber from 've-range-utils/trimNumberToFitWithin0ToAnotherNumber';
+import ac from 've-api-check';
 
 export default function moveCaret({sequenceLength, selectionLayer, caretPosition, moveBy}, tree, output) {
     ac.throw(ac.number, moveBy);

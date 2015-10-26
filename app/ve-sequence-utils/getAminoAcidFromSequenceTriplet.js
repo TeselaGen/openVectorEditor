@@ -1,10 +1,10 @@
-var threeLetterSequenceStringToAminoAcidMap = require('./threeLetterSequenceStringToAminoAcidMap');
-var proteinAlphabet = require('./proteinAlphabet');
-var ac = require('ve-api-check'); 
+import threeLetterSequenceStringToAminoAcidMap from './threeLetterSequenceStringToAminoAcidMap';
+import proteinAlphabet from './proteinAlphabet';
+import ac from 've-api-check'; 
 // ac.throw([ac.string,ac.bool],arguments);
 //tnrtodo: expand the threeLetterSequenceStringToAminoAcidMap mappings to include RNA characters. 
 //currently stop bps aren't all mapped!
-module.exports = function getAminoAcidFromSequenceTriplet(sequenceString) {
+export default function getAminoAcidFromSequenceTriplet(sequenceString) {
     ac.throw([ac.string],arguments);
     sequenceString = sequenceString.toLowerCase();
     if (sequenceString.length !== 3) {
@@ -15,4 +15,4 @@ module.exports = function getAminoAcidFromSequenceTriplet(sequenceString) {
     } else {
         return (proteinAlphabet['-']); //return a gap/undefined character
     }
-};
+}

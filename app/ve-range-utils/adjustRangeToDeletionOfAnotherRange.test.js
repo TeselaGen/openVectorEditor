@@ -1,8 +1,8 @@
-//var tap = require('tap');
+//import tap from 'tap';
 //tap.mochaGlobals();
-var adjustRangeToDeletionOfAnotherRange = require('./adjustRangeToDeletionOfAnotherRange.js');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
-var assert = require('assert');
+import adjustRangeToDeletionOfAnotherRange from './adjustRangeToDeletionOfAnotherRange.js';
+// import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
+import assert from 'assert';
 describe('adjustRangeToDeletionOfAnotherRange', function() {
     it('deletes non circular range if fully overlapped', function() {
         assert.deepEqual(adjustRangeToDeletionOfAnotherRange({

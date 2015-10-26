@@ -1,6 +1,6 @@
-var expandOrContractNonCircularRangeToPosition = require('ve-range-utils/expandOrContractNonCircularRangeToPosition');
-var expandOrContractCircularRangeToPosition = require('ve-range-utils/expandOrContractCircularRangeToPosition');
-var ac = require('ve-api-check');
+import expandOrContractNonCircularRangeToPosition from 've-range-utils/expandOrContractNonCircularRangeToPosition';
+import expandOrContractCircularRangeToPosition from 've-range-utils/expandOrContractCircularRangeToPosition';
+import ac from 've-api-check';
 export default function updateSelectionShiftClick({updatedCaretPos, sequenceLength, caretPosition, selectionLayer}, tree, output) {
     if (selectionLayer.start > selectionLayer.end) {
         var {newRange, endMoved} = expandOrContractCircularRangeToPosition(selectionLayer, updatedCaretPos, sequenceLength);

@@ -1,5 +1,5 @@
-var setSelectionLayerHelper = require('./setSelectionLayerHelper');
-var deepEqual = require('deep-equal');
+import setSelectionLayerHelper from './setSelectionLayerHelper';
+import deepEqual from 'deep-equal';
 /**
  * sets the selection layer on a plasmid
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}

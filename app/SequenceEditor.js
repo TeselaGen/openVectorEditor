@@ -2,13 +2,13 @@ import React, {PropTypes} from 'react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 var Combokeys = require("combokeys");
 var combokeys;
-var bindGlobalPlugin = require('combokeys/plugins/global-bind');
+import bindGlobalPlugin from 'combokeys/plugins/global-bind';
 
-var RowView = require('./RowView');
-var MapView = require('./MapView');
-var BottomStatusBar = require('./BottomStatusBar');
+import RowView from './RowView';
+import MapView from './MapView';
+import BottomStatusBar from './BottomStatusBar';
 
-var Clipboard = require('./Clipboard');
+import Clipboard from './Clipboard';
 import {Decorator as Cerebral} from 'cerebral-react';
 
 @Cerebral({
@@ -300,4 +300,4 @@ class SequenceEditor extends React.Component {
   }
 }
 
-module.exports = SequenceEditor;
+export default SequenceEditor;

@@ -1,12 +1,12 @@
-var assign = require('lodash/object/assign');
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
+import assign from 'lodash/object/assign';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
 
 /**
  * sets the selection layer on a plasmid
  * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
  * @return {undefined}                   
  */
-module.exports = function setSelectionLayerHelper (newSelectionLayer) {
+export default function setSelectionLayerHelper (newSelectionLayer) {
     var updatedSelectionLayer = {};
     if (!newSelectionLayer || typeof newSelectionLayer !== 'object' || !areNonNegativeIntegers([newSelectionLayer.start, newSelectionLayer.end])) {
         //no selection layer passed, so cancel it
@@ -31,4 +31,4 @@ module.exports = function setSelectionLayerHelper (newSelectionLayer) {
         }
     }
     return(updatedSelectionLayer);
-};
+}

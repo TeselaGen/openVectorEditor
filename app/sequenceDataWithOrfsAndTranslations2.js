@@ -92,4 +92,4 @@ var sequenceData = {
 // }
 // sequenceData.sequence += reallyLongFakeSequence;
 // 
-module.exports = sequenceData;
+export default sequenceData;

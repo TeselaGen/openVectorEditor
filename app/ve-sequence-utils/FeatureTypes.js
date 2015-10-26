@@ -1,5 +1,5 @@
 // Options for the "Type" combo box in the Create New Features.
-module.exports = [
+export default [
     "-10_signal",
     "-35_signal",
     "3'clip",

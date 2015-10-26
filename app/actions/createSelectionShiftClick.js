@@ -1,7 +1,8 @@
+import ac from 've-api-check';
+
 export default function createSelectionShiftClick({
     updatedCaretPos, caretPosition
 }, tree, output) {
-    var ac = require('ve-api-check');
     ac.throw(ac.posInt, updatedCaretPos)
     ac.throw(ac.posInt, caretPosition)
     if (updatedCaretPos === caretPosition) {

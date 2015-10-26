@@ -1,8 +1,8 @@
-// var tap = require('tap');
+// import tap from 'tap';
 // tap.mochaGlobals();
 var expect = require('chai').expect;
 
-var getOrfsFromSequence = require('./getOrfsFromSequence.js');
+import getOrfsFromSequence from './getOrfsFromSequence.js';
 // getOrfsFromSequence(frame, sequence, minimumOrfSize, forward, circular)
 describe('getOrfsFromSequence', function() {
     it('finds correct orfs in reverse direction in slightly more complex sequence', function() {

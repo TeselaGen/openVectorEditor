@@ -1,5 +1,5 @@
-var ac = require('ve-api-check');    
-module.exports = function getSequenceWithinRange(range, sequence) {
+import ac from 've-api-check';    
+export default function getSequenceWithinRange(range, sequence) {
     ac.throw([ac.range, ac.oneOfType([ac.array, ac.string])], arguments);
     if (range.start > range.end) {
         //circular range 
@@ -13,4 +13,4 @@ module.exports = function getSequenceWithinRange(range, sequence) {
     } else {
         return sequence.slice(range.start, range.end + 1);
     }
-};
+}

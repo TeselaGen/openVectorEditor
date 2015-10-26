@@ -1,9 +1,9 @@
-var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var assign = require('lodash/object/assign');
-let React = require('react');
-var Caret = require('./Caret');
-let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import assign from 'lodash/object/assign';
+import React from 'react';
+import Caret from './Caret';
+import getOverlapsOfPotentiallyCircularRanges from 've-range-utils/getOverlapsOfPotentiallyCircularRanges';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 var highlightLayerStyle = {
     height: "98%",
@@ -81,4 +81,4 @@ let HighlightLayer = React.createClass({
 });
 
 
-module.exports = HighlightLayer;
+export default HighlightLayer;

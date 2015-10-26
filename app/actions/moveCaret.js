@@ -1,4 +1,4 @@
-var ac = require('ve-api-check');
+import ac from 've-api-check';
 var handleMoves = {
     moveCaretLeftOne: function ({selectionLayer, shiftHeld}) {
         if (selectionLayer.selected && !shiftHeld) {
