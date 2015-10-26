@@ -1,26 +1,18 @@
 import ReactDOM from 'react-dom';
-import {controller, editor} from './App'
+import App from './App'
 
-//do overrides here:
+var options = {
+	actions: {
 
-//merge in custon state data before it is rendered
-//
+	},
+	state: {
+		showFeatures: false
 
-controller.merge({
-	showFeatures: false,
-	sequenceData: mySequenceData
-})
-
-//override actions here: 
-
-controller.actions.merge({
-	saveSequence: function mySpecialSequenceSave (input, tree, output, services) {
-		services.request.post('/sequences').send(input.sequenceData)
 	}
-})
+}
 
-//render to wherever you want here!
+var {Editor, controller} = App(options);
 
-const app = document.createElement('div');
-document.body.appendChild(app);
-ReactDOM.render(editor, app);
+const DOMNodeToRenderTo = document.createElement('div');
+document.body.appendChild(DOMNodeToRenderTo);
+ReactDOM.render(Editor, DOMNodeToRenderTo);
