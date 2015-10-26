@@ -219,85 +219,45 @@ class SequenceEditor extends React.Component {
   
   
 
-  render() {
-      console.log('selectedSequenceString: ' + JSON.stringify(selectedSequenceString,null,4));
-      // var visibilityParameters = this.props.visibilityParameters;
-      // var highlightLayer = this.props.highlightLayer;
-      var self = this;
-      var {
-        selectionLayer,
-        caretPosition,
-        sequenceLength,
-        bpsPerRow,
-        totalRows,
-        sequenceData,
-        selectedSequenceString,
-        signals: {
-            setViewportDimensions,
-            jumpToRow,
-            toggleAnnotationDisplay
-        }
-    } = this.props;
-      var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
-      var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
-      var toggleButtons = annotationList.map(function(annotationType, index){
-      // console.log(">>> " + annotationType + " " + index);
-          return (<button key={index} onClick={function () {
-              toggleAnnotationDisplay(String(annotationType));
-          }}>
-           toggle {annotationType}
-          </button>)
-      });
+    render() {
+        var {
+            selectedSequenceString,
+            signals: {
+                toggleAnnotationDisplay
+            }
+        } = this.props;
+        var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
+        var toggleButtons = annotationList.map(function(annotationType, index){
+            // console.log(">>> " + annotationType + " " + index);
+            return (<button key={index} onClick={function () {
+                toggleAnnotationDisplay(String(annotationType));
+            }}>
+            toggle {annotationType}
+        </button>)
+        });
 
-      return (
-      <div ref="sequenceEditor"
-        style={{float:"right"}}>
-        features 7 count: {featuresCount}
-        <br/>
-        selectionLayer: {selectionLayer.start}  {selectionLayer.end}
-        <br/>
-        caretPosition: {caretPosition}
-        <br/>
-        sequence length: {sequenceLength}
-        <br/>
-        bpsPerRow:  {bpsPerRow}
-        <br/>
+        return (
+            <div ref="sequenceEditor"
+                style={{float:"right"}}>
 
-        <button onClick={function () {
-            setViewportDimensions({height: 800, width: 1500})
-        }}>
-         set viewport dimensions
-        </button>
+                {toggleButtons}
 
-        {toggleButtons}
+                <Clipboard
+                    value={selectedSequenceString}
+                    onCopy={this.handleCopy.bind(this)}
+                    onPaste={this.handlePaste.bind(this)}/>
 
-        <button onClick={function () {
-            jumpToRow(self.props.newRandomRowToJumpTo)
-        }}>
-         Jump to a random row!: Row #{self.props.newRandomRowToJumpTo.row}
-        </button>
-        
-        <Clipboard
-          value={selectedSequenceString}
-          onCopy={this.handleCopy.bind(this)}
-          onPaste={this.handlePaste.bind(this)}/>
-        <br/>
-        totalRows:  {totalRows}
-        
-        <RowView 
-          handleEditorDrag={this.handleEditorDrag.bind(this)}
-          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-          handleEditorClick={this.handleEditorClick.bind(this)}
-           />
-        <BottomStatusBar/>
-             <br/>
-             <br/>
-             <br/>
-        
-      </div>
-    );
-  }
+               <RowView
+                   handleEditorDrag={this.handleEditorDrag.bind(this)}
+                   handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                   handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                   handleEditorClick={this.handleEditorClick.bind(this)}
+               />
+
+               <BottomStatusBar/>
+            </div>
+      );
+    }
 }
 
 module.exports = SequenceEditor;
