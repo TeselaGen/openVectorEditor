@@ -6,7 +6,6 @@ var options = {
 
 	},
 	state: {
-		showFeatures: false
 
 	}
 }
