@@ -1,8 +1,12 @@
+//tnr: uncomment following line to allow errors to pass through to the browser! (helpful while debugging!)
+mocha.allowUncaught()
+
 var chai = require("chai");
 chai.should();
 var chaiSubset = require('chai-subset');
 chai.use(chaiSubset);
-chai.use(require('chai-things'));
+// chai.use(require('chai-things'));
+
 
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 

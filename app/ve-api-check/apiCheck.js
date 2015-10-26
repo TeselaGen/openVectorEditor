@@ -35,6 +35,7 @@ var ac = require('api-check')({
 });
 
 function posInt(val, name, location) {
+    if (val === Infinity) return; //allow infinity to be one of the posInt types
     if (!isNonNegativeInteger(val)) {
         return ac.utils.getError(name, location, posInt.type);
     }
