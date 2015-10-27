@@ -2,7 +2,7 @@
   "name": "webpackTrial",
   "version": "1.0.0",
   "description": "",
-  "main": "app/App.js",
+  "main": "app/main.js",
   "repository": "https://github.com/TeselaGen/openVectorEditor",
   "scripts": {
     "lint": "globstar --node -- eslint \"./app/**/*.js\"",
