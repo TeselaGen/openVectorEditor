@@ -179,7 +179,6 @@ class RowView extends React.Component {
                     containerHeight={rowViewDimensions.height}
                     renderRow={renderRows}
                     totalNumberOfRows={rowData.length}
-                    preloadRowStart={40}
                     rowToJumpTo={rowToJumpTo}
                     /> 
               </div>
