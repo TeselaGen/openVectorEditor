@@ -15,3 +15,4 @@ var {Editor, controller} = App(options);
 const DOMNodeToRenderTo = document.createElement('div');
 document.body.appendChild(DOMNodeToRenderTo);
 ReactDOM.render(Editor, DOMNodeToRenderTo);
+
