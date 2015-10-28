@@ -1,17 +1,17 @@
-import ReactDOM from 'react-dom';
-import App from './App'
+// import ReactDOM from 'react-dom';
+// import App from './App'
 
-var options = {
-	actions: {
+// var options = {
+// 	actions: {
 
-	},
-	state: {
+// 	},
+// 	state: {
 
-	}
-}
+// 	}
+// }
 
-var {Editor, controller} = App(options);
+// var {Editor, controller} = App(options);
 
-const DOMNodeToRenderTo = document.createElement('div');
-document.body.appendChild(DOMNodeToRenderTo);
-ReactDOM.render(Editor, DOMNodeToRenderTo);
+// const DOMNodeToRenderTo = document.createElement('div');
+// document.body.appendChild(DOMNodeToRenderTo);
+// ReactDOM.render(Editor, DOMNodeToRenderTo);
