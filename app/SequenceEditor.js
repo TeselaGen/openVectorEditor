@@ -11,6 +11,13 @@ var BottomStatusBar = require('./BottomStatusBar');
 var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-react';
 
+/* Toolbar */
+import { Toolbar, ToolbarGroup } from 'material-ui';
+import { IconMenu } from 'material-ui';
+import { IconButton } from 'material-ui';
+import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+
 @Cerebral({
     sequenceLength: ['sequenceLength'],
     bpsPerRow: ['bpsPerRow'],
@@ -228,7 +235,6 @@ class SequenceEditor extends React.Component {
         } = this.props;
         var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
         var toggleButtons = annotationList.map(function(annotationType, index){
-            // console.log(">>> " + annotationType + " " + index);
             return (<button key={index} onClick={function () {
                 toggleAnnotationDisplay(String(annotationType));
             }}>
@@ -236,9 +242,22 @@ class SequenceEditor extends React.Component {
         </button>)
         });
 
+        var iconButtonElement = (
+            <IconButton tooltip="Settings">
+                <SettingsIcon />
+            </IconButton>
+        );
+
         return (
-            <div ref="sequenceEditor"
-                style={{float:"right"}}>
+            <div ref="sequenceEditor">
+                <Toolbar>
+                    <ToolbarGroup key={0}>
+                        <IconMenu iconButtonElement={iconButtonElement}>
+                            <MenuItem primaryText="Annotations" />
+                            <MenuItem primaryText="ORFs" />
+                        </IconMenu>
+                    </ToolbarGroup>
+                </Toolbar>
 
                 {toggleButtons}
 
@@ -247,16 +266,16 @@ class SequenceEditor extends React.Component {
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}/>
 
-               <RowView
-                   handleEditorDrag={this.handleEditorDrag.bind(this)}
-                   handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-                   handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-                   handleEditorClick={this.handleEditorClick.bind(this)}
-               />
+                <RowView
+                    handleEditorDrag={this.handleEditorDrag.bind(this)}
+                    handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                    handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                    handleEditorClick={this.handleEditorClick.bind(this)}
+                />
 
-               <BottomStatusBar/>
+                <BottomStatusBar/>
             </div>
-      );
+        );
     }
 }
 
