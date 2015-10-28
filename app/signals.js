@@ -6,7 +6,7 @@ reqContext.keys().forEach(function(key) {
 });
 
 //add all the signals to the cerebral controller here
-export default function registerSignals(controller) {
+export default function registerSignals(controller, options) {
     //tnr:  WORKING: 
     controller.signal('copySelection', [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
         success: a.setData('clipboardData'),

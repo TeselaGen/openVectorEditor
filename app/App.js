@@ -1,10 +1,17 @@
+var ac = require('ve-api-check');
 import controller from './controller.js';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {Container} from 'cerebral-react';
 import SequenceEditor from './SequenceEditor.js';
 
-const app = document.createElement('div');
-document.body.appendChild(app);
-
-ReactDOM.render(<Container controller={controller} app={SequenceEditor}/>, app);
+module.exports = function (options) {
+	ac.throw(ac.shape({
+		state: ac.object,
+		actions: ac.object
+	}),options)
+	var cerebral = controller(options);
+	return {
+		Editor: (<Container controller={cerebral} app={SequenceEditor}/>),
+		controller: cerebral
+	};
+}
