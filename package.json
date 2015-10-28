@@ -6,16 +6,16 @@
   "repository": "https://github.com/TeselaGen/openVectorEditor",
   "scripts": {
     "lint": "globstar --node -- eslint \"./app/**/*.js\"",
-    "test": "npm run lint && karma start",
+    "test": "npm run lint && NODE_ENV=testing karma start",
     "checkDeps": "npm-check-updates",
     "check-dependencies": "check-dependencies",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
     "linklocal": "linklocal",
     "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
     "bot": "npm run testServer & sleep 1 && npm run openTestPage",
-    "testServer": "webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
+    "testServer": "NODE_ENV=testing webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
     "start": "npm run check-dependencies && npm run linklocal && node devServer.js",
-    "build": "npm run linklocal && webpack -p --config webpack.config.production.js",
+    "build": "NODE_ENV=production npm run linklocal && webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "dependencies": {
