@@ -12,7 +12,7 @@ module.exports = function mapAnnotationsToRows(annotations, sequenceLength, bpsP
     ac.throw(ac.arrayOf(ac.shape({
         start: ac.posInt,
         end: ac.posInt,
-        id: ac.oneOfType([ac.object, ac.string])
+        // id: ac.oneOfType([ac.object, ac.string])
     })), annotations);
     ac.throw(ac.posInt, sequenceLength);
     ac.throw(ac.posInt, bpsPerRow);
@@ -52,7 +52,7 @@ function mapAnnotationToRows(annotation, sequenceLength, bpsPerRow, annotationsT
             var yOffset
             if (index > 0 //second half of an annotation range
                 && annotationsForRow.length //there are already annotations within the row
-                && annotationsForRow[annotationsForRow.length - 1].id === annotation.id) {
+                && annotationsForRow[annotationsForRow.length - 1].annotation === annotation) {
                 //the first chunk of the annotation has already been pushed into the row, 
                 //so set the yOffset for the range chunk to the already calculated yOffset
                 yOffset = annotationsForRow[annotationsForRow.length - 1].yOffset;
