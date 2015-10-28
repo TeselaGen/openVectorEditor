@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var path = require('path');
 module.exports = {
     devtool: 'eval',
@@ -18,4 +19,13 @@ module.exports = {
             }
         }]
     },
+    plugins: [
+        //tnr: this plugin sets the NODE_ENV variable to "testing". This currently does nothing different than
+        //"development" except for turning off HMR (hot module replacement) in the .babelrc
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('testing')
+            }
+        })
+    ],
 };

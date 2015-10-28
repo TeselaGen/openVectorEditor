@@ -24,7 +24,6 @@ export default {
     tickSpacing: 10,
     mapViewTickSpacing: 40,
     spaceBetweenAnnotations: 3,
-    preloadRowStart: 0,
     showOrfs: true,
     allowPartialAnnotationsOnCopy: false,
     showCutsites: true,
