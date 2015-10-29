@@ -283,7 +283,7 @@ class SequenceEditor extends React.Component {
 
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
-                <MenuItem key={index} primaryText={annotationType.label} checked={annotationType.state} onClick={function () {
+                <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
                     toggleAnnotationDisplay(String(annotationType.type));
                 }} />
             );
