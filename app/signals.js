@@ -49,6 +49,23 @@ export default function registerSignals(controller, options) {
         }
     ]);
 
+    // controller.signal('annotationClicked', [
+    //     a.checkAnnotationType, {
+            
+    //     }
+    //     a.getData('selectionLayer', 'sequenceLength', 'bpsPerRow', 'caretPosition'),
+    //     a.checkShiftHeld, {
+    //         shiftHeld: [a.checkLayerIsSelected, {
+    //             selected: [a.updateSelectionShiftClick, a.setSelectionLayer],
+    //             notSelected: [a.createSelectionShiftClick, {
+    //                 updateSelection: [a.setSelectionLayer],
+    //                 doNothing: []
+    //             }]
+    //         }],
+    //         shiftNotHeld: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
+    //     }
+    // ]);
+
     controller.signal('caretMoved', [
         a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
             path: ['sequenceData', 'circular'],
