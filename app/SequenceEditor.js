@@ -28,6 +28,11 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
     sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
+    showOrfs: ['showOrfs'],
+    showCutsites: ['showCutsites'],
+    showParts: ['showParts'],
+    showFeatures: ['showFeatures'],
+    showTranslations: ['showTranslations']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -39,6 +44,11 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
     sequenceData: PropTypes.object.isRequired,
     selectionLayer: PropTypes.object.isRequired,
     clipboardData: PropTypes.object.isRequired,
+    showOrfs: PropTypes.bool.isRequired,
+    showCutsites: PropTypes.bool.isRequired,
+    showParts: PropTypes.bool.isRequired,
+    showFeatures: PropTypes.bool.isRequired,
+    showTranslations: PropTypes.bool.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -229,15 +239,52 @@ class SequenceEditor extends React.Component {
     render() {
         var {
             selectedSequenceString,
+            showFeatures,
+            showParts,
+            showTranslations,
+            showOrfs,
+            showCutsites,
             signals: {
                 toggleAnnotationDisplay
             }
         } = this.props;
-        var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
+
+        var annotationList = [
+            {
+                type: 'features',
+                label: 'Features',
+                state: showFeatures
+            },
+
+            {
+                type: 'parts',
+                label: 'Parts',
+                state: showParts
+            },
+
+            {
+                type: 'translations',
+                label: 'Translations',
+                state: showTranslations
+            },
+
+            {
+                type: 'orfs',
+                label: 'ORFs',
+                state: showOrfs
+            },
+
+            {
+                type: 'cutsites',
+                label: 'Cutsites',
+                state: showCutsites
+            }
+        ];
+
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
-                <MenuItem key={index} primaryText={annotationType} onClick={function () {
-                    toggleAnnotationDisplay(String(annotationType));
+                <MenuItem key={index} primaryText={annotationType.label} checked={annotationType.state} onClick={function () {
+                    toggleAnnotationDisplay(String(annotationType.type));
                 }} />
             );
         });
