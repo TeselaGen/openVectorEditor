@@ -2,27 +2,20 @@ var React = require('react');
 var interpolate = require('interpolate');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-var Feature = React.createClass({
+//this should just return a polyline of the desired shape, and not worry about styling (that's handled in the StyleFeature component)
+var LinearFeature = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         widthInBps: React.PropTypes.number.isRequired,
         charWidth: React.PropTypes.number.isRequired,
         height: React.PropTypes.number.isRequired,
         rangeType: React.PropTypes.string.isRequired,
-        color: React.PropTypes.string.isRequired,
         name: React.PropTypes.string.isRequired,
-        forward: React.PropTypes.bool.isRequired
+        forward: React.PropTypes.bool.isRequired,
     },
 
     render: function() {
-        var {
-            widthInBps, 
-            charWidth,
-            height,
-            rangeType,
-            forward,
-            name
-        } = this.props;
+        var {widthInBps, charWidth, height, rangeType, forward} = this.props;
 
         var width = widthInBps * charWidth;
         var normalizedCharWidth = charWidth;
@@ -34,8 +27,9 @@ var Feature = React.createClass({
             }
         }
         var widthMinusOne = width - normalizedCharWidth;
-        var points;
 
+
+        var points;
         // starting from the top left of the feature
         if (rangeType === 'middle') {
             //draw a rectangle
@@ -58,28 +52,11 @@ var Feature = React.createClass({
             });
         }
         return (
-            <g
-            onClick={this.props.onClick}
-            >
             <polyline
-                transform={forward ? null : "translate("+width+",0) scale(-1,1) "}
-                points={points}
-                strokeWidth="1"
-                stroke={this.props.color}
-                fillOpacity={0.4}
-                fill={this.props.color || 'orange'}>
+              transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
+              points={ points }>
             </polyline>
-            
-          </g>
-        );
+            );
     }
 });
-// <text 
-//                 transform={"translate("+width/2+",0)"}
-//                 x="0"  
-//                 y="13"
-//                 style={{textAnchor: "middle"}}
-//                 >
-//                 {name}
-//             </text>
-module.exports = Feature;
+module.exports = LinearFeature;

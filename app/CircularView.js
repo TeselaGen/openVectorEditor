@@ -1,8 +1,8 @@
+var StyleFeature = require('./StyleFeature');
 var arcUtils = require('./graphic-helpers/arcUtils.js');
-var Path = require('paths-js/path');
 import assign from 'lodash/object/assign'
-import React, {PropTypes} from 'react';
-import {Decorator as Cerebral} from 'cerebral-react';
+import React, { PropTypes } from 'react';
+import { Decorator as Cerebral } from 'cerebral-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 var Draggable = require('react-draggable');
 
@@ -20,6 +20,7 @@ var Draggable = require('react-draggable');
     showParts: ['showParts'],
     showOrfs: ['showOrfs'],
     showAxis: ['showAxis'],
+    showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
     caretPosition: ['caretPosition'],
@@ -92,112 +93,127 @@ class CircularView extends React.Component {
     }
 
     render() {
-        var {
-            rowViewDimensions, 
-            rowData, 
-            rowToJumpTo, 
-            handleEditorDrag,
-            handleEditorDragStart,
-            handleEditorDragStop,
-            handleEditorClick,
-            charWidth,
-            selectionLayer,
-            cutsiteLabelSelectionLayer,
-            annotationHeight,
-            tickSpacing,
-            spaceBetweenAnnotations,
-            showFeatures,
-            showTranslations,
-            showParts,
-            showOrfs,
-            showAxis,
-            showCutsites,
-            showReverseSequence,
-            caretPosition,
-            sequenceLength,
-            bpsPerRow,
-            signals
-        } = this.props;
-        
+        var {showSequence, rowViewDimensions, rowData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, tickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
+
 
         var rowViewStyle = {
             height: rowViewDimensions.height,
             width: rowViewDimensions.width,
-            //   overflowY: "scroll",
-            // float: "left",
-            // paddingRight: "20px"
-            //   padding: 10
+        //   overflowY: "scroll",
+        // float: "left",
+        // paddingRight: "20px"
+        //   padding: 10
         };
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
         var annotationHeightRunningCount = 30;
 
-        var center = {x: 250, y:250}
+        var center = {
+            x: 250,
+            y: 250
+        }
         var radius = 100;
-        var thickness = 30;
+        var gapBetweenAnnotations = 5;
+        var totalAnnotationHeight = annotationHeight + gapBetweenAnnotations;
         var startAngle = 0;
         var endAngle = 1;
         var direction = 1;
 
-        function getAngleStartAndEndForRange (range, sequenceLength) {
+        function getAngleStartAndEndForRange(range, sequenceLength) {
             return {
-                startAngle: 2 * Math.PI *(range.start / sequenceLength),
+                startAngle: 2 * Math.PI * (range.start / sequenceLength),
                 endAngle: 2 * Math.PI * range.end / sequenceLength
             }
         }
 
-        var annotations = [];
+        var annotationsSvgs = [];
+        if (showSequence) {
+            var path = arcUtils.drawPiePiece(center, annotationHeightRunningCount, annotationHeight, 0, 2*Math.PI - .00001, direction)
+            annotationsSvgs.push(<path
+                               d={ path }
+                               onClick={function () {
+                                   signals.selectAll();
+                               }}
+                               fill='black' />)
+            annotationHeightRunningCount += totalAnnotationHeight
+        }
         if (showFeatures) {
-            rowData[0].features.forEach(function (feature) {
-                var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
-                console.log('feature.yOffset: ' + JSON.stringify(feature.yOffset,null,4));
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
-                annotations.push(<path d={path} fill="blue" />)
+            var maxYOffset = 0;
+            rowData[0].features.forEach(function(annotation) {
+                var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
+                if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                annotationsSvgs.push(
+                    <StyleFeature
+                        onClick={function (event) {
+                            signals.setSelectionLayer({selectionLayer: this});
+                            event.stopPropagation();
+                        }.bind(annotation)}
+                        color={annotation.color}>
+                        <path
+                                   d={ path }
+                                   onClick={function () {
+                                       signals.annotationClicked(annotation);
+                                   }}
+                                   fill={annotation.color} />
+                    </StyleFeature>
+                    )
             })
-            annotationHeightRunningCount += rowData[0].features.length * thickness
+            annotationHeightRunningCount += maxYOffset + 1 * totalAnnotationHeight
         }
         if (showParts) {
-            rowData[0].parts.forEach(function (feature) {
+            rowData[0].parts.forEach(function(feature) {
                 var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
-                annotations.push(<path d={path} fill="orange" />)
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                annotationsSvgs.push(<path
+                                   d={ path }
+                                   fill="orange" />)
             })
-            annotationHeightRunningCount += rowData[0].parts.length * thickness
+            annotationHeightRunningCount += rowData[0].parts.length * annotationHeight
         }
         if (showTranslations) {
-            rowData[0].translations.forEach(function (feature) {
+            rowData[0].translations.forEach(function(feature) {
                 var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
-                annotations.push(<path d={path} fill="orange" />)
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                annotationsSvgs.push(<path
+                                   d={ path }
+                                   fill="orange" />)
             })
-            annotationHeightRunningCount += rowData[0].translations.length * thickness
+            annotationHeightRunningCount += rowData[0].translations.length * annotationHeight
         }
 
         if (showReverseSequence) {
-            rowData[0].features.forEach(function (feature) {
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (thickness + 5) * feature.yOffset + 15, thickness, startAngle, endAngle, direction)
-                annotations.push(<path d={path} fill="green" />)
+            rowData[0].features.forEach(function(feature) {
+                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                annotationsSvgs.push(<path
+                                   d={ path }
+                                   fill="green" />)
             })
-            annotationHeightRunningCount += rowData[0].features.length * thickness
+            annotationHeightRunningCount += rowData[0].features.length * annotationHeight
         }
 
         if (selectionLayer.selected) {
             var {startAngle, endAngle} = getAngleStartAndEndForRange(selectionLayer, sequenceLength)
             var path = arcUtils.drawPiePiece(center, 150, annotationHeightRunningCount, startAngle, endAngle, direction)
-            annotations.push(<path style={{opacity: .4}} d={path} fill="blue" />)
+            annotationsSvgs.push(<path
+                               style={ {    opacity: .4} }
+                               d={ path }
+                               fill="blue" />)
         }
-        var circViewStyle = assign({},rowViewDimensions, {
+        var circViewStyle = assign({}, rowViewDimensions, {
             height: rowViewDimensions.height + 200
-            // overflowY: 'none'
+        // overflowY: 'none'
         })
         return (
-            <div style={circViewStyle}>
-               <svg width={annotationHeightRunningCount + 500} height={annotationHeightRunningCount + 500}>
-               <g transform={"translate("+annotationHeightRunningCount/2+","+annotationHeightRunningCount/2+")"}>
-                {annotations}
-               </g>
-               </svg>
+            <div style={ circViewStyle }>
+              <svg
+                width={ annotationHeightRunningCount + 500 }
+                height={ annotationHeightRunningCount + 500 }>
+                <g transform={ "translate(" + annotationHeightRunningCount / 2 + "," + annotationHeightRunningCount / 2 + ")" }>
+                  { annotationsSvgs }
+                </g>
+              </svg>
             </div>
-        );
+            );
     }
 }
 

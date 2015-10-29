@@ -31,6 +31,7 @@ export default {
     showFeatures: true,
     showTranslations: true,
     showAxis: true,
+    showSequence: true,
     showReverseSequence: true,
     rowViewDimensions: {
         height: 500,

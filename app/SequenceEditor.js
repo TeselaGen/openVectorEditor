@@ -285,22 +285,23 @@ class SequenceEditor extends React.Component {
         <br/>
         totalRows:  {totalRows}
 
-        <CircularView 
-          handleEditorDrag={this.handleEditorDrag.bind(this)}
-          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-          handleEditorClick={this.handleEditorClick.bind(this)}
-           />
+        <div style={{display: 'flex'}}>
+            <CircularView 
+              handleEditorDrag={this.handleEditorDrag.bind(this)}
+              handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+              handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+              handleEditorClick={this.handleEditorClick.bind(this)}
+               />
 
-           <div height={300}>
-           </div>
+            
+            <RowView 
+              handleEditorDrag={this.handleEditorDrag.bind(this)}
+              handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+              handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+              handleEditorClick={this.handleEditorClick.bind(this)}
+               />
+        </div>
         
-        <RowView 
-          handleEditorDrag={this.handleEditorDrag.bind(this)}
-          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-          handleEditorClick={this.handleEditorClick.bind(this)}
-           />
         
         <BottomStatusBar/>
              <br/>
