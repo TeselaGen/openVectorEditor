@@ -234,12 +234,12 @@ class SequenceEditor extends React.Component {
             }
         } = this.props;
         var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
-        var toggleButtons = annotationList.map(function(annotationType, index){
-            return (<button key={index} onClick={function () {
-                toggleAnnotationDisplay(String(annotationType));
-            }}>
-            toggle {annotationType}
-        </button>)
+        var toggleMenuItems = annotationList.map(function(annotationType, index){
+            return (
+                <MenuItem key={index} primaryText={annotationType} onClick={function () {
+                    toggleAnnotationDisplay(String(annotationType));
+                }} />
+            );
         });
 
         var iconButtonElement = (
@@ -253,13 +253,10 @@ class SequenceEditor extends React.Component {
                 <Toolbar>
                     <ToolbarGroup key={0}>
                         <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                            <MenuItem primaryText="Annotations" />
-                            <MenuItem primaryText="ORFs" />
+                            {toggleMenuItems}
                         </IconMenu>
                     </ToolbarGroup>
                 </Toolbar>
-
-                {toggleButtons}
 
                 <Clipboard
                     value={selectedSequenceString}
