@@ -252,7 +252,7 @@ class SequenceEditor extends React.Component {
             <div ref="sequenceEditor">
                 <Toolbar>
                     <ToolbarGroup key={0}>
-                        <IconMenu iconButtonElement={iconButtonElement}>
+                        <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                             <MenuItem primaryText="Annotations" />
                             <MenuItem primaryText="ORFs" />
                         </IconMenu>
