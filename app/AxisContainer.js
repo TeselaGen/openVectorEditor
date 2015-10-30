@@ -1,3 +1,4 @@
+var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 import React, {PropTypes} from 'react';
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
@@ -30,7 +31,7 @@ var AxisContainer = React.createClass({
         var xEnd = xStart + width;
 
         var yStart = 0;
-        var tickMarkPositions = calculateTickMarkPositionsForGivenRange(tickSpacing, row);
+        var tickMarkPositions = calculateTickMarkPositionsForGivenRange({tickSpacing, range: row});
         var tickMarkSVG = [];
         tickMarkPositions.forEach(function(tickMarkPosition) {
             var xCenter = getXCenterOfRowAnnotation({
@@ -65,15 +66,7 @@ var AxisContainer = React.createClass({
             </svg>
         );
 
-        function calculateTickMarkPositionsForGivenRange(tickSpacing, range) {
-            var rangeLength = range.end - range.start;
-            var firstTickOffsetFromRangeStart = tickSpacing - (range.start % tickSpacing);
-            var arrayOfTickMarkPositions = [];
-            for (var tickMarkPositions = firstTickOffsetFromRangeStart; tickMarkPositions < rangeLength; tickMarkPositions += tickSpacing) {
-                arrayOfTickMarkPositions.push(tickMarkPositions);
-            }
-            return arrayOfTickMarkPositions;
-        }
+        
     }
 });
 

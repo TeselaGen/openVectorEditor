@@ -30,10 +30,10 @@ var graphicUtils = {
      */
     drawArc: function(center, radius, startAngle, endAngle, reverse,
                       returnString, sweep, largeArc) {
-        sweep = sweep || false;
-        largeArc = largeArc || false;
         reverse = reverse || false;
         returnString = returnString || false;
+        sweep = sweep || false;
+        largeArc = largeArc || false;
 
         // Set SVG arc flags. See SVG path documentation for more information
         // on the sweep flag and large arc flag.

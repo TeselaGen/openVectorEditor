@@ -1,3 +1,5 @@
+let Cutsite = require('./Cutsite');
+var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 var StyleFeature = require('./StyleFeature');
 var arcUtils = require('./graphic-helpers/arcUtils.js');
 import assign from 'lodash/object/assign'
@@ -105,7 +107,7 @@ class CircularView extends React.Component {
         //   padding: 10
         };
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
-        var annotationHeightRunningCount = 30;
+        var baseRadius = 30;
 
         var center = {
             x: 250,
@@ -126,22 +128,13 @@ class CircularView extends React.Component {
         }
 
         var annotationsSvgs = [];
-        if (showSequence) {
-            var path = arcUtils.drawPiePiece(center, annotationHeightRunningCount, annotationHeight, 0, 2*Math.PI - .00001, direction)
-            annotationsSvgs.push(<path
-                               d={ path }
-                               onClick={function () {
-                                   signals.selectAll();
-                               }}
-                               fill='black' />)
-            annotationHeightRunningCount += totalAnnotationHeight
-        }
+        
         if (showFeatures) {
             var maxYOffset = 0;
             rowData[0].features.forEach(function(annotation) {
                 var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
                 if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
                 annotationsSvgs.push(
                     <StyleFeature
                         onClick={function (event) {
@@ -151,49 +144,97 @@ class CircularView extends React.Component {
                         color={annotation.color}>
                         <path
                                    d={ path }
-                                   onClick={function () {
-                                       signals.annotationClicked(annotation);
-                                   }}
                                    fill={annotation.color} />
                     </StyleFeature>
                     )
             })
-            annotationHeightRunningCount += maxYOffset + 1 * totalAnnotationHeight
-        }
-        if (showParts) {
-            rowData[0].parts.forEach(function(feature) {
-                var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
-                annotationsSvgs.push(<path
-                                   d={ path }
-                                   fill="orange" />)
-            })
-            annotationHeightRunningCount += rowData[0].parts.length * annotationHeight
-        }
-        if (showTranslations) {
-            rowData[0].translations.forEach(function(feature) {
-                var {startAngle, endAngle} = getAngleStartAndEndForRange(feature, sequenceLength)
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
-                annotationsSvgs.push(<path
-                                   d={ path }
-                                   fill="orange" />)
-            })
-            annotationHeightRunningCount += rowData[0].translations.length * annotationHeight
+            baseRadius += maxYOffset + 1 * totalAnnotationHeight
         }
 
-        if (showReverseSequence) {
-            rowData[0].features.forEach(function(feature) {
-                var path = arcUtils.drawDirectedPiePiece(center, annotationHeightRunningCount + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
-                annotationsSvgs.push(<path
+        if (showFeatures) {
+            var maxYOffset = 0;
+            rowData[0].features.forEach(function(annotation) {
+                var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
+                if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
+                var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                annotationsSvgs.push(
+                    <StyleFeature
+                        onClick={function (event) {
+                            signals.setSelectionLayer({selectionLayer: this});
+                            event.stopPropagation();
+                        }.bind(annotation)}
+                        color={annotation.color}>
+                        <path
                                    d={ path }
-                                   fill="green" />)
+                                   fill={annotation.color} />
+                    </StyleFeature>
+                    )
             })
-            annotationHeightRunningCount += rowData[0].features.length * annotationHeight
+            baseRadius += maxYOffset + 1 * totalAnnotationHeight
         }
+        
+        if (showAxis) {
+            var tickMarkHeight = 10;
+            var tickMarkWidth = 1/(2*Math.PI);
+            var axisLineThickness = 4;
+            var outerRadius = baseRadius + 40 + tickMarkHeight + axisLineThickness
+
+            var path = arcUtils.drawPiePiece(center, outerRadius, axisLineThickness, 0, 2*Math.PI - .00001, direction)
+            var tickPositions = calculateTickMarkPositionsForGivenRange({range: {start: 0, end: sequenceLength}, tickSpacing: 30});
+            var tickMarksAndLabels = tickPositions.map(function (tickPosition,index) {
+
+                // var {startAngle, endAngle} = getAngleStartAndEndForRange({start: tickPosition, end: tickPosition}, sequenceLength);
+                // var tickMarkPath = arcUtils.drawPiePiece(center, outerRadius, tickMarkHeight, startAngle, startAngle + tickMarkWidth, direction)
+                return (
+                    <g
+                    transform={`translate(${center.x},${center.y - outerRadius}) rotate(${tickPosition},0,${outerRadius})`}
+                    >
+                        <text 
+                            x={tickMarkWidth/2}  
+                            y={tickMarkHeight + 15}
+                            style={{textAnchor: "middle"}}
+                            >
+                            {tickPosition}
+                        </text>
+                        <polyline
+                            points={`0,0 ${tickMarkWidth},0 ${tickMarkWidth},${tickMarkHeight} 0,${tickMarkHeight} 0,0`}
+                            strokeWidth="3"
+                            stroke={'black'}
+                            >
+                        </polyline>                
+                    </g>
+                    )
+                // return (
+                //     <path
+                //        d={ tickMarkPath }
+                //        fill='black' />
+                //     )
+            })
+            annotationsSvgs.push(
+                <g>
+                    {tickMarksAndLabels}
+                    <path
+                       d={ path }
+                       fill='black' />
+                </g>
+            )
+            baseRadius += totalAnnotationHeight
+        }
+        // if (showAxis) {
+        //     rowData[0].features.forEach(function(feature) {
+        //         var {startAngle, endAngle} = getAngleStartAndEndForRange({start: 0, end: sequenceLength}, sequenceLength)
+        //         console.log('startAngle, endAngle: ' + JSON.stringify([startAngle, endAngle],null,4));
+        //         var path = arcUtils.drawArc(center, baseRadius + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle )
+        //         annotationsSvgs.push(<path
+        //                            d={ path }
+        //                            stroke="black" />)
+        //     })
+        //     baseRadius += rowData[0].features.length * annotationHeight
+        // }
 
         if (selectionLayer.selected) {
             var {startAngle, endAngle} = getAngleStartAndEndForRange(selectionLayer, sequenceLength)
-            var path = arcUtils.drawPiePiece(center, 150, annotationHeightRunningCount, startAngle, endAngle, direction)
+            var path = arcUtils.drawPiePiece(center, 50, baseRadius, startAngle, endAngle, direction)
             annotationsSvgs.push(<path
                                style={ {    opacity: .4} }
                                d={ path }
@@ -206,9 +247,11 @@ class CircularView extends React.Component {
         return (
             <div style={ circViewStyle }>
               <svg
-                width={ annotationHeightRunningCount + 500 }
-                height={ annotationHeightRunningCount + 500 }>
-                <g transform={ "translate(" + annotationHeightRunningCount / 2 + "," + annotationHeightRunningCount / 2 + ")" }>
+                width={ baseRadius + 500 }
+                height={ baseRadius + 500 }>
+                <g 
+                // transform={ "translate(" + baseRadius / 2 + "," + baseRadius / 2 + ")" }
+                >
                   { annotationsSvgs }
                 </g>
               </svg>
