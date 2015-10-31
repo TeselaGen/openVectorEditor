@@ -185,6 +185,7 @@ class CircularView extends React.Component {
 
                 // var {startAngle, endAngle} = getAngleStartAndEndForRange({start: tickPosition, end: tickPosition}, sequenceLength);
                 // var tickMarkPath = arcUtils.drawPiePiece(center, outerRadius, tickMarkHeight, startAngle, startAngle + tickMarkWidth, direction)
+                //tnr: turn the following into a reusable component
                 return (
                     <g
                     transform={`translate(${center.x},${center.y - outerRadius}) rotate(${tickPosition},0,${outerRadius})`}
@@ -192,7 +193,7 @@ class CircularView extends React.Component {
                         <text 
                             x={tickMarkWidth/2}  
                             y={tickMarkHeight + 15}
-                            style={{textAnchor: "middle"}}
+                            style={{textAnchor: "middle", fontSize: 'small'}}
                             >
                             {tickPosition}
                         </text>
@@ -204,11 +205,6 @@ class CircularView extends React.Component {
                         </polyline>                
                     </g>
                     )
-                // return (
-                //     <path
-                //        d={ tickMarkPath }
-                //        fill='black' />
-                //     )
             })
             annotationsSvgs.push(
                 <g>
@@ -242,7 +238,6 @@ class CircularView extends React.Component {
         }
         var circViewStyle = assign({}, rowViewDimensions, {
             height: rowViewDimensions.height + 200
-        // overflowY: 'none'
         })
         return (
             <div style={ circViewStyle }>

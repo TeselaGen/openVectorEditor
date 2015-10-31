@@ -20,7 +20,7 @@ export default {
     charWidth: 15,
     charHeight: 15,
     annotationHeight: 15,
-    minimumOrfSize: 200,
+    minimumOrfSize: 20,
     tickSpacing: 10,
     mapViewTickSpacing: 40,
     spaceBetweenAnnotations: 3,

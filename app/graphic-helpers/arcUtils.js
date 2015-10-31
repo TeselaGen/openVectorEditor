@@ -6,9 +6,8 @@
  * @author Zinovii Dmytriv (original author)
  */
 var graphicUtils = {
-    SQUIGGLY_END_STRENGTH: 3,
     ARC_THRESHOLD: 5, // Minimum arc length of a feature to be drawn as a
-                      // full pie piece as opposed to a triangle.
+    // full pie piece as opposed to a triangle.
 
     /**
      * Draws an arc using an SVG path.
@@ -29,7 +28,7 @@ var graphicUtils = {
      * @return {Ext.draw.Sprite} A sprite of the arc. Returned if returnString false.
      */
     drawArc: function(center, radius, startAngle, endAngle, reverse,
-                      returnString, sweep, largeArc) {
+        returnString, sweep, largeArc) {
         reverse = reverse || false;
         returnString = returnString || false;
         sweep = sweep || false;
@@ -38,21 +37,21 @@ var graphicUtils = {
         // Set SVG arc flags. See SVG path documentation for more information
         // on the sweep flag and large arc flag.
         var sweepFlag;
-        if(sweep) {
+        if (sweep) {
             sweepFlag = 1;
         } else {
             sweepFlag = 0;
         }
 
         var largeFlag;
-        if(largeArc) {
+        if (largeArc) {
             largeFlag = 1;
         } else {
             largeFlag = 0;
         }
 
         var alpha;
-        if(endAngle < startAngle) {
+        if (endAngle < startAngle) {
             alpha = 2 * Math.PI - startAngle + endAngle;
         } else {
             alpha = endAngle - startAngle;
@@ -66,7 +65,7 @@ var graphicUtils = {
 
         // Swap angles if the arc will be drawn in reverse.
         var tempAngle;
-        if(reverse) {
+        if (reverse) {
             tempAngle = startAngle;
             startAngle = endAngle;
             endAngle = tempAngle;
@@ -79,8 +78,65 @@ var graphicUtils = {
         endPoint.y = center.y - radius * Math.cos(endAngle);
 
         path = "M" + startPoint.x + " " + startPoint.y +
-               "A" + radius + " " + radius + " 0 " + largeFlag + " " +
-               sweepFlag + " " + endPoint.x + " " + endPoint.y + " ";
+            "A" + radius + " " + radius + " 0 " + largeFlag + " " +
+            sweepFlag + " " + endPoint.x + " " + endPoint.y + " ";
+
+        return path;
+    },
+
+    drawArc2: function(radius, startAngle, endAngle, reverse,
+        returnString, sweep, largeArc) {
+        reverse = reverse || false;
+        returnString = returnString || false;
+        sweep = sweep || false;
+        largeArc = largeArc || false;
+
+        // Set SVG arc flags. See SVG path documentation for more information
+        // on the sweep flag and large arc flag.
+        var sweepFlag;
+        if (sweep) {
+            sweepFlag = 1;
+        } else {
+            sweepFlag = 0;
+        }
+
+        var largeFlag;
+        if (largeArc) {
+            largeFlag = 1;
+        } else {
+            largeFlag = 0;
+        }
+
+        var alpha;
+        if (endAngle < startAngle) {
+            alpha = 2 * Math.PI - startAngle + endAngle;
+        } else {
+            alpha = endAngle - startAngle;
+        }
+
+        var startPoint = {};
+        var endPoint = {};
+
+        var sprite;
+        var path;
+
+        // Swap angles if the arc will be drawn in reverse.
+        var tempAngle;
+        if (reverse) {
+            tempAngle = startAngle;
+            startAngle = endAngle;
+            endAngle = tempAngle;
+        }
+
+        startPoint.x = radius * Math.sin(startAngle);
+        startPoint.y = radius * Math.cos(startAngle);
+
+        endPoint.x = radius * Math.sin(endAngle);
+        endPoint.y = radius * Math.cos(endAngle);
+
+        path = "M" + startPoint.x + " " + startPoint.y +
+            "A" + radius + " " + radius + " 0 " + largeFlag + " " +
+            sweepFlag + " " + endPoint.x + " " + endPoint.y + " ";
 
         return path;
     },
@@ -119,23 +175,23 @@ var graphicUtils = {
         innerCorner.y = center.y - innerRadius * Math.cos(endAngle);
 
         var sweep = true;
-        if(endAngle < startAngle) {
+        if (endAngle < startAngle) {
             sweep = false;
         }
 
         // Determine whether we must set the large-arc-flag in SVG to 1.
         var largeFlag = false;
-        if(Math.abs(endAngle - startAngle) > Math.PI) {
+        if (Math.abs(endAngle - startAngle) > Math.PI) {
             largeFlag = true;
         }
 
         path = "M" + outerCorner.x + " " + outerCorner.y + " " +
-               this.drawArc(center, outerRadius, startAngle, endAngle, false,
-                            true, sweep, largeFlag) +
-               "L" + innerCorner.x + " " + innerCorner.y + " " +
-               this.drawArc(center, innerRadius, startAngle, endAngle, true,
-                            true, !sweep, largeFlag) +
-               "L" + outerCorner.x + " " + outerCorner.y;
+            this.drawArc(center, outerRadius, startAngle, endAngle, false,
+                true, sweep, largeFlag) +
+            "L" + innerCorner.x + " " + innerCorner.y + " " +
+            this.drawArc(center, innerRadius, startAngle, endAngle, true,
+                true, !sweep, largeFlag) +
+            "L" + outerCorner.x + " " + outerCorner.y;
 
         return path;
     },
@@ -160,7 +216,7 @@ var graphicUtils = {
      * "black" or "red", or a string of a hex value, like "#ffffff".
      * @return {Ext.draw.Sprite} A sprite of the pie piece.
      */
-    drawDirectedPiePiece: function (center, radius, thickness, startAngle, endAngle, direction) {
+    drawDirectedPiePiece: function(center, radius, thickness, startAngle, endAngle, direction) {
         var outerRadius = radius + thickness / 2;
         var innerRadius = radius - thickness / 2;
         var arcLength;
@@ -172,35 +228,35 @@ var graphicUtils = {
         var middlePoint = {};
 
         var path;
-        if(direction > 0) {
-            if(startAngle > endAngle) {
+        if (direction > 0) {
+            if (startAngle > endAngle) {
                 arcLength = radius * (2 * Math.PI - startAngle + endAngle);
             } else {
                 arcLength = radius * (endAngle - startAngle);
             }
 
             // Draw triangle if arc is smaller than the threshold.
-            if(arcLength > this.ARC_THRESHOLD) {
+            if (arcLength > this.ARC_THRESHOLD) {
                 // The angle between the tip of the arrow and its base.
                 var alpha = this.ARC_THRESHOLD / radius;
 
                 var sweep = true;
-                if(endAngle < startAngle) {
+                if (endAngle < startAngle) {
                     sweep = false;
                 }
 
                 // Determine whether we must set the large-arc-flag in SVG to 1.
                 var largeFlag = false;
-                if(Math.abs(endAngle - startAngle) > Math.PI) {
+                if (Math.abs(endAngle - startAngle) > Math.PI) {
                     largeFlag = true;
                 }
 
-                if(startAngle > endAngle) {
+                if (startAngle > endAngle) {
                     sweep = !sweep;
                     largeFlag = !largeFlag;
                 }
 
-                if(direction == 1) {
+                if (direction == 1) {
                     middlePoint.x = center.x + radius * Math.sin(endAngle);
                     middlePoint.y = center.y - radius * Math.cos(endAngle);
 
@@ -213,13 +269,13 @@ var graphicUtils = {
                     innerCorner.y = center.y - innerRadius * Math.cos(endAngle);
 
                     path = this.drawArc(center, outerRadius, startAngle,
-                                 endAngle, false, true, sweep, largeFlag) +
-                           "L" + middlePoint.x + " " + middlePoint.y + " " +
-                           "L" + innerCorner.x + " " + innerCorner.y + " " +
-                           this.drawArc(center, innerRadius, startAngle,
-                                 endAngle, true, true, !sweep, largeFlag) +
-                           "L" + outerCorner.x + " " + outerCorner.y;
-                } else if(direction == 2) {
+                            endAngle, false, true, sweep, largeFlag) +
+                        "L" + middlePoint.x + " " + middlePoint.y + " " +
+                        "L" + innerCorner.x + " " + innerCorner.y + " " +
+                        this.drawArc(center, innerRadius, startAngle,
+                            endAngle, true, true, !sweep, largeFlag) +
+                        "L" + outerCorner.x + " " + outerCorner.y;
+                } else if (direction == 2) {
                     middlePoint.x = center.x + radius * Math.sin(startAngle);
                     middlePoint.y = center.y - radius * Math.cos(startAngle);
 
@@ -232,16 +288,16 @@ var graphicUtils = {
                     innerCorner.y = center.y - innerRadius * Math.cos(endAngle);
 
                     path = "M" + outerCorner.x + " " + outerCorner.y +
-                           this.drawArc(center, outerRadius, startAngle,
-                                endAngle, false, true, sweep, largeFlag) +
-                           "L" + innerCorner.x + " " + innerCorner.y +
-                           this.drawArc(center, innerRadius, startAngle,
-                                endAngle, true, true, !sweep, largeFlag) +
-                           "L" + middlePoint.x + " " + middlePoint.y +
-                           "L" + outerCorner.x + " " + outerCorner.y;
+                        this.drawArc(center, outerRadius, startAngle,
+                            endAngle, false, true, sweep, largeFlag) +
+                        "L" + innerCorner.x + " " + innerCorner.y +
+                        this.drawArc(center, innerRadius, startAngle,
+                            endAngle, true, true, !sweep, largeFlag) +
+                        "L" + middlePoint.x + " " + middlePoint.y +
+                        "L" + outerCorner.x + " " + outerCorner.y;
                 }
             } else {
-                if(direction == 1) {
+                if (direction == 1) {
                     middlePoint.x = center.x + radius * Math.sin(endAngle);
                     middlePoint.y = center.y - radius * Math.cos(endAngle);
 
@@ -251,9 +307,9 @@ var graphicUtils = {
                     innerCorner.y = center.y - innerRadius * Math.cos(startAngle);
 
                     path = "M" + outerCorner.x + " " + outerCorner.y +
-                           "L" + middlePoint.x + " " + middlePoint.y +
-                           "L" + innerCorner.x + " " + innerCorner.y + "Z";
-                } else if(direction == 2) {
+                        "L" + middlePoint.x + " " + middlePoint.y +
+                        "L" + innerCorner.x + " " + innerCorner.y + "Z";
+                } else if (direction == 2) {
                     middlePoint.x = center.x + radius * Math.sin(startAngle);
                     middlePoint.y = center.y - radius * Math.cos(startAngle);
 
@@ -263,8 +319,8 @@ var graphicUtils = {
                     innerCorner.y = center.y - innerRadius * Math.cos(endAngle);
 
                     path = "M" + outerCorner.x + " " + outerCorner.y +
-                           "L" + innerCorner.x + " " + innerCorner.y +
-                           "L" + middlePoint.x + " " + middlePoint.y + "Z";
+                        "L" + innerCorner.x + " " + innerCorner.y +
+                        "L" + middlePoint.x + " " + middlePoint.y + "Z";
                 }
             }
         } else {
@@ -275,13 +331,66 @@ var graphicUtils = {
             innerCorner.y = center.y - innerRadius * Math.cos(endAngle);
 
             path = "M" + outerCorner.x + " " + outerCorner.y +
-                   this.drawArc(center, outerRadius, startAngle, endAngle,
-                                false, true) +
-                   "L" + innerCorner.x + " " + innerCorner.y +
-                   this.drawArc(center, innerRadius, startAngle, endAngle,
-                                false, true) +
-                   "L" + outerCorner.x + " " + outerCorner.y;
+                this.drawArc(center, outerRadius, startAngle, endAngle,
+                    false, true) +
+                "L" + innerCorner.x + " " + innerCorner.y +
+                this.drawArc(center, innerRadius, startAngle, endAngle,
+                    false, true) +
+                "L" + outerCorner.x + " " + outerCorner.y;
         }
+
+        return path;
+    },
+
+    drawOrf: function(radius, annotationHeight, widthInBps, charWidth) {
+
+        var outerRadius = radius + annotationHeight / 2;
+        var innerRadius = radius - annotationHeight / 2;
+        var arcLength;
+
+        var outerCorner = {};
+        var innerCorner = {};
+
+        // The tip of the arrow.
+        var middlePoint = {};
+
+        var path;
+        
+            // The angle between the tip of the arrow and its base.
+            var alpha = this.ARC_THRESHOLD / radius;
+
+            var sweep = true;
+
+            // Determine whether we must set the large-arc-flag in SVG to 1.
+            var largeFlag = false;
+            if (Math.abs(endAngle - 0) > Math.PI) {
+                largeFlag = true;
+            }
+
+            if (0 > endAngle) {
+                sweep = !sweep;
+                largeFlag = !largeFlag;
+            }
+
+            middlePoint.x = radius * Math.sin(endAngle);
+            middlePoint.y = - radius * Math.cos(endAngle);
+
+            endAngle -= alpha;
+
+            outerCorner.x = outerRadius * Math.sin(0);
+            outerCorner.y = - outerRadius * Math.cos(0);
+
+            innerCorner.x = innerRadius * Math.sin(endAngle);
+            innerCorner.y = - innerRadius * Math.cos(endAngle);
+
+            path = this.drawArc2(center, outerRadius, 0,
+                    endAngle, false, true, sweep, largeFlag) +
+                "L" + middlePoint.x + " " + middlePoint.y + " " +
+                "L" + innerCorner.x + " " + innerCorner.y + " " +
+                this.drawArc2(center, innerRadius, 0,
+                    endAngle, true, true, !sweep, largeFlag) +
+                "L" + outerCorner.x + " " + outerCorner.y;
+        } 
 
         return path;
     },
@@ -297,22 +406,22 @@ var graphicUtils = {
      * given angle. Has attributes x and y.
      */
     pointOnCircle: function(center, angle, radius) {
-        if(angle > 2 * Math.PI) {
+        if (angle > 2 * Math.PI) {
             angle = angle % (2 * Math.PI);
         }
 
         var point = {};
 
-        if(angle < Math.PI / 2) {
+        if (angle < Math.PI / 2) {
             point.x = center.x + Math.sin(angle) * radius;
             point.y = center.y - Math.cos(angle) * radius;
-        } else if((angle >= Math.PI / 2) && (angle < Math.PI)) {
+        } else if ((angle >= Math.PI / 2) && (angle < Math.PI)) {
             point.x = center.x + Math.sin(Math.PI - angle) * radius;
             point.y = center.y + Math.cos(Math.PI - angle) * radius;
-        } else if((angle >= Math.PI) && (angle < 3 * Math.PI / 2)) {
+        } else if ((angle >= Math.PI) && (angle < 3 * Math.PI / 2)) {
             point.x = center.x - Math.sin(angle - Math.PI) * radius;
             point.y = center.y + Math.cos(angle - Math.PI) * radius;
-        } else if((angle >= 3 * Math.PI / 2) && (angle <= 2 * Math.PI)) {
+        } else if ((angle >= 3 * Math.PI / 2) && (angle <= 2 * Math.PI)) {
             point.x = center.x - Math.sin(2 * Math.PI - angle) * radius;
             point.y = center.y - Math.cos(2 * Math.PI - angle) * radius;
         }
@@ -324,7 +433,7 @@ var graphicUtils = {
 
         var point = {};
 
-        point.x = reference.x + ((railwidth/location)*railwidth);
+        point.x = reference.x + ((railwidth / location) * railwidth);
         point.y = reference.y + gap;
 
         return point;

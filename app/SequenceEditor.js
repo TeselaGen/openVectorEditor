@@ -252,40 +252,18 @@ class SequenceEditor extends React.Component {
 
       return (
       <div ref="sequenceEditor"
-        style={{float:"right"}}>
-        features 7 count: {featuresCount}
-        <br/>
-        selectionLayer: {selectionLayer.start}  {selectionLayer.end}
-        <br/>
-        caretPosition: {caretPosition}
-        <br/>
-        sequence length: {sequenceLength}
-        <br/>
-        bpsPerRow:  {bpsPerRow}
-        <br/>
-
-        <button onClick={function () {
-            setViewportDimensions({height: 800, width: 1500})
-        }}>
-         set viewport dimensions
-        </button>
+        >
+        
 
         {toggleButtons}
 
-        <button onClick={function () {
-            jumpToRow(self.props.newRandomRowToJumpTo)
-        }}>
-         Jump to a random row!: Row #{self.props.newRandomRowToJumpTo.row}
-        </button>
         
         <Clipboard
           value={selectedSequenceString}
           onCopy={this.handleCopy.bind(this)}
           onPaste={this.handlePaste.bind(this)}/>
         <br/>
-        totalRows:  {totalRows}
-
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', overflowX: 'auto'}}>
             <CircularView 
               handleEditorDrag={this.handleEditorDrag.bind(this)}
               handleEditorDragStart={this.handleEditorDragStart.bind(this)}
