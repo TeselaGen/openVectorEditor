@@ -18,7 +18,7 @@ See a [demo] (http://teselagen.github.io/openVectorEditor/)
 
 ```js
 import ReactDOM from 'react-dom';
-import App from './App'
+import App from 'open-vector-editor'
 import request from 'superagent'
 
 //set your custom options here
