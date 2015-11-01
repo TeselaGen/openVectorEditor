@@ -1,99 +1,60 @@
-export function polarToCartesian(center, radius, angleInDegrees) {
-    // var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-
+var Path = require('paths-js/path');
+function polarToCartesian(radius, angleInRadians) {
     return {
-        x: center.x + (radius * Math.cos(angleInRadians)),
-        y: center.y + (radius * Math.sin(angleInRadians))
+        x: radius * Math.cos(angleInRadians),
+        y: radius * Math.sin(angleInRadians)
     };
 }
 
-export default function describeArc(x, y, radius, startAngle, endAngle, counterclockwise) {
+// draws a directed piece of the pie with an arrowhead, starts at 0 angle, only draws in one direction (use transforms to move it around the ) 
+export default function ({arrowheadOffset=.6, arrowheadLength=1, radius, annotationHeight, widthInBps, sequenceLength}) {
+    var arcHeight = annotationHeight*arrowheadOffset;
+    
+    var arrowheadOuterRadius = radius + annotationHeight / 2;
+    var arrowheadInnerRadius = radius - annotationHeight / 2;
+    var arcOuterRadius = radius + arcHeight / 2;
+    var arcInnerRadius = radius - arcHeight / 2;
+    
+    //angle for entire annotation
+    var angleInRadians = (widthInBps/sequenceLength)*(Math.PI * 2);
+    //angle for just the arrowhead
+    // var arrowheadAngleInRadians = angleInRadians / 2
+    var arrowheadAngleInRadians = arrowheadLength / (Math.PI * 2)
 
-    var start = polarToCartesian(x, y, radius, endAngle);
-    var end = polarToCartesian(x, y, radius, startAngle);
+    if (angleInRadians < arrowheadAngleInRadians) {
+        //set arrowhead length to the angle in radians length
+        arrowheadAngleInRadians = angleInRadians;
+    } 
+    var arcAngle = angleInRadians - arrowheadAngleInRadians;
 
-    var arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
-
-    var d = [
-        "M", start.x, start.y,
-        "A", radius, radius, 0, arcSweep, 0, end.x, end.y
-    ].join(" ");
-
-    return d;
+    //the main points we need to draw the arrow and in the order we draw them in:
+    var arrowheadPoint = polarToCartesian(radius, 0);
+    console.log('arrowheadPoint: ' + JSON.stringify(arrowheadPoint,null,4));
+    var arrowheadBottom = polarToCartesian(arrowheadInnerRadius, arrowheadAngleInRadians)
+    console.log('arrowheadBottom: ' + JSON.stringify(arrowheadBottom,null,4));
+    
+    var arcLeftBottom = polarToCartesian(arcInnerRadius, arrowheadAngleInRadians)
+    console.log('arcLeftBottom: ' + JSON.stringify(arcLeftBottom,null,4));
+    
+    var arcRightBottom = polarToCartesian(arcInnerRadius, angleInRadians)
+    console.log('arcRightBottom: ' + JSON.stringify(arcRightBottom,null,4));
+    
+    var arcRightTop = polarToCartesian(arcOuterRadius, angleInRadians)
+    
+    var arcLeftTop = polarToCartesian(arcOuterRadius, arrowheadAngleInRadians)
+    
+    var arrowheadTop = polarToCartesian(arrowheadOuterRadius, arrowheadAngleInRadians)
+    
+    var large_arc_flag = arcAngle > Math.PI ? 1 : 0
+    var path = Path()
+      .moveto(arrowheadPoint.x,arrowheadPoint.y)
+      .lineto(arrowheadBottom.x,arrowheadBottom.y)
+      .lineto(arcLeftBottom.x,arcLeftBottom.y)
+      .arc({rx: arcInnerRadius, ry: arcInnerRadius, xrot: 0, large_arc_flag, sweep_flag: 1, x: arcRightBottom.x, y: arcRightBottom.y})
+      .lineto(arcRightTop.x,arcRightTop.y)
+      .arc({rx: arcOuterRadius, ry: arcOuterRadius, xrot: 0, large_arc_flag, sweep_flag: 0, x: arcLeftTop.x, y: arcLeftTop.y})
+      .lineto(arrowheadTop.x,arrowheadTop.y)
+      .closepath();
+      path.print()
+    return path;
 }
-
-//draws a directed piece of the pie with an arrowhead, starts at 0 angle, only draws in one direction (use transforms to move it around the ) 
-drawDirectedPiePiece: function(center, radius, annotationHeight, widthInBps, sequenceLength) {
-        var arrowheadStrength = 10
-        var arrowheadLength = 10
-        var arrowheadAngleInRadians = arrowheadLength * Math.PI
-        var orfLineHeight = annotationHeight/arrowheadStrength;
-        
-        var arrowheadOuterRadius = radius + orfLineHeight / 2;
-        var arrowheadInnerRadius = radius - orfLineHeight / 2;
-        var outerRadius = radius + orfLineHeight / 2;
-        var innerRadius = radius - orfLineHeight / 2;
-        
-        //angle for entire annotation
-        var angleInRadians = (widthInBps/sequenceLength)*Math.PI;
-        
-        var arcLength = radius * (2 * Math.PI + angleInRadians);
-        var arrowheadPoint = polarToCartesian(center, radius, 0);
-
-        if (angleInRadians < arrowheadAngleInRadians) {
-            //set arrowhead length to the angle in radians length
-            arrowheadAngleInRadians = angleInRadians;
-        } 
-        var arrowheadBottom = polarToCartesian(center, radius, 0)
-
-        else {
-            //draw just part of arrowhead, no tail
-        }
-
-        var arrowheadBottom = polarToCartesian(center.x,center.y, radius, angleInRadians)
-
-        
-
-        // The tip of the arrow.
-        var middlePoint = {};
-
-        var path;
-        
-            // The angle between the tip of the arrow and its base.
-            var alpha = this.ARC_THRESHOLD / radius;
-
-            var sweep = true;
-
-            // Determine whether we must set the large-arc-flag in SVG to 1.
-            var largeFlag = false;
-            if (Math.abs(endAngle - 0) > Math.PI) {
-                largeFlag = true;
-            }
-
-            if (0 > endAngle) {
-                sweep = !sweep;
-                largeFlag = !largeFlag;
-            }
-
-            middlePoint.x = radius * Math.sin(endAngle);
-            middlePoint.y = - radius * Math.cos(endAngle);
-
-            endAngle -= alpha;
-
-            outerCorner.x = outerRadius * Math.sin(0);
-            outerCorner.y = - outerRadius * Math.cos(0);
-
-            innerCorner.x = innerRadius * Math.sin(endAngle);
-            innerCorner.y = - innerRadius * Math.cos(endAngle);
-
-            path = this.drawArc2(center, outerRadius, 0,
-                    endAngle, false, true, sweep, largeFlag) +
-                "L" + middlePoint.x + " " + middlePoint.y + " " +
-                "L" + innerCorner.x + " " + innerCorner.y + " " +
-                this.drawArc2(center, innerRadius, 0,
-                    endAngle, true, true, !sweep, largeFlag) +
-                "L" + outerCorner.x + " " + outerCorner.y;
-        } 
-
-        return path;
-    },

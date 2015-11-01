@@ -342,59 +342,6 @@ var graphicUtils = {
         return path;
     },
 
-    drawOrf: function(radius, annotationHeight, widthInBps, charWidth) {
-
-        var outerRadius = radius + annotationHeight / 2;
-        var innerRadius = radius - annotationHeight / 2;
-        var arcLength;
-
-        var outerCorner = {};
-        var innerCorner = {};
-
-        // The tip of the arrow.
-        var middlePoint = {};
-
-        var path;
-        
-            // The angle between the tip of the arrow and its base.
-            var alpha = this.ARC_THRESHOLD / radius;
-
-            var sweep = true;
-
-            // Determine whether we must set the large-arc-flag in SVG to 1.
-            var largeFlag = false;
-            if (Math.abs(endAngle - 0) > Math.PI) {
-                largeFlag = true;
-            }
-
-            if (0 > endAngle) {
-                sweep = !sweep;
-                largeFlag = !largeFlag;
-            }
-
-            middlePoint.x = radius * Math.sin(endAngle);
-            middlePoint.y = - radius * Math.cos(endAngle);
-
-            endAngle -= alpha;
-
-            outerCorner.x = outerRadius * Math.sin(0);
-            outerCorner.y = - outerRadius * Math.cos(0);
-
-            innerCorner.x = innerRadius * Math.sin(endAngle);
-            innerCorner.y = - innerRadius * Math.cos(endAngle);
-
-            path = this.drawArc2(center, outerRadius, 0,
-                    endAngle, false, true, sweep, largeFlag) +
-                "L" + middlePoint.x + " " + middlePoint.y + " " +
-                "L" + innerCorner.x + " " + innerCorner.y + " " +
-                this.drawArc2(center, innerRadius, 0,
-                    endAngle, true, true, !sweep, largeFlag) +
-                "L" + outerCorner.x + " " + outerCorner.y;
-        } 
-
-        return path;
-    },
-
     /**
      * Given the parameters defining a circle, returns a point object on that
      * circle at a given angle.

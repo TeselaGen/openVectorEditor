@@ -2,6 +2,7 @@ let Cutsite = require('./Cutsite');
 var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 var StyleFeature = require('./StyleFeature');
 var arcUtils = require('./graphic-helpers/arcUtils.js');
+var drawDirectedPiePiece = require('./graphic-helpers/describeArc.js');
 import assign from 'lodash/object/assign'
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-react';
@@ -129,34 +130,35 @@ class CircularView extends React.Component {
 
         var annotationsSvgs = [];
         
-        if (showFeatures) {
-            var maxYOffset = 0;
-            rowData[0].features.forEach(function(annotation) {
-                var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
-                if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
-                var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
-                annotationsSvgs.push(
-                    <StyleFeature
-                        onClick={function (event) {
-                            signals.setSelectionLayer({selectionLayer: this});
-                            event.stopPropagation();
-                        }.bind(annotation)}
-                        color={annotation.color}>
-                        <path
-                                   d={ path }
-                                   fill={annotation.color} />
-                    </StyleFeature>
-                    )
-            })
-            baseRadius += maxYOffset + 1 * totalAnnotationHeight
-        }
+        // if (showFeatures) {
+        //     var maxYOffset = 0;
+        //     rowData[0].features.forEach(function(annotation) {
+        //         var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
+        //         if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
+        //         var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+        //         annotationsSvgs.push(
+        //             <StyleFeature
+        //                 onClick={function (event) {
+        //                     signals.setSelectionLayer({selectionLayer: this});
+        //                     event.stopPropagation();
+        //                 }.bind(annotation)}
+        //                 color={annotation.color}>
+        //                 <path
+        //                            d={ path }
+        //                            fill={annotation.color} />
+        //             </StyleFeature>
+        //             )
+        //     })
+        //     baseRadius += maxYOffset + 1 * totalAnnotationHeight
+        // }
 
         if (showFeatures) {
             var maxYOffset = 0;
-            rowData[0].features.forEach(function(annotation) {
+            rowData[0].features.some(function(annotation) {
                 var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
                 if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
-                var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                // var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
+                var path = drawDirectedPiePiece({radius: 80, annotationHeight, widthInBps: 10, sequenceLength: 100})
                 annotationsSvgs.push(
                     <StyleFeature
                         onClick={function (event) {
@@ -165,10 +167,11 @@ class CircularView extends React.Component {
                         }.bind(annotation)}
                         color={annotation.color}>
                         <path
-                                   d={ path }
+                                   d={ path.print() }
                                    fill={annotation.color} />
                     </StyleFeature>
                     )
+                return true
             })
             baseRadius += maxYOffset + 1 * totalAnnotationHeight
         }
@@ -188,7 +191,7 @@ class CircularView extends React.Component {
                 //tnr: turn the following into a reusable component
                 return (
                     <g
-                    transform={`translate(${center.x},${center.y - outerRadius}) rotate(${tickPosition},0,${outerRadius})`}
+                    transform={`translate(${outerRadius},0) rotate(${tickPosition})`}
                     >
                         <text 
                             x={tickMarkWidth/2}  
@@ -245,7 +248,7 @@ class CircularView extends React.Component {
                 width={ baseRadius + 500 }
                 height={ baseRadius + 500 }>
                 <g 
-                // transform={ "translate(" + baseRadius / 2 + "," + baseRadius / 2 + ")" }
+                transform={ "translate(" + (baseRadius + 160) / 2 + "," + (baseRadius + 160) / 2 + ")" }
                 >
                   { annotationsSvgs }
                 </g>
