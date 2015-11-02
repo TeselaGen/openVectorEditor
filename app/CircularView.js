@@ -1,8 +1,9 @@
+var Sector = require('paths-js/sector');
+var getRangeAngles = require('ve-range-utils/getRangeAngles');
 let Cutsite = require('./Cutsite');
 var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 var StyleFeature = require('./StyleFeature');
-var arcUtils = require('./graphic-helpers/arcUtils.js');
-var drawDirectedPiePiece = require('./graphic-helpers/describeArc.js');
+var drawDirectedPiePiece = require('./graphic-helpers/drawDirectedPiePiece.js');
 import assign from 'lodash/object/assign'
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-react';
@@ -10,7 +11,7 @@ import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this 
 var Draggable = require('react-draggable');
 
 @Cerebral({
-    rowViewDimensions: ['rowViewDimensions'],
+    circularViewDimensions: ['circularViewDimensions'],
     rowData: ['mapViewRowData'],
     charWidth: ['charWidth'],
     selectionLayer: ['selectionLayer'],
@@ -31,7 +32,7 @@ var Draggable = require('react-draggable');
     bpsPerRow: ['bpsPerRow']
 })
 @propTypes({
-    rowViewDimensions: PropTypes.object.isRequired,
+    circularViewDimensions: PropTypes.object.isRequired,
     rowData: PropTypes.array.isRequired,
     charWidth: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
@@ -55,207 +56,191 @@ var Draggable = require('react-draggable');
     handleEditorClick: PropTypes.func.isRequired,
 })
 class CircularView extends React.Component {
-    getNearestCursorPositionToMouseEvent(event, callback) {
-        var rowNotFound = true;
-        var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
-        //loop through all the rendered rows to see if the click event lands in one of them
-        for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
-            var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
-            var boundingRowRect = rowDomNode.getBoundingClientRect();
-            // console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
-            // console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
-            if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-                //then the click is falls within this row
-                // console.log('HGGGG');
-                rowNotFound = false;
-                var rowNumber = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
-                var row = this.props.rowData[rowNumber];
-                if (event.clientX - boundingRowRect.left < 0) {
-                    console.warn('this should never be 0...');
-                    callback(row.start, event); //return the first bp in the row
-                } else {
-                    var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-                    var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
-                    var nearestBP = numberOfBPsInFromRowStart + row.start;
-                    if (nearestBP > row.end + 1) {
-                        nearestBP = row.end + 1;
-                    }
-                    // console.log('nearestBP', nearestBP);
-                    callback(nearestBP, event);
-                }
-                break; //break the for loop early because we found the row the click event landed in
-            }
-        }
-        if (rowNotFound) {
-            console.warn('was not able to find the correct row');
-            //return the last bp index in the rendered rows
-            var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
-            var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
-            callback(lastOfRenderedRows.end, event);
-        }
+    getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
+        var boundingRect = this.refs.circularView.getBoundingClientRect()
+        //get relative click positions
+        var clickX = event.clientX - boundingRect.left / boundingRect.length
+        var clickY = event.clientY - boundingRect.top / boundingRect.height
+        //get angle
+        var angle = Math.atan2(clickX, clickY)
+
+        var bp = angle / Math.PI * sequenceLength
     }
 
     render() {
-        var {showSequence, rowViewDimensions, rowData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, tickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
-
-
-        var rowViewStyle = {
-            height: rowViewDimensions.height,
-            width: rowViewDimensions.width,
-        //   overflowY: "scroll",
-        // float: "left",
-        // paddingRight: "20px"
-        //   padding: 10
-        };
-        // console.log('rowData: ' + JSON.stringify(rowData,null,4));
-        var baseRadius = 30;
-
-        var center = {
-            x: 250,
-            y: 250
-        }
-        var radius = 100;
+        var {showSequence, circularViewDimensions, rowData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, tickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
+        const baseRadius = 80;
+        var currentRadius = baseRadius;
         var gapBetweenAnnotations = 5;
         var totalAnnotationHeight = annotationHeight + gapBetweenAnnotations;
-        var startAngle = 0;
-        var endAngle = 1;
-        var direction = 1;
-
-        function getAngleStartAndEndForRange(range, sequenceLength) {
-            return {
-                startAngle: 2 * Math.PI * (range.start / sequenceLength),
-                endAngle: 2 * Math.PI * range.end / sequenceLength
-            }
-        }
-
         var annotationsSvgs = [];
-        
-        // if (showFeatures) {
-        //     var maxYOffset = 0;
-        //     rowData[0].features.forEach(function(annotation) {
-        //         var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
-        //         if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
-        //         var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
-        //         annotationsSvgs.push(
-        //             <StyleFeature
-        //                 onClick={function (event) {
-        //                     signals.setSelectionLayer({selectionLayer: this});
-        //                     event.stopPropagation();
-        //                 }.bind(annotation)}
-        //                 color={annotation.color}>
-        //                 <path
-        //                            d={ path }
-        //                            fill={annotation.color} />
-        //             </StyleFeature>
-        //             )
-        //     })
-        //     baseRadius += maxYOffset + 1 * totalAnnotationHeight
-        // }
 
         if (showFeatures) {
             var maxYOffset = 0;
-            rowData[0].features.some(function(annotation) {
-                var {startAngle, endAngle} = getAngleStartAndEndForRange(annotation, sequenceLength);
-                if (annotation.yOffset > maxYOffset) maxYOffset = annotation.yOffset;
-                // var path = arcUtils.drawDirectedPiePiece(center, baseRadius + (annotationHeight + 5) * annotation.yOffset + 15, annotationHeight, startAngle, endAngle, direction)
-                var path = drawDirectedPiePiece({radius: 80, annotationHeight, widthInBps: 10, sequenceLength: 100})
-                annotationsSvgs.push(
-                    <StyleFeature
-                        onClick={function (event) {
-                            signals.setSelectionLayer({selectionLayer: this});
-                            event.stopPropagation();
-                        }.bind(annotation)}
-                        color={annotation.color}>
+            rowData[0].features.forEach(function(annotation, index) {
+                var {startAngle, endAngle, totalAngle} = getRangeAngles(annotation, sequenceLength);
+                if (annotation.yOffset > maxYOffset) {
+                    maxYOffset = annotation.yOffset;
+                }
+                function DrawCircularFeature({radius, annotationHeight, totalAngle}) {
+                    var path = drawDirectedPiePiece({
+                        radius,
+                        annotationHeight,
+                        totalAngle
+                    })
+                    return (
                         <path
-                                   d={ path.print() }
-                                   fill={annotation.color} />
-                    </StyleFeature>
-                    )
-                return true
+                          d={ path.print() }
+                          fill={ annotation.color } />
+                        )
+                }
+                function onClick(event) {
+                    signals.setSelectionLayer({
+                        selectionLayer: this
+                    });
+                    event.stopPropagation();
+                }
+                annotationsSvgs.push(
+                    <PositionAnnotationOnCircle
+                      key={ index }
+                      sAngle={ startAngle }
+                      eAngle={ endAngle }
+                      direction={ 'reverse' }>
+                      <StyleFeature
+                        onClick={ onClick.bind(annotation) }
+                        color={ annotation.color }>
+                        <DrawCircularFeature
+                          radius={ currentRadius }
+                          annotationHeight={ annotationHeight }
+                          totalAngle={ totalAngle }>
+                        </DrawCircularFeature>
+                      </StyleFeature>
+                    </PositionAnnotationOnCircle>
+                )
+                currentRadius += maxYOffset + 1 * totalAnnotationHeight
             })
-            baseRadius += maxYOffset + 1 * totalAnnotationHeight
         }
-        
+
         if (showAxis) {
             var tickMarkHeight = 10;
-            var tickMarkWidth = 1/(2*Math.PI);
+            var tickMarkWidth = 1;
+            var textOffset = 20
+
             var axisLineThickness = 4;
-            var outerRadius = baseRadius + 40 + tickMarkHeight + axisLineThickness
+            currentRadius += textOffset + tickMarkHeight + axisLineThickness
 
-            var path = arcUtils.drawPiePiece(center, outerRadius, axisLineThickness, 0, 2*Math.PI - .00001, direction)
-            var tickPositions = calculateTickMarkPositionsForGivenRange({range: {start: 0, end: sequenceLength}, tickSpacing: 30});
-            var tickMarksAndLabels = tickPositions.map(function (tickPosition,index) {
 
-                // var {startAngle, endAngle} = getAngleStartAndEndForRange({start: tickPosition, end: tickPosition}, sequenceLength);
-                // var tickMarkPath = arcUtils.drawPiePiece(center, outerRadius, tickMarkHeight, startAngle, startAngle + tickMarkWidth, direction)
-                //tnr: turn the following into a reusable component
+            var tickPositions = calculateTickMarkPositionsForGivenRange({
+                range: {
+                    start: 0,
+                    end: sequenceLength
+                },
+                tickSpacing: 30
+            });
+
+            var tickMarksAndLabels = tickPositions.map(function(tickPosition, index) {
+                function getAngleForPositionMidpoint(position, maxLength) {
+                    return (position + 0.5) / maxLength * Math.PI * 2;
+                }
+                var tickAngle = getAngleForPositionMidpoint(tickPosition, sequenceLength);
+                var flip = false;
+                if ((tickAngle > Math.PI * 0.5) && (tickAngle < Math.PI * 1.5)) {
+                    flip = true
+                }
                 return (
-                    <g
-                    transform={`translate(${outerRadius},0) rotate(${tickPosition})`}
-                    >
-                        <text 
-                            x={tickMarkWidth/2}  
-                            y={tickMarkHeight + 15}
-                            style={{textAnchor: "middle", fontSize: 'small'}}
-                            >
-                            {tickPosition}
-                        </text>
-                        <polyline
-                            points={`0,0 ${tickMarkWidth},0 ${tickMarkWidth},${tickMarkHeight} 0,${tickMarkHeight} 0,0`}
-                            strokeWidth="3"
-                            stroke={'black'}
-                            >
-                        </polyline>                
-                    </g>
+                    <PositionAnnotationOnCircle
+                      key={ index }
+                      sAngle={ tickAngle }
+                      eAngle={ tickAngle }
+                      height={ currentRadius }>
+                      <text
+                        transform={ (flip ? 'rotate(180)' : '') + ` translate(0, ${flip ? -textOffset : textOffset})` }
+                        style={ {    textAnchor: "middle",    dominantBaseline: "central",    fontSize: 'small'} }>
+                        { tickPosition }
+                      </text>
+                      <rect
+                        width={ tickMarkWidth }
+                        height={ tickMarkHeight }>
+                      </rect>
+                    </PositionAnnotationOnCircle>
                     )
             })
             annotationsSvgs.push(
                 <g>
-                    {tickMarksAndLabels}
-                    <path
-                       d={ path }
-                       fill='black' />
+                  { tickMarksAndLabels }
+                  <circle
+                    r={ currentRadius }
+                    style={ {    fill: 'none',    stroke: 'black',    strokeWidth: 1} }>
+                  </circle>
                 </g>
             )
-            baseRadius += totalAnnotationHeight
+
         }
-        // if (showAxis) {
-        //     rowData[0].features.forEach(function(feature) {
-        //         var {startAngle, endAngle} = getAngleStartAndEndForRange({start: 0, end: sequenceLength}, sequenceLength)
-        //         console.log('startAngle, endAngle: ' + JSON.stringify([startAngle, endAngle],null,4));
-        //         var path = arcUtils.drawArc(center, baseRadius + (annotationHeight + 5) * feature.yOffset + 15, annotationHeight, startAngle, endAngle )
-        //         annotationsSvgs.push(<path
-        //                            d={ path }
-        //                            stroke="black" />)
-        //     })
-        //     baseRadius += rowData[0].features.length * annotationHeight
-        // }
 
         if (selectionLayer.selected) {
-            var {startAngle, endAngle} = getAngleStartAndEndForRange(selectionLayer, sequenceLength)
-            var path = arcUtils.drawPiePiece(center, 50, baseRadius, startAngle, endAngle, direction)
-            annotationsSvgs.push(<path
-                               style={ {    opacity: .4} }
-                               d={ path }
-                               fill="blue" />)
+            var {startAngle, endAngle, totalAngle} = getRangeAngles(selectionLayer, sequenceLength)
+            var sector = Sector({
+                center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
+                r: baseRadius - annotationHeight / 2,
+                R: currentRadius,
+                start: 0,
+                end: totalAngle
+            });
+            annotationsSvgs.push(
+                <PositionAnnotationOnCircle
+                  sAngle={ startAngle }
+                  eAngle={ endAngle }
+                  height={ 0 }>
+                  <path
+                    style={ {    opacity: .4} }
+                    d={ sector.path.print() }
+                    fill="blue" />
+                </PositionAnnotationOnCircle>)
         }
-        var circViewStyle = assign({}, rowViewDimensions, {
-            height: rowViewDimensions.height + 200
+        var circViewStyle = assign({}, circularViewDimensions, {
+            height: circularViewDimensions.height + 200
         })
         return (
-            <div style={ circViewStyle }>
-              <svg
-                width={ baseRadius + 500 }
-                height={ baseRadius + 500 }>
-                <g 
-                transform={ "translate(" + (baseRadius + 160) / 2 + "," + (baseRadius + 160) / 2 + ")" }
-                >
-                  { annotationsSvgs }
-                </g>
-              </svg>
-            </div>
+            <Draggable
+            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+            onDrag={(event) => {
+                this.getNearestCursorPositionToMouseEvent(event, handleEditorDrag)}   
+            }
+            onStart={(event) => {
+                this.getNearestCursorPositionToMouseEvent(event, handleEditorDragStart)}   
+            }
+            onStop={handleEditorDragStop}
+            >
+                <div style={ circViewStyle }>
+                  <svg
+                    width={ currentRadius * 2 }
+                    height={ currentRadius * 2 }>
+                    <g 
+                    ref='circularView'
+                    transform={ "translate(" + (currentRadius) + "," + (currentRadius) + ")" }>
+                      { annotationsSvgs }
+                    </g>
+                  </svg>
+                </div>
+            </Draggable>
             );
     }
 }
 
 module.exports = CircularView;
+
+var PositionAnnotationOnCircle = function({children, height=0, sAngle=0, eAngle=0, forward=true}) {
+    const sAngleDegs = sAngle * 360 / Math.PI / 2
+    const eAngleDegs = eAngle * 360 / Math.PI / 2
+    var transform;
+    if (forward) {
+        transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`
+    } else {
+        transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `
+    }
+    return (
+        <g transform={ transform }>
+          { children }
+        </g>
+        )
+}

@@ -41,6 +41,10 @@ export default {
         height: 500,
         width: 500
     },
+    circularViewDimensions: {
+        height: 500,
+        width: 500
+    },
     userEnzymeList: [
         'rsplkii',
         'bme216i',
