@@ -12,7 +12,7 @@ var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence
 //tnr: this json file is being loaded with a special json webpack loader. it will break if run from another environment (eg. node, browserify)
 var enzymeList = require('ve-sequence-utils/enzymeList.json'); 
 
-export default {
+module.exports = {
     rowToJumpTo: null,
     topSpacerHeight: 0,
     bottomSpacerHeight: 0,

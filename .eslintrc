@@ -13,7 +13,7 @@
         "babel"
     ],
     "rules": {
-        "indent": [1,4],
+        "indent": [0,4],
         "no-else-return": 0,
         "spaced-comment": 0,
         "func-names": 0,
