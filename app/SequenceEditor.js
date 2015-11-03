@@ -297,6 +297,11 @@ class SequenceEditor extends React.Component {
 
         return (
             <div ref="sequenceEditor">
+                <Clipboard
+                    value={selectedSequenceString}
+                    onCopy={this.handleCopy.bind(this)}
+                    onPaste={this.handlePaste.bind(this)}/>
+
                 <Toolbar>
                     <ToolbarGroup key={0}>
                         <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
@@ -304,11 +309,6 @@ class SequenceEditor extends React.Component {
                         </IconMenu>
                     </ToolbarGroup>
                 </Toolbar>
-
-                <Clipboard
-                    value={selectedSequenceString}
-                    onCopy={this.handleCopy.bind(this)}
-                    onPaste={this.handlePaste.bind(this)}/>
 
                 <RowView
                     handleEditorDrag={this.handleEditorDrag.bind(this)}
