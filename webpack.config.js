@@ -4,7 +4,7 @@ module.exports = {
     devtool: 'eval',
     entry: [
         'webpack-hot-middleware/client?reload=true',
-        "./app/main.js"
+        "./example/example.js"
     ],
     output: {
         path: __dirname,

@@ -44,7 +44,7 @@ let FeatureContainer = React.createClass({
         }
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
-        annotationRanges.forEach(function(annotationRange) {
+        annotationRanges.forEach(function(annotationRange, index) {
             if (annotationRange.yOffset > maxAnnotationYOffset) {
                 maxAnnotationYOffset = annotationRange.yOffset;
             }
@@ -54,15 +54,13 @@ let FeatureContainer = React.createClass({
                 <AnnotationPositioner 
                     height={annotationHeight} 
                     width={result.width}
-                    key={'feature' + annotation.id + 'start:' + annotationRange.start}
+                    key={index}
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
                     left={result.xStart}
                     >
                     <StyleFeature
-                        onClick={function (event) {
-                            signals.setSelectionLayer({selectionLayer: this});
-                            event.stopPropagation();
-                        }.bind(annotation)}
+                        signals={signals}
+                        annotation={annotation}
                         color={annotation.color}>
                         <LinearFeature
                             widthInBps={annotationRange.end - annotationRange.start + 1}

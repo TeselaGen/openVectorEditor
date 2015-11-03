@@ -1,3 +1,4 @@
+var StyleOrf = require('./StyleOrf');
 let React = require('react');
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
@@ -14,6 +15,7 @@ let OrfContainer = React.createClass({
         annotationHeight: React.PropTypes.number.isRequired,
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
         setSelectionLayer: React.PropTypes.func.isRequired,
+        signals: React.PropTypes.object.isRequired
     },
     render: function() {
         var {
@@ -22,7 +24,7 @@ let OrfContainer = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            setSelectionLayer
+            signals
         } = this.props;
 
         if (annotationRanges.length === 0) {
@@ -44,19 +46,23 @@ let OrfContainer = React.createClass({
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
                     left={result.xStart}
                     >
-                    <Orf
-                        onClick={function (event) {
-                            setSelectionLayer(this);
-                            event.stopPropagation();
-                        }.bind(annotation)}
-                        width={result.width}
-                        charWidth={charWidth}
-                        forward={annotation.forward}
-                        rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
-                        height={annotationHeight}
-                        color={annotation.color}
-                        name={annotation.name}>
-                    </Orf>
+                    <StyleOrf
+                        signals={signals}
+                        annotation={annotation}
+                        color={annotation.color}>
+                        <Orf
+                            signals={signals}
+                            annotation={annotation}
+                            width={result.width}
+                            charWidth={charWidth}
+                            forward={annotation.forward}
+                            rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
+                            height={annotationHeight}
+                            color={annotation.color}
+                            name={annotation.name}>
+                        </Orf>
+                    </StyleOrf>
+
                 </AnnotationPositioner>
             );
         });

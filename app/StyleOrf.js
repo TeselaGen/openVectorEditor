@@ -1,24 +1,24 @@
 import React, { PropTypes } from 'react';
-export default function StyleFeature({children, color, annotation, signals}) {
+export default function StyleOrf({children, color, annotation, signals}) {
     return (
         <g
           onClick={ function (e) {
             e.stopPropagation()
-            signals.featureClicked({annotation: annotation}) 
+            signals.orfClicked({annotation: annotation}) 
             }
           }
           strokeWidth="1"
           stroke={ color || 'orange'}
-          fillOpacity={ 0.4 }
+          fillOpacity={ 1 }
           fill={ color || 'orange' }>
           { children }
         </g>)
 }
 
-StyleFeature.propTypes = {
+StyleOrf.propTypes = {
     color: PropTypes.string.isRequired,
     signals: PropTypes.shape({
-      featureClicked: PropTypes.func.isRequired
+      orfClicked: PropTypes.func.isRequired
     }),
     annotation: PropTypes.object.isRequired,
     children: PropTypes.element

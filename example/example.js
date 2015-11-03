@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import App from './App'
+import App from '../app/App.js'
 // import request from 'superagent'
 
 //set your custom options here

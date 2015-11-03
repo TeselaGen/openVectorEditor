@@ -1,9 +1,10 @@
 var Sector = require('paths-js/sector');
 var getRangeAngles = require('ve-range-utils/getRangeAngles');
 let Cutsite = require('./Cutsite');
+let CircularFeature = require('./CircularFeature');
 var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 var StyleFeature = require('./StyleFeature');
-var drawDirectedPiePiece = require('./graphic-helpers/drawDirectedPiePiece.js');
+
 import assign from 'lodash/object/assign'
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-react';
@@ -12,7 +13,7 @@ var Draggable = require('react-draggable');
 
 @Cerebral({
     circularViewDimensions: ['circularViewDimensions'],
-    rowData: ['mapViewRowData'],
+    circularViewData: ['circularViewData'],
     charWidth: ['charWidth'],
     selectionLayer: ['selectionLayer'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
@@ -33,7 +34,7 @@ var Draggable = require('react-draggable');
 })
 @propTypes({
     circularViewDimensions: PropTypes.object.isRequired,
-    rowData: PropTypes.array.isRequired,
+    circularViewData: PropTypes.array.isRequired,
     charWidth: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
     cutsiteLabelSelectionLayer: PropTypes.object.isRequired,
@@ -68,7 +69,7 @@ class CircularView extends React.Component {
     }
 
     render() {
-        var {showSequence, circularViewDimensions, rowData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, tickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
+        var {showSequence, circularViewDimensions, circularViewData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, tickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
         const baseRadius = 80;
         var currentRadius = baseRadius;
         var gapBetweenAnnotations = 5;
@@ -77,23 +78,12 @@ class CircularView extends React.Component {
 
         if (showFeatures) {
             var maxYOffset = 0;
-            rowData[0].features.forEach(function(annotation, index) {
+            circularViewData.features.forEach(function(annotation, index) {
                 var {startAngle, endAngle, totalAngle} = getRangeAngles(annotation, sequenceLength);
                 if (annotation.yOffset > maxYOffset) {
                     maxYOffset = annotation.yOffset;
                 }
-                function DrawCircularFeature({radius, annotationHeight, totalAngle}) {
-                    var path = drawDirectedPiePiece({
-                        radius,
-                        annotationHeight,
-                        totalAngle
-                    })
-                    return (
-                        <path
-                          d={ path.print() }
-                          fill={ annotation.color } />
-                        )
-                }
+
                 function onClick(event) {
                     signals.setSelectionLayer({
                         selectionLayer: this
@@ -107,13 +97,14 @@ class CircularView extends React.Component {
                       eAngle={ endAngle }
                       direction={ 'reverse' }>
                       <StyleFeature
-                        onClick={ onClick.bind(annotation) }
+                        signals={signals}
+                        annotation={annotation}
                         color={ annotation.color }>
-                        <DrawCircularFeature
+                        <CircularFeature
                           radius={ currentRadius }
                           annotationHeight={ annotationHeight }
                           totalAngle={ totalAngle }>
-                        </DrawCircularFeature>
+                        </CircularFeature>
                       </StyleFeature>
                     </PositionAnnotationOnCircle>
                 )
@@ -198,7 +189,8 @@ class CircularView extends React.Component {
                 </PositionAnnotationOnCircle>)
         }
         var circViewStyle = assign({}, circularViewDimensions, {
-            height: circularViewDimensions.height + 200
+            height: circularViewDimensions.height,
+            overflow: 'scroll',
         })
         return (
             <Draggable
