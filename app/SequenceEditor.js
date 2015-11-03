@@ -11,12 +11,7 @@ var BottomStatusBar = require('./BottomStatusBar');
 var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-react';
 
-/* Toolbar */
-import { Toolbar, ToolbarGroup } from 'material-ui';
-import { IconMenu } from 'material-ui';
-import { IconButton } from 'material-ui';
-import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import ToolBar from './ToolBar';
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
@@ -27,12 +22,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
     caretPosition: ['caretPosition'],
     sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
-    clipboardData: ['clipboardData'],
-    showOrfs: ['showOrfs'],
-    showCutsites: ['showCutsites'],
-    showParts: ['showParts'],
-    showFeatures: ['showFeatures'],
-    showTranslations: ['showTranslations']
+    clipboardData: ['clipboardData']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -43,12 +33,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
     caretPosition: PropTypes.number.isRequired,
     sequenceData: PropTypes.object.isRequired,
     selectionLayer: PropTypes.object.isRequired,
-    clipboardData: PropTypes.object.isRequired,
-    showOrfs: PropTypes.bool.isRequired,
-    showCutsites: PropTypes.bool.isRequired,
-    showParts: PropTypes.bool.isRequired,
-    showFeatures: PropTypes.bool.isRequired,
-    showTranslations: PropTypes.bool.isRequired
+    clipboardData: PropTypes.object.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -238,62 +223,8 @@ class SequenceEditor extends React.Component {
 
     render() {
         var {
-            selectedSequenceString,
-            showFeatures,
-            showParts,
-            showTranslations,
-            showOrfs,
-            showCutsites,
-            signals: {
-                toggleAnnotationDisplay
-            }
+            selectedSequenceString
         } = this.props;
-
-        var annotationList = [
-            {
-                type: 'features',
-                label: 'Features',
-                state: showFeatures
-            },
-
-            {
-                type: 'parts',
-                label: 'Parts',
-                state: showParts
-            },
-
-            {
-                type: 'translations',
-                label: 'Translations',
-                state: showTranslations
-            },
-
-            {
-                type: 'orfs',
-                label: 'ORFs',
-                state: showOrfs
-            },
-
-            {
-                type: 'cutsites',
-                label: 'Cutsites',
-                state: showCutsites
-            }
-        ];
-
-        var toggleMenuItems = annotationList.map(function(annotationType, index){
-            return (
-                <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
-                    toggleAnnotationDisplay(String(annotationType.type));
-                }} />
-            );
-        });
-
-        var iconButtonElement = (
-            <IconButton tooltip="Settings">
-                <SettingsIcon />
-            </IconButton>
-        );
 
         return (
             <div ref="sequenceEditor">
@@ -302,13 +233,7 @@ class SequenceEditor extends React.Component {
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}/>
 
-                <Toolbar>
-                    <ToolbarGroup key={0}>
-                        <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                            {toggleMenuItems}
-                        </IconMenu>
-                    </ToolbarGroup>
-                </Toolbar>
+                <ToolBar />
 
                 <RowView
                     handleEditorDrag={this.handleEditorDrag.bind(this)}
