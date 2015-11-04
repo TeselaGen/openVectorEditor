@@ -6,12 +6,12 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
 var RowView = require('./RowView');
 var MapView = require('./MapView');
-var BottomStatusBar = require('./BottomStatusBar');
 
 var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-react';
 
 import ToolBar from './ToolBar';
+import StatusBar from './StatusBar';
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
@@ -242,7 +242,7 @@ class SequenceEditor extends React.Component {
                     handleEditorClick={this.handleEditorClick.bind(this)}
                 />
 
-                <BottomStatusBar/>
+                <StatusBar/>
             </div>
         );
     }

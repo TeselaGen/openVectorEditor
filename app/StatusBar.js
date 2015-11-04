@@ -25,7 +25,7 @@ var itemStyle = {
     caretPosition: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
 })
-class BottomStatusBar extends React.Component {
+export default class StatusBar extends React.Component {
     render() {
         return (
             <div
@@ -53,5 +53,3 @@ class BottomStatusBar extends React.Component {
             );
     }
 }
-
-module.exports = BottomStatusBar;
