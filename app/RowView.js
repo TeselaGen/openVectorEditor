@@ -65,9 +65,14 @@ class RowView extends React.Component {
                 rowNotFound = false;
                 var rowNumber = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
                 var row = this.props.rowData[rowNumber];
+                var dragInitiatedByGrabbingCaret = event.target.className === "cursor"
                 if (event.clientX - boundingRowRect.left < 0) {
                     console.warn('this should never be 0...');
-                    callback(row.start, event); //return the first bp in the row
+                    callback({
+                        shiftHeld: event.shiftHeld,
+                        nearestBP: row.start, 
+                        dragInitiatedByGrabbingCaret //tnr: come back and fix this
+                    }); //return the first bp in the row
                 } else {
                     var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
                     var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
@@ -76,7 +81,13 @@ class RowView extends React.Component {
                         nearestBP = row.end + 1;
                     }
                     // console.log('nearestBP', nearestBP);
-                    callback(nearestBP, event);
+                    console.log('nearestBP: ' + JSON.stringify(nearestBP,null,4));
+                    console.log('dragInitiatedByGrabbingCaret: ' + JSON.stringify(dragInitiatedByGrabbingCaret,null,4));
+                    callback({
+                        shiftHeld: event.shiftHeld,
+                        nearestBP, 
+                        dragInitiatedByGrabbingCaret //tnr: come back and fix this
+                    });
                 }
                 break; //break the for loop early because we found the row the click event landed in
             }

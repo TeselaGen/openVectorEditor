@@ -60,12 +60,17 @@ class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect()
         //get relative click positions
-        var clickX = event.clientX - boundingRect.left / boundingRect.length
-        var clickY = event.clientY - boundingRect.top / boundingRect.height
+        var clickX = (event.clientX - boundingRect.left) / boundingRect.width
+        var clickY = (event.clientY - boundingRect.top) / boundingRect.height
         //get angle
-        var angle = Math.atan2(clickX, clickY)
+        var angle = Math.atan2(clickX, clickY) - Math.PI/2 
 
-        var bp = angle / Math.PI * sequenceLength
+        var nearestBP = Math.floor(angle / Math.PI * sequenceLength)
+        callback({
+            shiftHeld: event.shiftHeld,
+            nearestBP, 
+            dragInitiatedByGrabbingCaret: false //tnr: come back and fix this
+        })
     }
 
     render() {
@@ -190,16 +195,16 @@ class CircularView extends React.Component {
         }
         var circViewStyle = assign({}, circularViewDimensions, {
             height: circularViewDimensions.height,
-            overflow: 'scroll',
+            // overflow: 'scroll',
         })
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
             onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDrag)}   
+                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDrag)}   
             }
             onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDragStart)}   
+                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDragStart)}   
             }
             onStop={handleEditorDragStop}
             >
