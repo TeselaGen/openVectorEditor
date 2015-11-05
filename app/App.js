@@ -3,6 +3,9 @@ import controller from './controller.js';
 import React from 'react';
 import {Container} from 'cerebral-react';
 import SequenceEditor from './SequenceEditor.js';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
 
 module.exports = function (options) {
 	ac.throw(ac.shape({
