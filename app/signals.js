@@ -1,4 +1,5 @@
 //tnr: little webpack trick to require all the action files and add them to the 'a' object
+var each = require('lodash/collection/each');
 var reqContext = require.context('./actions/', true, /^((?!test).)*$/);
 var a = {};
 reqContext.keys().forEach(function(key) {
@@ -6,7 +7,7 @@ reqContext.keys().forEach(function(key) {
 });
 
 //add all the signals to the cerebral controller here
-export default function registerSignals(controller, options) {
+export default function registerSignals(controller) {
     //tnr:  WORKING: 
     controller.signal('copySelection', [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
         success: a.setData('clipboardData'),
@@ -71,5 +72,41 @@ export default function registerSignals(controller, options) {
     controller.signal('addAnnotations', [a.addAnnotations]);
     controller.signal('jumpToRow', [a.jumpToRow]);
 
+    var editModeOnlySignals = {
+        'backspacePressed': [
+            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
+            }
+        ],
+        'sequenceDataInserted': [
+            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.getData('caretPosition')]
+            },
+            a.insertSequenceData,
+            a.setData('caretPosition', 'sequenceData')
+        ]
+    }
+}
 
+function addEditModeOnlySignal(signalsObj) {
+    var newSignalsObj = {};
+    each(signalsObj, function(actionArray, signalName) {
+        newSignalsObj[signalName] = [
+            a.checkIfEditAllowed, {
+                success: actionArray,
+                error: a.displayError('Unable to complete action while in Read Only mode')
+            }
+        ]
+    })
+    return newSignalsObj;
+}
+
+function attachSignalObjectsToController (signalsObj, controller) {
+    each(signalsObj, function(actionArray, signalName) {
+        controller.signal(signalName, actionArray);
+    })
 }
