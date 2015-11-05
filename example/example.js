@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom';
-import App from '../app/App.js'
+var ReactDOM = require('react-dom')
+var App = require('../app/App.js')
 // import request from 'superagent'
 
 //set your custom options here
@@ -27,7 +27,9 @@ var options = {
 	},
 }
 
-var {Editor, controller} = App(options);
+var placeHolder = App(options);
+var Editor = placeHolder.Editor
+var controller = placeHolder.controller
 //Editor is the React Component
 //controller is the cerebral state controller
 
@@ -35,4 +37,4 @@ var {Editor, controller} = App(options);
 //choose the dom node you want to render to
 const DOMNodeToRenderTo = document.createElement('div');
 document.body.appendChild(DOMNodeToRenderTo);
-ReactDOM.render(Editor, DOMNodeToRenderTo);
+ReactDOM.render(placeHolder.Editor, DOMNodeToRenderTo);

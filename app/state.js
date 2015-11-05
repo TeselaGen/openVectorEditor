@@ -21,7 +21,7 @@ module.exports = {
     averageRowHeight: 100,
     charWidth: 15,
     charHeight: 15,
-    annotationHeight: 15,
+    annotationHeight: 25,
     minimumOrfSize: 20,
     tickSpacing: 10,
     mapViewTickSpacing: 40,
@@ -197,6 +197,13 @@ module.exports = {
         ['combinedSequenceData'],
         function(combinedSequenceData, ) {
             return prepareCircularViewData(combinedSequenceData);
+        }
+    ]),
+    circularAndLinearTickSpacing: deriveData([
+        ['sequenceLength'],
+        function(sequenceLength, ) {
+            var a = Math.ceil(sequenceLength / 100) * 10;
+            return a
         }
     ]),
     totalRows: deriveData([

@@ -18,8 +18,8 @@ var Draggable = require('react-draggable');
     selectionLayer: ['selectionLayer'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     annotationHeight: ['annotationHeight'],
-    tickSpacing: ['tickSpacing'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showParts: ['showParts'],
@@ -34,12 +34,12 @@ var Draggable = require('react-draggable');
 })
 @propTypes({
     circularViewDimensions: PropTypes.object.isRequired,
-    circularViewData: PropTypes.array.isRequired,
+    circularViewData: PropTypes.object.isRequired,
     charWidth: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
     cutsiteLabelSelectionLayer: PropTypes.object.isRequired,
     annotationHeight: PropTypes.number.isRequired,
-    tickSpacing: PropTypes.number.isRequired,
+    circularAndLinearTickSpacing: PropTypes.number.isRequired,
     spaceBetweenAnnotations: PropTypes.number.isRequired,
     showFeatures: PropTypes.bool.isRequired,
     showTranslations: PropTypes.bool.isRequired,
@@ -60,25 +60,29 @@ class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect()
         //get relative click positions
-        var clickX = (event.clientX - boundingRect.left) / boundingRect.width
-        var clickY = (event.clientY - boundingRect.top) / boundingRect.height
+        var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
+        var clickY = (event.clientY - boundingRect.top - boundingRect.height/2)
+        console.log('clickX: ' + JSON.stringify(clickX,null,4));
+        console.log('clickY: ' + JSON.stringify(clickY,null,4));
         //get angle
-        var angle = Math.atan2(clickX, clickY) - Math.PI/2 
 
-        var nearestBP = Math.floor(angle / Math.PI * sequenceLength)
+        var angle = Math.atan2(clickY, clickX) + Math.PI/2
+        if (angle < 0) angle += Math.PI * 2
+        console.log('angle: ' + JSON.stringify(angle,null,4));
+        var dragInitiatedByGrabbingCaret = event.target.className === "cursor"
+        var nearestBP = Math.floor(angle / Math.PI / 2 * sequenceLength)
         callback({
             shiftHeld: event.shiftHeld,
             nearestBP, 
-            dragInitiatedByGrabbingCaret: false //tnr: come back and fix this
+            dragInitiatedByGrabbingCaret //tnr: come back and fix this
         })
     }
 
     render() {
-        var {showSequence, circularViewDimensions, circularViewData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, tickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
+        var { spaceBetweenAnnotations, showSequence, circularViewDimensions, circularViewData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
         const baseRadius = 80;
         var currentRadius = baseRadius;
-        var gapBetweenAnnotations = 5;
-        var totalAnnotationHeight = annotationHeight + gapBetweenAnnotations;
+        var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
         var annotationsSvgs = [];
 
         if (showFeatures) {
@@ -89,12 +93,6 @@ class CircularView extends React.Component {
                     maxYOffset = annotation.yOffset;
                 }
 
-                function onClick(event) {
-                    signals.setSelectionLayer({
-                        selectionLayer: this
-                    });
-                    event.stopPropagation();
-                }
                 annotationsSvgs.push(
                     <PositionAnnotationOnCircle
                       key={ index }
@@ -131,13 +129,11 @@ class CircularView extends React.Component {
                     start: 0,
                     end: sequenceLength
                 },
-                tickSpacing: 30
+                tickSpacing: circularAndLinearTickSpacing
             });
 
             var tickMarksAndLabels = tickPositions.map(function(tickPosition, index) {
-                function getAngleForPositionMidpoint(position, maxLength) {
-                    return (position + 0.5) / maxLength * Math.PI * 2;
-                }
+                
                 var tickAngle = getAngleForPositionMidpoint(tickPosition, sequenceLength);
                 var flip = false;
                 if ((tickAngle > Math.PI * 0.5) && (tickAngle < Math.PI * 1.5)) {
@@ -172,6 +168,7 @@ class CircularView extends React.Component {
             )
 
         }
+        var innerRadius = -baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
 
         if (selectionLayer.selected) {
             var {startAngle, endAngle, totalAngle} = getRangeAngles(selectionLayer, sequenceLength)
@@ -192,11 +189,44 @@ class CircularView extends React.Component {
                     d={ sector.path.print() }
                     fill="blue" />
                 </PositionAnnotationOnCircle>)
+                annotationsSvgs.push(
+                <Caret 
+                    caretPosition={selectionLayer.start}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />)
+                annotationsSvgs.push(
+                <Caret 
+                    caretPosition={selectionLayer.end + 1}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />)
+        }
+
+        if (caretPosition !== -1 && !selectionLayer.selected) {
+            annotationsSvgs.push(
+                <Caret 
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />
+            )
         }
         var circViewStyle = assign({}, circularViewDimensions, {
             height: circularViewDimensions.height,
             // overflow: 'scroll',
         })
+        var maxDistance = circularViewDimensions.height
+        if (circularViewDimensions.height < circularViewDimensions.width) {
+            maxDistance = circularViewDimensions.width
+        }
+        var scale = ''
+        if (currentRadius > maxDistance) {
+            scale = ``
+        }
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
@@ -207,14 +237,18 @@ class CircularView extends React.Component {
                 this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDragStart)}   
             }
             onStop={handleEditorDragStop}
+            
             >
                 <div style={ circViewStyle }>
                   <svg
-                    width={ currentRadius * 2 }
-                    height={ currentRadius * 2 }>
+                  onClick={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorClick)}   
+                }
+                    width={ circularViewDimensions.width }
+                    height={ circularViewDimensions.height }>
                     <g 
                     ref='circularView'
-                    transform={ "translate(" + (currentRadius) + "," + (currentRadius) + ")" }>
+                    transform={ `scale(${maxDistance/currentRadius/2},${maxDistance/currentRadius/2}) translate(${currentRadius},${currentRadius}) ` }>
                       { annotationsSvgs }
                     </g>
                   </svg>
@@ -224,7 +258,27 @@ class CircularView extends React.Component {
     }
 }
 
+
 module.exports = CircularView;
+
+function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
+    var caretWidth = .01;
+    var {startAngle, endAngle} = getRangeAngles({start: caretPosition, end:caretPosition}, sequenceLength)
+    return (
+        <PositionAnnotationOnCircle
+          sAngle={ startAngle }
+          eAngle={ endAngle }
+          height={ 0 }>
+          <line
+            style={ { className:"cursor", opacity: 9} }//tnr: the classname needs to be cursor here!
+            x0={0}
+            y0={innerRadius + 100}
+            x1={0}
+            y1={-outerRadius}
+            stroke="black" />
+        </PositionAnnotationOnCircle>
+    )
+}
 
 var PositionAnnotationOnCircle = function({children, height=0, sAngle=0, eAngle=0, forward=true}) {
     const sAngleDegs = sAngle * 360 / Math.PI / 2
@@ -240,4 +294,8 @@ var PositionAnnotationOnCircle = function({children, height=0, sAngle=0, eAngle=
           { children }
         </g>
         )
+}
+
+function getAngleForPositionMidpoint(position, maxLength) {
+    return (position + 0.5) / maxLength * Math.PI * 2;
 }

@@ -7,7 +7,8 @@ module.exports = function prepareCircularViewData(sequenceData) {
     var clonedSeqData = cloneDeep(sequenceData)
     annotationTypes.forEach(function(annotationType){
         if (annotationType !== 'cutsites') {
-            getYOffsetsForPotentiallyCircularRanges(clonedSeqData[annotationType]);
+            var {maxYOffset} = getYOffsetsForPotentiallyCircularRanges(clonedSeqData[annotationType]);
+            clonedSeqData[annotationType].maxYOffset = maxYOffset;
         }
     });
     return clonedSeqData;
