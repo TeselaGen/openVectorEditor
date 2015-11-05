@@ -1,12 +1,9 @@
 var deriveData = require('baobab').monkey
-// var sequenceData = require('./sequenceData');
-// var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
-// var sequenceData = require('./sequenceDataWithOrfsAndTranslations2');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
+
 var prepareRowData = require('./prepareRowData');
 var prepareCircularViewData = require('./prepareCircularViewData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
+
 var assign = require('lodash/object/assign');
 var getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDataForEachBaseOfDna');
@@ -74,7 +71,7 @@ module.exports = {
         start: 0,
         end: 0
     },
-    sequenceData: tidyUpSequenceData(sequenceData),
+    sequenceData: null, //tnr: sequence data will get passed in through the options object
     clipboardData: null,
     bpsPerRow: deriveData([
         ['rowViewDimensions',
