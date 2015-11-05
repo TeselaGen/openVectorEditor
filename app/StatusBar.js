@@ -3,6 +3,8 @@ import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this 
 
 import { Decorator as Cerebral } from 'cerebral-react';
 
+import styles from './status-bar.css';
+
 @Cerebral({
     sequenceLength: ['sequenceLength'],
     selectedSeqMeltingTemp: ['selectedSeqMeltingTemp'],
@@ -25,52 +27,30 @@ export default class StatusBar extends React.Component {
             selectionLayer
         } = this.props;
 
-        var style = {
-            bar: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-end'
-            },
-
-            box: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-            },
-
-            label: {
-                margin: '10px'
-            },
-
-            data: {
-                margin: '10px 10px 10px 0'
-            }
-        };
-
         var selectionStart = (selectionLayer.start != -1) ? selectionLayer.start : '--';
         var selectionEnd = (selectionLayer.end != -1) ? selectionLayer.end : '--';
 
         return (
             <div ref="statusBar">
-                <div style={style.bar}>
-                    <div style={style.box}>
-                        <div style={style.label}>Length</div>
-                        <div style={style.data}>{sequenceLength}</div>
+                <div className={styles.bar}>
+                    <div className={styles.box}>
+                        <div className={styles.label}>Length</div>
+                        <div className={styles.data}>{sequenceLength}</div>
                     </div>
 
-                    <div style={style.box}>
-                        <div style={style.label}>Melting Temp.</div>
-                        <div style={style.data}>{selectedSeqMeltingTemp}</div>
+                    <div className={styles.box}>
+                        <div className={styles.label}>Melting Temp.</div>
+                        <div className={styles.data}>{selectedSeqMeltingTemp}</div>
                     </div>
 
-                    <div style={style.box}>
-                        <div style={style.label}>Cursor</div>
-                        <div style={style.data}>{caretPosition}</div>
+                    <div className={styles.box}>
+                        <div className={styles.label}>Cursor</div>
+                        <div className={styles.data}>{caretPosition}</div>
                     </div>
 
-                    <div style={style.box}>
-                        <div style={style.label}>Selection</div>
-                        <div style={style.data}>
+                    <div className={styles.box}>
+                        <div className={styles.label}>Selection</div>
+                        <div className={styles.data}>
                             {selectionStart} : {selectionEnd}
                         </div>
                     </div>
