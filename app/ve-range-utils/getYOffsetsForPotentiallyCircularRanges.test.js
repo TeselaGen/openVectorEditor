@@ -8,7 +8,7 @@ describe('getYOffsetsForPotentiallyCircularRanges', function() {
         }, {
             start: 50,
             end: 50
-        }])).to.deep.equal([0,1]);
+        }])).to.deep.equal({yOffsets: [0,1], maxYOffset: 1});
         expect(getYOffsetsForPotentiallyCircularRanges([{
             start: 5,
             end: 100
@@ -24,15 +24,6 @@ describe('getYOffsetsForPotentiallyCircularRanges', function() {
         },{
             start: 150,
             end: 150
-        }])).to.deep.equal([0,1,2,0,1]);
+        }])).to.deep.equal({yOffsets: [0,1,2,0,1], maxYOffset: 2});
     });
-    // it('returns false if ranges do not overlap', function() {
-    //     expect(getYOffsetsForPotentiallyCircularRanges([{
-    //         start: 5,
-    //         end: 100
-    //     }, {
-    //         start: 1,
-    //         end: 4
-    //     }])).to.deep.equal(false);
-    // });
 });

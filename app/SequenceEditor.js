@@ -6,6 +6,7 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
 var RowView = require('./RowView');
 var MapView = require('./MapView');
+var CircularView = require('./CircularView');
 
 var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-react';
@@ -22,7 +23,10 @@ import StatusBar from './StatusBar';
     caretPosition: ['caretPosition'],
     sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
-    clipboardData: ['clipboardData']
+    clipboardData: ['clipboardData'],
+    displayCircular: ['displayCircular'],
+    displayLinear: ['displayLinear'],
+    displayRow: ['displayRow'] 
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -33,7 +37,10 @@ import StatusBar from './StatusBar';
     caretPosition: PropTypes.number.isRequired,
     sequenceData: PropTypes.object.isRequired,
     selectionLayer: PropTypes.object.isRequired,
-    clipboardData: PropTypes.object.isRequired
+    clipboardData: PropTypes.object.isRequired,
+    displayCircular: PropTypes.bool.isRequired,
+    displayLinear: PropTypes.bool.isRequired,
+    displayRow: PropTypes.bool.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -119,56 +126,54 @@ class SequenceEditor extends React.Component {
         combokeys.detach()
     }
 
-    handleEditorClick(updatedCaretPos, event) {
+    handleEditorClick({nearestBP, shiftHeld}) {
         //if cursor position is different than the original position, reset the position and clear the selection
-        // console.log('onclick!!');
-        // var bp = this.getNearestCursorPositionToMouseEvent(event);
         if (this.editorBeingDragged) {
             //do nothing because the click was triggered by a drag event
         } else {
             this.props.signals.editorClicked({
-                shiftHeld: event.shiftKey,
+                shiftHeld,
                 type: 'editorClick',
-                updatedCaretPos: updatedCaretPos
+                updatedCaretPos: nearestBP
             })
         }
-
     }
 
-    handleEditorDrag(caretPosition) {
+    handleEditorDrag({nearestBP}) {
         var {
             setCaretPosition,
             setSelectionLayer
         } = this.props.signals;
         //note this method relies on variables that are set in the handleEditorDragStart method!
         this.editorBeingDragged = true;
-        if (caretPosition === this.fixedCaretPositionOnEditorDragStart) {
-            setCaretPosition(caretPosition);
+        console.log('nearestBP: ' + JSON.stringify(nearestBP,null,4));
+        if (nearestBP === this.fixedCaretPositionOnEditorDragStart) {
+            setCaretPosition(nearestBP);
             setSelectionLayer(false);
         } else {
             var newSelectionLayer;
             if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
                 newSelectionLayer = {
                     start: this.fixedCaretPositionOnEditorDragStart,
-                    end: caretPosition - 1,
+                    end: nearestBP - 1,
                     cursorAtEnd: true,
                 };
             } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
                 newSelectionLayer = {
-                    start: caretPosition,
+                    start: nearestBP,
                     end: this.fixedCaretPositionOnEditorDragStart - 1,
                     cursorAtEnd: false,
                 };
             } else {
-                if (caretPosition > this.fixedCaretPositionOnEditorDragStart) {
+                if (nearestBP > this.fixedCaretPositionOnEditorDragStart) {
                     newSelectionLayer = {
                         start: this.fixedCaretPositionOnEditorDragStart,
-                        end: caretPosition - 1,
+                        end: nearestBP - 1,
                         cursorAtEnd: true,
                     };
                 } else {
                     newSelectionLayer = {
-                        start: caretPosition,
+                        start: nearestBP,
                         end: this.fixedCaretPositionOnEditorDragStart - 1,
                         cursorAtEnd: false,
                     };
@@ -178,12 +183,11 @@ class SequenceEditor extends React.Component {
         }
     }
 
-    handleEditorDragStart(caretPosition, event) {
+    handleEditorDragStart({nearestBP, dragInitiatedByGrabbingCaret}) {
         var {selectionLayer} = this.props;
-        // var caretPosition = this.getNearestCursorPositionToMouseEvent(event);
-        if (event.target.className === "cursor" && selectionLayer.selected) {
+        if (dragInitiatedByGrabbingCaret && selectionLayer.selected) {
             // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
-            if (selectionLayer.start === caretPosition) {
+            if (selectionLayer.start === nearestBP) {
                 this.fixedCaretPositionOnEditorDragStart = selectionLayer.end + 1;
                 this.fixedCaretPositionOnEditorDragStartType = 'end';
 
@@ -192,7 +196,7 @@ class SequenceEditor extends React.Component {
                 //0 1 2  <--possible cursor positions
                 // A T G
                 //if A is selected, selection.start = 0, selection.end = 0
-                //so the caretPosition for the end of the selection is 1!
+                //so the nearestBP for the end of the selection is 1!
                 //which is selection.end+1
             } else {
                 this.fixedCaretPositionOnEditorDragStart = selectionLayer.start;
@@ -200,7 +204,7 @@ class SequenceEditor extends React.Component {
             }
         } else {
             // this.circularSelectionOnEditorDragStart = false;
-            this.fixedCaretPositionOnEditorDragStart = caretPosition;
+            this.fixedCaretPositionOnEditorDragStart = nearestBP;
             this.fixedCaretPositionOnEditorDragStartType = 'caret';
         }
     }
@@ -218,12 +222,11 @@ class SequenceEditor extends React.Component {
             self.editorBeingDragged = false;
         }
     }
-  
-  
-
     render() {
         var {
-            selectedSequenceString
+            selectedSequenceString,
+            displayCircular,
+            displayRow,
         } = this.props;
 
         return (
@@ -235,12 +238,21 @@ class SequenceEditor extends React.Component {
 
                 <ToolBar />
 
-                <RowView
-                    handleEditorDrag={this.handleEditorDrag.bind(this)}
-                    handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-                    handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-                    handleEditorClick={this.handleEditorClick.bind(this)}
-                />
+                <div style={{display: 'flex', overflow: 'auto'}}>
+                    {displayCircular && <CircularView 
+                                          handleEditorDrag={this.handleEditorDrag.bind(this)}
+                                          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                                          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                                          handleEditorClick={this.handleEditorClick.bind(this)}
+                                           />}
+                    
+                    {displayRow &&  <RowView 
+                                          handleEditorDrag={this.handleEditorDrag.bind(this)}
+                                          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                                          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                                          handleEditorClick={this.handleEditorClick.bind(this)}
+                                           />}
+                </div>
 
                 <StatusBar/>
             </div>

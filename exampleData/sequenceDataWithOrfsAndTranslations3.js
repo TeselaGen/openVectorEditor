@@ -1,4 +1,4 @@
-var seqString1 = "gacgtctggatcctcgtctcatgccgcggccgcggccgcggacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
+var seqString1 = "gacgtctggatcctcgtctcassasdfasdsfasdfasdfasdasdgasdgasdgasdgtgccgcggccgcggccgcggacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
 var seqString = "";
 for (var i = 0; i < 1; i++) {
     seqString += seqString1
@@ -34,14 +34,21 @@ var sequenceData = {
             "name": "Operator I2 and I1",
             "type": "protein_bind",
             "id": "55a4a061f0c5b500012a8qqqq",
-            "start": 45,
+            "start": 0,
+            "end": 321,
+            "strand": -1,
+            "notes": []
+        },
+        {
+            "name": "Operator I2 and I1",
+            "type": "protein_bind",
+            "id": "55a4a061f0c5b500012a8qqqq",
+            "start": 20,
             "end": 95,
             "strand": -1,
             "notes": []
-        }]
-  
-  
-  
+        }
+        ]
 };
 
 module.exports = sequenceData;
