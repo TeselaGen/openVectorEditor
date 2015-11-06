@@ -1,0 +1,46 @@
+.testing {
+    border: 2px solid black;
+    padding: 20px;
+    background-color: white;
+}
+
+.editor {
+    composes: testing;
+}
+
+.toolbarSlot {
+    composes: testing;
+}
+
+.appWrapper {
+    composes: testing;
+    display: flex;
+}
+
+.sideBarSlot {
+    composes: testing;
+    width: 50px;
+}
+
+.viewWrapper {
+    composes: testing;
+    flex-grow: 1;
+}
+
+.viewWrapper:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.circularViewSlot {
+    width: 50%;
+    float: left;
+    overflow: auto;
+}
+
+.rowViewSlot {
+    width: 50%;
+    float: left;
+    overflow: auto;
+}
