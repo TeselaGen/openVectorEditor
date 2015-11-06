@@ -14,7 +14,6 @@ let OrfContainer = React.createClass({
         bpsPerRow: React.PropTypes.number.isRequired,
         annotationHeight: React.PropTypes.number.isRequired,
         spaceBetweenAnnotations: React.PropTypes.number.isRequired,
-        setSelectionLayer: React.PropTypes.func.isRequired,
         signals: React.PropTypes.object.isRequired
     },
     render: function() {

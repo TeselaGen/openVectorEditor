@@ -18,7 +18,10 @@ module.exports = {
     averageRowHeight: 100,
     charWidth: 15,
     charHeight: 15,
-    annotationHeight: 25,
+    displayLinear: true,
+    displayCircular: true,
+    displayRow: true,
+    annotationHeight: 15,
     minimumOrfSize: 20,
     tickSpacing: 10,
     mapViewTickSpacing: 40,
@@ -71,7 +74,12 @@ module.exports = {
         start: 0,
         end: 0
     },
-    sequenceData: null, //tnr: sequence data will get passed in through the options object
+    sequenceData: {//tnr: sequence data gets passed in and overrides this object
+       sequence: '',
+       features: [],
+       translations: [],
+       parts: [],
+    }, 
     clipboardData: null,
     bpsPerRow: deriveData([
         ['rowViewDimensions',

@@ -191,6 +191,7 @@ class CircularView extends React.Component {
                 </PositionAnnotationOnCircle>)
                 annotationsSvgs.push(
                 <Caret 
+                    key='caretStart'
                     caretPosition={selectionLayer.start}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
@@ -198,6 +199,7 @@ class CircularView extends React.Component {
                 />)
                 annotationsSvgs.push(
                 <Caret 
+                    key='caretEnd'
                     caretPosition={selectionLayer.end + 1}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}

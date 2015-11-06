@@ -9,10 +9,7 @@ var Orf = React.createClass({
         charWidth: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
         rangeType: PropTypes.string.isRequired,
-        color: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
         forward: PropTypes.bool.isRequired,
-        lineThickness: PropTypes.number,
     },
 
     render() {
