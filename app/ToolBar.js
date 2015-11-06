@@ -11,6 +11,7 @@ import { IconMenu } from 'material-ui';
 import { IconButton } from 'material-ui';
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import { FlatButton } from 'material-ui';
 
 @Cerebral({
     showOrfs: ['showOrfs'],
@@ -28,6 +29,11 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 })
 export default class ToolBar extends React.Component {
 
+    constructor() {
+        super(arguments);
+        this.state = { overlayMenu: false, sideMenu: false };
+    }
+
     render() {
         var {
             showFeatures,
@@ -36,7 +42,8 @@ export default class ToolBar extends React.Component {
             showOrfs,
             showCutsites,
             signals: {
-                toggleAnnotationDisplay
+                toggleAnnotationDisplay,
+                showSideMenu
             }
         } = this.props;
 
@@ -72,6 +79,14 @@ export default class ToolBar extends React.Component {
             }
         ];
 
+        var that = this;
+        var toggleState = function (key) {
+            var state = that.state[key];
+            var obj = {};
+            obj[key] = !state;
+            that.setState(obj);
+        };
+
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
                 <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
@@ -87,13 +102,35 @@ export default class ToolBar extends React.Component {
         );
 
         return (
-            <Toolbar>
-                <ToolbarGroup key={0}>
-                    <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                        {toggleMenuItems}
-                    </IconMenu>
-                </ToolbarGroup>
-            </Toolbar>
+            <div>
+                <Toolbar>
+                    <ToolbarGroup key={0}>
+                        <FlatButton label="Click for Overlay Menu" onClick={function() { toggleState('overlayMenu'); }}/>
+                        <FlatButton label="Click for Side Menu" onClick={function() { showSideMenu() }}/>
+                    </ToolbarGroup>
+
+                    <ToolbarGroup key={1}>
+                        <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
+                            {toggleMenuItems}
+                        </IconMenu>
+                    </ToolbarGroup>
+                </Toolbar>
+
+                { this.state.overlayMenu && <div style={{
+                    zIndex: '9999',
+                    background: 'white',
+                    border: '2px solid black',
+                    position: 'absolute',
+                    width: '250px',
+                    height: '250px',
+                    padding: '20px',
+                    fontSize: '24px',
+                    fontFamily: 'sans'
+                }}>
+                    This could be occluding something we want to highlight with this menu…
+                </div>}
+
+            </div>
         );
     }
 
