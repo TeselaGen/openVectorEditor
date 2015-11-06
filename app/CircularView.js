@@ -168,7 +168,7 @@ class CircularView extends React.Component {
             )
 
         }
-        var innerRadius = -baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+        var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
 
         if (selectionLayer.selected) {
             var {startAngle, endAngle, totalAngle} = getRangeAngles(selectionLayer, sequenceLength)
@@ -273,10 +273,10 @@ function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
           height={ 0 }>
           <line
             style={ { className:"cursor", opacity: 9} }//tnr: the classname needs to be cursor here!
-            x0={0}
-            y0={innerRadius + 100}
             x1={0}
-            y1={-outerRadius}
+            y1={-innerRadius}
+            x2={0}
+            y2={-outerRadius}
             stroke="black" />
         </PositionAnnotationOnCircle>
     )
