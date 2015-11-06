@@ -1,3 +1,4 @@
+	var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var ac = require('ve-api-check');
 import controller from './controller.js';
 import React from 'react';
@@ -9,6 +10,9 @@ module.exports = function (options) {
 		state: ac.object,
 		actions: ac.object
 	}),options)
+	//tidy up the sequence data so it will work in our app
+	options.state.sequenceData = tidyUpSequenceData(options.state.sequenceData)
+	
 	var cerebral = controller(options);
 	return {
 		Editor: (<Container controller={cerebral} app={SequenceEditor}/>),

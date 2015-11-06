@@ -1,8 +1,7 @@
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
-var sequenceData1 = require('.exampleData/sequenceData');
+// var sequenceData1 = require('.exampleData/sequenceData');
 // var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations');
 // var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations2');
-var sequenceData = require('./exampleData/sequenceDataWithOrfsAndTranslations3');
+var sequenceData = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
 var ReactDOM = require('react-dom')
 var App = require('../app/App.js')
 // import request from 'superagent'
@@ -11,7 +10,7 @@ var App = require('../app/App.js')
 var options = {
 	state: {
 		//override default state here. See state.js for the full list of application state
-		sequenceData: tidyUpSequenceData(sequenceData) //tnr: set the initial sequence data here
+		sequenceData: sequenceData //tnr: set the initial sequence data here
 		// showFeatures: true,
 		//etc..
 	},
@@ -36,8 +35,7 @@ var options = {
 var {Editor, controller} = App(options);
 //Editor is the React Component
 //controller is the cerebral state controller
-console.log('controller: ' + JSON.stringify(controller,null,4));
-controller.signals.setSequenceData(tidyUpSequenceData(sequenceData1))
+// controller.signals.setSequenceData(tidyUpSequenceData(sequenceData1))
 
 
 //choose the dom node you want to render to
