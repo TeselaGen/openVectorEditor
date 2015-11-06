@@ -1,10 +1,9 @@
 var deriveData = require('baobab').monkey
-// var sequenceData = require('./sequenceData');
-// var sequenceData = require('./sequenceDataWithOrfsAndTranslations');
-var sequenceData = require('./sequenceDataWithOrfsAndTranslations3');
+
 var prepareRowData = require('./prepareRowData');
+var prepareCircularViewData = require('./prepareCircularViewData');
 var findOrfsInPlasmid = require('ve-sequence-utils/findOrfsInPlasmid');
-var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
+
 var assign = require('lodash/object/assign');
 var getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDataForEachBaseOfDna');
@@ -12,15 +11,18 @@ var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence
 //tnr: this json file is being loaded with a special json webpack loader. it will break if run from another environment (eg. node, browserify)
 var enzymeList = require('ve-sequence-utils/enzymeList.json'); 
 
-export default {
+module.exports = {
     rowToJumpTo: null,
     topSpacerHeight: 0,
     bottomSpacerHeight: 0,
     averageRowHeight: 100,
     charWidth: 15,
     charHeight: 15,
+    displayLinear: true,
+    displayCircular: true,
+    displayRow: true,
     annotationHeight: 15,
-    minimumOrfSize: 200,
+    minimumOrfSize: 20,
     tickSpacing: 10,
     mapViewTickSpacing: 40,
     spaceBetweenAnnotations: 3,
@@ -31,12 +33,17 @@ export default {
     showFeatures: true,
     showTranslations: true,
     showAxis: true,
+    showSequence: true,
     showReverseSequence: true,
     rowViewDimensions: {
         height: 500,
         width: 500
     },
     mapViewDimensions: {
+        height: 500,
+        width: 500
+    },
+    circularViewDimensions: {
         height: 500,
         width: 500
     },
@@ -67,7 +74,12 @@ export default {
         start: 0,
         end: 0
     },
-    sequenceData: tidyUpSequenceData(sequenceData),
+    sequenceData: {//tnr: sequence data gets passed in and overrides this object
+       sequence: '',
+       features: [],
+       translations: [],
+       parts: [],
+    }, 
     clipboardData: null,
     bpsPerRow: deriveData([
         ['rowViewDimensions',
@@ -184,6 +196,19 @@ export default {
         ['sequenceLength'],
         function(sequenceData, sequenceLength) {
             return prepareRowData(sequenceData, sequenceLength);
+        }
+    ]),
+    circularViewData: deriveData([
+        ['combinedSequenceData'],
+        function(combinedSequenceData, ) {
+            return prepareCircularViewData(combinedSequenceData);
+        }
+    ]),
+    circularAndLinearTickSpacing: deriveData([
+        ['sequenceLength'],
+        function(sequenceLength, ) {
+            var a = Math.ceil(sequenceLength / 100) * 10;
+            return a
         }
     ]),
     totalRows: deriveData([

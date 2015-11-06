@@ -1,6 +1,6 @@
 var webpack = require("webpack");
 module.exports = {
-    entry: "./app/main.js",
+    entry: "./app/App.js",
     output: {
         path: __dirname,
         filename: "bundle.js"
@@ -11,7 +11,7 @@ module.exports = {
             loader: "json-loader"
         }, {
             test: /\.css$/,
-            loader: "style!css"
+            loader: "style!css?modules"
         }, {
             test: /\.js$/,
             exclude: /node_modules/,

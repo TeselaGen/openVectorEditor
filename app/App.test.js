@@ -1,12 +1,13 @@
 import ReactDOM from 'react-dom';
 import App from './App'
+var sequenceDataWithOrfsAndTranslations3 = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
 
 var options = {
 	actions: {
 
 	},
 	state: {
-
+		sequenceData: sequenceDataWithOrfsAndTranslations3 
 	}
 }
 

@@ -50,7 +50,11 @@ var RowView = React.createClass({
                     nearestBP = this.props.sequenceLength + 1;
                 }
                 // console.log('nearestBP', nearestBP);
-                callback(nearestBP);
+                callback({
+                    shiftHeld: event.shiftHeld,
+                    nearestBP,
+                    dragInitiatedByGrabbingCaret: false //tnr: come back and fix this
+                })
             }
             // break; //break the for loop early because we found the row the click event landed in
         }

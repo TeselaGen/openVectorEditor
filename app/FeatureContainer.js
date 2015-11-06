@@ -1,7 +1,8 @@
+var StyleFeature = require('./StyleFeature');
 import React, { PropTypes } from 'react';
 let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
-let Feature = require('./Feature');
+let LinearFeature = require('./LinearFeature');
 let PureRenderMixin = require('react-addons-pure-render-mixin');
 
 let AnnotationContainerHolder = require('./AnnotationContainerHolder');
@@ -43,7 +44,7 @@ let FeatureContainer = React.createClass({
         }
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
-        annotationRanges.forEach(function(annotationRange) {
+        annotationRanges.forEach(function(annotationRange, index) {
             if (annotationRange.yOffset > maxAnnotationYOffset) {
                 maxAnnotationYOffset = annotationRange.yOffset;
             }
@@ -53,23 +54,24 @@ let FeatureContainer = React.createClass({
                 <AnnotationPositioner 
                     height={annotationHeight} 
                     width={result.width}
-                    key={'feature' + annotation.id + 'start:' + annotationRange.start}
+                    key={index}
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
                     left={result.xStart}
                     >
-                    <Feature
-                        onClick={function (event) {
-                            signals.setSelectionLayer({selectionLayer: this});
-                            event.stopPropagation();
-                        }.bind(annotation)}
-                        widthInBps={annotationRange.end - annotationRange.start + 1}
-                        charWidth={charWidth}
-                        forward={annotation.forward}
-                        rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
-                        height={annotationHeight}
-                        color={annotation.color}
-                        name={annotation.name}>
-                    </Feature>
+                    <StyleFeature
+                        signals={signals}
+                        annotation={annotation}
+                        color={annotation.color}>
+                        <LinearFeature
+                            widthInBps={annotationRange.end - annotationRange.start + 1}
+                            charWidth={charWidth}
+                            forward={annotation.forward}
+                            rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
+                            height={annotationHeight}
+                            name={annotation.name}>
+                        </LinearFeature>
+                    </StyleFeature>
+                    
                 </AnnotationPositioner>
             );
         });

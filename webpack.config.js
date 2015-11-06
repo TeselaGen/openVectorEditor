@@ -4,7 +4,7 @@ module.exports = {
     devtool: 'eval',
     entry: [
         'webpack-hot-middleware/client?reload=true',
-        "./app/main.js"
+        "./example/example.js"
     ],
     output: {
         path: __dirname,
@@ -17,11 +17,11 @@ module.exports = {
             loader: "json-loader"
         },{
             test: /\.css$/,
-            loader: "style!css"
+            loader: "style!css?modules&localIdentName=[path][name]---[local]---[hash:base64:5]"
         }, {
             test: /\.js$/,
             exclude: /node_modules/,
-            // include: path.join(__dirname, 'app'),
+            include: [path.join(__dirname, 'example'),path.join(__dirname, 'app') ],
             loader: ['babel'],
             query: {
                 stage: 1
