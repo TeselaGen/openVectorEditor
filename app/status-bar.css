@@ -1,0 +1,19 @@
+.bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.label {
+    margin: 10px;
+}
+
+.data {
+    margin: 10px 10px 10px 0;
+}

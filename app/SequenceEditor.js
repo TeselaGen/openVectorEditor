@@ -7,10 +7,12 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var RowView = require('./RowView');
 var MapView = require('./MapView');
 var CircularView = require('./CircularView');
-var BottomStatusBar = require('./BottomStatusBar');
 
 var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-react';
+
+import ToolBar from './ToolBar';
+import StatusBar from './StatusBar';
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
@@ -21,7 +23,7 @@ import {Decorator as Cerebral} from 'cerebral-react';
     caretPosition: ['caretPosition'],
     sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
-    clipboardData: ['clipboardData'],
+    clipboardData: ['clipboardData']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -32,7 +34,7 @@ import {Decorator as Cerebral} from 'cerebral-react';
     caretPosition: PropTypes.number.isRequired,
     sequenceData: PropTypes.object.isRequired,
     selectionLayer: PropTypes.object.isRequired,
-    clipboardData: PropTypes.object.isRequired,
+    clipboardData: PropTypes.object.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -214,78 +216,41 @@ class SequenceEditor extends React.Component {
             self.editorBeingDragged = false;
         }
     }
-  
-  
+    render() {
+        var {
+            selectedSequenceString
+        } = this.props;
 
-  render() {
-      console.log('selectedSequenceString: ' + JSON.stringify(selectedSequenceString,null,4));
-      // var visibilityParameters = this.props.visibilityParameters;
-      // var highlightLayer = this.props.highlightLayer;
-      var self = this;
-      var {
-        selectionLayer,
-        caretPosition,
-        sequenceLength,
-        bpsPerRow,
-        totalRows,
-        sequenceData,
-        selectedSequenceString,
-        signals: {
-            setViewportDimensions,
-            jumpToRow,
-            toggleAnnotationDisplay
-        }
-    } = this.props;
-      var featuresCount = sequenceData.features ? sequenceData.features.length : 0;
-      var annotationList = ['features', 'parts', 'translations', 'orfs', 'cutsites'];
-      var toggleButtons = annotationList.map(function(annotationType, index){
-      // console.log(">>> " + annotationType + " " + index);
-          return (<button key={index} onClick={function () {
-              toggleAnnotationDisplay(String(annotationType));
-          }}>
-           toggle {annotationType}
-          </button>)
-      });
+        return (
+            <div ref="sequenceEditor">
+                <Clipboard
+                    value={selectedSequenceString}
+                    onCopy={this.handleCopy.bind(this)}
+                    onPaste={this.handlePaste.bind(this)}/>
 
-      return (
-      <div ref="sequenceEditor"
-        >
-        
+                <ToolBar />
 
-        {toggleButtons}
+                <div style={{display: 'flex', overflow: 'auto'}}>
+                    <CircularView 
+                      handleEditorDrag={this.handleEditorDrag.bind(this)}
+                      handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                      handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                      handleEditorClick={this.handleEditorClick.bind(this)}
+                       />
 
-        
-        <Clipboard
-          value={selectedSequenceString}
-          onCopy={this.handleCopy.bind(this)}
-          onPaste={this.handlePaste.bind(this)}/>
-        <br/>
-        <div style={{display: 'flex', overflowX: 'auto'}}>
-            <CircularView 
-              handleEditorDrag={this.handleEditorDrag.bind(this)}
-              handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-              handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-              handleEditorClick={this.handleEditorClick.bind(this)}
-               />
+                    
+                    <RowView 
+                      handleEditorDrag={this.handleEditorDrag.bind(this)}
+                      handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                      handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                      handleEditorClick={this.handleEditorClick.bind(this)}
+                       />
+                </div>
 
-            
-            <RowView 
-              handleEditorDrag={this.handleEditorDrag.bind(this)}
-              handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-              handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-              handleEditorClick={this.handleEditorClick.bind(this)}
-               />
-        </div>
-        
-        
-        <BottomStatusBar/>
-             <br/>
-             <br/>
-             <br/>
-        
-      </div>
-    );
-  }
+                <StatusBar/>
+            </div>
+        );
+    }
 }
 
 module.exports = SequenceEditor;

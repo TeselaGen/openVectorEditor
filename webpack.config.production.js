@@ -11,7 +11,7 @@ module.exports = {
             loader: "json-loader"
         }, {
             test: /\.css$/,
-            loader: "style!css"
+            loader: "style!css?modules"
         }, {
             test: /\.js$/,
             exclude: /node_modules/,
