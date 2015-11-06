@@ -26,7 +26,8 @@ import StatusBar from './StatusBar';
     clipboardData: ['clipboardData'],
     displayCircular: ['displayCircular'],
     displayLinear: ['displayLinear'],
-    displayRow: ['displayRow'] 
+    displayRow: ['displayRow'],
+    showSideMenu: ['showSideMenu']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -40,7 +41,8 @@ import StatusBar from './StatusBar';
     clipboardData: PropTypes.object.isRequired,
     displayCircular: PropTypes.bool.isRequired,
     displayLinear: PropTypes.bool.isRequired,
-    displayRow: PropTypes.bool.isRequired
+    displayRow: PropTypes.bool.isRequired,
+    showSideMenu: PropTypes.bool.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -227,6 +229,7 @@ class SequenceEditor extends React.Component {
             selectedSequenceString,
             displayCircular,
             displayRow,
+            showSideMenu
         } = this.props;
 
         return (
@@ -236,25 +239,41 @@ class SequenceEditor extends React.Component {
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}/>
 
-                <ToolBar />
+                    { showSideMenu && <div style={ { width: '20%', float: 'left', height: '100%',
+                        zIndex: '9999',
+                        background: 'white',
+                        border: '2px solid black',
+                        position: 'absolute',
+                        padding: '20px',
+                        fontSize: '24px',
+                        fontFamily: 'sans'
+                    } }>
+                    …this, however, is not.
+                </div>}
 
-                <div style={{display: 'flex', overflow: 'auto'}}>
-                    {displayCircular && <CircularView 
-                                          handleEditorDrag={this.handleEditorDrag.bind(this)}
-                                          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-                                          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-                                          handleEditorClick={this.handleEditorClick.bind(this)}
-                                           />}
+                <div style={ { width: (showSideMenu) ? '70%' : '100%', float: 'right' } }>
+                    <ToolBar />
                     
-                    {displayRow &&  <RowView 
-                                          handleEditorDrag={this.handleEditorDrag.bind(this)}
-                                          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-                                          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-                                          handleEditorClick={this.handleEditorClick.bind(this)}
-                                           />}
+                    <div style={{display: 'flex', overflow: 'auto'}}>
+                        {displayCircular && <CircularView 
+                                              handleEditorDrag={this.handleEditorDrag.bind(this)}
+                                              handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                                              handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                                              handleEditorClick={this.handleEditorClick.bind(this)}
+                                               />}
+                        
+                        {displayRow &&  <RowView 
+                                              handleEditorDrag={this.handleEditorDrag.bind(this)}
+                                              handleEditorDragStart={this.handleEditorDragStart.bind(this)}
+                                              handleEditorDragStop={this.handleEditorDragStop.bind(this)}
+                                              handleEditorClick={this.handleEditorClick.bind(this)}
+                                               />}
+                    </div>
+                    
+                    <StatusBar/>
                 </div>
 
-                <StatusBar/>
+                <div style={{clear: 'both'}}></div>
             </div>
         );
     }

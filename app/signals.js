@@ -88,4 +88,5 @@ export default function registerSignals(controller, options) {
     controller.signal('jumpToRow', [a.jumpToRow]);
 
 
+    controller.signal('showSideMenu', [ (obj, tree, output) => { tree.set('showSideMenu', !tree.get('showSideMenu')); } ])
 }
