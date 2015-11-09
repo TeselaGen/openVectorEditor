@@ -30,7 +30,6 @@ var Draggable = require('react-draggable');
     showReverseSequence: ['showReverseSequence'],
     caretPosition: ['caretPosition'],
     sequenceLength: ['sequenceLength'],
-    bpsPerRow: ['bpsPerRow']
 })
 @propTypes({
     circularViewDimensions: PropTypes.object.isRequired,
@@ -50,7 +49,6 @@ var Draggable = require('react-draggable');
     showReverseSequence: PropTypes.bool.isRequired,
     caretPosition: PropTypes.number.isRequired,
     sequenceLength: PropTypes.number.isRequired,
-    bpsPerRow: PropTypes.number.isRequired,
     handleEditorDrag: PropTypes.func.isRequired,
     handleEditorDragStart: PropTypes.func.isRequired,
     handleEditorDragStop: PropTypes.func.isRequired,
@@ -79,7 +77,7 @@ class CircularView extends React.Component {
     }
 
     render() {
-        var { showSequence, circularViewDimensions, circularViewData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
+        var { showSequence, circularViewDimensions, circularViewData, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, signals} = this.props;
         const baseRadius = 80;
         var currentRadius = baseRadius;
         var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
@@ -233,18 +231,18 @@ class CircularView extends React.Component {
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
             onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDrag)}   
+                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}   
             }
-            onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDragStart)}   
-            }
-            onStop={handleEditorDragStop}
+            // onStart={(event) => {
+            //     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDragStart)}   
+            // }
+            // onStop={handleEditorDragStop}
             
             >
                 <div style={ circViewStyle }>
                   <svg
                   onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorClick)}   
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
                 }
                     width={ circularViewDimensions.width }
                     height={ circularViewDimensions.height }>

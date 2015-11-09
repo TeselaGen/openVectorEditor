@@ -77,6 +77,31 @@ export default function registerSignals(controller, options) {
         }
     ]);
 
+    controller.signal('editorDragged', [
+        a.getData('selectionLayer', 'caretPosition', 'sequenceLength', {
+            path: ['sequenceData', 'circular'],
+            name: 'circular'
+        }),
+        a.handleEditorDragged, {
+            caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+            selectionUpdated: [a.setSelectionLayer],
+        }
+    ]);
+
+    // controller.signal('editorDragStarted', [
+    //     function ({nearestBP},tree, output) {
+    //         tree.set()
+    //         tree.set('editorBeingDragged', true)
+    //     }
+    // ]);
+
+    // controller.signal('editorDragStopped', [
+    //     function (input,tree, output) {
+    //         tree.set('editorBeingDragged', false)
+    //     }
+    // ]);
+
+
 
     //tnr: NOT YET WORKING:
     //higher priority
