@@ -48,6 +48,7 @@ class SequenceEditor extends React.Component {
             sequenceDataInserted,
             backspacePressed,
             selectAll,
+            selectInverse,
         } = this.props.signals;
         var self = this;
         combokeys = new Combokeys(document.documentElement);
@@ -99,6 +100,10 @@ class SequenceEditor extends React.Component {
         });
         combokeys.bindGlobal('command+a', function(event) { // Handle shortcut
             selectAll();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+i', function(event) { // Handle shortcut
+            selectInverse();
             event.stopPropagation();
         });
     }
