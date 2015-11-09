@@ -4,7 +4,7 @@ export default function selectAll(input, tree, output) {
     output({
         selectionLayer: {
         	start: 0,
-        	end: sequenceLength - 2
+        	end: sequenceLength - 1
         }
     });
 }
