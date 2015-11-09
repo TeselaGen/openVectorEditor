@@ -102,7 +102,7 @@ class SequenceEditor extends React.Component {
             selectAll();
             event.stopPropagation();
         });
-        combokeys.bindGlobal('command+i', function(event) { // Handle shortcut
+        combokeys.bindGlobal('command+ctrl+i', function(event) { // Handle shortcut
             selectInverse();
             event.stopPropagation();
         });
