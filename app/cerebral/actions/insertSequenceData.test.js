@@ -1,4 +1,4 @@
-import {testSequenceData} from '../../test/testSetup.js';
+import {testSequenceData} from '../../../test/testSetup.js';
 var insertSequenceData = require('./insertSequenceData.js');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 

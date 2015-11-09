@@ -1,7 +1,4 @@
 var handleCaretMoves = {
-    'editorClick': function ({newCaretPosition}) {
-        return newCaretPosition
-    },
     'moveCaretLeftOne': function ({caretPosition}) {
         return caretPosition - 1;
     },
