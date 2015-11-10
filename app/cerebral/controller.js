@@ -19,6 +19,9 @@ export default function (options={state: null, services: null, actions: null}) {
 	const services = {};
 	//create the controller
 	var controller = Controller(model, services);
+
+	controller.tree = model.tree;
+
 	//and attach signals to it
 	signals(controller, options);
 	return controller;
