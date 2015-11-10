@@ -18,7 +18,10 @@ var controller = require('../controller')({
 
 var testSetup = require('./testSetup');
 
-describe('caretMoved', function() {
+describe('caretMoved circular sequence', function() {
+    beforeEach(function () {
+        controller.tree.set(['sequenceData', 'circular'], true);
+    })
     it('moveCaretLeftOne should move the cursor left 1', function(done) {
         testSetup(controller, controller.signals.caretMoved, {
             type: 'moveCaretLeftOne',
@@ -38,6 +41,7 @@ describe('caretMoved', function() {
             done()
         })
     });
+    
     it('moveCaretRightOne should move the cursor right 1', function(done) {
         controller.tree.set('caretPosition', 1);
         testSetup(controller, controller.signals.caretMoved, {
@@ -75,6 +79,44 @@ describe('caretMoved', function() {
             shiftHeld: false,
         }, function() {
             controller.get('caretPosition').should.equal(2);
+            done()
+        })
+    });
+});
+
+describe('caretMoved non circular sequence', function() {
+    beforeEach(function () {
+        controller.tree.set(['sequenceData', 'circular'], false);
+    })
+    it('moveCaretLeftOne should not move the cursor around the sequence', function(done) {
+        controller.tree.set('caretPosition', 0);
+        testSetup(controller, controller.signals.caretMoved, {
+            type: 'moveCaretLeftOne',
+            shiftHeld: false,
+        }, function() {
+            controller.get('caretPosition').should.equal(0);
+            done()
+        })
+    });
+    
+    it('moveCaretRightOne should not move the cursor around the sequence', function(done) {
+        controller.tree.set('caretPosition', 4);
+        testSetup(controller, controller.signals.caretMoved, {
+            type: 'moveCaretRightOne',
+            shiftHeld: false,
+        }, function() {
+            controller.get('caretPosition').should.equal(4);
+            done()
+        })
+    });
+
+    it('moveCaretUpARow should move the cursor up 2 places and around the sequence', function(done) {
+        controller.tree.set('caretPosition', 0);
+        testSetup(controller, controller.signals.caretMoved, {
+            type: 'moveCaretUpARow',
+            shiftHeld: false,
+        }, function() {
+            controller.get('caretPosition').should.equal(0);
             done()
         })
     });
