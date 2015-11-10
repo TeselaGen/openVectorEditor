@@ -89,20 +89,19 @@ export default function registerSignals(controller, options) {
         }
     ]);
 
-    // controller.signal('editorDragStarted', [
-    //     function ({nearestBP},tree, output) {
-    //         tree.set()
-    //         tree.set('editorBeingDragged', true)
-    //     }
-    // ]);
+    controller.signal('editorDragStarted', [
+        function ({nearestBP, caretGrabbed},tree, output) {
+            tree.set(['editorDrag', 'positionOfFixedCaretPosition'], nearestBP)
+            tree.set(['editorDrag', 'initiatedByGrabbingCaret'], cursorOnCaret)
+            tree.set(['editorDrag', 'inProgress'], true)
+        }
+    ]);
 
-    // controller.signal('editorDragStopped', [
-    //     function (input,tree, output) {
-    //         tree.set('editorBeingDragged', false)
-    //     }
-    // ]);
-
-
+    controller.signal('editorDragStopped', [
+        function (input,tree, output) {
+            tree.set(['editorDrag', 'inProgress'], false)
+        }
+    ]);
 
     //tnr: NOT YET WORKING:
     //higher priority

@@ -35,6 +35,11 @@ module.exports = {
     showAxis: true,
     showSequence: true,
     showReverseSequence: true,
+    editorDrag: {
+        inProgress: false,
+        initiatedByGrabbingCaret: false,
+        bpOfFixedCaretPosition: 0,
+    },
     rowViewDimensions: {
         height: 500,
         width: 500
