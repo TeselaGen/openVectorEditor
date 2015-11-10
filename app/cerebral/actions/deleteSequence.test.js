@@ -1,4 +1,4 @@
-require('../../test/testSetup.js');
+require('../../../test/testSetup.js');
 var deleteSequence = require('./deleteSequence.js');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var sequenceData = tidyUpSequenceData({

@@ -2,11 +2,15 @@ import Controller from 'cerebral';
 import Model from 'cerebral-baobab';
 import signals from './signals';
 import defaultState from './state';
-import merge from 'lodash/object/merge'
+import assign from 'lodash/object/assign'
+var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 
-export default function (options) {
+
+export default function (options={state: null, services: null, actions: null}) {
 	//merge all optional state into the default state
-	var newDefaultState = merge(defaultState, options.state);
+	var newDefaultState = assign({},defaultState, options.state);
+	//tidy up the sequence data so it will work in our app
+	newDefaultState.sequenceData = tidyUpSequenceData(newDefaultState.sequenceData)
 
 	//tnr: we can pass extra baobab-specific options here as well if we want
 	const model = Model(newDefaultState); 
@@ -15,6 +19,9 @@ export default function (options) {
 	const services = {};
 	//create the controller
 	var controller = Controller(model, services);
+
+	controller.tree = model.tree;
+
 	//and attach signals to it
 	signals(controller, options);
 	return controller;
