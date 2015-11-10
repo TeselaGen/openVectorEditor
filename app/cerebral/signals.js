@@ -13,6 +13,7 @@ export default function registerSignals(controller, options) {
         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
     }]);
     controller.signal('selectAll', [a.selectAll, a.setSelectionLayer]);
+    controller.signal('selectInverse', [a.selectInverse, a.setSelectionLayer]);
     controller.signal('sequenceDataInserted', [
         a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
         a.checkLayerIsSelected, {
