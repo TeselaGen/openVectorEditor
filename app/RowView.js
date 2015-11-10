@@ -89,9 +89,23 @@ class RowView extends React.Component {
         });
     }
 
+    resize() {
+        if (this.refs.rowView) {
+            this.props.signals.resizeRowView({
+                rootWidth: this.refs.rowView.clientWidth,
+                rootHeight: this.refs.rowView.clientHeight
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.resize();
+        window.addEventListener('resize', this.resize.bind(this));
+    }
+
     render() {
         var {
-            rowViewDimensions, 
+            rowViewDimensions,
             rowData, 
             rowToJumpTo, 
             charWidth,
@@ -141,8 +155,8 @@ class RowView extends React.Component {
         }
 
         var rowViewStyle = {
-            height: rowViewDimensions.height,
-            width: rowViewDimensions.width,
+            height: '100%',
+            width: '100%',
             //   overflowY: "scroll",
             // float: "left",
             // paddingRight: "20px"
