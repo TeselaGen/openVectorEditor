@@ -215,14 +215,6 @@ class CircularView extends React.Component {
             height: circularViewDimensions.height,
             // overflow: 'scroll',
         })
-        var maxDistance = circularViewDimensions.height
-        if (circularViewDimensions.height < circularViewDimensions.width) {
-            maxDistance = circularViewDimensions.width
-        }
-        var scale = ''
-        if (currentRadius > maxDistance) {
-            scale = ``
-        }
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
@@ -241,12 +233,9 @@ class CircularView extends React.Component {
                     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
                 }
                     width={ circularViewDimensions.width }
-                    height={ circularViewDimensions.height }>
-                    <g 
-                    ref='circularView'
-                    transform={ `scale(${maxDistance/currentRadius/2},${maxDistance/currentRadius/2}) translate(${currentRadius},${currentRadius}) ` }>
+                    height={ circularViewDimensions.height }
+                    viewBox={ `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}` }>
                       { annotationsSvgs }
-                    </g>
                   </svg>
                 </div>
             </Draggable>
