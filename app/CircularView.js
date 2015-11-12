@@ -11,6 +11,8 @@ import { Decorator as Cerebral } from 'cerebral-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 var Draggable = require('react-draggable');
 
+import styles from './circular-view.css';
+
 @Cerebral({
     circularViewDimensions: ['circularViewDimensions'],
     circularViewData: ['circularViewData'],
@@ -211,10 +213,7 @@ class CircularView extends React.Component {
                 />
             )
         }
-        var circViewStyle = assign({}, circularViewDimensions, {
-            height: circularViewDimensions.height,
-            // overflow: 'scroll',
-        })
+
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
@@ -227,7 +226,7 @@ class CircularView extends React.Component {
             onStop={signals.editorDragStopped}
             
             >
-                <div style={ circViewStyle }>
+                <div className={styles.circularView}>
                   <svg
                   onClick={(event) => {
                     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
