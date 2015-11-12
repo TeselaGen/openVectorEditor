@@ -73,6 +73,9 @@ export default function(controller, options) {
         resizeRowView: [
             a.resizeRowView
         ],
+        resizeCircularView: [
+            a.resizeCircularView
+        ],
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],

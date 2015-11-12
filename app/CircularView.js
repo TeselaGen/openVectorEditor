@@ -74,6 +74,20 @@ class CircularView extends React.Component {
         })
     }
 
+    resize() {
+        if (this.refs.circularView) {
+            this.props.signals.resizeCircularView({
+                rootWidth: this.refs.circularView.clientWidth,
+                rootHeight: this.refs.circularView.clientHeight
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.resize();
+        window.addEventListener('resize', this.resize.bind(this));
+    }
+
     render() {
         var { showSequence, circularViewDimensions, circularViewData, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, signals} = this.props;
         const baseRadius = 80;
@@ -226,17 +240,17 @@ class CircularView extends React.Component {
             onStop={signals.editorDragStopped}
             
             >
-                <div className={styles.circularView}>
                   <svg
                   onClick={(event) => {
                     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
                 }
                     width={ circularViewDimensions.width }
                     height={ circularViewDimensions.height }
+                    ref="circularView"
+                    className={styles.circularView}
                     viewBox={ `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}` }>
                       { annotationsSvgs }
                   </svg>
-                </div>
             </Draggable>
             );
     }
