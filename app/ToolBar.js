@@ -94,7 +94,7 @@ export default class ToolBar extends React.Component {
                         {toggleMenuItems}
                     </IconMenu>
                     <RaisedButton label='Toggle Sidebar' onClick={function (argument) {
-                        signals.sidebarToggled({activeToolbarEl: 'REMTool'});
+                        signals.sidebarToggled({currentSidebar: 'black'});
                     }}>
                     </RaisedButton>
                 </ToolbarGroup>

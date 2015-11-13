@@ -245,8 +245,7 @@ class SequenceEditor extends React.Component {
                 <ToolBar />
 
                 <div style={{display: 'flex', overflow: 'auto'}}>
-                    {showSidebar && <div style = {{background : 'black', width: 500}}>
-
+                    {showSidebar === 'black' && <div style = {{background : 'black', width: 500}}>
                                             </div>}
                     {showCircular && <CircularView 
                                           handleEditorDrag={this.handleEditorDrag.bind(this)}
