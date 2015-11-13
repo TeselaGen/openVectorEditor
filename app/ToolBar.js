@@ -93,7 +93,7 @@ export default class ToolBar extends React.Component {
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                         {toggleMenuItems}
                     </IconMenu>
-                    <RaisedButton label='Toggle Sidebar' onClick={function (argument) {
+                    <RaisedButton label='Black Sidebar' onClick={function (argument) {
                         signals.sidebarToggled({currentSidebar: 'black'});
                     }}>
                     </RaisedButton>
