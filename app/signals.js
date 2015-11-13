@@ -88,8 +88,15 @@ export default function registerSignals(controller) {
     //lower priority
     controller.signal('addAnnotations', [a.addAnnotations]);
     controller.signal('jumpToRow', [a.jumpToRow]);
+    // sl: in progress
+    controller.signal('setEditState', [a.setEditState]);
 
     var editModeOnlySignals = {
+        'testSignal' :[
+            function(input, tree, output) {
+                console.log("test signal");
+            }
+        ],
         'backspacePressed': [
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
@@ -107,22 +114,25 @@ export default function registerSignals(controller) {
             a.setData('caretPosition', 'sequenceData')
         ]
     }
+    // prepend edit mode check to all edit only mode signals, then instantiate on controller
+    var processedEditModeSignals = addEditModeOnlyToSignal(editModeOnlySignals);
+    attachSignalsObjectToController(processedEditModeSignals, controller);
 }
 
-function addEditModeOnlySignal(signalsObj) {
+function addEditModeOnlyToSignal(signalsObj) {
     var newSignalsObj = {};
     each(signalsObj, function(actionArray, signalName) {
         newSignalsObj[signalName] = [
             a.checkIfEditAllowed, {
-                success: actionArray,
-                error: a.displayError('Unable to complete action while in Read Only mode')
+                editAllowed: actionArray,
+                readOnly: [function (input, tree, output) {console.log('Unable to complete action while in Read Only mode')}]
             }
         ]
     })
     return newSignalsObj;
 }
 
-function attachSignalObjectsToController (signalsObj, controller) {
+function attachSignalsObjectToController (signalsObj, controller) {
     each(signalsObj, function(actionArray, signalName) {
         controller.signal(signalName, actionArray);
     })

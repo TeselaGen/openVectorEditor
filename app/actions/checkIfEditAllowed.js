@@ -1,10 +1,8 @@
 export default function checkIfEditAllowed({ selectionLayer }, tree, output) {
     if (tree.get('readOnly')) {
-        tree.set('readOnly', false);
-        // console.log("set false");
+        output.readOnly();
     } else {
-        tree.set('readOnly', true);
-        // console.log("set true");
+        output.editAllowed();
     }
 }
 checkIfEditAllowed.outputs = ['editAllowed', 'readOnly'];

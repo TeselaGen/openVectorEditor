@@ -27,7 +27,7 @@ module.exports = {
     displayRow: true,
     mapViewTickSpacing: 40,
     minimumOrfSize: 20,
-    readOnly: true,
+    readOnly: false,
     rowToJumpTo: null,
     showAxis: true,
     showCutsites: true,
