@@ -8,6 +8,11 @@ reqContext.keys().forEach(function(key) {
 //add all the signals to the cerebral controller here
 export default function registerSignals(controller, options) {
     //tnr:  WORKING: 
+    controller.signal('sidebarToggled', [function (input, tree, output) {
+        console.log('heyyyayya');
+        tree.set('showSidebar', !tree.get('showSidebar'));
+    }]);
+
     controller.signal('copySelection', [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
         success: a.setData('clipboardData'),
         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong

@@ -9,6 +9,7 @@ import { Decorator as Cerebral } from 'cerebral-react';
 import { Toolbar, ToolbarGroup } from 'material-ui';
 import { IconMenu } from 'material-ui';
 import { IconButton } from 'material-ui';
+import { RaisedButton } from 'material-ui'
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
@@ -17,7 +18,8 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
     showCutsites: ['showCutsites'],
     showParts: ['showParts'],
     showFeatures: ['showFeatures'],
-    showTranslations: ['showTranslations']
+    showTranslations: ['showTranslations'],
+    showSidebar: ['showSidebar']
 })
 @propTypes({
     showOrfs: PropTypes.bool.isRequired,
@@ -35,9 +37,8 @@ export default class ToolBar extends React.Component {
             showTranslations,
             showOrfs,
             showCutsites,
-            signals: {
-                toggleAnnotationDisplay
-            }
+            showSidebar,
+            signals
         } = this.props;
 
         var annotationList = [
@@ -75,7 +76,7 @@ export default class ToolBar extends React.Component {
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
                 <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
-                    toggleAnnotationDisplay(String(annotationType.type));
+                    signals.toggleAnnotationDisplay(String(annotationType.type));
                 }} />
             );
         });
@@ -92,6 +93,10 @@ export default class ToolBar extends React.Component {
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                         {toggleMenuItems}
                     </IconMenu>
+                    <RaisedButton label='Toggle Sidebar' onClick={function (argument) {
+                        signals.sidebarToggled({activeToolbarEl: 'REMTool'});
+                    }}>
+                    </RaisedButton>
                 </ToolbarGroup>
             </Toolbar>
         );

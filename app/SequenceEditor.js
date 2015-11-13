@@ -26,7 +26,8 @@ import StatusBar from './StatusBar';
     clipboardData: ['clipboardData'],
     displayCircular: ['displayCircular'],
     displayLinear: ['displayLinear'],
-    displayRow: ['displayRow'] 
+    displayRow: ['displayRow'],
+    displaySidebar: ['displaySidebar'],
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -232,6 +233,7 @@ class SequenceEditor extends React.Component {
             selectedSequenceString,
             displayCircular,
             displayRow,
+            displaySidebar,
         } = this.props;
 
         return (
@@ -244,6 +246,9 @@ class SequenceEditor extends React.Component {
                 <ToolBar />
 
                 <div style={{display: 'flex', overflow: 'auto'}}>
+                    {displaySidebar && <div style = {{background : 'black', width: 500}}>
+                    
+                                            </div>}
                     {displayCircular && <CircularView 
                                           handleEditorDrag={this.handleEditorDrag.bind(this)}
                                           handleEditorDragStart={this.handleEditorDragStart.bind(this)}
@@ -257,6 +262,7 @@ class SequenceEditor extends React.Component {
                                           handleEditorDragStop={this.handleEditorDragStop.bind(this)}
                                           handleEditorClick={this.handleEditorClick.bind(this)}
                                            />}
+                    
                 </div>
 
                 <StatusBar/>

@@ -35,6 +35,7 @@ module.exports = {
     showAxis: true,
     showSequence: true,
     showReverseSequence: true,
+    displaySidebar: true,
     rowViewDimensions: {
         height: 500,
         width: 500
