@@ -4,14 +4,15 @@ var a = {};
 reqContext.keys().forEach(function(key) {
     a[key.substring(2)] = reqContext(key)
 });
-
+var showSidebar = function(input, tree, output) {
+    console.log(!tree.get('showSidebar'));
+    tree.set('showSidebar', !tree.get('showSidebar'))
+    console.log(!tree.get('showSidebar'));
+}
 //add all the signals to the cerebral controller here
 export default function registerSignals(controller, options) {
     //tnr:  WORKING: 
-    controller.signal('sidebarToggled', [function (input, tree, output) {
-        console.log('heyyyayya');
-        tree.set('showSidebar', !tree.get('showSidebar'));
-    }]);
+    controller.signal('sidebarToggled', [showSidebar]);
 
     controller.signal('copySelection', [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
         success: a.setData('clipboardData'),

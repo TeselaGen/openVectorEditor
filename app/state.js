@@ -18,9 +18,9 @@ module.exports = {
     averageRowHeight: 100,
     charWidth: 15,
     charHeight: 15,
-    displayLinear: true,
-    displayCircular: true,
-    displayRow: true,
+    showLinear: true,
+    showCircular: true,
+    showRow: true,
     annotationHeight: 15,
     minimumOrfSize: 20,
     tickSpacing: 10,
@@ -35,7 +35,7 @@ module.exports = {
     showAxis: true,
     showSequence: true,
     showReverseSequence: true,
-    displaySidebar: true,
+    showSidebar: true,
     rowViewDimensions: {
         height: 500,
         width: 500
