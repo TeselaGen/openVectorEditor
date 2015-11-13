@@ -1,84 +1,129 @@
-var controller = require('../controller')({
-    //instantiate some default val's here:
-    state: {
-        selectionLayer: {
-            selected: false,
-        },
-        caretPosition: 1,
-        sequenceData: {
-            sequence: 'atat',
-            circular: true
-        },
-        //seq looks like:
-        //at
-        //at
-    }
-});
-
 var testSignal = require('./testSignal');
-
 describe('editorDragged circular sequence', function() {
-    beforeEach(function () {
-        controller.tree.set(['sequenceData', 'circular'], true);
-    })
-    it('moveCaretLeftOne should move the cursor left 1', function(done) {
-        testSignal(controller, controller.signals.editorDragged, {
-            type: 'moveCaretLeftOne',
-            shiftHeld: false,
+    it('editorDrag starts by grabbing caret at pos 1 and moves to 2', function(done) {
+        var controller = require('../controller')({
+            //instantiate some default val's here:
+            state: {
+                selectionLayer: {
+                    selected: false,
+                },
+                caretPosition: 1,
+                sequenceData: {
+                    sequence: 'atatatatat',
+                    circular: true
+                },
+            }
+        });
+        controller.signals.editorDragStarted({nearestBP: 1, caretGrabbed: true});
+        testSignal(controller.signals.editorDragged, {
+            nearestBP: 2,
         }, function() {
-            controller.get('caretPosition').should.equal(0);
-            done()
-        })
-    });
-    it('moveCaretLeftOne should move the cursor left 1 and around the sequence', function(done) {
-        controller.tree.set('caretPosition', 0);
-        testSignal(controller, controller.signals.editorDragged, {
-            type: 'moveCaretLeftOne',
-            shiftHeld: false,
-        }, function() {
-            controller.get('caretPosition').should.equal(3);
-            done()
-        })
-    });
-    
-    it('moveCaretRightOne should move the cursor right 1', function(done) {
-        controller.tree.set('caretPosition', 1);
-        testSignal(controller, controller.signals.editorDragged, {
-            type: 'moveCaretRightOne',
-            shiftHeld: false,
-        }, function() {
+            controller.get('selectionLayer').start.should.equal(1);
+            controller.get('selectionLayer').end.should.equal(1);
             controller.get('caretPosition').should.equal(2);
             done()
         })
+        controller.signals.editorDragStopped();
     });
-    it('moveCaretRightOne should move the cursor right 1 and around the sequence', function(done) {
-        controller.tree.set('caretPosition', 4);
-        testSignal(controller, controller.signals.editorDragged, {
-            type: 'moveCaretRightOne',
-            shiftHeld: false,
+    it('editorDrag starts by grabbing caret at pos 1 and moves to 2 and then moves back to pos 1', function(done) {
+        var controller = require('../controller')({
+            //instantiate some default val's here:
+            state: {
+                selectionLayer: {
+                    selected: false,
+                },
+                caretPosition: 1,
+                sequenceData: {
+                    sequence: 'atatatatat',
+                    circular: true
+                },
+            }
+        });
+        controller.signals.editorDragStarted({nearestBP: 1, caretGrabbed: true});
+        controller.signals.editorDragged({nearestBP: 2});
+        testSignal(controller.signals.editorDragged, {
+            nearestBP: 1,
         }, function() {
+            controller.get('selectionLayer').selected.should.equal(false);
             controller.get('caretPosition').should.equal(1);
             done()
         })
+        controller.signals.editorDragStopped();
     });
-    it('moveCaretUpARow should move the cursor up 2 places', function(done) {
-        controller.tree.set('caretPosition', 4);
-        testSignal(controller, controller.signals.editorDragged, {
-            type: 'moveCaretUpARow',
-            shiftHeld: false,
+    it('editorDrag starts by grabbing caret at pos 1 and moves to 0', function(done) {
+        var controller = require('../controller')({
+            //instantiate some default val's here:
+            state: {
+                selectionLayer: {
+                    selected: false,
+                },
+                caretPosition: 1,
+                sequenceData: {
+                    sequence: 'atatatatat',
+                    circular: true
+                },
+            }
+        });
+        controller.signals.editorDragStarted({nearestBP: 1, caretGrabbed: true});
+        testSignal(controller.signals.editorDragged, {
+            nearestBP: 0,
         }, function() {
-            controller.get('caretPosition').should.equal(2);
+            controller.get('selectionLayer').start.should.equal(0);
+            controller.get('selectionLayer').end.should.equal(0);
+            controller.get('caretPosition').should.equal(0);
             done()
         })
+        controller.signals.editorDragStopped();
     });
-    it('moveCaretUpARow should move the cursor up 2 places and around the sequence', function(done) {
-        controller.tree.set('caretPosition', 0);
-        testSignal(controller, controller.signals.editorDragged, {
-            type: 'moveCaretUpARow',
-            shiftHeld: false,
+    it('editorDrag starts at pos 1 without grabbing caret and moves to 0', function(done) {
+        var controller = require('../controller')({
+            //instantiate some default val's here:
+            state: {
+                selectionLayer: {
+                    selected: false,
+                },
+                caretPosition: 8,
+                sequenceData: {
+                    sequence: 'atatatatat',
+                    circular: true
+                },
+            }
+        });
+        controller.signals.editorDragStarted({nearestBP: 1, caretGrabbed: false});
+        testSignal(controller.signals.editorDragged, {
+            nearestBP: 0,
         }, function() {
-            controller.get('caretPosition').should.equal(2);
+            controller.get('selectionLayer').start.should.equal(0);
+            controller.get('selectionLayer').end.should.equal(0);
+            controller.get('caretPosition').should.equal(0);
             done()
         })
+        controller.signals.editorDragStopped();
+    });
+    it.skip('editorDrag starts by grabbing caret at pos 1 and moves around the sequence', function(done) {
+        var controller = require('../controller')({
+            //instantiate some default val's here:
+            state: {
+                selectionLayer: {
+                    selected: false,
+                },
+                caretPosition: 1,
+                sequenceData: {
+                    sequence: 'atatatatat',
+                    circular: true
+                },
+            }
+        });
+        controller.signals.editorDragStarted({nearestBP: 1, caretGrabbed: true});
+        controller.signals.editorDragged({nearestBP: 0});
+        testSignal(controller.signals.editorDragged, {
+            nearestBP: 1,
+        }, function() {
+            controller.get('selectionLayer').start.should.equal(1);
+            controller.get('selectionLayer').end.should.equal(1);
+            controller.get('caretPosition').should.equal(0);
+            done()
+        })
+        controller.signals.editorDragStopped();
     });
 });

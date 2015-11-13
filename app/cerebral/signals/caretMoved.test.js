@@ -17,13 +17,15 @@ var controller = require('../controller')({
 });
 
 var testSignal = require('./testSignal');
+var caretMoved = controller.signals.caretMoved;
 
 describe('caretMoved circular sequence', function() {
     beforeEach(function () {
         controller.tree.set(['sequenceData', 'circular'], true);
     })
     it('moveCaretLeftOne should move the cursor left 1', function(done) {
-        testSignal(controller, controller.signals.caretMoved, {
+        controller.tree.set('caretPosition', 1);
+        testSignal(caretMoved, {
             type: 'moveCaretLeftOne',
             shiftHeld: false,
         }, function() {
@@ -31,9 +33,13 @@ describe('caretMoved circular sequence', function() {
             done()
         })
     });
-    it('moveCaretLeftOne should move the cursor left 1 and around the sequence', function(done) {
-        controller.tree.set('caretPosition', 0);
-        testSignal(controller, controller.signals.caretMoved, {
+    it('calling moveCaretLeftOne twice should move the cursor left 2 positions and around the sequence', function(done) {
+        controller.tree.set('caretPosition', 1);
+        controller.signals.caretMoved({
+            type: 'moveCaretLeftOne',
+            shiftHeld: false,
+        });
+        testSignal(caretMoved, {
             type: 'moveCaretLeftOne',
             shiftHeld: false,
         }, function() {
@@ -44,7 +50,7 @@ describe('caretMoved circular sequence', function() {
     
     it('moveCaretRightOne should move the cursor right 1', function(done) {
         controller.tree.set('caretPosition', 1);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretRightOne',
             shiftHeld: false,
         }, function() {
@@ -54,7 +60,7 @@ describe('caretMoved circular sequence', function() {
     });
     it('moveCaretRightOne should move the cursor right 1 and around the sequence', function(done) {
         controller.tree.set('caretPosition', 4);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretRightOne',
             shiftHeld: false,
         }, function() {
@@ -64,7 +70,7 @@ describe('caretMoved circular sequence', function() {
     });
     it('moveCaretUpARow should move the cursor up 2 places', function(done) {
         controller.tree.set('caretPosition', 4);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretUpARow',
             shiftHeld: false,
         }, function() {
@@ -74,7 +80,7 @@ describe('caretMoved circular sequence', function() {
     });
     it('moveCaretUpARow should move the cursor up 2 places and around the sequence', function(done) {
         controller.tree.set('caretPosition', 0);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretUpARow',
             shiftHeld: false,
         }, function() {
@@ -90,7 +96,7 @@ describe('caretMoved non circular sequence', function() {
     })
     it('moveCaretLeftOne should not move the cursor around the sequence', function(done) {
         controller.tree.set('caretPosition', 0);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretLeftOne',
             shiftHeld: false,
         }, function() {
@@ -101,7 +107,7 @@ describe('caretMoved non circular sequence', function() {
     
     it('moveCaretRightOne should not move the cursor around the sequence', function(done) {
         controller.tree.set('caretPosition', 4);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretRightOne',
             shiftHeld: false,
         }, function() {
@@ -112,7 +118,7 @@ describe('caretMoved non circular sequence', function() {
 
     it('moveCaretUpARow should move the cursor up 2 places and around the sequence', function(done) {
         controller.tree.set('caretPosition', 0);
-        testSignal(controller, controller.signals.caretMoved, {
+        testSignal(caretMoved, {
             type: 'moveCaretUpARow',
             shiftHeld: false,
         }, function() {
