@@ -14,7 +14,7 @@ var options = {
 var {Editor, controller} = App(options);
 
 it('should render the app without errors', function (done) {
-	this.timout(5000) //add a slightly longer mocha timout than normal for this test
+	this.timeout(5000) //add a slightly longer mocha timout than normal for this test
 	const DOMNodeToRenderTo = document.createElement('div');
 	document.body.appendChild(DOMNodeToRenderTo);
 	ReactDOM.render(Editor, DOMNodeToRenderTo);
