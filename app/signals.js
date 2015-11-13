@@ -1,4 +1,5 @@
 //tnr: little webpack trick to require all the action files and add them to the 'a' object
+var each = require('lodash/collection/each');
 var reqContext = require.context('./actions/', true, /^((?!test).)*$/);
 var a = {};
 reqContext.keys().forEach(function(key) {
@@ -20,7 +21,7 @@ var showSidebar = function(input, tree, output) {
     }
 }
 //add all the signals to the cerebral controller here
-export default function registerSignals(controller, options) {
+export default function registerSignals(controller) {
     //tnr:  WORKING: 
     controller.signal('sidebarToggled', [showSidebar]);
 
@@ -103,6 +104,52 @@ export default function registerSignals(controller, options) {
     //lower priority
     controller.signal('addAnnotations', [a.addAnnotations]);
     controller.signal('jumpToRow', [a.jumpToRow]);
+    // sl: in progress
+    controller.signal('setEditState', [a.setEditState]);
 
+    var editModeOnlySignals = {
+        'testSignal' :[
+            function(input, tree, output) {
+                console.log("test signal");
+            }
+        ],
+        'backspacePressed': [
+            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
+            }
+        ],
+        'sequenceDataInserted': [
+            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.getData('caretPosition')]
+            },
+            a.insertSequenceData,
+            a.setData('caretPosition', 'sequenceData')
+        ]
+    }
+    // prepend edit mode check to all edit only mode signals, then instantiate on controller
+    var processedEditModeSignals = addEditModeOnlyToSignal(editModeOnlySignals);
+    attachSignalsObjectToController(processedEditModeSignals, controller);
+}
 
+function addEditModeOnlyToSignal(signalsObj) {
+    var newSignalsObj = {};
+    each(signalsObj, function(actionArray, signalName) {
+        newSignalsObj[signalName] = [
+            a.checkIfEditAllowed, {
+                editAllowed: actionArray,
+                readOnly: [function (input, tree, output) {console.log('Unable to complete action while in Read Only mode')}]
+            }
+        ]
+    })
+    return newSignalsObj;
+}
+
+function attachSignalsObjectToController (signalsObj, controller) {
+    each(signalsObj, function(actionArray, signalName) {
+        controller.signal(signalName, actionArray);
+    })
 }
