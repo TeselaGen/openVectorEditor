@@ -24,9 +24,10 @@ import StatusBar from './StatusBar';
     sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
-    displayCircular: ['displayCircular'],
-    displayLinear: ['displayLinear'],
-    displayRow: ['displayRow'] 
+    showCircular: ['showCircular'],
+    showLinear: ['showLinear'],
+    showRow: ['showRow'],
+    showSidebar: ['showSidebar'],
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -38,9 +39,9 @@ import StatusBar from './StatusBar';
     sequenceData: PropTypes.object.isRequired,
     selectionLayer: PropTypes.object.isRequired,
     clipboardData: PropTypes.object.isRequired,
-    displayCircular: PropTypes.bool.isRequired,
-    displayLinear: PropTypes.bool.isRequired,
-    displayRow: PropTypes.bool.isRequired
+    showCircular: PropTypes.bool.isRequired,
+    showLinear: PropTypes.bool.isRequired,
+    showRow: PropTypes.bool.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -230,10 +231,10 @@ class SequenceEditor extends React.Component {
     render() {
         var {
             selectedSequenceString,
-            displayCircular,
-            displayRow,
+            showCircular,
+            showRow,
+            showSidebar,
         } = this.props;
-
         return (
             <div ref="sequenceEditor">
                 <Clipboard
@@ -244,19 +245,22 @@ class SequenceEditor extends React.Component {
                 <ToolBar />
 
                 <div style={{display: 'flex', overflow: 'auto'}}>
-                    {displayCircular && <CircularView 
+                    {showSidebar === 'black' && <div style = {{background : 'black', width: 500}}>
+                                            </div>}
+                    {showCircular && <CircularView 
                                           handleEditorDrag={this.handleEditorDrag.bind(this)}
                                           handleEditorDragStart={this.handleEditorDragStart.bind(this)}
                                           handleEditorDragStop={this.handleEditorDragStop.bind(this)}
                                           handleEditorClick={this.handleEditorClick.bind(this)}
                                            />}
                     
-                    {displayRow &&  <RowView 
+                    {showRow &&  <RowView 
                                           handleEditorDrag={this.handleEditorDrag.bind(this)}
                                           handleEditorDragStart={this.handleEditorDragStart.bind(this)}
                                           handleEditorDragStop={this.handleEditorDragStop.bind(this)}
                                           handleEditorClick={this.handleEditorClick.bind(this)}
                                            />}
+                    
                 </div>
 
                 <StatusBar/>
