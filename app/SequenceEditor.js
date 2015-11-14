@@ -24,9 +24,10 @@ import StatusBar from './StatusBar';
     sequenceData: ['sequenceData'],
     selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
-    displayCircular: ['displayCircular'],
-    displayLinear: ['displayLinear'],
-    displayRow: ['displayRow'] 
+    showCircular: ['showCircular'],
+    showLinear: ['showLinear'],
+    showRow: ['showRow'],
+    showSidebar: ['showSidebar'],
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -38,9 +39,9 @@ import StatusBar from './StatusBar';
     sequenceData: PropTypes.object.isRequired,
     selectionLayer: PropTypes.object.isRequired,
     clipboardData: PropTypes.object.isRequired,
-    displayCircular: PropTypes.bool.isRequired,
-    displayLinear: PropTypes.bool.isRequired,
-    displayRow: PropTypes.bool.isRequired
+    showCircular: PropTypes.bool.isRequired,
+    showLinear: PropTypes.bool.isRequired,
+    showRow: PropTypes.bool.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -230,11 +231,11 @@ class SequenceEditor extends React.Component {
     render() {
         var {
             selectedSequenceString,
-            displayCircular,
-            displayRow,
-            sequenceData
+            sequenceData,
+            showCircular,
+            showRow,
+            showSidebar,
         } = this.props;
-
         return (
             <div ref="sequenceEditor">
                 <Clipboard
@@ -245,9 +246,11 @@ class SequenceEditor extends React.Component {
                 <ToolBar />
 
                 <div style={{display: 'flex', overflow: 'auto'}}>
+                    {showSidebar === 'black' && <div style = {{background : 'black', width: 500}}>
+                                            </div>}
                     {
                         (function() {
-                            if (displayCircular) {
+                            if (showCircular) {
                                 if (sequenceData.circular) {
                                     return (<CircularView/>)
                                 } else { 
@@ -259,7 +262,8 @@ class SequenceEditor extends React.Component {
                             }
                         })()
                     }
-                    {displayRow &&  <RowView/>}
+                    {showRow &&  <RowView/>}
+                    
                 </div>
 
                 <StatusBar/>
