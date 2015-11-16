@@ -100,7 +100,7 @@ describe('editorDragged circular sequence', function() {
         })
         controller.signals.editorDragStopped();
     });
-    it.skip('editorDrag starts by grabbing caret at pos 1 and moves around the sequence', function(done) {
+    it.only('editorDrag starts by grabbing caret at pos 1 and moves around the sequence', function(done) {
         var controller = require('../controller')({
             //instantiate some default val's here:
             state: {
@@ -116,6 +116,7 @@ describe('editorDragged circular sequence', function() {
         });
         controller.signals.editorDragStarted({nearestBP: 1, caretGrabbed: true});
         controller.signals.editorDragged({nearestBP: 0});
+        debugger;
         testSignal(controller.signals.editorDragged, {
             nearestBP: 1,
         }, function() {
