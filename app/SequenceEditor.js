@@ -189,9 +189,9 @@ class SequenceEditor extends React.Component {
     //     }
     // }
 
-    // handleEditorDragStart({nearestBP, dragInitiatedByGrabbingCaret}) {
+    // handleEditorDragStart({nearestBP, caretGrabbed}) {
     //     var {selectionLayer} = this.props;
-    //     if (dragInitiatedByGrabbingCaret && selectionLayer.selected) {
+    //     if (caretGrabbed && selectionLayer.selected) {
     //         // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
     //         if (selectionLayer.start === nearestBP) {
     //             this.fixedCaretPositionOnEditorDragStart = selectionLayer.end + 1;

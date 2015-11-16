@@ -1,4 +1,4 @@
-var testSignal = require('./testSignal');
+var testSignal = require('../testSignal');
 describe('editorDragged circular sequence', function() {
     it('editorDrag starts by grabbing caret at pos 1 and moves to 2', function(done) {
         var controller = require('../controller')({

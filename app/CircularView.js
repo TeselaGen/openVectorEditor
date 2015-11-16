@@ -49,10 +49,6 @@ var Draggable = require('react-draggable');
     showReverseSequence: PropTypes.bool.isRequired,
     caretPosition: PropTypes.number.isRequired,
     sequenceLength: PropTypes.number.isRequired,
-    handleEditorDrag: PropTypes.func.isRequired,
-    handleEditorDragStart: PropTypes.func.isRequired,
-    handleEditorDragStop: PropTypes.func.isRequired,
-    handleEditorClick: PropTypes.func.isRequired,
 })
 class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
@@ -67,12 +63,12 @@ class CircularView extends React.Component {
         var angle = Math.atan2(clickY, clickX) + Math.PI/2
         if (angle < 0) angle += Math.PI * 2
         console.log('angle: ' + JSON.stringify(angle,null,4));
-        var dragInitiatedByGrabbingCaret = event.target.className === "cursor"
+        var caretGrabbed = event.target.className === "cursor"
         var nearestBP = Math.floor(angle / Math.PI / 2 * sequenceLength)
         callback({
-            shiftHeld: event.shiftHeld,
+            shiftHeld: event.shiftKey,
             nearestBP, 
-            dragInitiatedByGrabbingCaret //tnr: come back and fix this
+            caretGrabbed //tnr: come back and fix this
         })
     }
 
@@ -233,10 +229,10 @@ class CircularView extends React.Component {
             onDrag={(event) => {
                 this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}   
             }
-            // onStart={(event) => {
-            //     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDragStart)}   
-            // }
-            // onStop={handleEditorDragStop}
+            onStart={(event) => {
+                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}   
+            }
+            onStop={signals.editorDragStopped}
             
             >
                 <div style={ circViewStyle }>

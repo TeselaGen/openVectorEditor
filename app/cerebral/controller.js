@@ -26,3 +26,4 @@ export default function (options={state: null, services: null, actions: null}) {
 	signals(controller, options);
 	return controller;
 }
+

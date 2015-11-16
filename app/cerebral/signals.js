@@ -1,164 +1,98 @@
 //tnr: little webpack trick to require all the action files and add them to the 'a' object
-var each = require('lodash/collection/each');
 var reqContext = require.context('./actions/', true, /^((?!test).)*$/);
 var a = {};
 reqContext.keys().forEach(function(key) {
     a[key.substring(2)] = reqContext(key)
 });
+//tnr: little webpack trick to require all the action chain files and add them to the 'c' object
+var reqContext = require.context('./chains/', true, /^((?!test).)*$/);
+var c = {};
+reqContext.keys().forEach(function(key) {
+    c[key.substring(2)] = reqContext(key)
+});
+import assign from 'lodash/object/assign'
+var each = require('lodash/collection/each');
 
-// if same sidebar toggle is hit twice the sidebar opens and closes
-// toggling a different sidebar closes the current and opens that sidebar
-var showSidebar = function(input, tree, output) {
-    var currentSidebar = tree.get('showSidebar')
-    if (!currentSidebar) {
-        tree.set('showSidebar', input.currentSidebar)
-    } else {
-        if(currentSidebar === input.currentSidebar) {
-            tree.set('showSidebar', '') //an empty string evaluates false so sidebar isn't shown
-        } else {
-            tree.set('showSidebar', input['currentSidebar'])
-        }
-    }
-}
-//add all the signals to the cerebral controller here
-export default function registerSignals(controller) {
-    //tnr:  WORKING: 
-    controller.signal('sidebarToggled', [showSidebar]);
 
-    controller.signal('copySelection', [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
-        success: a.setData('clipboardData'),
-        error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
-    }]);
-    controller.signal('selectAll', [a.selectAll, a.setSelectionLayer]);
-    controller.signal('selectInverse', [a.selectInverse, a.setSelectionLayer]);
-    controller.signal('sequenceDataInserted', [
-        a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
-        a.checkLayerIsSelected, {
-            selected: [a.deleteSequence],
-            notSelected: [a.getData('caretPosition')]
-        },
-        a.insertSequenceData,
-        a.setData('caretPosition', 'sequenceData')
-    ]);
-    controller.signal('setCutsiteLabelSelection', [a.setCutsiteLabelSelection]);
-    controller.signal('setCaretPosition', [a.setCaretPosition]);
-    // SL: working but may need to be more robust
-    controller.signal('toggleAnnotationDisplay', [a.toggleAnnotationDisplay]);
+export default function(controller, options) {
+    a = assign({}, a, options.actions) //override any actions here!
+    var signals = {
+        sidebarToggled: [a.toggleSidebar],
+        copySelection: [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
+            success: a.setData('clipboardData'),
+            error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        }],
+        selectAll: [a.selectAll, a.setSelectionLayer],
+        selectInverse: [a.selectInverse, a.setSelectionLayer],
+        setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
+        toggleAnnotationDisplay: [a.toggleAnnotationDisplay],
 
-    //tnr: MOSTLY WORKING: 
-    controller.signal('backspacePressed', [
-        a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
-        a.checkLayerIsSelected, {
-            selected: [a.deleteSequence],
-            notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
-        }
-    ]);
-    controller.signal('editorClicked', [
-        a.getData('selectionLayer', 'sequenceLength', 'bpsPerRow', 'caretPosition'),
-        a.checkShiftHeld, {
-            shiftHeld: [a.checkLayerIsSelected, {
-                selected: [a.updateSelectionShiftClick, a.setSelectionLayer],
-                notSelected: [a.createSelectionShiftClick, {
-                    updateSelection: [a.setSelectionLayer],
-                    doNothing: []
-                }]
-            }],
-            shiftNotHeld: [a.clearSelectionLayer, a.updateOutput('updatedCaretPos', 'caretPosition'), a.setCaretPosition],
-        }
-    ]);
-    var selectAnnotation = [
-        a.getData('selectionLayer', 'sequenceLength', 'bpsPerRow', 'caretPosition'),
-        a.checkShiftHeld, {
-            shiftHeld: [a.checkLayerIsSelected, {
-                selected: [a.updateSelectionShiftClick, a.setSelectionLayer],
-                notSelected: [a.createSelectionShiftClick, {
-                    updateSelection: [a.setSelectionLayer],
-                    doNothing: []
-                }]
-            }],
-            shiftNotHeld: [a.updateOutput('annotation', 'selectionLayer'), a.setSelectionLayer],
-        }
-    ]
-
-    controller.signal('featureClicked', selectAnnotation);
-    controller.signal('orfClicked', selectAnnotation);
-
-    controller.signal('caretMoved', [
-        a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
-            path: ['sequenceData', 'circular'],
-            name: 'circular'
-        }),
-
-        a.moveCaret,
-        a.handleCaretMoved, {
-            caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
-            selectionUpdated: [a.setSelectionLayer],
-        }
-    ]);
-
-    controller.signal('editorDragged', [
-        a.handleEditorDragged, {
-            caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
-            selectionUpdated: [a.setSelectionLayer],
-        }
-    ]);
-
-    controller.signal('editorDragStarted', [
-        function handleEditorDragStarted ({nearestBP, caretGrabbed},tree, output) {
-            var selectionLayer = tree.get('selectionLayer');
-            if (caretGrabbed && selectionLayer.selected) {
-                if (selectionLayer.start === nearestBP) {
-                    tree.set(['editorDrag','fixedCaretPositionOnDragStart'], selectionLayer.end + 1)
-                    tree.set(['editorDrag','fixedCaretPositionOnDragStartType'], 'end')
-                    //plus one because the cursor position will be 1 more than the selectionLayer.end
-                    //imagine selection from
-                    //0 1 2  <--possible cursor positions
-                    // A T G
-                    //if A is selected, selection.start = 0, selection.end = 0
-                    //so the nearestBP for the end of the selection is 1!
-                    //which is selection.end+1
-                } else {
-                    tree.set(['editorDrag','fixedCaretPositionOnDragStart'], selectionLayer.start)
-                    tree.set(['editorDrag','fixedCaretPositionOnDragStartType'], 'start')
-                }
-            } else {
-                    tree.set(['editorDrag','fixedCaretPositionOnDragStart'], nearestBP)
-                    tree.set(['editorDrag','fixedCaretPositionOnDragStartType'], 'caret')
+        editorClicked: [
+            a.checkBooleanState(['editorDrag', 'inProgress']), {
+                success: [], //do nothing
+                error: [a.getData('selectionLayer', 'sequenceLength', 'bpsPerRow', 'caretPosition'),
+                    a.checkShiftHeld, {
+                        shiftHeld: [a.checkLayerIsSelected, {
+                            selected: [a.updateSelectionShiftClick, a.setSelectionLayer],
+                            notSelected: [a.createSelectionShiftClick, {
+                                updateSelection: [a.setSelectionLayer],
+                                doNothing: []
+                            }]
+                        }],
+                        shiftNotHeld: [a.clearSelectionLayer, a.updateOutput('nearestBP', 'caretPosition'), a.setCaretPosition],
+                    }
+                ]
             }
-        }
-    ]);
+        ],
+        featureClicked: c.selectAnnotation(a),
+        orfClicked: c.selectAnnotation(a),
+        caretMoved: [
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+                path: ['sequenceData', 'circular'],
+                name: 'circular'
+            }),
 
-    controller.signal('editorDragStopped', [
-        function handleEditorDragStopped (input,tree, output) {
-            tree.set(['editorDrag', 'dragging'], false)
-        }
-    ]);
+            a.moveCaret,
+            a.handleCaretMoved, {
+                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+                selectionUpdated: [a.setSelectionLayer],
+            }
+        ],
+        editorDragged: [
+            a.handleEditorDragged, {
+                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+                selectionUpdated: [a.setSelectionLayer],
+            }
+        ],
+        editorDragStarted: [
+            a.handleEditorDragStarted
+        ],
+        editorDragStopped: [
+            a.handleEditorDragStopped
+        ],
+        //tnr: NOT YET WORKING:
+        //higher priority
+        pasteSequenceString: [a.pasteSequenceString],
+        setSelectionLayer: [a.setSelectionLayer],
 
-    //tnr: NOT YET WORKING:
-    //higher priority
-    controller.signal('pasteSequenceString', [a.pasteSequenceString]);
-    controller.signal('setSelectionLayer', [a.setSelectionLayer]);
-
-    //lower priority
-    controller.signal('addAnnotations', [a.addAnnotations]);
-    controller.signal('jumpToRow', [a.jumpToRow]);
-    // sl: in progress
-    controller.signal('setEditState', [a.setEditState]);
-
-    var editModeOnlySignals = {
-        'testSignal' :[
+        //lower priority
+        addAnnotations: [a.addAnnotations],
+        jumpToRow: [a.jumpToRow],
+        // sl: in progress
+        setEditState: [a.setEditState],
+        testSignal: a.addEditModeOnly([
             function(input, tree, output) {
                 console.log("test signal");
             }
-        ],
-        'backspacePressed': [
+        ]),
+        backspacePressed: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
             }
-        ],
-        'sequenceDataInserted': [
+        ]),
+        sequenceDataInserted: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
@@ -166,27 +100,13 @@ export default function registerSignals(controller) {
             },
             a.insertSequenceData,
             a.setData('caretPosition', 'sequenceData')
-        ]
+        ])
     }
-    // prepend edit mode check to all edit only mode signals, then instantiate on controller
-    var processedEditModeSignals = addEditModeOnlyToSignal(editModeOnlySignals);
-    attachSignalsObjectToController(processedEditModeSignals, controller);
+    assign({}, signals, options.signals) //optionally override any signals here
+    return (attachSignalsToController(signals, controller))
 }
 
-function addEditModeOnlyToSignal(signalsObj) {
-    var newSignalsObj = {};
-    each(signalsObj, function(actionArray, signalName) {
-        newSignalsObj[signalName] = [
-            a.checkIfEditAllowed, {
-                editAllowed: actionArray,
-                readOnly: [function (input, tree, output) {console.log('Unable to complete action while in Read Only mode')}]
-            }
-        ]
-    })
-    return newSignalsObj;
-}
-
-function attachSignalsObjectToController (signalsObj, controller) {
+function attachSignalsToController(signalsObj, controller) {
     each(signalsObj, function(actionArray, signalName) {
         controller.signal(signalName, actionArray);
     })

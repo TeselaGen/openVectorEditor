@@ -23,49 +23,40 @@ var RowView = React.createClass({
         caretPosition: PropTypes.number.isRequired,
         sequenceLength: PropTypes.number.isRequired,
         bpsPerRow: PropTypes.number.isRequired,
-        handleEditorDrag: PropTypes.func.isRequired,
-        handleEditorDragStart: PropTypes.func.isRequired,
-        handleEditorDragStop: PropTypes.func.isRequired,
-        handleEditorClick: PropTypes.func.isRequired,
     },
     getNearestCursorPositionToMouseEvent: function(event, callback) {
         callback(0);
         var rowNotFound = true;
         var rowDomNode = this.refs.mapView.getDOMNode();
         var boundingRowRect = rowDomNode.getBoundingClientRect();
+        var nearestBP = 0;
         // console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
         // console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
         if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-            //then the click is falls within this row
-            // console.log('HGGGG');
             rowNotFound = false;
             if (event.clientX - boundingRowRect.left < 0) {
                 console.warn('this should never be 0...');
-                callback(0); //return the first bp in the row
             } else {
                 var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
                 var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
-                var nearestBP = numberOfBPsInFromRowStart;
+                nearestBP = numberOfBPsInFromRowStart;
                 if (nearestBP > this.props.sequenceLength + 1) {
                     nearestBP = this.props.sequenceLength + 1;
                 }
-                // console.log('nearestBP', nearestBP);
-                callback({
-                    shiftHeld: event.shiftHeld,
-                    nearestBP,
-                    dragInitiatedByGrabbingCaret: false //tnr: come back and fix this
-                })
             }
-            // break; //break the for loop early because we found the row the click event landed in
         }
-        // }
         if (rowNotFound) {
             console.warn('was not able to find the correct row');
             //return the last bp index in the rendered rows
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
-            callback(lastOfRenderedRows.end);
+            nearestBP = lastOfRenderedRows.end;
         }
+        callback({
+            shiftHeld: event.shiftKey,
+            nearestBP,
+            caretGrabbed: false //tnr: come back and fix this
+        })
     },
 
     
@@ -93,10 +84,7 @@ var RowView = React.createClass({
             caretPosition,
             sequenceLength,
             bpsPerRow,
-            handleEditorDrag,
-            handleEditorDragStart,
-            handleEditorDragStop,
-            handleEditorClick,
+            signals
         } = this.props;
         var self = this;
         // function renderRows(rowNumber) {
@@ -121,19 +109,19 @@ var RowView = React.createClass({
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
             onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDrag)}   
+                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
             }
             onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDragStart)}   
+                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
             }
-            onStop={handleEditorDragStop}
+            onStop={signals.editorDragStopped}
             >
               <div
                 ref="mapView"
                 className="mapView"
                 style={mapViewStyle}
                 onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, handleEditorClick)}   
+                    this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
                 }
                 >
                 <RowItem
@@ -153,6 +141,7 @@ var RowView = React.createClass({
                       caretPosition={caretPosition}
                       sequenceLength={sequenceLength}
                       bpsPerRow={bpsPerRow}
+                      signals={signals}
                     row={rowData[0]} />
               </div>
             </Draggable>

@@ -16,7 +16,7 @@ var controller = require('../controller')({
     }
 });
 
-var testSignal = require('./testSignal');
+var testSignal = require('../testSignal');
 var caretMoved = controller.signals.caretMoved;
 
 describe('caretMoved circular sequence', function() {
