@@ -30,7 +30,6 @@ var Draggable = require('react-draggable');
     showReverseSequence: ['showReverseSequence'],
     caretPosition: ['caretPosition'],
     sequenceLength: ['sequenceLength'],
-    bpsPerRow: ['bpsPerRow']
 })
 @propTypes({
     circularViewDimensions: PropTypes.object.isRequired,
@@ -50,11 +49,6 @@ var Draggable = require('react-draggable');
     showReverseSequence: PropTypes.bool.isRequired,
     caretPosition: PropTypes.number.isRequired,
     sequenceLength: PropTypes.number.isRequired,
-    bpsPerRow: PropTypes.number.isRequired,
-    handleEditorDrag: PropTypes.func.isRequired,
-    handleEditorDragStart: PropTypes.func.isRequired,
-    handleEditorDragStop: PropTypes.func.isRequired,
-    handleEditorClick: PropTypes.func.isRequired,
 })
 class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
@@ -69,17 +63,17 @@ class CircularView extends React.Component {
         var angle = Math.atan2(clickY, clickX) + Math.PI/2
         if (angle < 0) angle += Math.PI * 2
         console.log('angle: ' + JSON.stringify(angle,null,4));
-        var dragInitiatedByGrabbingCaret = event.target.className === "cursor"
+        var caretGrabbed = event.target.className === "cursor"
         var nearestBP = Math.floor(angle / Math.PI / 2 * sequenceLength)
         callback({
-            shiftHeld: event.shiftHeld,
+            shiftHeld: event.shiftKey,
             nearestBP, 
-            dragInitiatedByGrabbingCaret //tnr: come back and fix this
+            caretGrabbed //tnr: come back and fix this
         })
     }
 
     render() {
-        var { showSequence, circularViewDimensions, circularViewData, handleEditorDrag, handleEditorDragStart, handleEditorDragStop, handleEditorClick, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, bpsPerRow, signals} = this.props;
+        var { showSequence, circularViewDimensions, circularViewData, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, signals} = this.props;
         const baseRadius = 80;
         var currentRadius = baseRadius;
         var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
@@ -168,7 +162,7 @@ class CircularView extends React.Component {
             )
 
         }
-        var innerRadius = -baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+        var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
 
         if (selectionLayer.selected) {
             var {startAngle, endAngle, totalAngle} = getRangeAngles(selectionLayer, sequenceLength)
@@ -233,18 +227,18 @@ class CircularView extends React.Component {
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
             onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDrag)}   
+                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}   
             }
             onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorDragStart)}   
+                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}   
             }
-            onStop={handleEditorDragStop}
+            onStop={signals.editorDragStopped}
             
             >
                 <div style={ circViewStyle }>
                   <svg
                   onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, handleEditorClick)}   
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
                 }
                     width={ circularViewDimensions.width }
                     height={ circularViewDimensions.height }>
@@ -273,10 +267,10 @@ function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
           height={ 0 }>
           <line
             style={ { className:"cursor", opacity: 9} }//tnr: the classname needs to be cursor here!
-            x0={0}
-            y0={innerRadius + 100}
             x1={0}
-            y1={-outerRadius}
+            y1={-innerRadius}
+            x2={0}
+            y2={-outerRadius}
             stroke="black" />
         </PositionAnnotationOnCircle>
     )

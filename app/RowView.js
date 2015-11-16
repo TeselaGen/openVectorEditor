@@ -44,16 +44,13 @@ var InfiniteScroller = require('react-variable-height-infinite-scroller');
     caretPosition: PropTypes.number.isRequired,
     sequenceLength: PropTypes.number.isRequired,
     bpsPerRow: PropTypes.number.isRequired,
-    handleEditorDrag: PropTypes.func.isRequired,
-    handleEditorDragStart: PropTypes.func.isRequired,
-    handleEditorDragStop: PropTypes.func.isRequired,
-    handleEditorClick: PropTypes.func.isRequired,
 })
 class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
         var visibleRowsContainer = this.refs.InfiniteScroller.getVisibleRowsContainerDomNode();
         //loop through all the rendered rows to see if the click event lands in one of them
+        var nearestBP = 0;
         for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
             var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
             var boundingRowRect = rowDomNode.getBoundingClientRect();
@@ -65,29 +62,15 @@ class RowView extends React.Component {
                 rowNotFound = false;
                 var rowNumber = this.refs.InfiniteScroller.state.visibleRows[relativeRowNumber];
                 var row = this.props.rowData[rowNumber];
-                var dragInitiatedByGrabbingCaret = event.target.className === "cursor"
                 if (event.clientX - boundingRowRect.left < 0) {
-                    console.warn('this should never be 0...');
-                    callback({
-                        shiftHeld: event.shiftHeld,
-                        nearestBP: row.start, 
-                        dragInitiatedByGrabbingCaret //tnr: come back and fix this
-                    }); //return the first bp in the row
+                    nearestBP = row.start;
                 } else {
                     var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
                     var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
-                    var nearestBP = numberOfBPsInFromRowStart + row.start;
+                    nearestBP = numberOfBPsInFromRowStart + row.start;
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;
                     }
-                    // console.log('nearestBP', nearestBP);
-                    console.log('nearestBP: ' + JSON.stringify(nearestBP,null,4));
-                    console.log('dragInitiatedByGrabbingCaret: ' + JSON.stringify(dragInitiatedByGrabbingCaret,null,4));
-                    callback({
-                        shiftHeld: event.shiftHeld,
-                        nearestBP, 
-                        dragInitiatedByGrabbingCaret //tnr: come back and fix this
-                    });
                 }
                 break; //break the for loop early because we found the row the click event landed in
             }
@@ -97,8 +80,13 @@ class RowView extends React.Component {
             //return the last bp index in the rendered rows
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
-            callback(lastOfRenderedRows.end, event);
+            nearestBP = lastOfRenderedRows.end
         }
+        callback({
+            shiftHeld: event.shiftKey,
+            nearestBP,
+            caretGrabbed: event.target.className === "cursor"
+        });
     }
 
     render() {
@@ -106,10 +94,6 @@ class RowView extends React.Component {
             rowViewDimensions, 
             rowData, 
             rowToJumpTo, 
-            handleEditorDrag,
-            handleEditorDragStart,
-            handleEditorDragStop,
-            handleEditorClick,
             charWidth,
             selectionLayer,
             cutsiteLabelSelectionLayer,
@@ -169,19 +153,19 @@ class RowView extends React.Component {
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
             onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDrag)}   
+                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
             }
             onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, handleEditorDragStart)}   
+                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
             }
-            onStop={handleEditorDragStop}
+            onStop={signals.editorDragStopped}
             >
               <div
                 ref="rowView"
                 className="rowView"
                 style={rowViewStyle}
                 onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, handleEditorClick)}   
+                    this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
                 }
                 >
                 <InfiniteScroller

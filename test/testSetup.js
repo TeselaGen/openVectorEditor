@@ -35,7 +35,7 @@ var testSequenceData = tidyUpSequenceData({
     }]
 });
 
-var testBlankSelectionLayer = {
+var blankSelectionLayer = {
 	selected: false,
 	start: -1,
 	end: -1,
@@ -44,6 +44,6 @@ var testBlankSelectionLayer = {
 
 module.exports = {
     testSequenceData: testSequenceData,
-    testBlankSelectionLayer: testBlankSelectionLayer
+    blankSelectionLayer: blankSelectionLayer
 }
 

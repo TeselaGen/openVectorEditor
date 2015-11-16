@@ -132,105 +132,106 @@ class SequenceEditor extends React.Component {
         combokeys.detach()
     }
 
-    handleEditorClick({nearestBP, shiftHeld}) {
-        //if cursor position is different than the original position, reset the position and clear the selection
-        if (this.editorBeingDragged) {
-            //do nothing because the click was triggered by a drag event
-        } else {
-            this.props.signals.editorClicked({
-                shiftHeld,
-                type: 'editorClick',
-                updatedCaretPos: nearestBP
-            })
-        }
-    }
+    // handleEditorClick({nearestBP, shiftHeld}) {
+    //     //if cursor position is different than the original position, reset the position and clear the selection
+    //     if (this.editorBeingDragged) {
+    //         //do nothing because the click was triggered by a drag event
+    //     } else {
+    //         this.props.signals.editorClicked({
+    //             shiftHeld,
+    //             type: 'editorClick',
+    //             updatedCaretPos: nearestBP
+    //         })
+    //     }
+    // }
 
-    handleEditorDrag({nearestBP}) {
-        var {
-            setCaretPosition,
-            setSelectionLayer
-        } = this.props.signals;
-        //note this method relies on variables that are set in the handleEditorDragStart method!
-        this.editorBeingDragged = true;
-        console.log('nearestBP: ' + JSON.stringify(nearestBP,null,4));
-        if (nearestBP === this.fixedCaretPositionOnEditorDragStart) {
-            setCaretPosition(nearestBP);
-            setSelectionLayer(false);
-        } else {
-            var newSelectionLayer;
-            if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
-                newSelectionLayer = {
-                    start: this.fixedCaretPositionOnEditorDragStart,
-                    end: nearestBP - 1,
-                    cursorAtEnd: true,
-                };
-            } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
-                newSelectionLayer = {
-                    start: nearestBP,
-                    end: this.fixedCaretPositionOnEditorDragStart - 1,
-                    cursorAtEnd: false,
-                };
-            } else {
-                if (nearestBP > this.fixedCaretPositionOnEditorDragStart) {
-                    newSelectionLayer = {
-                        start: this.fixedCaretPositionOnEditorDragStart,
-                        end: nearestBP - 1,
-                        cursorAtEnd: true,
-                    };
-                } else {
-                    newSelectionLayer = {
-                        start: nearestBP,
-                        end: this.fixedCaretPositionOnEditorDragStart - 1,
-                        cursorAtEnd: false,
-                    };
-                }
-            }
-            setSelectionLayer({selectionLayer: newSelectionLayer});
-        }
-    }
+    // handleEditorDrag({nearestBP}) {
+    //     var {
+    //         setCaretPosition,
+    //         setSelectionLayer
+    //     } = this.props.signals;
+    //     //note this method relies on variables that are set in the handleEditorDragStart method!
+    //     this.editorBeingDragged = true;
+    //     console.log('nearestBP: ' + JSON.stringify(nearestBP,null,4));
+    //     if (nearestBP === this.fixedCaretPositionOnEditorDragStart) {
+    //         setCaretPosition(nearestBP);
+    //         setSelectionLayer(false);
+    //     } else {
+    //         var newSelectionLayer;
+    //         if (this.fixedCaretPositionOnEditorDragStartType === 'start') {
+    //             newSelectionLayer = {
+    //                 start: this.fixedCaretPositionOnEditorDragStart,
+    //                 end: nearestBP - 1,
+    //                 cursorAtEnd: true,
+    //             };
+    //         } else if (this.fixedCaretPositionOnEditorDragStartType === 'end') {
+    //             newSelectionLayer = {
+    //                 start: nearestBP,
+    //                 end: this.fixedCaretPositionOnEditorDragStart - 1,
+    //                 cursorAtEnd: false,
+    //             };
+    //         } else {
+    //             if (nearestBP > this.fixedCaretPositionOnEditorDragStart) {
+    //                 newSelectionLayer = {
+    //                     start: this.fixedCaretPositionOnEditorDragStart,
+    //                     end: nearestBP - 1,
+    //                     cursorAtEnd: true,
+    //                 };
+    //             } else {
+    //                 newSelectionLayer = {
+    //                     start: nearestBP,
+    //                     end: this.fixedCaretPositionOnEditorDragStart - 1,
+    //                     cursorAtEnd: false,
+    //                 };
+    //             }
+    //         }
+    //         setSelectionLayer({selectionLayer: newSelectionLayer});
+    //     }
+    // }
 
-    handleEditorDragStart({nearestBP, dragInitiatedByGrabbingCaret}) {
-        var {selectionLayer} = this.props;
-        if (dragInitiatedByGrabbingCaret && selectionLayer.selected) {
-            // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
-            if (selectionLayer.start === nearestBP) {
-                this.fixedCaretPositionOnEditorDragStart = selectionLayer.end + 1;
-                this.fixedCaretPositionOnEditorDragStartType = 'end';
+    // handleEditorDragStart({nearestBP, caretGrabbed}) {
+    //     var {selectionLayer} = this.props;
+    //     if (caretGrabbed && selectionLayer.selected) {
+    //         // this.circularSelectionOnEditorDragStart = (selectionLayer.start > selectionLayer.end);
+    //         if (selectionLayer.start === nearestBP) {
+    //             this.fixedCaretPositionOnEditorDragStart = selectionLayer.end + 1;
+    //             this.fixedCaretPositionOnEditorDragStartType = 'end';
 
-                //plus one because the cursor position will be 1 more than the selectionLayer.end
-                //imagine selection from
-                //0 1 2  <--possible cursor positions
-                // A T G
-                //if A is selected, selection.start = 0, selection.end = 0
-                //so the nearestBP for the end of the selection is 1!
-                //which is selection.end+1
-            } else {
-                this.fixedCaretPositionOnEditorDragStart = selectionLayer.start;
-                this.fixedCaretPositionOnEditorDragStartType = 'start';
-            }
-        } else {
-            // this.circularSelectionOnEditorDragStart = false;
-            this.fixedCaretPositionOnEditorDragStart = nearestBP;
-            this.fixedCaretPositionOnEditorDragStartType = 'caret';
-        }
-    }
+    //             //plus one because the cursor position will be 1 more than the selectionLayer.end
+    //             //imagine selection from
+    //             //0 1 2  <--possible cursor positions
+    //             // A T G
+    //             //if A is selected, selection.start = 0, selection.end = 0
+    //             //so the nearestBP for the end of the selection is 1!
+    //             //which is selection.end+1
+    //         } else {
+    //             this.fixedCaretPositionOnEditorDragStart = selectionLayer.start;
+    //             this.fixedCaretPositionOnEditorDragStartType = 'start';
+    //         }
+    //     } else {
+    //         // this.circularSelectionOnEditorDragStart = false;
+    //         this.fixedCaretPositionOnEditorDragStart = nearestBP;
+    //         this.fixedCaretPositionOnEditorDragStartType = 'caret';
+    //     }
+    // }
 
-    handleEditorDragStop(event, ui) {
-        var self = this;
-        if (this.editorBeingDragged) { //check to make sure dragging actually occurred
-            setTimeout(function() {
-                //we use setTimeout to put the call to change editorBeingDragged to false
-                //on the bottom of the event stack, thus the click event that is fired because of the drag
-                //will be able to check if editorBeingDragged and not trigger if it is
-                self.editorBeingDragged = false;
-            }, 0);
-        } else {
-            self.editorBeingDragged = false;
-        }
-    }
+    // handleEditorDragStop(event, ui) {
+    //     var self = this;
+    //     if (this.editorBeingDragged) { //check to make sure dragging actually occurred
+    //         setTimeout(function() {
+    //             //we use setTimeout to put the call to change editorBeingDragged to false
+    //             //on the bottom of the event stack, thus the click event that is fired because of the drag
+    //             //will be able to check if editorBeingDragged and not trigger if it is
+    //             self.editorBeingDragged = false;
+    //         }, 0);
+    //     } else {
+    //         self.editorBeingDragged = false;
+    //     }
+    // }
     render() {
         var {
             selectedSequenceString,
+            sequenceData,
             showCircular,
             showRow,
             showSidebar,
@@ -247,19 +248,21 @@ class SequenceEditor extends React.Component {
                 <div style={{display: 'flex', overflow: 'auto'}}>
                     {showSidebar === 'black' && <div style = {{background : 'black', width: 500}}>
                                             </div>}
-                    {showCircular && <CircularView 
-                                          handleEditorDrag={this.handleEditorDrag.bind(this)}
-                                          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-                                          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-                                          handleEditorClick={this.handleEditorClick.bind(this)}
-                                           />}
-                    
-                    {showRow &&  <RowView 
-                                          handleEditorDrag={this.handleEditorDrag.bind(this)}
-                                          handleEditorDragStart={this.handleEditorDragStart.bind(this)}
-                                          handleEditorDragStop={this.handleEditorDragStop.bind(this)}
-                                          handleEditorClick={this.handleEditorClick.bind(this)}
-                                           />}
+                    {
+                        (function() {
+                            if (showCircular) {
+                                if (sequenceData.circular) {
+                                    return (<CircularView/>)
+                                } else { 
+                                    //tnr: perhaps return an option to set the sequence linearity here?
+                                    return (<h4>
+                                                Cannot display linear sequence in circular view
+                                            </h4>)
+                                }
+                            }
+                        })()
+                    }
+                    {showRow &&  <RowView/>}
                     
                 </div>
 

@@ -1,7 +1,7 @@
 // var tap = require('tap');
 // tap.mochaGlobals();
 var expect = require('chai').expect;
-var mapAnnotationsToRows = require('../app/mapAnnotationsToRows.js');
+var mapAnnotationsToRows = require('./mapAnnotationsToRows.js');
 describe('mapAnnotationsToRows', function() {
     it('maps overlapping annotations to rows correctly', function() {
         var annotation1 = {
