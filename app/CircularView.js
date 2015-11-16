@@ -266,7 +266,7 @@ function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
           eAngle={ endAngle }
           height={ 0 }>
           <line
-            style={ { className:"cursor", opacity: 9} }//tnr: the classname needs to be cursor here!
+            style={ { className:"cursor", opacity: 9, cursor: "ew-resize",} }//tnr: the classname needs to be cursor here!
             x1={0}
             y1={-innerRadius}
             x2={0}
