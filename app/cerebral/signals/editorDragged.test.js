@@ -12,7 +12,7 @@ var controller = require('../controller')({
     }
 });
 
-var testSignal = require('../testSignal2');
+var testSignal = require('../testSignal');
 describe('editorDragged circular sequence', function() {
     beforeEach(function() {
         controller.reset();
