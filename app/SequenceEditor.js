@@ -240,32 +240,30 @@ class SequenceEditor extends React.Component {
         } = this.props;
 
         return (
-            <div ref="sequenceEditor" className={styles.editor}>
+            <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}
                 />
 
-                <div className={styles.toolBarSlot}>
+                <div className={styles.head}>
                 </div>
 
-                <div className={styles.appWrapper}>
+                <div className={styles.content}>
                     <div className={styles.sideBarSlot}>
                     </div>
 
-                    <div className={styles.viewWrapper}>
-                        <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>
-                            <CircularView />
-                        </div>
+                    <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>
+                        <CircularView />
+                    </div>
 
-                        <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
-                            <RowView />
-                        </div>
+                    <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
+                        <RowView />
                     </div>
                 </div>
 
-                <div className={styles.statusBarSlot}></div>
+                <div className={styles.foot}></div>
             </div>
         );
     }

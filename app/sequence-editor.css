@@ -2,45 +2,42 @@
     border: 2px solid black;
     padding: 20px;
     background-color: white;
+    box-sizing: border-box;
 }
 
-.editor {
+.app {
+    composes: testing;
+    display: flex;
+    flex-direction: column;
+}
+
+.head {
     composes: testing;
 }
 
-.toolbarSlot {
+.content {
     composes: testing;
-}
-
-.appWrapper {
-    composes: testing;
+    flex-grow: 1;
     display: flex;
 }
 
 .sideBarSlot {
     composes: testing;
-    width: 50px;
-}
-
-.viewWrapper {
-    composes: testing;
-    flex-grow: 1;
-}
-
-.viewWrapper:after {
-    content: '';
-    display: block;
-    clear: both;
 }
 
 .circularViewSlot {
-    width: 50%;
-    float: left;
-    overflow: auto;
+    composes: testing;
+    flex-grow: 1;
+    flex-basis: 0;
 }
 
 .rowViewSlot {
-    width: 50%;
-    float: left;
-    overflow: auto;
+    composes: testing;
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+}
+
+.foot {
+    composes: testing;
 }
