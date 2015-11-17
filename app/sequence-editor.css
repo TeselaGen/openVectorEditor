@@ -1,43 +1,29 @@
-.testing {
-    border: 2px solid black;
-    padding: 20px;
-    background-color: white;
-    box-sizing: border-box;
-}
-
 .app {
-    composes: testing;
     display: flex;
     flex-direction: column;
 }
 
 .head {
-    composes: testing;
 }
 
 .content {
-    composes: testing;
     flex-grow: 1;
     display: flex;
 }
 
 .sideBarSlot {
-    composes: testing;
 }
 
 .circularViewSlot {
-    composes: testing;
     flex-grow: 1;
     flex-basis: 0;
 }
 
 .rowViewSlot {
-    composes: testing;
     flex-grow: 1;
     flex-basis: 0;
     display: flex;
 }
 
 .foot {
-    composes: testing;
 }
