@@ -11,7 +11,7 @@ export default function handleEditorDragged({
         }, editorDrag: {fixedCaretPositionOnDragStart, fixedCaretPositionOnDragStartType}
     } = tree.get();
     tree.set(['editorDrag', 'inProgress'], true)
-    if (nearestBP === fixedCaretPositionOnDragStart && (!selectionLayer.selected || getRangeLength(selectionLayer) < 2)) {
+    if (nearestBP === fixedCaretPositionOnDragStart && (!selectionLayer.selected || selectionLayer.start < selectionLayer.end)) {
         output.caretMoved({
             caretPosition: fixedCaretPositionOnDragStart
         });
