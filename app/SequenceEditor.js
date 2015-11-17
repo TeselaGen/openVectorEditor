@@ -248,10 +248,11 @@ class SequenceEditor extends React.Component {
                 />
 
                 <div className={styles.head}>
+                    <ToolBar />
                 </div>
 
                 <div className={styles.content}>
-                    <div className={styles.sideBarSlot}>
+                    <div className={styles.sideBarSlot} style={(showSidebar) ? {} : {display: 'none'}}>
                     </div>
 
                     <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>
@@ -263,7 +264,9 @@ class SequenceEditor extends React.Component {
                     </div>
                 </div>
 
-                <div className={styles.foot}></div>
+                <div className={styles.foot}>
+                    <StatusBar />
+                </div>
             </div>
         );
     }
