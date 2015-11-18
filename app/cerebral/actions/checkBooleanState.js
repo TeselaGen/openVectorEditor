@@ -9,6 +9,6 @@ module.exports = function checkBooleanState(path) {
             output.error()
         }
     }
-    stateCheck.displayName = 'checkBooleanState' + path.toString();
+    stateCheck.displayName = 'checkBooleanState: [' + path.toString() + ']';
     return stateCheck;
 }

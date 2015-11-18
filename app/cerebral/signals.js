@@ -68,6 +68,12 @@ export default function(controller, options) {
             a.handleEditorDragStarted
         ],
         editorDragStopped: [
+            [function pause (input, tree, output) {
+                //async function that doesn't do anything
+                setTimeout(function () {
+                    output()
+                },0)
+            }],
             a.handleEditorDragStopped
         ],
         //tnr: NOT YET WORKING:
