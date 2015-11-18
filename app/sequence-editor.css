@@ -1,0 +1,31 @@
+.app {
+    display: flex;
+    flex-direction: column;
+}
+
+.head {
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+}
+
+.sideBarSlot {
+    width: 200px;
+    background-color: black;
+}
+
+.circularViewSlot {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.rowViewSlot {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+}
+
+.foot {
+}

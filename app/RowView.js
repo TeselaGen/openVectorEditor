@@ -5,6 +5,8 @@ var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
 
+import styles from './row-view.css';
+
 @Cerebral({
     rowViewDimensions: ['rowViewDimensions'],
     rowData: ['rowData'],
@@ -89,9 +91,23 @@ class RowView extends React.Component {
         });
     }
 
+    resize() {
+        if (this.refs.rowView) {
+            this.props.signals.resizeRowView({
+                rootWidth: this.refs.rowView.clientWidth,
+                rootHeight: this.refs.rowView.clientHeight
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.resize();
+        window.addEventListener('resize', this.resize.bind(this));
+    }
+
     render() {
         var {
-            rowViewDimensions, 
+            rowViewDimensions,
             rowData, 
             rowToJumpTo, 
             charWidth,
@@ -140,15 +156,6 @@ class RowView extends React.Component {
             }
         }
 
-        var rowViewStyle = {
-            height: rowViewDimensions.height,
-            width: rowViewDimensions.width,
-            //   overflowY: "scroll",
-            // float: "left",
-            // paddingRight: "20px"
-            //   padding: 10
-        };
-        // console.log('rowData: ' + JSON.stringify(rowData,null,4));
         return (
             <Draggable
             bounds={{top: 0, left: 0, right: 0, bottom: 0}}
@@ -162,8 +169,7 @@ class RowView extends React.Component {
             >
               <div
                 ref="rowView"
-                className="rowView"
-                style={rowViewStyle}
+                className={styles.rowView}
                 onClick={(event) => {
                     this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
                 }

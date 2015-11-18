@@ -70,6 +70,12 @@ export default function(controller, options) {
         editorDragStopped: [
             a.handleEditorDragStopped
         ],
+        resizeRowView: [
+            a.resizeRowView
+        ],
+        resizeCircularView: [
+            a.resizeCircularView
+        ],
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],

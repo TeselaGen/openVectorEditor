@@ -14,6 +14,8 @@ import {Decorator as Cerebral} from 'cerebral-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
 
+import styles from './sequence-editor.css';
+
 @Cerebral({
     sequenceLength: ['sequenceLength'],
     bpsPerRow: ['bpsPerRow'],
@@ -236,37 +238,35 @@ class SequenceEditor extends React.Component {
             showRow,
             showSidebar,
         } = this.props;
+
         return (
-            <div ref="sequenceEditor">
+            <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}
-                    onPaste={this.handlePaste.bind(this)}/>
+                    onPaste={this.handlePaste.bind(this)}
+                />
 
-                <ToolBar />
-
-                <div style={{display: 'flex', overflow: 'auto'}}>
-                    {showSidebar === 'black' && <div style = {{background : 'black', width: 500}}>
-                                            </div>}
-                    {
-                        (function() {
-                            if (showCircular) {
-                                if (sequenceData.circular) {
-                                    return (<CircularView/>)
-                                } else { 
-                                    //tnr: perhaps return an option to set the sequence linearity here?
-                                    return (<h4>
-                                                Cannot display linear sequence in circular view
-                                            </h4>)
-                                }
-                            }
-                        })()
-                    }
-                    {showRow &&  <RowView/>}
-                    
+                <div className={styles.head}>
+                    <ToolBar />
                 </div>
 
-                <StatusBar/>
+                <div className={styles.content}>
+                    <div className={styles.sideBarSlot} style={(showSidebar) ? {} : {display: 'none'}}>
+                    </div>
+
+                    <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>
+                        <CircularView />
+                    </div>
+
+                    <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
+                        <RowView />
+                    </div>
+                </div>
+
+                <div className={styles.foot}>
+                    <StatusBar />
+                </div>
             </div>
         );
     }
