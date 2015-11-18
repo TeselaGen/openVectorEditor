@@ -2,7 +2,7 @@
 #openVectorEditor
 ##An open source vector/plasmid/dna editor
 
-Detailed Project Info: [Workflowy list] (https://workflowy.com/s/AMpvp1km0o)
+###Project Info: https://workflowy.com/s/AMpvp1km0o
 
 Chatroom: [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
