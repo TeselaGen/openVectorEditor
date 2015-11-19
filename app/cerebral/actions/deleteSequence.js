@@ -7,7 +7,6 @@ export default function deleteSequence({selectionLayer, sequenceData}, tree, out
     ac.throw(ac.range, selectionLayer)
     var newCaretPosition = selectionLayer.start;
     console.log("got into deleteSequence");
-    console.log("selection: " + selectionLayer.start + " " + selectionLayer.end);
     if (selectionLayer.start > selectionLayer.end) {
         newCaretPosition = selectionLayer.start - selectionLayer.end - 1;
     }
@@ -21,6 +20,7 @@ export default function deleteSequence({selectionLayer, sequenceData}, tree, out
             //regular deletion
             newSequenceData.sequence = sequenceData.sequence.slice(0, selectionLayer.start) + sequenceData.sequence.slice(selectionLayer.end + 1, sequenceData.sequence.length);
         }
+        // console.log("new sequence: " + newSequenceData.sequence);
     }
     //trim and remove features
     newSequenceData.features = applyDeleteToAnnotations(sequenceData.features);

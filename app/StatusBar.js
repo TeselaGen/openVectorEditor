@@ -39,9 +39,9 @@ export default class StatusBar extends React.Component {
                 <div className={styles.bar}>
                     <div>
                         <button onClick={function () {
-                            signals.setEditState(true);}}>Set Edit True</button> 
+                            signals.setEditState(false);}}>Set Edit True</button> 
                         <button onClick={function () {
-                            signals.setEditState(false);}}>Set Edit False</button> 
+                            signals.setEditState(true);}}>Set Edit False</button> 
                     </div>
                     <div className={styles.box}>
                         <div className={styles.label}>Length</div>
