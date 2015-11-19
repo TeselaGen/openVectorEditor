@@ -6,6 +6,8 @@ var assign = require('lodash/object/assign');
 export default function deleteSequence({selectionLayer, sequenceData}, tree, output) {
     ac.throw(ac.range, selectionLayer)
     var newCaretPosition = selectionLayer.start;
+    console.log("got into deleteSequence");
+    console.log("selection: " + selectionLayer.start + " " + selectionLayer.end);
     if (selectionLayer.start > selectionLayer.end) {
         newCaretPosition = selectionLayer.start - selectionLayer.end - 1;
     }

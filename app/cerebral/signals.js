@@ -86,11 +86,12 @@ export default function(controller, options) {
         jumpToRow: [a.jumpToRow],
         // sl: in progress
         setEditState: [a.setEditState],
-        testSignal: a.addEditModeOnly([
-            function(input, tree, output) {
-                console.log("test signal");
-            }
-        ]),
+        // testSignal: a.addEditModeOnly([
+        //     function(input, tree, output) {
+        //         console.log("test signal");
+        //     }
+        // ]),
+        // sl: working on this one now
         backspacePressed: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {

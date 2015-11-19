@@ -10,14 +10,14 @@ import styles from './status-bar.css';
     selectedSeqMeltingTemp: ['selectedSeqMeltingTemp'],
     caretPosition: ['caretPosition'],
     selectionLayer: ['selectionLayer'],
-    readOnly: ['readOnly']
+    // readOnly: ['readOnly']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
     selectedSeqMeltingTemp: PropTypes.number.isRequired,
     caretPosition: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
-    readOnly: PropTypes.bool.isRequired
+    // readOnly: PropTypes.bool.isRequired
 })
 export default class StatusBar extends React.Component {
 
@@ -27,7 +27,7 @@ export default class StatusBar extends React.Component {
             selectedSeqMeltingTemp,
             caretPosition,
             selectionLayer,
-            readOnly,
+            // readOnly,
             signals
         } = this.props;
 
@@ -39,9 +39,9 @@ export default class StatusBar extends React.Component {
                 <div className={styles.bar}>
                     <div>
                         <button onClick={function () {
-                            signals.setEditState();}}>Set Edit</button> 
+                            signals.setEditState(true);}}>Set Edit True</button> 
                         <button onClick={function () {
-                            signals.testSignal();}}>Test Edit</button> 
+                            signals.setEditState(false);}}>Set Edit False</button> 
                     </div>
                     <div className={styles.box}>
                         <div className={styles.label}>Length</div>
