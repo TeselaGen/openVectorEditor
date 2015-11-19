@@ -9,6 +9,15 @@ var myRange = {
 }
 ```
 
+A "circular" range has a start > end.
+Eg:
+```
+var myRange2 = {
+	start: 50,
+	end: 40
+}
+```
+
 All ranges are assumed to have 0-based indices:
 
 rrrr
