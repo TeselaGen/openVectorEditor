@@ -84,14 +84,7 @@ export default function(controller, options) {
         //lower priority
         addAnnotations: [a.addAnnotations],
         jumpToRow: [a.jumpToRow],
-        // sl: in progress
-        setEditState: [a.setEditState],
-        // testSignal: a.addEditModeOnly([
-        //     function(input, tree, output) {
-        //         console.log("test signal");
-        //     }
-        // ]),
-        // sl: working on this one now
+        // sl: working on this one now, need to debus
         backspacePressed: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {

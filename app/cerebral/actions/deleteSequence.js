@@ -46,5 +46,7 @@ export default function deleteSequence({selectionLayer, sequenceData}, tree, out
             return [];
         }
     }
-    output({sequenceData: tidyUpSequenceData(newSequenceData, true), caretPosition: newCaretPosition});
+    tree.set('sequenceData', tidyUpSequenceData(newSequenceData, true));
+    tree.set('caretPosition', newCaretPosition);
+    // output({sequenceData: tidyUpSequenceData(newSequenceData, true), caretPosition: newCaretPosition});
 }
