@@ -47,9 +47,9 @@ module.exports = {
         width: 500
     },
     cutsiteLabelSelectionLayer: {
-        start: 0,
-        end: 0,
-        selected: true,
+        start: -1,
+        end: -1,
+        selected: false,
         cursorAtEnd: true
     },
     editorDrag: {
@@ -66,8 +66,8 @@ module.exports = {
         width: 500
     },
     selectionLayer: {
-        start: 0,
-        end: 0,
+        start: -1,
+        end: -1,
         selected: false,
         cursorAtEnd: true
     },

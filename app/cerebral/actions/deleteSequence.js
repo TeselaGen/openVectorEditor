@@ -2,15 +2,16 @@ var ac = require('ve-api-check');
 var adjustRangeToDeletionOfAnotherRange = require('ve-range-utils/adjustRangeToDeletionOfAnotherRange');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
+var setSelectionLayer = require('./setSelectionLayer');
 
 export default function deleteSequence({selectionLayer, sequenceData}, tree, output) {
     ac.throw(ac.range, selectionLayer)
     var newCaretPosition = selectionLayer.start;
-    console.log("got into deleteSequence");
     if (selectionLayer.start > selectionLayer.end) {
         newCaretPosition = selectionLayer.start - selectionLayer.end - 1;
     }
-    var newSequenceData = {};
+    // lodash assign
+    var newSequenceData =assign({}, sequenceData);
     if (sequenceData.sequence) {
         //splice the underlying sequence
         if (selectionLayer.start > selectionLayer.end) {
@@ -20,7 +21,6 @@ export default function deleteSequence({selectionLayer, sequenceData}, tree, out
             //regular deletion
             newSequenceData.sequence = sequenceData.sequence.slice(0, selectionLayer.start) + sequenceData.sequence.slice(selectionLayer.end + 1, sequenceData.sequence.length);
         }
-        // console.log("new sequence: " + newSequenceData.sequence);
     }
     //trim and remove features
     newSequenceData.features = applyDeleteToAnnotations(sequenceData.features);
@@ -48,5 +48,5 @@ export default function deleteSequence({selectionLayer, sequenceData}, tree, out
     }
     tree.set('sequenceData', tidyUpSequenceData(newSequenceData, true));
     tree.set('caretPosition', newCaretPosition);
-    // output({sequenceData: tidyUpSequenceData(newSequenceData, true), caretPosition: newCaretPosition});
+    setSelectionLayer(false, tree);
 }
