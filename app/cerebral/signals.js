@@ -89,7 +89,7 @@ export default function(controller, options) {
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
-                notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
+                notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
         ]),
         sequenceDataInserted: a.addEditModeOnly([
