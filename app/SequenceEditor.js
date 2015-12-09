@@ -13,6 +13,7 @@ import {Decorator as Cerebral} from 'cerebral-react';
 
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
+import AnnotationTable from './AnnotationTable';
 
 import styles from './sequence-editor.css';
 
