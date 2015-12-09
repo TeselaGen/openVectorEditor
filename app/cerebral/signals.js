@@ -17,7 +17,7 @@ var each = require('lodash/collection/each');
 export default function(controller, options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
-        sidebarToggled: [a.toggleSidebar],
+        toggleAnnotationTable: [a.toggleSidebar],
         copySelection: [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
             success: a.setData('clipboardData'),
             error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong

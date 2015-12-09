@@ -240,6 +240,28 @@ class SequenceEditor extends React.Component {
             showSidebar,
         } = this.props;
 
+        var table;
+
+        if (showSidebar === 'features') {
+            table = (
+                <AnnotationTable
+                   data={sequenceData.features}
+                   />
+            );
+        } else if (showSidebar === 'cutsites') {
+            table = (
+                <AnnotationTable
+                   data={sequenceData.cutsites}
+                   />
+            );
+        } else if (showSidebar === 'orfs') {
+            table = (
+                <AnnotationTable
+                   data={sequenceData.orfs}
+                   />
+            );
+        }
+
         return (
             <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
@@ -253,7 +275,8 @@ class SequenceEditor extends React.Component {
                 </div>
 
                 <div className={styles.content}>
-                    <div className={styles.sideBarSlot} style={(showSidebar) ? {} : {display: 'none'}}>
+                    <div className={styles.sideBarSlot} style={(table) ? {} : {display: 'none'}}>
+                      {table}
                     </div>
 
                     <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>
