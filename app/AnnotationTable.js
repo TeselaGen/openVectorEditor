@@ -1,5 +1,12 @@
 import React from 'react';
 
+const Table = require('material-ui/lib/table/table');
+const TableBody = require('material-ui/lib/table/table-body');
+const TableHeader = require('material-ui/lib/table/table-header');
+const TableHeaderColumn = require('material-ui/lib/table/table-header-column');
+const TableRow = require('material-ui/lib/table/table-row');
+const TableRowColumn = require('material-ui/lib/table/table-row-column');
+
 export default class AnnotationTable extends React.Component {
     render() {
         var {
@@ -11,7 +18,7 @@ export default class AnnotationTable extends React.Component {
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
-            tableHeaderCells.push((<td>{filter[i]}</td>));
+            tableHeaderCells.push((<TableHeaderColumn>{filter[i]}</TableHeaderColumn>));
         }
 
         var tableDataRows = [];
@@ -28,19 +35,19 @@ export default class AnnotationTable extends React.Component {
                     continue;
                 }
 
-                tableDataCells.push((<td>{data}</td>));
+                tableDataCells.push((<TableRowColumn>{data}</TableRowColumn>));
             }
 
-            tableDataRows.push((<tr>{tableDataCells}</tr>));
+            tableDataRows.push((<TableRow>{tableDataCells}</TableRow>));
         }
 
         return (
-            <table ref="annotationTable">
-              <thead>
-                <tr>{tableHeaderCells}</tr>
-              </thead>
-              <tbody>{tableDataRows}</tbody>
-            </table>
+            <Table ref="annotationTable">
+              <TableHeader>
+                <TableRow>{tableHeaderCells}</TableRow>
+              </TableHeader>
+              <TableBody>{tableDataRows}</TableBody>
+            </Table>
         );
     }
 }
