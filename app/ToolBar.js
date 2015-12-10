@@ -90,6 +90,12 @@ export default class ToolBar extends React.Component {
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
+                  <RaisedButton
+                     label='Features'
+                     onTouchTap={function() {
+                         signals.toggleAnnotationTable({ currentSidebar: 'features' });
+                     }}
+                     />
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                         {toggleMenuItems}
                     </IconMenu>
