@@ -31,6 +31,8 @@ import styles from './sequence-editor.css';
     showLinear: ['showLinear'],
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
+    cutsites: ['cutsites'],
+    orfData: ['orfData']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -238,6 +240,8 @@ class SequenceEditor extends React.Component {
             showCircular,
             showRow,
             showSidebar,
+            cutsites,
+            orfData
         } = this.props;
 
         var table;
@@ -251,13 +255,13 @@ class SequenceEditor extends React.Component {
         } else if (showSidebar === 'cutsites') {
             table = (
                 <AnnotationTable
-                   data={sequenceData.cutsites}
+                   data={cutsites}
                    />
             );
         } else if (showSidebar === 'orfs') {
             table = (
                 <AnnotationTable
-                   data={sequenceData.orfs}
+                   data={orfData}
                    />
             );
         }
