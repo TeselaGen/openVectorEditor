@@ -76,6 +76,13 @@ export default function(controller, options) {
             }],
             a.handleEditorDragStopped
         ],
+        backspacePressed: a.addEditModeOnly([
+            // a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.prepDeleteOneBack, a.deleteSequence]
+            }
+        ]),        
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],
@@ -85,13 +92,7 @@ export default function(controller, options) {
         addAnnotations: [a.addAnnotations],
         jumpToRow: [a.jumpToRow],
         // sl: working on this one now, need to debus
-        backspacePressed: a.addEditModeOnly([
-            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
-            a.checkLayerIsSelected, {
-                selected: [a.deleteSequence],
-                notSelected: [a.prepDeleteOneBack, a.deleteSequence]
-            }
-        ]),
+
         sequenceDataInserted: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
