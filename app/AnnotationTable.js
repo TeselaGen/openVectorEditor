@@ -8,6 +8,17 @@ const TableRow = require('material-ui/lib/table/table-row');
 const TableRowColumn = require('material-ui/lib/table/table-row-column');
 
 export default class AnnotationTable extends React.Component {
+
+    constructor() {
+        super(arguments);
+
+        this.state = {};
+    }
+
+    selectRow(selectedRows) {
+        this.setState({ selectedRow: selectedRows[0] });
+    }
+
     render() {
         var {
             data,
@@ -41,13 +52,30 @@ export default class AnnotationTable extends React.Component {
             tableDataRows.push((<TableRow>{tableDataCells}</TableRow>));
         }
 
+        if (this.state.selectedRow !== undefined) {
+            let displayedRow = data[this.state.selectedRow];
+
+            let rowDataItems = [];
+
+            for (let key in displayedRow) {
+                rowDataItems.push((<dt>{key}</dt>));
+                rowDataItems.push((<dd>{displayedRow[key]}</dd>));
+            }
+
+            var rowDataList = React.createElement('dl', {}, rowDataItems);
+        }
+
         return (
-            <Table ref="annotationTable">
-              <TableHeader>
-                <TableRow>{tableHeaderCells}</TableRow>
-              </TableHeader>
-              <TableBody>{tableDataRows}</TableBody>
-            </Table>
+            <div>
+              <Table ref="annotationTable" onRowSelection={this.selectRow.bind(this)}>
+                <TableHeader>
+                  <TableRow>{tableHeaderCells}</TableRow>
+                </TableHeader>
+                <TableBody>{tableDataRows}</TableBody>
+              </Table>
+
+              {rowDataList}
+            </div>
         );
     }
 }
