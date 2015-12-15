@@ -25,7 +25,8 @@ import styles from './row-view.css';
     showReverseSequence: ['showReverseSequence'],
     caretPosition: ['caretPosition'],
     sequenceLength: ['sequenceLength'],
-    bpsPerRow: ['bpsPerRow']
+    bpsPerRow: ['bpsPerRow'],
+    uppercase: ['uppercase']
 })
 @propTypes({
     rowViewDimensions: PropTypes.object.isRequired,
@@ -46,6 +47,7 @@ import styles from './row-view.css';
     caretPosition: PropTypes.number.isRequired,
     sequenceLength: PropTypes.number.isRequired,
     bpsPerRow: PropTypes.number.isRequired,
+    uppercase: PropTypes.bool.isRequired
 })
 class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
@@ -126,8 +128,10 @@ class RowView extends React.Component {
             caretPosition,
             sequenceLength,
             bpsPerRow,
+            uppercase,
             signals
         } = this.props;
+
         function renderRows(rowNumber) {
             if (rowData[rowNumber]) {
                 return (<RowItem
@@ -149,6 +153,7 @@ class RowView extends React.Component {
                     bpsPerRow={bpsPerRow}
                     signals={signals}
                     key={rowNumber}
+                    uppercase={uppercase}
                     row={rowData[rowNumber]} 
                     />);
             } else {

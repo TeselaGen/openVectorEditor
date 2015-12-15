@@ -76,6 +76,9 @@ export default function(controller, options) {
         resizeCircularView: [
             a.resizeCircularView
         ],
+        toggleSequenceCase: [
+            a.toggleSequenceCase
+        ],
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],

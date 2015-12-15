@@ -41,6 +41,7 @@ module.exports = {
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
     topSpacerHeight: 0,
+    uppercase: false,
     // complex vars
     circularViewDimensions: {
         height: 500,
