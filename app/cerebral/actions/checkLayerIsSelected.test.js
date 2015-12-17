@@ -1,11 +1,12 @@
 var checkLayerIsSelected = require('./checkLayerIsSelected');
 describe('checkLayerIsSelected', function() {
     it('should call success when selectionLayer.selected = true', function(done) {
-        checkLayerIsSelected({
+        var testTree = {
             selectionLayer: {
                 selected: true
             }
-        }, {}, {
+        };
+        checkLayerIsSelected({}, testTree, {
             selected: function() {
                 done()
             },
@@ -15,11 +16,12 @@ describe('checkLayerIsSelected', function() {
         });
     });
     it('should call error when selectionLayer.selected = false', function(done) {
-        checkLayerIsSelected({
+        var testTree = {
             selectionLayer: {
                 selected: false
             }
-        }, {}, {
+        };        
+        checkLayerIsSelected({}, testTree, {
             selected: function() {
                 throw new Error();
             },

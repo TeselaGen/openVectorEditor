@@ -77,7 +77,6 @@ export default function(controller, options) {
             a.handleEditorDragStopped
         ],
         backspacePressed: a.addEditModeOnly([
-            // a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
@@ -91,8 +90,6 @@ export default function(controller, options) {
         //lower priority
         addAnnotations: [a.addAnnotations],
         jumpToRow: [a.jumpToRow],
-        // sl: working on this one now, need to debus
-
         sequenceDataInserted: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
