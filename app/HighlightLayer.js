@@ -1,9 +1,11 @@
+import React, {PropTypes} from 'react';
+import Caret from './Caret';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { propTypes } from './react-props-decorators.js';
+
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var assign = require('lodash/object/assign');
-let React = require('react');
-var Caret = require('./Caret');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var highlightLayerStyle = {
     height: "98%",
@@ -12,17 +14,28 @@ var highlightLayerStyle = {
     opacity: ".3",
 };
 
-let HighlightLayer = React.createClass({
-    mixins: [PureRenderMixin],
-    propTypes: {
-        charWidth: React.PropTypes.number.isRequired,
-        bpsPerRow: React.PropTypes.number.isRequired,
-        color: React.PropTypes.string,
-        row: React.PropTypes.object.isRequired,
-        sequenceLength: React.PropTypes.number.isRequired,
-        selectionLayer: React.PropTypes.object.isRequired,
-    },
-    render: function() {
+function mixin(target, source) {
+    target = target.prototype;
+
+    Object.getOwnPropertyNames(source).forEach((name) => {
+        let sourceProp = Object.getOwnPropertyDescriptor(source, name);
+
+        if (name !== "constructor") {
+            Object.defineProperty(target, name, sourceProp);
+        }
+    });
+}
+
+@propTypes({
+    charWidth: PropTypes.number.isRequired,
+    bpsPerRow: PropTypes.number.isRequired,
+    color: PropTypes.string,
+    row: PropTypes.object.isRequired,
+    sequenceLength: PropTypes.number.isRequired,
+    selectionLayer: PropTypes.object.isRequired,
+})
+export default class HighlightLayer extends React.Component {
+    render() {
         var {
             charWidth,
             bpsPerRow,
@@ -78,7 +91,8 @@ let HighlightLayer = React.createClass({
             return null;
         }
     }
-});
+}
 
+mixin(HighlightLayer, PureRenderMixin);
 
 module.exports = HighlightLayer;
