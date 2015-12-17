@@ -1,5 +1,6 @@
 // var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
-// var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength');
+var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength');
+var getRangeLength = require('ve-range-utils/getRangeLength');
 // var ac = require('ve-api-check');
 export default function handleEditorDragged({
     nearestBP,
@@ -10,38 +11,40 @@ export default function handleEditorDragged({
         }, editorDrag: {fixedCaretPositionOnDragStart, fixedCaretPositionOnDragStartType}
     } = tree.get();
     tree.set(['editorDrag', 'inProgress'], true)
-    if (nearestBP === fixedCaretPositionOnDragStart) {
+    if (nearestBP === fixedCaretPositionOnDragStart && (!selectionLayer.selected || selectionLayer.start < selectionLayer.end)) {
         output.caretMoved({
             caretPosition: fixedCaretPositionOnDragStart
         });
     } else {
         var newSelectionLayer;
-        if (fixedCaretPositionOnDragStartType === 'start') {
+        if (fixedCaretPositionOnDragStartType === 'start' && circular) {
             newSelectionLayer = {
                 start: fixedCaretPositionOnDragStart,
-                end: nearestBP - 1,
+                end: normalizePositionByRangeLength(nearestBP - 1, sequenceLength, true),
                 cursorAtEnd: true,
             };
-        } else if (fixedCaretPositionOnDragStartType === 'end') {
+        } else if (fixedCaretPositionOnDragStartType === 'end' && circular) {
             newSelectionLayer = {
                 start: nearestBP,
-                end: fixedCaretPositionOnDragStart - 1,
+                end: normalizePositionByRangeLength(fixedCaretPositionOnDragStart - 1, sequenceLength, true),
                 cursorAtEnd: false,
             };
         } else {
-            if (nearestBP > fixedCaretPositionOnDragStart) {
-                newSelectionLayer = {
-                    start: fixedCaretPositionOnDragStart,
-                    end: nearestBP - 1,
-                    cursorAtEnd: true,
-                };
-            } else {
-                newSelectionLayer = {
-                    start: nearestBP,
-                    end: fixedCaretPositionOnDragStart - 1,
-                    cursorAtEnd: false,
-                };
-            }
+                if (nearestBP > fixedCaretPositionOnDragStart) {
+                    newSelectionLayer = {
+                        start: fixedCaretPositionOnDragStart,
+                        end: nearestBP - 1,
+                        cursorAtEnd: true,
+                    };
+                    tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'start')
+                } else {
+                    newSelectionLayer = {
+                        start: nearestBP,
+                        end: fixedCaretPositionOnDragStart - 1,
+                        cursorAtEnd: false,
+                    };
+                    tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'end')
+                }
         }
         output.selectionUpdated({
             selectionLayer: newSelectionLayer

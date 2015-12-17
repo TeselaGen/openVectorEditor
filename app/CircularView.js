@@ -65,7 +65,7 @@ class CircularView extends React.Component {
         var angle = Math.atan2(clickY, clickX) + Math.PI/2
         if (angle < 0) angle += Math.PI * 2
         console.log('angle: ' + JSON.stringify(angle,null,4));
-        var caretGrabbed = event.target.className === "cursor"
+        var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
         var nearestBP = Math.floor(angle / Math.PI / 2 * sequenceLength)
         callback({
             shiftHeld: event.shiftKey,
@@ -268,7 +268,8 @@ function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
           eAngle={ endAngle }
           height={ 0 }>
           <line
-            style={ { className:"cursor", opacity: 9} }//tnr: the classname needs to be cursor here!
+            className="cursor"
+            style={ { opacity: 9, cursor: "ew-resize",} }//tnr: the classname needs to be cursor here!
             x1={0}
             y1={-innerRadius}
             x2={0}

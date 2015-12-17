@@ -76,6 +76,7 @@ module.exports = {
        features: [],
        translations: [],
        parts: [],
+       circular: false
     }, 
     userEnzymeList: [
         'rsplkii',

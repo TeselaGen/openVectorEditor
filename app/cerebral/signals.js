@@ -68,6 +68,12 @@ export default function(controller, options) {
             a.handleEditorDragStarted
         ],
         editorDragStopped: [
+            [function pause (input, tree, output) {
+                //async function that doesn't do anything
+                setTimeout(function () {
+                    output()
+                },0)
+            }],
             a.handleEditorDragStopped
         ],
         resizeRowView: [
@@ -84,18 +90,12 @@ export default function(controller, options) {
         //lower priority
         addAnnotations: [a.addAnnotations],
         jumpToRow: [a.jumpToRow],
-        // sl: in progress
-        setEditState: [a.setEditState],
-        testSignal: a.addEditModeOnly([
-            function(input, tree, output) {
-                console.log("test signal");
-            }
-        ]),
+        // sl: working on this one now, need to debus
         backspacePressed: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
-                notSelected: [a.getData('caretPosition'), a.prepDeleteOneBack, a.deleteSequence]
+                notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
         ]),
         sequenceDataInserted: a.addEditModeOnly([
