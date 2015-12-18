@@ -3,16 +3,10 @@ import Caret from './Caret';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { propTypes } from './react-props-decorators.js';
 
-var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-var assign = require('lodash/object/assign');
-let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
+import styles from './highlight-layer.css';
 
-var highlightLayerStyle = {
-    height: "98%",
-    position: "absolute",
-    top: "0",
-    opacity: ".3",
-};
+var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
+let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 
 function mixin(target, source) {
     target = target.prototype;
@@ -69,12 +63,16 @@ export default class HighlightLayer extends React.Component {
                 var xStart = result.xStart;
                 var width = result.width;
 
-                var style = assign({}, highlightLayerStyle, {
+                var style = {
                     width: width,
-                    left: xStart,
-                    background: color ? color : 'blue' 
-                });
-                return (<div key={index} className="selectionLayer" style={style}/>);
+                    left: xStart
+                };
+
+                if (color !== undefined) {
+                    style.background = color;
+                }
+
+                return (<div key={index} className={ styles.selectionLayer } style={style}/>);
             });
             return (
                 <div onContextMenu={function (event) {
