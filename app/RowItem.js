@@ -137,7 +137,7 @@ class RowItem extends React.Component {
                     row={row}
                     signals={signals}
                     sequenceLength={sequenceLength}
-                    selectionLayer={selectionLayer}
+                    regions={[selectionLayer]}
                 >
                 </HighlightLayer>
                 <HighlightLayer
@@ -147,7 +147,7 @@ class RowItem extends React.Component {
                     color={'green'}
                     signals={signals}
                     sequenceLength={sequenceLength}
-                    selectionLayer={cutsiteLabelSelectionLayer}
+                    regions={[cutsiteLabelSelectionLayer]}
                 >
                 </HighlightLayer>
                 {!selectionLayer.selected && 

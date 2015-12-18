@@ -26,7 +26,7 @@ function mixin(target, source) {
     color: PropTypes.string,
     row: PropTypes.object.isRequired,
     sequenceLength: PropTypes.number.isRequired,
-    selectionLayer: PropTypes.object.isRequired,
+    regions: PropTypes.array.isRequired,
 })
 export default class HighlightLayer extends React.Component {
     render() {
@@ -35,59 +35,72 @@ export default class HighlightLayer extends React.Component {
             bpsPerRow,
             row,
             sequenceLength,
-            selectionLayer,
+            regions,
             color
         } = this.props;
-        if (selectionLayer.selected) {
-            var startSelectionCursor;
-            var endSelectionCursor;
-            var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
-            var selectionLayers = overlaps.map(function(overlap, index) {
-                if (overlap.start === selectionLayer.start) {
-                    startSelectionCursor = (<Caret 
-                        charWidth={charWidth}
-                        row={row}
-                        sequenceLength={sequenceLength}
-                        shouldBlink={!selectionLayer.cursorAtEnd}
-                        caretPosition= {overlap.start} />)
-                }
-                if (overlap.end === selectionLayer.end) {
-                    endSelectionCursor = (<Caret 
-                        charWidth={charWidth}
-                        row={row}
-                        sequenceLength={sequenceLength}
-                        shouldBlink={selectionLayer.cursorAtEnd}
-                        caretPosition= {overlap.end + 1} />)
-                }
-                var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
-                var xStart = result.xStart;
-                var width = result.width;
 
-                var style = {
-                    width: width,
-                    left: xStart
-                };
+        var selectionLayers;
 
-                if (color !== undefined) {
-                    style.background = color;
-                }
+        for (let i = 0; i < regions.length; i++) {
+            let selectionLayer = regions[i];
 
-                return (<div key={index} className={ styles.selectionLayer } style={style}/>);
-            });
+            if (selectionLayer.selected) {
+                var startSelectionCursor;
+                var endSelectionCursor;
+                var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
+                let layers = overlaps.map(function(overlap, index) {
+                    if (overlap.start === selectionLayer.start) {
+                        startSelectionCursor = (<Caret
+                                                charWidth={charWidth}
+                                                row={row}
+                                                sequenceLength={sequenceLength}
+                                                shouldBlink={!selectionLayer.cursorAtEnd}
+                                                caretPosition={overlap.start} />);
+                    }
+                    if (overlap.end === selectionLayer.end) {
+                        endSelectionCursor = (<Caret
+                                              charWidth={charWidth}
+                                              row={row}
+                                              sequenceLength={sequenceLength}
+                                              shouldBlink={selectionLayer.cursorAtEnd}
+                                              caretPosition={overlap.end + 1} />);
+                    }
+                    var result = getXStartAndWidthOfRowAnnotation(overlap, bpsPerRow, charWidth);
+                    var xStart = result.xStart;
+                    var width = result.width;
+
+                    var style = {
+                        width: width,
+                        left: xStart
+                    };
+
+                    if (color !== undefined) {
+                        style.background = color;
+                    }
+
+                    return (<div key={index} className={styles.selectionLayer} style={style}/>);
+                });
+
+                selectionLayers = selectionLayers || [];
+                selectionLayers.push(layers);
+            }
+        }
+
+        if (selectionLayers !== undefined && selectionLayers.length > 0) {
             return (
                 <div onContextMenu={function (event) {
-                    //tnrtodo: add context menu here
-                    event.preventDefault();
-                    event.stopPropagation();
-                }}>
-                    {selectionLayers}
-                    {startSelectionCursor}
-                    {endSelectionCursor}
+                         //tnrtodo: add context menu here
+                         event.preventDefault();
+                         event.stopPropagation();
+                     }}>
+                  {selectionLayers}
+                  {startSelectionCursor}
+                  {endSelectionCursor}
                 </div>
             );
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
 
