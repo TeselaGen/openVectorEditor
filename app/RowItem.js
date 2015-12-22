@@ -16,6 +16,7 @@ class RowItem extends React.Component {
         var {
             charWidth,
             selectionLayer,
+            searchLayers,
             cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
@@ -148,6 +149,16 @@ class RowItem extends React.Component {
                     signals={signals}
                     sequenceLength={sequenceLength}
                     regions={[cutsiteLabelSelectionLayer]}
+                >
+                </HighlightLayer>
+                <HighlightLayer
+                    charWidth={charWidth}
+                    bpsPerRow={bpsPerRow}
+                    row={row}
+                    color={'yellow'}
+                    signals={signals}
+                    sequenceLength={sequenceLength}
+                    regions={searchLayers}
                 >
                 </HighlightLayer>
                 {!selectionLayer.selected && 

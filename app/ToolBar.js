@@ -12,6 +12,7 @@ import { IconButton } from 'material-ui';
 import { RaisedButton } from 'material-ui'
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import TextField from 'material-ui/lib/text-field';
 
 @Cerebral({
     showOrfs: ['showOrfs'],
@@ -29,6 +30,14 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
     showTranslations: PropTypes.bool.isRequired
 })
 export default class ToolBar extends React.Component {
+
+    search() {
+        this.props.signals.searchSequence({ searchString: this.refs.searchField.getValue() });
+    }
+
+    clearSearch() {
+        this.props.signals.searchSequence({ searchString: "" });
+    }
 
     render() {
         var {
@@ -111,6 +120,10 @@ export default class ToolBar extends React.Component {
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                         {toggleMenuItems}
                     </IconMenu>
+
+                    <TextField ref="searchField" hintText="search" />
+                    <RaisedButton label='Search' onClick={this.search.bind(this)}/>
+                    <RaisedButton label='Clear Search' onClick={this.clearSearch.bind(this)}/>
                 </ToolbarGroup>
             </Toolbar>
         );

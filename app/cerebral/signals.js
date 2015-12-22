@@ -82,6 +82,10 @@ export default function(controller, options) {
         resizeCircularView: [
             a.resizeCircularView
         ],
+        searchSequence: [
+            a.searchSequence,
+            a.updateSearchLayers
+        ],
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],

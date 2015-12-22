@@ -12,6 +12,7 @@ import styles from './row-view.css';
     rowData: ['rowData'],
     charWidth: ['charWidth'],
     selectionLayer: ['selectionLayer'],
+    searchLayers: ['searchLayers'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     annotationHeight: ['annotationHeight'],
     tickSpacing: ['tickSpacing'],
@@ -32,6 +33,7 @@ import styles from './row-view.css';
     rowData: PropTypes.array.isRequired,
     charWidth: PropTypes.number.isRequired,
     selectionLayer: PropTypes.object.isRequired,
+    searchLayers: PropTypes.array.isRequired,
     cutsiteLabelSelectionLayer: PropTypes.object.isRequired,
     annotationHeight: PropTypes.number.isRequired,
     tickSpacing: PropTypes.number.isRequired,
@@ -112,6 +114,7 @@ class RowView extends React.Component {
             rowToJumpTo, 
             charWidth,
             selectionLayer,
+            searchLayers,
             cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
@@ -133,6 +136,7 @@ class RowView extends React.Component {
                 return (<RowItem
                     charWidth={charWidth}
                     selectionLayer={selectionLayer}
+                    searchLayers={searchLayers}
                     cutsiteLabelSelectionLayer={cutsiteLabelSelectionLayer}
                     annotationHeight={annotationHeight}
                     tickSpacing={tickSpacing}
