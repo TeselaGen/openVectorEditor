@@ -13,6 +13,7 @@ import {Decorator as Cerebral} from 'cerebral-react';
 
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
+import AnnotationTable from './AnnotationTable';
 
 import styles from './sequence-editor.css';
 
@@ -30,6 +31,8 @@ import styles from './sequence-editor.css';
     showLinear: ['showLinear'],
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
+    cutsites: ['cutsites'],
+    orfData: ['orfData']
 })
 @propTypes({
     sequenceLength: PropTypes.number.isRequired,
@@ -140,7 +143,31 @@ class SequenceEditor extends React.Component {
             showCircular,
             showRow,
             showSidebar,
+            cutsites,
+            orfData
         } = this.props;
+
+        var table;
+
+        if (showSidebar === 'features') {
+            table = (
+                <AnnotationTable
+                   data={sequenceData.features}
+                   />
+            );
+        } else if (showSidebar === 'cutsites') {
+            table = (
+                <AnnotationTable
+                   data={cutsites}
+                   />
+            );
+        } else if (showSidebar === 'orfs') {
+            table = (
+                <AnnotationTable
+                   data={orfData}
+                   />
+            );
+        }
 
         return (
             <div ref="sequenceEditor" className={styles.app}>
@@ -155,7 +182,8 @@ class SequenceEditor extends React.Component {
                 </div>
 
                 <div className={styles.content}>
-                    <div className={styles.sideBarSlot} style={(showSidebar) ? {} : {display: 'none'}}>
+                    <div className={styles.sideBarSlot} style={(table) ? {} : {display: 'none'}}>
+                      {table}
                     </div>
 
                     <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>

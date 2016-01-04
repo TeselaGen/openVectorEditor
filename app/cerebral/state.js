@@ -36,7 +36,7 @@ module.exports = {
     showReverseSequence: true,
     showRow: true,
     showSequence: true,
-    showSidebar: true,
+    showSidebar: '',
     showTranslations: true,
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
