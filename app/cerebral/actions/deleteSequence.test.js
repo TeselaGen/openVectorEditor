@@ -1,7 +1,7 @@
 require('../../../test/testSetup.js');
 var deleteSequence = require('./deleteSequence.js');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
-var sequenceData = tidyUpSequenceData({
+var testSequence = tidyUpSequenceData({
     sequence: 'atgc',
     features: [{
         start: 0,
@@ -25,15 +25,20 @@ var sequenceData = tidyUpSequenceData({
         end: 1
     }]
 });
+var controller = require('../controller')({
+    //instantiate some default val's here:
+    state: {
+        sequenceData: testSequence,
+        selectionLayer: {
+            start: 0,
+            end: 3
+        }
+    }
+});
+
 describe('deleteSequence', function() {
     it('deletes entire sequence and annotations correctly', function() {
-        deleteSequence({
-            sequenceData: sequenceData,
-            selectionLayer: {
-                start: 0,
-                end: 3,
-            },
-        }, {}, function({
+        deleteSequence({}, controller.tree, function({
             caretPosition, sequenceData
         }) {
             sequenceData.sequence.length.should.equal(0);
@@ -44,13 +49,9 @@ describe('deleteSequence', function() {
         });
     });
     it('deletes end of sequence and adjusts annotations correctly', function() {
-        deleteSequence({
-            sequenceData: sequenceData,
-            selectionLayer: {
-                start: 3,
-                end: 3,
-            },
-        }, {}, function({
+        controller.reset();
+        controller.tree.set(['selectionLayer', 'start'], 3);     
+        deleteSequence({}, controller.tree, function({
             caretPosition, sequenceData
         }) {
             console.log('sequenceData: ' + JSON.stringify(sequenceData.features,null,4));
