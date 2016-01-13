@@ -1,4 +1,6 @@
-export default function checkShiftHeld({ shiftHeld }, tree, output) {
+export default function checkShiftHeld(input, tree, output) {
+    var shiftHeld = tree.get('shiftHeld');
+
     if (shiftHeld) {
         output.shiftHeld();
     } else {

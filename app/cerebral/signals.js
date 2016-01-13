@@ -76,6 +76,7 @@ export default function(controller, options) {
             }],
             a.handleEditorDragStopped
         ],
+<<<<<<< HEAD
         resizeRowView: [
             a.resizeRowView
         ],
@@ -86,6 +87,14 @@ export default function(controller, options) {
             a.searchSequence,
             a.updateSearchLayers
         ],
+=======
+        backspacePressed: a.addEditModeOnly([
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.prepDeleteOneBack, a.deleteSequence]
+            }
+        ]),        
+>>>>>>> 2fd8e5bf962b99774caa56d6dcee8cc18092851b
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],
@@ -94,14 +103,6 @@ export default function(controller, options) {
         //lower priority
         addAnnotations: [a.addAnnotations],
         jumpToRow: [a.jumpToRow],
-        // sl: working on this one now, need to debus
-        backspacePressed: a.addEditModeOnly([
-            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
-            a.checkLayerIsSelected, {
-                selected: [a.deleteSequence],
-                notSelected: [a.prepDeleteOneBack, a.deleteSequence]
-            }
-        ]),
         sequenceDataInserted: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
