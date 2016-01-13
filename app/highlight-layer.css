@@ -1,0 +1,7 @@
+.selectionLayer {
+    height: 98%;
+    position: absolute;
+    top: 0;
+    opacity: .3;
+    background-color: blue;
+}

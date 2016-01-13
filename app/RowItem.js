@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react';
+import HighlightLayer from './HighlightLayer';
+
 var getComplementSequenceString = require('ve-sequence-utils/getComplementSequenceString');
 var SequenceContainer = require('./SequenceContainer');
 var AxisContainer = require('./AxisContainer');
@@ -7,7 +9,6 @@ var TranslationContainer = require('./TranslationContainer');
 var FeatureContainer = require('./FeatureContainer');
 var CutsiteLabelContainer = require('./CutsiteLabelContainer');
 var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
-var HighlightLayer = require('./HighlightLayer');
 var Caret = require('./Caret');
 
 class RowItem extends React.Component {
@@ -15,6 +16,7 @@ class RowItem extends React.Component {
         var {
             charWidth,
             selectionLayer,
+            searchLayers,
             cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
@@ -136,7 +138,7 @@ class RowItem extends React.Component {
                     row={row}
                     signals={signals}
                     sequenceLength={sequenceLength}
-                    selectionLayer={selectionLayer}
+                    regions={[selectionLayer]}
                 >
                 </HighlightLayer>
                 <HighlightLayer
@@ -146,7 +148,17 @@ class RowItem extends React.Component {
                     color={'green'}
                     signals={signals}
                     sequenceLength={sequenceLength}
-                    selectionLayer={cutsiteLabelSelectionLayer}
+                    regions={[cutsiteLabelSelectionLayer]}
+                >
+                </HighlightLayer>
+                <HighlightLayer
+                    charWidth={charWidth}
+                    bpsPerRow={bpsPerRow}
+                    row={row}
+                    color={'yellow'}
+                    signals={signals}
+                    sequenceLength={sequenceLength}
+                    regions={searchLayers}
                 >
                 </HighlightLayer>
                 {!selectionLayer.selected && 

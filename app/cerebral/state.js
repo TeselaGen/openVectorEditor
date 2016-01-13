@@ -65,6 +65,7 @@ module.exports = {
         height: 500,
         width: 500
     },
+    searchLayers: [],
     selectionLayer: {
         start: -1,
         end: -1,
