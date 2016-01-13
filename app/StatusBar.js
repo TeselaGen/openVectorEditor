@@ -39,26 +39,35 @@ export default class StatusBar extends React.Component {
                 <div className={styles.bar}>
                     
                     {readOnly ? <div className={styles.label}>Read Only Mode</div> : <div>Editing Allowed</div>}
+                    <div>
+                      <button onClick={function() { signals.toggleSequenceCase(); }}>
+                        Toggle Sequence Case
+                      </button>
+                      <button onClick={function () {
+                              signals.setEditState();}}>Set Edit</button> 
+                      <button onClick={function () {
+                              signals.testSignal();}}>Test Edit</button> 
+                    </div>
                     <div className={styles.box}>
-                        <div className={styles.label}>Length</div>
-                        <div className={styles.data}>{sequenceLength}</div>
+                      <div className={styles.label}>Length</div>
+                      <div className={styles.data}>{sequenceLength}</div>
                     </div>
 
                     <div className={styles.box}>
-                        <div className={styles.label}>Melting Temp.</div>
-                        <div className={styles.data}>{selectedSeqMeltingTemp}</div>
+                      <div className={styles.label}>Melting Temp.</div>
+                      <div className={styles.data}>{selectedSeqMeltingTemp}</div>
                     </div>
 
                     <div className={styles.box}>
-                        <div className={styles.label}>Cursor</div>
-                        <div className={styles.data}>{caretPosition}</div>
+                      <div className={styles.label}>Cursor</div>
+                      <div className={styles.data}>{caretPosition}</div>
                     </div>
 
                     <div className={styles.box}>
-                        <div className={styles.label}>Selection</div>
-                        <div className={styles.data}>
-                            {selectionStart} : {selectionEnd}
-                        </div>
+                      <div className={styles.label}>Selection</div>
+                      <div className={styles.data}>
+                        {selectionStart} : {selectionEnd}
+                      </div>
                     </div>
                 </div>
             </div>
