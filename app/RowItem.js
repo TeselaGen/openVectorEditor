@@ -32,6 +32,7 @@ class RowItem extends React.Component {
             sequenceLength,
             bpsPerRow,
             row,
+            uppercase,
             signals,
         } = this.props;
         if (!row) {
@@ -44,6 +45,9 @@ class RowItem extends React.Component {
             position: "relative",
             width: "100%",
         };
+
+        var sequence = (uppercase) ? row.sequence.toUpperCase() : row.sequence.toLowerCase();
+
         return (
             <div className="rowContainer"
                 style={rowContainerStyle}
@@ -97,7 +101,7 @@ class RowItem extends React.Component {
                     spaceBetweenAnnotations={spaceBetweenAnnotations}/>
                 }
                 <SequenceContainer 
-                    sequence={row.sequence} 
+                    sequence={sequence} 
                     charWidth={charWidth}>
                     {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                         row={row}
@@ -111,7 +115,7 @@ class RowItem extends React.Component {
                 </SequenceContainer>
 
                 {showReverseSequence &&
-                    <SequenceContainer sequence={ getComplementSequenceString(row.sequence)} charWidth={charWidth}>
+                    <SequenceContainer sequence={ getComplementSequenceString(sequence)} charWidth={charWidth}>
                         {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                                                 row={row}
                                                 signals={signals}
@@ -193,6 +197,7 @@ RowItem.propTypes = {
     caretPosition: PropTypes.number.isRequired,
     sequenceLength: PropTypes.number.isRequired,
     bpsPerRow: PropTypes.number.isRequired,
+    uppercase: PropTypes.bool.isRequired,
     row: PropTypes.object.isRequired
 };
 

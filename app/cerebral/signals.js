@@ -92,8 +92,18 @@ export default function(controller, options) {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
-        ]),
-        // in progress - sl
+        ]),      
+        toggleSequenceCase: [
+            a.toggleSequenceCase
+        ],
+        //tnr: NOT YET WORKING:
+        //higher priority
+        pasteSequenceString: [a.pasteSequenceString],
+        setSelectionLayer: [a.setSelectionLayer],
+
+        //lower priority
+        addAnnotations: [a.addAnnotations],
+        jumpToRow: [a.jumpToRow],
         sequenceDataInserted: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
@@ -105,12 +115,12 @@ export default function(controller, options) {
         ]),  
         //tnr: NOT YET WORKING:
         //higher priority
-        pasteSequenceString: [a.pasteSequenceString],
-        setSelectionLayer: [a.setSelectionLayer],
+        // pasteSequenceString: [a.pasteSequenceString],
+        // setSelectionLayer: [a.setSelectionLayer],
 
-        //lower priority
-        addAnnotations: [a.addAnnotations],
-        jumpToRow: [a.jumpToRow],
+        // //lower priority
+        // addAnnotations: [a.addAnnotations],
+        // jumpToRow: [a.jumpToRow],
     }
     assign({}, signals, options.signals) //optionally override any signals here
     return (attachSignalsToController(signals, controller))
