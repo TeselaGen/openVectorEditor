@@ -86,20 +86,14 @@ export default function(controller, options) {
             a.searchSequence,
             a.updateSearchLayers
         ],
+        // edit only actions
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
-        ]),        
-        //tnr: NOT YET WORKING:
-        //higher priority
-        pasteSequenceString: [a.pasteSequenceString],
-        setSelectionLayer: [a.setSelectionLayer],
-
-        //lower priority
-        addAnnotations: [a.addAnnotations],
-        jumpToRow: [a.jumpToRow],
+        ]),
+        // in progress - sl
         sequenceDataInserted: a.addEditModeOnly([
             a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
@@ -108,7 +102,15 @@ export default function(controller, options) {
             },
             a.insertSequenceData,
             a.setData('caretPosition', 'sequenceData')
-        ])
+        ]),  
+        //tnr: NOT YET WORKING:
+        //higher priority
+        pasteSequenceString: [a.pasteSequenceString],
+        setSelectionLayer: [a.setSelectionLayer],
+
+        //lower priority
+        addAnnotations: [a.addAnnotations],
+        jumpToRow: [a.jumpToRow],
     }
     assign({}, signals, options.signals) //optionally override any signals here
     return (attachSignalsToController(signals, controller))
