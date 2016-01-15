@@ -43,10 +43,6 @@ export default class StatusBar extends React.Component {
                       <button onClick={function() { signals.toggleSequenceCase(); }}>
                         Toggle Sequence Case
                       </button>
-                      <button onClick={function () {
-                              signals.setEditState();}}>Set Edit</button> 
-                      <button onClick={function () {
-                              signals.testSignal();}}>Test Edit</button> 
                     </div>
                     <div className={styles.box}>
                       <div className={styles.label}>Length</div>
