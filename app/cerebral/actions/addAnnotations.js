@@ -2,7 +2,7 @@ var ac = require('ve-api-check');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require('validate.io-boolean');
 
-export default function addAnnotations({annotationType, annotationsToInsert, throwErrors}, state, output) {
+export default function addAnnotations({input: {annotationType, annotationsToInsert, throwErrors}, state, output}) {
     ac.throw(ac.annotationType, annotationType);
     ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
     ac.throw(ac.bool.optional, throwErrors);

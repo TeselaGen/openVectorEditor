@@ -2,15 +2,15 @@
 var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength');
 var getRangeLength = require('ve-range-utils/getRangeLength');
 // var ac = require('ve-api-check');
-export default function handleEditorDragged({
+export default function handleEditorDragged({input: {
     nearestBP,
-}, tree, output) {
+}, state, output}) {
     var {
         sequenceLength, caretPosition, selectionLayer, sequenceData: {
             circular
         }, editorDrag: {fixedCaretPositionOnDragStart, fixedCaretPositionOnDragStartType}
-    } = tree.get();
-    tree.set(['editorDrag', 'inProgress'], true)
+    } = state.get();
+    state.set(['editorDrag', 'inProgress'], true)
     if (nearestBP === fixedCaretPositionOnDragStart && (!selectionLayer.selected || selectionLayer.start < selectionLayer.end)) {
         output.caretMoved({
             caretPosition: fixedCaretPositionOnDragStart
@@ -36,14 +36,14 @@ export default function handleEditorDragged({
                         end: nearestBP - 1,
                         cursorAtEnd: true,
                     };
-                    tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'start')
+                    state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'start')
                 } else {
                     newSelectionLayer = {
                         start: nearestBP,
                         end: fixedCaretPositionOnDragStart - 1,
                         cursorAtEnd: false,
                     };
-                    tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'end')
+                    state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'end')
                 }
         }
         output.selectionUpdated({

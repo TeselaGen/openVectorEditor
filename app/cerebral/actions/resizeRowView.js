@@ -1,5 +1,5 @@
-function resizeRowView({ rootWidth, rootHeight }, tree, output) {
-    tree.set('rowViewDimensions', {
+function resizeRowView({input: { rootWidth, rootHeight }, state, output}) {
+    state.set('rowViewDimensions', {
         width: rootWidth,
         height: rootHeight
     });

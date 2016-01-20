@@ -9,7 +9,7 @@ var MapView = require('./MapView');
 var CircularView = require('./CircularView');
 
 var Clipboard = require('./Clipboard');
-import {Decorator as Cerebral} from 'cerebral-react';
+import {Decorator as Cerebral} from 'cerebral-view-react';
 
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';

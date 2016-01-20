@@ -1,9 +1,9 @@
 var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength');
 var ac = require('ve-api-check');
-export default function handleCaretMoved({
+export default function handleCaretMoved({input: {
     moveBy, circular, sequenceLength, bpsPerRow, caretPosition, selectionLayer, shiftHeld, type
-}, tree, output) {
+}, state, output}) {
     ac.throw(ac.number, caretPosition);
     ac.throw(ac.bool.optional, shiftHeld);
     ac.throw(ac.object, selectionLayer);

@@ -1,6 +1,6 @@
-export default function createSelectionShiftClick({
+export default function createSelectionShiftClick({input: {
     nearestBP, caretPosition
-}, tree, output) {
+}, state, output}) {
     var ac = require('ve-api-check');
     ac.throw(ac.posInt, nearestBP)
     ac.throw(ac.posInt, caretPosition)

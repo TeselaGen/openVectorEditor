@@ -20,7 +20,7 @@ var options = {
 	},
 	actions: {
 		//override default actions here. See signals.js for the full list of application signals
-		saveSequence: function saveSequence (input, tree, output, services) {
+		saveSequence: function saveSequence ({input, output, services}) {
 			services.request.post('/sequence')
 				.send(input.sequenceData)
 				.then(function (res) {

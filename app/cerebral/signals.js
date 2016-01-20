@@ -14,12 +14,12 @@ import assign from 'lodash/object/assign'
 var each = require('lodash/collection/each');
 
 
-export default function(controller, options) {
+export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
         toggleAnnotationTable: [a.toggleSidebar],
         copySelection: [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
-            success: a.setData('clipboardData'),
+            success: [a.setData('clipboardData')],
             error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
         }],
         selectAll: [a.selectAll, a.setSelectionLayer],
@@ -68,7 +68,7 @@ export default function(controller, options) {
             a.handleEditorDragStarted
         ],
         editorDragStopped: [
-            [function pause (input, tree, output) {
+            [function pause ({input, state, output}) {
                 //async function that doesn't do anything
                 setTimeout(function () {
                     output()
@@ -122,12 +122,6 @@ export default function(controller, options) {
         // addAnnotations: [a.addAnnotations],
         // jumpToRow: [a.jumpToRow],
     }
-    assign({}, signals, options.signals) //optionally override any signals here
-    return (attachSignalsToController(signals, controller))
+    return assign({}, signals, options.signals) //optionally override any signals here
 }
 
-function attachSignalsToController(signalsObj, controller) {
-    each(signalsObj, function(actionArray, signalName) {
-        controller.signal(signalName, actionArray);
-    })
-}

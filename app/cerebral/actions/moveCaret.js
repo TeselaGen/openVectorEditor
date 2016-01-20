@@ -36,7 +36,7 @@ var handleMoves = {
     },
 }
 
-function moveCaret ({sequenceLength, bpsPerRow, caretPosition, newCaretPosition, selectionLayer, shiftHeld, type}, tree, output) {
+function moveCaret ({input: {sequenceLength, bpsPerRow, caretPosition, newCaretPosition, selectionLayer, shiftHeld, type}, state, output}) {
     ac.throw(ac.number, caretPosition);
     ac.throw(ac.number, sequenceLength);
     ac.throw(ac.bool.optional, shiftHeld);

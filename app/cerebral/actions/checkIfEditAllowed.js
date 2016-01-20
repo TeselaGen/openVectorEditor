@@ -1,7 +1,7 @@
-export default function checkIfEditAllowed(input, tree, output) {
-    var selectionLayer = tree.get('selectionLayer');
+export default function checkIfEditAllowed({input, state, output}) {
+    var selectionLayer = state.get('selectionLayer');
 
-    if (tree.get('readOnly')) {
+    if (state.get('readOnly')) {
         output.readOnly();
     } else {
         output.editAllowed();

@@ -2,15 +2,15 @@ export default function getData() {
     //takes in a path to data,
     //or an object with a path to the data and a desired name 
     var paths = Array.prototype.slice.call(arguments);
-    var getData = function({}, tree, output) {
+    var getData = function({input: {}, state, output}) {
         var data = {};
         paths.forEach(function(path) {
             var info;
             if (path.path) { 
-                info = tree.get(path.path);
+                info = state.get(path.path);
                 data[path.name] = info
             } else {
-                info = tree.get(path);
+                info = state.get(path);
                 data[path] = info
             }
             if (info === undefined) {

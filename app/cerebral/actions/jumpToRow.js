@@ -1,3 +1,3 @@
-export default function insertSequenceData({rowToJumpTo}, tree, output) {
-    tree.set(['rowToJumpTo'], rowToJumpTo);
+export default function insertSequenceData({input: {rowToJumpTo}, state, output}) {
+    state.set(['rowToJumpTo'], rowToJumpTo);
 }
