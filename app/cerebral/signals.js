@@ -86,12 +86,26 @@ export default function(controller, options) {
             a.searchSequence,
             a.updateSearchLayers
         ],
+        // edit only actions
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
-        ]),        
+        ]),  
+        // sl: in progress
+        sequenceDataInserted: a.addEditModeOnly([
+            // a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.getData('caretPosition')]
+            },
+            a.insertSequenceData,
+            // a.setData('caretPosition', 'sequenceData')
+        ]),            
+        toggleSequenceCase: [
+            a.toggleSequenceCase
+        ],
         //tnr: NOT YET WORKING:
         //higher priority
         pasteSequenceString: [a.pasteSequenceString],
@@ -99,16 +113,7 @@ export default function(controller, options) {
 
         //lower priority
         addAnnotations: [a.addAnnotations],
-        jumpToRow: [a.jumpToRow],
-        sequenceDataInserted: a.addEditModeOnly([
-            a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
-            a.checkLayerIsSelected, {
-                selected: [a.deleteSequence],
-                notSelected: [a.getData('caretPosition')]
-            },
-            a.insertSequenceData,
-            a.setData('caretPosition', 'sequenceData')
-        ])
+        jumpToRow: [a.jumpToRow],  
     }
     assign({}, signals, options.signals) //optionally override any signals here
     return (attachSignalsToController(signals, controller))
