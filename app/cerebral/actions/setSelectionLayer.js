@@ -3,16 +3,16 @@ var deepEqual = require('deep-equal');
 /**
  * sets the selection layer on a plasmid
  */
-export default function setSelectionLayer({selectionLayer}, tree) {
+export default function setSelectionLayer({input: {selectionLayer}, state}) {
     var updatedSelectionLayer = setSelectionLayerHelper(selectionLayer);
-    if (!deepEqual(tree.get('selectionLayer'), updatedSelectionLayer)) {
-        tree.set('selectionLayer', updatedSelectionLayer);
+    if (!deepEqual(state.get('selectionLayer'), updatedSelectionLayer)) {
+        state.set('selectionLayer', updatedSelectionLayer);
     }
     if (updatedSelectionLayer.selected) {
         if (updatedSelectionLayer.cursorAtEnd) {
-            tree.set('caretPosition', updatedSelectionLayer.end + 1);
+            state.set('caretPosition', updatedSelectionLayer.end + 1);
         } else {
-            tree.set('caretPosition', updatedSelectionLayer.start);
+            state.set('caretPosition', updatedSelectionLayer.start);
         }
     }
 }

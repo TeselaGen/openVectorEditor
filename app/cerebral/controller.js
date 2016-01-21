@@ -1,5 +1,5 @@
 import Controller from 'cerebral';
-import Model from 'cerebral-baobab';
+import Model from 'cerebral-model-baobab';
 import signals from './signals';
 import defaultState from './state';
 import assign from 'lodash/object/assign'
@@ -17,18 +17,15 @@ export default function(options = {
     newDefaultState.sequenceData = tidyUpSequenceData(newDefaultState.sequenceData)
 
     //tnr: we can pass extra baobab-specific options here as well if we want
-    const model = Model(newDefaultState);
-
-    //tnr: services are things like an ajax library, or some default values that we want every action to have access to
-    const services = {};
+    const model = Model(newDefaultState, {lazyMonkeys: false});
     //create the controller
-    var controller = Controller(model, services);
+    var controller = Controller(model);
     // only when testing - expose the model on the controller
     // (webpack will make process.env.NODE_ENV available).
     if (process.env.NODE_ENV === 'testing') {
         // DON'T DO THIS IN PRODUCTION
         controller.model = model;
-        controller.tree = model.tree;
+        controller.state = model.tree;
 
         // optional test helper to rest cerebral state, you may want to put this
         // somewhere else if don't like test methods being deployed to production.
@@ -37,8 +34,7 @@ export default function(options = {
             model.tree.commit();
         };
     }
-
     //and attach signals to it
-    signals(controller, options);
+    controller.signals(signals(options));
     return controller;
 }

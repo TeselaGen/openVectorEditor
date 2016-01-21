@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 
-import { Decorator as Cerebral } from 'cerebral-react';
+import { Decorator as Cerebral } from 'cerebral-view-react';
 
 import styles from './status-bar.css';
 

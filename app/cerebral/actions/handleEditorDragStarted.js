@@ -1,14 +1,14 @@
 var ac = require('ve-api-check/apiCheck');
-export default function handleEditorDragStarted({
+export default function handleEditorDragStarted({input: {
     nearestBP, caretGrabbed
-}, tree, output) {
+}, state, output}) {
 	ac.throw(ac.posInt, nearestBP);
 	ac.throw(ac.bool, caretGrabbed);
-    var selectionLayer = tree.get('selectionLayer');
+    var selectionLayer = state.get('selectionLayer');
     if (caretGrabbed && selectionLayer.selected) {
         if (selectionLayer.start === nearestBP) {
-            tree.set(['editorDrag', 'fixedCaretPositionOnDragStart'], selectionLayer.end + 1)
-            tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'end')
+            state.set(['editorDrag', 'fixedCaretPositionOnDragStart'], selectionLayer.end + 1)
+            state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'end')
                 //plus one because the cursor position will be 1 more than the selectionLayer.end
                 //imagine selection from
                 //0 1 2  <--possible cursor positions
@@ -17,11 +17,11 @@ export default function handleEditorDragStarted({
                 //so the nearestBP for the end of the selection is 1!
                 //which is selection.end+1
         } else {
-            tree.set(['editorDrag', 'fixedCaretPositionOnDragStart'], selectionLayer.start)
-            tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'start')
+            state.set(['editorDrag', 'fixedCaretPositionOnDragStart'], selectionLayer.start)
+            state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'start')
         }
     } else {
-        tree.set(['editorDrag', 'fixedCaretPositionOnDragStart'], nearestBP)
-        tree.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'caret')
+        state.set(['editorDrag', 'fixedCaretPositionOnDragStart'], nearestBP)
+        state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'caret')
     }
 }

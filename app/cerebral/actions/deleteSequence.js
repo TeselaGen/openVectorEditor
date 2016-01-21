@@ -4,8 +4,8 @@ var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
 var setSelectionLayer = require('./setSelectionLayer');
 
-export default function deleteSequence(input, tree, output) {
-    var {selectionLayer, sequenceData} = tree.get();
+export default function deleteSequence({state, output}) {
+    var {selectionLayer, sequenceData} = state.get();
     ac.throw(ac.range, selectionLayer)
     var newCaretPosition = selectionLayer.start;
 
@@ -48,7 +48,7 @@ export default function deleteSequence(input, tree, output) {
             return [];
         }
     }
-    tree.set('sequenceData', tidyUpSequenceData(newSequenceData, true));
-    tree.set('caretPosition', newCaretPosition);
-    setSelectionLayer(false, tree);
+    state.set('sequenceData', tidyUpSequenceData(newSequenceData, true));
+    state.set('caretPosition', newCaretPosition);
+    setSelectionLayer({input: false, state});
 }

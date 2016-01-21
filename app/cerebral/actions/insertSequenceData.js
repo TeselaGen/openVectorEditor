@@ -2,9 +2,9 @@ var assign = require('lodash/object/assign');
 var insertSequenceDataAtPosition = require('ve-sequence-utils/insertSequenceDataAtPosition');
 var ac = require('ve-api-check');
 
-export default function insertSequenceData(input, tree, output) {
+export default function insertSequenceData({input, state, output}) {
     // where is newsequencedata coming from, pass in input?
-    var { sequenceData, newSequenceData, caretPosition } = tree.get();
+    var { sequenceData, newSequenceData, caretPosition } = state.get();
     ac.throw(ac.posInt, caretPosition)
     ac.throw(ac.sequenceData, sequenceData)
     ac.throw(ac.sequenceData, newSequenceData)

@@ -13,7 +13,7 @@ let CutsiteLabelContainer = React.createClass({
         signals: React.PropTypes.object.isRequired,
     },
     render: function() {
-        return null; //tnr: commenting this out because interval tree is being buggy
+        return null; //tnr: commenting this out because interval state is being buggy
 /*
  *        var {
  *            annotationRanges,
@@ -47,7 +47,7 @@ let CutsiteLabelContainer = React.createClass({
  *                debug('level', level);
  *                if (!annotationLevels[level]) {
  *                    debug('adding new level');
- *                    annotationLevels[level] = new IntervalTree(rowCenter);
+ *                    annotationLevels[level] = new Intervalstate(rowCenter);
  *                    annotationLevels[level].add([xStart, xEnd, 'index'])
  *                    fits = true;
  *                } else {

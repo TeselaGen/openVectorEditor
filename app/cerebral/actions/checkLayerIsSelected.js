@@ -1,5 +1,5 @@
-export default function checkLayerIsSelected(input, tree, output) {
-    var selectionLayer = tree.get('selectionLayer');
+export default function checkLayerIsSelected({input, state, output}) {
+    var selectionLayer = state.get('selectionLayer');
 
     if (selectionLayer.selected) {
         output.selected();

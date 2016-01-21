@@ -3,9 +3,9 @@ export default function setData() {
     //     paths = [paths]
     // }
     var paths = Array.prototype.slice.call(arguments);
-    var setData = function(input, tree, output) {
+    var setData = function({input, state, output}) {
         paths.forEach(function(path) {
-            input[path] = tree.set(path, input[path]);
+            input[path] = state.set(path, input[path]);
         });
     }
     setData.displayName = 'set-' + paths.join('-');

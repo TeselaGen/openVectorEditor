@@ -1,5 +1,5 @@
-function toggleSequenceCase({}, tree, output) {
-    tree.set('uppercase', !tree.get('uppercase'));
+function toggleSequenceCase({state}) {
+    state.set('uppercase', !state.get('uppercase'));
 }
 
 module.exports = toggleSequenceCase;

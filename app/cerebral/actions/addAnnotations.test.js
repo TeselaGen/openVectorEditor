@@ -1,6 +1,6 @@
 // var addAnnotations = require('../../app/actions/addAnnotations');
 // var expect = require('chai').expect;
-// var tree = require('../testHelpers/baobabTestTree.js');
+// var state = require('../testHelpers/baobabTeststate.js');
 
 // describe('addAnnotations', function() {
 //     it('adds features to sequence object', function() {
@@ -26,8 +26,8 @@
 //         addAnnotations({}, mockedState, mockedOutput, mockedServices);
 //         //clear the selectionLayer
 //         addAnnotations('features', newFeatures);
-//         expect(tree.get('sequenceData', 'features')).to.exist;
-//         expect(tree.get('sequenceData', 'features')).to.deep.equal(newFeatures);
+//         expect(state.get('sequenceData', 'features')).to.exist;
+//         expect(state.get('sequenceData', 'features')).to.deep.equal(newFeatures);
 //     });
 //     it('adds parts to sequence object', function() {
 //         //clear the selectionLayer
@@ -37,8 +37,8 @@
 //             end: 3
 //         }];
 //         addAnnotations('parts', newParts);
-//         expect(tree.get('sequenceData', 'parts')).to.exist;
-//         expect(tree.get('sequenceData', 'parts')).to.deep.equal(newParts);
+//         expect(state.get('sequenceData', 'parts')).to.exist;
+//         expect(state.get('sequenceData', 'parts')).to.deep.equal(newParts);
 //     });
 //     //tnrtodo: add more tests to make sure other cases are working
 // });
