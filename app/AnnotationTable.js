@@ -29,7 +29,7 @@ export default class AnnotationTable extends React.Component {
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
-            tableHeaderCells.push((<TableHeaderColumn>{filter[i]}</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key={i}>{filter[i]}</TableHeaderColumn>));
         }
 
         var tableDataRows = [];
@@ -39,17 +39,12 @@ export default class AnnotationTable extends React.Component {
 
             for (let j = 0; j < filter.length; j++) {
                 let column = filter[j];
-                let data = feature[column];
+                let data = feature[column].toString();
 
-                // FIXME: objects in the data breaks things
-                if (typeof data === 'object') {
-                    continue;
-                }
-
-                tableDataCells.push((<TableRowColumn>{data}</TableRowColumn>));
+                tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
             }
 
-            tableDataRows.push((<TableRow>{tableDataCells}</TableRow>));
+            tableDataRows.push((<TableRow key={i}>{tableDataCells}</TableRow>));
         }
 
         if (this.state.selectedRow !== undefined) {
