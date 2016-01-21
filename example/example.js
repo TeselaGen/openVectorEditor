@@ -32,12 +32,9 @@ var options = {
 	},
 }
 
-var {Editor, controller} = App(options);
 //Editor is the React Component
 //controller is the cerebral state controller
-// controller.signals.setSequenceData(tidyUpSequenceData(sequenceData1))
-
-
+var {Editor, controller} = App(options);
 //choose the dom node you want to render to
 const DOMNodeToRenderTo = document.createElement('div');
 document.body.appendChild(DOMNodeToRenderTo);

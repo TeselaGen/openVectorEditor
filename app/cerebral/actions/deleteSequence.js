@@ -50,5 +50,5 @@ export default function deleteSequence({state, output}) {
     }
     state.set('sequenceData', tidyUpSequenceData(newSequenceData, true));
     state.set('caretPosition', newCaretPosition);
-    setSelectionLayer(false, state);
+    setSelectionLayer({input: false, state});
 }

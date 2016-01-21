@@ -30,8 +30,8 @@ export default function(options = {
         // optional test helper to rest cerebral state, you may want to put this
         // somewhere else if don't like test methods being deployed to production.
         controller.reset = function() {
-            model.state.set(newDefaultState);
-            model.state.commit();
+            model.tree.set(newDefaultState);
+            model.tree.commit();
         };
     }
     //and attach signals to it
