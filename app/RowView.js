@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Decorator as Cerebral} from 'cerebral-react';
+import {Decorator as Cerebral} from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');

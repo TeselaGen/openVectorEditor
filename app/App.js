@@ -1,7 +1,7 @@
 var ac = require('ve-api-check');
 import controller from './cerebral/controller.js';
 import React from 'react';
-import {Container} from 'cerebral-react';
+import {Container} from 'cerebral-view-react';
 import SequenceEditor from './SequenceEditor.js';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -12,11 +12,11 @@ module.exports = function (options) {
 		state: ac.object,
 		actions: ac.object
 	}),options)
-	
-	
-	var cerebral = controller(options);
+	var cerebral = controller(options)
 	return {
-		Editor: (<Container controller={cerebral} app={SequenceEditor}/>),
+		Editor: (<Container controller={cerebral}>
+		    <SequenceEditor/>
+		  </Container>),
 		controller: cerebral
 	};
 }

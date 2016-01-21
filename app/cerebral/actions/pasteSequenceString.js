@@ -4,9 +4,9 @@ var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 // var insertSequenceString = require('./insertSequenceString.js');
 var insertSequenceData = require('./insertSequenceData');
 
-export default function pasteSequenceString({sequenceString}, tree, output) {
+export default function pasteSequenceString({input: {sequenceString}, state, output}) {
     //compare the sequenceString being pasted in with what's already stored in the clipboard
-    var clipboardData = tree.get('clipboardData');
+    var clipboardData = state.get('clipboardData');
     if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
         // insert clipboardData
         //assign clipboardData annotations new ids

@@ -1,9 +1,9 @@
-function searchSequence({ searchString }, tree, output) {
+function searchSequence({input: { searchString }, state, output}) {
     if (searchString.length === 0) {
         output({ searchLayers: [] });
         return;
     }
-    var sequence = tree.get(['sequenceData', 'sequence']);
+    var sequence = state.get(['sequenceData', 'sequence']);
 
     var layers = [];
     var inResult = false;

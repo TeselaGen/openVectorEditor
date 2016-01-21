@@ -4,11 +4,11 @@ var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-u
 var getSubstringByRange = require('get-substring-by-range');
 var ac = require('ve-api-check');
 
-export default function copySelection({
+export default function copySelection({input: {
     selectionLayer, sequenceData
-}, tree, output) {
+}, state, output}) {
     ac.throw(ac.sequenceData, sequenceData)
-    var allowPartialAnnotationsOnCopy = tree.get('allowPartialAnnotationsOnCopy');
+    var allowPartialAnnotationsOnCopy = state.get('allowPartialAnnotationsOnCopy');
     if (selectionLayer.selected) {
         output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
     } else {

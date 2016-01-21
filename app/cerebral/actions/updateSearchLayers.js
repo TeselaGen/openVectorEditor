@@ -1,5 +1,5 @@
-function updateSearchLayers({ searchLayers }, tree, output) {
-    tree.set('searchLayers', searchLayers);
+function updateSearchLayers({input: { searchLayers }, state}) {
+    state.set('searchLayers', searchLayers);
 }
 
 module.exports = updateSearchLayers;

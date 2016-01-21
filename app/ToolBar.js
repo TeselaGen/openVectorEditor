@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { propTypes } from './react-props-decorators.js';
 
 // Cerebral
-import { Decorator as Cerebral } from 'cerebral-react';
+import { Decorator as Cerebral } from 'cerebral-view-react';
 
 // Material UI
 import { Toolbar, ToolbarGroup } from 'material-ui';
@@ -85,7 +85,7 @@ export default class ToolBar extends React.Component {
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
                 <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
-                    signals.toggleAnnotationDisplay(String(annotationType.type));
+                    signals.toggleAnnotationDisplay({type: String(annotationType.type)});
                 }} />
             );
         });
