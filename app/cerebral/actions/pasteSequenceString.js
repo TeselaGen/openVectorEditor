@@ -1,7 +1,7 @@
 var ObjectID = require("bson-objectid");
 var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
-var insertSequenceString = require('./insertSequenceString.js');
+// var insertSequenceString = require('./insertSequenceString.js');
 var insertSequenceData = require('./insertSequenceData');
 
 export default function pasteSequenceString({sequenceString}, tree, output) {
@@ -14,7 +14,7 @@ export default function pasteSequenceString({sequenceString}, tree, output) {
         insertSequenceData(clipboardDataWithNewIds);
     } else {
         //clean up the sequence string and insert it
-        insertSequenceString(filterSequenceString(sequenceString));
+        // insertSequenceString(filterSequenceString(sequenceString));
     }
 
     function generateNewIdsForSequenceAnnotations(sequenceData) {
