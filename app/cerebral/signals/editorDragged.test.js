@@ -17,7 +17,7 @@ describe('editorDragged circular sequence', function() {
     beforeEach(function() {
         controller.reset();
     });
-    it('editorDrag starts by grabbing caret at pos 1 and moves to 2, 3, 1, 0', function() {
+    it.skip('editorDrag starts by grabbing caret at pos 1 and moves to 2, 3, 1, 0', function() {
         return testSignal(controller, controller.getSignals().editorDragStarted, {nearestBP: 1, caretGrabbed: true})
         .then(function () {
             return testSignal(controller, controller.getSignals().editorDragged, {nearestBP: 2}, () => {
@@ -47,7 +47,7 @@ describe('editorDragged circular sequence', function() {
             });
         })
     });
-    it('editorDrag starts by grabbing caret at pos 1 and moves to 0, 1, 5', function() {
+    it.skip('editorDrag starts by grabbing caret at pos 1 and moves to 0, 1, 5', function() {
         return testSignal(controller, controller.getSignals().editorDragStarted, {nearestBP: 1, caretGrabbed: true})
         .then(function () {
             return testSignal(controller, controller.getSignals().editorDragged, {nearestBP: 0}, () => {

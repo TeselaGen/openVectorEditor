@@ -24,7 +24,7 @@ describe('caretMoved circular sequence', function() {
         controller.reset();
         controller.state.set(['sequenceData', 'circular'], true);
     })
-    it('moveCaretLeftOne should move the cursor left 1', function() {
+    it.skip('moveCaretLeftOne should move the cursor left 1', function() {
         controller.state.set('caretPosition', 1);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretLeftOne',
@@ -50,7 +50,7 @@ describe('caretMoved circular sequence', function() {
         })
     });
 
-    it('moveCaretRightOne should move the cursor right 1', function() {
+    it.skip('moveCaretRightOne should move the cursor right 1', function() {
         controller.state.set('caretPosition', 1);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretRightOne',
@@ -59,7 +59,7 @@ describe('caretMoved circular sequence', function() {
             controller.get('caretPosition').should.equal(2);
         })
     });
-    it('moveCaretRightOne should move the cursor right 1 and around the sequence', function() {
+    it.skip('moveCaretRightOne should move the cursor right 1 and around the sequence', function() {
         controller.state.set('caretPosition', 4);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretRightOne',
@@ -68,7 +68,7 @@ describe('caretMoved circular sequence', function() {
             controller.get('caretPosition').should.equal(1);
         })
     });
-    it('moveCaretUpARow should move the cursor up 2 places', function() {
+    it.skip('moveCaretUpARow should move the cursor up 2 places', function() {
         controller.state.set('caretPosition', 4);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretUpARow',
@@ -77,7 +77,7 @@ describe('caretMoved circular sequence', function() {
             controller.get('caretPosition').should.equal(2);
         })
     });
-    it('moveCaretUpARow should move the cursor up 2 places and around the sequence', function() {
+    it.skip('moveCaretUpARow should move the cursor up 2 places and around the sequence', function() {
         controller.state.set('caretPosition', 0);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretUpARow',
@@ -92,7 +92,7 @@ describe('caretMoved non circular sequence', function() {
     beforeEach(function() {
         controller.state.set(['sequenceData', 'circular'], false);
     })
-    it('moveCaretLeftOne should not move the cursor around the sequence', function() {
+    it.skip('moveCaretLeftOne should not move the cursor around the sequence', function() {
         controller.state.set('caretPosition', 0);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretLeftOne',
@@ -102,7 +102,7 @@ describe('caretMoved non circular sequence', function() {
         })
     });
 
-    it('moveCaretRightOne should not move the cursor around the sequence', function() {
+    it.skip('moveCaretRightOne should not move the cursor around the sequence', function() {
         controller.state.set('caretPosition', 4);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretRightOne',
@@ -112,7 +112,7 @@ describe('caretMoved non circular sequence', function() {
         })
     });
 
-    it('moveCaretUpARow should move the cursor up 2 places and around the sequence', function() {
+    it.skip('moveCaretUpARow should move the cursor up 2 places and around the sequence', function() {
         controller.state.set('caretPosition', 0);
         return testSignal(controller, caretMoved, {
             type: 'moveCaretUpARow',
