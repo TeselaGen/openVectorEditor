@@ -112,15 +112,7 @@ export default function(options) {
             },
             a.insertSequenceData,
             a.setData('caretPosition', 'sequenceData')
-        ]),  
-        //tnr: NOT YET WORKING:
-        //higher priority
-        // pasteSequenceString: [a.pasteSequenceString],
-        // setSelectionLayer: [a.setSelectionLayer],
-
-        // //lower priority
-        // addAnnotations: [a.addAnnotations],
-        // jumpToRow: [a.jumpToRow],
+        ])
     }
     return assign({}, signals, options.signals) //optionally override any signals here
 }
