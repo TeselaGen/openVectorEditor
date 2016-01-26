@@ -39,7 +39,11 @@ export default class AnnotationTable extends React.Component {
 
             for (let j = 0; j < filter.length; j++) {
                 let column = filter[j];
-                let data = feature[column].toString();
+                let data = '';
+
+                if (feature[column] !== null && feature[column] !== undefined) {
+                    data = feature[column].toString();
+                }
 
                 tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
             }
