@@ -7,6 +7,9 @@ const TableHeaderColumn = require('material-ui/lib/table/table-header-column');
 const TableRow = require('material-ui/lib/table/table-row');
 const TableRowColumn = require('material-ui/lib/table/table-row-column');
 
+import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
+import IconButton from 'material-ui/lib/icon-button';
+
 export default class AnnotationTable extends React.Component {
 
     constructor() {
@@ -72,6 +75,10 @@ export default class AnnotationTable extends React.Component {
                 </TableHeader>
                 <TableBody>{tableDataRows}</TableBody>
               </Table>
+
+              <IconButton tooltip={"add"}>
+                <AddBoxIcon />
+              </IconButton>
 
               {rowDataList}
             </div>
