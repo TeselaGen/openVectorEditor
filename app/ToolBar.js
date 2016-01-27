@@ -102,19 +102,19 @@ export default class ToolBar extends React.Component {
                   <RaisedButton
                      label='Features'
                      onTouchTap={function() {
-                         signals.toggleAnnotationTable({ currentSidebar: 'features' });
+                         signals.toggleAnnotationTable({ annotationType: 'features' });
                      }}
                      />
                   <RaisedButton
                      label='Cutsites'
                      onTouchTap={function() {
-                         signals.toggleAnnotationTable({ currentSidebar: 'cutsites' });
+                         signals.toggleAnnotationTable({ annotationType: 'cutsites' });
                      }}
                      />
                   <RaisedButton
                      label='ORFs'
                      onTouchTap={function() {
-                         signals.toggleAnnotationTable({ currentSidebar: 'orfs' });
+                         signals.toggleAnnotationTable({ annotationType: 'orfs' });
                      }}
                      />
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
