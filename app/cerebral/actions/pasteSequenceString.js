@@ -2,20 +2,11 @@ var ObjectID = require("bson-objectid");
 var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 // var insertSequenceString = require('./insertSequenceString.js');
-var insertSequenceData = require('./insertSequenceData');
+// var insertSequenceData = require('./insertSequenceData');
 
 export default function pasteSequenceString({input: {sequenceString}, state, output}) {
-    //compare the sequenceString being pasted in with what's already stored in the clipboard
     var clipboardData = state.get('clipboardData');
-    if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
-        // insert clipboardData
-        //assign clipboardData annotations new ids
-        var clipboardDataWithNewIds = generateNewIdsForSequenceAnnotations(clipboardData);
-        insertSequenceData(clipboardDataWithNewIds);
-    } else {
-        //clean up the sequence string and insert it
-        // insertSequenceString(filterSequenceString(sequenceString));
-    }
+    var cleanedUpClipboardData;
 
     function generateNewIdsForSequenceAnnotations(sequenceData) {
         return assign({}, sequenceData, {
@@ -30,5 +21,20 @@ export default function pasteSequenceString({input: {sequenceString}, state, out
                 id: ObjectID().str
             });
         });
+    }
+
+    if (clipboardData && clipboardData.sequence || clipboardData.sequence === sequenceString) {
+        // handle clipboardData which was copied from within the app
+        // assign clipboardData annotations new ids
+        cleanedUpClipboardData = generateNewIdsForSequenceAnnotations(clipboardData);
+    } else {
+        // clean up the sequence string coming from elsewhere so we can insert it
+        cleanedUpClipboardData = filterSequenceString(sequenceString);
+    }
+
+    if(cleanedUpClipboardData.length > 0) {
+        output.success({'cleanedUpSequence': cleanedUpClipboardData})
+    } else {
+        output.error()
     }
 }

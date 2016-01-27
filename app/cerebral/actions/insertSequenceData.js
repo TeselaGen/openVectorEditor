@@ -3,12 +3,13 @@ var insertSequenceDataAtPosition = require('ve-sequence-utils/insertSequenceData
 var ac = require('ve-api-check');
 var setSelectionLayer = require('./setSelectionLayer');
 
-export default function insertSequenceData({input: {newSequenceData}, state, output}) {
+export default function insertSequenceData({input, state, output}) {
+    var newSequenceData = input;
     var { sequenceData, caretPosition } = state.get();
     ac.throw(ac.posInt, caretPosition)
     ac.throw(ac.sequenceData, sequenceData)
     // ac.throw(ac.sequenceData, newSequenceData)
     state.set('sequenceData', assign({}, sequenceData, insertSequenceDataAtPosition(newSequenceData, sequenceData, caretPosition)));
     state.set('caretPosition', newSequenceData.sequence.length + caretPosition);
-    setSelectionLayer({input: false, state});
+    // setSelectionLayer({input: false, state});
 }

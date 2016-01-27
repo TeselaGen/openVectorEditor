@@ -16,10 +16,12 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
         toggleAnnotationTable: [a.toggleSidebar],
-        copySelection: [a.getData('selectionLayer', 'sequenceData'), a.copySelection, {
-            success: [a.setData('clipboardData')],
-            error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
-        }],
+        selectionCopied: [
+            a.copySelection, {
+                success: [a.setData('clipboardData')],
+                error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+            }
+        ],
         selectAll: [a.selectAll, a.setSelectionLayer],
         selectInverse: [a.selectInverse, a.setSelectionLayer],
         setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
@@ -84,7 +86,9 @@ export default function(options) {
             a.searchSequence,
             a.updateSearchLayers
         ],
-        // edit only actions
+        
+    // ///////////////////////////////////
+    // edit only actions
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
@@ -92,21 +96,31 @@ export default function(options) {
             }
         ]),  
         // sl: in progress
+        // explicitly call signals that are implicit right now by copying signal path over here or making a var
+        // paste sequence from clipboard
+        pasteSequenceString: a.addEditModeOnly([
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [a.getData('caretPosition')]
+            },
+            a.pasteSequenceString, {
+                success: [a.insertSequenceData('cleanedUpSequence')],
+                error: []
+            }
+        ]),
+        // type sequence from keyboard
         sequenceDataInserted: a.addEditModeOnly([
-            // a.getData('selectionLayer', 'sequenceLength', 'sequenceData'),
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.getData('caretPosition')]
             },
             a.insertSequenceData,
-            // a.setData('caretPosition', 'sequenceData')
+            a.setSelectionLayer('false') // this is wrong right now
         ]),            
         toggleSequenceCase: [
             a.toggleSequenceCase
         ],
-        //tnr: NOT YET WORKING:
-        //higher priority
-        pasteSequenceString: [a.pasteSequenceString],
+
         setSelectionLayer: [a.setSelectionLayer],
 
         //lower priority

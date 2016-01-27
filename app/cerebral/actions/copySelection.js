@@ -2,18 +2,11 @@ var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-utils/collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var getSubstringByRange = require('get-substring-by-range');
-var ac = require('ve-api-check');
+// var ac = require('ve-api-check');
 
-export default function copySelection({input: {
-    selectionLayer, sequenceData
-}, state, output}) {
-    ac.throw(ac.sequenceData, sequenceData)
+export default function copySelection({input, state, output}) {
+    var { selectionLayer, sequenceData } = state.get();
     var allowPartialAnnotationsOnCopy = state.get('allowPartialAnnotationsOnCopy');
-    if (selectionLayer.selected) {
-        output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
-    } else {
-        output.error();
-    }
 
     function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
         var newSequenceData = {};
@@ -60,5 +53,11 @@ export default function copySelection({input: {
             start: start,
             end: end
         };
+    }
+
+    if (selectionLayer.selected) {
+        output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
+    } else {
+        output.error();
     }
 }

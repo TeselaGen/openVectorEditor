@@ -113,22 +113,21 @@ class SequenceEditor extends React.Component {
             event.stopPropagation();
         });
     }
-
+    // copy and paste events are handled by a listener in the DOM element as listed below
     handlePaste(event) {
         var {
             pasteSequenceString,
         } = this.props.signals;
-        event.clipboardData.items[0].getAsString(function(string) {
-            pasteSequenceString(string);
+        event.clipboardData.items[0].getAsString(function(clipboardString) {
+            pasteSequenceString(clipboardString);
         });
     }
 
     handleCopy() {
         var {
-            copySelection,
+            selectionCopied,
         } = this.props.signals;
-        copySelection();
-        // this.props.selectedSequenceString
+        selectionCopied();
     }
 
     componentWillUnmount() {
