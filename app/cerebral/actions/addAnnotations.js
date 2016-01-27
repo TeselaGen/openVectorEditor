@@ -7,7 +7,6 @@ export default function addAnnotations({input: {annotationType, annotationsToIns
     ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
     ac.throw(ac.bool.optional, throwErrors);
     
-    var annotationsCursor = state.select('sequenceData', annotationType);
     annotationsToInsert.forEach(function(annotationToInsert) {
         if (!isBoolean(annotationToInsert.forward)) {
             if (throwErrors) {
@@ -33,6 +32,6 @@ export default function addAnnotations({input: {annotationType, annotationsToIns
                 annotationToInsert.end = 0;
             }
         }
-        annotationsCursor.push(annotationToInsert);
+        state.push(['sequenceData', annotationType], annotationToInsert);
     });
 }

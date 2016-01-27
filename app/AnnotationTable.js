@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Decorator as Cerebral } from 'cerebral-view-react';
+
 const Table = require('material-ui/lib/table/table');
 const TableBody = require('material-ui/lib/table/table-body');
 const TableHeader = require('material-ui/lib/table/table-header');
@@ -10,6 +12,8 @@ const TableRowColumn = require('material-ui/lib/table/table-row-column');
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IconButton from 'material-ui/lib/icon-button';
 
+@Cerebral({
+})
 export default class AnnotationTable extends React.Component {
 
     constructor() {
@@ -20,6 +24,18 @@ export default class AnnotationTable extends React.Component {
 
     selectRow(selectedRows) {
         this.setState({ selectedRow: selectedRows[0] });
+    }
+
+    addRow() {
+        this.props.signals.addAnnotations({
+            annotationType: 'features',
+
+            annotationsToInsert: [
+                { name: 'unnamed annotation' }
+            ],
+
+            throwErrors: false
+        });
     }
 
     render() {
@@ -76,7 +92,7 @@ export default class AnnotationTable extends React.Component {
                 <TableBody>{tableDataRows}</TableBody>
               </Table>
 
-              <IconButton tooltip={"add"}>
+              <IconButton onClick={this.addRow.bind(this)} tooltip={"add"}>
                 <AddBoxIcon />
               </IconButton>
 
