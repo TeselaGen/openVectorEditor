@@ -32,6 +32,7 @@
     "combokeys": "^2.4.3",
     "css-loader": "^0.23.0",
     "deep-equal": "^1.0.1",
+    "eslint": "^1.10.3",
     "get-substring-by-range": "^1.0.0",
     "interpolate": "^0.1.0",
     "is-integer": "^1.0.4",
