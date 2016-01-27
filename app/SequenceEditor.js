@@ -152,18 +152,21 @@ class SequenceEditor extends React.Component {
             table = (
                 <AnnotationTable
                    data={sequenceData.features}
+                   annotationType={showSidebar}
                    />
             );
         } else if (showSidebar === 'cutsites') {
             table = (
                 <AnnotationTable
                    data={cutsites}
+                   annotationType={showSidebar}
                    />
             );
         } else if (showSidebar === 'orfs') {
             table = (
                 <AnnotationTable
                    data={orfData}
+                   annotationType={showSidebar}
                    />
             );
         }

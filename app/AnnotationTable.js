@@ -26,12 +26,12 @@ export default class AnnotationTable extends React.Component {
         this.setState({ selectedRow: selectedRows[0] });
     }
 
-    addRow() {
+    addFeature() {
         this.props.signals.addAnnotations({
             annotationType: 'features',
 
             annotationsToInsert: [
-                { name: 'unnamed annotation' }
+                { name: 'unnamed feature' }
             ],
 
             throwErrors: false
@@ -41,6 +41,7 @@ export default class AnnotationTable extends React.Component {
     render() {
         var {
             data,
+            annotationType,
             filter
         } = this.props;
 
@@ -92,9 +93,9 @@ export default class AnnotationTable extends React.Component {
                 <TableBody>{tableDataRows}</TableBody>
               </Table>
 
-              <IconButton onClick={this.addRow.bind(this)} tooltip={"add"}>
-                <AddBoxIcon />
-              </IconButton>
+              {annotationType === 'features' && <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
+                    <AddBoxIcon />
+              </IconButton>}
 
               {rowDataList}
             </div>
