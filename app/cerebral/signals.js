@@ -104,7 +104,7 @@ export default function(options) {
                 notSelected: [a.getData('caretPosition')]
             },
             a.pasteSequenceString, {
-                success: [a.insertSequenceData('cleanedUpSequence')],
+                success: [a.insertSequenceData],
                 error: []
             }
         ]),

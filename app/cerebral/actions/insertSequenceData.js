@@ -4,7 +4,7 @@ var ac = require('ve-api-check');
 var setSelectionLayer = require('./setSelectionLayer');
 
 export default function insertSequenceData({input, state, output}) {
-    var newSequenceData = input;
+    var { newSequenceData } = input;
     var { sequenceData, caretPosition } = state.get();
     ac.throw(ac.posInt, caretPosition)
     ac.throw(ac.sequenceData, sequenceData)

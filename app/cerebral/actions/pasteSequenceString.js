@@ -1,8 +1,6 @@
 var ObjectID = require("bson-objectid");
 var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
-// var insertSequenceString = require('./insertSequenceString.js');
-// var insertSequenceData = require('./insertSequenceData');
 
 export default function pasteSequenceString({input: {sequenceString}, state, output}) {
     var clipboardData = state.get('clipboardData');
@@ -33,7 +31,7 @@ export default function pasteSequenceString({input: {sequenceString}, state, out
     }
 
     if(cleanedUpClipboardData.length > 0) {
-        output.success({'cleanedUpSequence': cleanedUpClipboardData})
+        output.success({'newSequenceData': cleanedUpClipboardData})
     } else {
         output.error()
     }
