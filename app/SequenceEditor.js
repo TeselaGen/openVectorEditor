@@ -154,6 +154,7 @@ class SequenceEditor extends React.Component {
                 <AnnotationTable
                    data={sequenceData.features}
                    annotationType={annotationTableType}
+                   filter={['name', 'type', 'start', 'end', 'strand']}
                    />
             );
         } else if (annotationTableType === 'cutsites') {
@@ -161,6 +162,7 @@ class SequenceEditor extends React.Component {
                 <AnnotationTable
                    data={cutsites}
                    annotationType={annotationTableType}
+                   filter={['name', 'start', 'end', 'strand']}
                    />
             );
         } else if (annotationTableType === 'orfs') {
@@ -168,6 +170,7 @@ class SequenceEditor extends React.Component {
                 <AnnotationTable
                    data={orfData}
                    annotationType={annotationTableType}
+                   filter={['start', 'end', 'length', 'strand', 'frame']}
                    />
             );
         }

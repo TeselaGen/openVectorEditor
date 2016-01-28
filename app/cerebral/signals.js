@@ -111,6 +111,9 @@ export default function(options) {
             a.clearSelectionLayer
         ]),
         // type sequence from keyboard
+        deleteFeatures: a.addEditModeOnly([
+            a.deleteFeatures
+        ]),
         sequenceDataInserted: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import { propTypes } from './react-props-decorators.js';
 
 const Table = require('material-ui/lib/table/table');
 const TableBody = require('material-ui/lib/table/table-body');
@@ -14,6 +15,11 @@ import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterm
 import IconButton from 'material-ui/lib/icon-button';
 
 @Cerebral({
+})
+@propTypes({
+    data: PropTypes.object.isRequired,
+    annotationType: PropTypes.string.isRequired,
+    filter: PropTypes.object.isRequired
 })
 export default class AnnotationTable extends React.Component {
 
@@ -30,7 +36,14 @@ export default class AnnotationTable extends React.Component {
     }
 
     deleteFeatures() {
-        
+        var featureIds = [];
+
+        for ( let idx in this.state.selectedRows ) {
+            featureIds.push(this.props.data[idx].id);
+        }
+
+        this.props.signals.deleteFeatures({ featureIds: featureIds });
+        this.setState({ selectedRows: [] });
     }
 
     addFeature() {
@@ -51,8 +64,6 @@ export default class AnnotationTable extends React.Component {
             annotationType,
             filter
         } = this.props;
-
-        filter = filter || Object.keys(data[0]);
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
