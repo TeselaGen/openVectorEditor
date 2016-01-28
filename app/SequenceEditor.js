@@ -119,7 +119,7 @@ class SequenceEditor extends React.Component {
             pasteSequenceString,
         } = this.props.signals;
         event.clipboardData.items[0].getAsString(function(clipboardString) {
-            pasteSequenceString(clipboardString);
+            pasteSequenceString({sequenceString:clipboardString});
         });
     }
 

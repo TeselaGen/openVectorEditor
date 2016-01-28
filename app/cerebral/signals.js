@@ -96,17 +96,19 @@ export default function(options) {
             }
         ]),  
         // sl: in progress
-        // explicitly call signals that are implicit right now by copying signal path over here or making a var
         // paste sequence from clipboard
         pasteSequenceString: a.addEditModeOnly([
-            a.checkLayerIsSelected, {
-                selected: [a.deleteSequence],
-                notSelected: [a.getData('caretPosition')]
-            },
             a.pasteSequenceString, {
-                success: [a.insertSequenceData],
+                success: [
+                    a.checkLayerIsSelected, {
+                        selected: [a.deleteSequence],
+                        notSelected: [a.getData('caretPosition')]
+                    },
+                    a.insertSequenceData
+                ],
                 error: []
-            }
+            },
+            a.clearSelectionLayer
         ]),
         // type sequence from keyboard
         sequenceDataInserted: a.addEditModeOnly([
@@ -115,7 +117,7 @@ export default function(options) {
                 notSelected: [a.getData('caretPosition')]
             },
             a.insertSequenceData,
-            a.setSelectionLayer('false') // this is wrong right now
+            a.clearSelectionLayer
         ]),            
         toggleSequenceCase: [
             a.toggleSequenceCase
