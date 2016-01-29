@@ -14,6 +14,8 @@ import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
 
+import AnnotationForm from './AnnotationForm';
+
 @Cerebral({
 })
 @propTypes({
@@ -90,16 +92,9 @@ export default class AnnotationTable extends React.Component {
         }
 
         if (this.state.selectedRows.length === 1) {
-            let displayedRow = data[this.state.selectedRows[0]];
+            let annotation = data[this.state.selectedRows[0]];
 
-            let rowDataItems = [];
-
-            for (let key in displayedRow) {
-                rowDataItems.push((<dt>{key}</dt>));
-                rowDataItems.push((<dd>{displayedRow[key]}</dd>));
-            }
-
-            var rowDataList = React.createElement('dl', {}, rowDataItems);
+            var annotationForm = (<AnnotationForm annotation={annotation} />);
         }
 
         if (annotationType === 'features') {
@@ -127,7 +122,7 @@ export default class AnnotationTable extends React.Component {
 
               {controls}
 
-              {rowDataList}
+              {annotationForm}
             </div>
         );
     }
