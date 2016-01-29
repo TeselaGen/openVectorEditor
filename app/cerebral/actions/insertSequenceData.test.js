@@ -26,12 +26,12 @@ var testSequence = tidyUpSequenceData({
 });
 
 var newSequenceData = tidyUpSequenceData({
-            sequence: 'atgagagaga',
-            features: [{
-                start: 0,
-                end: 5
-            }]
-        });
+    sequence: 'atgagagaga',
+    features: [{
+        start: 0,
+        end: 5
+    }]
+});
 var controller = require('../controller')({
     //instantiate some default val's here:
     state: {
@@ -43,7 +43,7 @@ var controller = require('../controller')({
 
 describe('insertSequenceData', function() {
     it('inserts data at start of sequence and adjusts annotations correctly', function() {
-        insertSequenceData({newSequenceData}, controller.tree, function({ caretPosition, sequenceData }) {
+        insertSequenceData({input: {newSequenceData}, state: controller.state, output: function({ caretPosition, sequenceData }) {
             sequenceData.sequence.length.should.equal(14);
             sequenceData.features.should.containSubset([{
                 start: 10,
@@ -67,14 +67,14 @@ describe('insertSequenceData', function() {
                 end: 13
             }])
             caretPosition.should.equal(10);
-        });
+        }});
     });
 
     it('inserts mid-sequence and adjusts entire sequence and annotations correctly', function() {
         controller.reset();
-        controller.tree.set(['sequenceData'], testSequence); 
-        controller.tree.set('caretPosition', 1);
-        insertSequenceData({newSequenceData}, controller.tree, function({ caretPosition, sequenceData }) {
+        controller.state.set(['sequenceData'], testSequence); 
+        controller.state.set('caretPosition', 1);
+        insertSequenceData({input: {newSequenceData}, state: controller.state, output: function({ caretPosition, sequenceData }) {
             sequenceData.sequence.length.should.equal(14);
             sequenceData.features.should.containSubset([{
                 start: 0,
@@ -101,6 +101,6 @@ describe('insertSequenceData', function() {
                 end: 13
             }])
             caretPosition.should.equal(11);
-        });
+        }});
     });
 });
