@@ -38,9 +38,9 @@ export default class AnnotationTable extends React.Component {
     deleteFeatures() {
         var featureIds = [];
 
-        for ( let idx in this.state.selectedRows ) {
-            featureIds.push(this.props.data[idx].id);
-        }
+        this.state.selectedRows.forEach(el => {
+            featureIds.push(this.props.data[el].id);
+        });
 
         this.props.signals.deleteFeatures({ featureIds: featureIds });
         this.setState({ selectedRows: [] });
