@@ -36,7 +36,7 @@ export default function pasteSequenceString({input, state, output}) {
         // console.log(">>>> data is from outside the editor");
     }
 
-    console.log("clipboard data is clean: " + cleanedUpClipboardData);
+    // console.log("clipboard data is clean: " + cleanedUpClipboardData);
     if(cleanedUpClipboardData.sequence) {
         output.success({'newSequenceData': cleanedUpClipboardData})
     } else {
