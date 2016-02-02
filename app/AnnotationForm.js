@@ -40,7 +40,7 @@ export default class AnnotationForm extends React.Component {
         var fields = [];
 
         for ( let property in this.state.annotation ) {
-            fields.push((<TextField onChange={this.onChange.bind(this)} floatingLabelText={property} id={property} value={this.state.annotation[property]} />));
+            fields.push((<TextField onChange={this.onChange.bind(this)} disabled={property === 'id'} floatingLabelText={property} id={property} value={this.state.annotation[property]} />));
             fields.push((<br />));
         }
 
