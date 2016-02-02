@@ -5,7 +5,7 @@ var setSelectionLayer = require('./setSelectionLayer');
 
 export default function insertSequenceData({input, state, output}) {
     var { newSequenceData } = input;
-    console.log("input passed to insert is " + newSequenceData);
+    // console.log("input passed to insert is " + newSequenceData);
     var { sequenceData, caretPosition } = state.get();
     ac.throw(ac.posInt, caretPosition)
     ac.throw(ac.sequenceData, sequenceData)
