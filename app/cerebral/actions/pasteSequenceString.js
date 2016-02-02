@@ -22,18 +22,18 @@ export default function pasteSequenceString({input, state, output}) {
         });
     }
 
-    console.log("starting input string: " + sequenceString);
-    console.log("starting clipboard data: " + clipboardData.sequence);
+    // console.log("starting input string: " + sequenceString);
+    // console.log("starting clipboard data: " + clipboardData.sequence);
 
     if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
         // handle clipboardData which was copied from within the app
         // assign clipboardData annotations new ids
         cleanedUpClipboardData = generateNewIdsForSequenceAnnotations(clipboardData);
-        console.log(">>>> data was copied from inside the editor");
+        // console.log(">>>> data was copied from inside the editor");
     } else {
         // clean up the sequence string coming from elsewhere so we can insert it
         cleanedUpClipboardData = filterSequenceString(sequenceString);
-        console.log(">>>> data is from outside the editor");
+        // console.log(">>>> data is from outside the editor");
     }
 
     console.log("clipboard data is clean: " + cleanedUpClipboardData);
