@@ -5,17 +5,42 @@ import { propTypes } from './react-props-decorators.js';
 
 import TextField from 'material-ui/lib/text-field';
 
+var assign = require('lodash/object/assign');
+
+@Cerebral({})
 export default class AnnotationForm extends React.Component {
 
-    render() {
-        var {
-            annotation
-        } = this.props;
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            annotation: assign({}, this.props.annotation)
+        };
+    }
+
+    onChange(event) {
+        clearTimeout(this.state.timeout);
+
+        var annotation = this.state.annotation;
+        annotation[event.target.id] = event.target.value;
+
+        var timeout = setTimeout(() => {
+            this.props.signals.updateFeature({
+                feature: annotation
+            });
+        }, 1000);
+
+        this.setState({
+            annotation: annotation,
+            timeout: timeout
+        });
+    }
+
+    render() {
         var fields = [];
 
-        for ( let property in annotation ) {
-            fields.push((<TextField floatingLabelText={property} value={annotation[property]} />));
+        for ( let property in this.state.annotation ) {
+            fields.push((<TextField onChange={this.onChange.bind(this)} floatingLabelText={property} id={property} value={this.state.annotation[property]} />));
             fields.push((<br />));
         }
 

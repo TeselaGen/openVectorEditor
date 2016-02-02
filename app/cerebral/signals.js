@@ -114,6 +114,9 @@ export default function(options) {
         deleteFeatures: a.addEditModeOnly([
             a.deleteFeatures
         ]),
+        updateFeature: a.addEditModeOnly([
+            a.updateFeature
+        ]),
         sequenceDataInserted: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],

@@ -19,9 +19,9 @@ import AnnotationForm from './AnnotationForm';
 @Cerebral({
 })
 @propTypes({
-    data: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
     annotationType: PropTypes.string.isRequired,
-    filter: PropTypes.object.isRequired
+    filter: PropTypes.array.isRequired
 })
 export default class AnnotationTable extends React.Component {
 
@@ -117,7 +117,7 @@ export default class AnnotationTable extends React.Component {
                 <TableHeader>
                   <TableRow>{tableHeaderCells}</TableRow>
                 </TableHeader>
-                <TableBody>{tableDataRows}</TableBody>
+                <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
               </Table>
 
               {controls}
