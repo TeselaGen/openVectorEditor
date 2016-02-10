@@ -3,6 +3,13 @@ var assign = require('lodash/object/assign');
 export default function updateFeature({ input: { feature }, state, output }) {
     var temp = [];
 
+    feature.start = parseInt(feature.start);
+    feature.end = parseInt(feature.end);
+    feature.strand = parseInt(feature.strand);
+
+    if ( isNaN(feature.start + feature.end + feature.strand) )
+        return;
+
     while ( state.get(['sequenceData', 'features', 'length']) > 0 ) {
         let f = state.shift(['sequenceData', 'features']);
 
