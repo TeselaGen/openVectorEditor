@@ -1,6 +1,6 @@
 {
   "name": "ve-sequence-utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "sequence utility functions",
   "main": "none",
   "scripts": {
