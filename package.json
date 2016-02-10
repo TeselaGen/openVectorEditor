@@ -10,12 +10,11 @@
     "checkDeps": "npm-check-updates",
     "check-dependencies": "check-dependencies",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
-    "linklocal": "linklocal",
     "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
     "bot": "npm run testServer & sleep 1 && npm run openTestPage",
     "testServer": "NODE_ENV=testing webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
-    "start": "npm run check-dependencies && npm run linklocal && node devServer.js",
-    "build": "NODE_ENV=production npm run linklocal && webpack -p --config webpack.config.production.js",
+    "start": "npm run check-dependencies && node devServer.js",
+    "build": "NODE_ENV=production webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "dependencies": {
@@ -87,7 +86,6 @@
     "karma-mocha": "^0.2.0",
     "karma-sourcemap-loader": "^0.3.6",
     "karma-webpack": "^1.7.0",
-    "linklocal": "^2.5.2",
     "mocha": "^2.2.5",
     "mocha-loader": "^0.7.1",
     "npm-check-updates": "^2.3.0",
