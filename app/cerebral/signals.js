@@ -15,7 +15,7 @@ var each = require('lodash/collection/each');
 export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
-        toggleAnnotationTable: [a.toggleSidebar],
+        toggleAnnotationTable: [a.toggleAnnotationTable],
         selectionCopied: [
             a.copySelection, {
                 success: [a.setData('clipboardData')],
@@ -111,6 +111,12 @@ export default function(options) {
             a.clearSelectionLayer
         ]),
         // type sequence from keyboard
+        deleteFeatures: a.addEditModeOnly([
+            a.deleteFeatures
+        ]),
+        updateFeature: a.addEditModeOnly([
+            a.updateFeature
+        ]),
         sequenceDataInserted: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],

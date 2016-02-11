@@ -30,7 +30,7 @@ import styles from './sequence-editor.css';
     showCircular: ['showCircular'],
     showLinear: ['showLinear'],
     showRow: ['showRow'],
-    showSidebar: ['showSidebar'],
+    annotationTableType: ['annotationTableType'],
     cutsites: ['cutsites'],
     orfData: ['orfData']
 })
@@ -46,7 +46,8 @@ import styles from './sequence-editor.css';
     clipboardData: PropTypes.object.isRequired,
     showCircular: PropTypes.bool.isRequired,
     showLinear: PropTypes.bool.isRequired,
-    showRow: PropTypes.bool.isRequired
+    showRow: PropTypes.bool.isRequired,
+    annotationTableType: PropTypes.string.isRequired
 })
 class SequenceEditor extends React.Component {
     componentDidMount() {
@@ -141,29 +142,35 @@ class SequenceEditor extends React.Component {
             sequenceData,
             showCircular,
             showRow,
-            showSidebar,
+            annotationTableType,
             cutsites,
             orfData
         } = this.props;
 
         var table;
 
-        if (showSidebar === 'features') {
+        if (annotationTableType === 'features') {
             table = (
                 <AnnotationTable
                    data={sequenceData.features}
+                   annotationType={annotationTableType}
+                   filter={['name', 'type', 'start', 'end', 'strand']}
                    />
             );
-        } else if (showSidebar === 'cutsites') {
+        } else if (annotationTableType === 'cutsites') {
             table = (
                 <AnnotationTable
                    data={cutsites}
+                   annotationType={annotationTableType}
+                   filter={['name', 'start', 'end', 'strand']}
                    />
             );
-        } else if (showSidebar === 'orfs') {
+        } else if (annotationTableType === 'orfs') {
             table = (
                 <AnnotationTable
                    data={orfData}
+                   annotationType={annotationTableType}
+                   filter={['start', 'end', 'length', 'strand', 'frame']}
                    />
             );
         }
