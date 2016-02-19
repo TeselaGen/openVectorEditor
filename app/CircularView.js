@@ -10,7 +10,6 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 var Draggable = require('react-draggable');
-
 import styles from './circular-view.css';
 
 @Cerebral({
@@ -151,29 +150,29 @@ class CircularView extends React.Component {
                 }
                 return (
                     <PositionAnnotationOnCircle
-                      key={ index }
-                      sAngle={ tickAngle }
-                      eAngle={ tickAngle }
-                      height={ currentRadius }>
-                      <text
+                        key={ index }
+                        sAngle={ tickAngle }
+                        eAngle={ tickAngle }
+                        height={ currentRadius }>
+                    <text
                         transform={ (flip ? 'rotate(180)' : '') + ` translate(0, ${flip ? -textOffset : textOffset})` }
                         style={ {    textAnchor: "middle",    dominantBaseline: "central",    fontSize: 'small'} }>
                         { tickPosition }
-                      </text>
-                      <rect
+                    </text>
+                    <rect
                         width={ tickMarkWidth }
                         height={ tickMarkHeight }>
-                      </rect>
+                    </rect>
                     </PositionAnnotationOnCircle>
-                    )
+                )
             })
             annotationsSvgs.push(
                 <g>
-                  { tickMarksAndLabels }
-                  <circle
-                    r={ currentRadius }
-                    style={ {    fill: 'none',    stroke: 'black',    strokeWidth: 1} }>
-                  </circle>
+                    { tickMarksAndLabels }
+                    <circle
+                        r={ currentRadius }
+                        style={ { fill: 'none', stroke: 'black', strokeWidth: 1} }>
+                    </circle>
                 </g>
             )
 
@@ -191,30 +190,33 @@ class CircularView extends React.Component {
             });
             annotationsSvgs.push(
                 <PositionAnnotationOnCircle
-                  sAngle={ startAngle }
-                  eAngle={ endAngle }
-                  height={ 0 }>
-                  <path
-                    style={ {    opacity: .4} }
-                    d={ sector.path.print() }
+                    sAngle={ startAngle }
+                    eAngle={ endAngle }
+                    height={ 0 }>
+                    <path
+                        style={ {    opacity: .4} }
+                        d={ sector.path.print() }
                     fill="blue" />
-                </PositionAnnotationOnCircle>)
-                annotationsSvgs.push(
+                </PositionAnnotationOnCircle>
+            )
+            annotationsSvgs.push(
                 <Caret 
                     key='caretStart'
                     caretPosition={selectionLayer.start}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
                     outerRadius={currentRadius}
-                />)
-                annotationsSvgs.push(
+                />
+            )
+            annotationsSvgs.push(
                 <Caret 
                     key='caretEnd'
                     caretPosition={selectionLayer.end + 1}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
                     outerRadius={currentRadius}
-                />)
+                />
+            )
         }
 
         if (caretPosition !== -1 && !selectionLayer.selected) {
@@ -230,29 +232,29 @@ class CircularView extends React.Component {
 
         return (
             <Draggable
-            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-            onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}   
-            }
-            onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}   
-            }
-            onStop={signals.editorDragStopped}
-            
-            >
-                  <svg
-                  onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
+                bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+                onDrag={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}   
                 }
+                onStart={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}   
+                }
+                onStop={signals.editorDragStopped}
+            >
+                <svg
+                    onClick={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked)}   
+                    }
                     width={ circularViewDimensions.width }
                     height={ circularViewDimensions.height }
                     ref="circularView"
                     className={styles.circularView}
-                    viewBox={ `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}` }>
-                      { annotationsSvgs }
-                  </svg>
+                    viewBox={ `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}` }
+                >
+                    { annotationsSvgs }
+                </svg>
             </Draggable>
-            );
+        );
     }
 }
 
@@ -264,17 +266,19 @@ function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
     var {startAngle, endAngle} = getRangeAngles({start: caretPosition, end:caretPosition}, sequenceLength)
     return (
         <PositionAnnotationOnCircle
-          sAngle={ startAngle }
-          eAngle={ endAngle }
-          height={ 0 }>
-          <line
-            className="cursor"
-            style={ { opacity: 9, cursor: "ew-resize",} }//tnr: the classname needs to be cursor here!
-            x1={0}
-            y1={-innerRadius}
-            x2={0}
-            y2={-outerRadius}
-            stroke="black" />
+            sAngle={ startAngle }
+            eAngle={ endAngle }
+            height={ 0 }
+        >
+            <line
+                className="cursor"
+                style={ { opacity: 9, cursor: "ew-resize",} }//tnr: the classname needs to be cursor here!
+                x1={0}
+                y1={-innerRadius}
+                x2={0}
+                y2={-outerRadius}
+                stroke="black" 
+            />
         </PositionAnnotationOnCircle>
     )
 }
@@ -290,9 +294,9 @@ var PositionAnnotationOnCircle = function({children, height=0, sAngle=0, eAngle=
     }
     return (
         <g transform={ transform }>
-          { children }
+            { children }
         </g>
-        )
+    )
 }
 
 function getAngleForPositionMidpoint(position, maxLength) {

@@ -15,8 +15,8 @@ module.exports = function (options) {
 	var cerebral = controller(options)
 	return {
 		Editor: (<Container controller={cerebral}>
-		    <SequenceEditor/>
-		  </Container>),
+            <SequenceEditor/>
+            </Container>),
 		controller: cerebral
 	};
 }

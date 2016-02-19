@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 
-
 var RowView = React.createClass({
     propTypes: {
         mapViewDimensions: PropTypes.object.isRequired,
@@ -59,11 +58,7 @@ var RowView = React.createClass({
         })
     },
 
-    
-
-    render: function() {
-        // console.log('render!');
-        // 
+    render: function() { 
         var {
             mapViewDimensions, 
             rowData, 

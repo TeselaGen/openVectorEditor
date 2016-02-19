@@ -21,22 +21,25 @@ function mixin(target, source) {
 }
 
 @propTypes({
-    charWidth: PropTypes.number.isRequired,
     bpsPerRow: PropTypes.number.isRequired,
+    charWidth: PropTypes.number.isRequired,
     color: PropTypes.string,
+    regions: PropTypes.array.isRequired,
     row: PropTypes.object.isRequired,
     sequenceLength: PropTypes.number.isRequired,
-    regions: PropTypes.array.isRequired,
+    shouldBlink: React.PropTypes.bool.isRequired
 })
+
 export default class HighlightLayer extends React.Component {
     render() {
         var {
+            bpsPerRow,            
             charWidth,
-            bpsPerRow,
+            color,
+            regions,                    
             row,
             sequenceLength,
-            regions,
-            color
+            shouldBlink
         } = this.props;
 
         var selectionLayers;
@@ -89,17 +92,16 @@ export default class HighlightLayer extends React.Component {
         if (selectionLayers !== undefined && selectionLayers.length > 0) {
             return (
                 <div onContextMenu={function (event) {
-                         //tnrtodo: add context menu here
-                         event.preventDefault();
-                         event.stopPropagation();
-                     }}>
-                  {selectionLayers}
-                  {startSelectionCursor}
-                  {endSelectionCursor}
+                    //tnrtodo: add context menu here
+                    event.preventDefault();
+                    event.stopPropagation();
+                }}>
+                    {selectionLayers}
+                    {startSelectionCursor}
+                    {endSelectionCursor}
                 </div>
             );
         }
-
         return null;
     }
 }

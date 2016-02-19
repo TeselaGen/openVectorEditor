@@ -6,10 +6,12 @@ module.exports = function CircularFeature({color, radius, annotationHeight, tota
         annotationHeight,
         totalAngle,
         tailThickness:1 //feature specific
-    })
+    });
+
     return (
         <path
-          d={ path.print() }
-          fill={ color } />
-        )
+            d={ path.print() }
+            fill={ color } 
+        />
+    )
 }

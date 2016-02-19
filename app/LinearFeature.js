@@ -56,7 +56,7 @@ var LinearFeature = React.createClass({
               transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
               points={ points }>
             </polyline>
-            );
+        );
     }
 });
 module.exports = LinearFeature;

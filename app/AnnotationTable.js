@@ -11,7 +11,6 @@ export default class AnnotationTable extends React.Component {
 
     constructor() {
         super(arguments);
-
         this.state = {};
     }
 

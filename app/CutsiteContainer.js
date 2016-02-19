@@ -45,7 +45,7 @@ let CutsiteContainer = React.createClass({
                     key={'Cutsite' + annotation.id + 'start:' + annotationRange.start}
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
                     left={result.xStart}
-                    >
+                >
                     <Cutsite
                         onClick={function (event) {
                             setSelectionLayer({selectionLayer: this});
