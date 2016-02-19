@@ -1,11 +1,9 @@
 import React, { PropTypes } from 'react';
 
-
 const AnnotationContainerHolder = require('./AnnotationContainerHolder');
 const AnnotationPositioner = require('./AnnotationPositioner');
 const Translation = require('./Translation');
 const getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-
 const PureRenderMixin = require('react-addons-pure-render-mixin');
 
 const TranslationContainer = React.createClass({
@@ -69,15 +67,13 @@ const TranslationContainer = React.createClass({
             // annotationsSVG = annotationsSVG.concat(translationSVG);
         });
         const containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
-          // height={containerHeight}
+        // height={containerHeight}
         return (
-              <AnnotationContainerHolder 
-                containerHeight={containerHeight}>
+            <AnnotationContainerHolder containerHeight={containerHeight}>
                 {annotationsSVG}
-              </AnnotationContainerHolder>
-          );
-
-          
+            </AnnotationContainerHolder>
+        );     
     }
 });
+
 module.exports = TranslationContainer;

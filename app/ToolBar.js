@@ -99,24 +99,24 @@ export default class ToolBar extends React.Component {
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
-                  <RaisedButton
-                     label='Features'
-                     onTouchTap={function() {
-                         signals.toggleAnnotationTable({ currentSidebar: 'features' });
-                     }}
-                     />
-                  <RaisedButton
-                     label='Cutsites'
-                     onTouchTap={function() {
-                         signals.toggleAnnotationTable({ currentSidebar: 'cutsites' });
-                     }}
-                     />
-                  <RaisedButton
-                     label='ORFs'
-                     onTouchTap={function() {
-                         signals.toggleAnnotationTable({ currentSidebar: 'orfs' });
-                     }}
-                     />
+                    <RaisedButton
+                        label='Features'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ currentSidebar: 'features' });
+                        }}
+                    />
+                    <RaisedButton
+                        label='Cutsites'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ currentSidebar: 'cutsites' });
+                        }}
+                    />
+                    <RaisedButton
+                        label='ORFs'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ currentSidebar: 'orfs' });
+                        }}
+                    />
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                         {toggleMenuItems}
                     </IconMenu>
@@ -128,5 +128,4 @@ export default class ToolBar extends React.Component {
             </Toolbar>
         );
     }
-
 }

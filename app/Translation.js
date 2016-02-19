@@ -3,7 +3,6 @@ const zeroSubrangeByContainerRange = require('ve-range-utils/zeroSubrangeByConta
 const getSequenceWithinRange = require('ve-range-utils/getSequenceWithinRange');
 const getCodonRangeForAASliver = require('ve-sequence-utils/getCodonRangeForAASliver');
 const AASliver = require('./AASliver');
-
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var Translation = React.createClass({
@@ -65,18 +64,14 @@ var Translation = React.createClass({
                     color={aminoAcidSliver.aminoAcid.color}
                 positionInCodon={aminoAcidSliver.positionInCodon}>
               </AASliver>
-          );
+            );
         });
         return (
-            <g
-            onClick={this.props.onClick}
-            >
-            {translationSVG}    
+            <g onClick={this.props.onClick} >
+                {translationSVG}    
             </g>
         );
     }
 });
-
-
 
 module.exports = Translation;
