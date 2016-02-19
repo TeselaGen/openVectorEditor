@@ -1,9 +1,6 @@
-import React, {
-    PropTypes
-}
-from 'react';
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import React, { PropTypes } from 'react';
 
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 var SequenceContainer = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
@@ -28,7 +25,6 @@ var SequenceContainer = React.createClass({
                 {children}
             </div>
         )
-
     }
 });
 

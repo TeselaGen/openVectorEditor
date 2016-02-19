@@ -102,48 +102,47 @@ var RowView = React.createClass({
         // console.log('rowData: ' + JSON.stringify(rowData,null,4));
         return (
             <Draggable
-            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-            onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
-            }
-            onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
-            }
-            onStop={signals.editorDragStopped}
-            >
-              <div
-                ref="mapView"
-                className="mapView"
-                style={mapViewStyle}
-                onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
+                bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+                onDrag={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
                 }
+                onStart={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
+                }
+                onStop={signals.editorDragStopped}
+            >
+                <div
+                    ref="mapView"
+                    className="mapView"
+                    style={mapViewStyle}
+                    onClick={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
+                    }
                 >
-                <RowItem
-                    charWidth={charWidth}
-                      charHeight={charHeight}
-                      annotationHeight={annotationHeight}
-                      tickSpacing={tickSpacing}
-                      spaceBetweenAnnotations={spaceBetweenAnnotations}
-                      showFeatures={showFeatures}
-                      showTranslations={showTranslations}
-                      showParts={showParts}
-                      showOrfs={showOrfs}
-                      showAxis={showAxis}
-                      showCutsites={showCutsites}
-                      showReverseSequence={showReverseSequence}
-                      selectionLayer={selectionLayer}
-                      caretPosition={caretPosition}
-                      sequenceLength={sequenceLength}
-                      bpsPerRow={bpsPerRow}
-                      signals={signals}
-                    row={rowData[0]} />
-              </div>
+                    <RowItem
+                        charWidth={charWidth}
+                        charHeight={charHeight}
+                        annotationHeight={annotationHeight}
+                        tickSpacing={tickSpacing}
+                        spaceBetweenAnnotations={spaceBetweenAnnotations}
+                        showFeatures={showFeatures}
+                        showTranslations={showTranslations}
+                        showParts={showParts}
+                        showOrfs={showOrfs}
+                        showAxis={showAxis}
+                        showCutsites={showCutsites}
+                        showReverseSequence={showReverseSequence}
+                        selectionLayer={selectionLayer}
+                        caretPosition={caretPosition}
+                        sequenceLength={sequenceLength}
+                        bpsPerRow={bpsPerRow}
+                        signals={signals}
+                        row={rowData[0]} 
+                    />
+                </div>
             </Draggable>
         );
     }
 });
-
-
 
 module.exports = RowView;

@@ -2,7 +2,6 @@ var each = require('lodash/collection/each');
 var sortBy = require('lodash/collection/sortBy');
 var uniq = require('lodash/array/uniq');
 
-
 function populateRowByRowNumber(sequenceData, bpsPerRow, rowNumber, sequenceLength) {
     var row = {};
     row.rowNumber = rowNumber;

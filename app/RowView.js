@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
+import styles from './row-view.css';
+
 var Draggable = require('react-draggable');
 var RowItem = require('./RowItem.js');
 var InfiniteScroller = require('react-variable-height-infinite-scroller');
-
-import styles from './row-view.css';
 
 @Cerebral({
     rowViewDimensions: ['rowViewDimensions'],
@@ -29,6 +29,7 @@ import styles from './row-view.css';
     bpsPerRow: ['bpsPerRow'],
     uppercase: ['uppercase']
 })
+
 @propTypes({
     rowViewDimensions: PropTypes.object.isRequired,
     rowData: PropTypes.array.isRequired,
@@ -51,6 +52,7 @@ import styles from './row-view.css';
     bpsPerRow: PropTypes.number.isRequired,
     uppercase: PropTypes.bool.isRequired
 })
+
 class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
@@ -159,7 +161,7 @@ class RowView extends React.Component {
                     key={rowNumber}
                     uppercase={uppercase}
                     row={rowData[rowNumber]} 
-                    />);
+                />);
             } else {
                 return null
             }
@@ -167,31 +169,31 @@ class RowView extends React.Component {
 
         return (
             <Draggable
-            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-            onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
-            }
-            onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
-            }
-            onStop={signals.editorDragStopped}
-            >
-              <div
-                ref="rowView"
-                className={styles.rowView}
-                onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
+                bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+                onDrag={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
                 }
+                onStart={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
+                }
+                onStop={signals.editorDragStopped}
+            >
+                <div
+                    ref="rowView"
+                    className={styles.rowView}
+                    onClick={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
+                    }
                 >
-                <InfiniteScroller
-                    ref={'InfiniteScroller'}
-                    averageElementHeight={100}
-                    containerHeight={rowViewDimensions.height}
-                    renderRow={renderRows}
-                    totalNumberOfRows={rowData.length}
-                    rowToJumpTo={rowToJumpTo}
+                    <InfiniteScroller
+                        ref={'InfiniteScroller'}
+                        averageElementHeight={100}
+                        containerHeight={rowViewDimensions.height}
+                        renderRow={renderRows}
+                        totalNumberOfRows={rowData.length}
+                        rowToJumpTo={rowToJumpTo}
                     /> 
-              </div>
+                </div>
             </Draggable>
         );
     }

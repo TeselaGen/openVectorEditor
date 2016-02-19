@@ -1,21 +1,18 @@
 import React, {PropTypes} from 'react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
-var Combokeys = require("combokeys");
-var combokeys;
-var bindGlobalPlugin = require('combokeys/plugins/global-bind');
-
-var RowView = require('./RowView');
-var MapView = require('./MapView');
-var CircularView = require('./CircularView');
-
-var Clipboard = require('./Clipboard');
 import {Decorator as Cerebral} from 'cerebral-view-react';
-
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
 import AnnotationTable from './AnnotationTable';
-
 import styles from './sequence-editor.css';
+
+var Combokeys = require("combokeys");
+var combokeys;
+var bindGlobalPlugin = require('combokeys/plugins/global-bind');
+var RowView = require('./RowView');
+var MapView = require('./MapView');
+var CircularView = require('./CircularView');
+var Clipboard = require('./Clipboard');
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
@@ -48,6 +45,7 @@ import styles from './sequence-editor.css';
     showLinear: PropTypes.bool.isRequired,
     showRow: PropTypes.bool.isRequired
 })
+
 class SequenceEditor extends React.Component {
     componentDidMount() {
         var {
@@ -152,19 +150,19 @@ class SequenceEditor extends React.Component {
             table = (
                 <AnnotationTable
                    data={sequenceData.features}
-                   />
+                />
             );
         } else if (showSidebar === 'cutsites') {
             table = (
                 <AnnotationTable
                    data={cutsites}
-                   />
+                />
             );
         } else if (showSidebar === 'orfs') {
             table = (
                 <AnnotationTable
                    data={orfData}
-                   />
+                />
             );
         }
 

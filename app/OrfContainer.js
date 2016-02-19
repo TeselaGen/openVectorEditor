@@ -61,7 +61,6 @@ let OrfContainer = React.createClass({
                             name={annotation.name}>
                         </Orf>
                     </StyleOrf>
-
                 </AnnotationPositioner>
             );
         });
@@ -69,11 +68,12 @@ let OrfContainer = React.createClass({
         return (
             <AnnotationContainerHolder 
                 className='orfContainer'
-                containerHeight={containerHeight}>
+                containerHeight={containerHeight}
+            >
                 {annotationsSVG}
             </AnnotationContainerHolder>
         );
-
     }
 });
+
 module.exports = OrfContainer;

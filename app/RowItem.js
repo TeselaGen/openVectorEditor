@@ -54,55 +54,59 @@ class RowItem extends React.Component {
                 onMouseMove={this.onMouseMove}
                 onMouseUp={this.onMouseUp}
                 onMouseDown={this.onMouseDown}
-                >
+            >
                 {(showFeatures && row.features.length > 0) &&
-                  <FeatureContainer
-                    row={row}
-                    signals={signals}
-                    annotationRanges={row.features}
-                    charWidth={charWidth}
-                    annotationHeight={annotationHeight}
-                    bpsPerRow={bpsPerRow}
-                    sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    <FeatureContainer
+                        row={row}
+                        signals={signals}
+                        annotationRanges={row.features}
+                        charWidth={charWidth}
+                        annotationHeight={annotationHeight}
+                        bpsPerRow={bpsPerRow}
+                        sequenceLength={sequenceLength}
+                        spaceBetweenAnnotations={spaceBetweenAnnotations}
                     />
                 }
             
                 {(showOrfs && row.orfs.length > 0) &&
-                  <OrfContainer
-                    row={row}
-                    signals={signals}
-                    annotationRanges={row.orfs}
-                    charWidth={charWidth}
-                    annotationHeight={annotationHeight}
-                    bpsPerRow={bpsPerRow}
-                    sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
+                    <OrfContainer
+                        row={row}
+                        signals={signals}
+                        annotationRanges={row.orfs}
+                        charWidth={charWidth}
+                        annotationHeight={annotationHeight}
+                        bpsPerRow={bpsPerRow}
+                        sequenceLength={sequenceLength}
+                        spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    />
                 }
                 {(showTranslations && row.translations.length > 0) &&
-                  <TranslationContainer
-                    row={row}
-                    signals={signals}
-                    annotationRanges={row.translations}
-                    charWidth={charWidth}
-                    annotationHeight={annotationHeight}
-                    bpsPerRow={bpsPerRow}
-                    sequenceLength={sequenceLength}
-                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
+                    <TranslationContainer
+                        row={row}
+                        signals={signals}
+                        annotationRanges={row.translations}
+                        charWidth={charWidth}
+                        annotationHeight={annotationHeight}
+                        bpsPerRow={bpsPerRow}
+                        sequenceLength={sequenceLength}
+                        spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    />
                 }
 
                 {(showCutsites && row.cutsites.length > 0) &&
-                  <CutsiteLabelContainer
-                    signals={signals}
-                    annotationRanges={row.cutsites}
-                    charWidth={charWidth}
-                    annotationHeight={annotationHeight}
-                    bpsPerRow={bpsPerRow}
-                    spaceBetweenAnnotations={spaceBetweenAnnotations}/>
+                    <CutsiteLabelContainer
+                        signals={signals}
+                        annotationRanges={row.cutsites}
+                        charWidth={charWidth}
+                        annotationHeight={annotationHeight}
+                        bpsPerRow={bpsPerRow}
+                        spaceBetweenAnnotations={spaceBetweenAnnotations}
+                    />
                 }
                 <SequenceContainer 
                     sequence={sequence} 
-                    charWidth={charWidth}>
+                    charWidth={charWidth}
+                >
                     {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
                         row={row}
                         signals={signals}
@@ -111,30 +115,31 @@ class RowItem extends React.Component {
                         charWidth={charWidth}
                         bpsPerRow={bpsPerRow}
                         topStrand={true}
-                        />}
+                    />}
                 </SequenceContainer>
 
                 {showReverseSequence &&
                     <SequenceContainer sequence={ getComplementSequenceString(sequence)} charWidth={charWidth}>
                         {(showCutsites && row.cutsites.length > 0) && <CutsiteSnipsContainer
-                                                row={row}
-                                                signals={signals}
-                                                sequenceLength={sequenceLength}
-                                                annotationRanges={row.cutsites}
-                                                charWidth={charWidth}
-                                                bpsPerRow={bpsPerRow}
-                                                topStrand={false}
-                                                />}
+                            row={row}
+                            signals={signals}
+                            sequenceLength={sequenceLength}
+                            annotationRanges={row.cutsites}
+                            charWidth={charWidth}
+                            bpsPerRow={bpsPerRow}
+                            topStrand={false}
+                        />}
                     </SequenceContainer>
                 }
                 {showAxis &&
                     <AxisContainer
-                    row={row}
-                    signals={signals}
-                    tickSpacing={tickSpacing}
-                    charWidth={charWidth}
-                    annotationHeight={annotationHeight}
-                    bpsPerRow={bpsPerRow}/>
+                        row={row}
+                        signals={signals}
+                        tickSpacing={tickSpacing}
+                        charWidth={charWidth}
+                        annotationHeight={annotationHeight}
+                        bpsPerRow={bpsPerRow}
+                    />
                 }
                 <HighlightLayer
                     charWidth={charWidth}
@@ -173,7 +178,7 @@ class RowItem extends React.Component {
                         signals={signals}
                         sequenceLength={sequenceLength}
                         shouldBlink={true}
-                        />
+                    />
                 }
             </div>
         );

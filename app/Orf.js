@@ -21,23 +21,22 @@ var Orf = React.createClass({
                 d= {rangeType === 'start' 
                     ? 'M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z' 
                     : 'M0 64 L64 32 L0 0 Z'} 
-                />)
+            />)
         } else if (rangeType === 'start') {
             arrowOrCircle = (<path 
                 transform={`scale(${charWidth/64},${height/64})`}
                 d= 'M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z' 
-                />)
+            />)
         }
         return (
-                <g transform={forward ? null : `translate(${width},0) scale(-1,1)`}
-                    >
-                    <path
-                        transform={(rangeType === 'start' ? `translate(${charWidth},0)` : '') + `scale(${(width - (rangeType === 'middle' ? 0 : charWidth))/64},${height/64})`}
-                        d='M0 40 L64 40 L64 20 L0 20 Z'
-                        >
-                    </path>
-                    {arrowOrCircle}
-                </g>
+            <g transform={forward ? null : `translate(${width},0) scale(-1,1)`}>
+                <path
+                    transform={(rangeType === 'start' ? `translate(${charWidth},0)` : '') + `scale(${(width - (rangeType === 'middle' ? 0 : charWidth))/64},${height/64})`}
+                    d='M0 40 L64 40 L64 20 L0 20 Z'
+                >
+                </path>
+                {arrowOrCircle}
+            </g>
         );
     }
 });
