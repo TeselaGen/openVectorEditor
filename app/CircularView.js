@@ -1,12 +1,6 @@
-import React, {
-    PropTypes
-} from 'react';
-import {
-    Decorator as Cerebral
-} from 'cerebral-view-react';
-import {
-    propTypes
-} from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
+import React, { PropTypes } from 'react';
+import { Decorator as Cerebral } from 'cerebral-view-react';
+import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 
 import Sector from 'paths-js/sector';
 import Cutsite from './Cutsite';
@@ -176,7 +170,7 @@ class CircularView extends React.Component {
                 var tickAngle = getAngleForPositionMidpoint(tickPosition, sequenceLength);
                 var flip = false;
                 if ((tickAngle > Math.PI * 0.5) && (tickAngle < Math.PI * 1.5)) {
-                    flip = true
+                    flip = true;
                 }
                 return (
                     <PositionAnnotationOnCircle
@@ -261,47 +255,38 @@ class CircularView extends React.Component {
             );
         }
 
-        return ( < Draggable bounds = {
-                {
+        return (
+            <Draggable bounds = {{
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0
-                }
-            }
-            onDrag = {
-                (event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
-                }
-            }
-            onStart = {
-                (event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
-                }
-            }
-            onStop = {
-                signals.editorDragStopped
-            } >
-            < svg onClick = {
-                (event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
-                }
-            }
-            width = {
-                circularViewDimensions.width
-            }
-            height = {
-                circularViewDimensions.height
-            }
-            ref = "circularView"
-            className = {
-                styles.circularView
-            }
-            viewBox = {
-                `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}`
-            } > {
-                annotationsSvgs
-            } < /svg> < /Draggable>
+                }}
+                       onDrag={
+                           (event) => {
+                               this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                           }
+                                }
+                       onStart={
+                           (event) => {
+                               this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                           }
+                                 }
+                       onStop={
+                           signals.editorDragStopped
+                                } >
+                <svg onClick={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                     }}
+                     width={circularViewDimensions.width}
+                     height={circularViewDimensions.height}
+                     ref="circularView"
+                     className={styles.circularView}
+                     viewBox={`-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}`}
+                >
+                    {annotationsSvgs}
+                </svg>
+            </Draggable>
         );
     }
 }
