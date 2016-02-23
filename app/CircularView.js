@@ -1,15 +1,16 @@
-var Sector = require('paths-js/sector');
-var getRangeAngles = require('ve-range-utils/getRangeAngles');
-let Cutsite = require('./Cutsite');
-let CircularFeature = require('./CircularFeature');
-var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
-var StyleFeature = require('./StyleFeature');
-
-import assign from 'lodash/object/assign';
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
-var Draggable = require('react-draggable');
+
+import Sector from 'paths-js/sector';
+import Cutsite from './Cutsite';
+import CircularFeature from './CircularFeature';
+import StyleFeature from './StyleFeature';
+import Draggable from 'react-draggable';
+
+import assign from 'lodash/object/assign';
+import calculateTickMarkPositionsForGivenRange from './calculateTickMarkPositionsForGivenRange';
+import getRangeAngles from 've-range-utils/getRangeAngles';
 
 import styles from './circular-view.css';
 
@@ -69,7 +70,7 @@ class CircularView extends React.Component {
         var nearestBP = Math.floor(angle / Math.PI / 2 * sequenceLength);
         callback({
             shiftHeld: event.shiftKey,
-            nearestBP, 
+            nearestBP,
             caretGrabbed //tnr: come back and fix this
         });
     }
