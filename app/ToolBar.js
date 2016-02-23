@@ -6,10 +6,11 @@ import { propTypes } from './react-props-decorators.js';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
 // Material UI
-import { Toolbar, ToolbarGroup } from 'material-ui';
-import { IconMenu } from 'material-ui';
-import { IconButton } from 'material-ui';
-import { RaisedButton } from 'material-ui'
+import Toolbar from 'material-ui/lib/toolbar/toolbar';
+import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import IconButton from 'material-ui/lib/icon-button';
+import RaisedButton from 'material-ui/lib/raised-button';
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
