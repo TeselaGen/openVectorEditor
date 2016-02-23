@@ -1,6 +1,12 @@
-import React, { PropTypes } from 'react';
-import { Decorator as Cerebral } from 'cerebral-view-react';
-import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
+import React, {
+    PropTypes
+} from 'react';
+import {
+    Decorator as Cerebral
+} from 'cerebral-view-react';
+import {
+    propTypes
+} from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 
 import Sector from 'paths-js/sector';
 import Cutsite from './Cutsite';
@@ -57,15 +63,15 @@ class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect();
         //get relative click positions
-        var clickX = (event.clientX - boundingRect.left - boundingRect.width/2);
-        var clickY = (event.clientY - boundingRect.top - boundingRect.height/2);
-        console.log('clickX: ' + JSON.stringify(clickX,null,4));
-        console.log('clickY: ' + JSON.stringify(clickY,null,4));
+        var clickX = (event.clientX - boundingRect.left - boundingRect.width / 2);
+        var clickY = (event.clientY - boundingRect.top - boundingRect.height / 2);
+        console.log('clickX: ' + JSON.stringify(clickX, null, 4));
+        console.log('clickY: ' + JSON.stringify(clickY, null, 4));
         //get angle
 
-        var angle = Math.atan2(clickY, clickX) + Math.PI/2;
+        var angle = Math.atan2(clickY, clickX) + Math.PI / 2;
         if (angle < 0) angle += Math.PI * 2;
-        console.log('angle: ' + JSON.stringify(angle,null,4));
+        console.log('angle: ' + JSON.stringify(angle, null, 4));
         var caretGrabbed = event.target.className && event.target.className.animVal === "cursor";
         var nearestBP = Math.floor(angle / Math.PI / 2 * sequenceLength);
         callback({
@@ -90,7 +96,27 @@ class CircularView extends React.Component {
     }
 
     render() {
-        var { showSequence, circularViewDimensions, circularViewData, charWidth, selectionLayer, cutsiteLabelSelectionLayer, annotationHeight, circularAndLinearTickSpacing, spaceBetweenAnnotations, showFeatures, showTranslations, showParts, showOrfs, showAxis, showCutsites, showReverseSequence, caretPosition, sequenceLength, signals} = this.props;
+        var {
+            showSequence,
+            circularViewDimensions,
+            circularViewData,
+            charWidth,
+            selectionLayer,
+            cutsiteLabelSelectionLayer,
+            annotationHeight,
+            circularAndLinearTickSpacing,
+            spaceBetweenAnnotations,
+            showFeatures,
+            showTranslations,
+            showParts,
+            showOrfs,
+            showAxis,
+            showCutsites,
+            showReverseSequence,
+            caretPosition,
+            sequenceLength,
+            signals
+        } = this.props;
         const baseRadius = 80;
         var currentRadius = baseRadius;
         var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
@@ -99,7 +125,11 @@ class CircularView extends React.Component {
         if (showFeatures) {
             var maxYOffset = 0;
             circularViewData.features.forEach(function(annotation, index) {
-                var {startAngle, endAngle, totalAngle} = getRangeAngles(annotation, sequenceLength);
+                var {
+                    startAngle,
+                    endAngle,
+                    totalAngle
+                } = getRangeAngles(annotation, sequenceLength);
                 if (annotation.yOffset > maxYOffset) {
                     maxYOffset = annotation.yOffset;
                 }
@@ -180,7 +210,11 @@ class CircularView extends React.Component {
         var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
 
         if (selectionLayer.selected) {
-            var {startAngle, endAngle, totalAngle} = getRangeAngles(selectionLayer, sequenceLength);
+            var {
+                startAngle,
+                endAngle,
+                totalAngle
+            } = getRangeAngles(selectionLayer, sequenceLength);
             var sector = Sector({
                 center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
                 r: baseRadius - annotationHeight / 2,
@@ -227,32 +261,47 @@ class CircularView extends React.Component {
             );
         }
 
-        return (
-            <Draggable
-               bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-               onDrag={(event) => {
-                   this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
-                  }
-              }
-              onStart={(event) => {
-                          this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
-                          }
-                      }
-                      onStop={signals.editorDragStopped}
-                      >
-                      <svg
-                         onClick={(event) => {
-                             this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
-                            }
-                        }
-                        width={ circularViewDimensions.width }
-                        height={ circularViewDimensions.height }
-                        ref="circularView"
-                        className={styles.circularView}
-                        viewBox={ `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}` }>
-                        { annotationsSvgs }
-                      </svg>
-</Draggable>
+        return ( < Draggable bounds = {
+                {
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0
+                }
+            }
+            onDrag = {
+                (event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                }
+            }
+            onStart = {
+                (event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                }
+            }
+            onStop = {
+                signals.editorDragStopped
+            } >
+            < svg onClick = {
+                (event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                }
+            }
+            width = {
+                circularViewDimensions.width
+            }
+            height = {
+                circularViewDimensions.height
+            }
+            ref = "circularView"
+            className = {
+                styles.circularView
+            }
+            viewBox = {
+                `-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}`
+            } > {
+                annotationsSvgs
+            } < /svg> < /Draggable>
         );
     }
 }
@@ -260,9 +309,20 @@ class CircularView extends React.Component {
 
 module.exports = CircularView;
 
-function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
+function Caret({
+    caretPosition,
+    sequenceLength,
+    innerRadius,
+    outerRadius
+}) {
     var caretWidth = .01;
-    var {startAngle, endAngle} = getRangeAngles({start: caretPosition, end:caretPosition}, sequenceLength);
+    var {
+        startAngle,
+        endAngle
+    } = getRangeAngles({
+        start: caretPosition,
+        end: caretPosition
+    }, sequenceLength);
     return (
         <PositionAnnotationOnCircle
           sAngle={ startAngle }
@@ -280,7 +340,13 @@ function Caret ({caretPosition, sequenceLength, innerRadius, outerRadius}) {
     );
 }
 
-var PositionAnnotationOnCircle = function({children, height=0, sAngle=0, eAngle=0, forward=true}) {
+var PositionAnnotationOnCircle = function({
+    children,
+    height = 0,
+    sAngle = 0,
+    eAngle = 0,
+    forward = true
+}) {
     const sAngleDegs = sAngle * 360 / Math.PI / 2;
     const eAngleDegs = eAngle * 360 / Math.PI / 2;
     var transform;
