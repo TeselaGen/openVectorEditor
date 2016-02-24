@@ -25,7 +25,7 @@ module.exports = {
     minimumOrfSize: 20,
     readOnly: false,
     rowToJumpTo: null,
-    showAxis: true,
+    showAxis: false,
     showCircular: true,
     showCutsites: true,
     showFeatures: true,

@@ -75,20 +75,6 @@ class CircularView extends React.Component {
         });
     }
 
-    resize() {
-        if (this.refs.circularView) {
-            this.props.signals.resizeCircularView({
-                rootWidth: this.refs.circularView.clientWidth,
-                rootHeight: this.refs.circularView.clientHeight
-            });
-        }
-    }
-
-    componentDidMount() {
-        this.resize();
-        window.addEventListener('resize', this.resize.bind(this));
-    }
-
     render() {
         var {
             showSequence,
@@ -130,77 +116,26 @@ class CircularView extends React.Component {
 
                 annotationsSvgs.push(
                     <PositionAnnotationOnCircle
-                       key={ index }
-                       sAngle={ startAngle }
-                       eAngle={ endAngle }
-                       direction={ 'reverse' }>
-                      <StyleFeature
-                         signals={signals}
-                         annotation={annotation}
-                         color={ annotation.color }>
-                        <CircularFeature
-                           radius={ currentRadius }
-                           annotationHeight={ annotationHeight }
-                           totalAngle={ totalAngle }>
-                        </CircularFeature>
-                      </StyleFeature>
+                        key={ index }
+                        sAngle={ startAngle }
+                        eAngle={ endAngle }
+                        direction={ 'reverse' }>
+                        <StyleFeature
+                            signals={signals}
+                            annotation={annotation}
+                            color={ annotation.color }>
+                            <CircularFeature
+                                radius={ currentRadius }
+                                annotationHeight={ annotationHeight }
+                                totalAngle={ totalAngle }>
+                            </CircularFeature>
+                        </StyleFeature>
                     </PositionAnnotationOnCircle>
                 );
                 currentRadius += maxYOffset + 1 * totalAnnotationHeight;
             });
         }
 
-        if (showAxis) {
-            var tickMarkHeight = 10;
-            var tickMarkWidth = 1;
-            var textOffset = 20;
-
-            var axisLineThickness = 4;
-            currentRadius += textOffset + tickMarkHeight + axisLineThickness;
-
-            var tickPositions = calculateTickMarkPositionsForGivenRange({
-                range: {
-                    start: 0,
-                    end: sequenceLength
-                },
-                tickSpacing: circularAndLinearTickSpacing
-            });
-
-            var tickMarksAndLabels = tickPositions.map(function(tickPosition, index) {
-                var tickAngle = getAngleForPositionMidpoint(tickPosition, sequenceLength);
-                var flip = false;
-                if ((tickAngle > Math.PI * 0.5) && (tickAngle < Math.PI * 1.5)) {
-                    flip = true;
-                }
-                return (
-                    <PositionAnnotationOnCircle
-                       key={ index }
-                       sAngle={ tickAngle }
-                       eAngle={ tickAngle }
-                       height={ currentRadius }>
-                      <text
-                         transform={ (flip ? 'rotate(180)' : '') + ` translate(0, ${flip ? -textOffset : textOffset})` }
-                         style={ {    textAnchor: "middle",    dominantBaseline: "central",    fontSize: 'small'} }>
-                        { tickPosition }
-                      </text>
-                      <rect
-                         width={ tickMarkWidth }
-                         height={ tickMarkHeight }>
-                      </rect>
-                    </PositionAnnotationOnCircle>
-                );
-            });
-            annotationsSvgs.push(
-                <g>
-                  { tickMarksAndLabels }
-                  <circle
-                     r={ currentRadius }
-                     style={ {    fill: 'none',    stroke: 'black',    strokeWidth: 1} }>
-                  </circle>
-                </g>
-            );
-
-        }
         var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
 
         if (selectionLayer.selected) {
@@ -218,42 +153,44 @@ class CircularView extends React.Component {
             });
             annotationsSvgs.push(
                 <PositionAnnotationOnCircle
-                   sAngle={ startAngle }
-                   eAngle={ endAngle }
-                   height={ 0 }>
-                  <path
-                     style={ {    opacity: .4} }
-                     d={ sector.path.print() }
-                     fill="blue" />
+                    sAngle={ startAngle }
+                    eAngle={ endAngle }
+                    height={ 0 }>
+                    <path
+                        style={ {    opacity: .4} }
+                        d={ sector.path.print() }
+                        fill="blue" />
                 </PositionAnnotationOnCircle>);
             annotationsSvgs.push(
                 <Caret 
-                   key='caretStart'
-                   caretPosition={selectionLayer.start}
-                   sequenceLength={sequenceLength}
-                   innerRadius={innerRadius}
-                   outerRadius={currentRadius}
-                   />);
+                    key='caretStart'
+                    caretPosition={selectionLayer.start}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />);
             annotationsSvgs.push(
                 <Caret 
-                   key='caretEnd'
-                   caretPosition={selectionLayer.end + 1}
-                   sequenceLength={sequenceLength}
-                   innerRadius={innerRadius}
-                   outerRadius={currentRadius}
-                   />);
+                    key='caretEnd'
+                    caretPosition={selectionLayer.end + 1}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />);
         }
 
         if (caretPosition !== -1 && !selectionLayer.selected) {
             annotationsSvgs.push(
                 <Caret 
-                   caretPosition={caretPosition}
-                   sequenceLength={sequenceLength}
-                   innerRadius={innerRadius}
-                   outerRadius={currentRadius}
-                   />
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />
             );
         }
+
+        var rimRadius = currentRadius + annotationHeight;
 
         return (
             <Draggable bounds = {{
@@ -266,27 +203,37 @@ class CircularView extends React.Component {
                            (event) => {
                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
                            }
-                                }
+                              }
                        onStart={
                            (event) => {
                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
                            }
-                                 }
+                               }
                        onStop={
                            signals.editorDragStopped
-                                } >
-                <svg onClick={(event) => {
-                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                              } >
+                <div style={{
+                        width: circularViewDimensions.width,
+                        height: circularViewDimensions.height
                     }}
-                     width={circularViewDimensions.width}
-                     height={circularViewDimensions.height}
-                     ref="circularView"
-                     className={styles.circularView}
                 >
-                    <g transform={`translate(${circularViewDimensions.width/2} ${circularViewDimensions.height/2})`}>
-                        {annotationsSvgs}
-                    </g>
-                </svg>
+                    <svg onClick={(event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                        }}
+                         width={circularViewDimensions.width}
+                         height={circularViewDimensions.height}
+                    >
+                        <g transform={`translate(${circularViewDimensions.width/2} ${circularViewDimensions.height/2})`}>
+                            <path
+                                d={`M 0, 0 m -${rimRadius}, 0 a ${rimRadius},${rimRadius} 0 1,0 ${rimRadius*2},0 a ${rimRadius},${rimRadius} 0 1,0 -${rimRadius*2},0 ` +
+                                    `M 0, 0 m -${currentRadius}, 0 a ${currentRadius},${currentRadius} 0 1,1 ${currentRadius*2},0 a ${currentRadius},${currentRadius} 0 1,1 -${currentRadius*2},0`}
+                                fill={'red'}
+                                stroke={'black'}
+                            />
+                            {annotationsSvgs}
+                        </g>
+                    </svg>
+                </div>
             </Draggable>
         );
     }
