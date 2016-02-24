@@ -202,19 +202,19 @@ class CircularView extends React.Component {
                     right: 0,
                     bottom: 0
                 }}
-                       onDrag={
-                           (event) => {
-                               this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
-                           }
-                              }
-                       onStart={
-                           (event) => {
-                               this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
-                           }
-                               }
-                       onStop={
-                           signals.editorDragStopped
-                              } >
+                        onDrag={
+                            (event) => {
+                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                            }
+                                }
+                        onStart={
+                            (event) => {
+                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                            }
+                                }
+                        onStop={
+                            signals.editorDragStopped
+                                } >
                 <div style={{
                         width: circularViewDimensions.width,
                         height: circularViewDimensions.height
@@ -223,8 +223,8 @@ class CircularView extends React.Component {
                     <svg onClick={(event) => {
                             this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
                         }}
-                         width={circularViewDimensions.width}
-                         height={circularViewDimensions.height}
+                            width={circularViewDimensions.width}
+                            height={circularViewDimensions.height}
                     >
                         <g transform={`translate(${circularViewDimensions.width/2} ${circularViewDimensions.height/2})`}>
                             <path
@@ -233,8 +233,9 @@ class CircularView extends React.Component {
                                 fill={'red'}
                                 stroke={'black'}
                             />
-                            <text x={0} y={0} textAnchor={'middle'} fontFamily={'Roboto'} fontSize={18} style={{dominantBaseline: 'central'}}>
-                                {sequenceName}
+                            <text x={0} y={0} textAnchor={'middle'} fontFamily={'Roboto'} fontSize={14} style={{dominantBaseline: 'central'}}>
+                                <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{sequenceName}</tspan>
+                                <tspan x={0} dy={'1.2em'}>{`(${sequenceLength} bp)`}</tspan>
                             </text>
                             {annotationsSvgs}
                         </g>
