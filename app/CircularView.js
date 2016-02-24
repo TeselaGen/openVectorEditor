@@ -32,7 +32,8 @@ import styles from './circular-view.css';
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
     caretPosition: ['caretPosition'],
-    sequenceLength: ['sequenceLength']
+    sequenceLength: ['sequenceLength'],
+    sequenceName: ['sequenceData', 'name']
 })
 @propTypes({
     circularViewDimensions: PropTypes.object.isRequired,
@@ -51,7 +52,8 @@ import styles from './circular-view.css';
     showCutsites: PropTypes.bool.isRequired,
     showReverseSequence: PropTypes.bool.isRequired,
     caretPosition: PropTypes.number.isRequired,
-    sequenceLength: PropTypes.number.isRequired
+    sequenceLength: PropTypes.number.isRequired,
+    sequenceName: PropTypes.string.isRequired
 })
 class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
@@ -95,6 +97,7 @@ class CircularView extends React.Component {
             showReverseSequence,
             caretPosition,
             sequenceLength,
+            sequenceName,
             signals
         } = this.props;
         const baseRadius = 80;
@@ -230,6 +233,9 @@ class CircularView extends React.Component {
                                 fill={'red'}
                                 stroke={'black'}
                             />
+                            <text x={0} y={0} textAnchor={'middle'} fontFamily={'Roboto'} fontSize={18} style={{dominantBaseline: 'central'}}>
+                                {sequenceName}
+                            </text>
                             {annotationsSvgs}
                         </g>
                     </svg>
