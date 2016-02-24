@@ -277,14 +277,15 @@ class CircularView extends React.Component {
                                 } >
                 <svg onClick={(event) => {
                         this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
-                     }}
+                    }}
                      width={circularViewDimensions.width}
                      height={circularViewDimensions.height}
                      ref="circularView"
                      className={styles.circularView}
-                     viewBox={`-${currentRadius} -${currentRadius} ${currentRadius*2} ${currentRadius*2}`}
                 >
-                    {annotationsSvgs}
+                    <g transform={`translate(${circularViewDimensions.width/2} ${circularViewDimensions.height/2})`}>
+                        {annotationsSvgs}
+                    </g>
                 </svg>
             </Draggable>
         );
@@ -310,17 +311,17 @@ function Caret({
     }, sequenceLength);
     return (
         <PositionAnnotationOnCircle
-          sAngle={ startAngle }
-          eAngle={ endAngle }
-          height={ 0 }>
-          <line
-            className="cursor"
-            style={ { opacity: 9, cursor: "ew-resize" } }//tnr: the classname needs to be cursor here!
-            x1={0}
-            y1={-innerRadius}
-            x2={0}
-            y2={-outerRadius}
-            stroke="black" />
+            sAngle={ startAngle }
+            eAngle={ endAngle }
+            height={ 0 }>
+            <line
+                className="cursor"
+                style={ { opacity: 9, cursor: "ew-resize" } }//tnr: the classname needs to be cursor here!
+                x1={0}
+                y1={-innerRadius}
+                x2={0}
+                y2={-outerRadius}
+                stroke="black" />
         </PositionAnnotationOnCircle>
     );
 }
@@ -342,7 +343,7 @@ var PositionAnnotationOnCircle = function({
     }
     return (
         <g transform={ transform }>
-          { children }
+            { children }
         </g>
     );
 };
