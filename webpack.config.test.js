@@ -19,6 +19,9 @@ module.exports = {
             }
         }]
     },
+    node: {
+        __dirname: true,
+    },
     plugins: [
         //tnr: this plugin sets the NODE_ENV variable to "testing". This currently does nothing different than
         //"development" except for turning off HMR (hot module replacement) in the .babelrc
@@ -26,6 +29,8 @@ module.exports = {
             'process.env': {
                 NODE_ENV: JSON.stringify('testing')
             }
-        })
+        }),
+        // fixing superagent
+        new webpack.DefinePlugin({ "global.GENTLY": false })
     ],
 };

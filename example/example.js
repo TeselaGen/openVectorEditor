@@ -29,7 +29,7 @@ var options = {
 	},
 	services: {
 		//add or override any services you want here. These are passed to every action (see below)
-		request: request
+		// request: request
 	},
 	actions: {
 		//override default actions here. See signals.js for the full list of application signals

@@ -28,9 +28,13 @@ module.exports = {
             }
         }]
     },
+    node: {
+        __dirname: true,
+    },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new webpack.DefinePlugin({ "global.GENTLY": false })
     ],
     resolve: {
         // you can now require('file') instead of require('file.coffee')
