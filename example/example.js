@@ -1,22 +1,35 @@
 // var sequenceData1 = require('.exampleData/sequenceData');
 // var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations');
 // var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations2');
-var sequenceData = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
+// var sequenceData = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
 var ReactDOM = require('react-dom')
 var App = require('../app/App.js')
-// import request from 'superagent'
+import request from 'superagent/lib/client';
+
+var query = location.search;
+var cookie = document.cookie;
+var id = query.match(/entryId=[\d]+/) + "";
+id = id.replace(/entryId=/, "");
+
+var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
+sid = sid.replace(/sessionId=|%22/g, "");
+
+request
+   .get('/rest/parts/' + id + '/sequence')
+   .set('X-ICE-Authentication-sessionId', sid)
+   .end(function(err, result) {});
 
 //set your custom options here
 var options = {
 	state: {
 		//override default state here. See state.js for the full list of application state
-		sequenceData: sequenceData //tnr: set the initial sequence data here
+		// sequenceData: sequenceData //tnr: set the initial sequence data here
 		// showFeatures: true,
 		//etc..
 	},
 	services: {
 		//add or override any services you want here. These are passed to every action (see below)
-		// request: request
+		request: request
 	},
 	actions: {
 		//override default actions here. See signals.js for the full list of application signals

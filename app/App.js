@@ -1,7 +1,4 @@
 var ac = require('ve-api-check');
-var id = location.search.slice(1);
-console.log(">>>>>>> " + id);
-var sid = "";
 
 import controller from './cerebral/controller.js';
 import React from 'react';
