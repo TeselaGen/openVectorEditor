@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+
+import { Decorator as Cerebral } from 'cerebral-view-react';
+import { propTypes } from './react-props-decorators.js';
 
 const Table = require('material-ui/lib/table/table');
 const TableBody = require('material-ui/lib/table/table-body');
@@ -7,24 +10,69 @@ const TableHeaderColumn = require('material-ui/lib/table/table-header-column');
 const TableRow = require('material-ui/lib/table/table-row');
 const TableRowColumn = require('material-ui/lib/table/table-row-column');
 
+import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
+import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
+import IconButton from 'material-ui/lib/icon-button';
+
+import FeatureForm from './FeatureForm';
+
+@Cerebral({
+})
+@propTypes({
+    data: PropTypes.array.isRequired,
+    annotationType: PropTypes.string.isRequired,
+    filter: PropTypes.array.isRequired
+})
 export default class AnnotationTable extends React.Component {
 
     constructor() {
         super(arguments);
-        this.state = {};
+
+        this.state = {
+            selectedRows: []
+        };
     }
 
-    selectRow(selectedRows) {
-        this.setState({ selectedRow: selectedRows[0] });
+    onRowSelection(selectedRows) {
+        this.setState({ selectedRows: selectedRows });
+    }
+
+    deleteFeatures() {
+        var featureIds = [];
+
+        this.state.selectedRows.forEach(el => {
+            featureIds.push(this.props.data[el].id);
+        });
+
+        this.props.signals.deleteFeatures({ featureIds: featureIds });
+        this.setState({ selectedRows: [] });
+    }
+
+    addFeature() {
+        this.props.signals.addAnnotations({
+            annotationType: 'features',
+
+            annotationsToInsert: [
+                {
+                    name: 'unnamed feature',
+                    type: '',
+                    start: 0,
+                    end: 0,
+                    strand: -1,
+                    notes: []
+                }
+            ],
+
+            throwErrors: false
+        });
     }
 
     render() {
         var {
             data,
+            annotationType,
             filter
         } = this.props;
-
-        filter = filter || Object.keys(data[0]);
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
@@ -47,32 +95,41 @@ export default class AnnotationTable extends React.Component {
                 tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
             }
 
-            tableDataRows.push((<TableRow key={i}>{tableDataCells}</TableRow>));
+            tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
 
-        if (this.state.selectedRow !== undefined) {
-            let displayedRow = data[this.state.selectedRow];
+        if (this.state.selectedRows.length === 1) {
+            let annotation = data[this.state.selectedRows[0]];
 
-            let rowDataItems = [];
+            var annotationForm = (<FeatureForm feature={annotation} />);
+        }
 
-            for (let key in displayedRow) {
-                rowDataItems.push((<dt>{key}</dt>));
-                rowDataItems.push((<dd>{displayedRow[key]}</dd>));
-            }
+        if (annotationType === 'features') {
+            var controls = (
+                <div>
+                    <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
+                        <AddBoxIcon />
+                    </IconButton>
 
-            var rowDataList = React.createElement('dl', {}, rowDataItems);
+                    <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0}tooltip={"delete"}>
+                        <IndeterminateCheckBoxIcon />
+                    </IconButton>
+                </div>
+            );
         }
 
         return (
             <div>
-              <Table ref="annotationTable" onRowSelection={this.selectRow.bind(this)}>
+              <Table ref="annotationTable" multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
                 <TableHeader>
                   <TableRow>{tableHeaderCells}</TableRow>
                 </TableHeader>
-                <TableBody>{tableDataRows}</TableBody>
+                <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
               </Table>
 
-              {rowDataList}
+              {controls}
+
+              {annotationForm}
             </div>
         );
     }

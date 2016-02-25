@@ -43,7 +43,7 @@ var Clipboard = React.createClass({
 
     render: function() {
         var value = this.props.value;
-        console.log('value: ' + JSON.stringify(value,null,4));
+        // console.log('value: ' + JSON.stringify(value,null,4));
         var style = {
             position: 'fixed',
       // width: 0, //tnr: commented these out because they seem to be messing thing up if used...

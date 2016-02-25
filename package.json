@@ -10,12 +10,11 @@
     "checkDeps": "npm-check-updates",
     "check-dependencies": "check-dependencies",
     "coverage": "istanbul cover _mocha -- --harmony -R spec app/**/*.test.js",
-    "linklocal": "linklocal",
     "openTestPage": "open http://localhost:8080/webpack-dev-server/test",
     "bot": "npm run testServer & sleep 1 && npm run openTestPage",
     "testServer": "NODE_ENV=testing webpack-dev-server 'mocha!./test/registerTests.js' --config webpack.config.test.js --output-filename test.js",
-    "start": "npm run check-dependencies && npm run linklocal && node devServer.js",
-    "build": "NODE_ENV=production npm run linklocal && webpack -p --config webpack.config.production.js",
+    "start": "npm run check-dependencies && node devServer.js",
+    "build": "NODE_ENV=production webpack -p --config webpack.config.production.js",
     "printDependencyGraph": "webpack --profile --json > stats.json"
   },
   "dependencies": {
@@ -57,9 +56,9 @@
     "validate.io-boolean": "^1.0.4",
     "validate.io-nonnegative-integer": "^1.0.0",
     "validate.io-nonnegative-integer-array": "^1.0.1",
-    "ve-api-check": "./app/ve-api-check",
-    "ve-range-utils": "./app/ve-range-utils",
-    "ve-sequence-utils": "./app/ve-sequence-utils"
+    "ve-api-check": "*",
+    "ve-range-utils": "*",
+    "ve-sequence-utils": "*"
   },
   "devDependencies": {
     "babel": "^5.1.10",
@@ -75,7 +74,7 @@
     "eslint": "^1.4.1",
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-babel": "^2.1.1",
-    "eslint-plugin-react": "^3.3.0",
+    "eslint-plugin-react": "^3.16.1",
     "express": "^4.13.3",
     "globstar": "^1.0.0",
     "istanbul": "^0.4.0",
@@ -87,7 +86,6 @@
     "karma-mocha": "^0.2.0",
     "karma-sourcemap-loader": "^0.3.6",
     "karma-webpack": "^1.7.0",
-    "linklocal": "^2.5.2",
     "mocha": "^2.2.5",
     "mocha-loader": "^0.7.1",
     "npm-check-updates": "^2.3.0",
