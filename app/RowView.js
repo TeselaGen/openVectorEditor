@@ -1,9 +1,10 @@
-import React, {PropTypes} from 'react';
-import {Decorator as Cerebral} from 'cerebral-view-react';
+import React, { PropTypes } from 'react';
+import { Decorator as Cerebral } from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
-var Draggable = require('react-draggable');
-var RowItem = require('./RowItem.js');
-var InfiniteScroller = require('react-variable-height-infinite-scroller');
+
+import Draggable from 'react-draggable';
+import RowItem from './RowItem';
+import InfiniteScroller from 'react-variable-height-infinite-scroller';
 
 import styles from './row-view.css';
 
@@ -86,7 +87,7 @@ class RowView extends React.Component {
             //return the last bp index in the rendered rows
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
-            nearestBP = lastOfRenderedRows.end
+            nearestBP = lastOfRenderedRows.end;
         }
         callback({
             shiftHeld: event.shiftKey,
@@ -95,25 +96,11 @@ class RowView extends React.Component {
         });
     }
 
-    resize() {
-        if (this.refs.rowView) {
-            this.props.signals.resizeRowView({
-                rootWidth: this.refs.rowView.clientWidth,
-                rootHeight: this.refs.rowView.clientHeight
-            });
-        }
-    }
-
-    componentDidMount() {
-        this.resize();
-        window.addEventListener('resize', this.resize.bind(this));
-    }
-
     render() {
         var {
             rowViewDimensions,
-            rowData, 
-            rowToJumpTo, 
+            rowData,
+            rowToJumpTo,
             charWidth,
             selectionLayer,
             searchLayers,
@@ -158,40 +145,54 @@ class RowView extends React.Component {
                     signals={signals}
                     key={rowNumber}
                     uppercase={uppercase}
-                    row={rowData[rowNumber]} 
+                    row={rowData[rowNumber]}
                     />);
             } else {
-                return null
+                return null;
             }
         }
 
         return (
-            <Draggable
-            bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-            onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}   
-            }
-            onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}   
-            }
-            onStop={signals.editorDragStopped}
-            >
-              <div
-                ref="rowView"
-                className={styles.rowView}
-                onClick={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
+            <Draggable bounds={
+                {
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0
                 }
-                >
-                <InfiniteScroller
-                    ref={'InfiniteScroller'}
-                    averageElementHeight={100}
-                    containerHeight={rowViewDimensions.height}
-                    renderRow={renderRows}
-                    totalNumberOfRows={rowData.length}
-                    rowToJumpTo={rowToJumpTo}
-                    /> 
-              </div>
+                              }
+                       onDrag={
+                           (event) => {
+                               this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged);
+                           }
+                              }
+                       onStart={
+                           (event) => {
+                               this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted);
+                           }
+                               }
+                       onStop={
+                           signals.editorDragStopped
+                              }>
+                <div ref="rowView"
+                     className={
+                         styles.rowView
+                               }
+                     onClick={
+                         (event) => {
+                             this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
+                         }
+                             }>
+
+                    <InfiniteScroller
+                        ref={'InfiniteScroller'}
+                        averageElementHeight={100}
+                        containerHeight={rowViewDimensions.height}
+                        renderRow={renderRows}
+                        totalNumberOfRows={rowData.length}
+                        rowToJumpTo={rowToJumpTo}
+                    />
+                </div>
             </Draggable>
         );
     }
