@@ -55,7 +55,9 @@ import styles from './circular-view.css';
     sequenceLength: PropTypes.number.isRequired,
     sequenceName: PropTypes.string.isRequired
 })
+
 class CircularView extends React.Component {
+
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect();
         //get relative click positions
@@ -104,6 +106,11 @@ class CircularView extends React.Component {
         var currentRadius = baseRadius;
         var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
         var annotationsSvgs = [];
+
+        // fixing for empty sequence
+        if(sequenceLength == 0) {
+            sequenceLength = 1;
+        }
 
         if (showFeatures) {
             var maxYOffset = 0;
@@ -202,19 +209,19 @@ class CircularView extends React.Component {
                     right: 0,
                     bottom: 0
                 }}
-                        onDrag={
-                            (event) => {
-                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                    onDrag={
+                        (event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                        }
                             }
-                                }
-                        onStart={
-                            (event) => {
-                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                    onStart={
+                        (event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                        }
                             }
-                                }
-                        onStop={
-                            signals.editorDragStopped
-                                } >
+                    onStop={
+                        signals.editorDragStopped
+                            } >
                 <div style={{
                         width: circularViewDimensions.width,
                         height: circularViewDimensions.height
@@ -281,19 +288,19 @@ function Caret({
 }
 
 var PositionAnnotationOnCircle = function({
-    children,
-    height = 0,
-    sAngle = 0,
-    eAngle = 0,
-    forward = true
-}) {
-    const sAngleDegs = sAngle * 360 / Math.PI / 2;
-    const eAngleDegs = eAngle * 360 / Math.PI / 2;
-    var transform;
-    if (forward) {
-        transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;
-    } else {
-        transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `;
+        children,
+        height = 0,
+        sAngle = 0,
+        eAngle = 0,
+        forward = true
+    }) {
+        const sAngleDegs = sAngle * 360 / Math.PI / 2;
+        const eAngleDegs = eAngle * 360 / Math.PI / 2;
+        var transform;
+        if (forward) {
+            transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;
+        } else {
+            transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `;
     }
     return (
         <g transform={ transform }>
