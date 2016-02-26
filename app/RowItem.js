@@ -198,6 +198,7 @@ export default class RowItem extends React.Component {
                            shouldBlink={true}
                        />
                       }
+                       <hr />
             </div>
         );
     }
