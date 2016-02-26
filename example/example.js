@@ -10,29 +10,34 @@ var query = location.search;
 var cookie = document.cookie;
 var id = query.match(/entryId=[\d]+/) + "";
 id = id.replace(/entryId=/, "");
-
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
-// var getSequence = request
+var getSequence = "";
+var name = "";
+var fullBody;
+
 request
-   .get('/rest/parts/' + id + '/sequence')
-   .set('X-ICE-Authentication-sessionId', sid)
-   .end(function(err, result) {});
+    .get('/rest/parts/' + id + '/sequence')
+    .set('X-ICE-Authentication-sessionId', sid)
+    .accept('application/json')
+    .end(function(err, result) {
+        getSequence = result.body.sequence;
+        name = result.body.name;
+        fullBody = result.body;
+    });
 
-// console.log(">>>>> json object is " + getSequence);
-// console.log("sequence " + getSequence.sequence);
-
-// move this to another file eventually
-// var fixedSequence = function() {
-//     getSequence
-// }
+console.log("response: " + fullBody);
+console.log("sequence: " + getSequence);
+console.log("name: " + name);
 
 //set your custom options here
 var options = {
 	state: {
 		//override default state here. See state.js for the full list of application state
-		// sequenceData: getSequence
+		// sequenceData: getSequence,
+        // circular: isCircular,
+        // name: name
 	},
 	services: {
 		//add or override any services you want here. These are passed to every action (see below)
