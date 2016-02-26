@@ -142,7 +142,6 @@ class RowView extends React.Component {
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
                     bpsPerRow={bpsPerRow}
-                    signals={signals}
                     key={rowNumber}
                     uppercase={uppercase}
                     row={rowData[rowNumber]}
