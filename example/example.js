@@ -22,8 +22,10 @@ request
 
         var options = {
             state: {
-                sequenceData: sequence,
-                circular: isCircular,
+                sequenceData: {
+                    sequence: sequence,
+                    circular: isCircular
+                },
                 name: name
             },
             services: {
@@ -36,7 +38,6 @@ request
         //Editor is the React Component
         //controller is the cerebral state controller
         var {Editor, controller} = App(options);
-        console.log(options);
         //choose the dom node you want to render to
         const DOMNodeToRenderTo = document.createElement('div');
         document.body.appendChild(DOMNodeToRenderTo);
