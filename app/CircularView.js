@@ -107,11 +107,6 @@ class CircularView extends React.Component {
         var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
         var annotationsSvgs = [];
 
-        // fixing for empty sequence
-        if(sequenceLength == 0) {
-            sequenceLength = 1;
-        }
-
         if (showFeatures) {
             var maxYOffset = 0;
             circularViewData.features.forEach(function(annotation, index) {

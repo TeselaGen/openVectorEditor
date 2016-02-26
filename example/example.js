@@ -4,7 +4,7 @@
 // var sequenceData = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
 var ReactDOM = require('react-dom')
 var App = require('../app/App.js')
-import request from 'superagent';
+import request from 'superagent/lib/client';
 
 var query = location.search;
 var cookie = document.cookie;
@@ -14,14 +14,14 @@ id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
-var getSequence = request
-// request
+// var getSequence = request
+request
    .get('/rest/parts/' + id + '/sequence')
    .set('X-ICE-Authentication-sessionId', sid)
    .end(function(err, result) {});
 
-console.log(">>>>> json object is " + getSequence);
-console.log("sequence " + getSequence.sequence);
+// console.log(">>>>> json object is " + getSequence);
+// console.log("sequence " + getSequence.sequence);
 
 // move this to another file eventually
 // var fixedSequence = function() {
@@ -36,7 +36,7 @@ var options = {
 	},
 	services: {
 		//add or override any services you want here. These are passed to every action (see below)
-		request: request
+		// request: request
 	},
 	actions: {
 		//override default actions here. See signals.js for the full list of application signals
