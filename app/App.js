@@ -5,7 +5,6 @@ import React from 'react';
 import {Container} from 'cerebral-view-react';
 import SequenceEditor from './SequenceEditor.js';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-// import request from 'superagent/lib/client';
 
 injectTapEventPlugin();
 

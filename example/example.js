@@ -1,7 +1,3 @@
-// var sequenceData1 = require('../exampleData/sequenceData');
-// var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations');
-// var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations2');
-// var sequenceData = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
 var ReactDOM = require('react-dom')
 var App = require('../app/App.js')
 import request from 'superagent/lib/client';
@@ -13,45 +9,36 @@ id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
-var response = request
+// async response call
+request
     .get('/rest/parts/' + id + '/sequence')
     .set('X-ICE-Authentication-sessionId', sid)
     .accept('application/json')
     .end(function(err, result) {
-        debugger;
+        var contents = result.body;
+        var sequence = contents.sequence;
+        var name = contents.name;
+        var isCircular = contents.isCircular;
+
+        var options = {
+            state: {
+                sequenceData: sequence,
+                circular: isCircular,
+                name: name
+            },
+            services: {
+                request: request
+            },
+            actions: {
+
+            },
+        }
+        //Editor is the React Component
+        //controller is the cerebral state controller
+        var {Editor, controller} = App(options);
+        console.log(options);
+        //choose the dom node you want to render to
+        const DOMNodeToRenderTo = document.createElement('div');
+        document.body.appendChild(DOMNodeToRenderTo);
+        ReactDOM.render(Editor, DOMNodeToRenderTo);
     });
-debugger;
-
-//set your custom options here
-var options = {
-	state: {
-		//override default state here. See state.js for the full list of application state
-		// sequenceData: sequenceData,
-        // circular: isCircular,
-        // name: name
-	},
-	services: {
-		//add or override any services you want here. These are passed to every action (see below)
-		request: request
-	},
-	actions: {
-		//override default actions here. See signals.js for the full list of application signals
-		saveSequence: function saveSequence ({input, output, services}) {
-			services.request.post('/sequence')
-				.send(input.sequenceData)
-				.then(function (res) {
-					output.success(res.body)
-				}).catch(function (err) {
-					output.error(err)
-				})
-		}
-	},
-}
-
-//Editor is the React Component
-//controller is the cerebral state controller
-var {Editor, controller} = App(options);
-//choose the dom node you want to render to
-const DOMNodeToRenderTo = document.createElement('div');
-document.body.appendChild(DOMNodeToRenderTo);
-ReactDOM.render(Editor, DOMNodeToRenderTo);
