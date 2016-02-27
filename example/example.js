@@ -19,13 +19,17 @@ request
         var sequence = contents.sequence;
         var name = contents.name;
         var isCircular = contents.isCircular;
+        var canEdit = contents.canEdit;
+        var seqId = contents.identifier;
 
         var options = {
             state: {
                 sequenceData: {
+                    _id: seqId,
                     sequence: sequence,
                     circular: isCircular
                 },
+                readOnly: !canEdit,
                 name: name
             },
             services: {
