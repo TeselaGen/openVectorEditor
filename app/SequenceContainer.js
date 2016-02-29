@@ -1,7 +1,4 @@
-import React, {
-    PropTypes
-}
-from 'react';
+import React, { PropTypes } from 'react';
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var SequenceContainer = React.createClass({

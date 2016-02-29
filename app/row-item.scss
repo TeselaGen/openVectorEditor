@@ -1,0 +1,19 @@
+.rowContainer {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+
+    border-bottom: 1px solid lightgray;
+    font-family: monospace;
+}
+
+.rowMarginContainer {
+    width: 2em;
+    padding: 0.5em 1em 0 1em;
+    text-align: right;
+}
+
+.rowBodyContainer {
+    flex-grow: 1;
+}
