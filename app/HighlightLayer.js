@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Caret from './Caret';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { propTypes } from './react-props-decorators.js';
@@ -7,18 +7,7 @@ import styles from './highlight-layer.css';
 
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-
-function mixin(target, source) {
-    target = target.prototype;
-
-    Object.getOwnPropertyNames(source).forEach((name) => {
-        let sourceProp = Object.getOwnPropertyDescriptor(source, name);
-
-        if (name !== "constructor") {
-            Object.defineProperty(target, name, sourceProp);
-        }
-    });
-}
+var mixin = require('./mixin');
 
 @propTypes({
     charWidth: PropTypes.number.isRequired,

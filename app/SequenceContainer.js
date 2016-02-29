@@ -1,32 +1,49 @@
 import React, { PropTypes } from 'react';
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import { propTypes } from './react-props-decorators';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-var SequenceContainer = React.createClass({
-    mixins: [PureRenderMixin],
-    propTypes: {
-        sequence: PropTypes.string.isRequired,
-        charWidth: PropTypes.number.isRequired,
-        children: PropTypes.any
-    },
-    render: function() {
+var mixin = require('./mixin');
+
+import styles from './sequence-container';
+
+@propTypes({
+    sequence: PropTypes.string.isRequired,
+    charWidth: PropTypes.number.isRequired,
+    children: PropTypes.any
+})
+class SequenceContainer extends React.Component {
+
+    render() {
         var {
-            sequence, charWidth, children
+            sequence,
+            charWidth,
+            children
         } = this.props;
+
         if (charWidth < 10) {
             return null;
         }
-        var style = {
-            position: 'relative'
+
+        var columns = [];
+
+        for (let i = 0; i < sequence.length; i+=10) {
+            var textEl = (<text x={charWidth * i} y={10}>{sequence.slice(i, (i < sequence.length - 10) ? i + 10 : sequence.length)}</text>);
+            columns.push(textEl);
         }
-        var textHTML = '<text font-family="Courier New, Courier, monospace" x="' + (charWidth / 4) + '" y="10" textLength="' + (charWidth * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>';
+
         return (
-            <div style={style} className='sequenceContainer'>
-                <svg ref="textContainer" className="textContainer" width="100%" height={charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
+            <div className={styles.sequenceContainer}>
+                <svg ref="textContainer" className={styles.textContainer} height={charWidth}>
+                    {columns}
+                </svg>
                 {children}
             </div>
         )
 
     }
-});
+
+}
+
+mixin(SequenceContainer, PureRenderMixin);
 
 module.exports = SequenceContainer;

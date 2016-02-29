@@ -1,0 +1,16 @@
+.sequenceContainer {
+    position: relative;
+}
+
+.textContainer {
+    width: 100%;
+
+    text {
+        display: flex;
+        width: 100%;
+
+        tspan {
+            flex-grow: 1;
+        }
+    }
+}
