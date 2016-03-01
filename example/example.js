@@ -32,8 +32,6 @@ request
             featureList[p].end = featureList[p].locations[0].end;
         }
 
-        console.log(featureList);
-
         var options = {
             state: {
                 sequenceData: {
