@@ -232,7 +232,7 @@ class CircularView extends React.Component {
                             <path
                                 d={`M 0, 0 m -${rimRadius}, 0 a ${rimRadius},${rimRadius} 0 1,0 ${rimRadius*2},0 a ${rimRadius},${rimRadius} 0 1,0 -${rimRadius*2},0 ` +
                                     `M 0, 0 m -${currentRadius}, 0 a ${currentRadius},${currentRadius} 0 1,1 ${currentRadius*2},0 a ${currentRadius},${currentRadius} 0 1,1 -${currentRadius*2},0`}
-                                fill={'red'}
+                                fill={'yellow'}
                                 stroke={'black'}
                             />
                             <text x={0} y={0} textAnchor={'middle'} fontFamily={'Roboto'} fontSize={14} style={{dominantBaseline: 'central'}}>

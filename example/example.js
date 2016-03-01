@@ -9,22 +9,6 @@ id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
-// var getAllFeatures = function(response) {
-//     for (var f in response.features) {
-//         options = options + {
-//             state: {
-//                 name: features.name,
-//                 type: features.type,
-//                 id: features.id,
-//                 start: features.locations.genbankStart,
-//                 end: features.locations.end,
-//                 strand: features.strand,
-//                 notes: features.notes
-//             }
-//         }
-//     }
-// }
-
 // async response call
 request
     .get('rest/parts/' + id + '/sequence')
