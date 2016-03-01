@@ -4,7 +4,7 @@ var Combokeys = require("combokeys");
 var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 
-var RowView = require('./RowView');
+var RowView = require('./RowView/RowView');
 var MapView = require('./MapView');
 var CircularView = require('./CircularView');
 
