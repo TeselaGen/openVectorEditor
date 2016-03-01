@@ -1,6 +1,5 @@
 .rowContainer {
     overflow: hidden;
-    position: relative;
     width: 100%;
     display: flex;
     padding: 0.5em 0 0.5em 0;
@@ -16,5 +15,6 @@
 }
 
 .rowBodyContainer {
+    position: relative;
     flex-grow: 1;
 }

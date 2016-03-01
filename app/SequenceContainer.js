@@ -27,13 +27,13 @@ class SequenceContainer extends React.Component {
         var columns = [];
 
         for (let i = 0; i < sequence.length; i+=10) {
-            var textEl = (<div className={styles.columnContainer}>{sequence.slice(i, (i < sequence.length - 10) ? i + 10 : sequence.length)}</div>);
-            columns.push(textEl);
+            let textHTML = `<text x="${charWidth * i + i / 10 * charWidth}" y="10" textLength="${charWidth * 10}" length-adjust="spacing">${sequence.slice(i, i + 10)}</text>`;
+            columns.push(textHTML);
         }
 
         return (
             <div className={styles.sequenceContainer}>
-                {columns}
+                <svg ref="textContainer" width="100%" height={charWidth} dangerouslySetInnerHTML={{__html: columns.join('')}} />
                 {children}
             </div>
         )
