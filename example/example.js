@@ -9,9 +9,25 @@ id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
+// var getAllFeatures = function(response) {
+//     for (var f in response.features) {
+//         options = options + {
+//             state: {
+//                 name: features.name,
+//                 type: features.type,
+//                 id: features.id,
+//                 start: features.locations.genbankStart,
+//                 end: features.locations.end,
+//                 strand: features.strand,
+//                 notes: features.notes
+//             }
+//         }
+//     }
+// }
+
 // async response call
 request
-    .get('/rest/parts/' + id + '/sequence')
+    .get('rest/parts/' + id + '/sequence')
     .set('X-ICE-Authentication-sessionId', sid)
     .accept('application/json')
     .end(function(err, result) {
@@ -21,6 +37,7 @@ request
         var isCircular = contents.isCircular;
         var canEdit = contents.canEdit;
         var seqId = contents.identifier;
+        var features = contents.features[0];
 
         var options = {
             state: {
@@ -30,15 +47,20 @@ request
                     circular: isCircular
                 },
                 readOnly: !canEdit,
-                name: name
+                name: name,
+                features: [
+
+                ]
             },
             services: {
                 request: request
             },
             actions: {
 
-            },
+            }
         }
+        for (var feature in contents.features) { options.state.features += { feature } }
+        debugger;
         //Editor is the React Component
         //controller is the cerebral state controller
         var {Editor, controller} = App(options);
