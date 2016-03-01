@@ -37,20 +37,29 @@ request
         var isCircular = contents.isCircular;
         var canEdit = contents.canEdit;
         var seqId = contents.identifier;
-        var features = contents.features[0];
+        var featureList = [];
+
+        for (var f = 0; f < contents.features.length; f++) { 
+            featureList.push(contents.features[f]);
+        }
+        // reformat feature data a little
+        for (var p = 0; p < featureList.length; p++) {
+            featureList[p].start = featureList[p].locations[0].genbankStart;
+            featureList[p].end = featureList[p].locations[0].end;
+        }
+
+        console.log(featureList);
 
         var options = {
             state: {
                 sequenceData: {
+                    features: featureList,
                     _id: seqId,
                     sequence: sequence,
                     circular: isCircular
                 },
                 readOnly: !canEdit,
                 name: name,
-                features: [
-
-                ]
             },
             services: {
                 request: request
@@ -59,8 +68,7 @@ request
 
             }
         }
-        for (var feature in contents.features) { options.state.features += { feature } }
-        debugger;
+
         //Editor is the React Component
         //controller is the cerebral state controller
         var {Editor, controller} = App(options);
