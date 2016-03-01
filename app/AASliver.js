@@ -43,7 +43,7 @@ let AASliver = React.createClass({
                     strokeWidth="5"
                     // stroke="black"
                     opacity={0.5}
-                    fill={this.props.color || 'orange'}>
+                    fill={this.props.color || 'gray'}>
                 </polyline>
                 {this.props.positionInCodon === 1 &&
                 <text 
