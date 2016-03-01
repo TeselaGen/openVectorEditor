@@ -12,6 +12,9 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
+import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
+import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
+import uploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
@@ -83,6 +86,26 @@ export default class ToolBar extends React.Component {
             }
         ];
 
+        var fileMenuItems = (
+            <div>
+                <MenuItem key={1} primaryText="Download SBOL" insetChildren={true} onClick={function () {
+                    signals.clickSaveFile({fileExt: 'sbol'});
+                }} />
+                <MenuItem key={2} primaryText="Download GenBank" insetChildren={true} onClick={function () {
+                    signals.clickSaveFile({fileExt: 'genbank'});
+                }} />
+                <MenuItem key={3} primaryText="Download Fasta" insetChildren={true} onClick={function () {
+                    signals.clickSaveFile({fileExt: 'fasta'});
+                }} />                
+            </div>
+        );
+
+        var fileButtonElement = (
+            <IconButton tooltip="File">
+                <FileIcon />
+            </IconButton>
+        );
+
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
                 <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
@@ -117,11 +140,13 @@ export default class ToolBar extends React.Component {
                      onTouchTap={function() {
                          signals.toggleAnnotationTable({ annotationType: 'orfs' });
                      }}
-                     />
-                    <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                        {toggleMenuItems}
-                    </IconMenu>
-
+                  />
+                  <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
+                    {fileMenuItems}
+                  </IconMenu>                  
+                  <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
+                    {toggleMenuItems}
+                  </IconMenu>
                     <TextField ref="searchField" hintText="search" />
                     <RaisedButton label='Search' onClick={this.search.bind(this)}/>
                     <RaisedButton label='Clear Search' onClick={this.clearSearch.bind(this)}/>
@@ -129,4 +154,5 @@ export default class ToolBar extends React.Component {
             </Toolbar>
         );
     }
+
 }
