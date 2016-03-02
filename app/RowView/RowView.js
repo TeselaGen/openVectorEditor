@@ -3,6 +3,7 @@ import { propTypes } from '../react-props-decorators.js';
 
 import styles from './RowView.scss';
 
+import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import RowItem from './RowItem.js';
@@ -51,13 +52,17 @@ export default class RowView extends React.Component {
             rowLength
         } = this.state;
 
+        var sequence = sequenceData.sequence;
+        var complement = getComplementSequenceString(sequence);
+
         var rowCount = sequenceData.size / rowLength;
         var rowItems = [];
 
         for (let i = 0; i < rowCount; i++) {
             rowItems.push((
                 <RowItem
-                    sequence={sequenceData.sequence.substr(i * rowLength, rowLength)}
+                    sequence={sequence.substr(i * rowLength, rowLength)}
+                    complement={complement.substr(i * rowLength, rowLength)}
                     columnWidth={columnWidth}
                 />
             ));
