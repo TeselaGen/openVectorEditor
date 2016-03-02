@@ -1,39 +1,40 @@
 import React, { PropTypes } from 'react';
 import { propTypes } from '../react-props-decorators.js';
 
+import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
+
 import styles from './RowItem.scss';
 
 @propTypes({
-    sequence: PropTypes.string.isRequired,
+    sequenceData: PropTypes.object.isRequired,
     columnWidth: PropTypes.number
 })
 export default class RowItem extends React.Component {
 
     render() {
         var {
-            sequence,
-            complement,
+            sequenceData,
             columnWidth
         } = this.props;
 
+        var {
+            sequence
+        } = sequenceData;
+
         var renderedSequence = sequence;
+
+        var complement = getComplementSequenceString(sequence);
         var renderedComplement = complement;
 
         if (columnWidth) {
-            let rColumnChunks = [];
-            let cColumnChunks = [];
+            renderedSequence = '';
+            renderedComplement = '';
+
             for (let i = 0; i < sequence.length; i += columnWidth) {
-                rColumnChunks.push(
-                    sequence.substr(i, columnWidth)
-                );
+                renderedSequence += sequence.substr(i, columnWidth) + ' ';
 
-                cColumnChunks.push(
-                    complement.substr(i, columnWidth)
-                );
+                renderedComplement += complement.substr(i, columnWidth) + ' ';
             }
-
-            renderedSequence = rColumnChunks.join(' ');
-            renderedComplement = cColumnChunks.join(' ');
         }
 
         return (
