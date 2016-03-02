@@ -19,7 +19,7 @@ export default class RowView extends React.Component {
         this.state = {};
     }
 
-    componentDidMount() {
+    recalcuateRowLength() {
         var fontSize = this.refs.fontMeasure.getBoundingClientRect().width;
         var componentWidth = this.refs.rowView.clientWidth;
 
@@ -33,6 +33,11 @@ export default class RowView extends React.Component {
         this.setState({
             rowLength: adjustedRowLength
         });
+    }
+
+    componentDidMount() {
+        this.recalcuateRowLength();
+        new ResizeSensor(this.refs.rowView, this.recalcuateRowLength.bind(this));
     }
 
     render() {
