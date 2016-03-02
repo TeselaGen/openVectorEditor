@@ -23,13 +23,50 @@ request
         var seqId = contents.identifier;
         var featureList = [];
 
+        // maybe move this
+        var colorFeature = function(feature) {
+            var type = feature.type;
+            type = type.toLowerCase();
+            var color = "#CCCCCC";
+            switch(type) {
+                case "promoter":
+                    color = "#31B440";
+                    break;
+                case "terminator":
+                    color = "#F51600";
+                    break;
+                case "cds":
+                    color = "#EF6500";
+                    break;
+                case "misc_feature":
+                    color = "#006FEF";
+                    break;
+                case "m_rna":
+                    color = "#FFFF00";
+                    break;
+                case "misc_binding":
+                    color = "#006FEF";
+                    break;                   
+                case "misc_marker":
+                    color = "#8DCEB1";
+                    break;
+                case "rep_origin":
+                    color = "#878787";
+                    break;
+                default:
+                    // leave it gray            
+            }
+            return color;
+        }
+
         for (var f = 0; f < contents.features.length; f++) { 
             featureList.push(contents.features[f]);
-        }
+        }       
         // reformat feature data a little
         for (var p = 0; p < featureList.length; p++) {
             featureList[p].start = featureList[p].locations[0].genbankStart;
             featureList[p].end = featureList[p].locations[0].end;
+            featureList[p].color = colorFeature(featureList[p]);
         }
 
         var options = {
@@ -47,7 +84,7 @@ request
                 request: request
             },
             actions: {
-
+                // nothing here currently
             }
         }
 

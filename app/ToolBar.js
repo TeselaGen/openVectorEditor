@@ -13,6 +13,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
+import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
 import uploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -123,30 +124,37 @@ export default class ToolBar extends React.Component {
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
-                  <RaisedButton
-                     label='Features'
-                     onTouchTap={function() {
-                         signals.toggleAnnotationTable({ annotationType: 'features' });
-                     }}
-                     />
-                  <RaisedButton
-                     label='Cutsites'
-                     onTouchTap={function() {
-                         signals.toggleAnnotationTable({ annotationType: 'cutsites' });
-                     }}
-                     />
-                  <RaisedButton
-                     label='ORFs'
-                     onTouchTap={function() {
-                         signals.toggleAnnotationTable({ annotationType: 'orfs' });
-                     }}
-                  />
-                  <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
-                    {fileMenuItems}
-                  </IconMenu>                  
-                  <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                    {toggleMenuItems}
-                  </IconMenu>
+                    <IconButton
+                        label='Save to Server'
+                        icon={SaveIcon}
+                        onTouchTap={function() {
+                            signals.saveChanges();
+                        }}
+                    />
+                    <RaisedButton
+                        label='Features'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ annotationType: 'features' });
+                        }}
+                    />
+                    <RaisedButton
+                        label='Cutsites'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ annotationType: 'cutsites' });
+                        }}
+                    />
+                    <RaisedButton
+                        label='ORFs'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ annotationType: 'orfs' });
+                        }}
+                    />
+                    <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
+                        {fileMenuItems}
+                    </IconMenu>                  
+                    <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
+                        {toggleMenuItems}
+                    </IconMenu>
                     <TextField ref="searchField" hintText="search" />
                     <RaisedButton label='Search' onClick={this.search.bind(this)}/>
                     <RaisedButton label='Clear Search' onClick={this.clearSearch.bind(this)}/>

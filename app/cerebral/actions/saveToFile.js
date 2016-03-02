@@ -10,28 +10,14 @@ sid = sid.replace(/sessionId=|%22/g, "");
 
 export default function saveToFile({input, state, output}) {
     var { fileExt } = input;
-    var fileName = state.get('name');
-    var fileContent = "";
-    var entryFile;
 
-    // safety checks
-    if(!fileName || fileName.length == 0) {
-        fileName = "unknown_sequence";
-    }
-    // this probably can't happen but whatever
-    if(!fileExt || fileExt.length == 0) {
-        fileExt = "original";
+    if(fileExt.match("sbol|genbank|fasta|original")
+        && id
+        && sid) 
+    {
+        window.open('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
+    } else {
+        console.log("something went wrong, unable to find file");
     }
 
-    window.open('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
-
-    // request
-    // .get('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
-    // .set('X-ICE-Authentication-sessionId', sid)
-    // .redirects(2)
-    // .end(function(err, result) {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    // });    
 }

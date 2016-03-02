@@ -132,6 +132,8 @@ export default function(options) {
         // sl - in progress loading and saving local files
         clickSaveFile:
             [a.saveToFile],
+        saveChanges:
+            [a.saveToServer],
 
         // clickLoadFile: 
         //     [a.loadFromFile],
