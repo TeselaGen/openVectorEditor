@@ -197,7 +197,7 @@ class SequenceEditor extends React.Component {
                     </div>
 
                     <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
-                        <RowView sequenceData={sequenceData} />
+                        <RowView sequenceData={sequenceData} columnWidth={10} />
                     </div>
                 </div>
 

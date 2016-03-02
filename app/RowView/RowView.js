@@ -8,7 +8,8 @@ import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import RowItem from './RowItem.js';
 
 @propTypes({
-    sequenceData: PropTypes.object.isRequired
+    sequenceData: PropTypes.object.isRequired,
+    columnWidth: PropTypes.number
 })
 export default class RowView extends React.Component {
 
@@ -22,14 +23,22 @@ export default class RowView extends React.Component {
         var fontSize = this.refs.fontMeasure.getBoundingClientRect().width;
         var componentWidth = this.refs.rowView.clientWidth;
 
+        var baseRowLength = Math.floor(componentWidth / fontSize);
+        var adjustedRowLength = baseRowLength;
+
+        if (this.props.columnWidth) {
+            adjustedRowLength -= Math.floor(baseRowLength / this.props.columnWidth);
+        }
+
         this.setState({
-            rowLength: Math.floor(componentWidth / fontSize)
+            rowLength: adjustedRowLength
         });
     }
 
     render() {
         var {
-            sequenceData
+            sequenceData,
+            columnWidth
         } = this.props;
 
         var {
@@ -40,7 +49,12 @@ export default class RowView extends React.Component {
         var rowItems = [];
 
         for (let i = 0; i < rowCount; i++) {
-            rowItems.push((<RowItem sequence={sequenceData.sequence.substr(i * rowLength, rowLength)} />));
+            rowItems.push((
+                <RowItem
+                    sequence={sequenceData.sequence.substr(i * rowLength, rowLength)}
+                    columnWidth={columnWidth}
+                />
+            ));
         }
 
         return (
