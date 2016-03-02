@@ -1,5 +1,5 @@
 // download a copy of the current plasmid in genbank or sbol format
-import request from 'superagent/lib/client';
+// import request from 'superagent/lib/client';
 
 var query = location.search;
 var cookie = document.cookie;
@@ -20,16 +20,18 @@ export default function saveToFile({input, state, output}) {
     }
     // this probably can't happen but whatever
     if(!fileExt || fileExt.length == 0) {
-        fileExt = "txt";
+        fileExt = "original";
     }
 
-    request
-    .get('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
-    .set('X-ICE-Authentication-sessionId', sid)
-    .end(function(err, result) {
-        if(err) {
-            console.log(err)
-        }
-    });
-    
+    window.open('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
+
+    // request
+    // .get('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
+    // .set('X-ICE-Authentication-sessionId', sid)
+    // .redirects(2)
+    // .end(function(err, result) {
+    //     if(err) {
+    //         console.log(err)
+    //     }
+    // });    
 }
