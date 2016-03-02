@@ -28,6 +28,7 @@ export default class RowView extends React.Component {
 
         if (this.props.columnWidth) {
             adjustedRowLength -= Math.floor(baseRowLength / this.props.columnWidth);
+            adjustedRowLength = Math.floor(adjustedRowLength / this.props.columnWidth) * this.props.columnWidth;
         }
 
         this.setState({
