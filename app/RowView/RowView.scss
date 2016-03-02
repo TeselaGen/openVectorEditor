@@ -6,5 +6,12 @@
     right: 0;
     overflow-y: scroll;
     overflow-x: hidden;
-    background-color: red;
+    font-family: monospace;
+}
+
+.fontMeasure {
+    height: 0;
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
 }
