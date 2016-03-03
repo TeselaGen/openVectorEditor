@@ -9,5 +9,17 @@ export default {
         }
 
         return columns.join('');
+    },
+
+    calculateRowLength: function(charWidth, viewWidth, columnWidth) {
+        var baseRowLength = Math.floor(viewWidth / charWidth);
+        var adjustedRowLength = baseRowLength;
+
+        if (columnWidth) {
+            adjustedRowLength -= Math.floor(baseRowLength / columnWidth);
+            adjustedRowLength = Math.floor(adjustedRowLength / columnWidth) * columnWidth;
+        }
+
+        return adjustedRowLength;
     }
 }

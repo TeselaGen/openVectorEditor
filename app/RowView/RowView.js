@@ -5,6 +5,7 @@ import styles from './RowView.scss';
 
 import assign from 'lodash/object/assign';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import { calculateRowLength } from './Utils';
 
 import RowItem from './RowItem.js';
 
@@ -20,26 +21,18 @@ export default class RowView extends React.Component {
         this.state = {};
     }
 
-    recalcuateRowLength() {
-        var fontSize = this.refs.fontMeasure.getBoundingClientRect().width;
-        var componentWidth = this.refs.rowView.clientWidth;
+    componentDidMount() {
+        var setRowLength = () => {
+            var charWidth = this.refs.fontMeasure.getBoundingClientRect().width;
+            var viewWidth = this.refs.rowView.clientWidth;
 
-        var baseRowLength = Math.floor(componentWidth / fontSize);
-        var adjustedRowLength = baseRowLength;
-
-        if (this.props.columnWidth) {
-            adjustedRowLength -= Math.floor(baseRowLength / this.props.columnWidth);
-            adjustedRowLength = Math.floor(adjustedRowLength / this.props.columnWidth) * this.props.columnWidth;
+            this.setState({
+                rowLength: calculateRowLength(charWidth, viewWidth, this.props.columnWidth)
+            });
         }
 
-        this.setState({
-            rowLength: adjustedRowLength
-        });
-    }
-
-    componentDidMount() {
-        this.recalcuateRowLength();
-        new ResizeSensor(this.refs.rowView, this.recalcuateRowLength.bind(this));
+        new ResizeSensor(this.refs.rowView, setRowLength);
+        setRowLength();
     }
 
     render() {
