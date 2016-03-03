@@ -32,7 +32,7 @@ export default class RowItem extends React.Component {
                 <div className={styles.sequence}>
                     {renderedSequence}
                 </div>
-                <div className={styles.reversedSequence}>
+                <div className={styles.sequence + ' ' + styles.reversed}>
                     {renderedComplement}
                 </div>
             </div>
