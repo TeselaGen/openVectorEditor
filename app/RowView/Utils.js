@@ -1,14 +1,13 @@
 export default {
     columnizeString: function(string, columnWidth) {
-        var columnizedString = '';
+        var columns = [];
 
         if (columnWidth) {
-
             for (let i = 0; i < string.length; i += columnWidth) {
-                columnizedString += string.substr(i, columnWidth) + ' ';
+                columns.push(string.substr(i, columnWidth) + ' ');
             }
         }
 
-        return columnizedString;
+        return columns.join('');
     }
 }
