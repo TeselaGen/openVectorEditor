@@ -13,16 +13,19 @@ module.exports = {
         filename: "bundle.js",
         publicPath: '/static/'
     },
+    postcss: function () {
+        return [autoprefixer];
+    },
     module: {
         loaders: [{
             test: /\.json$/,
             loader: "json-loader"
         }, {
             test: /\.css$/,
-            loader: "style!css?modules&localIdentName=[path][name]---[local]---[hash:base64:5]"
+            loader: "style!css?modules&importLoader=1&localIdentName=[path][name]---[local]---[hash:base64:5]!postcss"
         }, {
             test: /\.scss$/,
-            loader: "style!css?modules&importLoaders=1&localIdentName=[path][name]---[local]---[hash:base64:5]!sass?sourceMap"
+            loader: "style!css?modules&importLoaders=1&localIdentName=[path][name]---[local]---[hash:base64:5]!postcss!sass?sourceMap"
         }, {
             test: /\.js$/,
             exclude: /node_modules/,

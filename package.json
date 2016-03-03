@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "api-check": "^7.5.0",
+    "autoprefixer": "^6.3.3",
     "baobab": "^2.3.2",
     "br-mousetrap": "^1.1.3",
     "bson-objectid": "^1.1.1",
@@ -40,6 +41,7 @@
     "material-ui": "^0.13.1",
     "object-assign": "^4.0.1",
     "paths-js": "^0.3.5",
+    "postcss-loader": "^0.8.1",
     "random-color": "0.0.1",
     "react": "^0.14.0",
     "react-addons-create-fragment": "^0.14.1",
