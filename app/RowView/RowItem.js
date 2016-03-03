@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { propTypes } from '../react-props-decorators.js';
 
 import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
+import { columnizeString } from './Utils';
 
 import styles from './RowItem.scss';
 
@@ -21,21 +22,10 @@ export default class RowItem extends React.Component {
             sequence
         } = sequenceData;
 
-        var renderedSequence = sequence;
-
         var complement = getComplementSequenceString(sequence);
-        var renderedComplement = complement;
 
-        if (columnWidth) {
-            renderedSequence = '';
-            renderedComplement = '';
-
-            for (let i = 0; i < sequence.length; i += columnWidth) {
-                renderedSequence += sequence.substr(i, columnWidth) + ' ';
-
-                renderedComplement += complement.substr(i, columnWidth) + ' ';
-            }
-        }
+        var renderedSequence = columnizeString(sequence, columnWidth);
+        var renderedComplement = columnizeString(complement, columnWidth);
 
         return (
             <div className={styles.rowItem}>
