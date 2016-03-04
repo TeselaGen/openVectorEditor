@@ -128,7 +128,7 @@ export default class ToolBar extends React.Component {
             <Toolbar>
                 <ToolbarGroup key={0}>
                     <IconButton
-                        disabled={ !canEdit }
+                        // disabled={ !canEdit }
                         label='Save to Server'
                         onTouchTap={function() {
                             signals.saveChanges();

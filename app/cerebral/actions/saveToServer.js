@@ -20,6 +20,10 @@ export default function saveToServer({input, state, output}) {
     newSequenceData.seqId = newSequenceData._id;
     newSequenceData.isCircular = newSequenceData.circular;
 
+    console.log("seqID is " + newSequenceData.seqId);
+    console.log("circular is " + newSequenceData.circular);
+    console.log("readonly status is " + state.get('readOnly'));
+
 
     // remember to do checks for bad id and sid and sequence length
 
