@@ -95,4 +95,5 @@ request
         const DOMNodeToRenderTo = document.createElement('div');
         document.body.appendChild(DOMNodeToRenderTo);
         ReactDOM.render(Editor, DOMNodeToRenderTo);
-    });
+    }
+);

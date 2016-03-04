@@ -1,5 +1,6 @@
 // upload a copy of the current plasmid in genbank or sbol format to ice
 import request from 'superagent/lib/client';
+import assign from 'lodash/object/assign';
 
 var query = location.search;
 var cookie = document.cookie;
@@ -12,9 +13,26 @@ export default function saveToServer({input, state, output}) {
     // BUILD AN OBJECT FROM THE STATE TREE THAT'S SETUP THE WAY JSON WANTS
     // MAKE SURE YOU'RE TYPING IN ALL CAPS
     // THEN PUT THAT OBJECT IN THE BODY OF THE REQUEST TO THE URL BELOw
-    var newSequenceData = state.get("sequenceData");
+    // BOOYAH
+    var sequenceData = state.get("sequenceData");
+    var newSequenceData = assign({}, sequenceData);
+    // massage the data back into a form that ICE can accept
+    newSequenceData.seqId = newSequenceData._id;
+    newSequenceData.isCircular = newSequenceData.circular;
 
-    // may need to detect parts plasmid &c.
-    window.open('rest/parts/' + id + '/sequence?sid=' + sid)
 
+    // remember to do checks for bad id and sid and sequence length
+
+    // parts is always parts, even for plasmids and seeds
+    request
+        .post('rest/parts/' + id + '/sequence?sid=' + sid)
+        .set('X-ICE-Authentication-sessionId', sid)
+        .set('Content-Type', 'application/json')
+        .send(newSequenceData)
+        .end(function(err, result) {
+            if(err) {
+                console.log("unable to save to registry, something went wrong: " + err)
+            }
+        }
+    );
 }

@@ -20,6 +20,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
 @Cerebral({
+    canEdit: ['canEdit'],
     showOrfs: ['showOrfs'],
     showCutsites: ['showCutsites'],
     showParts: ['showParts'],
@@ -28,6 +29,7 @@ import TextField from 'material-ui/lib/text-field';
     showSidebar: ['showSidebar']
 })
 @propTypes({
+    canEdit: PropTypes.bool.isRequired,
     showOrfs: PropTypes.bool.isRequired,
     showCutsites: PropTypes.bool.isRequired,
     showParts: PropTypes.bool.isRequired,
@@ -46,6 +48,7 @@ export default class ToolBar extends React.Component {
 
     render() {
         var {
+            canEdit,
             showFeatures,
             showParts,
             showTranslations,
@@ -125,12 +128,14 @@ export default class ToolBar extends React.Component {
             <Toolbar>
                 <ToolbarGroup key={0}>
                     <IconButton
+                        disabled={ !canEdit }
                         label='Save to Server'
-                        icon={SaveIcon}
                         onTouchTap={function() {
                             signals.saveChanges();
                         }}
-                    />
+                    >
+                        <SaveIcon />
+                    </IconButton>
                     <RaisedButton
                         label='Features'
                         onTouchTap={function() {
