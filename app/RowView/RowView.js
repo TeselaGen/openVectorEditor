@@ -22,18 +22,28 @@ export default class RowView extends React.Component {
     }
 
     _populateRows() {
-        var charWidth = this.refs.fontMeasure.getBoundingClientRect().width;
-        var viewWidth = this.refs.rowMeasure.sequenceContainerWidth();
+        var {
+            sequenceData,
+            columnWidth
+        } = this.props;
 
-        var rowLength = calculateRowLength(charWidth, viewWidth, this.props.columnWidth);
+        var {
+            fontMeasure,
+            rowMeasure
+        } = this.refs;
+
+        var charWidth = fontMeasure.getBoundingClientRect().width;
+        var viewWidth = rowMeasure.sequenceContainerWidth();
+
+        var rowLength = calculateRowLength(charWidth, viewWidth, columnWidth);
 
         var rowItems = [];
 
-        for (let i = 0; i < this.props.sequenceData.size; i+=rowLength) {
-            var rowData = assign({}, this.props.sequenceData);
+        for (let i = 0; i < sequenceData.size; i += rowLength) {
+            var rowData = assign({}, sequenceData);
             rowData.sequence = rowData.sequence.substr(i, rowLength);
             rowItems.push((
-                <RowItem sequenceData={rowData} columnWidth={this.props.columnWidth} />
+                <RowItem sequenceData={rowData} columnWidth={columnWidth} />
             ));
         }
 
