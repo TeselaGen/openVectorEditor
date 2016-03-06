@@ -24,7 +24,7 @@ export default class RowView extends React.Component {
     componentDidMount() {
         var setRowLength = () => {
             var charWidth = this.refs.fontMeasure.getBoundingClientRect().width;
-            var viewWidth = this.refs.rowView.clientWidth;
+            var viewWidth = this.refs.rowMeasure.sequenceContainerWidth();
 
             this.setState({
                 rowLength: calculateRowLength(charWidth, viewWidth, this.props.columnWidth)
@@ -67,6 +67,7 @@ export default class RowView extends React.Component {
                  className={styles.rowView}
             >
                 <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
+                <RowItem ref={'rowMeasure'} sequenceData={{ sequence: '' }} className={styles.rowMeasure} />
                 {rowItems}
             </div>
         );

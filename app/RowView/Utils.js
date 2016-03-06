@@ -21,5 +21,9 @@ export default {
         }
 
         return adjustedRowLength;
+    },
+
+    elementWidth: function(elem) {
+        return (elem) ? parseFloat(getComputedStyle(elem).width) : 0;
     }
 }
