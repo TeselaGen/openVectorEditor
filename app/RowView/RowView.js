@@ -21,46 +21,34 @@ export default class RowView extends React.Component {
         this.state = {};
     }
 
-    componentDidMount() {
-        var setRowLength = () => {
-            var charWidth = this.refs.fontMeasure.getBoundingClientRect().width;
-            var viewWidth = this.refs.rowMeasure.sequenceContainerWidth();
+    _populateRows() {
+        var charWidth = this.refs.fontMeasure.getBoundingClientRect().width;
+        var viewWidth = this.refs.rowMeasure.sequenceContainerWidth();
 
-            this.setState({
-                rowLength: calculateRowLength(charWidth, viewWidth, this.props.columnWidth)
-            });
+        var rowLength = calculateRowLength(charWidth, viewWidth, this.props.columnWidth);
+
+        var rowItems = [];
+
+        for (let i = 0; i < this.props.sequenceData.size; i+=rowLength) {
+            var rowData = assign({}, this.props.sequenceData);
+            rowData.sequence = rowData.sequence.substr(i, rowLength);
+            rowItems.push((
+                <RowItem sequenceData={rowData} columnWidth={this.props.columnWidth} />
+            ));
         }
 
-        new ResizeSensor(this.refs.rowView, setRowLength);
-        setRowLength();
+        this.setState({ rowItems: rowItems });
+    }
+
+    componentDidMount() {
+        new ResizeSensor(this.refs.rowView, this._populateRows.bind(this));
+        this._populateRows();
     }
 
     render() {
         var {
-            sequenceData,
-            columnWidth
-        } = this.props;
-
-        var {
-            rowLength
+            rowItems
         } = this.state;
-
-        var sequence = sequenceData.sequence;
-
-        var rowCount = sequenceData.size / rowLength;
-        var rowItems = [];
-
-        for (let i = 0; i < rowCount; i++) {
-            let rowSequenceData = assign({}, sequenceData);
-            rowSequenceData.sequence = sequenceData.sequence.substr(i * rowLength, rowLength);
-
-            rowItems.push((
-                <RowItem
-                    sequenceData={rowSequenceData}
-                    columnWidth={columnWidth}
-                />
-            ));
-        }
 
         return (
             <div ref={'rowView'}
