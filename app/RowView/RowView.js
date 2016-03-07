@@ -18,7 +18,9 @@ export default class RowView extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            rowData: []
+        };
     }
 
     _populateRows() {
@@ -37,17 +39,16 @@ export default class RowView extends React.Component {
 
         var rowLength = calculateRowLength(charWidth, viewWidth, columnWidth);
 
-        var rowItems = [];
+        var rowData = [];
 
         for (let i = 0; i < sequenceData.size; i += rowLength) {
-            var rowData = assign({}, sequenceData);
-            rowData.sequence = rowData.sequence.substr(i, rowLength);
-            rowItems.push((
-                <RowItem sequenceData={rowData} columnWidth={columnWidth} />
-            ));
+            let data = {};
+            data.sequence = sequenceData.sequence.substr(i, rowLength);
+            data = assign({}, sequenceData, data);
+            rowData.push(data);
         }
 
-        this.setState({ rowItems: rowItems });
+        this.setState({ rowData: rowData });
     }
 
     componentDidMount() {
@@ -57,7 +58,11 @@ export default class RowView extends React.Component {
 
     render() {
         var {
-            rowItems
+            columnWidth
+        } = this.props;
+
+        var {
+            rowData
         } = this.state;
 
         return (
@@ -66,7 +71,9 @@ export default class RowView extends React.Component {
             >
                 <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                 <RowItem ref={'rowMeasure'} sequenceData={{ sequence: '' }} className={styles.rowMeasure} />
-                {rowItems}
+                {
+                    rowData.map(datum => <RowItem sequenceData={datum} columnWidth={columnWidth} />)
+                }
             </div>
         );
     }
