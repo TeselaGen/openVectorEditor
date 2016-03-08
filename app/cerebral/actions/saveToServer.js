@@ -15,15 +15,19 @@ export default function saveToServer({input, state, output}) {
     // THEN PUT THAT OBJECT IN THE BODY OF THE REQUEST TO THE URL BELOw
     // BOOYAH
     var sequenceData = state.get("sequenceData");
-    var newSequenceData = assign({}, sequenceData);
+    var newSequenceData = {};
     // massage the data back into a form that ICE can accept
     newSequenceData.seqId = newSequenceData._id;
     newSequenceData.isCircular = newSequenceData.circular;
-
-    console.log("seqID is " + newSequenceData.seqId);
-    console.log("circular is " + newSequenceData.circular);
-    console.log("readonly status is " + state.get('readOnly'));
-
+    newSequenceData.name = sequenceData.name;
+    newSequenceData.sequence = sequenceData.sequence;
+    // var feature = {};
+    // for(var f = 0; f++; f<sequenceData.features.length) {
+    //     feature = newSequenceData.features[f];
+    //     feature.locations.genbankStart = feature.start;
+    //     feature.locations.end = feature.end;
+    // }
+    newSequenceData.uri = window.location.origin + "/rest/parts/" + id;
 
     // remember to do checks for bad id and sid and sequence length
 

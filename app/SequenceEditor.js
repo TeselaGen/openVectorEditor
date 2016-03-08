@@ -63,7 +63,7 @@ class SequenceEditor extends React.Component {
         //bind a bunch of keyboard shortcuts we're interested in catching
         //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
         //documentation: https://craig.is/killing/mice
-        combokeys.bind(['a', 'c', 'g', 't'], function(event) { // type in bases
+        combokeys.bind(['a', 'b', 'c', 'd', 'g', 'h', 'k', 'm', 'n', 'r', 's', 't', 'v', 'w', 'y'], function(event) { // type in bases
             sequenceDataInserted({newSequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
         combokeys.bind(['left','shift+left'] , function(event) { // Handle shortcut
