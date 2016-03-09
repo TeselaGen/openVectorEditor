@@ -13,7 +13,7 @@ import styles from './RowItem.scss';
 export default class RowItem extends React.Component {
 
     sequenceContainerWidth() {
-        return elementWidth(this.refs.sequenceContainer);
+        return elementWidth(this.refs.sequence);
     }
 
     render() {
@@ -23,7 +23,8 @@ export default class RowItem extends React.Component {
         } = this.props;
 
         var {
-            sequence
+            sequence,
+            offset
         } = sequenceData;
 
         var complement = getComplementSequenceString(sequence);
@@ -33,11 +34,18 @@ export default class RowItem extends React.Component {
 
         return (
             <div className={styles.rowItem + ' ' + this.props.className}>
-                <div ref={'sequenceContainer'} className={styles.sequence}>
-                    {renderedSequence}
+                <div className={styles.margin}>
+                    {(offset || 0) + 1}
                 </div>
-                <div className={styles.sequence + ' ' + styles.reversed}>
-                    {renderedComplement}
+
+                <div ref={'sequenceContainer'} className={styles.sequenceContainer}>
+                    <div ref={'sequence'} className={styles.sequence}>
+                        {renderedSequence}
+                    </div>
+
+                    <div className={styles.sequence + ' ' + styles.reversed}>
+                        {renderedComplement}
+                    </div>
                 </div>
             </div>
         );

@@ -41,9 +41,12 @@ export default class RowView extends React.Component {
 
         var rowData = [];
 
+        if (rowLength === 0) return;
+
         for (let i = 0; i < sequenceData.size; i += rowLength) {
             let data = {};
             data.sequence = sequenceData.sequence.substr(i, rowLength);
+            data.offset = i;
             data = assign({}, sequenceData, data);
             rowData.push(data);
         }
