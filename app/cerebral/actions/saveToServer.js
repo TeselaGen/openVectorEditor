@@ -14,20 +14,29 @@ export default function saveToServer({input, state, output}) {
     // MAKE SURE YOU'RE TYPING IN ALL CAPS
     // THEN PUT THAT OBJECT IN THE BODY OF THE REQUEST TO THE URL BELOw
     // BOOYAH
-    var sequenceData = state.get("sequenceData");
+    var sequenceData = state.get('sequenceData');
     var newSequenceData = {};
+    var featureList = [];
     // massage the data back into a form that ICE can accept
-    newSequenceData.seqId = newSequenceData._id;
-    newSequenceData.isCircular = newSequenceData.circular;
-    newSequenceData.name = sequenceData.name;
     newSequenceData.sequence = sequenceData.sequence;
-    // var feature = {};
-    // for(var f = 0; f++; f<sequenceData.features.length) {
-    //     feature = newSequenceData.features[f];
-    //     feature.locations.genbankStart = feature.start;
-    //     feature.locations.end = feature.end;
-    // }
-    newSequenceData.uri = window.location.origin + "/rest/parts/" + id;
+    newSequenceData.name = state.get('name');
+    newSequenceData.isCircular = sequenceData.circular;
+
+    // we have to copy these over instead of pushing the object because we need to delete certain props
+    for (var f = 0; f < sequenceData.features.length; f++) {
+        featureList[f] = {};
+        featureList[f].id = sequenceData.features[f].id;
+        featureList[f].type = sequenceData.features[f].type;
+        featureList[f].name = sequenceData.features[f].name;
+        featureList[f].strand = sequenceData.features[f].strand;
+        featureList[f].notes = sequenceData.features[f].notes;
+        // featureList[f].notes.push(sequenceData.features[f].notes);
+        featureList[f].locations = [{}];
+        featureList[f].locations[0].genbankStart = sequenceData.features[f].start;
+        featureList[f].locations[0].end = sequenceData.features[f].end;
+    }
+
+    newSequenceData.features = featureList;
 
     // remember to do checks for bad id and sid and sequence length
 
