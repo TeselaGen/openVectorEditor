@@ -215,7 +215,7 @@ class CircularView extends React.Component {
                         onStop={
                             signals.editorDragStopped
                                 } >
-                <div style={{
+                <div ref={'circularView'} style={{
                         width: circularViewDimensions.width,
                         height: circularViewDimensions.height
                     }}
