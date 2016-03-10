@@ -30,7 +30,6 @@ export default function saveToServer({input, state, output}) {
         featureList[f].name = sequenceData.features[f].name;
         featureList[f].strand = sequenceData.features[f].strand;
         featureList[f].notes = sequenceData.features[f].notes;
-        // featureList[f].notes.push(sequenceData.features[f].notes);
         featureList[f].locations = [{}];
         featureList[f].locations[0].genbankStart = sequenceData.features[f].start;
         featureList[f].locations[0].end = sequenceData.features[f].end;
