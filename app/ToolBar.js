@@ -100,26 +100,6 @@ export default class ToolBar extends React.Component {
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
-<<<<<<< HEAD
-                    <RaisedButton
-                        label='Features'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ currentSidebar: 'features' });
-                        }}
-                    />
-                    <RaisedButton
-                        label='Cutsites'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ currentSidebar: 'cutsites' });
-                        }}
-                    />
-                    <RaisedButton
-                        label='ORFs'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ currentSidebar: 'orfs' });
-                        }}
-                    />
-=======
                   <RaisedButton
                      label='Features'
                      onTouchTap={function() {
@@ -138,7 +118,6 @@ export default class ToolBar extends React.Component {
                          signals.toggleAnnotationTable({ annotationType: 'orfs' });
                      }}
                      />
->>>>>>> b869baf85582943bd1d64f8840e54bec3e7a61ea
                     <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
                         {toggleMenuItems}
                     </IconMenu>
