@@ -12,6 +12,8 @@ export default {
     },
 
     calculateRowLength: function(charWidth, viewWidth, columnWidth) {
+        if (!(charWidth && viewWidth)) return 0;
+
         var baseRowLength = Math.floor(viewWidth / charWidth);
         var adjustedRowLength = baseRowLength;
 

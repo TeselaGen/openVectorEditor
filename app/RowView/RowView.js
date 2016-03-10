@@ -34,14 +34,16 @@ export default class RowView extends React.Component {
             rowMeasure
         } = this.refs;
 
+        if (sequenceData.size <= 0) return;
+
         var charWidth = fontMeasure.getBoundingClientRect().width;
         var viewWidth = rowMeasure.sequenceContainerWidth();
 
         var rowLength = calculateRowLength(charWidth, viewWidth, columnWidth);
 
-        var rowData = [];
-
         if (rowLength === 0) return;
+
+        var rowData = [];
 
         for (let i = 0; i < sequenceData.size; i += rowLength) {
             let data = {};
