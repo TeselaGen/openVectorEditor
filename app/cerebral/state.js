@@ -14,7 +14,7 @@ module.exports = {
     //sl: begin obsessive alphabetization   :p
     // simple vars
     allowPartialAnnotationsOnCopy: false,
-    annotationHeight: 15,
+    annotationHeight: 8,
     averageRowHeight: 100,
     bottomSpacerHeight: 0,
     caretPosition: 0,
@@ -25,7 +25,7 @@ module.exports = {
     minimumOrfSize: 20,
     readOnly: false,
     rowToJumpTo: null,
-    showAxis: true,
+    showAxis: false,
     showCircular: true,
     showCutsites: true,
     showFeatures: true,
@@ -35,7 +35,7 @@ module.exports = {
     showReverseSequence: true,
     showRow: true,
     showSequence: true,
-    showSidebar: '',
+    annotationTableType: '',
     showTranslations: true,
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
