@@ -134,9 +134,8 @@ export default function(options) {
             [a.saveToFile],
         saveChanges:
             [a.saveToServer],
-
-        // clickLoadFile: 
-        //     [a.loadFromFile],
+        clickLoadFile: 
+            [a.loadFromFile],
 
         //lower priority
         addAnnotations: [a.addAnnotations],
