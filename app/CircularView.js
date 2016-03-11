@@ -165,7 +165,8 @@ class CircularView extends React.Component {
                         style={ {    opacity: .4} }
                         d={ sector.path.print() }
                         fill="blue" />
-                </PositionAnnotationOnCircle>);
+                </PositionAnnotationOnCircle>
+            );
             annotationsSvgs.push(
                 <Caret 
                     key='caretStart'
@@ -173,7 +174,8 @@ class CircularView extends React.Component {
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
                     outerRadius={currentRadius}
-                />);
+                />
+            );
             annotationsSvgs.push(
                 <Caret 
                     key='caretEnd'
@@ -181,7 +183,8 @@ class CircularView extends React.Component {
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
                     outerRadius={currentRadius}
-                />);
+                />
+            );
         }
 
         if (caretPosition !== -1 && !selectionLayer.selected) {
@@ -214,10 +217,10 @@ class CircularView extends React.Component {
                             this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
                         }
                             }
-                    onStop={
-                        signals.editorDragStopped
-                            } >
-                <div style={{
+                        onStop={
+                            signals.editorDragStopped
+                                } >
+                <div ref={'circularView'} style={{
                         width: circularViewDimensions.width,
                         height: circularViewDimensions.height
                     }}
@@ -232,7 +235,7 @@ class CircularView extends React.Component {
                             <path
                                 d={`M 0, 0 m -${rimRadius}, 0 a ${rimRadius},${rimRadius} 0 1,0 ${rimRadius*2},0 a ${rimRadius},${rimRadius} 0 1,0 -${rimRadius*2},0 ` +
                                     `M 0, 0 m -${currentRadius}, 0 a ${currentRadius},${currentRadius} 0 1,1 ${currentRadius*2},0 a ${currentRadius},${currentRadius} 0 1,1 -${currentRadius*2},0`}
-                                fill={'yellow'}
+                                fill={'#ffff99'}
                                 stroke={'black'}
                             />
                             <text x={0} y={0} textAnchor={'middle'} fontFamily={'Roboto'} fontSize={14} style={{dominantBaseline: 'central'}}>
