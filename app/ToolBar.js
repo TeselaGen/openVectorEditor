@@ -101,7 +101,7 @@ export default class ToolBar extends React.Component {
                 <MenuItem key={3} primaryText="Download Fasta" insetChildren={true} onClick={function () {
                     signals.clickSaveFile({fileExt: 'fasta'});
                 }} />
-                <MenuItem key={3} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
+                <MenuItem key={4} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
                     signals.clickLoadFile();
                 }} />         
             </div>
