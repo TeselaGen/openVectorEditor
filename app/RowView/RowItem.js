@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { propTypes } from '../react-props-decorators.js';
 
 import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
-import { columnizeString, elementWidth } from './Utils';
+import { columnizeString, elementWidth, calculateRowLength } from './Utils';
 
 import styles from './RowItem.scss';
 
@@ -12,8 +12,9 @@ import styles from './RowItem.scss';
 })
 export default class RowItem extends React.Component {
 
-    sequenceContainerWidth() {
-        return elementWidth(this.refs.sequence);
+    getMaxSequenceLength(charWidth, columnWidth) {
+        var sequenceWidthPx = elementWidth(this.refs.sequence);
+        return calculateRowLength(charWidth, sequenceWidthPx, columnWidth);
     }
 
     render() {

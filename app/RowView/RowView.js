@@ -5,7 +5,6 @@ import styles from './RowView.scss';
 
 import assign from 'lodash/object/assign';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
-import { calculateRowLength } from './Utils';
 
 import RowItem from './RowItem.js';
 
@@ -37,9 +36,7 @@ export default class RowView extends React.Component {
         if (sequenceData.size <= 0) return;
 
         var charWidth = fontMeasure.getBoundingClientRect().width;
-        var viewWidth = rowMeasure.sequenceContainerWidth();
-
-        var rowLength = calculateRowLength(charWidth, viewWidth, columnWidth);
+        var rowLength = rowMeasure.getMaxSequenceLength(charWidth, columnWidth);
 
         if (rowLength === 0) return;
 
