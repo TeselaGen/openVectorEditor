@@ -12,6 +12,12 @@ import styles from './RowItem.scss';
 })
 export default class RowItem extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+    }
+
     getMaxSequenceLength(charWidth, columnWidth) {
         var sequenceWidthPx = elementWidth(this.refs.sequenceContainer);
         return calculateRowLength(charWidth, sequenceWidthPx, columnWidth);
@@ -34,11 +40,11 @@ export default class RowItem extends React.Component {
         this._resizeSVG();
     }
 
-    render() {
+    _processProps(props) {
         var {
             sequenceData,
             columnWidth
-        } = this.props;
+        } = props;
 
         var {
             sequence,
@@ -51,10 +57,36 @@ export default class RowItem extends React.Component {
         var renderedSequence = columnizeString(sequence, columnWidth);
         var renderedComplement = columnizeString(complement, columnWidth);
 
+        this.setState({
+            renderedSequence: renderedSequence,
+            renderedComplement: renderedComplement,
+            renderedOffset: (offset || 0) + 1
+        });
+    }
+
+    componentWillMount() {
+        this._processProps(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this._processProps(nextProps);
+    }
+
+    render() {
+        var {
+            className
+        } = this.props;
+
+        var {
+            renderedSequence,
+            renderedComplement,
+            renderedOffset
+        } = this.state;
+
         return (
             <div className={styles.rowItem + ' ' + className}>
                 <div className={styles.margin}>
-                    {(offset || 0) + 1}
+                    {renderedOffset}
                 </div>
 
                 <svg ref={'sequenceContainer'} className={styles.sequenceContainer}>
