@@ -13,8 +13,25 @@ import styles from './RowItem.scss';
 export default class RowItem extends React.Component {
 
     getMaxSequenceLength(charWidth, columnWidth) {
-        var sequenceWidthPx = elementWidth(this.refs.sequence);
+        var sequenceWidthPx = elementWidth(this.refs.sequenceContainer);
         return calculateRowLength(charWidth, sequenceWidthPx, columnWidth);
+    }
+
+    _resizeSVG() {
+        var {
+            sequenceContainer: svg
+        } = this.refs;
+
+        var bbox = svg.getBBox();
+        svg.setAttribute('height', bbox.y + bbox.height + 'px');
+    }
+
+    componentDidMount() {
+        this._resizeSVG();
+    }
+
+    componentDidUpdate() {
+        this._resizeSVG();
     }
 
     render() {
@@ -39,15 +56,17 @@ export default class RowItem extends React.Component {
                     {(offset || 0) + 1}
                 </div>
 
-                <div ref={'sequenceContainer'} className={styles.sequenceContainer}>
-                    <div ref={'sequence'} className={styles.sequence}>
-                        {renderedSequence}
-                    </div>
+                <svg ref={'sequenceContainer'} className={styles.sequenceContainer}>
+                    <text ref={'sequence'} className={styles.sequence}>
+                        <tspan className={styles.sequence}>
+                            {renderedSequence}
+                        </tspan>
 
-                    <div className={styles.sequence + ' ' + styles.reversed}>
-                        {renderedComplement}
-                    </div>
-                </div>
+                        <tspan x={0} dy={'1.2em'} className={styles.sequence + ' ' + styles.reversed}>
+                            {renderedComplement}
+                        </tspan>
+                    </text>
+                </svg>
             </div>
         );
     }
