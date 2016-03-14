@@ -42,7 +42,8 @@ export default class RowItem extends React.Component {
 
         var {
             sequence,
-            offset
+            offset,
+            className
         } = sequenceData;
 
         var complement = getComplementSequenceString(sequence);
@@ -51,7 +52,7 @@ export default class RowItem extends React.Component {
         var renderedComplement = columnizeString(complement, columnWidth);
 
         return (
-            <div className={styles.rowItem + ' ' + this.props.className}>
+            <div className={styles.rowItem + ' ' + className}>
                 <div className={styles.margin}>
                     {(offset || 0) + 1}
                 </div>
