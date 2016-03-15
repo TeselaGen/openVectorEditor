@@ -1,4 +1,3 @@
-// var ObjectID = require("bson-objectid");
 var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 
@@ -7,27 +6,30 @@ export default function pasteSequenceString({input, state, output}) {
     var cleanedUpClipboardData;
     var { sequenceString } = input;
 
+    // delete id instead of putting anything there, remove entirely
+    function removeIds(annotations) {
+        var newFeature;
+        return annotations.map(function(annotation) {
+            newFeature = assign({}, annotation);
+            delete newFeature.id;
+            return newFeature;
+        });
+    }
+
     function removeFeatureIds(sequenceData) {
         return assign({}, sequenceData, {
             features: removeIds(sequenceData.features)
         });
     }
 
-    // // {{}} delete id instead of putting anything there, remove entirely
-    function removeIds(annotations) {
-        return annotations.map(function(annotation) {
-            delete annotation._id;
-        });
-    }
-
-    if (clipboardData && clipboardData.sequence && clipboardData.sequence === sequenceString) {
+    if (clipboardData && clipboardData.sequence /*&& clipboardData.sequence === sequenceString*/) {
         // handle clipboardData which was copied from within the app
         // remove ids from the copied features so the server can give them new ones
-        // cleanedUpClipboardData = removeFeatureIds(clipboardData);
-        cleanedUpClipboardData = clipboardData;
+        cleanedUpClipboardData = removeFeatureIds(clipboardData);
     } else {
         // clean up the sequence string coming from elsewhere so we can insert it
-        cleanedUpClipboardData = filterSequenceString(sequenceString);
+        // cleanedUpClipboardData = filterSequenceString(sequenceString);
+        cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});
     }
 
     if(cleanedUpClipboardData.sequence) {
