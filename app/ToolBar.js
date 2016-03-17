@@ -13,9 +13,10 @@ import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
-import SaveIcon from 'material-ui/lib/svg-icons/content/save';
+import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
 import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
 import uploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
+import printIcon from 'material-ui/lib/svg-icons/action/print';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
@@ -139,6 +140,14 @@ export default class ToolBar extends React.Component {
                     >
                         <SaveIcon />
                     </IconButton>
+                    <IconButton
+                        label='Print Current View'
+                        onTouchTap={function() {
+                            signals.clickPrint();
+                        }}
+                    >
+                        <SaveIcon />
+                    </IconButton>                    
                     <RaisedButton
                         label='Features'
                         onTouchTap={function() {

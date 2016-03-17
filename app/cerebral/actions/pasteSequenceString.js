@@ -28,7 +28,6 @@ export default function pasteSequenceString({input, state, output}) {
         cleanedUpClipboardData = removeFeatureIds(clipboardData);
     } else {
         // clean up the sequence string coming from elsewhere so we can insert it
-        // cleanedUpClipboardData = filterSequenceString(sequenceString);
         cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});
     }
 
