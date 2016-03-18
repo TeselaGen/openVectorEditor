@@ -190,7 +190,7 @@ class SequenceEditor extends React.Component {
                       {table}
                     </div>
 
-                    <div className={styles.circularViewSlot} style={(showCircular) ? {} : {display: 'none'}}>
+                    <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
                         <CircularView />
                     </div>
 

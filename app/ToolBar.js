@@ -16,7 +16,7 @@ import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
 import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
 import uploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
-import printIcon from 'material-ui/lib/svg-icons/action/print';
+import PrintIcon from 'material-ui/lib/svg-icons/action/print';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
@@ -143,10 +143,10 @@ export default class ToolBar extends React.Component {
                     <IconButton
                         label='Print Current View'
                         onTouchTap={function() {
-                            signals.clickPrint();
+                            window.print();
                         }}
                     >
-                        <SaveIcon />
+                        <PrintIcon />
                     </IconButton>                    
                     <RaisedButton
                         label='Features'

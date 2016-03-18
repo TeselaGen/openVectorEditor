@@ -1,3 +1,13 @@
+@media print {
+  body [class^='app-sequence-editor---head'], body [class^='app-sequence-editor---foot'], body [class*='navbar-fixed-bottom'] {
+    display: none;
+  }
+
+  body #circularView {
+    display: block;
+  }
+}
+
 .app {
     display: flex;
     flex-direction: column;
