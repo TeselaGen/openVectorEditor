@@ -1,8 +1,15 @@
-var seqString1 = "gacgtctggatcctcgtctcassasdfasdsfasdfasdfasdasdgasdgasdgasdgtgccgcggccgcggccgcggacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcggacgtctggatcctcgtctcatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcg" 
-var seqString = "";
-for (var i = 0; i < 1; i++) {
-    seqString += seqString1
+var seqString = '';
+
+var randomBP = function () {
+    var bps = [ 'a', 't', 'c', 'g' ];
+    var pick = Math.floor(Math.random() * 4);
+    return bps[pick];
 }
+
+for (let i = 0; i < 360; i++) {
+    seqString += randomBP();
+}
+
 var sequenceData = {
     "_id": "55a34cf01d8e1e8ea7000006",
     "name_lowercase": "pj5_00001",

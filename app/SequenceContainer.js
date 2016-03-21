@@ -1,31 +1,44 @@
 import React, { PropTypes } from 'react';
 
-var PureRenderMixin = require('react-addons-pure-render-mixin');
-var SequenceContainer = React.createClass({
-    mixins: [PureRenderMixin],
-    propTypes: {
-        sequence: PropTypes.string.isRequired,
-        charWidth: PropTypes.number.isRequired,
-        children: PropTypes.any
-    },
-    render: function() {
+var mixin = require('./mixin');
+
+import styles from './sequence-container';
+
+@propTypes({
+    sequence: PropTypes.string.isRequired,
+    charWidth: PropTypes.number.isRequired,
+    children: PropTypes.any
+})
+class SequenceContainer extends React.Component {
+
+    render() {
         var {
-            sequence, charWidth, children
+            sequence,
+            charWidth,
+            children
         } = this.props;
+
         if (charWidth < 10) {
             return null;
         }
-        var style = {
-            position: 'relative'
+
+        var columns = [];
+
+        for (let i = 0; i < sequence.length; i+=10) {
+            let textHTML = `<text x="${charWidth * i + i / 10 * charWidth}" y="10" textLength="${charWidth * 10}" length-adjust="spacing">${sequence.slice(i, i + 10)}</text>`;
+            columns.push(textHTML);
         }
-        var textHTML = '<text font-family="Courier New, Courier, monospace" x="' + (charWidth / 4) + '" y="10" textLength="' + (charWidth * (sequence.length)) + '" length-adjust="spacing">' + sequence + '</text>';
+
         return (
-            <div style={style} className='sequenceContainer'>
-                <svg ref="textContainer" className="textContainer" width="100%" height={charWidth} dangerouslySetInnerHTML={{__html: textHTML}} />
+            <div className={styles.sequenceContainer}>
+                <svg ref="textContainer" width="100%" height={charWidth} dangerouslySetInnerHTML={{__html: columns.join('')}} />
                 {children}
             </div>
         )
     }
-});
+
+}
+
+mixin(SequenceContainer, PureRenderMixin);
 
 module.exports = SequenceContainer;

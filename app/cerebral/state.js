@@ -40,7 +40,7 @@ module.exports = {
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
     topSpacerHeight: 0,
-    uppercase: false,
+    uppercase: true,
     // complex vars
     circularViewDimensions: {
         height: 500,
@@ -100,9 +100,11 @@ module.exports = {
         ],
         ['charWidth'],
         function(rowViewDimensionsWidth, charWidth) {
-            return Math.floor(rowViewDimensionsWidth / charWidth);
+            var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
+            var gaps = Math.floor(charsInRow / 10) - 1;
+            return Math.floor((charsInRow - gaps) / 10) * 10;
         }
-    ]),  
+    ]),
     userEnzymes: deriveData([
         ['userEnzymeList'],
         function(userEnzymeList) {

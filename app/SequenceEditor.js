@@ -9,8 +9,8 @@ import styles from './sequence-editor.css';
 var Combokeys = require("combokeys");
 var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
-var RowView = require('./RowView');
-var MapView = require('./MapView');
+
+var RowView = require('./RowView/RowView');
 var CircularView = require('./CircularView');
 var Clipboard = require('./Clipboard');
 
@@ -193,9 +193,8 @@ class SequenceEditor extends React.Component {
                     <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
                         <CircularView />
                     </div>
-
-                    <div className={styles.rowViewSlot} id="rowView" style={(showRow) ? {} : {display: 'none'}}>
-                        <RowView />
+                    <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
+                        <RowView sequenceData={sequenceData} columnWidth={10} />
                     </div>
                 </div>
 
