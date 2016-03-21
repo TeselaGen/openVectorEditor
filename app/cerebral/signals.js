@@ -91,8 +91,6 @@ export default function(options) {
         ],
 
         setSelectionLayer: [a.setSelectionLayer],
-
-        clickPrint: [a.printView],
         
     // ///////////////////////////////////
     // edit only actions

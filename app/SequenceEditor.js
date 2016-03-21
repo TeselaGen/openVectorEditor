@@ -186,7 +186,7 @@ class SequenceEditor extends React.Component {
                 </div>
 
                 <div className={styles.content}>
-                    <div className={styles.sideBarSlot} style={(table) ? {} : {display: 'none'}}>
+                    <div className={styles.sideBarSlot} id="sideBar" style={(table) ? {} : {display: 'none'}}>
                       {table}
                     </div>
 
@@ -194,7 +194,7 @@ class SequenceEditor extends React.Component {
                         <CircularView />
                     </div>
 
-                    <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
+                    <div className={styles.rowViewSlot} id="rowView" style={(showRow) ? {} : {display: 'none'}}>
                         <RowView />
                     </div>
                 </div>
