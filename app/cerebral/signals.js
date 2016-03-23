@@ -86,6 +86,11 @@ export default function(options) {
             a.searchSequence,
             a.updateSearchLayers
         ],
+        toggleSequenceCase: [
+            a.toggleSequenceCase
+        ],
+
+        setSelectionLayer: [a.setSelectionLayer],
         
     // ///////////////////////////////////
     // edit only actions
@@ -95,7 +100,6 @@ export default function(options) {
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
         ]),  
-        // sl: in progress
         // paste sequence from clipboard
         pasteSequenceString: a.addEditModeOnly([
             a.pasteSequenceString, {
@@ -124,12 +128,14 @@ export default function(options) {
             },
             a.insertSequenceData,
             a.clearSelectionLayer
-        ]),            
-        toggleSequenceCase: [
-            a.toggleSequenceCase
-        ],
-
-        setSelectionLayer: [a.setSelectionLayer],
+        ]),
+        // sl - in progress loading and saving local files
+        clickSaveFile:
+            [a.saveToFile],
+        saveChanges:
+            [a.saveToServer],
+        clickLoadFile: 
+            [a.loadFromFile],
 
         //lower priority
         addAnnotations: [a.addAnnotations],

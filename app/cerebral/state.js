@@ -22,7 +22,7 @@ module.exports = {
     charWidth: 15,
     clipboardData: null,
     mapViewTickSpacing: 40,
-    minimumOrfSize: 20,
+    minimumOrfSize: 300,
     readOnly: false,
     rowToJumpTo: null,
     showAxis: false,

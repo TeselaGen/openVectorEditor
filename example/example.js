@@ -1,41 +1,99 @@
-// var sequenceData1 = require('.exampleData/sequenceData');
-// var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations');
-// var sequenceData = require('.exampleData/sequenceDataWithOrfsAndTranslations2');
-var sequenceData = require('../exampleData/sequenceDataWithOrfsAndTranslations3');
 var ReactDOM = require('react-dom')
 var App = require('../app/App.js')
-// import request from 'superagent'
+import request from 'superagent/lib/client';
 
-//set your custom options here
-var options = {
-	state: {
-		//override default state here. See state.js for the full list of application state
-		sequenceData: sequenceData //tnr: set the initial sequence data here
-		// showFeatures: true,
-		//etc..
-	},
-	services: {
-		//add or override any services you want here. These are passed to every action (see below)
-		// request: request
-	},
-	actions: {
-		//override default actions here. See signals.js for the full list of application signals
-		saveSequence: function saveSequence ({input, output, services}) {
-			services.request.post('/sequence')
-				.send(input.sequenceData)
-				.then(function (res) {
-					output.success(res.body)
-				}).catch(function (err) {
-					output.error(err)
-				})
-		}
-	},
-}
+var query = location.search;
+var cookie = document.cookie;
+var id = query.match(/entryId=[\d]+/) + "";
+id = id.replace(/entryId=/, "");
+var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
+sid = sid.replace(/sessionId=|%22/g, "");
 
-//Editor is the React Component
-//controller is the cerebral state controller
-var {Editor, controller} = App(options);
-//choose the dom node you want to render to
-const DOMNodeToRenderTo = document.createElement('div');
-document.body.appendChild(DOMNodeToRenderTo);
-ReactDOM.render(Editor, DOMNodeToRenderTo);
+// async response call
+request
+    .get('rest/parts/' + id + '/sequence')
+    .set('X-ICE-Authentication-sessionId', sid)
+    .accept('application/json')
+    .end(function(err, result) {
+        var contents = result.body;
+        var sequence = contents.sequence;
+        var name = contents.name;
+        var isCircular = contents.isCircular;
+        var canEdit = contents.canEdit;
+        var seqId = contents.identifier;
+        var featureList = [];
+
+        // maybe move this
+        var colorFeature = function(feature) {
+            var type = feature.type;
+            type = type.toLowerCase();
+            var color = "#CCCCCC";
+            switch(type) {
+                case "promoter":
+                    color = "#31B440";
+                    break;
+                case "terminator":
+                    color = "#F51600";
+                    break;
+                case "cds":
+                    color = "#EF6500";
+                    break;
+                case "misc_feature":
+                    color = "#006FEF";
+                    break;
+                case "m_rna":
+                    color = "#FFFF00";
+                    break;
+                case "misc_binding":
+                    color = "#006FEF";
+                    break;                   
+                case "misc_marker":
+                    color = "#8DCEB1";
+                    break;
+                case "rep_origin":
+                    color = "#878787";
+                    break;
+                default:
+                    // leave it gray            
+            }
+            return color;
+        }
+
+        for (var f = 0; f < contents.features.length; f++) { 
+            featureList.push(contents.features[f]);
+        }       
+        // reformat feature data a little
+        for (var p = 0; p < featureList.length; p++) {
+            featureList[p].start = featureList[p].locations[0].genbankStart;
+            featureList[p].end = featureList[p].locations[0].end;
+            featureList[p].color = colorFeature(featureList[p]);
+        }
+
+        var options = {
+            state: {
+                sequenceData: {
+                    features: featureList,
+                    _id: seqId,
+                    sequence: sequence,
+                    circular: isCircular
+                },
+                readOnly: !canEdit,
+                name: name,
+            },
+            services: {
+                request: request
+            },
+            actions: {
+                // nothing here currently
+            }
+        }
+
+        //Editor is the React Component
+        //controller is the cerebral state controller
+        var {Editor, controller} = App(options);
+        //choose the dom node you want to render to
+        const DOMNodeToRenderTo = document.createElement('div');
+        document.body.appendChild(DOMNodeToRenderTo);
+        ReactDOM.render(Editor, DOMNodeToRenderTo);
+    }
+);

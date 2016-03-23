@@ -55,7 +55,9 @@ import styles from './circular-view.css';
     sequenceLength: PropTypes.number.isRequired,
     sequenceName: PropTypes.string.isRequired
 })
+
 class CircularView extends React.Component {
+
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect();
         //get relative click positions
@@ -162,7 +164,6 @@ class CircularView extends React.Component {
                     <path
                         style={ {    opacity: .4} }
                         d={ sector.path.print() }
-
                         fill="blue" />
                 </PositionAnnotationOnCircle>
             );
@@ -206,16 +207,16 @@ class CircularView extends React.Component {
                     right: 0,
                     bottom: 0
                 }}
-                        onDrag={
-                            (event) => {
-                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                    onDrag={
+                        (event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged);
+                        }
                             }
-                                }
-                        onStart={
-                            (event) => {
-                                this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                    onStart={
+                        (event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted);
+                        }
                             }
-                                }
                         onStop={
                             signals.editorDragStopped
                                 } >
@@ -279,26 +280,25 @@ function Caret({
                 y1={-innerRadius}
                 x2={0}
                 y2={-outerRadius}
-
                 stroke="black" />
         </PositionAnnotationOnCircle>
     );
 }
 
 var PositionAnnotationOnCircle = function({
-    children,
-    height = 0,
-    sAngle = 0,
-    eAngle = 0,
-    forward = true
-}) {
-    const sAngleDegs = sAngle * 360 / Math.PI / 2;
-    const eAngleDegs = eAngle * 360 / Math.PI / 2;
-    var transform;
-    if (forward) {
-        transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;
-    } else {
-        transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `;
+        children,
+        height = 0,
+        sAngle = 0,
+        eAngle = 0,
+        forward = true
+    }) {
+        const sAngleDegs = sAngle * 360 / Math.PI / 2;
+        const eAngleDegs = eAngle * 360 / Math.PI / 2;
+        var transform;
+        if (forward) {
+            transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;
+        } else {
+            transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `;
     }
     return (
         <g transform={ transform }>

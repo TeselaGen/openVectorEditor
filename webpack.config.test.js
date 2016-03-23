@@ -27,6 +27,8 @@ module.exports = {
             }
         }]
     },
+    node: {
+        __dirname: true,
     resolve: {
         // you can now require('file') instead of require('file.coffee')
         extensions: ['', '.js', '.json', '.coffee', '.css', '.scss']
@@ -38,6 +40,8 @@ module.exports = {
             'process.env': {
                 NODE_ENV: JSON.stringify('testing')
             }
-        })
+        }),
+        // fixing superagent
+        new webpack.DefinePlugin({ "global.GENTLY": false })
     ],
 };
