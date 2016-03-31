@@ -131,6 +131,20 @@ export default class ToolBar extends React.Component {
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
+                    <RaisedButton
+                        label='Row'
+                        onTouchTap={function() {
+                            document.getElementById("rowView").addClass("printMe");
+                            document.getElementById("circularView").removeClass("printMe");
+                        }}
+                    />
+                    <RaisedButton
+                        label='Map'
+                        onTouchTap={function() {
+                            document.getElementById("circularView").addClass("printMe");
+                            document.getElementById("rowView").removeClass("printMe");                        
+                        }}
+                    />                    
                     <IconButton
                         disabled={ readOnly }
                         label='Save to Server'
@@ -149,19 +163,19 @@ export default class ToolBar extends React.Component {
                         <PrintIcon />
                     </IconButton>                    
                     <RaisedButton
-                        label='Features'
+                        label='F'
                         onTouchTap={function() {
                             signals.toggleAnnotationTable({ annotationType: 'features' });
                         }}
                     />
                     <RaisedButton
-                        label='Cutsites'
+                        label='C'
                         onTouchTap={function() {
                             signals.toggleAnnotationTable({ annotationType: 'cutsites' });
                         }}
                     />
                     <RaisedButton
-                        label='ORFs'
+                        label='O'
                         onTouchTap={function() {
                             signals.toggleAnnotationTable({ annotationType: 'orfs' });
                         }}

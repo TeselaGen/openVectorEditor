@@ -3,7 +3,7 @@
     display: none;
   }
 
-  body #circularView {
+  body [class*='printMe'] {
     display: block;
   }
 }

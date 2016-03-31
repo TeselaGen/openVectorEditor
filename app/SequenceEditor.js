@@ -193,7 +193,7 @@ class SequenceEditor extends React.Component {
                     <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
                         <CircularView />
                     </div>
-                    <div className={styles.rowViewSlot} style={(showRow) ? {} : {display: 'none'}}>
+                    <div className={styles.rowViewSlot} id="rowView" style={(showRow) ? {} : {display: 'none'}}>
                         <RowView sequenceData={sequenceData} columnWidth={10} />
                     </div>
                 </div>
