@@ -134,15 +134,15 @@ export default class ToolBar extends React.Component {
                     <RaisedButton
                         label='Row'
                         onTouchTap={function() {
-                            document.getElementById("rowView").addClass("printMe");
-                            document.getElementById("circularView").removeClass("printMe");
+                            document.getElementById("rowView").classList.add("printMe");
+                            document.getElementById("circularView").classList.remove("printMe");
                         }}
                     />
                     <RaisedButton
                         label='Map'
                         onTouchTap={function() {
-                            document.getElementById("circularView").addClass("printMe");
-                            document.getElementById("rowView").removeClass("printMe");                        
+                            document.getElementById("circularView").classList.add("printMe");
+                            document.getElementById("rowView").classList.remove("printMe");                        
                         }}
                     />                    
                     <IconButton
