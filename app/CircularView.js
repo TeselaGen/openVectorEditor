@@ -162,7 +162,6 @@ class CircularView extends React.Component {
                     eAngle={ endAngle }
                     height={ 0 }>
                     <path
-                        style={ {    opacity: .4} }
                         d={ sector.path.print() }
                         fill="blue" />
                 </PositionAnnotationOnCircle>
@@ -275,7 +274,7 @@ function Caret({
             height={ 0 }>
             <line
                 className="cursor"
-                style={ { opacity: 9, cursor: "ew-resize" } }//tnr: the classname needs to be cursor here!
+                style={ { cursor: "ew-resize" } }//tnr: the classname needs to be cursor here!
                 x1={0}
                 y1={-innerRadius}
                 x2={0}

@@ -42,7 +42,6 @@ let AASliver = React.createClass({
                     points={"0,0 " + x2 + ",0 100,50 " + x2 + ",100 0,100 " + x1 + ",50 0,0"}
                     strokeWidth="5"
                     // stroke="black"
-                    opacity={0.5}
                     fill={this.props.color || 'gray'}>
                 </polyline>
                 {this.props.positionInCodon === 1 &&
