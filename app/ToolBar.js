@@ -21,6 +21,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
 @Cerebral({
+    embedded: ['embedded'],
     readOnly: ['readOnly'],
     showOrfs: ['showOrfs'],
     showCutsites: ['showCutsites'],
@@ -30,6 +31,7 @@ import TextField from 'material-ui/lib/text-field';
     showSidebar: ['showSidebar']
 })
 @propTypes({
+    embedded: PropTypes.bool.isRequired,
     readOnly: PropTypes.bool.isRequired,
     showOrfs: PropTypes.bool.isRequired,
     showCutsites: PropTypes.bool.isRequired,
@@ -49,6 +51,7 @@ export default class ToolBar extends React.Component {
 
     render() {
         var {
+            embedded,
             readOnly,
             showFeatures,
             showParts,
@@ -91,6 +94,26 @@ export default class ToolBar extends React.Component {
             }
         ];
 
+        var embeddedControls = (
+            embedded ? 
+                <div>
+                <RaisedButton
+                    label='Row'
+                    onTouchTap={function() {
+                        document.getElementById("circularView").setAttribute("style", "display: none");
+                        document.getElementById("rowView").setAttribute("style", "display: block"); 
+                    }}
+                />
+                <RaisedButton
+                    label='Map'
+                    onTouchTap={function() {
+                        document.getElementById("circularView").setAttribute("style", "display: block");
+                        document.getElementById("rowView").setAttribute("style", "display: none");                        
+                    }}
+                />
+                </div> : null
+        )
+
         var fileMenuItems = (
             <div>
                 <MenuItem key={1} primaryText="Download SBOL" insetChildren={true} onClick={function () {
@@ -131,22 +154,11 @@ export default class ToolBar extends React.Component {
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
-                    <RaisedButton
-                        label='Row'
-                        onTouchTap={function() {
-                            document.getElementById("rowView").classList.add("printMe");
-                            document.getElementById("circularView").classList.remove("printMe");
-                        }}
-                    />
-                    <RaisedButton
-                        label='Map'
-                        onTouchTap={function() {
-                            document.getElementById("circularView").classList.add("printMe");
-                            document.getElementById("rowView").classList.remove("printMe");                        
-                        }}
-                    />                    
+                    
+                    {embeddedControls}
+
                     <IconButton
-                        disabled={ readOnly }
+                        disabled={ readOnly }  // you can't save in read only
                         label='Save to Server'
                         onTouchTap={function() {
                             signals.saveChanges();
