@@ -162,7 +162,9 @@ class CircularView extends React.Component {
                     eAngle={ endAngle }
                     height={ 0 }>
                     <path
+                        style={ {    opacity: .4} }
                         d={ sector.path.print() }
+
                         fill="blue" />
                 </PositionAnnotationOnCircle>
             );
