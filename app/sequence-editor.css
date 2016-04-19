@@ -1,4 +1,4 @@
-@media print {
+/*@media print {
   body [class^='app-sequence-editor---head'], body [class^='app-sequence-editor---foot'], 
   body [class*='navbar-fixed-bottom'], .sideBarSlot {
     display: none;
@@ -18,7 +18,7 @@
       margin: 2cm;
       size: auto;
   }
-}
+}*/
 
 .head {
     overflow: hidden;

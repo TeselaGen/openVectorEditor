@@ -185,7 +185,7 @@ class SequenceEditor extends React.Component {
                     <ToolBar />
                 </div>
 
-                <div className={styles.content}>
+                <div className={styles.content} id="allViews">
                     <div className={styles.sideBarSlot} id="sideBar" style={(table) ? {} : {display: 'none'}}>
                       {table}
                     </div>

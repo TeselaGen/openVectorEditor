@@ -94,6 +94,7 @@ export default class ToolBar extends React.Component {
             }
         ];
 
+        // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             embedded ? 
                 <div>
@@ -114,6 +115,7 @@ export default class ToolBar extends React.Component {
                 </div> : null
         )
 
+        // upload and download files items
         var fileMenuItems = (
             <div>
                 <MenuItem key={1} primaryText="Download SBOL" insetChildren={true} onClick={function () {
@@ -137,6 +139,7 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
+        // pop out sidebar
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
                 <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
@@ -145,11 +148,27 @@ export default class ToolBar extends React.Component {
             );
         });
 
+        // show/hide annotations
         var iconButtonElement = (
             <IconButton tooltip="Settings">
                 <SettingsIcon />
             </IconButton>
         );
+
+        // pulls out the current view and necessary resizing js to a new tab 
+        // and applies some styling to cleanup for print version
+        var prepPrintPage = function() {
+            var contents = document.getElementById("allViews").innerHTML;
+            var head = document.head.innerHTML;
+            var stylePage = "<style>@page{margin: 1in;}</style>";
+            var printTab = window.open();
+            printTab.document.body.innerHTML = head + stylePage + contents;
+            printTab.document.getElementById("allViews").attribute("style", "width: 8.5in; text-align: center;");
+            printTab.document.close();
+            printTab.focus();
+            printTab.print();
+            printTab.close();
+        }
 
         return (
             <Toolbar>
@@ -169,7 +188,7 @@ export default class ToolBar extends React.Component {
                     <IconButton
                         label='Print Current View'
                         onTouchTap={function() {
-                            window.print();
+                            prepPrintPage();
                         }}
                     >
                         <PrintIcon />

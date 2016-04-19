@@ -78,8 +78,8 @@ request
                     sequence: sequence,
                     circular: isCircular
                 },
-                embedded: !!embedded,
-                readOnly: !canEdit,
+                embedded: !!embedded, // forcing a Boolean
+                readOnly: !canEdit, // forced falsed Boolean
                 name: name,
             },
             services: {
