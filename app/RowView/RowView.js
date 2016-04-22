@@ -9,6 +9,7 @@ import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import RowItem from './RowItem.js';
 
 @propTypes({
+    embedded: PropTypes.bool.isRequired,
     sequenceData: PropTypes.object.isRequired,
     columnWidth: PropTypes.number
 })
@@ -69,12 +70,14 @@ export default class RowView extends React.Component {
         } = this.props;
 
         var {
+            embedded,
             rowData
         } = this.state;
 
         return (
             <div ref={'rowView'}
-                 className={styles.rowView}
+                className={ styles.rowView }
+                style={ embedded ? { display: 'none' } : null } // prime this inline for embedded version
             >
                 <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                 <RowItem ref={'rowMeasure'} sequenceData={{ sequence: '' }} className={styles.rowMeasure} />

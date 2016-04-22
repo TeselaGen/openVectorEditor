@@ -1,24 +1,32 @@
-@media print {
-  body [class^='app-sequence-editor---head'], body [class^='app-sequence-editor---foot'], body [class*='navbar-fixed-bottom'] {
+/*@media print {
+  body [class^='app-sequence-editor---head'], body [class^='app-sequence-editor---foot'], 
+  body [class*='navbar-fixed-bottom'], .sideBarSlot {
     display: none;
   }
 
-  body #circularView {
-    display: block;
+  body {
+      text-align: center;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      .content {
+          width: 100%;
+      }
   }
-}
 
-.app {
-    display: flex;
-    flex-direction: column;
-}
+  @page {
+      margin: 2cm;
+      size: auto;
+  }
+}*/
 
 .head {
+    overflow: hidden;
 }
 
 .content {
-    flex-grow: 1;
     display: flex;
+    padding-bottom: 70px;
 }
 
 .sideBarSlot {
@@ -32,8 +40,6 @@
 .rowViewSlot {
     flex-grow: 1;
     flex-basis: 0;
-    display: flex;
-    position: relative;
 }
 
 .foot {

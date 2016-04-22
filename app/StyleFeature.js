@@ -19,7 +19,6 @@ export default function StyleFeature({children, color, annotation, signals}) {
             }
             strokeWidth="1"
             stroke={ color || 'gray'}
-            fillOpacity={ 0.4 }
             fill={ color || 'gray' }
         >
             { children }

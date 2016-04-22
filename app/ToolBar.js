@@ -21,6 +21,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
 @Cerebral({
+    embedded: ['embedded'],
     readOnly: ['readOnly'],
     showOrfs: ['showOrfs'],
     showCutsites: ['showCutsites'],
@@ -30,6 +31,7 @@ import TextField from 'material-ui/lib/text-field';
     showSidebar: ['showSidebar']
 })
 @propTypes({
+    embedded: PropTypes.bool.isRequired,
     readOnly: PropTypes.bool.isRequired,
     showOrfs: PropTypes.bool.isRequired,
     showCutsites: PropTypes.bool.isRequired,
@@ -49,6 +51,7 @@ export default class ToolBar extends React.Component {
 
     render() {
         var {
+            embedded,
             readOnly,
             showFeatures,
             showParts,
@@ -91,6 +94,28 @@ export default class ToolBar extends React.Component {
             }
         ];
 
+        // show/hide views buttons that only appear in embedded mode
+        var embeddedControls = (
+            embedded ? 
+                <div>
+                <RaisedButton
+                    label='Row'
+                    onTouchTap={function() {
+                        document.getElementById("circularView").setAttribute("style", "display: none");
+                        document.getElementById("rowView").setAttribute("style", "display: block"); 
+                    }}
+                />
+                <RaisedButton
+                    label='Map'
+                    onTouchTap={function() {
+                        document.getElementById("circularView").setAttribute("style", "display: block");
+                        document.getElementById("rowView").setAttribute("style", "display: none");                        
+                    }}
+                />
+                </div> : null
+        )
+
+        // upload and download files items
         var fileMenuItems = (
             <div>
                 <MenuItem key={1} primaryText="Download SBOL" insetChildren={true} onClick={function () {
@@ -114,6 +139,7 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
+        // pop out sidebar
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
                 <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
@@ -122,17 +148,35 @@ export default class ToolBar extends React.Component {
             );
         });
 
+        // show/hide annotations
         var iconButtonElement = (
             <IconButton tooltip="Settings">
                 <SettingsIcon />
             </IconButton>
         );
 
+        // pulls out the current view and necessary resizing js to a new tab 
+        // and applies some styling to cleanup for print version
+        var prepPrintPage = function() {
+            var contents = document.getElementById("allViews").innerHTML;
+            var head = document.head.innerHTML;
+            var stylePage = "<style>@page{margin: 1in;} #allViews{width: 8.5in}</style>";
+            var printTab = window.open();
+            printTab.document.body.innerHTML = head + stylePage + contents;
+            printTab.document.close();
+            printTab.focus();
+            printTab.print();
+            printTab.close();
+        }
+
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
+                    
+                    {embeddedControls}
+
                     <IconButton
-                        disabled={ readOnly }
+                        disabled={ readOnly }  // you can't save in read only
                         label='Save to Server'
                         onTouchTap={function() {
                             signals.saveChanges();
@@ -143,25 +187,25 @@ export default class ToolBar extends React.Component {
                     <IconButton
                         label='Print Current View'
                         onTouchTap={function() {
-                            window.print();
+                            prepPrintPage();
                         }}
                     >
                         <PrintIcon />
                     </IconButton>                    
                     <RaisedButton
-                        label='Features'
+                        label='F'
                         onTouchTap={function() {
                             signals.toggleAnnotationTable({ annotationType: 'features' });
                         }}
                     />
                     <RaisedButton
-                        label='Cutsites'
+                        label='C'
                         onTouchTap={function() {
                             signals.toggleAnnotationTable({ annotationType: 'cutsites' });
                         }}
                     />
                     <RaisedButton
-                        label='ORFs'
+                        label='O'
                         onTouchTap={function() {
                             signals.toggleAnnotationTable({ annotationType: 'orfs' });
                         }}
