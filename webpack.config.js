@@ -6,7 +6,7 @@ module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: [
         'webpack-hot-middleware/client?reload=true',
-        "main.js"
+        "vectoreditor.js"
     ],
     output: {
         path: __dirname,
