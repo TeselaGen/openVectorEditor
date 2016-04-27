@@ -22,6 +22,8 @@
 .circularViewSlot {
     flex-grow: 1;
     flex-basis: 0;
+    text-align: center;
+    padding-top: 30px;
 }
 
 .rowViewSlot {
