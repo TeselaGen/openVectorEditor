@@ -11,7 +11,8 @@ import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
+import InputIcon from 'material-ui/lib/svg-icons/action/input';
+import SearchIcon from 'material-ui/lib/svg-icons/action/search';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
 import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
@@ -139,6 +140,15 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
+        // show or hide features &c
+        var toggleFeatures = (
+            <div id='toggleButtons'>
+                <div id='toggleFeature'> F </div>
+                <div id='toggleCutsite'> C </div>
+                <div id='toggleOrf'> O </div>
+            </div>
+        );
+
         // pop out sidebar
         var toggleMenuItems = annotationList.map(function(annotationType, index){
             return (
@@ -147,13 +157,6 @@ export default class ToolBar extends React.Component {
                 }} />
             );
         });
-
-        // show/hide annotations
-        var iconButtonElement = (
-            <IconButton tooltip="Settings">
-                <SettingsIcon />
-            </IconButton>
-        );
 
         // pulls out the current view and necessary resizing js to a new tab 
         // and applies some styling to cleanup for print version
@@ -176,13 +179,9 @@ export default class ToolBar extends React.Component {
                     {embeddedControls}
 
                     <IconButton
-                        disabled={ readOnly }  // you can't save in read only
-                        label='Save to Server'
-                        onTouchTap={function() {
-                            signals.saveChanges();
-                        }}
-                    >
-                        <SaveIcon />
+                        label='Feature Details'
+                        >
+                        <InputIcon />
                     </IconButton>
                     <IconButton
                         label='Print Current View'
@@ -191,34 +190,27 @@ export default class ToolBar extends React.Component {
                         }}
                     >
                         <PrintIcon />
-                    </IconButton>                    
-                    <RaisedButton
-                        label='F'
+                    </IconButton>                     
+                    <IconButton
+                        label='Search Sequence'
+                        >
+                        <SearchIcon />
+                    </IconButton>
+
+                    {toggleFeatures}
+
+                    <IconButton
+                        disabled={ readOnly }  // you can't save in read only
+                        label='Save to Server'
                         onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'features' });
+                            signals.saveChanges();
                         }}
-                    />
-                    <RaisedButton
-                        label='C'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'cutsites' });
-                        }}
-                    />
-                    <RaisedButton
-                        label='O'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'orfs' });
-                        }}
-                    />
+                    >
+                        <SaveIcon />
+                    </IconButton>                   
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
                         {fileMenuItems}
                     </IconMenu>                  
-                    <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                        {toggleMenuItems}
-                    </IconMenu>
-                    <TextField ref="searchField" hintText="search" />
-                    <RaisedButton label='Search' onClick={this.search.bind(this)}/>
-                    <RaisedButton label='Clear Search' onClick={this.clearSearch.bind(this)}/>
                 </ToolbarGroup>
             </Toolbar>
         );
