@@ -221,10 +221,7 @@ class CircularView extends React.Component {
                         onStop={
                             signals.editorDragStopped
                                 } >
-                <div ref={'circularView'} style={{
-                        width: circularViewDimensions.width,
-                        height: circularViewDimensions.height
-                    }}
+                <div ref={'circularView'}
                 >
                     <svg onClick={(event) => {
                             this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);

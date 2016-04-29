@@ -117,7 +117,7 @@ export default class ToolBar extends React.Component {
             <div style={ toggleStyles }>
                 <div style={ buttonStyles } id='toggleFeatures' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Features'});
-                }}> F <div style={ showFeatures ? checkStyle : "" }></div></div>
+                }}> F </div>
                 <div style={ buttonStyles } id='toggleCutsites' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Cutsites'});
                 }}> C <span style={ showCutsites ? checkStyle : "" }></span></div>

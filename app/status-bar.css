@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    background-color: rgb(232,232,232);
+    border-top: 1px solid #666;
 }
 
 .box {
