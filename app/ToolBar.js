@@ -63,38 +63,6 @@ export default class ToolBar extends React.Component {
             signals
         } = this.props;
 
-        var annotationList = [
-            {
-                type: 'features',
-                label: 'Features',
-                state: showFeatures
-            },
-
-            {
-                type: 'parts',
-                label: 'Parts',
-                state: showParts
-            },
-
-            {
-                type: 'translations',
-                label: 'Translations',
-                state: showTranslations
-            },
-
-            {
-                type: 'orfs',
-                label: 'ORFs',
-                state: showOrfs
-            },
-
-            {
-                type: 'cutsites',
-                label: 'Cutsites',
-                state: showCutsites
-            }
-        ];
-
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             embedded ? 
@@ -140,23 +108,24 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
+        // jsx styling syntax is really screwy!
+        var toggleStyles = {display: 'inline-block', fontSize: '16px', fontWeight: 'bold', verticalAlign: 'top'}
+        var buttonStyles = {position: 'relative', display: 'inline-block', padding: '10px 16px', margin: '6px 10px', border: '1px solid black', borderRadius: '4px'}
+        var checkStyle = {position: 'absolute', pointerEvents: 'none', height: '22px', width: '15px', borderTop: '5px solid green', borderRight: '5px solid green', opacity: '.5', transform: 'rotate(145deg)', top: '6px'};
         // show or hide features &c
         var toggleFeatures = (
-            <div id='toggleButtons'>
-                <div id='toggleFeature'> F </div>
-                <div id='toggleCutsite'> C </div>
-                <div id='toggleOrf'> O </div>
+            <div style={ toggleStyles }>
+                <div style={ buttonStyles } id='toggleFeatures' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'Features'});
+                }}> F </div>
+                <div style={ buttonStyles } id='toggleCutsites' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'Cutsites'});
+                }}> C <span style={ showCutsites ? checkStyle : "" }></span></div>
+                <div style={ buttonStyles } id='toggleOrfs' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'Orfs'});
+                }}> O <span style={ showOrfs ? checkStyle : "" }></span></div>
             </div>
         );
-
-        // pop out sidebar
-        var toggleMenuItems = annotationList.map(function(annotationType, index){
-            return (
-                <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
-                    signals.toggleAnnotationDisplay({type: String(annotationType.type)});
-                }} />
-            );
-        });
 
         // pulls out the current view and necessary resizing js to a new tab 
         // and applies some styling to cleanup for print version

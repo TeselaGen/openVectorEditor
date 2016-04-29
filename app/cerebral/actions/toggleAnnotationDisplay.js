@@ -1,15 +1,7 @@
-var ac = require('ve-api-check');
-var capitalize = require('capitalize');
-export default function toggleAnnotationDisplay({input: {type}, state, output}) {
-    ac.throw(ac.type, type);
-    var capitalizedType = capitalize({type});
-    // console.log(capitalizedType);
+export default function toggleAnnotationDisplay({input, state, output}) {
+    var { type } = input;
+    var currently = state.get('show' + type);
+    currently = !!currently; // force a bool, might not be necessary
 
-    if (state.get('show' + capitalizedType)) {
-        state.set('show' + capitalizedType, false);
-        // console.log("set false");
-    } else {
-        state.set('show' + capitalizedType, true);
-        // console.log("set true");
-    }
+    state.set('show' + type, !currently);
 }

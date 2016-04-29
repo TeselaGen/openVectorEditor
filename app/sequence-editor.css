@@ -8,8 +8,7 @@
     flex-direction: column;
 }
 
-.head {
-}
+.head {}
 
 .content {
     display: flex;
@@ -24,6 +23,7 @@
     flex-basis: 0;
     text-align: center;
     padding-top: 30px;
+    text-align: center;
 }
 
 .rowViewSlot {
