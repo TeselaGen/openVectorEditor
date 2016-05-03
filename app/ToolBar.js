@@ -137,8 +137,8 @@ export default class ToolBar extends React.Component {
             printTab.document.body.innerHTML = head + stylePage + contents;
             printTab.document.close();
             printTab.focus();
-            // printTab.print();
-            // printTab.close();
+            printTab.print();
+            printTab.close();
         }
 
         return (
