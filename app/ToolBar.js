@@ -132,7 +132,7 @@ export default class ToolBar extends React.Component {
         var prepPrintPage = function() {
             var contents = document.getElementById("allViews").innerHTML;
             var head = document.head.innerHTML;
-            var stylePage = "<style>@page{margin: 1in;} #circularView,#rowView{width: 8.5in; display: block}#rowView{bottom: auto;}</style>";
+            var stylePage = "<style>@page{margin: 1in;} #circularView,#rowView{width: 8.5in; display: block;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
             var printTab = window.open();
             printTab.document.body.innerHTML = head + stylePage + contents;
             printTab.document.close();
