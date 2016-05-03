@@ -109,21 +109,22 @@ export default class ToolBar extends React.Component {
         );
 
         // jsx styling syntax is really screwy!
+        var disabledStyle = {opacity: '.5'};
         var toggleStyles = {display: 'inline-block', fontSize: '16px', fontWeight: 'bold', verticalAlign: 'top'}
         var buttonStyles = {position: 'relative', display: 'inline-block', padding: '10px 16px', margin: '6px 10px', border: '1px solid black', borderRadius: '4px'}
         var checkStyle = {position: 'absolute', pointerEvents: 'none', height: '22px', width: '15px', borderTop: '5px solid green', borderRight: '5px solid green', opacity: '.5', transform: 'rotate(145deg)', top: '6px'};
         // show or hide features &c
         var toggleFeatures = (
             <div style={ toggleStyles }>
-                <div style={ buttonStyles } id='toggleFeatures' onClick={function () {
+                <div style={ showFeatures ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleFeatures' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Features'});
                 }}> F </div>
-                <div style={ buttonStyles } id='toggleCutsites' onClick={function () {
+                <div style={ showCutsites ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleCutsites' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Cutsites'});
-                }}> C <span style={ showCutsites ? checkStyle : "" }></span></div>
-                <div style={ buttonStyles } id='toggleOrfs' onClick={function () {
+                }}> C </div>
+                <div style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Orfs'});
-                }}> O <span style={ showOrfs ? checkStyle : "" }></span></div>
+                }}> O </div>
             </div>
         );
 
