@@ -112,7 +112,6 @@ export default class ToolBar extends React.Component {
         var disabledStyle = {opacity: '.5'};
         var toggleStyles = {display: 'inline-block', fontSize: '16px', fontWeight: 'bold', verticalAlign: 'top'}
         var buttonStyles = {position: 'relative', display: 'inline-block', padding: '10px 16px', margin: '6px 10px', border: '1px solid black', borderRadius: '4px'}
-        var checkStyle = {position: 'absolute', pointerEvents: 'none', height: '22px', width: '15px', borderTop: '5px solid green', borderRight: '5px solid green', opacity: '.5', transform: 'rotate(145deg)', top: '6px'};
         // show or hide features &c
         var toggleFeatures = (
             <div style={ toggleStyles }>
@@ -150,6 +149,9 @@ export default class ToolBar extends React.Component {
 
                     <IconButton
                         label='Feature Details'
+                        onTouchTap={function() {
+                            signals.toggleAnnotationTable({ annotationType: 'features' });
+                        }}
                         >
                         <InputIcon />
                     </IconButton>

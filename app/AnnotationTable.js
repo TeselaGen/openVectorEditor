@@ -120,16 +120,21 @@ export default class AnnotationTable extends React.Component {
 
         return (
             <div>
-              <Table ref="annotationTable" multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
-                <TableHeader>
-                  <TableRow>{tableHeaderCells}</TableRow>
-                </TableHeader>
-                <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
-              </Table>
+                <div id='featureTabs'>
+                    <div>Features</div>
+                    <div>Cutsites</div>
+                    <div>ORFs</div>
+                </div>
+                <Table ref="annotationTable" multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
+                    <TableHeader>
+                        <TableRow>{tableHeaderCells}</TableRow>
+                    </TableHeader>
+                    <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
+                </Table>
 
-              {controls}
+                {controls}
 
-              {annotationForm}
+                {annotationForm}
             </div>
         );
     }
