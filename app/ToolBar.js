@@ -150,7 +150,7 @@ export default class ToolBar extends React.Component {
                     <IconButton
                         label='Feature Details'
                         onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'features' });
+                            signals.sidebarToggle();
                         }}
                         >
                         <InputIcon />

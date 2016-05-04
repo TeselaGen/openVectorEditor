@@ -15,7 +15,15 @@ var each = require('lodash/collection/each');
 export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
-        toggleAnnotationTable: [a.toggleAnnotationTable],
+
+        // sidebar signals
+        sidebarToggle: [
+            a.sidebarToggle
+        ],
+        sideBarDisplay: [
+            a.sidebarDisplay
+        ],
+        // end sidebar
         selectionCopied: [
             a.copySelection, {
                 success: [a.setData('clipboardData')],

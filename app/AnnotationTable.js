@@ -71,7 +71,8 @@ export default class AnnotationTable extends React.Component {
         var {
             data,
             annotationType,
-            filter
+            filter,
+            signals
         } = this.props;
 
         var tableHeaderCells = [];
@@ -98,6 +99,8 @@ export default class AnnotationTable extends React.Component {
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
 
+        var featureTabs 
+
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
 
@@ -121,9 +124,15 @@ export default class AnnotationTable extends React.Component {
         return (
             <div>
                 <div id='featureTabs'>
-                    <div>Features</div>
-                    <div>Cutsites</div>
-                    <div>ORFs</div>
+                    <div onTouchTap={function() {
+                        signals.sidebarDisplay({ type: 'Features' });
+                    }}>Features</div>
+                    <div onTouchTap={function () {
+                        signals.sidebarDisplay({ type: 'Cutsites' });
+                    }}>Cutsites</div>
+                    <div onTouchTap={function () {
+                        signals.sidebarDisplay({ type: 'Orfs' });
+                    }}>ORFs</div>
                 </div>
                 <Table ref="annotationTable" multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
                     <TableHeader>
