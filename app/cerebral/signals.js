@@ -94,10 +94,6 @@ export default function(options) {
             a.searchSequence,
             a.updateSearchLayers
         ],
-        toggleSequenceCase: [
-            a.toggleSequenceCase
-        ],
-
         setSelectionLayer: [a.setSelectionLayer],
         
     // ///////////////////////////////////

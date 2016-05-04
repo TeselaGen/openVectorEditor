@@ -99,7 +99,7 @@ export default class AnnotationTable extends React.Component {
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
 
-        var featureTabs 
+        var featureTabs ;
 
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
@@ -107,7 +107,7 @@ export default class AnnotationTable extends React.Component {
             var annotationForm = (<FeatureForm feature={annotation} />);
         }
 
-        if (annotationType === 'features') {
+        if (annotationType === 'Features') {
             var controls = (
                 <div>
                     <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
