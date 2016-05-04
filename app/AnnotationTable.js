@@ -50,7 +50,7 @@ export default class AnnotationTable extends React.Component {
 
     addFeature() {
         this.props.signals.addAnnotations({
-            annotationType: 'features',
+            annotationType: 'Features',
 
             annotationsToInsert: [
                 {

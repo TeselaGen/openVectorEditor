@@ -20,7 +20,7 @@ export default function(options) {
         sidebarToggle: [
             a.sidebarToggle
         ],
-        sideBarDisplay: [
+        sidebarDisplay: [
             a.sidebarDisplay
         ],
         // end sidebar

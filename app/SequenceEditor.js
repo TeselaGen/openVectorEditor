@@ -27,24 +27,10 @@ var Clipboard = require('./Clipboard');
     showCircular: ['showCircular'],
     showLinear: ['showLinear'],
     showRow: ['showRow'],
-    annotationTableType: ['annotationTableType'],
+    showSidebar: ['showSidebar'],
+    sidebarType: ['sidebarType'],
     cutsites: ['cutsites'],
     orfData: ['orfData']
-})
-@propTypes({
-    sequenceLength: PropTypes.number.isRequired,
-    bpsPerRow: PropTypes.number.isRequired,
-    totalRows: PropTypes.number.isRequired,
-    newRandomRowToJumpTo: PropTypes.object,
-    selectedSequenceString: PropTypes.string.isRequired,
-    caretPosition: PropTypes.number.isRequired,
-    sequenceData: PropTypes.object.isRequired,
-    selectionLayer: PropTypes.object.isRequired,
-    clipboardData: PropTypes.object.isRequired,
-    showCircular: PropTypes.bool.isRequired,
-    showLinear: PropTypes.bool.isRequired,
-    showRow: PropTypes.bool.isRequired,
-    annotationTableType: PropTypes.string.isRequired
 })
 
 class SequenceEditor extends React.Component {
@@ -140,37 +126,40 @@ class SequenceEditor extends React.Component {
             sequenceData,
             showCircular,
             showRow,
-            annotationTableType,
+            showSidebar,
+            sidebarType,
             cutsites,
             orfData
         } = this.props;
 
         var table;
 
-        if (annotationTableType === 'features') {
-            table = (
-                <AnnotationTable
-                   data={sequenceData.features}
-                   annotationType={annotationTableType}
-                   filter={['name', 'type', 'start', 'end', 'strand']}
-                   />
-            );
-        } else if (annotationTableType === 'cutsites') {
-            table = (
-                <AnnotationTable
-                   data={cutsites}
-                   annotationType={annotationTableType}
-                   filter={['name', 'start', 'end', 'strand']}
-                   />
-            );
-        } else if (annotationTableType === 'orfs') {
-            table = (
-                <AnnotationTable
-                   data={orfData}
-                   annotationType={annotationTableType}
-                   filter={['start', 'end', 'length', 'strand', 'frame']}
-                   />
-            );
+        if (showSidebar) {
+            if (sidebarType === 'Features') {
+                table = (
+                    <AnnotationTable
+                       data={sequenceData.features}
+                       annotationType={sidebarType}
+                       filter={['name', 'type', 'start', 'end', 'strand']}
+                       />
+                );
+            } else if (sidebarType === 'Cutsites') {
+                table = (
+                    <AnnotationTable
+                       data={cutsites}
+                       annotationType={sidebarType}
+                       filter={['name', 'start', 'end', 'strand']}
+                       />
+                );
+            } else if (sidebarType === 'Orfs') {
+                table = (
+                    <AnnotationTable
+                       data={orfData}
+                       annotationType={sidebarType}
+                       filter={['start', 'end', 'length', 'strand', 'frame']}
+                       />
+                );
+            }
         }
 
         return (
