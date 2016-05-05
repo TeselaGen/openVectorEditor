@@ -1,0 +1,7 @@
+@import 'colors';
+.__react_component_tooltip.type-info {
+    background: $tablue !important;
+    &:after {
+    	border-left: 6px solid $tablue !important;
+    }
+}

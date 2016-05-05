@@ -1,0 +1,7 @@
+$cardsFit: 860px;
+
+@mixin cardsDoFit {
+  @media (min-width: #{$cardsFit}) {
+    @content;
+  }
+}

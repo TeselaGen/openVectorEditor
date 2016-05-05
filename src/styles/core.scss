@@ -1,0 +1,77 @@
+@import 'colors';
+@import 'flexMixins';
+// @import "~susy/sass/susy";
+@import 'vendor/normalize';
+@import 'mediaQueries';
+@import 'fonts';
+@import 'colorClasses';
+@import 'tooltipStyle';
+@import 'hoverMixins.scss';
+
+
+// Some best-practice CSS that's useful for most apps
+// Just remove them if they're not what you want
+html {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+
+body {
+    margin: 0;
+    height: 100%;
+    font-family: proximaNova, Verdana, Helvetica, Sans-Serif;
+}
+
+
+button {
+    border-radius: none;
+    color: tagrey;
+    background: $talightgrey;
+    border: 1px solid black;
+    @include hoverOpacity;
+
+}
+
+
+// /*bit of css for chrome autofill styling*/
+// input:-webkit-autofill {
+//     -webkit-box-shadow: 0 0 0 1000px white inset;
+// }
+
+.littleText {
+    font-size: 10px;
+}
+.textAlignCenter {
+    text-align: center;
+}
+.flexRightBottom {
+    @include flexRightBottom
+}
+.flexSpaceBetween {
+    @include flexSpaceBetween
+}
+.flexWrap {
+    @include flexWrap
+}
+.flexSpaceAround {
+    @include flexSpaceAround
+}
+.flexContentCenterItemsCenter {
+    @include flexContentCenterItemsCenter
+}
+.flexContentLeftCenterItems {
+    @include flexContentLeftCenterItems
+}
+.flexColumnContentCenterItemsCenter {
+    @include flexColumnContentCenterItemsCenter
+}
+
+.clickable {
+    cursor: pointer;
+}

@@ -1,60 +1,187 @@
+Note this repo is very much a work in progress, we're currently experimenting with getting Electron up and running in conjunction with Redux and settling on a good development workflow. 
+
+
 
 #openVectorEditor
-##An open source vector/plasmid/dna editor
+##An open source dna editor
 
-###Project Info: https://workflowy.com/s/AMpvp1km0o
+See a [demo] (http://teselagen.github.io/openVectorEditor/) [work in progress... :)] 
 
-Chatroom: [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+The main goal of this project is to make an easy to use, open-source, desktop + web tool for manipulating DNA sequence data. To begin with, it will provide 3 simple views of DNA data: a detailed Sequence View, a High-Level Pie view (for circular DNA), and a High-Level Map view. 
+
+Other goals include:
+-The editor should also be able to handle both large (genome-scale/millions of bps) and small amounts of DNA without choking.
+-The editor should be composed of distinct modules. Those modules should be able to be able to be required from outside the project via npm (as they might become npm modules themselves one day). 
+-It should support viewing more than one sequence at once and copying between them.
+
+Long-term goals: 
+-allow for people to write atom-like extensions for all sorts of bio-related enhancements! Don't like how the primers are being rendered? Install a new primer rendering package. Want to work with restriction digests in a particular way? There's an extension for that. :) 
+
+##Tech Stack: 
+React, redux, webpack, electron
+
+##Getting involved
+Check out the list of open issues: https://github.com/TeselaGen/openVectorEditor/issues
+
+Come say hello in our Chatroom: [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Issue Tracking: [![Stories in Ready](https://badge.waffle.io/TeselaGen/openVectorEditor.png?label=ready&title=Ready)](https://waffle.io/TeselaGen/openVectorEditor)
 
-Google hangout [link](https://hangouts.google.com/call/jhgq63wgvimabmjjct5526dnl4a)
+The following is the README for the electron-react-boilerplate which we forked for this repo:
 
-See a [demo] (http://teselagen.github.io/openVectorEditor/)
+# electron-react-boilerplate
 
+[![NPM version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Dependency Status][david_img]][david_site]
 
+![](./erb-logo.png)
 
-###Embedding into your own project (Work In Progress)
+> Live editing development on desktop app
 
-```js
-import ReactDOM from 'react-dom';
-import App from 'open-vector-editor'
-import request from 'superagent'
+[Electron](http://electron.atom.io/) application boilerplate based on [React](https://facebook.github.io/react/), [Redux](https://github.com/reactjs/redux), [React Router](https://github.com/reactjs/react-router), [Webpack](http://webpack.github.io/docs/), [React Transform HMR](https://github.com/gaearon/react-transform-hmr) for rapid application development
 
-//set your custom options here
-var options = {
-	state: {
-		//override default state here. See state.js for the full list of application state
-		showFeatures: true,
-		//etc..
-	},
-	services: {
-		//add or override any services you want here. These are passed to every action (see below)
-		request: request
-	},
-	actions: {
-		//override default actions here. See signals.js for the full list of application signals
-		saveSequence: function saveSequence ({input, state, output}, services) {
-			services.request.post('/sequence')
-				.send(input.sequenceData)
-				.then(function (res) {
-					output.success(res.body)
-				}).catch(function (err) {
-					output.error(err)
-				})
-		}
-	},
-}
+## Screenshot
 
-var {Editor, controller} = App(options);
-//Editor is the React Component
-//controller is the cerebral state controller
+![](https://cloud.githubusercontent.com/assets/3382565/10557547/b1f07a4e-74e3-11e5-8d27-79ab6947d429.gif)
 
+## Install
 
-//choose the dom node you want to render to
-const DOMNodeToRenderTo = document.createElement('div');
-document.body.appendChild(DOMNodeToRenderTo);
-ReactDOM.render(Editor, DOMNodeToRenderTo);
+First, clone the repo via git:
 
+```bash
+git clone https://github.com/chentsulin/electron-react-boilerplate.git your-project-name
 ```
 
+And then install dependencies.
+
+```bash
+$ cd your-project-name && npm install
+```
+
+
+## Run
+
+Run this two commands __simultaneously__ in different console tabs.
+
+```bash
+$ npm run hot-server
+$ npm run start-hot
+```
+
+or run two servers with one command
+
+```bash
+$ npm run dev
+```
+
+*Note: requires a node version >= 4 and an npm version >= 2.*
+
+
+## DevTools
+
+#### Toggle Chrome DevTools
+
+- OS X: <kbd>Cmd</kbd> <kbd>Alt</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
+- Linux: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
+- Windows: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
+
+*See [electron-debug](https://github.com/sindresorhus/electron-debug) for more information.*
+
+#### Toggle Redux DevTools
+
+- All platforms: <kbd>Ctrl+H</kbd>
+
+*See [redux-devtools-dock-monitor](https://github.com/gaearon/redux-devtools-dock-monitor) for more information.*
+
+#### Redux Devtools Window
+
+Now you can implement it using [remote-redux-devtools](https://github.com/zalmoxisus/remote-redux-devtools) with a [remote monitor](https://github.com/zalmoxisus/remote-redux-devtools#remote-monitoring) by yourself.
+
+
+## Externals
+
+If you use any 3rd party libraries which can't be built with webpack, you must list them in your `webpack.config.base.js`：
+
+```javascript
+externals: [
+  // put your node 3rd party libraries which can't be built with webpack here (mysql, mongodb, and so on..)
+]
+```
+
+You can find those lines in the file.
+
+
+## CSS Modules
+
+This boilerplate out of the box is configured to use [css-modules](https://github.com/css-modules/css-modules).
+
+All `.css` file extensions will use css-modules unless it has `.global.css`.
+
+If you need global styles, stylesheets with `.global.css` will not go through the
+css-modules loader. e.g. `app.global.css`
+
+
+## Package
+
+```bash
+$ npm run package
+```
+
+To package apps for all platforms:
+
+```bash
+$ npm run package-all
+```
+
+#### Options
+
+- --name, -n: Application name (default: ElectronReact)
+- --version, -v: Electron version (default: latest version)
+- --asar, -a: [asar](https://github.com/atom/asar) support (default: false)
+- --icon, -i: Application icon
+- --all: pack for all platforms
+
+Use `electron-packager` to pack your app with `--all` options for darwin (osx), linux and win32 (windows) platform. After build, you will find them in `release` folder. Otherwise, you will only find one for your os.
+
+`test`, `tools`, `release` folder and devDependencies in `package.json` will be ignored by default.
+
+#### Default Ignore modules
+
+We add some module's `peerDependencies` to ignore option as default for application size reduction.
+
+- `babel-core` is required by `babel-loader` and its size is ~19 MB
+- `node-libs-browser` is required by `webpack` and its size is ~3MB.
+
+> **Note:** If you want to use any above modules in runtime, for example: `require('babel/register')`, you should move them from `devDependencies` to `dependencies`.
+
+#### Building windows apps from non-windows platforms
+
+Please checkout [Building windows apps from non-windows platforms](https://github.com/maxogden/electron-packager#building-windows-apps-from-non-windows-platforms).
+
+## How hot-reloading works on Electron
+
+We use [webpack-target-electron-renderer](https://github.com/chentsulin/webpack-target-electron-renderer) to provide a build target for electron renderer process. Read more information [here](https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works).
+
+> Note: webpack >= 1.12.15 has built-in support for `electron-main` and `electron-renderer` targets.
+
+## Native-like UI
+
+If you want to have native-like User Interface (OS X El Capitan and Windows 10), [react-desktop](https://github.com/gabrielbull/react-desktop) may perfect suit for you.
+
+
+## Maintainers
+
+- [C. T. Lin](https://github.com/chentsulin)
+- [Jhen-Jie Hong](https://github.com/jhen0409)
+
+
+## License
+MIT © [C. T. Lin](https://github.com/chentsulin)
+
+[npm-image]: https://img.shields.io/npm/v/electron-react-boilerplate.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/electron-react-boilerplate
+[travis-image]: https://travis-ci.org/chentsulin/electron-react-boilerplate.svg?branch=master
+[travis-url]: https://travis-ci.org/chentsulin/electron-react-boilerplate
+[david_img]: https://img.shields.io/david/chentsulin/electron-react-boilerplate.svg
+[david_site]: https://david-dm.org/chentsulin/electron-react-boilerplate

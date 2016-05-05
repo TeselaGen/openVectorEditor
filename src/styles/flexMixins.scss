@@ -1,0 +1,34 @@
+@mixin flexRightBottom {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+@mixin flexSpaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+@mixin flexWrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+@mixin flexSpaceAround {
+    display: flex;
+    justify-content: space-around;
+}
+@mixin flexContentCenterItemsCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@mixin flexContentLeftCenterItems {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+@mixin flexColumnContentCenterItemsCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+}
