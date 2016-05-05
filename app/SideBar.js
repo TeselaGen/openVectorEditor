@@ -17,10 +17,11 @@ import IconButton from 'material-ui/lib/icon-button';
 import FeatureForm from './FeatureForm';
 
 @Cerebral({
+    sidebarType: ['sidebarType']
 })
 @propTypes({
     data: PropTypes.array.isRequired,
-    annotationType: PropTypes.string.isRequired,
+    sidebarType: PropTypes.string.isRequired,
     filter: PropTypes.array.isRequired
 })
 export default class SideBar extends React.Component {
@@ -70,7 +71,7 @@ export default class SideBar extends React.Component {
     render() {
         var {
             data,
-            annotationType,
+            sidebarType,
             filter,
             signals
         } = this.props;
@@ -100,7 +101,8 @@ export default class SideBar extends React.Component {
         }
 
         var featureTabs;
-        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', backgroundColor: '#ccc', fontSize: '16px'};
+        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
+        var selectedTabStyle = {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'};
 
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
@@ -108,7 +110,7 @@ export default class SideBar extends React.Component {
             var annotationForm = (<FeatureForm feature={annotation} />);
         }
 
-        if (annotationType === 'Features') {
+        if (sidebarType === 'Features') {
             var controls = (
                 <div>
                     <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
@@ -124,14 +126,14 @@ export default class SideBar extends React.Component {
 
         return (
             <div>
-                <div id='featureTabs' style={{display: 'flex'}}>
-                    <div style={tabStyle} onTouchTap={function() {
+                <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
+                    <div style={sidebarType=='Features' ? Object.assign(tabStyle, selectedTabStyle) : tabStyle} onTouchTap={function() {
                         signals.sidebarDisplay({ type: 'Features' });
                     }}>Features</div>
-                    <div style={tabStyle} onTouchTap={function () {
+                    <div style={sidebarType=='Cutsites' ? Object.assign(tabStyle, selectedTabStyle) : tabStyle}  onTouchTap={function () {
                         signals.sidebarDisplay({ type: 'Cutsites' });
                     }}>Cutsites</div>
-                    <div style={tabStyle} onTouchTap={function () {
+                    <div style={sidebarType=='Orfs' ? Object.assign(tabStyle, selectedTabStyle) : tabStyle}  onTouchTap={function () {
                         signals.sidebarDisplay({ type: 'Orfs' });
                     }}>ORFs</div>
                 </div>
