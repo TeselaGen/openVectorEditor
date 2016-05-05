@@ -10,12 +10,12 @@ See a [demo] (http://teselagen.github.io/openVectorEditor/) [work in progress...
 The main goal of this project is to make an easy to use, open-source, desktop + web tool for manipulating DNA sequence data. To begin with, it will provide 3 simple views of DNA data: a detailed Sequence View, a High-Level Pie view (for circular DNA), and a High-Level Map view. 
 
 Other goals include:
--The editor should also be able to handle both large (genome-scale/millions of bps) and small amounts of DNA without choking.
--The editor should be composed of distinct modules. Those modules should be able to be able to be required from outside the project via npm (as they might become npm modules themselves one day). 
--It should support viewing more than one sequence at once and copying between them.
+ - The editor should also be able to handle both large (genome-scale/millions of bps) and small amounts of DNA without choking.
+ - The editor should be composed of distinct modules. Those modules should be able to be able to be required from outside the project via npm (as they might become npm modules themselves one day). 
+ - It should support viewing more than one sequence at once and copying between them.
 
 Long-term goals: 
--allow for people to write atom-like extensions for all sorts of bio-related enhancements! Don't like how the primers are being rendered? Install a new primer rendering package. Want to work with restriction digests in a particular way? There's an extension for that. :) 
+ - allow for people to write atom-like extensions for all sorts of bio-related enhancements! Don't like how the primers are being rendered? Install a new primer rendering package. Want to work with restriction digests in a particular way? There's an extension for that. :) 
 
 ##Tech Stack: 
 React, redux, webpack, electron
@@ -27,7 +27,7 @@ Come say hello in our Chatroom: [![Join the chat at https://gitter.im/TeselaGen/
 
 Issue Tracking: [![Stories in Ready](https://badge.waffle.io/TeselaGen/openVectorEditor.png?label=ready&title=Ready)](https://waffle.io/TeselaGen/openVectorEditor)
 
-The following is the README for the electron-react-boilerplate which we forked for this repo:
+##The following is the README for the electron-react-boilerplate which we forked for this repo:
 
 # electron-react-boilerplate
 
