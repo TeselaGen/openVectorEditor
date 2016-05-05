@@ -23,7 +23,7 @@ import FeatureForm from './FeatureForm';
     annotationType: PropTypes.string.isRequired,
     filter: PropTypes.array.isRequired
 })
-export default class AnnotationTable extends React.Component {
+export default class SideBar extends React.Component {
 
     constructor() {
         super(arguments);
@@ -99,7 +99,8 @@ export default class AnnotationTable extends React.Component {
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
 
-        var featureTabs ;
+        var featureTabs;
+        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', backgroundColor: '#ccc', fontSize: '16px'};
 
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
@@ -123,23 +124,23 @@ export default class AnnotationTable extends React.Component {
 
         return (
             <div>
-                <div id='featureTabs'>
-                    <div onTouchTap={function() {
+                <div id='featureTabs' style={{display: 'flex'}}>
+                    <div style={tabStyle} onTouchTap={function() {
                         signals.sidebarDisplay({ type: 'Features' });
                     }}>Features</div>
-                    <div onTouchTap={function () {
+                    <div style={tabStyle} onTouchTap={function () {
                         signals.sidebarDisplay({ type: 'Cutsites' });
                     }}>Cutsites</div>
-                    <div onTouchTap={function () {
+                    <div style={tabStyle} onTouchTap={function () {
                         signals.sidebarDisplay({ type: 'Orfs' });
                     }}>ORFs</div>
                 </div>
-                <Table ref="annotationTable" multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
-                    <TableHeader>
-                        <TableRow>{tableHeaderCells}</TableRow>
-                    </TableHeader>
-                    <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
-                </Table>
+                <table ref="sideBar" style={{borderRight: '1px solid #ccc', minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
+                    <th>
+                        <tr>{tableHeaderCells}</tr>
+                    </th>
+                    <tbody deselectOnClickaway={false}>{tableDataRows}</tbody>
+                </table>
 
                 {controls}
 

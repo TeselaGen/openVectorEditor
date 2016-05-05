@@ -3,7 +3,7 @@ import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this 
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
-import AnnotationTable from './AnnotationTable';
+import SideBar from './SideBar';
 import styles from './sequence-editor.css';
 
 var Combokeys = require("combokeys");
@@ -43,12 +43,9 @@ class SequenceEditor extends React.Component {
         } = this.props.signals;
         var self = this;
         combokeys = new Combokeys(document.documentElement);
-        // combokeys = new Combokeys(React.findDOMNode(this.refs.sequenceEditor));
         bindGlobalPlugin(combokeys);
 
         //bind a bunch of keyboard shortcuts we're interested in catching
-        //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
-        //documentation: https://craig.is/killing/mice
         combokeys.bind(['a', 'b', 'c', 'd', 'g', 'h', 'k', 'm', 'n', 'r', 's', 't', 'v', 'w', 'y'], function(event) { // type in bases
             sequenceDataInserted({newSequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
@@ -116,8 +113,6 @@ class SequenceEditor extends React.Component {
     }
 
     componentWillUnmount() {
-
-        // Remove any Mousetrap bindings before unmounting.detach()
         combokeys.detach()
     }
     render() {
@@ -134,32 +129,30 @@ class SequenceEditor extends React.Component {
 
         var table;
 
-        if (showSidebar) {
-            if (sidebarType === 'Features') {
-                table = (
-                    <AnnotationTable
-                       data={sequenceData.features}
-                       annotationType={sidebarType}
-                       filter={['name', 'type', 'start', 'end', 'strand']}
-                       />
-                );
-            } else if (sidebarType === 'Cutsites') {
-                table = (
-                    <AnnotationTable
-                       data={cutsites}
-                       annotationType={sidebarType}
-                       filter={['name', 'start', 'end', 'strand']}
-                       />
-                );
-            } else if (sidebarType === 'Orfs') {
-                table = (
-                    <AnnotationTable
-                       data={orfData}
-                       annotationType={sidebarType}
-                       filter={['start', 'end', 'length', 'strand', 'frame']}
-                       />
-                );
-            }
+        if (sidebarType === 'Features') {
+            table = (
+                <SideBar
+                   data={sequenceData.features}
+                   annotationType={sidebarType}
+                   filter={['name', 'type', 'start', 'end', 'strand']}
+                   />
+            );
+        } else if (sidebarType === 'Cutsites') {
+            table = (
+                <SideBar
+                   data={cutsites}
+                   annotationType={sidebarType}
+                   filter={['name', 'start', 'end', 'strand']}
+                   />
+            );
+        } else if (sidebarType === 'Orfs') {
+            table = (
+                <SideBar
+                   data={orfData}
+                   annotationType={sidebarType}
+                   filter={['start', 'end', 'length', 'strand', 'frame']}
+                   />
+            );
         }
 
         return (
@@ -175,7 +168,7 @@ class SequenceEditor extends React.Component {
                 </div>
 
                 <div className={styles.content} id="allViews">
-                    <div className={styles.sideBarSlot} id="sideBar" style={(table) ? {} : {display: 'none'}}>
+                    <div className={styles.sideBarSlot} id="sideBar" style={(showSidebar) ? {} : {display: 'none'}}>
                       {table}
                     </div>
 
