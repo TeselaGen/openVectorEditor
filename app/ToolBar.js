@@ -139,7 +139,19 @@ export default class ToolBar extends React.Component {
             printTab.focus();
             printTab.print();
             printTab.close();
-        }
+        };
+
+        // var showSearch = true;
+        // var searchBar = (
+        //     showSearch ?                 
+        //         <div id='searchBox' style={{display: 'none'}}>
+        //             <TextField ref="searchField" hintText="search sequence" />
+        //             <RaisedButton label='Search' onClick={this.search.bind(this)}/>
+        //         </div> : null
+        //     );
+        // var toggleSearch = function() {
+        //     showSearch = !showSearch;  
+        // };
 
         return (
             <Toolbar>
@@ -162,12 +174,11 @@ export default class ToolBar extends React.Component {
                         }}
                     >
                         <PrintIcon />
-                    </IconButton>                     
-                    <IconButton
-                        label='Search Sequence'
-                        >
+                    </IconButton>       
+                    <IconButton label='Search' onClick={this.search.bind(this)}>
                         <SearchIcon />
-                    </IconButton>
+                    </IconButton>                                  
+                    <TextField ref="searchField" hintText="search sequence" />
 
                     {toggleFeatures}
 
@@ -183,7 +194,8 @@ export default class ToolBar extends React.Component {
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
                         {fileMenuItems}
                     </IconMenu>                  
-                </ToolbarGroup>
+                </ToolbarGroup>           
+            
             </Toolbar>
         );
     }
