@@ -141,18 +141,6 @@ export default class ToolBar extends React.Component {
             printTab.close();
         };
 
-        // var showSearch = true;
-        // var searchBar = (
-        //     showSearch ?                 
-        //         <div id='searchBox' style={{display: 'none'}}>
-        //             <TextField ref="searchField" hintText="search sequence" />
-        //             <RaisedButton label='Search' onClick={this.search.bind(this)}/>
-        //         </div> : null
-        //     );
-        // var toggleSearch = function() {
-        //     showSearch = !showSearch;  
-        // };
-
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
