@@ -102,7 +102,8 @@ export default class SideBar extends React.Component {
 
         var featureTabs;
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
-        var selectedTabStyle = {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'};
+        var selectedTabStyle = {};
+        Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
 
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
@@ -127,20 +128,20 @@ export default class SideBar extends React.Component {
         return (
             <div>
                 <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
-                    <div style={sidebarType=='Features' ? Object.assign(tabStyle, selectedTabStyle) : tabStyle} onTouchTap={function() {
+                    <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onTouchTap={function() {
                         signals.sidebarDisplay({ type: 'Features' });
                     }}>Features</div>
-                    <div style={sidebarType=='Cutsites' ? Object.assign(tabStyle, selectedTabStyle) : tabStyle}  onTouchTap={function () {
+                    <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onTouchTap={function () {
                         signals.sidebarDisplay({ type: 'Cutsites' });
                     }}>Cutsites</div>
-                    <div style={sidebarType=='Orfs' ? Object.assign(tabStyle, selectedTabStyle) : tabStyle}  onTouchTap={function () {
+                    <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onTouchTap={function () {
                         signals.sidebarDisplay({ type: 'Orfs' });
                     }}>ORFs</div>
                 </div>
                 <table ref="sideBar" style={{borderRight: '1px solid #ccc', minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
-                    <th>
+                    <thead>
                         <tr>{tableHeaderCells}</tr>
-                    </th>
+                    </thead>
                     <tbody deselectOnClickaway={false}>{tableDataRows}</tbody>
                 </table>
 
