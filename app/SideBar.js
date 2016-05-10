@@ -17,6 +17,8 @@ import IconButton from 'material-ui/lib/icon-button';
 import FeatureForm from './FeatureForm';
 
 @Cerebral({
+    minimumOrfSize: ['minimumOrfSize'],    
+    readOnly: ['readOnly'],
     sidebarType: ['sidebarType']
 })
 @propTypes({
@@ -24,8 +26,8 @@ import FeatureForm from './FeatureForm';
     sidebarType: PropTypes.string.isRequired,
     filter: PropTypes.array.isRequired
 })
-export default class SideBar extends React.Component {
 
+export default class SideBar extends React.Component {
     constructor() {
         super(arguments);
 
@@ -51,7 +53,7 @@ export default class SideBar extends React.Component {
 
     addFeature() {
         this.props.signals.addAnnotations({
-            annotationType: 'Features',
+            sidebarType: 'Features',
 
             annotationsToInsert: [
                 {
@@ -71,10 +73,25 @@ export default class SideBar extends React.Component {
     render() {
         var {
             data,
+            filter,            
+            minimumOrfSize,
+            readOnly,
             sidebarType,
-            filter,
             signals
         } = this.props;
+
+        var featureTabs;
+        var controls;
+        var showOrfModal = false;
+        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
+        var selectedTabStyle = {};
+        Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
+
+        var setOrfModal = function(truthiness) {
+            if(typeof(truthiness) === 'boolean') {
+                showOrfModal = truthiness;
+            }
+        }
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
@@ -100,19 +117,15 @@ export default class SideBar extends React.Component {
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
 
-        var featureTabs;
-        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
-        var selectedTabStyle = {};
-        Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
-
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
 
             var annotationForm = (<FeatureForm feature={annotation} />);
         }
 
-        if (sidebarType === 'Features') {
-            var controls = (
+        // edit, add and remove feature buttons
+        if (sidebarType === 'Features' && !readOnly) {
+            controls = (
                 <div>
                     <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
                         <AddBoxIcon />
@@ -121,6 +134,28 @@ export default class SideBar extends React.Component {
                     <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0}tooltip={"delete"}>
                         <IndeterminateCheckBoxIcon />
                     </IconButton>
+                </div>
+            );
+        }
+        else if (sidebarType === 'Orfs') {
+            controls = (
+                <div style={{margin: '10px'}}>
+                    Minimum ORF Size: { minimumOrfSize }
+                    { readOnly ? null : 
+                        <div id='orfControl' onTouchTap={ setOrfModal(true) }
+                        style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
+                    }
+                    { showOrfModal ? 
+                        <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
+                            <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
+                            <button name='setOrfMin' onTouchTap={function () {
+                                var newMinVal = document.getElementById('orfInput').value;
+                                signals.changeOrfMin({ newMin: newMinVal });
+                            }}>Set</button>
+                            <button name='closeOrfModal' onTouchTap={ setOrfModal(false) 
+                            }>Cancel</button>
+                        </div> : null 
+                    }
                 </div>
             );
         }
@@ -148,6 +183,7 @@ export default class SideBar extends React.Component {
                 {controls}
 
                 {annotationForm}
+
             </div>
         );
     }

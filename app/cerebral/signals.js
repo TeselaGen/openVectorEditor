@@ -23,6 +23,9 @@ export default function(options) {
         sidebarDisplay: [
             a.sidebarDisplay
         ],
+        changeOrfMin: [
+            a.changeOrfMin
+        ],
         // end sidebar
         selectionCopied: [
             a.copySelection, {

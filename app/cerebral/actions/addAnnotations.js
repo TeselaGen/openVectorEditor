@@ -2,10 +2,8 @@ var ac = require('ve-api-check');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require('validate.io-boolean');
 
-// import ObjectID from 'bson-objectid';
-
-export default function addAnnotations({input: {annotationType, annotationsToInsert, throwErrors}, state, output}) {
-    ac.throw(ac.annotationType, annotationType);
+export default function addAnnotations({input: {sidebarType, annotationsToInsert, throwErrors}, state, output}) {
+    ac.throw(ac.annotationType, sidebarType);
     ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
     ac.throw(ac.bool.optional, throwErrors);
     
@@ -37,10 +35,6 @@ export default function addAnnotations({input: {annotationType, annotationsToIns
 
         delete annotationToInsert.id;
 
-        // if (annotationToInsert.id === undefined) {
-        //     annotationToInsert.id = ObjectID().str;
-        // }
-
-        state.push(['sequenceData', annotationType], annotationToInsert);
+        state.push(['sequenceData', sidebarType], annotationToInsert);
     });
 }
