@@ -128,7 +128,10 @@ class SequenceEditor extends React.Component {
         } = this.props;
 
         var table;
+        var sidebarStyle = {};
+        Object.assign(sidebarStyle, {borderRight: '1px solid #ccc'}, (showSidebar) ? {} : {display: 'none'})
 
+        // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (
                 <SideBar
@@ -168,7 +171,7 @@ class SequenceEditor extends React.Component {
                 </div>
 
                 <div className={styles.content} id="allViews">
-                    <div className={styles.sideBarSlot} id="sideBar" style={(showSidebar) ? {} : {display: 'none'}}>
+                    <div className={styles.sideBarSlot} id="sideBar" style={ sidebarStyle }>
                       {table}
                     </div>
 

@@ -90,6 +90,7 @@ export default class SideBar extends React.Component {
         var setOrfModal = function(truthiness) {
             if(typeof(truthiness) === 'boolean') {
                 showOrfModal = truthiness;
+                console.log("changed modal bool to " + truthiness);
             }
         }
 
@@ -141,18 +142,21 @@ export default class SideBar extends React.Component {
             controls = (
                 <div style={{margin: '10px'}}>
                     Minimum ORF Size: { minimumOrfSize }
-                    { readOnly ? null : 
-                        <div id='orfControl' onTouchTap={ setOrfModal(true) }
+                    {/* replace with readOnly, not working */}                    
+                    { true ? null : 
+                        <div id='orfControl' onClick={ setOrfModal(true) }
                         style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
                     }
-                    { showOrfModal ? 
+                    {/* replace with showOrfModal, not working */} 
+                    { false ? 
                         <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
                             <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
                             <button name='setOrfMin' onTouchTap={function () {
                                 var newMinVal = document.getElementById('orfInput').value;
                                 signals.changeOrfMin({ newMin: newMinVal });
+                                setOrfModal(false);
                             }}>Set</button>
-                            <button name='closeOrfModal' onTouchTap={ setOrfModal(false) 
+                            <button name='closeOrfModal' onClick={ setOrfModal(false) 
                             }>Cancel</button>
                         </div> : null 
                     }
@@ -163,17 +167,17 @@ export default class SideBar extends React.Component {
         return (
             <div>
                 <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
-                    <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onTouchTap={function() {
+                    <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
                         signals.sidebarDisplay({ type: 'Features' });
                     }}>Features</div>
-                    <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onTouchTap={function () {
+                    <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onClick={function () {
                         signals.sidebarDisplay({ type: 'Cutsites' });
                     }}>Cutsites</div>
-                    <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onTouchTap={function () {
+                    <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onClick={function () {
                         signals.sidebarDisplay({ type: 'Orfs' });
                     }}>ORFs</div>
                 </div>
-                <table ref="sideBar" style={{borderRight: '1px solid #ccc', minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
+                <table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
                     <thead>
                         <tr>{tableHeaderCells}</tr>
                     </thead>
