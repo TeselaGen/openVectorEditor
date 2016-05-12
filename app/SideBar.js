@@ -82,17 +82,11 @@ export default class SideBar extends React.Component {
 
         var featureTabs;
         var controls;
-        var showOrfModal = false;
+        var showOrfModal;
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
         var selectedTabStyle = {};
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
-
-        var setOrfModal = function(truthiness) {
-            if(typeof(truthiness) === 'boolean') {
-                showOrfModal = truthiness;
-                console.log("changed modal bool to " + truthiness);
-            }
-        }
+        var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc'};
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
@@ -125,44 +119,38 @@ export default class SideBar extends React.Component {
         }
 
         // edit, add and remove feature buttons
-        if (sidebarType === 'Features' && !readOnly) {
-            controls = (
-                <div>
-                    <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
-                        <AddBoxIcon />
-                    </IconButton>
+        var featureControls = (
+            <div style={ sidebarControlStyle }>
+                <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
+                    <AddBoxIcon />
+                </IconButton>
 
-                    <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0}tooltip={"delete"}>
-                        <IndeterminateCheckBoxIcon />
-                    </IconButton>
-                </div>
-            );
-        }
-        else if (sidebarType === 'Orfs') {
-            controls = (
-                <div style={{margin: '10px'}}>
-                    Minimum ORF Size: { minimumOrfSize }
-                    {/* replace with readOnly, not working */}                    
-                    { true ? null : 
-                        <div id='orfControl' onClick={ setOrfModal(true) }
-                        style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
-                    }
-                    {/* replace with showOrfModal, not working */} 
-                    { false ? 
-                        <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
-                            <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
-                            <button name='setOrfMin' onTouchTap={function () {
-                                var newMinVal = document.getElementById('orfInput').value;
-                                signals.changeOrfMin({ newMin: newMinVal });
-                                setOrfModal(false);
-                            }}>Set</button>
-                            <button name='closeOrfModal' onClick={ setOrfModal(false) 
-                            }>Cancel</button>
-                        </div> : null 
-                    }
-                </div>
-            );
-        }
+                <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0}tooltip={"delete"}>
+                    <IndeterminateCheckBoxIcon />
+                </IconButton>
+            </div>
+        );
+        var orfControls = (
+            <div style={ sidebarControlStyle }>
+                Minimum ORF Size: { minimumOrfSize }                
+                {/* readOnly ? null : 
+                    <div id='orfControl' onClick={function() {showOrfModal = true;}}
+                    style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
+                */}
+                { showOrfModal ? 
+                    <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
+                        <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
+                        <button name='setOrfMin' onTouchTap={function () {
+                            var newMinVal = document.getElementById('orfInput').value;
+                            signals.changeOrfMin({ newMin: newMinVal });
+                            showOrfModal = false;
+                        }}>Set</button>
+                        <button name='closeOrfModal' onClick={ function() {showOrfModal = false
+                        }}>Cancel</button>
+                    </div> : null 
+                }
+            </div>
+        );
 
         return (
             <div>
@@ -184,7 +172,8 @@ export default class SideBar extends React.Component {
                     <tbody deselectOnClickaway={false}>{tableDataRows}</tbody>
                 </table>
 
-                {controls}
+                {(!readOnly && sidebarType ==='Features') ? featureControls : null}
+                {sidebarType === 'Orfs' ? orfControls : null}
 
                 {annotationForm}
 
