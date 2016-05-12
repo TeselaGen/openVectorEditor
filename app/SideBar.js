@@ -165,13 +165,14 @@ export default class SideBar extends React.Component {
                         signals.sidebarDisplay({ type: 'Orfs' });
                     }}>ORFs</div>
                 </div>
-                <table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
-                    <thead>
-                        <tr>{tableHeaderCells}</tr>
-                    </thead>
-                    <tbody deselectOnClickaway={false}>{tableDataRows}</tbody>
-                </table>
-
+                <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
+                    <table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
+                        <thead>
+                            <tr>{tableHeaderCells}</tr>
+                        </thead>
+                        <tbody deselectOnClickaway={false}>{tableDataRows}</tbody>
+                    </table>
+                </div>
                 {(!readOnly && sidebarType ==='Features') ? featureControls : null}
                 {sidebarType === 'Orfs' ? orfControls : null}
 

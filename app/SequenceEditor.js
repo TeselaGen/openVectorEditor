@@ -130,7 +130,7 @@ class SequenceEditor extends React.Component {
         var table;
         var sidebarStyle = {};
         // we need this position relative to place the controller bar in the sidebar
-        Object.assign(sidebarStyle, {borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
+        Object.assign(sidebarStyle, {minWidth: '580px', overflow: 'hidden', borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
 
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
