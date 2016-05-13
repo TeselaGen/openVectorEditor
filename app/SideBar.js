@@ -90,7 +90,7 @@ export default class SideBar extends React.Component {
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
-            tableHeaderCells.push((<TableHeaderColumn key={i}>{filter[i]}</TableHeaderColumn>));
+            tableHeaderCells.push((<td key={i}>{filter[i]}</td>));
         }
 
         var tableDataRows = [];
@@ -106,10 +106,10 @@ export default class SideBar extends React.Component {
                     data = feature[column].toString();
                 }
 
-                tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
+                tableDataCells.push((<td key={j}>{data}</td>));
             }
 
-            tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
+            tableDataRows.push((<tr key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</tr>));
         }
 
         if (this.state.selectedRows.length === 1) {
