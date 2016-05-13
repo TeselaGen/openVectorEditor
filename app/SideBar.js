@@ -40,6 +40,7 @@ export default class SideBar extends React.Component {
         this.setState({ selectedRows: selectedRows });
     }
 
+    // not working, foreach problem
     deleteFeatures() {
         var featureIds = [];
 
@@ -90,7 +91,7 @@ export default class SideBar extends React.Component {
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
-            tableHeaderCells.push((<td key={i}>{filter[i]}</td>));
+            tableHeaderCells.push((<TableHeaderColumn key={i}>{filter[i]}</TableHeaderColumn>));
         }
 
         var tableDataRows = [];
@@ -106,10 +107,10 @@ export default class SideBar extends React.Component {
                     data = feature[column].toString();
                 }
 
-                tableDataCells.push((<td key={j}>{data}</td>));
+                tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
             }
 
-            tableDataRows.push((<tr key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</tr>));
+            tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
 
         if (this.state.selectedRows.length === 1) {
@@ -125,7 +126,7 @@ export default class SideBar extends React.Component {
                     <AddBoxIcon />
                 </IconButton>
 
-                <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0}tooltip={"delete"}>
+                <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0} tooltip={"delete"}>
                     <IndeterminateCheckBoxIcon />
                 </IconButton>
             </div>
@@ -166,12 +167,12 @@ export default class SideBar extends React.Component {
                     }}>ORFs</div>
                 </div>
                 <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
-                    <table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
-                        <thead>
-                            <tr>{tableHeaderCells}</tr>
-                        </thead>
-                        <tbody deselectOnClickaway={false}>{tableDataRows}</tbody>
-                    </table>
+                    <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
+                        <TableHeader>
+                            <TableRow>{tableHeaderCells}</TableRow>
+                        </TableHeader>
+                        <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
+                    </Table>
                 </div>
                 {(!readOnly && sidebarType ==='Features') ? featureControls : null}
                 {sidebarType === 'Orfs' ? orfControls : null}
