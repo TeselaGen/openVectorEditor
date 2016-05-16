@@ -46,7 +46,7 @@ var RowView = require('./RowView/RowView');
     annotationTableType: PropTypes.string.isRequired
 })
 
-class SequenceEditor extends React.Component {
+export default class SequenceEditor extends React.Component {
     componentDidMount() {
         var {
             sequenceDataInserted,
@@ -200,5 +200,3 @@ class SequenceEditor extends React.Component {
         );
     }
 }
-
-module.exports = SequenceEditor;

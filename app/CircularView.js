@@ -53,7 +53,7 @@ import styles from './circular-view.css';
     sequenceName: PropTypes.string.isRequired
 })
 
-class CircularView extends React.Component {
+export default class CircularView extends React.Component {
 
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect();
@@ -248,8 +248,6 @@ class CircularView extends React.Component {
         );
     }
 }
-
-module.exports = CircularView;
 
 function Caret({
     caretPosition,

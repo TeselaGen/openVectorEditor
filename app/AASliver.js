@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-let AASliver = React.createClass({
+var AASliver = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         width: PropTypes.number.isRequired,

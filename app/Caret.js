@@ -10,7 +10,7 @@ var cursorStyle = {
     width: "2px",
 };
 
-let HighlightLayer = React.createClass({
+let Caret = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         caretPosition: React.PropTypes.number.isRequired,        
@@ -42,4 +42,4 @@ let HighlightLayer = React.createClass({
     }
 });
 
-module.exports = HighlightLayer;
+module.exports = Caret;
