@@ -51,7 +51,7 @@ export default class FeatureForm extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{backgroundColor: 'white', marginLeft: '580px', position: 'fixed', padding: '20px', width: '300px', border: '1px solid #ccc', zIndex: '55'}}>
               <TextField
                  id={"id"}
                  disabled={true}
