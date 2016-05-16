@@ -1,4 +1,5 @@
-var React = require('react');
+import React, { PropTypes } from 'react';
+
 var interpolate = require('interpolate');
 
 var Cutsite = React.createClass({

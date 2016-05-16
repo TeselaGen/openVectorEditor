@@ -1,5 +1,14 @@
 import React, { PropTypes } from 'react';
 
+StyleOrf.propTypes = {
+    color: PropTypes.string.isRequired,
+    signals: PropTypes.shape({
+        orfClicked: PropTypes.func.isRequired
+    }),
+    annotation: PropTypes.object.isRequired,
+    children: PropTypes.element
+}
+
 export default function StyleOrf({children, color, annotation, signals}) {
     return (
         <g
@@ -16,13 +25,4 @@ export default function StyleOrf({children, color, annotation, signals}) {
             { children }
         </g>
     )
-}
-
-StyleOrf.propTypes = {
-    color: PropTypes.string.isRequired,
-    signals: PropTypes.shape({
-        orfClicked: PropTypes.func.isRequired
-    }),
-    annotation: PropTypes.object.isRequired,
-    children: PropTypes.element
 }

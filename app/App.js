@@ -1,10 +1,10 @@
-var ac = require('ve-api-check');
-
 import controller from './cerebral/controller.js';
 import React from 'react';
 import {Container} from 'cerebral-view-react';
 import SequenceEditor from './SequenceEditor.js';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+var ac = require('ve-api-check');
 
 injectTapEventPlugin();
 

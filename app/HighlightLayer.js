@@ -2,12 +2,10 @@ import React, { PropTypes } from 'react';
 import Caret from './Caret';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { propTypes } from './react-props-decorators.js';
-
 import styles from './highlight-layer.css';
-
-var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-var mixin = require('./mixin');
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import getOverlapsOfPotentiallyCircularRanges from 've-range-utils/getOverlapsOfPotentiallyCircularRanges';
+import mixin from './mixin';
 
 @propTypes({
     bpsPerRow: PropTypes.number.isRequired,

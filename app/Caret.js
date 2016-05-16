@@ -1,7 +1,6 @@
 var assign = require('lodash/object/assign');
-let React = require('react');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
-
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 var cursorStyle = {
     background: 'black',
     cursor: "ew-resize",    

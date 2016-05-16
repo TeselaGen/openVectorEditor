@@ -6,13 +6,12 @@ import StatusBar from './StatusBar';
 import AnnotationTable from './AnnotationTable';
 import styles from './sequence-editor.css';
 
-var Combokeys = require("combokeys");
-var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
-
-var RowView = require('./RowView/RowView');
 var CircularView = require('./CircularView');
 var Clipboard = require('./Clipboard');
+var Combokeys = require("combokeys");
+var combokeys;
+var RowView = require('./RowView/RowView');
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
