@@ -1,5 +1,5 @@
 var ReactDOM = require('react-dom')
-var App = require('./app/App.js')
+var App = require('../app/App.js')
 import request from 'superagent/lib/client';
 
 var query = location.search;
