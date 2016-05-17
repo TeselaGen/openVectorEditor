@@ -2,8 +2,8 @@ var ac = require('ve-api-check');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require('validate.io-boolean');
 
-export default function addAnnotations({input: {annotationType, annotationsToInsert, throwErrors}, state, output}) {
-    ac.throw(ac.annotationType, annotationType);
+export default function addAnnotations({input: {sidebarType, annotationsToInsert, throwErrors}, state, output}) {
+    // ac.throw(ac.annotationType, sidebarType);
     ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
     ac.throw(ac.bool.optional, throwErrors);
     
@@ -33,8 +33,8 @@ export default function addAnnotations({input: {annotationType, annotationsToIns
             }
         }
 
-        delete annotationToInsert.id; // force ice to give this annotation a new id
-
-        state.push(['sequenceData', annotationType], annotationToInsert);
+        // delete annotationToInsert.id;
+        // hardcoding features for now because it's the only thing we can update
+        state.push(['sequenceData', 'features'], annotationToInsert);
     });
 }

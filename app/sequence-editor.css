@@ -2,14 +2,13 @@
     position: absolute;
     top: 0px;
     right: 0px;
-    bottom: 70px;
+    bottom: 64px;
     left: 0px;
     display: flex;
     flex-direction: column;
 }
 
-.head {
-}
+.head {}
 
 .content {
     display: flex;
@@ -24,6 +23,7 @@
     flex-basis: 0;
     text-align: center;
     padding-top: 30px;
+    text-align: center;
 }
 
 .rowViewSlot {
@@ -34,4 +34,5 @@
 }
 
 .foot {
+    z-index: 50;
 }

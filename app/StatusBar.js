@@ -34,12 +34,7 @@ export default class StatusBar extends React.Component {
         return (
             <div ref="statusBar">
                 <div className={styles.bar}>
-                    {readOnly ? <div className={styles.label}>Read Only Mode</div> : <div>Editing Allowed</div>}
-                    <div>
-                        <button onClick={function() { signals.toggleSequenceCase(); }}>
-                            Toggle Sequence Case
-                        </button>
-                    </div>
+                    {readOnly ? <div className={styles.label}>Read Only Mode</div> : <div className={styles.label}>Editing Allowed</div>}
 
                     <div className={styles.box}>
                         <div className={styles.label}>Length</div>

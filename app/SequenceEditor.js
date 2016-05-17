@@ -3,7 +3,7 @@ import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this 
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
-import AnnotationTable from './AnnotationTable';
+import SideBar from './SideBar';
 import styles from './sequence-editor.css';
 
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
@@ -26,24 +26,10 @@ var RowView = require('./RowView/RowView');
     showCircular: ['showCircular'],
     showLinear: ['showLinear'],
     showRow: ['showRow'],
-    annotationTableType: ['annotationTableType'],
+    showSidebar: ['showSidebar'],
+    sidebarType: ['sidebarType'],
     cutsites: ['cutsites'],
     orfData: ['orfData']
-})
-@propTypes({
-    sequenceLength: PropTypes.number.isRequired,
-    bpsPerRow: PropTypes.number.isRequired,
-    totalRows: PropTypes.number.isRequired,
-    newRandomRowToJumpTo: PropTypes.object,
-    selectedSequenceString: PropTypes.string.isRequired,
-    caretPosition: PropTypes.number.isRequired,
-    sequenceData: PropTypes.object.isRequired,
-    selectionLayer: PropTypes.object.isRequired,
-    clipboardData: PropTypes.object.isRequired,
-    showCircular: PropTypes.bool.isRequired,
-    showLinear: PropTypes.bool.isRequired,
-    showRow: PropTypes.bool.isRequired,
-    annotationTableType: PropTypes.string.isRequired
 })
 
 export default class SequenceEditor extends React.Component {
@@ -135,34 +121,39 @@ export default class SequenceEditor extends React.Component {
             sequenceData,
             showCircular,
             showRow,
-            annotationTableType,
+            showSidebar,
+            sidebarType,
             cutsites,
             orfData
         } = this.props;
 
         var table;
+        var sidebarStyle = {};
+        // we need this position relative to place the controller bar in the sidebar
+        Object.assign(sidebarStyle, {minWidth: '580px', overflow: 'hidden', borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
 
-        if (annotationTableType === 'features') {
+        // this should probably move to the sidebar file
+        if (sidebarType === 'Features') {
             table = (
-                <AnnotationTable
+                <SideBar
                    data={sequenceData.features}
-                   annotationType={annotationTableType}
+                   annotationType={sidebarType}
                    filter={['name', 'type', 'start', 'end', 'strand']}
                    />
             );
-        } else if (annotationTableType === 'cutsites') {
+        } else if (sidebarType === 'Cutsites') {
             table = (
-                <AnnotationTable
+                <SideBar
                    data={cutsites}
-                   annotationType={annotationTableType}
+                   annotationType={sidebarType}
                    filter={['name', 'start', 'end', 'strand']}
                    />
             );
-        } else if (annotationTableType === 'orfs') {
+        } else if (sidebarType === 'Orfs') {
             table = (
-                <AnnotationTable
+                <SideBar
                    data={orfData}
-                   annotationType={annotationTableType}
+                   annotationType={sidebarType}
                    filter={['start', 'end', 'length', 'strand', 'frame']}
                    />
             );
@@ -181,7 +172,7 @@ export default class SequenceEditor extends React.Component {
                 </div>
 
                 <div className={styles.content} id="allViews">
-                    <div className={styles.sideBarSlot} id="sideBar" style={(table) ? {} : {display: 'none'}}>
+                    <div className={styles.sideBarSlot} id="sideBar" style={ sidebarStyle }>
                       {table}
                     </div>
 

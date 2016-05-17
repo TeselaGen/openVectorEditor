@@ -11,7 +11,8 @@ import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import SettingsIcon from 'material-ui/lib/svg-icons/action/settings';
+import InputIcon from 'material-ui/lib/svg-icons/action/input';
+import SearchIcon from 'material-ui/lib/svg-icons/action/search';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
 import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
@@ -63,38 +64,6 @@ export default class ToolBar extends React.Component {
             signals
         } = this.props;
 
-        var annotationList = [
-            {
-                type: 'features',
-                label: 'Features',
-                state: showFeatures
-            },
-
-            {
-                type: 'parts',
-                label: 'Parts',
-                state: showParts
-            },
-
-            {
-                type: 'translations',
-                label: 'Translations',
-                state: showTranslations
-            },
-
-            {
-                type: 'orfs',
-                label: 'ORFs',
-                state: showOrfs
-            },
-
-            {
-                type: 'cutsites',
-                label: 'Cutsites',
-                state: showCutsites
-            }
-        ];
-
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             embedded ? 
@@ -140,20 +109,23 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
-        // pop out sidebar
-        var toggleMenuItems = annotationList.map(function(annotationType, index){
-            return (
-                <MenuItem key={index} primaryText={annotationType.label} insetChildren={true} checked={annotationType.state} onClick={function () {
-                    signals.toggleAnnotationDisplay({type: String(annotationType.type)});
-                }} />
-            );
-        });
-
-        // show/hide annotations
-        var iconButtonElement = (
-            <IconButton tooltip="Settings">
-                <SettingsIcon />
-            </IconButton>
+        // jsx styling syntax is really screwy!
+        var disabledStyle = {opacity: '.5'};
+        var toggleStyles = {display: 'inline-block', fontSize: '16px', fontWeight: 'bold', verticalAlign: 'top'}
+        var buttonStyles = {position: 'relative', display: 'inline-block', padding: '10px 16px', margin: '6px 10px', border: '1px solid black', borderRadius: '4px'}
+        // show or hide features &c
+        var toggleFeatures = (
+            <div style={ toggleStyles }>
+                <div style={ showFeatures ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleFeatures' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'Features'});
+                }}> F </div>
+                <div style={ showCutsites ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleCutsites' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'Cutsites'});
+                }}> C </div>
+                <div style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'Orfs'});
+                }}> O </div>
+            </div>
         );
 
         // pulls out the current view and necessary resizing js to a new tab 
@@ -161,20 +133,43 @@ export default class ToolBar extends React.Component {
         var prepPrintPage = function() {
             var contents = document.getElementById("allViews").innerHTML;
             var head = document.head.innerHTML;
-            var stylePage = "<style>@page{margin: 1in;} #allViews{width: 8.5in}</style>";
+            var stylePage = "<style>@page{margin: 1in;} #circularView,#rowView{width: 8.5in; display: block;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
             var printTab = window.open();
             printTab.document.body.innerHTML = head + stylePage + contents;
             printTab.document.close();
             printTab.focus();
             printTab.print();
             printTab.close();
-        }
+        };
 
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
                     
                     {embeddedControls}
+
+                    <IconButton
+                        label='Feature Details'
+                        onTouchTap={function() {
+                            signals.sidebarToggle();
+                        }}
+                        >
+                        <InputIcon />
+                    </IconButton>
+                    <IconButton
+                        label='Print Current View'
+                        onTouchTap={function() {
+                            prepPrintPage();
+                        }}
+                    >
+                        <PrintIcon />
+                    </IconButton>       
+                    <IconButton label='Search' onClick={this.search.bind(this)}>
+                        <SearchIcon />
+                    </IconButton>                                  
+                    <TextField ref="searchField" hintText="search sequence" />
+
+                    {toggleFeatures}
 
                     <IconButton
                         disabled={ readOnly }  // you can't save in read only
@@ -184,43 +179,12 @@ export default class ToolBar extends React.Component {
                         }}
                     >
                         <SaveIcon />
-                    </IconButton>
-                    <IconButton
-                        label='Print Current View'
-                        onTouchTap={function() {
-                            prepPrintPage();
-                        }}
-                    >
-                        <PrintIcon />
-                    </IconButton>                    
-                    <RaisedButton
-                        label='F'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'features' });
-                        }}
-                    />
-                    <RaisedButton
-                        label='C'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'cutsites' });
-                        }}
-                    />
-                    <RaisedButton
-                        label='O'
-                        onTouchTap={function() {
-                            signals.toggleAnnotationTable({ annotationType: 'orfs' });
-                        }}
-                    />
+                    </IconButton>                   
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
                         {fileMenuItems}
                     </IconMenu>                  
-                    <IconMenu iconButtonElement={iconButtonElement} openDirection="bottom-right">
-                        {toggleMenuItems}
-                    </IconMenu>
-                    <TextField ref="searchField" hintText="search" />
-                    <RaisedButton label='Search' onClick={this.search.bind(this)}/>
-                    <RaisedButton label='Clear Search' onClick={this.clearSearch.bind(this)}/>
-                </ToolbarGroup>
+                </ToolbarGroup>           
+            
             </Toolbar>
         );
     }
