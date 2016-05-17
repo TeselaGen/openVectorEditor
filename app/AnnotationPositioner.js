@@ -20,6 +20,5 @@ var AnnotationPositioner = React.createClass({
     );
     }
 });
-module.exports = AnnotationPositioner;
 
-          // key={'feature' + annotation.id + 'start:' + annotationRange.start}
+module.exports = AnnotationPositioner;

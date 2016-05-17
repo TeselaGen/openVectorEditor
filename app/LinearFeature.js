@@ -1,6 +1,6 @@
-var React = require('react');
-var interpolate = require('interpolate');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+import React from 'react';
+import interpolate from 'interpolate';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 //this should just return a polyline of the desired shape, and not worry about styling (that's handled in the StyleFeature component)
 var LinearFeature = React.createClass({

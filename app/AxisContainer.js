@@ -1,5 +1,6 @@
-var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 import React, {PropTypes} from 'react';
+
+var calculateTickMarkPositionsForGivenRange = require('./calculateTickMarkPositionsForGivenRange');
 var getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
 var getXCenterOfRowAnnotation = require('./getXCenterOfRowAnnotation');
 var PureRenderMixin = require('react-addons-pure-render-mixin');

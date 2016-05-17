@@ -3,8 +3,8 @@ export default function selectAll({input, state, output}) {
     var sequenceLength = state.get(['sequenceLength']);
     output({
         selectionLayer: {
-        	start: 0,
-        	end: sequenceLength - 1
+            start: 0,
+            end: sequenceLength - 1
         }
     });
 }

@@ -6,13 +6,12 @@ import StatusBar from './StatusBar';
 import AnnotationTable from './AnnotationTable';
 import styles from './sequence-editor.css';
 
-var Combokeys = require("combokeys");
-var combokeys;
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
-
-var RowView = require('./RowView/RowView');
 var CircularView = require('./CircularView');
 var Clipboard = require('./Clipboard');
+var Combokeys = require("combokeys");
+var combokeys;
+var RowView = require('./RowView/RowView');
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
@@ -47,7 +46,7 @@ var Clipboard = require('./Clipboard');
     annotationTableType: PropTypes.string.isRequired
 })
 
-class SequenceEditor extends React.Component {
+export default class SequenceEditor extends React.Component {
     componentDidMount() {
         var {
             sequenceDataInserted,
@@ -57,12 +56,9 @@ class SequenceEditor extends React.Component {
         } = this.props.signals;
         var self = this;
         combokeys = new Combokeys(document.documentElement);
-        // combokeys = new Combokeys(React.findDOMNode(this.refs.sequenceEditor));
         bindGlobalPlugin(combokeys);
 
         //bind a bunch of keyboard shortcuts we're interested in catching
-        //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
-        //documentation: https://craig.is/killing/mice
         combokeys.bind(['a', 'b', 'c', 'd', 'g', 'h', 'k', 'm', 'n', 'r', 's', 't', 'v', 'w', 'y'], function(event) { // type in bases
             sequenceDataInserted({newSequenceData: {sequence: String.fromCharCode(event.charCode)}});
         });
@@ -130,10 +126,9 @@ class SequenceEditor extends React.Component {
     }
 
     componentWillUnmount() {
-
-        // Remove any Mousetrap bindings before unmounting.detach()
         combokeys.detach()
     }
+
     render() {
         var {
             selectedSequenceString,
@@ -205,5 +200,3 @@ class SequenceEditor extends React.Component {
         );
     }
 }
-
-module.exports = SequenceEditor;
