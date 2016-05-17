@@ -1,7 +1,6 @@
 var assign = require('lodash/object/assign');
-let React = require('react');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
-
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 var cursorStyle = {
     background: 'black',
     cursor: "ew-resize",    
@@ -11,7 +10,7 @@ var cursorStyle = {
     width: "2px",
 };
 
-let HighlightLayer = React.createClass({
+let Caret = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         caretPosition: React.PropTypes.number.isRequired,        
@@ -43,4 +42,4 @@ let HighlightLayer = React.createClass({
     }
 });
 
-module.exports = HighlightLayer;
+module.exports = Caret;

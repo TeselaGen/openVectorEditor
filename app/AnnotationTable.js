@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
-
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js';
+import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
+import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
+import IconButton from 'material-ui/lib/icon-button';
+import FeatureForm from './FeatureForm';
 
 const Table = require('material-ui/lib/table/table');
 const TableBody = require('material-ui/lib/table/table-body');
@@ -10,19 +13,15 @@ const TableHeaderColumn = require('material-ui/lib/table/table-header-column');
 const TableRow = require('material-ui/lib/table/table-row');
 const TableRowColumn = require('material-ui/lib/table/table-row-column');
 
-import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
-import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
-import IconButton from 'material-ui/lib/icon-button';
-
-import FeatureForm from './FeatureForm';
-
 @Cerebral({
 })
+
 @propTypes({
     data: PropTypes.array.isRequired,
     annotationType: PropTypes.string.isRequired,
     filter: PropTypes.array.isRequired
 })
+
 export default class AnnotationTable extends React.Component {
 
     constructor() {

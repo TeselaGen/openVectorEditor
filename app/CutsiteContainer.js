@@ -1,11 +1,10 @@
-let React = require('react');
-let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
-let Cutsite = require('./Cutsite');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
-
-let AnnotationContainerHolder = require('./AnnotationContainerHolder');
-let AnnotationPositioner = require('./AnnotationPositioner');
+import React, { PropTypes } from 'react';
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import getAnnotationRangeType from've-range-utils/getAnnotationRangeType';
+import Cutsite from './Cutsite';
+import PureRenderMixin from'react-addons-pure-render-mixin';
+import AnnotationContainerHolder from './AnnotationContainerHolder';
+import AnnotationPositioner from './AnnotationPositioner';
 
 let CutsiteContainer = React.createClass({
     mixins: [PureRenderMixin],

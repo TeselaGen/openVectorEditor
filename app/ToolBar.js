@@ -39,6 +39,7 @@ import TextField from 'material-ui/lib/text-field';
     showFeatures: PropTypes.bool.isRequired,
     showTranslations: PropTypes.bool.isRequired
 })
+
 export default class ToolBar extends React.Component {
 
     search() {
@@ -223,5 +224,4 @@ export default class ToolBar extends React.Component {
             </Toolbar>
         );
     }
-
 }
