@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
+import PureRenderMixin from'react-addons-pure-render-mixin';
 
-let PureRenderMixin = require('react-addons-pure-render-mixin');
 var Orf = React.createClass({
     mixins: [PureRenderMixin],
     
@@ -40,4 +40,5 @@ var Orf = React.createClass({
         );
     }
 });
+
 module.exports = Orf;

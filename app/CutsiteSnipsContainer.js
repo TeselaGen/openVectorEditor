@@ -1,8 +1,9 @@
-var assign = require('lodash/object/assign');
-let React = require('react');
-var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
-let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
+import assign from 'lodash/object/assign';
+import React from 'react';
+import areNonNegativeIntegers from 'validate.io-nonnegative-integer-array';
+import getOverlapsOfPotentiallyCircularRanges from 've-range-utils/getOverlapsOfPotentiallyCircularRanges';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+
 var snipStyle = {
     height: "100%",
     background: 'black',
@@ -16,8 +17,6 @@ var snipConnectorStyle = {
     position: "absolute",
     top: "0",
 };
-
-// var cursor = getCursorForRow(caretPosition, row, bpsPerRow, snipStyle, charWidth, true);
 
 function getSnipForRow(snipPosition, row, sequenceLength, bpsPerRow, snipStyle, charWidth, index) {
     //tnrtodo: refactor this get position in row into a helper function!
@@ -141,6 +140,5 @@ let CutsiteSnipsContainer = React.createClass({
         )
     }
 });
-
 
 module.exports = CutsiteSnipsContainer;

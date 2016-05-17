@@ -20,4 +20,5 @@ var AnnotationPositioner = React.createClass({
     );
     }
 });
+
 module.exports = AnnotationPositioner;

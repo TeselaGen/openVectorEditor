@@ -26,7 +26,6 @@ export default function copySelection({input, state, output}) {
                     });
                 }
                 if (collapsedOverlaps.length > 1) {
-                    //tnrtodo: add a new bson id for the 2nd annotation!
                     console.log('splitting annotation on copy!');
                 }
                 collapsedOverlaps.forEach(function(collapsedOverlap) {

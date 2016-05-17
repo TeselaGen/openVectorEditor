@@ -1,4 +1,5 @@
-var React = require('react');
+import React, { PropTypes } from 'react';
+
 var interpolate = require('interpolate');
 
 var Cutsite = React.createClass({
@@ -15,7 +16,8 @@ var Cutsite = React.createClass({
 
     render: function() {
         var {
-            widthInBps, charWidth,
+            widthInBps, 
+            charWidth,
             height,
             rangeType,
             forward, 
@@ -32,7 +34,7 @@ var Cutsite = React.createClass({
         });
         return (
             <g
-            onClick={this.props.onClick}
+                onClick={this.props.onClick}
             >
             <polyline
                 transform={forward ? null : "translate("+width+",2.5) scale(-1,1) "} //tnrtodo: this 2.5 shouldn't be hardcoded. it is in there to make the annotation slightly smaller
@@ -47,7 +49,7 @@ var Cutsite = React.createClass({
                 x="0"  
                 y="13"
                 style={{textAnchor: "middle"}}
-                >
+            >
                 {name}
             </text>
           </g>

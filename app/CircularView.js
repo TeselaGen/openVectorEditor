@@ -1,17 +1,14 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
-
 import Sector from 'paths-js/sector';
 import Cutsite from './Cutsite';
 import CircularFeature from './CircularFeature';
 import StyleFeature from './StyleFeature';
 import Draggable from 'react-draggable';
-
 import assign from 'lodash/object/assign';
 import calculateTickMarkPositionsForGivenRange from './calculateTickMarkPositionsForGivenRange';
 import getRangeAngles from 've-range-utils/getRangeAngles';
-
 import styles from './circular-view.css';
 
 @Cerebral({
@@ -56,7 +53,7 @@ import styles from './circular-view.css';
     sequenceName: PropTypes.string.isRequired
 })
 
-class CircularView extends React.Component {
+export default class CircularView extends React.Component {
 
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
         var boundingRect = this.refs.circularView.getBoundingClientRect();
@@ -248,9 +245,6 @@ class CircularView extends React.Component {
         );
     }
 }
-
-
-module.exports = CircularView;
 
 function Caret({
     caretPosition,

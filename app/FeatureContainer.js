@@ -1,12 +1,11 @@
-var StyleFeature = require('./StyleFeature');
+import StyleFeature from './StyleFeature';
 import React, { PropTypes } from 'react';
-let getXStartAndWidthOfRowAnnotation = require('./getXStartAndWidthOfRowAnnotation');
-let getAnnotationRangeType = require('ve-range-utils/getAnnotationRangeType');
-let LinearFeature = require('./LinearFeature');
-let PureRenderMixin = require('react-addons-pure-render-mixin');
-
-let AnnotationContainerHolder = require('./AnnotationContainerHolder');
-let AnnotationPositioner = require('./AnnotationPositioner');
+import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation';
+import getAnnotationRangeType from 've-range-utils/getAnnotationRangeType';
+import LinearFeature from './LinearFeature';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import AnnotationContainerHolder from './AnnotationContainerHolder';
+import AnnotationPositioner from './AnnotationPositioner';
 
 let FeatureContainer = React.createClass({
     mixins: [PureRenderMixin],
@@ -86,4 +85,5 @@ let FeatureContainer = React.createClass({
 
     }
 });
+
 module.exports = FeatureContainer;

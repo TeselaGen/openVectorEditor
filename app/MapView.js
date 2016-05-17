@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
-var Draggable = require('react-draggable');
-var RowItem = require('./RowItem.js');
+import Draggable from 'react-draggable';
+import RowItem from './RowItem.js';
 
 var RowView = React.createClass({
     propTypes: {
@@ -82,24 +82,12 @@ var RowView = React.createClass({
             signals
         } = this.props;
         var self = this;
-        // function renderRows(rowNumber) {
-        //     if (rowData[rowNumber]) {
-        //         return ();
-        //     } else {
-        //         return null
-        //     }
-        // }
-
         var mapViewStyle = {
             height: mapViewDimensions.height,
             width: mapViewDimensions.width,
             transform: "rotate(7deg)"
-            //   overflowY: "scroll",
-            // float: "left",
-            // paddingRight: "20px"
-            //   padding: 10
         };
-        // console.log('rowData: ' + JSON.stringify(rowData,null,4));
+
         return (
             <Draggable
                 bounds={{top: 0, left: 0, right: 0, bottom: 0}}
