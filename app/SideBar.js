@@ -54,7 +54,7 @@ export default class SideBar extends React.Component {
 
     addFeature() {
         this.props.signals.addAnnotations({
-            sidebarType: 'Features',
+            sidebarType: 'features',
 
             annotationsToInsert: [
                 {

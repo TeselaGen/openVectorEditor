@@ -29,6 +29,7 @@ export default class FeatureForm extends React.Component {
     }
 
     update() {
+        // {{}} theres a better way to do this, willget to later
         clearTimeout(this.state.timeout);
 
         var timeout = setTimeout(() => {
@@ -45,7 +46,6 @@ export default class FeatureForm extends React.Component {
 
     onChange(event) {
         this.state.feature[event.target.id] = event.target.value;
-
         this.update();
     }
 
@@ -57,7 +57,7 @@ export default class FeatureForm extends React.Component {
                  disabled={true}
                  onChange={this.onChange.bind(this)}
                  floatingLabelText={"id"}
-                 value={this.state.feature.id.toString()}
+                 value={ this.state.feature.id ? this.state.feature.id.toString() : "" }
                  />
 
               <br />
