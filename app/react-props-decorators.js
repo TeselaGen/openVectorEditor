@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+import assign from 'lodash/object/assign';
 
 export function propTypes(param) {
     return function(clazz) {
