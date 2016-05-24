@@ -7,7 +7,7 @@ import SideBar from './SideBar';
 import styles from './sequence-editor.css';
 
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
-var CircularView = require('./CircularView');
+var CircularView = require('./CircularView/CircularView');
 var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
 var combokeys;
