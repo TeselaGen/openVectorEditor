@@ -1,9 +1,6 @@
-var ac = require('ve-api-check/apiCheck');
 export default function handleEditorDragStarted({input: {
     nearestBP, caretGrabbed
 }, state, output}) {
-	ac.throw(ac.posInt, nearestBP);
-	ac.throw(ac.bool, caretGrabbed);
     var selectionLayer = state.get('selectionLayer');
     if (caretGrabbed && selectionLayer.selected) {
         if (selectionLayer.start === nearestBP) {

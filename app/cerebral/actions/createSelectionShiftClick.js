@@ -1,9 +1,6 @@
 export default function createSelectionShiftClick({input: {
     nearestBP, caretPosition
 }, state, output}) {
-    var ac = require('ve-api-check');
-    ac.throw(ac.posInt, nearestBP)
-    ac.throw(ac.posInt, caretPosition)
     if (nearestBP === caretPosition) {
         return output.doNothing()
     }

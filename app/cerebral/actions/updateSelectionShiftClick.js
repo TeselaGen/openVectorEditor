@@ -1,6 +1,6 @@
 var expandOrContractNonCircularRangeToPosition = require('ve-range-utils/expandOrContractNonCircularRangeToPosition');
 var expandOrContractCircularRangeToPosition = require('ve-range-utils/expandOrContractCircularRangeToPosition');
-var ac = require('ve-api-check');
+
 export default function updateSelectionShiftClick({input: {nearestBP, sequenceLength, caretPosition, selectionLayer}, state, output}) {
     if (true || selectionLayer.start > selectionLayer.end) {
         var {newRange, endMoved} = expandOrContractCircularRangeToPosition(selectionLayer, nearestBP, sequenceLength);
