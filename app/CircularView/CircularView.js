@@ -3,7 +3,7 @@ import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 // import _Labels from './Labels';
 import _SelectionLayer from './SelectionLayer';
-import _Caret from './Caret';
+// import _Caret from './Caret';
 import _Axis from './Axis';
 // import _Features from './Features';
 // import _Cutsites from './Cutsites';
@@ -12,10 +12,10 @@ import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 import getPositionFromAngle from 've-range-utils/getPositionFromAngle';
 
-export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
-    obj[key] = key
-    return obj
-}, {});
+// export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
+//     obj[key] = key
+//     return obj
+// }, {});
 
 function noop(argument) {
     //console.log('noop!');
@@ -104,7 +104,7 @@ export default class CircularView extends React.Component {
         var {
         //     Labels = _Labels,
             SelectionLayer = _SelectionLayer,
-            Caret = _Caret,
+        //     Caret = _Caret,
             Axis = _Axis,
             // Features = _Features,
         //     Cutsites = _Cutsites,
@@ -179,7 +179,7 @@ export default class CircularView extends React.Component {
             annotationsSvgs.push(axisResult.component)
         }
 
-        radius-=10
+        // radius-=10
         // //DRAW CUTSITES
         // if (showCutsites) {
         //     var cutsiteResults = Cutsites({
@@ -207,19 +207,19 @@ export default class CircularView extends React.Component {
             }))
         }
 
-        //DRAW CARET
-        if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
-            annotationsSvgs.push(
-                <Caret
-                    key='caret'
-                    className={draggableClassNames.caretSvg}
-                    caretPosition={caretPosition}
-                    sequenceLength={sequenceLength}
-                    innerRadius={innerRadius}
-                    outerRadius={radius}
-                    />
-            )
-        }
+        // //DRAW CARET
+        // if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
+        //     annotationsSvgs.push(
+        //         <Caret
+        //             key='caret'
+        //             className={draggableClassNames.caretSvg}
+        //             caretPosition={caretPosition}
+        //             sequenceLength={sequenceLength}
+        //             innerRadius={innerRadius}
+        //             outerRadius={radius}
+        //             />
+        //     )
+        // }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
         //DRAW LABELS
         // annotationsSvgs.push(Labels({namespace, labels, outerRadius: radius}))
