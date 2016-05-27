@@ -76,11 +76,11 @@ request
                     features: featureList,
                     _id: seqId,
                     sequence: sequence,
-                    circular: isCircular
+                    circular: isCircular,
+                    name: name
                 },
                 embedded: !!embedded, // forcing a Boolean
-                readOnly: !canEdit, // forced falsed Boolean
-                name: name,
+                readOnly: !canEdit // forced falsed Boolean
             },
             services: {
                 request: request

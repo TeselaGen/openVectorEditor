@@ -2,8 +2,8 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 // import _Labels from './Labels';
-// import _SelectionLayer from './SelectionLayer';
-// import _Caret from './Caret';
+import _SelectionLayer from './SelectionLayer';
+import _Caret from './Caret';
 import _Axis from './Axis';
 // import _Features from './Features';
 // import _Cutsites from './Cutsites';
@@ -12,10 +12,11 @@ import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 import getPositionFromAngle from 've-range-utils/getPositionFromAngle';
 
-// export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
-//     obj[key] = key
-//     return obj
-// }, {});
+export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
+    obj[key] = key
+    return obj
+}, {});
+
 function noop(argument) {
     //console.log('noop!');
 }
@@ -26,10 +27,10 @@ function toDegrees(radians) {
 
 @Cerebral({
     circularViewDimensions: ['circularViewDimensions'],
-    circularViewData: ['circularViewData'], //
-    charWidth: ['charWidth'], //
+    circularViewData: ['circularViewData'], 
+    charWidth: ['charWidth'], 
     selectionLayer: ['selectionLayer'],
-    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'], //
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'], 
     annotationHeight: ['annotationHeight'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
@@ -44,7 +45,7 @@ function toDegrees(radians) {
     caretPosition: ['caretPosition'],
     sequenceLength: ['sequenceLength'],
     sequenceData: ['sequenceData'],
-    sequenceName: ['sequenceData', 'name']//
+    sequenceName: ['sequenceData', 'name']
 })
 
 export default class CircularView extends React.Component {
@@ -82,6 +83,9 @@ export default class CircularView extends React.Component {
             sequenceName,
             cutsites = [],
             selectionLayer = {start: -1, end: -1},
+            showAxis,
+            showCaret,
+            showFeatures,
             annotationHeight = 15,
             spaceBetweenAnnotations=2,
             annotationVisibility = {},
@@ -99,10 +103,10 @@ export default class CircularView extends React.Component {
 
         var {
         //     Labels = _Labels,
-        //     SelectionLayer = _SelectionLayer,
-        //     Caret = _Caret,
+            SelectionLayer = _SelectionLayer,
+            Caret = _Caret,
             Axis = _Axis,
-        //     Features = _Features,
+            // Features = _Features,
         //     Cutsites = _Cutsites,
         } = componentOverrides
 
@@ -156,9 +160,10 @@ export default class CircularView extends React.Component {
         //         sequenceLength,
         //         namespace
         //     })
-        //     //update the radius, labels, and svg
+        //     console.log('features results ' + featureResults)
+        //     // update the radius, labels, and svg
         //     radius+= featureResults.height
-        //     labels = {...labels, ...featureResults.labels}
+        //     // labels = {...labels, ...featureResults.labels}
         //     annotationsSvgs.push(featureResults.component)
         // }
 
@@ -174,7 +179,7 @@ export default class CircularView extends React.Component {
             annotationsSvgs.push(axisResult.component)
         }
 
-        // radius-=10
+        radius-=10
         // //DRAW CUTSITES
         // if (showCutsites) {
         //     var cutsiteResults = Cutsites({
@@ -191,29 +196,30 @@ export default class CircularView extends React.Component {
         //     annotationsSvgs.push(cutsiteResults.component)
         // }
 
-        // //DRAW SELECTION LAYER
-        // if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
-        //     annotationsSvgs.push(SelectionLayer({
-        //         selectionLayer, 
-        //         sequenceLength, 
-        //         baseRadius: baseRadius, 
-        //         radius: radius, 
-        //         innerRadius}))
-        // }
+        //DRAW SELECTION LAYER
+        if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
+            annotationsSvgs.push(SelectionLayer({
+                selectionLayer, 
+                sequenceLength, 
+                baseRadius: baseRadius, 
+                radius: radius, 
+                innerRadius
+            }))
+        }
 
         //DRAW CARET
-        // if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
-        //     annotationsSvgs.push(
-        //         <Caret
-        //             key='caret'
-        //             className={draggableClassNames.caretSvg}
-        //             caretPosition={caretPosition}
-        //             sequenceLength={sequenceLength}
-        //             innerRadius={innerRadius}
-        //             outerRadius={radius}
-        //         />
-        //     )
-        // }
+        if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
+            annotationsSvgs.push(
+                <Caret
+                    key='caret'
+                    className={draggableClassNames.caretSvg}
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={radius}
+                    />
+            )
+        }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
         //DRAW LABELS
         // annotationsSvgs.push(Labels({namespace, labels, outerRadius: radius}))

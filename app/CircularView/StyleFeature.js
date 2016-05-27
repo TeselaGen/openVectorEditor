@@ -4,9 +4,9 @@ export default function StyleFeature({children, color, annotation}) {
         <g
           className='ve-feature'
           strokeWidth="1"
-          stroke={ color || 'orange'}
-          fillOpacity={ 0.4 }
-          fill={ color || 'orange' }>
+          stroke={ color || 'gray'}
+          // fillOpacity={ 0.4 }
+          fill={ color || 'gray' }>
           { children }
         </g>)
 }

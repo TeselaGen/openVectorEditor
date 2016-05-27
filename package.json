@@ -32,6 +32,7 @@
     "eslint": "^1.10.3",
     "get-substring-by-range": "^1.0.0",
     "interpolate": "^0.1.0",
+    "interval-tree2": "github:tnrich/interval-tree2",
     "lodash": "^3.10.0",
     "material-ui": "^0.13.1",
     "paths-js": "^0.3.5",
