@@ -7,16 +7,6 @@ import getXStartAndWidthOfRowAnnotation from './getXStartAndWidthOfRowAnnotation
 import getOverlapsOfPotentiallyCircularRanges from 've-range-utils/getOverlapsOfPotentiallyCircularRanges';
 import mixin from './mixin';
 
-@propTypes({
-    bpsPerRow: PropTypes.number.isRequired,
-    charWidth: PropTypes.number.isRequired,
-    color: PropTypes.string,
-    regions: PropTypes.array.isRequired,
-    row: PropTypes.object.isRequired,
-    sequenceLength: PropTypes.number.isRequired,
-    shouldBlink: React.PropTypes.bool.isRequired
-})
-
 export default class HighlightLayer extends React.Component {
     render() {
         var {
@@ -79,7 +69,6 @@ export default class HighlightLayer extends React.Component {
         if (selectionLayers !== undefined && selectionLayers.length > 0) {
             return (
                 <div onContextMenu={function (event) {
-                    //tnrtodo: add context menu here
                     event.preventDefault();
                     event.stopPropagation();
                 }}>
