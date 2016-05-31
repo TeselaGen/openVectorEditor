@@ -6,7 +6,7 @@ import _SelectionLayer from './SelectionLayer';
 import _Caret from './Caret';
 import _Axis from './Axis';
 // import _Features from './Features';
-// import _Cutsites from './Cutsites';
+import _Cutsites from './Cutsites';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
@@ -87,6 +87,7 @@ export default class CircularView extends React.Component {
             selectionLayer = {start: -1, end: -1},
             showAxis,
             showCaret,
+            showCutsites,
             showFeatures,
             annotationHeight = 15,
             spaceBetweenAnnotations=2,
@@ -104,12 +105,12 @@ export default class CircularView extends React.Component {
         } = this.props;
 
         var {
-        //     Labels = _Labels,
+            // Labels = _Labels,
             SelectionLayer = _SelectionLayer,
             Caret = _Caret,
             Axis = _Axis,
             // Features = _Features,
-        //     Cutsites = _Cutsites,
+            Cutsites = _Cutsites,
         } = componentOverrides
 
         const baseRadius = 80;
@@ -130,17 +131,15 @@ export default class CircularView extends React.Component {
         // if (showFeatures) {
         //     var featureResults = Features({
         //         radius,
-        //         featureClicked,
         //         features: sequenceData.features,
         //         annotationHeight,
         //         spaceBetweenAnnotations,
-        //         sequenceLength,
-        //         namespace
+        //         sequenceLength
         //     })
         //     console.log('features results ' + featureResults)
         //     // update the radius, labels, and svg
         //     radius+= featureResults.height
-        //     // labels = {...labels, ...featureResults.labels}
+        //     labels = {...labels, ...featureResults.labels}
         //     annotationsSvgs.push(featureResults.component)
         // }
 
@@ -156,21 +155,21 @@ export default class CircularView extends React.Component {
             annotationsSvgs.push(axisResult.component)
         }
 
-        // //DRAW CUTSITES
-        // if (showCutsites) {
-        //     var cutsiteResults = Cutsites({
-        //         cutsites,
-        //         radius,
-        //         annotationHeight,
-        //         sequenceLength,
-        //         cutsiteClicked,
-        //         namespace
-        //     })
-        //     //update the radius, labels, and svg
-        //     radius+= cutsiteResults.height
-        //     labels = {...labels, ...cutsiteResults.labels}
-        //     annotationsSvgs.push(cutsiteResults.component)
-        // }
+        //DRAW CUTSITES
+        if (showCutsites) {
+            var cutsiteResults = Cutsites({
+                cutsites,
+                radius,
+                annotationHeight,
+                sequenceLength,
+                // cutsiteClicked,
+                // namespace
+            })
+            //update the radius, labels, and svg
+            radius+= cutsiteResults.height
+            labels = {...labels, ...cutsiteResults.labels}
+            annotationsSvgs.push(cutsiteResults.component)
+        }
 
         //DRAW SELECTION LAYER
         if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
@@ -197,12 +196,12 @@ export default class CircularView extends React.Component {
             )
         }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
-        //DRAW LABELS
-        // annotationsSvgs.push(Labels({namespace, labels, outerRadius: radius}))
+        // DRAW LABELS
+        // annotationsSvgs.push(Labels({labels, outerRadius: radius}))
         // radius+=50
-  // var labels = [...cutsiteSvgs.labels, ...featureSvgs.labels]
-  //       annotationsSvgs.push(Labels({labels, outerRadius: radius}))
-        // //console.log('cutsiteResults: ', cutsiteResults);
+        // labels = [...cutsiteSvgs.labels, ...featureSvgs.labels]
+        // annotationsSvgs.push(Labels({labels, outerRadius: radius}))
+        //console.log('cutsiteResults: ', cutsiteResults);
 
         return (
             <Draggable

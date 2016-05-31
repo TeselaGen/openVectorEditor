@@ -1,10 +1,10 @@
 import polarToSpecialCartesian from '../utils/polarToSpecialCartesian';
 // import relaxLabels from './relaxLabels';
 import relaxLabelAngles from './relaxLabelAngles';
-import HoverHelper from '../../HoverHelper';
-import deepEqual from 'deep-equal';
+// import HoverHelper from '../../HoverHelper';
+// import deepEqual from 'deep-equal';
 import './style.scss';
-import lruMemoize  from 'lru-memoize'
+// import lruMemoize  from 'lru-memoize'
 import React  from 'react'
 
 function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
@@ -16,7 +16,7 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 
 
 
-function Labels({labels={}, namespace, outerRadius, /*radius*/}) {
+export default function Labels({labels={}, namespace, outerRadius, /*radius*/}) {
   //console.log('RENDERING LABELS');
   var radius = outerRadius
   var outerPointRadius = outerRadius - 20
@@ -71,7 +71,6 @@ function Labels({labels={}, namespace, outerRadius, /*radius*/}) {
     <use style={{pointerEvents: 'none'}} xlinkHref="#topLevelHomie"/>
   </g>
 }
-export default lruMemoize(5, deepEqual)(Labels)
 
 
 function LabelGroup ({label, namespace, ...rest}) {
@@ -81,13 +80,13 @@ function LabelGroup ({label, namespace, ...rest}) {
   var multipleLabels = sublabels.length > 1
   return (
     //wrap the entire label group in a HoverHelper
-    <HoverHelper 
+    <div 
             mouseAware={true}
             namespace={namespace}
             id={labelIds}>
       <DrawLabelGroup 
         {...{label, namespace, ...rest, className: 'DrawLabelGroup', multipleLabels, sublabels, labelIds}}/>
-    </HoverHelper>
+    </div>
             
   )
 }
@@ -165,7 +164,7 @@ function DrawLabelGroup (props) {
                         {sublabels.map(function (label, index) {
                           // //console.log('label.id: ' + JSON.stringify(label.id,null,4));
                           return (
-                            <HoverHelper
+                            <div
                               namespace={namespace}
                               key={index}
                               id={label.id}
@@ -178,7 +177,7 @@ function DrawLabelGroup (props) {
                                 className={labelClass + label.className}>
                               {label.text}
                               </tspan>
-                            </HoverHelper>
+                            </div>
                           )
                         })}
                     </text>
@@ -215,9 +214,6 @@ function LabelLine(pointArray,options) {
       stroke:'black',
       fill: 'none',
       strokeWidth:1,
-      style: {
-        opacity: .4
-      },
       className: 'veLabelLine',
       ...options
     }

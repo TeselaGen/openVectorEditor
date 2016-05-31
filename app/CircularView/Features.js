@@ -7,7 +7,7 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React, { PropTypes } from 'react';
 import noop from 'lodash/utility/noop';
 
-export default function Features({radius, namespace='', featureClicked=noop, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength}) {
+export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength}) {
     //console.log('RENDERING FEATURES');
     var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
     var featureITree = new intervalTree2(Math.PI)
@@ -16,15 +16,13 @@ export default function Features({radius, namespace='', featureClicked=noop, fea
     var labels = {}
     Object.keys(features).forEach(function(key, index) {
         var annotation = features[key]
-        function onClick (event) {
-            //console.log('FEATURE CLICKED');
-            featureClicked({event, annotation, namespace}) 
-            event.stopPropagation()
-        }
+        // function onClick (event) {
+        //     //console.log('FEATURE CLICKED');
+        //     featureClicked({event, annotation, namespace}) 
+        //     event.stopPropagation()
+        // }
         var annotationCopy = {...annotation}
         var annotationRadius
-        var labelFits
-
         
         var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);
         var spansOrigin = startAngle > endAngle;
@@ -63,10 +61,8 @@ export default function Features({radius, namespace='', featureClicked=noop, fea
         if (!annotation.id) debugger;
         svgGroup.push(
             <div 
-                namespace={namespace}
                 id={annotation.id}
                 key={'Features'+index}
-                onClick={onClick}
                 >
                 <g className='Features clickable'>
                     <PositionAnnotationOnCircle

@@ -1,5 +1,6 @@
 var React = require('react');
 import drawDirectedPiePiece from './drawDirectedPiePiece';
+
 module.exports = function CircularFeature({color, radius, annotationHeight, totalAngle}) {
     var path = drawDirectedPiePiece({
         radius,
@@ -10,6 +11,7 @@ module.exports = function CircularFeature({color, radius, annotationHeight, tota
     return (
         <path
           d={ path.print() }
-          fill={ color } />
-        )
+          fill={ color } 
+        />
+    )
 }
