@@ -80,7 +80,7 @@ export default class RowView extends React.Component {
                 <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                 <RowItem ref={'rowMeasure'} sequenceData={{ sequence: '' }} className={styles.rowMeasure} />
                 {
-                    rowData.map(datum => <RowItem key={datum} sequenceData={datum} columnWidth={columnWidth} />)
+                    rowData.map(datum => <RowItem sequenceData={datum} columnWidth={columnWidth} />)
                 }
             </div>
         );

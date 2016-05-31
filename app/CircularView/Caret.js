@@ -14,21 +14,20 @@ export default function Caret ({caretPosition, sequenceLength, className, innerR
     }
     return (
         <PositionAnnotationOnCircle
-            key='caret'
-            className={ className }
-            sAngle={ startAngle }
-            eAngle={ endAngle }
-            height={ 0 }>
-            <line
-                className={ className }
-                strokeWidth='2px'
-                style={ { opacity: 9, zIndex: 100,  cursor: "ew-resize" } }//tnr: the classname needs to be cursor here!
-                x1={ 0 }
-                y1={ -innerRadius }
-                x2={ 0 }
-                y2={ -outerRadius }
-                stroke="blue" 
-                />
+          key='caret'
+          className={className}
+          sAngle={ startAngle }
+          eAngle={ endAngle }
+          height={ 0 }>
+          <line
+            className={className}
+            strokeWidth='2px'
+            style={ { opacity: 9, zIndex: 100,  cursor: "ew-resize",} }//tnr: the classname needs to be cursor here!
+            x1={0}
+            y1={-innerRadius}
+            x2={0}
+            y2={-outerRadius}
+            stroke="blue" />
         </PositionAnnotationOnCircle>
     )
 }

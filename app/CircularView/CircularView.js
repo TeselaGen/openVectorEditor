@@ -3,7 +3,7 @@ import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 // import _Labels from './Labels';
 import _SelectionLayer from './SelectionLayer';
-// import _Caret from './Caret';
+import _Caret from './Caret';
 import _Axis from './Axis';
 // import _Features from './Features';
 // import _Cutsites from './Cutsites';
@@ -39,6 +39,7 @@ function toDegrees(radians) {
     showParts: ['showParts'],
     showOrfs: ['showOrfs'],
     showAxis: ['showAxis'],
+    showCaret: ['showCaret'],
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
@@ -73,6 +74,7 @@ export default class CircularView extends React.Component {
 
     render() {
         var {
+            signals,
             //set defaults for all of these vars
             circularViewDimensions = {
                 width: 400,
@@ -104,43 +106,18 @@ export default class CircularView extends React.Component {
         var {
         //     Labels = _Labels,
             SelectionLayer = _SelectionLayer,
-        //     Caret = _Caret,
+            Caret = _Caret,
             Axis = _Axis,
             // Features = _Features,
         //     Cutsites = _Cutsites,
         } = componentOverrides
 
-        circularAndLinearTickSpacing = circularAndLinearTickSpacing 
-            || (sequenceLength < 10
-                ? 1
-                : sequenceLength < 50
-                    ? Math.ceil(sequenceLength / 5)
-                    : Math.ceil(sequenceLength / 100) * 10)
-        //console.log('annotationVisibility: ', annotationVisibility);
-        // var {
-        //     features: showFeatures = true,
-        //     translations: showTranslations = true,
-        //     parts: showParts = true,
-        //     orfs: showOrfs = true,
-        //     cutsites: showCutsites = true,
-        //     firstCut: showFirstCut = true,
-        //     axis: showAxis = true,
-        //     sequence: showSequence = true,
-        //     reverseSequence: showReverseSequence = true,
-        // } = annotationVisibility
         const baseRadius = 80;
         var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
         var radius = baseRadius;
         var annotationsSvgs = [];
         var labels = {}
 
-
-        //RENDERING CONCEPTS:
-        //-"Circular" annotations get a radius, and a curvature based on their radius:
-        //<CircularFeature>
-        //-Then we rotate the annotations as necessary (and optionally flip them):
-        //<PositionAnnotationOnCircle>
-        // var labels = []
         //DRAW FEATURES
         //console.log(':all da things ' + JSON.stringify({
             //     radius,
@@ -179,7 +156,6 @@ export default class CircularView extends React.Component {
             annotationsSvgs.push(axisResult.component)
         }
 
-        // radius-=10
         // //DRAW CUTSITES
         // if (showCutsites) {
         //     var cutsiteResults = Cutsites({
@@ -209,19 +185,19 @@ export default class CircularView extends React.Component {
             }))
         }
 
-        // //DRAW CARET
-        // if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
-        //     annotationsSvgs.push(
-        //         <Caret
-        //             key='caret'
-        //             className={draggableClassNames.caretSvg}
-        //             caretPosition={caretPosition}
-        //             sequenceLength={sequenceLength}
-        //             innerRadius={innerRadius}
-        //             outerRadius={radius}
-        //             />
-        //     )
-        // }
+        //DRAW CARET
+        if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
+            annotationsSvgs.push(
+                <Caret
+                    key='caret'
+                    className={'caretSvg'}
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={radius}
+                    />
+            )
+        }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
         //DRAW LABELS
         // annotationsSvgs.push(Labels({namespace, labels, outerRadius: radius}))
@@ -234,17 +210,17 @@ export default class CircularView extends React.Component {
             <Draggable
                 bounds={{top: 0, left: 0, right: 0, bottom: 0}}
                 onDrag={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, editorDragged)}
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}
                 }
                 onStart={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, editorDragStarted)}
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}
                 }
-                onStop={editorDragStopped}
+                onStop={signals.editorDragStopped}
                 >
                 <svg
                     onClick={(event) => {
-                      this.getNearestCursorPositionToMouseEvent(event, sequenceLength, editorClicked)}
-                    }
+                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                    }}
                     style={{overflow: 'visible'}}
                     width={ circularViewDimensions.width }
                     height={ circularViewDimensions.height }
@@ -254,7 +230,7 @@ export default class CircularView extends React.Component {
                     >
                     <text x={0} y={0} textAnchor={'middle'} fontSize={14} style={{dominantBaseline: 'central'}}>
                         <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>
-                        <tspan x={0} dy={'1.2em'} style={{textSize: '8px'}}>{`(${ sequenceLength } bp)`}</tspan>
+                        <tspan x={0} dy={'1.2em'}>{`(${ sequenceLength } bp)`}</tspan>
                     </text>
 
                     { annotationsSvgs }
