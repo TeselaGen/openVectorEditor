@@ -197,6 +197,8 @@ export default class CircularView extends React.Component {
         // }
 
         //DRAW SELECTION LAYER
+        console.log("selectionlayer: " + selectionLayer);
+        debugger;
         if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
             annotationsSvgs.push(SelectionLayer({
                 selectionLayer, 
