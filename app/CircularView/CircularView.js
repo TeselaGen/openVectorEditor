@@ -92,14 +92,14 @@ export default class CircularView extends React.Component {
             spaceBetweenAnnotations=2,
             annotationVisibility = {},
             caretPosition = -1,
-            circularAndLinearTickSpacing,
-            editorDragged = noop,
-            editorDragStarted = noop,
-            editorClicked = noop,
-            editorDragStopped = noop,
-            featureClicked = noop,
-            cutsiteClicked = noop,
-            namespace='',
+            // circularAndLinearTickSpacing,
+            // editorDragged = noop,
+            // editorDragStarted = noop,
+            // editorClicked = noop,
+            // editorDragStopped = noop,
+            // featureClicked = noop,
+            // cutsiteClicked = noop,
+            // namespace='',
             componentOverrides={}
         } = this.props;
 
@@ -173,8 +173,6 @@ export default class CircularView extends React.Component {
         // }
 
         //DRAW SELECTION LAYER
-        console.log("selectionlayer: " + selectionLayer);
-        debugger;
         if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
             annotationsSvgs.push(SelectionLayer({
                 selectionLayer, 
