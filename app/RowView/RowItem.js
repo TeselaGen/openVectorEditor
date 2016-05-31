@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react';
 import { propTypes } from '../react-props-decorators.js';
-
 import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
 import { columnizeString, elementWidth, calculateRowLength } from './Utils';
-
 import styles from './RowItem.scss';
 
 @propTypes({
     sequenceData: PropTypes.object.isRequired,
     columnWidth: PropTypes.number
 })
+
 export default class RowItem extends React.Component {
 
     constructor(props) {

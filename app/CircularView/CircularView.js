@@ -2,20 +2,23 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 // import _Labels from './Labels';
-import _SelectionLayer from './SelectionLayer';
-// import _Caret from './Caret';
+// import _SelectionLayer from './SelectionLayer';
+import _Caret from './Caret';
 import _Axis from './Axis';
 // import _Features from './Features';
-// import _Cutsites from './Cutsites';
+import _Cutsites from './Cutsites';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 import getPositionFromAngle from 've-range-utils/getPositionFromAngle';
+// old imports
+import getRangeAngles from 've-range-utils/getRangeAngles';
+import Sector from 'paths-js/sector';
 
-export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
-    obj[key] = key
-    return obj
-}, {});
+// export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
+//     obj[key] = key
+//     return obj
+// }, {});
 
 function noop(argument) {
     //console.log('noop!');
@@ -39,6 +42,7 @@ function toDegrees(radians) {
     showParts: ['showParts'],
     showOrfs: ['showOrfs'],
     showAxis: ['showAxis'],
+    showCaret: ['showCaret'],
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
@@ -61,80 +65,51 @@ export default class CircularView extends React.Component {
         //get angle
         var angle = Math.atan2(clickY, clickX) + Math.PI/2
         if (angle < 0) angle += Math.PI * 2 //normalize the angle if necessary
-        var nearestCaretPos = normalizePositionByRangeLength(getPositionFromAngle(angle, sequenceLength, true), sequenceLength) //true because we're in between positions
+        var nearestBP = normalizePositionByRangeLength(getPositionFromAngle(angle, sequenceLength, true), sequenceLength) //true because we're in between positions
         var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
         callback({
-            className: event.target.className.animVal,
             shiftHeld: event.shiftKey,
-            nearestCaretPos,
+            nearestBP,
             caretGrabbed
-        })
+        });
     }
 
     render() {
         var {
-            //set defaults for all of these vars
-            circularViewDimensions = {
-                width: 400,
-                height: 400,
-            },
+            signals,
+            circularViewDimensions,
             sequenceData,
             sequenceLength,
+            selectionLayer,
             sequenceName,
-            cutsites = [],
-            selectionLayer = {start: -1, end: -1},
+            cutsites,
             showAxis,
             showCaret,
+            showCutsites,
             showFeatures,
-            annotationHeight = 15,
-            spaceBetweenAnnotations=2,
-            annotationVisibility = {},
-            caretPosition = -1,
-            circularAndLinearTickSpacing,
-            editorDragged = noop,
-            editorDragStarted = noop,
-            editorClicked = noop,
-            editorDragStopped = noop,
-            featureClicked = noop,
-            cutsiteClicked = noop,
-            namespace='',
+            annotationHeight,
+            spaceBetweenAnnotations,
+            annotationVisibility,
+            caretPosition,
             componentOverrides={}
         } = this.props;
 
         var {
-        //     Labels = _Labels,
-            SelectionLayer = _SelectionLayer,
-            // Caret = _Caret,
+            // Labels = _Labels,
+            // SelectionLayer = _SelectionLayer,
+            Caret = _Caret,
             Axis = _Axis,
             // Features = _Features,
-        //     Cutsites = _Cutsites,
+            Cutsites = _Cutsites,
         } = componentOverrides
 
-        //console.log('annotationVisibility: ', annotationVisibility);
-        // var {
-        //     features: showFeatures = true,
-        //     translations: showTranslations = true,
-        //     parts: showParts = true,
-        //     orfs: showOrfs = true,
-        //     cutsites: showCutsites = true,
-        //     firstCut: showFirstCut = true,
-        //     axis: showAxis = true,
-        //     sequence: showSequence = true,
-        //     reverseSequence: showReverseSequence = true,
-        // } = annotationVisibility
         const baseRadius = 80;
+        var currentRadius = baseRadius;
         var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
         var radius = baseRadius;
         var annotationsSvgs = [];
         var labels = {}
 
-
-        //RENDERING CONCEPTS:
-        //-"Circular" annotations get a radius, and a curvature based on their radius:
-        //<CircularFeature>
-        //-Then we rotate the annotations as necessary (and optionally flip them):
-        //<PositionAnnotationOnCircle>
-        // var labels = []
         //DRAW FEATURES
         //console.log(':all da things ' + JSON.stringify({
             //     radius,
@@ -147,17 +122,15 @@ export default class CircularView extends React.Component {
         // if (showFeatures) {
         //     var featureResults = Features({
         //         radius,
-        //         featureClicked,
         //         features: sequenceData.features,
         //         annotationHeight,
         //         spaceBetweenAnnotations,
-        //         sequenceLength,
-        //         namespace
+        //         sequenceLength
         //     })
         //     console.log('features results ' + featureResults)
         //     // update the radius, labels, and svg
         //     radius+= featureResults.height
-        //     // labels = {...labels, ...featureResults.labels}
+        //     labels = {...labels, ...featureResults.labels}
         //     annotationsSvgs.push(featureResults.component)
         // }
 
@@ -173,73 +146,130 @@ export default class CircularView extends React.Component {
             annotationsSvgs.push(axisResult.component)
         }
 
-        radius-=10
-        // //DRAW CUTSITES
-        // if (showCutsites) {
-        //     var cutsiteResults = Cutsites({
-        //         cutsites,
-        //         radius,
-        //         annotationHeight,
-        //         sequenceLength,
-        //         cutsiteClicked,
-        //         namespace
-        //     })
-        //     //update the radius, labels, and svg
-        //     radius+= cutsiteResults.height
-        //     labels = {...labels, ...cutsiteResults.labels}
-        //     annotationsSvgs.push(cutsiteResults.component)
-        // }
-
-        //DRAW SELECTION LAYER
-        if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
-            annotationsSvgs.push(SelectionLayer({
-                selectionLayer, 
-                sequenceLength, 
-                baseRadius: baseRadius, 
-                radius: radius, 
-                innerRadius
-            }))
+        //DRAW CUTSITES
+        if (showCutsites) {
+            var cutsiteResults = Cutsites({
+                cutsites,
+                radius,
+                annotationHeight,
+                sequenceLength,
+                // cutsiteClicked,
+                // namespace
+            })
+            //update the radius, labels, and svg
+            radius+= cutsiteResults.height
+            labels = {...labels, ...cutsiteResults.labels}
+            annotationsSvgs.push(cutsiteResults.component)
         }
 
+        //DRAW SELECTION LAYER
+        // if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
+        //     annotationsSvgs.push(SelectionLayer({
+        //         selectionLayer, 
+        //         sequenceLength, 
+        //         baseRadius: baseRadius, 
+        //         radius: radius, 
+        //         innerRadius
+        //     }))
+        // 
+
+        // patch in old stuff
+
+        if (selectionLayer.selected) {
+            var {
+                startAngle,
+                endAngle,
+                totalAngle
+            } = getRangeAngles(selectionLayer, sequenceLength);
+
+            var sector = Sector({
+                center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
+                r: baseRadius - annotationHeight / 2,
+                R: currentRadius,
+                start: 0,
+                end: totalAngle
+            });
+            annotationsSvgs.push(
+                <PositionAnnotationOnCircle
+                    sAngle={ startAngle }
+                    eAngle={ endAngle }
+                    height={ 0 }>
+                    <path
+                        style={{ opacity: .4}}
+                        d={ sector.path.print() }
+                        fill="blue" 
+                        />
+                </PositionAnnotationOnCircle>
+            );
+            annotationsSvgs.push(
+                <Caret 
+                    key='caretStart'
+                    caretPosition={selectionLayer.start}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />
+            );
+            annotationsSvgs.push(
+                <Caret 
+                    key='caretEnd'
+                    caretPosition={selectionLayer.end + 1}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />
+            );
+        }
+
+        if (caretPosition !== -1 && !selectionLayer.selected) {
+            annotationsSvgs.push(
+                <Caret 
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
+                />
+            );
+        }
+
+        // stop patching        
+
         //DRAW CARET
-        console.log("caretposition: " + caretPosition);
-        console.log("start: " + selectionLayer.start);
-        console.log("sequence length: " + sequenceLength);
-        // if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
-        //     annotationsSvgs.push(
-        //         <Caret
-        //             key='caret'
-        //             className={draggableClassNames.caretSvg}
-        //             caretPosition={caretPosition}
-        //             sequenceLength={sequenceLength}
-        //             innerRadius={innerRadius}
-        //             outerRadius={radius}
-        //             />
-        //     )
-        // }
+        if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
+            annotationsSvgs.push(
+                <Caret
+                    key='caret'
+                    className={'caretSvg'}
+                    caretPosition={caretPosition}
+                    sequenceLength={sequenceLength}
+                    innerRadius={innerRadius}
+                    outerRadius={radius}
+                    />
+            )
+        }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
-        //DRAW LABELS
-        // annotationsSvgs.push(Labels({namespace, labels, outerRadius: radius}))
+        // DRAW LABELS
+        // annotationsSvgs.push(Labels({labels, outerRadius: radius}))
         // radius+=50
-  // var labels = [...cutsiteSvgs.labels, ...featureSvgs.labels]
-  //       annotationsSvgs.push(Labels({labels, outerRadius: radius}))
-        // //console.log('cutsiteResults: ', cutsiteResults);
+        // labels = [...cutsiteSvgs.labels, ...featureSvgs.labels]
+        // annotationsSvgs.push(Labels({labels, outerRadius: radius}))
+        //console.log('cutsiteResults: ', cutsiteResults);
 
         return (
             <Draggable
                 bounds={{top: 0, left: 0, right: 0, bottom: 0}}
                 onDrag={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, editorDragged)}
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}
                 }
                 onStart={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, editorDragStarted)}
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}
                 }
-                onStop={editorDragStopped}
+                onStop={signals.editorDragStopped}
                 >
                 <svg
                     onClick={(event) => {
-                      this.getNearestCursorPositionToMouseEvent(event, sequenceLength, editorClicked)}
-                    }
+                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                    }}
                     style={{overflow: 'visible'}}
                     width={ circularViewDimensions.width }
                     height={ circularViewDimensions.height }
@@ -249,7 +279,7 @@ export default class CircularView extends React.Component {
                     >
                     <text x={0} y={0} textAnchor={'middle'} fontSize={14} style={{dominantBaseline: 'central'}}>
                         <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>
-                        <tspan x={0} dy={'1.2em'} style={{textSize: '8px'}}>{`(${ sequenceLength } bp)`}</tspan>
+                        <tspan x={0} dy={'1.2em'}>{`(${ sequenceLength } bp)`}</tspan>
                     </text>
 
                     { annotationsSvgs }

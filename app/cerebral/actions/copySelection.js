@@ -2,7 +2,6 @@ var assign = require('lodash/object/assign');
 var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-utils/collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var getSubstringByRange = require('get-substring-by-range');
-var ac = require('ve-api-check');
 
 export default function copySelection({input, state, output}) {
     var { selectionLayer, sequenceData } = state.get();

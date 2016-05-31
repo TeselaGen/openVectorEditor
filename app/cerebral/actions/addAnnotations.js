@@ -1,12 +1,8 @@
-var ac = require('ve-api-check');
 var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 var isBoolean = require('validate.io-boolean');
 
 export default function addAnnotations({input: {sidebarType, annotationsToInsert, throwErrors}, state, output}) {
-    // ac.throw(ac.annotationType, sidebarType);
-    ac.throw(ac.arrayOf(ac.range), annotationsToInsert);
-    ac.throw(ac.bool.optional, throwErrors);
-    
+
     annotationsToInsert.forEach(function(annotationToInsert) {
         if (!isBoolean(annotationToInsert.forward)) {
             if (throwErrors) {

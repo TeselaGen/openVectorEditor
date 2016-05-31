@@ -1,11 +1,12 @@
 /* @flow */
-import HoverHelper from '../HoverHelper';
+// import HoverHelper from '../HoverHelper';
 import getRangeAngles from './getRangeAnglesSpecial';
-import lruMemoize from 'lru-memoize';
+// import lruMemoize from 'lru-memoize';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React, { PropTypes } from 'react';
-import each from 'lodash/each';
-function Cutsites({radius, namespace, cutsiteClicked, cutsites, cutsiteHeight = 20, cutsiteWidth=2, annotationHeight, sequenceLength}) {
+import each from 'lodash/collection/each';
+
+export default function Cutsites({radius, cutsites, cutsiteHeight = 20, cutsiteWidth=2, annotationHeight, sequenceLength}) {
   //console.log('RENDERING CUTSITES');
   var svgGroup = []
   var labels = {}
@@ -13,7 +14,7 @@ function Cutsites({radius, namespace, cutsiteClicked, cutsites, cutsiteHeight = 
   each(cutsites,function(annotation, key) {
     index++
       function onClick(event) {
-        cutsiteClicked({event, annotation, namespace})
+        // cutsiteClicked({event, annotation, namespace})
         event.stopPropagation()
       }
       if (!(annotation.downstreamTopSnip > -1)) {
@@ -37,34 +38,32 @@ function Cutsites({radius, namespace, cutsiteClicked, cutsites, cutsiteHeight = 
 
       // //console.log('labelCenter: ' + JSON.stringify(labelCenter,null,4));
       // //console.log('shouldFlipText(labelCenter): ' + JSON.stringify(shouldFlipText(labelCenter),null,4));
-      svgGroup.push(
-        <HoverHelper
-          namespace={namespace}
-          id={annotation.id}
-          key={'cutsite' + index}
-          >
-          <PositionAnnotationOnCircle
-            className='cutsiteDrawing'
-            sAngle={startAngle}
-            eAngle={startAngle}
-            height={ radius }
-            >
-            <rect
-              width={ cutsiteWidth }
-              height={ cutsiteHeight }>
-            </rect>
-          </PositionAnnotationOnCircle>
-        </HoverHelper>
+        svgGroup.push(
+            <div
+                namespace={namespace}
+                id={annotation.id}
+                key={'cutsite' + index}
+                >
+                <PositionAnnotationOnCircle
+                    className='cutsiteDrawing'
+                    sAngle={startAngle}
+                    eAngle={startAngle}
+                    height={ radius }
+                    >
+                    <rect
+                        width={ cutsiteWidth }
+                        height={ cutsiteHeight }>
+                    </rect>
+                </PositionAnnotationOnCircle>
+            </div>
         )
       
     })
-  return {
-    height: annotationHeight,
-    labels,
-    component: <g key={'cutsites'} className={'cutsites'}>
-      {svgGroup}
-    </g>}
+    return {
+        height: annotationHeight,
+        labels,
+        component: <g key={'cutsites'} className={'cutsites'}>
+                    {svgGroup}
+                    </g>
+    }
 }
-
-export default lruMemoize(5, undefined, true)(Cutsites)
-

@@ -45,9 +45,6 @@ function getSnipConnector(snipRange, row, sequenceLength, bpsPerRow, snipConnect
         var cursorEl = <div key={index} className="snipConnector" style={newCursorStyle}/>
         return (cursorEl);
     });
-
-
-    // onHover={self.onCursorHover}
 }
 
 let CutsiteSnipsContainer = React.createClass({
