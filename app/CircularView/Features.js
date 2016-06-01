@@ -7,7 +7,7 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React, { PropTypes } from 'react';
 import noop from 'lodash/utility/noop';
 
-export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength}) {
+export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
     //console.log('RENDERING FEATURES');
     var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
     var featureITree = new intervalTree2(Math.PI)
@@ -23,15 +23,14 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
         // }
         var annotationCopy = {...annotation}
         var annotationRadius
-        
         var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);
         var spansOrigin = startAngle > endAngle;
         var labelCenter = centerAngle;
         //expand the end angle if annotation spans the origin
         var expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle
-        // if (annotationCopy.id === '5590c1d88979df000a4f02f5c') debugger;
         var yOffset1
         var yOffset2
+
         if (spansOrigin) {
             annotationCopy.yOffset = getYOffset(featureITree, startAngle, expandedEndAngle)
         } else {
@@ -42,8 +41,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
         }
 
         annotationRadius = radius + annotationCopy.yOffset*(annotationHeight + spaceBetweenAnnotations)
-        // //console.log('startAngle: ' + JSON.stringify(toDegrees(startAngle),null,4));
-        // //console.log('endAngle: ' + JSON.stringify(toDegrees(expandedEndAngle),null,4));
+
         if (spansOrigin) {
             featureITree.add(startAngle, expandedEndAngle, undefined, {...annotationCopy})
         } else {
@@ -56,36 +54,37 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
         if (annotationCopy.yOffset > maxYOffset) {
             maxYOffset = annotationCopy.yOffset;
         }
-        // //console.log('labelCenter: ' + JSON.stringify(labelCenter,null,4));
-        // //console.log('shouldFlipText(labelCenter): ' + JSON.stringify(shouldFlipText(labelCenter),null,4));
-        if (!annotation.id) debugger;
+
+    //     if (!annotation.id) debugger;
         svgGroup.push(
-            <div 
+            <g 
                 id={annotation.id}
-                key={'Features'+index}
+                key={'Features' + index}
                 >
                 <g className='Features clickable'>
                     <PositionAnnotationOnCircle
                         key={ 'feature' + index }
                         sAngle={ startAngle }
                         eAngle={ endAngle }
-                        direction={ 'reverse' }
+                        direction={ 'reverse' } // buh
                         >
                         <StyleFeature
-                            annotation={annotation}
+                            annotation={ annotation }
                             color={ annotation.color }
+                            signals = { signals }
                             >
                             <CircularFeature
+                                color= { annotation.color }
                                 key={ 'feature' + index }
                                 radius={ annotationRadius }
                                 annotationHeight={ annotationHeight }
                                 totalAngle={ totalAngle }
                                 >
                             </CircularFeature>
-                        </StyleFeature>
+                        </StyleFeature>                            
                     </PositionAnnotationOnCircle>
                 </g>
-            </div>
+            </g>
         )
     })
     return {

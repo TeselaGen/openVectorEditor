@@ -5,7 +5,7 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 // import _SelectionLayer from './SelectionLayer';
 import _Caret from './Caret';
 import _Axis from './Axis';
-// import _Features from './Features';
+import _Features from './Features';
 import _Cutsites from './Cutsites';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
@@ -14,11 +14,6 @@ import getPositionFromAngle from 've-range-utils/getPositionFromAngle';
 // old imports
 import getRangeAngles from 've-range-utils/getRangeAngles';
 import Sector from 'paths-js/sector';
-
-// export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
-//     obj[key] = key
-//     return obj
-// }, {});
 
 function noop(argument) {
     //console.log('noop!');
@@ -99,68 +94,60 @@ export default class CircularView extends React.Component {
             // SelectionLayer = _SelectionLayer,
             Caret = _Caret,
             Axis = _Axis,
-            // Features = _Features,
+            Features = _Features,
             Cutsites = _Cutsites,
         } = componentOverrides
 
         const baseRadius = 80;
-        var currentRadius = baseRadius;
-        var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
-        var radius = baseRadius;
+        // var runningInnerRadius = baseRadius;
+        var runningOuterRadius = baseRadius;
+        var runningInnerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+        // var radius = baseRadius;
         var annotationsSvgs = [];
         var labels = {}
 
         //DRAW FEATURES
-        //console.log(':all da things ' + JSON.stringify({
-            //     radius,
-            //     featureClicked,
-            //     features: sequenceData.features,
-            //     annotationHeight,
-            //     spaceBetweenAnnotations,
-            //     sequenceLength,
-            // },null,4));
-        // if (showFeatures) {
-        //     var featureResults = Features({
-        //         radius,
-        //         features: sequenceData.features,
-        //         annotationHeight,
-        //         spaceBetweenAnnotations,
-        //         sequenceLength
-        //     })
-        //     console.log('features results ' + featureResults)
-        //     // update the radius, labels, and svg
-        //     radius+= featureResults.height
-        //     labels = {...labels, ...featureResults.labels}
-        //     annotationsSvgs.push(featureResults.component)
-        // }
+        if (showFeatures) {
+            var featureResults = Features({
+                runningOuterRadius,
+                features: sequenceData.features,
+                annotationHeight,
+                spaceBetweenAnnotations,
+                sequenceLength,
+                signals
+            })
+            // console.log('features results ' + featureResults.component)
+            // update the radius, labels, and svg
+            runningOuterRadius += featureResults.height
+            labels = {...labels, ...featureResults.labels}
+            annotationsSvgs.push(featureResults.component)
+        }
 
         //DRAW AXIS
         if (showAxis) {
             var axisResult = Axis({
-                            radius: radius,
-                            innerRadius,
+                            radius: runningOuterRadius + 8,
+                            innerRadius: runningOuterRadius,
                             sequenceLength
                             })
             //update the radius, and svg
-            radius+= axisResult.height
+            runningOuterRadius+= axisResult.height
             annotationsSvgs.push(axisResult.component)
         }
 
         //DRAW CUTSITES
-        if (showCutsites) {
-            var cutsiteResults = Cutsites({
-                cutsites,
-                radius,
-                annotationHeight,
-                sequenceLength,
-                // cutsiteClicked,
-                // namespace
-            })
-            //update the radius, labels, and svg
-            radius+= cutsiteResults.height
-            labels = {...labels, ...cutsiteResults.labels}
-            annotationsSvgs.push(cutsiteResults.component)
-        }
+        // if (showCutsites) {
+        //     var cutsiteResults = Cutsites({
+        //         cutsites,
+        //         radius,
+        //         annotationHeight,
+        //         sequenceLength
+        //     })
+        //     //update the radius, labels, and svg
+        //     radius+= cutsiteResults.height
+        //     labels = {...labels, ...cutsiteResults.labels}
+        //     annotationsSvgs.push(cutsiteResults.component)
+        // }
 
         //DRAW SELECTION LAYER
         // if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {
@@ -185,7 +172,7 @@ export default class CircularView extends React.Component {
             var sector = Sector({
                 center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
                 r: baseRadius - annotationHeight / 2,
-                R: currentRadius,
+                R: runningOuterRadius,
                 start: 0,
                 end: totalAngle
             });
@@ -193,7 +180,8 @@ export default class CircularView extends React.Component {
                 <PositionAnnotationOnCircle
                     sAngle={ startAngle }
                     eAngle={ endAngle }
-                    height={ 0 }>
+                    height={ 0 }
+                    >
                     <path
                         style={{ opacity: .4}}
                         d={ sector.path.print() }
@@ -206,18 +194,18 @@ export default class CircularView extends React.Component {
                     key='caretStart'
                     caretPosition={selectionLayer.start}
                     sequenceLength={sequenceLength}
-                    innerRadius={innerRadius}
-                    outerRadius={currentRadius}
-                />
+                    innerRadius={runningInnerRadius}
+                    outerRadius={runningOuterRadius}
+                    />
             );
             annotationsSvgs.push(
                 <Caret 
                     key='caretEnd'
                     caretPosition={selectionLayer.end + 1}
                     sequenceLength={sequenceLength}
-                    innerRadius={innerRadius}
-                    outerRadius={currentRadius}
-                />
+                    innerRadius={runningInnerRadius}
+                    outerRadius={runningOuterRadius}
+                    />
             );
         }
 
@@ -226,9 +214,9 @@ export default class CircularView extends React.Component {
                 <Caret 
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
-                    innerRadius={innerRadius}
-                    outerRadius={currentRadius}
-                />
+                    innerRadius={runningInnerRadius}
+                    outerRadius={runningOuterRadius}
+                    />
             );
         }
 
@@ -242,8 +230,8 @@ export default class CircularView extends React.Component {
                     className={'caretSvg'}
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
-                    innerRadius={innerRadius}
-                    outerRadius={radius}
+                    innerRadius={runningInnerRadius}
+                    outerRadius={runningOuterRadius}
                     />
             )
         }
@@ -275,7 +263,7 @@ export default class CircularView extends React.Component {
                     height={ circularViewDimensions.height }
                     ref="circularView"
                     className={'circularViewSvg'}
-                    viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
+                    viewBox={ `-${runningOuterRadius} -${runningOuterRadius} ${runningOuterRadius*2} ${runningOuterRadius*2}` }
                     >
                     <text x={0} y={0} textAnchor={'middle'} fontSize={14} style={{dominantBaseline: 'central'}}>
                         <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 export default function StyleFeature({children, color, annotation, signals}) {
     return (
@@ -10,7 +10,8 @@ export default function StyleFeature({children, color, annotation, signals}) {
             className='ve-feature'
             strokeWidth="1"
             stroke={ color || 'gray'}
-            fill={ color || 'gray' }>
+            fill={ color || 'gray' }
+            >
             { children }
         </g>
     )

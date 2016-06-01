@@ -1,4 +1,5 @@
 var Path = require('paths-js/path');
+
 function polarToSpecialCartesian(radius, angleInRadians) {
     //the 0 angle returns the 0,1 point on the unit circle instead of the 1,0 point like normal
     return {
@@ -36,15 +37,15 @@ export default function drawDirectedPiePiece ({tailThickness=.6, arrowheadLength
     
     var largeArcFlag = arcAngle > Math.PI ? 1 : 0
     var path = Path()
-      .moveto(arrowheadPoint.x,arrowheadPoint.y)
-      .lineto(arrowheadBottom.x,arrowheadBottom.y)
-      .lineto(arcLeftBottom.x,arcLeftBottom.y)
-      .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag, sweepFlag: 1, x: arcRightBottom.x, y: arcRightBottom.y})
-      .lineto(arcRightTop.x,arcRightTop.y)
-      .arc({rx: tailOuterRadius, ry: tailOuterRadius, xrot: 0, largeArcFlag, sweepFlag: 0, x: arcLeftTop.x, y: arcLeftTop.y})
-      .lineto(arrowheadTop.x,arrowheadTop.y)
-      .closepath();
-      path.print()
+        .moveto(arrowheadPoint.x,arrowheadPoint.y)
+        .lineto(arrowheadBottom.x,arrowheadBottom.y)
+        .lineto(arcLeftBottom.x,arcLeftBottom.y)
+        .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag, sweepFlag: 1, x: arcRightBottom.x, y: arcRightBottom.y})
+        .lineto(arcRightTop.x,arcRightTop.y)
+        .arc({rx: tailOuterRadius, ry: tailOuterRadius, xrot: 0, largeArcFlag, sweepFlag: 0, x: arcLeftTop.x, y: arcLeftTop.y})
+        .lineto(arrowheadTop.x,arrowheadTop.y)
+        .closepath();
+    path.print()
     return path;
 }
 

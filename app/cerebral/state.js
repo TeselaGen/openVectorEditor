@@ -14,7 +14,7 @@ module.exports = {
     //sl: begin obsessive alphabetization   :p
     // simple vars
     allowPartialAnnotationsOnCopy: false,
-    annotationHeight: 8,
+    annotationHeight: 4,
     averageRowHeight: 100,
     bottomSpacerHeight: 0,
     caretPosition: 0,
