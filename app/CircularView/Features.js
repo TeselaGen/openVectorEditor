@@ -16,11 +16,6 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
     var labels = {}
     Object.keys(features).forEach(function(key, index) {
         var annotation = features[key]
-        // function onClick (event) {
-        //     //console.log('FEATURE CLICKED');
-        //     featureClicked({event, annotation, namespace}) 
-        //     event.stopPropagation()
-        // }
         var annotationCopy = {...annotation}
         var annotationRadius
         var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);

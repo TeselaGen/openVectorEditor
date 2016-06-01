@@ -99,17 +99,16 @@ export default class CircularView extends React.Component {
         } = componentOverrides
 
         const baseRadius = 80;
-        // var runningInnerRadius = baseRadius;
-        var runningOuterRadius = baseRadius;
-        var runningInnerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
-        // var radius = baseRadius;
+        var currentRadius = baseRadius;
+        var innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+        var radius = baseRadius;
         var annotationsSvgs = [];
         var labels = {}
 
         //DRAW FEATURES
         if (showFeatures) {
             var featureResults = Features({
-                runningOuterRadius,
+                radius,
                 features: sequenceData.features,
                 annotationHeight,
                 spaceBetweenAnnotations,
@@ -118,7 +117,7 @@ export default class CircularView extends React.Component {
             })
             // console.log('features results ' + featureResults.component)
             // update the radius, labels, and svg
-            runningOuterRadius += featureResults.height
+            radius+= featureResults.height
             labels = {...labels, ...featureResults.labels}
             annotationsSvgs.push(featureResults.component)
         }
@@ -126,12 +125,12 @@ export default class CircularView extends React.Component {
         //DRAW AXIS
         if (showAxis) {
             var axisResult = Axis({
-                            radius: runningOuterRadius + 8,
-                            innerRadius: runningOuterRadius,
+                            radius: baseRadius,
+                            innerRadius,
                             sequenceLength
                             })
             //update the radius, and svg
-            runningOuterRadius+= axisResult.height
+            radius+= axisResult.height
             annotationsSvgs.push(axisResult.component)
         }
 
@@ -172,7 +171,7 @@ export default class CircularView extends React.Component {
             var sector = Sector({
                 center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
                 r: baseRadius - annotationHeight / 2,
-                R: runningOuterRadius,
+                R: currentRadius,
                 start: 0,
                 end: totalAngle
             });
@@ -194,8 +193,8 @@ export default class CircularView extends React.Component {
                     key='caretStart'
                     caretPosition={selectionLayer.start}
                     sequenceLength={sequenceLength}
-                    innerRadius={runningInnerRadius}
-                    outerRadius={runningOuterRadius}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
                     />
             );
             annotationsSvgs.push(
@@ -203,8 +202,8 @@ export default class CircularView extends React.Component {
                     key='caretEnd'
                     caretPosition={selectionLayer.end + 1}
                     sequenceLength={sequenceLength}
-                    innerRadius={runningInnerRadius}
-                    outerRadius={runningOuterRadius}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
                     />
             );
         }
@@ -214,8 +213,8 @@ export default class CircularView extends React.Component {
                 <Caret 
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
-                    innerRadius={runningInnerRadius}
-                    outerRadius={runningOuterRadius}
+                    innerRadius={innerRadius}
+                    outerRadius={currentRadius}
                     />
             );
         }
@@ -230,8 +229,8 @@ export default class CircularView extends React.Component {
                     className={'caretSvg'}
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
-                    innerRadius={runningInnerRadius}
-                    outerRadius={runningOuterRadius}
+                    innerRadius={innerRadius}
+                    outerRadius={radius}
                     />
             )
         }
@@ -263,7 +262,7 @@ export default class CircularView extends React.Component {
                     height={ circularViewDimensions.height }
                     ref="circularView"
                     className={'circularViewSvg'}
-                    viewBox={ `-${runningOuterRadius} -${runningOuterRadius} ${runningOuterRadius*2} ${runningOuterRadius*2}` }
+                    viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
                     >
                     <text x={0} y={0} textAnchor={'middle'} fontSize={14} style={{dominantBaseline: 'central'}}>
                         <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>
