@@ -1,7 +1,7 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
-// import _Labels from './Labels';
+import _Labels from './Labels';
 // import _SelectionLayer from './SelectionLayer';
 import _Caret from './Caret';
 import _Axis from './Axis';
@@ -90,7 +90,7 @@ export default class CircularView extends React.Component {
         } = this.props;
 
         var {
-            // Labels = _Labels,
+            Labels = _Labels,
             // SelectionLayer = _SelectionLayer,
             Caret = _Caret,
             Axis = _Axis,
@@ -125,8 +125,8 @@ export default class CircularView extends React.Component {
         //DRAW AXIS
         if (showAxis) {
             var axisResult = Axis({
-                            radius: baseRadius,
-                            innerRadius,
+                            radius: radius + 16,
+                            innerRadius: radius + 8,
                             sequenceLength
                             })
             //update the radius, and svg
@@ -171,7 +171,7 @@ export default class CircularView extends React.Component {
             var sector = Sector({
                 center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
                 r: baseRadius - annotationHeight / 2,
-                R: currentRadius,
+                R: radius,
                 start: 0,
                 end: totalAngle
             });
@@ -194,7 +194,7 @@ export default class CircularView extends React.Component {
                     caretPosition={selectionLayer.start}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
-                    outerRadius={currentRadius}
+                    outerRadius={radius}
                     />
             );
             annotationsSvgs.push(
@@ -203,18 +203,18 @@ export default class CircularView extends React.Component {
                     caretPosition={selectionLayer.end + 1}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
-                    outerRadius={currentRadius}
+                    outerRadius={radius}
                     />
             );
         }
-
+        // nothing selected, just put a caret at posirtion 0
         if (caretPosition !== -1 && !selectionLayer.selected) {
             annotationsSvgs.push(
                 <Caret 
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
-                    outerRadius={currentRadius}
+                    outerRadius={radius}
                     />
             );
         }
@@ -236,11 +236,11 @@ export default class CircularView extends React.Component {
         }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
         // DRAW LABELS
-        // annotationsSvgs.push(Labels({labels, outerRadius: radius}))
-        // radius+=50
+        annotationsSvgs.push(Labels({labels, outerRadius: radius}))
+        radius+=50
         // labels = [...cutsiteSvgs.labels, ...featureSvgs.labels]
         // annotationsSvgs.push(Labels({labels, outerRadius: radius}))
-        //console.log('cutsiteResults: ', cutsiteResults);
+        // console.log('cutsiteResults: ', cutsiteResults);
 
         return (
             <Draggable

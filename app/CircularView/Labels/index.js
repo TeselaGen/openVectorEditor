@@ -3,92 +3,94 @@ import polarToSpecialCartesian from '../utils/polarToSpecialCartesian';
 import relaxLabelAngles from './relaxLabelAngles';
 // import HoverHelper from '../../HoverHelper';
 // import deepEqual from 'deep-equal';
-import './style.scss';
+// import './style.scss';
 // import lruMemoize  from 'lru-memoize'
 import React  from 'react'
 
 function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
-  return {
-    height: fontHeight,
-    width: text.length * fontWidth
-  }
+    return {
+        height: fontHeight,
+        width: text.length * fontWidth
+    }
 }
 
 
 
 export default function Labels({labels={}, namespace, outerRadius, /*radius*/}) {
-  //console.log('RENDERING LABELS');
-  var radius = outerRadius
-  var outerPointRadius = outerRadius - 20
+    //console.log('RENDERING LABELS');
+    var radius = outerRadius
+    var outerPointRadius = outerRadius - 20
 
-  var fontWidth = 8 * outerRadius/120;
-  var fontHeight = fontWidth * 1.5
+    var fontWidth = 8 * outerRadius/120;
+    var fontHeight = fontWidth * 1.5
 
-  var labelPoints = Object.keys(labels).map(function (key, index) {
+    var labelPoints = Object.keys(labels).map(function (key, index) {
     var label = labels[key]
     var {annotationCenterAngle, annotationCenterRadius} = label
 
 
     return {
-      ...label,
-      ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
-      //three points define the label:
-      innerPoint: {
-        ...polarToSpecialCartesian(annotationCenterRadius, annotationCenterAngle),
-        radius: annotationCenterRadius,
+        ...label,
+        ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
+        //three points define the label:
+        innerPoint: {
+            ...polarToSpecialCartesian(annotationCenterRadius, annotationCenterAngle),
+            radius: annotationCenterRadius,
+            angle: annotationCenterAngle,
+        },
+        outerPoint: {
+            ...polarToSpecialCartesian(outerPointRadius, annotationCenterAngle),
+            radius: outerPointRadius,
+            angle: annotationCenterAngle,
+        },
+        ...polarToSpecialCartesian(radius, annotationCenterAngle),
+        radius,
         angle: annotationCenterAngle,
-      },
-      outerPoint: {
-        ...polarToSpecialCartesian(outerPointRadius, annotationCenterAngle),
-        radius: outerPointRadius,
-        angle: annotationCenterAngle,
-      },
-      ...polarToSpecialCartesian(radius, annotationCenterAngle),
-      radius,
-      angle: annotationCenterAngle,
     }
-  })
+})
 
-  var groupedLabels = relaxLabelAngles(labelPoints, fontHeight)
-  // var groupedLabels = relaxLabels(labelPoints)
-  //console.log('groupedLabels: ', groupedLabels);
-  return <g 
-    key={'veLabels'}
-    className='veLabels'>
-    {groupedLabels.map(function (label) {
-      return LabelGroup({
-        label,
-        fontWidth,
-        fontHeight,
-        namespace,
-        outerRadius
-      })
-    })
-    //we use the <use> tag to position the hovered label group at the top of the stack
-    //point events: none is to fix a click bug..
-    //http://stackoverflow.com/questions/24078524/svg-click-events-not-firing-bubbling-when-using-use-element
-  }
-    <use style={{pointerEvents: 'none'}} xlinkHref="#topLevelHomie"/>
-  </g>
+    var groupedLabels = relaxLabelAngles(labelPoints, fontHeight)
+    // var groupedLabels = relaxLabels(labelPoints)
+    //console.log('groupedLabels: ', groupedLabels);
+    return <g 
+        key={'veLabels'}
+        className='veLabels'>
+        {groupedLabels.map(function (label) {
+            return LabelGroup({
+                label,
+                fontWidth,
+                fontHeight,
+                namespace,
+                outerRadius
+            })
+        })
+        //we use the <use> tag to position the hovered label group at the top of the stack
+        //point events: none is to fix a click bug..
+        //http://stackoverflow.com/questions/24078524/svg-click-events-not-firing-bubbling-when-using-use-element
+        }
+        <use style={{pointerEvents: 'none'}} xlinkHref="#topLevelHomie"/>
+    </g>
 }
 
 
 function LabelGroup ({label, namespace, ...rest}) {
-  var {labels: sublabels = []} = label
-  var labelIds = {}
-  sublabels.forEach((label) => {labelIds[label.id] = true})
-  var multipleLabels = sublabels.length > 1
-  return (
-    //wrap the entire label group in a HoverHelper
-    <div 
+    var {labels: sublabels = []} = label
+    var labelIds = {}
+    sublabels.forEach((label) => {labelIds[label.id] = true})
+    var multipleLabels = sublabels.length > 1
+
+    return (
+        //wrap the entire label group in a HoverHelper
+        <div 
             mouseAware={true}
             namespace={namespace}
-            id={labelIds}>
-      <DrawLabelGroup 
-        {...{label, namespace, ...rest, className: 'DrawLabelGroup', multipleLabels, sublabels, labelIds}}/>
-    </div>
-            
-  )
+            id={labelIds}
+            >
+            <DrawLabelGroup 
+                {...{label, namespace, ...rest, className: 'DrawLabelGroup', multipleLabels, sublabels, labelIds}}
+                />
+        </div>
+    )
 }
 
 
@@ -204,20 +206,20 @@ function DrawLabelGroup (props) {
 
 
 function LabelLine(pointArray,options) {
-  var points =''
-  pointArray.forEach(function({x,y}){
-      points+= `${x},${y} `
-  });
-  return <polyline {... {
-      key: 'polyline',
-      points, 
-      stroke:'black',
-      fill: 'none',
-      strokeWidth:1,
-      className: 'veLabelLine',
-      ...options
-    }
-  }
-  />
+    var points =''
+    pointArray.forEach(function({x,y}){
+        points+= `${x},${y} `
+    });
+
+    return <polyline {... {
+        key: 'polyline',
+        points, 
+        stroke:'black',
+        fill: 'none',
+        strokeWidth:1,
+        className: 'veLabelLine',
+        ...options
+    }}
+    />
 }
 
