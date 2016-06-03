@@ -3,6 +3,7 @@ import polarToSpecialCartesian from '../utils/polarToSpecialCartesian';
 
 var alpha = .035; //the larger the alpha, the fewer loops through relax necessary, but too large and things are spaced unevenly
 var relaxCounter = 0;
+
 export default function relaxLabelAngles(labelPoints, spacing) {
   var mutableLabelPoints = clone(labelPoints)
   if (labelPoints.length > 100) {
@@ -83,67 +84,71 @@ export default function relaxLabelAngles(labelPoints, spacing) {
 }
 
 function sortLabelsByHeight (a,b) {
-  return  b.y - a.y
+    return  b.y - a.y;
 }
 
 function sortLabelsByAngle (a,b) {
-  return  a.innerPoint.angle - b.innerPoint.angle
+    return  a.innerPoint.angle - b.innerPoint.angle;
 }
 
 function updateXandYBasedOnNewAngle(point) {
-  var {x,y} = polarToSpecialCartesian(point.radius, point.angle)
-  point.x = x
-  point.y = y
+    var {x,y} = polarToSpecialCartesian(point.radius, point.angle);
+    point.x = x;
+    point.y = y;
 }
 
 function combineLabels(labels) {
-      var numberOfBuckets=100
-      var buckets = {}
-      Object.keys(labels).forEach(function(key){
-          var label = labels[key]
-          var bucket = Math.floor(label.annotationCenterAngle / 6.29 * numberOfBuckets)
-          if (!buckets[bucket]) {
-              buckets[bucket] = {
+    var numberOfBuckets=100;
+    var buckets = {};
+
+    Object.keys(labels).forEach(function(key){
+        var label = labels[key];
+        var bucket = Math.floor(label.annotationCenterAngle / 6.29 * numberOfBuckets);
+
+        if (!buckets[bucket]) {
+            buckets[bucket] = {
                 ...label,
                 labels: []
-              }
-          }
-          buckets[bucket].labels.push(label)
-      });
-      var combinedLabels = Object.keys(buckets).map(function(key){
-          return buckets[key]
-      });
-      return combinedLabels
-  }
-
-        function doLabelsCollide(point1, point2, spacing) {
-          // a & b are on opposite sides of the chart and
-          // don't collide
-          if ((point1.x > 0 && point2.x <= 0) || (point1.x < 0 && point2.x >= 0)) {
-            return false
-          }
-          // Now let's calculate the distance between
-          // these elements.
-          var deltaY = point1.y - point2.y;
-
-          // Our spacing is greater than our specified spacing,
-          // so they don't collide.
-          // debugger;
-          if (Math.abs(deltaY) > spacing) return false;
-          var deltaX = point1.x - point2.x;
-          // if (Math.abs(deltaX) > spacing) return false;
-          if (deltaX > 0) {
-            if (deltaX > point1.width) {
-              // //console.log('deltaX: ' + JSON.stringify(deltaX,null,4));
-              // //console.log('point1.width: ' + JSON.stringify(point1.width,null,4));
-              // //console.log('point1.x: ' + JSON.stringify(point1.x,null,4));
-              // //console.log('point2.x: ' + JSON.stringify(point2.x,null,4));
-              return false
             }
-          } else {
-            if (-deltaX > point2.width) {
-              return false
-            }
-          }
-          return true
         }
+        buckets[bucket].labels.push(label);
+    });
+
+    var combinedLabels = Object.keys(buckets).map(function(key){
+        return buckets[key];
+    });
+
+    return combinedLabels;
+}
+
+function doLabelsCollide(point1, point2, spacing) {
+    // Now let's calculate the distance between
+    // these elements.
+    var deltaY = point1.y - point2.y;
+    var deltaX = point1.x - point2.x;
+
+    // a & b are on opposite sides of the chart and
+    // don't collide
+    if ((point1.x > 0 && point2.x <= 0) || (point1.x < 0 && point2.x >= 0)) {
+        return false
+    }
+    // Our spacing is greater than our specified spacing,
+    // so they don't collide.
+    // debugger;
+    if (Math.abs(deltaY) > spacing) return false;
+    // if (Math.abs(deltaX) > spacing) return false;
+    if (deltaX > 0) {
+        if (deltaX > point1.width) {
+            // //console.log('deltaX: ' + JSON.stringify(deltaX,null,4));
+            // //console.log('point1.width: ' + JSON.stringify(point1.width,null,4));
+            // //console.log('point1.x: ' + JSON.stringify(point1.x,null,4));
+            // //console.log('point2.x: ' + JSON.stringify(point2.x,null,4));
+            return false;
+        }
+    } else {
+        if (-deltaX > point2.width) {
+            return false;
+        }
+    }
+    return true;
+}

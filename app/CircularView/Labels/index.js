@@ -1,11 +1,6 @@
 import polarToSpecialCartesian from '../utils/polarToSpecialCartesian';
-// import relaxLabels from './relaxLabels';
 import relaxLabelAngles from './relaxLabelAngles';
-// import HoverHelper from '../../HoverHelper';
-// import deepEqual from 'deep-equal';
-// import './style.scss';
-// import lruMemoize  from 'lru-memoize'
-import React  from 'react'
+import React  from 'react';
 
 function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
     return {
@@ -14,44 +9,36 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
     }
 }
 
-
-
-export default function Labels({labels={}, namespace, outerRadius, /*radius*/}) {
-    //console.log('RENDERING LABELS');
-    var radius = outerRadius
-    var outerPointRadius = outerRadius - 20
-
+export default function Labels({labels={}, outerRadius}) {
+    var radius = outerRadius;
+    var outerPointRadius = outerRadius - 20;
     var fontWidth = 8 * outerRadius/120;
-    var fontHeight = fontWidth * 1.5
-
+    var fontHeight = fontWidth * 1.5;
     var labelPoints = Object.keys(labels).map(function (key, index) {
-    var label = labels[key]
-    var {annotationCenterAngle, annotationCenterRadius} = label
+        var label = labels[key];
+        var {annotationCenterAngle, annotationCenterRadius} = label
 
-
-    return {
-        ...label,
-        ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
-        //three points define the label:
-        innerPoint: {
-            ...polarToSpecialCartesian(annotationCenterRadius, annotationCenterAngle),
-            radius: annotationCenterRadius,
+        return {
+            ...label,
+            ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
+            //three points define the label:
+            innerPoint: {
+                ...polarToSpecialCartesian(annotationCenterRadius, annotationCenterAngle),
+                radius: annotationCenterRadius,
+                angle: annotationCenterAngle,
+            },
+            outerPoint: {
+                ...polarToSpecialCartesian(outerPointRadius, annotationCenterAngle),
+                radius: outerPointRadius,
+                angle: annotationCenterAngle,
+            },
+            ...polarToSpecialCartesian(radius, annotationCenterAngle),
+            radius,
             angle: annotationCenterAngle,
-        },
-        outerPoint: {
-            ...polarToSpecialCartesian(outerPointRadius, annotationCenterAngle),
-            radius: outerPointRadius,
-            angle: annotationCenterAngle,
-        },
-        ...polarToSpecialCartesian(radius, annotationCenterAngle),
-        radius,
-        angle: annotationCenterAngle,
-    }
-})
-
+        }
+    });
     var groupedLabels = relaxLabelAngles(labelPoints, fontHeight)
-    // var groupedLabels = relaxLabels(labelPoints)
-    //console.log('groupedLabels: ', groupedLabels);
+
     return <g 
         key={'veLabels'}
         className='veLabels'>
@@ -95,61 +82,73 @@ function LabelGroup ({label, namespace, ...rest}) {
 
 
 function DrawLabelGroup (props) {
-  var {label, sublabels, fontWidth, fontHeight, outerRadius, hoveredId, labelIds, namespace, multipleLabels, hovered, ...rest} = props
-  
-  var {text} = label;
+    var {
+        label, 
+        sublabels, 
+        fontWidth, 
+        fontHeight, 
+        outerRadius, 
+        hoveredId, 
+        labelIds, 
+        namespace, 
+        multipleLabels, 
+        hovered, 
+        ...rest
+    } = props;
+    var {text} = label;
+    var maxLabelLength;
+    var labelLength = text.length * (fontWidth -2);
+    var maxLabelWidth = maxLabelLength * fontWidth;
+    var labelXStart = label.x - (label.x < 0 ? labelLength : 0);
+    var dy = 12;
+    var textYStart = label.y + dy/2;
+    var content;
+    var labelClass = "velabelText veCircularViewLabelText clickable ";
+    var line = LabelLine([hoveredLabel.innerPoint, label], {style: {opacity: 1}});
+    var labelYStart = label.y;
+    var labelGroupHeight = sublabels.length * dy;
+    var labelGroupBottom = label.y + labelGroupHeight;
 
-
-  if (label.labels.length > 1) {
-    text +=' +' + label.labels.length
-  }
-
-  var labelLength = text.length * (fontWidth -2)
-  var maxLabelLength = sublabels.reduce(function (currentLength, {text}) {
-    // //console.log('arguments: ', arguments);
-    if (text.length > currentLength) {
-      return text.length
-    } 
-    return currentLength
-  }, 0)
-
-  var maxLabelWidth = maxLabelLength * fontWidth
-  var labelXStart = label.x - (label.x < 0 ? labelLength : 0)
-  var dy = 12;
-  var textYStart = label.y + dy/2
-
-  var content
-  if (multipleLabels && hovered) {
-    //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
-    var hoveredLabel
-    sublabels.some(function (label) {
-      if (label.id === hoveredId) {
-        hoveredLabel = label
-        return true
-      }
-    })
-    if (!hoveredLabel) {
-      hoveredLabel = label
+    if (label.labels.length > 1) {
+        text +=' +' + label.labels.length
     }
-    var labelYStart = label.y
-    var labelGroupHeight = sublabels.length * dy
-    var labelGroupBottom = label.y + labelGroupHeight
-    // var numberOfLabelsToFitAbove = 0
+
+    maxLabelLength = sublabels.reduce(function (currentLength, {text}) {
+        // //console.log('arguments: ', arguments);
+        if (text.length > currentLength) {
+            return text.length
+        } 
+        return currentLength
+    }, 0)
+
+    // I don't think we need the hover stuff
+    if (multipleLabels && hovered) {
+        //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
+        var hoveredLabel
+        sublabels.some(function (label) {
+            if (label.id === hoveredId) {
+                hoveredLabel = label
+                return true
+            }
+        })
+
+        if (!hoveredLabel) {
+            hoveredLabel = label
+        }
+
     if (labelGroupBottom > (outerRadius+10)) {
-      var diff = labelGroupBottom - (outerRadius+10)
-      //calculate new label y start if necessary (the group is too long)
-      labelYStart-= diff
-      if (labelYStart < -outerRadius) {
+        var diff = labelGroupBottom - (outerRadius+10)
+        //calculate new label y start if necessary (the group is too long)
+        labelYStart-= diff
+        if (labelYStart < -outerRadius) {
         //we need to make another row of labels!
-        
-      }
+
+        }
     }
-    var labelClass = "velabelText veCircularViewLabelText clickable "
-    
-    var line = LabelLine([hoveredLabel.innerPoint, label], {style: {opacity: 1}})
+
     content = [
                 line,
-                <g id='topLevelHomie' key='gGroup'>
+                <g id='topLevelLabels' key='gGroup'>
                   <rect 
                     x={labelXStart-4 } 
                     y={labelYStart-dy/2} 
@@ -184,23 +183,26 @@ function DrawLabelGroup (props) {
                         })}
                     </text>
                 </g>
+        ]
+    } else {
+            //DRAW A SINGLE LABEL
+            content = [
+                <text
+                    key='text'
+                    x={labelXStart}
+                    className={labelClass + label.className + (hovered ? ' veAnnotationHovered' : '')}
+                    y={textYStart}
+                    style={{ fill: label.color ? label.color : 'black', fontSize: fontHeight,}}
+                    >
+                    { text }
+                </text>, 
+                LabelLine([label.innerPoint, label], hovered ? {style: {opacity: 1}} : {})
             ]
-  } else {
-    //DRAW A SINGLE LABEL
-    content = [<text
-          key='text'
-          x={labelXStart}
-          className={labelClass + label.className + (hovered ? ' veAnnotationHovered' : '')}
-          y={textYStart}
-          style={ { fill: label.color ? label.color : 'black', fontSize: fontHeight,}   }>
-          {text}
-          </text>, 
-          LabelLine([label.innerPoint, label], hovered ? {style: {opacity: 1}} : {})]
-  }
+    }
        
-  return <g {...{...rest, onClick: label.onClick}}>
-    {content}
-  </g>
+    return <g {...{...rest, onClick: label.onClick}}>
+        {content}
+    </g>
 }
 
 

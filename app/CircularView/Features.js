@@ -1,6 +1,7 @@
 import StyleFeature from './StyleFeature';
 import CircularFeature from './CircularFeature';
 import intervalTree2 from 'interval-tree2';
+import drawCircularLabel2 from './drawCircularLabel2';
 import getRangeAngles from './getRangeAnglesSpecial';
 import getYOffset from './getYOffset';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
@@ -78,6 +79,19 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                             </CircularFeature>
                         </StyleFeature>                            
                     </PositionAnnotationOnCircle>
+                    <PositionAnnotationOnCircle
+                        key={ 'inlineLabel' + index }
+                        sAngle={ labelCenter + Math.PI } //add PI because drawCircularLabel is drawing 180
+                        eAngle={ labelCenter + Math.PI }
+                        >
+                        {drawCircularLabel2({
+                            centerAngle: labelCenter, //used to flip label if necessary
+                            radius: annotationRadius, 
+                            height: annotationHeight, 
+                            text: annotation.name, 
+                            id: annotation.id
+                        })}
+                    </PositionAnnotationOnCircle>                    
                 </g>
             </g>
         )

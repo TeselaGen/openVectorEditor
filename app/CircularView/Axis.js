@@ -7,11 +7,11 @@
 import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import React, { PropTypes } from 'react';
 export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'].reduce(function (obj, key) {
-    obj[key] = key
-    return obj
+    obj[key] = key;
+    return obj;
 }, {});
 
-export default function Axis({radius, innerRadius, sequenceLength, axisLineThickness = 2} ) {
+export default function Axis({radius, innerRadius, sequenceLength, axisLineThickness = 12} ) {
 
     var component = 
         <g 
@@ -23,10 +23,10 @@ export default function Axis({radius, innerRadius, sequenceLength, axisLineThick
                 fill={'#ffff99'}
                 stroke={'black'}
                 strokeWidth={'.25px'}
-            />
+                />
         </g>
     return {
-      component,
-      height: axisLineThickness
+        component,
+        height: axisLineThickness
     }
 }

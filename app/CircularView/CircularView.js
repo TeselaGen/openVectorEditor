@@ -125,8 +125,8 @@ export default class CircularView extends React.Component {
         //DRAW AXIS
         if (showAxis) {
             var axisResult = Axis({
-                            radius: radius + 16,
-                            innerRadius: radius + 8,
+                            radius: radius + 8,
+                            innerRadius: radius + 4,
                             sequenceLength
                             })
             //update the radius, and svg
@@ -222,18 +222,18 @@ export default class CircularView extends React.Component {
         // stop patching        
 
         //DRAW CARET
-        if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
-            annotationsSvgs.push(
-                <Caret
-                    key='caret'
-                    className={'caretSvg'}
-                    caretPosition={caretPosition}
-                    sequenceLength={sequenceLength}
-                    innerRadius={innerRadius}
-                    outerRadius={radius}
-                    />
-            )
-        }
+        // if (caretPosition !== -1 && selectionLayer.start < 0 && sequenceLength > 0) { //only render if there is no selection layer
+        //     annotationsSvgs.push(
+        //         <Caret
+        //             key='caret'
+        //             className={'caretSvg'}
+        //             caretPosition={caretPosition}
+        //             sequenceLength={sequenceLength}
+        //             innerRadius={innerRadius}
+        //             outerRadius={radius}
+        //             />
+        //     )
+        // }
         //console.log('labels: ' + JSON.stringify(labels,null,4));
         // DRAW LABELS
         annotationsSvgs.push(Labels({labels, outerRadius: radius}))
@@ -264,7 +264,7 @@ export default class CircularView extends React.Component {
                     className={'circularViewSvg'}
                     viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
                     >
-                    <text x={0} y={0} textAnchor={'middle'} fontSize={14} style={{dominantBaseline: 'central'}}>
+                    <text x={0} y={0} textAnchor={'middle'} /*fontSize={14}*/ style={{dominantBaseline: 'central'}}>
                         <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>
                         <tspan x={0} dy={'1.2em'}>{`(${ sequenceLength } bp)`}</tspan>
                     </text>
