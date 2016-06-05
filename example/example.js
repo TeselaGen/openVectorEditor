@@ -1,7 +1,7 @@
-var ReactDOM = require('react-dom')
-var colorOfFeature = require('./colorOfFeature')
-var App = require('../app/App.js')
+var ReactDOM = require('react-dom');
+var App = require('../app/App.js');
 import request from 'superagent/lib/client';
+import {toOpenVectorEditor} from './schemaConvert';
 
 var query = location.search;
 var cookie = document.cookie;
@@ -17,45 +17,15 @@ request
     .accept('application/json')
     .end(function(err, result) {
         var contents = result.body;
-        var sequence = contents.sequence;
-        var name = contents.name;
-        var isCircular = contents.isCircular;
-        var canEdit = contents.canEdit;
-        var seqId = contents.identifier;
-        var featureList = [];
+        contents.featureList = [];
         var embedded = document.location.pathname.match(/entry/);
         for (var f = 0; f < contents.features.length; f++) { 
-            featureList.push(contents.features[f]);
-        }       
-        // reformat feature data a little
-        for (var p = 0; p < featureList.length; p++) {
-            featureList[p].start = featureList[p].locations[0].genbankStart;
-            featureList[p].end = featureList[p].locations[0].end;
-            featureList[p].color = colorOfFeature(featureList[p]);
-        }
-        var options = {
-            state: {
-                sequenceData: {
-                    features: featureList,
-                    _id: seqId,
-                    sequence: sequence,
-                    circular: isCircular
-                },
-                embedded: !!embedded, // forcing a Boolean
-                readOnly: !canEdit, // forced falsed Boolean
-                name: name,
-            },
-            services: {
-                request: request
-            },
-            actions: {
-                // nothing here currently
-            }
+            contents.featureList.push(contents.features[f]);
         }
 
         //Editor is the React Component
         //controller is the cerebral state controller
-        var {Editor, controller} = App(options);
+        var {Editor, controller} = App(toOpenVectorEditor(contents, embedded, {request: request}));
         //choose the dom node you want to render to
         const DOMNodeToRenderTo = document.createElement('div');
         document.body.appendChild(DOMNodeToRenderTo);
