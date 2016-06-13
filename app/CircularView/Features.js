@@ -16,7 +16,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
     var svgGroup = []
     var labels = {}
     Object.keys(features).forEach(function(key, index) {
-        var annotation = features[key]
+        var annotation = features[key]  
         var annotationCopy = {...annotation}
         var annotationRadius
         var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);
@@ -36,7 +36,16 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
             annotationCopy.yOffset = Math.max(yOffset1, yOffset2)
         }
 
-        annotationRadius = radius + annotationCopy.yOffset*(annotationHeight + spaceBetweenAnnotations)
+        annotationRadius = radius + annotationCopy.yOffset*(annotationHeight + spaceBetweenAnnotations)        
+
+        // add label info to labels
+        labels[annotation.id] ={
+            annotationCenterAngle: centerAngle,
+            annotationCenterRadius: annotationRadius,
+            text: annotation.name,
+            id: annotation.id,
+            className: 'veFeatureLabel'
+        }
 
         if (spansOrigin) {
             featureITree.add(startAngle, expandedEndAngle, undefined, {...annotationCopy})

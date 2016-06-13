@@ -119,6 +119,7 @@ export default class CircularView extends React.Component {
             // update the radius, labels, and svg
             radius+= featureResults.height
             labels = {...labels, ...featureResults.labels}
+            console.log("labels contain " + labels)
             annotationsSvgs.push(featureResults.component)
         }
 
