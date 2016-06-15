@@ -133,8 +133,6 @@ function DrawLabelGroup (props) {
         </text>, 
         LabelLine([label.innerPoint, label])
     ]
-    // }
-    debugger;
        
     return <g {...{...rest, onClick: label.onClick}}>
         {content}
@@ -148,8 +146,6 @@ function LabelLine(pointArray) {
     pointArray.forEach(function({x,y}){
         points+= `${x},${y} `
     });
-
-    console.log("points are " + points)
 
     return <polyline {... {
             key: 'polyline',

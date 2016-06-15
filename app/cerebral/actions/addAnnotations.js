@@ -6,7 +6,7 @@ export default function addAnnotations({input: {sidebarType, annotationsToInsert
     annotationsToInsert.forEach(function(annotationToInsert) {
         if (!isBoolean(annotationToInsert.forward)) {
             if (throwErrors) {
-                throw new Error('annotation direction not specified')
+                throw new Error('error: annotation direction not specified')
             } else {
                 console.log('annotation direction not specified')
                 annotationToInsert.forward = true;
@@ -14,7 +14,7 @@ export default function addAnnotations({input: {sidebarType, annotationsToInsert
         }
         if (!areNonNegativeIntegers([annotationToInsert.start])) {
             if (throwErrors) {
-                throw new Error('annotation position not specified')
+                throw new Error('error: annotation position not specified')
             } else {
                 console.log('annotation position not specified')
                 annotationToInsert.start = 0;
@@ -22,7 +22,7 @@ export default function addAnnotations({input: {sidebarType, annotationsToInsert
         }
         if (!areNonNegativeIntegers([annotationToInsert.end])) {
             if (throwErrors) {
-                throw new Error('annotation position not specified')
+                throw new Error('error: annotation position not specified')
             } else {
                 console.log('annotation position not specified')
                 annotationToInsert.end = 0;

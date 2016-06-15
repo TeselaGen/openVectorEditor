@@ -14,7 +14,7 @@ import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
 
-import FeatureForm from './FeatureForm';
+import SidebarDetail from './SidebarDetail';
 
 @Cerebral({
     minimumOrfSize: ['minimumOrfSize'],    
@@ -53,22 +53,29 @@ export default class SideBar extends React.Component {
     }
 
     addFeature() {
-        this.props.signals.addAnnotations({
-            sidebarType: 'features',
+        // this needs to be changed so it just pops out the modal.
+        // pop the modal open with a blank feature
+        // expand later for other types of feature?
+        // a button in the modal should finalize the insertion
 
-            annotationsToInsert: [
-                {
-                    name: 'unnamed feature',
-                    type: '',
-                    start: 0,
-                    end: 0,
-                    strand: -1,
-                    notes: []
-                }
-            ],
+        var annotationForm = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />);
 
-            throwErrors: false
-        });
+        // this.props.signals.addAnnotations({
+        //     sidebarType: 'features',
+
+        //     annotationsToInsert: [
+        //         {
+        //             name: 'unnamed feature',
+        //             type: '',
+        //             start: 0,
+        //             end: 0,
+        //             strand: -1,
+        //             notes: []
+        //         }
+        //     ],
+
+        //     throwErrors: true
+        // });
     }
 
     render() {
@@ -94,10 +101,12 @@ export default class SideBar extends React.Component {
             tableHeaderCells.push((<TableHeaderColumn key={i}>{filter[i]}</TableHeaderColumn>));
         }
 
+        // {{}} get rid of the "data" thing
         var tableDataRows = [];
         for (let i = 0; i < data.length; i++) {
             let tableDataCells = [];
             let feature = data[i];
+            console.log(feature);
 
             for (let j = 0; j < filter.length; j++) {
                 let column = filter[j];
@@ -112,11 +121,11 @@ export default class SideBar extends React.Component {
 
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
-
+        // pop out the detail modal
         if (this.state.selectedRows.length === 1) {
             let annotation = data[this.state.selectedRows[0]];
 
-            var annotationForm = (<FeatureForm feature={annotation} />);
+            var annotationForm = (<SidebarDetail feature={annotation} />);
         }
 
         // edit, add and remove feature buttons
@@ -169,15 +178,15 @@ export default class SideBar extends React.Component {
                 <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
                     <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
                         <TableHeader>
-                            <TableRow>{tableHeaderCells}</TableRow>
+                            <TableRow>{ tableHeaderCells }</TableRow>
                         </TableHeader>
-                        <TableBody deselectOnClickaway={false}>{tableDataRows}</TableBody>
+                        <TableBody deselectOnClickaway={ false }>{ tableDataRows }</TableBody>
                     </Table>
                 </div>
-                {(!readOnly && sidebarType ==='Features') ? featureControls : null}
-                {sidebarType === 'Orfs' ? orfControls : null}
+                { (!readOnly && sidebarType ==='Features') ? featureControls : null }
+                { sidebarType === 'Orfs' ? orfControls : null }
 
-                {annotationForm}
+                { annotationForm }
 
             </div>
         );

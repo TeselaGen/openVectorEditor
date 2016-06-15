@@ -7,9 +7,10 @@ import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterm
 import IconButton from 'material-ui/lib/icon-button';
 import assign from 'lodash/object/assign';
 
-@Cerebral({})
+// this is the feature detail popout that comes out of the sidebar; it may need a new name
+// or to be in a folder with sidebar stuff. This form is used to edit / add feature information
 
-export default class FeatureForm extends React.Component {
+export default class SidebarDetail extends React.Component {
 
     constructor(props) {
         super(props);
@@ -104,6 +105,8 @@ export default class FeatureForm extends React.Component {
                  errorText={isNaN(this.state.feature.strand) && "not a number"}
                  value={this.state.feature.strand.toString()}
                  />
+                 
+              <button> Save Changes </button>
             </div>
         );
     }

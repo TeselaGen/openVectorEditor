@@ -119,7 +119,6 @@ export default class CircularView extends React.Component {
             // update the radius, labels, and svg
             radius+= featureResults.height
             labels = {...labels, ...featureResults.labels}
-            console.log("labels contain " + labels)
             annotationsSvgs.push(featureResults.component)
         }
 
@@ -136,18 +135,18 @@ export default class CircularView extends React.Component {
         }
 
         //DRAW CUTSITES
-        // if (showCutsites) {
-        //     var cutsiteResults = Cutsites({
-        //         cutsites,
-        //         radius,
-        //         annotationHeight,
-        //         sequenceLength
-        //     })
-        //     //update the radius, labels, and svg
-        //     radius+= cutsiteResults.height
-        //     labels = {...labels, ...cutsiteResults.labels}
-        //     annotationsSvgs.push(cutsiteResults.component)
-        // }
+        if (showCutsites) {
+            var cutsiteResults = Cutsites({
+                cutsites,
+                radius,
+                annotationHeight,
+                sequenceLength
+            })
+            //update the radius, labels, and svg
+            radius+= cutsiteResults.height
+            labels = {...labels, ...cutsiteResults.labels}
+            annotationsSvgs.push(cutsiteResults.component)
+        }
 
         //DRAW SELECTION LAYER
         // if (selectionLayer.start >= 0 && selectionLayer.end >= 0 && sequenceLength > 0) {

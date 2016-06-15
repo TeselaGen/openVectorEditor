@@ -5,7 +5,7 @@ import drawCircularLabel2 from './drawCircularLabel2';
 import getRangeAngles from './getRangeAnglesSpecial';
 import getYOffset from './getYOffset';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
-import React, { PropTypes } from 'react';
+import React from 'react';
 import noop from 'lodash/utility/noop';
 
 export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {

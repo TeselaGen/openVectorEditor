@@ -119,9 +119,6 @@ module.exports = {
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
         ['userEnzymes'],
-        // function (argument) {
-        //     return {}
-        // }
         getCutsitesFromSequence
     ]),
     cutsites: deriveData([
@@ -129,7 +126,6 @@ module.exports = {
         function (cutsitesByName) {
             var cutsitesArray = [];
             Object.keys(cutsitesByName).forEach(function (key) {
-                // return cutsitesByName[key]
                 cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
             });
             return cutsitesArray;
