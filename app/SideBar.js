@@ -106,7 +106,6 @@ export default class SideBar extends React.Component {
         for (let i = 0; i < data.length; i++) {
             let tableDataCells = [];
             let feature = data[i];
-            console.log(feature);
 
             for (let j = 0; j < filter.length; j++) {
                 let column = filter[j];
@@ -114,6 +113,18 @@ export default class SideBar extends React.Component {
 
                 if (feature[column] !== null && feature[column] !== undefined) {
                     data = feature[column].toString();
+                }
+                // new stuff
+                if (column === 'name' && sidebarType === 'Cutsites') {
+                    var enz = feature['restrictionEnzyme'];
+                    data = enz['name'].toString();
+                }
+                if (column === 'strand') {
+                    if (feature['forward']) {
+                        data = "+";
+                    } else {
+                        data = "-";
+                    }
                 }
 
                 tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
