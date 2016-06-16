@@ -59,21 +59,20 @@ export default function Labels({labels={}, outerRadius}) {
 }
 
 
-function LabelGroup ({label, namespace, ...rest}) {
-    var {labels: sublabels = []} = label
-    var labelIds = {}
-    sublabels.forEach((label) => {labelIds[label.id] = true})
-    var multipleLabels = sublabels.length > 1
+function LabelGroup ({label, ...rest}) {
+    var {labels: sublabels = []} = label;
+    var labelIds = {};
+    sublabels.forEach((label) => {labelIds[label.id] = true});
+    var multipleLabels = sublabels.length > 1;
 
     return (
         //wrap the entire label group in a HoverHelper
         <g 
             mouseAware={true}
-            namespace={namespace}
             id={labelIds}
             >
             <DrawLabelGroup 
-                {...{label, namespace, ...rest, className: 'DrawLabelGroup', multipleLabels, sublabels, labelIds}}
+                {...{label, ...rest, className: 'DrawLabelGroup', sublabels, labelIds}}
                 />
         </g>
     )
@@ -135,8 +134,8 @@ function DrawLabelGroup (props) {
     ]
        
     return <g {...{...rest, onClick: label.onClick}}>
-        {content}
-    </g>
+            {content}
+        </g>
 }
 
 

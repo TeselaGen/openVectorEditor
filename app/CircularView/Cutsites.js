@@ -28,7 +28,6 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
             id: annotation.id,
             onClick,
         }
-        // if (!annotation.id) debugger;
 
         svgGroup.push(
             <g
