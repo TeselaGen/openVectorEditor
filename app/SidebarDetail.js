@@ -50,15 +50,6 @@ export default class SidebarDetail extends React.Component {
     render() {
         return (
             <div style={{backgroundColor: 'white', marginLeft: '580px', position: 'fixed', padding: '20px', width: '300px', border: '1px solid #ccc', zIndex: '55'}}>
-              <TextField
-                 id={"id"}
-                 disabled={true}
-                 onChange={this.onChange.bind(this)}
-                 floatingLabelText={"id"}
-                 value={ this.state.feature.id ? this.state.feature.id.toString() : "" }
-                 />
-
-              <br />
 
               <TextField
                  id={"name"}

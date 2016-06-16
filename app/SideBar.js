@@ -40,7 +40,6 @@ export default class SideBar extends React.Component {
         this.setState({ selectedRows: selectedRows });
     }
 
-    // not working, foreach problem
     deleteFeatures() {
         var featureIds = [];
 
@@ -52,13 +51,13 @@ export default class SideBar extends React.Component {
         this.setState({ selectedRows: [] });
     }
 
-    addFeature() {
+    // addFeature() {
         // this needs to be changed so it just pops out the modal.
         // pop the modal open with a blank feature
         // expand later for other types of feature?
         // a button in the modal should finalize the insertion
 
-        var annotationForm = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />);
+        // var annotationForm = emptyDetails;
 
         // this.props.signals.addAnnotations({
         //     sidebarType: 'features',
@@ -76,7 +75,7 @@ export default class SideBar extends React.Component {
 
         //     throwErrors: true
         // });
-    }
+    // }
 
     render() {
         var {
@@ -95,6 +94,8 @@ export default class SideBar extends React.Component {
         var selectedTabStyle = {};
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
         var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc'};
+
+        var emptyDetails = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />);
 
         var tableHeaderCells = [];
         for (let i = 0; i < filter.length; i++) {
@@ -139,10 +140,16 @@ export default class SideBar extends React.Component {
             var annotationForm = (<SidebarDetail feature={annotation} />);
         }
 
+        // add new feature
+        var addFeature = function() {
+            // deselect all rows
+            var annotationForm = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />)
+        }
+
         // edit, add and remove feature buttons
         var featureControls = (
             <div style={ sidebarControlStyle }>
-                <IconButton onClick={this.addFeature.bind(this)} tooltip={"add"}>
+                <IconButton onClick={addFeature()} tooltip={"add"}>
                     <AddBoxIcon />
                 </IconButton>
 

@@ -24,14 +24,17 @@ function toDegrees(radians) {
 }
 
 @Cerebral({
-    circularViewDimensions: ['circularViewDimensions'],
-    circularViewData: ['circularViewData'], 
+    annotationHeight: ['annotationHeight'],    
     charWidth: ['charWidth'], 
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
+    circularViewData: ['circularViewData'],    
+    circularViewDimensions: ['circularViewDimensions'], 
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
+    cutsites: ['cutsites'],
+
     selectionLayer: ['selectionLayer'],
-    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'], 
-    annotationHeight: ['annotationHeight'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
+
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showParts: ['showParts'],
