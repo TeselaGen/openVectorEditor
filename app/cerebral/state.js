@@ -17,7 +17,7 @@ var commonEnzymes = ["aatii", "avrii", "bamhi", "bglii", "bsgi", "eagi", "ecori"
 var berkeleyBBEnzymes = ["ecori", "bglii", "bamhi", "xhoi"];
 // MIT BioBricks
 var MITBBEnzymes = ["ecori", "xbai", "spei", "psti"];
-// fermentas fast digest enzymes - this one's really really really long
+// fermentas fast digest enzymes - this one's really really really long and doesnt work right now!
 var fastDigestEnzymes = ["aatii", "acc65i", "acci", "acii", "acli", "acui", "afei", "aflii", "agei", "ajui", "alei", "alui", "alw21i", "alw26i", "alwni", "apai", "apali", "asci", "asei", "asisi", "avai", "avaii", "avrii", "bamhi", "bani", "bbsi", "bbvi", "bcli", "bfai", "bgli", "bglii", "blpi", "bme1580i", "bmti", "bpli", "bpmi", "bpu10i", "bsaai", "bsabi", "bsahi", "bsaji", "bsegi", "bseni", "bsexi", "bsh1236i", "bsiei", "bsiwi", "bsli", "bsmbi", "bsmfi", "bsp119i", "bsp120i", "bsp1286i", "bsp1407i", "bspcni", "bsphi", "bspmi", "bsrbi", "bsrdi", "bsrfi", "bsshii", "bstxi", "bstz17i", "bsu36i", "clai", "csp6i", "ddei", "dpni", "drai", "draiii", "drdi", "eagi", "eam1105i", "eari", "ecl136ii", "eco31i", "eco91i", "econi", "ecoo109i", "ecori", "ecorv", "ehei", "fnu4hi", "foki", "fspai", "fspi", "haeii", "haeiii", "hgai", "hhai", "hincii", "hindiii", "hinfi", "hinp1i", "hpai", "hpaii", "hpy8i", "hpyf10vi", "kpn2i", "kpni", "maubi", "mboi", "mboii", "mfei", "mlui", "mlyi", "mnli", "mrei", "msci", "msei", "msli", "mspi", "mssi", "mva1269i", "mvai", "naei", "ncii", "ncoi", "ndei", "nhei", "nlaiii", "nlaiv", "nmuci", "noti", "nrui", "nsii", "nspi", "paci", "pdmi", "pflmi", "pfoi", "pmli", "ppumi", "pshai", "psii", "pspfi", "psti", "psui", "psyi", "pvui", "pvuii", "rsai", "rsrii", "saci", "sali", "sandi", "sapi", "sau3ai", "sau96i", "sbfi", "scai", "scrfi", "sexai", "sfani", "sfci", "sfii", "smai", "snabi", "spei", "sphi", "sspi", "stui", "styi", "swai", "taai", "taii", "taqi", "tati", "taui", "tfii", "tru1i", "tsp509i", "tspri", "xapi", "xbai", "xhoi"];
 
 module.exports = {
@@ -91,7 +91,7 @@ module.exports = {
        parts: [],
        circular: false
     }, 
-    userEnzymeList: berkeleyBBEnzymes,
+    userEnzymeList: commonEnzymes,
     viewportDimensions: {
         height: 500,
         width: 500

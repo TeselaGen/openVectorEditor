@@ -18,20 +18,26 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
         }
         var {startAngle} = getRangeAngles({start: annotation.downstreamTopSnip, end: annotation.downstreamTopSnip}, sequenceLength);
 
+        // if (!(annotation.id)) {
+        //     annotation.id = index;
+        // }
+
+        console.log(annotation);
+
         // add label info
-        labels[annotation.id]={
+        labels[index]={
             annotationCenterAngle: startAngle,
             annotationCenterRadius: radius,
             text: annotation.restrictionEnzyme.name,
             color: annotation.restrictionEnzyme.color,
             className: 'veCutsiteLabel',
-            id: annotation.id,
+            id: index,
             onClick,
         }
 
         svgGroup.push(
             <g
-                id={annotation.id}
+                id={index}
                 key={'cutsite' + index}
                 >
                 <PositionAnnotationOnCircle
