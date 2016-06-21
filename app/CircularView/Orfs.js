@@ -1,21 +1,19 @@
-import StyleFeature from './StyleFeature';
 import CircularFeature from './CircularFeature';
 import intervalTree2 from 'interval-tree2';
-// import drawCircularLabel2 from './drawCircularLabel2';
 import getRangeAngles from './getRangeAnglesSpecial';
 import getYOffset from './getYOffset';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React from 'react';
 import noop from 'lodash/utility/noop';
 
-export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
+export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
     //console.log('RENDERING FEATURES');
     var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
     var featureITree = new intervalTree2(Math.PI)
     var maxYOffset = 0
     var svgGroup = []
-    var labels = {}
-    Object.keys(features).forEach(function(key, index) {
+
+    Object.keys(orfs).forEach(function(key, index) {
         var annotation = features[key]  
         var annotationCopy = {...annotation}
         var annotationRadius
@@ -37,15 +35,6 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
         }
 
         annotationRadius = radius + annotationCopy.yOffset*(annotationHeight + spaceBetweenAnnotations)        
-
-        // add label info to labels
-        labels[annotation.id] ={
-            annotationCenterAngle: centerAngle,
-            annotationCenterRadius: annotationRadius,
-            text: annotation.name,
-            id: annotation.id,
-            className: 'veFeatureLabel'
-        }
 
         if (spansOrigin) {
             featureITree.add(startAngle, expandedEndAngle, undefined, {...annotationCopy})
@@ -87,17 +76,29 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                                 >
                             </CircularFeature>
                         </StyleFeature>                            
-                    </PositionAnnotationOnCircle>                  
+                    </PositionAnnotationOnCircle>
+                    <PositionAnnotationOnCircle
+                        key={ 'inlineLabel' + index }
+                        sAngle={ labelCenter + Math.PI } //add PI because drawCircularLabel is drawing 180
+                        eAngle={ labelCenter + Math.PI }
+                        >
+                        {drawCircularLabel2({
+                            centerAngle: labelCenter, //used to flip label if necessary
+                            radius: annotationRadius, 
+                            height: annotationHeight, 
+                            text: annotation.name, 
+                            id: annotation.id
+                        })}
+                    </PositionAnnotationOnCircle>                    
                 </g>
             </g>
         )
     })
     return {
-        component: <g className='veFeatures' key='veFeatures'>
+        component: <g className='veOrfs' key='veOrfs'>
             {svgGroup}
         </g>,
         height: (maxYOffset + 1) * totalAnnotationHeight,
-        labels
     }
 }
 
