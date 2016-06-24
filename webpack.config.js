@@ -6,7 +6,7 @@ module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: [
         'webpack-hot-middleware/client?reload=true',
-        "./example/example.js"
+        "./main/loadFromICE.js"
     ],
     output: {
         path: __dirname,
@@ -29,7 +29,7 @@ module.exports = {
         }, {
             test: /\.js$/,
             exclude: /node_modules/,
-            include: [path.join(__dirname, 'example'),path.join(__dirname, 'app') ],
+            include: [path.join(__dirname, 'main'),path.join(__dirname, 'app') ],
             loader: ['babel'],
             query: {
                 stage: 1
