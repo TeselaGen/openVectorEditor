@@ -1,12 +1,13 @@
 import React from 'react';
 import drawDirectedPiePiece from './drawDirectedPiePiece';
 
-module.exports = function CircularFeature({color, radius, annotationHeight, totalAngle}) {
+module.exports = function CircularFeature({color, radius, annotationHeight, totalAngle, forward}) {
+
     var path = drawDirectedPiePiece({
         radius,
         annotationHeight,
         totalAngle,
-        tailThickness:1 //feature specific
+        forward
     })
 
     return (

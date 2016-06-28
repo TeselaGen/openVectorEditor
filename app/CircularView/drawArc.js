@@ -1,4 +1,5 @@
 var Path = require('paths-js/path');
+
 function polarToSpecialCartesian(radius, angleInRadians) {
     //the 0 angle returns the 0,1 point on the unit circle instead of the 1,0 point like normal
     return {
@@ -8,36 +9,26 @@ function polarToSpecialCartesian(radius, angleInRadians) {
 }
 
 // draws a directed piece of the pie with an arrowhead, starts at 0 angle, only draws in one direction (use transforms to move it around the ) 
-export default function drawArc ({flip, tailThickness=.6, arrowheadLength=1, radius, height, totalAngle}) {
-    var tailHeight = height*tailThickness;
+export default function drawArc ({radius, height, totalAngle}) {
     
-    var tailInnerRadius = radius - tailHeight / 2;
-    
-    // var arrowheadAngle = totalAngle / 2
-    var arrowheadAngle = arrowheadLength / (Math.PI * 2)
-
-    if (totalAngle < arrowheadAngle) {
-        //set arrowhead length to the angle in radians length
-        arrowheadAngle = totalAngle;
-    } 
-    var arcAngle = totalAngle - arrowheadAngle;
+    var innerRadius = radius - height / 2;
 
     //the main points we need to draw the arrow and in the order we draw them in:
-    var arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, arrowheadAngle)
-    var arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle)
+    var arcStart = polarToSpecialCartesian(innerRadius, 0)
+    var arcEnd = polarToSpecialCartesian(innerRadius, totalAngle)
     
-    var largeArcFlag = arcAngle > Math.PI ? 1 : 0
-    var path
-    if (!flip) {
+    var largeArcFlag = totalAngle > Math.PI ? 1 : 0
+    var path;
+    // if (!flip) {
       path = Path()
-        .moveto(arcLeftBottom.x,arcLeftBottom.y)
-        .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag, sweepFlag: 1, x: arcRightBottom.x, y: arcRightBottom.y})
+        .moveto(arcStart.x, arcStart.y)
+        .arc({rx: innerRadius, ry: innerRadius, xrot: 0, largeArcFlag, sweepFlag: 1, x: arcEnd.x, y: arcEnd.y})
         //console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
-    } else {
-      path = Path()
-        .moveto(arcRightBottom.x,arcRightBottom.y)
-        .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag: largeArcFlag, sweepFlag: 0, x: arcLeftBottom.x, y: arcLeftBottom.y})
-        //console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
-    }
+    // } else {
+    //   path = Path()
+    //     .moveto(arcRightBottom.x,arcRightBottom.y)
+    //     .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag: largeArcFlag, sweepFlag: 0, x: arcLeftBottom.x, y: arcLeftBottom.y})
+    //     //console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
+    // }
     return path;
 }

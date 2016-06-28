@@ -71,7 +71,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                         key={ 'feature' + index }
                         sAngle={ startAngle }
                         eAngle={ endAngle }
-                        direction={ 'reverse' } // buh
+                        // direction={ 'reverse' } // buh
                         >
                         <StyleFeature
                             annotation={ annotation }
@@ -79,11 +79,12 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                             signals = { signals }
                             >
                             <CircularFeature
-                                color= { annotation.color }
+                                color={ annotation.color }
                                 key={ 'feature' + index }
                                 radius={ annotationRadius }
                                 annotationHeight={ annotationHeight }
                                 totalAngle={ totalAngle }
+                                forward={ annotation.forward }
                                 >
                             </CircularFeature>
                         </StyleFeature>                            

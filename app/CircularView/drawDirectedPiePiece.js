@@ -8,9 +8,11 @@ function polarToSpecialCartesian(radius, angleInRadians) {
     };
 }
 
-// draws a directed piece of the pie with an arrowhead, starts at 0 angle, only draws in one direction (use transforms to move it around the ) 
-export default function drawDirectedPiePiece ({tailThickness=.6, arrowheadLength=1, radius, annotationHeight, totalAngle}) {
-    var tailHeight = annotationHeight*tailThickness;
+// draws a directed piece of the pie with an arrowhead, starts at 0 angle
+export default function drawDirectedPiePiece ({arrowheadLength=.5, radius, annotationHeight, totalAngle, forward}) {
+    var tailHeight = annotationHeight;
+
+    console.log(forward);
     
     var arrowheadOuterRadius = radius + annotationHeight / 2;
     var arrowheadInnerRadius = radius - annotationHeight / 2;
@@ -26,24 +28,43 @@ export default function drawDirectedPiePiece ({tailThickness=.6, arrowheadLength
     } 
     var arcAngle = totalAngle - arrowheadAngle;
 
-    //the main points we need to draw the arrow and in the order we draw them in:
-    var arrowheadPoint = polarToSpecialCartesian(radius, 0);
-    var arrowheadBottom = polarToSpecialCartesian(arrowheadInnerRadius, arrowheadAngle)
-    var arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, arrowheadAngle)
-    var arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle)
-    var arcRightTop = polarToSpecialCartesian(tailOuterRadius, totalAngle)
-    var arcLeftTop = polarToSpecialCartesian(tailOuterRadius, arrowheadAngle)
-    var arrowheadTop = polarToSpecialCartesian(arrowheadOuterRadius, arrowheadAngle)
+    var arrowheadPoint;
+    var arrowheadBottom;
+    var arcLeftBottom;
+    var arcRightBottom;
+    var arcRightTop;
+    var arcLeftTop;
+    var arrowheadTop;
+
+    // the main points we need to draw the arrow and in the order we draw them in:
+    // check which strand we're on 
+    if(forward) {
+        arrowheadPoint = polarToSpecialCartesian(radius, 0);
+        arrowheadBottom = polarToSpecialCartesian(arrowheadInnerRadius, arrowheadAngle)
+        arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, arrowheadAngle)
+        arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle)
+        arcRightTop = polarToSpecialCartesian(tailOuterRadius, totalAngle)
+        arcLeftTop = polarToSpecialCartesian(tailOuterRadius, arrowheadAngle)
+        arrowheadTop = polarToSpecialCartesian(arrowheadOuterRadius, arrowheadAngle)
+    } else {
+        arrowheadPoint = polarToSpecialCartesian(radius, 0);
+        arrowheadBottom = polarToSpecialCartesian(arrowheadInnerRadius, arrowheadAngle)
+        arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, arrowheadAngle)
+        arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle)
+        arcRightTop = polarToSpecialCartesian(tailOuterRadius, totalAngle)
+        arcLeftTop = polarToSpecialCartesian(tailOuterRadius, arrowheadAngle)
+        arrowheadTop = polarToSpecialCartesian(arrowheadOuterRadius, arrowheadAngle)
+    }
     
     var largeArcFlag = arcAngle > Math.PI ? 1 : 0
     var path = Path()
-        .moveto(arrowheadPoint.x,arrowheadPoint.y)
-        .lineto(arrowheadBottom.x,arrowheadBottom.y)
-        .lineto(arcLeftBottom.x,arcLeftBottom.y)
+        .moveto(arrowheadPoint.x, arrowheadPoint.y)
+        .lineto(arrowheadBottom.x, arrowheadBottom.y)
+        .lineto(arcLeftBottom.x, arcLeftBottom.y)
         .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag, sweepFlag: 1, x: arcRightBottom.x, y: arcRightBottom.y})
-        .lineto(arcRightTop.x,arcRightTop.y)
+        .lineto(arcRightTop.x, arcRightTop.y)
         .arc({rx: tailOuterRadius, ry: tailOuterRadius, xrot: 0, largeArcFlag, sweepFlag: 0, x: arcLeftTop.x, y: arcLeftTop.y})
-        .lineto(arrowheadTop.x,arrowheadTop.y)
+        .lineto(arrowheadTop.x, arrowheadTop.y)
         .closepath();
     path.print()
     return path;
