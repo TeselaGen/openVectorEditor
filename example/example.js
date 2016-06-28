@@ -1,6 +1,7 @@
 var ReactDOM = require('react-dom')
 var App = require('../app/App.js')
 import request from 'superagent/lib/client';
+import fakeIceSequenceData from './fakeIceSequenceData'
 
 var query = location.search;
 var cookie = document.cookie;
@@ -16,6 +17,10 @@ request
     .accept('application/json')
     .end(function(err, result) {
         var contents = result.body;
+        if (!contents) {
+          //use an example ice response
+          contents = fakeIceSequenceData
+        }
         var sequence = contents.sequence;
         var name = contents.name;
         var isCircular = contents.isCircular;
