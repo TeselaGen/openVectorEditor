@@ -5,7 +5,6 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: [
-        'webpack-hot-middleware/client?reload=true',
         "./example/example.js"
     ],
     output: {
@@ -40,7 +39,6 @@ module.exports = {
         __dirname: true,
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({ "global.GENTLY": false })
     ],

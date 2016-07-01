@@ -1,15 +1,16 @@
 import getRangeAngles from './getRangeAnglesSpecial';
 import getYOffset from './getYOffset';
+import intervalTree2 from 'interval-tree2';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React from 'react';
 import noop from 'lodash/utility/noop';
 import drawArc from './drawArc.js';
 
 export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
-    //console.log('RENDERING FEATURES');
     var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
-    var maxYOffset = 0
-    var svgGroup = []
+    var orfITree = new intervalTree2(Math.PI);
+    var maxYOffset = 0;
+    var svgGroup = [];
 
     Object.keys(orfs).forEach(function(key, index) {
         var annotation = orfs[key]
@@ -17,8 +18,10 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var annotationCopy = {...annotation}
         var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);
         var spansOrigin = startAngle > endAngle;
-        var expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle
-
+        var expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle;
+        var annotationRadius;
+        var yOffset1;
+        var yOffset2;
         var orfColor = 'red';
         var path = drawArc({radius, height: annotationHeight, totalAngle});
         if (annotation.frame === 2) {
@@ -27,24 +30,35 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             orfColor = 'blue';
         }
 
+        if (spansOrigin) {
+            annotationCopy.yOffset = getYOffset(orfITree, startAngle, expandedEndAngle)
+        } else {
+            //we need to check both locations to account for orfs that span the origin
+            yOffset1 = getYOffset(orfITree, startAngle, expandedEndAngle)
+            yOffset2 = getYOffset(orfITree, startAngle + Math.PI * 2, expandedEndAngle + Math.PI * 2)
+            annotationCopy.yOffset = Math.max(yOffset1, yOffset2)
+        }
+
+        annotationRadius = radius + annotationCopy.yOffset*(annotationHeight + spaceBetweenAnnotations)
+
+        if (spansOrigin) {
+            orfITree.add(startAngle, expandedEndAngle, undefined, {...annotationCopy})
+        } else {
+            //normal orf
+            // we need to add it twice to the interval tree to accomodate features which span the origin
+            orfITree.add(startAngle, expandedEndAngle, undefined, {...annotationCopy})
+            orfITree.add(startAngle + 2 * Math.PI, expandedEndAngle + 2 * Math.PI, undefined, {...annotationCopy})
+        }
+
+        if (annotationCopy.yOffset > maxYOffset) {
+            maxYOffset = annotationCopy.yOffset;
+        }
+
         svgGroup.push(
             <g 
                 id={annotation.id}
                 key={'Orfs' + annotation.id}
                 >
-                <defs>
-                    <g id='codon'>
-                        <circle style={{fill:'inherit'}} r="2"/>
-                    </g>
-                    <marker id='arrow'>
-                        <path 
-                            d="M 200 50 L 300 150 L 200 150 L 200 50" 
-                            stroke="red" 
-                            strokeWidth="3" 
-                            fill="none"  
-                            />
-                    </marker>
-                </defs>
                 <g className='Orfs clickable'>
                     <PositionAnnotationOnCircle
                         key={ 'orf' + annotation.id }
@@ -56,10 +70,9 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }
-                            strokeWidth={ annotationHeight }
+                            strokeWidth={ annotationHeight/2 }
                             markerEnd="url(#arrow)"
                             />
-
                     </PositionAnnotationOnCircle>                   
                 </g>
             </g>

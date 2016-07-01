@@ -24,7 +24,8 @@ function toDegrees(radians) {
 }
 
 @Cerebral({
-    annotationHeight: ['annotationHeight'],    
+    annotationHeight: ['annotationHeight'],
+    caretPosition: ['caretPosition'],     
     charWidth: ['charWidth'], 
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
     circularViewData: ['circularViewData'],    
@@ -33,8 +34,9 @@ function toDegrees(radians) {
     cutsites: ['cutsites'],
     orfs: ['orfData'],
     selectionLayer: ['selectionLayer'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
-
+    sequenceData: ['sequenceData'],
+    sequenceLength: ['sequenceLength'],
+    sequenceName: ['sequenceData', 'name'],
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showParts: ['showParts'],
@@ -44,10 +46,7 @@ function toDegrees(radians) {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    caretPosition: ['caretPosition'],
-    sequenceLength: ['sequenceLength'],
-    sequenceData: ['sequenceData'],
-    sequenceName: ['sequenceData', 'name']
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
 })
 
 export default class CircularView extends React.Component {
@@ -253,6 +252,19 @@ export default class CircularView extends React.Component {
                     className={'circularViewSvg'}
                     viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
                     >
+                    <defs>
+                        <marker id='codon' markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
+                            <circle fill="red" cx="0" cy="0" r="2"/>
+                        </marker>
+                        <marker id='arrow' markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
+                            <path 
+                                d="M 0 0 L 0 6 L 9 150 L 200 50" 
+                                stroke="red" 
+                                strokeWidth="3" 
+                                fill="none"  
+                                />
+                        </marker>
+                    </defs>
                     <text x={0} y={0} textAnchor={'middle'} /*fontSize={14}*/ style={{dominantBaseline: 'central'}}>
                         <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>
                         <tspan x={0} dy={'1.2em'}>{`(${ sequenceLength } bp)`}</tspan>

@@ -55,8 +55,8 @@ module.exports = {
     uppercase: true,
     // complex vars
     circularViewDimensions: {
-        height: 500,
-        width: 500
+        height: 700,
+        width: 700
     },
     cutsiteLabelSelectionLayer: {
         start: -1,

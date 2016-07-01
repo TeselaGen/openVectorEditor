@@ -126,7 +126,7 @@ function DrawLabelGroup (props) {
             x={labelXStart}
             className={ labelClass + label.className }
             y={textYStart}
-            style={{ fill: 'black', fontSize: fontHeight }}
+            style={{ fill: 'black', fontSize: '5px' }}
             >
             { text }
         </text>, 

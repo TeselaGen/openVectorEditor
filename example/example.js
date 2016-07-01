@@ -84,8 +84,8 @@ request
                     circular: isCircular,
                     name: name
                 },
-                embedded: !!embedded, // forcing a Boolean
-                readOnly: !canEdit // forced falsed Boolean
+                embedded: true, // forcing a Boolean
+                // readOnly: !canEdit // forced falsed Boolean
             },
             services: {
                 request: request

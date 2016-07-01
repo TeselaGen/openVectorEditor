@@ -124,7 +124,8 @@ export default class SequenceEditor extends React.Component {
             showSidebar,
             sidebarType,
             cutsites,
-            orfData
+            orfData,
+            readOnly
         } = this.props;
 
         var table;
@@ -160,7 +161,7 @@ export default class SequenceEditor extends React.Component {
         }
 
         return (
-            <div ref="sequenceEditor" className={styles.app}>
+            <div ref="sequenceEditor" className={styles.app} style={readOnly ? {display: 'none'} : {}}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}

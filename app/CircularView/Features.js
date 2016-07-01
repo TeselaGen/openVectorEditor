@@ -1,7 +1,6 @@
 import StyleFeature from './StyleFeature';
 import CircularFeature from './CircularFeature';
 import intervalTree2 from 'interval-tree2';
-// import drawCircularLabel2 from './drawCircularLabel2';
 import getRangeAngles from './getRangeAnglesSpecial';
 import getYOffset from './getYOffset';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
@@ -60,7 +59,6 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
             maxYOffset = annotationCopy.yOffset;
         }
 
-    //     if (!annotation.id) debugger;
         svgGroup.push(
             <g 
                 id={annotation.id}
@@ -71,7 +69,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                         key={ 'feature' + index }
                         sAngle={ startAngle }
                         eAngle={ endAngle }
-                        // direction={ 'reverse' } // buh
+                        direction={ 'reverse' } // buh
                         >
                         <StyleFeature
                             annotation={ annotation }
