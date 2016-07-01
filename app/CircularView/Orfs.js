@@ -22,13 +22,16 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var annotationRadius;
         var yOffset1;
         var yOffset2;
+        var path;
+        console.log(annotation);
+        // frame is one of [0,1,2]        
         var orfColor = 'red';
-        var path = drawArc({radius, height: annotationHeight, totalAngle});
-        if (annotation.frame === 2) {
+        if (annotation.frame === 1) {
             orfColor = 'green';
-        } else if (annotation.frame === 3) {
+        } else if (annotation.frame === 2) {
             orfColor = 'blue';
         }
+        console.log(orfColor);
 
         if (spansOrigin) {
             annotationCopy.yOffset = getYOffset(orfITree, startAngle, expandedEndAngle)
@@ -53,6 +56,8 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         if (annotationCopy.yOffset > maxYOffset) {
             maxYOffset = annotationCopy.yOffset;
         }
+
+        path = drawArc({ radius: annotationRadius, height: annotationHeight, totalAngle});
 
         svgGroup.push(
             <g 

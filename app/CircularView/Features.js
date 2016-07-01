@@ -37,15 +37,6 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
 
         annotationRadius = radius + annotationCopy.yOffset*(annotationHeight + spaceBetweenAnnotations)        
 
-        // add label info to labels
-        labels[annotation.id] ={
-            annotationCenterAngle: centerAngle,
-            annotationCenterRadius: annotationRadius,
-            text: annotation.name,
-            id: annotation.id,
-            className: 'veFeatureLabel'
-        }
-
         if (spansOrigin) {
             featureITree.add(startAngle, expandedEndAngle, undefined, {...annotationCopy})
         } else {
@@ -57,6 +48,15 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
 
         if (annotationCopy.yOffset > maxYOffset) {
             maxYOffset = annotationCopy.yOffset;
+        }
+
+        // add label info to labels
+        labels[annotation.id] ={
+            annotationCenterAngle: centerAngle,
+            annotationCenterRadius: annotationRadius,
+            text: annotation.name,
+            id: annotation.id,
+            className: 'veFeatureLabel'
         }
 
         svgGroup.push(
