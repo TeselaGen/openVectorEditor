@@ -154,7 +154,7 @@ export default class ToolBar extends React.Component {
                         <InputIcon />
                     </IconButton>
 
-                    {embeddedControls}
+                    { embeddedControls }
 
                     <IconButton
                         label='Print Current View'

@@ -159,7 +159,8 @@ export default class CircularView extends React.Component {
                 orfs,
                 radius,
                 annotationHeight,
-                sequenceLength
+                sequenceLength,
+                signals
             })
             radius+= orfResults.height
             annotationsSvgs.push(orfResults.component)
@@ -253,10 +254,10 @@ export default class CircularView extends React.Component {
                     viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
                     >
                     <defs>
-                        <marker id='codon' markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
+                        <marker id="codon" markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
                             <circle fill="red" cx="0" cy="0" r="2"/>
                         </marker>
-                        <marker id='arrow' markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
+                        <marker id="arrow" markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
                             <path 
                                 d="M 0 0 L 0 6 L 9 150 L 200 50" 
                                 stroke="red" 

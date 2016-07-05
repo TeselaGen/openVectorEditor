@@ -23,7 +23,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var yOffset1;
         var yOffset2;
         var path;
-        console.log(annotation);
+
         // frame is one of [0,1,2]        
         var orfColor = 'red';
         if (annotation.frame === 1) {
@@ -31,7 +31,6 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         } else if (annotation.frame === 2) {
             orfColor = 'blue';
         }
-        console.log(orfColor);
 
         if (spansOrigin) {
             annotationCopy.yOffset = getYOffset(orfITree, startAngle, expandedEndAngle)
@@ -72,11 +71,15 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         direction={ 'reverse' } // buh
                         >
                         <path
+                            onClick={ function (e) {
+                                e.stopPropagation()
+                                signals.orfClicked({annotation: annotation}) 
+                            }}
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }
                             strokeWidth={ annotationHeight/2 }
-                            markerEnd="url(#arrow)"
+                            markerEnd="url(#arrow)"                            
                             />
                     </PositionAnnotationOnCircle>                   
                 </g>

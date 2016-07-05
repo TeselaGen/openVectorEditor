@@ -161,10 +161,10 @@ export default class SideBar extends React.Component {
         var orfControls = (
             <div style={ sidebarControlStyle }>
                 Minimum ORF Size: { minimumOrfSize }                
-                {/* readOnly ? null : 
-                    <div id='orfControl' onClick={function() {showOrfModal = true;}}
+                { readOnly ? null : 
+                    <div id='orfControl' onClick={function() {this.state.showOrfModal = true;}}
                     style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
-                */}
+                }
                 { showOrfModal ? 
                     <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
                         <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
