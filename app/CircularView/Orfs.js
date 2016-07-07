@@ -24,11 +24,14 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var yOffset2;
         var path;
 
-        // frame is one of [0,1,2]        
+        console.log(annotation)
+
+        // frame is one of [0,1,2] 
+        // hacky fix for colors, not sure we're calculating reversed orfs right 
         var orfColor = 'red';
-        if (annotation.frame === 1) {
+        if (annotationCopy.frame === 1) {
             orfColor = 'green';
-        } else if (annotation.frame === 2) {
+        } else if (annotationCopy.frame === 2) {
             orfColor = 'blue';
         }
 

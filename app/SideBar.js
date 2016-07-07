@@ -89,7 +89,7 @@ export default class SideBar extends React.Component {
 
         var featureTabs;
         var controls;
-        var showOrfModal;
+        var showOrfModal = true;
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
         var selectedTabStyle = {};
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
@@ -162,7 +162,7 @@ export default class SideBar extends React.Component {
             <div style={ sidebarControlStyle }>
                 Minimum ORF Size: { minimumOrfSize }                
                 { readOnly ? null : 
-                    <div id='orfControl' onClick={function() {this.state.showOrfModal = true;}}
+                    <div id='orfControl' onClick={function(e) {console.log("onClick", showOrfModal);}}
                     style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
                 }
                 { showOrfModal ? 

@@ -14,7 +14,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
     var maxYOffset = 0
     var svgGroup = []
     var labels = {}
-    Object.keys(features).forEach(function(key, index) {
+    Object.keys(features).reverse().forEach(function(key, index) {
         var annotation = features[key]  
         var annotationCopy = {...annotation}
         var annotationRadius
