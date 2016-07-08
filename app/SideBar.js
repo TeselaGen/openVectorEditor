@@ -134,7 +134,8 @@ export default class SideBar extends React.Component {
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
         // pop out the detail modal
-        if (this.state.selectedRows.length === 1) {
+        // restrict to features since that's the only thingw e can edit/add/remove right now
+        if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = data[this.state.selectedRows[0]];
 
             var annotationForm = (<SidebarDetail feature={annotation} />);
