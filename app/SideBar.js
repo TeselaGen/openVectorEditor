@@ -116,6 +116,7 @@ export default class SideBar extends React.Component {
                     data = feature[column].toString();
                 }
                 // new stuff
+                // {{}} throws error when selecting cutsite and switching to features
                 if (column === 'name' && sidebarType === 'Cutsites') {
                     var enz = feature['restrictionEnzyme'];
                     data = enz['name'].toString();

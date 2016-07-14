@@ -97,7 +97,7 @@ export default class SidebarDetail extends React.Component {
                  value={this.state.feature.strand.toString()}
                  />
                  
-              <button> Save Changes </button>
+              <button onClick={this.onChange.bind(this)}> Save Changes </button>
             </div>
         );
     }

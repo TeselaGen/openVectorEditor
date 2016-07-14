@@ -252,6 +252,8 @@ export default class CircularView extends React.Component {
                     ref="circularView"
                     className={'circularViewSvg'}
                     viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
                     >
                     <defs>
                         <marker id="codon" markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">

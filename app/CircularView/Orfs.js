@@ -82,8 +82,9 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             fill="none"
                             stroke={ orfColor }
                             strokeWidth={ annotationHeight/2 }
-                            markerEnd="url(#arrow)"                            
+                            markerEnd="url(#arrow)"                          
                             />
+                        <use x='0' y='50' xlinkHref="#arrow" style={{fill: 'blue'}} />
                     </PositionAnnotationOnCircle>                   
                 </g>
             </g>
