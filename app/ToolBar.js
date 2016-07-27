@@ -67,7 +67,7 @@ export default class ToolBar extends React.Component {
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             embedded ? 
-                <div>
+                <div style={{display: 'inline-block'}}>
                 <RaisedButton
                     label='Row'
                     onTouchTap={function() {
@@ -144,10 +144,7 @@ export default class ToolBar extends React.Component {
 
         return (
             <Toolbar>
-                <ToolbarGroup key={0}>
-                    
-                    {embeddedControls}
-
+                <ToolbarGroup key={0}>                    
                     <IconButton
                         label='Feature Details'
                         onTouchTap={function() {
@@ -156,12 +153,15 @@ export default class ToolBar extends React.Component {
                         >
                         <InputIcon />
                     </IconButton>
+
+                    { embeddedControls }
+
                     <IconButton
                         label='Print Current View'
                         onTouchTap={function() {
                             prepPrintPage();
                         }}
-                    >
+                        >
                         <PrintIcon />
                     </IconButton>       
                     <IconButton label='Search' onClick={this.search.bind(this)}>
@@ -177,7 +177,7 @@ export default class ToolBar extends React.Component {
                         onTouchTap={function() {
                             signals.saveChanges();
                         }}
-                    >
+                        >
                         <SaveIcon />
                     </IconButton>                   
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">

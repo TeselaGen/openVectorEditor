@@ -1,7 +1,6 @@
-// var trimNumberToFitWithin0ToAnotherNumber = require('ve-range-utils/trimNumberToFitWithin0ToAnotherNumber');
 var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionByRangeLength');
 var getRangeLength = require('ve-range-utils/getRangeLength');
-// var ac = require('ve-api-check');
+
 export default function handleEditorDragged({input: {
     nearestBP,
 }, state, output}) {

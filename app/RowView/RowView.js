@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react';
-import { propTypes } from '../react-props-decorators.js';
-
+import {Decorator as Cerebral} from 'cerebral-view-react';
 import styles from './RowView.scss';
-
 import assign from 'lodash/object/assign';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
-
 import RowItem from './RowItem.js';
 
-@propTypes({
-    embedded: PropTypes.bool.isRequired,
-    sequenceData: PropTypes.object.isRequired,
-    columnWidth: PropTypes.number
+@Cerebral({
+    embedded: ['embedded'],
+    sequenceData: ['sequenceData'],
+    columnWidth: ['columnWidth']
 })
+
 export default class RowView extends React.Component {
 
     constructor(props) {
@@ -78,7 +76,7 @@ export default class RowView extends React.Component {
             <div ref={'rowView'}
                 className={ styles.rowView }
                 style={ embedded ? { display: 'none' } : null } // prime this inline for embedded version
-            >
+                >
                 <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                 <RowItem ref={'rowMeasure'} sequenceData={{ sequence: '' }} className={styles.rowMeasure} />
                 {

@@ -1,4 +1,3 @@
-var ac = require('ve-api-check'); 
 var adjustRangeToDeletionOfAnotherRange = require('ve-range-utils/adjustRangeToDeletionOfAnotherRange');
 var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
 var assign = require('lodash/object/assign');
@@ -6,7 +5,6 @@ var setSelectionLayer = require('./setSelectionLayer');
 
 export default function deleteSequence({state, output}) {
     var {selectionLayer, sequenceData} = state.get();
-    ac.throw(ac.range, selectionLayer)
     var newCaretPosition = selectionLayer.start;
 
     if (selectionLayer.start > selectionLayer.end) {

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
+// import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 import {Decorator as Cerebral} from 'cerebral-view-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
@@ -7,7 +7,7 @@ import SideBar from './SideBar';
 import styles from './sequence-editor.css';
 
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
-var CircularView = require('./CircularView');
+var CircularView = require('./CircularView/CircularView');
 var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
 var combokeys;
@@ -124,7 +124,8 @@ export default class SequenceEditor extends React.Component {
             showSidebar,
             sidebarType,
             cutsites,
-            orfData
+            orfData,
+            readOnly
         } = this.props;
 
         var table;
@@ -160,7 +161,7 @@ export default class SequenceEditor extends React.Component {
         }
 
         return (
-            <div ref="sequenceEditor" className={styles.app}>
+            <div ref="sequenceEditor" className={styles.app} style={readOnly ? {display: 'none'} : {}}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}

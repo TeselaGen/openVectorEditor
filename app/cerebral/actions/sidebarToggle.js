@@ -1,5 +1,9 @@
 module.exports = function sidebarToggle({input, state, output}) {
-    var current = state.get('showSidebar');
-    state.set('showSidebar', !current);
+    var currentSidebar = state.get('showSidebar');
+    // hide the rowview when the sidebar pops out
+    var currentRow = state.get('showRow');
+
+    state.set('showRow', !currentRow);
+    state.set('showSidebar', !currentSidebar);
     state.set('sidebarType', 'Features'); // features are default but making sure
 }
