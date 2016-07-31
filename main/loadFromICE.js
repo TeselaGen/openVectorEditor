@@ -1,7 +1,7 @@
 var ReactDOM = require('react-dom');
 var App = require('../app/App.js');
 import request from 'superagent/lib/client';
-import {toOpenVectorEditor} from './schemaConvert';
+import {toOpenVectorEditor} from '../app/schemaConvert';
 import fakeIceSequenceData from './fakeIceSequenceData'
 
 var query = location.search;

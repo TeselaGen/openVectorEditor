@@ -25,7 +25,24 @@ module.exports = {
             }
         }
      },
-    toJBEI: function(){
-        //jpnTODO this would be useful for saving back to ICE
+    toICE: function(state){
+        // remember to do checks for bad id and sid and sequence length
+        // parts is always parts, even for plasmids and seeds
+        var sequenceData = state.get('sequenceData')
+        return {
+            sequence: sequenceData.sequence,
+            name: state.get('name'),
+            isCircular: sequenceData.circular,
+            features: sequenceData.features.map(function (elem){
+                return {
+                    id: elem.id,
+                    type: elem.type,
+                    name: elem.name,
+                    strand: elem.strand,
+                    notes: elem.notes,
+                    locations: [{genbankStart: elem.start, end:elem.end}]
+                }
+            })
+        }
     }
 }
