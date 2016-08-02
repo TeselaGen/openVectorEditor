@@ -82,7 +82,7 @@ export default class SideBar extends React.Component {
 
         var featureTabs;
         var controls;
-        var showOrfModal = true;
+        var showOrfModal = false; // may need to mvoe this to the state tree
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
         var selectedTabStyle = {};
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
@@ -109,7 +109,6 @@ export default class SideBar extends React.Component {
                     data = feature[column].toString();
                 }
                 // new stuff
-                // {{}} throws error when selecting cutsite and switching to features
                 if (column === 'name' && sidebarType === 'Cutsites') {
                     var enz = feature['restrictionEnzyme'];
                     data = enz['name'].toString();
@@ -128,7 +127,7 @@ export default class SideBar extends React.Component {
             tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
         }
         // pop out the detail modal
-        // restrict to features since that's the only thingw e can edit/add/remove right now
+        // restrict to features since that's the only thing we can edit/add/remove right now
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = data[this.state.selectedRows[0]];
 
@@ -175,8 +174,8 @@ export default class SideBar extends React.Component {
             </div>
         );
 
-        return (
-            <div>
+        return ( // {{}} tabs onclick need to deselect any selected row
+            <div> 
                 <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
                     <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
                         signals.sidebarDisplay({ type: 'Features' });
