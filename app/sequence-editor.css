@@ -34,5 +34,9 @@
 }
 
 .foot {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 65px;
     z-index: 50;
 }
