@@ -34,7 +34,7 @@ module.exports = {
     embedded: true,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
-    readOnly: false,
+    readOnly: true,
     rowToJumpTo: null,
     showAxis: true,
     showCircular: true,

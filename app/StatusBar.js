@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { propTypes } from './react-props-decorators.js'; //tnrtodo: update this once the actual npm module updates its dependencies
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import styles from './status-bar.css';
 
@@ -9,13 +8,6 @@ import styles from './status-bar.css';
     caretPosition: ['caretPosition'],
     selectionLayer: ['selectionLayer'],
     readOnly: ['readOnly']
-})
-@propTypes({
-    sequenceLength: PropTypes.number.isRequired,
-    selectedSeqMeltingTemp: PropTypes.number.isRequired,
-    caretPosition: PropTypes.number.isRequired,
-    selectionLayer: PropTypes.object.isRequired,
-    readOnly: PropTypes.bool.isRequired
 })
 
 export default class StatusBar extends React.Component {

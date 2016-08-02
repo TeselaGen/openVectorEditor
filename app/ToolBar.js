@@ -1,6 +1,5 @@
 // React
 import React, { PropTypes } from 'react';
-import { propTypes } from './react-props-decorators.js';
 
 // Cerebral
 import { Decorator as Cerebral } from 'cerebral-view-react';
@@ -30,15 +29,6 @@ import TextField from 'material-ui/lib/text-field';
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar']
-})
-@propTypes({
-    embedded: PropTypes.bool.isRequired,
-    readOnly: PropTypes.bool.isRequired,
-    showOrfs: PropTypes.bool.isRequired,
-    showCutsites: PropTypes.bool.isRequired,
-    showParts: PropTypes.bool.isRequired,
-    showFeatures: PropTypes.bool.isRequired,
-    showTranslations: PropTypes.bool.isRequired
 })
 
 export default class ToolBar extends React.Component {

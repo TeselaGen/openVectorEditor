@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
-
 import { Decorator as Cerebral } from 'cerebral-view-react';
-import { propTypes } from './react-props-decorators.js';
 
 const Table = require('material-ui/lib/table/table');
 const TableBody = require('material-ui/lib/table/table-body');
@@ -20,11 +18,6 @@ import SidebarDetail from './SidebarDetail';
     minimumOrfSize: ['minimumOrfSize'],    
     readOnly: ['readOnly'],
     sidebarType: ['sidebarType']
-})
-@propTypes({
-    data: PropTypes.array.isRequired,
-    sidebarType: PropTypes.string.isRequired,
-    filter: PropTypes.array.isRequired
 })
 
 export default class SideBar extends React.Component {
