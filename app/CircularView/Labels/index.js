@@ -151,7 +151,7 @@ function LabelLine(pointArray) {
             points, 
             stroke:'black',
             fill: 'none',
-            strokeWidth: 1,
+            strokeWidth: .25,
             className: 'veLabelLine',
         }}
     />

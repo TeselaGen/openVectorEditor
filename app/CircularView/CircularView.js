@@ -143,7 +143,7 @@ export default class CircularView extends React.Component {
         if (showCutsites) {
             var cutsiteResults = Cutsites({
                 cutsites,
-                radius,
+                radius: radius - 4,
                 annotationHeight,
                 sequenceLength
             })
