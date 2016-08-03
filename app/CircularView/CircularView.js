@@ -131,7 +131,7 @@ export default class CircularView extends React.Component {
         if (showAxis) {
             var axisResult = Axis({
                             radius: radius,
-                            innerRadius: radius,
+                            innerRadius: radius - 8,
                             sequenceLength
                             })
             //update the radius, and svg

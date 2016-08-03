@@ -14,6 +14,7 @@ export default function saveToFile({input, state, output}) {
     if(fileExt.match("sbol|genbank|fasta|original")
         && id
         && sid) 
+    // a request made to ice with this format will tell it to send the file for download
     {
         window.open('rest/file/' + id + '/sequence/' + fileExt + '?sid=' + sid)
     } else {

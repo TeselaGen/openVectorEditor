@@ -80,7 +80,7 @@ export default function(options) {
         ],
         editorDragStopped: [
             [function pause ({input, state, output}) {
-                //async function that doesn't do anything
+                // {{}} async function that doesn't do anything
                 setTimeout(function () {
                     output()
                 },0)
