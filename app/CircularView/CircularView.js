@@ -130,8 +130,8 @@ export default class CircularView extends React.Component {
         //DRAW AXIS
         if (showAxis) {
             var axisResult = Axis({
-                            radius: radius + 8,
-                            innerRadius: radius + 4,
+                            radius: radius,
+                            innerRadius: radius,
                             sequenceLength
                             })
             //update the radius, and svg
@@ -184,6 +184,8 @@ export default class CircularView extends React.Component {
             });
             annotationsSvgs.push(
                 <PositionAnnotationOnCircle
+                    key='veSelectionLayer' 
+                    className='veSelectionLayer'
                     sAngle={ startAngle }
                     eAngle={ endAngle }
                     height={ 0 }

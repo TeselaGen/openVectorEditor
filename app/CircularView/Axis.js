@@ -11,7 +11,7 @@ export const draggableClassNames = ['selectionStart', 'selectionEnd', 'caretSvg'
     return obj;
 }, {});
 
-export default function Axis({radius, innerRadius, sequenceLength, axisLineThickness = 12} ) {
+export default function Axis({radius, innerRadius, sequenceLength, axisLineThickness = 10} ) {
 
     var component = 
         <g 
