@@ -37,7 +37,7 @@ export default function SelectionLayer ({selectionLayer, sequenceLength, radius,
                 >
                 <path
                     className='selectionLayer'
-                    style={ {    opacity: .4} }
+                    style={{ opacity: .4 }}
                     d={ section.path.print() }
                     fill="blue" 
                     />
@@ -50,7 +50,7 @@ export default function SelectionLayer ({selectionLayer, sequenceLength, radius,
                 >
                 <path
                     className='selectionLayerInverse'
-                    style={ {    opacity: .2} }
+                    style={{ opacity: .2 }}
                     d={ section2.path.print() }
                     fill="red" 
                     />
