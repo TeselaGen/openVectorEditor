@@ -1,5 +1,5 @@
-var ReactDOM = require('react-dom')
-var App = require('../app/App.js')
+var ReactDOM = require('react-dom');
+var App = require('../app/App.js');
 import request from 'superagent/lib/client';
 import fakeIceSequenceData from './fakeIceSequenceData'
 
@@ -15,11 +15,11 @@ request
     .get('rest/parts/' + id + '/sequence')
     .set('X-ICE-Authentication-sessionId', sid)
     .accept('application/json')
-    .end(function(err, result) {
+    .end(function (err, result) {
         var contents = result.body;
         if (!contents) {
-          //use an example ice response
-          contents = fakeIceSequenceData
+            //use an example ice response
+            contents = fakeIceSequenceData
         }
         var sequence = contents.sequence;
         var name = contents.name;
@@ -30,11 +30,11 @@ request
         var embedded = document.location.pathname.match(/entry/);
 
         // maybe move this
-        var colorFeature = function(feature) {
+        var colorFeature = function (feature) {
             var type = feature.type;
             type = type.toLowerCase();
             var color = "#CCCCCC";
-            switch(type) {
+            switch (type) {
                 case "promoter":
                     color = "#31B440";
                     break;
@@ -52,7 +52,7 @@ request
                     break;
                 case "misc_binding":
                     color = "#006FEF";
-                    break;                   
+                    break;
                 case "misc_marker":
                     color = "#8DCEB1";
                     break;
@@ -60,16 +60,19 @@ request
                     color = "#878787";
                     break;
                 default:
-                    // leave it gray            
+                // leave it gray
             }
             return color;
-        }
+        };
 
-        for (var f = 0; f < contents.features.length; f++) { 
+        for (var f = 0; f < contents.features.length; f++) {
             featureList.push(contents.features[f]);
-        }       
+        }
         // reformat feature data a little
         for (var p = 0; p < featureList.length; p++) {
+            if (!featureList[p].locations.length)
+                continue;
+
             featureList[p].start = featureList[p].locations[0].genbankStart;
             featureList[p].end = featureList[p].locations[0].end;
             featureList[p].color = colorFeature(featureList[p]);
@@ -84,8 +87,8 @@ request
                     circular: isCircular,
                     name: name
                 },
-                embedded: true, // forcing a Boolean
-                // readOnly: !canEdit // forced falsed Boolean
+                embedded: true // forcing a Boolean
+                // readOnly: !canEdit // forced false Boolean
             },
             services: {
                 request: request
@@ -93,7 +96,7 @@ request
             actions: {
                 // nothing here currently
             }
-        }
+        };
 
         //Editor is the React Component
         //controller is the cerebral state controller

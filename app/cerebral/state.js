@@ -216,13 +216,13 @@ module.exports = {
     ]),
     circularViewData: deriveData([
         ['combinedSequenceData'],
-        function(combinedSequenceData, ) {
+        function(combinedSequenceData) {
             return prepareCircularViewData(combinedSequenceData);
         }
     ]),
     circularAndLinearTickSpacing: deriveData([
         ['sequenceLength'],
-        function(sequenceLength, ) {
+        function(sequenceLength) {
             var a = Math.ceil(sequenceLength / 100) * 10;
             return a
         }
