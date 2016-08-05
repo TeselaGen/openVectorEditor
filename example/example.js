@@ -27,7 +27,7 @@ request
         var canEdit = contents.canEdit;
         var seqId = contents.identifier;
         var featureList = [];
-        // var embedded = document.location.pathname.match(/entry/);
+        var embedded = document.location.pathname.match(/entry/);
 
         // maybe move this
         var colorFeature = function(feature) {
@@ -84,6 +84,7 @@ request
                     circular: isCircular,
                     name: name
                 },
+                embedded: embedded
             },
             services: {
                 request: request

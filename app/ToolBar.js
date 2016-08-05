@@ -14,9 +14,12 @@ import InputIcon from 'material-ui/lib/svg-icons/action/input';
 import SearchIcon from 'material-ui/lib/svg-icons/action/search';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
-import downloadIcon from 'material-ui/lib/svg-icons/file/file-download';
-import uploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
+import DownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
+import UploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
 import PrintIcon from 'material-ui/lib/svg-icons/action/print';
+import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
+import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
+import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 
@@ -56,23 +59,29 @@ export default class ToolBar extends React.Component {
 
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
-            embedded ? 
-                <div style={{display: 'inline-block'}}>
-                <RaisedButton
-                    label='Row'
+            <div style={{display: 'inline-block'}}>
+                <IconButton
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
                         document.getElementById("rowView").setAttribute("style", "display: block"); 
                     }}
-                />
-                <RaisedButton
-                    label='Map'
+                    >
+                    <RowIcon />
+                </IconButton>
+                <IconButton
+                    // not set up yet
+                    >
+                    <RailIcon />
+                </IconButton>                
+                <IconButton
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: none");                        
                     }}
-                />
-                </div> : null
+                    >
+                    <CircularIcon />
+                </IconButton>
+            </div>
         )
 
         // upload and download files items
@@ -159,7 +168,7 @@ export default class ToolBar extends React.Component {
                     </IconButton>                                  
                     <TextField ref="searchField" hintText="search sequence" />
 
-                    {toggleFeatures}
+                    { toggleFeatures }
 
                     <IconButton
                         disabled={ readOnly }  // you can't save in read only
@@ -171,7 +180,7 @@ export default class ToolBar extends React.Component {
                         <SaveIcon />
                     </IconButton>                   
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
-                        {fileMenuItems}
+                        { fileMenuItems }
                     </IconMenu>                  
                 </ToolbarGroup>           
             

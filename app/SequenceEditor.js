@@ -13,8 +13,9 @@ var combokeys;
 var RowView = require('./RowView/RowView');
 
 @Cerebral({
+    bpsPerRow: ['bpsPerRow'],    
+    embedded: ['embedded'],
     sequenceLength: ['sequenceLength'],
-    bpsPerRow: ['bpsPerRow'],
     totalRows: ['totalRows'],
     newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
     selectedSequenceString: ['selectedSequenceString'],
@@ -116,6 +117,7 @@ export default class SequenceEditor extends React.Component {
 
     render() {
         var {
+            embedded,
             selectedSequenceString,
             sequenceData,
             showCircular,
@@ -160,7 +162,7 @@ export default class SequenceEditor extends React.Component {
         }
 
         return (
-            <div ref="sequenceEditor" className={styles.app} style={readOnly ? {display: 'none'} : {}}>
+            <div ref="sequenceEditor" className={styles.app} style={embedded ? {width: '600px'} : {}}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}
@@ -179,7 +181,7 @@ export default class SequenceEditor extends React.Component {
                     <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
                         <CircularView />
                     </div>
-                    <div className={styles.rowViewSlot} id="rowView" style={(showRow) ? {} : {display: 'none'}}>
+                    <div className={styles.rowViewSlot} id="rowView" style={(!embedded) ? {} : {display: 'none'}}>
                         <RowView sequenceData={sequenceData} columnWidth={10} />
                     </div>
                 </div>
