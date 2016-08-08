@@ -1,6 +1,6 @@
 var colorOfFeature = require('./colorOfFeature');
 module.exports = {
-        toOpenVectorEditor: function(contents, embedded, services){
+    toOpenVectorEditor: function(contents, embedded, services){
         return {
             state: {
                 sequenceData: {
@@ -11,20 +11,20 @@ module.exports = {
                         elem.color = colorOfFeature(elem)
                         return elem
                     }),
+                    name: contents.name,
                     _id: contents.identifier,
                     sequence: contents.sequence,
                     circular: contents.isCircular
                 },
                 embedded: !!embedded, //forced boolean
-                readOnly: !contents.canEdit, //forced false boolean
-                name: contents.name
+                readOnly: !contents.canEdit //forced inverse boolean
             },
             services: services,
             actions: {
                 //nothing here currently
             }
         }
-     },
+    },
     toICE: function(state){
         // remember to do checks for bad id and sid and sequence length
         // parts is always parts, even for plasmids and seeds
