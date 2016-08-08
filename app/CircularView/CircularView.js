@@ -131,7 +131,7 @@ export default class CircularView extends React.Component {
         if (showAxis) {
             var axisResult = Axis({
                             radius: radius,
-                            innerRadius: radius - 8,
+                            innerRadius: radius - 4,
                             sequenceLength
                             })
             //update the radius, and svg
@@ -143,7 +143,7 @@ export default class CircularView extends React.Component {
         if (showCutsites) {
             var cutsiteResults = Cutsites({
                 cutsites,
-                radius,
+                radius: radius - 4,
                 annotationHeight,
                 sequenceLength
             })
@@ -270,9 +270,9 @@ export default class CircularView extends React.Component {
                                 />
                         </marker>
                     </defs>
-                    <text x={0} y={0} textAnchor={'middle'} /*fontSize={14}*/ style={{dominantBaseline: 'central'}}>
-                        <tspan x={0} y={'0.6em'} dy={'-1.2em'}>{ sequenceName }</tspan>
-                        <tspan x={0} dy={'1.2em'}>{`(${ sequenceLength } bp)`}</tspan>
+                    <text x={0} y={0} fontSize={'14px'} textAnchor={'middle'} style={{dominantBaseline: 'central'}}>
+                        <tspan x={0} y={'0.6em'} dy={'-1.2em'} fontSize={'12px'}>{ sequenceName }</tspan>
+                        <tspan x={0} dy={'1.2em'} fontSize={'10px'}>{`(${ sequenceLength } bp)`}</tspan>
                     </text>
 
                     { annotationsSvgs }
