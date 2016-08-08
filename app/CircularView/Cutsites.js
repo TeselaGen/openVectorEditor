@@ -3,10 +3,11 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React, { PropTypes } from 'react';
 import each from 'lodash/collection/each';
 
-export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteWidth=1, annotationHeight, sequenceLength, signals}) {
+export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteWidth=.25, annotationHeight, sequenceLength, signals}) {
     var svgGroup = [];
     var labels = {};
     var index = 0;
+    radius = radius;
     each(cutsites,function(annotation, key) {
         index++;
         function onClick(event) {
