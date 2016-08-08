@@ -11,26 +11,33 @@ id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
+/**
+ * Upload the sequence file to the server to be parsed.
+ * The parsed sequence is not associated with the current entry that the user is viewing but rather
+ * requires clicking "save"
+ * @param input
+ * @param state
+ * @param output
+ */
 export default function loadFromFile({input, state, output}) {
-    var seqFileParser = require('bio-parsers/parsers/anyToJSON');
+    var { inputFile } = input;
 
-    console.log("did it. :3");
+    request.post('rest/file/sequence/model')
+        .set('X-ICE-Authentication-sessionId', sid)
+        .field("entryRecordId", id)
+        .field("entryType", "part")
+        .attach("file", inputFile)
+        .end((err, res) => {
+            //console.log(err);
+            //console.log(res);
+            if (res) {
+                let sequenceData = res.body.sequence;
+                sequenceData.cutsites = [];
+                sequenceData.orfs = [];
+                sequenceData.translations = [];
+                sequenceData.parts = [];
 
-    if(id && sid) 
-    {
-        request
-            .post('rest/parts/sequence')
-            .set('X-ICE-Authentication-sessionId', sid)
-            .set('Content-Type', 'application/json')
-            .send(/* results of seqfileparser? or is that on node server*/)
-            .end(function(err, result) {
-                if(err) {
-                    console.log("unable to load file, something went wrong: " + err)
-                }
+                state.set('sequenceData', sequenceData);
             }
-        );
-    } else {
-        console.log("something went wrong, unable to upload file");
-    }
-
+        });
 }

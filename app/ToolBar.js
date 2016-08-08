@@ -97,8 +97,17 @@ export default class ToolBar extends React.Component {
                     signals.clickSaveFile({fileExt: 'fasta'});
                 }} />
                 <MenuItem key={4} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
-                    signals.clickLoadFile();
-                }} />         
+                    var element = document.getElementById("uploadFileInput");
+                    element.click();
+                    element.addEventListener("change", handleFiles, false);
+                    function handleFiles() {
+                        let file = this.files[0];
+                         signals.clickLoadFile({inputFile: file});
+                    }
+                }} />
+
+                <input type="file" id="uploadFileInput" style={{display:'none'}} onChange={function() {
+                }} />
             </div>
         );
 
@@ -143,7 +152,7 @@ export default class ToolBar extends React.Component {
 
         return (
             <Toolbar>
-                <ToolbarGroup key={0}>                    
+                <ToolbarGroup key={0}>
                     <IconButton
                         label='Feature Details'
                         onTouchTap={function() {
@@ -162,10 +171,10 @@ export default class ToolBar extends React.Component {
                         }}
                         >
                         <PrintIcon />
-                    </IconButton>       
+                    </IconButton>
                     <IconButton label='Search' onClick={this.search.bind(this)}>
                         <SearchIcon />
-                    </IconButton>                                  
+                    </IconButton>
                     <TextField ref="searchField" hintText="search sequence" />
 
                     { toggleFeatures }
@@ -178,12 +187,12 @@ export default class ToolBar extends React.Component {
                         }}
                         >
                         <SaveIcon />
-                    </IconButton>                   
+                    </IconButton>
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
                         { fileMenuItems }
                     </IconMenu>                  
                 </ToolbarGroup>           
-            
+
             </Toolbar>
         );
     }
