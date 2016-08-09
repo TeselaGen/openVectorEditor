@@ -98,7 +98,7 @@ export default function(options) {
             a.updateSearchLayers
         ],
         setSelectionLayer: [a.setSelectionLayer],
-        
+
     // ///////////////////////////////////
     // edit only actions
         backspacePressed: a.addEditModeOnly([
@@ -106,7 +106,7 @@ export default function(options) {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
-        ]),  
+        ]),
         // paste sequence from clipboard
         pasteSequenceString: a.addEditModeOnly([
             a.pasteSequenceString, {
@@ -141,12 +141,15 @@ export default function(options) {
             [a.saveToFile],
         saveChanges:
             [a.saveToServer],
-        clickLoadFile: 
-            [a.loadFromFile],
-
+        clickLoadFile: [
+            [a.loadFromFile], {
+                success: [a.insertSequenceData],
+                error: []
+            }
+        ],
         //lower priority
         addAnnotations: [a.addAnnotations],
-        jumpToRow: [a.jumpToRow],  
+        jumpToRow: [a.jumpToRow],
     }
     return assign({}, signals, options.signals) //optionally override any signals here
 }
