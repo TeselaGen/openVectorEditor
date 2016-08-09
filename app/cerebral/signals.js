@@ -98,6 +98,10 @@ export default function(options) {
             a.updateSearchLayers
         ],
         setSelectionLayer: [a.setSelectionLayer],
+
+        restrictionEnzymeManagerDisplay: [
+            a.restrictionEnzymeManagerDisplay
+        ],
         
     // ///////////////////////////////////
     // edit only actions

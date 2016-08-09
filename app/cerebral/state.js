@@ -48,6 +48,7 @@ module.exports = {
     showSequence: true,
     showSidebar: false,
     showTranslations: false,
+    showRestrictionEnzymeManager: false,
     sidebarType: 'Features',
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,

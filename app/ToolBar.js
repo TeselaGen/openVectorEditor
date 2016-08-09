@@ -19,6 +19,7 @@ import uploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
 import PrintIcon from 'material-ui/lib/svg-icons/action/print';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
+import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
 
 @Cerebral({
     embedded: ['embedded'],
@@ -99,6 +100,22 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
+/*
+        var restrictionEnzymeManager = (
+            <Dialog>
+                <TextField primaryText="Download SBOL" />
+            </Dialog>
+
+        );
+
+
+        var enzymesButtonElement = (
+            <IconButton tooltip="'Manage Restriction Enzymes'">
+                <EnzymesIcon />
+            </IconButton>
+        );
+        */
+
         // jsx styling syntax is really screwy!
         var disabledStyle = {opacity: '.5'};
         var toggleStyles = {display: 'inline-block', fontSize: '16px', fontWeight: 'bold', verticalAlign: 'top'}
@@ -172,7 +189,17 @@ export default class ToolBar extends React.Component {
                     </IconButton>                   
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
                         {fileMenuItems}
-                    </IconMenu>                  
+                    </IconMenu>
+
+                     <IconButton
+                        label='Manage Restrictions Enzymes'
+                        tooltip='Manage Restriction Enzymes'
+                        onTouchTap={function() {
+                                signals.restrictionEnzymeManagerDisplay();
+                            }}
+                                >
+                                <EnzymesIcon />
+                     </IconButton>
                 </ToolbarGroup>           
             
             </Toolbar>
