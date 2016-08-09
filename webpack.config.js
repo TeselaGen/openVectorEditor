@@ -5,7 +5,7 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: [
-        'webpack-hot-middleware/client?reload=false',
+        // 'webpack-hot-middleware/client?reload=true',
         "./main/loadFromICE.js"
     ],
     output: {
@@ -40,7 +40,7 @@ module.exports = {
         __dirname: true,
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({ "global.GENTLY": false })
     ],
