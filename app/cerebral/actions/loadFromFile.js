@@ -6,8 +6,8 @@ import request from 'superagent/lib/client';
 
 var query = location.search;
 var cookie = document.cookie;
-var id = query.match(/entryId=[\d]+/) + "";
-id = id.replace(/entryId=/, "");
+//var id = query.match(/entryId=[\d]+/) + "";
+//id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
@@ -24,20 +24,12 @@ export default function loadFromFile({input, state, output}) {
 
     request.post('rest/file/sequence/model')
         .set('X-ICE-Authentication-sessionId', sid)
-        .field("entryRecordId", id)
-        .field("entryType", "part")
         .attach("file", inputFile)
         .end((err, res) => {
             //console.log(err);
-            //console.log(res);
             if (res) {
                 let sequenceData = res.body.sequence;
-                sequenceData.cutsites = [];
-                sequenceData.orfs = [];
-                sequenceData.translations = [];
-                sequenceData.parts = [];
-
-                state.set('sequenceData', sequenceData);
+                output.success({'newSequenceData': sequenceData});
             }
         });
 }
