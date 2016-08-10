@@ -31,7 +31,7 @@ module.exports = {
     charHeight: 15,
     charWidth: 15,
     clipboardData: null,
-    // embedded: true,
+    embedded: true,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     readOnly: true,
@@ -55,8 +55,8 @@ module.exports = {
     uppercase: true,
     // complex vars
     circularViewDimensions: {
-        height: 700,
-        width: 700
+        height: 500,
+        width: 500
     },
     cutsiteLabelSelectionLayer: {
         start: -1,

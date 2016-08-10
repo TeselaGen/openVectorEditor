@@ -94,6 +94,7 @@ export default class SequenceEditor extends React.Component {
             event.stopPropagation();
         });
     }
+
     // copy and paste events are handled by a listener in the DOM element as listed below
     handlePaste(event) {
         var {
@@ -162,7 +163,7 @@ export default class SequenceEditor extends React.Component {
         }
 
         return (
-            <div ref="sequenceEditor" className={styles.app} style={embedded ? {width: '600px'} : {}}>
+            <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}
@@ -181,7 +182,7 @@ export default class SequenceEditor extends React.Component {
                     <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
                         <CircularView />
                     </div>
-                    <div className={styles.rowViewSlot} id="rowView" style={(!embedded) ? {} : {display: 'none'}}>
+                    <div className={styles.rowViewSlot} id="rowView" style={(embedded || !showRow) ? {display: 'none'} : {}}>
                         <RowView sequenceData={sequenceData} columnWidth={10} />
                     </div>
                 </div>
