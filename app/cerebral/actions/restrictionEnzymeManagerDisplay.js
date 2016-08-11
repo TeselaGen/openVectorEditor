@@ -1,3 +1,4 @@
 module.exports = function restrictionEnzymeManagerDisplay({input, state, output}) {
-    state.set('showRestrictionEnzymeManager', true);
+    var currentDisplay = state.get('showRestrictionEnzymeManager');
+    state.set('showRestrictionEnzymeManager', !currentDisplay);
 }

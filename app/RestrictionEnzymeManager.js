@@ -1,44 +1,66 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 
+import FlatButton from 'material-ui/lib/flat-button';
+import RaisedButton from 'material-ui/lib/raised-button';
+
 const Dialog = require('material-ui/lib/dialog');
-// import Dialog from 'material-ui/lib/dialog';
 
 @Cerebral({
     showRestrictionEnzymeManager: ['showRestrictionEnzymeManager'],
-    readOnly: ['readOnly'],
 })
 
 export default class RestrictionEnzymeManager extends  React.Component {
-
-    constructor () {
-        super();
-        this.closeModal = this.closeModal.bind(this);
-    }
-
     state = {
-        open: true,
+        open: false,
     };
 
-    returnState () {
-        console.log(this.state.open);
-        console.log(this.state.isOpen);
-        return this.state.isOpen;
-    }
-
-    openDialog () {this.setState({open: true});};
-
-    closeDialog () { this.setState({open: false}); };
+    // returnState () {
+    //     console.log(this.state.open);
+    //     console.log(this.state.isOpen);
+    //     return this.state.isOpen;
+    // }
+    //
+    // openDialog () {this.setState({open: true});};
+    //
+    // closeDialog () { this.setState({open: false}); };
 
     render () {
+        var {
+            signals,
+            showRestrictionEnzymeManager,
+        } = this.props;
+
+        var toOpen = showRestrictionEnzymeManager;
+
+        var actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={function() {
+                        signals.restrictionEnzymeManagerDisplay();
+                    }}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={function() {
+                        signals.restrictionEnzymeManagerDisplay();
+                    }}
+            />,
+        ];
+
         return (
             <div>
+
                 <Dialog
-                    isOpen={this.returnState}
-                    onRequestClose={this.closeModal}
-                    >
-                    <h1>Close Me With Escape Modal</h1>
-                    <button onClick={this.closeDialog}>Close</button>
+                    title="Restriction Enzyme Manager"
+                    actions={actions}
+                    open={toOpen}
+
+                >
+                    "HIIIIII"
                 </Dialog>
             </div>
         );

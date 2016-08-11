@@ -3,7 +3,6 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
 import SideBar from './SideBar';
-import RestrictionEnzymeManager from './RestrictionEnzymeManager';
 import styles from './sequence-editor.css';
 
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
@@ -30,7 +29,6 @@ var RowView = require('./RowView/RowView');
     sidebarType: ['sidebarType'],
     cutsites: ['cutsites'],
     orfData: ['orfData'],
-    showRestrictionEnzymeManager: ['showRestrictionEnzymeManager']
 })
 
 export default class SequenceEditor extends React.Component {
@@ -131,17 +129,9 @@ export default class SequenceEditor extends React.Component {
         } = this.props;
 
         var table;
-        var dialog;
         var sidebarStyle = {};
         // we need this position relative to place the controller bar in the sidebar
         Object.assign(sidebarStyle, {minWidth: '580px', overflow: 'hidden', borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
-        Object.assign(sidebarStyle, (showRestrictionEnzymeManager) ? {} : {display: 'none'})
-
-        if (showRestrictionEnzymeManager === true) {
-            dialog = (
-                <RestrictionEnzymeManager />
-            );
-        }
 
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {

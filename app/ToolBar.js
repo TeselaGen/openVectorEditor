@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 
 // Cerebral
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import RestrictionEnzymeManager from './RestrictionEnzymeManager';
 
 // Material UI
 import Toolbar from 'material-ui/lib/toolbar/toolbar';
@@ -55,6 +56,10 @@ export default class ToolBar extends React.Component {
             signals
         } = this.props;
 
+        var dialog = (
+            <RestrictionEnzymeManager />
+        );
+
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             embedded ? 
@@ -100,21 +105,11 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
-/*
-        var restrictionEnzymeManager = (
-            <Dialog>
-                <TextField primaryText="Download SBOL" />
-            </Dialog>
-
-        );
-
-
-        var enzymesButtonElement = (
-            <IconButton tooltip="'Manage Restriction Enzymes'">
+        var dialogButtonElement = (
+            <IconButton tooltip="Restriction Enzyme Manager">
                 <EnzymesIcon />
             </IconButton>
         );
-        */
 
         // jsx styling syntax is really screwy!
         var disabledStyle = {opacity: '.5'};
@@ -190,16 +185,17 @@ export default class ToolBar extends React.Component {
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
                         {fileMenuItems}
                     </IconMenu>
-
-                     <IconButton
-                        label='Manage Restrictions Enzymes'
+                    <IconButton
+                        label="Dialog"
                         tooltip='Manage Restriction Enzymes'
                         onTouchTap={function() {
-                                signals.restrictionEnzymeManagerDisplay();
-                            }}
-                                >
-                                <EnzymesIcon />
-                     </IconButton>
+                            signals.restrictionEnzymeManagerDisplay();
+                        }}
+                        >
+                        <EnzymesIcon />
+                    </IconButton>
+                    {dialog}
+
                 </ToolbarGroup>           
             
             </Toolbar>
