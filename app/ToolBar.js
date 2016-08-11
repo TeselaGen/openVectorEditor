@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 
 // Cerebral
 import { Decorator as Cerebral } from 'cerebral-view-react';
-import RestrictionEnzymeManager from './RestrictionEnzymeManager';
+import RestrictionEnzymeManager from './RectrictionEnzymeManager/RestrictionEnzymeManager';
 
 // Material UI
 import Toolbar from 'material-ui/lib/toolbar/toolbar';
