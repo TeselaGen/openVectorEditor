@@ -1,100 +1,83 @@
-import React, { PropTypes } from 'react';
-import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
-import { columnizeString, elementWidth, calculateRowLength } from './Utils';
-import styles from './RowItem.scss';
+import React, {PropTypes} from 'react';
+// import HighlightLayer from './HighlightLayer';
 
-export default class RowItem extends React.Component {
+var getComplementSequenceString = require('ve-sequence-utils/getComplementSequenceString');
+var SequenceContainer = require('./SequenceContainer');
+// var AxisContainer = require('../AxisContainer');
+// var OrfContainer = require('../OrfContainer');
+// var TranslationContainer = require('../TranslationContainer');
+// var FeatureContainer = require('../FeatureContainer');
+// var CutsiteLabelContainer = require('./CutsiteLabelContainer');
+// var CutsiteSnipsContainer = require('./CutsiteSnipsContainer');
+// var Caret = require('./Caret');
 
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-    }
-
-    getMaxSequenceLength(charWidth, columnWidth) {
-        var sequenceWidthPx = elementWidth(this.refs.sequenceContainer);
-        return calculateRowLength(charWidth, sequenceWidthPx, columnWidth);
-    }
-
-    _resizeSVG() {
-        var {
-            sequenceContainer: svg
-        } = this.refs;
-
-        var bbox = svg.getBBox();
-        svg.setAttribute('height', bbox.y + bbox.height + 'px');
-    }
-
-    componentDidMount() {
-        this._resizeSVG();
-    }
-
-    componentDidUpdate() {
-        this._resizeSVG();
-    }
-
-    _processProps(props) {
-        var {
-            sequenceData,
-            columnWidth
-        } = props;
-
-        var {
-            sequence,
-            offset,
-            className
-        } = sequenceData;
-
-        var complement = getComplementSequenceString(sequence);
-
-        var renderedSequence = columnizeString(sequence, columnWidth);
-        var renderedComplement = columnizeString(complement, columnWidth);
-
-        this.setState({
-            renderedSequence: renderedSequence,
-            renderedComplement: renderedComplement,
-            renderedOffset: (offset || 0) + 1
-        });
-    }
-
-    componentWillMount() {
-        this._processProps(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this._processProps(nextProps);
-    }
-
+class RowItem extends React.Component {
     render() {
         var {
-            className
+            charWidth,
+            selectionLayer,
+            searchLayers,
+            cutsiteLabelSelectionLayer,
+            annotationHeight,
+            tickSpacing,
+            spaceBetweenAnnotations,
+            showFeatures,
+            showTranslations,
+            showParts,
+            showOrfs,
+            showAxis,
+            showCutsites,
+            showReverseSequence,
+            caretPosition,
+            sequenceLength,
+            bpsPerRow,
+            row,
+            uppercase,
+            signals,
         } = this.props;
 
-        var {
-            renderedSequence,
-            renderedComplement,
-            renderedOffset
-        } = this.state;
+        if (!row) {
+            return null;
+        }
+        var fontSize = charWidth + "px";
+        
+        var rowContainerStyle = {
+            overflow: "hidden",
+            position: "relative",
+            width: "100%",
+        };
+
+        var sequence = (uppercase) ? row.sequence.toUpperCase() : row.sequence.toLowerCase();
 
         return (
-            <div className={styles.rowItem + ' ' + className}>
-                <div className={styles.margin}>
-                    {renderedOffset}
-                </div>
+            <div className="rowContainer"
+                style={rowContainerStyle}
+                onMouseMove={this.onMouseMove}
+                onMouseUp={this.onMouseUp}
+                onMouseDown={this.onMouseDown}
+                >
+               
 
-                <svg ref={'sequenceContainer'} className={styles.sequenceContainer}>
-                    <text ref={'sequence'} className={styles.sequence}>
-                        <tspan className={styles.sequence}>
-                            {renderedSequence}
-                        </tspan>
 
-                        <tspan x={0} dy={'1.2em'} className={styles.sequence + ' ' + styles.reversed}>
-                            {renderedComplement}
-                        </tspan>
-                    </text>
-                </svg>
+                <SequenceContainer 
+                    sequence={sequence} 
+                    charWidth={charWidth}>
+
+                </SequenceContainer>
+
+                {showReverseSequence &&
+                    <SequenceContainer sequence={ getComplementSequenceString(sequence)} charWidth={charWidth}>
+
+                    </SequenceContainer>
+                }
+
+
+
+
+
             </div>
         );
     }
-
 }
+
+module.exports = RowItem;
