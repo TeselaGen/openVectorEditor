@@ -4,6 +4,7 @@ import some from 'lodash/collection/some'
 // import prepareRowData from './prepareRowData'
 import React from 'react';
 import Draggable from 'react-draggable'
+import { Decorator as Cerebral } from 'cerebral-view-react';
 // import RowItem from './RowItem'
 // import ReactList from 'react-list';
 // import './style.scss';
@@ -16,6 +17,30 @@ var defaultMarginWidth = 10
 
 function noop() {
 }
+
+@Cerebral({
+    annotationHeight: ['annotationHeight'],
+    caretPosition: ['caretPosition'],     
+    charWidth: ['charWidth'], 
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
+    cutsites: ['cutsites'],
+    orfs: ['orfData'],
+    selectionLayer: ['selectionLayer'],
+    sequenceData: ['sequenceData'],
+    sequenceLength: ['sequenceLength'],
+    sequenceName: ['sequenceData', 'name'],
+    showFeatures: ['showFeatures'],
+    showTranslations: ['showTranslations'],
+    showParts: ['showParts'],
+    showOrfs: ['showOrfs'],
+    showAxis: ['showAxis'],
+    showCaret: ['showCaret'],
+    showSequence: ['showSequence'],
+    showCutsites: ['showCutsites'],
+    showReverseSequence: ['showReverseSequence'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+})
 
 export default class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(rowData, event, callback) {
@@ -75,11 +100,21 @@ export default class RowView extends React.Component {
 
     render() {
         var {
-            sequenceData = {},
-            editorDragged = noop,
-            editorDragStarted = noop,
-            editorClicked = noop,
-            editorDragStopped = noop,
+            sequenceData,
+            sequenceLength,
+            selectionLayer,
+            sequenceName,
+            cutsites,
+            orfs,
+            showAxis,
+            showCaret,
+            showCutsites,
+            showFeatures,
+            showOrfs,
+            annotationHeight,
+            spaceBetweenAnnotations,
+            annotationVisibility,
+            caretPosition,
             width=defaultContainerWidth,
             marginWidth=defaultMarginWidth,
             height=400,
@@ -89,25 +124,25 @@ export default class RowView extends React.Component {
         } = this.props;
 
         var renderItem = (index,key) =>{
-          if (rowData[index]) {
-              return (
-                  <div data-row-number={index} key={key}>
-                      <div className={'veRowItemSpacer'}/>
-                      <RowItem {
-                              ...{
-                                  ...rest,
-                                  sequenceLength: sequenceData.sequence.length,
-                                  width: width - marginWidth,
-                                  bpsPerRow,
-                              }
-                          }
-                          row={rowData[index]}
-                          />
-                  </div>
-              );
-          } else {
-              return null
-          }
+            if (rowData[index]) {
+                return (
+                    <div data-row-number={index} key={key}>
+                        <div className={'veRowItemSpacer'}/>
+                        <RowItem {
+                            ...{
+                            ...rest,
+                            sequenceLength: sequenceData.sequence.length,
+                            width: width - marginWidth,
+                            bpsPerRow,
+                            }
+                            }
+                            row={rowData[index]}
+                            />
+                    </div>
+                );
+            } else {
+                return null
+            }
         }
 
         return (
