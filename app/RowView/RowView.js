@@ -1,19 +1,16 @@
 import some from 'lodash/collection/some'
-// import moveCaret from '../VectorInteractionWrapper/moveCaret'
-// import handleCaretMoved from '../VectorInteractionWrapper/handleCaretMoved'
-// import prepareRowData from './prepareRowData'
+import prepareRowData from './prepareRowData'
 import React from 'react';
 import Draggable from 'react-draggable'
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import ReactList from 'react-list';
 // import RowItem from './RowItem'
-// import ReactList from 'react-list';
+
 // import './style.scss';
 
 var defaultContainerWidth = 400
 var defaultCharWidth = 12
 var defaultMarginWidth = 10
-// var Combokeys = require("combokeys");
-// var combokeys;
 
 function noop() {
 }
@@ -26,6 +23,8 @@ function noop() {
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
     cutsites: ['cutsites'],
     orfs: ['orfData'],
+    rowData: ['rowData'],
+    rowViewDimensions: ['rowViewDimensions'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceLength: ['sequenceLength'],
@@ -49,6 +48,8 @@ export default class RowView extends React.Component {
         var visibleRowsContainer = this.InfiniteScroller.items;
         //loop through all the rendered rows to see if the click event lands in one of them
         var nearestBP = 0;
+        var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
+
         some(visibleRowsContainer.childNodes, function (rowDomNode) {
           var boundingRowRect = rowDomNode.getBoundingClientRect();
           if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
@@ -115,9 +116,8 @@ export default class RowView extends React.Component {
             spaceBetweenAnnotations,
             annotationVisibility,
             caretPosition,
-            width=defaultContainerWidth,
+            rowViewDimensions,
             marginWidth=defaultMarginWidth,
-            height=400,
             signals,
             bpsPerRow,
             rowData
@@ -128,15 +128,7 @@ export default class RowView extends React.Component {
                 return (
                     <div data-row-number={index} key={key}>
                         <div className={'veRowItemSpacer'}/>
-                        <RowItem {
-                            ...{
-                            ...rest,
-                            sequenceLength: sequenceData.sequence.length,
-                            width: width - marginWidth,
-                            bpsPerRow,
-                            }
-                            }
-                            row={rowData[index]}
+                        <div 
                             />
                     </div>
                 );
@@ -157,19 +149,21 @@ export default class RowView extends React.Component {
                 onStop={signals.editorDragStopped}
                 >
                 <div
-                    ref={(ref) => this.rowViewComp = ref}
+                    ref="rowView"
                     className="veRowView"
-                    style={{
-                        overflowY: "auto",
-                        overflowX: "visible",
-                        height,
-                        marginLeft: marginWidth/2,
-                    }}
                     onClick={(event) => {
-                        this.getNearestCursorPositionToMouseEvent(rowData, event, editorClicked)}
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
                     }
                     >
-
+                    <ReactList
+                        ref={c => {
+                            this.InfiniteScroller= c
+                        }}
+                        itemRenderer={renderItem}
+                        length={rowData.length}
+                        itemSizeEstimator={itemSizeEstimator}
+                        type='variable'
+                    />
                 </div>
             </Draggable>
         );
@@ -177,19 +171,19 @@ export default class RowView extends React.Component {
 }
 
 function getBpsPerRow({
-    charWidth=defaultCharWidth,
-    width=defaultContainerWidth,
-    marginWidth=defaultMarginWidth
-}) {
-    return Math.floor((width-marginWidth)/charWidth)
+        charWidth=defaultCharWidth,
+        width=defaultContainerWidth,
+        marginWidth=defaultMarginWidth
+    }) {
+        return Math.floor((width-marginWidth)/charWidth)
 }
 
 function itemSizeEstimator(index, cache) {
-  if (cache[index+1]) {
-    return cache[index+1]
-  }
-  if (cache[index-1]) {
-    return cache[index-1]
-  }
-  return 100
+    if (cache[index+1]) {
+        return cache[index+1]
+    }
+    if (cache[index-1]) {
+        return cache[index-1]
+    }
+    return 100
 }

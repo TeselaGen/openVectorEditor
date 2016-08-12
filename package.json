@@ -46,6 +46,7 @@
     "react-clipboard": "^1.1.1",
     "react-dom": "^0.14.0",
     "react-draggable": "^1.1.1",
+    "react-list": "^0.7.20",    
     "react-tap-event-plugin": "^0.2.1",
     "style-loader": "^0.13.0",
     "superagent": "^1.8.3",
