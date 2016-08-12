@@ -2,11 +2,11 @@ import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 
 import FlatButton from 'material-ui/lib/flat-button';
-import TextField from 'material-ui/lib/text-field';
 import GridList from 'material-ui/lib/grid-list/grid-list';
 import GridTile from 'material-ui/lib/grid-list/grid-tile';
 
-import EnzymesDropdown from './EnzymesDropdown';
+import LeftTile from './LeftTile';
+import RightTile from './RightTile';
 
 const Dialog = require('material-ui/lib/dialog');
 
@@ -32,18 +32,15 @@ export default class RestrictionEnzymeManager extends  React.Component {
 
         var tileLeft = (
             <div>
-                <EnzymesDropdown /> <br />
-                <TextField
-                    ref="enzymeName"
-                    style={{position: 'relative'}}
-                    floatingLabelText="Enzyme name"
-                /> <br />
+                <h5>Enzymes groups</h5>
+                <LeftTile />
             </div>
         );
 
         var tileRight = (
             <div>
-                "HII"
+                <h5>Active enzymes</h5> <br />
+                <RightTile /> <br />
             </div>
         );
 
@@ -51,13 +48,13 @@ export default class RestrictionEnzymeManager extends  React.Component {
             <div>
                 <GridList
                     cols={2}
-                    cellHeight={200}
-                    padding={1}
+                    cellHeight={600}
+                    padding={10}
                 >
-                    <GridTile>
+                    <GridTile rows={1} cols={1}>
                         {tileLeft}
                     </GridTile>
-                    <GridTile>
+                    <GridTile rows={1} cols={1}>
                         {tileRight}
                     </GridTile>
                 </GridList>
@@ -84,14 +81,14 @@ export default class RestrictionEnzymeManager extends  React.Component {
         ];
 
         return (
-            <div>
+            <div align="center">
                 <Dialog
                     ref="enzymeManager"
                     title="Restriction Enzyme Manager"
-                    style={{height: '700px'}}
+                    autoDetectWindowHeight={true}
                     actions={actions}
                     open={toOpen}
-                >
+                > <br />
                         {grid}
                 </Dialog>
             </div>

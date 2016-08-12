@@ -105,12 +105,6 @@ export default class ToolBar extends React.Component {
             </IconButton>
         );
 
-        var dialogButtonElement = (
-            <IconButton tooltip="Restriction Enzyme Manager">
-                <EnzymesIcon />
-            </IconButton>
-        );
-
         // jsx styling syntax is really screwy!
         var disabledStyle = {opacity: '.5'};
         var toggleStyles = {display: 'inline-block', fontSize: '16px', fontWeight: 'bold', verticalAlign: 'top'}
