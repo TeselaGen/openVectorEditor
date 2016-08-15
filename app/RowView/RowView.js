@@ -1,5 +1,5 @@
 import some from 'lodash/collection/some'
-import prepareRowData from './prepareRowData'
+// import prepareRowData from './prepareRowData'   // not sure we need this
 import React from 'react';
 import Draggable from 'react-draggable'
 import { Decorator as Cerebral } from 'cerebral-view-react';
@@ -74,22 +74,22 @@ export default class RowView extends React.Component {
             var numbers = [top,bottom]
             var target = event.clientY
             var topOrBottom = numbers.map(function(value, index) {
-              return [Math.abs(value - target), index];
+                return [Math.abs(value - target), index];
             }).sort().map(function(value) {
-              return numbers[value[1]];
+                return numbers[value[1]];
             })[0];
             var rowDomNode
             if (topOrBottom === top) {
-              rowDomNode = visibleRowsContainer.childNodes[0]
+                rowDomNode = visibleRowsContainer.childNodes[0]
             } else {
-              rowDomNode = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]
+                rowDomNode = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]
             }
             if (rowDomNode) {
-              var row = rowData[Number(rowDomNode.getAttribute('data-row-number'))];
-              //return the last bp index in the rendered rows
-              nearestBP = row.end
+                var row = rowData[Number(rowDomNode.getAttribute('data-row-number'))];
+                //return the last bp index in the rendered rows
+                nearestBP = row.end
             } else {
-              nearestBP = 0
+                nearestBP = 0
             }
         }
         callback({

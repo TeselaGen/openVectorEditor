@@ -1,60 +1,34 @@
 
-#openVectorEditor
+#VectorEditor
 ##An open source vector/plasmid/dna editor
 
-###Project Info: https://workflowy.com/s/AMpvp1km0o
+###Downloading and Installing
 
-Chatroom: [![Join the chat at https://gitter.im/TeselaGen/openVectorEditor](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/TeselaGen/openVectorEditor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+- clone this repo
+- make sure you have 577 permissions on the folder
+- cd to the project folder and do ````npm install````
+- if there are no errors, continue once installation's done
 
-Issue Tracking: [![Stories in Ready](https://badge.waffle.io/TeselaGen/openVectorEditor.png?label=ready&title=Ready)](https://waffle.io/TeselaGen/openVectorEditor)
+###Running embedded in ICE
 
-Google hangout [link](https://hangouts.google.com/call/jhgq63wgvimabmjjct5526dnl4a)
+- clone ice branch ````veIntegration````
+- cd into VE project and do ````webpack````
+- copy the ````bundle.js```` file into ice project folder ````src/main/webapp/scripts/lib/ve````
+(I know this is really annoying, working on a better way)
+- in the ice project folder, do ````jetty mvn:run````
+- open localhost:8443 in the browser (Chrome preferred)
+- username/password is Administrator/Administrator
 
-See a [demo] (http://teselagen.github.io/openVectorEditor/)
+###Running Standalone
 
+[in progress]
 
+###Branches
 
-###Embedding into your own project (Work In Progress)
+Please create your own local branch and push to ````dev````
+Releases require a pull request to ````master````
 
-```js
-import ReactDOM from 'react-dom';
-import App from 'open-vector-editor'
-import request from 'superagent'
+###Contacts
 
-//set your custom options here
-var options = {
-	state: {
-		//override default state here. See state.js for the full list of application state
-		showFeatures: true,
-		//etc..
-	},
-	services: {
-		//add or override any services you want here. These are passed to every action (see below)
-		request: request
-	},
-	actions: {
-		//override default actions here. See signals.js for the full list of application signals
-		saveSequence: function saveSequence ({input, state, output}, services) {
-			services.request.post('/sequence')
-				.send(input.sequenceData)
-				.then(function (res) {
-					output.success(res.body)
-				}).catch(function (err) {
-					output.error(err)
-				})
-		}
-	},
-}
-
-var {Editor, controller} = App(options);
-//Editor is the React Component
-//controller is the cerebral state controller
-
-
-//choose the dom node you want to render to
-const DOMNodeToRenderTo = document.createElement('div');
-document.body.appendChild(DOMNodeToRenderTo);
-ReactDOM.render(Editor, DOMNodeToRenderTo);
-
-```
-
+Sarah LaFrance: salafrance@lbl.gov
+Distributed under an open BSD license by Berkeley National Lab
