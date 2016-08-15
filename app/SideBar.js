@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
-const Table = require('material-ui/lib/table/table');
-const TableBody = require('material-ui/lib/table/table-body');
-const TableHeader = require('material-ui/lib/table/table-header');
-const TableHeaderColumn = require('material-ui/lib/table/table-header-column');
-const TableRow = require('material-ui/lib/table/table-row');
-const TableRowColumn = require('material-ui/lib/table/table-row-column');
+const Table = require('material-ui/Table/Table');
+const TableBody = require('material-ui/Table/TableBody');
+const TableHeader = require('material-ui/Table/TableHeader');
+const TableHeaderColumn = require('material-ui/Table/TableHeaderColumn');
+const TableRow = require('material-ui/Table/TableRow');
+const TableRowColumn = require('material-ui/Table/TableRowColumn');
 
-import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
-import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
-import IconButton from 'material-ui/lib/icon-button';
+import AddBoxIcon from 'material-ui/svg-icons/content/add-box';
+import IndeterminateCheckBoxIcon from 'material-ui/svg-icons/toggle/indeterminate-check-box';
+import IconButton from 'material-ui/IconButton';
 
 import SidebarDetail from './SidebarDetail';
 

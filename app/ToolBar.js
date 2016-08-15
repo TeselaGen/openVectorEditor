@@ -5,23 +5,24 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
 // Material UI
-import Toolbar from 'material-ui/lib/toolbar/toolbar';
-import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import IconButton from 'material-ui/lib/icon-button';
-import RaisedButton from 'material-ui/lib/raised-button';
-import InputIcon from 'material-ui/lib/svg-icons/action/input';
-import SearchIcon from 'material-ui/lib/svg-icons/action/search';
-import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
-import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
-import DownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
-import UploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
-import PrintIcon from 'material-ui/lib/svg-icons/action/print';
-import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
-import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
-import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import TextField from 'material-ui/lib/text-field';
+import Toolbar from 'material-ui/Toolbar/Toolbar';
+import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+import InputIcon from 'material-ui/svg-icons/action/input';
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import FileIcon from 'material-ui/svg-icons/editor/insert-drive-file';
+import SaveIcon from 'material-ui/svg-icons/action/backup';
+import DownloadIcon from 'material-ui/svg-icons/file/file-download';
+import UploadIcon from 'material-ui/svg-icons/file/file-upload';
+import PrintIcon from 'material-ui/svg-icons/action/print';
+import CircularIcon from 'material-ui/svg-icons/device/data-usage';
+import RailIcon from 'material-ui/svg-icons/hardware/power-input';
+import RowIcon from 'material-ui/svg-icons/content/text-format';
 
 @Cerebral({
     embedded: ['embedded'],
