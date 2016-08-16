@@ -4,7 +4,7 @@ import React from 'react';
 import Draggable from 'react-draggable'
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import ReactList from 'react-list';
-// import RowItem from './RowItem'
+import RowItem from './RowItem/RowItem.js'
 
 // import './style.scss';
 
@@ -128,7 +128,7 @@ export default class RowView extends React.Component {
                 return (
                     <div data-row-number={index} key={key}>
                         <div className={'veRowItemSpacer'}/>
-                        <div 
+                        <RowItem 
                             />
                     </div>
                 );
