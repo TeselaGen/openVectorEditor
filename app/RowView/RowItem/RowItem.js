@@ -1,3 +1,25 @@
+/* structure of row object
+
+obj
+    - cutsites[]
+        - length: number
+        Object:
+        - annotation [object of type]
+        - enclosingRangeType : string
+        - end : number
+        - id : ?
+        - start : number
+        - yOffset : number
+    - end : number
+    - features[]
+    - orfs []
+    - parts [] // unused by us
+    - rowNumber : number
+    - sequence : string
+    - start : number
+    - translations []
+*/
+
 // import PassThrough from '../../utils/PassThrough'
 import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString'
 import React from 'react';
@@ -63,11 +85,20 @@ export default class RowItem extends React.Component {
             bpsPerRow,
             componentOverrides = {}
         } = this.props;
+        
+        var {
+            sequence='',
+            features= [],
+            translations= [],
+            cutsites= [],
+            orfs= []
+        } = row
 
-        // var reverseSequence = getComplementSequenceString(sequence)
-        // if (!row) {
-        //     return null;
-        // }
+        var reverseSequence = getComplementSequenceString(sequence)
+
+        if (!row) {
+            return null;
+        }
 
         var {
             Sequence = _Sequence,
@@ -80,11 +111,6 @@ export default class RowItem extends React.Component {
         //     // Caret = _Caret,
         } = componentOverrides
 
-        var rowContainerStyle = {
-            position: "relative",
-            width: width + 'px',
-        };
-
         var annotationCommonProps = {
           charWidth,
           bpsPerRow,
@@ -95,19 +121,16 @@ export default class RowItem extends React.Component {
         }
         
         return (
-            <div className="veRowItem"
-                style={ rowContainerStyle }
-
-                >
+            <div className="veRowItem">
                 <br></br>                
 
 
 
-                 <div className='veRowItemSequenceContainer' style={{position: 'relative'}}>
+                <div className='veRowItemSequenceContainer' style={{position: 'relative'}}>
                     <Sequence
-                        sequence={sequenceData.sequence}
+                        sequence={sequence}
                         height={'12px'}
-                        length={sequenceLength}
+                        length={sequence.length}
                         charWidth={charWidth}>
 
                     </Sequence>

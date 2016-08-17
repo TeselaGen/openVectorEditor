@@ -6,8 +6,6 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 import ReactList from 'react-list';
 import RowItem from './RowItem/RowItem.js'
 
-// import './style.scss';
-
 var defaultContainerWidth = 400
 var defaultCharWidth = 12
 var defaultMarginWidth = 10
@@ -42,6 +40,7 @@ function noop() {
 })
 
 export default class RowView extends React.Component {
+
     getNearestCursorPositionToMouseEvent(rowData, event, callback) {
         var charWidth = defaultCharWidth;
         var rowNotFound = true;
@@ -127,9 +126,8 @@ export default class RowView extends React.Component {
             if (rowData[index]) {
                 return (
                     <div data-row-number={index} key={key}>
-                        <div className={'veRowItemSpacer'}/>
-                        <RowItem 
-                            />
+                        <div className={'veRowItemSpacer'} />
+                        <RowItem row={rowData[index]} />
                     </div>
                 );
             } else {
@@ -163,7 +161,7 @@ export default class RowView extends React.Component {
                         length={rowData.length}
                         itemSizeEstimator={itemSizeEstimator}
                         type='variable'
-                    />
+                        />
                 </div>
             </Draggable>
         );
@@ -171,11 +169,11 @@ export default class RowView extends React.Component {
 }
 
 function getBpsPerRow({
-        charWidth=defaultCharWidth,
-        width=defaultContainerWidth,
-        marginWidth=defaultMarginWidth
-    }) {
-        return Math.floor((width-marginWidth)/charWidth)
+    charWidth=defaultCharWidth,
+    width=defaultContainerWidth,
+    marginWidth=defaultMarginWidth
+}) {
+    return Math.floor((width-marginWidth)/charWidth)
 }
 
 function itemSizeEstimator(index, cache) {
