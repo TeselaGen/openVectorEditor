@@ -31,7 +31,7 @@ import _Sequence from './Sequence'
 // import _Axis from './Axis'
 // import _Orfs from './Orfs'
 // import _Translations from './Translations'
-// import _Features from './Features'
+import _Features from './Features'
 // import _CutsiteLabels from './CutsiteLabels'
 // import _Cutsites from './Cutsites'
 // import Caret from './Caret'
@@ -75,6 +75,8 @@ export default class RowItem extends React.Component {
             cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
+            showCutsites,
+            showReverseSequence,
             sequenceHeight,
             spaceBetweenAnnotations,
             width,
@@ -82,6 +84,7 @@ export default class RowItem extends React.Component {
             caretPosition,
             sequenceLength,
             row,
+            showFeatures,
             bpsPerRow,
             componentOverrides = {}
         } = this.props;
@@ -105,7 +108,7 @@ export default class RowItem extends React.Component {
         //     Axis = _Axis,
         //     Orfs = _Orfs,
         //     Translations = _Translations,
-        //     Features = _Features,
+            Features = _Features,
         //     CutsiteLabels = _CutsiteLabels,
         //     Cutsites = _Cutsites,
         //     // Caret = _Caret,
@@ -125,6 +128,12 @@ export default class RowItem extends React.Component {
                 <br></br>                
 
 
+                {(showFeatures && Object.keys(features).length > 0) &&
+                    <Features
+                        annotationRanges={features}
+                        {...annotationCommonProps}
+                        />
+                }
 
                 <div className='veRowItemSequenceContainer' style={{position: 'relative'}}>
                     <Sequence
@@ -134,6 +143,18 @@ export default class RowItem extends React.Component {
                         charWidth={charWidth}>
 
                     </Sequence>
+
+                    {showReverseSequence &&
+                        <Sequence
+                            length={sequence.length}
+                            sequence={reverseSequence}
+                            height={sequenceHeight}
+                            charWidth={charWidth}>
+
+
+
+                        </Sequence>
+                    }
                 </div>
               
             </div>
