@@ -1,34 +1,54 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
-import MenuItem from 'material-ui/lib/menu/menu-item';
+
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
-import TextField from 'material-ui/lib/text-field';
 import Checkbox from 'material-ui/lib/checkbox';
+import styles from './manager-list.scss';
 
 const DropDownMenu = require('material-ui/lib/drop-down-menu');
 
-const listStyles = {
-    list: {
-        height: 330,
-        overflow: 'scroll',
-    },
-};
-
 @Cerebral({
-    userEnzymeList: ['userEnzymeList'],
+    commonEnzymes: ['commonEnzymes'],
+    // REBASEEnzymes: ['REBASEEnzymes'],
+    berkeleyBBEnzymes: ['berkeleyBBEnzymes'],
+    MITBBEnzymes: ['MITBBEnzymes'],
+    fastDigestEnzymes: ['fastDigestEnzymes'],
+    currentEnzymesList: ['currentEnzymesList'],
 })
 
 export default class LeftTile extends React.Component {
     constructor(props) {
         super(props);
+        this.props.signals.chooseEnzymeList({selectedList: this.props.commonEnzymes});
+        this.state = {
+            value: 1,
+        };
     }
 
-    handleChange = (event, index, value) => this.setState({value});
+    handleChange = (event, index, value) => {
+        this.setState({value: value});
+        switch (value.text) {
+            case 'REBASE':
+                /**/
+                break;
+            case 'Berkeley BioBricks':
+                this.props.signals.chooseEnzymeList({selectedList: this.props.berkeleyBBEnzymes});
+                break;
+            case 'MIT BioBricks':
+                this.props.signals.chooseEnzymeList({selectedList: this.props.MITBBEnzymes});
+                break;
+            case 'Fermentas Fast Digest':
+                this.props.signals.chooseEnzymeList({selectedList: this.props.fastDigestEnzymes});
+                break;
+            default:
+                this.props.signals.chooseEnzymeList({selectedList: this.props.commonEnzymes});
+        }
+    };
 
     render() {
         var {
-            userEnzymeList,
+            currentEnzymesList,
         } = this.props;
 
         let menuItems = [
@@ -43,17 +63,13 @@ export default class LeftTile extends React.Component {
         return (
             <div>
                 <DropDownMenu
-
+                    onChange={this.handleChange}
                     menuItems={menuItems}
                 />
-                <List style={listStyles.list}>
-                    <ListItem primaryText="Inbox" leftCheckbox={<Checkbox />} />
-                    <ListItem primaryText="Inbox2" leftCheckbox={<Checkbox />} />
-                    <ListItem primaryText="Inbox2" leftCheckbox={<Checkbox />} />
-                    <ListItem primaryText="Inbox2" leftCheckbox={<Checkbox />} />
-                    <ListItem primaryText="Inbox2" leftCheckbox={<Checkbox />} />
-                    <ListItem primaryText="Inbox2" leftCheckbox={<Checkbox />} />
-                    <ListItem primaryText="Inbox2" leftCheckbox={<Checkbox />} />
+                <List className={styles.managerList}>
+                    {currentEnzymesList.map((enzyme, index) => (
+                        <ListItem primaryText={enzyme.name} />
+                    ))}
                 </List>
             </div>
         );
@@ -61,7 +77,24 @@ export default class LeftTile extends React.Component {
 }
 
 /*
- <TextField
- ref="enzymeName"
- floatingLabelText="Enzyme name"
- />*/
+class LikeButton extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            liked: false
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+    handleClick() {
+        this.setState({liked: !this.state.liked});
+    }
+    render() {
+        const text = this.state.liked ? 'liked' : 'haven\'t liked';
+        return (
+            <div onClick={this.handleClick}>
+        You {text} this. Click to toggle.
+        </div>
+    );
+    }
+}
+    */

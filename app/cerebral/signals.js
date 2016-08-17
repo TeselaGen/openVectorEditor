@@ -102,6 +102,10 @@ export default function(options) {
         restrictionEnzymeManagerDisplay: [
             a.restrictionEnzymeManagerDisplay
         ],
+
+        chooseEnzymeList: [
+            a.showSelectedEnzymeList
+        ],
         
     // ///////////////////////////////////
     // edit only actions

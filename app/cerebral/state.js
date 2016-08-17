@@ -93,6 +93,11 @@ module.exports = {
        circular: false
     }, 
     userEnzymeList: commonEnzymes,
+    commonEnzymes: commonEnzymes,
+    berkeleyBBEnzymes: berkeleyBBEnzymes,
+    MITBBEnzymes: MITBBEnzymes,
+    fastDigestEnzymes: fastDigestEnzymes,
+    currentEnzymesList: commonEnzymes,
     viewportDimensions: {
         height: 500,
         width: 500
