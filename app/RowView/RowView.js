@@ -124,6 +124,7 @@ export default class RowView extends React.Component {
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
+                console.log(rowData[index])
                 return (
                     <div data-row-number={index} key={key}>
                         <div className={'veRowItemSpacer'} />

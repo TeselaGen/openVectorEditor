@@ -11,7 +11,7 @@ var AnnotationPositioner = React.createClass({
                 style = {{
                     position: 'absolute',
                     top: this.props.top,
-                    left: (this.props.left),
+                    left: this.props.left,
                     }}
                 >
                 {this.props.children}

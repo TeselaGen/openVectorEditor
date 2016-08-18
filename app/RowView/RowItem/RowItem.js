@@ -127,7 +127,6 @@ export default class RowItem extends React.Component {
             <div className="veRowItem">
                 <br></br>                
 
-
                 {(showFeatures && Object.keys(features).length > 0) &&
                     <Features
                         annotationRanges={features}
@@ -140,19 +139,17 @@ export default class RowItem extends React.Component {
                         sequence={sequence}
                         height={'12px'}
                         length={sequence.length}
-                        charWidth={charWidth}>
-
+                        charWidth={charWidth}
+                        >
                     </Sequence>
 
                     {showReverseSequence &&
                         <Sequence
+                            className="complement"
                             length={sequence.length}
                             sequence={reverseSequence}
                             height={sequenceHeight}
                             charWidth={charWidth}>
-
-
-
                         </Sequence>
                     }
                 </div>
