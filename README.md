@@ -14,8 +14,8 @@
 - clone ice branch ````veIntegration````
 - cd into VE project and do ````webpack````
 - copy the ````bundle.js```` file into ice project folder ````src/main/webapp/scripts/lib/ve````
-(I know this is really annoying, working on a better way)
-- in the ice project folder, do ````jetty mvn:run````
+    - (I know this is really annoying, working on a better way)
+- in the ice project folder, do ````mvn jetty:run````
 - open localhost:8443 in the browser (Chrome preferred)
 - username/password is Administrator/Administrator
 
