@@ -65,7 +65,7 @@ function noop() {
     spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
 })
 
-export default class RowItem extends React.Component {
+class RowItem extends React.Component {
     render() {
         var {
             charWidth,
@@ -125,7 +125,7 @@ export default class RowItem extends React.Component {
         
         return (
             <div className="veRowItem">
-                <br></br>                
+                <br></br>
 
                 {(showFeatures && Object.keys(features).length > 0) &&
                     <Features
@@ -134,10 +134,10 @@ export default class RowItem extends React.Component {
                         />
                 }
 
-                <div className='veRowItemSequenceContainer' style={{position: 'relative'}}>
+                <div className='veRowItemSequenceContainer'>
                     <Sequence
                         sequence={sequence}
-                        height={'12px'}
+                        height={16}
                         length={sequence.length}
                         charWidth={charWidth}
                         >
@@ -148,7 +148,7 @@ export default class RowItem extends React.Component {
                             className="complement"
                             length={sequence.length}
                             sequence={reverseSequence}
-                            height={sequenceHeight}
+                            height={16}
                             charWidth={charWidth}>
                         </Sequence>
                     }
@@ -158,3 +158,5 @@ export default class RowItem extends React.Component {
         );
     }
 }
+
+module.exports = RowItem;
