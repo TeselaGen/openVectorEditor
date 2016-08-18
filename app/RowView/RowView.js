@@ -123,12 +123,11 @@ export default class RowView extends React.Component {
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
-                console.log(rowData[index])
                 return (
-                    // <div data-row-number={index} key={key}>
-                    //     <div className={'veRowItemSpacer'} />
+                    <div data-row-number={index} key={key}>
+                        <div className={'veRowItemSpacer'} />
                         <RowItem row={rowData[index]} />
-                    // </div>
+                    </div>
                 );
             } else {
                 return null
@@ -160,7 +159,7 @@ export default class RowView extends React.Component {
                         itemRenderer={renderItem}
                         length={rowData.length}
                         itemSizeEstimator={itemSizeEstimator}
-                        type='variable'
+                        type='simple'
                         />
                 </div>
             </Draggable>
