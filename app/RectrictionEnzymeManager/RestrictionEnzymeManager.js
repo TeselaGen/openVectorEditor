@@ -5,13 +5,15 @@ import FlatButton from 'material-ui/lib/flat-button';
 import GridList from 'material-ui/lib/grid-list/grid-list';
 import GridTile from 'material-ui/lib/grid-list/grid-tile';
 
-import LeftTile from './LeftTile';
-import RightTile from './RightTile';
+import LeftTile from './EnzymesGroups';
+import RightTile from './ActiveEnzymes';
 
 const Dialog = require('material-ui/lib/dialog');
 
 @Cerebral({
     showRestrictionEnzymeManager: ['showRestrictionEnzymeManager'],
+    originalUserEnzymesList: ['originalUserEnzymesList'],
+    currentUserEnzymesList: ['currentUserEnzymesList'],
 })
 
 export default class RestrictionEnzymeManager extends  React.Component {
@@ -28,6 +30,8 @@ export default class RestrictionEnzymeManager extends  React.Component {
         var {
             signals,
             showRestrictionEnzymeManager,
+            originalUserEnzymesList,
+            currentUserEnzymesList,
         } = this.props;
 
         var tileLeft = (
@@ -68,6 +72,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
                 label="OK"
                 primary={true}
                 onTouchTap={function() {
+                        signals.updateUserEnzymes({selectedButton: "OK", currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
                         signals.restrictionEnzymeManagerDisplay();
                     }}
             />,
@@ -75,6 +80,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
                 label="Cancel"
                 primary={true}
                 onTouchTap={function() {
+                        signals.updateUserEnzymes({selectedButton: "Cancel", currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
                         signals.restrictionEnzymeManagerDisplay();
                     }}
             />,

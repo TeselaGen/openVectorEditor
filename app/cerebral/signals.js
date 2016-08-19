@@ -103,6 +103,14 @@ export default function(options) {
             a.restrictionEnzymeManagerDisplay
         ],
 
+        editUserEnzymes: [
+            a.editUserEnzymes
+        ],
+
+        updateUserEnzymes: [
+            a.updateUserEnzymes
+        ],
+
         chooseEnzymeList: [
             a.showSelectedEnzymeList
         ],

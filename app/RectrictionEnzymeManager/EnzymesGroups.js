@@ -68,7 +68,7 @@ export default class LeftTile extends React.Component {
                 />
                 <List className={styles.managerList}>
                     {currentEnzymesList.map((enzyme, index) => (
-                        <ListItem primaryText={enzyme.name} />
+                        <ListItem primaryText={enzyme.name} leftCheckbox={<Checkbox defaultChecked={false} />} />
                     ))}
                 </List>
             </div>

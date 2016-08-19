@@ -13,6 +13,7 @@ var enzymeList = require('ve-sequence-utils/enzymeList.json');
 
 // here's the enzyme lists from old VE so we can pick and choose / merge them
 var commonEnzymes = ["aatii", "avrii", "bamhi", "bglii", "bsgi", "eagi", "ecori", "ecorv", "hindiii", "kpni", "ncoi", "ndei", "nhei", "noti", "psti", "pvui", "saci", "sacii", "sali", "smai", "spei", "sphi", "xbai", "xhoi", "xmai"];
+// var commonEnzymes = ["1", "2", "3", "4"];
 // {{}} need the rebase set
 // Berkeley BioBricks
 var berkeleyBBEnzymes = ["ecori", "bglii", "bamhi", "xhoi"];
@@ -92,12 +93,14 @@ module.exports = {
        parts: [],
        circular: false
     }, 
-    userEnzymeList: commonEnzymes,
+    userEnzymeList: commonEnzymes, //user enzymes applied to the view
     commonEnzymes: commonEnzymes,
     berkeleyBBEnzymes: berkeleyBBEnzymes,
     MITBBEnzymes: MITBBEnzymes,
     fastDigestEnzymes: fastDigestEnzymes,
-    currentEnzymesList: commonEnzymes,
+    currentEnzymesList: commonEnzymes, //chosen enzymes list to show under enzymes groups
+    originalUserEnzymesList: commonEnzymes, //state of user enzymes list at the moment when RestrictionEnzymeManager was opened
+    currentUserEnzymesList: commonEnzymes, //edited, not saved list of active enzymes
     viewportDimensions: {
         height: 500,
         width: 500

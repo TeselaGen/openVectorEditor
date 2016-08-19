@@ -3,7 +3,7 @@ module.exports = function showSelectedEnzymeList({input: {selectedList}, state, 
     for (let i = 0; i < selectedList.length; i++) {
         enzymesList.push({
             name: selectedList[i],
-
+            // checked status?
         });
     }
     state.set('currentEnzymesList', enzymesList);
