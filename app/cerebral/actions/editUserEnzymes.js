@@ -1,10 +1,13 @@
 module.exports = function editUserEnzymes({input: {currentUserList, enzyme, action}, state, output}) {
-    console.log("Before: " + currentUserList);
+    // console.log("Before: " + currentUserList);
     var editedList = currentUserList.slice();
-    if (action === "delete") {
+    if (action === "remove") {
         var index = editedList.indexOf(enzyme);
         editedList.splice(index, 1);
-        state.set('currentUserEnzymesList', editedList);
-        console.log("After: " + state.get('currentUserEnzymesList'));
+    } else if (action === "add") {
+        editedList.push(enzyme);
+        editedList.sort();
     }
+    state.set('currentUserEnzymesList', editedList);
+    // console.log("After: " + state.get('currentUserEnzymesList'));
 }

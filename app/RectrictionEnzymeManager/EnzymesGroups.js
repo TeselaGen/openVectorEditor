@@ -15,6 +15,7 @@ const DropDownMenu = require('material-ui/lib/drop-down-menu');
     MITBBEnzymes: ['MITBBEnzymes'],
     fastDigestEnzymes: ['fastDigestEnzymes'],
     currentEnzymesList: ['currentEnzymesList'],
+    currentUserEnzymesList: ['currentUserEnzymesList'],
 })
 
 export default class LeftTile extends React.Component {
@@ -46,9 +47,15 @@ export default class LeftTile extends React.Component {
         }
     };
 
+    isChecked = (enzyme) => {
+        return (this.props.currentUserEnzymesList.indexOf(enzyme) >= 0);
+    };
+
     render() {
         var {
             currentEnzymesList,
+            currentUserEnzymesList,
+            signals,
         } = this.props;
 
         let menuItems = [
@@ -68,33 +75,24 @@ export default class LeftTile extends React.Component {
                 />
                 <List className={styles.managerList}>
                     {currentEnzymesList.map((enzyme, index) => (
-                        <ListItem primaryText={enzyme.name} leftCheckbox={<Checkbox defaultChecked={false} />} />
+                        <ListItem
+                            primaryText={enzyme.name}
+                            leftCheckbox={
+                                <Checkbox
+                                    checked={this.isChecked(enzyme.name)}
+                                    disabled={this.isChecked(enzyme.name)}
+                                    onCheck={
+                                        function () {
+                                            signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
+                                            enzyme: enzyme.name, action: "add"})
+                                        }
+                                    }
+
+                                />}
+                        />
                     ))}
                 </List>
             </div>
         );
     }
 }
-
-/*
-class LikeButton extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            liked: false
-        };
-        this.handleClick = this.handleClick.bind(this);
-    }
-    handleClick() {
-        this.setState({liked: !this.state.liked});
-    }
-    render() {
-        const text = this.state.liked ? 'liked' : 'haven\'t liked';
-        return (
-            <div onClick={this.handleClick}>
-        You {text} this. Click to toggle.
-        </div>
-    );
-    }
-}
-    */

@@ -13,7 +13,7 @@ import styles from './manager-list.scss';
     currentUserEnzymesList: ['currentUserEnzymesList'],
 })
 
-export default class RightTile extends React.Component {
+export default class ActiveEnzymes extends React.Component {
     constructor(props) {
         super(props);
 
@@ -39,7 +39,7 @@ export default class RightTile extends React.Component {
                                     onTouchTap={
                                         function() {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                                enzyme: enzyme, action: "delete"});
+                                                enzyme: enzyme, action: "remove"});
                                         }
                                     }
                                 >
@@ -53,22 +53,3 @@ export default class RightTile extends React.Component {
     );
     }
 }
-
-/*
-
- checked={this.state.snapsToGrid}
- onCheck={this.snapsToGridChecked.bind(this)}
- */
-/*
-leftIcon={
-    <Checkbox
-onCheck={function() {
-    signals.editUserEnzymes({currentUserList: this.state.currentUserEnzymesList,
-        enzyme: enzyme, action: "delete"})
-}
-}
-checkedIcon={<CloseIcon />}
-uncheckedIcon={<UncheckedIcon/>}
-/>
-}
-    */
