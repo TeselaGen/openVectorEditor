@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 
 import IconButton from 'material-ui/lib/icon-button';
-import UncheckedIcon from 'material-ui/lib/svg-icons/image/crop-square';
 import CloseIcon from 'material-ui/lib/svg-icons/navigation/close';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
@@ -31,9 +30,13 @@ export default class ActiveEnzymes extends React.Component {
 
         return (
             <div>
-                <List className={styles.managerList}>
+                <br />
+                <br />
+                <br />
+                <List className={styles.managerListRight}>
                     {currentUserEnzymesList.map((enzyme, index) => (
                         <ListItem
+                            primaryText={enzyme}
                             rightIconButton={
                                 <IconButton
                                     onTouchTap={
@@ -44,8 +47,8 @@ export default class ActiveEnzymes extends React.Component {
                                     }
                                 >
                                     <CloseIcon />
-                                </IconButton>}
-                            primaryText={enzyme}
+                                </IconButton>
+                            }
                         />
                     ))}
                 </List>

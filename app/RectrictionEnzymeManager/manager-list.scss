@@ -1,4 +1,9 @@
-.managerList {
-  height: 330px;
+.managerListLeft {
+  height: 300px;
+  overflow: scroll;
+}
+
+.managerListRight {
+  height: 350px;
   overflow: scroll;
 }

@@ -18,7 +18,7 @@ const DropDownMenu = require('material-ui/lib/drop-down-menu');
     currentUserEnzymesList: ['currentUserEnzymesList'],
 })
 
-export default class LeftTile extends React.Component {
+export default class EnzymesGroups extends React.Component {
     constructor(props) {
         super(props);
         this.props.signals.chooseEnzymeList({selectedList: this.props.commonEnzymes});
@@ -69,26 +69,29 @@ export default class LeftTile extends React.Component {
 
         return (
             <div>
+                <br />
+                <br />
                 <DropDownMenu
                     onChange={this.handleChange}
                     menuItems={menuItems}
                 />
-                <List className={styles.managerList}>
+                <br />
+                <List className={styles.managerListLeft}>
                     {currentEnzymesList.map((enzyme, index) => (
                         <ListItem
-                            primaryText={enzyme.name}
                             leftCheckbox={
                                 <Checkbox
-                                    checked={this.isChecked(enzyme.name)}
-                                    disabled={this.isChecked(enzyme.name)}
+                                    checked={this.isChecked(enzyme)}
+                                    disabled={this.isChecked(enzyme)}
                                     onCheck={
                                         function () {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                            enzyme: enzyme.name, action: "add"})
+                                            enzyme: enzyme, action: "add"})
                                         }
                                     }
-
-                                />}
+                                />
+                            }
+                            primaryText={enzyme}
                         />
                     ))}
                 </List>
