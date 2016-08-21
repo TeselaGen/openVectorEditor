@@ -4,7 +4,9 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Checkbox from 'material-ui/lib/checkbox';
+import RaisedButton from 'material-ui/lib/raised-button';
 import styles from './manager-list.scss';
+import RightArrowIcon from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 
 const DropDownMenu = require('material-ui/lib/drop-down-menu');
 
@@ -95,6 +97,15 @@ export default class EnzymesGroups extends React.Component {
                         />
                     ))}
                 </List>
+                <br />
+                <RaisedButton
+                    label="Add all"
+                    secondary={true}
+                    onTouchTap={function () {
+                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
+                            currentEnzymesList: currentEnzymesList, action: "add all"});
+                    }}
+                />
             </div>
         );
     }
