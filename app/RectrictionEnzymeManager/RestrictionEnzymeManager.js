@@ -4,7 +4,6 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import FlatButton from 'material-ui/lib/flat-button';
 import GridList from 'material-ui/lib/grid-list/grid-list';
 import GridTile from 'material-ui/lib/grid-list/grid-tile';
-
 import LeftTile from './EnzymesGroups';
 import RightTile from './ActiveEnzymes';
 
@@ -14,6 +13,8 @@ const Dialog = require('material-ui/lib/dialog');
     showRestrictionEnzymeManager: ['showRestrictionEnzymeManager'],
     originalUserEnzymesList: ['originalUserEnzymesList'],
     currentUserEnzymesList: ['currentUserEnzymesList'],
+    cancelButtonValue: ['cancelButtonValue'],
+    applyButtonValue: ['applyButtonValue'],
 })
 
 export default class RestrictionEnzymeManager extends  React.Component {
@@ -25,29 +26,20 @@ export default class RestrictionEnzymeManager extends  React.Component {
         open: false,
     };
 
-
     render () {
         var {
             signals,
             showRestrictionEnzymeManager,
             originalUserEnzymesList,
             currentUserEnzymesList,
+            cancelButtonValue,
+            applyButtonValue,
         } = this.props;
 
         var tileTitleStyle = {
             textAlign: "center",
             color: "black",
             opacity: "0.54",
-        };
-
-        var titleStyle = {
-            color: "white",
-            background: "#3F51B5",
-            paddingBottom: "20px",
-        };
-
-        var buttonStyle = {
-            color: "#03A9F4",
         };
 
         var tileLeft = (
@@ -91,17 +83,17 @@ export default class RestrictionEnzymeManager extends  React.Component {
 
         var actions = [
             <FlatButton
-                label="Cancel"
+                label={cancelButtonValue}
                 onTouchTap={function() {
-                        signals.updateUserEnzymes({selectedButton: "Cancel", currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
+                        signals.updateUserEnzymes({selectedButton: cancelButtonValue, currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
                         signals.restrictionEnzymeManagerDisplay();
                     }}
             />,
             <FlatButton
-                label="Apply"
-                style={buttonStyle}
+                label={applyButtonValue}
+                style={{color: "#03A9F4"}}
                 onTouchTap={function() {
-                        signals.updateUserEnzymes({selectedButton: "OK", currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
+                        signals.updateUserEnzymes({selectedButton: applyButtonValue, currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
                         signals.restrictionEnzymeManagerDisplay();
                     }}
             />,
@@ -115,7 +107,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     autoDetectWindowHeight={true}
                     actions={actions}
                     open={toOpen}
-                    titleStyle={titleStyle}
+                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "20px"}}
                 > <br />
                         {grid}
                 </Dialog>

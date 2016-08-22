@@ -7,11 +7,12 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import styles from './manager-list.scss';
-import LeftArrowIcon from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
 
 @Cerebral({
     userEnzymeList: ['userEnzymeList'],
     currentUserEnzymesList: ['currentUserEnzymesList'],
+    removeEnzymeButtonValue: ['removeEnzymeButtonValue'],
+    removeAllEnzymesButtonValue: ['removeAllEnzymesButtonValue'],
 })
 
 export default class ActiveEnzymes extends React.Component {
@@ -27,6 +28,8 @@ export default class ActiveEnzymes extends React.Component {
     render() {
         var {
             currentUserEnzymesList,
+            removeEnzymeButtonValue,
+            removeAllEnzymesButtonValue,
             signals,
         } = this.props;
 
@@ -38,13 +41,14 @@ export default class ActiveEnzymes extends React.Component {
                 <List className={styles.managerListRight}>
                     {currentUserEnzymesList.map((enzyme, index) => (
                         <ListItem
+                            style={{maxHeight: 40}}
                             primaryText={enzyme}
                             rightIconButton={
                                 <IconButton
                                     onTouchTap={
                                         function() {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                                enzyme: enzyme, action: "remove"});
+                                                enzyme: enzyme, action: removeEnzymeButtonValue});
                                         }
                                     }
                                 >
@@ -59,10 +63,10 @@ export default class ActiveEnzymes extends React.Component {
                     label="Remove all"
                     primary={true}
                     onTouchTap={function () {
-                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: "remove all"});
+                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: removeAllEnzymesButtonValue});
                     }}
                 />
             </div>
-    );
+        );
     }
 }

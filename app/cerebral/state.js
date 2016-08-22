@@ -55,6 +55,12 @@ module.exports = {
     tickSpacing: 10,
     topSpacerHeight: 0,
     uppercase: true,
+    addEnzymeButtonValue: 'add',
+    addAllEnzymesButtonValue: 'add all',
+    removeEnzymeButtonValue: 'remove',
+    removeAllEnzymesButtonValue: 'remove all',
+    cancelButtonValue: 'Cancel',
+    applyButtonValue: 'Apply',
     // complex vars
     circularViewDimensions: {
         height: 700,

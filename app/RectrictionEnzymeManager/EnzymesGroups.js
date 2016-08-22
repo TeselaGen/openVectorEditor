@@ -6,7 +6,6 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import Checkbox from 'material-ui/lib/checkbox';
 import RaisedButton from 'material-ui/lib/raised-button';
 import styles from './manager-list.scss';
-import RightArrowIcon from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 
 const DropDownMenu = require('material-ui/lib/drop-down-menu');
 
@@ -18,6 +17,8 @@ const DropDownMenu = require('material-ui/lib/drop-down-menu');
     fastDigestEnzymes: ['fastDigestEnzymes'],
     currentEnzymesList: ['currentEnzymesList'],
     currentUserEnzymesList: ['currentUserEnzymesList'],
+    addEnzymeButtonValue: ['addEnzymeButtonValue'],
+    addAllEnzymesButtonValue: ['addAllEnzymesButtonValue'],
 })
 
 export default class EnzymesGroups extends React.Component {
@@ -57,6 +58,8 @@ export default class EnzymesGroups extends React.Component {
         var {
             currentEnzymesList,
             currentUserEnzymesList,
+            addEnzymeButtonValue,
+            addAllEnzymesButtonValue,
             signals,
         } = this.props;
 
@@ -68,19 +71,24 @@ export default class EnzymesGroups extends React.Component {
             { payload: '5', text: 'Fermentas Fast Digest' },
         ];
 
-
         return (
             <div>
+                <br />
                 <br />
                 <br />
                 <DropDownMenu
                     onChange={this.handleChange}
                     menuItems={menuItems}
+                    style={{backgroundColor: "#311B92"}}
+                    underlineStyle={{opacity: 0}}
+                    iconStyle={{color: "#000000"}}
+                    labelStyle={{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
                 />
                 <br />
                 <List className={styles.managerListLeft}>
                     {currentEnzymesList.map((enzyme, index) => (
                         <ListItem
+                            style={{maxHeight: 12}}
                             leftCheckbox={
                                 <Checkbox
                                     checked={this.isChecked(enzyme)}
@@ -88,7 +96,7 @@ export default class EnzymesGroups extends React.Component {
                                     onCheck={
                                         function () {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                            enzyme: enzyme, action: "add"})
+                                            enzyme: enzyme, action: addEnzymeButtonValue})
                                         }
                                     }
                                 />
@@ -103,7 +111,7 @@ export default class EnzymesGroups extends React.Component {
                     secondary={true}
                     onTouchTap={function () {
                         signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                            currentEnzymesList: currentEnzymesList, action: "add all"});
+                            currentEnzymesList: currentEnzymesList, action: addAllEnzymesButtonValue});
                     }}
                 />
             </div>
