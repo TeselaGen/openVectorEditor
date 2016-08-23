@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-// var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var Sequence = React.createClass({
     render: function() {
@@ -16,7 +15,8 @@ var Sequence = React.createClass({
             return null;
         }
         var style = {
-            position: 'relative'
+            position: 'relative',
+            fontFamily: 'monospace'
         }
         
         return (

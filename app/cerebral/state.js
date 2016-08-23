@@ -102,14 +102,13 @@ module.exports = {
     },
     // derived data - can't alphabetize because of dependencies  :(
     bpsPerRow: deriveData([
-        ['rowViewDimensions',
-            'width'
-        ],
+        ['rowViewDimensions', 'width'],
         ['charWidth'],
         function(rowViewDimensionsWidth, charWidth) {
             var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
-            var gaps = Math.floor(charsInRow / 10) - 1;
-            return Math.floor((charsInRow - gaps) / 10) * 10;
+            // var gaps = Math.floor(charsInRow / 10) - 1;
+            // return Math.floor((charsInRow - gaps) / 10) * 10;
+            return charsInRow;
         }
     ]),
     userEnzymes: deriveData([

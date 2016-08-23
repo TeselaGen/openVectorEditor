@@ -42,6 +42,7 @@ function noop() {
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],
     caretPosition: ['caretPosition'],     
     charWidth: ['charWidth'], 
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
@@ -145,7 +146,6 @@ class RowItem extends React.Component {
 
                     {showReverseSequence &&
                         <Sequence
-                            className="complement"
                             length={sequence.length}
                             sequence={reverseSequence}
                             height={16}

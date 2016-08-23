@@ -1,4 +1,6 @@
-var React = require('react');
+import React from 'react';
+import Draggable from 'react-draggable';
+import { Decorator as Cerebral } from 'cerebral-view-react';
 
 var Feature = React.createClass({
 
@@ -12,9 +14,10 @@ var Feature = React.createClass({
             name,
             pointiness=8,
             fontWidth=12, 
-            color='orange', 
+            color, 
             featureClicked,
-            annotation
+            annotation,
+            signals
         } = this.props;
 
         var width = widthInBps * charWidth;
@@ -63,15 +66,6 @@ var Feature = React.createClass({
           Q ${pointiness},${height/2} ${0},${0}
           z`
         }
-        var nameToDisplay = name
-        var textLength = name.length * fontWidth
-        var textOffset = (widthMinusOne/2)
-        if (textLength > widthMinusOne) {
-            textOffset = 0
-            nameToDisplay = ''
-        }
-        // path=path.replace(/ /g,'')
-        // path=path.replace(/\n/g,'')
         return (
             <g
                 className='veRowViewFeature clickable'
@@ -87,12 +81,6 @@ var Feature = React.createClass({
                     transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
                     d={ path }
                     />
-                <text 
-                    style={{fill: 'black', }} 
-                    transform={`translate(${textOffset},${height-1})`}
-                    >
-                    {nameToDisplay}
-                </text>
             </g>
         );
     }

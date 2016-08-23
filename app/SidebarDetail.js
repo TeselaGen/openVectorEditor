@@ -6,6 +6,8 @@ import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterm
 import IconButton from 'material-ui/lib/icon-button';
 import assign from 'lodash/object/assign';
 
+// {{}} remove this.state and do it correctly
+
 // this is the feature detail popout that comes out of the sidebar; it may need a new name
 // or to be in a folder with sidebar stuff. This form is used to edit / add feature information
 

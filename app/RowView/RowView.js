@@ -14,6 +14,7 @@ function noop() {
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],
     caretPosition: ['caretPosition'],     
     charWidth: ['charWidth'], 
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
@@ -97,6 +98,21 @@ export default class RowView extends React.Component {
     //     });
     // }
 
+    // this runs before render(), we need to grab the final size of the rowview container and fill it
+    componentWillMount() {
+        const height = document.getElementById('rowView').clientHeight;
+        const width = document.getElementById('rowView').clientWidth;
+
+        if(height != 0 && width != 0) {
+            this.setState(["rowViewDimensions", "height"], height)
+            this.setState(["rowViewDimensions", "width"], width)
+        }
+
+        console.log("set state!")
+        console.log(width)
+        console.log(height)
+    }
+
     render() {
         var {
             sequenceData,
@@ -165,14 +181,6 @@ export default class RowView extends React.Component {
             </Draggable>
         );
     }
-}
-
-function getBpsPerRow({
-    charWidth=defaultCharWidth,
-    width=defaultContainerWidth,
-    marginWidth=defaultMarginWidth
-}) {
-    return Math.floor((width-marginWidth)/charWidth)
 }
 
 function itemSizeEstimator(index, cache) {
