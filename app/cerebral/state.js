@@ -40,6 +40,7 @@ module.exports = {
     showCircular: true,
     showCutsites: false,
     showFeatures: true,
+    showGelDigestDialog: false,
     showLinear: true,
     showOrfs: false,
     showParts: true,
