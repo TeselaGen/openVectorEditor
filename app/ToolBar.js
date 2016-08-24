@@ -12,6 +12,7 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import InputIcon from 'material-ui/lib/svg-icons/action/input';
+import GelIcon from 'material-ui/lib/svg-icons/communication/clear-all';
 import SearchIcon from 'material-ui/lib/svg-icons/action/search';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
@@ -24,6 +25,8 @@ import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
+
+import DigestionSimulation from './GelDigest/DigestionSimulation';
 
 @Cerebral({
     embedded: ['embedded'],
@@ -61,6 +64,10 @@ export default class ToolBar extends React.Component {
 
         var dialog = (
             <RestrictionEnzymeManager />
+        );
+
+        var gelModal = (
+            <DigestionSimulation/>
         );
 
         // show/hide views buttons that only appear in embedded mode
@@ -195,6 +202,18 @@ export default class ToolBar extends React.Component {
                         <SaveIcon />
                     </IconButton>
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
+                        { fileMenuItems }
+                    </IconMenu>
+                    <IconButton
+                        label="Gel Digest dialog"
+                        tooltip='Simulate digestion'
+                        onTouchTap={function() {
+                            signals.gelDigestDisplay();
+                        }}
+                    >
+                        <GelIcon />
+                    </IconButton>
+                    {gelModal}
                         {fileMenuItems}
                     </IconMenu>
                     <IconButton
@@ -208,7 +227,7 @@ export default class ToolBar extends React.Component {
                     </IconButton>
                     {dialog}
 
-                </ToolbarGroup>           
+                </ToolbarGroup>
 
             </Toolbar>
         );

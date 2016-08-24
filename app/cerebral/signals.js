@@ -98,6 +98,7 @@ export default function(options) {
             a.updateSearchLayers
         ],
         setSelectionLayer: [a.setSelectionLayer],
+        gelDigestDisplay: [a.gelDigestDisplay],
 
         restrictionEnzymeManagerDisplay: [
             a.restrictionEnzymeManagerDisplay
