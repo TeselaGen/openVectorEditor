@@ -100,17 +100,15 @@ export default class RowView extends React.Component {
 
     // this runs before render(), we need to grab the final size of the rowview container and fill it
     componentWillMount() {
-        const height = document.getElementById('rowView').clientHeight;
-        const width = document.getElementById('rowView').clientWidth;
+        // const height = document.getElementById('rowView').clientHeight;
+        // const width = document.getElementById('rowView').clientWidth;
 
-        if(height != 0 && width != 0) {
-            this.setState(["rowViewDimensions", "height"], height)
-            this.setState(["rowViewDimensions", "width"], width)
-        }
-
-        console.log("set state!")
-        console.log(width)
-        console.log(height)
+        // if(height != 0 && width != 0) {
+        //     this.setState(["rowViewDimensions", "height"], height)
+        //     this.setState(["rowViewDimensions", "width"], width)
+        //     // this should update itself up but isn't
+        //     this.setState("bpsPerRow", Math.floor(["rowViewDimensions", "width"] / 15))
+        // }
     }
 
     render() {

@@ -31,6 +31,7 @@
     flex-basis: 0;
     display: flex;
     position: relative;
+    overflow-y: scroll;
 }
 
 .foot {
