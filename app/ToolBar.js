@@ -3,7 +3,6 @@ import React, { PropTypes } from 'react';
 
 // Cerebral
 import { Decorator as Cerebral } from 'cerebral-view-react';
-import RestrictionEnzymeManager from './RectrictionEnzymeManager/RestrictionEnzymeManager';
 
 // Material UI
 import Toolbar from 'material-ui/lib/toolbar/toolbar';
@@ -17,6 +16,7 @@ import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
 import DownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
 import UploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
+import GelIcon from 'material-ui/lib/svg-icons/communication/clear-all';
 import PrintIcon from 'material-ui/lib/svg-icons/action/print';
 import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
 import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
@@ -25,6 +25,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
 
+import RestrictionEnzymeManager from './RectrictionEnzymeManager/RestrictionEnzymeManager';
 import DigestionSimulation from './GelDigest/DigestionSimulation';
 
 @Cerebral({
@@ -212,9 +213,6 @@ export default class ToolBar extends React.Component {
                     >
                         <GelIcon />
                     </IconButton>
-                    {gelModal}
-                        {fileMenuItems}
-                    </IconMenu>
                     <IconButton
                         label="Dialog"
                         tooltip='Manage Restriction Enzymes'
@@ -224,6 +222,7 @@ export default class ToolBar extends React.Component {
                         >
                         <EnzymesIcon />
                     </IconButton>
+                    {gelModal}
                     {dialog}
 
                 </ToolbarGroup>

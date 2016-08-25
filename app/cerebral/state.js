@@ -62,6 +62,7 @@ module.exports = {
     removeAllEnzymesButtonValue: 'remove all',
     cancelButtonValue: 'Cancel',
     applyButtonValue: 'Apply',
+    okButtonValue: 'OK',
     // complex vars
     circularViewDimensions: {
         height: 700,

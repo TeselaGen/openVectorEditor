@@ -8,6 +8,7 @@ import GridTile from 'material-ui/lib/grid-list/grid-tile';
 
 import SelectedEnzymes from './SelectedEnzymes';
 import EnzymesLists from './EnzymesLists';
+import Ladder from './Ladder';
 
 const Dialog = require('material-ui/lib/dialog');
 
@@ -16,7 +17,7 @@ const Dialog = require('material-ui/lib/dialog');
     originalUserEnzymesList: ['originalUserEnzymesList'],
     currentUserEnzymesList: ['currentUserEnzymesList'],
     cancelButtonValue: ['cancelButtonValue'],
-    applyButtonValue: ['applyButtonValue'],
+    okButtonValue: ['okButtonValue'],
 })
 
 export default class DigestionSimulation extends React.Component {
@@ -32,20 +33,20 @@ export default class DigestionSimulation extends React.Component {
         var {
             signals,
             cancelButtonValue,
-            applyButtonValue,
+            okButtonValue,
         } = this.props;
 
         var toOpen = this.props.showGelDigestDialog;
 
         var actions = [
             <FlatButton
-                label={"Cancel"}
+                label={cancelButtonValue}
                 onTouchTap={function() {
                     signals.gelDigestDisplay();
                 }}
             />,
             <FlatButton
-                label={"OK"}
+                label={okButtonValue}
                 style={{color: "#03A9F4"}}
                 onTouchTap={function() {
                     signals.gelDigestDisplay();
@@ -53,9 +54,16 @@ export default class DigestionSimulation extends React.Component {
             />,
         ];
 
-        var customContentStyle = {
+        var customDialogContentStyle = {
             width: '80%',
             maxWidth: 'none',
+        };
+
+        var paperBlockStyle = {
+            height: "100%",
+            width: "100%",
+            padding: "5px",
+
         };
 
         var gridTileTitleStyle = {
@@ -65,20 +73,20 @@ export default class DigestionSimulation extends React.Component {
         };
 
         var tileLeft = (
-            <Paper>
-                <EnzymesLists/>
+            <Paper style={paperBlockStyle}>
+                <br/><br/><br/><EnzymesLists/>
             </Paper>
         );
 
         var tileCenter = (
-            <Paper>
-                <SelectedEnzymes/>
+            <Paper style={paperBlockStyle}>
+                <br/><br/><br/><SelectedEnzymes/>
             </Paper>
         );
 
         var tileRight = (
-            <Paper>
-                <br/><br/><p>Ladder will be here</p>
+            <Paper style={paperBlockStyle}>
+                <br/><br/><br/><Ladder/>
             </Paper>
         );
 
@@ -99,7 +107,7 @@ export default class DigestionSimulation extends React.Component {
             <div>
                 <GridList
                     cols={3}
-                    cellHeight={400}
+                    cellHeight={600}
                     padding={10}
                 >
                     <GridTile rows={1} cols={1} title={leftTileTitle} titlePosition={"top"} titleBackground="#E0E0E0">
@@ -124,7 +132,7 @@ export default class DigestionSimulation extends React.Component {
                     actions={actions}
                     open={toOpen}
                     titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "8px", paddingTop: "8px"}}
-                    contentStyle={customContentStyle}
+                    contentStyle={customDialogContentStyle}
                 >
                     {gelDigestContentGrid}
                 </Dialog>
