@@ -12,7 +12,6 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import InputIcon from 'material-ui/lib/svg-icons/action/input';
-import GelIcon from 'material-ui/lib/svg-icons/communication/clear-all';
 import SearchIcon from 'material-ui/lib/svg-icons/action/search';
 import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
 import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
