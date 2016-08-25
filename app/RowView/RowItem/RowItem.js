@@ -25,6 +25,7 @@ import getComplementSequenceString from 've-sequence-utils/getComplementSequence
 import React from 'react';
 import Draggable from 'react-draggable'
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import { columnizeString, elementWidth, calculateRowLength } from '../utils';
 // import SelectionLayer from './SelectionLayer';
 import _Sequence from './Sequence'
 // import LineageLines from './LineageLines'
@@ -35,6 +36,7 @@ import _Features from './Features'
 // import _CutsiteLabels from './CutsiteLabels'
 // import _Cutsites from './Cutsites'
 // import Caret from './Caret'
+import styles from './RowItem.scss';
 
 function noop() {
 
@@ -67,6 +69,67 @@ function noop() {
 })
 
 class RowItem extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+    }
+
+    getMaxSequenceLength(charWidth, columnWidth) {
+        var sequenceWidthPx = elementWidth(this.refs.sequenceContainer);
+        return calculateRowLength(charWidth, sequenceWidthPx, columnWidth);
+    }
+
+    _resizeSVG() {
+        var {
+            sequenceContainer: svg
+        } = this.refs;
+
+        var bbox = svg.getBBox();
+        svg.setAttribute('height', bbox.y + bbox.height + 'px');
+    }
+
+    componentDidMount() {
+        this._resizeSVG();
+    }
+
+    componentDidUpdate() {
+        this._resizeSVG();
+    }
+
+    _processProps(props) {
+        var {
+            sequenceData,
+            columnWidth
+        } = props;
+
+        var {
+            sequence,
+            offset,
+            className
+        } = sequenceData;
+
+        var complement = getComplementSequenceString(sequence);
+
+        var renderedSequence = columnizeString(sequence, columnWidth);
+        var renderedComplement = columnizeString(complement, columnWidth);
+
+        this.setState({
+            renderedSequence: renderedSequence,
+            renderedComplement: renderedComplement,
+            renderedOffset: (offset || 0) + 1
+        });
+    }
+
+    componentWillMount() {
+        this._processProps(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this._processProps(nextProps);
+    }
+
     render() {
         var {
             charWidth,
@@ -87,8 +150,15 @@ class RowItem extends React.Component {
             row,
             showFeatures,
             bpsPerRow,
-            componentOverrides = {}
+            componentOverrides = {},
+            className
         } = this.props;
+
+        var {
+            renderedSequence,
+            renderedComplement,
+            renderedOffset
+        } = this.state;
         
         var {
             sequence='',
@@ -125,8 +195,11 @@ class RowItem extends React.Component {
         }
         
         return (
-            <div className="veRowItem">
-                <br></br>
+
+            <div className = {styles.rowItem + "veRowItem"}>
+                <div className={styles.margin}>
+                    {renderedOffset}
+                </div>
 
                 {(showFeatures && Object.keys(features).length > 0) &&
                     <Features
@@ -138,7 +211,7 @@ class RowItem extends React.Component {
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
                         sequence={sequence}
-                        height={16}
+                        height={1}
                         length={sequence.length}
                         charWidth={charWidth}
                         >
@@ -148,7 +221,7 @@ class RowItem extends React.Component {
                         <Sequence
                             length={sequence.length}
                             sequence={reverseSequence}
-                            height={16}
+                            height={1}
                             charWidth={charWidth}>
                         </Sequence>
                     }

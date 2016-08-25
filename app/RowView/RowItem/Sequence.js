@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 
 var Sequence = React.createClass({
-    render: function() {
+    render() {
         var {
             sequence, 
             charWidth, 
@@ -21,7 +21,9 @@ var Sequence = React.createClass({
         
         return (
             <div style={style} className='Sequence'>
-                <svg ref="rowViewTextContainer" className="rowViewTextContainer">
+                <svg ref="rowViewTextContainer" className="rowViewTextContainer" width="100%" 
+                    height="32px" style={{overflow: "visible"}}
+                    >
                     <text>
                         { sequence }
                     </text>
@@ -29,7 +31,6 @@ var Sequence = React.createClass({
                 { children }
             </div>
         )
-
     }
 });
 

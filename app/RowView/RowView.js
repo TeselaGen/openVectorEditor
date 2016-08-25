@@ -1,9 +1,11 @@
 import some from 'lodash/collection/some'
 import React from 'react';
 import Draggable from 'react-draggable'
+import styles from './RowView.scss';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import ReactList from 'react-list';
 import RowItem from './RowItem/RowItem.js'
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 var defaultContainerWidth = 400
 var defaultCharWidth = 12
@@ -99,16 +101,8 @@ export default class RowView extends React.Component {
     // }
 
     // this runs before render(), we need to grab the final size of the rowview container and fill it
-    componentWillMount() {
-        // const height = document.getElementById('rowView').clientHeight;
-        // const width = document.getElementById('rowView').clientWidth;
-
-        // if(height != 0 && width != 0) {
-        //     this.setState(["rowViewDimensions", "height"], height)
-        //     this.setState(["rowViewDimensions", "width"], width)
-        //     // this should update itself up but isn't
-        //     this.setState("bpsPerRow", Math.floor(["rowViewDimensions", "width"] / 15))
-        // }
+    componentDidMount() {
+        new ResizeSensor(this.refs.rowView);
     }
 
     render() {
@@ -161,11 +155,12 @@ export default class RowView extends React.Component {
                 >
                 <div
                     ref="rowView"
-                    className="veRowView"
+                    className={styles.RowView}
                     // onClick={(event) => {
                     //     this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
                     // }
                     >
+                    <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                     <ReactList
                         ref={c => {
                             this.InfiniteScroller= c
