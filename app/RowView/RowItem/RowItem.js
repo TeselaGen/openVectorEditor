@@ -70,66 +70,6 @@ function noop() {
 
 class RowItem extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-    }
-
-    getMaxSequenceLength(charWidth, columnWidth) {
-        var sequenceWidthPx = elementWidth(this.refs.sequenceContainer);
-        return calculateRowLength(charWidth, sequenceWidthPx, columnWidth);
-    }
-
-    _resizeSVG() {
-        var {
-            sequenceContainer: svg
-        } = this.refs;
-
-        var bbox = svg.getBBox();
-        svg.setAttribute('height', bbox.y + bbox.height + 'px');
-    }
-
-    componentDidMount() {
-        this._resizeSVG();
-    }
-
-    componentDidUpdate() {
-        this._resizeSVG();
-    }
-
-    _processProps(props) {
-        var {
-            sequenceData,
-            columnWidth
-        } = props;
-
-        var {
-            sequence,
-            offset,
-            className
-        } = sequenceData;
-
-        var complement = getComplementSequenceString(sequence);
-
-        var renderedSequence = columnizeString(sequence, columnWidth);
-        var renderedComplement = columnizeString(complement, columnWidth);
-
-        this.setState({
-            renderedSequence: renderedSequence,
-            renderedComplement: renderedComplement,
-            renderedOffset: (offset || 0) + 1
-        });
-    }
-
-    componentWillMount() {
-        this._processProps(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this._processProps(nextProps);
-    }
-
     render() {
         var {
             charWidth,
@@ -154,11 +94,11 @@ class RowItem extends React.Component {
             className
         } = this.props;
 
-        var {
-            renderedSequence,
-            renderedComplement,
-            renderedOffset
-        } = this.state;
+        // var {
+        //     renderedSequence,
+        //     renderedComplement,
+        //     renderedOffset
+        // } = this.state;
         
         var {
             sequence='',
@@ -195,10 +135,9 @@ class RowItem extends React.Component {
         }
         
         return (
-
-            <div className = {styles.rowItem + "veRowItem"}>
+            <div className = {styles.rowItem + " veRowItem"}>
                 <div className={styles.margin}>
-                    {renderedOffset}
+
                 </div>
 
                 {(showFeatures && Object.keys(features).length > 0) &&
@@ -212,21 +151,21 @@ class RowItem extends React.Component {
                     <Sequence
                         sequence={sequence}
                         height={1}
-                        length={sequence.length}
+                        length={sequenceLength}
                         charWidth={charWidth}
                         >
                     </Sequence>
 
                     {showReverseSequence &&
                         <Sequence
-                            length={sequence.length}
+                            length={sequenceLength}
                             sequence={reverseSequence}
                             height={1}
-                            charWidth={charWidth}>
+                            charWidth={charWidth}
+                            >
                         </Sequence>
                     }
-                </div>
-              
+                </div>              
             </div>
         );
     }

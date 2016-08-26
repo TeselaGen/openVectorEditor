@@ -6,6 +6,7 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 import ReactList from 'react-list';
 import RowItem from './RowItem/RowItem.js'
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import prepareRowData from 've-sequence-utils/prepareRowData';
 
 var defaultContainerWidth = 400
 var defaultCharWidth = 12
@@ -100,10 +101,22 @@ export default class RowView extends React.Component {
     //     });
     // }
 
-    // this runs before render(), we need to grab the final size of the rowview container and fill it
     componentDidMount() {
-        new ResizeSensor(this.refs.rowView);
+        console.log("rv did mount ran")
+        // maybe get the ref instead of id
+        var rowViewWidth = document.getElementById("allViews").clientWidth;
+        console.log(rowViewWidth)
+
+        var correctBps = Math.floor(rowViewWidth / this.props.charWidth);
+        this.setState({ bpsPerRow: correctBps });
+        console.log(correctBps)
+        this.setState({ rowData: prepareRowData(this.props.sequenceData, this.props.bpsPerRow) });
     }
+
+    // this runs before render(), we need to grab the final size of the rowview container and fill it
+    // componentDidMount() {
+        // new ResizeSensor(this.refs.rowView);
+    // }
 
     render() {
         var {
@@ -128,6 +141,14 @@ export default class RowView extends React.Component {
             bpsPerRow,
             rowData
         } = this.props;
+
+        console.log("ran render rv")
+
+        // calculate bps per row and separate rows based on viewport size
+        // var rowViewWidth = document.getElementById("circularView").clientWidth;
+        // var correctBps = Math.floor(sequenceLength * 12 / rowViewWidth);
+        // bpsPerRow = correctBps;
+        // rowData = prepareRowData(sequenceData, bpsPerRow);
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
@@ -155,7 +176,7 @@ export default class RowView extends React.Component {
                 >
                 <div
                     ref="rowView"
-                    className={styles.RowView}
+                    className={styles.RowView + " veRowView"}
                     // onClick={(event) => {
                     //     this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
                     // }
