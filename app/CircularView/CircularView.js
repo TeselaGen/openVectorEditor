@@ -248,9 +248,9 @@ export default class CircularView extends React.Component {
                     onClick={(event) => {
                         this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
                     }}
-                    style={{overflow: 'visible'}}
-                    width={ circularViewDimensions.width }
-                    height={ circularViewDimensions.height }
+                    // style={{overflow: 'visible'}}
+                    // width={ circularViewDimensions.width }
+                    // height={ circularViewDimensions.height }
                     ref="circularView"
                     className={'circularViewSvg'}
                     viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
