@@ -24,7 +24,7 @@ var Sequence = React.createClass({
                 <svg ref="rowViewTextContainer" className="rowViewTextContainer" width="100%" 
                     height="32px" style={{overflow: "visible"}}
                     >
-                    <text>
+                    <text style={{letterSpacing: ".2em"}}>
                         { sequence }
                     </text>
                 </svg>

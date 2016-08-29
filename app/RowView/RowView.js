@@ -101,17 +101,17 @@ export default class RowView extends React.Component {
     //     });
     // }
 
-    componentDidMount() {
-        // maybe get the ref instead of id
-        var rowViewWidth = document.getElementById("allViews").clientWidth;
-        var correctBps = Math.floor(rowViewWidth / this.props.charWidth);
-        var recalcRows = prepareRowData(this.props.sequenceData, correctBps);
+    // componentDidMount() {
+    //     // maybe get the ref instead of id
+    //     var rowViewWidth = document.getElementById("allViews").clientWidth;
+    //     var correctBps = Math.floor(rowViewWidth / this.props.charWidth);
+    //     var recalcRows = prepareRowData(this.props.sequenceData, correctBps);
 
-        // this.setState({ bpsPerRow: correctBps });
-        // this.setState({ rowData: recalcRows });
-        this.props.signals.setTreeVal({ bpsPerRow: correctBps, rowData: recalcRows });
-        debugger;
-    }
+    //     // this.setState({ bpsPerRow: correctBps });
+    //     // this.setState({ rowData: recalcRows });
+    //     this.props.signals.setTreeVal({ bpsPerRow: correctBps, rowData: recalcRows });
+    //     debugger;
+    // }
 
     // this runs before render(), we need to grab the final size of the rowview container and fill it
     // componentDidMount() {
@@ -141,15 +141,6 @@ export default class RowView extends React.Component {
             bpsPerRow,
             rowData
         } = this.props;
-
-        // calculate bps per row and separate rows based on viewport size
-        // var rowViewWidth = document.getElementById("circularView").clientWidth;
-        // var correctBps = Math.floor(sequenceLength * 12 / rowViewWidth);
-        // bpsPerRow = correctBps;
-        // rowData = prepareRowData(sequenceData, bpsPerRow);
-
-
-
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
