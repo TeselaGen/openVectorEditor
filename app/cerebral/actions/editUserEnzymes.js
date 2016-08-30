@@ -1,4 +1,4 @@
-module.exports = function editUserEnzymes({input: {currentUserList, currentEnzymesList, enzyme, action}, state, output}) {
+module.exports = function editUserEnzymes({input: {currentUserList, currentEnzymesList, enzyme, action, immediateUserListUpdate}, state, output}) {
     var editedList = currentUserList.slice();
     if (action === state.get('removeEnzymeButtonValue')) {
         var index = editedList.indexOf(enzyme);
@@ -21,4 +21,7 @@ module.exports = function editUserEnzymes({input: {currentUserList, currentEnzym
         editedList = [];
     }
     state.set('currentUserEnzymesList', editedList);
+    if (immediateUserListUpdate) {
+        state.set('userEnzymeList', editedList);
+    }
 }

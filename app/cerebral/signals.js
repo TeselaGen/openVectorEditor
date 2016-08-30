@@ -115,6 +115,10 @@ export default function(options) {
         chooseEnzymeList: [
             a.showSelectedEnzymeList
         ],
+
+        chooseGeneRuler: [
+            a.showGeneRuler
+        ],
         
     // ///////////////////////////////////
     // edit only actions

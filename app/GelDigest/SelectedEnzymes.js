@@ -45,7 +45,7 @@ export default class SelectedEnzymes extends React.Component {
                                     onTouchTap={
                                         function() {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                                enzyme: enzyme, action: removeEnzymeButtonValue});
+                                                enzyme: enzyme, action: removeEnzymeButtonValue, immediateUserListUpdate: true});
                                         }
                                     }
                                 >
@@ -60,7 +60,8 @@ export default class SelectedEnzymes extends React.Component {
                     label="Remove all"
                     primary={true}
                     onTouchTap={function () {
-                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: removeAllEnzymesButtonValue});
+                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: removeAllEnzymesButtonValue,
+                            immediateUserListUpdate: true});
                     }}
                 />
             </div>

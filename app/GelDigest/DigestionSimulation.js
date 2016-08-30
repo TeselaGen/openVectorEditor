@@ -55,14 +55,17 @@ export default class DigestionSimulation extends React.Component {
         ];
 
         var customDialogContentStyle = {
-            width: '80%',
+            width: '90%',
+            height: '95%',
             maxWidth: 'none',
+            maxHeight: 'none',
         };
 
         var paperBlockStyle = {
             height: "100%",
-            width: "100%",
+            width: "99%",
             padding: "5px",
+            overflow: "scroll",
 
         };
 
@@ -101,7 +104,6 @@ export default class DigestionSimulation extends React.Component {
         var rightTileTitle = (
             <h4 style={gridTileTitleStyle}>Ladder</h4>
         );
-
 
         var gelDigestContentGrid = (
             <div>
