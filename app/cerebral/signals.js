@@ -119,6 +119,10 @@ export default function(options) {
         chooseGeneRuler: [
             a.showGeneRuler
         ],
+
+        createFragmentsLines: [
+            a.createFragmentsLines
+        ],
         
     // ///////////////////////////////////
     // edit only actions

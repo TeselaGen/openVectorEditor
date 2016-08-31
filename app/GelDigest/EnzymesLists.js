@@ -93,7 +93,8 @@ export default class EnzymesLists extends React.Component {
                                     onCheck={
                                         function () {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                                enzyme: enzyme, action: addEnzymeButtonValue, immediateUserListUpdate: true})
+                                                enzyme: enzyme, action: addEnzymeButtonValue, immediateUserListUpdate: true});
+                                            this.props.signals.createFragmentsLines();
                                         }
                                     }
                                 />
@@ -109,6 +110,7 @@ export default class EnzymesLists extends React.Component {
                     onTouchTap={function () {
                         signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
                             currentEnzymesList: currentEnzymesList, action: addAllEnzymesButtonValue, immediateUserListUpdate: true});
+                        this.props.signals.createFragmentsLines();
                     }}
                 />
             </div>

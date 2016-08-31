@@ -12,12 +12,15 @@ const DropDownMenu = require('material-ui/lib/drop-down-menu');
     geneRuler100bp: ['geneRuler100bp'],
     currentGeneRuler: ['geneRuler1kb'],
     cutsites: ['cutsites'],
+    fragments: ['fragments'],
+    fragmentsNum: ['fragmentsNum'],
 })
 
 export default class EnzymesLists extends React.Component {
     constructor(props) {
         super(props);
         this.props.signals.chooseGeneRuler({selectedRuler: this.props.geneRuler1kb});
+        this.props.signals.createFragmentsLines();
         this.state = {
             value: 1,
         };
@@ -35,94 +38,31 @@ export default class EnzymesLists extends React.Component {
             default:
                 this.props.signals.chooseGeneRuler({selectedRuler: this.props.geneRuler1kb});
         }
+        this.props.signals.createFragmentsLines();
     };
 
     render() {
         var {
             userEnzymeList,
-            currentGeneRuler,
-            cutsites,
-            signals,
+            fragments,
+            fragmentsNum,
         } = this.props;
-
-        var paperBlockStyle = {
-            height: "700px",
-            width: "99%",
-            padding: "2px",
-            paddingTop: "5px",
-            paddingBottom: "5 px",
-            overflow: "scroll",
-        };
 
         let menuItems = [
             { payload: '1', text: 'GeneRuler 1kb Plus DNA' },
             { payload: '2', text: 'GeneRuler 100 bp Plus DNA' },
         ];
 
-        var fragmentsCount; //todo: change to dependency on the actual lines
+        var fragmentsCount;
         if (userEnzymeList.length == 0) {
             fragmentsCount = (
                 <div className={styles.fragmentsNumLabel}>No digestion</div>
             );
         } else {
             fragmentsCount = (
-                <div className={styles.fragmentsNumLabel}>{userEnzymeList.length + 1} fragments</div>
+                <div className={styles.fragmentsNumLabel}>{fragmentsNum} fragments, {userEnzymeList.length} enzymes</div>
             );
         }
-
-        var fragmentsLines = function () {
-            var upperBoundary = currentGeneRuler[0];
-
-            function sortNumber(a,b) {
-                return a - b;
-            }
-            let ranges = [];
-            for (let i = 0; i < cutsites.length; i++) {
-                ranges.push(Math.abs(cutsites[i].end - cutsites[i].start));
-            }
-            ranges.sort(sortNumber);
-            ranges.reverse();
-
-            let yCount = 0;
-
-            let lines = [];
-            for (let iLeft = 0, iRight = 0; ; ) {
-                if (iLeft == currentGeneRuler.length && iRight == ranges.length) {
-                    break;
-                } else if (iRight == ranges.length || currentGeneRuler[iLeft] >= ranges[iRight]) {
-                    let offset = (upperBoundary - currentGeneRuler[iLeft]) / upperBoundary;
-                    let offPix = offset.toFixed(2) * 500;
-                    offPix = (offPix - yCount);
-                    yCount += offPix;
-                    offPix = offPix + "px";
-                    lines.push((
-                        <div>
-                            <hr
-                                className={styles.left}
-                                style={{marginTop: offPix}}
-                            />
-                        </div>
-                    ));
-                    iLeft++;
-                } else if (iLeft == currentGeneRuler.length || currentGeneRuler[iLeft] < ranges[iRight]) {
-                    let offset = (upperBoundary - ranges[iRight]) / upperBoundary;
-                    let offPix = offset.toFixed(2) * 500;
-                    offPix = (offPix - yCount);
-                    yCount += offPix;
-                    offPix = offPix + "px";
-                    lines.push((
-                        <div>
-                            <hr
-                                className={styles.right}
-                                style={{marginTop: offPix}}
-                            />
-                        </div>
-                    ));
-                    iRight++;
-                }
-            }
-            return lines;
-        };
 
         return (
             <div>
@@ -136,7 +76,12 @@ export default class EnzymesLists extends React.Component {
                 />
                 {fragmentsCount}
                 <Paper className={styles.block}>
-                    {fragmentsLines()}
+                    {fragments.map((fragment, index) => (
+                        <hr
+                            className={fragment.style == "left" ? styles.left : styles.right}
+                            style={{marginTop: fragment.marginTop, borderWidth: fragment.borderWidth}}
+                        />
+                    ))}
                 </Paper>
             </div>
         );

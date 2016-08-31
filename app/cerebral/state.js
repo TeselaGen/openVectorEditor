@@ -35,6 +35,8 @@ module.exports = {
     charWidth: 15,
     clipboardData: null,
     // embedded: true,
+    fragments: [],
+    fragmentsNum: 1,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     readOnly: true,
