@@ -60,7 +60,7 @@ export default class ToolBar extends React.Component {
             showCutsites,
             showSidebar,
             signals,
-            cutsites
+            cutsites,
         } = this.props;
 
         var dialog = (
@@ -210,7 +210,6 @@ export default class ToolBar extends React.Component {
                         tooltip='Simulate digestion'
                         onTouchTap={function() {
                             signals.gelDigestDisplay();
-                            console.log(cutsites);
                         }}
                     >
                         <GelIcon />

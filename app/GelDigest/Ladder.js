@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 
+import Paper from 'material-ui/lib/paper';
+import styles from './ruler.scss';
+
 const DropDownMenu = require('material-ui/lib/drop-down-menu');
 
 @Cerebral({
@@ -8,6 +11,7 @@ const DropDownMenu = require('material-ui/lib/drop-down-menu');
     geneRuler1kb: ['geneRuler1kb'],
     geneRuler100bp: ['geneRuler100bp'],
     currentGeneRuler: ['geneRuler1kb'],
+    cutsites: ['cutsites'],
 })
 
 export default class EnzymesLists extends React.Component {
@@ -37,27 +41,88 @@ export default class EnzymesLists extends React.Component {
         var {
             userEnzymeList,
             currentGeneRuler,
+            cutsites,
             signals,
         } = this.props;
+
+        var paperBlockStyle = {
+            height: "700px",
+            width: "99%",
+            padding: "2px",
+            paddingTop: "5px",
+            paddingBottom: "5 px",
+            overflow: "scroll",
+        };
 
         let menuItems = [
             { payload: '1', text: 'GeneRuler 1kb Plus DNA' },
             { payload: '2', text: 'GeneRuler 100 bp Plus DNA' },
         ];
 
-        var fragmentsCount;
+        var fragmentsCount; //todo: change to dependency on the actual lines
         if (userEnzymeList.length == 0) {
             fragmentsCount = (
-                <div>No digestion</div>
+                <div className={styles.fragmentsNumLabel}>No digestion</div>
             );
         } else {
             fragmentsCount = (
-                <div>{userEnzymeList.length + 1} fragments</div>
+                <div className={styles.fragmentsNumLabel}>{userEnzymeList.length + 1} fragments</div>
             );
         }
 
-        var fragments;
-        var upperBoundary = currentGeneRuler[0];
+        var fragmentsLines = function () {
+            var upperBoundary = currentGeneRuler[0];
+
+            function sortNumber(a,b) {
+                return a - b;
+            }
+            let ranges = [];
+            for (let i = 0; i < cutsites.length; i++) {
+                ranges.push(Math.abs(cutsites[i].end - cutsites[i].start));
+            }
+            ranges.sort(sortNumber);
+            ranges.reverse();
+
+            let yCount = 0;
+
+            let lines = [];
+            for (let iLeft = 0, iRight = 0; ; ) {
+                if (iLeft == currentGeneRuler.length && iRight == ranges.length) {
+                    break;
+                } else if (iRight == ranges.length || currentGeneRuler[iLeft] >= ranges[iRight]) {
+                    let offset = (upperBoundary - currentGeneRuler[iLeft]) / upperBoundary;
+                    let offPix = offset.toFixed(2) * 500;
+                    offPix = (offPix - yCount);
+                    yCount += offPix;
+                    offPix = offPix + "px";
+                    lines.push((
+                        <div>
+                            <hr
+                                className={styles.left}
+                                style={{marginTop: offPix}}
+                            />
+                        </div>
+                    ));
+                    iLeft++;
+                } else if (iLeft == currentGeneRuler.length || currentGeneRuler[iLeft] < ranges[iRight]) {
+                    let offset = (upperBoundary - ranges[iRight]) / upperBoundary;
+                    let offPix = offset.toFixed(2) * 500;
+                    offPix = (offPix - yCount);
+                    yCount += offPix;
+                    offPix = offPix + "px";
+                    lines.push((
+                        <div>
+                            <hr
+                                className={styles.right}
+                                style={{marginTop: offPix}}
+                            />
+                        </div>
+                    ));
+                    iRight++;
+                }
+            }
+            return lines;
+        };
 
         return (
             <div>
@@ -70,7 +135,9 @@ export default class EnzymesLists extends React.Component {
                     labelStyle={{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
                 />
                 {fragmentsCount}
-                {fragments}
+                <Paper className={styles.block}>
+                    {fragmentsLines()}
+                </Paper>
             </div>
         );
     }

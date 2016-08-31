@@ -1,0 +1,39 @@
+.left {
+  margin-right: 55%;
+  margin-left: 5px;
+  border-color: black;
+  border-width: 2px;
+  position: relative;
+}
+
+.right {
+  margin-right: 5px;
+  margin-left: 55%;
+  border-color: black;
+  border-width: 1px;
+  position: relative;
+}
+
+.rightLabel {
+  margin-right: 2%;
+  margin-left: 60%;
+  position: relative;
+}
+
+.leftLabel {
+  margin-left: 2%;
+  margin-right: 60%;
+  position: relative;
+}
+
+.block {
+  height: 380px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  overflow: scroll;
+}
+
+.fragmentsNumLabel {
+  text-align: right;
+  padding-right: 5px;
+}
