@@ -149,19 +149,19 @@ class RowItem extends React.Component {
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
+                        reverse="false"
                         sequence={sequence}
-                        height={1}
-                        length={sequenceLength}
                         charWidth={charWidth}
+                        bpsPerRow={bpsPerRow}
                         >
                     </Sequence>
 
                     {showReverseSequence &&
                         <Sequence
-                            length={sequenceLength}
+                            reverse="true"
                             sequence={reverseSequence}
-                            height={1}
                             charWidth={charWidth}
+                            bpsPerRow={bpsPerRow}
                             >
                         </Sequence>
                     }

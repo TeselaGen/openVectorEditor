@@ -71,7 +71,7 @@ let Features = React.createClass({
                 {annotationsSVG}
             </AnnotationContainerHolder>
         );
-
     }
 });
+
 module.exports = Features;

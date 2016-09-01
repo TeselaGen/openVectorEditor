@@ -12,7 +12,7 @@ var Feature = React.createClass({
             rangeType, 
             forward, 
             name,
-            pointiness=8,
+            pointiness=4,
             fontWidth=12, 
             color, 
             featureClicked,

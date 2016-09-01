@@ -135,6 +135,19 @@ export default class SequenceEditor extends React.Component {
         // we need this position relative to place the controller bar in the sidebar
         Object.assign(sidebarStyle, {minWidth: '580px', overflow: 'hidden', borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
 
+        // check if we have just circ or just row and pad it out a little
+        // using the bitwise xor here might be a little sketchy
+        // {{}} looks ok for now but needs to be reactive
+        var oneViewOnly = !showSidebar && (showCircular ^ showRow)
+        var circularStyle = {}
+        if(!showCircular) circularStyle = {display: 'none'}
+        if (oneViewOnly) {
+            circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
+            rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
+        }
+        var rowStyle = {}
+        if(embedded || !showRow) rowStyle =  {display: 'none'}
+
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (
@@ -179,11 +192,11 @@ export default class SequenceEditor extends React.Component {
                       {table}
                     </div>
 
-                    <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
+                    <div className={styles.circularViewSlot} id="circularView" style={ circularStyle }>
                         <CircularView />
                     </div>
-                    <div className={styles.rowViewSlot} id="rowView" style={(embedded || !showRow) ? {display: 'none'} : {}}>
-                        <RowView sequenceData={sequenceData} columnWidth={10} />
+                    <div className={styles.rowViewSlot} id="rowView" style={ rowStyle }>
+                        <RowView sequenceData={sequenceData} />
                     </div>
                 </div>
 
