@@ -60,7 +60,7 @@ export default class EnzymesLists extends React.Component {
             );
         } else {
             fragmentsCount = (
-                <div className={styles.fragmentsNumLabel}>{fragmentsNum} fragments, {userEnzymeList.length} enzymes</div>
+                <div className={styles.fragmentsNumLabel}>{fragmentsNum} fragment(s), {userEnzymeList.length} enzymes</div>
             );
         }
 
