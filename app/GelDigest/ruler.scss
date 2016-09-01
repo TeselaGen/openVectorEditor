@@ -12,6 +12,21 @@
   position: relative;
 }
 
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 .rightLabel {
   margin-right: 2%;
   margin-left: 60%;
@@ -26,8 +41,9 @@
 
 .block {
   height: 380px;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  max-height: none;
+  padding-bottom: 40px;
+  padding-top: 10px;
   overflow: scroll;
 }
 

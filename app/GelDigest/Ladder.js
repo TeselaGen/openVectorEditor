@@ -77,10 +77,15 @@ export default class EnzymesLists extends React.Component {
                 {fragmentsCount}
                 <Paper className={styles.block}>
                     {fragments.map((fragment, index) => (
-                        <hr
-                            className={fragment.style == "left" ? styles.left : styles.right}
-                            style={{marginTop: fragment.marginTop, borderWidth: fragment.borderWidth}}
-                        />
+                        <div className={styles.tooltip}>
+                            <span className={styles.tooltiptext}>
+                                {fragment.position}
+                            </span>
+                            <hr
+                                className={fragment.align == "left" ? styles.left : styles.right}
+                                style={{marginTop: fragment.marginTop, borderWidth: fragment.borderWidth}}
+                            />
+                        </div>
                     ))}
                 </Paper>
             </div>

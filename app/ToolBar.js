@@ -36,7 +36,6 @@ import DigestionSimulation from './GelDigest/DigestionSimulation';
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
-    cutsites: ['cutsites'],
 })
 
 export default class ToolBar extends React.Component {
@@ -60,7 +59,6 @@ export default class ToolBar extends React.Component {
             showCutsites,
             showSidebar,
             signals,
-            cutsites,
         } = this.props;
 
         var dialog = (
