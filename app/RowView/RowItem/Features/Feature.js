@@ -20,6 +20,8 @@ var Feature = React.createClass({
             signals
         } = this.props;
 
+        height = 24;
+
         var width = widthInBps * charWidth;
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
@@ -75,8 +77,8 @@ var Feature = React.createClass({
                 }}
                 >
                 <path
-                    strokeWidth="1"
-                    stroke={ 'black' }
+                    // strokeWidth="1"
+                    // stroke={ 'black' }
                     fill={ color }
                     transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
                     d={ path }
