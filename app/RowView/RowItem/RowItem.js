@@ -126,12 +126,12 @@ class RowItem extends React.Component {
         } = componentOverrides
 
         var annotationCommonProps = {
-          charWidth,
-          bpsPerRow,
-          sequenceLength,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          row
+            charWidth,
+            bpsPerRow,
+            sequenceLength,
+            annotationHeight,
+            spaceBetweenAnnotations,
+            row
         }
         
         return (

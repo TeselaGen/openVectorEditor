@@ -253,7 +253,7 @@ export default class CircularView extends React.Component {
                     // height={ circularViewDimensions.height }
                     ref="circularView"
                     className={'circularViewSvg'}
-                    viewBox={ `-${radius} -${radius} ${radius*2} ${radius*2}` }
+                    viewBox={ `-${radius} -${radius*.80} ${radius*2} ${radius*2*.80}` } // scaling svg to crop
                     xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                     >
