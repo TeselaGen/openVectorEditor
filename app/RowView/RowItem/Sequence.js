@@ -2,7 +2,13 @@ import React, {PropTypes} from 'react';
 
 var Sequence = React.createClass({
 
-    render() {
+    // this is an awkward workaround for react stripping this attribute from the text node
+    componentDidMount: function() {
+        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
+        this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
+    },
+
+    render: function() {
         var {
             bpsPerRow,
             charWidth, 
@@ -29,7 +35,7 @@ var Sequence = React.createClass({
                 <svg ref="rowViewTextContainer" className="rowViewTextContainer" 
                     viewBox={ "0 " + charWidth*-0.85 + " " + rowWidth + " " + charWidth } // in future the radio should be bpsPerRow*charWidth x charHeight 
                     >
-                    <text ref="sequenceRow" fill={ textColor } textLength={ rowWidth } lengthAdjust="spacing">
+                    <text ref="sequenceRow" fill={ textColor }>
                         { sequence }
                     </text>
                 </svg>

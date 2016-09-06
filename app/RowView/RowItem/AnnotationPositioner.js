@@ -8,12 +8,12 @@ var AnnotationPositioner = React.createClass({
                 // height={this.props.height + 5} 
                 className={this.props.className + ' veRowViewAnnotationPosition'} 
                 // width={this.props.width + 5}
-                width = "100%;"
+                width = "100%"
                 style = {{
                     // position: 'absolute',
                     // top: this.props.top,
                     // left: this.props.left,
-                    padding: "0 20px;"
+                    padding: "0 20px"
                     }}
                 >
                 {this.props.children}
