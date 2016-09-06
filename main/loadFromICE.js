@@ -23,14 +23,13 @@ request
           contents = fakeIceSequenceData
         }
         contents.featureList = [];
-        var embedded = document.location.pathname.match(/entry/);
         for (var f = 0; f < contents.features.length; f++) { 
             contents.featureList.push(contents.features[f]);
         }
 
         //Editor is the React Component
         //controller is the cerebral state controller
-        var {Editor, controller} = App(toOpenVectorEditor(contents, embedded, {request: request}));
+        var {Editor, controller} = App(toOpenVectorEditor(contents, {request: request}));
         //choose the dom node you want to render to
         const DOMNodeToRenderTo = document.createElement('div');
         document.body.appendChild(DOMNodeToRenderTo);

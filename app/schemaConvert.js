@@ -1,6 +1,6 @@
 var colorOfFeature = require('./colorOfFeature');
 module.exports = {
-    toOpenVectorEditor: function(contents, embedded, services){
+    toOpenVectorEditor: function(contents, services){
         return {
             state: {
                 sequenceData: {
@@ -16,8 +16,8 @@ module.exports = {
                     sequence: contents.sequence,
                     circular: contents.isCircular
                 },
-                embedded: !!embedded, //forced boolean
-                readOnly: !contents.canEdit //forced inverse boolean
+                embedded: !document.location.pathname.match(/entry/),
+                readOnly: !contents.canEdit 
             },
             services: services,
             actions: {

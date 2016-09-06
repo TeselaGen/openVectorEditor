@@ -32,7 +32,7 @@ module.exports = {
     charHeight: 15,
     charWidth: 15,
     clipboardData: null,
-    // embedded: true,
+    embedded: true,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     readOnly: true,
@@ -63,8 +63,8 @@ module.exports = {
     applyButtonValue: 'Apply',
     // complex vars
     circularViewDimensions: {
-        height: 700,
-        width: 700
+        height: 500,
+        width: 500
     },
     cutsiteLabelSelectionLayer: {
         start: -1,
@@ -117,14 +117,14 @@ module.exports = {
     },
     // derived data - can't alphabetize because of dependencies  :(
     bpsPerRow: deriveData([
-        ['rowViewDimensions',
-            'width'
-        ],
+        ['rowViewDimensions', 'width'],
         ['charWidth'],
         function(rowViewDimensionsWidth, charWidth) {
             var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
-            var gaps = Math.floor(charsInRow / 10) - 1;
-            return Math.floor((charsInRow - gaps) / 10) * 10;
+            // var gaps = Math.floor(charsInRow / 10) - 1;
+            // return Math.floor((charsInRow - gaps) / 10) * 10;
+            // return charsInRow;
+            return 90; //hard code for now
         }
     ]),
     userEnzymes: deriveData([

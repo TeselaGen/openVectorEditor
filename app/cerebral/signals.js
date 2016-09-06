@@ -16,6 +16,10 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
 
+        setTreeVal: [
+            a.setData
+        ],
+
         // sidebar signals
         sidebarToggle: [
             a.sidebarToggle
@@ -152,7 +156,7 @@ export default function(options) {
             a.insertSequenceData,
             a.clearSelectionLayer
         ]),
-        // sl - in progress loading and saving local files
+        // loading and saving local files
         clickSaveFile:
             [a.saveToFile],
         saveChanges:

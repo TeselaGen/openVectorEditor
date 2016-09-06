@@ -94,6 +94,7 @@ export default class SequenceEditor extends React.Component {
             event.stopPropagation();
         });
     }
+
     // copy and paste events are handled by a listener in the DOM element as listed below
     handlePaste(event) {
         var {
@@ -135,6 +136,19 @@ export default class SequenceEditor extends React.Component {
         // we need this position relative to place the controller bar in the sidebar
         Object.assign(sidebarStyle, {minWidth: '580px', overflow: 'hidden', borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
 
+        // check if we have just circ or just row and pad it out a little
+        // using the bitwise xor here might be a little sketchy
+        // {{}} looks ok for now but needs to be reactive
+        var oneViewOnly = !showSidebar && (showCircular ^ showRow)
+        var circularStyle = {}
+        if(!showCircular) circularStyle = {display: 'none'}
+        if (oneViewOnly) {
+            circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
+            rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
+        }
+        var rowStyle = {}
+        if(embedded || !showRow) rowStyle =  {display: 'none'}
+
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (
@@ -163,7 +177,7 @@ export default class SequenceEditor extends React.Component {
         }
 
         return (
-            <div ref="sequenceEditor" className={styles.app} style={embedded ? {width: '600px'} : {}}>
+            <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
                     value={selectedSequenceString}
                     onCopy={this.handleCopy.bind(this)}
@@ -179,11 +193,11 @@ export default class SequenceEditor extends React.Component {
                       {table}
                     </div>
 
-                    <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
+                    <div className={styles.circularViewSlot} id="circularView" style={ circularStyle }>
                         <CircularView />
                     </div>
-                    <div className={styles.rowViewSlot} id="rowView" style={(!embedded) ? {} : {display: 'none'}}>
-                        <RowView sequenceData={sequenceData} columnWidth={10} />
+                    <div className={styles.rowViewSlot} id="rowView" style={ rowStyle }>
+                        <RowView sequenceData={sequenceData} />
                     </div>
                 </div>
 
