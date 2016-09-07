@@ -4,8 +4,10 @@ var Sequence = React.createClass({
 
     // this is an awkward workaround for react stripping this attribute from the text node
     componentDidMount: function() {
-        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
+        var rowWidth = this.getState("rowWidth");
+        if(rowWidth && rowWidth > 0)
         this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
+        // this.setState({ rowWidth: rowWidth });
     },
 
     render: function() {

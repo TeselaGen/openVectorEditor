@@ -22,7 +22,7 @@ var Feature = React.createClass({
 
         height = 24;
 
-        var width = widthInBps * charWidth;
+        var width = widthInBps * (charWidth+2);
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
             if (width > 15) {

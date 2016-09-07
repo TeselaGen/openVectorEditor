@@ -35,7 +35,7 @@ import _Sequence from './Sequence'
 import _Features from './Features'
 // import _CutsiteLabels from './CutsiteLabels'
 // import _Cutsites from './Cutsites'
-// import Caret from './Caret'
+import Caret from './Caret'
 import styles from './RowItem.scss';
 
 function noop() {
@@ -69,6 +69,15 @@ function noop() {
 })
 
 class RowItem extends React.Component {
+
+    // this is an awkward workaround for react stripping this attribute from the text node
+    componentDidMount() {
+        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
+        if(rowWidth && rowWidth > 0) {
+            // this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
+            this.setState({ rowWidth: rowWidth });
+        }
+    }
 
     render() {
         var {
@@ -122,7 +131,7 @@ class RowItem extends React.Component {
             Features = _Features,
         //     CutsiteLabels = _CutsiteLabels,
         //     Cutsites = _Cutsites,
-        //     // Caret = _Caret,
+            // Caret = _Caret,
         } = componentOverrides
 
         var annotationCommonProps = {
@@ -136,6 +145,7 @@ class RowItem extends React.Component {
         
         return (
             <div className = {styles.rowItem + " veRowItem"}>
+     
                 <div className={styles.margin}>
 
                 </div>
