@@ -1,28 +1,36 @@
 import React from 'react';
-import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
-var Feature = React.createClass({
+@Cerebral({
+    annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],  
+    charWidth: ['charWidth'], 
+    rowData: ['rowData'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+})
 
-    render: function() {
+export default class Feature extends React.Component {
+
+    render() {
         var {
-            widthInBps, 
+            bpsPerRow,
             charWidth, 
             height, 
             rangeType, 
             forward, 
             name,
             pointiness=4,
-            fontWidth=12, 
+            fontWidth=16, 
             color, 
             featureClicked,
             annotation,
             signals
         } = this.props;
 
-        height = 24;
+        height = 24; // {{}} should this not be hardcoded
 
-        var width = widthInBps * (charWidth+2);
+        var width = bpsPerRow * charWidth * 1.2 - 20; // scale feature to width of row with padding
+        // var width = widthInBps * (charWidth+2);
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
             if (width > 15) {
@@ -68,6 +76,7 @@ var Feature = React.createClass({
           Q ${pointiness},${height/2} ${0},${0}
           z`
         }
+
         return (
             <g
                 className='veRowViewFeature clickable'
@@ -86,5 +95,4 @@ var Feature = React.createClass({
             </g>
         );
     }
-});
-module.exports = Feature;
+}

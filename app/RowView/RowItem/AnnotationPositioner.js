@@ -1,26 +1,29 @@
 var React = require('react');
+import { Decorator as Cerebral } from 'cerebral-view-react';
 
-var AnnotationPositioner = React.createClass({
-    render: function () {
+@Cerebral({
+    bpsPerRow: ['bpsPerRow'],    
+    charWidth: ['charWidth'], 
+})
+
+export default class AnnotationPositioner extends React.Component{
+    render() {
+        var {
+            bpsPerRow,
+            charWidth
+        } = this.props;
+
+        var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // account for padding
+
         return (
             <svg 
                 transform={this.props.transform || null}
-                // height={this.props.height + 5} 
                 className={this.props.className + ' veRowViewAnnotationPosition'} 
-                // width={this.props.width + 5}
-                // width = "100%"
-                style = {{
-                    // position: 'absolute',
-                    // top: this.props.top,
-                    // left: this.props.left,
-                    padding: "0 20px"
-                    }}
-                viewBox="0 0 2000 25" 
+                style = {{ padding: "0 20px" }}
+                viewBox={"0 0 " + rowWidth + " 25"}
                 >
                 {this.props.children}
             </svg>
         );
     }
-});
-
-module.exports = AnnotationPositioner;
+}

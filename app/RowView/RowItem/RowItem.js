@@ -143,12 +143,14 @@ class RowItem extends React.Component {
             spaceBetweenAnnotations,
             row
         }
+
+        var rowNumber = row.start + 1; // we start at 1 and not 0
         
         return (
             <div className = {styles.rowItem + " veRowItem"}>
      
                 <div className={styles.margin}>
-
+                    { rowNumber }
                 </div>
 
                 {(showFeatures && Object.keys(features).length > 0) &&
