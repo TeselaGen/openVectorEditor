@@ -103,6 +103,22 @@ export default function(options) {
         ],
         setSelectionLayer: [a.setSelectionLayer],
 
+        restrictionEnzymeManagerDisplay: [
+            a.restrictionEnzymeManagerDisplay
+        ],
+
+        editUserEnzymes: [
+            a.editUserEnzymes
+        ],
+
+        updateUserEnzymes: [
+            a.updateUserEnzymes
+        ],
+
+        chooseEnzymeList: [
+            a.showSelectedEnzymeList
+        ],
+        
     // ///////////////////////////////////
     // edit only actions
         backspacePressed: a.addEditModeOnly([
