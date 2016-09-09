@@ -77,8 +77,6 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             }
         }
 
-        console.log( codonIndices )
-
         path = drawArc({ radius: annotationRadius, height: annotationHeight, totalAngle});
 
         svgGroup.push(

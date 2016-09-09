@@ -30,7 +30,7 @@ import { columnizeString, elementWidth, calculateRowLength } from '../utils';
 import _Sequence from './Sequence'
 // import LineageLines from './LineageLines'
 // import _Axis from './Axis'
-// import _Orfs from './Orfs'
+import _Orfs from './Orfs'
 // import _Translations from './Translations'
 import _Features from './Features'
 // import _CutsiteLabels from './CutsiteLabels'
@@ -99,16 +99,11 @@ class RowItem extends React.Component {
             sequenceLength,
             row,
             showFeatures,
+            showOrfs,
             bpsPerRow,
             componentOverrides = {},
             className
         } = this.props;
-
-        // var {
-        //     renderedSequence,
-        //     renderedComplement,
-        //     renderedOffset
-        // } = this.state;
         
         var {
             sequence='',
@@ -127,7 +122,7 @@ class RowItem extends React.Component {
         var {
             Sequence = _Sequence,
         //     Axis = _Axis,
-        //     Orfs = _Orfs,
+            Orfs = _Orfs,
         //     Translations = _Translations,
             Features = _Features,
         //     CutsiteLabels = _CutsiteLabels,
@@ -159,6 +154,13 @@ class RowItem extends React.Component {
                         {...annotationCommonProps}
                         />
                 }
+
+                {(showOrfs && Object.keys(orfs).length > 0) &&
+                    <Orfs
+                        annotationRanges={orfs}
+                        {...annotationCommonProps}
+                        />
+                }                
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
