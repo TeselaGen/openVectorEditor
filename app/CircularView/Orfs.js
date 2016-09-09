@@ -57,6 +57,28 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             maxYOffset = annotationCopy.yOffset;
         }
 
+        var codonIndices = [];
+        // check for codon indices
+        if (annotation.internalStartCodonIndices.length > 0) {
+            var codons = annotation.internalStartCodonIndices;
+            var node;
+            for(var c = 0; c < codons.length; c++) {
+                node = (
+                        <PositionAnnotationOnCircle
+                            key={ 'codon' + c + "_" + annotation.id }
+                            sAngle={ codons[c] }
+                            eAngle={ codons[c] }
+                            direction={ 'forward' } // buh
+                            >
+                            <circle r="1.5" fill={ orfColor } stroke="none"/>
+                        </ PositionAnnotationOnCircle>
+                )
+                codonIndices.push( node );
+            }
+        }
+
+        console.log( codonIndices )
+
         path = drawArc({ radius: annotationRadius, height: annotationHeight, totalAngle});
 
         svgGroup.push(
@@ -79,11 +101,10 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }
-                            strokeWidth={ annotationHeight/2 }
-                            markerEnd="url(#arrow)"                          
+                            strokeWidth={ annotationHeight/2 }                        
                             />
-                        <use x='0' y='50' xlinkHref="#arrow" style={{fill: 'blue'}} />
-                    </PositionAnnotationOnCircle>                   
+                        { codonIndices } 
+                    </PositionAnnotationOnCircle>                  
                 </g>
             </g>
         )

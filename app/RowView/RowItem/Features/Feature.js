@@ -24,13 +24,14 @@ export default class Feature extends React.Component {
             color, 
             featureClicked,
             annotation,
-            signals
+            signals,
+            widthInBps
         } = this.props;
 
-        height = 24; // {{}} should this not be hardcoded
+        height = 20; // {{}} should this not be hardcoded
 
-        var width = bpsPerRow * charWidth * 1.2 - 20; // scale feature to width of row with padding
-        // var width = widthInBps * (charWidth+2);
+        // var width = bpsPerRow * charWidth * 1.2 - 20; // scale feature to width of row with padding
+        var width = widthInBps * (charWidth * 1.2) - 20;
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
             if (width > 15) {
