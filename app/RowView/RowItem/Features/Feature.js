@@ -18,7 +18,6 @@ export default class Feature extends React.Component {
             height, 
             rangeType, 
             forward, 
-            name,
             pointiness=4,
             fontWidth=16, 
             color, 

@@ -9,18 +9,21 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 export default class AnnotationPositioner extends React.Component{
     render() {
         var {
+            left, // left shoves the x position over
             bpsPerRow,
-            charWidth
+            charWidth,
+            width
         } = this.props;
 
-        var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // account for padding
+        var xShift = left * -1.2; // account for character spacing and move feature right
+        var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // 40 accounts for padding, 1.2 accounts for spacing
 
         return (
             <svg 
                 transform={this.props.transform || null}
                 className={this.props.className + ' veRowViewAnnotationPosition'} 
                 style = {{ padding: "0 20px" }}
-                viewBox={"0 0 " + rowWidth + " 25"}
+                viewBox={ xShift + " 0 " + rowWidth + " 25"}
                 >
                 {this.props.children}
             </svg>
