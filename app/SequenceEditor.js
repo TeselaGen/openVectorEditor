@@ -127,7 +127,8 @@ export default class SequenceEditor extends React.Component {
             cutsites,
             orfData,
             showRestrictionEnzymeManager,
-            readOnly
+            readOnly,
+            clipboardData
         } = this.props;
 
         var table;
@@ -165,7 +166,7 @@ export default class SequenceEditor extends React.Component {
         return (
             <div ref="sequenceEditor" className={styles.app} style={embedded ? {width: '600px'} : {}}>
                 <Clipboard
-                    value={selectedSequenceString}
+                    value={JSON.stringify(clipboardData)}
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}
                 />
