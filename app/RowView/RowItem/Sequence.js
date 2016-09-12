@@ -4,8 +4,20 @@ var Sequence = React.createClass({
 
     // this is an awkward workaround for react stripping this attribute from the text node
     componentDidMount: function() {
+        var {
+            bpsPerRow,
+            charWidth, 
+            children,            
+            className,
+            reverse,
+            sequence            
+        } = this.props;        
         // var rowWidth = this.getState("rowWidth");
-        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
+        // check if we have a partial final row
+        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;        
+        if(sequence.length < bpsPerRow) {
+            rowWidth = sequence.length * charWidth * 1.2;
+        }
         if(rowWidth && rowWidth > 0)
         this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
         this.setState({ rowWidth: rowWidth });

@@ -126,7 +126,7 @@ class RowItem extends React.Component {
         //     Translations = _Translations,
             Features = _Features,
         //     CutsiteLabels = _CutsiteLabels,
-        //     Cutsites = _Cutsites,
+            // Cutsites = _Cutsites,
             // Caret = _Caret,
         } = componentOverrides
 
@@ -178,6 +178,7 @@ class RowItem extends React.Component {
                             charWidth={charWidth}
                             bpsPerRow={bpsPerRow}
                             >
+                       
                         </Sequence>
                     }
                 </div>              
