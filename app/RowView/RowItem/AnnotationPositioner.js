@@ -12,6 +12,7 @@ export default class AnnotationPositioner extends React.Component{
             left, // left shoves the x position over
             bpsPerRow,
             charWidth,
+            height,
             width
         } = this.props;
 
@@ -23,7 +24,7 @@ export default class AnnotationPositioner extends React.Component{
                 transform={this.props.transform || null}
                 className={this.props.className + ' veRowViewAnnotationPosition'} 
                 style = {{ padding: "0 20px" }}
-                viewBox={ xShift + " 0 " + rowWidth + " 25"}
+                viewBox={ xShift + " 0 " + rowWidth + " " + height}
                 >
                 {this.props.children}
             </svg>

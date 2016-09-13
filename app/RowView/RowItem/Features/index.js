@@ -23,6 +23,7 @@ let Features = React.createClass({
         }
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
+        annotationHeight = annotationHeight*6;
         forEach(annotationRanges, function(annotationRange, index) {
             if (annotationRange.yOffset > maxAnnotationYOffset) {
                 maxAnnotationYOffset = annotationRange.yOffset;

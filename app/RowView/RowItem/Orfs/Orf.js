@@ -9,9 +9,9 @@ var Orf = React.createClass({
             // normalizedInternalStartCodonIndices=[], 
             forward, 
             annotation, 
-            width, 
+            widthInBps, 
             orfClicked,
-            charWidth
+            charWidth=16
         } = this.props;
 
         var frame = annotation.frame;
@@ -23,6 +23,7 @@ var Orf = React.createClass({
         } else if (frame === 2) {
             color = 'blue';
         }
+        var width = widthInBps * (charWidth * 1.2) - 20;
 
         // var heightToUse = height/1.5;
         var arrow = null;
@@ -36,14 +37,19 @@ var Orf = React.createClass({
         if (rangeType === 'end'||rangeType === 'beginningAndEnd') {
             arrow = (<path 
                         transform={
-                            `translate(${width - charWidth},0) 
-                            scale(${charWidth/64},${height/64})`
+                            `translate(${width - charWidth},0)`
                         }
-                        d= {rangeType === 'start' 
-                            ? 'M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z' 
-                            : 'M0 64 L64 32 L0 0 Z'} 
-                        />)
+                        d= {'M0 0 L16 8 L16 -8 Z'} 
+                        />
+                    )
         }
+
+        var path = `
+            M 0,0 
+            L ${width},0 
+            L ${width},${height}
+            L 0,${height} 
+            z`
         // if (rangeType === 'start'|| rangeType === 'beginningAndEnd') {
         //     endCircle = circle
         // }
@@ -63,11 +69,7 @@ var Orf = React.createClass({
                     >
                     
                     <path
-                        transform={(rangeType === 'start' ? 
-                            `translate(${charWidth},0)` : '') 
-                            + `scale(${(width - (rangeType === 'middle' 
-                            ? 0 : charWidth))/64},${height/64})`}
-                        d='M0 40 L64 40 L64 20 L0 20 Z'
+                        d={ path }
                         >
                     </path>
                     { arrow }
