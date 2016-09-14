@@ -6,7 +6,7 @@ var Orf = React.createClass({
         var {
             height, 
             rangeType, 
-            // normalizedInternalStartCodonIndices=[], 
+            normalizedInternalStartCodonIndices=[], 
             forward, 
             annotation, 
             widthInBps, 
@@ -16,7 +16,6 @@ var Orf = React.createClass({
 
         var frame = annotation.frame;
         // frame is one of [0,1,2] 
-        // hacky fix for colors, not sure we're calculating reversed orfs right 
         var color = 'red';
         if (frame === 1) {
             color = 'green';
@@ -24,6 +23,8 @@ var Orf = React.createClass({
             color = 'blue';
         }
         var width = widthInBps * (charWidth * 1.2) - 20;
+        var heightWithArrow = height + 12;
+        var halfwayPoint = heightWithArrow/2;
 
         // var heightToUse = height/1.5;
         var arrow = null;
@@ -36,19 +37,20 @@ var Orf = React.createClass({
         //     />
         if (rangeType === 'end'||rangeType === 'beginningAndEnd') {
             arrow = (<path 
+
                         transform={
-                            `translate(${width - charWidth},0)`
+                            `translate(${width + 20},0)`
                         }
-                        d= {'M0 0 L16 8 L16 -8 Z'} 
+                        d= {`M 0 ${halfwayPoint} L -18 ${halfwayPoint+6} L -18 ${halfwayPoint-6} Z`} 
                         />
                     )
         }
 
         var path = `
-            M 0,0 
-            L ${width},0 
-            L ${width},${height}
-            L 0,${height} 
+            M 0,${halfwayPoint+height/2} 
+            L ${width},${halfwayPoint+height/2} 
+            L ${width},${halfwayPoint-height/2}
+            L 0,${halfwayPoint-height/2} 
             z`
         // if (rangeType === 'start'|| rangeType === 'beginningAndEnd') {
         //     endCircle = circle
