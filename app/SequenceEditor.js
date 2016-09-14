@@ -99,16 +99,26 @@ export default class SequenceEditor extends React.Component {
         var {
             pasteSequenceString,
         } = this.props.signals;
-        event.clipboardData.items[0].getAsString(function(clipboardString) {
-            pasteSequenceString({sequenceString:clipboardString});
-        });
+        // event.clipboardData.items[0].getAsString(function(clipboardString) {
+        //     pasteSequenceString({sequenceString:clipboardString});
+        // });
+        // console.log(event.clipboardData.types);
+        console.log("json: " + event.clipboardData.getData("application/json"));
+        console.log("text: " + event.clipboardData.getData("text/plain"));
+        event.preventDefault();
     }
 
-    handleCopy() {
+    handleCopy(event) {
         var {
             selectionCopied,
         } = this.props.signals;
         selectionCopied();
+
+        let val = this.props.clipboardData;
+        event.clipboardData.setData("application/json", JSON.stringify(val));
+        event.clipboardData.setData("text/plain", val.sequence);
+        event.preventDefault();
+        // console.log(event.clipboardData.types);
     }
 
     componentWillUnmount() {
