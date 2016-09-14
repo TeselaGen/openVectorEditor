@@ -26,15 +26,13 @@ var Orf = React.createClass({
         var heightWithArrow = height + 12;
         var halfwayPoint = heightWithArrow/2;
 
-        // var heightToUse = height/1.5;
-        var arrow = null;
-        // var endCircle = null;
-        // var circle = <circle 
-        //     key='circle'
-        //     r={heightToUse/2}
-        //     cx={heightToUse/2}
-        //     cy={heightToUse/2}
-        //     />
+         var arrow = null;
+         var circle = <circle 
+                        key='circle'
+                        r={height*1.5}
+                        cx='0'
+                        cy={halfwayPoint}
+                        />
         if (rangeType === 'end'||rangeType === 'beginningAndEnd') {
             arrow = (<path 
 
@@ -52,12 +50,11 @@ var Orf = React.createClass({
             L ${width},${halfwayPoint-height/2}
             L 0,${halfwayPoint-height/2} 
             z`
-        // if (rangeType === 'start'|| rangeType === 'beginningAndEnd') {
-        //     endCircle = circle
-        // }
-        // var internalStartCodonCircles = normalizedInternalStartCodonIndices.map(function (internalStartCodon,index) {
-        //   return React.cloneElement(circle, {key: index, transform: `translate(${charWidth * internalStartCodon},0)`})
-        // })
+
+        var codonIndices = normalizedInternalStartCodonIndices.map(function (internalStartCodon,index) {
+            return React.cloneElement(circle, {key: index, transform: `translate(${charWidth * 1.2 * internalStartCodon},0)`})
+        })
+
         return (
                 <g
                     onClick={function (event) {
@@ -74,6 +71,7 @@ var Orf = React.createClass({
                         d={ path }
                         >
                     </path>
+                    { codonIndices }
                     { arrow }
                 </g>
         );
