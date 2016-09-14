@@ -21,6 +21,7 @@ export default class Feature extends React.Component {
             pointiness=4,
             fontWidth=16, 
             color, 
+            name,
             featureClicked,
             annotation,
             signals,
@@ -77,6 +78,14 @@ export default class Feature extends React.Component {
           z`
         }
 
+        var nameToDisplay = name
+        var textLength = name.length * fontWidth
+        var textOffset = (widthMinusOne/2)
+        if (textLength > widthMinusOne) {
+            textOffset = 0
+            nameToDisplay = ''
+        }
+
         return (
             <g
                 className='veRowViewFeature clickable'
@@ -86,12 +95,13 @@ export default class Feature extends React.Component {
                 }}
                 >
                 <path
-                    // strokeWidth="1"
-                    // stroke={ 'black' }
                     fill={ color }
                     transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
                     d={ path }
                     />
+                <text style={{fill: 'black'}} transform={`translate(${textOffset},${height*.75})`}>
+                    { nameToDisplay }
+                </text>
             </g>
         );
     }
