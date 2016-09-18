@@ -72,7 +72,7 @@ export default class EnzymesLists extends React.Component {
                     style={{backgroundColor: "#311B92"}}
                     underlineStyle={{opacity: 0}}
                     iconStyle={{color: "#000000"}}
-                    labelStyle={{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
+                    labelStyle={{fontWeight: 650, fontSize: 15, color: "#FFFFFF"}}
                 />
                 {fragmentsCount}
                 <Paper className={styles.block}>

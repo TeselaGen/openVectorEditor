@@ -56,14 +56,12 @@ export default class DigestionSimulation extends React.Component {
 
         var customDialogContentStyle = {
             width: '90%',
-            height: '700px',
             maxWidth: 'none',
             maxHeight: 'none',
         };
 
         var paperBlockStyle = {
             width: "99%",
-            height: "500px"
         };
 
         var gridTileTitleStyle = {
@@ -106,7 +104,7 @@ export default class DigestionSimulation extends React.Component {
             <div>
                 <GridList
                     cols={3}
-                    cellHeight={700}
+                    cellHeight={450}
                     padding={5}
                 >
                     <GridTile rows={1} cols={1} title={leftTileTitle} titlePosition={"top"} titleBackground="#E0E0E0">
