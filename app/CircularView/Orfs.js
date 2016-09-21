@@ -64,14 +64,12 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             var node;
             for(var c = 0; c < codons.length; c++) {
                 node = (
-                        <PositionAnnotationOnCircle
+                        <g
                             key={ 'codon' + c + "_" + annotation.id }
-                            sAngle={ codons[c] }
-                            eAngle={ codons[c] }
-                            direction={ 'forward' } // buh
+                            transform={ 'translate(0,' + radius*-1 + ')' }
                             >
-                            <circle r="1.5" fill={ orfColor } stroke="none"/>
-                        </ PositionAnnotationOnCircle>
+                            <circle r='1.5' fill={ orfColor } stroke="none"/>
+                        </g>
                 )
                 codonIndices.push( node );
             }

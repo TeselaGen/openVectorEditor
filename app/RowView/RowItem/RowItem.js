@@ -33,8 +33,8 @@ import _Sequence from './Sequence'
 import _Orfs from './Orfs'
 // import _Translations from './Translations'
 import _Features from './Features'
-// import _CutsiteLabels from './CutsiteLabels'
-// import _Cutsites from './Cutsites'
+import _CutsiteLabels from './Cutsites/CutsiteLabels'
+import _Cutsites from './Cutsites'
 // import Caret from './Caret'
 import styles from './RowItem.scss';
 
@@ -125,8 +125,8 @@ class RowItem extends React.Component {
             Orfs = _Orfs,
         //     Translations = _Translations,
             Features = _Features,
-        //     CutsiteLabels = _CutsiteLabels,
-            // Cutsites = _Cutsites,
+            CutsiteLabels = _CutsiteLabels,
+            Cutsites = _Cutsites,
             // Caret = _Caret,
         } = componentOverrides
 
@@ -160,15 +160,29 @@ class RowItem extends React.Component {
                         annotationRanges={orfs}
                         {...annotationCommonProps}
                         />
-                }                
-
+                }
+                {(showCutsites && Object.keys(cutsites).length > 0) &&
+                  <CutsiteLabels
+                    
+                    annotationRanges={cutsites}
+                    {...annotationCommonProps}
+                    />
+                }
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
                         reverse="false"
                         sequence={sequence}
                         charWidth={charWidth}
-                        bpsPerRow={bpsPerRow}
+                        bpsPerRow={bpsPerRow}                        
                         >
+                        {(showCutsites && Object.keys(cutsites).length > 0) && 
+                            <Cutsites
+                                sequenceLength={sequenceLength}
+                                annotationRanges={cutsites}
+                                topStrand={true}
+                                {...annotationCommonProps}
+                                />
+                        }
                     </Sequence>
 
                     {showReverseSequence &&
@@ -177,8 +191,15 @@ class RowItem extends React.Component {
                             sequence={reverseSequence}
                             charWidth={charWidth}
                             bpsPerRow={bpsPerRow}
-                            >
-                       
+                            >                            
+                            {(showCutsites && Object.keys(cutsites).length > 0) && 
+                                <Cutsites
+                                    sequenceLength={sequenceLength}
+                                    annotationRanges={cutsites}
+                                    topStrand={false}
+                                    {...annotationCommonProps}
+                                    />
+                            }
                         </Sequence>
                     }
                 </div>              

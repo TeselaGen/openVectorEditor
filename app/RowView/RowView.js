@@ -142,8 +142,6 @@ export default class RowView extends React.Component {
             rowData
         } = this.props;
 
-        console.log(rowData)
-
         var renderItem = (index,key) =>{
             if (rowData[index]) {
                 return (
