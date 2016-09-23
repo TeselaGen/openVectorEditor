@@ -35,8 +35,7 @@ let Features = React.createClass({
                     key={'feature' + index}
                     id={annotation.id}
                     >
-                    <div onClick={function () {
-                        }}>
+                    <div>
                         <AnnotationPositioner
                             height={annotationHeight}
                             width={result.width}

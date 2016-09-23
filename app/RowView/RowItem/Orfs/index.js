@@ -16,7 +16,8 @@ let Orfs = React.createClass({
             spaceBetweenAnnotations, 
             orfClicked,
             widthInBps,
-            row
+            row,
+            signals
         } = this.props;
 
         if (annotationRanges.length === 0) {

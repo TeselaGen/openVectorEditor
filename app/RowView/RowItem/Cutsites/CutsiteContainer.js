@@ -16,7 +16,8 @@ let CutsiteContainer = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            setSelectionLayer
+            setSelectionLayer,
+            signals
         } = this.props;
        
         if (annotationRanges.length === 0) {
@@ -39,10 +40,10 @@ let CutsiteContainer = React.createClass({
                     left={result.xStart}
                     >
                     <Cutsite
-                        onClick={function (event) {
-                            setSelectionLayer({selectionLayer: this});
-                            event.stopPropagation();
-                        }.bind(annotation)}
+                        onClick={ function (e) {
+                            e.stopPropagation()
+                            signals.featureClicked({annotation: annotation}) 
+                        }}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Decorator as Cerebral } from 'cerebral-view-react';
 
 var Orf = React.createClass({
     
@@ -11,7 +12,8 @@ var Orf = React.createClass({
             annotation, 
             widthInBps, 
             orfClicked,
-            charWidth=16
+            charWidth=16,
+            signals
         } = this.props;
 
         var frame = annotation.frame;
@@ -57,8 +59,9 @@ var Orf = React.createClass({
 
         return (
                 <g
-                    onClick={function (event) {
-                        orfClicked({annotation,event})
+                    onClick={ function (e) {
+                        e.stopPropagation()
+                        signals.orfClicked({annotation: annotation}) 
                     }}
                     className={`veRowViewOrf clickable frame${frame}`}
                     strokeWidth="2"

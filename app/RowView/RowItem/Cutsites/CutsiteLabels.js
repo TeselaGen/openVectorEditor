@@ -48,15 +48,10 @@ let CutsiteLabels = React.createClass({
                     >
                     <div 
                         left={xStart}
-                        className={''}
-                        onClick={function (event) {
-                        cutsiteClicked({event, annotation, });
-                        event.stopPropagation();
-                        }}
                         style={{
                             position: 'absolute',
                             top: 'height',
-                            left: 'xStart',
+                            left: xStart,
                             zIndex: 10
                         }}
                         >
