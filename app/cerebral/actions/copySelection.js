@@ -6,8 +6,12 @@ var getSubstringByRange = require('get-substring-by-range');
 export default function copySelection({input, state, output}) {
     var { selectionLayer, sequenceData } = state.get();
     var allowPartialAnnotationsOnCopy = state.get('allowPartialAnnotationsOnCopy');
+    var selectionStart = undefined;
+    var selectionEnd = undefined;
 
     function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
+        selectionStart = rangeToCopy.start;
+        selectionEnd = rangeToCopy.end;
         var newSequenceData = {};
         newSequenceData.sequence = getSubstringByRange(sequenceData.sequence, rangeToCopy);
         newSequenceData.features = copyAnnotationsByRange(sequenceData.features, rangeToCopy, sequenceData.sequence.length);
@@ -53,8 +57,34 @@ export default function copySelection({input, state, output}) {
         };
     }
 
-    if (selectionLayer.selected) {
-        output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
+    if (selectionLayer.selected) { // copy the whole sequence data + selected feature
+        let selectionData = copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy);
+        let newClipboardData = JSON.parse(JSON.stringify(sequenceData));
+
+        newClipboardData.selectedFeatures = [];
+        if (selectionData.features.length != 0) {
+            let selectionFeatures = selectionData.features;
+            for (var i = 0; i < selectionFeatures.length; i++) {
+                let newFeature = {name: selectionFeatures[i].name, id: selectionFeatures[i].id, forward: selectionFeatures[i].forward, type: selectionFeatures[i].type,
+                    genbankStartBP: selectionFeatures[i].locations[0].genbankStart, endBP: selectionFeatures[i].locations[0].end,
+                    sequence: selectionData.sequence};
+                newClipboardData.selectedFeatures.push(newFeature);
+            }
+        }
+
+        newClipboardData.revComp = false;
+        newClipboardData.genbankStartBP = selectionStart;
+        newClipboardData.endBP = selectionEnd;
+        newClipboardData.subsequence = selectionData.sequence;
+
+        // delete newClipboardData["translations"];
+        // delete newClipboardData["orfs"];
+        // delete newClipboardData["cutsites"];
+        // delete newClipboardData["parts"];
+
+        console.log(newClipboardData);
+        output.success({'clipboardData': newClipboardData});
+        // output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
     } else {
         output.error();
     }

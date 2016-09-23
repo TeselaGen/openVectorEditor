@@ -102,8 +102,8 @@ export default class SequenceEditor extends React.Component {
         // event.clipboardData.items[0].getAsString(function(clipboardString) {
         //     pasteSequenceString({sequenceString:clipboardString});
         // });
-        // console.log(event.clipboardData.types);
-        console.log("json: " + event.clipboardData.getData("application/json"));
+
+        // console.log("json: " + event.clipboardData.getData("application/json"));
         console.log("text: " + event.clipboardData.getData("text/plain"));
         event.preventDefault();
     }
@@ -115,10 +115,11 @@ export default class SequenceEditor extends React.Component {
         selectionCopied();
 
         let val = this.props.clipboardData;
+        // console.log(JSON.stringify(val));
+        // console.log(val.subsequence);
         event.clipboardData.setData("application/json", JSON.stringify(val));
-        event.clipboardData.setData("text/plain", val.sequence);
+        event.clipboardData.setData("text/plain", val.subsequence);
         event.preventDefault();
-        // console.log(event.clipboardData.types);
     }
 
     componentWillUnmount() {
