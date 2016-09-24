@@ -57,34 +57,20 @@ export default function copySelection({input, state, output}) {
         };
     }
 
-    if (selectionLayer.selected) { // copy the whole sequence data + selected feature
+    if (selectionLayer.selected) { // copy the whole sequence data + selected features
         let selectionData = copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy);
         let newClipboardData = JSON.parse(JSON.stringify(sequenceData));
 
-        newClipboardData.selectedFeatures = [];
-        if (selectionData.features.length != 0) {
-            let selectionFeatures = selectionData.features;
-            for (var i = 0; i < selectionFeatures.length; i++) {
-                let newFeature = {name: selectionFeatures[i].name, id: selectionFeatures[i].id, forward: selectionFeatures[i].forward, type: selectionFeatures[i].type,
-                    genbankStartBP: selectionFeatures[i].locations[0].genbankStart, endBP: selectionFeatures[i].locations[0].end,
-                    sequence: selectionData.sequence};
-                newClipboardData.selectedFeatures.push(newFeature);
-            }
-        }
-
+        newClipboardData.allFeatures = newClipboardData.features;
+        newClipboardData.features = selectionData.features; // selected features only
         newClipboardData.revComp = false;
         newClipboardData.genbankStartBP = selectionStart;
         newClipboardData.endBP = selectionEnd;
-        newClipboardData.subsequence = selectionData.sequence;
-
-        // delete newClipboardData["translations"];
-        // delete newClipboardData["orfs"];
-        // delete newClipboardData["cutsites"];
-        // delete newClipboardData["parts"];
+        newClipboardData.fullSequence = newClipboardData.sequence; // this is the full original sequence
+        newClipboardData.sequence = selectionData.sequence; // this is the selected subsequence
 
         console.log(newClipboardData);
         output.success({'clipboardData': newClipboardData});
-        // output.success({'clipboardData': copyRangeOfSequenceData(sequenceData, selectionLayer, allowPartialAnnotationsOnCopy)})
     } else {
         output.error();
     }
