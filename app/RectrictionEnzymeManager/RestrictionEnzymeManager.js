@@ -107,7 +107,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     autoDetectWindowHeight={true}
                     actions={actions}
                     open={toOpen}
-                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "8px"}}
+                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "8px", paddingTop: "8px"}}
                 > <br />
                         {grid}
                 </Dialog>
