@@ -66,7 +66,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
             <div>
                 <GridList
                     cols={2}
-                    cellHeight={400}
+                    cellHeight={450}
                     padding={10}
                 >
                     <GridTile rows={1} cols={1} title={leftTileTitle} titlePosition={"top"} titleBackground="#E0E0E0">
@@ -107,7 +107,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     autoDetectWindowHeight={true}
                     actions={actions}
                     open={toOpen}
-                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "8px", paddingTop: "8px"}}
+                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "8px"}}
                 > <br />
                         {grid}
                 </Dialog>
