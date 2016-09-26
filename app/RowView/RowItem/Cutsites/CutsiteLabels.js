@@ -39,7 +39,7 @@ let CutsiteLabels = React.createClass({
             if (yOffset > maxAnnotationYOffset) {
                 maxAnnotationYOffset = yOffset;
             }
-            let height = (yOffset) * (annotationHeight + spaceBetweenAnnotations);
+            let height = (annotationHeight + spaceBetweenAnnotations);
 
             annotationsSVG.push(
                 <div
@@ -50,7 +50,7 @@ let CutsiteLabels = React.createClass({
                         left={xStart}
                         style={{
                             position: 'absolute',
-                            top: 'height',
+                            // top: height,
                             left: xStart,
                             zIndex: 10
                         }}
@@ -61,13 +61,13 @@ let CutsiteLabels = React.createClass({
             );
         });
 
-        let containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+        let containerHeight = annotationHeight + spaceBetweenAnnotations + 5;
         return (
             <div
                 width="100%"
                 style={{
                     position: 'relative', 
-                    height: {containerHeight}, 
+                    height: containerHeight, 
                     display: 'block'
                 }}
                 className='cutsiteContainer'
