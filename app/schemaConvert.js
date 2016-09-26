@@ -16,7 +16,7 @@ module.exports = {
                     sequence: contents.sequence,
                     circular: contents.isCircular
                 },
-                embedded: !document.location.pathname.match(/entry/),
+                embedded: document.location.pathname.match(/entry/),
                 readOnly: !contents.canEdit 
             },
             services: services,
