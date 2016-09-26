@@ -33,7 +33,7 @@ export default class StatusBar extends React.Component {
                         <div className={styles.data}>{sequenceLength}</div>
                     </div>
 
-                    <div className={styles.box}>
+                    <div className={styles.box } style={{display: 'none'}}>
                         <div className={styles.label}>Melting Temp.</div>
                         <div className={styles.data}>{selectedSeqMeltingTemp}</div>
                     </div>
