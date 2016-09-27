@@ -75,7 +75,7 @@ export default class ToolBar extends React.Component {
                     <RowIcon />
                 </IconButton>
                 <IconButton 
-                    disabled="true"
+                    disabled={true}
                     // not set up yet
                     >
                     <RailIcon />

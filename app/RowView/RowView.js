@@ -7,6 +7,7 @@ import ReactList from 'react-list';
 import RowItem from './RowItem/RowItem.js'
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import prepareRowData from 've-sequence-utils/prepareRowData';
+import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 
 var defaultContainerWidth = 400
 var defaultCharWidth = 12
@@ -44,79 +45,27 @@ function noop() {
 
 export default class RowView extends React.Component {
 
-    // getNearestCursorPositionToMouseEvent(rowData, event, callback) {
-    //     var charWidth = defaultCharWidth;
-    //     var rowNotFound = true;
-    //     var visibleRowsContainer = this.InfiniteScroller.items;
-    //     //loop through all the rendered rows to see if the click event lands in one of them
-    //     var nearestBP = 0;
-    //     var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
+    getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
+        if (!event.clientX) {
+            return;
+        }
+        var boundingRect = this.refs.rowView.getBoundingClientRect()
+        //get relative click positions
+        var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
+        var clickY = (event.clientY - boundingRect.top - boundingRect.height/2)
 
-    //     some(visibleRowsContainer.childNodes, function (rowDomNode) {
-    //       var boundingRowRect = rowDomNode.getBoundingClientRect();
-    //       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-    //           //then the click is falls within this row
-    //           rowNotFound = false;
-    //           var row = rowData[Number(rowDomNode.getAttribute('data-row-number'))];
-    //           if (event.clientX - boundingRowRect.left < 0) {
-    //               nearestBP = row.start;
-    //           } else {
-    //               var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-    //               var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth);
-    //               nearestBP = numberOfBPsInFromRowStart + row.start;
-    //               if (nearestBP > row.end + 1) {
-    //                   nearestBP = row.end + 1;
-    //               }
-    //           }
-    //           return true //break the loop early because we found the row the click event landed in
-    //       }
-    //     })
-    //     if (rowNotFound) {
-    //         var {top, bottom} = visibleRowsContainer.getBoundingClientRect()
-    //         var numbers = [top,bottom]
-    //         var target = event.clientY
-    //         var topOrBottom = numbers.map(function(value, index) {
-    //             return [Math.abs(value - target), index];
-    //         }).sort().map(function(value) {
-    //             return numbers[value[1]];
-    //         })[0];
-    //         var rowDomNode
-    //         if (topOrBottom === top) {
-    //             rowDomNode = visibleRowsContainer.childNodes[0]
-    //         } else {
-    //             rowDomNode = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]
-    //         }
-    //         if (rowDomNode) {
-    //             var row = rowData[Number(rowDomNode.getAttribute('data-row-number'))];
-    //             //return the last bp index in the rendered rows
-    //             nearestBP = row.end
-    //         } else {
-    //             nearestBP = 0
-    //         }
-    //     }
-    //     callback({
-    //         shiftHeld: event.shiftKey,
-    //         nearestBP,
-    //         caretGrabbed
-    //     });
-    // }
+        console.log(clickX)
+        console.log(clickY)
+        console.log("---")
 
-    // componentDidMount() {
-    //     // maybe get the ref instead of id
-    //     var rowViewWidth = document.getElementById("allViews").clientWidth;
-    //     var correctBps = Math.floor(rowViewWidth / this.props.charWidth);
-    //     var recalcRows = prepareRowData(this.props.sequenceData, correctBps);
-
-    //     // this.setState({ bpsPerRow: correctBps });
-    //     // this.setState({ rowData: recalcRows });
-    //     this.props.signals.setTreeVal({ bpsPerRow: correctBps, rowData: recalcRows });
-    //     debugger;
-    // }
-
-    // this runs before render(), we need to grab the final size of the rowview container and fill it
-    // componentDidMount() {
-        // new ResizeSensor(this.refs.rowView);
-    // }
+        var nearestBP = normalizePositionByRangeLength(clickX, sequenceLength, true) //true because we're in between positions
+        var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
+        callback({
+            shiftHeld: event.shiftKey,
+            nearestBP,
+            caretGrabbed
+        });
+    }
 
     render() {
         var {
@@ -158,20 +107,20 @@ export default class RowView extends React.Component {
         return (
             <Draggable
                 bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-                // onDrag={(event) => {
-                //     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}
-                // }
-                // onStart={(event) => {
-                //     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}
-                // }
-                // onStop={signals.editorDragStopped}
+                onDrag={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}
+                }
+                onStart={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}
+                }
+                onStop={signals.editorDragStopped}
                 >
                 <div
+                    onClick={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                    }}
                     ref="rowView"
                     className={styles.RowView + " veRowView"}
-                    // onClick={(event) => {
-                    //     this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
-                    // }
                     >
                     <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                     <ReactList

@@ -1,4 +1,6 @@
 /* structure of row object
+   note start of sequence is 0
+
 
 obj
     - cutsites[]
@@ -17,7 +19,7 @@ obj
     - rowNumber : number
     - sequence : string
     - start : number
-    - translations []
+    - translations [] // also unused right now
 */
 
 // import PassThrough from '../../utils/PassThrough'
@@ -26,7 +28,7 @@ import React from 'react';
 import Draggable from 'react-draggable'
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { columnizeString, elementWidth, calculateRowLength } from '../utils';
-// import SelectionLayer from './SelectionLayer';
+import SelectionLayer from './SelectionLayer';
 import _Sequence from './Sequence'
 // import LineageLines from './LineageLines'
 // import _Axis from './Axis'
@@ -35,7 +37,7 @@ import _Orfs from './Orfs'
 import _Features from './Features'
 import _CutsiteLabels from './Cutsites/CutsiteLabels'
 import _Cutsites from './Cutsites'
-// import Caret from './Caret'
+import Caret from './Caret'
 import styles from './RowItem.scss';
 
 function noop() {
@@ -70,23 +72,12 @@ function noop() {
 
 class RowItem extends React.Component {
 
-    // this is an awkward workaround for react stripping this attribute from the text node
-    // componentDidMount() {
-    //     var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
-    //     if(rowWidth && rowWidth > 0) {
-    //         // this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
-    //         this.setState({ rowWidth: rowWidth });
-    //         console.log(rowWidth)
-    //     }
-    // }
-
     render() {
         var {
             charWidth,
-            selectionLayer,
-            searchLayers,
+            selectionLayer={start: -1, end: -1},
+            searchLayers=[],
             sequenceData,
-            cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
             showCutsites,
@@ -94,7 +85,7 @@ class RowItem extends React.Component {
             sequenceHeight,
             spaceBetweenAnnotations,
             width,
-            additionalSelectionLayers,
+            additionalSelectionLayers=[],
             caretPosition,
             sequenceLength,
             row,
@@ -102,7 +93,8 @@ class RowItem extends React.Component {
             showOrfs,
             bpsPerRow,
             componentOverrides = {},
-            className
+            className,
+            signals
         } = this.props;
         
         var {
@@ -127,7 +119,6 @@ class RowItem extends React.Component {
             Features = _Features,
             CutsiteLabels = _CutsiteLabels,
             Cutsites = _Cutsites,
-            // Caret = _Caret,
         } = componentOverrides
 
         var annotationCommonProps = {
@@ -139,7 +130,53 @@ class RowItem extends React.Component {
             row
         }
 
-        var rowNumber = row.start + 1; // we start at 1 and not 0
+        var rowNumber = row.start + 1; // we want to start at 1 and not 0
+
+        var selectedStuff = [];
+
+        if (selectionLayer.selected) {
+
+        //     selectedLayer.push(
+        //         <div
+        //             key='veSelectionLayer' 
+        //             className='veSelectionLayer'
+        //             start={ start }
+        //             end={ end }
+        //             height={ 0 }
+        //             >
+        //             <path
+        //                 style={{ opacity: .4}}
+        //                 d={ sector.path.print() }
+        //                 fill="blue" 
+        //                 />
+        //         </div>
+        //     );
+        //     selectedLayer.push(
+        //         <Caret 
+        //             key='caretStart'
+        //             caretPosition={selectionLayer.start}
+        //             sequenceLength={sequenceLength}
+        //             />
+        //     );
+        //     selectedLayer.push(
+        //         <Caret 
+        //             key='caretEnd'
+        //             caretPosition={selectionLayer.end + 1}
+        //             sequenceLength={sequenceLength}
+        //             />
+        //     );
+        }
+        // nothing selected, just put a caret at position 0
+        if (caretPosition !== -1 && !selectionLayer.selected) {
+            selectedStuff.push(
+                <Caret 
+                    charWidth = {charWidth}
+                    row = {row}
+                    sequenceLength = {sequenceLength}
+                    caretPosition = {caretPosition}
+                    />
+            );
+        }        
         
         return (
             <div className = {styles.rowItem + " veRowItem"}>
@@ -161,6 +198,7 @@ class RowItem extends React.Component {
                         {...annotationCommonProps}
                         />
                 }
+
                 {(showCutsites && Object.keys(cutsites).length > 0) &&
                   <CutsiteLabels
                     
@@ -168,6 +206,9 @@ class RowItem extends React.Component {
                     {...annotationCommonProps}
                     />
                 }
+
+                { selectedStuff }
+
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
                         reverse="false"
@@ -202,7 +243,8 @@ class RowItem extends React.Component {
                             }
                         </Sequence>
                     }
-                </div>              
+                </div>
+        
             </div>
         );
     }
