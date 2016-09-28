@@ -140,7 +140,7 @@ export default class SequenceEditor extends React.Component {
         // using the bitwise xor here might be a little sketchy
         // {{}} currently not working
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
-        console.log(oneViewOnly)
+
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         if (oneViewOnly) {
@@ -149,7 +149,9 @@ export default class SequenceEditor extends React.Component {
             console.log("added margin to circular")
         }
         var rowStyle = {}
-        if(embedded || !showRow) rowStyle =  {display: 'none'}
+        if(embedded || !showRow) rowStyle = {display: 'none'}
+
+        // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
 
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {

@@ -70,7 +70,7 @@ export default class ToolBar extends React.Component {
                 <IconButton
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
-                        document.getElementById("rowView").setAttribute("style", "display: block"); 
+                        document.getElementById("rowView").setAttribute("style", "display: block");
                     }}
                     >
                     <RowIcon />
