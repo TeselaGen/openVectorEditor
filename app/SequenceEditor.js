@@ -99,22 +99,26 @@ export default class SequenceEditor extends React.Component {
         var {
             pasteSequenceString,
         } = this.props.signals;
-        pasteSequenceString({sequenceString: event.clipboardData.getData("text/plain")});
 
-        // console.log("json: " + event.clipboardData.getData("application/json"));
-        // console.log("text: " + event.clipboardData.getData("text/plain"));
+        pasteSequenceString({sequenceString: event.clipboardData.getData("text/plain")});
         event.preventDefault();
     }
 
     handleCopy(event) {
-        var {
-            selectionCopied,
-        } = this.props.signals;
-        selectionCopied();
+        /*
+        earavina:
+        This is an async call leading to a bug
+        when copy is successful only if user copies the range twice.
+        This action assigns this.props.clipboardData after it has been passed to a system clipboard.
+        Replaced with a module used each time the user makes a selection
+        */
+        // var {
+        //     copySelection,
+        // } = this.props.signals;
+        // copySelection();
 
         let val = this.props.clipboardData;
-        // console.log(JSON.stringify(val));
-        // console.log(val.sequence);
+        // console.log(val);
         event.clipboardData.setData("application/json", JSON.stringify(val));
         event.clipboardData.setData("text/plain", val.sequence);
         event.preventDefault();
