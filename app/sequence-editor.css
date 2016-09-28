@@ -21,8 +21,8 @@
 .circularViewSlot {
     flex-grow: 1;
     flex-basis: 0;
-    padding-bottom: 36px;
-    margin: 0 15%;
+    padding-bottom: 40px;
+    /*margin: 0 15%;*/
 }
 
 .rowViewSlot {

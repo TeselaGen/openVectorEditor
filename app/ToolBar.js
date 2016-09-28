@@ -24,6 +24,7 @@ import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
+import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
 
 @Cerebral({
     embedded: ['embedded'],
@@ -74,12 +75,14 @@ export default class ToolBar extends React.Component {
                     >
                     <RowIcon />
                 </IconButton>
-                <IconButton 
-                    disabled={true}
-                    // not set up yet
+                <IconButton
+                    onTouchTap={function() {
+                        document.getElementById("circularView").setAttribute("style", "display: block");
+                        document.getElementById("rowView").setAttribute("style", "display: block"); 
+                    }}
                     >
-                    <RailIcon />
-                </IconButton>                
+                    <BothViewsIcon />
+                </IconButton>              
                 <IconButton
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");

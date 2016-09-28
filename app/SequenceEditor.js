@@ -138,13 +138,15 @@ export default class SequenceEditor extends React.Component {
 
         // check if we have just circ or just row and pad it out a little
         // using the bitwise xor here might be a little sketchy
-        // {{}} looks ok for now but needs to be reactive
+        // {{}} currently not working
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
+        console.log(oneViewOnly)
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         if (oneViewOnly) {
             circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
-            rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
+            // rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
+            console.log("added margin to circular")
         }
         var rowStyle = {}
         if(embedded || !showRow) rowStyle =  {display: 'none'}
