@@ -54,11 +54,8 @@ export default class RowView extends React.Component {
         var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
         var clickY = (event.clientY - boundingRect.top - boundingRect.height/2)
 
-        console.log(clickX)
-        console.log(clickY)
-        console.log("---")
+        var nearestBP = normalizePositionByRangeLength(clickX, sequenceLength, true) //true because we're in between positions       
 
-        var nearestBP = normalizePositionByRangeLength(clickX, sequenceLength, true) //true because we're in between positions
         var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
         callback({
             shiftHeld: event.shiftKey,
