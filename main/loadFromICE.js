@@ -20,7 +20,8 @@ request
         var contents = result.body;
         if (!contents) {
           //use an example ice response
-          contents = fakeIceSequenceData
+          // contents = fakeIceSequenceData
+          
         }
         contents.featureList = [];
         for (var f = 0; f < contents.features.length; f++) { 
