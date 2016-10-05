@@ -231,7 +231,6 @@ export default class CircularView extends React.Component {
         // stop patching        
 
         annotationsSvgs.push(Labels({labels, outerRadius: radius}))
-        radius+=50
 
         return (
             <Draggable
@@ -248,12 +247,12 @@ export default class CircularView extends React.Component {
                     onClick={(event) => {
                         this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
                     }}
-                    // style={{overflow: 'visible'}}
+                    style={{height: '100%'}}
                     // width={ circularViewDimensions.width }
                     // height={ circularViewDimensions.height }
                     ref="circularView"
                     className={'circularViewSvg'}
-                    viewBox={ `-${radius} -${radius*.80} ${radius*2} ${radius*2*.80}` } // scaling svg to crop
+                    viewBox={'-150 -150 300 300'} // scaling svg to crop
                     xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                     >
