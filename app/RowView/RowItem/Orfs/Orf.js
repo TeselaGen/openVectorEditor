@@ -27,9 +27,9 @@ var Orf = React.createClass({
         var width = widthInBps * (charWidth * 1.2) - 20;
         var heightWithArrow = height + 12;
         var halfwayPoint = heightWithArrow/2;
-
-         var arrow = null;
-         var circle = <circle 
+        var endCircle;
+        var arrow = null;
+        var circle = <circle 
                         key='circle'
                         r={height*1.5}
                         cx='0'
@@ -45,6 +45,9 @@ var Orf = React.createClass({
                         />
                     )
         }
+        if (rangeType === 'start'|| rangeType === 'beginningAndEnd') {
+            endCircle = circle
+        }        
 
         var path = `
             M 0,${halfwayPoint+height/2} 
@@ -58,25 +61,26 @@ var Orf = React.createClass({
         })
 
         return (
-                <g
-                    onClick={ function (e) {
-                        e.stopPropagation()
-                        signals.orfClicked({annotation: annotation}) 
-                    }}
-                    className={`veRowViewOrf clickable frame${frame}`}
-                    strokeWidth="2"
-                    stroke={ color}
-                    fill={ color } 
-                    transform={forward ? null : `translate(${width},0) scale(-1,1)`}
+            <g
+                onClick={ function (e) {
+                    e.stopPropagation()
+                    signals.orfClicked({annotation: annotation}) 
+                }}
+                className={`veRowViewOrf clickable frame${frame}`}
+                strokeWidth="2"
+                stroke={ color}
+                fill={ color } 
+                transform={forward ? null : `translate(${width},0) scale(-1,1)`}
+                >
+                
+                <path
+                    d={ path }
                     >
-                    
-                    <path
-                        d={ path }
-                        >
-                    </path>
-                    { codonIndices }
-                    { arrow }
-                </g>
+                </path>
+                { codonIndices }
+                { arrow }
+                { endCircle }
+            </g>
         );
     }
 });
