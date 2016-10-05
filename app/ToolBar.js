@@ -106,7 +106,7 @@ export default class ToolBar extends React.Component {
                 <MenuItem key={3} primaryText="Download Fasta" insetChildren={true} onClick={function () {
                     signals.clickSaveFile({fileExt: 'fasta'});
                 }} />
-                <MenuItem key={4} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
+                <MenuItem key={4} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
                     var element = document.getElementById("uploadFileInput");
                     element.click();
                     element.addEventListener("change", handleFiles, false);
@@ -151,13 +151,13 @@ export default class ToolBar extends React.Component {
         var prepPrintPage = function() {
             var contents = document.getElementById("allViews").innerHTML;
             var head = document.head.innerHTML;
-            var stylePage = "<style>@page{margin: 1in;} .veSelectionLayer{display: none;} #circularView,#rowView{width: 8.5in; display: block;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
+            var stylePage = "<style>@page{margin: 1in;} .veSelectionLayer{display: none;} #circularView,#rowView{width: 8.5in; display: block; overflow: visible;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
             var printTab = window.open();
             printTab.document.body.innerHTML = head + stylePage + contents;
             printTab.document.close();
             printTab.focus();
             printTab.print();
-            printTab.close();
+            // printTab.close();
         };
 
         return (
