@@ -154,7 +154,6 @@ export default class SequenceEditor extends React.Component {
         // using the bitwise xor here might be a little sketchy
         // {{}} currently not working
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
-        console.log(oneViewOnly)
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         if (oneViewOnly) {

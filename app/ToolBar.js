@@ -149,6 +149,8 @@ export default class ToolBar extends React.Component {
         // pulls out the current view and necessary resizing js to a new tab 
         // and applies some styling to cleanup for print version
         var prepPrintPage = function() {
+            // scroll the rowview to reveal all rows
+
             var contents = document.getElementById("allViews").innerHTML;
             var head = document.head.innerHTML;
             var stylePage = "<style>@page{margin: 1in;} .veSelectionLayer{display: none;} #circularView,#rowView{width: 8.5in; display: block; overflow: visible;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
