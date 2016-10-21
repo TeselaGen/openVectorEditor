@@ -111,20 +111,22 @@ module.exports = {
         height: 500,
         width: 500
     },
-    visibleRows: {
-        start: 0,
-        end: 0
-    },
     // derived data - can't alphabetize because of dependencies  :(
     bpsPerRow: deriveData([
         ['rowViewDimensions', 'width'],
         ['charWidth'],
-        function(rowViewDimensionsWidth, charWidth) {
-            var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
+        ['showCircular'],
+        ['showRow'],
+        function(rowViewDimensionsWidth, charWidth, showCircular, showRow) {
+            // var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
             // var gaps = Math.floor(charsInRow / 10) - 1;
             // return Math.floor((charsInRow - gaps) / 10) * 10;
             // return charsInRow;
-            return 90; //hard code for now
+            if(showCircular && showRow) {
+                return 45;
+            } else {
+                return 90;
+            }
         }
     ]),
     userEnzymes: deriveData([
