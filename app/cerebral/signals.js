@@ -31,7 +31,7 @@ export default function(options) {
             a.changeOrfMin
         ],
         // end sidebar
-        selectionCopied: [
+        copySelection: [ // earavina: not used for now
             a.copySelection, {
                 success: [a.setData('clipboardData')],
                 error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong

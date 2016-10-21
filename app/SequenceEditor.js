@@ -100,16 +100,29 @@ export default class SequenceEditor extends React.Component {
         var {
             pasteSequenceString,
         } = this.props.signals;
-        event.clipboardData.items[0].getAsString(function(clipboardString) {
-            pasteSequenceString({sequenceString:clipboardString});
-        });
+
+        pasteSequenceString({sequenceString: event.clipboardData.getData("text/plain")});
+        event.preventDefault();
     }
 
-    handleCopy() {
-        var {
-            selectionCopied,
-        } = this.props.signals;
-        selectionCopied();
+    handleCopy(event) {
+        /*
+        earavina:
+        This is an async call leading to a bug
+        when copy is successful only if user copies the range twice.
+        This action assigns this.props.clipboardData after it has been passed to a system clipboard.
+        Replaced with a module used each time the user makes a selection
+        */
+        // var {
+        //     copySelection,
+        // } = this.props.signals;
+        // copySelection();
+
+        let val = this.props.clipboardData;
+        // console.log(val);
+        event.clipboardData.setData("application/json", JSON.stringify(val));
+        event.clipboardData.setData("text/plain", val.sequence);
+        event.preventDefault();
     }
 
     componentWillUnmount() {
@@ -128,7 +141,8 @@ export default class SequenceEditor extends React.Component {
             cutsites,
             orfData,
             showRestrictionEnzymeManager,
-            readOnly
+            readOnly,
+            clipboardData
         } = this.props;
 
         var table;
@@ -183,7 +197,7 @@ export default class SequenceEditor extends React.Component {
         return (
             <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
-                    value={selectedSequenceString}
+                    value={JSON.stringify(clipboardData)}
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}
                 />

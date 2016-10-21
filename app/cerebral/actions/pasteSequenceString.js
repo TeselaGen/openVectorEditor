@@ -16,16 +16,16 @@ export default function pasteSequenceString({input, state, output}) {
         });
     }
 
-    function removeFeatureIds(sequenceData) {
-        return assign({}, sequenceData, {
-            features: removeIds(sequenceData.features)
+    function removeFeatureIds() {
+        return assign({}, clipboardData, {
+            features: removeIds(clipboardData.features)
         });
     }
 
     if (clipboardData && clipboardData.sequence /*&& clipboardData.sequence === sequenceString*/) {
         // handle clipboardData which was copied from within the app
         // remove ids from the copied features so the server can give them new ones
-        cleanedUpClipboardData = removeFeatureIds(clipboardData);
+        cleanedUpClipboardData = removeFeatureIds();
     } else {
         // clean up the sequence string coming from elsewhere so we can insert it
         cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});

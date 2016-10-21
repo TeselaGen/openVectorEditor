@@ -191,10 +191,10 @@ export default class SideBar extends React.Component {
                 </div>
                 <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
                     <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
-                        <TableHeader>
+                        <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
                             <TableRow>{ tableHeaderCells }</TableRow>
                         </TableHeader>
-                        <TableBody deselectOnClickaway={ false }>{ tableDataRows }</TableBody>
+                        <TableBody deselectOnClickaway={ false } displayRowCheckbox={ false }>{ tableDataRows }</TableBody>
                     </Table>
                 </div>
                 { (!readOnly && sidebarType ==='Features') ? featureControls : null }

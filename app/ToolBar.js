@@ -67,7 +67,7 @@ export default class ToolBar extends React.Component {
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             <div style={{display: 'inline-block'}}>
-                <IconButton
+                <IconButton tooltip="Display Sequence View"
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
                         document.getElementById("rowView").setAttribute("style", "display: block");
@@ -75,7 +75,7 @@ export default class ToolBar extends React.Component {
                     >
                     <RowIcon />
                 </IconButton>
-                <IconButton
+                <IconButton tooltip="Display Side-by-side View"
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block"); 
@@ -83,7 +83,7 @@ export default class ToolBar extends React.Component {
                     >
                     <BothViewsIcon />
                 </IconButton>              
-                <IconButton
+                <IconButton tooltip="Display Circular View"
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: none");                        
@@ -122,7 +122,7 @@ export default class ToolBar extends React.Component {
         );
 
         var fileButtonElement = (
-            <IconButton tooltip="File">
+            <IconButton tooltip="File Functions">
                 <FileIcon />
             </IconButton>
         );
@@ -134,13 +134,13 @@ export default class ToolBar extends React.Component {
         // show or hide features &c
         var toggleFeatures = (
             <div style={ toggleStyles }>
-                <div style={ showFeatures ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleFeatures' onClick={function () {
+                <div title="Toggle Features" style={ showFeatures ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleFeatures' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Features'});
                 }}> F </div>
-                <div style={ showCutsites ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleCutsites' onClick={function () {
+                <div title="Toggle Cutsites" style={ showCutsites ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleCutsites' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Cutsites'});
                 }}> C </div>
-                <div style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
+                <div title="Toggle ORFs" style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Orfs'});
                 }}> O </div>
             </div>
@@ -164,7 +164,7 @@ export default class ToolBar extends React.Component {
             <Toolbar>
                 <ToolbarGroup key={0}>
                     <IconButton
-                        label='Feature Details'
+                        tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
                         }}
@@ -175,14 +175,14 @@ export default class ToolBar extends React.Component {
                     { embeddedControls }
 
                     <IconButton
-                        label='Print Current View'
+                        tooltip="Print Current View"
                         onTouchTap={function() {
                             prepPrintPage();
                         }}
                         >
                         <PrintIcon />
                     </IconButton>
-                    <IconButton label='Search' onClick={this.search.bind(this)}>
+                    <IconButton tooltip="Search" onClick={this.search.bind(this)}>
                         <SearchIcon />
                     </IconButton>
                     <TextField ref="searchField" hintText="search sequence" />
@@ -191,7 +191,7 @@ export default class ToolBar extends React.Component {
 
                     <IconButton
                         disabled={ readOnly }  // you can't save in read only
-                        label='Save to Server'
+                        tooltip="Save to Server"
                         onTouchTap={function() {
                             signals.saveChanges();
                         }}
@@ -203,7 +203,7 @@ export default class ToolBar extends React.Component {
                     </IconMenu>
                     <IconButton
                         label="Dialog"
-                        tooltip='Manage Restriction Enzymes'
+                        tooltip="Manage Restriction Enzymes"
                         onTouchTap={function() {
                             signals.restrictionEnzymeManagerDisplay();
                         }}
