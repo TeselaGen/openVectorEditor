@@ -162,7 +162,9 @@ export default class SequenceEditor extends React.Component {
             console.log("added margin to circular")
         }
         var rowStyle = {}
-        if(embedded || !showRow) rowStyle =  {display: 'none'}
+        if(embedded || !showRow) rowStyle = {display: 'none'}
+
+        // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
 
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
