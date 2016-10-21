@@ -168,25 +168,25 @@ export default class SequenceEditor extends React.Component {
         if (sidebarType === 'Features') {
             table = (
                 <SideBar
-                   data={sequenceData.features}
+                   annotations={sequenceData.features}
                    annotationType={sidebarType}
-                   filter={['name', 'type', 'start', 'end', 'strand']}
+                   headers={['name', 'type', 'start', 'end', 'strand']}
                    />
             );
         } else if (sidebarType === 'Cutsites') {
             table = (
                 <SideBar
-                   data={cutsites}
+                   annotations={cutsites}
                    annotationType={sidebarType}
-                   filter={['name', 'start', 'end', 'strand']}
+                   headers={['name']}
                    />
             );
         } else if (sidebarType === 'Orfs') {
             table = (
                 <SideBar
-                   data={orfData}
+                   annotations={orfData}
                    annotationType={sidebarType}
-                   filter={['start', 'end', 'length', 'strand', 'frame']}
+                   headers={['start', 'end', 'length', 'strand', 'frame']}
                    />
             );
         }

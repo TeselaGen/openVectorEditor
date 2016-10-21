@@ -50,7 +50,7 @@ export default class SidebarDetail extends React.Component {
 
     render() {
         return (
-            <div style={{backgroundColor: 'white', marginLeft: '580px', position: 'fixed', padding: '20px', width: '300px', border: '1px solid #ccc', zIndex: '55'}}>
+            <div style={{backgroundColor: 'white', position: 'absolute', padding: '20px', width: '565px', border: '1px solid #ccc', zIndex: '55'}}>
 
               <TextField
                  id={"name"}

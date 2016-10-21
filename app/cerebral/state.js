@@ -136,22 +136,23 @@ module.exports = {
             });
         }
     ]),
-    cutsitesByName: deriveData([
+    // cutsitesByName: deriveData([
+    cutsites: deriveData([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
         ['userEnzymes'],
         getCutsitesFromSequence
     ]),
-    cutsites: deriveData([
-        ['cutsitesByName'],
-        function (cutsitesByName) {
-            var cutsitesArray = [];
-            Object.keys(cutsitesByName).forEach(function (key) {
-                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
-            });
-            return cutsitesArray;
-        }
-    ]),
+    // cutsites: deriveData([
+    //     ['cutsitesByName'],
+    //     function (cutsitesByName) {
+    //         var cutsitesArray = [];
+    //         Object.keys(cutsitesByName).forEach(function (key) {
+    //             cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
+    //         });
+    //         return cutsitesArray;
+    //     }
+    // ]),
     translationsWithAminoAcids: deriveData([
         ['sequenceData', 'translations'],
         ['sequenceData', 'sequence'],

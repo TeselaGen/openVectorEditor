@@ -17,6 +17,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import SidebarDetail from './SidebarDetail';
 
 @Cerebral({
+    cutsitesByName: ['cutsitesByName'],
     minimumOrfSize: ['minimumOrfSize'],    
     readOnly: ['readOnly'],
     sidebarType: ['sidebarType']
@@ -74,8 +75,8 @@ export default class SideBar extends React.Component {
 
     render() {
         var {
-            data,
-            filter,            
+            annotations,
+            headers,            
             minimumOrfSize,
             readOnly,
             sidebarType,
@@ -92,48 +93,49 @@ export default class SideBar extends React.Component {
 
         var emptyDetails = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />);
 
+        // fill out the tables
         var tableHeaderCells = [];
-        for (let i = 0; i < filter.length; i++) {
-            tableHeaderCells.push((<TableHeaderColumn key={i}>{filter[i]}</TableHeaderColumn>));
+        for (let i = 0; i < headers.length; i++) {
+            tableHeaderCells.push((<TableHeaderColumn key={i}>{headers[i]}</TableHeaderColumn>));
         }
 
-        // {{}} get rid of the "data" thing
-        var tableDataRows = [];
-        for (let i = 0; i < data.length; i++) {
-            let tableDataCells = [];
-            let feature = data[i];
+        var annotationTableRows = [];
+        for (let i = 0; i < annotations.length; i++) {
+            let annotationTableCells = [];
+            let annotation = annotations[i];
+            console.log(annotations)
 
-            for (let j = 0; j < filter.length; j++) {
-                let column = filter[j];
-                let data = '';
+            for (let j = 0; j < headers.length; j++) {
+                let column = headers[j];
+                let annotations = '';
 
-                if (feature[column] !== null && feature[column] !== undefined) {
-                    data = feature[column].toString();
+                // handle cutsites. maybe need to revamp this whole thing
+                if(sidebarType === 'Cutsites') {
+                    console.log(annotation)
+                    
                 }
-                // new stuff
-                if (column === 'name' && sidebarType === 'Cutsites') {
-                    var enz = feature['restrictionEnzyme'];
-                    data = enz['name'].toString();
+                if (annotation[column] !== null && annotation[column] !== undefined) {
+                    annotations = annotation[column].toString();
                 }
                 if (column === 'strand') {
-                    if (feature['forward']) {
-                        data = "+";
+                    if (annotation['forward']) {
+                        annotations = "+";
                     } else {
-                        data = "-";
+                        annotations = "-";
                     }
                 }
 
-                tableDataCells.push((<TableRowColumn key={j}>{data}</TableRowColumn>));
+                annotationTableCells.push((<TableRowColumn key={j}>{ annotations }</TableRowColumn>));
             }
 
-            tableDataRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{tableDataCells}</TableRow>));
+            annotationTableRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{annotationTableCells}</TableRow>));
         }
         // pop out the detail modal
         // restrict to features since that's the only thing we can edit/add/remove right now
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
-            let annotation = data[this.state.selectedRows[0]];
+            let annotation = annotations[this.state.selectedRows[0]];
 
-            var annotationForm = (<SidebarDetail feature={annotation} />);
+            var annotationForm = (<SidebarDetail feature={ annotation } />);
         }
 
         // add new feature
@@ -194,7 +196,7 @@ export default class SideBar extends React.Component {
                         <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
                             <TableRow>{ tableHeaderCells }</TableRow>
                         </TableHeader>
-                        <TableBody deselectOnClickaway={ false } displayRowCheckbox={ false }>{ tableDataRows }</TableBody>
+                        <TableBody deselectOnClickaway={ false } displayRowCheckbox={ false }>{ annotationTableRows }</TableBody>
                     </Table>
                 </div>
                 { (!readOnly && sidebarType ==='Features') ? featureControls : null }
