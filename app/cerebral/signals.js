@@ -118,6 +118,10 @@ export default function(options) {
         chooseEnzymeList: [
             a.showSelectedEnzymeList
         ],
+
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
+        ],
         
     // ///////////////////////////////////
     // edit only actions
