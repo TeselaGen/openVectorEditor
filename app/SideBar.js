@@ -166,16 +166,15 @@ export default class SideBar extends React.Component {
                     autoScrollBodyContent={true}
                     actions={actions}
                     open={showAddFeatureModal}
+                    style={{height: '700px', position: 'absolute', maxWidth: '500px'}}
+                    titleStyle={{paddingBottom: "0px"}}
                 >
-                    <br/>
-                    <div style={{height: '450px', overflowY: 'scroll', maxWidth: '565px'}}>
-                        {sidebarDetail}
-                    </div>
+                    {sidebarDetail}
                 </Dialog>
             );
         }
 
-        // edit, add and remove feature buttons
+        // add and remove feature buttons
         var featureControls = (
             <div style={ sidebarControlStyle }>
                 <IconButton

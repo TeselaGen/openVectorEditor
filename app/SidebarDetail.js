@@ -23,12 +23,18 @@ export default class SidebarDetail extends React.Component {
         this.state = {
             feature: assign({}, this.props.feature),
             newFeature: {},
+            style: {},
         };
 
         if (this.state.feature.notes === undefined) {
             this.state.feature.notes = [];
         } else {
             this.state.feature.notes = this.props.feature.notes.slice();
+        }
+        if (this.props.createFeature != null) {
+            this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', height: '360px', paddingBottom: '10px', overflowY: 'scroll'};
+        } else {
+            this.state.style = {backgroundColor: 'white', position: 'fixed', padding: '20px', marginLeft: '580px', width: '300px', border: '1px solid #ccc', zIndex: '55'};
         }
     }
 
@@ -56,7 +62,7 @@ export default class SidebarDetail extends React.Component {
         }
 
         return (
-            <div style={{backgroundColor: 'white', position: 'absolute', padding: '20px', width: '565px', border: '1px solid #ccc', zIndex: '55'}}>
+            <div style={this.state.style}>
 
               <TextField
                  id={"name"}
