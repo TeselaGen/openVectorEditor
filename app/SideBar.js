@@ -40,6 +40,13 @@ export default class SideBar extends React.Component {
         this.setState({ selectedRows: selectedRows });
     }
 
+    editFeature(currentFeature) {
+        this.props.signals.updateFeature({
+            feature: currentFeature
+        });
+        this.setState({ selectedRows: [] });
+    }
+
     deleteFeatures() {
         var featureIds = [];
         console.log(this.props.annotations);
@@ -51,7 +58,7 @@ export default class SideBar extends React.Component {
         this.setState({ selectedRows: [] });
     }
 
-    openAddFeatureDisplay () {
+    openAddFeatureDisplay() {
         this.setState({ selectedRows: [] });
         this.props.signals.addFeatureModalDisplay();
     }
@@ -62,8 +69,7 @@ export default class SideBar extends React.Component {
         });
     }
 
-    addFeature () {
-        console.log(this.state.newFeature);
+    addFeature() {
         this.props.signals.addAnnotations({
             sidebarType: 'features',
 
@@ -135,8 +141,7 @@ export default class SideBar extends React.Component {
         // restrict to features since that's the only thing we can edit/add/remove right now
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = annotations[this.state.selectedRows[0]];
-
-            var annotationForm = (<SidebarDetail feature={ annotation } />);
+            var annotationForm = (<SidebarDetail editFeature={this.editFeature.bind(this)} feature={ annotation } />);
         }
 
         var actions = [

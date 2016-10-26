@@ -33,35 +33,17 @@ export default class SidebarDetail extends React.Component {
     }
 
     save = () => {
-        this.props.signals.updateFeature({
-            feature: this.state.feature
-        });
+        this.props.editFeature(this.state.feature);
     };
-
-    /*
-    update = () => {
-        // {{}} theres a better way to do this, willget to later
-        // clearTimeout(this.state.timeout);
-
-        // var timeout = setTimeout(() => {
-        //     this.props.signals.updateFeature({
-        //         feature: this.state.feature
-        //     });
-        // }, 1000);
-
-
-        this.setState({
-            feature: this.state.feature,
-        });
-    };
-    */
 
     onChange = (event) => {
         this.state.feature[event.target.id] = event.target.value;
         this.setState({
             feature: this.state.feature,
         });
-        this.props.createFeature(this.state.feature);
+        if (this.props.createFeature != null) {
+            this.props.createFeature(this.state.feature);
+        }
     };
 
     render() {
