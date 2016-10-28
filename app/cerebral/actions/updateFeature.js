@@ -5,9 +5,9 @@ export default function updateFeature({ input: { feature }, state, output }) {
 
     feature.start = parseInt(feature.start);
     feature.end = parseInt(feature.end);
-    feature.strand = parseInt(feature.strand);
+    feature.forward = parseInt(feature.strand);
 
-    if ( isNaN(feature.start + feature.end + feature.strand) )
+    if ( isNaN(feature.start + feature.end + feature.forward) )
         return;
 
     while ( state.get(['sequenceData', 'features', 'length']) > 0 ) {

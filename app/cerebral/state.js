@@ -38,19 +38,21 @@ module.exports = {
     minimumOrfSize: 300,
     readOnly: true,
     rowToJumpTo: null,
+    showAddFeatureModal: false,
     showAxis: true,
     showCircular: true,
     showCutsites: false,
     showFeatures: true,
     showLinear: true,
+    showOrfModal: false,
     showOrfs: false,
     showParts: true,
+    showRestrictionEnzymeManager: false,
     showReverseSequence: true,
     showRow: true,
     showSequence: true,
     showSidebar: false,
     showTranslations: false,
-    showRestrictionEnzymeManager: false,
     sidebarType: 'Features',
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
@@ -139,22 +141,21 @@ module.exports = {
         }
     ]),
     cutsitesByName: deriveData([
-    // cutsites: deriveData([
         ['sequenceData', 'sequence'],
         ['sequenceData', 'circular'],
         ['userEnzymes'],
         getCutsitesFromSequence
     ]),
-    cutsites: deriveData([
-        ['cutsitesByName'],
-        function (cutsitesByName) {
-            var cutsitesArray = [];
-            Object.keys(cutsitesByName).forEach(function (key) {
-                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
-            });
-            return cutsitesArray;
-        }
-    ]),
+    // cutsites: deriveData([
+    //     ['cutsitesByName'],
+    //     function (cutsitesByName) {
+    //         var cutsitesArray = [];
+    //         Object.keys(cutsitesByName).forEach(function (key) {
+    //             cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
+    //         });
+    //         return cutsitesArray;
+    //     }
+    // ]),
     translationsWithAminoAcids: deriveData([
         ['sequenceData', 'translations'],
         ['sequenceData', 'sequence'],

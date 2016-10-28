@@ -5,27 +5,40 @@ export default function addAnnotations({input: {sidebarType, annotationsToInsert
 
     annotationsToInsert.forEach(function(annotationToInsert) {
         if (!isBoolean(annotationToInsert.forward)) {
-            if (throwErrors) {
-                throw new Error('error: annotation direction not specified')
+            if (annotationToInsert.strand == null) {
+                if (throwErrors) {
+                    throw new Error('error: annotation direction not specified')
+                } else {
+                    console.log('annotation direction not specified')
+                    annotationToInsert.forward = true;
+                }
             } else {
-                console.log('annotation direction not specified')
-                annotationToInsert.forward = true;
+                (annotationToInsert.strand < 0) ? annotationToInsert.forward = false : annotationToInsert.forward = true;
             }
         }
         if (!areNonNegativeIntegers([annotationToInsert.start])) {
-            if (throwErrors) {
-                throw new Error('error: annotation position not specified')
+            if (annotationToInsert.start == null) {
+                if (throwErrors) {
+                    throw new Error('error: annotation position not specified')
+                } else {
+                    console.log('annotation position not specified')
+                    annotationToInsert.start = 0;
+                }
             } else {
-                console.log('annotation position not specified')
-                annotationToInsert.start = 0;
+                annotationToInsert.start = parseInt(annotationToInsert.start);
             }
+
         }
         if (!areNonNegativeIntegers([annotationToInsert.end])) {
-            if (throwErrors) {
-                throw new Error('error: annotation position not specified')
+            if (annotationToInsert.start == null) {
+                if (throwErrors) {
+                    throw new Error('error: annotation position not specified')
+                } else {
+                    console.log('annotation position not specified')
+                    annotationToInsert.end = 0;
+                }
             } else {
-                console.log('annotation position not specified')
-                annotationToInsert.end = 0;
+                annotationToInsert.end = parseInt(annotationToInsert.end);
             }
         }
 

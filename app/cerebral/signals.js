@@ -118,6 +118,14 @@ export default function(options) {
         chooseEnzymeList: [
             a.showSelectedEnzymeList
         ],
+
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
+        ],
+
+        showChangeMinOrfSizeDialog: [
+            a.showChangeMinOrfSizeDialog
+        ],
         
     // ///////////////////////////////////
     // edit only actions

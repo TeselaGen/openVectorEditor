@@ -3,6 +3,7 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 
 // {{}} remove this.state and do it correctly
 
+const Dialog = require('material-ui/lib/dialog');
 const Table = require('material-ui/lib/table/table');
 const TableBody = require('material-ui/lib/table/table-body');
 const TableHeader = require('material-ui/lib/table/table-header');
@@ -13,10 +14,13 @@ const TableRowColumn = require('material-ui/lib/table/table-row-column');
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
+import FlatButton from 'material-ui/lib/flat-button';
 
 import SidebarDetail from './SidebarDetail';
 
 @Cerebral({
+    showAddFeatureModal: ['showAddFeatureModal'],
+    showOrfModal: ['showOrfModal'],
     cutsitesByName: ['cutsitesByName'],
     minimumOrfSize: ['minimumOrfSize'],    
     readOnly: ['readOnly'],
@@ -28,7 +32,8 @@ export default class SideBar extends React.Component {
         super(arguments);
 
         this.state = {
-            selectedRows: []
+            selectedRows: [],
+            newFeature: {},
         };
     }
 
@@ -36,42 +41,47 @@ export default class SideBar extends React.Component {
         this.setState({ selectedRows: selectedRows });
     }
 
+    editFeature(currentFeature) {
+        this.props.signals.updateFeature({
+            feature: currentFeature
+        });
+        this.setState({ selectedRows: [] });
+    }
+
     deleteFeatures() {
         var featureIds = [];
-
+        console.log(this.props.annotations);
         this.state.selectedRows.forEach(el => {
-            featureIds.push(this.props.data[el].id);
+            featureIds.push(this.props.annotations[el].id);
         });
 
         this.props.signals.deleteFeatures({ featureIds: featureIds });
         this.setState({ selectedRows: [] });
     }
 
-    // addFeature() {
-        // this needs to be changed so it just pops out the modal.
-        // pop the modal open with a blank feature
-        // expand later for other types of feature?
-        // a button in the modal should finalize the insertion
+    openAddFeatureDisplay() {
+        this.setState({ selectedRows: [] });
+        this.props.signals.addFeatureModalDisplay();
+    }
 
-        // var annotationForm = emptyDetails;
+    createFeature(newFeature) {
+        this.setState({
+            newFeature: newFeature,
+        });
+    }
 
-        // this.props.signals.addAnnotations({
-        //     sidebarType: 'features',
+    addFeature() {
+        this.props.signals.addAnnotations({
+            sidebarType: 'features',
 
-        //     annotationsToInsert: [
-        //         {
-        //             name: 'unnamed feature',
-        //             type: '',
-        //             start: 0,
-        //             end: 0,
-        //             strand: -1,
-        //             notes: []
-        //         }
-        //     ],
+            annotationsToInsert: [
+                this.state.newFeature
+            ],
 
-        //     throwErrors: true
-        // });
-    // }
+            throwErrors: true
+        });
+        this.props.signals.addFeatureModalDisplay();
+    }
 
     render() {
         var {
@@ -80,18 +90,17 @@ export default class SideBar extends React.Component {
             minimumOrfSize,
             readOnly,
             sidebarType,
-            signals
+            signals,
+            showAddFeatureModal,
+            showOrfModal
         } = this.props;
 
         var featureTabs;
         var controls;
-        var showOrfModal = false; // may need to mvoe this to the state tree
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
         var selectedTabStyle = {};
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
-        var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc'};
-
-        var emptyDetails = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />);
+        var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc', marginLeft: '3px'};
 
         // fill out the tables
         var tableHeaderCells = [];
@@ -103,7 +112,6 @@ export default class SideBar extends React.Component {
         for (let i = 0; i < annotations.length; i++) {
             let annotationTableCells = [];
             let annotation = annotations[i];
-            console.log(annotations)
 
             for (let j = 0; j < headers.length; j++) {
                 let column = headers[j];
@@ -111,8 +119,7 @@ export default class SideBar extends React.Component {
 
                 // handle cutsites. maybe need to revamp this whole thing
                 if(sidebarType === 'Cutsites') {
-                    console.log(annotation)
-                    
+
                 }
                 if (annotation[column] !== null && annotation[column] !== undefined) {
                     annotations = annotation[column].toString();
@@ -135,19 +142,47 @@ export default class SideBar extends React.Component {
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = annotations[this.state.selectedRows[0]];
 
-            var annotationForm = (<SidebarDetail feature={ annotation } />);
+            var annotationForm = (<SidebarDetail editFeature={this.editFeature.bind(this)} feature={ annotation } />);
+
         }
 
-        // add new feature
-        var addFeature = function() {
-            // deselect all rows
-            var annotationForm = (<SidebarDetail feature={{start: 0, end: 0, strand: -1, name: "", type: ""}} />)
+        var actions = [
+            <FlatButton
+                label="Cancel"
+                onTouchTap={function() {signals.addFeatureModalDisplay()}}
+            />,
+            <FlatButton
+                label="Add Feature"
+                style={{color: "#03A9F4"}}
+                onTouchTap={this.addFeature.bind(this)}
+            />,
+        ];
+
+        var sidebarDetail = (<SidebarDetail createFeature={this.createFeature.bind(this)} feature = {{start: 0, end: 0, strand: -1, name: "", type: ""}}/>);
+
+        if (showAddFeatureModal) {
+            var addFeatureDialog = (
+                <Dialog
+                    title="Add New Feature"
+                    autoDetectWindowHeight={true}
+                    autoScrollBodyContent={true}
+                    actions={actions}
+                    open={showAddFeatureModal}
+                    style={{height: '700px', position: 'absolute', maxWidth: '500px'}}
+                    titleStyle={{paddingBottom: "0px"}}
+                >
+                    {sidebarDetail}
+                </Dialog>
+            );
         }
 
-        // edit, add and remove feature buttons
+        // add and remove feature buttons
         var featureControls = (
             <div style={ sidebarControlStyle }>
-                <IconButton onClick={addFeature()} tooltip={"add"}>
+                <IconButton
+                    onTouchTap={this.openAddFeatureDisplay.bind(this)}
+                    tooltip="add"
+                >
                     <AddBoxIcon />
                 </IconButton>
 
@@ -160,19 +195,19 @@ export default class SideBar extends React.Component {
             <div style={ sidebarControlStyle }>
                 Minimum ORF Size: { minimumOrfSize }                
                 { readOnly ? null : 
-                    <div id='orfControl' onClick={function(e) {console.log("onClick", showOrfModal);}}
-                    style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
+                    <div id='orfControl' onClick={function() {signals.showChangeMinOrfSizeDialog()}}
+                    style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>
                 }
+                <span>          </span>
                 { showOrfModal ? 
-                    <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
+                    <div id='orfModal' style={{display: 'inline', marginLeft:'20px', height: '26px'}}>
                         <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
                         <button name='setOrfMin' onTouchTap={function () {
                             var newMinVal = document.getElementById('orfInput').value;
                             signals.changeOrfMin({ newMin: newMinVal });
-                            showOrfModal = false;
+                            signals.showChangeMinOrfSizeDialog();
                         }}>Set</button>
-                        <button name='closeOrfModal' onClick={ function() {showOrfModal = false
-                        }}>Cancel</button>
+                        <button name='closeOrfModal' onClick={function() {signals.showChangeMinOrfSizeDialog()}}>Cancel</button>
                     </div> : null 
                 }
             </div>
@@ -203,6 +238,7 @@ export default class SideBar extends React.Component {
                 { sidebarType === 'Orfs' ? orfControls : null }
 
                 { annotationForm }
+                {addFeatureDialog}
 
             </div>
         );
