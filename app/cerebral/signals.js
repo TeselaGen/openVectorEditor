@@ -91,12 +91,12 @@ export default function(options) {
             }],
             a.handleEditorDragStopped
         ],
-        resizeRowView: [
-            a.resizeRowView
-        ],
-        resizeCircularView: [
-            a.resizeCircularView
-        ],
+        // resizeRowView: [
+        //     a.resizeRowView
+        // ],
+        // resizeCircularView: [
+        //     a.resizeCircularView
+        // ],
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers

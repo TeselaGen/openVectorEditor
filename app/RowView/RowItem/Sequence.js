@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 
 var Sequence = React.createClass({
 
-    // this is an awkward workaround for react stripping this attribute from the text node
     componentDidMount: function() {
         var {
             bpsPerRow,
@@ -12,7 +11,7 @@ var Sequence = React.createClass({
             reverse,
             sequence            
         } = this.props;        
-        // var rowWidth = this.getState("rowWidth");
+
         // check if we have a partial final row
         var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;        
         if(sequence.length < bpsPerRow) {

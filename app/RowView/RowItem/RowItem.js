@@ -52,6 +52,7 @@ function noop() {
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
     cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     selectionLayer: ['selectionLayer'],
@@ -200,11 +201,10 @@ class RowItem extends React.Component {
                 }
 
                 {(showCutsites && Object.keys(cutsites).length > 0) &&
-                  <CutsiteLabels
-                    
-                    annotationRanges={cutsites}
-                    {...annotationCommonProps}
-                    />
+                    <CutsiteLabels
+                        annotationRanges={cutsites}
+                        {...annotationCommonProps}
+                        />
                 }
 
                 { selectedStuff }
