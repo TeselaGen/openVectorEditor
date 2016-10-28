@@ -20,6 +20,7 @@ import SidebarDetail from './SidebarDetail';
 
 @Cerebral({
     showAddFeatureModal: ['showAddFeatureModal'],
+    showOrfModal: ['showOrfModal'],
     cutsitesByName: ['cutsitesByName'],
     minimumOrfSize: ['minimumOrfSize'],    
     readOnly: ['readOnly'],
@@ -90,16 +91,16 @@ export default class SideBar extends React.Component {
             readOnly,
             sidebarType,
             signals,
-            showAddFeatureModal
+            showAddFeatureModal,
+            showOrfModal
         } = this.props;
 
         var featureTabs;
         var controls;
-        var showOrfModal = false; // may need to mvoe this to the state tree
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
         var selectedTabStyle = {};
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
-        var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc'};
+        var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc', marginLeft: '3px'};
 
         // fill out the tables
         var tableHeaderCells = [];
@@ -193,19 +194,19 @@ export default class SideBar extends React.Component {
             <div style={ sidebarControlStyle }>
                 Minimum ORF Size: { minimumOrfSize }                
                 { readOnly ? null : 
-                    <div id='orfControl' onClick={function(e) {console.log("onClick", showOrfModal);}}
-                    style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>                       
+                    <div id='orfControl' onClick={function() {signals.showChangeMinOrfSizeDialog()}}
+                    style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>
                 }
+                <span>          </span>
                 { showOrfModal ? 
-                    <div id='orfModal' style={{position: 'fixed', top: '250px', left: '250px', height: '70px'}}>
+                    <div id='orfModal' style={{display: 'inline', marginLeft:'20px', height: '26px'}}>
                         <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
                         <button name='setOrfMin' onTouchTap={function () {
                             var newMinVal = document.getElementById('orfInput').value;
                             signals.changeOrfMin({ newMin: newMinVal });
-                            showOrfModal = false;
+                            signals.showChangeMinOrfSizeDialog();
                         }}>Set</button>
-                        <button name='closeOrfModal' onClick={ function() {showOrfModal = false
-                        }}>Cancel</button>
+                        <button name='closeOrfModal' onClick={function() {signals.showChangeMinOrfSizeDialog()}}>Cancel</button>
                     </div> : null 
                 }
             </div>

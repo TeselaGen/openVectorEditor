@@ -44,6 +44,7 @@ module.exports = {
     showCutsites: false,
     showFeatures: true,
     showLinear: true,
+    showOrfModal: false,
     showOrfs: false,
     showParts: true,
     showRestrictionEnzymeManager: false,

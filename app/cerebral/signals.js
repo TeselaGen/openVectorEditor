@@ -122,6 +122,10 @@ export default function(options) {
         addFeatureModalDisplay: [
             a.addFeatureModalDisplay
         ],
+
+        showChangeMinOrfSizeDialog: [
+            a.showChangeMinOrfSizeDialog
+        ],
         
     // ///////////////////////////////////
     // edit only actions
