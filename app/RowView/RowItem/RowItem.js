@@ -178,6 +178,21 @@ class RowItem extends React.Component {
                     />
             );
         }        
+
+        if (selectionLayer.start <= row.end && selectionLayer.end >= row.start) {
+            var selStart = selectionLayer.start - row.start - 1;
+            var selEnd = selectionLayer.end - row.start;
+
+            if (selStart < 0) selStart = 0;
+            if (selEnd > row.end) selEnd = row.end;
+
+            selectedStuff.push(
+                <svg className={styles.selectionLayer} viewBox={'0 0 ' + ( bpsPerRow ) + ' 1'} preserveAspectRatio={'none'}>
+                    <rect x={selStart} y={0} width={selEnd} height={1} fill={'blue'}/>
+                </svg>
+                );
+        }
+
         
         return (
             <div className = {styles.rowItem + " veRowItem"}>
