@@ -38,6 +38,7 @@ import _Features from './Features'
 import _CutsiteLabels from './Cutsites/CutsiteLabels'
 import _Cutsites from './Cutsites'
 import Caret from './Caret'
+import Highlight from './Highlight';
 import styles from './RowItem.scss';
 
 function noop() {
@@ -179,20 +180,6 @@ class RowItem extends React.Component {
             );
         }        
 
-        if (selectionLayer.start <= row.end && selectionLayer.end >= row.start) {
-            var selStart = selectionLayer.start - row.start - 1;
-            var selEnd = selectionLayer.end - row.start;
-
-            if (selStart < 0) selStart = 0;
-            if (selEnd > row.end) selEnd = row.end;
-
-            selectedStuff.push(
-                <svg className={styles.selectionLayer} viewBox={'0 0 ' + ( bpsPerRow ) + ' 1'} preserveAspectRatio={'none'}>
-                    <rect x={selStart} y={0} width={selEnd} height={1} fill={'blue'}/>
-                </svg>
-                );
-        }
-
         
         return (
             <div className = {styles.rowItem + " veRowItem"}>
@@ -222,7 +209,7 @@ class RowItem extends React.Component {
                         />
                 }
 
-                { selectedStuff }
+                <Highlight start={selectionLayer.start - 1} end={selectionLayer.end - 1} rowStart={row.start - 1} rowEnd={row.end - 1} />
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
