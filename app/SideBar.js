@@ -21,7 +21,7 @@ import SidebarDetail from './SidebarDetail';
 @Cerebral({
     showAddFeatureModal: ['showAddFeatureModal'],
     showOrfModal: ['showOrfModal'],
-    cutsitesByName: ['cutsitesByName'],
+    // cutsites: ['cutsites'],
     minimumOrfSize: ['minimumOrfSize'],    
     readOnly: ['readOnly'],
     sidebarType: ['sidebarType']
@@ -82,8 +82,7 @@ export default class SideBar extends React.Component {
 
     render() {
         var {
-            annotations,
-            // headers,            
+            annotations,            
             minimumOrfSize,
             readOnly,
             sidebarType,
@@ -181,17 +180,22 @@ export default class SideBar extends React.Component {
             tableHeaderCells.push((<TableHeaderColumn key='cuthead2'>position</TableHeaderColumn>));
             tableHeaderCells.push((<TableHeaderColumn key='cuthead3'>strand</TableHeaderColumn>));
 
+            console.log(annotations)
+
             annotationTableRows = [];
             for (let i = 0; i < annotations.length; i++) {
                 let annotationTableCells = [];
-                let annotation = annotations[i];
+                let annotation = annotations[i];                
 
                 for (let j = 0; j < tableHeaderCells.length; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
                     let cellEntry = '';
 
-                    if (annotation[column] !== null && annotation[column] !== undefined) {
-                        cellEntry = annotation[column].toString();
+                    if(column === 'name') {
+                        cellEntry = annotation['restrictionEnzyme']['name']
+                    }
+                    if (column === '# cuts') {
+
                     }
                     if (column === 'position') {
                         cellEntry = annotation['start'] + " - " + annotation['end'];
