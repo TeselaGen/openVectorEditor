@@ -50,7 +50,6 @@ export default class SideBar extends React.Component {
 
     deleteFeatures() {
         var featureIds = [];
-        console.log(this.props.annotations);
         this.state.selectedRows.forEach(el => {
             featureIds.push(this.props.annotations[el].id);
         });
@@ -73,11 +72,9 @@ export default class SideBar extends React.Component {
     addFeature() {
         this.props.signals.addAnnotations({
             sidebarType: 'features',
-
             annotationsToInsert: [
                 this.state.newFeature
             ],
-
             throwErrors: true
         });
         this.props.signals.addFeatureModalDisplay();
@@ -86,7 +83,7 @@ export default class SideBar extends React.Component {
     render() {
         var {
             annotations,
-            headers,            
+            // headers,            
             minimumOrfSize,
             readOnly,
             sidebarType,
@@ -95,50 +92,185 @@ export default class SideBar extends React.Component {
             showOrfModal
         } = this.props;
 
-        var featureTabs;
+        var sidebarContent;
         var controls;
-        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
-        var selectedTabStyle = {};
-        Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
+        var tableHeaderCells;
+        var annotationTableRows;
         var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc', marginLeft: '3px'};
 
-        // fill out the tables
-        var tableHeaderCells = [];
-        for (let i = 0; i < headers.length; i++) {
-            tableHeaderCells.push((<TableHeaderColumn key={i}>{headers[i]}</TableHeaderColumn>));
-        }
+        // TABS
+        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
+        var selectedTabStyle = {};
+        Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});        
+        
+        var topTabs = (
+                        <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
+                            <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
+                                signals.sidebarDisplay({ type: 'Features' });
+                            }}>Features</div>
+                            <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onClick={function () {
+                                signals.sidebarDisplay({ type: 'Cutsites' });
+                            }}>Cutsites</div>
+                            <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onClick={function () {
+                                signals.sidebarDisplay({ type: 'Orfs' });
+                            }}>ORFs</div>
+                        </div>
+                    );
 
-        var annotationTableRows = [];
-        for (let i = 0; i < annotations.length; i++) {
-            let annotationTableCells = [];
-            let annotation = annotations[i];
+        // FEATURES TAB
+        if (sidebarType === 'Features') {
+            tableHeaderCells = [];
+            tableHeaderCells.push((<TableHeaderColumn key='feathead0'>name</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='feathead1'>type</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='feathead2'>position</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='feathead3'>strand</TableHeaderColumn>));
 
-            for (let j = 0; j < headers.length; j++) {
-                let column = headers[j];
-                let annotations = '';
+            annotationTableRows = [];
+            for (let i = 0; i < annotations.length; i++) {
+                let annotationTableCells = [];
+                let annotation = annotations[i];
 
-                // handle cutsites. maybe need to revamp this whole thing
-                if(sidebarType === 'Cutsites') {
+                for (let j = 0; j < tableHeaderCells.length; j++) {
+                    let column = tableHeaderCells[j].props.children.toString();
+                    let cellEntry = '';
 
-                }
-                if (annotation[column] !== null && annotation[column] !== undefined) {
-                    annotations = annotation[column].toString();
-                }
-                if (column === 'strand') {
-                    if (annotation['forward']) {
-                        annotations = "+";
-                    } else {
-                        annotations = "-";
+                    if (annotation[column] !== null && annotation[column] !== undefined) {
+                        cellEntry = annotation[column].toString();
                     }
+                    if (column === 'position') {
+                        cellEntry = annotation['start'] + " - " + annotation['end']; 
+                    }
+                    if (column === 'strand') {
+                        if (annotation['forward']) {
+                            cellEntry = "+";
+                        } else {
+                            cellEntry = "-";
+                        }
+                    }
+
+                    annotationTableCells.push((<TableRowColumn key={j}>{ cellEntry }</TableRowColumn>));
                 }
 
-                annotationTableCells.push((<TableRowColumn key={j}>{ annotations }</TableRowColumn>));
+                annotationTableRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{annotationTableCells}</TableRow>));
             }
 
-            annotationTableRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{annotationTableCells}</TableRow>));
+            // controls
+            if (!readOnly) {
+                var featureControls = (
+                    <div style={ sidebarControlStyle }>
+                        <IconButton
+                            onTouchTap={this.openAddFeatureDisplay.bind(this)}
+                            tooltip="add"
+                            >
+                            <AddBoxIcon />
+                        </IconButton>
+
+                        <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0} tooltip={"delete"}>
+                            <IndeterminateCheckBoxIcon />
+                        </IconButton>
+                    </div>
+                );
+            }
         }
-        // pop out the detail modal
-        // restrict to features since that's the only thing we can edit/add/remove right now
+
+        // CUTSITES TAB
+        if (sidebarType === 'Cutsites') {
+            tableHeaderCells = [];
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead0'>name</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead1'># cuts</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead2'>position</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead3'>strand</TableHeaderColumn>));
+
+            annotationTableRows = [];
+            for (let i = 0; i < annotations.length; i++) {
+                let annotationTableCells = [];
+                let annotation = annotations[i];
+
+                for (let j = 0; j < tableHeaderCells.length; j++) {
+                    let column = tableHeaderCells[j].props.children.toString();
+                    let cellEntry = '';
+
+                    if (annotation[column] !== null && annotation[column] !== undefined) {
+                        cellEntry = annotation[column].toString();
+                    }
+                    if (column === 'position') {
+                        cellEntry = annotation['start'] + " - " + annotation['end'];
+                    }                    
+                    if (column === 'strand') {
+                        if (annotation['forward']) {
+                            cellEntry = "+";
+                        } else {
+                            cellEntry = "-";
+                        }
+                    }
+
+                    annotationTableCells.push((<TableRowColumn key={j}>{ cellEntry }</TableRowColumn>));
+                }
+
+                annotationTableRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{annotationTableCells}</TableRow>));
+            }
+        }
+
+        // ORFS TAB
+        if (sidebarType === 'Orfs') {
+            tableHeaderCells = [];
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead0'>position</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead1'>length</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead2'>strand</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='cuthead3'>frame</TableHeaderColumn>));
+
+            annotationTableRows = [];
+            for (let i = 0; i < annotations.length; i++) {
+                let annotationTableCells = [];
+                let annotation = annotations[i];
+
+                for (let j = 0; j < tableHeaderCells.length; j++) {
+                    let column = tableHeaderCells[j].props.children;
+                    let cellEntry = '';
+
+                    if (column === 'position') {
+                        cellEntry = annotation['start'] + " - " + annotation['end'];
+                    }  else                  
+                    if (column === 'strand') {
+                        if (annotation['forward']) {
+                            cellEntry = "+";
+                        } else {
+                            cellEntry = "-";
+                        }
+                    } else
+                    if (annotation[column] !== null && annotation[column] !== undefined) {
+                        cellEntry = annotation[column].toString();
+                    }
+
+                    annotationTableCells.push((<TableRowColumn key={j}>{ cellEntry }</TableRowColumn>));
+                }
+
+                annotationTableRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{annotationTableCells}</TableRow>));
+            }
+            var orfControls = (
+                <div style={ sidebarControlStyle }>
+                    Minimum ORF Size: { minimumOrfSize }                
+                    { readOnly ? null : 
+                        <div id='orfControl' onClick={function() {signals.showChangeMinOrfSizeDialog()}}
+                        style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>
+                    }
+                    { showOrfModal ? 
+                        <div id='orfModal' style={{display: 'inline', marginLeft:'20px', height: '26px'}}>
+                            <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
+                            <button name='setOrfMin' onTouchTap={function () {
+                                var newMinVal = document.getElementById('orfInput').value;
+                                signals.changeOrfMin({ newMin: newMinVal });
+                                signals.showChangeMinOrfSizeDialog();
+                            }}>Set</button>
+                            <button name='closeOrfModal' onClick={function() {signals.showChangeMinOrfSizeDialog()}}>Cancel</button>
+                        </div> : null 
+                    }
+                </div>
+            );            
+        }
+
+        // FEATURE DETAIL
+
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = annotations[this.state.selectedRows[0]];
 
@@ -146,19 +278,23 @@ export default class SideBar extends React.Component {
 
         }
 
-        var actions = [
+        var actions = (
             <FlatButton
                 label="Cancel"
                 onTouchTap={function() {signals.addFeatureModalDisplay()}}
-            />,
+                />,
             <FlatButton
                 label="Add Feature"
                 style={{color: "#03A9F4"}}
                 onTouchTap={this.addFeature.bind(this)}
-            />,
-        ];
+                />
+        );
 
-        var sidebarDetail = (<SidebarDetail createFeature={this.createFeature.bind(this)} feature = {{start: 0, end: 0, strand: -1, name: "", type: ""}}/>);
+        var sidebarDetail = (
+                <SidebarDetail createFeature={this.createFeature.bind(this)} 
+                    feature = {{start: 0, end: 0, strand: -1, name: "", type: ""}}
+                    />
+            );
 
         if (showAddFeatureModal) {
             var addFeatureDialog = (
@@ -170,75 +306,33 @@ export default class SideBar extends React.Component {
                     open={showAddFeatureModal}
                     style={{height: '700px', position: 'absolute', maxWidth: '500px'}}
                     titleStyle={{paddingBottom: "0px"}}
-                >
+                    >
                     {sidebarDetail}
                 </Dialog>
             );
         }
 
-        // add and remove feature buttons
-        var featureControls = (
-            <div style={ sidebarControlStyle }>
-                <IconButton
-                    onTouchTap={this.openAddFeatureDisplay.bind(this)}
-                    tooltip="add"
-                >
-                    <AddBoxIcon />
-                </IconButton>
-
-                <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0} tooltip={"delete"}>
-                    <IndeterminateCheckBoxIcon />
-                </IconButton>
-            </div>
-        );
-        var orfControls = (
-            <div style={ sidebarControlStyle }>
-                Minimum ORF Size: { minimumOrfSize }                
-                { readOnly ? null : 
-                    <div id='orfControl' onClick={function() {signals.showChangeMinOrfSizeDialog()}}
-                    style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>
-                }
-                <span>          </span>
-                { showOrfModal ? 
-                    <div id='orfModal' style={{display: 'inline', marginLeft:'20px', height: '26px'}}>
-                        <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
-                        <button name='setOrfMin' onTouchTap={function () {
-                            var newMinVal = document.getElementById('orfInput').value;
-                            signals.changeOrfMin({ newMin: newMinVal });
-                            signals.showChangeMinOrfSizeDialog();
-                        }}>Set</button>
-                        <button name='closeOrfModal' onClick={function() {signals.showChangeMinOrfSizeDialog()}}>Cancel</button>
-                    </div> : null 
-                }
-            </div>
-        );
-
         return ( // {{}} tabs onclick need to deselect any selected row
             <div> 
-                <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
-                    <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
-                        signals.sidebarDisplay({ type: 'Features' });
-                    }}>Features</div>
-                    <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onClick={function () {
-                        signals.sidebarDisplay({ type: 'Cutsites' });
-                    }}>Cutsites</div>
-                    <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onClick={function () {
-                        signals.sidebarDisplay({ type: 'Orfs' });
-                    }}>ORFs</div>
-                </div>
+
+                { topTabs }
+
                 <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
-                    <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={true} onRowSelection={this.onRowSelection.bind(this)}>
+                    <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={ false } onRowSelection={this.onRowSelection.bind(this)}>
                         <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
                             <TableRow>{ tableHeaderCells }</TableRow>
                         </TableHeader>
                         <TableBody deselectOnClickaway={ false } displayRowCheckbox={ false }>{ annotationTableRows }</TableBody>
                     </Table>
                 </div>
-                { (!readOnly && sidebarType ==='Features') ? featureControls : null }
-                { sidebarType === 'Orfs' ? orfControls : null }
+
+                { featureControls }
+
+                { orfControls }
 
                 { annotationForm }
-                {addFeatureDialog}
+
+                { addFeatureDialog }
 
             </div>
         );
