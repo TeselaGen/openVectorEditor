@@ -180,48 +180,48 @@ export default class SideBar extends React.Component {
             tableHeaderCells.push((<TableHeaderColumn key='cuthead2'>position</TableHeaderColumn>));
             tableHeaderCells.push((<TableHeaderColumn key='cuthead3'>strand</TableHeaderColumn>));
 
-            console.log(annotations)
-
             annotationTableRows = [];
-            for (let i = 0; i < annotations.length; i++) {
+            for (var enzyme in annotations) { // this is an object so we loop differently
                 let annotationTableCells = [];
-                let annotation = annotations[i];                
+                let annotation = annotations[enzyme];  
+
+                debugger;     
 
                 for (let j = 0; j < tableHeaderCells.length; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
                     let cellEntry = '';
 
                     if(column === 'name') {
-                        cellEntry = annotation['restrictionEnzyme']['name']
+                        cellEntry = annotation[0].restrictionEnzyme.name;
                     }
                     if (column === '# cuts') {
-
+                        cellEntry = annotation.length;
                     }
-                    if (column === 'position') {
-                        cellEntry = annotation['start'] + " - " + annotation['end'];
-                    }                    
-                    if (column === 'strand') {
-                        if (annotation['forward']) {
-                            cellEntry = "+";
-                        } else {
-                            cellEntry = "-";
-                        }
-                    }
+                    // if (column === 'position') {
+                    //     cellEntry = annotation['start'] + " - " + annotation['end'];
+                    // }                    
+                    // if (column === 'strand') {
+                    //     if (annotation['forward']) {
+                    //         cellEntry = "+";
+                    //     } else {
+                    //         cellEntry = "-";
+                    //     }
+                    // }
 
                     annotationTableCells.push((<TableRowColumn key={j}>{ cellEntry }</TableRowColumn>));
                 }
 
-                annotationTableRows.push((<TableRow key={i} selected={this.state.selectedRows.indexOf(i) !== -1}>{annotationTableCells}</TableRow>));
+                annotationTableRows.push((<TableRow>{annotationTableCells}</TableRow>));
             }
         }
 
         // ORFS TAB
         if (sidebarType === 'Orfs') {
             tableHeaderCells = [];
-            tableHeaderCells.push((<TableHeaderColumn key='cuthead0'>position</TableHeaderColumn>));
-            tableHeaderCells.push((<TableHeaderColumn key='cuthead1'>length</TableHeaderColumn>));
-            tableHeaderCells.push((<TableHeaderColumn key='cuthead2'>strand</TableHeaderColumn>));
-            tableHeaderCells.push((<TableHeaderColumn key='cuthead3'>frame</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='orfhead0'>position</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='orfhead1'>length</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='orfhead2'>strand</TableHeaderColumn>));
+            tableHeaderCells.push((<TableHeaderColumn key='orfhead3'>frame</TableHeaderColumn>));
 
             annotationTableRows = [];
             for (let i = 0; i < annotations.length; i++) {
