@@ -280,20 +280,27 @@ export default class SideBar extends React.Component {
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = annotations[this.state.selectedRows[0]];
 
-            var annotationForm = (<SidebarDetail editFeature={this.editFeature.bind(this)} feature={ annotation } />);
+            var annotationForm = (
+                <SidebarDetail 
+                    editFeature={this.editFeature.bind(this)} 
+                    feature={ annotation } 
+                    />
+            );
 
         }
 
         var actions = (
-            <FlatButton
-                label="Cancel"
-                onTouchTap={function() {signals.addFeatureModalDisplay()}}
-                />,
-            <FlatButton
-                label="Add Feature"
-                style={{color: "#03A9F4"}}
-                onTouchTap={this.addFeature.bind(this)}
-                />
+            <div>
+                <FlatButton
+                    label="Cancel"
+                    onTouchTap={function() {signals.addFeatureModalDisplay()}}
+                    />
+                <FlatButton
+                    label="Add Feature"
+                    style={{color: "#03A9F4"}}
+                    onTouchTap={this.addFeature.bind(this)}
+                    />
+            </div>
         );
 
         var sidebarDetail = (
@@ -306,14 +313,15 @@ export default class SideBar extends React.Component {
             var addFeatureDialog = (
                 <Dialog
                     title="Add New Feature"
-                    autoDetectWindowHeight={true}
-                    autoScrollBodyContent={true}
-                    actions={actions}
+                    autoDetectWindowHeight={false}
+                    autoScrollBodyContent={false}
+                    // actions={actions}
                     open={showAddFeatureModal}
                     style={{height: '700px', position: 'absolute', maxWidth: '500px'}}
                     titleStyle={{paddingBottom: "0px"}}
-                    >
-                    {sidebarDetail}
+                    >                    
+                    { sidebarDetail }
+                    { actions }
                 </Dialog>
             );
         }
