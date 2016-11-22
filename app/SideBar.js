@@ -183,10 +183,9 @@ export default class SideBar extends React.Component {
             annotationTableRows = [];
             for (var enzyme in annotations) { // this is an object so we loop differently
                 let annotationTableCells = [];
-                let annotation = annotations[enzyme];  
+                let annotation = annotations[enzyme];   
 
-                debugger;     
-
+                // outer loop for enzyme name and number of cuts
                 for (let j = 0; j < tableHeaderCells.length; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
                     let cellEntry = '';
@@ -197,20 +196,22 @@ export default class SideBar extends React.Component {
                     if (column === '# cuts') {
                         cellEntry = annotation.length;
                     }
-                    // if (column === 'position') {
-                    //     cellEntry = annotation['start'] + " - " + annotation['end'];
-                    // }                    
-                    // if (column === 'strand') {
-                    //     if (annotation['forward']) {
-                    //         cellEntry = "+";
-                    //     } else {
-                    //         cellEntry = "-";
-                    //     }
-                    // }
-
                     annotationTableCells.push((<TableRowColumn key={j}>{ cellEntry }</TableRowColumn>));
-                }
 
+                    // inner loop for each cut location
+                    for (var cut in annotation) {                        
+                        if (column === 'position') {
+                            cellEntry = annotation[cut]['start'] + " - " + annotation[cut]['end'];
+                        }                    
+                        if (column === 'strand') {
+                            if (annotation[cut]['forward']) {
+                                cellEntry = "+";
+                            } else {
+                                cellEntry = "-";
+                            }
+                        }
+                    }
+                }
                 annotationTableRows.push((<TableRow>{annotationTableCells}</TableRow>));
             }
         }
