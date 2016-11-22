@@ -21,7 +21,7 @@ import SidebarDetail from './SidebarDetail';
 @Cerebral({
     showAddFeatureModal: ['showAddFeatureModal'],
     showOrfModal: ['showOrfModal'],
-    // cutsites: ['cutsites'],
+    cutsites: ['cutsites'],
     minimumOrfSize: ['minimumOrfSize'],    
     readOnly: ['readOnly'],
     sidebarType: ['sidebarType']
@@ -82,7 +82,8 @@ export default class SideBar extends React.Component {
 
     render() {
         var {
-            annotations,            
+            annotations,   
+            cutsites,         
             minimumOrfSize,
             readOnly,
             sidebarType,

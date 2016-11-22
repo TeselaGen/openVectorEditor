@@ -4,15 +4,9 @@ module.exports = {
         return {
             state: {
                 sequenceData: {
-                    features: contents.featureList.map(function (elem) {
-                        elem.start = 0;
-                        if (elem.locations[0].genbankStart) {
-                            elem.start = elem.locations[0].genbankStart;
-                        }
-                        elem.end = 0;
-                        if (elem.locations[0].end) {
-                            elem.end = elem.locations[0].end;
-                        }
+                    features: contents.featureList.map(function (elem) {                       
+                        elem.start = elem.locations[0].genbankStart;                       
+                        elem.end = elem.locations[0].end;                      
                         elem.color = colorOfFeature(elem);
                         return elem;
                     }),
