@@ -5,18 +5,23 @@ module.exports = {
             state: {
                 sequenceData: {
                     features: contents.featureList.map(function (elem) {
-                        elem.start = elem.locations[0].genbankStart;
-                        elem.end = elem.locations[0].end
-                        //jpnTODO should locations[0] be removed?
-                        elem.color = colorOfFeature(elem)
-                        return elem
+                        elem.start = 0;
+                        if (elem.locations[0].genbankStart) {
+                            elem.start = elem.locations[0].genbankStart;
+                        }
+                        elem.end = 0;
+                        if (elem.locations[0].end) {
+                            elem.end = elem.locations[0].end;
+                        }
+                        elem.color = colorOfFeature(elem);
+                        return elem;
                     }),
                     name: contents.name,
                     _id: contents.identifier,
                     sequence: contents.sequence,
                     circular: contents.isCircular
                 },
-                embedded: document.location.pathname.match(/entry/),
+                embedded: document.location.pathname.match(/\/entry\//),
                 readOnly: !contents.canEdit 
             },
             services: services,
@@ -40,7 +45,7 @@ module.exports = {
                     name: elem.name,
                     strand: elem.strand,
                     notes: elem.notes,
-                    locations: [{genbankStart: elem.start, end:elem.end}]
+                    locations: [{genbankStart: elem.start, end: elem.end}]
                 }
             })
         }
