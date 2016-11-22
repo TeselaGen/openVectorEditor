@@ -104,18 +104,18 @@ export default class SideBar extends React.Component {
         Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});        
         
         var topTabs = (
-                        <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
-                            <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
-                                signals.sidebarDisplay({ type: 'Features' });
-                            }}>Features</div>
-                            <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onClick={function () {
-                                signals.sidebarDisplay({ type: 'Cutsites' });
-                            }}>Cutsites</div>
-                            <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onClick={function () {
-                                signals.sidebarDisplay({ type: 'Orfs' });
-                            }}>ORFs</div>
-                        </div>
-                    );
+            <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
+                <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
+                    signals.sidebarDisplay({ type: 'Features' });
+                }}>Features</div>
+                <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onClick={function () {
+                    signals.sidebarDisplay({ type: 'Cutsites' });
+                }}>Cutsites</div>
+                <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onClick={function () {
+                    signals.sidebarDisplay({ type: 'Orfs' });
+                }}>ORFs</div>
+            </div>
+        );
 
         // FEATURES TAB
         if (sidebarType === 'Features') {
@@ -186,8 +186,8 @@ export default class SideBar extends React.Component {
                 let annotationTableCells = [];
                 let annotation = annotations[enzyme];   
 
-                // outer loop for enzyme name and number of cuts
-                for (let j = 0; j < tableHeaderCells.length; j++) {
+                // first loop for enzyme name and number of cuts
+                for (let j = 0; j < 4; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
                     let cellEntry = '';
 
@@ -198,11 +198,20 @@ export default class SideBar extends React.Component {
                         cellEntry = annotation.length;
                     }
                     annotationTableCells.push((<TableRowColumn key={j}>{ cellEntry }</TableRowColumn>));
+                }
+                annotationTableRows.push((<TableRow>{ annotationTableCells }</TableRow>));
+                annotationTableCells = [];                
 
-                    // inner loop for each cut location
-                    for (var cut in annotation) {                        
+                // inner loop for each cut location
+                for (var cut in annotation) {
+                    for (let k = 0; k < 4; k++) {
+                        let column = tableHeaderCells[k].props.children.toString();
+                        let cellEntry = '';
+
+                        // if it's name or number of cuts it'll stay blank
                         if (column === 'position') {
                             cellEntry = annotation[cut]['start'] + " - " + annotation[cut]['end'];
+
                         }                    
                         if (column === 'strand') {
                             if (annotation[cut]['forward']) {
@@ -211,9 +220,11 @@ export default class SideBar extends React.Component {
                                 cellEntry = "-";
                             }
                         }
+                        annotationTableCells.push((<TableRowColumn key={k}>{ cellEntry }</TableRowColumn>));   
                     }
+                    annotationTableRows.push((<TableRow>{ annotationTableCells }</TableRow>));
+                    annotationTableCells = [];                        
                 }
-                annotationTableRows.push((<TableRow>{annotationTableCells}</TableRow>));
             }
         }
 
@@ -276,7 +287,6 @@ export default class SideBar extends React.Component {
         }
 
         // FEATURE DETAIL
-
         if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
             let annotation = annotations[this.state.selectedRows[0]];
 
@@ -290,6 +300,7 @@ export default class SideBar extends React.Component {
         }
 
         var actions = (
+            // {{}} why are the function calls different?
             <div>
                 <FlatButton
                     label="Cancel"
