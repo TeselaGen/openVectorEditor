@@ -187,6 +187,7 @@ export default class SideBar extends React.Component {
                 let annotation = annotations[enzyme];   
 
                 // first loop for enzyme name and number of cuts
+                // [enzyme] [# cuts] [empty] [empty]
                 for (let j = 0; j < 4; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
                     let cellEntry = '';
@@ -202,7 +203,8 @@ export default class SideBar extends React.Component {
                 annotationTableRows.push((<TableRow>{ annotationTableCells }</TableRow>));
                 annotationTableCells = [];                
 
-                // inner loop for each cut location
+                // sub loop for each cut location
+                // [empty] [empty] [position] [strand]
                 for (var cut in annotation) {
                     for (let k = 0; k < 4; k++) {
                         let column = tableHeaderCells[k].props.children.toString();

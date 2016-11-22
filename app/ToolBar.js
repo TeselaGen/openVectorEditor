@@ -76,6 +76,7 @@ export default class ToolBar extends React.Component {
                     <RowIcon />
                 </IconButton>
                 <IconButton tooltip="Display Side-by-side View"
+                    disabled = { showSidebar }
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block"); 
@@ -159,7 +160,7 @@ export default class ToolBar extends React.Component {
             printTab.document.close();
             printTab.focus();
             printTab.print();
-            // printTab.close();
+            printTab.close();
         };
 
         return (
