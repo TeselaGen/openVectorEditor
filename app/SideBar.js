@@ -39,6 +39,7 @@ export default class SideBar extends React.Component {
 
     onRowSelection(selectedRows) {
         this.setState({ selectedRows: selectedRows });
+        console.log(selectedRows)
     }
 
     editFeature(currentFeature) {
