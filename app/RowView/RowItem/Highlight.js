@@ -5,18 +5,18 @@ import getXStartAndWidthOfRowAnnotation from '../../shared-utils/getXStartAndWid
 
 @Cerebral({
     charWidth: ['charWidth'],
-    bpsPerRow: ['bpsPerRow']
+    bpsPerRow: ['bpsPerRow'],
+    sequenceLength: ['sequenceLength']
 })
 export default class Highlight extends React.Component {
 
-    _dimensions() {
+    _dimensions(start, end) {
         var {
-            start,
-            end,
             rowStart,
             rowEnd,
             charWidth,
-            bpsPerRow
+            bpsPerRow,
+            sequenceLength
         } = this.props;
 
         var dimensions = [];
@@ -37,13 +37,22 @@ export default class Highlight extends React.Component {
                 width: width,
                 rowWidth: rowWidth
             });
+        } else if (start > end) {
+            var left = this._dimensions(0, end);
+            var right = this._dimensions(start, sequenceLength);
+            dimensions.push(...left, ...right);
         }
 
         return dimensions;
     }
 
     render() {
-        var dimensions = this._dimensions();
+        var {
+            start,
+            end
+        } = this.props;
+
+        var dimensions = this._dimensions(start, end);
         var overlays = [];
 
         dimensions.forEach((d) => {
