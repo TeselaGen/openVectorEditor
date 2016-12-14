@@ -76,6 +76,7 @@ export default class ToolBar extends React.Component {
                     <RowIcon />
                 </IconButton>
                 <IconButton tooltip="Display Side-by-side View"
+                    disabled = { showSidebar }
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block"); 
@@ -97,24 +98,32 @@ export default class ToolBar extends React.Component {
         // upload and download files items
         var fileMenuItems = (
             <div>
-                <MenuItem key={1} primaryText="Download SBOL" insetChildren={true} onClick={function () {
-                    signals.clickSaveFile({fileExt: 'sbol'});
-                }} />
-                <MenuItem key={2} primaryText="Download GenBank" insetChildren={true} onClick={function () {
-                    signals.clickSaveFile({fileExt: 'genbank'});
-                }} />
-                <MenuItem key={3} primaryText="Download Fasta" insetChildren={true} onClick={function () {
-                    signals.clickSaveFile({fileExt: 'fasta'});
-                }} />
-                <MenuItem key={4} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
-                    var element = document.getElementById("uploadFileInput");
-                    element.click();
-                    element.addEventListener("change", handleFiles, false);
-                    function handleFiles() {
-                        let file = this.files[0];
-                         signals.clickLoadFile({inputFile: file});
-                    }
-                }} />
+                <MenuItem key={1} primaryText="Download SBOL 1.1" insetChildren={true} 
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'sbol1'});
+                    }} />
+                <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={true} 
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'sbol2'});
+                    }} />                
+                <MenuItem key={3} primaryText="Download GenBank" insetChildren={true} 
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'genbank'});
+                    }} />
+                <MenuItem key={4} primaryText="Download Fasta" insetChildren={true} 
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'fasta'});
+                    }} />
+                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true} 
+                    onClick={function () {
+                        var element = document.getElementById("uploadFileInput");
+                        element.click();
+                        element.addEventListener("change", handleFiles, false);
+                        function handleFiles() {
+                            let file = this.files[0];
+                             signals.clickLoadFile({inputFile: file});
+                        }
+                    }} />
 
                 <input type="file" id="uploadFileInput" style={{display:'none'}} onChange={function() {
                 }} />
@@ -159,7 +168,7 @@ export default class ToolBar extends React.Component {
             printTab.document.close();
             printTab.focus();
             printTab.print();
-            // printTab.close();
+            printTab.close();
         };
 
         return (

@@ -26,7 +26,8 @@ export default class StatusBar extends React.Component {
         return (
             <div ref="statusBar">
                 <div className={styles.bar}>
-                    {readOnly ? <div className={styles.label}>Read Only Mode</div> : <div className={styles.label}>Editing Allowed</div>}
+                    {readOnly ? <div className={styles.label}>Read Only Mode</div> 
+                              : <div className={styles.label}>Editing Allowed</div>}
 
                     <div className={styles.box}>
                         <div className={styles.label}>Length</div>

@@ -146,16 +146,16 @@ module.exports = {
         ['userEnzymes'],
         getCutsitesFromSequence
     ]),
-    // cutsites: deriveData([
-    //     ['cutsitesByName'],
-    //     function (cutsitesByName) {
-    //         var cutsitesArray = [];
-    //         Object.keys(cutsitesByName).forEach(function (key) {
-    //             cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
-    //         });
-    //         return cutsitesArray;
-    //     }
-    // ]),
+    cutsites: deriveData([
+        ['cutsitesByName'],
+        function (cutsitesByName) {
+            var cutsitesArray = [];
+            Object.keys(cutsitesByName).forEach(function (key) {
+                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
+            });
+            return cutsitesArray;
+        }
+    ]),
     translationsWithAminoAcids: deriveData([
         ['sequenceData', 'translations'],
         ['sequenceData', 'sequence'],

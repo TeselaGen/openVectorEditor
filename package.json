@@ -53,8 +53,8 @@
     "validate.io-boolean": "^1.0.4",
     "validate.io-nonnegative-integer": "^1.0.0",
     "validate.io-nonnegative-integer-array": "^1.0.1",
-    "ve-range-utils": "*",
-    "ve-sequence-utils": "*"
+    "ve-range-utils": "2.0.26",
+    "ve-sequence-utils": "2.0.1"
   },
   "devDependencies": {
     "babel": "^5.1.10",
