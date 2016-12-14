@@ -9,7 +9,7 @@ import getXStartAndWidthOfRowAnnotation from '../../shared-utils/getXStartAndWid
 })
 export default class Highlight extends React.Component {
 
-    render() {
+    _dimensions() {
         var {
             start,
             end,
@@ -19,7 +19,7 @@ export default class Highlight extends React.Component {
             bpsPerRow
         } = this.props;
 
-        var overlay = null;
+        var dimensions = [];
 
         if (start <= rowEnd && end >= rowStart) {
             var localStart = (start > rowStart) ? start - rowStart : 0;
@@ -32,19 +32,44 @@ export default class Highlight extends React.Component {
             var widthInBps = localEnd - localStart + 1;
             var width = widthInBps * (charWidth * 1.2) - 20;
 
-            overlay = (
+            dimensions.push({
+                x: xShift,
+                width: width,
+                rowWidth: rowWidth
+            });
+        }
+
+        return dimensions;
+    }
+
+    render() {
+        var dimensions = this._dimensions();
+        var overlays = [];
+
+        dimensions.forEach((d) => {
+            var {x, width, rowWidth} = d;
+
+            overlays.push(
                 <svg
                     transform={this.props.transform || null}
-                    className={styles.highlight}
+                    className={styles.overlay}
                     preserveAspectRatio={'none'}
-                    viewBox={ xShift + " 0 " + rowWidth + " 1"}
+                    viewBox={ x + " 0 " + rowWidth + " 1"}
                     >
                     <rect x={0} y={0} width={width} height={1}/>
                 </svg>
             );
+        });
+
+        if (overlays.length === 0) {
+            return null;
         }
 
-        return overlay;
+        return (
+            <div>
+                {overlays}
+            </div>
+        );
     }
 
 }
