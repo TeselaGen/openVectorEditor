@@ -1,5 +1,7 @@
 var Path = require('paths-js/path');
 
+// This is used to draw the arc of an Orf
+
 function polarToSpecialCartesian(radius, angleInRadians) {
     //the 0 angle returns the 0,1 point on the unit circle instead of the 1,0 point like normal
     return {
@@ -19,16 +21,10 @@ export default function drawArc ({radius, height, totalAngle}) {
     
     var largeArcFlag = totalAngle > Math.PI ? 1 : 0
     var path;
-    // if (!flip) {
-      path = Path()
+
+    path = Path()
         .moveto(arcStart.x, arcStart.y)
         .arc({rx: innerRadius, ry: innerRadius, xrot: 0, largeArcFlag, sweepFlag: 1, x: arcEnd.x, y: arcEnd.y})
-        //console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
-    // } else {
-    //   path = Path()
-    //     .moveto(arcRightBottom.x,arcRightBottom.y)
-    //     .arc({rx: tailInnerRadius, ry: tailInnerRadius, xrot: 0, largeArcFlag: largeArcFlag, sweepFlag: 0, x: arcLeftBottom.x, y: arcLeftBottom.y})
-    //     //console.log('path.print(): ' + JSON.stringify(path.print(),null,4));
-    // }
+
     return path;
 }

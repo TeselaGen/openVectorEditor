@@ -1,5 +1,7 @@
 var Path = require('paths-js/path');
 
+// this is used to draw the pointed arrow arc of a feature
+
 function polarToSpecialCartesian(radius, angleInRadians) {
     //the 0 angle returns the 0,1 point on the unit circle instead of the 1,0 point like normal
     return {
