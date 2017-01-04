@@ -21,7 +21,11 @@ export default class Highlight extends React.Component {
 
         var dimensions = [];
 
-        if (start <= rowEnd && end >= rowStart) {
+        if (start > end) {
+            var left = this._dimensions(0, end);
+            var right = this._dimensions(start, sequenceLength - 1);
+            dimensions.push(...left, ...right);
+        } else if (start <= rowEnd && end >= rowStart) {
             var localStart = (start > rowStart) ? start - rowStart : 0;
             var localEnd = (end < rowEnd) ? end - rowStart : rowEnd - rowStart;
             let result = getXStartAndWidthOfRowAnnotation({start: localStart, end: localEnd}, bpsPerRow, charWidth);
@@ -37,10 +41,6 @@ export default class Highlight extends React.Component {
                 width: width,
                 rowWidth: rowWidth
             });
-        } else if (start > end) {
-            var left = this._dimensions(0, end);
-            var right = this._dimensions(start, sequenceLength);
-            dimensions.push(...left, ...right);
         }
 
         return dimensions;
