@@ -25,7 +25,6 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var yOffset2;
         var path;
         var arrowHead = null;
-        console.log(annotation)
 
         // frame is one of [0,1,2] 
         // hacky fix for colors, not sure we're calculating reversed orfs right 
@@ -140,6 +139,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         eAngle={ endAngle }
                         direction={ 'reverse' } // buh
                         >
+                        { arrowHead } 
                         <path
                             onClick={ function (e) {
                                 e.stopPropagation()
@@ -151,8 +151,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             strokeWidth={ annotationHeight/2 }                        
                             />
                     </PositionAnnotationOnCircle>
-                    { codonIndices }  
-                    { arrowHead }            
+                    { codonIndices }             
                 </g>
             </g>
         )

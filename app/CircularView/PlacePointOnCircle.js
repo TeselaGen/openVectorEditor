@@ -14,9 +14,10 @@ function polarToSpecialCartesian(radius, angleInRadians) {
 
 export default function PlacePointOnCircle({children, radius=0, bpNumber=0, totalBps, ...rest}) {
     // given radius and base pair find x and y
+    // we need to flip the arrowheads and on the circles obviously it doesn't matter as they're cenetred at 0,0
     var angleOnCircle = bpNumber / totalBps * 2 * Math.PI;
     var coords = polarToSpecialCartesian(radius, angleOnCircle);
-    var transform = `translate(${ coords.x }, ${ coords.y })`
+    var transform = `translate(${ coords.x }, ${ coords.y }) rotate(180,0,0)`
 
     return (
         <g 
