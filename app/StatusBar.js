@@ -25,7 +25,7 @@ export default class StatusBar extends React.Component {
 
         return (
             <div ref="statusBar">
-                <div className={styles.bar}>
+                <div className = { styles.bar }>
                     {readOnly ? <div className={styles.label}>Read Only Mode</div> 
                               : <div className={styles.label}>Editing Allowed</div>}
 
@@ -34,7 +34,7 @@ export default class StatusBar extends React.Component {
                         <div className={styles.data}>{sequenceLength}</div>
                     </div>
 
-                    <div className={styles.box } style={{display: 'none'}}>
+                    <div className={styles.box} style={{display: 'none'}}>
                         <div className={styles.label}>Melting Temp.</div>
                         <div className={styles.data}>{selectedSeqMeltingTemp}</div>
                     </div>

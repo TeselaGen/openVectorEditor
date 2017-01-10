@@ -299,7 +299,6 @@ export default class SideBar extends React.Component {
                     feature={ annotation } 
                     />
             );
-
         }
 
         var actions = (
@@ -346,7 +345,7 @@ export default class SideBar extends React.Component {
                 { topTabs }
 
                 <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
-                    <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={ false } onRowSelection={this.onRowSelection.bind(this)}>
+                    <Table ref="sideBar" style={{minWidth: '500px'}} multiSelectable={ true } onRowSelection={this.onRowSelection.bind(this)}>
                         <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
                             <TableRow>{ tableHeaderCells }</TableRow>
                         </TableHeader>
