@@ -79,15 +79,15 @@ export default class ToolBar extends React.Component {
                     disabled = { showSidebar }
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: block"); 
+                        document.getElementById("rowView").setAttribute("style", "display: block");
                     }}
                     >
                     <BothViewsIcon />
-                </IconButton>              
+                </IconButton>
                 <IconButton tooltip="Display Circular View"
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: none");                        
+                        document.getElementById("rowView").setAttribute("style", "display: none");
                     }}
                     >
                     <CircularIcon />
@@ -98,23 +98,23 @@ export default class ToolBar extends React.Component {
         // upload and download files items
         var fileMenuItems = (
             <div>
-                <MenuItem key={1} primaryText="Download SBOL 1.1" insetChildren={true} 
+                <MenuItem key={1} primaryText="Download SBOL 1.1" insetChildren={true}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'sbol1'});
                     }} />
-                <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={true} 
+                <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={true}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'sbol2'});
-                    }} />                
-                <MenuItem key={3} primaryText="Download GenBank" insetChildren={true} 
+                    }} />
+                <MenuItem key={3} primaryText="Download GenBank" insetChildren={true}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'genbank'});
                     }} />
-                <MenuItem key={4} primaryText="Download Fasta" insetChildren={true} 
+                <MenuItem key={4} primaryText="Download Fasta" insetChildren={true}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'fasta'});
                     }} />
-                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true} 
+                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true}
                     onClick={function () {
                         var element = document.getElementById("uploadFileInput");
                         element.click();
@@ -155,14 +155,20 @@ export default class ToolBar extends React.Component {
             </div>
         );
 
-        // pulls out the current view and necessary resizing js to a new tab 
+        // pulls out the current view and necessary resizing js to a new tab
         // and applies some styling to cleanup for print version
         var prepPrintPage = function() {
             // scroll the rowview to reveal all rows
 
             var contents = document.getElementById("allViews").innerHTML;
             var head = document.head.innerHTML;
-            var stylePage = "<style>@page{margin: 1in;} .veSelectionLayer{display: none;} #circularView,#rowView{width: 8.5in; display: block; overflow: visible;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
+            var stylePage = "<style>" +
+                                "@page {margin: 1in;}" +
+                                ".veSelectionLayer {display: none;}" +
+                                "#circularView, #rowView {width: 8.5in; display: block; overflow: visible;}" +
+                                "#circularView {page-break-after: always;}" +
+                                "#rowView > div {bottom: auto;}" +
+                            "</style>";
             var printTab = window.open();
             printTab.document.body.innerHTML = head + stylePage + contents;
             printTab.document.close();
@@ -180,7 +186,7 @@ export default class ToolBar extends React.Component {
                             signals.sidebarToggle();
                         }}
                         >
-                        <InputIcon />
+                        <InputIcon id="openFeatureDisplay"/>
                     </IconButton>
 
                     { embeddedControls }
@@ -223,7 +229,7 @@ export default class ToolBar extends React.Component {
                     </IconButton>
                     {dialog}
 
-                </ToolbarGroup>           
+                </ToolbarGroup>
 
             </Toolbar>
         );
