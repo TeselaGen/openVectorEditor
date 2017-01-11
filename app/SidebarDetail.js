@@ -31,11 +31,7 @@ export default class SidebarDetail extends React.Component {
         } else {
             this.state.feature.notes = this.props.feature.notes.slice();
         }
-        if (this.props.createFeature != null) {
-            this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', height: '360px', paddingBottom: '10px', overflowY: 'scroll'};
-        } else {
-            this.state.style = {backgroundColor: 'white', position: 'fixed', padding: '20px', marginLeft: '580px', width: '300px', border: '1px solid #ccc', zIndex: '55'};
-        }
+        this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', height: '360px', paddingBottom: '10px', overflowY: 'scroll'};
     }
 
     save = () => {
@@ -47,9 +43,7 @@ export default class SidebarDetail extends React.Component {
         this.setState({
             feature: this.state.feature,
         });
-        if (this.props.createFeature != null) {
-            this.props.createFeature(this.state.feature);
-        }
+        this.props.createFeature(this.state.feature);
     };
 
     render() {
@@ -57,13 +51,8 @@ export default class SidebarDetail extends React.Component {
             showAddFeatureModal
         } = this.props;
 
-        if (!showAddFeatureModal) {
-            var saveButton = (<button onClick={this.save}> Save Changes </button>);
-        }
-
         return (
             <div style={this.state.style}>
-
 
               <TextField
                  id={"name"}
@@ -111,7 +100,6 @@ export default class SidebarDetail extends React.Component {
                  value={this.state.feature.strand.toString()}
                 />
                 <br/>
-                {saveButton}
             </div>
         );
     }
