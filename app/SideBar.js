@@ -29,41 +29,53 @@ export default class SideBar extends React.Component {
         super(arguments);
 
         this.state = {
-            selectedRows: [],
+            selectedFeatures: [],
+            selectedOrfs: [],
             newFeature: {},
         };
     }
 
-    onRowSelection(row) {
-        var selected = this.state.selectedRows;
-        var idx = selected.indexOf(row);
+    onFeatureSelection(row) {
+        let selected = this.state.selectedFeatures;
+        let idx = selected.indexOf(row);
         if (idx === -1) {
             selected.push(row);
         } else {
             selected.splice(idx, 1);
         }
-        this.setState({ selectedRows: selected });
+        this.setState({ selectedFeatures: selected });
+    }
+
+    onOrfSelection(row) {
+        let selected = this.state.selectedOrfs;
+        let idx = selected.indexOf(row);
+        if (idx === -1) {
+            selected.push(row);
+        } else {
+            selected.splice(idx, 1);
+        }
+        this.setState({ selectedOrfs: selected });
     }
 
     editFeature(currentFeature) {
         this.props.signals.updateFeature({
             feature: currentFeature
         });
-        this.setState({ selectedRows: [] });
+        this.setState({ selectedFeatures: [] });
     }
 
     deleteFeatures() {
         var featureIds = [];
-        this.state.selectedRows.forEach(el => {
+        this.state.selectedFeatures.forEach(el => {
             featureIds.push(this.props.annotations[el].id);
         });
 
         this.props.signals.deleteFeatures({ featureIds: featureIds });
-        this.setState({ selectedRows: [] });
+        this.setState({ selectedFeatures: [] });
     }
 
     openAddFeatureDisplay() {
-        this.setState({ selectedRows: [] });
+        this.setState({ selectedFeatures: [] });
         this.props.signals.addFeatureModalDisplay();
     }
 
@@ -84,8 +96,12 @@ export default class SideBar extends React.Component {
         this.props.signals.addFeatureModalDisplay();
     }
 
-     highlight(i) {
-        return this.state.selectedRows.indexOf(i) === -1 ? 'white' : '#E1E1E1';
+    highlightFeature(row) {
+        return this.state.selectedFeatures.indexOf(row) === -1 ? 'white' : '#E1E1E1';
+    }
+
+    highlightOrf(row) {
+        return this.state.selectedOrfs.indexOf(row) === -1 ? 'white' : '#E1E1E1';
     }
 
     render() {
@@ -161,8 +177,8 @@ export default class SideBar extends React.Component {
                     annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
                 // annotationTableCells.push(<td style={{width: '10%'}}></td>);
-                var rowStyle = {backgroundColor: this.highlight(i)};
-                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onRowSelection.bind(this, i)}>{ annotationTableCells }</tr>);
+                var rowStyle = {backgroundColor: this.highlightFeature(i)};
+                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onFeatureSelection.bind(this, i)}>{ annotationTableCells }</tr>);
             }
 
             // controls
@@ -176,7 +192,7 @@ export default class SideBar extends React.Component {
                             <AddBoxIcon />
                         </IconButton>
 
-                        <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedRows.length === 0} tooltip={"delete"}>
+                        <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedFeatures.length === 0} tooltip={"delete"}>
                             <IndeterminateCheckBoxIcon />
                         </IconButton>
                     </div>
@@ -300,7 +316,8 @@ export default class SideBar extends React.Component {
 
                     annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
-                annotationTableRows.push(<tr key={i}>{annotationTableCells}</tr>);
+                var rowStyle = {backgroundColor: this.highlightOrf(i)};
+                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onOrfSelection.bind(this, i)}>{annotationTableCells}</tr>);
             }
             var orfControls = (
                 <div className={styles.controls}>
@@ -325,8 +342,8 @@ export default class SideBar extends React.Component {
         }
 
         // FEATURE DETAIL
-        if (this.state.selectedRows.length === 1 && sidebarType === "Features") {
-            var idx = this.state.selectedRows[0];
+        if (this.state.selectedFeatures.length === 1 && sidebarType === "Features") {
+            var idx = this.state.selectedFeatures[0];
             var annotation = annotations[idx];
 
             var annotationForm = (
