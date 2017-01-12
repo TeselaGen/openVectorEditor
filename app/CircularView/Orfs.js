@@ -88,12 +88,14 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         codonIndices.push( endNode );
 
         // check for codon indices
+        // {{}} it'd be nice if you could hover or click to get the index
+        // or display them in the sidebar
         if (annotation.internalStartCodonIndices.length > 0) {
             var codons = annotation.internalStartCodonIndices;
             var node;
 
             for(var c = 0; c < codons.length; c++) {
-                node = (
+                node = ( // {{}}
                         <PlacePointOnCircle
                             radius={ annotationRadius - annotationHeight/2 }
                             key={ 'codon' + c + "_" + annotation.id }
