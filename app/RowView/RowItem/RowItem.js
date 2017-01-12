@@ -1,4 +1,6 @@
 /* structure of row object
+   note start of sequence is 0
+
 
 obj
     - cutsites[]
@@ -17,7 +19,7 @@ obj
     - rowNumber : number
     - sequence : string
     - start : number
-    - translations []
+    - translations [] // also unused right now
 */
 
 // import PassThrough from '../../utils/PassThrough'
@@ -25,16 +27,18 @@ import getComplementSequenceString from 've-sequence-utils/getComplementSequence
 import React from 'react';
 import Draggable from 'react-draggable'
 import { Decorator as Cerebral } from 'cerebral-view-react';
-// import SelectionLayer from './SelectionLayer';
+import { columnizeString, elementWidth, calculateRowLength } from '../utils';
+import SelectionLayer from './SelectionLayer';
 import _Sequence from './Sequence'
 // import LineageLines from './LineageLines'
 // import _Axis from './Axis'
-// import _Orfs from './Orfs'
+import _Orfs from './Orfs'
 // import _Translations from './Translations'
 import _Features from './Features'
-// import _CutsiteLabels from './CutsiteLabels'
-// import _Cutsites from './Cutsites'
-// import Caret from './Caret'
+import _CutsiteLabels from './Cutsites/CutsiteLabels'
+import _Cutsites from './Cutsites'
+import Caret from './Caret'
+import styles from './RowItem.scss';
 
 function noop() {
 
@@ -42,11 +46,13 @@ function noop() {
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],
     caretPosition: ['caretPosition'],     
     charWidth: ['charWidth'], 
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
     cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     selectionLayer: ['selectionLayer'],
@@ -66,13 +72,13 @@ function noop() {
 })
 
 class RowItem extends React.Component {
+
     render() {
         var {
             charWidth,
-            selectionLayer,
-            searchLayers,
+            selectionLayer={start: -1, end: -1},
+            searchLayers=[],
             sequenceData,
-            cutsiteLabelSelectionLayer,
             annotationHeight,
             tickSpacing,
             showCutsites,
@@ -80,13 +86,16 @@ class RowItem extends React.Component {
             sequenceHeight,
             spaceBetweenAnnotations,
             width,
-            additionalSelectionLayers,
+            additionalSelectionLayers=[],
             caretPosition,
             sequenceLength,
             row,
             showFeatures,
+            showOrfs,
             bpsPerRow,
-            componentOverrides = {}
+            componentOverrides = {},
+            className,
+            signals
         } = this.props;
         
         var {
@@ -106,26 +115,76 @@ class RowItem extends React.Component {
         var {
             Sequence = _Sequence,
         //     Axis = _Axis,
-        //     Orfs = _Orfs,
+            Orfs = _Orfs,
         //     Translations = _Translations,
             Features = _Features,
-        //     CutsiteLabels = _CutsiteLabels,
-        //     Cutsites = _Cutsites,
-        //     // Caret = _Caret,
+            CutsiteLabels = _CutsiteLabels,
+            Cutsites = _Cutsites,
         } = componentOverrides
 
         var annotationCommonProps = {
-          charWidth,
-          bpsPerRow,
-          sequenceLength,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          row
+            charWidth,
+            bpsPerRow,
+            sequenceLength,
+            annotationHeight,
+            spaceBetweenAnnotations,
+            row
         }
+
+        var rowNumber = row.start + 1; // we want to start at 1 and not 0
+
+        var selectedStuff = [];
+
+        if (selectionLayer.selected) {
+
+        //     selectedLayer.push(
+        //         <div
+        //             key='veSelectionLayer' 
+        //             className='veSelectionLayer'
+        //             start={ start }
+        //             end={ end }
+        //             height={ 0 }
+        //             >
+        //             <path
+        //                 style={{ opacity: .4}}
+        //                 d={ sector.path.print() }
+        //                 fill="blue" 
+        //                 />
+        //         </div>
+        //     );
+        //     selectedLayer.push(
+        //         <Caret 
+        //             key='caretStart'
+        //             caretPosition={selectionLayer.start}
+        //             sequenceLength={sequenceLength}
+        //             />
+        //     );
+        //     selectedLayer.push(
+        //         <Caret 
+        //             key='caretEnd'
+        //             caretPosition={selectionLayer.end + 1}
+        //             sequenceLength={sequenceLength}
+        //             />
+        //     );
+        }
+        // nothing selected, just put a caret at position 0
+        if (caretPosition !== -1 && !selectionLayer.selected) {
+            selectedStuff.push(
+                <Caret 
+                    charWidth = {charWidth}
+                    row = {row}
+                    sequenceLength = {sequenceLength}
+                    caretPosition = {caretPosition}
+                    />
+            );
+        }        
         
         return (
-            <div className="veRowItem">
-                <br></br>
+            <div className = {styles.rowItem + " veRowItem"}>
+     
+                <div className={styles.margin}>
+                    { rowNumber }
+                </div>
 
                 {(showFeatures && Object.keys(features).length > 0) &&
                     <Features
@@ -134,26 +193,58 @@ class RowItem extends React.Component {
                         />
                 }
 
+                {(showOrfs && Object.keys(orfs).length > 0) &&
+                    <Orfs
+                        annotationRanges={orfs}
+                        {...annotationCommonProps}
+                        />
+                }
+
+                {(showCutsites && Object.keys(cutsites).length > 0) &&
+                    <CutsiteLabels
+                        annotationRanges={cutsites}
+                        {...annotationCommonProps}
+                        />
+                }
+
+                { selectedStuff }
+
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
+                        reverse="false"
                         sequence={sequence}
-                        height={16}
-                        length={sequence.length}
                         charWidth={charWidth}
+                        bpsPerRow={bpsPerRow}                        
                         >
+                        {(showCutsites && Object.keys(cutsites).length > 0) && 
+                            <Cutsites
+                                sequenceLength={sequenceLength}
+                                annotationRanges={cutsites}
+                                topStrand={true}
+                                {...annotationCommonProps}
+                                />
+                        }
                     </Sequence>
 
                     {showReverseSequence &&
                         <Sequence
-                            className="complement"
-                            length={sequence.length}
+                            reverse="true"
                             sequence={reverseSequence}
-                            height={16}
-                            charWidth={charWidth}>
+                            charWidth={charWidth}
+                            bpsPerRow={bpsPerRow}
+                            >                            
+                            {(showCutsites && Object.keys(cutsites).length > 0) && 
+                                <Cutsites
+                                    sequenceLength={sequenceLength}
+                                    annotationRanges={cutsites}
+                                    topStrand={false}
+                                    {...annotationCommonProps}
+                                    />
+                            }
                         </Sequence>
                     }
                 </div>
-              
+        
             </div>
         );
     }

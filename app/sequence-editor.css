@@ -2,17 +2,21 @@
     position: absolute;
     top: 0px;
     right: 0px;
-    bottom: 64px;
+    bottom: 0px;
     left: 0px;
     display: flex;
     flex-direction: column;
 }
 
-.head {}
+.head {
+    z-index: 4;
+}
 
 .content {
     display: flex;
     flex-grow: 1;
+    min-height: 0;
+    min-width: 0;
 }
 
 .sideBarSlot {
@@ -21,22 +25,28 @@
 .circularViewSlot {
     flex-grow: 1;
     flex-basis: 0;
-    text-align: center;
-    padding-top: 30px;
+    display: block;
+    position: relative;
+    overflow: scroll;    
+    /*padding-bottom: 40px;*/
     text-align: center;
 }
 
 .rowViewSlot {
     flex-grow: 1;
     flex-basis: 0;
-    display: flex;
+    display: block;
     position: relative;
+    overflow-y: scroll;
+    /*padding-bottom: 40px;*/
 }
 
 .foot {
-    position: absolute;
+    display: block;
+    margin-bottom: 64px;
+/*    position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 50;
+    z-index: 50;*/
 }

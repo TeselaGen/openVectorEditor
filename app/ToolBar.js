@@ -3,26 +3,28 @@ import React, { PropTypes } from 'react';
 
 // Cerebral
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import RestrictionEnzymeManager from './RectrictionEnzymeManager/RestrictionEnzymeManager';
 
 // Material UI
-import Toolbar from 'material-ui/Toolbar/Toolbar';
-import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-
-import InputIcon from 'material-ui/svg-icons/action/input';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import FileIcon from 'material-ui/svg-icons/editor/insert-drive-file';
-import SaveIcon from 'material-ui/svg-icons/action/backup';
-import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import UploadIcon from 'material-ui/svg-icons/file/file-upload';
-import PrintIcon from 'material-ui/svg-icons/action/print';
-import CircularIcon from 'material-ui/svg-icons/device/data-usage';
-import RailIcon from 'material-ui/svg-icons/hardware/power-input';
-import RowIcon from 'material-ui/svg-icons/content/text-format';
+import Toolbar from 'material-ui/lib/toolbar/toolbar';
+import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import IconButton from 'material-ui/lib/icon-button';
+import RaisedButton from 'material-ui/lib/raised-button';
+import InputIcon from 'material-ui/lib/svg-icons/action/input';
+import SearchIcon from 'material-ui/lib/svg-icons/action/search';
+import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
+import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
+import DownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
+import UploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
+import PrintIcon from 'material-ui/lib/svg-icons/action/print';
+import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
+import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
+import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import TextField from 'material-ui/lib/text-field';
+import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
+import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
 
 @Cerebral({
     embedded: ['embedded'],
@@ -58,26 +60,34 @@ export default class ToolBar extends React.Component {
             signals
         } = this.props;
 
+        var dialog = (
+            <RestrictionEnzymeManager />
+        );
+
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             <div style={{display: 'inline-block'}}>
-                <IconButton
+                <IconButton tooltip="Display Sequence View"
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
-                        document.getElementById("rowView").setAttribute("style", "display: block"); 
+                        document.getElementById("rowView").setAttribute("style", "display: block");
                     }}
                     >
                     <RowIcon />
                 </IconButton>
-                <IconButton
-                    // not set up yet
-                    >
-                    <RailIcon />
-                </IconButton>                
-                <IconButton
+                <IconButton tooltip="Display Side-by-side View"
+                    disabled = { showSidebar }
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: none");                        
+                        document.getElementById("rowView").setAttribute("style", "display: block");
+                    }}
+                    >
+                    <BothViewsIcon />
+                </IconButton>
+                <IconButton tooltip="Display Circular View"
+                    onTouchTap={function() {
+                        document.getElementById("circularView").setAttribute("style", "display: block");
+                        document.getElementById("rowView").setAttribute("style", "display: none");
                     }}
                     >
                     <CircularIcon />
@@ -88,24 +98,32 @@ export default class ToolBar extends React.Component {
         // upload and download files items
         var fileMenuItems = (
             <div>
-                <MenuItem key={1} primaryText="Download SBOL" insetChildren={true} onClick={function () {
-                    signals.clickSaveFile({fileExt: 'sbol'});
-                }} />
-                <MenuItem key={2} primaryText="Download GenBank" insetChildren={true} onClick={function () {
-                    signals.clickSaveFile({fileExt: 'genbank'});
-                }} />
-                <MenuItem key={3} primaryText="Download Fasta" insetChildren={true} onClick={function () {
-                    signals.clickSaveFile({fileExt: 'fasta'});
-                }} />
-                <MenuItem key={4} primaryText="Upload from file ..." insetChildren={true} onClick={function () {
-                    var element = document.getElementById("uploadFileInput");
-                    element.click();
-                    element.addEventListener("change", handleFiles, false);
-                    function handleFiles() {
-                        let file = this.files[0];
-                         signals.clickLoadFile({inputFile: file});
-                    }
-                }} />
+                <MenuItem key={1} primaryText="Download SBOL 1.1" insetChildren={true}
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'sbol1'});
+                    }} />
+                <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={true}
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'sbol2'});
+                    }} />
+                <MenuItem key={3} primaryText="Download GenBank" insetChildren={true}
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'genbank'});
+                    }} />
+                <MenuItem key={4} primaryText="Download Fasta" insetChildren={true}
+                    onClick={function () {
+                        signals.clickSaveFile({fileExt: 'fasta'});
+                    }} />
+                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true}
+                    onClick={function () {
+                        var element = document.getElementById("uploadFileInput");
+                        element.click();
+                        element.addEventListener("change", handleFiles, false);
+                        function handleFiles() {
+                            let file = this.files[0];
+                             signals.clickLoadFile({inputFile: file});
+                        }
+                    }} />
 
                 <input type="file" id="uploadFileInput" style={{display:'none'}} onChange={function() {
                 }} />
@@ -113,7 +131,7 @@ export default class ToolBar extends React.Component {
         );
 
         var fileButtonElement = (
-            <IconButton tooltip="File">
+            <IconButton tooltip="File Functions">
                 <FileIcon />
             </IconButton>
         );
@@ -125,24 +143,32 @@ export default class ToolBar extends React.Component {
         // show or hide features &c
         var toggleFeatures = (
             <div style={ toggleStyles }>
-                <div style={ showFeatures ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleFeatures' onClick={function () {
+                <div title="Toggle Features" style={ showFeatures ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleFeatures' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Features'});
                 }}> F </div>
-                <div style={ showCutsites ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleCutsites' onClick={function () {
+                <div title="Toggle Cutsites" style={ showCutsites ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleCutsites' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Cutsites'});
                 }}> C </div>
-                <div style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
+                <div title="Toggle ORFs" style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Orfs'});
                 }}> O </div>
             </div>
         );
 
-        // pulls out the current view and necessary resizing js to a new tab 
+        // pulls out the current view and necessary resizing js to a new tab
         // and applies some styling to cleanup for print version
         var prepPrintPage = function() {
+            // scroll the rowview to reveal all rows
+
             var contents = document.getElementById("allViews").innerHTML;
             var head = document.head.innerHTML;
-            var stylePage = "<style>@page{margin: 1in;} .veSelectionLayer{display: none;} #circularView,#rowView{width: 8.5in; display: block;} #circularView{page-break-after: always;} #rowView>div{bottom: auto;}</style>";
+            var stylePage = "<style>" +
+                                "@page {margin: 1in;}" +
+                                ".veSelectionLayer {display: none;}" +
+                                "#circularView, #rowView {width: 8.5in; display: block; overflow: visible;}" +
+                                "#circularView {page-break-after: always;}" +
+                                "#rowView > div {bottom: auto;}" +
+                            "</style>";
             var printTab = window.open();
             printTab.document.body.innerHTML = head + stylePage + contents;
             printTab.document.close();
@@ -155,25 +181,25 @@ export default class ToolBar extends React.Component {
             <Toolbar>
                 <ToolbarGroup key={0}>
                     <IconButton
-                        label='Feature Details'
+                        tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
                         }}
                         >
-                        <InputIcon />
+                        <InputIcon id="openFeatureDisplay"/>
                     </IconButton>
 
                     { embeddedControls }
 
                     <IconButton
-                        label='Print Current View'
+                        tooltip="Print Current View"
                         onTouchTap={function() {
                             prepPrintPage();
                         }}
                         >
                         <PrintIcon />
                     </IconButton>
-                    <IconButton label='Search' onClick={this.search.bind(this)}>
+                    <IconButton tooltip="Search" onClick={this.search.bind(this)}>
                         <SearchIcon />
                     </IconButton>
                     <TextField ref="searchField" hintText="search sequence" />
@@ -182,7 +208,7 @@ export default class ToolBar extends React.Component {
 
                     <IconButton
                         disabled={ readOnly }  // you can't save in read only
-                        label='Save to Server'
+                        tooltip="Save to Server"
                         onTouchTap={function() {
                             signals.saveChanges();
                         }}
@@ -190,9 +216,20 @@ export default class ToolBar extends React.Component {
                         <SaveIcon />
                     </IconButton>
                     <IconMenu iconButtonElement={fileButtonElement} openDirection="bottom-right">
-                        { fileMenuItems }
-                    </IconMenu>                  
-                </ToolbarGroup>           
+                        {fileMenuItems}
+                    </IconMenu>
+                    <IconButton
+                        label="Dialog"
+                        tooltip="Manage Restriction Enzymes"
+                        onTouchTap={function() {
+                            signals.restrictionEnzymeManagerDisplay();
+                        }}
+                        >
+                        <EnzymesIcon />
+                    </IconButton>
+                    {dialog}
+
+                </ToolbarGroup>
 
             </Toolbar>
         );

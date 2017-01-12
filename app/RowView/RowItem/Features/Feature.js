@@ -1,23 +1,37 @@
-var React = require('react');
+import React from 'react';
+import { Decorator as Cerebral } from 'cerebral-view-react';
 
-var Feature = React.createClass({
+@Cerebral({
+    annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],  
+    charWidth: ['charWidth'], 
+    rowData: ['rowData'],
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+})
 
-    render: function() {
+export default class Feature extends React.Component {
+
+    render() {
         var {
-            widthInBps, 
+            bpsPerRow,
             charWidth, 
             height, 
             rangeType, 
             forward, 
+            pointiness=4,
+            fontWidth=16, 
+            color, 
             name,
-            pointiness=8,
-            fontWidth=12, 
-            color='orange', 
             featureClicked,
-            annotation
+            annotation,
+            signals,
+            widthInBps
         } = this.props;
 
-        var width = widthInBps * charWidth;
+        height = 20; // {{}} should this not be hardcoded
+
+        // var width = bpsPerRow * charWidth * 1.2 - 20; // scale feature to width of row with padding
+        var width = widthInBps * (charWidth * 1.2) - 20;
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
             if (width > 15) {
@@ -63,6 +77,7 @@ var Feature = React.createClass({
           Q ${pointiness},${height/2} ${0},${0}
           z`
         }
+
         var nameToDisplay = name
         var textLength = name.length * fontWidth
         var textOffset = (widthMinusOne/2)
@@ -70,8 +85,7 @@ var Feature = React.createClass({
             textOffset = 0
             nameToDisplay = ''
         }
-        // path=path.replace(/ /g,'')
-        // path=path.replace(/\n/g,'')
+
         return (
             <g
                 className='veRowViewFeature clickable'
@@ -81,20 +95,14 @@ var Feature = React.createClass({
                 }}
                 >
                 <path
-                    strokeWidth="1"
-                    stroke={ 'black' }
                     fill={ color }
                     transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
                     d={ path }
                     />
-                <text 
-                    style={{fill: 'black', }} 
-                    transform={`translate(${textOffset},${height-1})`}
-                    >
-                    {nameToDisplay}
+                <text style={{fill: 'black'}} transform={`translate(${textOffset},${height*.75})`}>
+                    { nameToDisplay }
                 </text>
             </g>
         );
     }
-});
-module.exports = Feature;
+}

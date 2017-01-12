@@ -8,8 +8,9 @@ var AnnotationContainerHolder = React.createClass({
         return (
       <div 
         className={this.props.className || "annotationContainer"}
-        width="100%" 
-        style={{height: this.props.containerHeight, position: 'relative', display: 'block'}}>
+        // width="100%" 
+        // style={{height: '30px', position: 'relative', display: 'block'}}
+        >
         {this.props.children}
       </div>
     );

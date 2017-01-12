@@ -16,6 +16,10 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
     var signals = {
 
+        setTreeVal: [
+            a.setData
+        ],
+
         // sidebar signals
         sidebarToggle: [
             a.sidebarToggle
@@ -27,7 +31,7 @@ export default function(options) {
             a.changeOrfMin
         ],
         // end sidebar
-        selectionCopied: [
+        copySelection: [ // earavina: not used for now
             a.copySelection, {
                 success: [a.setData('clipboardData')],
                 error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
@@ -87,18 +91,42 @@ export default function(options) {
             }],
             a.handleEditorDragStopped
         ],
-        resizeRowView: [
-            a.resizeRowView
-        ],
-        resizeCircularView: [
-            a.resizeCircularView
-        ],
+        // resizeRowView: [
+        //     a.resizeRowView
+        // ],
+        // resizeCircularView: [
+        //     a.resizeCircularView
+        // ],
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers
         ],
         setSelectionLayer: [a.setSelectionLayer],
 
+        restrictionEnzymeManagerDisplay: [
+            a.restrictionEnzymeManagerDisplay
+        ],
+
+        editUserEnzymes: [
+            a.editUserEnzymes
+        ],
+
+        updateUserEnzymes: [
+            a.updateUserEnzymes
+        ],
+
+        chooseEnzymeList: [
+            a.showSelectedEnzymeList
+        ],
+
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
+        ],
+
+        showChangeMinOrfSizeDialog: [
+            a.showChangeMinOrfSizeDialog
+        ],
+        
     // ///////////////////////////////////
     // edit only actions
         backspacePressed: a.addEditModeOnly([
@@ -136,7 +164,7 @@ export default function(options) {
             a.insertSequenceData,
             a.clearSelectionLayer
         ]),
-        // sl - in progress loading and saving local files
+        // loading and saving local files
         clickSaveFile:
             [a.saveToFile],
         saveChanges:

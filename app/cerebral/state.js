@@ -12,14 +12,16 @@ var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence
 var enzymeList = require('ve-sequence-utils/enzymeList.json'); 
 
 // here's the enzyme lists from old VE so we can pick and choose / merge them
-var commonEnzymes = ["aatii", "avrii", "bamhi", "bglii", "bsgi", "eagi", "ecori", "ecorv", "hindiii", "kpni", "ncoi", "ndei", "nhei", "noti", "psti", "pvui", "saci", "sacii", "sali", "smai", "spei", "sphi", "xbai", "xhoi", "xmai"];
+var commonEnzymes = ["AatII", "AvrII", "BamHI", "BglII", "BsgI", "EagI", "EcoRI", "EcoRV", "HindIII", "KpnI", "NcoI", "NdeI", "NheI", "NotI", "PstI", "PvuI", "SacI", "SacII", "SalI", "SmaI", "SpeI", "SphI", "XbaI", "XhoI", "XmaI"];
 // {{}} need the rebase set
+// REBASE group (it's real big)
+
 // Berkeley BioBricks
-var berkeleyBBEnzymes = ["ecori", "bglii", "bamhi", "xhoi"];
+var berkeleyBBEnzymes = ["EcoRI", "BglII", "BamHI", "XhoI"];
 // MIT BioBricks
-var MITBBEnzymes = ["ecori", "xbai", "spei", "psti"];
-// fermentas fast digest enzymes - this one's really really really long and doesnt work right now!
-var fastDigestEnzymes = ["aatii", "acc65i", "acci", "acii", "acli", "acui", "afei", "aflii", "agei", "ajui", "alei", "alui", "alw21i", "alw26i", "alwni", "apai", "apali", "asci", "asei", "asisi", "avai", "avaii", "avrii", "bamhi", "bani", "bbsi", "bbvi", "bcli", "bfai", "bgli", "bglii", "blpi", "bme1580i", "bmti", "bpli", "bpmi", "bpu10i", "bsaai", "bsabi", "bsahi", "bsaji", "bsegi", "bseni", "bsexi", "bsh1236i", "bsiei", "bsiwi", "bsli", "bsmbi", "bsmfi", "bsp119i", "bsp120i", "bsp1286i", "bsp1407i", "bspcni", "bsphi", "bspmi", "bsrbi", "bsrdi", "bsrfi", "bsshii", "bstxi", "bstz17i", "bsu36i", "clai", "csp6i", "ddei", "dpni", "drai", "draiii", "drdi", "eagi", "eam1105i", "eari", "ecl136ii", "eco31i", "eco91i", "econi", "ecoo109i", "ecori", "ecorv", "ehei", "fnu4hi", "foki", "fspai", "fspi", "haeii", "haeiii", "hgai", "hhai", "hincii", "hindiii", "hinfi", "hinp1i", "hpai", "hpaii", "hpy8i", "hpyf10vi", "kpn2i", "kpni", "maubi", "mboi", "mboii", "mfei", "mlui", "mlyi", "mnli", "mrei", "msci", "msei", "msli", "mspi", "mssi", "mva1269i", "mvai", "naei", "ncii", "ncoi", "ndei", "nhei", "nlaiii", "nlaiv", "nmuci", "noti", "nrui", "nsii", "nspi", "paci", "pdmi", "pflmi", "pfoi", "pmli", "ppumi", "pshai", "psii", "pspfi", "psti", "psui", "psyi", "pvui", "pvuii", "rsai", "rsrii", "saci", "sali", "sandi", "sapi", "sau3ai", "sau96i", "sbfi", "scai", "scrfi", "sexai", "sfani", "sfci", "sfii", "smai", "snabi", "spei", "sphi", "sspi", "stui", "styi", "swai", "taai", "taii", "taqi", "tati", "taui", "tfii", "tru1i", "tsp509i", "tspri", "xapi", "xbai", "xhoi"];
+var MITBBEnzymes = ["EcoRI", "XbaI", "SpeI", "PstI"];
+// fermentas fast digest enzymes - this one's really long
+var fastDigestEnzymes = ["AatII", "Acc65I", "AccI", "AciI", "AclI", "AcuI", "AfeI", "AflII", "AgeI", "AjuI", "AleI", "AluI", "Alw21I", "Alw26I", "AlwNI", "ApaI", "ApaLI", "AscI", "AseI", "AsiSI", "AvaI", "AvaII", "AvrII", "BamHI", "BanI", "BbsI", "BbvI", "BclI", "BfaI", "BglI", "BglII", "BlpI", "Bme1580I", "BmtI", "BplI", "BpmI", "Bpu10I", "BsaAI", "BsaBI", "BsaHI", "BsaJI", "BseGI", "BseNI", "BseXI", "Bsh1236I", "BsiEI", "BsiWI", "BslI", "BsmBI", "BsmFI", "Bsp119I", "Bsp120I", "Bsp1286I", "Bsp1407I", "BspCNI", "BspHI", "BspMI", "BsrBI", "BsrDI", "BsrFI", "BssHII", "BstXI", "BstZ17I", "Bsu36I", "ClaI", "Csp6I", "DdeI", "DpnI", "DraI", "DraIII", "DrdI", "EagI", "Eam1105I", "EarI", "Ecl136II", "Eco31I", "Eco91I", "EcoNI", "EcoO109I", "EcoRI", "EcoRV", "EheI", "Fnu4HI", "FokI", "FspAI", "FspI", "HaeII", "HaeIII", "HgaI", "HhaI", "HincII", "HindIII", "HinfI", "HinP1I", "HpaI", "HpaII", "Hpy8I", "HpyF10VI", "Kpn2I", "KpnI", "MauBI", "MboI", "MboII", "MfeI", "MluI", "MlyI", "MnlI", "MreI", "MscI", "MseI", "MslI", "MspI", "MssI", "Mva1269I", "MvaI", "NaeI", "NciI", "NcoI", "NdeI", "NheI", "NlaIII", "NlaIV", "NmuCI", "NotI", "NruI", "NsiI", "NspI", "PacI", "PdmI", "PflMI", "PfoI", "PmlI", "PpuMI", "PshAI", "PsiI", "PspFI", "PstI", "PsuI", "PsyI", "PvuI", "PvuII", "RsaI", "RsrII", "SacI", "SalI", "SanDI", "SapI", "Sau3AI", "Sau96I", "SbfI", "ScaI", "ScrFI", "SexAI", "SfaNI", "SfcI", "SfiI", "SmaI", "SnaBI", "SpeI", "SphI", "SspI", "StuI", "StyI", "SwaI", "TaaI", "TaiI", "TaqI", "TatI", "TauI", "TfiI", "Tru1I", "Tsp509I", "TspRI", "XapI", "XbaI", "XhoI"];
 
 module.exports = {
     // simple vars
@@ -36,13 +38,16 @@ module.exports = {
     minimumOrfSize: 300,
     readOnly: true,
     rowToJumpTo: null,
+    showAddFeatureModal: false,
     showAxis: true,
     showCircular: true,
     showCutsites: false,
     showFeatures: true,
     showLinear: true,
+    showOrfModal: false,
     showOrfs: false,
     showParts: true,
+    showRestrictionEnzymeManager: false,
     showReverseSequence: true,
     showRow: true,
     showSequence: true,
@@ -53,6 +58,12 @@ module.exports = {
     tickSpacing: 10,
     topSpacerHeight: 0,
     uppercase: true,
+    addEnzymeButtonValue: 'add',
+    addAllEnzymesButtonValue: 'add all',
+    removeEnzymeButtonValue: 'remove',
+    removeAllEnzymesButtonValue: 'remove all',
+    cancelButtonValue: 'Cancel',
+    applyButtonValue: 'Apply',
     // complex vars
     circularViewDimensions: {
         height: 500,
@@ -91,32 +102,41 @@ module.exports = {
        parts: [],
        circular: false
     }, 
-    userEnzymeList: commonEnzymes,
+    userEnzymeList: commonEnzymes, //user enzymes applied to the view
+    commonEnzymes: commonEnzymes,
+    berkeleyBBEnzymes: berkeleyBBEnzymes,
+    MITBBEnzymes: MITBBEnzymes,
+    fastDigestEnzymes: fastDigestEnzymes,
+    currentEnzymesList: commonEnzymes, //chosen enzymes list to show under enzymes groups
+    originalUserEnzymesList: commonEnzymes, //state of user enzymes list at the moment when RestrictionEnzymeManager was opened
+    currentUserEnzymesList: commonEnzymes, //edited, not saved list of active enzymes
     viewportDimensions: {
         height: 500,
         width: 500
     },
-    visibleRows: {
-        start: 0,
-        end: 0
-    },
     // derived data - can't alphabetize because of dependencies  :(
     bpsPerRow: deriveData([
-        ['rowViewDimensions',
-            'width'
-        ],
+        ['rowViewDimensions', 'width'],
         ['charWidth'],
-        function(rowViewDimensionsWidth, charWidth) {
-            var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
-            var gaps = Math.floor(charsInRow / 10) - 1;
-            return Math.floor((charsInRow - gaps) / 10) * 10;
+        ['showCircular'],
+        ['showRow'],
+        function(rowViewDimensionsWidth, charWidth, showCircular, showRow) {
+            // var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
+            // var gaps = Math.floor(charsInRow / 10) - 1;
+            // return Math.floor((charsInRow - gaps) / 10) * 10;
+            // return charsInRow;
+            if(showCircular && showRow) {
+                return 45;
+            } else {
+                return 90;
+            }
         }
     ]),
     userEnzymes: deriveData([
         ['userEnzymeList'],
         function(userEnzymeList) {
             return userEnzymeList.map(function(enzymeName) {
-                return enzymeList[enzymeName];
+                return enzymeList[enzymeName.toLowerCase()];
             });
         }
     ]),

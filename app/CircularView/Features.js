@@ -69,7 +69,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                         key={ 'feature' + index }
                         sAngle={ startAngle }
                         eAngle={ endAngle }
-                        direction={ 'reverse' } // buh
+                        direction={ 'reverse' } // buh {{}}
                         >
                         <StyleFeature
                             annotation={ annotation }

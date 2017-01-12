@@ -1,9 +1,13 @@
 import some from 'lodash/collection/some'
 import React from 'react';
 import Draggable from 'react-draggable'
+import styles from './RowView.scss';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import ReactList from 'react-list';
 import RowItem from './RowItem/RowItem.js'
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import prepareRowData from 've-sequence-utils/prepareRowData';
+import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 
 var defaultContainerWidth = 400
 var defaultCharWidth = 12
@@ -14,11 +18,13 @@ function noop() {
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],
     caretPosition: ['caretPosition'],     
     charWidth: ['charWidth'], 
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
     cutsites: ['cutsites'],
+    // cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     rowViewDimensions: ['rowViewDimensions'],
@@ -40,62 +46,24 @@ function noop() {
 
 export default class RowView extends React.Component {
 
-    // getNearestCursorPositionToMouseEvent(rowData, event, callback) {
-    //     var charWidth = defaultCharWidth;
-    //     var rowNotFound = true;
-    //     var visibleRowsContainer = this.InfiniteScroller.items;
-    //     //loop through all the rendered rows to see if the click event lands in one of them
-    //     var nearestBP = 0;
-    //     var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
+    getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
+        if (!event.clientX) {
+            return;
+        }
+        var boundingRect = this.refs.rowView.getBoundingClientRect()
+        //get relative click positions
+        var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
+        var clickY = (event.clientY - boundingRect.top - boundingRect.height/2)
 
-    //     some(visibleRowsContainer.childNodes, function (rowDomNode) {
-    //       var boundingRowRect = rowDomNode.getBoundingClientRect();
-    //       if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-    //           //then the click is falls within this row
-    //           rowNotFound = false;
-    //           var row = rowData[Number(rowDomNode.getAttribute('data-row-number'))];
-    //           if (event.clientX - boundingRowRect.left < 0) {
-    //               nearestBP = row.start;
-    //           } else {
-    //               var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-    //               var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth);
-    //               nearestBP = numberOfBPsInFromRowStart + row.start;
-    //               if (nearestBP > row.end + 1) {
-    //                   nearestBP = row.end + 1;
-    //               }
-    //           }
-    //           return true //break the loop early because we found the row the click event landed in
-    //       }
-    //     })
-    //     if (rowNotFound) {
-    //         var {top, bottom} = visibleRowsContainer.getBoundingClientRect()
-    //         var numbers = [top,bottom]
-    //         var target = event.clientY
-    //         var topOrBottom = numbers.map(function(value, index) {
-    //             return [Math.abs(value - target), index];
-    //         }).sort().map(function(value) {
-    //             return numbers[value[1]];
-    //         })[0];
-    //         var rowDomNode
-    //         if (topOrBottom === top) {
-    //             rowDomNode = visibleRowsContainer.childNodes[0]
-    //         } else {
-    //             rowDomNode = visibleRowsContainer.childNodes[visibleRowsContainer.childNodes.length-1]
-    //         }
-    //         if (rowDomNode) {
-    //             var row = rowData[Number(rowDomNode.getAttribute('data-row-number'))];
-    //             //return the last bp index in the rendered rows
-    //             nearestBP = row.end
-    //         } else {
-    //             nearestBP = 0
-    //         }
-    //     }
-    //     callback({
-    //         shiftHeld: event.shiftKey,
-    //         nearestBP,
-    //         caretGrabbed
-    //     });
-    // }
+        var nearestBP = normalizePositionByRangeLength(clickX, sequenceLength, true) //true because we're in between positions       
+
+        var caretGrabbed = event.target.className && event.target.className.animVal === "cursor"
+        callback({
+            shiftHeld: event.shiftKey,
+            nearestBP,
+            caretGrabbed
+        });
+    }
 
     render() {
         var {
@@ -104,6 +72,7 @@ export default class RowView extends React.Component {
             selectionLayer,
             sequenceName,
             cutsites,
+            cutsitesByName,
             orfs,
             showAxis,
             showCaret,
@@ -123,12 +92,11 @@ export default class RowView extends React.Component {
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
-                console.log(rowData[index])
                 return (
-                    // <div data-row-number={index} key={key}>
-                    //     <div className={'veRowItemSpacer'} />
+                    <div data-row-number={index} key={key}>
+                        <div className={'veRowItemSpacer'} />
                         <RowItem row={rowData[index]} />
-                    // </div>
+                    </div>
                 );
             } else {
                 return null
@@ -138,21 +106,22 @@ export default class RowView extends React.Component {
         return (
             <Draggable
                 bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-                // onDrag={(event) => {
-                //     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}
-                // }
-                // onStart={(event) => {
-                //     this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}
-                // }
-                // onStop={signals.editorDragStopped}
+                onDrag={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragged)}
+                }
+                onStart={(event) => {
+                    this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorDragStarted)}
+                }
+                onStop={signals.editorDragStopped}
                 >
                 <div
+                    onClick={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
+                    }}
                     ref="rowView"
-                    className="veRowView"
-                    // onClick={(event) => {
-                    //     this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked)}   
-                    // }
+                    className={styles.RowView + " veRowView"}
                     >
+                    <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                     <ReactList
                         ref={c => {
                             this.InfiniteScroller= c
@@ -160,20 +129,12 @@ export default class RowView extends React.Component {
                         itemRenderer={renderItem}
                         length={rowData.length}
                         itemSizeEstimator={itemSizeEstimator}
-                        type='variable'
+                        type='simple'
                         />
                 </div>
             </Draggable>
         );
     }
-}
-
-function getBpsPerRow({
-    charWidth=defaultCharWidth,
-    width=defaultContainerWidth,
-    marginWidth=defaultMarginWidth
-}) {
-    return Math.floor((width-marginWidth)/charWidth)
 }
 
 function itemSizeEstimator(index, cache) {

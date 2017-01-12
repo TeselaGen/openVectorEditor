@@ -28,8 +28,8 @@ var RowView = require('./RowView/RowView');
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
-    cutsites: ['cutsites'],
-    orfData: ['orfData']
+    cutsitesByName: ['cutsitesByName'],
+    orfData: ['orfData'],
 })
 
 export default class SequenceEditor extends React.Component {
@@ -100,16 +100,29 @@ export default class SequenceEditor extends React.Component {
         var {
             pasteSequenceString,
         } = this.props.signals;
-        event.clipboardData.items[0].getAsString(function(clipboardString) {
-            pasteSequenceString({sequenceString:clipboardString});
-        });
+
+        pasteSequenceString({sequenceString: event.clipboardData.getData("text/plain")});
+        event.preventDefault();
     }
 
-    handleCopy() {
-        var {
-            selectionCopied,
-        } = this.props.signals;
-        selectionCopied();
+    handleCopy(event) {
+        /*
+        earavina:
+        This is an async call leading to a bug
+        when copy is successful only if user copies the range twice.
+        This action assigns this.props.clipboardData after it has been passed to a system clipboard.
+        Replaced with a module used each time the user makes a selection
+        */
+        // var {
+        //     copySelection,
+        // } = this.props.signals;
+        // copySelection();
+
+        let val = this.props.clipboardData;
+        // console.log(val);
+        event.clipboardData.setData("application/json", JSON.stringify(val));
+        event.clipboardData.setData("text/plain", val.sequence);
+        event.preventDefault();
     }
 
     componentWillUnmount() {
@@ -125,9 +138,11 @@ export default class SequenceEditor extends React.Component {
             showRow,
             showSidebar,
             sidebarType,
-            cutsites,
+            cutsitesByName,
             orfData,
-            readOnly
+            showRestrictionEnzymeManager,
+            readOnly,
+            clipboardData
         } = this.props;
 
         var table;
@@ -135,29 +150,42 @@ export default class SequenceEditor extends React.Component {
         // we need this position relative to place the controller bar in the sidebar
         Object.assign(sidebarStyle, {minWidth: '580px', overflow: 'hidden', borderRight: '1px solid #ccc', position: 'relative'}, (showSidebar) ? {} : {display: 'none'})
 
+        // check if we have just circ or just row and pad it out a little
+        // using the bitwise xor here might be a little sketchy
+        // {{}} currently not working
+        var oneViewOnly = !showSidebar && (showCircular ^ showRow)
+        var circularStyle = {}
+        if(!showCircular) circularStyle = {display: 'none'}
+        if (oneViewOnly) {
+            circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
+            // rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
+            console.log("added margin to circular")
+        }
+        var rowStyle = {}
+        if(embedded || !showRow) rowStyle = {display: 'none'}
+
+        // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
+
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (
                 <SideBar
-                   data={sequenceData.features}
+                   annotations={sequenceData.features}
                    annotationType={sidebarType}
-                   filter={['name', 'type', 'start', 'end', 'strand']}
                    />
             );
         } else if (sidebarType === 'Cutsites') {
             table = (
                 <SideBar
-                   data={cutsites}
+                   annotations={cutsitesByName}
                    annotationType={sidebarType}
-                   filter={['name', 'start', 'end', 'strand']}
                    />
             );
         } else if (sidebarType === 'Orfs') {
             table = (
                 <SideBar
-                   data={orfData}
+                   annotations={orfData}
                    annotationType={sidebarType}
-                   filter={['start', 'end', 'length', 'strand', 'frame']}
                    />
             );
         }
@@ -165,7 +193,7 @@ export default class SequenceEditor extends React.Component {
         return (
             <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
-                    value={selectedSequenceString}
+                    value={JSON.stringify(clipboardData)}
                     onCopy={this.handleCopy.bind(this)}
                     onPaste={this.handlePaste.bind(this)}
                 />
@@ -179,11 +207,11 @@ export default class SequenceEditor extends React.Component {
                       {table}
                     </div>
 
-                    <div className={styles.circularViewSlot} id="circularView" style={(showCircular) ? {} : {display: 'none'}}>
+                    <div className={styles.circularViewSlot} id="circularView" style={ circularStyle }>
                         <CircularView />
                     </div>
-                    <div className={styles.rowViewSlot} id="rowView" style={(embedded || !showRow) ? {display: 'none'} : {}}>
-                        <RowView sequenceData={sequenceData} columnWidth={10} />
+                    <div className={styles.rowViewSlot} id="rowView" style={ rowStyle }>
+                        <RowView sequenceData={sequenceData} />
                     </div>
                 </div>
 

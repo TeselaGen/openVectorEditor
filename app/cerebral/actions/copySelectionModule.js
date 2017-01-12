@@ -1,6 +1,6 @@
 /**
-earavina: this function was replaced by module copySelectionModule
-to avoid asynchronous calls
+ * Created by earavina on 9/27/16 to avoid asynchronous calls
+ * Used as a follow-action in handleEditorDragStopped
  */
 
 var assign = require('lodash/object/assign');
@@ -8,7 +8,7 @@ var getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlaps
 var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('ve-range-utils/collapseOverlapsGeneratedFromRangeComparisonIfPossible');
 var getSubstringByRange = require('get-substring-by-range');
 
-export default function copySelection({input, state, output}) {
+module.exports = function copySelection(state) {
     var { selectionLayer, sequenceData } = state.get();
     var allowPartialAnnotationsOnCopy = state.get('allowPartialAnnotationsOnCopy');
     var selectionStart = undefined;
@@ -83,8 +83,7 @@ export default function copySelection({input, state, output}) {
             url: url,
         };
 
-        output.success({'clipboardData': newClipboardData});
-    } else {
-        output.error();
+        state.set('clipboardData', newClipboardData);
+        // console.log(state.get('clipboardData'));
     }
 }

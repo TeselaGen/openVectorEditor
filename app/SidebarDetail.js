@@ -7,8 +7,14 @@ import IndeterminateCheckBoxIcon from 'material-ui/svg-icons/toggle/indeterminat
 import IconButton from 'material-ui/IconButton';
 import assign from 'lodash/object/assign';
 
+// {{}} remove this.state and do it correctly
+
 // this is the feature detail popout that comes out of the sidebar; it may need a new name
 // or to be in a folder with sidebar stuff. This form is used to edit / add feature information
+
+@Cerebral({
+    showAddFeatureModal: ['showAddFeatureModal'],
+})
 
 export default class SidebarDetail extends React.Component {
 
@@ -16,7 +22,9 @@ export default class SidebarDetail extends React.Component {
         super(props);
 
         this.state = {
-            feature: assign({}, this.props.feature)
+            feature: assign({}, this.props.feature),
+            newFeature: {},
+            style: {},
         };
 
         if (this.state.feature.notes === undefined) {
@@ -24,36 +32,43 @@ export default class SidebarDetail extends React.Component {
         } else {
             this.state.feature.notes = this.props.feature.notes.slice();
         }
+        if (this.props.createFeature != null) {
+            this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', height: '360px', paddingBottom: '10px', overflowY: 'scroll'};
+        } else {
+            this.state.style = {backgroundColor: 'white', position: 'fixed', padding: '20px', marginLeft: '580px', width: '300px', border: '1px solid #ccc', zIndex: '55'};
+        }
     }
 
-    update() {
-        // {{}} theres a better way to do this, willget to later
-        clearTimeout(this.state.timeout);
+    save = () => {
+        this.props.editFeature(this.state.feature);
+    };
 
-        var timeout = setTimeout(() => {
-            this.props.signals.updateFeature({
-                feature: this.state.feature
-            });
-        }, 1000);
-
+    onChange = (event) => {
+        this.state.feature[event.target.id] = event.target.value;
         this.setState({
             feature: this.state.feature,
-            timeout: timeout
         });
-    }
-
-    onChange(event) {
-        this.state.feature[event.target.id] = event.target.value;
-        this.update();
-    }
+        if (this.props.createFeature != null) {
+            this.props.createFeature(this.state.feature);
+        }
+    };
 
     render() {
+        var {
+            showAddFeatureModal
+        } = this.props;
+
+        if (!showAddFeatureModal) {
+            var saveButton = (<button onClick={this.save}> Save Changes </button>);
+        }
+
         return (
-            <div style={{backgroundColor: 'white', marginLeft: '580px', position: 'fixed', padding: '20px', width: '300px', border: '1px solid #ccc', zIndex: '55'}}>
+            <div style={this.state.style}>
+
 
               <TextField
                  id={"name"}
-                 onChange={this.onChange.bind(this)}
+                 onChange={this.onChange}
                  floatingLabelText={"name"}
                  value={this.state.feature.name.toString()}
                  />
@@ -62,7 +77,7 @@ export default class SidebarDetail extends React.Component {
 
               <TextField
                  id={"type"}
-                 onChange={this.onChange.bind(this)}
+                 onChange={this.onChange}
                  floatingLabelText={"type"}
                  value={this.state.feature.type.toString()}
                  />
@@ -71,7 +86,7 @@ export default class SidebarDetail extends React.Component {
 
               <TextField
                  id={"start"}
-                 onChange={this.onChange.bind(this)}
+                 onChange={this.onChange}
                  floatingLabelText={"start"}
                  errorText={isNaN(this.state.feature.start) && "not a number"}
                  value={this.state.feature.start.toString()}
@@ -81,7 +96,7 @@ export default class SidebarDetail extends React.Component {
 
               <TextField
                  id={"end"}
-                 onChange={this.onChange.bind(this)}
+                 onChange={this.onChange}
                  floatingLabelText={"end"}
                  errorText={isNaN(this.state.feature.end) && "not a number"}
                  value={this.state.feature.end.toString()}
@@ -91,13 +106,13 @@ export default class SidebarDetail extends React.Component {
 
               <TextField
                  id={"strand"}
-                 onChange={this.onChange.bind(this)}
+                 onChange={this.onChange}
                  floatingLabelText={"strand"}
                  errorText={isNaN(this.state.feature.strand) && "not a number"}
                  value={this.state.feature.strand.toString()}
-                 />
-                 
-              <button onClick={this.onChange.bind(this)}> Save Changes </button>
+                />
+                <br/>
+                {saveButton}
             </div>
         );
     }

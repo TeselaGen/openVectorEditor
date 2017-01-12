@@ -23,6 +23,7 @@ let Features = React.createClass({
         }
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
+        annotationHeight = annotationHeight*6;
         forEach(annotationRanges, function(annotationRange, index) {
             if (annotationRange.yOffset > maxAnnotationYOffset) {
                 maxAnnotationYOffset = annotationRange.yOffset;
@@ -30,48 +31,45 @@ let Features = React.createClass({
             let annotation = annotationRange.annotation;
             let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             annotationsSVG.push(
-              <div
-                passJustOnMouseOverAndClassname
-                // onHover={function () {
-                  //     debugger
-                  // }}
-                  key={'feature' + index}
-                  id={annotation.id}
-                  >
-                  <div onClick={function () {
-                  }}>
-                    <AnnotationPositioner
-                      height={annotationHeight}
-                      width={result.width}
-                      key={index}
-                      top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
-                      left={result.xStart}
-                      >
-                      <Feature
-                        key={index}
-                        annotation={annotation}
-                        color={annotation.color}
-                        widthInBps={annotationRange.end - annotationRange.start + 1}
-                        charWidth={charWidth}
-                        forward={annotation.forward}
-                        rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
-                        height={annotationHeight}
-                        name={annotation.name}>
-                      </Feature>
-                    </AnnotationPositioner>
-                  </div>
-              </div>
+                <div
+                    key={'feature' + index}
+                    id={annotation.id}
+                    >
+                    <div>
+                        <AnnotationPositioner
+                            height={annotationHeight}
+                            width={result.width}
+                            key={index}
+                            top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
+                            left={result.xStart}
+                            >
+                            <Feature
+                                key={index}
+                                annotation={annotation}
+                                color={annotation.color}                                
+                                charWidth={charWidth}
+                                forward={annotation.forward}
+                                rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
+                                height={annotationHeight}
+                                name={annotation.name}
+                                widthInBps={annotationRange.end - annotationRange.start + 1}
+                                >
+                            </Feature>
+                        </AnnotationPositioner>
+                    </div>
+                </div>
             );
         });
         let containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
         return (
             <AnnotationContainerHolder
                 className='Features'
-                containerHeight={containerHeight}>
+                containerHeight={containerHeight}
+                >
                 {annotationsSVG}
             </AnnotationContainerHolder>
         );
-
     }
 });
+
 module.exports = Features;
