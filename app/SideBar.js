@@ -13,6 +13,7 @@ import FlatButton from 'material-ui/lib/flat-button';
 
 import SidebarDetail from './SidebarDetail';
 import SidebarEdit from './SidebarEdit';
+import styles from './side-bar.css'
 
 @Cerebral({
     showAddFeatureModal: ['showAddFeatureModal'],
@@ -83,6 +84,10 @@ export default class SideBar extends React.Component {
         this.props.signals.addFeatureModalDisplay();
     }
 
+     highlight(i) {
+        return this.state.selectedRows.indexOf(i) === -1 ? 'white' : '#E1E1E1';
+    }
+
     render() {
         var {
             annotations,
@@ -99,7 +104,6 @@ export default class SideBar extends React.Component {
         var controls;
         var tableHeaderCells;
         var annotationTableRows;
-        var sidebarControlStyle = {position: 'absolute', backgroundColor: 'white', bottom: '0px', width: '100%', borderTop: '1px solid #ccc', marginLeft: '3px'};
 
         // TABS
         var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
@@ -123,10 +127,11 @@ export default class SideBar extends React.Component {
         // FEATURES TAB
         if (sidebarType === 'Features') {
             tableHeaderCells = [];
-            tableHeaderCells.push(<th key='feathead0'>name</th>);
-            tableHeaderCells.push(<th key='feathead1'>type</th>);
+            tableHeaderCells.push(<th key='feathead0' style={{width: '30%'}}>name</th>);
+            tableHeaderCells.push(<th key='feathead1' style={{width: '30%'}}>type</th>);
             tableHeaderCells.push(<th key='feathead2'>position</th>);
-            tableHeaderCells.push(<th key='feathead3'>strand</th>);
+            tableHeaderCells.push(<th key='feathead3' style={{textAlign: 'center', width: '10%'}}>strand</th>);
+            tableHeaderCells.push(<th key='null' style={{width: '10%'}}> </th>);
 
             annotationTableRows = [];
             for (let i = 0; i < annotations.length; i++) {
@@ -135,30 +140,35 @@ export default class SideBar extends React.Component {
                 for (let j = 0; j < tableHeaderCells.length; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
                     let cellEntry = '';
+                    let cellStyle = {};
 
                     if (annotation[column] !== null && annotation[column] !== undefined) {
+                        cellStyle = {};
                         cellEntry = annotation[column].toString();
                     }
                     if (column === 'position') {
+                        cellStyle = {};
                         cellEntry = annotation['start'] + " - " + annotation['end'];
                     }
                     if (column === 'strand') {
+                        cellStyle = {textAlign: 'center'};
                         if (annotation['forward']) {
                             cellEntry = "+";
                         } else {
                             cellEntry = "-";
                         }
                     }
-                    annotationTableCells.push(<td key={j}>{ cellEntry }</td>);
+                    annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
-
-                annotationTableRows.push(<tr key={i} onClick={this.onRowSelection.bind(this, i)}>{ annotationTableCells }</tr>);
+                // annotationTableCells.push(<td style={{width: '10%'}}></td>);
+                var rowStyle = {backgroundColor: this.highlight(i)};
+                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onRowSelection.bind(this, i)}>{ annotationTableCells }</tr>);
             }
 
             // controls
             if (!readOnly) {
                 var featureControls = (
-                    <div style={ sidebarControlStyle }>
+                    <div className={styles.controls}>
                         <IconButton
                             onTouchTap={this.openAddFeatureDisplay.bind(this)}
                             tooltip="add"
@@ -178,54 +188,72 @@ export default class SideBar extends React.Component {
         if (sidebarType === 'Cutsites') {
             tableHeaderCells = [];
             tableHeaderCells.push(<th key='cuthead0'>name</th>);
-            tableHeaderCells.push(<th key='cuthead1'># cuts</th>);
-            tableHeaderCells.push(<th key='cuthead2'>position</th>);
-            tableHeaderCells.push(<th key='cuthead3'>strand</th>);
+            tableHeaderCells.push(<th key='cuthead1' style={{textAlign: 'center'}}># cuts</th>);
+            tableHeaderCells.push(<th key='cuthead2' style={{width: '40%'}}>position</th>);
+            tableHeaderCells.push(<th key='cuthead3' style={{textAlign: 'center'}}>strand</th>);
 
             annotationTableRows = [];
+            var color = '#FFFFFF';
             for (var enzyme in annotations) { // this is an object so we loop differently
                 let annotationTableCells = [];
                 let annotation = annotations[enzyme];
-
-                // first loop for enzyme name and number of cuts
-                // [enzyme] [# cuts] [empty] [empty]
+                // first loop for enzyme name and number of cuts + first cut
                 for (let j = 0; j < 4; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
+                    let cellStyle = {};
                     let cellEntry = '';
+                    let cut = annotation[0];
 
                     if(column === 'name') {
-                        cellEntry = annotation[0].restrictionEnzyme.name;
+                        cellStyle = {};
+                        cellEntry = enzyme;
                     }
                     if (column === '# cuts') {
+                        cellStyle = {textAlign: 'center'};
                         cellEntry = annotation.length;
                     }
-                    annotationTableCells.push(<td key={j}>{ cellEntry }</td>);
-                }
-                annotationTableRows.push(<tr>{ annotationTableCells }</tr>);
-                annotationTableCells = [];
+                    if (column === 'position') {
+                        cellEntry = cut['start'] + " - " + cut['end'];
 
-                // sub loop for each cut location
-                // [empty] [empty] [position] [strand]
-                for (var cut in annotation) {
+                    }
+                    if (column === 'strand') {
+                        cellStyle = {textAlign: 'center'};
+                        if (cut['forward']) {
+                            cellEntry = "+";
+                        } else {
+                            cellEntry = "-";
+                        }
+                    }
+                    annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
+                }
+                color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
+                annotationTableRows.push(<tr style={{backgroundColor: color}}>{ annotationTableCells }</tr>);
+
+                annotationTableCells = [];
+                // sub loop for each additional cut
+                for (var j=1; j<annotation.length; j++) {
                     for (let k = 0; k < 4; k++) {
                         let column = tableHeaderCells[k].props.children.toString();
                         let cellEntry = '';
+                        let cellStyle = {};
+                        let cut = annotation[j];
 
                         // if it's name or number of cuts it'll stay blank
                         if (column === 'position') {
-                            cellEntry = annotation[cut]['start'] + " - " + annotation[cut]['end'];
+                            cellEntry = cut['start'] + " - " + cut['end'];
 
                         }
                         if (column === 'strand') {
-                            if (annotation[cut]['forward']) {
+                            cellStyle = {textAlign: 'center'};
+                            if (cut['forward']) {
                                 cellEntry = "+";
                             } else {
                                 cellEntry = "-";
                             }
                         }
-                        annotationTableCells.push(<td key={k}>{ cellEntry }</td>);
+                        annotationTableCells.push(<td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
-                    annotationTableRows.push(<tr>{ annotationTableCells }</tr>);
+                    annotationTableRows.push(<tr style={{backgroundColor: color}}>{ annotationTableCells }</tr>);
                     annotationTableCells = [];
                 }
             }
@@ -236,8 +264,8 @@ export default class SideBar extends React.Component {
             tableHeaderCells = [];
             tableHeaderCells.push(<th key='orfhead0'>position</th>);
             tableHeaderCells.push(<th key='orfhead1'>length</th>);
-            tableHeaderCells.push(<th key='orfhead2'>strand</th>);
-            tableHeaderCells.push(<th key='orfhead3'>frame</th>);
+            tableHeaderCells.push(<th key='orfhead2' style={{textAlign: 'center'}}>strand</th>);
+            tableHeaderCells.push(<th key='orfhead3' style={{textAlign: 'center'}}>frame</th>);
 
             annotationTableRows = [];
             for (let i = 0; i < annotations.length; i++) {
@@ -247,35 +275,42 @@ export default class SideBar extends React.Component {
                 for (let j = 0; j < tableHeaderCells.length; j++) {
                     let column = tableHeaderCells[j].props.children;
                     let cellEntry = '';
+                    let cellStyle = {};
 
                     if (column === 'position') {
+                        cellStyle = {};
                         cellEntry = annotation['start'] + " - " + annotation['end'];
                     }  else
                     if (column === 'strand') {
+                        cellStyle = {textAlign: 'center'};
                         if (annotation['forward']) {
                             cellEntry = "+";
                         } else {
                             cellEntry = "-";
                         }
                     } else
+                    if (column === 'frame') {
+                        cellStyle = {textAlign: 'center'};
+                        cellEntry = annotation[column].toString();
+                    } else
                     if (annotation[column] !== null && annotation[column] !== undefined) {
+                        cellStyle = {};
                         cellEntry = annotation[column].toString();
                     }
 
-                    annotationTableCells.push(<td key={j}>{ cellEntry }</td>);
+                    annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
-
                 annotationTableRows.push(<tr key={i}>{annotationTableCells}</tr>);
             }
             var orfControls = (
-                <div style={ sidebarControlStyle }>
+                <div className={styles.controls}>
                     Minimum ORF Size: { minimumOrfSize }
                     { readOnly ? null :
                         <div id='orfControl' onClick={function() {signals.showChangeMinOrfSizeDialog()}}
-                        style={{display: 'inline-block', marginLeft: '10px', backgroundColor: '#65B6DE', color: 'white', padding: '3px 6px', borderRadius: '4px'}}> Change </div>
+                            className={styles.orfControl}> Change </div>
                     }
                     { showOrfModal ?
-                        <div id='orfModal' style={{display: 'inline', marginLeft:'20px', height: '26px'}}>
+                        <div id='orfModal' className={styles.orfModal}>
                             <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
                             <button name='setOrfMin' onTouchTap={function () {
                                 var newMinVal = document.getElementById('orfInput').value;
@@ -346,8 +381,8 @@ export default class SideBar extends React.Component {
 
                 { topTabs }
 
-                <div style={{position: 'absolute', top: '42px', left: '0', right: '0', bottom: '50px', overflowY: 'scroll'}}>
-                    <table ref="sideBar" style={{minWidth: '500px'}}>
+                <div className={styles.tableContainer}>
+                    <table ref="sideBar">
                         <thead><tr>{ tableHeaderCells }</tr></thead>
                         <tbody>{ annotationTableRows }</tbody>
                     </table>

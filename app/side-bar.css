@@ -1,0 +1,89 @@
+.editrow input:invalid {
+    border-color: red;
+}
+
+.editrow input:valid {
+    border-color: blue;
+}
+
+.editrow input {
+    border-top: none;
+    border-right: none;
+    border-bottom: 1px solid blue;
+    border-left: none;
+    width: 75%;
+    font-style: italic;
+}
+
+.editrow {
+    line-height: 1.55em !important;
+    font-size: 14px;
+    border: none;
+}
+
+input[type=text] {
+    padding: 0 0 0 5px;
+}
+
+td.position input {
+    display: inline;
+    width: 40% !important;
+}
+
+td.position input{
+    display: inline;
+}
+
+td.strand {
+    text-align: center;
+}
+
+td.strand input {
+    text-align: center;
+    width: 45% !important;
+}
+
+.tableContainer {
+    position: absolute;
+    top: 42px;
+    left: 20px;
+    right: 0;
+    bottom: 50px;
+    overflow-y: scroll;
+}
+
+.tableContainer table {
+    width: 100%;
+}
+
+.tableContainer table thead tr {
+    line-height: 3em;
+}
+
+.tableContainer table tbody tr {
+    line-height: 2em;
+}
+
+.controls {
+    position: absolute;
+    background-color: white;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    margin-left: 3px;
+}
+
+.orfControl {
+    display: inline-block;
+    margin-left: 10px;
+    background-color: #65B6DE;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.orfModal {
+    display: inline;
+    margin-left:20px;
+    height: 26px;
+}
