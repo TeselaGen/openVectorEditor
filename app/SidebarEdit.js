@@ -4,6 +4,7 @@ import TextField from 'material-ui/lib/text-field';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
+import SaveIcon from 'material-ui/lib/svg-icons/content/save'
 import assign from 'lodash/object/assign';
 
 import styles from './side-bar.css';
@@ -87,10 +88,8 @@ export default class SidebarDetail extends React.Component {
                     errorText={isNaN(this.state.feature.strand) && "not a number"}
                     value={this.state.feature.strand.toString()}
                 /></td>
-                <td>
-                    <button onClick={this.save}>
-                        Save
-                    </button>
+                <td style={{textAlign: 'center'}}>
+                    <SaveIcon className={styles.saveButton} style={{fill: '#00bcd4'}} onClick={this.save}/>
                 </td>
             </tr>
         );

@@ -4,10 +4,11 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 // {{}} remove this.state and do it correctly
 
 import Dialog from 'material-ui/lib/dialog';
-import TextField from 'material-ui/lib/text-field';
-
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
+import CheckCircle from 'material-ui/lib/svg-icons/check-circle';
+import CancelIcon from 'material-ui/lib/svg-icons/cancel-icon';
+import EditIcon from 'material-ui/lib/svg-icons/edit-icon';
 import IconButton from 'material-ui/lib/icon-button';
 import FlatButton from 'material-ui/lib/flat-button';
 
@@ -32,10 +33,14 @@ export default class SideBar extends React.Component {
             selectedFeatures: [],
             selectedOrfs: [],
             newFeature: {},
+            editfeature: -1
         };
     }
 
     onFeatureSelection(row) {
+        if (this.state.editFeature > -1) {
+            this.setState({ editFeature: -1 });
+        }
         let selected = this.state.selectedFeatures;
         let idx = selected.indexOf(row);
         if (idx === -1) {
@@ -57,11 +62,16 @@ export default class SideBar extends React.Component {
         this.setState({ selectedOrfs: selected });
     }
 
+    onEditIconClick(row) {
+        this.setState({ editFeature: row });
+        this.setState({ selectedFeatures: [] })
+    }
+
     editFeature(currentFeature) {
         this.props.signals.updateFeature({
             feature: currentFeature
         });
-        this.setState({ selectedFeatures: [] });
+        this.setState({ editFeature: -1 });
     }
 
     deleteFeatures() {
@@ -71,11 +81,11 @@ export default class SideBar extends React.Component {
         });
 
         this.props.signals.deleteFeatures({ featureIds: featureIds });
-        this.setState({ selectedFeatures: [] });
+        // this.setState({ selectedFeatures: [] });
     }
 
     openAddFeatureDisplay() {
-        this.setState({ selectedFeatures: [] });
+        // this.setState({ selectedFeatures: [] });
         this.props.signals.addFeatureModalDisplay();
     }
 
@@ -94,10 +104,6 @@ export default class SideBar extends React.Component {
             throwErrors: true
         });
         this.props.signals.addFeatureModalDisplay();
-    }
-
-    highlightFeature(row) {
-        return this.state.selectedFeatures.indexOf(row) === -1 ? 'white' : '#E1E1E1';
     }
 
     highlightOrf(row) {
@@ -153,10 +159,11 @@ export default class SideBar extends React.Component {
             for (let i = 0; i < annotations.length; i++) {
                 let annotationTableCells = [];
                 let annotation = annotations[i];
-                for (let j = 0; j < tableHeaderCells.length; j++) {
+
+                for (var j = 0; j < tableHeaderCells.length - 1; j++) {
                     let column = tableHeaderCells[j].props.children.toString();
-                    let cellEntry = '';
                     let cellStyle = {};
+                    let cellEntry = '';
 
                     if (annotation[column] !== null && annotation[column] !== undefined) {
                         cellStyle = {};
@@ -174,11 +181,18 @@ export default class SideBar extends React.Component {
                             cellEntry = "-";
                         }
                     }
-                    annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
+                    annotationTableCells.push(<td style={cellStyle} key={j} onClick={this.onFeatureSelection.bind(this, i)}>{ cellEntry }</td>);
                 }
-                // annotationTableCells.push(<td style={{width: '10%'}}></td>);
-                var rowStyle = {backgroundColor: this.highlightFeature(i)};
-                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onFeatureSelection.bind(this, i)}>{ annotationTableCells }</tr>);
+                var rowStyle = { backgroundColor: 'white' };
+                if (this.state.selectedFeatures.indexOf(i) !== -1) {
+                    rowStyle = { backgroundColor: '#E1E1E1' };
+                    let cellStyle = {textAlign: 'center', cursor: 'pointer'};
+                    var editCell = <td style={cellStyle} key={j+1}>
+                                        <EditIcon onClick={this.onEditIconClick.bind(this, i)} className={styles.editIcon} style={{fill: '#00bcd4', backgroundColor: 'white'}}/>
+                                   </td>;
+                    annotationTableCells.push(editCell);
+                }
+                annotationTableRows.push(<tr style={rowStyle} key={i}>{ annotationTableCells }</tr>);
             }
 
             // controls
@@ -341,10 +355,10 @@ export default class SideBar extends React.Component {
             );
         }
 
-        // FEATURE DETAIL
-        if (this.state.selectedFeatures.length === 1 && sidebarType === "Features") {
-            var idx = this.state.selectedFeatures[0];
-            var annotation = annotations[idx];
+        //FEATURE DETAIL
+        if (this.state.editFeature  > -1 && sidebarType === "Features") {
+            let idx = this.state.editFeature;
+            let annotation = annotations[idx];
 
             var annotationForm = (
                 <SidebarEdit
