@@ -16,7 +16,6 @@
 }
 
 .editrow {
-    line-height: 1.55em !important;
     font-size: 14px;
     border: none;
 }
@@ -61,7 +60,11 @@ td.strand input {
 }
 
 .tableContainer table tbody tr {
-    line-height: 2em;
+    height: 49px;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
 }
 
 .controls {
@@ -86,17 +89,4 @@ td.strand input {
     display: inline;
     margin-left:20px;
     height: 26px;
-}
-
-.saveButton, .editIcon {
-    box-shadow: 1px 1px 1px gray;
-    background-color: #E1E1E1;
-    border-radius: 100%;
-    padding: 3px;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-.saveButton:active, .editIcon:active {
-    box-shadow: -1px -1px 1px gray;
 }

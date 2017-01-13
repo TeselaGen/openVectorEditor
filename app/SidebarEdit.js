@@ -88,8 +88,13 @@ export default class SidebarDetail extends React.Component {
                     errorText={isNaN(this.state.feature.strand) && "not a number"}
                     value={this.state.feature.strand.toString()}
                 /></td>
-                <td style={{textAlign: 'center'}}>
-                    <SaveIcon className={styles.saveButton} style={{fill: '#00bcd4'}} onClick={this.save}/>
+                <td>
+                <IconButton
+                    onClick={this.save}
+                    tooltip="save"
+                    >
+                    <SaveIcon/>
+                </IconButton>
                 </td>
             </tr>
         );

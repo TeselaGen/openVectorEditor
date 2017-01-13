@@ -64,7 +64,7 @@ export default class SideBar extends React.Component {
 
     onEditIconClick(row) {
         this.setState({ editFeature: row });
-        this.setState({ selectedFeatures: [] })
+        this.setState({ selectedFeatures: [row] })
     }
 
     editFeature(currentFeature) {
@@ -187,10 +187,17 @@ export default class SideBar extends React.Component {
                 if (this.state.selectedFeatures.indexOf(i) !== -1) {
                     rowStyle = { backgroundColor: '#E1E1E1' };
                     let cellStyle = {textAlign: 'center', cursor: 'pointer'};
-                    var editCell = <td style={cellStyle} key={j+1}>
-                                        <EditIcon onClick={this.onEditIconClick.bind(this, i)} className={styles.editIcon} style={{fill: '#00bcd4', backgroundColor: 'white'}}/>
+                    var editCell = <td key={j+1}>
+                                        <IconButton
+                                            onClick={this.onEditIconClick.bind(this, i)}
+                                            tooltip="edit"
+                                            >
+                                            <EditIcon style={{width: '18px', height: '18px'}}/>
+                                        </IconButton>
                                    </td>;
                     annotationTableCells.push(editCell);
+                } else {
+                    annotationTableCells.push(<td onClick={this.onFeatureSelection.bind(this, i)}></td>);
                 }
                 annotationTableRows.push(<tr style={rowStyle} key={i}>{ annotationTableCells }</tr>);
             }
