@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
 // {{}} remove this.state and do it correctly
-
+//todo - fix lagginess of cutsites
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
@@ -11,6 +11,8 @@ import CancelIcon from 'material-ui/lib/svg-icons/cancel-icon';
 import EditIcon from 'material-ui/lib/svg-icons/edit-icon';
 import IconButton from 'material-ui/lib/icon-button';
 import FlatButton from 'material-ui/lib/flat-button';
+import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
+import ArrowDropUp from 'material-ui/lib/svg-icons/navigation/arrow-drop-up';
 
 import SidebarDetail from './SidebarDetail';
 import SidebarEdit from './SidebarEdit';
@@ -33,38 +35,41 @@ export default class SideBar extends React.Component {
             selectedFeatures: [],
             selectedOrfs: [],
             newFeature: {},
-            editfeature: -1
+            editfeature: -1,
+            featureOrder: 'name',
+            cutsiteOrder: 'name',
+            orfOrder: 'start',
         };
     }
 
-    onFeatureSelection(row) {
+    onFeatureSelection(id) {
         if (this.state.editFeature > -1) {
             this.setState({ editFeature: -1 });
         }
         let selected = this.state.selectedFeatures;
-        let idx = selected.indexOf(row);
+        let idx = selected.indexOf(id);
         if (idx === -1) {
-            selected.push(row);
+            selected.push(id);
         } else {
             selected.splice(idx, 1);
         }
         this.setState({ selectedFeatures: selected });
     }
 
-    onOrfSelection(row) {
+    onOrfSelection(id) {
         let selected = this.state.selectedOrfs;
-        let idx = selected.indexOf(row);
+        let idx = selected.indexOf(id);
         if (idx === -1) {
-            selected.push(row);
+            selected.push(id);
         } else {
             selected.splice(idx, 1);
         }
         this.setState({ selectedOrfs: selected });
     }
 
-    onEditIconClick(row) {
-        this.setState({ editFeature: row });
-        this.setState({ selectedFeatures: [row] })
+    onEditIconClick(id) {
+        this.setState({ editFeature: id });
+        this.setState({ selectedFeatures: [id] })
     }
 
     editFeature(currentFeature) {
@@ -72,20 +77,16 @@ export default class SideBar extends React.Component {
             feature: currentFeature
         });
         this.setState({ editFeature: -1 });
+        this.setState({ selectedFeatures: [] })
     }
 
     deleteFeatures() {
-        var featureIds = [];
-        this.state.selectedFeatures.forEach(el => {
-            featureIds.push(this.props.annotations[el].id);
-        });
-
+        var featureIds = this.state.selectedFeatures;
         this.props.signals.deleteFeatures({ featureIds: featureIds });
-        // this.setState({ selectedFeatures: [] });
+        this.setState({ selectedFeatures: [] });
     }
 
     openAddFeatureDisplay() {
-        // this.setState({ selectedFeatures: [] });
         this.props.signals.addFeatureModalDisplay();
     }
 
@@ -101,13 +102,34 @@ export default class SideBar extends React.Component {
             annotationsToInsert: [
                 this.state.newFeature
             ],
-            throwErrors: true
+            thidErrors: true
         });
         this.props.signals.addFeatureModalDisplay();
     }
 
-    highlightOrf(row) {
-        return this.state.selectedOrfs.indexOf(row) === -1 ? 'white' : '#E1E1E1';
+    onFeatureSort(column) {
+        this.setState({ featureOrder: column });
+    }
+
+    onCutsiteSort(column) {
+        this.setState({ cutsiteOrder: column });
+    }
+
+    onOrfSort(column) {
+        this.setState({ orfOrder: column });
+    }
+
+    dynamicSort(column) {
+        return function (a,b) {
+            if (typeof a[column] === 'string') {
+                a = a[column].toLowerCase();
+                b = b[column].toLowerCase();
+            } else {
+                a = a[column];
+                b = b[column];
+            }
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+        }
     }
 
     render() {
@@ -121,7 +143,6 @@ export default class SideBar extends React.Component {
             showAddFeatureModal,
             showOrfModal
         } = this.props;
-
         var sidebarContent;
         var controls;
         var tableHeaderCells;
@@ -146,60 +167,87 @@ export default class SideBar extends React.Component {
             </div>
         );
 
+        //FEATURE DETAIL
+        var annotationForm;
+        if (this.state.editFeature > -1 && sidebarType === "Features") {
+            let id = this.state.editFeature;
+            var annotation;
+            for (var i=0; i<annotations.length; i++) {
+                if (annotations[i].id === id)
+                annotation = annotations[i];
+            }
+
+            annotationForm = (
+                <SidebarEdit
+                    editFeature={this.editFeature.bind(this)}
+                    feature={ annotation }
+                    />
+            )
+        }
+
         // FEATURES TAB
         if (sidebarType === 'Features') {
             tableHeaderCells = [];
-            tableHeaderCells.push(<th key='feathead0' style={{width: '30%'}}>name</th>);
-            tableHeaderCells.push(<th key='feathead1' style={{width: '30%'}}>type</th>);
-            tableHeaderCells.push(<th key='feathead2'>position</th>);
-            tableHeaderCells.push(<th key='feathead3' style={{textAlign: 'center', width: '10%'}}>strand</th>);
+            var vertAlign = {verticalAlign: 'middle'};
+            tableHeaderCells.push(<th key='feathead0' style={{width: '30%'}}>name<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'name')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='feathead1' style={{width: '30%'}}>type<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'type')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='feathead2'>position<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'start')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='feathead3' style={{textAlign: 'center', width: '10%'}}>strand<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'strand')} style={vertAlign}/></th>);
             tableHeaderCells.push(<th key='null' style={{width: '10%'}}> </th>);
 
+            var sorted = annotations.slice(0);
+            sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
+
             annotationTableRows = [];
-            for (let i = 0; i < annotations.length; i++) {
+            for (let i = 0; i < sorted.length; i++) {
                 let annotationTableCells = [];
-                let annotation = annotations[i];
+                let annotation = sorted[i];
+                if (this.state.editFeature > -1 && annotation.id === this.state.editFeature) {
+                    annotationTableRows[i] = annotationForm;
 
-                for (var j = 0; j < tableHeaderCells.length - 1; j++) {
-                    let column = tableHeaderCells[j].props.children.toString();
-                    let cellStyle = {};
-                    let cellEntry = '';
-
-                    if (annotation[column] !== null && annotation[column] !== undefined) {
-                        cellStyle = {};
-                        cellEntry = annotation[column].toString();
-                    }
-                    if (column === 'position') {
-                        cellStyle = {};
-                        cellEntry = annotation['start'] + " - " + annotation['end'];
-                    }
-                    if (column === 'strand') {
-                        cellStyle = {textAlign: 'center'};
-                        if (annotation['forward']) {
-                            cellEntry = "+";
-                        } else {
-                            cellEntry = "-";
-                        }
-                    }
-                    annotationTableCells.push(<td style={cellStyle} key={j} onClick={this.onFeatureSelection.bind(this, i)}>{ cellEntry }</td>);
-                }
-                var rowStyle = { backgroundColor: 'white' };
-                if (this.state.selectedFeatures.indexOf(i) !== -1) {
-                    rowStyle = { backgroundColor: '#E1E1E1' };
-                    let cellStyle = {textAlign: 'center', cursor: 'pointer'};
-                    var editCell = <td key={j+1}>
-                                        <IconButton
-                                            onClick={this.onEditIconClick.bind(this, i)}
-                                            tooltip="edit"
-                                            >
-                                            <EditIcon style={{width: '18px', height: '18px'}}/>
-                                        </IconButton>
-                                   </td>;
-                    annotationTableCells.push(editCell);
                 } else {
-                    annotationTableCells.push(<td onClick={this.onFeatureSelection.bind(this, i)}></td>);
+
+                    for (var j = 0; j < tableHeaderCells.length - 1; j++) {
+                        let column = tableHeaderCells[j].props.children.toString().split(',')[0];
+                        let cellStyle = {};
+                        let cellEntry = '';
+
+                        if (annotation[column] !== null && annotation[column] !== undefined) {
+                            cellStyle = {};
+                            cellEntry = annotation[column].toString();
+                        }
+                        if (column === 'position') {
+                            cellStyle = {};
+                            cellEntry = annotation['start'] + " - " + annotation['end'];
+                        }
+                        if (column === 'strand') {
+                            cellStyle = {textAlign: 'center'};
+                            if (annotation['forward']) {
+                                cellEntry = "+";
+                            } else {
+                                cellEntry = "-";
+                            }
+                        }
+                        annotationTableCells.push(<td style={cellStyle} key={j} onClick={this.onFeatureSelection.bind(this, sorted[i].id)}>{ cellEntry }</td>);
+                    }
+                    var rowStyle = { backgroundColor: 'white' };
+                    if (this.state.selectedFeatures.indexOf(sorted[i].id) !== -1) {
+                        rowStyle = { backgroundColor: '#E1E1E1' };
+                        let cellStyle = {textAlign: 'center', cursor: 'pointer'};
+                        var editCell = <td key={j+1}>
+                                            <IconButton
+                                                onClick={this.onEditIconClick.bind(this, sorted[i].id)}
+                                                tooltip="edit"
+                                                >
+                                                <EditIcon style={{width: '18px', height: '18px'}}/>
+                                            </IconButton>
+                                       </td>;
+                        annotationTableCells.push(editCell);
+                    } else {
+                        annotationTableCells.push(<td onClick={this.onFeatureSelection.bind(this, sorted[i].id)}></td>);
+                    }
+                    annotationTableRows.push(<tr style={rowStyle} key={i}>{ annotationTableCells }</tr>);
                 }
-                annotationTableRows.push(<tr style={rowStyle} key={i}>{ annotationTableCells }</tr>);
             }
 
             // controls
@@ -224,19 +272,51 @@ export default class SideBar extends React.Component {
         // CUTSITES TAB
         if (sidebarType === 'Cutsites') {
             tableHeaderCells = [];
-            tableHeaderCells.push(<th key='cuthead0'>name</th>);
-            tableHeaderCells.push(<th key='cuthead1' style={{textAlign: 'center'}}># cuts</th>);
-            tableHeaderCells.push(<th key='cuthead2' style={{width: '40%'}}>position</th>);
-            tableHeaderCells.push(<th key='cuthead3' style={{textAlign: 'center'}}>strand</th>);
+            var vertAlign = {verticalAlign: 'middle'};
+            tableHeaderCells.push(<th key='cuthead0'>name<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'name')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='cuthead1' style={{textAlign: 'center'}}># cuts<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'numberOfCuts')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='cuthead2' style={{width: '40%'}}>position<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'start')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='cuthead3' style={{textAlign: 'center'}}>strand<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'strand')} style={vertAlign}/></th>);
+
+            //this is horrible and nasty and i'm sorry. i'm sorting by an attribute of an object, in an array, in a hash...
+            var sorted = Object.assign({}, annotations);
+            // if (this.state.cutsiteOrder !== 'name') {
+            //
+            //     //turning hash into an array to be sorted
+            //     var array = [];
+            //     for (var key in sorted) {
+            //         let numberOfCuts = sorted[key].length
+            //         for (var i=0; i<numberOfCuts; i++) {
+            //             let obj = Object.assign({}, sorted[key][i]);
+            //             obj.name = key;
+            //             obj.numberOfCuts = numberOfCuts;
+            //             array.push(obj);
+            //         }
+            //     }
+            //     array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
+            //
+            //     //turning array back into hash for rendering
+            //     sorted = {};
+            //     for (var j=0; j<array.length; j++) {
+            //         let name = array[j].name;
+            //
+            //         //a workaround for creating multiple entries with the same key...
+            //         while (sorted[name]) {
+            //             name = name + " ";
+            //         }
+            //
+            //         sorted[name] = [array[j]];
+            //     }
+            // }
 
             annotationTableRows = [];
             var color = '#FFFFFF';
-            for (var enzyme in annotations) { // this is an object so we loop differently
+            for (var enzyme in sorted) { // this is an object so we loop differently
                 let annotationTableCells = [];
-                let annotation = annotations[enzyme];
+                let annotation = sorted[enzyme];
                 // first loop for enzyme name and number of cuts + first cut
                 for (let j = 0; j < 4; j++) {
-                    let column = tableHeaderCells[j].props.children.toString();
+                    let column = tableHeaderCells[j].props.children.toString().split(',')[0];
                     let cellStyle = {};
                     let cellEntry = '';
                     let cut = annotation[0];
@@ -247,7 +327,7 @@ export default class SideBar extends React.Component {
                     }
                     if (column === '# cuts') {
                         cellStyle = {textAlign: 'center'};
-                        cellEntry = annotation.length;
+                        cellEntry = cut['numberOfCuts'] || annotation.length;
                     }
                     if (column === 'position') {
                         cellEntry = cut['start'] + " - " + cut['end'];
@@ -270,7 +350,7 @@ export default class SideBar extends React.Component {
                 // sub loop for each additional cut
                 for (var j=1; j<annotation.length; j++) {
                     for (let k = 0; k < 4; k++) {
-                        let column = tableHeaderCells[k].props.children.toString();
+                        let column = tableHeaderCells[k].props.children.toString().split(',')[0];
                         let cellEntry = '';
                         let cellStyle = {};
                         let cut = annotation[j];
@@ -299,18 +379,22 @@ export default class SideBar extends React.Component {
         // ORFS TAB
         if (sidebarType === 'Orfs') {
             tableHeaderCells = [];
-            tableHeaderCells.push(<th key='orfhead0'>position</th>);
-            tableHeaderCells.push(<th key='orfhead1'>length</th>);
-            tableHeaderCells.push(<th key='orfhead2' style={{textAlign: 'center'}}>strand</th>);
-            tableHeaderCells.push(<th key='orfhead3' style={{textAlign: 'center'}}>frame</th>);
+            var vertAlign = {verticalAlign: 'middle'};
+            tableHeaderCells.push(<th key='orfhead0'>position<ArrowDropDown onClick={this.onOrfSort.bind(this, 'start')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='orfhead1'>length<ArrowDropDown onClick={this.onOrfSort.bind(this, 'length')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='orfhead2' style={{textAlign: 'center'}}>strand<ArrowDropDown onClick={this.onOrfSort.bind(this, 'strand')} style={vertAlign}/></th>);
+            tableHeaderCells.push(<th key='orfhead3' style={{textAlign: 'center'}}>frame<ArrowDropDown onClick={this.onOrfSort.bind(this, 'frame')} style={vertAlign}/></th>);
+
+            var sorted = annotations.slice(0);
+            sorted = sorted.sort(this.dynamicSort(this.state.orfOrder));
 
             annotationTableRows = [];
-            for (let i = 0; i < annotations.length; i++) {
+            for (let i = 0; i < sorted.length; i++) {
                 let annotationTableCells = [];
-                let annotation = annotations[i];
+                let annotation = sorted[i];
 
                 for (let j = 0; j < tableHeaderCells.length; j++) {
-                    let column = tableHeaderCells[j].props.children;
+                    let column = tableHeaderCells[j].props.children.toString().split(',')[0];
                     let cellEntry = '';
                     let cellStyle = {};
 
@@ -337,8 +421,11 @@ export default class SideBar extends React.Component {
 
                     annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
-                var rowStyle = {backgroundColor: this.highlightOrf(i)};
-                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onOrfSelection.bind(this, i)}>{annotationTableCells}</tr>);
+                var rowStyle = { backgroundColor: 'white' };
+                if (this.state.selectedOrfs.indexOf(sorted[i].id) !== -1) {
+                    rowStyle = { backgroundColor: '#E1E1E1' };
+                }
+                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onOrfSelection.bind(this, sorted[i].id)}>{annotationTableCells}</tr>);
             }
             var orfControls = (
                 <div className={styles.controls}>
@@ -360,20 +447,6 @@ export default class SideBar extends React.Component {
                     }
                 </div>
             );
-        }
-
-        //FEATURE DETAIL
-        if (this.state.editFeature  > -1 && sidebarType === "Features") {
-            let idx = this.state.editFeature;
-            let annotation = annotations[idx];
-
-            var annotationForm = (
-                <SidebarEdit
-                    editFeature={this.editFeature.bind(this)}
-                    feature={ annotation }
-                    />
-            )
-            annotationTableRows[idx] = annotationForm;
         }
 
         var actions = (

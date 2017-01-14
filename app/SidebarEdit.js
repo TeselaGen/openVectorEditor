@@ -26,6 +26,7 @@ export default class SidebarDetail extends React.Component {
 
         this.state = {
             feature: assign({}, this.props.feature),
+            changesMade: false,
         };
 
         if (this.state.feature.notes === undefined) {
@@ -43,6 +44,7 @@ export default class SidebarDetail extends React.Component {
         this.state.feature[event.target.id] = event.target.value;
         this.setState({
             feature: this.state.feature,
+            changesMade: true,
         });
     };
 
@@ -90,6 +92,7 @@ export default class SidebarDetail extends React.Component {
                 /></td>
                 <td>
                 <IconButton
+                    disabled={!this.state.changesMade}
                     onClick={this.save}
                     tooltip="save"
                     >
