@@ -39,12 +39,11 @@ td.strand {
 
 td.strand input {
     text-align: center;
-    width: 45% !important;
 }
 
 .tableContainer {
     position: absolute;
-    top: 42px;
+    top: 60px;
     left: 20px;
     right: 0;
     bottom: 50px;
@@ -89,4 +88,13 @@ td.strand input {
     display: inline;
     margin-left:20px;
     height: 26px;
+}
+
+.arrowdropdown {
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.arrowdropdown:active {
+    box-shadow: -1px -1px 1px grey;
 }

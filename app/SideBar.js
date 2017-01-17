@@ -2,10 +2,10 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
 // {{}} remove this.state and do it correctly
-//todo - fix lagginess of cutsites
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
+import Checkbox from 'material-ui/lib/checkbox';
 import CheckCircle from 'material-ui/lib/svg-icons/check-circle';
 import CancelIcon from 'material-ui/lib/svg-icons/cancel-icon';
 import EditIcon from 'material-ui/lib/svg-icons/edit-icon';
@@ -32,6 +32,7 @@ export default class SideBar extends React.Component {
         super(arguments);
 
         this.state = {
+            sidebarType: 'Features',
             selectedFeatures: [],
             selectedOrfs: [],
             newFeature: {},
@@ -40,6 +41,23 @@ export default class SideBar extends React.Component {
             cutsiteOrder: 'name',
             orfOrder: 'start',
         };
+    }
+
+    selectAll(ids) {
+        this.setState({editFeature: -1});
+        if (this.state.sidebarType === 'Features') {
+            this.setState({selectedFeatures: ids});
+        } else if (this.state.sidebarType === 'Orfs') {
+            this.setState({selectedOrfs: ids});
+        }
+    }
+
+    selectNone() {
+        if (this.state.sidebarType === 'Features') {
+            this.setState({selectedFeatures: []});
+        } else if (this.state.sidebarType === 'Orfs') {
+            this.setState({selectedOrfs: []});
+        }
     }
 
     onFeatureSelection(id) {
@@ -68,16 +86,14 @@ export default class SideBar extends React.Component {
     }
 
     onEditIconClick(id) {
-        this.setState({ editFeature: id });
-        this.setState({ selectedFeatures: [id] })
+        this.setState({ selectedFeatures: [id], editFeature: id })
     }
 
     editFeature(currentFeature) {
         this.props.signals.updateFeature({
             feature: currentFeature
         });
-        this.setState({ editFeature: -1 });
-        this.setState({ selectedFeatures: [] })
+        this.setState({ selectedFeatures: [], editFeature: -1 })
     }
 
     deleteFeatures() {
@@ -87,6 +103,7 @@ export default class SideBar extends React.Component {
     }
 
     openAddFeatureDisplay() {
+        this.setState({ editFeature: -1 });
         this.props.signals.addFeatureModalDisplay();
     }
 
@@ -108,18 +125,35 @@ export default class SideBar extends React.Component {
     }
 
     onFeatureSort(column) {
-        this.setState({ featureOrder: column });
+        if (column === this.state.featureOrder) {
+            column = '-' + column; // descending sort
+        }
+        this.setState({ featureOrder: column, editFeature: -1 });
     }
 
     onCutsiteSort(column) {
+        if (column === this.state.cutsiteOrder) {
+            column = '-' + column; // descending sort
+        }
         this.setState({ cutsiteOrder: column });
     }
 
     onOrfSort(column) {
+        if (column === this.state.orfOrder) {
+            column = '-' + column; // descending sort
+        }
         this.setState({ orfOrder: column });
     }
 
     dynamicSort(column) {
+        // ascending sort
+        var sortOrder = 1;
+
+        // descending sort
+        if (column[0] === '-') {
+            sortOrder = -1;
+            column = column.slice(1);
+        }
         return function (a,b) {
             if (typeof a[column] === 'string') {
                 a = a[column].toLowerCase();
@@ -128,7 +162,7 @@ export default class SideBar extends React.Component {
                 a = a[column];
                 b = b[column];
             }
-            return (a < b) ? -1 : (a > b) ? 1 : 0;
+            return (a < b) ? -1*sortOrder : (a > b) ? sortOrder : 0;
         }
     }
 
@@ -138,7 +172,6 @@ export default class SideBar extends React.Component {
             cutsites,
             minimumOrfSize,
             readOnly,
-            sidebarType,
             signals,
             showAddFeatureModal,
             showOrfModal
@@ -149,27 +182,88 @@ export default class SideBar extends React.Component {
         var annotationTableRows;
 
         // TABS
-        var tabStyle = {textAlign: 'center', flexGrow: '1', padding: '10px 30px', fontSize: '16px'};
+        var tabStyle = {
+            textAlign: 'center',
+            flexGrow: '1',
+            padding: '10px 30px',
+            fontSize: '16px'
+        };
         var selectedTabStyle = {};
-        Object.assign(selectedTabStyle, tabStyle, {backgroundColor: 'white', borderTopRightRadius: '4px', borderTopLeftRadius: '4px'});
+        Object.assign(
+            selectedTabStyle,
+            tabStyle, {
+                backgroundColor: 'white',
+                borderTopRightRadius: '4px',
+                borderTopLeftRadius: '4px'
+            }
+        );
 
         var topTabs = (
             <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
-                <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle} onClick={function() {
-                    signals.sidebarDisplay({ type: 'Features' });
-                }}>Features</div>
-                <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}  onClick={function () {
-                    signals.sidebarDisplay({ type: 'Cutsites' });
-                }}>Cutsites</div>
-                <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}  onClick={function () {
-                    signals.sidebarDisplay({ type: 'Orfs' });
-                }}>ORFs</div>
+
+                <div style={this.state.sidebarType==='Features' ? selectedTabStyle : tabStyle}
+                    onClick={function() {
+                        this.setState({sidebarType: 'Features'});
+                        signals.sidebarDisplay({ type: 'Features' });
+                    }.bind(this)}>
+                    Features
+                </div>
+
+                <div style={this.state.sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}
+                    onClick={function () {
+                        this.setState({sidebarType: 'Cutsites', editFeature: -1});
+                        signals.sidebarDisplay({ type: 'Cutsites' });
+                    }.bind(this)}>
+                    Cutsites
+                </div>
+
+                <div style={this.state.sidebarType==='Orfs' ? selectedTabStyle : tabStyle}
+                    onClick={function () {
+                        this.setState({sidebarType: 'Orfs', editFeature: -1});
+                        signals.sidebarDisplay({ type: 'Orfs' });
+                    }.bind(this)}>
+                    ORFs
+                </div>
+
             </div>
         );
 
-        //FEATURE DETAIL
+        // SELECT ALL / SELECT NONE CHECKBOX
+        var selectAllNone = <div></div>;
+        var annotationIds = [];
+        for (let i=0; i<annotations.length; i++) {
+            annotationIds.push(annotations[i].id);
+        }
+        var selectAll = (
+            <IconButton tooltip='select all'
+                style={{position: 'absolute', top: '35px', width: '40px', zIndex: '5'}}>
+                <Checkbox onCheck={this.selectAll.bind(this, annotationIds)}></Checkbox>
+            </IconButton>
+        )
+        var selectNone = (
+            <IconButton tooltip='select none'
+                style={{position: 'absolute', top: '35px', width: '40px', zIndex: '5'}}>
+                <Checkbox onCheck={this.selectNone.bind(this)}></Checkbox>
+            </IconButton>
+        )
+
+        if (this.state.sidebarType === 'Features' &&
+            this.state.selectedFeatures.length !== annotationIds.length) {
+            selectAllNone = selectAll;
+        } else if (this.state.sidebarType === 'Features') {
+            selectAllNone = selectNone;
+        }
+
+        if (this.state.sidebarType === 'Orfs' &&
+            this.state.selectedOrfs.length !== annotationIds.length) {
+            selectAllNone = selectAll;
+        } else if (this.state.sidebarType === 'Orfs') {
+            selectAllNone = selectNone;
+        }
+
+        // FEATURE DETAIL
         var annotationForm;
-        if (this.state.editFeature > -1 && sidebarType === "Features") {
+        if (this.state.editFeature > -1 && this.state.sidebarType === "Features") {
             let id = this.state.editFeature;
             var annotation;
             for (var i=0; i<annotations.length; i++) {
@@ -186,14 +280,38 @@ export default class SideBar extends React.Component {
         }
 
         // FEATURES TAB
-        if (sidebarType === 'Features') {
+        if (this.state.sidebarType === 'Features') {
             tableHeaderCells = [];
-            var vertAlign = {verticalAlign: 'middle'};
-            tableHeaderCells.push(<th key='feathead0' style={{width: '30%'}}>name<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'name')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='feathead1' style={{width: '30%'}}>type<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'type')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='feathead2'>position<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'start')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='feathead3' style={{textAlign: 'center', width: '10%'}}>strand<ArrowDropDown onClick={this.onFeatureSort.bind(this, 'strand')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='null' style={{width: '10%'}}> </th>);
+            tableHeaderCells.push(
+                <th key='feathead0' style={{width: '30%'}}>name
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'name')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='feathead1' style={{width: '30%'}}>type
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'type')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='feathead2'>position
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'start')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='feathead3' style={{textAlign: 'center', width: '10%'}}>strand
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            // placeholder column for edit-icon
+            tableHeaderCells.push(<th key='null' style={{minWidth: '48px'}}> </th>);
 
             var sorted = annotations.slice(0);
             sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
@@ -228,40 +346,53 @@ export default class SideBar extends React.Component {
                                 cellEntry = "-";
                             }
                         }
-                        annotationTableCells.push(<td style={cellStyle} key={j} onClick={this.onFeatureSelection.bind(this, sorted[i].id)}>{ cellEntry }</td>);
+                        annotationTableCells.push(
+                            <td style={cellStyle} key={j}
+                                onClick={this.onFeatureSelection.bind(this, sorted[i].id)}>
+                                { cellEntry }
+                            </td>);
                     }
+
+                    // show edit-icon if row is selected
                     var rowStyle = { backgroundColor: 'white' };
                     if (this.state.selectedFeatures.indexOf(sorted[i].id) !== -1) {
                         rowStyle = { backgroundColor: '#E1E1E1' };
                         let cellStyle = {textAlign: 'center', cursor: 'pointer'};
-                        var editCell = <td key={j+1}>
-                                            <IconButton
-                                                onClick={this.onEditIconClick.bind(this, sorted[i].id)}
-                                                tooltip="edit"
-                                                >
-                                                <EditIcon style={{width: '18px', height: '18px'}}/>
-                                            </IconButton>
-                                       </td>;
+                        var editCell = (
+                            <td key={j+1}>
+                                <IconButton
+                                onClick={this.onEditIconClick.bind(this, sorted[i].id)}
+                                tooltip="edit">
+                                <EditIcon style={{width: '18px', height: '18px'}}/>
+                                </IconButton>
+                           </td>);
                         annotationTableCells.push(editCell);
                     } else {
-                        annotationTableCells.push(<td onClick={this.onFeatureSelection.bind(this, sorted[i].id)}></td>);
+                        annotationTableCells.push(
+                            <td key={j+1}
+                                onClick={this.onFeatureSelection.bind(this, sorted[i].id)}>
+                            </td>);
                     }
-                    annotationTableRows.push(<tr style={rowStyle} key={i}>{ annotationTableCells }</tr>);
+
+                    annotationTableRows.push(
+                        <tr style={rowStyle} key={i}>{ annotationTableCells }</tr>);
                 }
             }
 
-            // controls
+            // add / delete features controls
             if (!readOnly) {
                 var featureControls = (
                     <div className={styles.controls}>
                         <IconButton
                             onTouchTap={this.openAddFeatureDisplay.bind(this)}
-                            tooltip="add"
-                            >
+                            tooltip="add">
                             <AddBoxIcon />
                         </IconButton>
 
-                        <IconButton onClick={this.deleteFeatures.bind(this)} disabled={this.state.selectedFeatures.length === 0} tooltip={"delete"}>
+                        <IconButton
+                            onClick={this.deleteFeatures.bind(this)}
+                            disabled={this.state.selectedFeatures.length === 0}
+                            tooltip={"delete"}>
                             <IndeterminateCheckBoxIcon />
                         </IconButton>
                     </div>
@@ -270,44 +401,67 @@ export default class SideBar extends React.Component {
         }
 
         // CUTSITES TAB
-        if (sidebarType === 'Cutsites') {
+        if (this.state.sidebarType === 'Cutsites') {
             tableHeaderCells = [];
-            var vertAlign = {verticalAlign: 'middle'};
-            tableHeaderCells.push(<th key='cuthead0'>name<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'name')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='cuthead1' style={{textAlign: 'center'}}># cuts<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'numberOfCuts')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='cuthead2' style={{width: '40%'}}>position<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'start')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='cuthead3' style={{textAlign: 'center'}}>strand<ArrowDropDown onClick={this.onCutsiteSort.bind(this, 'strand')} style={vertAlign}/></th>);
+            tableHeaderCells.push(
+                <th key='cuthead0'>name
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'name')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='cuthead1' style={{textAlign: 'center'}}># cuts
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'numberOfCuts')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='cuthead2' style={{width: '40%'}}>position
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'start')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='cuthead3' style={{textAlign: 'center'}}>strand
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
 
-            //this is horrible and nasty and i'm sorry. i'm sorting by an attribute of an object, in an array, in a hash...
+            // this is horrible and nasty and i'm sorry. i'm trying to sort by an attribute of an object, in an array, in a hash...
             var sorted = Object.assign({}, annotations);
-            // if (this.state.cutsiteOrder !== 'name') {
-            //
-            //     //turning hash into an array to be sorted
-            //     var array = [];
-            //     for (var key in sorted) {
-            //         let numberOfCuts = sorted[key].length
-            //         for (var i=0; i<numberOfCuts; i++) {
-            //             let obj = Object.assign({}, sorted[key][i]);
-            //             obj.name = key;
-            //             obj.numberOfCuts = numberOfCuts;
-            //             array.push(obj);
-            //         }
-            //     }
-            //     array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
-            //
-            //     //turning array back into hash for rendering
-            //     sorted = {};
-            //     for (var j=0; j<array.length; j++) {
-            //         let name = array[j].name;
-            //
-            //         //a workaround for creating multiple entries with the same key...
-            //         while (sorted[name]) {
-            //             name = name + " ";
-            //         }
-            //
-            //         sorted[name] = [array[j]];
-            //     }
-            // }
+            if (this.state.cutsiteOrder !== 'name') {
+
+                // turning hash into an array to be sorted
+                var array = [];
+                for (var key in sorted) {
+                    let numberOfCuts = sorted[key].length
+                    for (var i=0; i<numberOfCuts; i++) {
+                        let obj = Object.assign({}, sorted[key][i]);
+                        obj.name = key;
+                        obj.numberOfCuts = numberOfCuts;
+                        array.push(obj);
+                    }
+                }
+                array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
+
+                // turning array back into hash for rendering
+                sorted = {};
+                for (var j=0; j<array.length; j++) {
+                    let name = array[j].name;
+
+                    // a hacky workaround for creating multiple entries with the same key
+                    while (sorted[name]) {
+                        name = name + " ";
+                    }
+
+                    sorted[name] = [array[j]];
+                }
+            }
 
             annotationTableRows = [];
             var color = '#FFFFFF';
@@ -341,10 +495,15 @@ export default class SideBar extends React.Component {
                             cellEntry = "-";
                         }
                     }
-                    annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
+                    annotationTableCells.push(
+                        <td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
                 color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
-                annotationTableRows.push(<tr style={{backgroundColor: color}}>{ annotationTableCells }</tr>);
+                annotationTableRows.push(
+                    <tr key={annotation.id}
+                        style={{backgroundColor: color}}>
+                        { annotationTableCells }
+                    </tr>);
 
                 annotationTableCells = [];
                 // sub loop for each additional cut
@@ -368,22 +527,50 @@ export default class SideBar extends React.Component {
                                 cellEntry = "-";
                             }
                         }
-                        annotationTableCells.push(<td style={cellStyle} key={k}>{ cellEntry }</td>);
+                        annotationTableCells.push(
+                            <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
-                    annotationTableRows.push(<tr style={{backgroundColor: color}}>{ annotationTableCells }</tr>);
+                    annotationTableRows.push(
+                        <tr key={annotation.id+'.'+j} style={{backgroundColor: color}}>
+                            { annotationTableCells }
+                        </tr>);
+
                     annotationTableCells = [];
                 }
             }
         }
 
         // ORFS TAB
-        if (sidebarType === 'Orfs') {
+        if (this.state.sidebarType === 'Orfs') {
             tableHeaderCells = [];
-            var vertAlign = {verticalAlign: 'middle'};
-            tableHeaderCells.push(<th key='orfhead0'>position<ArrowDropDown onClick={this.onOrfSort.bind(this, 'start')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='orfhead1'>length<ArrowDropDown onClick={this.onOrfSort.bind(this, 'length')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='orfhead2' style={{textAlign: 'center'}}>strand<ArrowDropDown onClick={this.onOrfSort.bind(this, 'strand')} style={vertAlign}/></th>);
-            tableHeaderCells.push(<th key='orfhead3' style={{textAlign: 'center'}}>frame<ArrowDropDown onClick={this.onOrfSort.bind(this, 'frame')} style={vertAlign}/></th>);
+            tableHeaderCells.push(
+                <th key='orfhead0'>position
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'start')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='orfhead1'>length
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'length')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='orfhead2' style={{textAlign: 'center'}}>strand
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
+            tableHeaderCells.push(
+                <th key='orfhead3' style={{textAlign: 'center'}}>frame
+                    <IconButton onClick={this.onFeatureSort.bind(this, 'frame')}
+                    style={{verticalAlign: 'middle'}}>
+                    <ArrowDropDown/>
+                    </IconButton>
+                </th>);
 
             var sorted = annotations.slice(0);
             sorted = sorted.sort(this.dynamicSort(this.state.orfOrder));
@@ -419,36 +606,48 @@ export default class SideBar extends React.Component {
                         cellEntry = annotation[column].toString();
                     }
 
-                    annotationTableCells.push(<td style={cellStyle} key={j}>{ cellEntry }</td>);
+                    annotationTableCells.push(
+                        <td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
                 var rowStyle = { backgroundColor: 'white' };
                 if (this.state.selectedOrfs.indexOf(sorted[i].id) !== -1) {
                     rowStyle = { backgroundColor: '#E1E1E1' };
                 }
-                annotationTableRows.push(<tr style={rowStyle} key={i} onClick={this.onOrfSelection.bind(this, sorted[i].id)}>{annotationTableCells}</tr>);
+                annotationTableRows.push(
+                    <tr style={rowStyle} key={i}
+                        onClick={this.onOrfSelection.bind(this, sorted[i].id)}>
+                        {annotationTableCells}
+                    </tr>);
             }
+
+            // orf controls
             var orfControls = (
                 <div className={styles.controls}>
                     Minimum ORF Size: { minimumOrfSize }
                     { readOnly ? null :
-                        <div id='orfControl' onClick={function() {signals.showChangeMinOrfSizeDialog()}}
+                        <div id='orfControl'
+                            onClick={function() {signals.showChangeMinOrfSizeDialog()}}
                             className={styles.orfControl}> Change </div>
                     }
                     { showOrfModal ?
                         <div id='orfModal' className={styles.orfModal}>
-                            <input id='orfInput' type='number' defaultValue={ minimumOrfSize }/>
+                            <input id='orfInput' type='number' defaultValue={minimumOrfSize}/>
                             <button name='setOrfMin' onTouchTap={function () {
                                 var newMinVal = document.getElementById('orfInput').value;
                                 signals.changeOrfMin({ newMin: newMinVal });
                                 signals.showChangeMinOrfSizeDialog();
                             }}>Set</button>
-                            <button name='closeOrfModal' onClick={function() {signals.showChangeMinOrfSizeDialog()}}>Cancel</button>
+                            <button name='closeOrfModal'
+                                onClick={function() {signals.showChangeMinOrfSizeDialog()}}>
+                                Cancel
+                            </button>
                         </div> : null
                     }
                 </div>
             );
         }
 
+        // add feature modal
         var actions = (
             // {{}} why are the function calls different?
             <div>
@@ -487,10 +686,12 @@ export default class SideBar extends React.Component {
             );
         }
 
-        return ( // {{}} tabs onclick need to deselect any selected row
+        return (
             <div>
 
                 { topTabs }
+
+                { selectAllNone }
 
                 <div className={styles.tableContainer}>
                     <table ref="sideBar">

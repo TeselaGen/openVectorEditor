@@ -25,8 +25,7 @@ export default class SidebarDetail extends React.Component {
         super(props);
 
         this.state = {
-            feature: assign({}, this.props.feature),
-            changesMade: false,
+            feature: assign({}, this.props.feature)
         };
 
         if (this.state.feature.notes === undefined) {
@@ -42,10 +41,7 @@ export default class SidebarDetail extends React.Component {
 
     onChange = (event) => {
         this.state.feature[event.target.id] = event.target.value;
-        this.setState({
-            feature: this.state.feature,
-            changesMade: true,
-        });
+        this.setState({ feature: this.state.feature });
     };
 
     render() {
@@ -87,12 +83,16 @@ export default class SidebarDetail extends React.Component {
                     id={"strand"}
                     placeholder="strand"
                     onChange={this.onChange}
-                    errorText={isNaN(this.state.feature.strand) && "not a number"}
+                    pattern="-*\d+" required
                     value={this.state.feature.strand.toString()}
                 /></td>
                 <td>
                 <IconButton
-                    disabled={!this.state.changesMade}
+                    disabled={
+                        !this.state.feature['start'] || isNaN(this.state.feature['start']) ||
+                        !this.state.feature['end'] || isNaN(this.state.feature['end']) ||
+                        !this.state.feature['strand'] || isNaN(this.state.feature['strand'])
+                    }
                     onClick={this.save}
                     tooltip="save"
                     >
