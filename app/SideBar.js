@@ -403,28 +403,28 @@ export default class SideBar extends React.Component {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='cuthead0'>name
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'name')}
+                    <IconButton onClick={this.onCutsiteSort.bind(this, 'name')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
                 <th key='cuthead1' style={{textAlign: 'center'}}># cuts
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'numberOfCuts')}
+                    <IconButton onClick={this.onCutsiteSort.bind(this, 'numberOfCuts')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
                 <th key='cuthead2' style={{width: '40%'}}>position
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'start')}
+                    <IconButton onClick={this.onCutsiteSort.bind(this, 'start')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
                 <th key='cuthead3' style={{textAlign: 'center'}}>strand
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
+                    <IconButton onClick={this.onCutsiteSort.bind(this, 'forward')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
@@ -543,28 +543,28 @@ export default class SideBar extends React.Component {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='orfhead0'>position
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'start')}
+                    <IconButton onClick={this.onOrfSort.bind(this, 'start')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
                 <th key='orfhead1'>length
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'length')}
+                    <IconButton onClick={this.onOrfSort.bind(this, 'length')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
                 <th key='orfhead2' style={{textAlign: 'center'}}>strand
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
+                    <IconButton onClick={this.onOrfSort.bind(this, 'forward')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
                 <th key='orfhead3' style={{textAlign: 'center'}}>frame
-                    <IconButton onClick={this.onFeatureSort.bind(this, 'frame')}
+                    <IconButton onClick={this.onOrfSort.bind(this, 'frame')}
                     style={{verticalAlign: 'middle'}}>
                     <ArrowDropDown/>
                     </IconButton>
