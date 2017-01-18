@@ -8,7 +8,7 @@ import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterm
 import IconButton from 'material-ui/lib/icon-button';
 import FlatButton from 'material-ui/lib/flat-button';
 import Checkbox from 'material-ui/lib/checkbox';
-import EditIcon from 'material-ui/lib/svg-icons/edit-icon';
+import ModeEdit from 'material-ui/lib/svg-icons/editor/mode-edit';
 import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 import ArrowDropUp from 'material-ui/lib/svg-icons/navigation/arrow-drop-up';
 
@@ -391,7 +391,7 @@ export default class SideBar extends React.Component {
                                 <IconButton
                                 onClick={this.onEditIconClick.bind(this, sorted[i].id)}
                                 tooltip="edit">
-                                <EditIcon style={{width: '18px', height: '18px'}}/>
+                                <ModeEdit style={{width: '18px', height: '18px'}}/>
                                 </IconButton>
                            </td>);
                         annotationTableCells.push(editCell);
