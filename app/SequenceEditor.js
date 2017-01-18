@@ -28,7 +28,7 @@ var RowView = require('./RowView/RowView');
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
-    cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
     orfData: ['orfData'],
 })
 
@@ -138,7 +138,7 @@ export default class SequenceEditor extends React.Component {
             showRow,
             showSidebar,
             sidebarType,
-            cutsites,
+            cutsitesByName,
             orfData,
             showRestrictionEnzymeManager,
             readOnly,
@@ -172,15 +172,13 @@ export default class SequenceEditor extends React.Component {
                 <SideBar
                    annotations={sequenceData.features}
                    annotationType={sidebarType}
-                   headers={['name', 'type', 'start', 'end', 'strand']}
                    />
             );
         } else if (sidebarType === 'Cutsites') {
             table = (
                 <SideBar
-                   annotations={cutsites}
+                   annotations={cutsitesByName}
                    annotationType={sidebarType}
-                   headers={['name']}
                    />
             );
         } else if (sidebarType === 'Orfs') {
@@ -188,7 +186,6 @@ export default class SequenceEditor extends React.Component {
                 <SideBar
                    annotations={orfData}
                    annotationType={sidebarType}
-                   headers={['start', 'end', 'length', 'strand', 'frame']}
                    />
             );
         }

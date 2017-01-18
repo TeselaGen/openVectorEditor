@@ -11,7 +11,7 @@ sid = sid.replace(/sessionId=|%22/g, "");
 export default function saveToFile({input, state, output}) {
     var { fileExt } = input;
 
-    if(fileExt.match("sbol|genbank|fasta|original")
+    if(fileExt.match("sbol1|sbol2|genbank|fasta|original")
         && id
         && sid) 
     // a request made to ice with this format will tell it to send the file for download

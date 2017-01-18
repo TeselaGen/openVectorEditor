@@ -11,7 +11,6 @@ var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
 export default function saveToServer({input, state, output}) {
-    debugger
     var convertedState = toICE(state)
     request
         .post('rest/parts/' + id + '/sequence?sid=' + sid)
