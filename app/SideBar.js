@@ -5,12 +5,10 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
-import Checkbox from 'material-ui/lib/checkbox';
-import CheckCircle from 'material-ui/lib/svg-icons/check-circle';
-import CancelIcon from 'material-ui/lib/svg-icons/cancel-icon';
-import EditIcon from 'material-ui/lib/svg-icons/edit-icon';
 import IconButton from 'material-ui/lib/icon-button';
 import FlatButton from 'material-ui/lib/flat-button';
+import Checkbox from 'material-ui/lib/checkbox';
+import EditIcon from 'material-ui/lib/svg-icons/edit-icon';
 import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 import ArrowDropUp from 'material-ui/lib/svg-icons/navigation/arrow-drop-up';
 
