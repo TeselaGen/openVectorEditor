@@ -9,7 +9,7 @@ var getAminoAcidDataForEachBaseOfDna = require('ve-sequence-utils/getAminoAcidDa
 var getCutsitesFromSequence = require('ve-sequence-utils/getCutsitesFromSequence');
 
 // this isn't loading, it's using the hardcoded version below but this line is still necessary
-var enzymeList = require('ve-sequence-utils/enzymeList.json'); 
+var enzymeList = require('ve-sequence-utils/enzymeList.json');
 
 // here's the enzyme lists from old VE so we can pick and choose / merge them
 var commonEnzymes = ["AatII", "AvrII", "BamHI", "BglII", "BsgI", "EagI", "EcoRI", "EcoRV", "HindIII", "KpnI", "NcoI", "NdeI", "NheI", "NotI", "PstI", "PvuI", "SacI", "SacII", "SalI", "SmaI", "SpeI", "SphI", "XbaI", "XhoI", "XmaI"];
@@ -101,7 +101,7 @@ module.exports = {
        translations: [],
        parts: [],
        circular: false
-    }, 
+    },
     userEnzymeList: commonEnzymes, //user enzymes applied to the view
     commonEnzymes: commonEnzymes,
     berkeleyBBEnzymes: berkeleyBBEnzymes,

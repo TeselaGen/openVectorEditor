@@ -22,13 +22,14 @@ import styles from './side-bar.css'
     cutsites: ['cutsites'],
     minimumOrfSize: ['minimumOrfSize'],
     readOnly: ['readOnly'],
-    sidebarType: ['sidebarType']
+    sidebarType: ['sidebarType'],
+    selectionLayer: ['selectionLayer'],
 })
 
 export default class SideBar extends React.Component {
+
     constructor() {
         super(arguments);
-
         this.state = {
             sidebarType: 'Features',
             selectedFeatures: [],
@@ -39,6 +40,19 @@ export default class SideBar extends React.Component {
             cutsiteOrder: 'name',
             orfOrder: 'start',
         };
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.selectionLayer.selected) {
+            for (var key in newProps.annotations) {
+                let annotation = newProps.annotations[key];
+                if (annotation.start === newProps.selectionLayer.start) {
+                    this.setState({selectedFeatures: [annotation.id]});
+                }
+            }
+        } else if (this.state.selectedFeatures.legnth === 1){
+            this.setState({selectedFeatures: []});
+        }
     }
 
     selectAll(ids) {
@@ -70,6 +84,20 @@ export default class SideBar extends React.Component {
             selected.splice(idx, 1);
         }
         this.setState({ selectedFeatures: selected });
+
+        let signals = this.props.signals;
+        if (this.state.selectedFeatures.length === 1) {
+            let highlightFeatureId = this.state.selectedFeatures[0];
+            let annotations = this.props.annotations;
+            for (var i=0; i<annotations.length; i++) {
+                if (annotations[i].id === highlightFeatureId) {
+                    var annotation = annotations[i];
+                }
+            }
+            signals.featureClicked({annotation: annotation});
+        } else {
+            signals.featureClicked({annotation: {}});
+        }
     }
 
     onOrfSelection(id) {
@@ -172,7 +200,8 @@ export default class SideBar extends React.Component {
             readOnly,
             signals,
             showAddFeatureModal,
-            showOrfModal
+            showOrfModal,
+            selectionLayer
         } = this.props;
         var sidebarContent;
         var controls;
@@ -265,8 +294,9 @@ export default class SideBar extends React.Component {
             let id = this.state.editFeature;
             var annotation;
             for (var i=0; i<annotations.length; i++) {
-                if (annotations[i].id === id)
-                annotation = annotations[i];
+                if (annotations[i].id === id) {
+                    annotation = annotations[i];
+                }
             }
 
             annotationForm = (
