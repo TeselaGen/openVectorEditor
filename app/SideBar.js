@@ -47,11 +47,18 @@ export default class SideBar extends React.Component {
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
                 if (annotation.start === newProps.selectionLayer.start) {
-                    this.setState({selectedFeatures: [annotation.id]});
+                    if (this.state.sidebarType === 'Features') {
+                        this.setState({selectedFeatures: [annotation.id]});
+                    }
+                    if (this.state.sidebarType === 'Orfs') {
+                        this.setState({selectedOrfs: [annotation.id]});
+                    }
                 }
             }
-        } else if (this.state.selectedFeatures.legnth === 1){
+        } else if (this.state.sidebarType === 'Features' && this.state.selectedFeatures.length === 1){
             this.setState({selectedFeatures: []});
+        } else if (this.state.sidebarType === 'Orfs' && this.state.selectedOrfs.length === 1) {
+            this.setState({selectedOrfs: []});
         }
     }
 
@@ -109,6 +116,20 @@ export default class SideBar extends React.Component {
             selected.splice(idx, 1);
         }
         this.setState({ selectedOrfs: selected });
+
+        let signals = this.props.signals;
+        if (this.state.selectedOrfs.length === 1) {
+            let highlightFeatureId = this.state.selectedOrfs[0];
+            let annotations = this.props.annotations;
+            for (var i=0; i<annotations.length; i++) {
+                if (annotations[i].id === highlightFeatureId) {
+                    var annotation = annotations[i];
+                }
+            }
+            signals.featureClicked({annotation: annotation});
+        } else {
+            signals.featureClicked({annotation: {}});
+        }
     }
 
     onEditIconClick(id) {
