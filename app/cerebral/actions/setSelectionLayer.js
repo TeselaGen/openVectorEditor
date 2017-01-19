@@ -6,7 +6,6 @@ var deepEqual = require('deep-equal');
 export default function setSelectionLayer({input: {selectionLayer}, state}) {
     var updatedSelectionLayer = setSelectionLayerHelper(selectionLayer);
     if (!deepEqual(state.get('selectionLayer'), updatedSelectionLayer)) {
-        console.log(updatedSelectionLayer);
         state.set('selectionLayer', updatedSelectionLayer);
     }
     if (updatedSelectionLayer.selected) {

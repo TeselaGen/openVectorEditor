@@ -31,7 +31,6 @@ export default class SideBar extends React.Component {
     constructor() {
         super(arguments);
         this.state = {
-            sidebarType: 'Features',
             selectedFeatures: [],
             selectedOrfs: [],
             newFeature: {},
@@ -43,38 +42,44 @@ export default class SideBar extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        let signals = this.props.signals;
         if (newProps.selectionLayer.selected) {
+
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
+
                 if (annotation.start === newProps.selectionLayer.start) {
-                    if (this.state.sidebarType === 'Features') {
+                    if (newProps.sidebarType === 'Features') {
+                        signals.toggleAnnotationDisplay({type: 'Features', value: true}); // highlighting is stupid if those annotation types aren't even being shown
                         this.setState({selectedFeatures: [annotation.id]});
                     }
-                    if (this.state.sidebarType === 'Orfs') {
+                    if (newProps.sidebarType === 'Orfs') {
+                        signals.toggleAnnotationDisplay({type: 'Orfs', value: true}); // highlighting is stupid if those annotation types aren't even being shown
                         this.setState({selectedOrfs: [annotation.id]});
                     }
                 }
             }
-        } else if (this.state.sidebarType === 'Features' && this.state.selectedFeatures.length === 1){
+
+        } else if (newProps.sidebarType === 'Features' && this.state.selectedFeatures.length === 1){
             this.setState({selectedFeatures: []});
-        } else if (this.state.sidebarType === 'Orfs' && this.state.selectedOrfs.length === 1) {
+        } else if (newProps.sidebarType === 'Orfs' && this.state.selectedOrfs.length === 1) {
             this.setState({selectedOrfs: []});
         }
     }
 
     selectAll(ids) {
         this.setState({editFeature: -1});
-        if (this.state.sidebarType === 'Features') {
+        if (this.props.sidebarType === 'Features') {
             this.setState({selectedFeatures: ids});
-        } else if (this.state.sidebarType === 'Orfs') {
+        } else if (this.props.sidebarType === 'Orfs') {
             this.setState({selectedOrfs: ids});
         }
     }
 
     selectNone() {
-        if (this.state.sidebarType === 'Features') {
+        if (this.props.sidebarType === 'Features') {
             this.setState({selectedFeatures: []});
-        } else if (this.state.sidebarType === 'Orfs') {
+        } else if (this.props.sidebarType === 'Orfs') {
             this.setState({selectedOrfs: []});
         }
     }
@@ -162,7 +167,7 @@ export default class SideBar extends React.Component {
 
     addFeature() {
         this.props.signals.addAnnotations({
-            sidebarType: 'features',
+            sidebarType: 'Features',
             annotationsToInsert: [
                 this.state.newFeature
             ],
@@ -222,7 +227,8 @@ export default class SideBar extends React.Component {
             signals,
             showAddFeatureModal,
             showOrfModal,
-            selectionLayer
+            selectionLayer,
+            sidebarType
         } = this.props;
         var sidebarContent;
         var controls;
@@ -249,27 +255,32 @@ export default class SideBar extends React.Component {
         var topTabs = (
             <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
 
-                <div style={this.state.sidebarType==='Features' ? selectedTabStyle : tabStyle}
+            // maybe we want reset selectedFeatures/Orfs and selectionLayer on change tab? maybe we don't?
+                <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle}
                     onClick={function() {
-                        this.setState({sidebarType: 'Features'});
-                        signals.sidebarDisplay({ type: 'Features' });
-                    }.bind(this)}>
+                        if (sidebarType !== 'Features') {
+                            signals.featureClicked({annotation: {}});
+                            this.setState({selectedFeatures: []});
+                        }
+                        signals.sidebarDisplay({ type: 'Features' })}.bind(this)}>
                     Features
                 </div>
 
-                <div style={this.state.sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}
+                <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}
                     onClick={function () {
-                        this.setState({sidebarType: 'Cutsites', editFeature: -1});
-                        signals.sidebarDisplay({ type: 'Cutsites' });
-                    }.bind(this)}>
+                        signals.featureClicked({annotation: {}});
+                        this.setState({selectedFeatures: []});
+                        signals.sidebarDisplay({ type: 'Cutsites' })}.bind(this)}>
                     Cutsites
                 </div>
 
-                <div style={this.state.sidebarType==='Orfs' ? selectedTabStyle : tabStyle}
+                <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}
                     onClick={function () {
-                        this.setState({sidebarType: 'Orfs', editFeature: -1});
-                        signals.sidebarDisplay({ type: 'Orfs' });
-                    }.bind(this)}>
+                        if (sidebarType !== 'Orfs') {
+                            signals.featureClicked({annotation: {}});
+                            this.setState({selectedFeatures: []});
+                        }
+                        signals.sidebarDisplay({ type: 'Orfs' })}.bind(this)}>
                     ORFs
                 </div>
 
@@ -295,23 +306,23 @@ export default class SideBar extends React.Component {
             </IconButton>
         )
 
-        if (this.state.sidebarType === 'Features' &&
+        if (sidebarType === 'Features' &&
             this.state.selectedFeatures.length !== annotationIds.length) {
             selectAllNone = selectAll;
-        } else if (this.state.sidebarType === 'Features') {
+        } else if (sidebarType === 'Features') {
             selectAllNone = selectNone;
         }
 
-        if (this.state.sidebarType === 'Orfs' &&
+        if (sidebarType === 'Orfs' &&
             this.state.selectedOrfs.length !== annotationIds.length) {
             selectAllNone = selectAll;
-        } else if (this.state.sidebarType === 'Orfs') {
+        } else if (sidebarType === 'Orfs') {
             selectAllNone = selectNone;
         }
 
         // FEATURE DETAIL
         var annotationForm;
-        if (this.state.editFeature > -1 && this.state.sidebarType === "Features") {
+        if (this.state.editFeature > -1 && sidebarType === "Features") {
             let id = this.state.editFeature;
             var annotation;
             for (var i=0; i<annotations.length; i++) {
@@ -329,7 +340,7 @@ export default class SideBar extends React.Component {
         }
 
         // FEATURES TAB
-        if (this.state.sidebarType === 'Features') {
+        if (sidebarType === 'Features') {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='feathead0' style={{width: '30%'}}>name
@@ -450,7 +461,7 @@ export default class SideBar extends React.Component {
         }
 
         // CUTSITES TAB
-        if (this.state.sidebarType === 'Cutsites') {
+        if (sidebarType === 'Cutsites') {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='cuthead0'>name
@@ -503,12 +514,16 @@ export default class SideBar extends React.Component {
                 for (var j=0; j<array.length; j++) {
                     let name = array[j].name;
 
-                    // a hacky workaround for creating multiple entries with the same key
-                    while (sorted[name]) {
-                        name = name + " ";
+                    // if cuts with the same name happen to end up together again after the sort, awesome
+                    if (j>0 && array[j-1].name === name) {
+                        sorted[name].push(array[j]);
+                    } else {
+                        // otherwise, a hacky workaround for creating multiple entries with the same key
+                        while (sorted[name]) {
+                            name = name + " ";
+                        }
+                        sorted[name] = [array[j]];
                     }
-
-                    sorted[name] = [array[j]];
                 }
             }
 
@@ -580,7 +595,7 @@ export default class SideBar extends React.Component {
                             <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
                     annotationTableRows.push(
-                        <tr key={annotation.id+'.'+j} style={{backgroundColor: color}}>
+                        <tr style={{backgroundColor: color}}>
                             { annotationTableCells }
                         </tr>);
 
@@ -590,7 +605,7 @@ export default class SideBar extends React.Component {
         }
 
         // ORFS TAB
-        if (this.state.sidebarType === 'Orfs') {
+        if (sidebarType === 'Orfs') {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='orfhead0'>position
