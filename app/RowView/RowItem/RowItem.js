@@ -47,10 +47,10 @@ function noop() {
 @Cerebral({
     annotationHeight: ['annotationHeight'],
     bpsPerRow: ['bpsPerRow'],
-    caretPosition: ['caretPosition'],     
-    charWidth: ['charWidth'], 
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
-    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
+    caretPosition: ['caretPosition'],
+    charWidth: ['charWidth'],
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
     cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
@@ -68,7 +68,7 @@ function noop() {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
 class RowItem extends React.Component {
@@ -97,7 +97,7 @@ class RowItem extends React.Component {
             className,
             signals
         } = this.props;
-        
+
         var {
             sequence='',
             features= [],
@@ -139,7 +139,7 @@ class RowItem extends React.Component {
 
         //     selectedLayer.push(
         //         <div
-        //             key='veSelectionLayer' 
+        //             key='veSelectionLayer'
         //             className='veSelectionLayer'
         //             start={ start }
         //             end={ end }
@@ -148,19 +148,19 @@ class RowItem extends React.Component {
         //             <path
         //                 style={{ opacity: .4}}
         //                 d={ sector.path.print() }
-        //                 fill="blue" 
+        //                 fill="blue"
         //                 />
         //         </div>
         //     );
         //     selectedLayer.push(
-        //         <Caret 
+        //         <Caret
         //             key='caretStart'
         //             caretPosition={selectionLayer.start}
         //             sequenceLength={sequenceLength}
         //             />
         //     );
         //     selectedLayer.push(
-        //         <Caret 
+        //         <Caret
         //             key='caretEnd'
         //             caretPosition={selectionLayer.end + 1}
         //             sequenceLength={sequenceLength}
@@ -170,18 +170,18 @@ class RowItem extends React.Component {
         // nothing selected, just put a caret at position 0
         if (caretPosition !== -1 && !selectionLayer.selected) {
             selectedStuff.push(
-                <Caret 
+                <Caret
                     charWidth = {charWidth}
                     row = {row}
                     sequenceLength = {sequenceLength}
                     caretPosition = {caretPosition}
                     />
             );
-        }        
-        
+        }
+
         return (
             <div className = {styles.rowItem + " veRowItem"}>
-     
+
                 <div className={styles.margin}>
                     { rowNumber }
                 </div>
@@ -196,6 +196,7 @@ class RowItem extends React.Component {
                 {(showOrfs && Object.keys(orfs).length > 0) &&
                     <Orfs
                         annotationRanges={orfs}
+                        signals={signals}
                         {...annotationCommonProps}
                         />
                 }
@@ -214,9 +215,9 @@ class RowItem extends React.Component {
                         reverse="false"
                         sequence={sequence}
                         charWidth={charWidth}
-                        bpsPerRow={bpsPerRow}                        
+                        bpsPerRow={bpsPerRow}
                         >
-                        {(showCutsites && Object.keys(cutsites).length > 0) && 
+                        {(showCutsites && Object.keys(cutsites).length > 0) &&
                             <Cutsites
                                 sequenceLength={sequenceLength}
                                 annotationRanges={cutsites}
@@ -232,8 +233,8 @@ class RowItem extends React.Component {
                             sequence={reverseSequence}
                             charWidth={charWidth}
                             bpsPerRow={bpsPerRow}
-                            >                            
-                            {(showCutsites && Object.keys(cutsites).length > 0) && 
+                            >
+                            {(showCutsites && Object.keys(cutsites).length > 0) &&
                                 <Cutsites
                                     sequenceLength={sequenceLength}
                                     annotationRanges={cutsites}
@@ -244,7 +245,7 @@ class RowItem extends React.Component {
                         </Sequence>
                     }
                 </div>
-        
+
             </div>
         );
     }
