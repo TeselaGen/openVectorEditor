@@ -10,7 +10,6 @@ import FlatButton from 'material-ui/lib/flat-button';
 import Checkbox from 'material-ui/lib/checkbox';
 import ModeEdit from 'material-ui/lib/svg-icons/editor/mode-edit';
 import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
-import ArrowDropUp from 'material-ui/lib/svg-icons/navigation/arrow-drop-up';
 
 import SidebarDetail from './SidebarDetail';
 import SidebarEdit from './SidebarEdit';
@@ -33,8 +32,8 @@ export default class SideBar extends React.Component {
         this.state = {
             selectedFeatures: [],
             selectedOrfs: [],
-            newFeature: {},
-            editfeature: -1,
+            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
+            editFeature: -1,
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
@@ -42,45 +41,48 @@ export default class SideBar extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        // newProps are passed in from things like switching tabs or clicking on the circular view
         let signals = this.props.signals;
         if (newProps.selectionLayer.selected) {
-
+            var found = false;
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
 
-                if (annotation.start === newProps.selectionLayer.start) {
-                    if (newProps.sidebarType === 'Features') {
-                        signals.toggleAnnotationDisplay({type: 'Features', value: true}); // highlighting is stupid if those annotation types aren't even being shown
+                if (annotation.id === newProps.selectionLayer.id) {
+                    found = true;
+                    if (newProps.annotationType === 'Features') {
+                        // highlighting is stupid if features aren't even being shown on the display
+                        signals.toggleAnnotationDisplay({type: 'Features', value: true});
                         this.setState({selectedFeatures: [annotation.id]});
                     }
-                    if (newProps.sidebarType === 'Orfs') {
-                        signals.toggleAnnotationDisplay({type: 'Orfs', value: true}); // highlighting is stupid if those annotation types aren't even being shown
+                    if (newProps.annotationType === 'Orfs') {
+                        // highlighting is stupid if orfs aren't even being shown on the display
+                        signals.toggleAnnotationDisplay({type: 'Orfs', value: true});
                         this.setState({selectedOrfs: [annotation.id]});
                     }
                 }
             }
 
-        } else if (newProps.sidebarType === 'Features' && this.state.selectedFeatures.length === 1){
+            // if feature/orf wasn't found on current tab, jump to the other tab (this works because there's only 2 tabs with selectable objects)
+            if (!found) {
+                newProps.annotationType === 'Features' ? signals.sidebarDisplay({ type: 'Orfs' }) : signals.sidebarDisplay({ type: 'Features' })
+            }
+
+        // deselecting a feature/orf from the circular view clears selected features/orfs
+    } else if (newProps.annotationType === 'Features' && this.state.selectedFeatures.length === 1){
             this.setState({selectedFeatures: []});
-        } else if (newProps.sidebarType === 'Orfs' && this.state.selectedOrfs.length === 1) {
+        } else if (newProps.annotationType === 'Orfs' && this.state.selectedOrfs.length === 1) {
             this.setState({selectedOrfs: []});
         }
     }
 
-    selectAll(ids) {
+    selectAllNone(ids) {
         this.setState({editFeature: -1});
-        if (this.props.sidebarType === 'Features') {
+        this.props.signals.featureClicked({annotation: {}});
+        if (this.props.annotationType === 'Features') {
             this.setState({selectedFeatures: ids});
-        } else if (this.props.sidebarType === 'Orfs') {
+        } else if (this.props.annotationType === 'Orfs') {
             this.setState({selectedOrfs: ids});
-        }
-    }
-
-    selectNone() {
-        if (this.props.sidebarType === 'Features') {
-            this.setState({selectedFeatures: []});
-        } else if (this.props.sidebarType === 'Orfs') {
-            this.setState({selectedOrfs: []});
         }
     }
 
@@ -97,6 +99,7 @@ export default class SideBar extends React.Component {
         }
         this.setState({ selectedFeatures: selected });
 
+        // only highlight feature if it's the only one selected
         let signals = this.props.signals;
         if (this.state.selectedFeatures.length === 1) {
             let highlightFeatureId = this.state.selectedFeatures[0];
@@ -122,6 +125,7 @@ export default class SideBar extends React.Component {
         }
         this.setState({ selectedOrfs: selected });
 
+        // only highlight orf if it's the only one selected
         let signals = this.props.signals;
         if (this.state.selectedOrfs.length === 1) {
             let highlightFeatureId = this.state.selectedOrfs[0];
@@ -150,6 +154,7 @@ export default class SideBar extends React.Component {
 
     deleteFeatures() {
         var featureIds = this.state.selectedFeatures;
+        this.props.signals.featureClicked({annotation: {}});
         this.props.signals.deleteFeatures({ featureIds: featureIds });
         this.setState({ selectedFeatures: [] });
     }
@@ -160,9 +165,7 @@ export default class SideBar extends React.Component {
     }
 
     createFeature(newFeature) {
-        this.setState({
-            newFeature: newFeature,
-        });
+        this.setState({ newFeature: newFeature });
     }
 
     addFeature() {
@@ -252,13 +255,13 @@ export default class SideBar extends React.Component {
             }
         );
 
+        // maybe we want reset selectedFeatures/Orfs and selectionLayer on change tab? maybe we don't?
         var topTabs = (
             <div id='featureTabs' style={{display: 'flex', backgroundColor: '#ccc'}}>
 
-            // maybe we want reset selectedFeatures/Orfs and selectionLayer on change tab? maybe we don't?
-                <div style={sidebarType==='Features' ? selectedTabStyle : tabStyle}
+                <div style={this.props.annotationType==='Features' ? selectedTabStyle : tabStyle}
                     onClick={function() {
-                        if (sidebarType !== 'Features') {
+                        if (this.props.annotationType !== 'Features') {
                             signals.featureClicked({annotation: {}});
                             this.setState({selectedFeatures: []});
                         }
@@ -266,7 +269,7 @@ export default class SideBar extends React.Component {
                     Features
                 </div>
 
-                <div style={sidebarType==='Cutsites' ? selectedTabStyle : tabStyle}
+                <div style={this.props.annotationType==='Cutsites' ? selectedTabStyle : tabStyle}
                     onClick={function () {
                         signals.featureClicked({annotation: {}});
                         this.setState({selectedFeatures: []});
@@ -274,9 +277,9 @@ export default class SideBar extends React.Component {
                     Cutsites
                 </div>
 
-                <div style={sidebarType==='Orfs' ? selectedTabStyle : tabStyle}
+                <div style={this.props.annotationType==='Orfs' ? selectedTabStyle : tabStyle}
                     onClick={function () {
-                        if (sidebarType !== 'Orfs') {
+                        if (this.props.annotationType !== 'Orfs') {
                             signals.featureClicked({annotation: {}});
                             this.setState({selectedFeatures: []});
                         }
@@ -287,42 +290,26 @@ export default class SideBar extends React.Component {
             </div>
         );
 
-        // SELECT ALL / SELECT NONE CHECKBOX
-        var selectAllNone = <div></div>;
+        // SELECT ALL / SELECT NONE
         var annotationIds = [];
         for (let i=0; i<annotations.length; i++) {
             annotationIds.push(annotations[i].id);
         }
-        var selectAll = (
-            <IconButton tooltip='select all'
-                style={{position: 'absolute', top: '35px', width: '40px', zIndex: '5'}}>
-                <Checkbox onCheck={this.selectAll.bind(this, annotationIds)}></Checkbox>
-            </IconButton>
-        )
-        var selectNone = (
-            <IconButton tooltip='select none'
-                style={{position: 'absolute', top: '35px', width: '40px', zIndex: '5'}}>
-                <Checkbox onCheck={this.selectNone.bind(this)}></Checkbox>
-            </IconButton>
+        var selectAllNone = (
+            <div style={{marginLeft: '15px'}}>
+                <a className={styles.selectAllNone} onClick={this.selectAllNone.bind(this, annotationIds)}>select all</a>
+                <span>|</span>
+                <a className={styles.selectAllNone} onClick={this.selectAllNone.bind(this, [])}>select none</a>
+            </div>
         )
 
-        if (sidebarType === 'Features' &&
-            this.state.selectedFeatures.length !== annotationIds.length) {
-            selectAllNone = selectAll;
-        } else if (sidebarType === 'Features') {
-            selectAllNone = selectNone;
-        }
-
-        if (sidebarType === 'Orfs' &&
-            this.state.selectedOrfs.length !== annotationIds.length) {
-            selectAllNone = selectAll;
-        } else if (sidebarType === 'Orfs') {
-            selectAllNone = selectNone;
+        if (this.props.annotationType === 'Cutsites') {
+            selectAllNone = <div></div>;
         }
 
         // FEATURE DETAIL
         var annotationForm;
-        if (this.state.editFeature > -1 && sidebarType === "Features") {
+        if (this.state.editFeature > -1 && this.props.annotationType === "Features") {
             let id = this.state.editFeature;
             var annotation;
             for (var i=0; i<annotations.length; i++) {
@@ -340,7 +327,7 @@ export default class SideBar extends React.Component {
         }
 
         // FEATURES TAB
-        if (sidebarType === 'Features') {
+        if (this.props.annotationType === 'Features') {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='feathead0' style={{width: '30%'}}>name
@@ -461,7 +448,7 @@ export default class SideBar extends React.Component {
         }
 
         // CUTSITES TAB
-        if (sidebarType === 'Cutsites') {
+        if (this.props.annotationType === 'Cutsites') {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='cuthead0'>name
@@ -529,12 +516,13 @@ export default class SideBar extends React.Component {
 
             annotationTableRows = [];
             var color = '#FFFFFF';
+            var dummyIdx = 0; // just to make react stop screaming at me about unique keys
             for (var enzyme in sorted) { // this is an object so we loop differently
                 let annotationTableCells = [];
                 let annotation = sorted[enzyme];
                 // first loop for enzyme name and number of cuts + first cut
-                for (let j = 0; j < 4; j++) {
-                    let column = tableHeaderCells[j].props.children.toString().split(',')[0];
+                for (let i = 0; i < 4; i++) {
+                    let column = tableHeaderCells[i].props.children.toString().split(',')[0];
                     let cellStyle = {};
                     let cellEntry = '';
                     let cut = annotation[0];
@@ -560,11 +548,11 @@ export default class SideBar extends React.Component {
                         }
                     }
                     annotationTableCells.push(
-                        <td style={cellStyle} key={j}>{ cellEntry }</td>);
+                        <td style={cellStyle} key={i}>{ cellEntry }</td>);
                 }
                 color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
                 annotationTableRows.push(
-                    <tr key={annotation.id}
+                    <tr key={'rowA'+dummyIdx}
                         style={{backgroundColor: color}}>
                         { annotationTableCells }
                     </tr>);
@@ -595,17 +583,18 @@ export default class SideBar extends React.Component {
                             <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
                     annotationTableRows.push(
-                        <tr style={{backgroundColor: color}}>
+                        <tr key={'rowB'+dummyIdx}style={{backgroundColor: color}}>
                             { annotationTableCells }
                         </tr>);
 
                     annotationTableCells = [];
                 }
+                dummyIdx += 1;
             }
         }
 
         // ORFS TAB
-        if (sidebarType === 'Orfs') {
+        if (this.props.annotationType === 'Orfs') {
             tableHeaderCells = [];
             tableHeaderCells.push(
                 <th key='orfhead0'>position
@@ -712,6 +701,7 @@ export default class SideBar extends React.Component {
         }
 
         // add feature modal
+
         var actions = (
             // {{}} why are the function calls different?
             <div>
@@ -720,9 +710,15 @@ export default class SideBar extends React.Component {
                     onTouchTap={function() {signals.addFeatureModalDisplay()}}
                     />
                 <FlatButton
+                    className={styles.saveButton}
                     label="Add Feature"
                     style={{color: "#03A9F4"}}
                     onTouchTap={this.addFeature.bind(this)}
+                    disabled={
+                        !this.state.newFeature['start'] || isNaN(this.state.newFeature['start']) ||
+                        !this.state.newFeature['end'] || isNaN(this.state.newFeature['end']) ||
+                        !this.state.newFeature['strand'] || isNaN(this.state.newFeature['strand'])
+                    }
                     />
             </div>
         );
@@ -730,7 +726,7 @@ export default class SideBar extends React.Component {
         var sidebarDetail = (
                 <SidebarDetail
                     createFeature={this.createFeature.bind(this)}
-                    feature = {{start: 0, end: 0, strand: -1, name: "", type: ""}}
+                    feature = {{start: '0', end: '0', strand: '-1', name: "", type: ""}}
                     />
             );
 

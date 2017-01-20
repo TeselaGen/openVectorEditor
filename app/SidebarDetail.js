@@ -34,10 +34,6 @@ export default class SidebarDetail extends React.Component {
         this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', height: '360px', paddingBottom: '10px', overflowY: 'scroll'};
     }
 
-    save = () => {
-        this.props.editFeature(this.state.feature);
-    };
-
     onChange = (event) => {
         this.state.feature[event.target.id] = event.target.value;
         this.setState({
@@ -76,7 +72,9 @@ export default class SidebarDetail extends React.Component {
                  id={"start"}
                  onChange={this.onChange}
                  floatingLabelText={"start"}
-                 errorText={isNaN(this.state.feature.start) && "not a number"}
+                 errorText={
+                     !this.state.feature.start && "not a number" ||
+                     isNaN(this.state.feature.start) && "not a number"}
                  value={this.state.feature.start.toString()}
                  />
 
@@ -86,7 +84,9 @@ export default class SidebarDetail extends React.Component {
                  id={"end"}
                  onChange={this.onChange}
                  floatingLabelText={"end"}
-                 errorText={isNaN(this.state.feature.end) && "not a number"}
+                 errorText={
+                     !this.state.feature.end && "not a number" ||
+                     isNaN(this.state.feature.end) && "not a number"}
                  value={this.state.feature.end.toString()}
                  />
 
@@ -96,7 +96,9 @@ export default class SidebarDetail extends React.Component {
                  id={"strand"}
                  onChange={this.onChange}
                  floatingLabelText={"strand"}
-                 errorText={isNaN(this.state.feature.strand) && "not a number"}
+                 errorText={
+                     !this.state.feature.strand && "not a number" ||
+                     isNaN(this.state.feature.strand) && "not a number"}
                  value={this.state.feature.strand.toString()}
                 />
                 <br/>

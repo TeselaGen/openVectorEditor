@@ -98,3 +98,13 @@ td.strand input {
 .arrowdropdown:active {
     box-shadow: -1px -1px 1px grey;
 }
+
+.saveButton:disabled {
+    color: gray !important;
+}
+
+.selectAllNone {
+    margin: 5px;
+    cursor: pointer;
+    font-size: 8pt;
+}

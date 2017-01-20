@@ -126,7 +126,7 @@ export default function(options) {
         showChangeMinOrfSizeDialog: [
             a.showChangeMinOrfSizeDialog
         ],
-        
+
     // ///////////////////////////////////
     // edit only actions
         backspacePressed: a.addEditModeOnly([
@@ -181,4 +181,3 @@ export default function(options) {
     }
     return assign({}, signals, options.signals) //optionally override any signals here
 }
-

@@ -92,6 +92,7 @@ module.exports = {
     selectionLayer: {
         start: -1,
         end: -1,
+        id: -1,
         selected: false,
         cursorAtEnd: true
     },
