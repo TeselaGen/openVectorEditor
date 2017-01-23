@@ -95,7 +95,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             var node;
 
             for(var c = 0; c < codons.length; c++) {
-                node = ( // {{}}
+                node = ( // {{}} node names are confusing here
                         <PlacePointOnCircle
                             radius={ annotationRadius - annotationHeight/2 }
                             key={ 'codon' + c + "_" + annotation.id }

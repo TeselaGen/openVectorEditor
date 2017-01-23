@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
-var Orf = React.createClass({
+export default class Orf extends React.Component {
     
     render() {
         var {
@@ -11,10 +11,13 @@ var Orf = React.createClass({
             forward, 
             annotation, 
             widthInBps, 
-            orfClicked,
+            // orfClicked,
             charWidth=16,
             signals
         } = this.props;
+
+        // console.log(this.props)
+        // console.log(this)
 
         var frame = annotation.frame;
         // frame is one of [0,1,2] 
@@ -60,12 +63,16 @@ var Orf = React.createClass({
             return React.cloneElement(circle, {key: index, transform: `translate(${charWidth * 1.2 * internalStartCodon},0)`})
         })
 
+        // console.log(signals)
+
         return (
             <g
+                id={annotation.id}
+                key={'Orfs' + annotation.id}
                 onClick={ function (e) {
-                    e.stopPropagation()
-                    signals.orfClicked({annotation: annotation}) 
-                }}
+                            e.stopPropagation()
+                            signals.orfClicked({annotation: annotation}) 
+                        }}                
                 className={`veRowViewOrf clickable frame${frame}`}
                 strokeWidth="2"
                 stroke={ color}
@@ -83,5 +90,4 @@ var Orf = React.createClass({
             </g>
         );
     }
-});
-module.exports = Orf;
+}

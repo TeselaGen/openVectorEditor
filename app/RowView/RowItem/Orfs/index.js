@@ -14,7 +14,7 @@ let Orfs = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            orfClicked,
+            // orfClicked,
             widthInBps,
             row,
             signals
@@ -54,7 +54,7 @@ let Orfs = React.createClass({
                     >
                     <Orf
                         annotation={annotation}
-                        orfClicked={orfClicked}
+                        // orfClicked={orfClicked}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}
