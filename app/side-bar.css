@@ -24,6 +24,15 @@ input[type=text] {
     padding: 0 0 0 5px;
 }
 
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 td.position input {
     display: inline;
     width: 40% !important;
@@ -33,11 +42,7 @@ td.position input{
     display: inline;
 }
 
-td.strand {
-    text-align: center;
-}
-
-td.strand input {
+td.strand, td.strand input  {
     text-align: center;
 }
 

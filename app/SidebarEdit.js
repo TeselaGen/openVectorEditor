@@ -45,36 +45,46 @@ export default class SidebarDetail extends React.Component {
     };
 
     render() {
+        var max = this.props.sequenceLength;
+        
+        var FEATURE_TYPES = ["promoter", "terminator", "cds", "misc_feature", "m_rna", "misc_binding", "misc_marker", "rep_origin"];
+        var options = [];
+        for (var i=0; i<FEATURE_TYPES.length; i++) {
+            options.push(<option value={FEATURE_TYPES[i]}>{FEATURE_TYPES[i]}</option>);
+        }
+
         return (
             <tr className={styles.editrow}>
                 <td><input type="text"
                     id={"name"}
                     placeholder="name"
+                    maxLength="50"
                     onChange={this.onChange}
                     value={this.state.feature.name.toString()}
                 /></td>
 
-                <td><input type="text"
+                <td><select name="type"
                     id={"type"}
                     placeholder="type"
                     onChange={this.onChange}
-                    value={this.state.feature.type.toString()}
-                /></td>
+                    value={this.state.feature.type.toString()}>
+                    {options}
+                </select></td>
 
                 <td className={styles.position}>
-                    <input type="text"
+                    <input type="number"
                     id={"start"}
                     placeholder="start"
                     onChange={this.onChange}
-                    pattern="\d+" required
+                    min="0" max={max}
                     value={this.state.feature.start.toString()}
                     />
                     <span>{' - '}</span>
-                    <input type="text"
+                    <input type="number"
                     id={"end"}
                     placeholder="end"
                     onChange={this.onChange}
-                    pattern="\d+" required
+                    min="0" max={max}
                     value={this.state.feature.end.toString()}
                 /></td>
 
@@ -83,15 +93,18 @@ export default class SidebarDetail extends React.Component {
                     id={"strand"}
                     placeholder="strand"
                     onChange={this.onChange}
-                    pattern="-*\d+" required
+                    pattern="-?1" required
                     value={this.state.feature.strand.toString()}
                 /></td>
                 <td>
                 <IconButton
                     disabled={
                         !this.state.feature['start'] || isNaN(this.state.feature['start']) ||
+                        this.state.feature['start'] < 0 || this.state.feature['start'] > max ||
                         !this.state.feature['end'] || isNaN(this.state.feature['end']) ||
-                        !this.state.feature['strand'] || isNaN(this.state.feature['strand'])
+                        this.state.feature['end'] < 0 || this.state.feature['end'] > max ||
+                        !this.state.feature['strand'] || isNaN(this.state.feature['strand'] ||
+                        this.state.feature['strand']*this.state.feature['strand'] !== 1)
                     }
                     onClick={this.save}
                     tooltip="save"

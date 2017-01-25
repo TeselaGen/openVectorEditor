@@ -23,6 +23,7 @@ import styles from './side-bar.css'
     readOnly: ['readOnly'],
     sidebarType: ['sidebarType'],
     selectionLayer: ['selectionLayer'],
+    sequenceLength: ['sequenceLength'],
 })
 
 export default class SideBar extends React.Component {
@@ -37,6 +38,7 @@ export default class SideBar extends React.Component {
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
+            featureError: false,
         };
     }
 
@@ -146,10 +148,16 @@ export default class SideBar extends React.Component {
     }
 
     editFeature(currentFeature) {
-        this.props.signals.updateFeature({
-            feature: currentFeature
-        });
+        if (parseInt(currentFeature.start) === parseInt(currentFeature.end)) {
+            this.setState({featureError: true});
+            return;
+        }
+        this.props.signals.updateFeature({ feature: currentFeature });
         this.setState({ selectedFeatures: [], editFeature: -1 })
+    }
+
+    closeErrorDialog() {
+        this.setState({featureError: false});
     }
 
     deleteFeatures() {
@@ -169,11 +177,13 @@ export default class SideBar extends React.Component {
     }
 
     addFeature() {
+        if (parseInt(this.state.newFeature.start) === parseInt(this.state.newFeature.end)) {
+            this.setState({featureError: true});
+            return;
+        }
         this.props.signals.addAnnotations({
             sidebarType: 'Features',
-            annotationsToInsert: [
-                this.state.newFeature
-            ],
+            annotationsToInsert: [this.state.newFeature],
             thidErrors: true
         });
         this.props.signals.addFeatureModalDisplay();
@@ -231,7 +241,8 @@ export default class SideBar extends React.Component {
             showAddFeatureModal,
             showOrfModal,
             selectionLayer,
-            sidebarType
+            sidebarType,
+            sequenceLength
         } = this.props;
         var sidebarContent;
         var controls;
@@ -321,6 +332,7 @@ export default class SideBar extends React.Component {
             annotationForm = (
                 <SidebarEdit
                     editFeature={this.editFeature.bind(this)}
+                    sequenceLength={sequenceLength}
                     feature={ annotation }
                     />
             )
@@ -717,7 +729,11 @@ export default class SideBar extends React.Component {
                     disabled={
                         !this.state.newFeature['start'] || isNaN(this.state.newFeature['start']) ||
                         !this.state.newFeature['end'] || isNaN(this.state.newFeature['end']) ||
-                        !this.state.newFeature['strand'] || isNaN(this.state.newFeature['strand'])
+                        !this.state.newFeature['strand'] || isNaN(this.state.newFeature['strand']) ||
+                        this.state.newFeature['start'] < 0 || this.state.newFeature['start'] > sequenceLength ||
+                        this.state.newFeature['end'] < 0 || this.state.newFeature['end'] > sequenceLength ||
+                        this.state.newFeature['strand']*this.state.newFeature['strand'] !== 1 ||
+                        this.state.newFeature.start === this.state.newFeature.end
                     }
                     />
             </div>
@@ -726,6 +742,7 @@ export default class SideBar extends React.Component {
         var sidebarDetail = (
                 <SidebarDetail
                     createFeature={this.createFeature.bind(this)}
+                    sequenceLength={sequenceLength}
                     feature = {{start: '0', end: '0', strand: '-1', name: "", type: ""}}
                     />
             );
@@ -737,7 +754,7 @@ export default class SideBar extends React.Component {
                     autoDetectWindowHeight={false}
                     autoScrollBodyContent={false}
                     open={showAddFeatureModal}
-                    style={{height: '700px', position: 'absolute', maxWidth: '500px'}}
+                    style={{position: 'absolute', maxWidth: '500px', top: "0px", bottom: "0px", paddingTop: '10% !important'}}
                     titleStyle={{paddingBottom: "0px"}}
                     >
                     { sidebarDetail }
@@ -745,6 +762,17 @@ export default class SideBar extends React.Component {
                 </Dialog>
             );
         }
+
+        var errorDialog = (
+            <Dialog
+                open={this.state.featureError}
+                onRequestClose={this.closeErrorDialog.bind(this)}
+                style={{height: '500px', position: 'absolute', maxWidth: '500px'}}
+                actions={[<FlatButton onClick={this.closeErrorDialog.bind(this)}>ok</FlatButton>]}
+                >
+                Feature length cannot be zero
+            </Dialog>
+        );
 
         return (
             <div>
@@ -763,6 +791,8 @@ export default class SideBar extends React.Component {
                 { featureControls }
 
                 { orfControls }
+
+                { errorDialog }
 
                 { addFeatureDialog }
 
