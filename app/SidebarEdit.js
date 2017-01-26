@@ -63,7 +63,7 @@ export default class SidebarDetail extends React.Component {
 
         var FEATURE_TYPES = ["cds", "gene", "m_rna", "misc_binding", "misc_feature", "misc_marker", "promoter", "protein_bind", "rep_origin", "terminator", "width"];
         var options = [];
-        var rowStyle = "unselectedType";
+        var rowStyle;
         for (var i=0; i<FEATURE_TYPES.length; i++) {
             if (this.state.feature.type.toString().toLowerCase() === FEATURE_TYPES[i]) {
                 rowStyle = "selectedType";

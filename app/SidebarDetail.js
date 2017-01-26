@@ -26,6 +26,7 @@ export default class SidebarDetail extends React.Component {
         this.state = {
             feature: assign({}, this.props.feature),
             style: {},
+            dropdown: "hidden"
         };
 
         if (this.state.feature.notes === undefined) {
@@ -34,6 +35,14 @@ export default class SidebarDetail extends React.Component {
             this.state.feature.notes = this.props.feature.notes.slice();
         }
         this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', overflowY: 'visible'};
+    }
+
+    toggleDropDown() {
+        this.state.dropdown === "hidden" ? this.setState({dropdown: "selectField"}) : this.setState({dropdown: "hidden"});
+    }
+
+    selectDropDown() {
+        this.setState({ dropdown: "hidden" });
     }
 
     onChange = (event) => {
@@ -55,7 +64,7 @@ export default class SidebarDetail extends React.Component {
 
         var FEATURE_TYPES = ["cds", "gene", "m_rna", "misc_binding", "misc_feature", "misc_marker", "promoter", "protein_bind", "rep_origin", "terminator", "width"];
         var options = [];
-        var rowStyle = "unselectedType";
+        var rowStyle;
         for (var i=0; i<FEATURE_TYPES.length; i++) {
             if (this.state.feature['type'] === FEATURE_TYPES[i]) {
                 rowStyle = "selectedType";
@@ -77,8 +86,9 @@ export default class SidebarDetail extends React.Component {
                 <br/>
 
                 <SelectField
-                    className={styles.selectField}
+                    className={styles[this.state.dropdown]}
                     id={"type"}
+                    onClick={this.toggleDropDown.bind(this)}
                     onChange={this.onChange.bind(this)}
                     floatingLabelText={"type"}
                     menuItems={options}

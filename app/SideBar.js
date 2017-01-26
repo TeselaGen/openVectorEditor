@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
-
+// todo: add keyboard auto-complete for dropdown boxes
 // {{}} remove this.state and do it correctly
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
@@ -101,19 +101,10 @@ export default class SideBar extends React.Component {
         }
         this.setState({ selectedFeatures: selected });
 
-        // only highlight feature if it's the only one selected
-        let signals = this.props.signals;
-        if (this.state.selectedFeatures.length === 1) {
-            let highlightFeatureId = this.state.selectedFeatures[0];
-            let annotations = this.props.annotations;
-            for (var i=0; i<annotations.length; i++) {
-                if (annotations[i].id === highlightFeatureId) {
-                    var annotation = annotations[i];
-                }
-            }
-            signals.featureClicked({annotation: annotation});
+        if (selected.length === 1) {
+            this.annotationHighlight(id);
         } else {
-            signals.featureClicked({annotation: {}});
+            this.annotationHighlight(null);
         }
     }
 
@@ -127,13 +118,19 @@ export default class SideBar extends React.Component {
         }
         this.setState({ selectedOrfs: selected });
 
-        // only highlight orf if it's the only one selected
+        if (selected.length === 1) {
+            this.annotationHighlight(id);
+        } else {
+            this.annotationHighlight(null);
+        }
+    }
+
+    annotationHighlight(id) {
         let signals = this.props.signals;
-        if (this.state.selectedOrfs.length === 1) {
-            let highlightFeatureId = this.state.selectedOrfs[0];
+        if (id) {
             let annotations = this.props.annotations;
             for (var i=0; i<annotations.length; i++) {
-                if (annotations[i].id === highlightFeatureId) {
+                if (annotations[i].id === id) {
                     var annotation = annotations[i];
                 }
             }
@@ -145,6 +142,7 @@ export default class SideBar extends React.Component {
 
     onEditIconClick(id) {
         this.setState({ selectedFeatures: [id], editFeature: id })
+        this.annotationHighlight(id);
     }
 
     editFeature(currentFeature) {
@@ -165,10 +163,12 @@ export default class SideBar extends React.Component {
         this.props.signals.featureClicked({annotation: {}});
         this.props.signals.deleteFeatures({ featureIds: featureIds });
         this.setState({ selectedFeatures: [] });
+        this.annotationHighlight(null);
     }
 
     openAddFeatureDisplay() {
-        this.setState({ editFeature: -1 });
+        this.setState({ editFeature: -1, selectedFeatures: [] });
+        this.annotationHighlight(null);
         this.props.signals.addFeatureModalDisplay();
     }
 
@@ -181,12 +181,16 @@ export default class SideBar extends React.Component {
             this.setState({featureError: true});
             return;
         }
+        this.props.signals.addFeatureModalDisplay();
         this.props.signals.addAnnotations({
             sidebarType: 'Features',
             annotationsToInsert: [this.state.newFeature],
             thidErrors: true
         });
-        this.props.signals.addFeatureModalDisplay();
+        if (this.state.newFeature.id) {
+            this.setState({selectedFeatures: [this.state.newFeature.id]});
+            this.annotationHighlight(this.state.newFeature.id);
+        }
     }
 
     onFeatureSort(column) {
@@ -444,14 +448,16 @@ export default class SideBar extends React.Component {
                     <div className={styles.controls}>
                         <IconButton
                             onTouchTap={this.openAddFeatureDisplay.bind(this)}
-                            tooltip="add">
+                            tooltip="add"
+                            tooltipPosition="top-center">
                             <AddBoxIcon />
                         </IconButton>
 
                         <IconButton
                             onClick={this.deleteFeatures.bind(this)}
                             disabled={this.state.selectedFeatures.length === 0}
-                            tooltip={"delete"}>
+                            tooltip={"delete"}
+                            tooltipPosition="top-center">
                             <IndeterminateCheckBoxIcon />
                         </IconButton>
                     </div>

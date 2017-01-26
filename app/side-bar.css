@@ -96,6 +96,7 @@
     top: 50px !important;
     height: 200px !important;
     overflow-y: scroll !important;
+    overflow-x: hidden !important;
 }
 
 .selectField div:nth-child(2) .selectedType {
