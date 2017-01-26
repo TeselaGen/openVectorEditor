@@ -73,7 +73,6 @@ export default class SidebarDetail extends React.Component {
             }
             options.push({ payload: FEATURE_TYPES[i], text: <div className={styles[rowStyle]}>{FEATURE_TYPES[i]}</div> });
         }
-        // debugger
         return (
             <div style={this.state.style} className={styles.sidebarDetail}>
                 <TextField

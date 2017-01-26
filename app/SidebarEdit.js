@@ -79,7 +79,7 @@ export default class SidebarDetail extends React.Component {
                     id={"name"}
                     placeholder="name"
                     maxLength="50"
-                    onChange={this.onChange}
+                    onChange={this.onChange.bind(this)}
                     value={this.state.feature.name.toString()}
                 /></td>
 
@@ -101,7 +101,7 @@ export default class SidebarDetail extends React.Component {
                     <input type="number"
                     id={"start"}
                     placeholder="start"
-                    onChange={this.onChange}
+                    onChange={this.onChange.bind(this)}
                     min="0" max={max}
                     value={this.state.feature.start.toString()}
                     />
@@ -109,7 +109,7 @@ export default class SidebarDetail extends React.Component {
                     <input type="number"
                     id={"end"}
                     placeholder="end"
-                    onChange={this.onChange}
+                    onChange={this.onChange.bind(this)}
                     min="0" max={max}
                     value={this.state.feature.end.toString()}
                 /></td>
@@ -118,7 +118,7 @@ export default class SidebarDetail extends React.Component {
                     <input type="text"
                     id={"strand"}
                     placeholder="strand"
-                    onChange={this.onChange}
+                    onChange={this.onChange.bind(this)}
                     pattern="-?1" required
                     value={this.state.feature.strand.toString()}
                 /></td>
@@ -132,7 +132,7 @@ export default class SidebarDetail extends React.Component {
                         !this.state.feature['strand'] || isNaN(this.state.feature['strand'] ||
                         this.state.feature['strand']*this.state.feature['strand'] !== 1)
                     }
-                    onClick={this.save}
+                    onClick={this.save.bind(this)}
                     tooltip="save"
                     >
                     <SaveIcon/>

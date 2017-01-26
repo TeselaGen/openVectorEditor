@@ -100,9 +100,8 @@ export default class SideBar extends React.Component {
             selected.splice(idx, 1);
         }
         this.setState({ selectedFeatures: selected });
-
-        if (selected.length === 1) {
-            this.annotationHighlight(id);
+        if (this.state.selectedFeatures.length === 1) {
+            this.annotationHighlight(this.state.selectedFeatures[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -119,7 +118,7 @@ export default class SideBar extends React.Component {
         this.setState({ selectedOrfs: selected });
 
         if (selected.length === 1) {
-            this.annotationHighlight(id);
+            this.annotationHighlight(this.state.selectedOrfs[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -403,7 +402,7 @@ export default class SideBar extends React.Component {
                         }
                         if (column === 'strand') {
                             cellStyle = {textAlign: 'center'};
-                            if (annotation['forward']) {
+                            if (annotation['strand'] === 1) {
                                 cellEntry = "+";
                             } else {
                                 cellEntry = "-";
