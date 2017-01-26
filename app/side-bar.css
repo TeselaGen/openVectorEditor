@@ -7,43 +7,107 @@
 }
 
 .editrow input {
+    width: 75%;
+}
+
+.editrow input, .selectInput {
     border-top: none;
     border-right: none;
     border-bottom: 2px solid #00bcd4;
     border-left: none;
-    width: 75%;
     font-style: italic;
+    background-color: transparent;
+    padding: 0 0 0 5px;
 }
 
-.editrow {
+.editrow * {
     font-size: 14px;
     border: none;
 }
 
-input[type=text] {
+.editrow input[type=text] {
     padding: 0 0 0 5px;
 }
 
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+.editrow input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-input[type="number"] {
+.editrow input[type="number"] {
     -moz-appearance: textfield;
 }
 
-td.position input {
+.typeValue {
+    border-bottom: 2px solid #00bcd4;
+    width: 75%;
+    display: inline;
+    padding: 0 5px 0 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    background-color: white;
+    font-style: normal;
+    border: 1px solid lightgray;
+    visibility: visible;
+    position: absolute;
+    display: block;
+    width: 200px;
+    padding: 0;
+    height: 325px;
+    overflow-y: scroll;
+    left: 130px;
+    margin-top: -13px;
+    box-shadow: 2px 2px 2px gray;
+}
+
+.visible ui {
+    position: relative;
+    display: block;
+    padding: 5px 10px 5px 30px;
+}
+
+.visible ui:hover {
+    background-color: whitesmoke;
+}
+
+.visible .selectedType {
+    color: #00bcd4;
+}
+
+.editrow td.position input {
     display: inline;
     width: 40% !important;
 }
 
-td.position input{
+.editrow td.position input{
     display: inline;
 }
 
-td.strand, td.strand input  {
+.editrow td.strand, td.strand input  {
     text-align: center;
+}
+
+.selectField > div:nth-child(2) {
+    top: 50px !important;
+    height: 200px !important;
+    overflow-y: scroll !important;
+}
+
+.selectField div:nth-child(2) .selectedType {
+    color: black;
+}
+
+.unselectedType {
+    color: black;
+}
+
+.selectField div:nth-child(2):focus .selectedType {
+    color: #00bcd4;
 }
 
 .tableContainer {

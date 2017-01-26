@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
-import TextField from 'material-ui/lib/text-field';
+import SelectField from 'material-ui/lib/select-field';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
 import SaveIcon from 'material-ui/lib/svg-icons/content/save'
+import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 import assign from 'lodash/object/assign';
 
 import styles from './side-bar.css';
@@ -25,7 +26,8 @@ export default class SidebarDetail extends React.Component {
         super(props);
 
         this.state = {
-            feature: assign({}, this.props.feature)
+            feature: assign({}, this.props.feature),
+            dropdown: "hidden"
         };
 
         if (this.state.feature.notes === undefined) {
@@ -39,6 +41,18 @@ export default class SidebarDetail extends React.Component {
         this.props.editFeature(this.state.feature);
     };
 
+    toggleDropDown() {
+        this.state.dropdown === "hidden" ? this.setState({dropdown: "visible"}) : this.setState({dropdown: "hidden"});
+    }
+
+    selectDropDown(event) {
+        this.state.feature["type"] = event.target.innerHTML;
+        this.setState({
+            dropdown: "hidden",
+            feature: this.state.feature
+        });
+    }
+
     onChange = (event) => {
         this.state.feature[event.target.id] = event.target.value;
         this.setState({ feature: this.state.feature });
@@ -46,11 +60,17 @@ export default class SidebarDetail extends React.Component {
 
     render() {
         var max = this.props.sequenceLength;
-        
-        var FEATURE_TYPES = ["promoter", "terminator", "cds", "misc_feature", "m_rna", "misc_binding", "misc_marker", "rep_origin"];
+
+        var FEATURE_TYPES = ["cds", "gene", "m_rna", "misc_binding", "misc_feature", "misc_marker", "promoter", "protein_bind", "rep_origin", "terminator", "width"];
         var options = [];
+        var rowStyle = "unselectedType";
         for (var i=0; i<FEATURE_TYPES.length; i++) {
-            options.push(<option value={FEATURE_TYPES[i]}>{FEATURE_TYPES[i]}</option>);
+            if (this.state.feature.type.toString().toLowerCase() === FEATURE_TYPES[i]) {
+                rowStyle = "selectedType";
+            } else {
+                rowStyle = "unselectedType";
+            }
+            options.push(<ui className={styles[rowStyle]} value={FEATURE_TYPES[i]}>{FEATURE_TYPES[i]}</ui>);
         }
 
         return (
@@ -63,13 +83,19 @@ export default class SidebarDetail extends React.Component {
                     value={this.state.feature.name.toString()}
                 /></td>
 
-                <td><select name="type"
+                <td className={styles.selectInput}
+                    hintText="type"
                     id={"type"}
-                    placeholder="type"
-                    onChange={this.onChange}
-                    value={this.state.feature.type.toString()}>
-                    {options}
-                </select></td>
+                    onClick={this.toggleDropDown.bind(this)}>
+                    <div className={styles.typeValue}>{this.state.feature.type.toString()}</div>
+                    <IconButton style={{verticalAlign: 'middle', marginLeft: '-10px'}}>
+                        <ArrowDropDown/>
+                    </IconButton>
+                    <ul className={styles[this.state.dropdown]}
+                        onClick={this.selectDropDown.bind(this)}>
+                        {options}
+                    </ul>
+                </td>
 
                 <td className={styles.position}>
                     <input type="number"

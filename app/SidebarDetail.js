@@ -2,12 +2,12 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
-import DropDownMenu from 'material-ui/lib/drop-down-menu';
-import MenuItem from 'material-ui/lib/menu/menu-item';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
 import assign from 'lodash/object/assign';
+
+import styles from './side-bar.css'
 
 // {{}} remove this.state and do it correctly
 
@@ -33,7 +33,7 @@ export default class SidebarDetail extends React.Component {
         } else {
             this.state.feature.notes = this.props.feature.notes.slice();
         }
-        this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', overflowY: 'scroll'};
+        this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', overflowY: 'visible'};
     }
 
     onChange = (event) => {
@@ -53,14 +53,20 @@ export default class SidebarDetail extends React.Component {
             sequenceLength,
         } = this.props;
 
-        var FEATURE_TYPES = ["cds", "m_rna", "misc_binding", "misc_feature", "misc_marker", "promoter", "rep_origin", "terminator"];
-        var options = [{ id: "type", payload: "", text: "" }];
+        var FEATURE_TYPES = ["cds", "gene", "m_rna", "misc_binding", "misc_feature", "misc_marker", "promoter", "protein_bind", "rep_origin", "terminator", "width"];
+        var options = [];
+        var rowStyle = "unselectedType";
         for (var i=0; i<FEATURE_TYPES.length; i++) {
-            options.push({ id: "type", payload: FEATURE_TYPES[i], text: FEATURE_TYPES[i] });
+            if (this.state.feature['type'] === FEATURE_TYPES[i]) {
+                rowStyle = "selectedType";
+            } else {
+                rowStyle = "unselectedType";
+            }
+            options.push({ payload: FEATURE_TYPES[i], text: <div className={styles[rowStyle]}>{FEATURE_TYPES[i]}</div> });
         }
-
+        // debugger
         return (
-            <div style={this.state.style}>
+            <div style={this.state.style} className={styles.sidebarDetail}>
                 <TextField
                     id={"name"}
                     onChange={this.onChange.bind(this)}
@@ -71,12 +77,11 @@ export default class SidebarDetail extends React.Component {
                 <br/>
 
                 <SelectField
+                    className={styles.selectField}
                     id={"type"}
                     onChange={this.onChange.bind(this)}
                     floatingLabelText={"type"}
-                    // style={{maxHeight:"100px", overflowY:"scroll"}}
                     menuItems={options}
-                    maxHeight={4}
                     value={this.state.feature.type.toString()}
                     />
                 <br/>
