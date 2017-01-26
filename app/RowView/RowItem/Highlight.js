@@ -5,23 +5,27 @@ import getXStartAndWidthOfRowAnnotation from '../../shared-utils/getXStartAndWid
 
 @Cerebral({
     charWidth: ['charWidth'],
-    bpsPerRow: ['bpsPerRow']
+    bpsPerRow: ['bpsPerRow'],
+    sequenceLength: ['sequenceLength']
 })
 export default class Highlight extends React.Component {
 
-    render() {
+    _dimensions(start, end) {
         var {
-            start,
-            end,
             rowStart,
             rowEnd,
             charWidth,
-            bpsPerRow
+            bpsPerRow,
+            sequenceLength
         } = this.props;
 
-        var overlay = null;
+        var dimensions = [];
 
-        if (start <= rowEnd && end >= rowStart) {
+        if (start > end) {
+            var left = this._dimensions(0, end);
+            var right = this._dimensions(start, sequenceLength - 1);
+            dimensions.push(...left, ...right);
+        } else if (start <= rowEnd && end >= rowStart) {
             var localStart = (start > rowStart) ? start - rowStart : 0;
             var localEnd = (end < rowEnd) ? end - rowStart : rowEnd - rowStart;
             let result = getXStartAndWidthOfRowAnnotation({start: localStart, end: localEnd}, bpsPerRow, charWidth);
@@ -32,19 +36,49 @@ export default class Highlight extends React.Component {
             var widthInBps = localEnd - localStart + 1;
             var width = widthInBps * (charWidth * 1.2) - 20;
 
-            overlay = (
+            dimensions.push({
+                x: xShift,
+                width: width,
+                rowWidth: rowWidth
+            });
+        }
+
+        return dimensions;
+    }
+
+    render() {
+        var {
+            start,
+            end
+        } = this.props;
+
+        var dimensions = this._dimensions(start, end);
+        var overlays = [];
+
+        dimensions.forEach((d) => {
+            var {x, width, rowWidth} = d;
+
+            overlays.push(
                 <svg
                     transform={this.props.transform || null}
-                    className={styles.highlight}
+                    className={styles.overlay}
                     preserveAspectRatio={'none'}
-                    viewBox={ xShift + " 0 " + rowWidth + " 1"}
+                    viewBox={ x + " 0 " + rowWidth + " 1"}
                     >
                     <rect x={0} y={0} width={width} height={1}/>
                 </svg>
             );
+        });
+
+        if (overlays.length === 0) {
+            return null;
         }
 
-        return overlay;
+        return (
+            <div>
+                {overlays}
+            </div>
+        );
     }
 
 }
