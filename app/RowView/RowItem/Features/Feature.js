@@ -30,7 +30,6 @@ export default class Feature extends React.Component {
 
         height = 20; // {{}} should this not be hardcoded
 
-        // var width = bpsPerRow * charWidth * 1.2 - 20; // scale feature to width of row with padding
         var width = widthInBps * (charWidth * 1.2) - 20;
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt

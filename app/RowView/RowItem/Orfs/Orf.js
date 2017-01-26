@@ -29,6 +29,7 @@ var Orf = React.createClass({
         var halfwayPoint = heightWithArrow/2;
         var endCircle;
         var arrow = null;
+        var arrowOffset = 0;
         var circle = <circle 
                         key='circle'
                         r={height*1.5}
@@ -36,10 +37,11 @@ var Orf = React.createClass({
                         cy={halfwayPoint}
                         />
         if (rangeType === 'end'||rangeType === 'beginningAndEnd') {
+            arrowOffset = 16;
             arrow = (<path 
 
                         transform={
-                            `translate(${width + 20},0)`
+                            `translate(${width},0)`
                         }
                         d= {`M 0 ${halfwayPoint} L -18 ${halfwayPoint+6} L -18 ${halfwayPoint-6} Z`} 
                         />
@@ -51,8 +53,8 @@ var Orf = React.createClass({
 
         var path = `
             M 0,${halfwayPoint+height/2} 
-            L ${width},${halfwayPoint+height/2} 
-            L ${width},${halfwayPoint-height/2}
+            L ${width - arrowOffset},${halfwayPoint+height/2} 
+            L ${width - arrowOffset},${halfwayPoint-height/2}
             L 0,${halfwayPoint-height/2} 
             z`
 
