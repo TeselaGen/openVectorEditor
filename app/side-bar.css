@@ -160,21 +160,19 @@
     height: 26px;
 }
 
-.arrowdropdown {
-    vertical-align: middle;
-    cursor: pointer;
-}
-
-.arrowdropdown:active {
-    box-shadow: -1px -1px 1px grey;
-}
-
 .saveButton:disabled {
     color: gray !important;
 }
 
+.selectAllNoneContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 15px;
+}
+
 .selectAllNone {
-    margin: 5px;
+    padding: 5px;
     cursor: pointer;
-    font-size: 8pt;
+    font-size: 11pt;
 }

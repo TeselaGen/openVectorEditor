@@ -214,14 +214,43 @@ export default class SideBar extends React.Component {
     }
 
     dynamicSort(column) {
-        // ascending sort
-        var sortOrder = 1;
-
-        // descending sort
+        var sortOrder = 1; // ascending sort
         if (column[0] === '-') {
-            sortOrder = -1;
+            sortOrder = -1; // descending sort
             column = column.slice(1);
         }
+
+        var arrowCSS = {
+            "transform": ["scaleY(1)", "scaleY(-1)"],
+            "filter": ["", "FlipV"],
+            "msFilter": ["", "'FlipV'"],
+            "MozTransform": ["scaleY(1)", "scaleY(-1)"],
+            "OTransform": ["scaleY(1)", "scaleY(-1)"],
+            "WebkitTransform": ["scaleY(1)", "scaleY(-1)"],
+            "fill": ["black !important"]
+        };
+
+        // flip arrow upside down
+        var idx = sortOrder === 1 ? 0 : 1;
+        let elementId = this.props.annotationType + '_' + column;
+        var arrow = document.getElementById(elementId);
+        if (arrow) {
+            arrow.style.transform = arrowCSS["transform"][idx];
+            arrow.style.filter = arrowCSS["filter"][idx];
+            arrow.style.msFilter = arrowCSS["msFilter"][idx];
+            arrow.style.MozTransform = arrowCSS["MozTransform"][idx];
+            arrow.style.OTransform = arrowCSS["OTransform"][idx];
+            arrow.style.WebkitTransform = arrowCSS["WebkitTransform"][idx];
+
+            // and change color of table headers
+            var headers = document.getElementsByTagName("th");
+            for (let i=0; i<headers.length; i++) {
+                headers[i].style.color = "black";
+            }
+            arrow.parentElement.style.color = "#00bcd4";
+        }
+
+        // actually sort
         return function (a,b) {
             if (typeof a[column] === 'string') {
                 a = a[column].toLowerCase();
@@ -310,7 +339,7 @@ export default class SideBar extends React.Component {
             annotationIds.push(annotations[i].id);
         }
         var selectAllNone = (
-            <div style={{marginLeft: '15px'}}>
+            <div className={styles.selectAllNoneContainer}>
                 <a className={styles.selectAllNone} onClick={this.selectAllNone.bind(this, annotationIds)}>select all</a>
                 <span>|</span>
                 <a className={styles.selectAllNone} onClick={this.selectAllNone.bind(this, [])}>select none</a>
@@ -345,29 +374,33 @@ export default class SideBar extends React.Component {
         if (this.props.annotationType === 'Features') {
             tableHeaderCells = [];
             tableHeaderCells.push(
-                <th key='feathead0' style={{width: '30%'}}>name
+                <th key='feathead0' style={{width:'30%', color:'black'}}>name
                     <IconButton onClick={this.onFeatureSort.bind(this, 'name')}
+                    id='Features_name'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='feathead1' style={{width: '30%'}}>type
+                <th key='feathead1' style={{width:'30%', color:'black'}}>type
                     <IconButton onClick={this.onFeatureSort.bind(this, 'type')}
+                    id='Features_type'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='feathead2'>position
+                <th key='feathead2' style={{color:'black'}}>position
                     <IconButton onClick={this.onFeatureSort.bind(this, 'start')}
+                    id='Features_start'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='feathead3' style={{textAlign: 'center', width: '10%'}}>strand
+                <th key='feathead3' style={{textAlign:'center', width:'10%', color:'black'}}>strand
                     <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
+                    id='Features_forward'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
@@ -468,29 +501,33 @@ export default class SideBar extends React.Component {
         if (this.props.annotationType === 'Cutsites') {
             tableHeaderCells = [];
             tableHeaderCells.push(
-                <th key='cuthead0'>name
+                <th key='cuthead0' style={{color:'black'}}>name
                     <IconButton onClick={this.onCutsiteSort.bind(this, 'name')}
+                    id='Cutsites_name'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='cuthead1' style={{textAlign: 'center'}}># cuts
+                <th key='cuthead1' style={{textAlign:'center', color:'black'}}># cuts
                     <IconButton onClick={this.onCutsiteSort.bind(this, 'numberOfCuts')}
+                    id='Cutsites_numberOfCuts'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='cuthead2' style={{width: '40%'}}>position
+                <th key='cuthead2' style={{width:'40%', color:'black'}}>position
                     <IconButton onClick={this.onCutsiteSort.bind(this, 'start')}
+                    id='Cutsites_start'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='cuthead3' style={{textAlign: 'center'}}>strand
+                <th key='cuthead3' style={{textAlign:'center', color:'black'}}>strand
                     <IconButton onClick={this.onCutsiteSort.bind(this, 'forward')}
+                    id='Cutsites_forward'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
@@ -498,36 +535,34 @@ export default class SideBar extends React.Component {
 
             // this is horrible and nasty and i'm sorry. i'm trying to sort by an attribute of an object, in an array, in a hash...
             var sorted = Object.assign({}, annotations);
-            if (this.state.cutsiteOrder !== 'name') {
 
-                // turning hash into an array to be sorted
-                var array = [];
-                for (var key in sorted) {
-                    let numberOfCuts = sorted[key].length
-                    for (var i=0; i<numberOfCuts; i++) {
-                        let obj = Object.assign({}, sorted[key][i]);
-                        obj.name = key;
-                        obj.numberOfCuts = numberOfCuts;
-                        array.push(obj);
-                    }
+            // turning hash into an array to be sorted
+            var array = [];
+            for (var key in sorted) {
+                let numberOfCuts = sorted[key].length
+                for (var i=0; i<numberOfCuts; i++) {
+                    let obj = Object.assign({}, sorted[key][i]);
+                    obj.name = key;
+                    obj.numberOfCuts = numberOfCuts;
+                    array.push(obj);
                 }
-                array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
+            }
+            array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
 
-                // turning array back into hash for rendering
-                sorted = {};
-                for (var j=0; j<array.length; j++) {
-                    let name = array[j].name;
+            // turning array back into hash for rendering
+            sorted = {};
+            for (var j=0; j<array.length; j++) {
+                let name = array[j].name;
 
-                    // if cuts with the same name happen to end up together again after the sort, awesome
-                    if (j>0 && array[j-1].name === name) {
-                        sorted[name].push(array[j]);
-                    } else {
-                        // otherwise, a hacky workaround for creating multiple entries with the same key
-                        while (sorted[name]) {
-                            name = name + " ";
-                        }
-                        sorted[name] = [array[j]];
+                // if cuts with the same name happen to end up together again after the sort, awesome
+                if (j>0 && array[j-1].name === name) {
+                    sorted[name].push(array[j]);
+                } else {
+                    // otherwise, a hacky workaround for creating multiple entries with the same key
+                    while (sorted[name]) {
+                        name = name + " ";
                     }
+                    sorted[name] = [array[j]];
                 }
             }
 
@@ -614,29 +649,33 @@ export default class SideBar extends React.Component {
         if (this.props.annotationType === 'Orfs') {
             tableHeaderCells = [];
             tableHeaderCells.push(
-                <th key='orfhead0'>position
+                <th key='orfhead0' style={{color:'black'}}>position
                     <IconButton onClick={this.onOrfSort.bind(this, 'start')}
+                    id='Orfs_start'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='orfhead1'>length
+                <th key='orfhead1' style={{color:'black'}}>length
                     <IconButton onClick={this.onOrfSort.bind(this, 'length')}
+                    id='Orfs_length'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='orfhead2' style={{textAlign: 'center'}}>strand
+                <th key='orfhead2' style={{textAlign:'center', color:'black'}}>strand
                     <IconButton onClick={this.onOrfSort.bind(this, 'forward')}
+                    id='Orfs_forward'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='orfhead3' style={{textAlign: 'center'}}>frame
+                <th key='orfhead3' style={{textAlign:'center', color:'black'}}>frame
                     <IconButton onClick={this.onOrfSort.bind(this, 'frame')}
+                    id='Orfs_frame'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
                     <ArrowDropDown/>
                     </IconButton>
@@ -784,8 +823,6 @@ export default class SideBar extends React.Component {
 
                 { topTabs }
 
-                { selectAllNone }
-
                 <div className={styles.tableContainer}>
                     <table ref="sideBar">
                         <thead><tr>{ tableHeaderCells }</tr></thead>
@@ -796,6 +833,8 @@ export default class SideBar extends React.Component {
                 { featureControls }
 
                 { orfControls }
+
+                { selectAllNone }
 
                 { errorDialog }
 
