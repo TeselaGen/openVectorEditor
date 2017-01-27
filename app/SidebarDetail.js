@@ -8,7 +8,70 @@ import IconButton from 'material-ui/lib/icon-button';
 import assign from 'lodash/object/assign';
 
 import styles from './side-bar.css'
-
+var FEATURE_TYPES = [
+    "-10_signal",
+    "-35_signal",
+    "3'UTR",
+    "5'UTR",
+    "allele",
+    "attenuator",
+    "C_region",
+    "CAAT_signal",
+    "CDS",
+    "conflict",
+    "D_segment",
+    "D-loop",
+    "enhancer",
+    "exon",
+    "GC_signal",
+    "gene",
+    "iDNA",
+    "intron",
+    "J_region",
+    "LTR",
+    "mat_peptide",
+    "misc_binding",
+    "misc_difference",
+    "misc_feature",
+    "misc_recomb",
+    "misc_RNA",
+    "misc_signal",
+    "misc_structure",
+    "modified_base",
+    "mRNA",
+    "mutation",
+    "N_region",
+    "old_sequence",
+    "polyA_signal",
+    "polyA_site",
+    "precursor_RNA",
+    "prim_transcript",
+    "primer",
+    "primer_bind",
+    "promoter",
+    "protein_bind",
+    "RBS",
+    "rep_origin",
+    "repeat_region",
+    "repeat_unit",
+    "rRNA",
+    "S_region",
+    "satellite",
+    "scRNA",
+    "sig_peptide",
+    "snRNA",
+    "source",
+    "stem_loop",
+    "STS",
+    "TATA_signal",
+    "terminator",
+    "transit_peptide",
+    "transposon",
+    "tRNA",
+    "unsure",
+    "V_region",
+    "variation"
+];
 // {{}} remove this.state and do it correctly
 
 // this is the feature detail popout that comes out of the sidebar; it may need a new name
@@ -62,7 +125,6 @@ export default class SidebarDetail extends React.Component {
             sequenceLength,
         } = this.props;
 
-        var FEATURE_TYPES = ["cds", "gene", "m_rna", "misc_binding", "misc_feature", "misc_marker", "promoter", "protein_bind", "rep_origin", "terminator", "width"];
         var options = [];
         var rowStyle;
         for (var i=0; i<FEATURE_TYPES.length; i++) {

@@ -180,16 +180,16 @@ export default class SideBar extends React.Component {
             this.setState({featureError: true});
             return;
         }
+        let temporaryId = this.props.annotations.length;
+        this.state.newFeature.id = temporaryId;
         this.props.signals.addFeatureModalDisplay();
         this.props.signals.addAnnotations({
             sidebarType: 'Features',
             annotationsToInsert: [this.state.newFeature],
             thidErrors: true
         });
-        if (this.state.newFeature.id) {
-            this.setState({selectedFeatures: [this.state.newFeature.id]});
-            this.annotationHighlight(this.state.newFeature.id);
-        }
+        this.setState({selectedFeatures: [temporaryId]});
+        this.props.signals.featureClicked({annotation: this.state.newFeature});
     }
 
     onFeatureSort(column) {
@@ -410,7 +410,6 @@ export default class SideBar extends React.Component {
 
             var sorted = annotations.slice(0);
             sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
-
             annotationTableRows = [];
             for (let i = 0; i < sorted.length; i++) {
                 let annotationTableCells = [];
@@ -435,7 +434,7 @@ export default class SideBar extends React.Component {
                         }
                         if (column === 'strand') {
                             cellStyle = {textAlign: 'center'};
-                            if (annotation['strand'] === 1) {
+                            if (parseInt(annotation['strand']) === 1) {
                                 cellEntry = "+";
                             } else {
                                 cellEntry = "-";
