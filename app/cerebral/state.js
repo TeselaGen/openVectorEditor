@@ -103,6 +103,7 @@ module.exports = {
        parts: [],
        circular: false
     },
+    history: [],
     userEnzymeList: commonEnzymes, //user enzymes applied to the view
     commonEnzymes: commonEnzymes,
     berkeleyBBEnzymes: berkeleyBBEnzymes,

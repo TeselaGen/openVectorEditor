@@ -42,6 +42,8 @@ export default function(options) {
         setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
         toggleAnnotationDisplay: [a.toggleAnnotationDisplay],
 
+        updateHistory: [a.updateHistory],
+
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
                 success: [], //do nothing
@@ -168,7 +170,7 @@ export default function(options) {
         clickSaveFile:
             [a.saveToFile],
         saveChanges:
-            [a.saveToServer],
+            [a.saveToServer, a.updateHistory],
         clickLoadFile: [
             [a.loadFromFile], {
                 success: [a.insertSequenceData],

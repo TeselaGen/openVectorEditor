@@ -24,6 +24,7 @@ import styles from './side-bar.css'
     sidebarType: ['sidebarType'],
     selectionLayer: ['selectionLayer'],
     sequenceLength: ['sequenceLength'],
+    sequenceData: ['sequenceData'],
 })
 
 export default class SideBar extends React.Component {
@@ -45,7 +46,7 @@ export default class SideBar extends React.Component {
     componentWillReceiveProps(newProps) {
         // newProps are passed in from things like switching tabs or clicking on the circular view
         let signals = this.props.signals;
-        if (newProps.selectionLayer.selected) {
+        if (newProps.selectionLayer.selected && newProps.selectionLayer.id) {
             var found = false;
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
@@ -71,10 +72,18 @@ export default class SideBar extends React.Component {
             }
 
         // deselecting a feature/orf from the circular view clears selected features/orfs
-    } else if (newProps.annotationType === 'Features' && this.state.selectedFeatures.length === 1){
+        } else if (newProps.annotationType === 'Features' && this.state.selectedFeatures.length === 1){
             this.setState({selectedFeatures: []});
         } else if (newProps.annotationType === 'Orfs' && this.state.selectedOrfs.length === 1) {
             this.setState({selectedOrfs: []});
+        }
+    }
+
+    /* this really shouldn't be in the sidebar, but it works for now because the sidebar
+       updates state anytime a change to sequenceData is made (whether in the sidebar or not) */
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.sequenceData !== prevProps.sequenceData) {
+            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
         }
     }
 
@@ -274,7 +283,8 @@ export default class SideBar extends React.Component {
             showOrfModal,
             selectionLayer,
             sidebarType,
-            sequenceLength
+            sequenceLength,
+            sequenceData
         } = this.props;
         var sidebarContent;
         var controls;
