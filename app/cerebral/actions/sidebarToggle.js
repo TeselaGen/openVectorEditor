@@ -6,7 +6,7 @@ module.exports = function sidebarToggle({input, state, output}) {
     state.set('showRow', !currentRow);
     state.set('showSidebar', !currentSidebar);
     state.set('sidebarType', 'Features'); // features are default but making sure
-    
+
     var sidebarCSS = {
         "transform": ["scaleX(1)", "scaleX(-1)"],
         "filter": ["", "FlipH"],
