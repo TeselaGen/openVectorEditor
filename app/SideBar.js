@@ -356,7 +356,9 @@ export default class SideBar extends React.Component {
             </div>
         )
 
-        if (this.props.annotationType === 'Cutsites') {
+        // i'm taking off 'selectAllNone' from Orfs for now because there's no good place to put it
+        // it gets in the way of orfcontrols at the moment
+        if (this.props.annotationType === 'Cutsites' || this.props.annotationType === 'Orfs') {
             selectAllNone = <div></div>;
         }
 
