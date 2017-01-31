@@ -2,7 +2,7 @@ var ReactDOM = require('react-dom');
 var App = require('../app/App.js');
 import request from 'superagent/lib/client';
 import {toOpenVectorEditor} from '../app/schemaConvert';
-// import fakeIceSequenceData from './fakeIceSequenceData'
+import emptySequenceData from './emptySequenceData'
 
 var query = location.search;
 var cookie = document.cookie;
@@ -19,8 +19,8 @@ request
     .end(function(err, result) {
         var contents = result.body;
         if (!contents) {
-          //use an example ice response
-          // contents = fakeIceSequenceData
+          //use an empty sequence object
+          contents = emptySequenceData
           
         }
         contents.featureList = [];
