@@ -3,8 +3,8 @@ var areNonNegativeIntegers = require('validate.io-nonnegative-integer-array');
 
 /**
  * sets the selection layer on a plasmid
- * @param  {object} newSelectionLayer {start: int, end: int, [cursorAtEnd: boolean]}
- * @return {undefined}                   
+ * @param  {object} newSelectionLayer {start: int, end: int, id: int, [cursorAtEnd: boolean]}
+ * @return {undefined}
  */
 module.exports = function setSelectionLayerHelper (newSelectionLayer) {
     var updatedSelectionLayer = {};
@@ -13,13 +13,15 @@ module.exports = function setSelectionLayerHelper (newSelectionLayer) {
         updatedSelectionLayer = {
             start: -1,
             end: -1,
+            id: -1,
             selected: false,
             cursorAtEnd: true
         };
     } else {
         updatedSelectionLayer = {
             start: newSelectionLayer.start,
-            end: newSelectionLayer.end
+            end: newSelectionLayer.end,
+            id: newSelectionLayer.id
         };
         updatedSelectionLayer.selected = true;
         if (newSelectionLayer.cursorAtEnd || typeof newSelectionLayer.cursorAtEnd === 'undefined') {

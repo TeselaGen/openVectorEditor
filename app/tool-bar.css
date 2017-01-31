@@ -1,0 +1,7 @@
+.unsaved div svg {
+    fill: #ff4d4d !important;
+}
+
+.saved div svg {
+    fill: black;
+}

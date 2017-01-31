@@ -26,6 +26,8 @@ import TextField from 'material-ui/lib/text-field';
 import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
 import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
 
+import styles from './tool-bar.css'
+
 @Cerebral({
     embedded: ['embedded'],
     readOnly: ['readOnly'],
@@ -34,7 +36,8 @@ import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
     showParts: ['showParts'],
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
-    showSidebar: ['showSidebar']
+    showSidebar: ['showSidebar'],
+    history: ['history'],
 })
 
 export default class ToolBar extends React.Component {
@@ -57,7 +60,8 @@ export default class ToolBar extends React.Component {
             showOrfs,
             showCutsites,
             showSidebar,
-            signals
+            signals,
+            history
         } = this.props;
 
         var dialog = (
@@ -177,6 +181,12 @@ export default class ToolBar extends React.Component {
             printTab.close();
         };
 
+        var saveButtonStatus = "saved";
+        var mostRecentHistory = history[history.length - 1]; //last element
+        if (mostRecentHistory && !mostRecentHistory.saved) {
+            saveButtonStatus = "unsaved";
+        }
+
         return (
             <Toolbar>
                 <ToolbarGroup key={0}>
@@ -209,6 +219,7 @@ export default class ToolBar extends React.Component {
                     <IconButton
                         disabled={ readOnly }  // you can't save in read only
                         tooltip="Save to Server"
+                        className={styles[saveButtonStatus]}
                         onTouchTap={function() {
                             signals.saveChanges();
                         }}
