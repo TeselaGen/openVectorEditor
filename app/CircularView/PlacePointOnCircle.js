@@ -18,7 +18,6 @@ export default function PlacePointOnCircle({children, radius=0, bpNumber=0, tota
     var angleOnCircle = bpNumber / totalBps * 2 * Math.PI; // angle in radians
     var coords = polarToSpecialCartesian(radius, angleOnCircle);
     if( forward ) {
-        console.log("rotate this!")
         // transform wants degrees and not rads
         var transform = `translate(${ coords.x }, ${ coords.y }) rotate(${ angleOnCircle * 180 / Math.PI },0,0)`
     } else {
