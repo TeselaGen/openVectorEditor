@@ -4,9 +4,9 @@ module.exports = {
         return {
             state: {
                 sequenceData: {
-                    features: contents.featureList.map(function (elem) {                       
-                        elem.start = elem.locations[0].genbankStart;                       
-                        elem.end = elem.locations[0].end;  
+                    features: contents.featureList.map(function (elem) {
+                        elem.start = elem.locations[0].genbankStart;
+                        elem.end = elem.locations[0].end;
                         elem.color = colorOfFeature(elem);
                         return elem;
                     }),
@@ -16,7 +16,7 @@ module.exports = {
                     circular: contents.isCircular
                 },
                 embedded: document.location.pathname.match(/\/entry\//),
-                readOnly: !contents.canEdit 
+                readOnly: !contents.canEdit
             },
             services: services,
             actions: {

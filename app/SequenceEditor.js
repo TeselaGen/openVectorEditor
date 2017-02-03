@@ -5,6 +5,7 @@ import StatusBar from './StatusBar';
 import SideBar from './SideBar';
 import styles from './sequence-editor.css';
 
+var assign = require('lodash/object/assign');
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var CircularView = require('./CircularView/CircularView');
 var Clipboard = require('./Clipboard');
@@ -13,7 +14,7 @@ var combokeys;
 var RowView = require('./RowView/RowView');
 
 @Cerebral({
-    bpsPerRow: ['bpsPerRow'],    
+    bpsPerRow: ['bpsPerRow'],
     embedded: ['embedded'],
     sequenceLength: ['sequenceLength'],
     totalRows: ['totalRows'],
@@ -33,6 +34,14 @@ var RowView = require('./RowView/RowView');
 })
 
 export default class SequenceEditor extends React.Component {
+    
+    componentWillMount() {
+        let signals = this.props.signals;
+        this.props.sequenceData.features.forEach(function (feature) {
+            signals.updateFeature({ feature: feature });
+        });
+    }
+
     componentDidMount() {
         var {
             sequenceDataInserted,
@@ -93,6 +102,12 @@ export default class SequenceEditor extends React.Component {
             selectInverse();
             event.stopPropagation();
         });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.sequenceData !== prevProps.sequenceData) {
+            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
+        }
     }
 
     // copy and paste events are handled by a listener in the DOM element as listed below

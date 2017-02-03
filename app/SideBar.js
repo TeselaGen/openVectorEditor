@@ -79,14 +79,6 @@ export default class SideBar extends React.Component {
         }
     }
 
-    /* this really shouldn't be in the sidebar, but it works for now because the sidebar
-       updates state anytime a change to sequenceData is made (whether in the sidebar or not) */
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.sequenceData !== prevProps.sequenceData) {
-            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
-        }
-    }
-
     selectAllNone(ids) {
         this.setState({editFeature: -1});
         this.props.signals.featureClicked({annotation: {}});

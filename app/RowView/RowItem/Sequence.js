@@ -5,15 +5,15 @@ var Sequence = React.createClass({
     componentDidMount: function() {
         var {
             bpsPerRow,
-            charWidth, 
-            children,            
+            charWidth,
+            children,
             className,
             reverse,
-            sequence            
-        } = this.props;        
+            sequence
+        } = this.props;
 
         // check if we have a partial final row
-        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;        
+        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
         if(sequence.length < bpsPerRow) {
             rowWidth = sequence.length * charWidth * 1.2;
         }
@@ -25,11 +25,11 @@ var Sequence = React.createClass({
     render: function() {
         var {
             bpsPerRow,
-            charWidth, 
-            children,            
+            charWidth,
+            children,
             className,
             reverse,
-            sequence            
+            sequence
         } = this.props;
 
         if (charWidth < 10) {
@@ -43,13 +43,13 @@ var Sequence = React.createClass({
         var rowWidth = bpsPerRow * charWidth * 1.2;
         var textColor = "#000"; // black
         if(reverse==="true") textColor = "#aaa"; // gray
-        
+
         return (
             <div style={style} className='Sequence'>
-                <svg ref="rowViewTextContainer" className="rowViewTextContainer" 
-                    viewBox={ "0 " + charWidth*-0.85 + " " + rowWidth + " " + charWidth } // in future the radio should be bpsPerRow*charWidth x charHeight 
+                <svg ref="rowViewTextContainer" className="rowViewTextContainer"
+                    viewBox={ "0 " + charWidth*-0.85 + " " + rowWidth + " " + charWidth } // in future the radio should be bpsPerRow*charWidth x charHeight
                     >
-                    <text ref="sequenceRow" fill={ textColor }>
+                    <text ref="sequenceRow" letterSpacing={ '9px' } fill={ textColor }>
                         { sequence }
                     </text>
                 </svg>

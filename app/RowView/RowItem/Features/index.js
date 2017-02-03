@@ -46,7 +46,7 @@ let Features = React.createClass({
                             <Feature
                                 key={index}
                                 annotation={annotation}
-                                color={annotation.color}                                
+                                color={annotation.color}
                                 charWidth={charWidth}
                                 forward={annotation.forward}
                                 rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
