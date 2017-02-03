@@ -127,11 +127,11 @@ module.exports = {
             // var gaps = Math.floor(charsInRow / 10) - 1;
             // return Math.floor((charsInRow - gaps) / 10) * 10;
             // return charsInRow;
-            if(showCircular && showRow) {
+            // if(showCircular && showRow) {
                 return 45;
-            } else {
-                return 90;
-            }
+            // } else {
+            //     return 90;
+            // }
         }
     ]),
     userEnzymes: deriveData([

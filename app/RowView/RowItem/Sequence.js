@@ -49,7 +49,7 @@ var Sequence = React.createClass({
                 <svg ref="rowViewTextContainer" className="rowViewTextContainer"
                     viewBox={ "0 " + charWidth*-0.85 + " " + rowWidth + " " + charWidth } // in future the radio should be bpsPerRow*charWidth x charHeight
                     >
-                    <text ref="sequenceRow" letterSpacing={ '9px' } fill={ textColor }>
+                    <text ref="sequenceRow" fill={ textColor }>
                         { sequence }
                     </text>
                 </svg>
