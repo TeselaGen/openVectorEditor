@@ -20,10 +20,10 @@ function noop() {
 @Cerebral({
     annotationHeight: ['annotationHeight'],
     bpsPerRow: ['bpsPerRow'],
-    caretPosition: ['caretPosition'],     
-    charWidth: ['charWidth'], 
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
-    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
+    caretPosition: ['caretPosition'],
+    charWidth: ['charWidth'],
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
     // cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
@@ -42,7 +42,7 @@ function noop() {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
 export default class RowView extends React.Component {
@@ -55,31 +55,28 @@ export default class RowView extends React.Component {
         for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
             var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
             var boundingRowRect = rowDomNode.getBoundingClientRect();
-            // //console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
-            // //console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
             if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
                 //then the click is falls within this row
-                // //console.log('HGGGG');
                 rowNotFound = false;
                 var rowNumber = parseInt(rowDomNode.getAttribute('data-row-number'));
                 var row = this.props.rowData[rowNumber];
-                if (event.clientX - boundingRowRect.left < 0) {
+                if (event.clientX - boundingRowRect.left < 20) { // 20 for left-padding
                     nearestBP = row.start;
-                                    
+
                 } else {
-                    var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-                    var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
+                    var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 20; // 20 for left-padding
+                    // var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
+                    var numberOfBPsInFromRowStart = Math.floor(((clickXPositionRelativeToRowContainer + this.props.charWidth/2) / (boundingRowRect.width - 40)) * this.props.bpsPerRow); // 40 for sum of left & right padding
                     nearestBP = numberOfBPsInFromRowStart + row.start;
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;
-                                            
                     }
-                                    
+
                 }
                 break; //break the for loop early because we found the row the click event landed in
-                            
+
             }
-                    
+
         }
         if (rowNotFound) {
             console.warn('was not able to find the correct row');
@@ -87,13 +84,13 @@ export default class RowView extends React.Component {
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
             nearestBP = lastOfRenderedRows.end
-                    
+
         }
         callback({
             shiftHeld: event.shiftKey,
             nearestBP,
             caretGrabbed: event.target.className === "cursor"
-                    
+
         });
 
     }

@@ -6,19 +6,19 @@ import getXStartAndWidthOfRowAnnotation from '../../shared-utils/getXStartAndWid
 @Cerebral({
     charWidth: ['charWidth'],
     bpsPerRow: ['bpsPerRow'],
-    sequenceLength: ['sequenceLength']
+    sequenceLength: ['sequenceLength'],
+    caretPosition: ['caretPosition']
 })
 export default class Highlight extends React.Component {
 
     _dimensions(start, end) {
         var {
-            rowStart,
-            rowEnd,
             charWidth,
             bpsPerRow,
             sequenceLength
         } = this.props;
-
+        var rowStart = this.props.rowStart + 1;
+        var rowEnd  = this.props.rowEnd + 1;
         var dimensions = [];
 
         if (start > end) {
@@ -30,11 +30,11 @@ export default class Highlight extends React.Component {
             var localEnd = (end < rowEnd) ? end - rowStart : rowEnd - rowStart;
             let result = getXStartAndWidthOfRowAnnotation({start: localStart, end: localEnd}, bpsPerRow, charWidth);
 
-            var xShift = result.xStart * -1.2; // account for character spacing and move selection right
+            var xShift = result.xStart * - 1.15; // account for character spacing and move selection right
             var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // 40 accounts for padding, 1.2 accounts for spacing
 
             var widthInBps = localEnd - localStart + 1;
-            var width = widthInBps * (charWidth * 1.2) - 20;
+            var width = widthInBps * (charWidth * 1.15) - 20;
 
             dimensions.push({
                 x: xShift,
@@ -42,7 +42,6 @@ export default class Highlight extends React.Component {
                 rowWidth: rowWidth
             });
         }
-
         return dimensions;
     }
 

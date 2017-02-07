@@ -31,15 +31,15 @@ export default function handleEditorDragged({input: {
         } else {
                 if (nearestBP > fixedCaretPositionOnDragStart) {
                     newSelectionLayer = {
-                        start: fixedCaretPositionOnDragStart,
-                        end: nearestBP - 1,
+                        start: fixedCaretPositionOnDragStart + 1,
+                        end: nearestBP + 1,
                         cursorAtEnd: true,
                     };
                     state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'start')
                 } else {
                     newSelectionLayer = {
-                        start: nearestBP,
-                        end: fixedCaretPositionOnDragStart - 1,
+                        start: nearestBP + 1,
+                        end: fixedCaretPositionOnDragStart + 1,
                         cursorAtEnd: false,
                     };
                     state.set(['editorDrag', 'fixedCaretPositionOnDragStartType'], 'end')
@@ -71,7 +71,7 @@ export default function handleEditorDragged({input: {
     // } else {
 
     // }
-    // // if (selectionLayer.selected && selectionLayer.start ) 
+    // // if (selectionLayer.selected && selectionLayer.start )
 
     // //note this method relies on variables that are set in the handleEditorDragStart method!
     // editorBeingDragged = true;

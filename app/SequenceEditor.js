@@ -10,8 +10,8 @@ var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var CircularView = require('./CircularView/CircularView');
 var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
-var combokeys;
 var RowView = require('./RowView/RowView');
+var combokeys;
 
 @Cerebral({
     bpsPerRow: ['bpsPerRow'],
@@ -34,7 +34,7 @@ var RowView = require('./RowView/RowView');
 })
 
 export default class SequenceEditor extends React.Component {
-    
+
     componentWillMount() {
         let signals = this.props.signals;
         this.props.sequenceData.features.forEach(function (feature) {

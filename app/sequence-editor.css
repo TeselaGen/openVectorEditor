@@ -27,7 +27,7 @@
     flex-basis: 0;
     display: block;
     position: relative;
-    overflow: scroll;    
+    overflow: scroll;
     /*padding-bottom: 40px;*/
     text-align: center;
 }
@@ -38,6 +38,7 @@
     display: block;
     position: relative;
     overflow-y: scroll;
+    overflow-x: hidden;
     /*padding-bottom: 40px;*/
 }
 

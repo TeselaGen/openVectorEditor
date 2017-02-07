@@ -42,7 +42,7 @@ var Sequence = React.createClass({
         }
         var rowWidth = bpsPerRow * charWidth * 1.2;
         var textColor = "#000"; // black
-        if(reverse==="true") textColor = "#aaa"; // gray
+        if (reverse==="true") textColor = "#aaa"; // gray
 
         return (
             <div style={style} className='Sequence'>
