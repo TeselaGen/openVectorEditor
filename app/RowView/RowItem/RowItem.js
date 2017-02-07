@@ -1,27 +1,3 @@
-/* structure of row object
-   note start of sequence is 0
-
-
-obj
-    - cutsites[]
-        - length: number
-        Object:
-        - annotation [object of type]
-        - enclosingRangeType : string
-        - end : number
-        - id : ?
-        - start : number
-        - yOffset : number
-    - end : number
-    - features[]
-    - orfs []
-    - parts [] // unused by us
-    - rowNumber : number
-    - sequence : string
-    - start : number
-    - translations [] // also unused right now
-*/
-
 // import PassThrough from '../../utils/PassThrough'
 import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString'
 import React from 'react';
