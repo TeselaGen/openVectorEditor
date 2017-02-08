@@ -23,10 +23,10 @@ request
           // contents = fakeIceSequenceData
           
         }
-        contents.featureList = [];
-        for (var f = 0; f < contents.features.length; f++) { 
-            contents.featureList.push(contents.features[f]);
-        }
+        // contents.featureList = [];
+        // for (var f = 0; f < contents.features.length; f++) { 
+        //     contents.featureList.push(contents.features[f]);
+        // }
 
         //Editor is the React Component
         //controller is the cerebral state controller
