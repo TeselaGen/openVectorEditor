@@ -17,8 +17,8 @@ export default class Highlight extends React.Component {
             bpsPerRow,
             sequenceLength
         } = this.props;
-        var rowStart = this.props.rowStart + 1;
-        var rowEnd  = this.props.rowEnd + 1;
+        var rowStart = this.props.rowStart;
+        var rowEnd  = this.props.rowEnd;
         var dimensions = [];
 
         if (start > end) {
@@ -28,13 +28,11 @@ export default class Highlight extends React.Component {
         } else if (start <= rowEnd && end >= rowStart) {
             var localStart = (start > rowStart) ? start - rowStart : 0;
             var localEnd = (end < rowEnd) ? end - rowStart : rowEnd - rowStart;
+
             let result = getXStartAndWidthOfRowAnnotation({start: localStart, end: localEnd}, bpsPerRow, charWidth);
-
-            var xShift = result.xStart * - 1.15; // account for character spacing and move selection right
+            var xShift = -result.xStart*(charWidth-1); //move selection right
+            var width = result.width;
             var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // 40 accounts for padding, 1.2 accounts for spacing
-
-            var widthInBps = localEnd - localStart + 1;
-            var width = widthInBps * (charWidth * 1.15) - 20;
 
             dimensions.push({
                 x: xShift,

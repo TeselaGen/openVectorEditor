@@ -69,12 +69,14 @@ export default class ToolBar extends React.Component {
         );
 
         // show/hide views buttons that only appear in embedded mode
+        var draggable = document.getElementById("draggable");
         var embeddedControls = (
             <div style={{display: 'inline-block'}}>
                 <IconButton tooltip="Display Sequence View"
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
                         document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.changeBps({width: draggable.clientWidth});
                     }}
                     >
                     <RowIcon />
@@ -84,6 +86,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.changeBps({width: draggable.clientWidth});
                     }}
                     >
                     <BothViewsIcon />
@@ -194,6 +197,7 @@ export default class ToolBar extends React.Component {
                         tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
+                            signals.changeBps({width: document.body.clientWidth});
                         }}
                         >
                         <InputIcon id="openFeatureDisplay"/>

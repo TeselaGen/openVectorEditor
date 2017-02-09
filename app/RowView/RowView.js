@@ -9,23 +9,16 @@ import RowItem from './RowItem/RowItem.js'
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import prepareRowData from 've-sequence-utils/prepareRowData';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
-
-var defaultContainerWidth = 400
-var defaultCharWidth = 12
-var defaultMarginWidth = 10
-
-function noop() {
-}
+import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthOfRowAnnotation';
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
     bpsPerRow: ['bpsPerRow'],
-    caretPosition: ['caretPosition'],
     charWidth: ['charWidth'],
+    caretPosition: ['caretPosition'],
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
-    // cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     rowViewDimensions: ['rowViewDimensions'],
@@ -47,6 +40,16 @@ function noop() {
 
 export default class RowView extends React.Component {
 
+    componentDidMount() {
+        var draggable = document.getElementById("draggable");
+        let signals = this.props.signals;
+        let charWidth = this.props.charWidth;
+        signals.changeBps({width: draggable.clientWidth});
+        window.onresize = function() {
+            signals.changeBps({width: draggable.clientWidth});
+        };
+    }
+
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
         var visibleRowsContainer = ReactDOM.findDOMNode(this.InfiniteScroller);
@@ -56,22 +59,25 @@ export default class RowView extends React.Component {
             var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
             var boundingRowRect = rowDomNode.getBoundingClientRect();
             if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-                //then the click is falls within this row
+                //then the click is within this row
                 rowNotFound = false;
                 var rowNumber = parseInt(rowDomNode.getAttribute('data-row-number'));
                 var row = this.props.rowData[rowNumber];
-                if (event.clientX - boundingRowRect.left < 20) { // 20 for left-padding
-                    nearestBP = row.start;
 
+                var sequenceText = document.getElementById("sequenceText");
+                var textWidth = sequenceText.firstChild.width.baseVal.value - 35; // 35 for left+right padding
+
+                var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
+
+                if (clickXPositionRelativeToRowContainer < 0) {
+                    nearestBP = row.start;
                 } else {
-                    var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 20; // 20 for left-padding
-                    // var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
-                    var numberOfBPsInFromRowStart = Math.floor(((clickXPositionRelativeToRowContainer + this.props.charWidth/2) / (boundingRowRect.width - 40)) * this.props.bpsPerRow); // 40 for sum of left & right padding
+                    console.log(this.props.bpsPerRow);
+                    var numberOfBPsInFromRowStart = Math.round(this.props.bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
                     nearestBP = numberOfBPsInFromRowStart + row.start;
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;
                     }
-
                 }
                 break; //break the for loop early because we found the row the click event landed in
 
@@ -94,6 +100,9 @@ export default class RowView extends React.Component {
         });
 
     }
+    // dosomthing() {
+    //     console.log("resizing");
+    // }
 
     render() {
         var {
@@ -114,7 +123,6 @@ export default class RowView extends React.Component {
             annotationVisibility,
             caretPosition,
             rowViewDimensions,
-            marginWidth=defaultMarginWidth,
             signals,
             bpsPerRow,
             rowData
@@ -144,7 +152,7 @@ export default class RowView extends React.Component {
                 }
                 onStop={signals.editorDragStopped}
                 >
-                <div
+                <div id="draggable"
                     onClick={(event) => {
                         this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
                     }}

@@ -99,6 +99,9 @@ export default function(options) {
         // resizeCircularView: [
         //     a.resizeCircularView
         // ],
+        changeBps: [
+            a.changeBps
+        ],
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers

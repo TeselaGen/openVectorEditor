@@ -30,6 +30,7 @@ let Features = React.createClass({
             }
             let annotation = annotationRange.annotation;
             let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+
             annotationsSVG.push(
                 <div
                     key={'feature' + index}
@@ -41,18 +42,17 @@ let Features = React.createClass({
                             width={result.width}
                             key={index}
                             top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
-                            left={result.xStart}
+                            left={-result.xStart}
                             >
                             <Feature
                                 key={index}
                                 annotation={annotation}
                                 color={annotation.color}
-                                charWidth={charWidth}
                                 forward={annotation.forward}
                                 rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
                                 height={annotationHeight}
                                 name={annotation.name}
-                                widthInBps={annotationRange.end - annotationRange.start + 1}
+                                annotationRange={annotationRange}
                                 >
                             </Feature>
                         </AnnotationPositioner>

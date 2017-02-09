@@ -48,8 +48,8 @@ function noop() {
 @Cerebral({
     annotationHeight: ['annotationHeight'],
     bpsPerRow: ['bpsPerRow'],
-    caretPosition: ['caretPosition'],
     charWidth: ['charWidth'],
+    caretPosition: ['caretPosition'],
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
@@ -76,7 +76,6 @@ class RowItem extends React.Component {
 
     render() {
         var {
-            charWidth,
             selectionLayer={start: -1, end: -1},
             searchLayers=[],
             sequenceData,
@@ -94,9 +93,10 @@ class RowItem extends React.Component {
             showFeatures,
             showOrfs,
             bpsPerRow,
+            charWidth,
             componentOverrides = {},
             className,
-            signals
+            signals,
         } = this.props;
 
         var {
@@ -124,11 +124,10 @@ class RowItem extends React.Component {
         } = componentOverrides
 
         var annotationCommonProps = {
-            charWidth,
             bpsPerRow,
+            charWidth,
             sequenceLength,
             annotationHeight,
-            spaceBetweenAnnotations,
             row
         }
 
@@ -136,43 +135,10 @@ class RowItem extends React.Component {
 
         var selectedStuff = [];
 
-        if (selectionLayer.selected) {
-
-        //     selectedLayer.push(
-        //         <div
-        //             key='veSelectionLayer'
-        //             className='veSelectionLayer'
-        //             start={ start }
-        //             end={ end }
-        //             height={ 0 }
-        //             >
-        //             <path
-        //                 style={{ opacity: .4}}
-        //                 d={ sector.path.print() }
-        //                 fill="blue"
-        //                 />
-        //         </div>
-        //     );
-        //     selectedLayer.push(
-        //         <Caret
-        //             key='caretStart'
-        //             caretPosition={selectionLayer.start}
-        //             sequenceLength={sequenceLength}
-        //             />
-        //     );
-        //     selectedLayer.push(
-        //         <Caret
-        //             key='caretEnd'
-        //             caretPosition={selectionLayer.end + 1}
-        //             sequenceLength={sequenceLength}
-        //             />
-        //     );
-        }
         // nothing selected, just put a caret at position 0
         if (caretPosition !== -1 && !selectionLayer.selected) {
             selectedStuff.push(
                 <Caret
-                    charWidth = {charWidth}
                     row = {row}
                     sequenceLength = {sequenceLength}
                     caretPosition = {caretPosition}
@@ -181,7 +147,7 @@ class RowItem extends React.Component {
         }
 
         return (
-            <div className = {styles.rowItem + " veRowItem"}>
+            <div className={"veRowItem", styles.rowItem}>
 
                 <div className={styles.margin}>
                     { rowNumber }
@@ -209,13 +175,12 @@ class RowItem extends React.Component {
                         />
                 }
 
-                <Highlight start={selectionLayer.start - 1} end={selectionLayer.end - 1} rowStart={row.start - 1} rowEnd={row.end - 1} />
+                <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
                         reverse="false"
                         sequence={sequence}
-                        charWidth={charWidth}
                         bpsPerRow={bpsPerRow}
                         >
                         {(showCutsites && Object.keys(cutsites).length > 0) &&
@@ -232,7 +197,6 @@ class RowItem extends React.Component {
                         <Sequence
                             reverse="true"
                             sequence={reverseSequence}
-                            charWidth={charWidth}
                             bpsPerRow={bpsPerRow}
                             >
                             {(showCutsites && Object.keys(cutsites).length > 0) &&

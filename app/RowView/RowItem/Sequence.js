@@ -1,53 +1,38 @@
 import React, {PropTypes} from 'react';
+import {Decorator as Cerebral} from 'cerebral-view-react';
 
-var Sequence = React.createClass({
+@Cerebral({
+    rowViewDimensions: ['rowViewDimensions'],
+})
 
-    componentDidMount: function() {
+class Sequence extends React.Component {
+
+    render() {
         var {
             bpsPerRow,
-            charWidth,
             children,
             className,
             reverse,
-            sequence
+            sequence,
         } = this.props;
 
-        // check if we have a partial final row
-        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;
-        if(sequence.length < bpsPerRow) {
-            rowWidth = sequence.length * charWidth * 1.2;
-        }
-        if(rowWidth && rowWidth > 0)
-        this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
-        this.setState({ rowWidth: rowWidth });
-    },
-
-    render: function() {
-        var {
-            bpsPerRow,
-            charWidth,
-            children,
-            className,
-            reverse,
-            sequence
-        } = this.props;
-
-        if (charWidth < 10) {
-            return null;
-        }
         var style = {
             position: 'relative',
             fontFamily: 'monospace',
-            padding: '0 20px'
+            padding: '10px 20px 10px 25px',
+            overflow: 'visible',
+            letterSpacing: '11px',
+            fontSize: '14pt',
+            width: '100%',
+            height: '20px'
         }
-        var rowWidth = bpsPerRow * charWidth * 1.2;
+
         var textColor = "#000"; // black
         if (reverse==="true") textColor = "#aaa"; // gray
 
         return (
-            <div style={style} className='Sequence'>
-                <svg ref="rowViewTextContainer" className="rowViewTextContainer"
-                    viewBox={ "0 " + charWidth*-0.85 + " " + rowWidth + " " + charWidth } // in future the radio should be bpsPerRow*charWidth x charHeight
+            <div className='Sequence' id='sequenceText'>
+                <svg style={style} ref="rowViewTextContainer" className="rowViewTextContainer"
                     >
                     <text ref="sequenceRow" fill={ textColor }>
                         { sequence }
@@ -57,6 +42,6 @@ var Sequence = React.createClass({
             </div>
         )
     }
-});
+}
 
 module.exports = Sequence;
