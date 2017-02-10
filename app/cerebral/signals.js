@@ -22,7 +22,14 @@ export default function(options) {
 
         // sidebar signals
         sidebarToggle: [
-            a.sidebarToggle
+            a.sidebarToggle,
+            // a.checkBooleanState(['showSidebar']), {
+            //     success: [],
+            //     error: [a.checkBooleanState(['showRow']), {
+            //         success: [a.changeBps],
+            //         error: [],
+            //     }],
+            // },
         ],
         sidebarDisplay: [
             a.sidebarDisplay

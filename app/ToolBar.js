@@ -35,6 +35,7 @@ import styles from './tool-bar.css'
     showCutsites: ['showCutsites'],
     showParts: ['showParts'],
     showFeatures: ['showFeatures'],
+    showRow: ['showRow'],
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
     history: ['history'],
@@ -59,6 +60,7 @@ export default class ToolBar extends React.Component {
             showTranslations,
             showOrfs,
             showCutsites,
+            showRow,
             showSidebar,
             signals,
             history
@@ -76,7 +78,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
                         document.getElementById("rowView").setAttribute("style", "display: block");
-                        signals.changeBps({width: draggable.clientWidth});
+                        signals.changeBps();
                     }}
                     >
                     <RowIcon />
@@ -86,7 +88,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block");
-                        signals.changeBps({width: draggable.clientWidth});
+                        signals.changeBps();
                     }}
                     >
                     <BothViewsIcon />
@@ -197,7 +199,7 @@ export default class ToolBar extends React.Component {
                         tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
-                            signals.changeBps({width: document.body.clientWidth});
+                            signals.changeBps();
                         }}
                         >
                         <InputIcon id="openFeatureDisplay"/>

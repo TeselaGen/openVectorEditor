@@ -31,10 +31,10 @@ function getSnipForRow(snipPosition, row, sequenceLength, bpsPerRow, snipStyle, 
     var {xStart, width} = getXStartAndWidthOfRangeWrtRow({start: snipPosition, end: snipPosition}, row, bpsPerRow, charWidth, sequenceLength);
     //TODO: refactor this get position in row into a helper function!
     //it is used here and in the caret position calculations!
-    // if (row.start <= snipPosition && row.end + 1 >= snipPosition 
+    // if (row.start <= snipPosition && row.end + 1 >= snipPosition
     //     || (row.end === sequenceLength - 1 && row.end < snipPosition) //catch the special case where we're at the very end of the sequence..
     //     ) {
-        
+
     // }
         var newCursorStyle = assign({}, snipStyle, {
             left: xStart
@@ -83,7 +83,7 @@ let Cutsites = React.createClass({
             var annotationRange = annotationRanges[key]
             var {
                 annotation
-            } = annotationRange;    
+            } = annotationRange;
             if (!annotation) {
                 annotation = annotationRange
             }
@@ -101,7 +101,7 @@ let Cutsites = React.createClass({
             var newSnip;
             var newConnector;
             var snipRange = {};
-            
+
             if (areNonNegativeIntegers([downstreamBottomSnip, downstreamTopSnip])) {
                 if (topStrand) {
                     newSnip = getSnipForRow(downstreamTopSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key+'downstream');

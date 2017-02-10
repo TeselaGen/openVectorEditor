@@ -35,13 +35,6 @@ var combokeys;
 
 export default class SequenceEditor extends React.Component {
 
-    componentWillMount() {
-        let signals = this.props.signals;
-        this.props.sequenceData.features.forEach(function (feature) {
-            signals.updateFeature({ feature: feature });
-        });
-    }
-
     componentDidMount() {
         var {
             sequenceDataInserted,

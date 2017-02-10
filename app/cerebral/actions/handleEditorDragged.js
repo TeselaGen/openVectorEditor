@@ -29,7 +29,6 @@ export default function handleEditorDragged({input: {
                 cursorAtEnd: false,
             };
         } else {
-            console.log(nearestBP);
                 if (nearestBP > fixedCaretPositionOnDragStart) {
                     newSelectionLayer = {
                         start: fixedCaretPositionOnDragStart,

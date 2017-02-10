@@ -52,11 +52,13 @@ export default class Highlight extends React.Component {
         var dimensions = this._dimensions(start, end);
         var overlays = [];
 
+        var dummyKey = 0; // please stop yelling at me react
         dimensions.forEach((d) => {
             var {x, width, rowWidth} = d;
 
             overlays.push(
                 <svg
+                    key={dummyKey}
                     transform={this.props.transform || null}
                     className={styles.overlay}
                     preserveAspectRatio={'none'}
@@ -65,6 +67,7 @@ export default class Highlight extends React.Component {
                     <rect x={0} y={0} width={width} height={1}/>
                 </svg>
             );
+            dummyKey += 1;
         });
 
         if (overlays.length === 0) {

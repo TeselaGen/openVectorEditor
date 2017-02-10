@@ -50,8 +50,18 @@ export default class RowView extends React.Component {
         };
     }
 
+    // componentWillUpdate(newProps) {
+    //     var draggable = document.getElementById("draggable");
+    //     let signals = this.props.signals;
+    //     let charWidth = this.props.charWidth;
+    //     signals.changeBps({width: draggable.clientWidth});
+    // }
+
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
+        var bpsPerRow = this.props.bpsPerRow;
+        var charWidth = this.props.charWidth;
+
         var visibleRowsContainer = ReactDOM.findDOMNode(this.InfiniteScroller);
         //loop through all the rendered rows to see if the click event lands in one of them
         var nearestBP = 0;
@@ -65,15 +75,14 @@ export default class RowView extends React.Component {
                 var row = this.props.rowData[rowNumber];
 
                 var sequenceText = document.getElementById("sequenceText");
-                var textWidth = sequenceText.firstChild.width.baseVal.value - 35; // 35 for left+right padding
-
+                // get width of the actual text
+                var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
                 var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
 
                 if (clickXPositionRelativeToRowContainer < 0) {
                     nearestBP = row.start;
                 } else {
-                    console.log(this.props.bpsPerRow);
-                    var numberOfBPsInFromRowStart = Math.round(this.props.bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
+                    var numberOfBPsInFromRowStart = Math.round(bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
                     nearestBP = numberOfBPsInFromRowStart + row.start;
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;

@@ -16,8 +16,6 @@ export default class AnnotationPositioner extends React.Component{
             width
         } = this.props;
 
-        let result
-
         var xShift = left * (charWidth-1); // account for character spacing and move feature right
         var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // 40 accounts for padding, 1.2 accounts for spacing
 
