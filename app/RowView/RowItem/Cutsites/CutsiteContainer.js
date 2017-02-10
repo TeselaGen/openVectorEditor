@@ -15,11 +15,11 @@ let CutsiteContainer = React.createClass({
             bpsPerRow,
             charWidth,
             annotationHeight,
-            spaceBetweenAnnotations, 
+            spaceBetweenAnnotations,
             setSelectionLayer,
             signals
         } = this.props;
-       
+
         if (annotationRanges.length === 0) {
             return null;
         }
@@ -32,7 +32,7 @@ let CutsiteContainer = React.createClass({
             let annotation = annotationRange.annotation;
             let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             annotationsSVG.push(
-                <AnnotationPositioner 
+                <AnnotationPositioner
                     height={annotationHeight} 
                     width={result.width}
                     key={'Cutsite' + annotation.id + 'start:' + annotationRange.start}
@@ -42,7 +42,7 @@ let CutsiteContainer = React.createClass({
                     <Cutsite
                         onClick={ function (e) {
                             e.stopPropagation()
-                            signals.featureClicked({annotation: annotation}) 
+                            signals.featureClicked({annotation: annotation})
                         }}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}

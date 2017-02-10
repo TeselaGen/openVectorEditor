@@ -18,6 +18,7 @@ let Features = React.createClass({
             annotationHeight,
             spaceBetweenAnnotations
         } = this.props;
+        
         if (annotationRanges.length === 0) {
             return null;
         }

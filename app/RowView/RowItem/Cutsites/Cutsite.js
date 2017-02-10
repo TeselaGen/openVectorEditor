@@ -5,11 +5,11 @@ var Cutsite = React.createClass({
 
     render: function() {
         var {
-            widthInBps, 
+            widthInBps,
             charWidth,
             height,
             rangeType,
-            forward, 
+            forward,
             name
         } = this.props;
 
@@ -33,9 +33,9 @@ var Cutsite = React.createClass({
                     fillOpacity={0.4}
                     fill={this.props.color || 'orange'}>
                 </polyline>
-                <text 
+                <text
                     transform={"translate("+width/2+",0)"}
-                    x="0"  
+                    x="0"
                     y="13"
                     style={{textAnchor: "middle"}}
                     >
