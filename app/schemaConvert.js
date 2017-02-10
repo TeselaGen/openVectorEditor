@@ -6,7 +6,7 @@ module.exports = {
                 sequenceData: {
                     features: contents.features.map(function (elem) {                       
                         elem.start = elem.locations[0].genbankStart;                       
-                        elem.end = elem.locations[0].end;  
+                        elem.end = elem.locations[0].end;
                         elem.color = colorOfFeature(elem);
                         return elem;
                     }),

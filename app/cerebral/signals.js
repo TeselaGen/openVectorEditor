@@ -34,7 +34,7 @@ export default function(options) {
         copySelection: [ // earavina: not used for now
             a.copySelection, {
                 success: [a.setData('clipboardData')],
-                error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+                error: [a.displayError]
             }
         ],
         selectAll: [a.selectAll, a.setSelectionLayer],
@@ -141,7 +141,7 @@ export default function(options) {
                     },
                     a.insertSequenceData
                 ],
-                error: []
+                error: [a.displayError]
             },
             a.clearSelectionLayer
         ]),
@@ -166,11 +166,10 @@ export default function(options) {
         saveChanges:
             [a.saveToServer, a.updateHistory],
         clickLoadFile: [
-            [a.loadFromFile], { // this extra bracketing will supposedly help with the async call
+            [a.loadFromFile, {
                 success: [a.insertSequenceData],
-                error: [] // do we want a clear all data/history action?
-            }
-        ],
+                error: [a.displayError] 
+            }]],
         //lower priority
         addAnnotations: [a.addAnnotations],
         jumpToRow: [a.jumpToRow],

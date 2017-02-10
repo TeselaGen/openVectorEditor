@@ -8,32 +8,22 @@ var cookie = document.cookie;
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
-/**
- * Upload the sequence file to the server to be parsed.
- * The parsed sequence is not associated with the current entry that the user is viewing but rather
- * requires clicking "save"
- */
-export default function loadFromFile({input, state, output}) {
+function loadFromFile({input, state, output}) {
     var { inputFile } = input;
-    var error = "";
-    var result;
 
     request.post('rest/file/sequence/model')
         .set('X-ICE-Authentication-sessionId', sid)
         .attach("file", inputFile)
         .end((err, res) => {
             if (res) {
-                result = res;
-                console.log("result = " + result)
+                var sequenceResult = res.body.sequence;
+                output.success({newSequenceData: sequenceResult});
             } else {
-                // error = err;
-                console.log("error = " + error)
+                output.error({error: err.message});
             }
         });
+};
 
-    if (result) {
-        output.success({newSequenceData: result});
-    } else {
-        // output.error({error: error});
-    }
-}
+loadFromFile.async = true;
+
+export default loadFromFile;
