@@ -93,12 +93,6 @@ export default function(options) {
             }],
             a.handleEditorDragStopped
         ],
-        // resizeRowView: [
-        //     a.resizeRowView
-        // ],
-        // resizeCircularView: [
-        //     a.resizeCircularView
-        // ],
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers
@@ -172,9 +166,9 @@ export default function(options) {
         saveChanges:
             [a.saveToServer, a.updateHistory],
         clickLoadFile: [
-            [a.loadFromFile], {
+            [a.loadFromFile], { // this extra bracketing will supposedly help with the async call
                 success: [a.insertSequenceData],
-                error: []
+                error: [] // do we want a clear all data/history action?
             }
         ],
         //lower priority
