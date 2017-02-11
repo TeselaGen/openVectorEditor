@@ -78,7 +78,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
                         document.getElementById("rowView").setAttribute("style", "display: block");
-                        signals.changeBps();
+                        signals.adjustWidth();
                     }}
                     >
                     <RowIcon />
@@ -88,7 +88,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block");
-                        signals.changeBps();
+                        signals.adjustWidth();
                     }}
                     >
                     <BothViewsIcon />
@@ -199,7 +199,7 @@ export default class ToolBar extends React.Component {
                         tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
-                            signals.changeBps();
+                            signals.adjustWidth();
                         }}
                         >
                         <InputIcon id="openFeatureDisplay"/>

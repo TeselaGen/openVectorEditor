@@ -21,7 +21,7 @@ class Sequence extends React.Component {
             fontFamily: 'monospace',
             padding: '10px 20px 10px 25px',
             overflow: 'visible',
-            letterSpacing: '11px',
+            letterSpacing: '11.2px',
             fontSize: '14pt',
             width: '100%',
             height: '20px'

@@ -41,21 +41,23 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
 export default class RowView extends React.Component {
 
     componentDidMount() {
+        this.state = {
+            rowWidth: rowView.clientWidth
+        }
+
         var draggable = document.getElementById("draggable");
         let signals = this.props.signals;
+        // let state = this.state;
         let charWidth = this.props.charWidth;
-        signals.changeBps({width: draggable.clientWidth});
+
+
+        signals.adjustWidth({width: draggable.clientWidth});
         window.onresize = function() {
-            signals.changeBps({width: draggable.clientWidth});
-        };
+            signals.adjustWidth();
+            this.setState({rowWidth: rowView.clientWidth});
+        }.bind(this)
     }
 
-    // componentWillUpdate(newProps) {
-    //     var draggable = document.getElementById("draggable");
-    //     let signals = this.props.signals;
-    //     let charWidth = this.props.charWidth;
-    //     signals.changeBps({width: draggable.clientWidth});
-    // }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
