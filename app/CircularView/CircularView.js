@@ -25,12 +25,12 @@ function toDegrees(radians) {
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
-    caretPosition: ['caretPosition'],     
-    charWidth: ['charWidth'], 
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
-    circularViewData: ['circularViewData'],    
-    circularViewDimensions: ['circularViewDimensions'], 
-    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
+    caretPosition: ['caretPosition'],
+    charWidth: ['charWidth'],
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
+    circularViewData: ['circularViewData'],
+    circularViewDimensions: ['circularViewDimensions'],
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
     orfs: ['orfData'],
     selectionLayer: ['selectionLayer'],
@@ -46,14 +46,26 @@ function toDegrees(radians) {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
 export default class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
+
+
         if (!event.clientX) {
             return;
         }
+
+        // var id;
+        // if (event.target.parentNode) {
+        //     var target = event.target;
+        //     while (!target.parentNode.id) {
+        //         target = target.parentNode;
+        //     }
+        //     id = target.parentNode.id;
+        // }
+        // console.log(id);
         var boundingRect = this.refs.circularView.getBoundingClientRect()
         //get relative click positions
         var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
@@ -67,7 +79,7 @@ export default class CircularView extends React.Component {
         callback({
             shiftHeld: event.shiftKey,
             nearestBP,
-            caretGrabbed
+            caretGrabbed,
         });
     }
 
@@ -184,7 +196,7 @@ export default class CircularView extends React.Component {
             });
             annotationsSvgs.push(
                 <PositionAnnotationOnCircle
-                    key='veSelectionLayer' 
+                    key='veSelectionLayer'
                     className='veSelectionLayer'
                     sAngle={ startAngle }
                     eAngle={ endAngle }
@@ -193,12 +205,12 @@ export default class CircularView extends React.Component {
                     <path
                         style={{ opacity: .4}}
                         d={ sector.path.print() }
-                        fill="blue" 
+                        fill="blue"
                         />
                 </PositionAnnotationOnCircle>
             );
             annotationsSvgs.push(
-                <Caret 
+                <Caret
                     key='caretStart'
                     caretPosition={selectionLayer.start}
                     sequenceLength={sequenceLength}
@@ -207,7 +219,7 @@ export default class CircularView extends React.Component {
                     />
             );
             annotationsSvgs.push(
-                <Caret 
+                <Caret
                     key='caretEnd'
                     caretPosition={selectionLayer.end + 1}
                     sequenceLength={sequenceLength}
@@ -219,7 +231,7 @@ export default class CircularView extends React.Component {
         // nothing selected, just put a caret at posirtion 0
         if (caretPosition !== -1 && !selectionLayer.selected) {
             annotationsSvgs.push(
-                <Caret 
+                <Caret
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
@@ -228,7 +240,7 @@ export default class CircularView extends React.Component {
             );
         }
 
-        // stop patching        
+        // stop patching
 
         annotationsSvgs.push(Labels({labels, outerRadius: radius}))
 
@@ -261,11 +273,11 @@ export default class CircularView extends React.Component {
                             <circle fill="red" cx="0" cy="0" r="2"/>
                         </marker>
                         <marker id="arrow" markerWidth="3" markerHeight="3" refx="0" refy="3" orient="auto">
-                            <path 
-                                d="M 0 0 L 0 6 L 9 150 L 200 50" 
-                                stroke="red" 
-                                strokeWidth="3" 
-                                fill="none"  
+                            <path
+                                d="M 0 0 L 0 6 L 9 150 L 200 50"
+                                stroke="red"
+                                strokeWidth="3"
+                                fill="none"
                                 />
                         </marker>
                     </defs>

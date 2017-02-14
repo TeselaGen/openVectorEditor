@@ -2,21 +2,8 @@ import React, {PropTypes} from 'react';
 import Caret from '../Caret';
 import './style.scss';
 
-// var getXStartAndWidthOfRangeWrtRow = require('../getXStartAndWidthOfRangeWrtRow');
 let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlapsOfPotentiallyCircularRanges');
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
-
-// function mixin(target, source) {
-//     target = target.prototype;
-
-//     Object.getOwnPropertyNames(source).forEach((name) => {
-//         let sourceProp = Object.getOwnPropertyDescriptor(source, name);
-
-//         if (name !== "constructor") {
-//             Object.defineProperty(target, name, sourceProp);
-//         }
-//     });
-// }
 
 // move this into shared utils
 function getXStartAndWidthOfRangeWrtRow(range, row, bpsPerRow, charWidth, sequenceLength) {
@@ -33,8 +20,7 @@ export default class SelectionLayer extends React.Component {
             bpsPerRow,
             row,
             sequenceLength,
-            regions,
-            className: globalClassname=''
+            regions
         } = this.props;
 
         return (

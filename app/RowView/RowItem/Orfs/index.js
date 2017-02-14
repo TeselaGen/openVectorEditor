@@ -14,7 +14,7 @@ let Orfs = React.createClass({
             charWidth,
             annotationHeight,
             spaceBetweenAnnotations, 
-            orfClicked,
+            // orfClicked,
             widthInBps,
             row,
             signals
@@ -39,14 +39,14 @@ let Orfs = React.createClass({
                     return position - row.start;
                 }
             )
-            
+
             let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             var arrowHeight = 12;
 
             annotationsSVG.push(
-                <AnnotationPositioner 
-                    className={'veRowViewOrfs'} 
-                    height={annotationHeight + arrowHeight} 
+                <AnnotationPositioner
+                    className={'veRowViewOrfs'}
+                    height={annotationHeight + arrowHeight}
                     width={result.width}
                     key={'orf' + annotation.id + 'start:' + annotationRange.start}
                     top={annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
@@ -54,7 +54,7 @@ let Orfs = React.createClass({
                     >
                     <Orf
                         annotation={annotation}
-                        orfClicked={orfClicked}
+                        // orfClicked={orfClicked}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}
@@ -62,14 +62,15 @@ let Orfs = React.createClass({
                         normalizedInternalStartCodonIndices={normalizedInternalStartCodonIndices}
                         rangeType={getAnnotationRangeType(annotationRange, annotation, annotation.forward)}
                         height={annotationHeight}
-                        name={annotation.name}>
+                        name={annotation.name}
+                        signals={signals}>
                     </Orf>
                 </AnnotationPositioner>
             );
         });
         let containerHeight = (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
         return (
-            <AnnotationContainerHolder 
+            <AnnotationContainerHolder
                 className='Orfs'
                 containerHeight={containerHeight}>
                 {annotationsSVG}

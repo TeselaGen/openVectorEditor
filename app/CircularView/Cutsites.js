@@ -19,6 +19,9 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
         }
         var {startAngle} = getRangeAngles({start: annotation.downstreamTopSnip, end: annotation.downstreamTopSnip}, sequenceLength);
 
+        console.log(annotation)
+        console.log("^ cutsite")
+
         // add label info
         labels[index]={
             annotationCenterAngle: startAngle,

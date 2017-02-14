@@ -42,6 +42,8 @@ export default function(options) {
         setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
         toggleAnnotationDisplay: [a.toggleAnnotationDisplay],
 
+        updateHistory: [a.updateHistory],
+
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
                 success: [], //do nothing
@@ -126,7 +128,7 @@ export default function(options) {
         showChangeMinOrfSizeDialog: [
             a.showChangeMinOrfSizeDialog
         ],
-        
+
     // ///////////////////////////////////
     // edit only actions
         backspacePressed: a.addEditModeOnly([
@@ -168,7 +170,7 @@ export default function(options) {
         clickSaveFile:
             [a.saveToFile],
         saveChanges:
-            [a.saveToServer],
+            [a.saveToServer, a.updateHistory],
         clickLoadFile: [
             [a.loadFromFile], {
                 success: [a.insertSequenceData],
@@ -181,4 +183,3 @@ export default function(options) {
     }
     return assign({}, signals, options.signals) //optionally override any signals here
 }
-
