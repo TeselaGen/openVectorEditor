@@ -167,7 +167,10 @@ export default function(options) {
             [a.saveToServer, a.updateHistory],
         clickLoadFile: [
             [a.loadFromFile, {
-                success: [a.insertSequenceData],
+                success: [a.deleteFeatures, 
+                          a.clearSelectionLayer, 
+                          a.deleteSequence,                           
+                          a.overwriteSequenceData],
                 error: [a.displayError] 
             }]],
         //lower priority
