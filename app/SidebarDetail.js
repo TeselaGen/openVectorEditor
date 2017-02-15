@@ -72,7 +72,6 @@ var FEATURE_TYPES = [
     "V_region",
     "variation"
 ];
-// {{}} remove this.state and do it correctly
 
 // this is the feature detail popout that comes out of the sidebar; it may need a new name
 // or to be in a folder with sidebar stuff. This form is used to edit / add feature information

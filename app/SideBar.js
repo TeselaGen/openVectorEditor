@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
+
 // todo: add keyboard auto-complete for dropdown boxes
-// {{}} remove this.state and do it correctly
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
