@@ -18,7 +18,8 @@ export default function(options) {
 
     var signals = {
         /* These should be in alphabetical order and are split into edit-only 
-        and general (read or edit) signals */
+        and general (read or edit) signals 
+        Unused signals are edited out */
 
         addAnnotations:
             [a.addAnnotations],
@@ -50,7 +51,7 @@ export default function(options) {
             }
         ],
 
-        // copySelection: [ // earavina: not used for now
+        // copySelection: [
         //     a.copySelection, {
         //         success: [a.setData('clipboardData')],
         //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
@@ -101,8 +102,8 @@ export default function(options) {
         featureClicked:
             c.selectAnnotation(a),
 
-        jumpToRow:
-            [a.jumpToRow],
+        // jumpToRow:
+        //     [a.jumpToRow],
 
         orfClicked:
             c.selectAnnotation(a),
@@ -133,14 +134,14 @@ export default function(options) {
             a.setSelectionLayer
         ],
 
-        setCutsiteLabelSelection:
-            [a.setCutsiteLabelSelection],
+        // setCutsiteLabelSelection:
+        //     [a.setCutsiteLabelSelection],
 
         setSelectionLayer:
             [a.setSelectionLayer],
 
-        setTreeVal:
-            [a.setData],
+        // setTreeVal:
+        //     [a.setData],
 
         showChangeMinOrfSizeDialog:
             [a.showChangeMinOrfSizeDialog],
