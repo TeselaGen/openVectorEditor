@@ -31,9 +31,6 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var path = null;
         var arrowHead = null;
 
-        console.log(annotation)
-        console.log("^ orf")
-
         // frame is one of [0,1,2] 
         var orfColor = 'red';
         if (annotationCopy.frame === 1) {
