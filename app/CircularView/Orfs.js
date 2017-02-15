@@ -16,19 +16,20 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
 
     Object.keys(orfs).forEach(function(key, index) {
         var annotation = orfs[key]
-        // an orf has {start, end, length, [internalStartCodonIndices], frame, forward, id}
         var annotationCopy = {...annotation}
-        var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);
+        var {
+            startAngle, 
+            endAngle, 
+            totalAngle, 
+            centerAngle
+        } = getRangeAngles(annotation, sequenceLength);
         var spansOrigin = startAngle > endAngle;
         var expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle;
         var annotationRadius;
-        var yOffset1;
-        var yOffset2;
-        var path;
+        var yOffset1 = null;
+        var yOffset2 = null;
+        var path = null;
         var arrowHead = null;
-
-        console.log(annotation)
-        console.log("^ orf")
 
         // frame is one of [0,1,2] 
         var orfColor = 'red';
@@ -65,7 +66,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var codonIndices = [];
         var endNode;
         // we always need an end dot, figure out which end to put it on
-        if (annotation.forward) {
+        if (annotationCopy.forward) {
             endNode =  (
                         <PlacePointOnCircle
                             radius={ annotationRadius - annotationHeight/2 }
@@ -120,10 +121,10 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         arrowHead = (      
                         <PlacePointOnCircle
                             radius = { annotationRadius - annotationHeight/2 }
-                            key = { 'arrow' + c + "_" + annotation.id }
+                            key = { 'arrow' + c + "_" + annotationCopy.id }
                             bpNumber = { arrowEnd }
                             totalBps = { sequenceLength }
-                            forward = { annotation.forward }
+                            forward = { annotationCopy.forward }
                             >
                             <path 
                                 fill = { orfColor }
@@ -137,13 +138,13 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
 
         svgGroup.push(
             <g 
-                id={annotation.id}
-                key={'Orfs' + annotation.id}
+                id={annotationCopy.id}
+                key={'Orfs' + annotationCopy.id}
                 >
                 <g className='Orfs clickable'>
                     { arrowHead } 
                     <PositionAnnotationOnCircle
-                        key={ 'orf' + annotation.id }
+                        key={ 'orf' + annotationCopy.id }
                         sAngle={ startAngle }
                         eAngle={ endAngle }
                         direction={ 'reverse' } // buh

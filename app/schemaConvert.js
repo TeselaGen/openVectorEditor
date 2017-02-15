@@ -1,4 +1,4 @@
-var colorOfFeature = require('./colorOfFeature');
+var colorOfFeature = require('./constants/colorOfFeature');
 module.exports = {
     toOpenVectorEditor: function(contents, services){
         return {
