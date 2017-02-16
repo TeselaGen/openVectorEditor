@@ -51,21 +51,10 @@ function toDegrees(radians) {
 
 export default class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
-
-
         if (!event.clientX) {
             return;
         }
 
-        // var id;
-        // if (event.target.parentNode) {
-        //     var target = event.target;
-        //     while (!target.parentNode.id) {
-        //         target = target.parentNode;
-        //     }
-        //     id = target.parentNode.id;
-        // }
-        // console.log(id);
         var boundingRect = this.refs.circularView.getBoundingClientRect()
         //get relative click positions
         var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
@@ -175,6 +164,7 @@ export default class CircularView extends React.Component {
                 signals
             })
             radius+= orfResults.height
+            // orfs don't get labels since they don't have names
             annotationsSvgs.push(orfResults.component)
         }
 
