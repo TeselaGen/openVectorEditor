@@ -69,7 +69,7 @@ function LabelGroup ({label, ...rest}) {
     return (
         <g 
             mouseAware={true}
-            id={labelIds} // {{}} this isn't working its an object
+            id={label.id}
             >
             <DrawLabelGroup 
                 {...{label, ...rest, className: 'DrawLabelGroup', sublabels, multipleLabels, labelIds}}
@@ -150,10 +150,6 @@ function DrawLabelGroup (props) {
                           style={ {fontSize: fontHeight} }>
                             {sublabels.map(function (label, index) {
                               return (
-                                // <div
-                                //   key={index}
-                                //   id={label.id}
-                                //   >
                                   <tspan 
                                     x={labelXStart} 
                                     onClick={label.onClick}
@@ -162,7 +158,6 @@ function DrawLabelGroup (props) {
                                     className={labelClass + label.className}>
                                   {label.text}
                                   </tspan>
-                                // </div>
                               )
                             })}
                         </text>
@@ -176,7 +171,8 @@ function DrawLabelGroup (props) {
                 x={labelXStart}
                 className={ labelClass + label.className }
                 y={textYStart}
-                style={{ fill: 'black', fontSize: fontWidth }}
+                // make our singletons red to match old VE
+                style={{ fill: 'red', fontSize: fontWidth }}
                 >
                 { text }
             </text>, 
