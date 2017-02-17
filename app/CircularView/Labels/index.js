@@ -14,6 +14,7 @@ export default function Labels({labels={}, outerRadius}) {
     var outerPointRadius = outerRadius - 20;
     var fontWidth = 8 * outerRadius/120;
     var fontHeight = fontWidth * 1.5;
+
     var labelPoints = Object.keys(labels).map(function (key, index) {
         var label = labels[key];
         var {annotationCenterAngle, annotationCenterRadius} = label
@@ -71,7 +72,7 @@ function LabelGroup ({label, ...rest}) {
             id={labelIds} // {{}} this isn't working its an object
             >
             <DrawLabelGroup 
-                {...{label, ...rest, className: 'DrawLabelGroup', sublabels, labelIds}}
+                {...{label, ...rest, className: 'DrawLabelGroup', sublabels, multipleLabels, labelIds}}
                 />
         </g>
     )
@@ -102,6 +103,9 @@ function DrawLabelGroup (props) {
     var labelYStart = label.y;
     var labelGroupHeight = sublabels.length * dy;
     var labelGroupBottom = label.y + labelGroupHeight;
+
+    console.log("draw label group")
+    console.log(props)
 
     maxLabelLength = sublabels.reduce(function (currentLength, {text}) {
         // //console.log('arguments: ', arguments);
