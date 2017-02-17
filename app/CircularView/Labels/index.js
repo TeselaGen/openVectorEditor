@@ -150,10 +150,10 @@ function DrawLabelGroup (props) {
                           style={ {fontSize: fontHeight} }>
                             {sublabels.map(function (label, index) {
                               return (
-                                <div
-                                  key={index}
-                                  id={label.id}
-                                  >
+                                // <div
+                                //   key={index}
+                                //   id={label.id}
+                                //   >
                                   <tspan 
                                     x={labelXStart} 
                                     onClick={label.onClick}
@@ -162,7 +162,7 @@ function DrawLabelGroup (props) {
                                     className={labelClass + label.className}>
                                   {label.text}
                                   </tspan>
-                                </div>
+                                // </div>
                               )
                             })}
                         </text>
