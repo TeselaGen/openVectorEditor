@@ -93,7 +93,7 @@ function DrawLabelGroup (props) {
     var {text} = label;
     var maxLabelLength;
     var labelLength = text.length * (fontWidth -2);
-    var maxLabelWidth = maxLabelLength * fontWidth;
+    var maxLabelWidth;
     var labelXStart = label.x - (label.x < 0 ? labelLength : 0);
     var dy = 12;
     var textYStart = label.y + dy/2;
@@ -104,9 +104,6 @@ function DrawLabelGroup (props) {
     var labelGroupHeight = sublabels.length * dy;
     var labelGroupBottom = label.y + labelGroupHeight;
 
-    console.log("draw label group")
-    console.log(props)
-
     maxLabelLength = sublabels.reduce(function (currentLength, {text}) {
         // //console.log('arguments: ', arguments);
         if (text.length > currentLength) {
@@ -114,6 +111,7 @@ function DrawLabelGroup (props) {
         } 
         return currentLength
     }, 0)
+    maxLabelWidth = maxLabelLength * fontWidth;
 
     if (multipleLabels) {
         // DRAW MULTIPLE LABELS IN A RECTANGLE
@@ -133,46 +131,48 @@ function DrawLabelGroup (props) {
         
         var line = LabelLine([label.innerPoint, label], {style: {opacity: 1}})
         content = [
-                    line,
-                    <g id='topLevelLabels' key='gGroup'>
-                      <rect 
-                        x={labelXStart-4 } 
-                        y={labelYStart-dy/2} 
-                        width={maxLabelWidth} 
-                        height={labelGroupHeight + 4} 
-                        fill='white'
-                        stroke='black'
-                        >
-                      </rect>
-                      <text
-                          x={labelXStart}
-                          y={labelYStart}
-                          style={ {fontSize: fontHeight} }>
-                            {sublabels.map(function (label, index) {
-                              return (
-                                  <tspan 
-                                    x={labelXStart} 
-                                    onClick={label.onClick}
-                                    dy={index === 0 ? dy/2 : dy} 
-                                    style={{fill: label.color ? label.color : 'black'}} 
-                                    className={labelClass + label.className}>
-                                  {label.text}
-                                  </tspan>
-                              )
-                            })}
-                        </text>
-                    </g>
-                ]
+            line,
+            <g id='topLevelLabels' key='gGroup'>
+                <rect 
+                    x = { labelXStart - 4 } 
+                    y = { labelYStart - dy/2 } 
+                    width = { maxLabelWidth } 
+                    height = { labelGroupHeight + 4 } 
+                    fill = 'white'
+                    stroke = 'black'
+                    >
+                </rect>
+                <text
+                    x = { labelXStart }
+                    y = { labelYStart }
+                    style = {{ fontSize: fontHeight }}
+                    >
+                    {sublabels.map(function (label, index) {
+                        return (
+                            <tspan 
+                                x = { labelXStart } 
+                                onClick = { label.onClick }
+                                dy = { index === 0 ? dy/2 : dy } 
+                                style = {{ fill: label.color ? label.color : 'black' }} 
+                                className = { labelClass + label.className }
+                                >
+                                { label.text }
+                            </tspan>
+                        )
+                    })}
+                </text>
+            </g>
+        ]
     } else {
         //DRAW A SINGLE LABEL
         content = [
             <text
-                key='text'
-                x={labelXStart}
-                className={ labelClass + label.className }
-                y={textYStart}
+                key = 'text'
+                x = { labelXStart }
+                className = { labelClass + label.className }
+                y = { textYStart }
                 // make our singletons red to match old VE
-                style={{ fill: 'red', fontSize: fontWidth }}
+                style = {{ fill: 'red', fontSize: fontWidth }}
                 >
                 { text }
             </text>, 
@@ -181,7 +181,7 @@ function DrawLabelGroup (props) {
     }
            
     return <g {...{...rest, onClick: label.onClick}}>
-            {content}
+            { content }
         </g>
 }
 
