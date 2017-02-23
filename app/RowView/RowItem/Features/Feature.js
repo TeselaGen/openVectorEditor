@@ -22,7 +22,7 @@ export default class Feature extends React.Component {
             fontWidth=16, 
             color, 
             name,
-            featureClicked,
+            // featureClicked,
             annotation,
             signals,
             widthInBps

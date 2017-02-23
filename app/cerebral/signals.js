@@ -13,36 +13,50 @@ reqContext.keys().forEach(function(key) {
 import assign from 'lodash/object/assign'
 var each = require('lodash/collection/each');
 export default function(options) {
+
     a = assign({}, a, options.actions) //override any actions here!
+
     var signals = {
+        /* These should be in alphabetical order and are split into edit-only 
+        and general (read or edit) signals 
+        Unused signals are edited out */
 
-        setTreeVal: [
-            a.setData
-        ],
+        addAnnotations:
+            [a.addAnnotations],
 
-        // sidebar signals
-        sidebarToggle: [
-            a.sidebarToggle
-        ],
-        sidebarDisplay: [
-            a.sidebarDisplay
-        ],
-        changeOrfMin: [
-            a.changeOrfMin
-        ],
-        // end sidebar
-        copySelection: [ // earavina: not used for now
-            a.copySelection, {
-                success: [a.setData('clipboardData')],
-                error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        addFeatureModalDisplay:
+            [a.addFeatureModalDisplay],
+
+        caretMoved: [
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow',
+                { path: ['sequenceData', 'circular'], name: 'circular'}),
+            a.moveCaret,
+            a.handleCaretMoved, {
+                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+                selectionUpdated: [a.setSelectionLayer],
             }
         ],
-        selectAll: [a.selectAll, a.setSelectionLayer],
-        selectInverse: [a.selectInverse, a.setSelectionLayer],
-        setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
-        toggleAnnotationDisplay: [a.toggleAnnotationDisplay],
 
-        updateHistory: [a.updateHistory],
+        changeOrfMin:
+            [a.changeOrfMin],
+
+        chooseEnzymeList:
+            [a.showSelectedEnzymeList],
+
+        // there's weird bracketing here to deal with the async superagent request
+        clickLoadFile: [
+            [a.loadFromFile], {
+                success: [a.insertSequenceData],
+                error: []
+            }
+        ],
+
+        // copySelection: [
+        //     a.copySelection, {
+        //         success: [a.setData('clipboardData')],
+        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        //     }
+        // ],
 
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
@@ -61,29 +75,17 @@ export default function(options) {
                 ]
             }
         ],
-        featureClicked: c.selectAnnotation(a),
-        orfClicked: c.selectAnnotation(a),
-        caretMoved: [
-            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
-                path: ['sequenceData', 'circular'],
-                name: 'circular'
-            }),
 
-            a.moveCaret,
-            a.handleCaretMoved, {
-                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
-                selectionUpdated: [a.setSelectionLayer],
-            }
-        ],
         editorDragged: [
             a.handleEditorDragged, {
                 caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
                 selectionUpdated: [a.setSelectionLayer],
             }
         ],
-        editorDragStarted: [
-            a.handleEditorDragStarted
-        ],
+
+        editorDragStarted:
+            [a.handleEditorDragStarted],
+
         editorDragStopped: [
             [function pause ({input, state, output}) {
                 // {{}} async function that doesn't do anything
@@ -93,51 +95,89 @@ export default function(options) {
             }],
             a.handleEditorDragStopped
         ],
-        // resizeRowView: [
-        //     a.resizeRowView
-        // ],
+
+        editUserEnzymes:
+            [a.editUserEnzymes],
+
+        featureClicked:
+            c.selectAnnotation(a),
+
+        // jumpToRow:
+        //     [a.jumpToRow],
+
+        orfClicked:
+            c.selectAnnotation(a),
+
         // resizeCircularView: [
         //     a.resizeCircularView
         // ],
+
+        // resizeRowView: [
+        //     a.resizeRowView
+        // ],
+
+        restrictionEnzymeManagerDisplay:
+            [a.restrictionEnzymeManagerDisplay],
+
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers
         ],
-        setSelectionLayer: [a.setSelectionLayer],
 
-        restrictionEnzymeManagerDisplay: [
-            a.restrictionEnzymeManagerDisplay
+        selectAll: [
+            a.selectAll,
+            a.setSelectionLayer
         ],
 
-        editUserEnzymes: [
-            a.editUserEnzymes
+        selectInverse: [
+            a.selectInverse,
+            a.setSelectionLayer
         ],
 
-        updateUserEnzymes: [
-            a.updateUserEnzymes
-        ],
+        // setCutsiteLabelSelection:
+        //     [a.setCutsiteLabelSelection],
 
-        chooseEnzymeList: [
-            a.showSelectedEnzymeList
-        ],
+        setSelectionLayer:
+            [a.setSelectionLayer],
 
-        addFeatureModalDisplay: [
-            a.addFeatureModalDisplay
-        ],
+        // setTreeVal:
+        //     [a.setData],
 
-        showChangeMinOrfSizeDialog: [
-            a.showChangeMinOrfSizeDialog
-        ],
+        showChangeMinOrfSizeDialog:
+            [a.showChangeMinOrfSizeDialog],
+
+        sidebarDisplay:
+            [a.sidebarDisplay],
+
+        sidebarToggle:
+            [a.sidebarToggle],
+
+        toggleAnnotationDisplay:
+            [a.toggleAnnotationDisplay],
+
+        updateHistory:
+            [a.updateHistory],
+
+        updateUserEnzymes:
+            [a.updateUserEnzymes],
 
     // ///////////////////////////////////
     // edit only actions
+
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
         ]),
-        // paste sequence from clipboard
+
+        clickSaveFile:
+            [a.saveToFile],
+
+        deleteFeatures: a.addEditModeOnly([
+            a.deleteFeatures
+        ]),
+
         pasteSequenceString: a.addEditModeOnly([
             a.pasteSequenceString, {
                 success: [
@@ -151,13 +191,12 @@ export default function(options) {
             },
             a.clearSelectionLayer
         ]),
-        // type sequence from keyboard
-        deleteFeatures: a.addEditModeOnly([
-            a.deleteFeatures
-        ]),
-        updateFeature: a.addEditModeOnly([
-            a.updateFeature
-        ]),
+
+        saveChanges: [
+            a.saveToServer, 
+            a.updateHistory
+        ],
+
         sequenceDataInserted: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
@@ -166,20 +205,11 @@ export default function(options) {
             a.insertSequenceData,
             a.clearSelectionLayer
         ]),
-        // loading and saving local files
-        clickSaveFile:
-            [a.saveToFile],
-        saveChanges:
-            [a.saveToServer, a.updateHistory],
-        clickLoadFile: [
-            [a.loadFromFile], {
-                success: [a.insertSequenceData],
-                error: []
-            }
-        ],
-        //lower priority
-        addAnnotations: [a.addAnnotations],
-        jumpToRow: [a.jumpToRow],
+
+        updateFeature: a.addEditModeOnly([
+            a.updateFeature
+        ])
     }
-    return assign({}, signals, options.signals) //optionally override any signals here
+
+    return assign({}, signals, options.signals)
 }

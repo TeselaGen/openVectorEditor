@@ -38,6 +38,7 @@ import _Features from './Features'
 import _CutsiteLabels from './Cutsites/CutsiteLabels'
 import _Cutsites from './Cutsites'
 import Caret from './Caret'
+import Highlight from './Highlight';
 import styles from './RowItem.scss';
 
 function noop() {
@@ -208,7 +209,7 @@ class RowItem extends React.Component {
                         />
                 }
 
-                { selectedStuff }
+                <Highlight start={selectionLayer.start - 1} end={selectionLayer.end - 1} rowStart={row.start - 1} rowEnd={row.end - 1} />
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
