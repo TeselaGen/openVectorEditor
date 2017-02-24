@@ -71,7 +71,6 @@ export default class ToolBar extends React.Component {
         );
 
         // show/hide views buttons that only appear in embedded mode
-        var draggable = document.getElementById("draggable");
         var embeddedControls = (
             <div style={{display: 'inline-block'}}>
                 <IconButton tooltip="Display Sequence View"

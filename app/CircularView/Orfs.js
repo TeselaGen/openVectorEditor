@@ -27,10 +27,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var path;
         var arrowHead = null;
 
-        console.log(annotation)
-        console.log("^ orf")
-
-        // frame is one of [0,1,2] 
+        // frame is one of [0,1,2]
         var orfColor = 'red';
         if (annotationCopy.frame === 1) {
             orfColor = 'green';
@@ -71,7 +68,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             radius={ annotationRadius - annotationHeight/2 }
                             key={ 'codon' + c + "_" + annotation.id }
                             bpNumber={ annotation.start }
-                            totalBps = { sequenceLength } 
+                            totalBps = { sequenceLength }
                             >
                             <circle r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
@@ -82,7 +79,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             radius={ annotationRadius - annotationHeight/2 }
                             key={ "endNode_" + annotation.id }
                             bpNumber={ annotation.end }
-                            totalBps = { sequenceLength } 
+                            totalBps = { sequenceLength }
                             >
                             <circle r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
@@ -103,7 +100,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             radius={ annotationRadius - annotationHeight/2 }
                             key={ 'codon' + c + "_" + annotation.id }
                             bpNumber={ codons[c] }
-                            totalBps = { sequenceLength } 
+                            totalBps = { sequenceLength }
                             >
                             <circle r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
@@ -117,7 +114,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         // put the arrow at the beginning or the end
         var arrowEnd = annotation.forward ? annotation.end : annotation.start;
 
-        arrowHead = (      
+        arrowHead = (
                         <PlacePointOnCircle
                             radius = { annotationRadius - annotationHeight/2 }
                             key = { 'arrow' + c + "_" + annotation.id }
@@ -125,23 +122,23 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             totalBps = { sequenceLength }
                             forward = { annotation.forward }
                             >
-                            <path 
+                            <path
                                 fill = { orfColor }
                                 stroke = "none"
-                                // the arrowhead is contained in the orf, 
+                                // the arrowhead is contained in the orf,
                                 // so the very tip of the arrow is the 0/end of the orf, no overhang
-                                d = {`M 0 0 L -6 2 L -6 -2 Z`} 
+                                d = {`M 0 0 L -6 2 L -6 -2 Z`}
                                 />
                         </PlacePointOnCircle>
                     )
 
         svgGroup.push(
-            <g 
+            <g
                 id={annotation.id}
                 key={'Orfs' + annotation.id}
                 >
                 <g className='Orfs clickable'>
-                    { arrowHead } 
+                    { arrowHead }
                     <PositionAnnotationOnCircle
                         key={ 'orf' + annotation.id }
                         sAngle={ startAngle }
@@ -151,15 +148,15 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         <path
                             onClick={ function (e) {
                                 e.stopPropagation()
-                                signals.orfClicked({annotation: annotation}) 
+                                signals.orfClicked({annotation: annotation})
                             }}
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }
-                            strokeWidth={ annotationHeight/2 }                        
+                            strokeWidth={ annotationHeight/2 }
                             />
                     </PositionAnnotationOnCircle>
-                    { codonIndices }             
+                    { codonIndices }
                 </g>
             </g>
         )
@@ -171,4 +168,3 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         height: (maxYOffset + 1) * totalAnnotationHeight,
     }
 }
-

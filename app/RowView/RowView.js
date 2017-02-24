@@ -47,10 +47,7 @@ export default class RowView extends React.Component {
 
         var draggable = document.getElementById("draggable");
         let signals = this.props.signals;
-        // let state = this.state;
         let charWidth = this.props.charWidth;
-
-
         signals.adjustWidth({width: draggable.clientWidth});
         window.onresize = function() {
             signals.adjustWidth();
@@ -111,9 +108,6 @@ export default class RowView extends React.Component {
         });
 
     }
-    // dosomthing() {
-    //     console.log("resizing");
-    // }
 
     render() {
         var {

@@ -19,17 +19,9 @@ export default function(options) {
         setTreeVal: [
             a.setData
         ],
-
         // sidebar signals
         sidebarToggle: [
             a.sidebarToggle,
-            // a.checkBooleanState(['showSidebar']), {
-            //     success: [],
-            //     error: [a.checkBooleanState(['showRow']), {
-            //         success: [a.changeBps],
-            //         error: [],
-            //     }],
-            // },
         ],
         sidebarDisplay: [
             a.sidebarDisplay
@@ -100,12 +92,6 @@ export default function(options) {
             }],
             a.handleEditorDragStopped
         ],
-        // resizeRowView: [
-        //     a.resizeRowView
-        // ],
-        // resizeCircularView: [
-        //     a.resizeCircularView
-        // ],
         adjustWidth: [
             a.adjustWidth
         ],
