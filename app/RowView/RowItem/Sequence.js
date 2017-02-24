@@ -1,11 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
 
-@Cerebral({
-    charWidth: ['charWidth'],
-    bpsPerRow: ['bpsPerRow'],
-})
-
 class Sequence extends React.Component {
 
     render() {
@@ -15,7 +10,7 @@ class Sequence extends React.Component {
             className,
             reverse,
             sequence,
-            height,
+            sequenceHeight,
             charWidth,
         } = this.props;
 
@@ -32,7 +27,7 @@ class Sequence extends React.Component {
             overflow: 'visible',
             letterSpacing: letterSpacing + 'px',
             fontSize: '14pt',
-            height: '20px',
+            height: sequenceHeight + 'px'
         }
 
         var textColor = "#000"; // black

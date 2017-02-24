@@ -58,6 +58,7 @@ function noop() {
     rowData: ['rowData'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
+    sequenceHeight: ['sequenceHeight'],
     sequenceLength: ['sequenceLength'],
     sequenceName: ['sequenceData', 'name'],
     showFeatures: ['showFeatures'],
@@ -126,9 +127,10 @@ class RowItem extends React.Component {
         var annotationCommonProps = {
             bpsPerRow,
             charWidth,
+            sequenceHeight,
             sequenceLength,
             annotationHeight,
-            row
+            row,
         }
 
         var rowNumber = row.start + 1; // we want to start at 1 and not 0
@@ -181,7 +183,7 @@ class RowItem extends React.Component {
                     <Sequence
                         reverse="false"
                         sequence={sequence}
-                        bpsPerRow={bpsPerRow}
+                        {...annotationCommonProps}
                         >
                         {(showCutsites && Object.keys(cutsites).length > 0) &&
                             <Cutsites
@@ -197,7 +199,7 @@ class RowItem extends React.Component {
                         <Sequence
                             reverse="true"
                             sequence={reverseSequence}
-                            bpsPerRow={bpsPerRow}
+                            {...annotationCommonProps}
                             >
                             {(showCutsites && Object.keys(cutsites).length > 0) &&
                                 <Cutsites

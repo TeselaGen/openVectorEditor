@@ -6,20 +6,6 @@ let getOverlapsOfPotentiallyCircularRanges = require('ve-range-utils/getOverlaps
 let PureRenderMixin = require('react-addons-pure-render-mixin');
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 
-var snipStyle = {
-    height: "100%",
-    // background: 'black',
-    position: "absolute",
-    top: "0px",
-    width: "2px",
-};
-var snipConnectorStyle = {
-    height: "2px",
-    // background: 'black',
-    position: "absolute",
-    top: "0px",
-};
-
 function getXStartAndWidthOfRangeWrtRow(range, row, bpsPerRow, charWidth, sequenceLength) {
     return {
         xStart: normalizePositionByRangeLength(range.start - row.start, sequenceLength) * charWidth,
@@ -36,11 +22,12 @@ function getSnipForRow(snipPosition, row, sequenceLength, bpsPerRow, snipStyle, 
     //     ) {
 
     // }
-        var newCursorStyle = assign({}, snipStyle, {
-            left: xStart
-        });
-        var cursorEl = <div key={index} className="veRowViewCutsite snip" style={newCursorStyle}/>
-        return (cursorEl);
+
+    var newCursorStyle = assign({}, snipStyle, {
+        left: xStart
+    });
+    var cursorEl = <div key={index} className="veRowViewCutsite snip" style={newCursorStyle}/>
+    return (cursorEl);
 }
 
 function getSnipConnector(snipRange, row, sequenceLength, bpsPerRow, snipConnectorStyle, charWidth, index) {
@@ -72,13 +59,32 @@ let Cutsites = React.createClass({
             charWidth,
             bpsPerRow,
             row,
-            height,
             HoverHelper,
+            sequenceHeight,
             sequenceLength,
             topStrand
         } = this.props
+
+        sequenceHeight += 5; // 5px from sequence's padding
+        var divPadding = 16;
+        var offset = sequenceHeight + divPadding;
+        var snipStyle = {
+            height: sequenceHeight + "px",
+            // background: 'black',
+            position: "absolute",
+            bottom: divPadding + "px",
+            width: "2px",
+        };
+        var snipConnectorStyle = {
+            height: "2px",
+            // background: 'black',
+            position: "absolute",
+            bottom: offset + "px",
+        };
+
         var snips = [];
         var snipConnectors = [];
+
         Object.keys(annotationRanges).forEach(function(key) {
             var annotationRange = annotationRanges[key]
             var {
@@ -104,11 +110,13 @@ let Cutsites = React.createClass({
 
             if (areNonNegativeIntegers([downstreamBottomSnip, downstreamTopSnip])) {
                 if (topStrand) {
+                    snipStyle.bottom = offset + 'px';
                     newSnip = getSnipForRow(downstreamTopSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key+'downstream');
                     if (newSnip) {
                         snips.push(newSnip)
                     }
                 } else {
+                    snipStyle.bottom = divPadding + 'px';
                     newSnip = getSnipForRow(downstreamBottomSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key+'downstream');
                     if (newSnip) {
                         snips.push(newSnip)
@@ -126,11 +134,13 @@ let Cutsites = React.createClass({
             }
             if (areNonNegativeIntegers([upstreamBottomSnip, upstreamTopSnip])) {
                 if (topStrand) {
+                    snipStyle.bottom = offset + 'px';
                     newSnip = getSnipForRow(upstreamTopSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key + 'upstream');
                     if (newSnip) {
                         snips.push(newSnip)
                     }
                 } else {
+                    snipStyle.bottom = divPadding + 'px';
                     newSnip = getSnipForRow(upstreamBottomSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key + 'upstream');
                     if (newSnip) {
                         snips.push(newSnip)
