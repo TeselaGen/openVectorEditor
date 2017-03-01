@@ -46,7 +46,7 @@ let CutsiteLabels = React.createClass({
                     id={annotation.id}
                     key={'cutsiteLabel' + index}
                     >
-                    <div 
+                    <div
                         left={xStart}
                         style={{
                             position: 'absolute',
@@ -66,9 +66,9 @@ let CutsiteLabels = React.createClass({
             <div
                 width="100%"
                 style={{
-                    position: 'relative', 
-                    height: containerHeight, 
-                    display: 'block'
+                    position: 'relative',
+                    height: containerHeight,
+                    display: 'none'
                 }}
                 className='cutsiteContainer'
                 >

@@ -10,7 +10,7 @@ var Cutsite = React.createClass({
             height,
             rangeType,
             forward,
-            name
+            name,
         } = this.props;
 
         var width = widthInBps * charWidth;

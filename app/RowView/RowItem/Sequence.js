@@ -15,10 +15,10 @@ class Sequence extends React.Component {
         } = this.props;
 
         // dynamic letter-spacing fixes rounding errors on window resize
-        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40;
+        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
         let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
         let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
-        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1);
+        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // 11.2 is default letterSpacing
 
         var style = {
             position: 'relative',

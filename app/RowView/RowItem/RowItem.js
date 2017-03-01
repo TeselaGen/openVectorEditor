@@ -54,6 +54,7 @@ function noop() {
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
     cutsitesByName: ['cutsitesByName'],
+    letterSpacing: ['letterSpacing'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     selectionLayer: ['selectionLayer'],
@@ -99,6 +100,12 @@ class RowItem extends React.Component {
             className,
             signals,
         } = this.props;
+        // var cuts = this.props.cutsites;
+        // cuts.forEach(function(cut) {
+        //     if (cut.restrictionEnzyme.name === "AvrII")
+        //     console.log(cut);
+        // })
+        // console.log(cuts);
 
         var {
             sequence='',

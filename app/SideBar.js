@@ -561,7 +561,7 @@ export default class SideBar extends React.Component {
                 if (j>0 && array[j-1].name === name) {
                     sorted[name].push(array[j]);
                 } else {
-                    // otherwise, a hacky workaround for creating multiple entries with the same key
+                    // otherwise, a hacky workaround for creating multiple hash entries with the same key
                     while (sorted[name]) {
                         name = name + " ";
                     }
@@ -607,7 +607,7 @@ export default class SideBar extends React.Component {
                 }
                 color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
                 annotationTableRows.push(
-                    <tr key={'rowA'+dummyIdx}
+                    <tr key={+dummyIdx}
                         style={{backgroundColor: color}}>
                         { annotationTableCells }
                     </tr>);
@@ -637,8 +637,9 @@ export default class SideBar extends React.Component {
                         annotationTableCells.push(
                             <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
+                    dummyIdx += 1;
                     annotationTableRows.push(
-                        <tr key={'rowB'+dummyIdx}style={{backgroundColor: color}}>
+                        <tr key={dummyIdx}style={{backgroundColor: color}}>
                             { annotationTableCells }
                         </tr>);
 

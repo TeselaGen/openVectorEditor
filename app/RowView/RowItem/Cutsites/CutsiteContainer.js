@@ -33,7 +33,7 @@ let CutsiteContainer = React.createClass({
             let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
             annotationsSVG.push(
                 <AnnotationPositioner
-                    height={annotationHeight} 
+                    height={annotationHeight}
                     width={result.width}
                     key={'Cutsite' + annotation.id + 'start:' + annotationRange.start}
                     top= {annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)}
