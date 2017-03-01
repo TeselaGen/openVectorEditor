@@ -552,74 +552,19 @@ export default class SideBar extends React.Component {
             }
             array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
 
-            // turning array back into hash for rendering
-            sorted = {};
-            for (var j=0; j<array.length; j++) {
-                let name = array[j].name;
-
-                // if cuts with the same name happen to end up together again after the sort, awesome
-                if (j>0 && array[j-1].name === name) {
-                    sorted[name].push(array[j]);
-                } else {
-                    // otherwise, a hacky workaround for creating multiple hash entries with the same key
-                    while (sorted[name]) {
-                        name = name + " ";
-                    }
-                    sorted[name] = [array[j]];
-                }
-            }
-
             annotationTableRows = [];
             var color = '#FFFFFF';
-            var dummyIdx = 0; // just to make react stop screaming at me about unique keys
-            for (var enzyme in sorted) { // this is an object so we loop differently
+
+            for (var i=0; i<array.length; i++) {
                 let annotationTableCells = [];
-                let annotation = sorted[enzyme];
-                // first loop for enzyme name and number of cuts + first cut
-                for (let i = 0; i < 4; i++) {
-                    let column = tableHeaderCells[i].props.children.toString().split(',')[0];
-                    let cellStyle = {};
-                    let cellEntry = '';
-                    let cut = annotation[0];
+                let cut = array[i];
 
-                    if(column === 'name') {
-                        cellStyle = {};
-                        cellEntry = enzyme;
-                    }
-                    if (column === '# cuts') {
-                        cellStyle = {textAlign: 'center'};
-                        cellEntry = cut['numberOfCuts'] || annotation.length;
-                    }
-                    if (column === 'position') {
-                        cellEntry = cut['start'] + " - " + cut['end'];
-
-                    }
-                    if (column === 'strand') {
-                        cellStyle = {textAlign: 'center'};
-                        if (cut['forward']) {
-                            cellEntry = "+";
-                        } else {
-                            cellEntry = "-";
-                        }
-                    }
-                    annotationTableCells.push(
-                        <td style={cellStyle} key={i}>{ cellEntry }</td>);
-                }
-                color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
-                annotationTableRows.push(
-                    <tr key={+dummyIdx}
-                        style={{backgroundColor: color}}>
-                        { annotationTableCells }
-                    </tr>);
-
-                annotationTableCells = [];
-                // sub loop for each additional cut
-                for (var j=1; j<annotation.length; j++) {
+                // if the prev row was same enzyme, lump them together, leave off name & #cuts columns
+                if (i>0 && array[i-1].name === array[i].name) {
                     for (let k = 0; k < 4; k++) {
                         let column = tableHeaderCells[k].props.children.toString().split(',')[0];
                         let cellEntry = '';
                         let cellStyle = {};
-                        let cut = annotation[j];
 
                         // if it's name or number of cuts it'll stay blank
                         if (column === 'position') {
@@ -637,15 +582,44 @@ export default class SideBar extends React.Component {
                         annotationTableCells.push(
                             <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
-                    dummyIdx += 1;
-                    annotationTableRows.push(
-                        <tr key={dummyIdx}style={{backgroundColor: color}}>
-                            { annotationTableCells }
-                        </tr>);
 
-                    annotationTableCells = [];
+                // otherwise, alternate background color and create new row with all columns
+                } else {
+                    color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
+                    for (let j = 0; j < 4; j++) {
+                        let column = tableHeaderCells[j].props.children.toString().split(',')[0];
+                        let cellStyle = {};
+                        let cellEntry = '';
+
+                        if(column === 'name') {
+                            cellStyle = {};
+                            cellEntry = cut['name'];
+                        }
+                        if (column === '# cuts') {
+                            cellStyle = {textAlign: 'center'};
+                            cellEntry = cut['numberOfCuts'] || annotation.length;
+                        }
+                        if (column === 'position') {
+                            cellEntry = cut['start'] + " - " + cut['end'];
+
+                        }
+                        if (column === 'strand') {
+                            cellStyle = {textAlign: 'center'};
+                            if (cut['forward']) {
+                                cellEntry = "+";
+                            } else {
+                                cellEntry = "-";
+                            }
+                        }
+                        annotationTableCells.push(
+                            <td style={cellStyle} key={j}>{ cellEntry }</td>);
+                    }
                 }
-                dummyIdx += 1;
+                annotationTableRows.push(
+                    <tr key={i}
+                        style={{backgroundColor: color}}>
+                        { annotationTableCells }
+                    </tr>);
             }
         }
 
@@ -697,7 +671,6 @@ export default class SideBar extends React.Component {
                     let column = tableHeaderCells[j].props.children.toString().split(',')[0];
                     let cellEntry = '';
                     let cellStyle = {};
-
                     if (column === 'position') {
                         cellStyle = {};
                         cellEntry = annotation['start'] + " - " + annotation['end'];
