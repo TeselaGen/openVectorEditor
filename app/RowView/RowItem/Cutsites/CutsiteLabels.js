@@ -26,8 +26,6 @@ let CutsiteLabels = React.createClass({
         var iTree = new intervalTree2(rowCenter)
         var sequenceText = document.getElementById("sequenceText");
         var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
-        // var width = normalizePositionByRangeLength(range.end - range.start, sequenceLength);
-        // width = textWidth * (width / bpsPerRow) + 2; // 2px for width of vertical bar
 
         forEach(annotationRanges,function(annotationRange, index) {
             let annotation = annotationRange.annotation;
@@ -62,7 +60,6 @@ let CutsiteLabels = React.createClass({
                         style={{
                             position: 'absolute',
                             left: xStart,
-                            top: -9,
                             zIndex: 10
                         }}
                         >

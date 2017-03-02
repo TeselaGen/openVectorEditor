@@ -162,7 +162,7 @@ export default class SideBar extends React.Component {
         if (id) {
             let annotations = this.props.annotations;
             for (var i=0; i<annotations.length; i++) {
-                    if (annotations[i].id === id) {
+                if (annotations[i].id === id) {
                     var annotation = annotations[i];
                 }
             }

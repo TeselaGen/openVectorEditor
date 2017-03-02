@@ -13,7 +13,9 @@ function getXStartAndWidthOfRangeWrtRow(range, row, bpsPerRow, charWidth, sequen
 
     var xStart = normalizePositionByRangeLength(range.start - row.start, sequenceLength);
     xStart = textWidth * (xStart / bpsPerRow) + 20; //move selection right
-
+    if (xStart > textWidth + 20 || xStart <= 20) {
+        xStart = null;
+    }
     var width = normalizePositionByRangeLength(range.end - range.start, sequenceLength);
     width = textWidth * (width / bpsPerRow) + 2; // 2px for width of vertical bar
 
@@ -32,7 +34,9 @@ function getSnipForRow(snipPosition, row, sequenceLength, bpsPerRow, snipStyle, 
     //     ) {
 
     // }
-
+    if (!xStart) {
+        return null;
+    }
     var newCursorStyle = assign({}, snipStyle, {
         left: xStart
     });
@@ -108,8 +112,8 @@ let Cutsites = React.createClass({
                 upstreamTopBeforeBottom,
                 downstreamTopBeforeBottom
             } = annotation
-            snipStyle = {...snipStyle, background: annotation.restrictionEnzyme.color || 'blue'}
-            snipConnectorStyle = {...snipConnectorStyle, background: annotation.restrictionEnzyme.color || 'blue'}
+            snipStyle = {...snipStyle, background: annotation.restrictionEnzyme.color || 'black'}
+            snipConnectorStyle = {...snipConnectorStyle, background: annotation.restrictionEnzyme.color || 'black'}
 
             var newSnip;
             var newConnector;

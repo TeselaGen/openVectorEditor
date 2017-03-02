@@ -100,12 +100,6 @@ class RowItem extends React.Component {
             className,
             signals,
         } = this.props;
-        // var cuts = this.props.cutsites;
-        // cuts.forEach(function(cut) {
-        //     if (cut.restrictionEnzyme.name === "AvrII")
-        //     console.log(cut);
-        // })
-        // console.log(cuts);
 
         var {
             sequence='',
@@ -187,7 +181,8 @@ class RowItem extends React.Component {
 
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
 
-                <div className='veRowItemSequenceContainer'>
+                <div className='veRowItemSequenceContainer'
+                    style={{paddingTop:'10px'}}>
                     <Sequence
                         reverse="false"
                         sequence={sequence}
