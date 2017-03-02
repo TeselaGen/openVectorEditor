@@ -71,7 +71,7 @@ export default function handleEditorDragged({input: {
     // } else {
 
     // }
-    // // if (selectionLayer.selected && selectionLayer.start ) 
+    // // if (selectionLayer.selected && selectionLayer.start )
 
     // //note this method relies on variables that are set in the handleEditorDragStart method!
     // editorBeingDragged = true;

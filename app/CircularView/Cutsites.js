@@ -15,7 +15,7 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
             event.stopPropagation()
         }
         if (!(annotation.downstreamTopSnip > -1)) {
-            debugger; //we need this to be present 
+            debugger; //we need this to be present
         }
         var {startAngle} = getRangeAngles({start: annotation.downstreamTopSnip, end: annotation.downstreamTopSnip}, sequenceLength);
 
@@ -48,7 +48,7 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
                 </PositionAnnotationOnCircle>
             </g>
         )
-      
+
     })
     return {
         height: annotationHeight,

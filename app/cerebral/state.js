@@ -24,13 +24,14 @@ module.exports = {
     bottomSpacerHeight: 0,
     caretPosition: 0,
     charHeight: 15,
-    charWidth: 15,
+    charWidth: 25,
     clipboardData: null,
     embedded: true,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     readOnly: true,
     rowToJumpTo: null,
+    sequenceHeight: 20,
     showAddFeatureModal: false,
     showAxis: true,
     showCircular: true,
@@ -112,23 +113,7 @@ module.exports = {
         width: 500
     },
     // derived data - can't alphabetize because of dependencies  :(
-    bpsPerRow: deriveData([
-        ['rowViewDimensions', 'width'],
-        ['charWidth'],
-        ['showCircular'],
-        ['showRow'],
-        function(rowViewDimensionsWidth, charWidth, showCircular, showRow) {
-            // var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
-            // var gaps = Math.floor(charsInRow / 10) - 1;
-            // return Math.floor((charsInRow - gaps) / 10) * 10;
-            // return charsInRow;
-            if(showCircular && showRow) {
-                return 45;
-            } else {
-                return 90;
-            }
-        }
-    ]),
+    bpsPerRow: 10,
     userEnzymes: deriveData([
         ['userEnzymeList'],
         function(userEnzymeList) {
@@ -146,10 +131,20 @@ module.exports = {
     cutsites: deriveData([
         ['cutsitesByName'],
         function (cutsitesByName) {
-            var cutsitesArray = [];
+            var cutsites = [];
             Object.keys(cutsitesByName).forEach(function (key) {
-                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
+                cutsites = cutsites.concat(cutsitesByName[key]);
             });
+
+            // i'd like to move this into ve-sequence-utils eventually
+            var cutsitesArray = [];
+            for (let i=0; i<cutsites.length; i++) {
+                var cutsite = Object.assign({}, cutsites[i])
+                cutsite.id = i;
+                cutsite.name = cutsite.restrictionEnzyme.name;
+                cutsite.numberOfCuts = cutsitesByName[cutsite.restrictionEnzyme.name].length;
+                cutsitesArray.push(cutsite);
+            }
             return cutsitesArray;
         }
     ]),

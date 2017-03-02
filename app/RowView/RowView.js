@@ -9,23 +9,16 @@ import RowItem from './RowItem/RowItem.js'
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import prepareRowData from 've-sequence-utils/prepareRowData';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
-
-var defaultContainerWidth = 400
-var defaultCharWidth = 12
-var defaultMarginWidth = 10
-
-function noop() {
-}
+import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthOfRowAnnotation';
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
     bpsPerRow: ['bpsPerRow'],
-    caretPosition: ['caretPosition'],     
-    charWidth: ['charWidth'], 
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],    
-    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],         
+    charWidth: ['charWidth'],
+    caretPosition: ['caretPosition'],
+    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
+    cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
-    // cutsitesByName: ['cutsitesByName'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     rowViewDimensions: ['rowViewDimensions'],
@@ -42,44 +35,62 @@ function noop() {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
 export default class RowView extends React.Component {
 
+    componentDidMount() {
+        this.state = {
+            rowWidth: rowView.clientWidth
+        }
+
+        var draggable = document.getElementById("draggable");
+        let signals = this.props.signals;
+        let charWidth = this.props.charWidth;
+        signals.adjustWidth({width: draggable.clientWidth});
+        window.onresize = function() {
+            signals.adjustWidth();
+            this.setState({rowWidth: rowView.clientWidth});
+        }.bind(this)
+    }
+
+
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
+        var bpsPerRow = this.props.bpsPerRow;
+        var charWidth = this.props.charWidth;
+
         var visibleRowsContainer = ReactDOM.findDOMNode(this.InfiniteScroller);
         //loop through all the rendered rows to see if the click event lands in one of them
         var nearestBP = 0;
         for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
             var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
             var boundingRowRect = rowDomNode.getBoundingClientRect();
-            // //console.log('boundingRowRect.top', JSON.stringify(boundingRowRect.top,null,4));
-            // //console.log('boundingRowRect.height', JSON.stringify(boundingRowRect.height,null,4));
             if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-                //then the click is falls within this row
-                // //console.log('HGGGG');
+                //then the click is within this row
                 rowNotFound = false;
                 var rowNumber = parseInt(rowDomNode.getAttribute('data-row-number'));
                 var row = this.props.rowData[rowNumber];
-                if (event.clientX - boundingRowRect.left < 0) {
+
+                var sequenceText = document.getElementById("sequenceText");
+                // get width of the actual text
+                var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+                var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
+
+                if (clickXPositionRelativeToRowContainer < 0) {
                     nearestBP = row.start;
-                                    
                 } else {
-                    var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left;
-                    var numberOfBPsInFromRowStart = Math.floor((clickXPositionRelativeToRowContainer + this.props.charWidth / 2) / this.props.charWidth);
+                    var numberOfBPsInFromRowStart = Math.round(bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
                     nearestBP = numberOfBPsInFromRowStart + row.start;
                     if (nearestBP > row.end + 1) {
                         nearestBP = row.end + 1;
-                                            
                     }
-                                    
                 }
                 break; //break the for loop early because we found the row the click event landed in
-                            
+
             }
-                    
+
         }
         if (rowNotFound) {
             console.warn('was not able to find the correct row');
@@ -87,13 +98,13 @@ export default class RowView extends React.Component {
             var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
             var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
             nearestBP = lastOfRenderedRows.end
-                    
+
         }
         callback({
             shiftHeld: event.shiftKey,
             nearestBP,
             caretGrabbed: event.target.className === "cursor"
-                    
+
         });
 
     }
@@ -117,7 +128,6 @@ export default class RowView extends React.Component {
             annotationVisibility,
             caretPosition,
             rowViewDimensions,
-            marginWidth=defaultMarginWidth,
             signals,
             bpsPerRow,
             rowData
@@ -147,7 +157,7 @@ export default class RowView extends React.Component {
                 }
                 onStop={signals.editorDragStopped}
                 >
-                <div
+                <div id="draggable"
                     onClick={(event) => {
                         this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
                     }}

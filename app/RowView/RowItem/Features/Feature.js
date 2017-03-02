@@ -1,12 +1,13 @@
 import React from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import getXStartAndWidthOfRowAnnotation from '../../../shared-utils/getXStartAndWidthOfRowAnnotation';
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
-    bpsPerRow: ['bpsPerRow'],  
-    charWidth: ['charWidth'], 
+    bpsPerRow: ['bpsPerRow'],
+    charWidth: ['charWidth'],
     rowData: ['rowData'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']     
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
 export default class Feature extends React.Component {
@@ -14,23 +15,24 @@ export default class Feature extends React.Component {
     render() {
         var {
             bpsPerRow,
-            charWidth, 
-            height, 
-            rangeType, 
-            forward, 
+            charWidth,
+            height,
+            rangeType,
+            forward,
             pointiness=4,
-            fontWidth=16, 
-            color, 
+            fontWidth=16,
+            color,
             name,
-            // featureClicked,
             annotation,
             signals,
-            widthInBps
+            annotationRange
         } = this.props;
 
         height = 20; // {{}} should this not be hardcoded
 
-        var width = widthInBps * (charWidth * 1.2) - 20;
+        let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
+        var width = result.width;
+
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
             if (width > 15) {
@@ -45,7 +47,7 @@ export default class Feature extends React.Component {
         if (rangeType === 'middle') {
             //draw a rectangle
             path = `
-            M 0,0 
+            M 0,0
             L ${width-pointiness/2},0
             Q ${width + pointiness/2},${height/2} ${width-pointiness/2},${height}
             L ${0},${height}
@@ -53,26 +55,26 @@ export default class Feature extends React.Component {
             z`;
         } else if (rangeType === 'start') {
             path = `
-            M 0,0 
-            L ${width-pointiness/2},0 
+            M 0,0
+            L ${width-pointiness/2},0
             Q ${width + pointiness/2},${height/2} ${width-pointiness/2},${height}
-            L 0,${height} 
+            L 0,${height}
             z`
         } else if (rangeType ==='beginningAndEnd') {
             path = `
-            M 0,0 
-            L ${widthMinusOne},0 
-            L ${width},${height/2} 
-            L ${widthMinusOne},${height} 
-            L 0,${height} 
+            M 0,0
+            L ${widthMinusOne},0
+            L ${width},${height/2}
+            L ${widthMinusOne},${height}
+            L 0,${height}
             z`
         } else {
           path = `
-          M 0,0 
-          L ${widthMinusOne},0 
-          L ${width},${height/2} 
-          L ${widthMinusOne},${height} 
-          L 0,${height} 
+          M 0,0
+          L ${widthMinusOne},0
+          L ${width},${height/2}
+          L ${widthMinusOne},${height}
+          L 0,${height}
           Q ${pointiness},${height/2} ${0},${0}
           z`
         }
@@ -90,7 +92,7 @@ export default class Feature extends React.Component {
                 className='veRowViewFeature clickable'
                 onClick={ function (e) {
                     e.stopPropagation()
-                    signals.featureClicked({annotation: annotation}) 
+                    signals.featureClicked({annotation: annotation})
                 }}
                 >
                 <path

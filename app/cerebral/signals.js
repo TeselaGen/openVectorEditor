@@ -21,20 +21,18 @@ export default function(options) {
         and general (read or edit) signals 
         Unused signals are edited out */
 
-        addAnnotations:
-            [a.addAnnotations],
-
-        addFeatureModalDisplay:
-            [a.addFeatureModalDisplay],
-
-        caretMoved: [
-            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow',
-                { path: ['sequenceData', 'circular'], name: 'circular'}),
-            a.moveCaret,
-            a.handleCaretMoved, {
-                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
-                selectionUpdated: [a.setSelectionLayer],
-            }
+        setTreeVal: [
+            a.setData
+        ],
+        // sidebar signals
+        sidebarToggle: [
+            a.sidebarToggle,
+        ],
+        sidebarDisplay: [
+            a.sidebarDisplay
+        ],
+        changeOrfMin: [
+            a.changeOrfMin
         ],
 
         changeOrfMin:
@@ -76,6 +74,16 @@ export default function(options) {
             }
         ],
 
+        featureClicked: c.selectAnnotation(a),
+        cutsiteClicked: c.selectAnnotation(a),
+        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action? 
+        caretMoved: [
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+                path: ['sequenceData', 'circular'],
+                name: 'circular'
+            })
+        ],
+
         editorDragged: [
             a.handleEditorDragged, {
                 caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
@@ -96,28 +104,9 @@ export default function(options) {
             a.handleEditorDragStopped
         ],
 
-        editUserEnzymes:
-            [a.editUserEnzymes],
-
-        featureClicked:
-            c.selectAnnotation(a),
-
-        // jumpToRow:
-        //     [a.jumpToRow],
-
-        orfClicked:
-            c.selectAnnotation(a),
-
-        // resizeCircularView: [
-        //     a.resizeCircularView
-        // ],
-
-        // resizeRowView: [
-        //     a.resizeRowView
-        // ],
-
-        restrictionEnzymeManagerDisplay:
-            [a.restrictionEnzymeManagerDisplay],
+        adjustWidth: [
+            a.adjustWidth
+        ],
 
         searchSequence: [
             a.searchSequence,

@@ -35,6 +35,7 @@ import styles from './tool-bar.css'
     showCutsites: ['showCutsites'],
     showParts: ['showParts'],
     showFeatures: ['showFeatures'],
+    showRow: ['showRow'],
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
     history: ['history'],
@@ -59,6 +60,7 @@ export default class ToolBar extends React.Component {
             showTranslations,
             showOrfs,
             showCutsites,
+            showRow,
             showSidebar,
             signals,
             history
@@ -75,6 +77,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: none");
                         document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.adjustWidth();
                     }}
                     >
                     <RowIcon />
@@ -84,6 +87,7 @@ export default class ToolBar extends React.Component {
                     onTouchTap={function() {
                         document.getElementById("circularView").setAttribute("style", "display: block");
                         document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.adjustWidth();
                     }}
                     >
                     <BothViewsIcon />
@@ -194,6 +198,7 @@ export default class ToolBar extends React.Component {
                         tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
+                            signals.adjustWidth();
                         }}
                         >
                         <InputIcon id="openFeatureDisplay"/>
