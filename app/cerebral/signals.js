@@ -176,7 +176,7 @@ export default function(options) {
                     },
                     a.insertSequenceData
                 ],
-                error: []
+                error: [a.displayError]
             },
             a.clearSelectionLayer
         ]),
@@ -198,6 +198,7 @@ export default function(options) {
         updateFeature: a.addEditModeOnly([
             a.updateFeature
         ])
+
     }
 
     return assign({}, signals, options.signals)

@@ -66,7 +66,7 @@ Cutsite:
                                   start: (number)
                               ]
         restrictionEnzyme: [Object:
-                               cutType: (number IN [])
+                               cutType: (number IN [?])
                                dsForward: (number)
                                dsReverse: (number)
                                forwardRegex: (string regex)
@@ -79,3 +79,17 @@ Cutsite:
 
     notes:
         the start and end dictate how the orf is drawn around the circle. End can be less than start; this indicates an orf that crosses the origin, since orfs are always drawn clockwise. The strand attribute dictates which direction the arrowhead points. 
+
+RowItem:
+    constructed by "prepareRowData" from ve sequence utils
+    stored in an array in state variable "rowData"
+    Object:
+        cutsites: [array of Cutsite objects]
+        start: (number)
+        end: (number)
+        sequence: (string)
+        rowNumber: (number)
+        features: [array of Feature objects]
+        orfs: [array of Orf objects]
+        parts: [array, not used]
+        translations: [array of translation objects]        
