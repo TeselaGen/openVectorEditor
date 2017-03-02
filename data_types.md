@@ -66,7 +66,7 @@ Cutsite:
                                   start: (number)
                               ]
         restrictionEnzyme: [Object:
-                               cutType: (number IN [])
+                               cutType: (number IN [?])
                                dsForward: (number)
                                dsReverse: (number)
                                forwardRegex: (string regex)

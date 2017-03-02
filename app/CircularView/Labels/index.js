@@ -12,7 +12,7 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 export default function Labels({labels={}, outerRadius}) {
     var radius = outerRadius;
     var outerPointRadius = outerRadius - 20;
-    var fontWidth = 8 * outerRadius/120;
+    var fontWidth = 4;
     var fontHeight = fontWidth * 1.5;
 
     var labelPoints = Object.keys(labels).map(function (key, index) {
@@ -90,13 +90,13 @@ function DrawLabelGroup (props) {
         multipleLabels,  
         ...rest
     } = props;
+
     var {text} = label;
     var maxLabelLength;
-    var labelLength = text.length * (fontWidth -2);
+    var labelLength = text.length * (fontWidth - 2);
     var maxLabelWidth;
     var labelXStart = label.x - (label.x < 0 ? labelLength : 0);
-    var dy = 12;
-    var textYStart = label.y + dy/2;
+    var dy = fontHeight;
     var content;
     var labelClass = "velabelText veCircularViewLabelText clickable ";
     var line = LabelLine([label.innerPoint, label], {style: {opacity: 1}});
@@ -105,7 +105,6 @@ function DrawLabelGroup (props) {
     var labelGroupBottom = label.y + labelGroupHeight;
 
     maxLabelLength = sublabels.reduce(function (currentLength, {text}) {
-        // //console.log('arguments: ', arguments);
         if (text.length > currentLength) {
             return text.length
         } 
@@ -114,16 +113,17 @@ function DrawLabelGroup (props) {
     maxLabelWidth = maxLabelLength * fontWidth;
 
     if (multipleLabels) {
-        // DRAW MULTIPLE LABELS IN A RECTANGLE
+        // DRAW MULTIPLE LABELS
         var labelYStart = label.y
         var labelGroupHeight = sublabels.length * dy
         var labelGroupBottom = label.y + labelGroupHeight
         if (labelGroupBottom > (outerRadius+10)) {
           var diff = labelGroupBottom - (outerRadius+10)
           //calculate new label y start if necessary (the group is too long)
-          labelYStart-= diff
-          if (labelYStart < -outerRadius) {
+          labelYStart -= diff
+          if (labelYStart < outerRadius * -1) {
             //we need to make another row of labels!
+            // {{}} this is not yet implemented, does it need to be?
             
           }
         }
@@ -133,34 +133,26 @@ function DrawLabelGroup (props) {
         content = [
             line,
             <g id='topLevelLabels' key='gGroup'>
-                <rect 
-                    x = { labelXStart - 4 } 
-                    y = { labelYStart - dy/2 } 
-                    width = { maxLabelWidth } 
-                    height = { labelGroupHeight + 4 } 
-                    fill = 'white'
-                    stroke = 'black'
-                    >
-                </rect>
-                <text
-                    x = { labelXStart }
-                    y = { labelYStart }
-                    style = {{ fontSize: fontHeight }}
-                    >
-                    {sublabels.map(function (label, index) {
-                        return (
-                            <tspan 
-                                x = { labelXStart } 
-                                onClick = { label.onClick }
-                                dy = { index === 0 ? dy/2 : dy } 
-                                style = {{ fill: label.color ? label.color : 'black' }} 
-                                className = { labelClass + label.className }
-                                >
-                                { label.text }
-                            </tspan>
-                        )
-                    })}
-                </text>
+                { sublabels.map(function (label, index) {
+                    // we need to know if it's a singleton and if we're on the top half
+                    var flipLabel = 1;
+                    if (labelYStart < 0) { // we're on the top half of the circle
+                        flipLabel = -1; // stack labels up not down
+                    }
+                    // if singleton set label.color to red
+                    return (
+                        <text 
+                            x = { labelXStart } 
+                            onClick = { label.onClick }
+                            dy = { index === 0 ? 0 : dy * index * flipLabel } 
+                            style = {{ fill: label.color ? label.color : 'black' , fontSize: fontWidth}} 
+                            className = { labelClass + label.className }
+                            y = { labelYStart }
+                            >
+                            { label.text }
+                        </text>
+                    )
+                })}
             </g>
         ]
     } else {
@@ -170,9 +162,9 @@ function DrawLabelGroup (props) {
                 key = 'text'
                 x = { labelXStart }
                 className = { labelClass + label.className }
-                y = { textYStart }
-                // make our singletons red to match old VE
-                style = {{ fill: 'red', fontSize: fontWidth }}
+                y = { labelYStart }
+                // make our singletons red to match old VE, how do we tag singleton cutsite
+                style = {{ fontSize: fontWidth }}
                 >
                 { text }
             </text>, 
