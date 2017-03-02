@@ -138,6 +138,7 @@ class RowItem extends React.Component {
             sequenceLength,
             annotationHeight,
             row,
+            signals,
         }
 
         var rowNumber = row.start + 1; // we want to start at 1 and not 0

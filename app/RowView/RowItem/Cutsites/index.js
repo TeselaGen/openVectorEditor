@@ -79,14 +79,12 @@ let Cutsites = React.createClass({
         var offset = sequenceHeight + divPadding;
         var snipStyle = {
             height: sequenceHeight + "px",
-            // background: 'black',
             position: "absolute",
             bottom: divPadding + "px",
             width: "2px",
         };
         var snipConnectorStyle = {
             height: "2px",
-            // background: 'black',
             position: "absolute",
             bottom: offset + "px",
         };
@@ -110,8 +108,8 @@ let Cutsites = React.createClass({
                 upstreamTopBeforeBottom,
                 downstreamTopBeforeBottom
             } = annotation
-            snipStyle = {...snipStyle, background: annotation.restrictionEnzyme.color || 'black'}
-            snipConnectorStyle = {...snipConnectorStyle, background: annotation.restrictionEnzyme.color || 'black'}
+            snipStyle = {...snipStyle, background: annotation.restrictionEnzyme.color || 'blue'}
+            snipConnectorStyle = {...snipConnectorStyle, background: annotation.restrictionEnzyme.color || 'blue'}
 
             var newSnip;
             var newConnector;

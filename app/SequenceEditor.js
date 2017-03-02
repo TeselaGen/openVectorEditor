@@ -30,6 +30,7 @@ var combokeys;
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
     cutsitesByName: ['cutsitesByName'],
+    cutsites: ['cutsites'],
     orfData: ['orfData'],
 })
 
@@ -146,7 +147,7 @@ export default class SequenceEditor extends React.Component {
             showRow,
             showSidebar,
             sidebarType,
-            cutsitesByName,
+            cutsites,
             orfData,
             showRestrictionEnzymeManager,
             readOnly,
@@ -185,7 +186,7 @@ export default class SequenceEditor extends React.Component {
         } else if (sidebarType === 'Cutsites') {
             table = (
                 <SideBar
-                   annotations={cutsitesByName}
+                   annotations={cutsites}
                    annotationType={sidebarType}
                    />
             );

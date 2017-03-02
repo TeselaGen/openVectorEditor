@@ -136,10 +136,20 @@ module.exports = {
     cutsites: deriveData([
         ['cutsitesByName'],
         function (cutsitesByName) {
-            var cutsitesArray = [];
+            var cutsites = [];
             Object.keys(cutsitesByName).forEach(function (key) {
-                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
+                cutsites = cutsites.concat(cutsitesByName[key]);
             });
+
+            // i'd like to move this into ve-sequence-utils eventually
+            var cutsitesArray = [];
+            for (let i=0; i<cutsites.length; i++) {
+                var cutsite = Object.assign({}, cutsites[i])
+                cutsite.id = i;
+                cutsite.name = cutsite.restrictionEnzyme.name;
+                cutsite.numberOfCuts = cutsitesByName[cutsite.restrictionEnzyme.name].length;
+                cutsitesArray.push(cutsite);
+            }
             return cutsitesArray;
         }
     ]),

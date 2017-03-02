@@ -61,7 +61,8 @@ export default function(options) {
             }
         ],
         featureClicked: c.selectAnnotation(a),
-        orfClicked: c.selectAnnotation(a),
+        cutsiteClicked: c.selectAnnotation(a),
+        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action? 
         caretMoved: [
             a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
                 path: ['sequenceData', 'circular'],
