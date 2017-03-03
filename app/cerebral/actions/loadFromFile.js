@@ -21,7 +21,8 @@ function loadFromFile({input, state, output}) {
             } else {
                 output.error({error: err.message});
             }
-        });
+        }
+    );
 };
 
 export default loadFromFile;

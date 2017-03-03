@@ -22,7 +22,6 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
         if(annotation.numberOfCuts === 1) { // this should really go on the enzyme obj
             cutColor = 'red';
         }
-        console.log(cutColor)
 
         // add label info
         labels[index]={
