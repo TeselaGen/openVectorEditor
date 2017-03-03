@@ -134,18 +134,16 @@ function DrawLabelGroup (props) {
             line,
             <g id='topLevelLabels' key='gGroup'>
                 { sublabels.map(function (label, index) {
-                    // we need to know if it's a singleton and if we're on the top half
                     var flipLabel = 1;
                     if (labelYStart < 0) { // we're on the top half of the circle
                         flipLabel = -1; // stack labels up not down
                     }
-                    // if singleton set label.color to red
                     return (
                         <text 
                             x = { labelXStart } 
                             onClick = { label.onClick }
                             dy = { index === 0 ? 0 : dy * index * flipLabel } 
-                            style = {{ fill: label.color ? label.color : 'black' , fontSize: fontWidth}} 
+                            style = {{ fill: label.color, fontSize: fontWidth }} 
                             className = { labelClass + label.className }
                             y = { labelYStart }
                             >
@@ -164,7 +162,7 @@ function DrawLabelGroup (props) {
                 className = { labelClass + label.className }
                 y = { labelYStart }
                 // make our singletons red to match old VE, how do we tag singleton cutsite
-                style = {{ fontSize: fontWidth }}
+                style = {{ fill: label.color, fontSize: fontWidth }}
                 >
                 { text }
             </text>, 

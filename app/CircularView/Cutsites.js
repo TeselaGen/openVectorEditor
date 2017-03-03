@@ -10,24 +10,28 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
     radius = radius;
     each(cutsites,function(annotation, key) {
         index++;
-        function onClick(event) {
-            // cutsiteClicked({event, annotation, namespace})
-            event.stopPropagation()
-        }
         if (!(annotation.downstreamTopSnip > -1)) {
             debugger; //we need this to be present
         }
-        var {startAngle} = getRangeAngles({start: annotation.downstreamTopSnip, end: annotation.downstreamTopSnip}, sequenceLength);
+        var { startAngle } = getRangeAngles({
+                                start: annotation.downstreamTopSnip, 
+                                end: annotation.downstreamTopSnip}, 
+                                sequenceLength);
+        // check if it's a singleton enzyme
+        var cutColor = 'black';
+        if(annotation.numberOfCuts === 1) { // this should really go on the enzyme obj
+            cutColor = 'red';
+        }
+        console.log(cutColor)
 
         // add label info
         labels[index]={
             annotationCenterAngle: startAngle,
             annotationCenterRadius: radius,
             text: annotation.restrictionEnzyme.name,
-            color: annotation.restrictionEnzyme.color,
+            color: cutColor,
             className: 'veCutsiteLabel',
-            id: index,
-            onClick,
+            id: index
         }
 
         svgGroup.push(
@@ -37,8 +41,8 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
                 >
                 <PositionAnnotationOnCircle
                     className='cutsiteDrawing'
-                    sAngle={startAngle}
-                    eAngle={startAngle}
+                    sAngle={ startAngle }
+                    eAngle={ startAngle }
                     height={ radius }
                     >
                     <rect

@@ -136,9 +136,8 @@ module.exports = {
                 cutsites = cutsites.concat(cutsitesByName[key]);
             });
 
-            // i'd like to move this into ve-sequence-utils eventually
             var cutsitesArray = [];
-            for (let i=0; i<cutsites.length; i++) {
+            for (let i = 0; i < cutsites.length; i++) {
                 var cutsite = Object.assign({}, cutsites[i])
                 cutsite.id = i;
                 cutsite.name = cutsite.restrictionEnzyme.name;
