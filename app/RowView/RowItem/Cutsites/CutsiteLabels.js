@@ -12,7 +12,6 @@ let CutsiteLabels = React.createClass({
             bpsPerRow,
             charWidth,
             annotationHeight,
-            textWidth=12,
             signals
         } = this.props;
 
@@ -22,10 +21,11 @@ let CutsiteLabels = React.createClass({
 
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
-        var rowCenter = bpsPerRow * textWidth / 2;
-        var iTree = new intervalTree2(rowCenter)
         var sequenceText = document.getElementById("sequenceText");
         var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        var rowCenter = textWidth / 2;
+        var iTree = new intervalTree2(rowCenter)
+        // var overlapInterval = textWidth * ((2 % bpsPerRow) / bpsPerRow);
 
         forEach(annotationRanges,function(annotationRange, index) {
             let annotation = annotationRange.annotation;
@@ -37,9 +37,8 @@ let CutsiteLabels = React.createClass({
             var xStart = textWidth * ((annotationRange.start % bpsPerRow) / bpsPerRow) + 15; //move selection right
             var width = textWidth * (((annotationRange.end - annotationRange.start) % bpsPerRow) / bpsPerRow); //move selection right
             xStart += width/2;
-
             var xEnd = xStart + annotationLength;
-            var yOffset = getYOffset(iTree, xStart, xEnd)
+            var yOffset = getYOffset(iTree, xStart, xEnd);
             iTree.add(xStart, xEnd, undefined, {...annotationRange, yOffset})
 
             if (yOffset > maxAnnotationYOffset) {
@@ -60,6 +59,7 @@ let CutsiteLabels = React.createClass({
                         style={{
                             position: 'absolute',
                             left: xStart,
+                            top: yOffset * -10,
                             zIndex: 10
                         }}
                         >
@@ -75,7 +75,7 @@ let CutsiteLabels = React.createClass({
                 width="100%"
                 style={{
                     position: 'relative',
-                    height: containerHeight,
+                    height: '10px',
                     display: 'block'
                 }}
                 >

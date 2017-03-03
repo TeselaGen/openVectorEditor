@@ -13,7 +13,9 @@ reqContext.keys().forEach(function(key) {
 import assign from 'lodash/object/assign'
 var each = require('lodash/collection/each');
 export default function(options) {
+
     a = assign({}, a, options.actions) //override any actions here!
+
     var signals = {
 
         setTreeVal: [
@@ -29,19 +31,24 @@ export default function(options) {
         changeOrfMin: [
             a.changeOrfMin
         ],
-        // end sidebar
-        copySelection: [ // earavina: not used for now
-            a.copySelection, {
-                success: [a.setData('clipboardData')],
-                error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        chooseEnzymeList: [
+            a.showSelectedEnzymeList
+        ],
+
+        // there's weird bracketing here to deal with the async superagent request
+        clickLoadFile: [
+            [a.loadFromFile], {
+                success: [a.insertSequenceData],
+                error: []
             }
         ],
-        selectAll: [a.selectAll, a.setSelectionLayer],
-        selectInverse: [a.selectInverse, a.setSelectionLayer],
-        setCutsiteLabelSelection: [a.setCutsiteLabelSelection],
-        toggleAnnotationDisplay: [a.toggleAnnotationDisplay],
 
-        updateHistory: [a.updateHistory],
+        // copySelection: [ // earavina: not used for now
+        //     a.copySelection, {
+        //         success: [a.setData('clipboardData')],
+        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        //     }
+        // ],
 
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
@@ -60,9 +67,18 @@ export default function(options) {
                 ]
             }
         ],
+
         featureClicked: c.selectAnnotation(a),
         cutsiteClicked: c.selectAnnotation(a),
-        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action? 
+        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action?
+
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
+        ],
+        adjustWidth: [
+            a.adjustWidth
+        ],
+
         caretMoved: [
             a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
                 path: ['sequenceData', 'circular'],
@@ -75,15 +91,18 @@ export default function(options) {
                 selectionUpdated: [a.setSelectionLayer],
             }
         ],
+
         editorDragged: [
             a.handleEditorDragged, {
                 caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
                 selectionUpdated: [a.setSelectionLayer],
             }
         ],
+
         editorDragStarted: [
             a.handleEditorDragStarted
         ],
+
         editorDragStopped: [
             [function pause ({input, state, output}) {
                 // {{}} async function that doesn't do anything
@@ -93,48 +112,72 @@ export default function(options) {
             }],
             a.handleEditorDragStopped
         ],
-        adjustWidth: [
-            a.adjustWidth
+
+        editUserEnzymes: [
+            a.editUserEnzymes
+        ],
+        jumpToRow: [
+            a.jumpToRow
+        ],
+        restrictionEnzymeManagerDisplay: [
+            a.restrictionEnzymeManagerDisplay
         ],
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers
         ],
-        setSelectionLayer: [a.setSelectionLayer],
-
-        restrictionEnzymeManagerDisplay: [
-            a.restrictionEnzymeManagerDisplay
+        selectAll: [
+            a.selectAll,
+            a.setSelectionLayer
         ],
-
-        editUserEnzymes: [
-            a.editUserEnzymes
+        selectInverse: [
+            a.selectInverse,
+            a.setSelectionLayer
         ],
-
+        // setCutsiteLabelSelection:[
+        //     a.setCutsiteLabelSelection
+        // ],
+        setSelectionLayer: [
+            a.setSelectionLayer
+        ],
+        // setTreeVal:[
+        //     a.setData
+        // ],
+        showChangeMinOrfSizeDialog: [
+            a.showChangeMinOrfSizeDialog
+        ],
+        toggleAnnotationDisplay: [
+            a.toggleAnnotationDisplay
+        ],
+        updateHistory: [
+            a.updateHistory
+        ],
         updateUserEnzymes: [
             a.updateUserEnzymes
         ],
 
-        chooseEnzymeList: [
-            a.showSelectedEnzymeList
-        ],
-
-        addFeatureModalDisplay: [
-            a.addFeatureModalDisplay
-        ],
-
-        showChangeMinOrfSizeDialog: [
-            a.showChangeMinOrfSizeDialog
-        ],
-
     // ///////////////////////////////////
     // edit only actions
+
+        addAnnotations: [
+            a.addAnnotations
+        ],
+
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
                 notSelected: [a.prepDeleteOneBack, a.deleteSequence]
             }
         ]),
-        // paste sequence from clipboard
+
+        clickSaveFile: [
+            a.saveToFile
+        ],
+
+        deleteFeatures: a.addEditModeOnly([
+            a.deleteFeatures
+        ]),
+
         pasteSequenceString: a.addEditModeOnly([
             a.pasteSequenceString, {
                 success: [
@@ -148,13 +191,12 @@ export default function(options) {
             },
             a.clearSelectionLayer
         ]),
-        // type sequence from keyboard
-        deleteFeatures: a.addEditModeOnly([
-            a.deleteFeatures
-        ]),
-        updateFeature: a.addEditModeOnly([
-            a.updateFeature
-        ]),
+
+        saveChanges: [
+            a.saveToServer,
+            a.updateHistory
+        ],
+
         sequenceDataInserted: a.addEditModeOnly([
             a.checkLayerIsSelected, {
                 selected: [a.deleteSequence],
@@ -163,20 +205,12 @@ export default function(options) {
             a.insertSequenceData,
             a.clearSelectionLayer
         ]),
-        // loading and saving local files
-        clickSaveFile:
-            [a.saveToFile],
-        saveChanges:
-            [a.saveToServer, a.updateHistory],
-        clickLoadFile: [
-            [a.loadFromFile], {
-                success: [a.insertSequenceData],
-                error: []
-            }
-        ],
-        //lower priority
-        addAnnotations: [a.addAnnotations],
-        jumpToRow: [a.jumpToRow],
+
+        updateFeature: a.addEditModeOnly([
+            a.updateFeature
+        ])
+
     }
-    return assign({}, signals, options.signals) //optionally override any signals here
+
+    return assign({}, signals, options.signals)
 }
