@@ -18,22 +18,34 @@ export default function(options) {
 
     var signals = {
 
-        setTreeVal: [
-            a.setData
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
         ],
-        // sidebar signals
-        sidebarToggle: [
-            a.sidebarToggle,
+
+        adjustWidth: [
+            a.adjustWidth
         ],
-        sidebarDisplay: [
-            a.sidebarDisplay
+
+        caretMoved: [
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+                path: ['sequenceData', 'circular'],
+                name: 'circular'
+            }),
+
+            a.moveCaret,
+            a.handleCaretMoved, {
+                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+                selectionUpdated: [a.setSelectionLayer],
+            }
         ],
+
         changeOrfMin: [
             a.changeOrfMin
         ],
+
         chooseEnzymeList: [
             a.showSelectedEnzymeList
-        ],
+        ],  
 
         // there's weird bracketing here to deal with the async superagent request
         clickLoadFile: [
@@ -43,12 +55,7 @@ export default function(options) {
             }
         ],
 
-        // copySelection: [ // earavina: not used for now
-        //     a.copySelection, {
-        //         success: [a.setData('clipboardData')],
-        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
-        //     }
-        // ],
+        cutsiteClicked: c.selectAnnotation(a),
 
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
@@ -65,30 +72,6 @@ export default function(options) {
                         shiftNotHeld: [a.clearSelectionLayer, a.updateOutput('nearestBP', 'caretPosition'), a.setCaretPosition],
                     }
                 ]
-            }
-        ],
-
-        featureClicked: c.selectAnnotation(a),
-        cutsiteClicked: c.selectAnnotation(a),
-        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action?
-
-        addFeatureModalDisplay: [
-            a.addFeatureModalDisplay
-        ],
-        adjustWidth: [
-            a.adjustWidth
-        ],
-
-        caretMoved: [
-            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
-                path: ['sequenceData', 'circular'],
-                name: 'circular'
-            }),
-
-            a.moveCaret,
-            a.handleCaretMoved, {
-                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
-                selectionUpdated: [a.setSelectionLayer],
             }
         ],
 
@@ -116,42 +99,62 @@ export default function(options) {
         editUserEnzymes: [
             a.editUserEnzymes
         ],
+
+        featureClicked: c.selectAnnotation(a),
+
         jumpToRow: [
             a.jumpToRow
         ],
+
+        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action?
+
         restrictionEnzymeManagerDisplay: [
             a.restrictionEnzymeManagerDisplay
         ],
+
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers
         ],
+
         selectAll: [
             a.selectAll,
             a.setSelectionLayer
         ],
+
         selectInverse: [
             a.selectInverse,
             a.setSelectionLayer
         ],
-        // setCutsiteLabelSelection:[
-        //     a.setCutsiteLabelSelection
-        // ],
+
         setSelectionLayer: [
             a.setSelectionLayer
         ],
-        // setTreeVal:[
-        //     a.setData
-        // ],
+
+        setTreeVal: [
+            a.setData
+        ],        
+
         showChangeMinOrfSizeDialog: [
             a.showChangeMinOrfSizeDialog
         ],
+
+        sidebarDisplay: [
+            a.sidebarDisplay
+        ],
+
+        sidebarToggle: [
+            a.sidebarToggle,
+        ],
+
         toggleAnnotationDisplay: [
             a.toggleAnnotationDisplay
         ],
+
         updateHistory: [
             a.updateHistory
         ],
+
         updateUserEnzymes: [
             a.updateUserEnzymes
         ],
@@ -209,7 +212,6 @@ export default function(options) {
         updateFeature: a.addEditModeOnly([
             a.updateFeature
         ])
-
     }
 
     return assign({}, signals, options.signals)
