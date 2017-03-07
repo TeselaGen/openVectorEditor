@@ -57,6 +57,7 @@ function noop() {
     letterSpacing: ['letterSpacing'],
     orfs: ['orfData'],
     rowData: ['rowData'],
+    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceHeight: ['sequenceHeight'],
@@ -71,7 +72,7 @@ function noop() {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
 })
 
 class RowItem extends React.Component {

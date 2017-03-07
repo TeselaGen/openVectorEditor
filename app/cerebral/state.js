@@ -37,7 +37,7 @@ module.exports = {
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     readOnly: true,
-    rowToJumpTo: null,
+    rowToJumpTo: 0,
     sequenceHeight: 20,
     showAddFeatureModal: false,
     showAxis: true,

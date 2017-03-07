@@ -3,28 +3,18 @@ function searchSequence({input: { searchString }, state, output}) {
         output({ searchLayers: [] });
         return;
     }
+
     var sequence = state.get(['sequenceData', 'sequence']);
-
+    var match;
     var layers = [];
-    var inResult = false;
-    var lastIndex = 0;
+    var regex = new RegExp(searchString, 'gi');
 
-    for (let i = 0; i < sequence.length; i++) {
-        if (!inResult) {
-            lastIndex = i;
+    do {
+        match = regex.exec(sequence);
+        if (match) {
+            layers.push({ start: match.index, end: match.index + searchString.length, selected: true });
         }
-
-        if (sequence[i] === searchString[i - lastIndex]) {
-            inResult = true;
-
-            if (i - lastIndex === searchString.length - 1) {
-                layers.push({ start: lastIndex, end: i, selected: true });
-                inResult = false;
-            }
-        } else {
-            inResult = false;
-        }
-    }
+    } while (match);
 
     output({ searchLayers: layers });
 }

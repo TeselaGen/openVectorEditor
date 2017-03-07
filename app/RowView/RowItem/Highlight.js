@@ -44,6 +44,9 @@ export default class Highlight extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        var row = Math.floor((newProps.start-1)/newProps.bpsPerRow);
+        row = row < 0 ? 0 : row;
+        this.props.signals.jumpToRow({rowToJumpTo: row});
         this._dimensions(newProps.start, newProps.end);
     }
 

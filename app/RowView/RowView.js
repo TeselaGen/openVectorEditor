@@ -19,6 +19,7 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
+    rowToJumpTo: ['rowToJumpTo'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     rowViewDimensions: ['rowViewDimensions'],
@@ -55,6 +56,14 @@ export default class RowView extends React.Component {
         }.bind(this)
     }
 
+    componentWillReceiveProps(newProps) {
+        if (this.props.rowToJumpTo !== newProps.rowToJumpTo && newProps.selectionLayer.id !== -1) {
+            var range = this.InfiniteScroller.getVisibleRange();
+            if (newProps.rowToJumpTo < range[0] || newProps.rowToJumpTo >= range[1]) {
+                this.InfiniteScroller.scrollTo(newProps.rowToJumpTo);
+            }
+        }
+    }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
         var rowNotFound = true;
@@ -70,7 +79,8 @@ export default class RowView extends React.Component {
             if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
                 //then the click is within this row
                 rowNotFound = false;
-                var rowNumber = parseInt(rowDomNode.getAttribute('data-row-number'));
+                // var rowNumber = parseInt(rowDomNode.getAttribute('data-row-number'));
+                var rowNumber = relativeRowNumber;
                 var row = this.props.rowData[rowNumber];
 
                 var sequenceText = document.getElementById("sequenceText");
@@ -127,6 +137,7 @@ export default class RowView extends React.Component {
             spaceBetweenAnnotations,
             annotationVisibility,
             caretPosition,
+            rowToJumpTo,
             rowViewDimensions,
             signals,
             bpsPerRow,
@@ -138,7 +149,7 @@ export default class RowView extends React.Component {
                 return (
                     <div data-row-number={index} key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]} />
+                        <RowItem data-row-number={index} row={rowData[index]} />
                     </div>
                 );
             } else {
@@ -172,7 +183,7 @@ export default class RowView extends React.Component {
                         itemRenderer={renderItem}
                         length={rowData.length}
                         itemSizeEstimator={itemSizeEstimator}
-                        type='simple'
+                        type='variable'
                         />
                 </div>
             </Draggable>
