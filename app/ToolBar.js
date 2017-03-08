@@ -122,7 +122,7 @@ export default class ToolBar extends React.Component {
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'fasta'});
                     }} />
-                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true}
+                <MenuItem key={5} primaryText="Upload from file ..." insetChildren={true}
                     onClick={function () {
                         var element = document.getElementById("uploadFileInput");
                         element.click();

@@ -17,6 +17,9 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
 
     var signals = {
+        /* These should be in alphabetical order and are split into edit-only 
+        and general (read or edit) signals 
+        Unused signals are edited out */
 
         addFeatureModalDisplay: [
             a.addFeatureModalDisplay
@@ -54,6 +57,13 @@ export default function(options) {
                 error: []
             }
         ],
+
+        // copySelection: [ // earavina: not used for now
+        //     a.copySelection, {
+        //         success: [a.setData('clipboardData')],
+        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        //     }
+        // ],
 
         cutsiteClicked: c.selectAnnotation(a),
 
@@ -106,7 +116,7 @@ export default function(options) {
             a.jumpToRow
         ],
 
-        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action?
+        orfClicked: c.selectAnnotation(a),
 
         restrictionEnzymeManagerDisplay: [
             a.restrictionEnzymeManagerDisplay
@@ -127,6 +137,10 @@ export default function(options) {
             a.setSelectionLayer
         ],
 
+        // setCutsiteLabelSelection:[
+        //     a.setCutsiteLabelSelection
+        // ],
+
         setSelectionLayer: [
             a.setSelectionLayer
         ],
@@ -144,7 +158,7 @@ export default function(options) {
         ],
 
         sidebarToggle: [
-            a.sidebarToggle,
+            a.sidebarToggle
         ],
 
         toggleAnnotationDisplay: [
@@ -190,13 +204,13 @@ export default function(options) {
                     },
                     a.insertSequenceData
                 ],
-                error: []
+                error: [a.displayError]
             },
             a.clearSelectionLayer
         ]),
 
         saveChanges: [
-            a.saveToServer,
+            a.saveToServer, 
             a.updateHistory
         ],
 
