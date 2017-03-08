@@ -157,8 +157,7 @@ class RowItem extends React.Component {
 
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
 
-                <div className='veRowItemSequenceContainer'
-                    style={{paddingTop:'10px'}}>
+                <div className='veRowItemSequenceContainer'>
                     <Sequence
                         reverse="false"
                         sequence={sequence}

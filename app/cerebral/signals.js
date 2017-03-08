@@ -50,6 +50,13 @@ export default function(options) {
 
         cutsiteClicked: c.selectAnnotation(a),
 
+        // copySelection: [ // earavina: not used for now
+        //     a.copySelection, {
+        //         success: [a.setData('clipboardData')],
+        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
+        //     }
+        // ],
+
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
                 success: [], //do nothing
@@ -89,9 +96,21 @@ export default function(options) {
             a.handleEditorDragStopped
         ],
 
-        featureClicked: c.selectAnnotation(a),
+        editUserEnzymes: [
+            a.editUserEnzymes
+        ],
 
-        orfClicked: c.selectAnnotation(a),
+        featureClicked: c.selectAnnotation(a),      
+
+        jumpToRow: [
+            a.jumpToRow
+        ],
+
+        orfClicked: c.selectAnnotation(a),          
+
+        restrictionEnzymeManagerDisplay: [
+            a.restrictionEnzymeManagerDisplay
+        ],        
 
         searchSequence: [
             a.searchSequence,
@@ -108,13 +127,17 @@ export default function(options) {
             a.setSelectionLayer
         ],
 
+        // setCutsiteLabelSelection:[
+        //     a.setCutsiteLabelSelection
+        // ],
+
         setSelectionLayer: [
             a.setSelectionLayer
         ],
 
-        setTreeVal: [
-            a.setData
-        ],
+        // setTreeVal:[
+        //     a.setData
+        // ],
 
         showChangeMinOrfSizeDialog: [
             a.showChangeMinOrfSizeDialog
@@ -126,7 +149,7 @@ export default function(options) {
 
         sidebarToggle: [
             a.sidebarToggle
-        ],
+        ],        
 
         toggleAnnotationDisplay: [
             a.toggleAnnotationDisplay
@@ -142,6 +165,10 @@ export default function(options) {
 
     // ///////////////////////////////////
     // edit only actions
+
+        addAnnotations: [
+            a.addAnnotations
+        ],
 
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {

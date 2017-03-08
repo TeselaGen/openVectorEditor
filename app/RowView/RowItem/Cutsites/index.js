@@ -13,7 +13,7 @@ function getXStartAndWidthOfRangeWrtRow(range, row, bpsPerRow, charWidth, sequen
 
     var xStart = normalizePositionByRangeLength(range.start - row.start, sequenceLength);
     xStart = textWidth * (xStart / bpsPerRow) + 20; //move selection right
-    if (xStart > textWidth + 20 || xStart <= 20) {
+    if (xStart > textWidth + 20 || xStart < 20) {
         xStart = null;
     }
     var width = normalizePositionByRangeLength(range.end - range.start, sequenceLength);

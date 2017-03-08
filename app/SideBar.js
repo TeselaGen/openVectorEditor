@@ -48,7 +48,7 @@ export default class SideBar extends React.Component {
     componentWillReceiveProps(newProps) {
         // newProps are passed in from things like switching tabs or clicking on the circular view
         let signals = this.props.signals;
-        if (newProps.selectionLayer.selected) {
+        if (newProps.selectionLayer.selected  && newProps.selectionLayer.id) {
             var found = false;
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
