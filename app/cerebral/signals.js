@@ -21,25 +21,24 @@ export default function(options) {
         and general (read or edit) signals 
         Unused signals are edited out */
 
-        setTreeVal: [
-            a.setData
+        adjustWidth: [
+            a.adjustWidth
         ],
-        // sidebar signals
-        sidebarToggle: [
-            a.sidebarToggle,
+
+        caretMoved: [
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+                path: ['sequenceData', 'circular'],
+                name: 'circular'
+            })
         ],
-        sidebarDisplay: [
-            a.sidebarDisplay
-        ],
+
         changeOrfMin: [
             a.changeOrfMin
         ],
 
-        changeOrfMin:
-            [a.changeOrfMin],
-
-        chooseEnzymeList:
-            [a.showSelectedEnzymeList],
+        chooseEnzymeList: [
+            a.showSelectedEnzymeList
+        ],
 
         // there's weird bracketing here to deal with the async superagent request
         clickLoadFile: [
@@ -49,12 +48,7 @@ export default function(options) {
             }
         ],
 
-        // copySelection: [
-        //     a.copySelection, {
-        //         success: [a.setData('clipboardData')],
-        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
-        //     }
-        // ],
+        cutsiteClicked: c.selectAnnotation(a),
 
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
@@ -74,16 +68,6 @@ export default function(options) {
             }
         ],
 
-        featureClicked: c.selectAnnotation(a),
-        cutsiteClicked: c.selectAnnotation(a),
-        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action? 
-        caretMoved: [
-            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
-                path: ['sequenceData', 'circular'],
-                name: 'circular'
-            })
-        ],
-
         editorDragged: [
             a.handleEditorDragged, {
                 caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
@@ -91,8 +75,9 @@ export default function(options) {
             }
         ],
 
-        editorDragStarted:
-            [a.handleEditorDragStarted],
+        editorDragStarted: [
+            a.handleEditorDragStarted
+        ],
 
         editorDragStopped: [
             [function pause ({input, state, output}) {
@@ -104,9 +89,9 @@ export default function(options) {
             a.handleEditorDragStopped
         ],
 
-        adjustWidth: [
-            a.adjustWidth
-        ],
+        featureClicked: c.selectAnnotation(a),
+
+        orfClicked: c.selectAnnotation(a),
 
         searchSequence: [
             a.searchSequence,
@@ -123,32 +108,37 @@ export default function(options) {
             a.setSelectionLayer
         ],
 
-        // setCutsiteLabelSelection:
-        //     [a.setCutsiteLabelSelection],
+        setSelectionLayer: [
+            a.setSelectionLayer
+        ],
 
-        setSelectionLayer:
-            [a.setSelectionLayer],
+        setTreeVal: [
+            a.setData
+        ],
 
-        // setTreeVal:
-        //     [a.setData],
+        showChangeMinOrfSizeDialog: [
+            a.showChangeMinOrfSizeDialog
+        ],
 
-        showChangeMinOrfSizeDialog:
-            [a.showChangeMinOrfSizeDialog],
+        sidebarDisplay: [
+            a.sidebarDisplay
+        ],
 
-        sidebarDisplay:
-            [a.sidebarDisplay],
+        sidebarToggle: [
+            a.sidebarToggle
+        ],
 
-        sidebarToggle:
-            [a.sidebarToggle],
+        toggleAnnotationDisplay: [
+            a.toggleAnnotationDisplay
+        ],
 
-        toggleAnnotationDisplay:
-            [a.toggleAnnotationDisplay],
+        updateHistory: [
+            a.updateHistory
+        ],
 
-        updateHistory:
-            [a.updateHistory],
-
-        updateUserEnzymes:
-            [a.updateUserEnzymes],
+        updateUserEnzymes: [
+            a.updateUserEnzymes
+        ],
 
     // ///////////////////////////////////
     // edit only actions
@@ -160,8 +150,9 @@ export default function(options) {
             }
         ]),
 
-        clickSaveFile:
-            [a.saveToFile],
+        clickSaveFile: [
+            a.saveToFile
+        ],
 
         deleteFeatures: a.addEditModeOnly([
             a.deleteFeatures
