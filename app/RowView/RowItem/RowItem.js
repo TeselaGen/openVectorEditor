@@ -152,7 +152,8 @@ class RowItem extends React.Component {
         }
 
         return (
-            <div className={"veRowItem", styles.rowItem}>
+            <div id={Math.floor(row.start / bpsPerRow)} // id is row-number
+                className={"veRowItem", styles.rowItem}>
 
                 <div className={styles.margin}>
                     { rowNumber }

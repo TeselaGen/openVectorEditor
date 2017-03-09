@@ -65,58 +65,46 @@ export default class RowView extends React.Component {
         }
     }
 
+    calculatHeight(rowNumber) {
+
+    }
+
     getNearestCursorPositionToMouseEvent(event, callback) {
-        var rowNotFound = true;
         var bpsPerRow = this.props.bpsPerRow;
         var charWidth = this.props.charWidth;
 
-        var visibleRowsContainer = ReactDOM.findDOMNode(this.InfiniteScroller);
-        //loop through all the rendered rows to see if the click event lands in one of them
         var nearestBP = 0;
-        for (var relativeRowNumber = 0; relativeRowNumber < visibleRowsContainer.childNodes.length; relativeRowNumber++) {
-            var rowDomNode = visibleRowsContainer.childNodes[relativeRowNumber];
-            var boundingRowRect = rowDomNode.getBoundingClientRect();
-            if (event.clientY > boundingRowRect.top && event.clientY < boundingRowRect.top + boundingRowRect.height) {
-                //then the click is within this row
-                rowNotFound = false;
-                // var rowNumber = parseInt(rowDomNode.getAttribute('data-row-number'));
-                var rowNumber = relativeRowNumber;
-                var row = this.props.rowData[rowNumber];
-
-                var sequenceText = document.getElementById("sequenceText");
-                // get width of the actual text
-                var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
-                var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
-
-                if (clickXPositionRelativeToRowContainer < 0) {
-                    nearestBP = row.start;
-                } else {
-                    var numberOfBPsInFromRowStart = Math.round(bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
-                    nearestBP = numberOfBPsInFromRowStart + row.start;
-                    if (nearestBP > row.end + 1) {
-                        nearestBP = row.end + 1;
-                    }
-                }
-                break; //break the for loop early because we found the row the click event landed in
-
+        var target = event.target;
+        while (target.className !== 'app-RowView-RowItem-RowItem---rowItem---2HAWf') {
+            target = target.parentElement;
+            if (!target) {
+                return;
             }
-
         }
-        if (rowNotFound) {
-            console.warn('was not able to find the correct row');
-            //return the last bp index in the rendered rows
-            var lastOfRenderedRowsNumber = this.refs.InfiniteScroller.state.visibleRows[this.refs.InfiniteScroller.state.visibleRows.length - 1];
-            var lastOfRenderedRows = this.props.rowData[lastOfRenderedRowsNumber];
-            nearestBP = lastOfRenderedRows.end
+        var rowNumber = parseInt(target.id);
+        var row = this.props.rowData[rowNumber];
 
+        var boundingRowRect = event.target.getBoundingClientRect();
+        var sequenceText = document.getElementById("sequenceText");
+        // get width of the actual text
+        var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+
+        var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
+        if (clickXPositionRelativeToRowContainer < 0) {
+            nearestBP = row.start;
+        } else {
+            var numberOfBPsInFromRowStart = Math.round(bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
+            nearestBP = numberOfBPsInFromRowStart + row.start;
+            if (nearestBP > row.end + 1) {
+                nearestBP = row.end + 1;
+            }
         }
+
         callback({
             shiftHeld: event.shiftKey,
             nearestBP,
             caretGrabbed: event.target.className === "cursor"
-
         });
-
     }
 
     render() {
@@ -146,10 +134,11 @@ export default class RowView extends React.Component {
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
+                // var rowHeight = calculatHeight(index);
                 return (
-                    <div data-row-number={index} key={key}>
+                    <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem data-row-number={index} row={rowData[index]} />
+                        <RowItem row={rowData[index]} />
                     </div>
                 );
             } else {
@@ -182,7 +171,8 @@ export default class RowView extends React.Component {
                         }}
                         itemRenderer={renderItem}
                         length={rowData.length}
-                        itemSizeEstimator={itemSizeEstimator}
+                        itemSizeEstimator={itemSizeEstimator.bind(this)}
+                        // itemSizeGetter={itemSizeGetter.bind(this)}
                         type='variable'
                         />
                 </div>
@@ -192,11 +182,12 @@ export default class RowView extends React.Component {
 }
 
 function itemSizeEstimator(index, cache) {
-    if (cache[index+1]) {
-        return cache[index+1]
-    }
-    if (cache[index-1]) {
-        return cache[index-1]
-    }
-    return 100
+    var row = this.props.rowData[index];
+    var height = 28; // div padding
+    height += 51 // sequence height: 50.67
+    height += 20 // row.start indicator
+    height += this.props.showFeatures ? row.features.length * 24 : 0; // feature height: 24 per feature
+    height += this.props.showOrfs ? row.orfs.length * 20 : 0; // orf height: 20 per orf
+    // need to add cutsites
+    return height
 }
