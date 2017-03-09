@@ -53,13 +53,6 @@ module.exports = {
     tickSpacing: 10,
     topSpacerHeight: 0,
     uppercase: true,
-    // (())
-    addEnzymeButtonValue: 'add',
-    addAllEnzymesButtonValue: 'add all',
-    removeEnzymeButtonValue: 'remove',
-    removeAllEnzymesButtonValue: 'remove all',
-    cancelButtonValue: 'Cancel',
-    applyButtonValue: 'Apply',
     // complex vars
     circularViewDimensions: {
         height: 500,
@@ -77,14 +70,14 @@ module.exports = {
         bpOfFixedCaretPosition: 0,
     },
     history: [],
-    mapViewDimensions: {
-        height: 500,
-        width: 500
-    },
-    rowViewDimensions: {
-        height: 500,
-        width: 500
-    },
+    // mapViewDimensions: {
+    //     height: 500,
+    //     width: 500
+    // },
+    // rowViewDimensions: {
+    //     height: 500,
+    //     width: 500
+    // },
     searchLayers: [],
     selectionLayer: {
         start: -1,
@@ -110,10 +103,10 @@ module.exports = {
     currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
     originalUserEnzymesList: COMMON_ENZYMES, //state of user enzymes list at the moment when RestrictionEnzymeManager was opened
     currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
-    viewportDimensions: {
-        height: 500,
-        width: 500
-    },
+    // viewportDimensions: {
+    //     height: 500,
+    //     width: 500
+    // },
     // derived data - can't alphabetize because of dependencies  :(
     bpsPerRow: 10,
     userEnzymes: deriveData([
@@ -167,15 +160,15 @@ module.exports = {
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
         }
     ]),
-    mapViewCharWidth: deriveData([
-        ['mapViewDimensions',
-            'width'
-        ],
-        ['sequenceLength'],
-        function(mapViewDimensionsWidth, sequenceLength) {
-            return mapViewDimensionsWidth / sequenceLength;
-        }
-    ]),
+    // mapViewCharWidth: deriveData([
+    //     ['mapViewDimensions',
+    //         'width'
+    //     ],
+    //     ['sequenceLength'],
+    //     function(mapViewDimensionsWidth, sequenceLength) {
+    //         return mapViewDimensionsWidth / sequenceLength;
+    //     }
+    // ]),
     selectedSequenceString: deriveData([
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
@@ -220,26 +213,26 @@ module.exports = {
             return prepareRowData(sequenceData, bpsPerRow);
         }
     ]),
-    mapViewRowData: deriveData([
-        ['combinedSequenceData'],
-        ['sequenceLength'],
-        function(sequenceData, sequenceLength) {
-            return prepareRowData(sequenceData, sequenceLength);
-        }
-    ]),
+    // mapViewRowData: deriveData([
+    //     ['combinedSequenceData'],
+    //     ['sequenceLength'],
+    //     function(sequenceData, sequenceLength) {
+    //         return prepareRowData(sequenceData, sequenceLength);
+    //     }
+    // ]),
     circularViewData: deriveData([
         ['combinedSequenceData'],
         function(combinedSequenceData) {
             return prepareCircularViewData(combinedSequenceData);
         }
     ]),
-    circularAndLinearTickSpacing: deriveData([
-        ['sequenceLength'],
-        function(sequenceLength) {
-            var a = Math.ceil(sequenceLength / 100) * 10;
-            return a
-        }
-    ]),
+    // circularAndLinearTickSpacing: deriveData([
+    //     ['sequenceLength'],
+    //     function(sequenceLength) {
+    //         var a = Math.ceil(sequenceLength / 100) * 10;
+    //         return a
+    //     }
+    // ]),
     totalRows: deriveData([
         ['rowData'],
         function(rowData) {

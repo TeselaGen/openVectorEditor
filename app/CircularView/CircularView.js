@@ -11,12 +11,11 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 import getPositionFromAngle from 've-range-utils/getPositionFromAngle';
-// old imports
 import getRangeAngles from 've-range-utils/getRangeAngles';
 import Sector from 'paths-js/sector';
 
 function noop(argument) {
-    //console.log('noop!');
+
 }
 
 function toDegrees(radians) {
@@ -27,7 +26,6 @@ function toDegrees(radians) {
     annotationHeight: ['annotationHeight'],
     caretPosition: ['caretPosition'],
     charWidth: ['charWidth'],
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     circularViewData: ['circularViewData'],
     circularViewDimensions: ['circularViewDimensions'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
