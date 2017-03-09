@@ -13,8 +13,9 @@ var enzymeList = require('ve-sequence-utils/enzymeList.json');
 // here's the enzyme lists from old VE so we can pick and choose / merge them
 const COMMON_ENZYMES = require('../constants/common-enzymes');
 const FAST_DIGEST = require('../constants/fermentas-fast-enzymes');
-const BERKELEY_BB = ["EcoRI", "BglII", "BamHI", "XhoI"];
-const MIT_BB = ["EcoRI", "XbaI", "SpeI", "PstI"];
+const REBASE = require('../constants/rebase-enzymes');
+const BERKELEY_BB = require('../constants/berkeley-biobrick-enzymes');
+const MIT_BB = require('../constants/mit-biobrick-enzymes');
 
 module.exports = {
     // simple vars
@@ -105,6 +106,7 @@ module.exports = {
     berkeleyBBEnzymes: BERKELEY_BB,
     MITBBEnzymes: MIT_BB,
     fastDigestEnzymes: FAST_DIGEST,
+    rebaseEnzymes: REBASE,
     currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
     originalUserEnzymesList: COMMON_ENZYMES, //state of user enzymes list at the moment when RestrictionEnzymeManager was opened
     currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
