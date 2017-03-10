@@ -14,24 +14,16 @@ var RowView = require('./RowView/RowView');
 var combokeys;
 
 @Cerebral({
-    bpsPerRow: ['bpsPerRow'],
-    embedded: ['embedded'],
-    sequenceLength: ['sequenceLength'],
-    totalRows: ['totalRows'],
-    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
-    selectedSequenceString: ['selectedSequenceString'],
-    caretPosition: ['caretPosition'],
-    sequenceData: ['sequenceData'],
-    selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
+    cutsites: ['cutsites'],
+    embedded: ['embedded'],
+    orfData: ['orfData'],
+    selectedSequenceString: ['selectedSequenceString'],
+    sequenceData: ['sequenceData'],
     showCircular: ['showCircular'],
-    showLinear: ['showLinear'],
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
-    cutsitesByName: ['cutsitesByName'],
-    cutsites: ['cutsites'],
-    orfData: ['orfData'],
 })
 
 export default class SequenceEditor extends React.Component {
@@ -140,18 +132,16 @@ export default class SequenceEditor extends React.Component {
 
     render() {
         var {
+            clipboardData,
+            cutsites,
             embedded,
+            orfData,
             selectedSequenceString,
             sequenceData,
             showCircular,
             showRow,
             showSidebar,
-            sidebarType,
-            cutsites,
-            orfData,
-            showRestrictionEnzymeManager,
-            readOnly,
-            clipboardData
+            sidebarType
         } = this.props;
 
         var table;
@@ -170,8 +160,6 @@ export default class SequenceEditor extends React.Component {
         }
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
-
-        // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
 
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {

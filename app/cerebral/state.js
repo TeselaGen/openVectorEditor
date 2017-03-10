@@ -22,16 +22,27 @@ module.exports = {
     allowPartialAnnotationsOnCopy: false,
     annotationHeight: 4,
     averageRowHeight: 100,
+    berkeleyBBEnzymes: BERKELEY_BB,
     bottomSpacerHeight: 0,
+    bpsPerRow: 10,
     caretPosition: 0,
     charHeight: 15,
     charWidth: 25,
     clipboardData: null,
+    commonEnzymes: COMMON_ENZYMES,
+    currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
+    currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
     embedded: true,
+    fastDigestEnzymes: FAST_DIGEST,
+    history: [],
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
+    MITBBEnzymes: MIT_BB,
+    originalUserEnzymesList: COMMON_ENZYMES, //state of user enzymes list at the moment opened
     readOnly: true,
+    rebaseEnzymes: REBASE,
     rowToJumpTo: null,
+    searchLayers: [],
     sequenceHeight: 20,
     showAddFeatureModal: false,
     showAxis: true,
@@ -53,6 +64,8 @@ module.exports = {
     tickSpacing: 10,
     topSpacerHeight: 0,
     uppercase: true,
+    userEnzymeList: COMMON_ENZYMES, //user enzymes applied to the view
+
     // complex vars
     circularViewDimensions: {
         height: 500,
@@ -69,16 +82,6 @@ module.exports = {
         initiatedByGrabbingCaret: false,
         bpOfFixedCaretPosition: 0,
     },
-    history: [],
-    // mapViewDimensions: {
-    //     height: 500,
-    //     width: 500
-    // },
-    // rowViewDimensions: {
-    //     height: 500,
-    //     width: 500
-    // },
-    searchLayers: [],
     selectionLayer: {
         start: -1,
         end: -1,
@@ -93,22 +96,8 @@ module.exports = {
        parts: [],
        circular: false
     },
-    // (()) why so many vars
-    userEnzymeList: COMMON_ENZYMES, //user enzymes applied to the view
-    commonEnzymes: COMMON_ENZYMES,
-    berkeleyBBEnzymes: BERKELEY_BB,
-    MITBBEnzymes: MIT_BB,
-    fastDigestEnzymes: FAST_DIGEST,
-    rebaseEnzymes: REBASE,
-    currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
-    originalUserEnzymesList: COMMON_ENZYMES, //state of user enzymes list at the moment when RestrictionEnzymeManager was opened
-    currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
-    // viewportDimensions: {
-    //     height: 500,
-    //     width: 500
-    // },
+
     // derived data - can't alphabetize because of dependencies  :(
-    bpsPerRow: 10,
     userEnzymes: deriveData([
         ['userEnzymeList'],
         function(userEnzymeList) {
@@ -160,15 +149,6 @@ module.exports = {
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
         }
     ]),
-    // mapViewCharWidth: deriveData([
-    //     ['mapViewDimensions',
-    //         'width'
-    //     ],
-    //     ['sequenceLength'],
-    //     function(mapViewDimensionsWidth, sequenceLength) {
-    //         return mapViewDimensionsWidth / sequenceLength;
-    //     }
-    // ]),
     selectedSequenceString: deriveData([
         ['sequenceData', 'sequence'],
         ['selectionLayer'],
@@ -213,26 +193,12 @@ module.exports = {
             return prepareRowData(sequenceData, bpsPerRow);
         }
     ]),
-    // mapViewRowData: deriveData([
-    //     ['combinedSequenceData'],
-    //     ['sequenceLength'],
-    //     function(sequenceData, sequenceLength) {
-    //         return prepareRowData(sequenceData, sequenceLength);
-    //     }
-    // ]),
     circularViewData: deriveData([
         ['combinedSequenceData'],
         function(combinedSequenceData) {
             return prepareCircularViewData(combinedSequenceData);
         }
     ]),
-    // circularAndLinearTickSpacing: deriveData([
-    //     ['sequenceLength'],
-    //     function(sequenceLength) {
-    //         var a = Math.ceil(sequenceLength / 100) * 10;
-    //         return a
-    //     }
-    // ]),
     totalRows: deriveData([
         ['rowData'],
         function(rowData) {
