@@ -32,7 +32,9 @@ export default class EnzymesGroups extends React.Component {
         this.setState({value: value});
         switch (value.text) {
             case 'REBASE':
-                this.props.signals.chooseEnzymeList({selectedList: this.props.rebaseEnzymes});
+                // REBASE currently is loaded correctly but is so huge it's slowing the app to a crawl
+                // disabling until we have a fix
+                // this.props.signals.chooseEnzymeList({selectedList: this.props.rebaseEnzymes});
                 break;
             case 'Berkeley BioBricks':
                 this.props.signals.chooseEnzymeList({selectedList: this.props.berkeleyBBEnzymes});

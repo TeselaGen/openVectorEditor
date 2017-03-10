@@ -19,7 +19,7 @@ export default function(options) {
     var signals = {
         /* These should be in alphabetical order and are split into edit-only 
         and general (read or edit) signals 
-        Unused signals are edited out */
+        Unused or broken signals are edited out */
 
         addFeatureModalDisplay: [
             a.addFeatureModalDisplay
