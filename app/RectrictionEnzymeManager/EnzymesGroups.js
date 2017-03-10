@@ -34,7 +34,7 @@ export default class EnzymesGroups extends React.Component {
             case 'REBASE':
                 // REBASE currently is loaded correctly but is so huge it's slowing the app to a crawl
                 // disabling until we have a fix
-                // this.props.signals.chooseEnzymeList({selectedList: this.props.rebaseEnzymes});
+                this.props.signals.chooseEnzymeList({selectedList: this.props.rebaseEnzymes});
                 break;
             case 'Berkeley BioBricks':
                 this.props.signals.chooseEnzymeList({selectedList: this.props.berkeleyBBEnzymes});
@@ -63,7 +63,7 @@ export default class EnzymesGroups extends React.Component {
 
         let menuItems = [
             { payload: '1', text: 'Common' },
-            { payload: '2', text: 'REBASE' },
+            // { payload: '2', text: 'REBASE' },
             { payload: '3', text: 'Berkeley BioBricks' },
             { payload: '4', text: 'MIT BioBricks' },
             { payload: '5', text: 'Fermentas Fast Digest' },
