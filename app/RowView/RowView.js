@@ -57,16 +57,12 @@ export default class RowView extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (this.props.rowToJumpTo !== newProps.rowToJumpTo && newProps.selectionLayer.id !== -1) {
+        if (parseInt(newProps.rowToJumpTo) && newProps.selectionLayer.id !== -1) {
             var range = this.InfiniteScroller.getVisibleRange();
             if (newProps.rowToJumpTo < range[0] || newProps.rowToJumpTo >= range[1]) {
                 this.InfiniteScroller.scrollTo(newProps.rowToJumpTo);
             }
         }
-    }
-
-    calculatHeight(rowNumber) {
-
     }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
@@ -134,7 +130,6 @@ export default class RowView extends React.Component {
 
         var renderItem = (index,key) =>{
             if (rowData[index]) {
-                // var rowHeight = calculatHeight(index);
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
@@ -167,12 +162,12 @@ export default class RowView extends React.Component {
                     <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
                     <ReactList
                         ref={c => {
-                            this.InfiniteScroller= c
+                            this.InfiniteScroller = c
                         }}
+                        initialIndex={0}
                         itemRenderer={renderItem}
                         length={rowData.length}
                         itemSizeEstimator={itemSizeEstimator.bind(this)}
-                        // itemSizeGetter={itemSizeGetter.bind(this)}
                         type='variable'
                         />
                 </div>
