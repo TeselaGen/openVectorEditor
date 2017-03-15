@@ -15,23 +15,25 @@ var combokeys;
 
 @Cerebral({
     bpsPerRow: ['bpsPerRow'],
-    embedded: ['embedded'],
-    sequenceLength: ['sequenceLength'],
-    totalRows: ['totalRows'],
-    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
-    selectedSequenceString: ['selectedSequenceString'],
     caretPosition: ['caretPosition'],
-    sequenceData: ['sequenceData'],
-    selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
+    cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
+    embedded: ['embedded'],
+    history: ['history'],
+    historyIdx: ['historyIdx'],
+    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
+    orfData: ['orfData'],
+    selectedSequenceString: ['selectedSequenceString'],
+    selectionLayer: ['selectionLayer'],
+    sequenceData: ['sequenceData'],
+    sequenceLength: ['sequenceLength'],
     showCircular: ['showCircular'],
     showLinear: ['showLinear'],
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
-    cutsitesByName: ['cutsitesByName'],
-    cutsites: ['cutsites'],
-    orfData: ['orfData'],
+    totalRows: ['totalRows'],
 })
 
 export default class SequenceEditor extends React.Component {
@@ -44,6 +46,7 @@ export default class SequenceEditor extends React.Component {
             selectInverse,
         } = this.props.signals;
         var self = this;
+        this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
 
@@ -100,7 +103,7 @@ export default class SequenceEditor extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
-            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
+            this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
     }
 
