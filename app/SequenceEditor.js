@@ -44,9 +44,11 @@ export default class SequenceEditor extends React.Component {
             backspacePressed,
             selectAll,
             selectInverse,
+            updateHistory
         } = this.props.signals;
+
         var self = this;
-        this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
+        updateHistory({ newHistory: this.props.sequenceData });
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
 
@@ -97,6 +99,16 @@ export default class SequenceEditor extends React.Component {
         });
         combokeys.bindGlobal('command+ctrl+i', function(event) { // Handle shortcut
             selectInverse();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+z', function(event) { // Handle shortcut
+            updateHistory({ idx: -1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+y', function(event) { // Handle shortcut
+            updateHistory({ idx: 1 });
+            event.preventDefault();
             event.stopPropagation();
         });
     }
