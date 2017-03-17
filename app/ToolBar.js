@@ -39,6 +39,8 @@ import styles from './tool-bar.css'
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
     history: ['history'],
+    historyIdx: ['historyIdx'],
+    savedIdx: ['savedIdx']
 })
 
 export default class ToolBar extends React.Component {
@@ -63,7 +65,9 @@ export default class ToolBar extends React.Component {
             showRow,
             showSidebar,
             signals,
-            history
+            history,
+            historyIdx,
+            savedIdx
         } = this.props;
 
         var dialog = (
@@ -186,8 +190,7 @@ export default class ToolBar extends React.Component {
         };
 
         var saveButtonStatus = "saved";
-        var mostRecentHistory = history[history.length - 1]; //last element
-        if (mostRecentHistory && !mostRecentHistory.saved) {
+        if (historyIdx !== savedIdx) {
             saveButtonStatus = "unsaved";
         }
 

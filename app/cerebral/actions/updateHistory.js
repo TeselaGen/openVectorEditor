@@ -1,34 +1,40 @@
 var assign = require('lodash/object/assign');
 
-export default function updateHistory({input: { newHistory }, state, output}) {
-    var maxHistoryToKeep = 24;
+export default function updateHistory({input: { newHistory, idx }, state, output}) {
+    var maxHistoryToKeep = 100;
+    let history = state.get('history');
+    let historyIdx = state.get('historyIdx') + 1;
+    let undo = state.get('undo');
 
     //new unsaved changes made
-    if (newHistory) {
-        let hist = assign({}, newHistory);
-        hist.saved = false;
-        state.push('history', hist);
+    if (newHistory && !undo) {
 
-        if (state.get('history').length > maxHistoryToKeep) {
+        // fork history and toss old fork if we're not at the last element in the array
+        if (historyIdx < history.length) {
+            for (var i = history.length; i > historyIdx; i--) {
+                state.pop('history');
+            }
+        }
+
+        // only keep finite amt of history
+        if (history.length >= maxHistoryToKeep) {
             state.shift('history');
+            state.set('savedIdx', state.get('savedIdx') - 1);
+            historyIdx -= 1;
         }
+
+        state.push('history', newHistory);
+        state.set('historyIdx', historyIdx);
+
+    } else if (newHistory && undo) {
+        state.set('undo', false);
+
+    // undo & redo, idx will be either -1 or 1 respectively
+    } else if (idx) {
+        let newIdx = state.get('historyIdx') + idx;
+        state.set('sequenceData', history[newIdx]);
+        state.set('historyIdx', newIdx);
+        state.set('undo', true);
     }
 
-    // changes are saved to server
-    else {
-        let temp = [];
-        while ( state.get('history').length > 1 ) {
-            let hist = state.shift('history');
-            temp.push(hist);
-        }
-
-        let mostRecent = state.shift('history');
-        let lastHist = assign({}, mostRecent);
-        lastHist.saved = true;
-        temp.push(lastHist);
-
-        while ( temp.length > 0 ) {
-            state.push('history', temp.shift());
-        }
-    }
 }
