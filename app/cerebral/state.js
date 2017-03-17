@@ -35,6 +35,7 @@ module.exports = {
     embedded: true,
     fastDigestEnzymes: FAST_DIGEST,
     history: [],
+    historyIdx: -1,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     MITBBEnzymes: MIT_BB,
@@ -42,6 +43,7 @@ module.exports = {
     readOnly: true,
     rebaseEnzymes: REBASE,
     rowToJumpTo: null,
+    savedIdx: 0,
     searchLayers: [],
     sequenceHeight: 20,
     showAddFeatureModal: false,
@@ -63,6 +65,7 @@ module.exports = {
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
     topSpacerHeight: 0,
+    undo: false,
     uppercase: true,
     userEnzymeList: COMMON_ENZYMES, //user enzymes applied to the view
 

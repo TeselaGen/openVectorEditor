@@ -48,7 +48,7 @@ export default function(options) {
 
         chooseEnzymeList: [
             a.showSelectedEnzymeList
-        ],  
+        ],
 
         // there's weird bracketing here to deal with the async superagent request
         clickLoadFile: [
@@ -147,7 +147,7 @@ export default function(options) {
 
         setTreeVal: [
             a.setData
-        ],        
+        ],
 
         showChangeMinOrfSizeDialog: [
             a.showChangeMinOrfSizeDialog
@@ -210,8 +210,7 @@ export default function(options) {
         ]),
 
         saveChanges: [
-            a.saveToServer, 
-            a.updateHistory
+            a.saveToServer,
         ],
 
         sequenceDataInserted: a.addEditModeOnly([

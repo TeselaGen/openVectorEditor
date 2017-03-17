@@ -14,16 +14,25 @@ var RowView = require('./RowView/RowView');
 var combokeys;
 
 @Cerebral({
+    bpsPerRow: ['bpsPerRow'],
+    caretPosition: ['caretPosition'],
     clipboardData: ['clipboardData'],
     cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
     embedded: ['embedded'],
+    history: ['history'],
+    historyIdx: ['historyIdx'],
+    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
     orfData: ['orfData'],
     selectedSequenceString: ['selectedSequenceString'],
+    selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
+    sequenceLength: ['sequenceLength'],
     showCircular: ['showCircular'],
     showRow: ['showRow'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
+    totalRows: ['totalRows']
 })
 
 export default class SequenceEditor extends React.Component {
@@ -34,8 +43,11 @@ export default class SequenceEditor extends React.Component {
             backspacePressed,
             selectAll,
             selectInverse,
+            updateHistory
         } = this.props.signals;
+
         var self = this;
+        updateHistory({ newHistory: this.props.sequenceData });
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
 
@@ -88,11 +100,21 @@ export default class SequenceEditor extends React.Component {
             selectInverse();
             event.stopPropagation();
         });
+        combokeys.bindGlobal('command+z', function(event) { // Handle shortcut
+            updateHistory({ idx: -1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+y', function(event) { // Handle shortcut
+            updateHistory({ idx: 1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
-            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
+            this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
     }
 
