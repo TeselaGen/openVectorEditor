@@ -13,10 +13,24 @@ function searchSequence({input: { searchString }, state, output}) {
         cursorAtEnd: true
     });
 
+    var dnaCompliment = {
+        'a': 't',
+        'c': 'g',
+        'g': 'c',
+        't': 'a'
+    };
+
+    var reverseSearchString = "";
+    for (let i=0; i<searchString.length; i++) {
+        reverseSearchString = dnaCompliment[searchString[i]] + reverseSearchString;
+    }
+
     var sequence = state.get(['sequenceData', 'sequence']);
     var match;
     var layers = [];
-    var regex = new RegExp(searchString, 'gi');
+
+    // searches forward and reverse sequence
+    var regex = new RegExp(searchString + '|' + reverseSearchString, 'gi');
 
     do {
         match = regex.exec(sequence);
