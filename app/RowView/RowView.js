@@ -42,28 +42,27 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
 export default class RowView extends React.Component {
 
     componentDidMount() {
-        this.state = {
-            rowWidth: rowView.clientWidth
-        }
-
         var draggable = document.getElementById("draggable");
         let signals = this.props.signals;
-        let charWidth = this.props.charWidth;
         signals.adjustWidth({width: draggable.clientWidth});
         window.onresize = function() {
             signals.adjustWidth();
-            this.setState({rowWidth: rowView.clientWidth});
         }.bind(this)
     }
 
     componentWillReceiveProps(newProps) {
-        if (parseInt(newProps.rowToJumpTo) && newProps.selectionLayer.id !== -1) {
+        if (parseInt(newProps.rowToJumpTo) && newProps.selectionLayer.id !== -1 && this.InfiniteScroller) {
             var range = this.InfiniteScroller.getVisibleRange();
             if (newProps.rowToJumpTo < range[0] || newProps.rowToJumpTo >= range[1]) {
                 this.InfiniteScroller.scrollTo(newProps.rowToJumpTo);
             }
         }
     }
+
+    // shouldComponentUpdate() {
+    //     // this.InfiniteScroller.scrollTo(0);
+    //     return true;
+    // }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
         var bpsPerRow = this.props.bpsPerRow;
@@ -117,6 +116,7 @@ export default class RowView extends React.Component {
             showCutsites,
             showFeatures,
             showOrfs,
+            showRow,
             annotationHeight,
             spaceBetweenAnnotations,
             annotationVisibility,
@@ -140,49 +140,63 @@ export default class RowView extends React.Component {
                 return null
             }
         }
+        if (showRow) {
+            return (
+                <Draggable
+                    bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+                    onDrag={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}
+                    }
+                    onStart={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}
+                    }
+                    onStop={signals.editorDragStopped}
+                    >
+                    <div id="draggable"
+                        style={{display: "block"}}
+                        onClick={(event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
+                        }}
+                        ref="rowView"
+                        className={styles.RowView + " veRowView"}
+                        >
+                        <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
+                        <ReactList
+                            ref={c => {
+                                this.InfiniteScroller = c
+                            }}
+                            itemRenderer={renderItem}
+                            length={rowData.length}
+                            itemSizeEstimator={itemSizeEstimator.bind(this)}
+                            type='variable'
+                            />
+                    </div>
+                </Draggable>
+            );
+        }
 
         return (
-            <Draggable
-                bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-                onDrag={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}
-                }
-                onStart={(event) => {
-                    this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}
-                }
-                onStop={signals.editorDragStopped}
-                >
-                <div id="draggable"
-                    onClick={(event) => {
-                        this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
-                    }}
-                    ref="rowView"
-                    className={styles.RowView + " veRowView"}
-                    >
-                    <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
-                    <ReactList
-                        ref={c => {
-                            this.InfiniteScroller = c
-                        }}
-                        initialIndex={0}
-                        itemRenderer={renderItem}
-                        length={rowData.length}
-                        itemSizeEstimator={itemSizeEstimator.bind(this)}
-                        type='variable'
-                        />
-                </div>
-            </Draggable>
+            <div style={{display: "none"}}></div>
         );
     }
 }
 
+// function itemSizeEstimator(index, cache) {
+//     var row = this.props.rowData[index];
+//     var height = 28; // div padding
+//     height += 51 // sequence height: 50.67
+//     height += 20 // row.start indicator
+//     height += this.props.showFeatures ? row.features.length * 24 : 0; // feature height: 24 per feature
+//     height += this.props.showOrfs ? row.orfs.length * 20 : 0; // orf height: 20 per orf
+//     // need to add cutsites
+//     return height
+// }
 function itemSizeEstimator(index, cache) {
-    var row = this.props.rowData[index];
-    var height = 28; // div padding
-    height += 51 // sequence height: 50.67
-    height += 20 // row.start indicator
-    height += this.props.showFeatures ? row.features.length * 24 : 0; // feature height: 24 per feature
-    height += this.props.showOrfs ? row.orfs.length * 20 : 0; // orf height: 20 per orf
-    // need to add cutsites
-    return height
+    if (cache[index+1]) {
+        return cache[index+1]
+    }
+    if (cache[index-1]) {
+        return cache[index-1]
+    }
+    return 100
 }

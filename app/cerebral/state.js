@@ -51,6 +51,7 @@ module.exports = {
     showRestrictionEnzymeManager: false,
     showReverseSequence: true,
     showRow: true,
+    showSearchBar: false,
     showSequence: true,
     showSidebar: false,
     showTranslations: false,

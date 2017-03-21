@@ -149,6 +149,15 @@ export default function(options) {
         toggleAnnotationDisplay: [
             a.toggleAnnotationDisplay
         ],
+        toggleSearchBar: [
+            a.toggleSearchBar
+        ],
+        toggleShowCircular: [
+            a.toggleShowCircular
+        ],
+        toggleShowRow: [
+            a.toggleShowRow
+        ],
         updateHistory: [
             a.updateHistory
         ],

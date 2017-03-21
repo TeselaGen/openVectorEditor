@@ -22,10 +22,10 @@ import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
 import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
 import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import TextField from 'material-ui/lib/text-field';
 import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
 import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
 
+import Search from './Search.js'
 import styles from './tool-bar.css'
 
 @Cerebral({
@@ -42,14 +42,6 @@ import styles from './tool-bar.css'
 })
 
 export default class ToolBar extends React.Component {
-
-    search() {
-        this.props.signals.searchSequence({ searchString: this.refs.searchField.getValue() });
-    }
-
-    clearSearch() {
-        this.props.signals.searchSequence({ searchString: "" });
-    }
 
     render() {
         var {
@@ -69,14 +61,15 @@ export default class ToolBar extends React.Component {
         var dialog = (
             <RestrictionEnzymeManager />
         );
-
         // show/hide views buttons that only appear in embedded mode
         var embeddedControls = (
             <div style={{display: 'inline-block'}}>
                 <IconButton tooltip="Display Sequence View"
                     onTouchTap={function() {
-                        document.getElementById("circularView").setAttribute("style", "display: none");
-                        document.getElementById("rowView").setAttribute("style", "display: block");
+                        // document.getElementById("circularView").setAttribute("style", "display: none");
+                        // document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.toggleShowCircular({ showCircular: false });
+                        signals.toggleShowRow({ showRow: true });
                         signals.adjustWidth();
                     }}
                     >
@@ -85,8 +78,10 @@ export default class ToolBar extends React.Component {
                 <IconButton tooltip="Display Side-by-side View"
                     disabled = { showSidebar }
                     onTouchTap={function() {
-                        document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: block");
+                        // document.getElementById("circularView").setAttribute("style", "display: block");
+                        // document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.toggleShowCircular({ showCircular: true });
+                        signals.toggleShowRow({ showRow: true });
                         signals.adjustWidth();
                     }}
                     >
@@ -94,8 +89,11 @@ export default class ToolBar extends React.Component {
                 </IconButton>
                 <IconButton tooltip="Display Circular View"
                     onTouchTap={function() {
-                        document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: none");
+                        // document.getElementById("circularView").setAttribute("style", "display: block");
+                        // document.getElementById("rowView").setAttribute("style", "display: none");
+                        signals.toggleShowCircular({ showCircular: true });
+                        signals.toggleShowRow({ showRow: false });
+
                     }}
                     >
                     <CircularIcon />
@@ -214,10 +212,16 @@ export default class ToolBar extends React.Component {
                         >
                         <PrintIcon />
                     </IconButton>
-                    <IconButton tooltip="Search" onClick={this.search.bind(this)}>
+
+                    <IconButton
+                        tooltip="Search"
+                        onTouchTap={function() {
+                            signals.toggleSearchBar();
+                        }}>
                         <SearchIcon />
                     </IconButton>
-                    <TextField ref="searchField" hintText="search sequence" />
+
+                    <Search/>
 
                     { toggleFeatures }
 

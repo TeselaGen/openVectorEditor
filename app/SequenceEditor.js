@@ -21,12 +21,14 @@ var combokeys;
     newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
     selectedSequenceString: ['selectedSequenceString'],
     caretPosition: ['caretPosition'],
-    sequenceData: ['sequenceData'],
+    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
+    sequenceData: ['sequenceData'],
     clipboardData: ['clipboardData'],
     showCircular: ['showCircular'],
     showLinear: ['showLinear'],
     showRow: ['showRow'],
+    showSearchBar: ['showSearchBar'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
     cutsitesByName: ['cutsitesByName'],
@@ -145,6 +147,7 @@ export default class SequenceEditor extends React.Component {
             sequenceData,
             showCircular,
             showRow,
+            showSearchBar,
             showSidebar,
             sidebarType,
             cutsites,
@@ -166,9 +169,9 @@ export default class SequenceEditor extends React.Component {
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         if (oneViewOnly) {
-            circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
+            circularStyle = Object.assign(circularStyle, {margin: '0 0 0 25%'})
             // rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
-            console.log("added margin to circular")
+            // console.log("added margin to circular")
         }
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
@@ -199,6 +202,11 @@ export default class SequenceEditor extends React.Component {
             );
         }
 
+        var toolbarStyle = '0px';
+        if (showSearchBar) {
+            toolbarStyle = '60px';
+        }
+
         return (
             <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
@@ -207,7 +215,7 @@ export default class SequenceEditor extends React.Component {
                     onPaste={this.handlePaste.bind(this)}
                 />
 
-                <div className={styles.head}>
+                <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />
                 </div>
 
@@ -217,10 +225,10 @@ export default class SequenceEditor extends React.Component {
                     </div>
 
                     <div className={styles.circularViewSlot} id="circularView" style={ circularStyle }>
-                        <CircularView />
+                        <CircularView showCircular={showCircular}/>
                     </div>
                     <div className={styles.rowViewSlot} id="rowView" style={ rowStyle }>
-                        <RowView sequenceData={sequenceData} />
+                        <RowView showRow={showRow} sequenceData={sequenceData} />
                     </div>
                 </div>
 

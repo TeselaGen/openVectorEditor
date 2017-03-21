@@ -1,12 +1,14 @@
 module.exports = function sidebarToggle({input, state, output}) {
     var currentSidebar = state.get('showSidebar');
-    // hide the rowview when the sidebar pops out
-    var currentRow = state.get('showRow');
 
-    state.set('showRow', !currentRow);
+    // hide the rowview if viewing side-by-side when sidebar opens
+    if (!currentSidebar && state.get('showRow') && state.get('showCircular')) {
+        state.set('showRow', false);
+    }
+
     state.set('showSidebar', !currentSidebar);
     state.set('sidebarType', 'Features'); // features are default but making sure
-    
+
     var sidebarCSS = {
         "transform": ["scaleX(1)", "scaleX(-1)"],
         "filter": ["", "FlipH"],
