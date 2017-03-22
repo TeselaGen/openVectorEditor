@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
 import TextField from 'material-ui/lib/text-field';
+import SelectField from 'material-ui/lib/select-field';
 import IconButton from 'material-ui/lib/icon-button';
 import ArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 import ArrowLeft from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
@@ -10,7 +11,8 @@ import ArrowLeft from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
 @Cerebral({
     searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
-    showSearchBar: ['showSearchBar']
+    showSearchBar: ['showSearchBar'],
+    searchString: ['searchString']
 })
 
 export default class Search extends React.Component {
@@ -19,13 +21,43 @@ export default class Search extends React.Component {
         super(props);
 
         this.state = {
-            searchIdx: 1
+            searchIdx: 1,
+            dna: "DNA",
+            literal: "Literal"
         };
     }
 
     search() {
         this.setState({ searchIdx: 1 });
-        this.props.signals.searchSequence({ searchString: this.refs.searchField.getValue() });
+        this.props.signals.searchSequence({
+            searchString: this.refs.searchField.getValue(),
+            dna: this.state.dna,
+            literal: this.state.literal
+        });
+    }
+
+    selectField(event) {
+        var dna = this.state.dna;
+        var literal = this.state.literal;
+        var newValue = event.target.firstChild.data;
+
+        if (newValue === "DNA" || newValue === "Amino Acids") {
+            dna = newValue;
+            this.setState({ dna: newValue });
+        } else {
+            literal = newValue;
+            this.setState({ literal: newValue });
+        }
+
+        // rerun search if search params are changed
+        // state is updating concurrently, so I can't use this.state in this fn call
+        if (this.refs.searchField.getValue().length > 0) {
+            this.props.signals.searchSequence({
+                searchString: this.refs.searchField.getValue(),
+                dna: dna,
+                literal: literal
+            });
+        }
     }
 
     prevResult() {
@@ -53,7 +85,8 @@ export default class Search extends React.Component {
             searchLayers,
             selectionLayer,
             signals,
-            showSearchBar
+            showSearchBar,
+            searchString
         } = this.props;
 
         if (!showSearchBar) {
@@ -63,7 +96,7 @@ export default class Search extends React.Component {
         var navigateSearchResults;
         if (searchLayers.length > 0) {
             navigateSearchResults = (
-                <div style={{display: 'inline-block'}}>
+                <div style={{display:'inline-block', marginRight:'10px', width:'150px', verticalAlign:'middle'}}>
 
                     <div style={{display: 'inline-block', fontStyle: 'italic', fontSize: '9pt'}}>
                         {this.state.searchIdx} of {searchLayers.length}
@@ -88,21 +121,47 @@ export default class Search extends React.Component {
                 </div>
             );
         } else {
-            navigateSearchResults = (<div></div>);
+            navigateSearchResults = (<div style={{display:'inline-block', marginRight:'10px'}}></div>);
         }
+
+        var dnaDropdown = (
+            <SelectField
+                style={{display:'inline-block', marginRight:'10px', width:'130px', verticalAlign:'middle'}}
+                id={"dnaDropdown"}
+                onChange={this.selectField.bind(this)}
+                menuItems={[
+                    { payload: "DNA", text: <div>DNA</div> },
+                    { payload: "Amino Acids", text: <div>Amino Acids</div> }
+                ]}
+            />
+        );
+
+        var literalDropdown = (
+            <SelectField
+                style={{display:'inline-block', marginRight:'10px', width:'130px', verticalAlign:'middle'}}
+                id={"literalDropdown"}
+                onChange={this.selectField.bind(this)}
+                menuItems={[
+                    { payload: "Literal", text: <div>Literal</div> },
+                    { payload: "Ambiguous", text: <div>Ambiguous</div> }
+                ]}
+            />
+        );
 
         return (
             <div
                 ref="searchBar"
-                style={{position: 'absolute', zIndex: '10'}}>
+                style={{position:'absolute', zIndex:'10', width:'1000px'}}>
                 <TextField ref="searchField" hintText="search sequence"
-                    style={{width: '150px'}}
+                    style={{marginRight:'10px', width:'150px', verticalAlign:'middle'}}
                     onChange={this.search.bind(this)}
                     errorText={
-                        searchLayers.length === 0 && "no results"
+                        searchLayers.length === 0 && searchString.length > 0 && "no results"
                     }
                     />
                 { navigateSearchResults }
+                { dnaDropdown }
+                { literalDropdown }
             </div>
         );
 

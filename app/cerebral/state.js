@@ -38,6 +38,7 @@ module.exports = {
     minimumOrfSize: 300,
     readOnly: true,
     rowToJumpTo: 0,
+    searchString: "",
     sequenceHeight: 20,
     showAddFeatureModal: false,
     showAxis: true,

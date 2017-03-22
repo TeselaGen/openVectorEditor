@@ -1,4 +1,5 @@
-function searchSequence({input: { searchString }, state, output}) {
+function searchSequence({input: { searchString, dna, literal }, state, output}) {
+    state.set('searchString', searchString)
     if (searchString.length === 0) {
         output({ searchLayers: [] });
         return;

@@ -110,7 +110,7 @@ class RowItem extends React.Component {
             orfs= []
         } = row
 
-        var reverseSequence = getComplementSequenceString(sequence)
+        var reverseSequence = getComplementSequenceString(sequence);
 
         if (!row) {
             return null;

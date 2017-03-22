@@ -176,6 +176,10 @@ export default class SequenceEditor extends React.Component {
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
 
+        var borderStyle = 'none';
+        if (showSearchBar) {
+            borderStyle = '1px solid rgb(232,232,232)';
+        }
         // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
 
         // this should probably move to the sidebar file
@@ -219,7 +223,7 @@ export default class SequenceEditor extends React.Component {
                     <ToolBar />
                 </div>
 
-                <div className={styles.content} id="allViews">
+                <div className={styles.content} id="allViews" style={{borderTop: borderStyle}}>
                     <div className={styles.sideBarSlot} id="sideBar" style={ sidebarStyle }>
                       {table}
                     </div>
