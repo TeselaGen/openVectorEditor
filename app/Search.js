@@ -124,6 +124,7 @@ export default class Search extends React.Component {
             navigateSearchResults = (<div style={{display:'inline-block', marginRight:'10px'}}></div>);
         }
 
+        // currently amino acids does nothing!
         var dnaDropdown = (
             <SelectField
                 style={{display:'inline-block', marginRight:'10px', width:'130px', verticalAlign:'middle'}}
