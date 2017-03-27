@@ -50,13 +50,19 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
             maxYOffset = annotationCopy.yOffset;
         }
 
+        function onClick(event) {
+            event.stopPropagation();
+            signals.featureClicked({ annotation: annotation, view: "circular" });
+        }
+
         // add label info to labels
         labels[annotation.id] ={
             annotationCenterAngle: centerAngle,
             annotationCenterRadius: annotationRadius,
             text: annotation.name,
             id: annotation.id,
-            className: 'veFeatureLabel'
+            className: 'veFeatureLabel',
+            onClick,
         };
 
         svgGroup.push(

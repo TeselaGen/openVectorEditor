@@ -33,9 +33,10 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     showOrfs: ['showOrfs'],
     showAxis: ['showAxis'],
     showCaret: ['showCaret'],
-    showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
+    showSequence: ['showSequence'],
+    showSidebar: ['showSidebar'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
@@ -56,6 +57,9 @@ export default class RowView extends React.Component {
             if (newProps.rowToJumpTo < range[0] || newProps.rowToJumpTo >= range[1]) {
                 this.InfiniteScroller.scrollTo(newProps.rowToJumpTo);
             }
+        }
+        if (newProps.showSidebar !== this.props.showSidebar) {
+            this.props.signals.adjustWidth();
         }
     }
 
@@ -81,8 +85,11 @@ export default class RowView extends React.Component {
 
         var boundingRowRect = event.target.getBoundingClientRect();
         var sequenceText = document.getElementById("sequenceText");
-        // get width of the actual text
-        var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        if (sequenceText && sequenceText.firstChild) {
+            var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        } else {
+            var textWidth = 20;
+        }
 
         var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
         if (clickXPositionRelativeToRowContainer < 0) {

@@ -73,7 +73,7 @@ export default class Orf extends React.Component {
                 key={'Orfs' + annotation.id}
                 onClick={ function (e) {
                             e.stopPropagation()
-                            signals.orfClicked({annotation: annotation})
+                            signals.orfClicked({ annotation: annotation, view: "row" })
                         }}
                 className={`veRowViewOrf clickable frame${frame}`}
                 strokeWidth="2"

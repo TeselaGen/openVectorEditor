@@ -49,38 +49,31 @@ export default class SideBar extends React.Component {
         // newProps are passed in from things like switching tabs or clicking on the circular view
         let signals = this.props.signals;
         if (newProps.selectionLayer.selected && newProps.selectionLayer.id) {
-            var found = false;
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
 
+                // open sidebar to correct tab
+                var type = 'Features';
+                if (annotation.numberOfCuts) {
+                    type = 'Cutsites';
+                } else if (annotation.internalStartCodonIndices) {
+                    type = 'Orfs';
+                }
+                signals.sidebarDisplay({ type: type });
+
+                // highlighting is stupid if the annotation's type isn't even being shown on the display
+                signals.toggleAnnotationDisplay({ type: type, value: true });
+
                 if (annotation.id === newProps.selectionLayer.id) {
-                    found = true;
-                    if (newProps.annotationType === 'Features') {
-                        // highlighting is stupid if features aren't even being shown on the display
-                        signals.toggleAnnotationDisplay({type: 'Features', value: true});
+                    if (type === 'Features') {
                         this.setState({selectedFeatures: [annotation.id]});
                     }
-                    if (newProps.annotationType === 'Cutsites') {
-                        // highlighting is stupid if cutsites aren't even being shown on the display
-                        signals.toggleAnnotationDisplay({type: 'Cutsites', value: true});
+                    if (type === 'Cutsites') {
                         this.setState({selectedCutsites: [annotation.id]});
                     }
-                    if (newProps.annotationType === 'Orfs') {
-                        // highlighting is stupid if orfs aren't even being shown on the display
-                        signals.toggleAnnotationDisplay({type: 'Orfs', value: true});
+                    if (type === 'Orfs') {
                         this.setState({selectedOrfs: [annotation.id]});
                     }
-                }
-            }
-
-            // if feature/orf wasn't found on current tab, jump to the next tab
-            if (!found) {
-                if (newProps.annotationType === 'Features') {
-                    signals.sidebarDisplay({ type: 'Cutsites' });
-                } else if (newProps.annotationType === 'Cutsites') {
-                    signals.sidebarDisplay({ type: 'Orfs' });
-                } else {
-                    signals.sidebarDisplay({ type: 'Features' });
                 }
             }
 

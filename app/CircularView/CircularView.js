@@ -158,7 +158,8 @@ export default class CircularView extends React.Component {
                 cutsites,
                 radius: radius - 4,
                 annotationHeight,
-                sequenceLength
+                sequenceLength,
+                signals
             })
             //update the radius, labels, and svg
             radius+= cutsiteResults.height

@@ -148,7 +148,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         <path
                             onClick={ function (e) {
                                 e.stopPropagation()
-                                signals.orfClicked({annotation: annotation})
+                                signals.orfClicked({ annotation: annotation, view: "circular" })
                             }}
                             d={ path.print() }
                             fill="none"

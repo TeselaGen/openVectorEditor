@@ -11,8 +11,8 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
     each(cutsites,function(annotation, key) {
         index++;
         function onClick(event) {
-            // cutsiteClicked({event, annotation, namespace})
-            event.stopPropagation()
+            event.stopPropagation();
+            signals.cutsiteClicked({ annotation: annotation, view: "circular" });
         }
         if (!(annotation.downstreamTopSnip > -1)) {
             debugger; //we need this to be present

@@ -5,7 +5,7 @@ export default function StyleFeature({children, color, annotation, signals}) {
         <g
             onClick={ function (e) {
                 e.stopPropagation()
-                signals.featureClicked({annotation: annotation}) 
+                signals.featureClicked({ annotation: annotation, view: "circular" }) 
             }}
             className='ve-feature'
             strokeWidth="1"
