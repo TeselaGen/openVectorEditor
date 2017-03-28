@@ -11,14 +11,12 @@ const DropDownMenu = require('material-ui/lib/drop-down-menu');
 
 @Cerebral({
     commonEnzymes: ['commonEnzymes'],
-    // REBASEEnzymes: ['REBASEEnzymes'],
+    rebaseEnzymes: ['rebaseEnzymes'],
     berkeleyBBEnzymes: ['berkeleyBBEnzymes'],
     MITBBEnzymes: ['MITBBEnzymes'],
     fastDigestEnzymes: ['fastDigestEnzymes'],
     currentEnzymesList: ['currentEnzymesList'],
-    currentUserEnzymesList: ['currentUserEnzymesList'],
-    addEnzymeButtonValue: ['addEnzymeButtonValue'],
-    addAllEnzymesButtonValue: ['addAllEnzymesButtonValue'],
+    currentUserEnzymesList: ['currentUserEnzymesList']
 })
 
 export default class EnzymesGroups extends React.Component {
@@ -34,7 +32,9 @@ export default class EnzymesGroups extends React.Component {
         this.setState({value: value});
         switch (value.text) {
             case 'REBASE':
-                /**/
+                // REBASE currently is loaded correctly but is so huge it's slowing the app to a crawl
+                // disabling until we have a fix
+                this.props.signals.chooseEnzymeList({selectedList: this.props.rebaseEnzymes});
                 break;
             case 'Berkeley BioBricks':
                 this.props.signals.chooseEnzymeList({selectedList: this.props.berkeleyBBEnzymes});
@@ -58,14 +58,12 @@ export default class EnzymesGroups extends React.Component {
         var {
             currentEnzymesList,
             currentUserEnzymesList,
-            addEnzymeButtonValue,
-            addAllEnzymesButtonValue,
-            signals,
+            signals
         } = this.props;
 
         let menuItems = [
             { payload: '1', text: 'Common' },
-            { payload: '2', text: 'REBASE' },
+            // { payload: '2', text: 'REBASE' },
             { payload: '3', text: 'Berkeley BioBricks' },
             { payload: '4', text: 'MIT BioBricks' },
             { payload: '5', text: 'Fermentas Fast Digest' },
@@ -83,7 +81,7 @@ export default class EnzymesGroups extends React.Component {
                     underlineStyle={{opacity: 0}}
                     iconStyle={{color: "#000000"}}
                     labelStyle={{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
-                />
+                    />
                 <br />
                 <List className={styles.managerListLeft}>
                     {currentEnzymesList.map((enzyme, index) => (
@@ -96,13 +94,13 @@ export default class EnzymesGroups extends React.Component {
                                     onCheck={
                                         function () {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                            enzyme: enzyme, action: addEnzymeButtonValue})
+                                            enzyme: enzyme, action: "add"})
                                         }
                                     }
-                                />
+                                    />
                             }
                             primaryText={enzyme}
-                        />
+                            />
                     ))}
                 </List>
                 <br />
@@ -111,9 +109,9 @@ export default class EnzymesGroups extends React.Component {
                     secondary={true}
                     onTouchTap={function () {
                         signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                            currentEnzymesList: currentEnzymesList, action: addAllEnzymesButtonValue});
+                            currentEnzymesList: currentEnzymesList, action: "add all"});
                     }}
-                />
+                    />
             </div>
         );
     }

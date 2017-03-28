@@ -1,28 +1,3 @@
-/* structure of row object
-   note start of sequence is 0
-
-
-obj
-    - cutsites[]
-        - length: number
-        Object:
-        - annotation [object of type]
-        - enclosingRangeType : string
-        - end : number
-        - id : ?
-        - start : number
-        - yOffset : number
-    - end : number
-    - features[]
-    - orfs []
-    - parts [] // unused by us
-    - rowNumber : number
-    - sequence : string
-    - start : number
-    - translations [] // also unused right now
-*/
-
-// import PassThrough from '../../utils/PassThrough'
 import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString'
 import React from 'react';
 import Draggable from 'react-draggable'
@@ -30,10 +5,7 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 import { columnizeString, elementWidth, calculateRowLength } from '../utils';
 import SelectionLayer from './SelectionLayer';
 import _Sequence from './Sequence'
-// import LineageLines from './LineageLines'
-// import _Axis from './Axis'
 import _Orfs from './Orfs'
-// import _Translations from './Translations'
 import _Features from './Features'
 import _CutsiteLabels from './Cutsites/CutsiteLabels'
 import _Cutsites from './Cutsites'
@@ -50,7 +22,6 @@ function noop() {
     bpsPerRow: ['bpsPerRow'],
     charWidth: ['charWidth'],
     caretPosition: ['caretPosition'],
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
     cutsitesByName: ['cutsitesByName'],

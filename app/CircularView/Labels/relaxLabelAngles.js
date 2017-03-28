@@ -4,6 +4,8 @@ import polarToSpecialCartesian from '../utils/polarToSpecialCartesian';
 var alpha = .035; //the larger the alpha, the fewer loops through relax necessary, but too large and things are spaced unevenly
 var relaxCounter = 0;
 
+// {{}} clean up this file
+
 export default function relaxLabelAngles(labelPoints, spacing) {
   var mutableLabelPoints = clone(labelPoints)
   if (labelPoints.length > 100) {

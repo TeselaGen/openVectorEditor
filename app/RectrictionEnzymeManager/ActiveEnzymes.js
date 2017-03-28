@@ -10,9 +10,7 @@ import styles from './manager-list.scss';
 
 @Cerebral({
     userEnzymeList: ['userEnzymeList'],
-    currentUserEnzymesList: ['currentUserEnzymesList'],
-    removeEnzymeButtonValue: ['removeEnzymeButtonValue'],
-    removeAllEnzymesButtonValue: ['removeAllEnzymesButtonValue'],
+    currentUserEnzymesList: ['currentUserEnzymesList']
 })
 
 export default class ActiveEnzymes extends React.Component {
@@ -28,8 +26,6 @@ export default class ActiveEnzymes extends React.Component {
     render() {
         var {
             currentUserEnzymesList,
-            removeEnzymeButtonValue,
-            removeAllEnzymesButtonValue,
             signals,
         } = this.props;
 
@@ -48,14 +44,14 @@ export default class ActiveEnzymes extends React.Component {
                                     onTouchTap={
                                         function() {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                                enzyme: enzyme, action: removeEnzymeButtonValue});
+                                                enzyme: enzyme, action: "remove"});
                                         }
                                     }
-                                >
+                                    >
                                     <CloseIcon />
                                 </IconButton>
                             }
-                        />
+                            />
                     ))}
                 </List>
                 <br />
@@ -63,9 +59,9 @@ export default class ActiveEnzymes extends React.Component {
                     label="Remove all"
                     primary={true}
                     onTouchTap={function () {
-                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: removeAllEnzymesButtonValue});
+                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: "remove all"});
                     }}
-                />
+                    />
             </div>
         );
     }

@@ -15,25 +15,26 @@ var combokeys;
 
 @Cerebral({
     bpsPerRow: ['bpsPerRow'],
-    embedded: ['embedded'],
-    sequenceLength: ['sequenceLength'],
-    totalRows: ['totalRows'],
-    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
-    selectedSequenceString: ['selectedSequenceString'],
     caretPosition: ['caretPosition'],
+    clipboardData: ['clipboardData'],
+    cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
+    embedded: ['embedded'],
+    history: ['history'],
+    historyIdx: ['historyIdx'],
+    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
+    orfData: ['orfData'],
+    selectedSequenceString: ['selectedSequenceString'],
     searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
-    clipboardData: ['clipboardData'],
+    sequenceLength: ['sequenceLength'],
     showCircular: ['showCircular'],
-    showLinear: ['showLinear'],
     showRow: ['showRow'],
     showSearchBar: ['showSearchBar'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
-    cutsitesByName: ['cutsitesByName'],
-    cutsites: ['cutsites'],
-    orfData: ['orfData'],
+    totalRows: ['totalRows']
 })
 
 export default class SequenceEditor extends React.Component {
@@ -44,8 +45,11 @@ export default class SequenceEditor extends React.Component {
             backspacePressed,
             selectAll,
             selectInverse,
+            updateHistory
         } = this.props.signals;
+
         var self = this;
+        updateHistory({ newHistory: this.props.sequenceData });
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
 
@@ -98,11 +102,21 @@ export default class SequenceEditor extends React.Component {
             selectInverse();
             event.stopPropagation();
         });
+        combokeys.bindGlobal('command+z', function(event) { // Handle shortcut
+            updateHistory({ idx: -1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+y', function(event) { // Handle shortcut
+            updateHistory({ idx: 1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
-            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
+            this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
     }
 
@@ -142,19 +156,17 @@ export default class SequenceEditor extends React.Component {
 
     render() {
         var {
+            clipboardData,
+            cutsites,
             embedded,
+            orfData,
             selectedSequenceString,
             sequenceData,
             showCircular,
             showRow,
             showSearchBar,
             showSidebar,
-            sidebarType,
-            cutsites,
-            orfData,
-            showRestrictionEnzymeManager,
-            readOnly,
-            clipboardData
+            sidebarType
         } = this.props;
 
         var table;
@@ -169,19 +181,16 @@ export default class SequenceEditor extends React.Component {
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         if (oneViewOnly) {
-            circularStyle = Object.assign(circularStyle, {margin: '0 0 0 25%'})
-            // rowStyle = Object.assign(rowStyle, {margin: '0 15%'})
-            // console.log("added margin to circular")
+            circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
         }
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
+
 
         var borderStyle = 'none';
         if (showSearchBar) {
             borderStyle = '1px solid rgb(232,232,232)';
         }
-        // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
-
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (

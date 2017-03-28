@@ -23,4 +23,6 @@ export default function saveToServer({input, state, output}) {
             }
         }
     );
+
+    state.set('savedIdx', state.get('historyIdx')); // update savedIdx
 }

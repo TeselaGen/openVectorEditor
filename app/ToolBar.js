@@ -39,6 +39,8 @@ import styles from './tool-bar.css'
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
     history: ['history'],
+    historyIdx: ['historyIdx'],
+    savedIdx: ['savedIdx']
 })
 
 export default class ToolBar extends React.Component {
@@ -55,7 +57,9 @@ export default class ToolBar extends React.Component {
             showRow,
             showSidebar,
             signals,
-            history
+            history,
+            historyIdx,
+            savedIdx
         } = this.props;
 
         var dialog = (
@@ -120,7 +124,7 @@ export default class ToolBar extends React.Component {
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'fasta'});
                     }} />
-                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true}
+                <MenuItem key={5} primaryText="Upload from file ..." insetChildren={true}
                     onClick={function () {
                         var element = document.getElementById("uploadFileInput");
                         element.click();
@@ -184,8 +188,7 @@ export default class ToolBar extends React.Component {
         };
 
         var saveButtonStatus = "saved";
-        var mostRecentHistory = history[history.length - 1]; //last element
-        if (mostRecentHistory && !mostRecentHistory.saved) {
+        if (historyIdx !== savedIdx) {
             saveButtonStatus = "unsaved";
         }
 

@@ -17,20 +17,35 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
 
     var signals = {
+        /* These should be in alphabetical order and are split into edit-only 
+        and general (read or edit) signals 
+        Unused or broken signals are edited out */
 
-        setTreeVal: [
-            a.setData
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
         ],
-        // sidebar signals
-        sidebarToggle: [
-            a.sidebarToggle,
+
+        adjustWidth: [
+            a.adjustWidth
         ],
-        sidebarDisplay: [
-            a.sidebarDisplay
+
+        caretMoved: [
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+                path: ['sequenceData', 'circular'],
+                name: 'circular'
+            }),
+
+            a.moveCaret,
+            a.handleCaretMoved, {
+                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
+                selectionUpdated: [a.setSelectionLayer],
+            }
         ],
+
         changeOrfMin: [
             a.changeOrfMin
         ],
+
         chooseEnzymeList: [
             a.showSelectedEnzymeList
         ],
@@ -50,6 +65,8 @@ export default function(options) {
         //     }
         // ],
 
+        cutsiteClicked: c.selectAnnotation(a),
+
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
                 success: [], //do nothing
@@ -65,30 +82,6 @@ export default function(options) {
                         shiftNotHeld: [a.clearSelectionLayer, a.updateOutput('nearestBP', 'caretPosition'), a.setCaretPosition],
                     }
                 ]
-            }
-        ],
-
-        featureClicked: c.selectAnnotation(a),
-        cutsiteClicked: c.selectAnnotation(a),
-        orfClicked: c.selectAnnotation(a), // why are there three different signals for this action?
-
-        addFeatureModalDisplay: [
-            a.addFeatureModalDisplay
-        ],
-        adjustWidth: [
-            a.adjustWidth
-        ],
-
-        caretMoved: [
-            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
-                path: ['sequenceData', 'circular'],
-                name: 'circular'
-            }),
-
-            a.moveCaret,
-            a.handleCaretMoved, {
-                caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
-                selectionUpdated: [a.setSelectionLayer],
             }
         ],
 
@@ -116,39 +109,62 @@ export default function(options) {
         editUserEnzymes: [
             a.editUserEnzymes
         ],
+
+        featureClicked: c.selectAnnotation(a),
+
         jumpToRow: [
             a.jumpToRow
         ],
+
+        orfClicked: c.selectAnnotation(a),
+
         restrictionEnzymeManagerDisplay: [
             a.restrictionEnzymeManagerDisplay
         ],
+
         searchSequence: [
             a.searchSequence,
             a.updateSearchLayers
         ],
+
         selectAll: [
             a.selectAll,
             a.setSelectionLayer
         ],
+
         selectInverse: [
             a.selectInverse,
             a.setSelectionLayer
         ],
+
         // setCutsiteLabelSelection:[
         //     a.setCutsiteLabelSelection
         // ],
+
         setSelectionLayer: [
             a.setSelectionLayer
         ],
-        // setTreeVal:[
-        //     a.setData
-        // ],
+
+        setTreeVal: [
+            a.setData
+        ],
+
         showChangeMinOrfSizeDialog: [
             a.showChangeMinOrfSizeDialog
         ],
+
+        sidebarDisplay: [
+            a.sidebarDisplay
+        ],
+
+        sidebarToggle: [
+            a.sidebarToggle
+        ],
+
         toggleAnnotationDisplay: [
             a.toggleAnnotationDisplay
         ],
+
         toggleSearchBar: [
             a.toggleSearchBar
         ],
@@ -158,9 +174,11 @@ export default function(options) {
         toggleShowRow: [
             a.toggleShowRow
         ],
+
         updateHistory: [
             a.updateHistory
         ],
+
         updateUserEnzymes: [
             a.updateUserEnzymes
         ],
@@ -196,14 +214,13 @@ export default function(options) {
                     },
                     a.insertSequenceData
                 ],
-                error: []
+                error: [a.displayError]
             },
             a.clearSelectionLayer
         ]),
 
         saveChanges: [
             a.saveToServer,
-            a.updateHistory
         ],
 
         sequenceDataInserted: a.addEditModeOnly([
@@ -218,7 +235,6 @@ export default function(options) {
         updateFeature: a.addEditModeOnly([
             a.updateFeature
         ])
-
     }
 
     return assign({}, signals, options.signals)

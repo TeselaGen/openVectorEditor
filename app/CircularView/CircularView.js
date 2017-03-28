@@ -11,12 +11,11 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import getAngleForPositionMidpoint from './getAngleForPositionMidpoint';
 import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
 import getPositionFromAngle from 've-range-utils/getPositionFromAngle';
-// old imports
 import getRangeAngles from 've-range-utils/getRangeAngles';
 import Sector from 'paths-js/sector';
 
 function noop(argument) {
-    //console.log('noop!');
+
 }
 
 function toDegrees(radians) {
@@ -27,7 +26,6 @@ function toDegrees(radians) {
     annotationHeight: ['annotationHeight'],
     caretPosition: ['caretPosition'],
     charWidth: ['charWidth'],
-    circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     circularViewData: ['circularViewData'],
     circularViewDimensions: ['circularViewDimensions'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
@@ -51,21 +49,10 @@ function toDegrees(radians) {
 
 export default class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
-
-
         if (!event.clientX) {
             return;
         }
 
-        // var id;
-        // if (event.target.parentNode) {
-        //     var target = event.target;
-        //     while (!target.parentNode.id) {
-        //         target = target.parentNode;
-        //     }
-        //     id = target.parentNode.id;
-        // }
-        // console.log(id);
         var boundingRect = this.refs.circularView.getBoundingClientRect()
         //get relative click positions
         var clickX = (event.clientX - boundingRect.left - boundingRect.width/2)
@@ -176,6 +163,7 @@ export default class CircularView extends React.Component {
                 signals
             })
             radius+= orfResults.height
+            // orfs don't get labels since they don't have names
             annotationsSvgs.push(orfResults.component)
         }
 
