@@ -34,6 +34,7 @@ module.exports = {
     charWidth: 25,
     clipboardData: null,
     embedded: true,
+    highlightAllSearchResults: false,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
     readOnly: true,

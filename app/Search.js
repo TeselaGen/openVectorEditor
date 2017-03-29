@@ -3,16 +3,17 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
+import Toggle from 'material-ui/lib/toggle';
 import IconButton from 'material-ui/lib/icon-button';
 import ArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 import ArrowLeft from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
-// import Cancel from 'material-ui/lib/svg-icons/navigation/cancel';
+import Cancel from 'material-ui/lib/svg-icons/navigation/cancel';
 
 @Cerebral({
+    highlightAllSearchResults: ['highlightAllSearchResults'],
     searchLayers: ['searchLayers'],
-    selectionLayer: ['selectionLayer'],
     showSearchBar: ['showSearchBar'],
-    searchString: ['searchString']
+    searchString: ['searchString'],
 })
 
 export default class Search extends React.Component {
@@ -29,11 +30,19 @@ export default class Search extends React.Component {
 
     search() {
         this.setState({ searchIdx: 1 });
+        this.props.signals.highlightAllSearchResults({ value: "no" });
+        var toggle = document.getElementById("toggleHighlightAll");
+        // debugger
+        toggle.checked = false;
         this.props.signals.searchSequence({
             searchString: this.refs.searchField.getValue(),
             dna: this.state.dna,
             literal: this.state.literal
         });
+    }
+
+    highlightAll() {
+        this.props.signals.highlightAllSearchResults();
     }
 
     selectField(event) {
@@ -67,7 +76,9 @@ export default class Search extends React.Component {
             prevIdx = searchLayers.length;
         }
         this.setState({ searchIdx: prevIdx });
-        this.props.signals.setSelectionLayer({ selectionLayer: searchLayers[prevIdx-1] }) // convert 1-indexed to 0-indexed
+        var row = Math.floor((searchLayers[prevIdx-1].start-1)/(this.props.bpsPerRow));
+        row = row < 0 ? 0 : row;
+        this.props.signals.jumpToRow({rowToJumpTo: row});
     }
 
     nextResult() {
@@ -77,16 +88,18 @@ export default class Search extends React.Component {
             nextIdx = 1;
         }
         this.setState({ searchIdx: nextIdx });
-        this.props.signals.setSelectionLayer({ selectionLayer: searchLayers[nextIdx-1] }) // convert 1-indexed to 0-indexed
+        var row = Math.floor((searchLayers[nextIdx-1].start-1)/(this.props.bpsPerRow));
+        row = row < 0 ? 0 : row;
+        this.props.signals.jumpToRow({rowToJumpTo: row});
     }
 
     render() {
         var {
             searchLayers,
-            selectionLayer,
             signals,
             showSearchBar,
-            searchString
+            searchString,
+            highlightAllSearchResults
         } = this.props;
 
         if (!showSearchBar) {
@@ -149,6 +162,16 @@ export default class Search extends React.Component {
             />
         );
 
+        var highlightAll = (
+            <Toggle
+                id="toggleHighlightAll"
+                name="toggleHighlightAll"
+                label="highlight all"
+                defaultToggled={false}
+                onToggle={this.highlightAll.bind(this)}
+                />
+        );
+
         return (
             <div
                 ref="searchBar"
@@ -163,6 +186,7 @@ export default class Search extends React.Component {
                 { navigateSearchResults }
                 { dnaDropdown }
                 { literalDropdown }
+                { highlightAll }
             </div>
         );
 

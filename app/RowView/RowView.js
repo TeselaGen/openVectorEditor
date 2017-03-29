@@ -19,10 +19,12 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
-    rowToJumpTo: ['rowToJumpTo'],
+    highlightAllSearchResults: ['highlightAllSearchResults'],
     orfs: ['orfData'],
     rowData: ['rowData'],
+    rowToJumpTo: ['rowToJumpTo'],
     rowViewDimensions: ['rowViewDimensions'],
+    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceLength: ['sequenceLength'],
@@ -111,12 +113,14 @@ export default class RowView extends React.Component {
 
     render() {
         var {
+            searchLayers,
             sequenceData,
             sequenceLength,
             selectionLayer,
             sequenceName,
             cutsites,
             cutsitesByName,
+            highlightAllSearchResults,
             orfs,
             showAxis,
             showCaret,
@@ -135,12 +139,25 @@ export default class RowView extends React.Component {
             rowData
         } = this.props;
 
+        var searchRows = {};
+        if (highlightAllSearchResults) {
+            searchLayers.forEach(function(result) {
+                result.rows.forEach(function(row) {
+                    if (searchRows[row]) {
+                        searchRows[row].push(result);
+                    } else {
+                        searchRows[row] = [result];
+                    }
+                });
+            });
+        }
+
         var renderItem = (index,key) =>{
             if (rowData[index]) {
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]} />
+                        <RowItem row={rowData[index]} searchResults={searchRows[index]}/>
                     </div>
                 );
             } else {

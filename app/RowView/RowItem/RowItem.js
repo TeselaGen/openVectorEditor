@@ -81,6 +81,7 @@ class RowItem extends React.Component {
         var {
             selectionLayer={start: -1, end: -1},
             searchLayers=[],
+            searchResults,
             sequenceData,
             annotationHeight,
             tickSpacing,
@@ -89,7 +90,6 @@ class RowItem extends React.Component {
             sequenceHeight,
             spaceBetweenAnnotations,
             width,
-            additionalSelectionLayers=[],
             caretPosition,
             sequenceLength,
             row,
@@ -151,6 +151,17 @@ class RowItem extends React.Component {
             );
         }
 
+        var searchHighlight = [];
+        if (searchResults && searchResults.length > 0) {
+            searchResults.forEach(function(result) {
+                searchHighlight.push(
+                    <Highlight start={result.start} end={result.end} rowStart={row.start} rowEnd={row.end} color={"yellow"}/>
+                );
+            });
+        } else {
+            searchHighlight = <div></div>;
+        }
+
         return (
             <div id={Math.floor(row.start / bpsPerRow)} // id is row-number
                 className={"veRowItem", styles.rowItem}>
@@ -182,6 +193,7 @@ class RowItem extends React.Component {
                 }
 
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
+                { searchHighlight }
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence

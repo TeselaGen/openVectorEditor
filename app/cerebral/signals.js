@@ -116,6 +116,9 @@ export default function(options) {
         editUserEnzymes: [
             a.editUserEnzymes
         ],
+        highlightAllSearchResults: [
+            a.highlightAllSearchResults
+        ],
         jumpToRow: [
             a.jumpToRow
         ],
