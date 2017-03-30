@@ -4,9 +4,16 @@ import request from 'superagent/lib/client';
 import {toOpenVectorEditor} from '../app/schemaConvert';
 
 var query = location.search;
+var id;
+if(!query) { // we're in vectorviewer
+    id = location.pathname;
+    id = id.replace(/\/entry\//, "");
+} else {
+    id = query.match(/entryId=[\d]+/) + "";
+    id = id.replace(/entryId=/, "");
+}
+
 var cookie = document.cookie;
-var id = query.match(/entryId=[\d]+/) + "";
-id = id.replace(/entryId=/, "");
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
 sid = sid.replace(/sessionId=|%22/g, "");
 
