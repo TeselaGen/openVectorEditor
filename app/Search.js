@@ -24,7 +24,7 @@ export default class Search extends React.Component {
         this.state = {
             searchIdx: 0,
             dna: "DNA",
-            literal: "Literal"
+            literal: "Literal",
         };
     }
 
@@ -42,15 +42,19 @@ export default class Search extends React.Component {
             row = row <= 0 ? "0" : row;
             this.props.signals.jumpToRow({rowToJumpTo: row});
         }
+        // if (this.refs.searchField && this.refs.searchField.props.errorText) {
+        //
+        // }
     }
 
     search() {
-        if (this.refs.searchField.getValue().length < 4) {
+        var string = this.refs.searchField.getValue();
+        if (string.length < 3) {
             return;
         }
         this.setState({ searchIdx: 1 });
         this.props.signals.searchSequence({
-            searchString: this.refs.searchField.getValue(),
+            searchString: string,
             dna: this.state.dna,
             literal: this.state.literal
         });
@@ -71,7 +75,8 @@ export default class Search extends React.Component {
 
         // rerun search if search params are changed
         // state is updating concurrently, so I can't use this.state in this fn call
-        if (this.refs.searchField.getValue().length > 0) {
+        if (this.refs.searchField.getValue().length > 2) {
+            this.setState({ searchIdx: 1 });
             this.props.signals.searchSequence({
                 searchString: this.refs.searchField.getValue(),
                 dna: dna,
@@ -141,7 +146,7 @@ export default class Search extends React.Component {
             navigateSearchResults = (<div style={{display:'inline-block', marginRight:'10px'}}></div>);
         }
 
-        // currently amino acids does nothing!
+        // i have no idea if the amino acids search is working like the biologists expect it to...
         var dnaDropdown = (
             <SelectField
                 style={{display:'inline-block', marginRight:'10px', width:'130px', verticalAlign:'middle'}}
