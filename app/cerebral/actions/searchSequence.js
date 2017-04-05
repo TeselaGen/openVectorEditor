@@ -8,15 +8,6 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         return;
     }
 
-    // clear any selected layer
-    state.set('selectionLayer', {
-        start: -1,
-        end: -1,
-        id: -1,
-        selected: false,
-        cursorAtEnd: true
-    });
-
     var dnaComplement = {
         'a':'t', 'c':'g', 'g':'c', 't':'a',
         'y':'r', 'r':'y', 'k':'m', 'm':'k',
@@ -34,39 +25,67 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         'x':'(a|c|g|t)', 'n':'(a|c|g|t)'
     };
 
-    // var aminoAcids = {
-    //     'ala':'gc(a|c|g|t)',
-    //     'arg':'(cg(a|c|g|t))|(ag(a|g))',
-    //     'asn':'aa(c|t)',
-    //     'asp':'ga(c|t)',
-    //     'cys':'tg(c|t)',
-    //     'gln':'ca(a|g)',
-    //     'glu':'ga(a|g)',
-    //     'gly':'gg(a|c|g|t)',
-    //     'his':'ca(c|t)',
-    //     'ile':'at(a|c|t)',
-    //     'leu':'(tt(a|g))|(ct(a|c|g|t))',
-    //     'lys':'aa(a|g)',
-    //     'met':'atg',
-    //     'phe':'tt(c|t)',
-    //     'pro':'cc(a|c|g|t)',
-    //     's':'(ta(a|g))|(tga)',
-    //     'ser':'(tc(a|c|g|t))|(ag(c|t))',
-    //     'thr':'ac(a|c|g|t)',
-    //     'trp':'tgg',
-    //     'tyr':'ta(c|t)',
-    //     'val':'gt(a|c|g|t)'
-    // };
+    var aminoAcids = {
+        'a':'gc(a|c|g|t)',
+        'r':'((cg(a|c|g|t))|(ag(a|g)))',
+        'n':'aa(c|t)',
+        'd':'ga(c|t)',
+        'c':'tg(c|t)',
+        'q':'ca(a|g)',
+        'e':'ga(a|g)',
+        'g':'gg(a|c|g|t)',
+        'h':'ca(c|t)',
+        'i':'at(a|c|t)',
+        'l':'((tt(a|g))|(ct(a|c|g|t)))',
+        'k':'aa(a|g)',
+        'm':'atg',
+        'f':'tt(c|t)',
+        'p':'cc(a|c|g|t)',
+        'u':'((ta(a|g))|(tga))', // stop
+        'o':'((ta(a|g))|(tga))', // also stop
+        's':'((tc(a|c|g|t))|(ag(c|t)))',
+        't':'ac(a|c|g|t)',
+        'w':'tgg',
+        'y':'ta(c|t)',
+        'v':'gt(a|c|g|t)'
+    };
+
+    var ambiguousAminoAcids = {
+        'b':'(g|a)a(c|t)',
+        'z':'(c|g)a(a|g)',
+        'j':'((at(a|c|t))|(tt(a|g))|(ct(a|c|g|t)))'
+    };
 
     var sequence = state.get(['sequenceData', 'sequence']);
-
     // wrap around origin
     var sequenceExtended = sequence + sequence.slice(0, searchString.length-1);
 
     var match;
     var layers = [];
 
-    if (literal === "Ambiguous") {
+    if (dna === "Amino Acids") {
+        var string = "";
+        for (let i=0; i<searchString.length; i++) {
+            if (!aminoAcids[searchString[i]]) {
+                string += searchString[i];
+            } else {
+                string += aminoAcids[searchString[i]];
+            }
+        }
+        searchString = string;
+    }
+
+    if (dna === "Amino Acids" && literal === "Ambiguous") {
+        var string = "";
+        for (let i=0; i<searchString.length; i++) {
+            if (!ambiguousAminoAcids[searchString[i]]) {
+                string += searchString[i];
+            } else {
+                string += ambiguousAminoAcids[searchString[i]];
+            }
+        }
+        searchString = string;
+    } else if (literal === "Ambiguous") {
         var string = "";
         for (let i=0; i<searchString.length; i++) {
             if (!ambiguous[searchString[i]]) {
@@ -88,8 +107,12 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
     }
 
     var reg = '('+searchString+')|('+reverseSearchString+')';
-    var regex = new RegExp(reg, 'gi');
-    var bpsPerRow = state.get('bpsPerRow');
+    try {
+        var regex = new RegExp(reg, 'gi');
+    } catch(e) {
+        state.set('searchLayers', []);
+        return;
+    }
     do {
         match = regex.exec(sequenceExtended);
         if (match) {
