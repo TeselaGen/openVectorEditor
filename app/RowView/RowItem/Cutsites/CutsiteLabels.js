@@ -21,7 +21,11 @@ let CutsiteLabels = React.createClass({
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
         var sequenceText = document.getElementById("sequenceText");
-        var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        if (sequenceText && sequenceText.firstChild) {
+            var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        } else {
+            var textWidth = 20;
+        }
         var rowCenter = textWidth / 2;
         var iTree = new intervalTree2(rowCenter)
 
@@ -49,7 +53,7 @@ let CutsiteLabels = React.createClass({
                     key={'cutsiteLabel' + index}
                     onClick={ function (e) {
                         e.stopPropagation()
-                        signals.cutsiteClicked({annotation: annotation})
+                        signals.cutsiteClicked({ annotation: annotation, view: "row" })
                     }}
                     >
                     <div

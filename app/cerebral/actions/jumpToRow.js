@@ -1,3 +1,3 @@
-export default function insertSequenceData({input: {rowToJumpTo}, state, output}) {
+export default function jumpToRow({input: {rowToJumpTo}, state, output}) {
     state.set(['rowToJumpTo'], rowToJumpTo);
 }

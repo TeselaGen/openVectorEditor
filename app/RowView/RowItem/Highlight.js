@@ -50,7 +50,8 @@ export default class Highlight extends React.Component {
     render() {
         var {
             start,
-            end
+            end,
+            color="blue"
         } = this.props;
 
         var dimensions = this._dimensions(start, end);
@@ -68,7 +69,7 @@ export default class Highlight extends React.Component {
                     preserveAspectRatio={'none'}
                     viewBox={ x + " 0 " + rowWidth + " 1"}
                     >
-                    <rect x={0} y={0} width={width} height={1}/>
+                    <rect fill={color} x={0} y={0} width={width} height={1}/>
                 </svg>
             );
             dummyKey += 1;

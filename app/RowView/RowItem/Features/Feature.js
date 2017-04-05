@@ -92,7 +92,7 @@ export default class Feature extends React.Component {
                 className='veRowViewFeature clickable'
                 onClick={ function (e) {
                     e.stopPropagation()
-                    signals.featureClicked({annotation: annotation})
+                    signals.featureClicked({ annotation: annotation, view: "row" })
                 }}
                 >
                 <path

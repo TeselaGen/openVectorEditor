@@ -20,27 +20,27 @@ export default class SelectionLayer extends React.Component {
             bpsPerRow,
             row,
             sequenceLength,
-            regions
+            regions,
+            signals
         } = this.props;
 
         return (
             <div>
                 {regions.map(function (selectionLayer, index) {
                     var {
-                        showCarets = true, 
-                        className='', 
-                        style={}, 
-                        start, 
-                        end, 
-                        color 
+                        showCarets = true,
+                        className='',
+                        style={},
+                        start,
+                        end,
+                        color
                     } = selectionLayer
-                    var classNameToPass = 'veRowViewSelectionLayer ' 
-                                        + className + ' ' 
-                                        + className + ' ' 
+                    var classNameToPass = 'veRowViewSelectionLayer '
+                                        + className + ' '
+                                        + className + ' '
                                         + globalClassname
                     if (start > -1) {
                         var overlaps = getOverlapsOfPotentiallyCircularRanges(selectionLayer, row, sequenceLength);
-                        
                         //DRAW SELECTION LAYER
                         return (overlaps.map(function(overlap, index) {
                             var {xStart, width} = getXStartAndWidthOfRangeWrtRow(overlap, row, bpsPerRow, charWidth, sequenceLength);
@@ -49,7 +49,7 @@ export default class SelectionLayer extends React.Component {
                             if (showCarets) {
                                 //DRAW CARETS
                                 caretSvgs = [
-                                    (overlap.start === start) && 
+                                    (overlap.start === start) &&
                                         <Caret {...{
                                             charWidth,
                                             row,
@@ -57,8 +57,8 @@ export default class SelectionLayer extends React.Component {
                                             className: classNameToPass,
                                             caretPosition: overlap.start
                                             }}
-                                            />, 
-                                        (overlap.end === end) && 
+                                            />,
+                                        (overlap.end === end) &&
                                         <Caret {...{
                                             charWidth,
                                             row,
@@ -70,9 +70,9 @@ export default class SelectionLayer extends React.Component {
                                 ]
                             }
                             return [
-                                <div 
-                                    key={index} 
-                                    className={classNameToPass} 
+                                <div
+                                    key={index}
+                                    className={classNameToPass}
                                     style={{
                                         width,
                                         left: xStart,

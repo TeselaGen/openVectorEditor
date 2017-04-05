@@ -28,6 +28,7 @@ function noop() {
     letterSpacing: ['letterSpacing'],
     orfs: ['orfData'],
     rowData: ['rowData'],
+    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceHeight: ['sequenceHeight'],
@@ -42,7 +43,7 @@ function noop() {
     showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
-    spaceBetweenAnnotations: ['spaceBetweenAnnotations']
+    spaceBetweenAnnotations: ['spaceBetweenAnnotations'],
 })
 
 class RowItem extends React.Component {
@@ -59,7 +60,6 @@ class RowItem extends React.Component {
             sequenceHeight,
             spaceBetweenAnnotations,
             width,
-            additionalSelectionLayers=[],
             caretPosition,
             sequenceLength,
             row,
@@ -67,7 +67,7 @@ class RowItem extends React.Component {
             showOrfs,
             bpsPerRow,
             charWidth,
-            componentOverrides = {},
+            componentOverrides={},
             className,
             signals,
         } = this.props;
@@ -77,10 +77,10 @@ class RowItem extends React.Component {
             features= [],
             translations= [],
             cutsites= [],
-            orfs= []
+            orfs= [],
         } = row
 
-        var reverseSequence = getComplementSequenceString(sequence)
+        var reverseSequence = getComplementSequenceString(sequence);
 
         if (!row) {
             return null;
@@ -121,8 +121,22 @@ class RowItem extends React.Component {
             );
         }
 
+        var searchHighlight = [];
+        if (searchLayers && searchLayers.length > 0) {
+            let i = 0;
+            searchLayers.forEach(function(result) {
+                searchHighlight.push(
+                    <Highlight key={i} start={result.start} end={result.end} rowStart={row.start} rowEnd={row.end} color={"yellow"}/>
+                );
+                i += 1;
+            });
+        } else {
+            searchHighlight = <div></div>;
+        }
+
         return (
-            <div className={"veRowItem", styles.rowItem}>
+            <div id={Math.floor(row.start / bpsPerRow)} // id is row-number
+                className={"veRowItem", styles.rowItem}>
 
                 <div className={styles.margin}>
                     { rowNumber }
@@ -151,6 +165,7 @@ class RowItem extends React.Component {
                 }
 
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
+                { searchHighlight }
 
                 <div className='veRowItemSequenceContainer'>
                     <Sequence
