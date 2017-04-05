@@ -18,9 +18,10 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     caretPosition: ['caretPosition'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
-    rowToJumpTo: ['rowToJumpTo'],
     orfs: ['orfData'],
     rowData: ['rowData'],
+    rowToJumpTo: ['rowToJumpTo'],
+    rowViewDimensions: ['rowViewDimensions'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceLength: ['sequenceLength'],
@@ -31,9 +32,10 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     showOrfs: ['showOrfs'],
     showAxis: ['showAxis'],
     showCaret: ['showCaret'],
-    showSequence: ['showSequence'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
+    showSequence: ['showSequence'],
+    showSidebar: ['showSidebar'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations']
 })
 
@@ -49,18 +51,16 @@ export default class RowView extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (parseInt(newProps.rowToJumpTo) && newProps.selectionLayer.id !== -1 && this.InfiniteScroller) {
-            var range = this.InfiniteScroller.getVisibleRange();
-            if (newProps.rowToJumpTo < range[0] || newProps.rowToJumpTo >= range[1]) {
-                this.InfiniteScroller.scrollTo(newProps.rowToJumpTo);
+        if (newProps.rowToJumpTo === "0" || parseInt(newProps.rowToJumpTo)) {
+            if (newProps.rowToJumpTo !== this.props.rowToJumpTo) {
+                var row = parseInt(newProps.rowToJumpTo);
+                this.InfiniteScroller.scrollTo(row);
+            }
+            if (newProps.showSidebar !== this.props.showSidebar) {
+                this.props.signals.adjustWidth();
             }
         }
     }
-
-    // shouldComponentUpdate() {
-    //     // this.InfiniteScroller.scrollTo(0);
-    //     return true;
-    // }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
         var bpsPerRow = this.props.bpsPerRow;
@@ -79,8 +79,11 @@ export default class RowView extends React.Component {
 
         var boundingRowRect = event.target.getBoundingClientRect();
         var sequenceText = document.getElementById("sequenceText");
-        // get width of the actual text
-        var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        if (sequenceText && sequenceText.firstChild) {
+            var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+        } else {
+            var textWidth = 20;
+        }
 
         var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
         if (clickXPositionRelativeToRowContainer < 0) {
@@ -126,18 +129,19 @@ export default class RowView extends React.Component {
             rowData
         } = this.props;
 
-        var renderItem = (index,key) =>{
+        var renderItem = (index,key) => {
             if (rowData[index]) {
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]} />
+                        <RowItem row={rowData[index]}/>
                     </div>
                 );
             } else {
                 return null
             }
         }
+
         if (showRow) {
             return (
                 <Draggable
@@ -179,16 +183,6 @@ export default class RowView extends React.Component {
     }
 }
 
-// function itemSizeEstimator(index, cache) {
-//     var row = this.props.rowData[index];
-//     var height = 28; // div padding
-//     height += 51 // sequence height: 50.67
-//     height += 20 // row.start indicator
-//     height += this.props.showFeatures ? row.features.length * 24 : 0; // feature height: 24 per feature
-//     height += this.props.showOrfs ? row.orfs.length * 20 : 0; // orf height: 20 per orf
-//     // need to add cutsites
-//     return height
-// }
 function itemSizeEstimator(index, cache) {
     if (cache[index+1]) {
         return cache[index+1]

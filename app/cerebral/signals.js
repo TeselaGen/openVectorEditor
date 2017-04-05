@@ -124,7 +124,6 @@ export default function(options) {
 
         searchSequence: [
             a.searchSequence,
-            a.updateSearchLayers
         ],
 
         selectAll: [

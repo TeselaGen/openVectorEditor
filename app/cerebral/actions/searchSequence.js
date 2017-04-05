@@ -1,3 +1,5 @@
+var assign = require('lodash/object/assign');
+
 function searchSequence({input: { searchString, dna, literal }, state, output}) {
     searchString = searchString.toLowerCase();
     state.set('searchString', searchString)
@@ -87,7 +89,7 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
 
     var reg = '('+searchString+')|('+reverseSearchString+')';
     var regex = new RegExp(reg, 'gi');
-
+    var bpsPerRow = state.get('bpsPerRow');
     do {
         match = regex.exec(sequenceExtended);
         if (match) {
@@ -96,20 +98,16 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
             if (end > sequence.length - 1) {
                 end -= sequence.length;
             }
+
             layers.push({
                 start: match.index,
                 end: end,
-                selected: true,
-                cursorAtEnd: true
+                selected: false
             });
         }
     } while (match);
 
-    if (layers.length > 0) {
-        state.set('selectionLayer', layers[0]);
-    }
-
-    output({ searchLayers: layers });
+    state.set('searchLayers', layers);
 }
 
 module.exports = searchSequence;

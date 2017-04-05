@@ -42,7 +42,7 @@ let CutsiteContainer = React.createClass({
                     <Cutsite
                         onClick={ function (e) {
                             e.stopPropagation()
-                            signals.featureClicked({annotation: annotation})
+                            signals.cutsiteClicked({ annotation: annotation, view: "row" })
                         }}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}

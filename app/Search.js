@@ -3,16 +3,17 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
+import Toggle from 'material-ui/lib/toggle';
 import IconButton from 'material-ui/lib/icon-button';
 import ArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 import ArrowLeft from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
-// import Cancel from 'material-ui/lib/svg-icons/navigation/cancel';
+import Cancel from 'material-ui/lib/svg-icons/navigation/cancel';
 
 @Cerebral({
+    bpsPerRow: ['bpsPerRow'],
     searchLayers: ['searchLayers'],
-    selectionLayer: ['selectionLayer'],
     showSearchBar: ['showSearchBar'],
-    searchString: ['searchString']
+    searchString: ['searchString'],
 })
 
 export default class Search extends React.Component {
@@ -21,13 +22,32 @@ export default class Search extends React.Component {
         super(props);
 
         this.state = {
-            searchIdx: 1,
+            searchIdx: 0,
             dna: "DNA",
             literal: "Literal"
         };
     }
 
+    componentWillReceiveProps(newProps) {
+        if (newProps.searchLayers !== this.props.searchLayers && newProps.searchLayers.length > 0) {
+            var row = Math.floor((newProps.searchLayers[0].start-1)/(this.props.bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            this.props.signals.jumpToRow({rowToJumpTo: row});
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.searchIdx !== prevState.searchIdx && this.props.searchLayers.length > 0) {
+            var row = Math.floor((this.props.searchLayers[this.state.searchIdx-1].start-1)/(this.props.bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            this.props.signals.jumpToRow({rowToJumpTo: row});
+        }
+    }
+
     search() {
+        if (this.refs.searchField.getValue().length < 4) {
+            return;
+        }
         this.setState({ searchIdx: 1 });
         this.props.signals.searchSequence({
             searchString: this.refs.searchField.getValue(),
@@ -67,7 +87,6 @@ export default class Search extends React.Component {
             prevIdx = searchLayers.length;
         }
         this.setState({ searchIdx: prevIdx });
-        this.props.signals.setSelectionLayer({ selectionLayer: searchLayers[prevIdx-1] }) // convert 1-indexed to 0-indexed
     }
 
     nextResult() {
@@ -77,16 +96,14 @@ export default class Search extends React.Component {
             nextIdx = 1;
         }
         this.setState({ searchIdx: nextIdx });
-        this.props.signals.setSelectionLayer({ selectionLayer: searchLayers[nextIdx-1] }) // convert 1-indexed to 0-indexed
     }
 
     render() {
         var {
             searchLayers,
-            selectionLayer,
             signals,
             showSearchBar,
-            searchString
+            searchString,
         } = this.props;
 
         if (!showSearchBar) {
