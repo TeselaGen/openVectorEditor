@@ -81,7 +81,6 @@ class RowItem extends React.Component {
         var {
             selectionLayer={start: -1, end: -1},
             searchLayers=[],
-            searchResults,
             sequenceData,
             annotationHeight,
             tickSpacing,
@@ -97,7 +96,7 @@ class RowItem extends React.Component {
             showOrfs,
             bpsPerRow,
             charWidth,
-            componentOverrides = {},
+            componentOverrides={},
             className,
             signals,
         } = this.props;
@@ -107,7 +106,7 @@ class RowItem extends React.Component {
             features= [],
             translations= [],
             cutsites= [],
-            orfs= []
+            orfs= [],
         } = row
 
         var reverseSequence = getComplementSequenceString(sequence);
@@ -152,11 +151,13 @@ class RowItem extends React.Component {
         }
 
         var searchHighlight = [];
-        if (searchResults && searchResults.length > 0) {
-            searchResults.forEach(function(result) {
+        if (searchLayers && searchLayers.length > 0) {
+            let i = 0;
+            searchLayers.forEach(function(result) {
                 searchHighlight.push(
-                    <Highlight start={result.start} end={result.end} rowStart={row.start} rowEnd={row.end} color={"yellow"}/>
+                    <Highlight key={i} start={result.start} end={result.end} rowStart={row.start} rowEnd={row.end} color={"yellow"}/>
                 );
+                i += 1;
             });
         } else {
             searchHighlight = <div></div>;

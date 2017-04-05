@@ -19,12 +19,10 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     circularAndLinearTickSpacing: ['circularAndLinearTickSpacing'],
     cutsiteLabelSelectionLayer: ['cutsiteLabelSelectionLayer'],
     cutsites: ['cutsites'],
-    highlightAllSearchResults: ['highlightAllSearchResults'],
     orfs: ['orfData'],
     rowData: ['rowData'],
     rowToJumpTo: ['rowToJumpTo'],
     rowViewDimensions: ['rowViewDimensions'],
-    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceLength: ['sequenceLength'],
@@ -54,21 +52,16 @@ export default class RowView extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (parseInt(newProps.rowToJumpTo) && newProps.selectionLayer.id !== -1 && this.InfiniteScroller) {
-            var range = this.InfiniteScroller.getVisibleRange();
-            if (newProps.rowToJumpTo < range[0] || newProps.rowToJumpTo >= range[1]) {
-                this.InfiniteScroller.scrollTo(newProps.rowToJumpTo);
+        if (newProps.rowToJumpTo === "0" || parseInt(newProps.rowToJumpTo)) {
+            if (newProps.rowToJumpTo !== this.props.rowToJumpTo) {
+                var row = parseInt(newProps.rowToJumpTo);
+                this.InfiniteScroller.scrollTo(row);
+            }
+            if (newProps.showSidebar !== this.props.showSidebar) {
+                this.props.signals.adjustWidth();
             }
         }
-        if (newProps.showSidebar !== this.props.showSidebar) {
-            this.props.signals.adjustWidth();
-        }
     }
-
-    // shouldComponentUpdate() {
-    //     // this.InfiniteScroller.scrollTo(0);
-    //     return true;
-    // }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
         var bpsPerRow = this.props.bpsPerRow;
@@ -113,14 +106,12 @@ export default class RowView extends React.Component {
 
     render() {
         var {
-            searchLayers,
             sequenceData,
             sequenceLength,
             selectionLayer,
             sequenceName,
             cutsites,
             cutsitesByName,
-            highlightAllSearchResults,
             orfs,
             showAxis,
             showCaret,
@@ -139,31 +130,19 @@ export default class RowView extends React.Component {
             rowData
         } = this.props;
 
-        var searchRows = {};
-        if (highlightAllSearchResults) {
-            searchLayers.forEach(function(result) {
-                result.rows.forEach(function(row) {
-                    if (searchRows[row]) {
-                        searchRows[row].push(result);
-                    } else {
-                        searchRows[row] = [result];
-                    }
-                });
-            });
-        }
-
-        var renderItem = (index,key) =>{
+        var renderItem = (index,key) => {
             if (rowData[index]) {
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]} searchResults={searchRows[index]}/>
+                        <RowItem row={rowData[index]}/>
                     </div>
                 );
             } else {
                 return null
             }
         }
+
         if (showRow) {
             return (
                 <Draggable

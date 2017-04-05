@@ -10,7 +10,7 @@ import ArrowLeft from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
 import Cancel from 'material-ui/lib/svg-icons/navigation/cancel';
 
 @Cerebral({
-    highlightAllSearchResults: ['highlightAllSearchResults'],
+    bpsPerRow: ['bpsPerRow'],
     searchLayers: ['searchLayers'],
     showSearchBar: ['showSearchBar'],
     searchString: ['searchString'],
@@ -22,27 +22,38 @@ export default class Search extends React.Component {
         super(props);
 
         this.state = {
-            searchIdx: 1,
+            searchIdx: 0,
             dna: "DNA",
             literal: "Literal"
         };
     }
 
+    componentWillReceiveProps(newProps) {
+        if (newProps.searchLayers !== this.props.searchLayers && newProps.searchLayers.length > 0) {
+            var row = Math.floor((newProps.searchLayers[0].start-1)/(this.props.bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            this.props.signals.jumpToRow({rowToJumpTo: row});
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.searchIdx !== prevState.searchIdx && this.props.searchLayers.length > 0) {
+            var row = Math.floor((this.props.searchLayers[this.state.searchIdx-1].start-1)/(this.props.bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            this.props.signals.jumpToRow({rowToJumpTo: row});
+        }
+    }
+
     search() {
+        if (this.refs.searchField.getValue().length < 4) {
+            return;
+        }
         this.setState({ searchIdx: 1 });
-        this.props.signals.highlightAllSearchResults({ value: "no" });
-        var toggle = document.getElementById("toggleHighlightAll");
-        // debugger
-        toggle.checked = false;
         this.props.signals.searchSequence({
             searchString: this.refs.searchField.getValue(),
             dna: this.state.dna,
             literal: this.state.literal
         });
-    }
-
-    highlightAll() {
-        this.props.signals.highlightAllSearchResults();
     }
 
     selectField(event) {
@@ -76,9 +87,6 @@ export default class Search extends React.Component {
             prevIdx = searchLayers.length;
         }
         this.setState({ searchIdx: prevIdx });
-        var row = Math.floor((searchLayers[prevIdx-1].start-1)/(this.props.bpsPerRow));
-        row = row < 0 ? 0 : row;
-        this.props.signals.jumpToRow({rowToJumpTo: row});
     }
 
     nextResult() {
@@ -88,9 +96,6 @@ export default class Search extends React.Component {
             nextIdx = 1;
         }
         this.setState({ searchIdx: nextIdx });
-        var row = Math.floor((searchLayers[nextIdx-1].start-1)/(this.props.bpsPerRow));
-        row = row < 0 ? 0 : row;
-        this.props.signals.jumpToRow({rowToJumpTo: row});
     }
 
     render() {
@@ -99,7 +104,6 @@ export default class Search extends React.Component {
             signals,
             showSearchBar,
             searchString,
-            highlightAllSearchResults
         } = this.props;
 
         if (!showSearchBar) {
@@ -162,16 +166,6 @@ export default class Search extends React.Component {
             />
         );
 
-        var highlightAll = (
-            <Toggle
-                id="toggleHighlightAll"
-                name="toggleHighlightAll"
-                label="highlight all"
-                defaultToggled={false}
-                onToggle={this.highlightAll.bind(this)}
-                />
-        );
-
         return (
             <div
                 ref="searchBar"
@@ -186,7 +180,6 @@ export default class Search extends React.Component {
                 { navigateSearchResults }
                 { dnaDropdown }
                 { literalDropdown }
-                { highlightAll }
             </div>
         );
 
