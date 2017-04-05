@@ -124,7 +124,6 @@ export default function(options) {
 
         searchSequence: [
             a.searchSequence,
-            a.updateSearchLayers
         ],
 
         selectAll: [
@@ -163,6 +162,16 @@ export default function(options) {
 
         toggleAnnotationDisplay: [
             a.toggleAnnotationDisplay
+        ],
+
+        toggleSearchBar: [
+            a.toggleSearchBar
+        ],
+        toggleShowCircular: [
+            a.toggleShowCircular
+        ],
+        toggleShowRow: [
+            a.toggleShowRow
         ],
 
         updateHistory: [

@@ -9,7 +9,11 @@ import getXStartAndWidthOfRowAnnotation from '../../../shared-utils/getXStartAnd
 
 function getXStartAndWidthOfRangeWrtRow(range, row, bpsPerRow, charWidth, sequenceLength) {
     var sequenceText = document.getElementById("sequenceText");
-    var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+    if (sequenceText && sequenceText.firstChild) {
+        var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
+    } else {
+        var textWidth = 20;
+    }
 
     var xStart = normalizePositionByRangeLength(range.start - row.start, sequenceLength);
     xStart = textWidth * (xStart / bpsPerRow) + 20; //move selection right

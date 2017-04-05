@@ -25,11 +25,13 @@ var combokeys;
     newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
     orfData: ['orfData'],
     selectedSequenceString: ['selectedSequenceString'],
+    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceLength: ['sequenceLength'],
     showCircular: ['showCircular'],
     showRow: ['showRow'],
+    showSearchBar: ['showSearchBar'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
     totalRows: ['totalRows']
@@ -162,6 +164,7 @@ export default class SequenceEditor extends React.Component {
             sequenceData,
             showCircular,
             showRow,
+            showSearchBar,
             showSidebar,
             sidebarType
         } = this.props;
@@ -183,6 +186,11 @@ export default class SequenceEditor extends React.Component {
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
 
+
+        var borderStyle = 'none';
+        if (showSearchBar) {
+            borderStyle = '1px solid rgb(232,232,232)';
+        }
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (
@@ -207,6 +215,11 @@ export default class SequenceEditor extends React.Component {
             );
         }
 
+        var toolbarStyle = '0px';
+        if (showSearchBar) {
+            toolbarStyle = '60px';
+        }
+
         return (
             <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
@@ -215,20 +228,20 @@ export default class SequenceEditor extends React.Component {
                     onPaste={this.handlePaste.bind(this)}
                 />
 
-                <div className={styles.head}>
+                <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />
                 </div>
 
-                <div className={styles.content} id="allViews">
+                <div className={styles.content} id="allViews" style={{borderTop: borderStyle}}>
                     <div className={styles.sideBarSlot} id="sideBar" style={ sidebarStyle }>
                       {table}
                     </div>
 
                     <div className={styles.circularViewSlot} id="circularView" style={ circularStyle }>
-                        <CircularView />
+                        <CircularView showCircular={showCircular}/>
                     </div>
                     <div className={styles.rowViewSlot} id="rowView" style={ rowStyle }>
-                        <RowView sequenceData={sequenceData} />
+                        <RowView showRow={showRow} sequenceData={sequenceData} />
                     </div>
                 </div>
 
