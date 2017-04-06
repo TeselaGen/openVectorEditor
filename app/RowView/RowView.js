@@ -105,28 +105,28 @@ export default class RowView extends React.Component {
 
     render() {
         var {
-            sequenceData,
-            sequenceLength,
-            selectionLayer,
-            sequenceName,
+            annotationHeight,
+            annotationVisibility,
+            bpsPerRow,
+            caretPosition,
             cutsites,
             cutsitesByName,
             orfs,
+            rowData,
+            rowToJumpTo,
+            rowViewDimensions,
+            selectionLayer,
+            sequenceData,
+            sequenceLength,
+            sequenceName,
             showAxis,
             showCaret,
             showCutsites,
             showFeatures,
             showOrfs,
             showRow,
-            annotationHeight,
-            spaceBetweenAnnotations,
-            annotationVisibility,
-            caretPosition,
-            rowToJumpTo,
-            rowViewDimensions,
             signals,
-            bpsPerRow,
-            rowData
+            spaceBetweenAnnotations
         } = this.props;
 
         var renderItem = (index,key) => {

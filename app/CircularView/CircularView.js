@@ -250,7 +250,7 @@ export default class CircularView extends React.Component {
                         onClick={(event) => {
                             this.getNearestCursorPositionToMouseEvent(event, sequenceLength, signals.editorClicked);
                         }}
-                        style={{height: '100%', display: 'block'}}
+                        style={{height: '100%', display: 'block', width: '100%'}}
                         // width={ circularViewDimensions.width }
                         // height={ circularViewDimensions.height }
                         ref="circularView"
