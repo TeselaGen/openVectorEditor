@@ -1,4 +1,4 @@
-var colorOfFeature = require('./constants/colorOfFeature');
+// var colorOfFeature = require('./constants/feature-colors');
 module.exports = {
     toOpenVectorEditor: function(contents, services){
         return {
@@ -7,7 +7,7 @@ module.exports = {
                     features: contents.features.map(function (elem) {                       
                         elem.start = elem.locations[0].genbankStart;                       
                         elem.end = elem.locations[0].end;
-                        elem.color = colorOfFeature(elem);
+                        // elem.color = colorOfFeature(elem);
                         return elem;
                     }),
                     name: contents.name,

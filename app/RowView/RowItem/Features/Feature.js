@@ -1,6 +1,7 @@
 import React from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import getXStartAndWidthOfRowAnnotation from '../../../shared-utils/getXStartAndWidthOfRowAnnotation';
+import colorOfFeature from '../../../constants/feature-colors';
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
@@ -21,7 +22,6 @@ export default class Feature extends React.Component {
             forward,
             pointiness=4,
             fontWidth=16,
-            color,
             name,
             annotation,
             signals,
@@ -33,6 +33,7 @@ export default class Feature extends React.Component {
         let result = getXStartAndWidthOfRowAnnotation(annotationRange, bpsPerRow, charWidth);
         var width = result.width;
 
+        var featureColor = colorOfFeature(annotation);
         var charWN = charWidth; //charWN is normalized
         if (charWidth < 15) { //allow the arrow width to adapt
             if (width > 15) {
@@ -96,7 +97,7 @@ export default class Feature extends React.Component {
                 }}
                 >
                 <path
-                    fill={ color }
+                    fill={ featureColor }
                     transform={ forward ? null : "translate(" + width + ",0) scale(-1,1) " }
                     d={ path }
                     />
