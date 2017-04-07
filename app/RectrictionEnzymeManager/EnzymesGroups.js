@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
-
+import ReactList from 'react-list';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Checkbox from 'material-ui/lib/checkbox';
@@ -69,9 +69,6 @@ export default class EnzymesGroups extends React.Component {
 
         return (
             <div>
-                <br />
-                <br />
-                <br />
                 <DropDownMenu
                     onChange={this.handleChange}
                     menuItems={menuItems}
@@ -80,7 +77,6 @@ export default class EnzymesGroups extends React.Component {
                     iconStyle={{color: "#000000"}}
                     labelStyle={{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
                     />
-                <br />
                 <List className={styles.managerListLeft}>
                     {currentEnzymesList.map((enzyme, index) => (
                         <ListItem
@@ -101,7 +97,6 @@ export default class EnzymesGroups extends React.Component {
                             />
                     ))}
                 </List>
-                <br />
                 <RaisedButton
                     label="Add all"
                     secondary={true}
