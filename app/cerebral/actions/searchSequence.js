@@ -1,6 +1,7 @@
 var assign = require('lodash/object/assign');
 
 function searchSequence({input: { searchString, dna, literal }, state, output}) {
+    var originalInput = searchString;
     searchString = searchString.toLowerCase();
     state.set('searchString', searchString)
     if (searchString.length === 0) {
@@ -116,14 +117,17 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
 
     // wrap around origin
     var sequence = state.get(['sequenceData', 'sequence']);
-    var sequenceExtended = sequence + sequence.slice(0, searchString.length-1);
+    var extend = originalInput.length;
+    if (dna === "Amino Acids") {
+        extend *= 3;
+    }
+    var sequenceExtended = sequence + sequence.slice(0, extend-1);
 
     // finally execute the search
     do {
         match = regex.exec(sequenceExtended);
         if (match) {
             var end = match.index + match[0].length - 1;
-            // wrap around origin
             if (end > sequence.length - 1) {
                 end -= sequence.length;
             }

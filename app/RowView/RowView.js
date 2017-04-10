@@ -71,12 +71,9 @@ export default class RowView extends React.Component {
 
             searchLayers.forEach(function(result) {
                 var rowStart = Math.floor((result.start-1)/(bpsPerRow));
-                /**
-                !!!
-                there's an off by one error here
-                !!
-                **/
-                var rowEnd = Math.floor((result.end)/(bpsPerRow));
+                rowStart = rowStart < 0 ? 0 : rowStart;
+                var rowEnd = Math.floor((result.end-1)/(bpsPerRow));
+                rowEnd = rowEnd < 0 ? 0 : rowEnd;
 
                 if (rowEnd === rowStart) {
                     searchRows = this.putIntoSearchHash(searchRows, rowStart, result);
@@ -168,8 +165,9 @@ export default class RowView extends React.Component {
             signals,
             spaceBetweenAnnotations,
         } = this.props;
+
         var searchRows = this.getSearchOverlays();
-        console.log(searchRows);
+
         var renderItem = (index,key) => {
             if (rowData[index]) {
                 if (!searchRows[index]) {
