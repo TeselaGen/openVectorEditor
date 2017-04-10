@@ -42,9 +42,6 @@ export default class Search extends React.Component {
             row = row <= 0 ? "0" : row;
             this.props.signals.jumpToRow({rowToJumpTo: row});
         }
-        // if (this.refs.searchField && this.refs.searchField.props.errorText) {
-        //
-        // }
     }
 
     search() {

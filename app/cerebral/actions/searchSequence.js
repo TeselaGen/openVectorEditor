@@ -10,9 +10,6 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
 
     var dnaComplement = {
         'a':'t', 'c':'g', 'g':'c', 't':'a',
-        'y':'r', 'r':'y', 'k':'m', 'm':'k',
-        'd':'h', 'h':'d', 'b':'v', 'v':'b',
-        'w':'w', 's':'s',
         '(':')', ')':'('
     };
 
@@ -51,18 +48,16 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
     };
 
     var ambiguousAminoAcids = {
-        'b':'(g|a)a(c|t)',
-        'z':'(c|g)a(a|g)',
-        'j':'((at(a|c|t))|(tt(a|g))|(ct(a|c|g|t)))'
+        'b':'(g|a)a(c|t)', // N or D
+        'z':'(c|g)a(a|g)', // Q or E
+        'j':'((at(a|c|t))|(tt(a|g))|(ct(a|c|g|t)))' // I or L
     };
 
-    var sequence = state.get(['sequenceData', 'sequence']);
-    // wrap around origin
-    var sequenceExtended = sequence + sequence.slice(0, searchString.length-1);
 
     var match;
     var layers = [];
 
+    // amino acid search
     if (dna === "Amino Acids") {
         var string = "";
         for (let i=0; i<searchString.length; i++) {
@@ -75,6 +70,7 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         searchString = string;
     }
 
+    // amino acid search with ambiguous
     if (dna === "Amino Acids" && literal === "Ambiguous") {
         var string = "";
         for (let i=0; i<searchString.length; i++) {
@@ -85,6 +81,8 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
             }
         }
         searchString = string;
+
+    // dna search with ambiguous
     } else if (literal === "Ambiguous") {
         var string = "";
         for (let i=0; i<searchString.length; i++) {
@@ -97,6 +95,7 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         searchString = string;
     }
 
+    // get regex to search reverse sequence
     var reverseSearchString = "";
     for (let i=0; i<searchString.length; i++) {
         if (dnaComplement[searchString[i]]) {
@@ -106,6 +105,7 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         }
     }
 
+    // make sure input is valid regexp
     var reg = '('+searchString+')|('+reverseSearchString+')';
     try {
         var regex = new RegExp(reg, 'gi');
@@ -113,6 +113,12 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         state.set('searchLayers', []);
         return;
     }
+
+    // wrap around origin
+    var sequence = state.get(['sequenceData', 'sequence']);
+    var sequenceExtended = sequence + sequence.slice(0, searchString.length-1);
+
+    // finally execute the search
     do {
         match = regex.exec(sequenceExtended);
         if (match) {
@@ -129,7 +135,6 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
             });
         }
     } while (match);
-
     state.set('searchLayers', layers);
 }
 

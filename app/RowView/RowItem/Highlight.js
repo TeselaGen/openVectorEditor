@@ -43,9 +43,9 @@ export default class Highlight extends React.Component {
         return dimensions;
     }
 
-    componentWillReceiveProps(newProps) {
-        this._dimensions(newProps.start, newProps.end);
-    }
+    // componentWillReceiveProps(newProps) {
+    //     this._dimensions(newProps.start, newProps.end);
+    // }
 
     render() {
         var {

@@ -39,6 +39,16 @@ var combokeys;
 
 export default class SequenceEditor extends React.Component {
 
+    componentWillMount() {
+        // still trying to fix cross origin problem
+        this.props.sequenceData.features.forEach(function(feature) {
+            if (!feature.end || feature.end === 0) {
+                this.props.signals.updateFeature({ feature : feature });
+            }
+        }.bind(this));
+        // this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
+    }
+
     componentDidMount() {
         var {
             sequenceDataInserted,
@@ -49,7 +59,6 @@ export default class SequenceEditor extends React.Component {
         } = this.props.signals;
 
         var self = this;
-        updateHistory({ newHistory: this.props.sequenceData });
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
 
