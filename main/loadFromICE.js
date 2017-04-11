@@ -27,10 +27,11 @@ request
         if (!contents) {
           // add some empty data
           contents = {
+              canEdit: false,
               features: [],
               identifier: "",
               name: "new sequence",
-              isCircular: "false",
+              isCircular: false,
               length: 0,
               sequence: ""
           }
