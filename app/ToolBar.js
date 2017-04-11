@@ -97,7 +97,6 @@ export default class ToolBar extends React.Component {
                         // document.getElementById("rowView").setAttribute("style", "display: none");
                         signals.toggleShowCircular({ showCircular: true });
                         signals.toggleShowRow({ showRow: false });
-
                     }}
                     >
                     <CircularIcon />

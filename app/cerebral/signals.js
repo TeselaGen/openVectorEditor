@@ -17,8 +17,8 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
 
     var signals = {
-        /* These should be in alphabetical order and are split into edit-only 
-        and general (read or edit) signals 
+        /* These should be in alphabetical order and are split into edit-only
+        and general (read or edit) signals
         Unused or broken signals are edited out */
 
         addFeatureModalDisplay: [
@@ -141,7 +141,7 @@ export default function(options) {
         // ],
 
         setSelectionLayer: [
-            a.setSelectionLayer
+            a.setSelectionLayer,
         ],
 
         setTreeVal: [

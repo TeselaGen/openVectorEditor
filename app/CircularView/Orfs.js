@@ -18,9 +18,9 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var annotation = orfs[key]
         var annotationCopy = {...annotation}
         var {
-            startAngle, 
-            endAngle, 
-            totalAngle, 
+            startAngle,
+            endAngle,
+            totalAngle,
             centerAngle
         } = getRangeAngles(annotation, sequenceLength);
         var spansOrigin = startAngle > endAngle;
@@ -31,7 +31,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         var path = null;
         var arrowHead = null;
 
-        // frame is one of [0,1,2] 
+        // frame is one of [0,1,2]
         var orfColor = 'red';
         if (annotationCopy.frame === 1) {
             orfColor = 'green';
@@ -151,9 +151,13 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         >
                         <path
                             onClick={ function (e) {
-                                e.stopPropagation()
-                                signals.orfClicked({ annotation: annotation, view: "circular" })
+                                e.stopPropagation();
+                                signals.orfClicked({ annotation: annotation });
                             }}
+                            // onDoubleClick={ function (e) {
+                            //     e.stopPropagation();
+                            //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
+                            // }}
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }

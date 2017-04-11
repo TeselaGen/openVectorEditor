@@ -52,8 +52,13 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
 
         function onClick(event) {
             event.stopPropagation();
-            signals.featureClicked({ annotation: annotation, view: "circular" });
+            signals.featureClicked({ annotation: annotation });
         }
+
+        // function onDoubleClick(event) {
+        //     event.stopPropagation();
+        //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
+        // }
 
         // add label info to labels
         labels[annotation.id] ={
@@ -63,6 +68,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
             id: annotation.id,
             className: 'veFeatureLabel',
             onClick,
+            // onDoubleClick,
         };
 
         svgGroup.push(

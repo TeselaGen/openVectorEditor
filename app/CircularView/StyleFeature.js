@@ -5,7 +5,11 @@ export default function StyleFeature({children, color, annotation, signals}) {
         <g
             onClick={ function (e) {
                 e.stopPropagation()
-                signals.featureClicked({ annotation: annotation, view: "circular" }) 
+                signals.featureClicked({ annotation: annotation })
+            }}
+            onDoubleClick={ function (e) {
+                e.stopPropagation()
+                signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" })
             }}
             className='ve-feature'
             strokeWidth="1"

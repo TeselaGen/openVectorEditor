@@ -12,14 +12,18 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
         index++;
         function onClick(event) {
             event.stopPropagation();
-            signals.cutsiteClicked({ annotation: annotation, view: "circular" });
+            signals.cutsiteClicked({ annotation: annotation });
         }
+        // function onDoubleClick(event) {
+        //     event.stopPropagation()
+        //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" })
+        // }
         if (!(annotation.downstreamTopSnip > -1)) {
             debugger; //we need this to be present
         }
         var { startAngle } = getRangeAngles({
-                                start: annotation.downstreamTopSnip, 
-                                end: annotation.downstreamTopSnip}, 
+                                start: annotation.downstreamTopSnip,
+                                end: annotation.downstreamTopSnip},
                                 sequenceLength);
         // check if it's a singleton enzyme
         var cutColor = 'black';

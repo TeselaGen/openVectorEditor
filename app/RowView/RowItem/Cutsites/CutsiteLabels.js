@@ -52,9 +52,13 @@ let CutsiteLabels = React.createClass({
                     id={annotation.id}
                     key={'cutsiteLabel' + index}
                     onClick={ function (e) {
-                        e.stopPropagation()
-                        signals.cutsiteClicked({ annotation: annotation, view: "row" })
+                        e.stopPropagation();
+                        signals.cutsiteClicked({ annotation: annotation });
                     }}
+                    // onDoubleClick={ function (e) {
+                    //     e.stopPropagation();
+                    //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "row" });
+                    // }}
                     >
                     <div
                         left={xStart}

@@ -91,9 +91,13 @@ export default class Feature extends React.Component {
             <g
                 className='veRowViewFeature clickable'
                 onClick={ function (e) {
-                    e.stopPropagation()
-                    signals.featureClicked({ annotation: annotation, view: "row" })
+                    e.stopPropagation();
+                    signals.featureClicked({ annotation: annotation });
                 }}
+                // onDoubleClick={ function(e) {
+                //     e.stopPropagation();
+                //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "row" });
+                // }}
                 >
                 <path
                     fill={ color }
