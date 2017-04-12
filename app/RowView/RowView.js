@@ -163,7 +163,7 @@ export default class RowView extends React.Component {
             showOrfs,
             showRow,
             signals,
-            spaceBetweenAnnotations,
+            spaceBetweenAnnotations
         } = this.props;
 
         var searchRows = this.getSearchOverlays();

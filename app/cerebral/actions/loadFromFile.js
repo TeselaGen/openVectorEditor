@@ -25,4 +25,6 @@ function loadFromFile({input, state, output}) {
     );
 };
 
+loadFromFile.async = true;
+
 export default loadFromFile;

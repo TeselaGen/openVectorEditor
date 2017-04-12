@@ -1,3 +1,5 @@
+// this isn't really a constant list but it takes a feature and returns the feature's color
+
 module.exports = function(feature) {
     var type = feature.type;
     type = type.toLowerCase();

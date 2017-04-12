@@ -6,6 +6,7 @@ import getYOffset from './getYOffset';
 import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React from 'react';
 import noop from 'lodash/utility/noop';
+import colorOfFeature from '../constants/feature-colors';
 
 export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
     //console.log('RENDERING FEATURES');
@@ -21,6 +22,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
         var {startAngle, endAngle, totalAngle, centerAngle} = getRangeAngles(annotation, sequenceLength);
         var spansOrigin = startAngle > endAngle;
         var labelCenter = centerAngle;
+        var featureColor = colorOfFeature(annotation);
         //expand the end angle if annotation spans the origin
         var expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle;
         var yOffset1;
@@ -85,11 +87,11 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                         >
                         <StyleFeature
                             annotation={ annotation }
-                            color={ annotation.color }
+                            color={ featureColor }
                             signals = { signals }
                             >
                             <CircularFeature
-                                color={ annotation.color }
+                                color={ featureColor }
                                 key={ 'feature' + index }
                                 radius={ annotationRadius }
                                 annotationHeight={ annotationHeight }

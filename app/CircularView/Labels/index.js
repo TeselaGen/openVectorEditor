@@ -161,7 +161,6 @@ function DrawLabelGroup (props) {
                 x = { labelXStart }
                 className = { labelClass + label.className }
                 y = { labelYStart }
-                // make our singletons red to match old VE, how do we tag singleton cutsite
                 style = {{ fill: label.color, fontSize: fontWidth }}
                 >
                 { text }
