@@ -4,8 +4,7 @@ export default function updateFeature({ input: { feature }, state, output }) {
     var temp = [];
 
     var featureCopy = Object.assign({}, feature);
-
-    if (feature.locations) {
+    if (parseInt(feature.end) === 0 && feature.locations) {
         featureCopy.start = parseInt(feature.locations[0].genbankStart);
         featureCopy.end = parseInt(feature.locations[0].end);
     } else {

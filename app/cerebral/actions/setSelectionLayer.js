@@ -11,7 +11,9 @@ export default function setSelectionLayer({input: {selectionLayer, view}, state}
     if (updatedSelectionLayer.selected) {
         if (updatedSelectionLayer.cursorAtEnd) {
             state.set('caretPosition', updatedSelectionLayer.end + 1);
-            state.set('showSidebar', true);
+            if (updatedSelectionLayer.id) {
+                state.set('showSidebar', true);
+            }
 
             // makesure sidebar open to correct tab
             var type = 'Features';

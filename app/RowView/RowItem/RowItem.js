@@ -50,26 +50,27 @@ class RowItem extends React.Component {
 
     render() {
         var {
-            selectionLayer={start: -1, end: -1},
-            searchLayers=[],
-            sequenceData,
             annotationHeight,
-            tickSpacing,
-            showCutsites,
-            showReverseSequence,
-            sequenceHeight,
-            spaceBetweenAnnotations,
-            width,
+            bpsPerRow,
             caretPosition,
-            sequenceLength,
+            charWidth,
+            className,
+            componentOverrides={},
             row,
+            searchLayers=[],
+            searchRows,
+            selectionLayer={start: -1, end: -1},
+            sequenceData,
+            sequenceHeight,
+            sequenceLength,
+            showCutsites,
             showFeatures,
             showOrfs,
-            bpsPerRow,
-            charWidth,
-            componentOverrides={},
-            className,
+            showReverseSequence,
             signals,
+            spaceBetweenAnnotations,
+            tickSpacing,
+            width,
         } = this.props;
 
         var {
@@ -122,9 +123,9 @@ class RowItem extends React.Component {
         }
 
         var searchHighlight = [];
-        if (searchLayers && searchLayers.length > 0) {
+        if (searchRows && searchRows.length > 0) {
             let i = 0;
-            searchLayers.forEach(function(result) {
+            searchRows.forEach(function(result) {
                 searchHighlight.push(
                     <Highlight key={i} start={result.start} end={result.end} rowStart={row.start} rowEnd={row.end} color={"yellow"}/>
                 );

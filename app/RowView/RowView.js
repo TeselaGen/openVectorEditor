@@ -22,6 +22,7 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     rowData: ['rowData'],
     rowToJumpTo: ['rowToJumpTo'],
     rowViewDimensions: ['rowViewDimensions'],
+    searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
     sequenceData: ['sequenceData'],
     sequenceLength: ['sequenceLength'],
@@ -60,6 +61,41 @@ export default class RowView extends React.Component {
                 this.props.signals.adjustWidth();
             }
         }
+    }
+
+    getSearchOverlays() {
+        var searchRows = {};
+        if (this.props.searchLayers.length > 0) {
+            var searchLayers = this.props.searchLayers;
+            var bpsPerRow = this.props.bpsPerRow;
+
+            searchLayers.forEach(function(result) {
+                var rowStart = Math.floor((result.start-1)/(bpsPerRow));
+                rowStart = rowStart < 0 ? 0 : rowStart;
+                var rowEnd = Math.floor((result.end-1)/(bpsPerRow));
+                rowEnd = rowEnd < 0 ? 0 : rowEnd;
+
+                if (rowEnd === rowStart) {
+                    searchRows = this.putIntoSearchHash(searchRows, rowStart, result);
+                } else {
+                    searchRows = this.putIntoSearchHash(searchRows, rowStart, { start: result.start, end: bpsPerRow*(rowStart+1), selected: false });
+                    searchRows = this.putIntoSearchHash(searchRows, rowEnd, { start: rowEnd*bpsPerRow, end: result.end, selected: false });
+                    for (let i=rowStart+1; i<rowEnd; i++) {
+                        searchRows = this.putIntoSearchHash(searchRows, i, {start:i*bpsPerRow, end:bpsPerRow*(i+1), selected:false});
+                    }
+                }
+            }.bind(this));
+        }
+        return searchRows;
+    }
+
+    putIntoSearchHash(searchRows, row, result) {
+        if (searchRows[row]) {
+            searchRows[row].push(result);
+        } else {
+            searchRows[row] = [result];
+        }
+        return searchRows;
     }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
@@ -115,9 +151,10 @@ export default class RowView extends React.Component {
             rowData,
             rowToJumpTo,
             rowViewDimensions,
-            selectionLayer,
+            searchLayers,
             sequenceData,
             sequenceLength,
+            selectionLayer,
             sequenceName,
             showAxis,
             showCaret,
@@ -129,12 +166,17 @@ export default class RowView extends React.Component {
             spaceBetweenAnnotations
         } = this.props;
 
+        var searchRows = this.getSearchOverlays();
+
         var renderItem = (index,key) => {
             if (rowData[index]) {
+                if (!searchRows[index]) {
+                    searchRows[index] = [];
+                }
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]}/>
+                        <RowItem row={rowData[index]} searchRows={searchRows[index]}/>
                     </div>
                 );
             } else {
