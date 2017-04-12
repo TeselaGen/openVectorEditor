@@ -43,6 +43,8 @@ class Sequence extends React.Component {
                     <text
                         ref="sequenceRow"
                         fill={ textColor }
+                        lengthAdjust="spacingAndGlyphs"
+                        textLength="800"
                         y="5"
                         >
                         { sequence }

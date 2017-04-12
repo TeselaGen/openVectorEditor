@@ -39,6 +39,9 @@
 }
 
 .typeValue {
+    border-top: none;
+    border-right: none;
+    border-left: none;
     border-bottom: 2px solid #00bcd4;
     width: 75%;
     display: inline;
@@ -58,24 +61,24 @@
     display: block;
     width: 200px;
     padding: 0;
-    height: 325px;
+    max-height: 325px;
     overflow-y: scroll;
     left: 130px;
     margin-top: -13px;
     box-shadow: 2px 2px 2px gray;
 }
 
-.visible ui {
+.visible ui, .selectField ui {
     position: relative;
     display: block;
     padding: 5px 10px 5px 30px;
 }
 
-.visible ui:hover {
+.visible ui:hover, .selectField ui:hover {
     background-color: whitesmoke;
 }
 
-.visible .selectedType {
+.visible .selectedType, .selectField .selectedType {
     color: #00bcd4;
 }
 
@@ -92,23 +95,20 @@
     text-align: center;
 }
 
-.selectField > div:nth-child(2) {
-    top: 50px !important;
-    height: 200px !important;
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-}
-
-.selectField div:nth-child(2) .selectedType {
-    color: black;
-}
-
-.unselectedType {
-    color: black;
-}
-
-.selectField div:nth-child(2):focus .selectedType {
-    color: #00bcd4;
+.selectField {
+    background-color: white;
+    font-style: normal;
+    border: 1px solid lightgray;
+    visibility: visible;
+    display: block;
+    position: absolute;
+    width: 200px;
+    padding: 0;
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: scroll;
+    margin-top: -13px;
+    box-shadow: 2px 2px 2px gray;
 }
 
 .tableContainer {

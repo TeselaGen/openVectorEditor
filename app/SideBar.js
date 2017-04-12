@@ -41,7 +41,7 @@ export default class SideBar extends React.Component {
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
-            featureError: false,
+            featureError: '',
         };
     }
 
@@ -171,7 +171,11 @@ export default class SideBar extends React.Component {
 
     editFeature(currentFeature) {
         if (parseInt(currentFeature.start) === parseInt(currentFeature.end)) {
-            this.setState({featureError: true});
+            this.setState({ featureError: 'Feature length cannot be zero' });
+            return;
+        }
+        if (currentFeature.badType) {
+            this.setState({ featureError: 'Unrecognized feature type' });
             return;
         }
         this.props.signals.updateFeature({ feature: currentFeature });
@@ -179,7 +183,7 @@ export default class SideBar extends React.Component {
     }
 
     closeErrorDialog() {
-        this.setState({featureError: false});
+        this.setState({featureError: ''});
     }
 
     deleteFeatures() {
@@ -202,7 +206,11 @@ export default class SideBar extends React.Component {
 
     addFeature() {
         if (parseInt(this.state.newFeature.start) === parseInt(this.state.newFeature.end)) {
-            this.setState({featureError: true});
+            this.setState({featureError: 'Feature length cannot be zero'});
+            return;
+        }
+        if (this.state.newFeature.badType) {
+            this.setState({ featureError: 'Unrecognized feature type' });
             return;
         }
         let temporaryId = this.props.annotations.length;
@@ -774,7 +782,8 @@ export default class SideBar extends React.Component {
                         this.state.newFeature['start'] < 0 || this.state.newFeature['start'] > sequenceLength ||
                         this.state.newFeature['end'] < 0 || this.state.newFeature['end'] > sequenceLength ||
                         this.state.newFeature['strand']*this.state.newFeature['strand'] !== 1 ||
-                        this.state.newFeature.start === this.state.newFeature.end
+                        this.state.newFeature.start === this.state.newFeature.end ||
+                        this.state.newFeature.badType
                     }
                     />
             </div>
@@ -806,12 +815,12 @@ export default class SideBar extends React.Component {
 
         var errorDialog = (
             <Dialog
-                open={this.state.featureError}
+                open={this.state.featureError.length > 0}
                 onRequestClose={this.closeErrorDialog.bind(this)}
                 style={{height: '500px', position: 'absolute', maxWidth: '500px'}}
                 actions={[<FlatButton onClick={this.closeErrorDialog.bind(this)}>ok</FlatButton>]}
                 >
-                Feature length cannot be zero
+                {this.state.featureError}
             </Dialog>
         );
 

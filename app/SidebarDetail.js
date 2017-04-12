@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import TextField from 'material-ui/lib/text-field';
-import SelectField from 'material-ui/lib/select-field';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
+import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
 import IconButton from 'material-ui/lib/icon-button';
 import assign from 'lodash/object/assign';
@@ -25,7 +25,10 @@ export default class SidebarDetail extends React.Component {
         this.state = {
             feature: assign({}, this.props.feature),
             style: {},
-            dropdown: "hidden"
+            dropdown: "hidden",
+            featureTypes: FEATURE_TYPES,
+            type: this.props.feature.type
+
         };
 
         if (this.state.feature.notes === undefined) {
@@ -36,21 +39,56 @@ export default class SidebarDetail extends React.Component {
         this.state.style = {backgroundColor: 'white', position: 'relative', width: '350px', overflowY: 'visible'};
     }
 
-    toggleDropDown() {
-        this.state.dropdown === "hidden" ? this.setState({dropdown: "selectField"}) : this.setState({dropdown: "hidden"});
+    toggleDropDown(state) {
+        if (state) {
+            this.setState({dropdown: state});
+        } else {
+            this.state.dropdown === "hidden" ? this.setState({dropdown: "selectField"}) : this.setState({dropdown: "hidden"});
+        }
     }
 
-    selectDropDown() {
-        this.setState({ dropdown: "hidden" });
+    selectDropDown(event) {
+        this.state.feature.type = event.target.innerHTML;
+        this.state.feature.badType = false;
+        this.setState({
+            dropdown: "hidden",
+            feature: this.state.feature,
+            type: event.target.innerHTML
+        });
+        this.props.createFeature(this.state.feature);
+    }
+
+    filterList() {
+        var string = this.refs.typeField.value;
+        this.setState({ type: string });
+
+        var regex = new RegExp('.*', 'i');
+        if (string && string.length > 0) {
+            var badType = true;
+            try {
+                regex = new RegExp(string.toLowerCase(), 'i');
+            } catch (e){}
+            var filteredFeatureTypes = [];
+            FEATURE_TYPES.forEach(function(type) {
+                if (regex.test(type)) {
+                    filteredFeatureTypes.push(type);
+                }
+                if (string.toLowerCase() === type.toLowerCase()) {
+                    badType = false;
+                }
+            })
+            this.state.feature.type = string;
+            this.state.feature.badType = badType;
+            this.setState({ feature: this.state.feature, featureTypes: filteredFeatureTypes });
+            this.props.createFeature(this.state.feature);
+        } else {
+            this.setState({ featureTypes: FEATURE_TYPES });
+        }
+
     }
 
     onChange = (event) => {
-        let target = event.target;
-        while (!target.id) {
-            //hacky workaround bc the individual dropdown menu items have no id
-            target = target.parentElement;
-        }
-        this.state.feature[target.id] = event.target.value;
+        this.state.feature[event.target.id] = event.target.value;
         this.setState({ feature: this.state.feature });
         this.props.createFeature(this.state.feature);
     };
@@ -63,16 +101,17 @@ export default class SidebarDetail extends React.Component {
 
         var options = [];
         var rowStyle;
-        for (var i=0; i<FEATURE_TYPES.length; i++) {
-            if (this.state.feature['type'] === FEATURE_TYPES[i]) {
+        for (var i=0; i<this.state.featureTypes.length; i++) {
+            if (this.state.feature.type.toString().toLowerCase() === this.state.featureTypes[i].toLowerCase()) {
                 rowStyle = "selectedType";
             } else {
                 rowStyle = "unselectedType";
             }
-            options.push({ payload: FEATURE_TYPES[i], text: <div className={styles[rowStyle]}>{FEATURE_TYPES[i]}</div> });
+            options.push(<ui className={styles[rowStyle]} value={this.state.featureTypes[i]}>{this.state.featureTypes[i]}</ui>);
         }
+
         return (
-            <div style={this.state.style} className={styles.sidebarDetail}>
+            <div style={this.state.style}>
                 <TextField
                     id={"name"}
                     onChange={this.onChange.bind(this)}
@@ -82,16 +121,27 @@ export default class SidebarDetail extends React.Component {
                     />
                 <br/>
 
-                <SelectField
-                    className={styles[this.state.dropdown]}
-                    id={"type"}
-                    onClick={this.toggleDropDown.bind(this)}
-                    onChange={this.onChange.bind(this)}
-                    floatingLabelText={"type"}
-                    menuItems={options}
-                    value={this.state.feature.type.toString()}
-                    />
-                <br/>
+                <div
+                    hintText="type"
+                    onFocus={this.toggleDropDown.bind(this, "selectField")}
+                    id={"type"}>
+                    <input
+                        ref="typeField"
+                        type="text"
+                        placeholder="type"
+                        className={styles.typeValue}
+                        value={this.state.type.toString()}
+                        onChange={this.filterList.bind(this)}
+                        />
+                    <IconButton style={{verticalAlign: 'middle', marginLeft: '-10px'}}
+                        onClick={this.toggleDropDown.bind(this, false)}>
+                        <ArrowDropDown/>
+                    </IconButton>
+                    <ul className={styles[this.state.dropdown]}
+                        onClick={this.selectDropDown.bind(this)}>
+                        {options}
+                    </ul>
+                </div>
 
                 <TextField
                     id={"start"}
