@@ -33,15 +33,15 @@ export default class SideBar extends React.Component {
     constructor() {
         super(arguments);
         this.state = {
-            selectedFeatures: [],
-            selectedCutsites: [],
-            selectedOrfs: [],
-            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
             editFeature: -1,
+            featureError: '',
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
-            featureError: '',
+            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
+            selectedCutsites: [],
+            selectedFeatures: [],
+            selectedOrfs: [],
         };
     }
 
@@ -388,12 +388,17 @@ export default class SideBar extends React.Component {
 
         // FEATURE DETAIL
         var annotationForm;
+        var sorted = annotations.slice(0);
+        sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
+
         if (this.state.editFeature > -1 && this.props.annotationType === "Features") {
             let id = this.state.editFeature;
             var annotation;
-            for (var i=0; i<annotations.length; i++) {
-                if (annotations[i].id === id) {
-                    annotation = annotations[i];
+            var rowPosition;
+            for (var i=0; i<sorted.length; i++) {
+                if (sorted[i].id === id) {
+                    annotation = sorted[i];
+                    rowPosition = i;
                 }
             }
 
@@ -401,7 +406,9 @@ export default class SideBar extends React.Component {
                 <SidebarEdit
                     editFeature={this.editFeature.bind(this)}
                     sequenceLength={sequenceLength}
-                    feature={ annotation }
+                    feature={annotation}
+                    rowPosition={rowPosition}
+                    totalFeatures={sorted.length}
                     />
             )
         }
@@ -444,8 +451,6 @@ export default class SideBar extends React.Component {
             // placeholder column for edit-icon
             tableHeaderCells.push(<th key='null' style={{minWidth: '48px'}}> </th>);
 
-            var sorted = annotations.slice(0);
-            sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
             annotationTableRows = [];
             for (let i = 0; i < sorted.length; i++) {
                 let annotationTableCells = [];
@@ -829,7 +834,7 @@ export default class SideBar extends React.Component {
 
                 { topTabs }
 
-                <div className={styles.tableContainer}>
+                <div className={styles.tableContainer} id="tableContainer">
                     <table ref="sideBar">
                         <thead><tr>{ tableHeaderCells }</tr></thead>
                         <tbody>{ annotationTableRows }</tbody>
