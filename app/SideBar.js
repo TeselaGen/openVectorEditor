@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
-
-// todo: add keyboard auto-complete for dropdown boxes
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
@@ -10,7 +8,6 @@ import FlatButton from 'material-ui/lib/flat-button';
 import Checkbox from 'material-ui/lib/checkbox';
 import ModeEdit from 'material-ui/lib/svg-icons/editor/mode-edit';
 import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
-
 import SidebarDetail from './SidebarDetail';
 import SidebarEdit from './SidebarEdit';
 import styles from './side-bar.css'

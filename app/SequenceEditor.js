@@ -189,9 +189,6 @@ export default class SequenceEditor extends React.Component {
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
-        if (oneViewOnly) {
-            circularStyle = Object.assign(circularStyle, {padding: '0 15%'})
-        }
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
 

@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Decorator as Cerebral} from 'cerebral-view-react';
-
+import ReactList from 'react-list';
 import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import Checkbox from 'material-ui/lib/checkbox';
+// import ListItem from 'material-ui/lib/lists/list-item';
+// import Checkbox from 'material-ui/lib/checkbox';
 import RaisedButton from 'material-ui/lib/raised-button';
 import styles from './manager-list.scss';
 
@@ -26,14 +26,12 @@ export default class EnzymesGroups extends React.Component {
         this.state = {
             value: 1,
         };
-    }
+    };
 
     handleChange = (event, index, value) => {
         this.setState({value: value});
         switch (value.text) {
             case 'REBASE':
-                // REBASE currently is loaded correctly but is so huge it's slowing the app to a crawl
-                // disabling until we have a fix
                 this.props.signals.chooseEnzymeList({selectedList: this.props.rebaseEnzymes});
                 break;
             case 'Berkeley BioBricks':
@@ -50,7 +48,7 @@ export default class EnzymesGroups extends React.Component {
         }
     };
 
-    isChecked = (enzyme) => {
+    isSelected = (enzyme) => {
         return (this.props.currentUserEnzymesList.indexOf(enzyme) >= 0);
     };
 
@@ -61,9 +59,13 @@ export default class EnzymesGroups extends React.Component {
             signals
         } = this.props;
 
+        var selectedStyle = { backgroundColor: '#00bcd4', fontWeight: 'bold', padding: '7px 10px' };
+
+        var notSelectedStyle = { backgroundColor: 'white', padding: '7px 10px' };
+
         let menuItems = [
             { payload: '1', text: 'Common' },
-            // { payload: '2', text: 'REBASE' },
+            { payload: '2', text: 'REBASE' },
             { payload: '3', text: 'Berkeley BioBricks' },
             { payload: '4', text: 'MIT BioBricks' },
             { payload: '5', text: 'Fermentas Fast Digest' },
@@ -71,39 +73,28 @@ export default class EnzymesGroups extends React.Component {
 
         return (
             <div>
-                <br />
-                <br />
-                <br />
                 <DropDownMenu
-                    onChange={this.handleChange}
-                    menuItems={menuItems}
-                    style={{backgroundColor: "#311B92"}}
-                    underlineStyle={{opacity: 0}}
-                    iconStyle={{color: "#000000"}}
-                    labelStyle={{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
+                    onChange = {this.handleChange}
+                    menuItems = {menuItems}
+                    style = {{backgroundColor: "#311B92"}}
+                    underlineStyle = {{opacity: 0}}
+                    iconStyle = {{color: "#000000"}}
+                    labelStyle = {{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
                     />
-                <br />
                 <List className={styles.managerListLeft}>
                     {currentEnzymesList.map((enzyme, index) => (
-                        <ListItem
-                            style={{maxHeight: 12}}
-                            leftCheckbox={
-                                <Checkbox
-                                    checked={this.isChecked(enzyme)}
-                                    disabled={this.isChecked(enzyme)}
-                                    onCheck={
-                                        function () {
+                        <div
+                            style = { this.isSelected(enzyme) ? selectedStyle : notSelectedStyle }
+                            id = { enzyme }
+                            onClick = {function () {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                            enzyme: enzyme, action: "add"})
-                                        }
-                                    }
-                                    />
-                            }
-                            primaryText={enzyme}
-                            />
+                                            enzyme: enzyme, action: "toggle" })
+                                        }}
+                            >
+                            { enzyme }
+                        </div>
                     ))}
                 </List>
-                <br />
                 <RaisedButton
                     label="Add all"
                     secondary={true}
