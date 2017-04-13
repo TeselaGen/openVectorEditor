@@ -24,7 +24,7 @@ export default class SidebarDetail extends React.Component {
         super(props);
 
         // rows near the bottom should have the dropdown menu drop-up
-        var rowHeight = 49.33; // probably shouldn't be hardcoded
+        var rowHeight = 49.33; // probably shouldn't be hardcoded...
         var sidebarHeight = this.props.totalFeatures * rowHeight;
         var clientHeight = document.getElementById("tableContainer").clientHeight;
         var maxHeight = clientHeight > sidebarHeight ? clientHeight : sidebarHeight;
@@ -81,7 +81,9 @@ export default class SidebarDetail extends React.Component {
             var badType = true;
             try {
                 regex = new RegExp(string.toLowerCase(), 'i');
-            } catch (e){}
+            } catch (e) {
+                return;
+            }
 
             var filteredFeatureTypes = [];
             FEATURE_TYPES.forEach(function(type) {
@@ -94,6 +96,11 @@ export default class SidebarDetail extends React.Component {
             }.bind(this))
             this.state.feature.badType = badType;
             this.setState({ feature: this.state.feature, featureTypes: filteredFeatureTypes });
+            if (filteredFeatureTypes.length < 11 && parseInt(this.state.dropUp)) {
+                this.setState({ dropUp: ((this.props.rowPosition+1) * 49.33) - (30 * filteredFeatureTypes.length) + 15});
+            } else if (parseInt(this.state.dropUp)) {
+                this.setState({dropUp: ((this.props.rowPosition+1) * 49.33) - 315});
+            }
         } else {
             this.setState({ featureTypes: FEATURE_TYPES });
         }

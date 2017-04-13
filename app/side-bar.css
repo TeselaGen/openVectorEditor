@@ -61,7 +61,7 @@
     display: block;
     width: 200px;
     padding: 0;
-    max-height: 325px;
+    max-height: 332.66px; /**yes this highly specific number is on purpose...**/
     overflow-y: scroll;
     left: 130px;
     margin-top: -13px;
