@@ -56,6 +56,7 @@ class RowItem extends React.Component {
             charWidth,
             className,
             componentOverrides={},
+            letterDistance,
             row,
             searchLayers=[],
             searchRows,
@@ -100,10 +101,11 @@ class RowItem extends React.Component {
         var annotationCommonProps = {
             bpsPerRow,
             charWidth,
+            letterDistance,
+            row,
             sequenceHeight,
             sequenceLength,
             annotationHeight,
-            row,
             signals,
         }
 

@@ -102,6 +102,11 @@ export default class RowView extends React.Component {
         var bpsPerRow = this.props.bpsPerRow;
         var charWidth = this.props.charWidth;
 
+        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
+        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
+        let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
+        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
+
         var nearestBP = 0;
         var target = event.target;
         while (target.className !== 'app-RowView-RowItem-RowItem---rowItem---2HAWf') {
@@ -112,20 +117,14 @@ export default class RowView extends React.Component {
         }
         var rowNumber = parseInt(target.id);
         var row = this.props.rowData[rowNumber];
-
-        var boundingRowRect = event.target.getBoundingClientRect();
-        var sequenceText = document.getElementById("sequenceText");
-        if (sequenceText && sequenceText.firstChild) {
-            var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
-        } else {
-            var textWidth = 20;
-        }
+        var boundingRowRect = target.getBoundingClientRect();
+        var textWidth = ((letterSpacing + 11.2) * bpsPerRow); // 10 for left & right padding around text box
 
         var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
         if (clickXPositionRelativeToRowContainer < 0) {
             nearestBP = row.start;
         } else {
-            var numberOfBPsInFromRowStart = Math.round(bpsPerRow * clickXPositionRelativeToRowContainer / textWidth);
+            var numberOfBPsInFromRowStart = Math.round(bpsPerRow * clickXPositionRelativeToRowContainer/textWidth);
             nearestBP = numberOfBPsInFromRowStart + row.start;
             if (nearestBP > row.end + 1) {
                 nearestBP = row.end + 1;

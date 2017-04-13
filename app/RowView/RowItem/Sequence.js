@@ -18,7 +18,7 @@ class Sequence extends React.Component {
         let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
         let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
         let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
-        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // 11.2 is default letterSpacing
+        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
 
         var style = {
             position: 'relative',
@@ -33,6 +33,20 @@ class Sequence extends React.Component {
         var textColor = "#000"; // black
         if (reverse==="true") textColor = "#aaa"; // gray
 
+        var svgText = [];
+        for (var i=0; i<sequence.length; i++) {
+            svgText.push(
+                <text
+                ref="sequenceRow"
+                fill={ textColor }
+                y="5"
+                x={(letterSpacing+11.2)*i} // this 11.2 is actual char width
+                >
+                { sequence[i] }
+                </text>
+            )
+        };
+
         return (
             <div className='Sequence' id='sequenceText'>
                 <svg
@@ -40,15 +54,7 @@ class Sequence extends React.Component {
                     ref="rowViewTextContainer"
                     className="rowViewTextContainer"
                     >
-                    <text
-                        ref="sequenceRow"
-                        fill={ textColor }
-                        lengthAdjust="spacingAndGlyphs"
-                        textLength="800"
-                        y="5"
-                        >
-                        { sequence }
-                    </text>
+                    { svgText }
                 </svg>
                 { children }
             </div>
