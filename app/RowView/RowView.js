@@ -53,9 +53,10 @@ export default class RowView extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if (newProps.rowToJumpTo === "0" || parseInt(newProps.rowToJumpTo)) {
-            if (newProps.rowToJumpTo !== this.props.rowToJumpTo) {
-                var row = parseInt(newProps.rowToJumpTo);
+            var row = parseInt(newProps.rowToJumpTo);
+            if (this.InfiniteScroller) {
                 this.InfiniteScroller.scrollTo(row);
+                this.props.signals.jumpToRow({ rowToJumpTo: null });
             }
             if (newProps.showSidebar !== this.props.showSidebar) {
                 this.props.signals.adjustWidth();

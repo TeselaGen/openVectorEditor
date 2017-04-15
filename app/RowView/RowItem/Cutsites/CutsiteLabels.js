@@ -11,7 +11,8 @@ let CutsiteLabels = React.createClass({
         var {
             annotationRanges={},
             bpsPerRow,
-            signals
+            signals,
+            charWidth,
         } = this.props;
 
         if (annotationRanges.length === 0) {
@@ -20,12 +21,12 @@ let CutsiteLabels = React.createClass({
 
         let maxAnnotationYOffset = 0;
         let annotationsSVG = [];
-        var sequenceText = document.getElementById("sequenceText");
-        if (sequenceText && sequenceText.firstChild) {
-            var textWidth = sequenceText.firstChild.firstChild.getBoundingClientRect().width + 10; // 10 for left & right padding around text box
-        } else {
-            var textWidth = 20;
-        }
+
+        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
+        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
+        let textWidth = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
+        var letterSpacing = ((textWidth - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
+
         var rowCenter = textWidth / 2;
         var iTree = new intervalTree2(rowCenter)
 

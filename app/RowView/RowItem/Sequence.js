@@ -26,7 +26,7 @@ class Sequence extends React.Component {
             padding: '10px 25px 10px 25px',
             overflow: 'visible',
             letterSpacing: letterSpacing + 'px',
-            fontSize: '14pt',
+            fontSize: '12pt',
             height: sequenceHeight + 'px'
         }
 
