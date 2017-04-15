@@ -29,6 +29,7 @@ export default class Search extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        // new/different search results
         if (newProps.searchLayers !== this.props.searchLayers && newProps.searchLayers.length > 0) {
             var row = Math.floor((newProps.searchLayers[0].start-1)/(this.props.bpsPerRow));
             row = row <= 0 ? "0" : row;
@@ -37,6 +38,7 @@ export default class Search extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        // navigating through search results
         if (this.state.searchIdx !== prevState.searchIdx && this.props.searchLayers.length > 0) {
             var row = Math.floor((this.props.searchLayers[this.state.searchIdx-1].start-1)/(this.props.bpsPerRow));
             row = row <= 0 ? "0" : row;
@@ -46,9 +48,6 @@ export default class Search extends React.Component {
 
     search() {
         var string = this.refs.searchField.getValue();
-        if (string.length < 3) {
-            return;
-        }
         this.setState({ searchIdx: 1 });
         this.props.signals.searchSequence({
             searchString: string,
@@ -58,6 +57,7 @@ export default class Search extends React.Component {
     }
 
     selectField(event) {
+        // dna/amino acids and literal/ambiguous dropdown boxes
         var dna = this.state.dna;
         var literal = this.state.literal;
         var newValue = event.target.firstChild.data;
@@ -71,7 +71,7 @@ export default class Search extends React.Component {
         }
 
         // rerun search if search params are changed
-        // state is updating concurrently, so I can't use this.state in this fn call
+        // (state is updating asynchronously, so I can't use this.state in this fn call)
         if (this.refs.searchField.getValue().length > 2) {
             this.setState({ searchIdx: 1 });
             this.props.signals.searchSequence({
@@ -112,6 +112,7 @@ export default class Search extends React.Component {
             return(<div style={{display: 'none'}}></div>);
         }
 
+        // results navigation pane
         var navigateSearchResults;
         if (searchLayers.length > 0) {
             navigateSearchResults = (
@@ -143,7 +144,7 @@ export default class Search extends React.Component {
             navigateSearchResults = (<div style={{display:'inline-block', marginRight:'10px'}}></div>);
         }
 
-        // i have no idea if the amino acids search is working like the biologists expect it to...
+        // dna/amino acids dropdown box
         var dnaDropdown = (
             <SelectField
                 style={{display:'inline-block', marginRight:'10px', width:'130px', verticalAlign:'middle'}}
@@ -156,6 +157,7 @@ export default class Search extends React.Component {
             />
         );
 
+        // literal/ambiguous dropdown box
         var literalDropdown = (
             <SelectField
                 style={{display:'inline-block', marginRight:'10px', width:'130px', verticalAlign:'middle'}}
@@ -176,7 +178,7 @@ export default class Search extends React.Component {
                     style={{marginRight:'10px', width:'150px', verticalAlign:'middle'}}
                     onChange={this.search.bind(this)}
                     errorText={
-                        searchLayers.length === 0 && searchString.length > 0 && "no results"
+                        searchLayers.length === 0 && searchString.length > 2 && "no results"
                     }
                     />
                 { navigateSearchResults }

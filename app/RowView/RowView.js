@@ -73,8 +73,7 @@ export default class RowView extends React.Component {
             searchLayers.forEach(function(result) {
                 var rowStart = Math.floor((result.start-1)/(bpsPerRow));
                 rowStart = rowStart < 0 ? 0 : rowStart;
-                var rowEnd = Math.floor((result.end-1)/(bpsPerRow));
-                rowEnd = rowEnd < 0 ? 0 : rowEnd;
+                var rowEnd = Math.floor((result.end)/(bpsPerRow));
 
                 if (rowEnd === rowStart) {
                     searchRows = this.putIntoSearchHash(searchRows, rowStart, result);
