@@ -56,6 +56,15 @@ export default class Search extends React.Component {
         });
     }
 
+    clearSearch() {
+        this.refs.searchField.setValue("");
+        this.props.signals.searchSequence({
+            searchString: "",
+            dna: this.state.dna,
+            literal: this.state.literal
+        });
+    }
+
     selectField(event) {
         // dna/amino acids and literal/ambiguous dropdown boxes
         var dna = this.state.dna;
@@ -173,7 +182,12 @@ export default class Search extends React.Component {
         return (
             <div
                 ref="searchBar"
-                style={{position:'absolute', zIndex:'10', width:'1000px'}}>
+                style={{position:'absolute', zIndex:'10', width:'1000px', left:'20px'}}>
+                <div
+                    style={{position:'absolute', top:'13px', left:'-20px', cursor:'pointer', fontSize:'13pt'}}
+                    onClick={this.clearSearch.bind(this)}>
+                    x
+                </div>
                 <TextField ref="searchField" hintText="search sequence"
                     style={{marginRight:'10px', width:'150px', verticalAlign:'middle'}}
                     onChange={this.search.bind(this)}

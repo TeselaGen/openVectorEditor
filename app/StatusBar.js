@@ -4,6 +4,7 @@ import styles from './status-bar.css';
 import IconButton from 'material-ui/lib/icon-button';
 import Undo from 'material-ui/lib/svg-icons/content/undo';
 import Redo from 'material-ui/lib/svg-icons/content/redo';
+import InvertColors from 'material-ui/lib/svg-icons/action/invert-colors';
 
 @Cerebral({
     sequenceLength: ['sequenceLength'],
@@ -33,6 +34,7 @@ export default class StatusBar extends React.Component {
         return (
             <div ref="statusBar">
                 <div className = { styles.bar }>
+
                     {readOnly ? <div></div>
                               : <div>
                                     <IconButton
@@ -59,6 +61,18 @@ export default class StatusBar extends React.Component {
                                     </IconButton>
                                 </div>
                     }
+
+                    <IconButton
+                        label="selectInverse"
+                        tooltip="select inverse (cmd+ctrl+i)"
+                        tooltipPosition="top-center"
+                        disabled={selectionLayer.start === -1}
+                        onTouchTap={function() {
+                            signals.selectInverse()
+                        }}
+                        >
+                        <InvertColors />
+                    </IconButton>
 
                     {readOnly ? <div className={styles.label}>Read Only Mode</div>
                               : <div className={styles.label}>Editing Allowed</div>
