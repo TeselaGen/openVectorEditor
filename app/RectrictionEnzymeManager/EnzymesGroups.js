@@ -25,8 +25,22 @@ export default class EnzymesGroups extends React.Component {
         this.props.signals.chooseEnzymeList({selectedList: this.props.commonEnzymes});
         this.state = {
             value: 1,
+            input: '',
+            currentEnzymesList: this.props.currentEnzymesList
         };
     };
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.currentEnzymesList !== this.props.currentEnzymesList) {
+            this.setState({ currentEnzymesList: newProps.currentEnzymesList });
+        }
+    }
+
+    componentDidUpdate(newProps, newState) {
+        if (newProps.currentEnzymesList !== this.props.currentEnzymesList) {
+            this.filterList();
+        }
+    }
 
     handleChange = (event, index, value) => {
         this.setState({value: value});
@@ -52,16 +66,65 @@ export default class EnzymesGroups extends React.Component {
         return (this.props.currentUserEnzymesList.indexOf(enzyme) >= 0);
     };
 
+    filterList() {
+        var string = this.refs.enzymeField.value;
+        var currentEnzymesList = this.props.currentEnzymesList;
+        this.setState({ input: string });
+
+        var regex = new RegExp('.*', 'i');
+        if (string && string.length > 0) {
+            try {
+                regex = new RegExp(string.toLowerCase(), 'i');
+            } catch (e) {
+                return;
+            }
+            var filteredEnzymes = [];
+            currentEnzymesList.forEach(function(enzyme) {
+                if (regex.test(enzyme)) {
+                    filteredEnzymes.push(enzyme);
+                }
+            })
+            if (filteredEnzymes.length > 0) {
+                this.setState({ currentEnzymesList: filteredEnzymes });
+            } else {
+                this.setState({ currentEnzymesList: ["no matches"] });
+            }
+        } else {
+            this.setState({ currentEnzymesList: currentEnzymesList });
+        }
+    }
+
+    clearSearch() {
+        this.setState({ input: "", currentEnzymesList: this.props.currentEnzymesList });
+    }
+
     render() {
         var {
-            currentEnzymesList,
             currentUserEnzymesList,
             signals
         } = this.props;
-
-        var selectedStyle = { backgroundColor: '#00bcd4', fontWeight: 'bold', padding: '7px 10px' };
-
-        var notSelectedStyle = { backgroundColor: 'white', padding: '7px 10px' };
+        var currentEnzymesList = this.state.currentEnzymesList;
+        // #cceeff
+        var selectedStyle = {
+            backgroundColor:'#00bcd4',
+            borderBottom:'1px solid white',
+            color:'white',
+            padding:'10px 16px',
+            fontSize:'11pt',
+            height:'40px',
+            verticalAlign:'middle',
+            cursor:'pointer'
+        };
+        var notSelectedStyle = {
+            backgroundColor:'white',
+            borderBottom:'1px solid #E0E0E0',
+            color:'black',
+            padding:'10px 16px',
+            fontSize:'11pt',
+            height:'40px',
+            verticalAlign:'middle',
+            cursor:'pointer'
+        };
 
         let menuItems = [
             { payload: '1', text: 'Common' },
@@ -70,32 +133,53 @@ export default class EnzymesGroups extends React.Component {
             { payload: '4', text: 'MIT BioBricks' },
             { payload: '5', text: 'Fermentas Fast Digest' },
         ];
-
         return (
             <div>
                 <DropDownMenu
                     onChange = {this.handleChange}
                     menuItems = {menuItems}
-                    style = {{backgroundColor: "#311B92"}}
+                    style = {{backgroundColor: "#E0E0E0", zIndex:'20', width:'100%'}}
                     underlineStyle = {{opacity: 0}}
-                    iconStyle = {{color: "#000000"}}
-                    labelStyle = {{fontWeight: 650, fontSize: 17, color: "#FFFFFF"}}
+                    iconStyle = {{fill: "black"}}
+                    label="Enzyme Groups"
+                    labelStyle = {{fontWeight: 650, fontSize: 17, color: "black"}}
                     />
+
+                <input
+                    ref="enzymeField"
+                    type="text"
+                    placeholder="search"
+                    style={{paddingLeft:'5px', marginBottom:'5px', width:'355px'}}
+                    value={this.state.input.toString()}
+                    onChange={this.filterList.bind(this)}
+                    />
+
+                <div
+                    style={{cursor:'pointer', display:'inline', marginLeft:'-15px'}}
+                    onClick={this.clearSearch.bind(this)}>
+                    x
+                </div>
+
                 <List className={styles.managerListLeft}>
                     {currentEnzymesList.map((enzyme, index) => (
                         <div
                             style = { this.isSelected(enzyme) ? selectedStyle : notSelectedStyle }
                             id = { enzyme }
+                            key = { index }
                             onClick = {function () {
+                                        if (enzyme !== "no matches") {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
                                             enzyme: enzyme, action: "toggle" })
-                                        }}
+                                        }
+                                    }}
                             >
                             { enzyme }
                         </div>
                     ))}
                 </List>
+
                 <RaisedButton
+                    className={styles.raisedButton}
                     label="Add all"
                     secondary={true}
                     onTouchTap={function () {

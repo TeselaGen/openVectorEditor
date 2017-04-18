@@ -7,7 +7,6 @@ import Toggle from 'material-ui/lib/toggle';
 import IconButton from 'material-ui/lib/icon-button';
 import ArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 import ArrowLeft from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
-import Cancel from 'material-ui/lib/svg-icons/navigation/cancel';
 
 @Cerebral({
     bpsPerRow: ['bpsPerRow'],

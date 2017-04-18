@@ -35,7 +35,6 @@ export default class RestrictionEnzymeManager extends  React.Component {
         var tileTitleStyle = {
             textAlign: "center",
             color: "black",
-            opacity: "0.54",
         };
 
         var tileLeft = (
@@ -46,12 +45,8 @@ export default class RestrictionEnzymeManager extends  React.Component {
 
         var tileRight = (
             <div>
-                <RightTile /> <br />
+                <RightTile />
             </div>
-        );
-
-        var leftTileTitle = (
-            <h4 style={tileTitleStyle}>Enzymes groups</h4>
         );
 
         var rightTileTitle = (
@@ -65,20 +60,17 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     cellHeight={400}
                     padding={10}
                     >
-                    <GridTile 
-                        rows={1} 
-                        cols={1} 
-                        title={leftTileTitle} 
-                        titlePosition={"top"} 
-                        titleBackground="#E0E0E0"
+                    <GridTile
+                        rows={1}
+                        cols={1}
                         >
                         {tileLeft}
                     </GridTile>
-                    <GridTile 
-                        rows={1} 
-                        cols={1} 
-                        title={rightTileTitle} 
-                        titlePosition={"top"} 
+                    <GridTile
+                        rows={1}
+                        cols={1}
+                        title={rightTileTitle}
+                        titlePosition={"top"}
                         titleBackground="#E0E0E0"
                         >
                         {tileRight}
@@ -94,8 +86,8 @@ export default class RestrictionEnzymeManager extends  React.Component {
                 label={"Cancel"}
                 onTouchTap={function() {
                         signals.updateUserEnzymes({
-                            selectedButton: "Cancel", 
-                            currentUserList: currentUserEnzymesList, 
+                            selectedButton: "Cancel",
+                            currentUserList: currentUserEnzymesList,
                             originalUserList: originalUserEnzymesList
                         });
                         signals.restrictionEnzymeManagerDisplay();
@@ -106,8 +98,8 @@ export default class RestrictionEnzymeManager extends  React.Component {
                 style={{color: "#03A9F4"}}
                 onTouchTap={function() {
                         signals.updateUserEnzymes({
-                            selectedButton: "Apply", 
-                            currentUserList: currentUserEnzymesList, 
+                            selectedButton: "Apply",
+                            currentUserList: currentUserEnzymesList,
                             originalUserList: originalUserEnzymesList
                         });
                         signals.restrictionEnzymeManagerDisplay();
@@ -123,9 +115,8 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     autoDetectWindowHeight={true}
                     actions={actionButtons}
                     open={toOpen}
-                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "20px"}}
-                    > 
-                    <br />
+                    titleStyle={{padding:'50px 0 0 50px', color:"black", background:"white"}}
+                    >
                     {grid}
                 </Dialog>
             </div>

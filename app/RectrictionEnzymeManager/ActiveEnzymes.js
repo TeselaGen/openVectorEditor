@@ -31,13 +31,11 @@ export default class ActiveEnzymes extends React.Component {
 
         return (
             <div>
-                <br />
-                <br />
-                <br />
                 <List className={styles.managerListRight}>
                     {currentUserEnzymesList.map((enzyme, index) => (
                         <ListItem
-                            style={{maxHeight: 40}}
+                            key={index}
+                            style={{maxHeight:'40px', fontSize:'11pt', verticalAlign:'middle', borderBottom:'1px solid #E0E0E0'}}
                             primaryText={enzyme}
                             rightIconButton={
                                 <IconButton
@@ -54,8 +52,9 @@ export default class ActiveEnzymes extends React.Component {
                             />
                     ))}
                 </List>
-                <br />
+
                 <RaisedButton
+                    className={styles.raisedButton}
                     label="Remove all"
                     primary={true}
                     onTouchTap={function () {
