@@ -5,13 +5,13 @@ import {toOpenVectorEditor} from '../app/schemaConvert';
 
 var query = location.search;
 var id;
-if(!query) { // we're in vectorviewer
-    id = location.pathname;
-    id = id.replace(/\/entry\//, "");
-} else {
+// if(!query) { // we're in vectorviewer
+//     id = location.pathname;
+//     id = id.replace(/\/entry\//, "");
+// } else {
     id = query.match(/entryId=[\d]+/) + "";
     id = id.replace(/entryId=/, "");
-}
+// }
 
 var cookie = document.cookie;
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
@@ -35,7 +35,6 @@ request
               length: 0,
               sequence: ""
           }
-
         }
 
         //Editor is the React Component
