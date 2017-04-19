@@ -61,6 +61,9 @@ export default class RowView extends React.Component {
             if (newProps.showSidebar !== this.props.showSidebar) {
                 this.props.signals.adjustWidth();
             }
+            if (newProps.selectionLayer !== this.props.selectionLayer) {
+                this.props.signals.adjustWidth();
+            }
         }
     }
 
@@ -131,10 +134,15 @@ export default class RowView extends React.Component {
             }
         }
 
+        var caretGrabbed = false;
+        if (event.target.className.animVal && event.target.className.animVal.split(" ")[0] === "cursor") {
+            caretGrabbed = true;
+        }
+
         callback({
             shiftHeld: event.shiftKey,
             nearestBP,
-            caretGrabbed: event.target.className === "cursor"
+            caretGrabbed: event.target.className === "cursor" || caretGrabbed
         });
     }
 
@@ -144,6 +152,7 @@ export default class RowView extends React.Component {
             annotationVisibility,
             bpsPerRow,
             caretPosition,
+            charWidth,
             cutsites,
             cutsitesByName,
             orfs,
@@ -165,17 +174,87 @@ export default class RowView extends React.Component {
             spaceBetweenAnnotations
         } = this.props;
 
+
         var searchRows = this.getSearchOverlays();
+
+        var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // 40 accounts for padding, 1.2 accounts for spacing
+        var selectionStartRow = Math.floor(selectionLayer.start / bpsPerRow);
+        var selectionEndRow = Math.floor(selectionLayer.end / bpsPerRow);
+
+        var result = getXStartAndWidthOfRowAnnotation({start: selectionLayer.start, end: selectionLayer.start+1}, bpsPerRow, charWidth);
+        var xShift = -result.xStart*(charWidth-1); //move selection right
+        var width = result.width / 10;
+
+        var selectionLeftEdge = (
+            <svg className={styles.overlay}
+                preserveAspectRatio={'none'}
+                viewBox={xShift + " 0 " + rowWidth + " 1"}
+                >
+                <Draggable
+                    onDrag={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)
+                    }}
+                    onStart={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)
+                    }}
+                    onStop={signals.editorDragStopped}
+                    >
+                    <rect fill={"blue"} className={"cursor"} style={{cursor:'col-resize', zIndex:'200'}}
+                        x={0} y={0} width={width} height={1}
+                        />
+                </Draggable>
+            </svg>
+        );
+
+        result = getXStartAndWidthOfRowAnnotation({start: selectionLayer.end+1, end: selectionLayer.end+2}, bpsPerRow, charWidth);
+        xShift = -result.xStart*(charWidth-1); //move selection right
+        if (xShift === 0) {
+            result = getXStartAndWidthOfRowAnnotation({start: bpsPerRow-1, end: bpsPerRow}, bpsPerRow, charWidth);
+            xShift = -result.xStart //move selection right
+            xShift = xShift - result.xStart*(charWidth-1) + 3; // 3 for padding???
+        }
+
+        var selectionRightEdge = (
+            <svg className={styles.overlay}
+                preserveAspectRatio={'none'}
+                viewBox={xShift + " 0 " + rowWidth + " 1"}
+                >
+                <Draggable
+                    onDrag={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)
+                    }}
+                    onStart={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)
+                    }}
+                    onStop={signals.editorDragStopped}
+                    >
+                    <rect fill={"blue"} className={"cursor"} style={{cursor:'col-resize', zIndex:'200'}}
+                        x={0} y={0} width={width} height={1}
+                        />
+                </Draggable>
+            </svg>
+        );
+
+        var selectionStart;
+        var selectionEnd;
 
         var renderItem = (index,key) => {
             if (rowData[index]) {
                 if (!searchRows[index]) {
                     searchRows[index] = [];
                 }
+                selectionStart = selectionStartRow === index ? selectionLeftEdge : <div></div>
+                selectionEnd = selectionEndRow === index ? selectionRightEdge : <div></div>
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]} searchRows={searchRows[index]}/>
+                        <RowItem
+                            selectionStart={selectionStart}
+                            row={rowData[index]}
+                            searchRows={searchRows[index]}
+                            getNearestCursorPosition={this.getNearestCursorPositionToMouseEvent.bind(this)}
+                            selectionEnd={selectionEnd}
+                            />
                     </div>
                 );
             } else {
@@ -185,6 +264,7 @@ export default class RowView extends React.Component {
 
         if (showRow) {
             return (
+                <div>
                 <Draggable
                     bounds={{top: 0, left: 0, right: 0, bottom: 0}}
                     onDrag={(event) => {
@@ -215,6 +295,7 @@ export default class RowView extends React.Component {
                             />
                     </div>
                 </Draggable>
+                </div>
             );
         }
 

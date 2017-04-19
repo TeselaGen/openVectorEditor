@@ -2,7 +2,7 @@ var normalizePositionByRangeLength = require('ve-range-utils/normalizePositionBy
 var getRangeLength = require('ve-range-utils/getRangeLength');
 
 export default function handleEditorDragged({input: {
-    nearestBP,
+    nearestBP, resize
 }, state, output}) {
     var {
         sequenceLength, caretPosition, selectionLayer, sequenceData: {
