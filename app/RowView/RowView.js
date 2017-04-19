@@ -51,6 +51,16 @@ export default class RowView extends React.Component {
         }.bind(this)
     }
 
+    calculateLetterSpacing() {
+        let bpsPerRow = this.props.bpsPerRow;
+        let charWidth = this.props.charWidth;
+        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
+        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
+        let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
+        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
+        return letterSpacing;
+    }
+
     componentWillReceiveProps(newProps) {
         if (newProps.rowToJumpTo === "0" || parseInt(newProps.rowToJumpTo)) {
             var row = parseInt(newProps.rowToJumpTo);
@@ -104,13 +114,8 @@ export default class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
         var bpsPerRow = this.props.bpsPerRow;
         var charWidth = this.props.charWidth;
-
-        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
-        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
-        let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
-        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
-
         var nearestBP = 0;
+
         var target = event.target;
         while (target.className !== 'app-RowView-RowItem-RowItem---rowItem---2HAWf') {
             target = target.parentElement;
@@ -118,9 +123,11 @@ export default class RowView extends React.Component {
                 return;
             }
         }
+
         var rowNumber = parseInt(target.id);
         var row = this.props.rowData[rowNumber];
         var boundingRowRect = target.getBoundingClientRect();
+        var letterSpacing = this.calculateLetterSpacing();
         var textWidth = ((letterSpacing + 11.2) * bpsPerRow); // 10 for left & right padding around text box
 
         var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
@@ -174,21 +181,16 @@ export default class RowView extends React.Component {
             spaceBetweenAnnotations
         } = this.props;
 
-
         var searchRows = this.getSearchOverlays();
 
-        var rowWidth = bpsPerRow * charWidth * 1.2 + 40; // 40 accounts for padding, 1.2 accounts for spacing
-        var selectionStartRow = Math.floor(selectionLayer.start / bpsPerRow);
-        var selectionEndRow = Math.floor(selectionLayer.end / bpsPerRow);
+        var letterSpacing = this.calculateLetterSpacing();
+        var textWidth = ((letterSpacing + 11.2) * bpsPerRow);
 
-        var result = getXStartAndWidthOfRowAnnotation({start: selectionLayer.start, end: selectionLayer.start+1}, bpsPerRow, charWidth);
-        var xShift = -result.xStart*(charWidth-1); //move selection right
-        var width = result.width / 10;
-
+        var xShift = (textWidth * (selectionLayer.start%bpsPerRow) / bpsPerRow) + 18;
         var selectionLeftEdge = (
-            <svg className={styles.overlay}
+            <svg className={styles.overlay} style={{left: xShift}}
                 preserveAspectRatio={'none'}
-                viewBox={xShift + " 0 " + rowWidth + " 1"}
+                viewBox={"0 0 1 1"}
                 >
                 <Draggable
                     onDrag={(event) => {
@@ -199,25 +201,18 @@ export default class RowView extends React.Component {
                     }}
                     onStop={signals.editorDragStopped}
                     >
-                    <rect fill={"blue"} className={"cursor"} style={{cursor:'col-resize', zIndex:'200'}}
-                        x={0} y={0} width={width} height={1}
+                    <rect fill={"blue"} className={"cursor"}
+                        x={0} y={0} width={2} height={1}
                         />
                 </Draggable>
             </svg>
         );
 
-        result = getXStartAndWidthOfRowAnnotation({start: selectionLayer.end+1, end: selectionLayer.end+2}, bpsPerRow, charWidth);
-        xShift = -result.xStart*(charWidth-1); //move selection right
-        if (xShift === 0) {
-            result = getXStartAndWidthOfRowAnnotation({start: bpsPerRow-1, end: bpsPerRow}, bpsPerRow, charWidth);
-            xShift = -result.xStart //move selection right
-            xShift = xShift - result.xStart*(charWidth-1) + 3; // 3 for padding???
-        }
-
+        xShift = (textWidth * ((selectionLayer.end+1)%bpsPerRow) / bpsPerRow) + 18;
         var selectionRightEdge = (
-            <svg className={styles.overlay}
+            <svg className={styles.overlay} style={{left: xShift}}
                 preserveAspectRatio={'none'}
-                viewBox={xShift + " 0 " + rowWidth + " 1"}
+                viewBox={"0 0 1 1"}
                 >
                 <Draggable
                     onDrag={(event) => {
@@ -228,8 +223,8 @@ export default class RowView extends React.Component {
                     }}
                     onStop={signals.editorDragStopped}
                     >
-                    <rect fill={"blue"} className={"cursor"} style={{cursor:'col-resize', zIndex:'200'}}
-                        x={0} y={0} width={width} height={1}
+                    <rect fill={"blue"} className={"cursor"}
+                        x={0} y={0} width={2} height={1}
                         />
                 </Draggable>
             </svg>
@@ -237,6 +232,8 @@ export default class RowView extends React.Component {
 
         var selectionStart;
         var selectionEnd;
+        var selectionStartRow = Math.floor(selectionLayer.start / bpsPerRow);
+        var selectionEndRow = Math.floor(selectionLayer.end / bpsPerRow);
 
         var renderItem = (index,key) => {
             if (rowData[index]) {
