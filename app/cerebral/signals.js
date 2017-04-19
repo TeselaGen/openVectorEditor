@@ -17,19 +17,24 @@ export default function(options) {
     a = assign({}, a, options.actions) //override any actions here!
 
     var signals = {
-        /* These should be in alphabetical order and are split into edit-only 
-        and general (read or edit) signals 
-        Unused signals are edited out */
+        /* These should be in alphabetical order and are split into edit-only
+        and general (read or edit) signals
+        Unused or broken signals are edited out */
 
-        addAnnotations:
-            [a.addAnnotations],
+        addFeatureModalDisplay: [
+            a.addFeatureModalDisplay
+        ],
 
-        addFeatureModalDisplay:
-            [a.addFeatureModalDisplay],
+        adjustWidth: [
+            a.adjustWidth
+        ],
 
         caretMoved: [
-            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow',
-                { path: ['sequenceData', 'circular'], name: 'circular'}),
+            a.getData('selectionLayer', 'caretPosition', 'sequenceLength', 'bpsPerRow', {
+                path: ['sequenceData', 'circular'],
+                name: 'circular'
+            }),
+
             a.moveCaret,
             a.handleCaretMoved, {
                 caretMoved: [a.clearSelectionLayer, a.setCaretPosition],
@@ -37,11 +42,13 @@ export default function(options) {
             }
         ],
 
-        changeOrfMin:
-            [a.changeOrfMin],
+        changeOrfMin: [
+            a.changeOrfMin
+        ],
 
-        chooseEnzymeList:
-            [a.showSelectedEnzymeList],
+        chooseEnzymeList: [
+            a.showSelectedEnzymeList
+        ],
 
         // there's weird bracketing here to deal with the async superagent request
         clickLoadFile: [
@@ -51,12 +58,14 @@ export default function(options) {
             }
         ],
 
-        // copySelection: [
+        // copySelection: [ // earavina: not used for now
         //     a.copySelection, {
         //         success: [a.setData('clipboardData')],
         //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
         //     }
         // ],
+
+        cutsiteClicked: c.selectAnnotation(a),
 
         editorClicked: [
             a.checkBooleanState(['editorDrag', 'inProgress']), {
@@ -83,8 +92,9 @@ export default function(options) {
             }
         ],
 
-        editorDragStarted:
-            [a.handleEditorDragStarted],
+        editorDragStarted: [
+            a.handleEditorDragStarted
+        ],
 
         editorDragStopped: [
             [function pause ({input, state, output}) {
@@ -96,32 +106,24 @@ export default function(options) {
             a.handleEditorDragStopped
         ],
 
-        editUserEnzymes:
-            [a.editUserEnzymes],
+        editUserEnzymes: [
+            a.editUserEnzymes
+        ],
 
-        featureClicked:
-            c.selectAnnotation(a),
+        featureClicked: c.selectAnnotation(a),
 
-        // jumpToRow:
-        //     [a.jumpToRow],
+        jumpToRow: [
+            a.jumpToRow
+        ],
 
-        orfClicked:
-            c.selectAnnotation(a),
+        orfClicked: c.selectAnnotation(a),
 
-        // resizeCircularView: [
-        //     a.resizeCircularView
-        // ],
-
-        // resizeRowView: [
-        //     a.resizeRowView
-        // ],
-
-        restrictionEnzymeManagerDisplay:
-            [a.restrictionEnzymeManagerDisplay],
+        restrictionEnzymeManagerDisplay: [
+            a.restrictionEnzymeManagerDisplay
+        ],
 
         searchSequence: [
             a.searchSequence,
-            a.updateSearchLayers
         ],
 
         selectAll: [
@@ -134,35 +136,58 @@ export default function(options) {
             a.setSelectionLayer
         ],
 
-        // setCutsiteLabelSelection:
-        //     [a.setCutsiteLabelSelection],
+        // setCutsiteLabelSelection:[
+        //     a.setCutsiteLabelSelection
+        // ],
 
-        setSelectionLayer:
-            [a.setSelectionLayer],
+        setSelectionLayer: [
+            a.setSelectionLayer,
+        ],
 
-        // setTreeVal:
-        //     [a.setData],
+        setTreeVal: [
+            a.setData
+        ],
 
-        showChangeMinOrfSizeDialog:
-            [a.showChangeMinOrfSizeDialog],
+        showChangeMinOrfSizeDialog: [
+            a.showChangeMinOrfSizeDialog
+        ],
 
-        sidebarDisplay:
-            [a.sidebarDisplay],
+        sidebarDisplay: [
+            a.sidebarDisplay
+        ],
 
-        sidebarToggle:
-            [a.sidebarToggle],
+        sidebarToggle: [
+            a.sidebarToggle
+        ],
 
-        toggleAnnotationDisplay:
-            [a.toggleAnnotationDisplay],
+        toggleAnnotationDisplay: [
+            a.toggleAnnotationDisplay
+        ],
 
-        updateHistory:
-            [a.updateHistory],
+        toggleSearchBar: [
+            a.toggleSearchBar
+        ],
+        toggleShowCircular: [
+            a.toggleShowCircular
+        ],
+        toggleShowRow: [
+            a.toggleShowRow
+        ],
 
-        updateUserEnzymes:
-            [a.updateUserEnzymes],
+        updateHistory: [
+            a.updateHistory
+        ],
+
+        updateUserEnzymes: [
+            a.updateUserEnzymes
+        ],
 
     // ///////////////////////////////////
     // edit only actions
+
+        addAnnotations: [
+            a.addAnnotations
+        ],
 
         backspacePressed: a.addEditModeOnly([
             a.checkLayerIsSelected, {
@@ -171,8 +196,9 @@ export default function(options) {
             }
         ]),
 
-        clickSaveFile:
-            [a.saveToFile],
+        clickSaveFile: [
+            a.saveToFile
+        ],
 
         deleteFeatures: a.addEditModeOnly([
             a.deleteFeatures
@@ -187,14 +213,13 @@ export default function(options) {
                     },
                     a.insertSequenceData
                 ],
-                error: []
+                error: [a.displayError]
             },
             a.clearSelectionLayer
         ]),
 
         saveChanges: [
-            a.saveToServer, 
-            a.updateHistory
+            a.saveToServer,
         ],
 
         sequenceDataInserted: a.addEditModeOnly([

@@ -1,11 +1,37 @@
-module.exports = function sidebarToggle({input, state, output}) {
+module.exports = function sidebarToggle({input: {sidebar, annotation, view}, state, output}) {
     var currentSidebar = state.get('showSidebar');
-    // hide the rowview when the sidebar pops out
-    var currentRow = state.get('showRow');
+    if (sidebar) {
+        currentSidebar = false;
+    }
 
-    state.set('showRow', !currentRow);
+    // hide the rowview if viewing side-by-side when sidebar opens
+    if (!currentSidebar && state.get('showRow') && state.get('showCircular')) {
+        state.set('showRow', false);
+    }
+
+    // makesure sidebar open to correct tab
+    var type = 'Features';
+    if (annotation && annotation.numberOfCuts) {
+        type = 'Cutsites';
+    } else if (annotation && annotation.internalStartCodonIndices) {
+        type = 'Orfs';
+    }
+    state.set('sidebarType', type);
+
+    // keep view that was clicked on, close the other
+    if (view === "row") {
+        state.set('showRow', true);
+        state.set('showCircular', false);
+    } else if (view === "circular"){
+        state.set('showRow', false);
+        state.set('showCircular', true);
+    }
+
     state.set('showSidebar', !currentSidebar);
+<<<<<<< HEAD
     state.set('sidebarType', 'Features'); // features are default but making sure
+=======
+>>>>>>> 30fe1c7568082b99c2ed604888bf90de59def99d
 
     var sidebarCSS = {
         "transform": ["scaleX(1)", "scaleX(-1)"],
@@ -16,7 +42,7 @@ module.exports = function sidebarToggle({input, state, output}) {
         "WebkitTransform": ["scaleX(1)", "scaleX(-1)"]
     };
 
-    var idx = state.get('showSidebar') ? 1 : 0;
+    var idx = currentSidebar ? 0 : 1;
     var svgInput = document.getElementById("openFeatureDisplay");
     svgInput.style.transform = sidebarCSS["transform"][idx];
     svgInput.style.filter = sidebarCSS["filter"][idx];

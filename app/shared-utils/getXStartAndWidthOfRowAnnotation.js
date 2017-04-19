@@ -1,10 +1,8 @@
  module.exports = function getXStartAndWidthOfRowAnnotation(range, bpsPerRow, charWidth) {
-    // 24 bps long: 
-    // 
-    // if (range.end + 1 - range.start > 0 && )
-    // (range.end + 1 - range.start) % bpsPerRow
+    let widthInBps = (range.end + 1 - range.start);
+    let width = widthInBps * (charWidth-1) * 1.2;
     return {
-        xStart: (range.start % bpsPerRow) * charWidth,
-        width: ((range.end + 1 - range.start)) * charWidth,
+        xStart: (range.start % bpsPerRow) * 1.2, // 1.2 account for character spacing
+        width: width
     };
 };

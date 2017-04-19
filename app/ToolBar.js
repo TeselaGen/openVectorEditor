@@ -6,26 +6,27 @@ import { Decorator as Cerebral } from 'cerebral-view-react';
 import RestrictionEnzymeManager from './RectrictionEnzymeManager/RestrictionEnzymeManager';
 
 // Material UI
+import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
+import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
+import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
+import Dialog from 'material-ui/lib/dialog';
+import DownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
+import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
+import IconButton from 'material-ui/lib/icon-button';
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import InputIcon from 'material-ui/lib/svg-icons/action/input';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import PrintIcon from 'material-ui/lib/svg-icons/action/print';
+import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
+import RaisedButton from 'material-ui/lib/raised-button';
+import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
+import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
+import SearchIcon from 'material-ui/lib/svg-icons/action/search';
 import Toolbar from 'material-ui/lib/toolbar/toolbar';
 import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import IconButton from 'material-ui/lib/icon-button';
-import RaisedButton from 'material-ui/lib/raised-button';
-import InputIcon from 'material-ui/lib/svg-icons/action/input';
-import SearchIcon from 'material-ui/lib/svg-icons/action/search';
-import FileIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
-import SaveIcon from 'material-ui/lib/svg-icons/action/backup';
-import DownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
 import UploadIcon from 'material-ui/lib/svg-icons/file/file-upload';
-import PrintIcon from 'material-ui/lib/svg-icons/action/print';
-import CircularIcon from 'material-ui/lib/svg-icons/device/data-usage';
-import RailIcon from 'material-ui/lib/svg-icons/hardware/power-input';
-import RowIcon from 'material-ui/lib/svg-icons/content/text-format';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import TextField from 'material-ui/lib/text-field';
-import EnzymesIcon from 'material-ui/lib/svg-icons/action/track-changes';
-import BothViewsIcon from 'material-ui/lib/svg-icons/av/art-track';
 
+import Search from './Search.js'
 import styles from './tool-bar.css'
 
 @Cerebral({
@@ -35,20 +36,15 @@ import styles from './tool-bar.css'
     showCutsites: ['showCutsites'],
     showParts: ['showParts'],
     showFeatures: ['showFeatures'],
+    showRow: ['showRow'],
     showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
     history: ['history'],
+    historyIdx: ['historyIdx'],
+    savedIdx: ['savedIdx']
 })
 
 export default class ToolBar extends React.Component {
-
-    search() {
-        this.props.signals.searchSequence({ searchString: this.refs.searchField.getValue() });
-    }
-
-    clearSearch() {
-        this.props.signals.searchSequence({ searchString: "" });
-    }
 
     render() {
         var {
@@ -59,9 +55,12 @@ export default class ToolBar extends React.Component {
             showTranslations,
             showOrfs,
             showCutsites,
+            showRow,
             showSidebar,
             signals,
-            history
+            history,
+            historyIdx,
+            savedIdx
         } = this.props;
 
         var dialog = (
@@ -73,8 +72,11 @@ export default class ToolBar extends React.Component {
             <div style={{display: 'inline-block'}}>
                 <IconButton tooltip="Display Sequence View"
                     onTouchTap={function() {
-                        document.getElementById("circularView").setAttribute("style", "display: none");
-                        document.getElementById("rowView").setAttribute("style", "display: block");
+                        // document.getElementById("circularView").setAttribute("style", "display: none");
+                        // document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.toggleShowCircular({ showCircular: false });
+                        signals.toggleShowRow({ showRow: true });
+                        signals.adjustWidth();
                     }}
                     >
                     <RowIcon />
@@ -82,16 +84,21 @@ export default class ToolBar extends React.Component {
                 <IconButton tooltip="Display Side-by-side View"
                     disabled = { showSidebar }
                     onTouchTap={function() {
-                        document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: block");
+                        // document.getElementById("circularView").setAttribute("style", "display: block");
+                        // document.getElementById("rowView").setAttribute("style", "display: block");
+                        signals.toggleShowCircular({ showCircular: true });
+                        signals.toggleShowRow({ showRow: true });
+                        signals.adjustWidth();
                     }}
                     >
                     <BothViewsIcon />
                 </IconButton>
                 <IconButton tooltip="Display Circular View"
                     onTouchTap={function() {
-                        document.getElementById("circularView").setAttribute("style", "display: block");
-                        document.getElementById("rowView").setAttribute("style", "display: none");
+                        // document.getElementById("circularView").setAttribute("style", "display: block");
+                        // document.getElementById("rowView").setAttribute("style", "display: none");
+                        signals.toggleShowCircular({ showCircular: true });
+                        signals.toggleShowRow({ showRow: false });
                     }}
                     >
                     <CircularIcon />
@@ -102,23 +109,28 @@ export default class ToolBar extends React.Component {
         // upload and download files items
         var fileMenuItems = (
             <div>
-                <MenuItem key={1} primaryText="Download SBOL 1.1" insetChildren={true}
+                <MenuItem key={1} primaryText="Download SBOL 1.1" insetChildren={false}
+                    style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'sbol1'});
                     }} />
-                <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={true}
+                <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={false}
+                    style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'sbol2'});
                     }} />
-                <MenuItem key={3} primaryText="Download GenBank" insetChildren={true}
+                <MenuItem key={3} primaryText="Download GenBank" insetChildren={false}
+                    style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'genbank'});
                     }} />
-                <MenuItem key={4} primaryText="Download Fasta" insetChildren={true}
+                <MenuItem key={4} primaryText="Download Fasta" insetChildren={false}
+                    style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'fasta'});
                     }} />
-                <MenuItem key={5} style={{display: 'none'}} primaryText="Upload from file ..." insetChildren={true}
+                <MenuItem key={5} primaryText="Upload from file ..." insetChildren={false}
+                    style={{padding:'0 20px'}}
                     onClick={function () {
                         var element = document.getElementById("uploadFileInput");
                         element.click();
@@ -182,8 +194,7 @@ export default class ToolBar extends React.Component {
         };
 
         var saveButtonStatus = "saved";
-        var mostRecentHistory = history[history.length - 1]; //last element
-        if (mostRecentHistory && !mostRecentHistory.saved) {
+        if (historyIdx !== savedIdx) {
             saveButtonStatus = "unsaved";
         }
 
@@ -194,6 +205,7 @@ export default class ToolBar extends React.Component {
                         tooltip="Feature Details"
                         onTouchTap={function() {
                             signals.sidebarToggle();
+                            signals.adjustWidth();
                         }}
                         >
                         <InputIcon id="openFeatureDisplay"/>
@@ -209,10 +221,16 @@ export default class ToolBar extends React.Component {
                         >
                         <PrintIcon />
                     </IconButton>
-                    <IconButton tooltip="Search" onClick={this.search.bind(this)}>
+
+                    <IconButton
+                        tooltip="Search"
+                        onTouchTap={function() {
+                            signals.toggleSearchBar();
+                        }}>
                         <SearchIcon />
                     </IconButton>
-                    <TextField ref="searchField" hintText="search sequence" />
+
+                    <Search/>
 
                     { toggleFeatures }
 
@@ -238,10 +256,8 @@ export default class ToolBar extends React.Component {
                         >
                         <EnzymesIcon />
                     </IconButton>
-                    {dialog}
-
+                    { dialog }
                 </ToolbarGroup>
-
             </Toolbar>
         );
     }

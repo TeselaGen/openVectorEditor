@@ -13,24 +13,40 @@ var enzymeList = require('ve-sequence-utils/enzymeList.json');
 // here's the enzyme lists from old VE so we can pick and choose / merge them
 const COMMON_ENZYMES = require('../constants/common-enzymes');
 const FAST_DIGEST = require('../constants/fermentas-fast-enzymes');
-const BERKELEY_BB = ["EcoRI", "BglII", "BamHI", "XhoI"];
-const MIT_BB = ["EcoRI", "XbaI", "SpeI", "PstI"];
+const REBASE = require('../constants/rebase-enzymes');
+const BERKELEY_BB = require('../constants/berkeley-biobrick-enzymes');
+const MIT_BB = require('../constants/mit-biobrick-enzymes');
 
 module.exports = {
     // simple vars
     allowPartialAnnotationsOnCopy: false,
     annotationHeight: 4,
     averageRowHeight: 100,
+    berkeleyBBEnzymes: BERKELEY_BB,
     bottomSpacerHeight: 0,
+    bpsPerRow: 10,
     caretPosition: 0,
     charHeight: 15,
-    charWidth: 15,
+    charWidth: 25,
     clipboardData: null,
+    commonEnzymes: COMMON_ENZYMES,
+    currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
+    currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
     embedded: true,
+    fastDigestEnzymes: FAST_DIGEST,
+    history: [],
+    historyIdx: -1,
     mapViewTickSpacing: 40,
     minimumOrfSize: 300,
+    MITBBEnzymes: MIT_BB,
+    originalUserEnzymesList: COMMON_ENZYMES, //state of user enzymes list at the moment opened
     readOnly: true,
+    rebaseEnzymes: REBASE,
     rowToJumpTo: null,
+    savedIdx: 0,
+    searchLayers: [],
+    searchString: "",
+    sequenceHeight: 20,
     showAddFeatureModal: false,
     showAxis: true,
     showCircular: true,
@@ -43,6 +59,7 @@ module.exports = {
     showRestrictionEnzymeManager: false,
     showReverseSequence: true,
     showRow: true,
+    showSearchBar: false,
     showSequence: true,
     showSidebar: false,
     showTranslations: false,
@@ -50,14 +67,10 @@ module.exports = {
     spaceBetweenAnnotations: 3,
     tickSpacing: 10,
     topSpacerHeight: 0,
+    undo: false,
     uppercase: true,
-    // (())
-    addEnzymeButtonValue: 'add',
-    addAllEnzymesButtonValue: 'add all',
-    removeEnzymeButtonValue: 'remove',
-    removeAllEnzymesButtonValue: 'remove all',
-    cancelButtonValue: 'Cancel',
-    applyButtonValue: 'Apply',
+    userEnzymeList: COMMON_ENZYMES, //user enzymes applied to the view
+
     // complex vars
     circularViewDimensions: {
         height: 500,
@@ -74,16 +87,6 @@ module.exports = {
         initiatedByGrabbingCaret: false,
         bpOfFixedCaretPosition: 0,
     },
-    history: [],
-    mapViewDimensions: {
-        height: 500,
-        width: 500
-    },
-    rowViewDimensions: {
-        height: 500,
-        width: 500
-    },
-    searchLayers: [],
     selectionLayer: {
         start: -1,
         end: -1,
@@ -98,37 +101,8 @@ module.exports = {
        parts: [],
        circular: false
     },
-    // (()) why so many vars
-    userEnzymeList: COMMON_ENZYMES, //user enzymes applied to the view
-    commonEnzymes: COMMON_ENZYMES,
-    berkeleyBBEnzymes: BERKELEY_BB,
-    MITBBEnzymes: MIT_BB,
-    fastDigestEnzymes: FAST_DIGEST,
-    currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
-    originalUserEnzymesList: COMMON_ENZYMES, //state of user enzymes list at the moment when RestrictionEnzymeManager was opened
-    currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
-    viewportDimensions: {
-        height: 500,
-        width: 500
-    },
+
     // derived data - can't alphabetize because of dependencies  :(
-    bpsPerRow: deriveData([
-        ['rowViewDimensions', 'width'],
-        ['charWidth'],
-        ['showCircular'],
-        ['showRow'],
-        function(rowViewDimensionsWidth, charWidth, showCircular, showRow) {
-            // var charsInRow = Math.floor(rowViewDimensionsWidth / charWidth);
-            // var gaps = Math.floor(charsInRow / 10) - 1;
-            // return Math.floor((charsInRow - gaps) / 10) * 10;
-            // return charsInRow;
-            if(showCircular && showRow) {
-                return 45;
-            } else {
-                return 90;
-            }
-        }
-    ]),
     userEnzymes: deriveData([
         ['userEnzymeList'],
         function(userEnzymeList) {
@@ -146,10 +120,19 @@ module.exports = {
     cutsites: deriveData([
         ['cutsitesByName'],
         function (cutsitesByName) {
-            var cutsitesArray = [];
+            var cutsites = [];
             Object.keys(cutsitesByName).forEach(function (key) {
-                cutsitesArray = cutsitesArray.concat(cutsitesByName[key]);
+                cutsites = cutsites.concat(cutsitesByName[key]);
             });
+
+            var cutsitesArray = [];
+            for (let i = 0; i < cutsites.length; i++) {
+                var cutsite = Object.assign({}, cutsites[i])
+                cutsite.id = i;
+                cutsite.name = cutsite.restrictionEnzyme.name;
+                cutsite.numberOfCuts = cutsitesByName[cutsite.restrictionEnzyme.name].length;
+                cutsitesArray.push(cutsite);
+            }
             return cutsitesArray;
         }
     ]),
@@ -169,15 +152,6 @@ module.exports = {
         ['sequenceData'],
         function(sequenceData) {
             return sequenceData.sequence ? sequenceData.sequence.length : 0;
-        }
-    ]),
-    mapViewCharWidth: deriveData([
-        ['mapViewDimensions',
-            'width'
-        ],
-        ['sequenceLength'],
-        function(mapViewDimensionsWidth, sequenceLength) {
-            return mapViewDimensionsWidth / sequenceLength;
         }
     ]),
     selectedSequenceString: deriveData([
@@ -224,24 +198,10 @@ module.exports = {
             return prepareRowData(sequenceData, bpsPerRow);
         }
     ]),
-    mapViewRowData: deriveData([
-        ['combinedSequenceData'],
-        ['sequenceLength'],
-        function(sequenceData, sequenceLength) {
-            return prepareRowData(sequenceData, sequenceLength);
-        }
-    ]),
     circularViewData: deriveData([
         ['combinedSequenceData'],
         function(combinedSequenceData) {
             return prepareCircularViewData(combinedSequenceData);
-        }
-    ]),
-    circularAndLinearTickSpacing: deriveData([
-        ['sequenceLength'],
-        function(sequenceLength) {
-            var a = Math.ceil(sequenceLength / 100) * 10;
-            return a
         }
     ]),
     totalRows: deriveData([

@@ -5,41 +5,59 @@ import StatusBar from './StatusBar';
 import SideBar from './SideBar';
 import styles from './sequence-editor.css';
 
+var assign = require('lodash/object/assign');
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var CircularView = require('./CircularView/CircularView');
 var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
-var combokeys;
 var RowView = require('./RowView/RowView');
+var combokeys;
 
 @Cerebral({
-    bpsPerRow: ['bpsPerRow'],    
-    embedded: ['embedded'],
-    sequenceLength: ['sequenceLength'],
-    totalRows: ['totalRows'],
-    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
-    selectedSequenceString: ['selectedSequenceString'],
+    bpsPerRow: ['bpsPerRow'],
     caretPosition: ['caretPosition'],
-    sequenceData: ['sequenceData'],
-    selectionLayer: ['selectionLayer'],
     clipboardData: ['clipboardData'],
+    cutsites: ['cutsites'],
+    cutsitesByName: ['cutsitesByName'],
+    embedded: ['embedded'],
+    history: ['history'],
+    historyIdx: ['historyIdx'],
+    newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
+    orfData: ['orfData'],
+    selectedSequenceString: ['selectedSequenceString'],
+    searchLayers: ['searchLayers'],
+    selectionLayer: ['selectionLayer'],
+    sequenceData: ['sequenceData'],
+    sequenceLength: ['sequenceLength'],
     showCircular: ['showCircular'],
-    showLinear: ['showLinear'],
     showRow: ['showRow'],
+    showSearchBar: ['showSearchBar'],
     showSidebar: ['showSidebar'],
     sidebarType: ['sidebarType'],
-    cutsitesByName: ['cutsitesByName'],
-    orfData: ['orfData'],
+    totalRows: ['totalRows']
 })
 
 export default class SequenceEditor extends React.Component {
+
+    componentWillMount() {
+        // still trying to fix cross origin problem
+        this.props.sequenceData.features.forEach(function(feature) {
+            if (!feature.end || feature.end === 0) {
+                this.props.signals.updateFeature({ feature : feature });
+            }
+        }.bind(this));
+        // this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
+    }
+
     componentDidMount() {
         var {
             sequenceDataInserted,
             backspacePressed,
             selectAll,
             selectInverse,
+            updateHistory
         } = this.props.signals;
+
         var self = this;
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
@@ -93,6 +111,22 @@ export default class SequenceEditor extends React.Component {
             selectInverse();
             event.stopPropagation();
         });
+        combokeys.bindGlobal('command+z', function(event) { // Handle shortcut
+            updateHistory({ idx: -1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+y', function(event) { // Handle shortcut
+            updateHistory({ idx: 1 });
+            event.preventDefault();
+            event.stopPropagation();
+        });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.sequenceData !== prevProps.sequenceData) {
+            this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
+        }
     }
 
     // copy and paste events are handled by a listener in the DOM element as listed below
@@ -131,18 +165,17 @@ export default class SequenceEditor extends React.Component {
 
     render() {
         var {
+            clipboardData,
+            cutsites,
             embedded,
+            orfData,
             selectedSequenceString,
             sequenceData,
             showCircular,
             showRow,
+            showSearchBar,
             showSidebar,
-            sidebarType,
-            cutsitesByName,
-            orfData,
-            showRestrictionEnzymeManager,
-            readOnly,
-            clipboardData
+            sidebarType
         } = this.props;
 
         var table;
@@ -156,14 +189,14 @@ export default class SequenceEditor extends React.Component {
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
-        if (oneViewOnly) {
-            circularStyle = Object.assign(circularStyle, {margin: '0 15%'})
-        }
         var rowStyle = {}
         if(embedded || !showRow) rowStyle = {display: 'none'}
 
-        // if(showCircular && showRow) this.setState({ bpsPerRow: 45 })
 
+        var borderStyle = 'none';
+        if (showSearchBar) {
+            borderStyle = '1px solid rgb(232,232,232)';
+        }
         // this should probably move to the sidebar file
         if (sidebarType === 'Features') {
             table = (
@@ -175,7 +208,7 @@ export default class SequenceEditor extends React.Component {
         } else if (sidebarType === 'Cutsites') {
             table = (
                 <SideBar
-                   annotations={cutsitesByName}
+                   annotations={cutsites}
                    annotationType={sidebarType}
                    />
             );
@@ -188,6 +221,11 @@ export default class SequenceEditor extends React.Component {
             );
         }
 
+        var toolbarStyle = '0px';
+        if (showSearchBar) {
+            toolbarStyle = '60px';
+        }
+
         return (
             <div ref="sequenceEditor" className={styles.app}>
                 <Clipboard
@@ -196,20 +234,20 @@ export default class SequenceEditor extends React.Component {
                     onPaste={this.handlePaste.bind(this)}
                 />
 
-                <div className={styles.head}>
+                <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />
                 </div>
 
-                <div className={styles.content} id="allViews">
+                <div className={styles.content} id="allViews" style={{borderTop: borderStyle}}>
                     <div className={styles.sideBarSlot} id="sideBar" style={ sidebarStyle }>
                       {table}
                     </div>
 
                     <div className={styles.circularViewSlot} id="circularView" style={ circularStyle }>
-                        <CircularView />
+                        <CircularView showCircular={showCircular}/>
                     </div>
                     <div className={styles.rowViewSlot} id="rowView" style={ rowStyle }>
-                        <RowView sequenceData={sequenceData} />
+                        <RowView showRow={showRow} sequenceData={sequenceData} />
                     </div>
                 </div>
 

@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
-
-// todo: add keyboard auto-complete for dropdown boxes
 import Dialog from 'material-ui/lib/dialog';
 import AddBoxIcon from 'material-ui/lib/svg-icons/content/add-box';
 import IndeterminateCheckBoxIcon from 'material-ui/lib/svg-icons/toggle/indeterminate-check-box';
@@ -10,15 +8,16 @@ import FlatButton from 'material-ui/lib/flat-button';
 import Checkbox from 'material-ui/lib/checkbox';
 import ModeEdit from 'material-ui/lib/svg-icons/editor/mode-edit';
 import ArrowDropDown from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
-
 import SidebarDetail from './SidebarDetail';
 import SidebarEdit from './SidebarEdit';
 import styles from './side-bar.css'
 
+var assign = require('lodash/object/assign');
+
 @Cerebral({
+    bpsPerRow: ['bpsPerRow'],
     showAddFeatureModal: ['showAddFeatureModal'],
     showOrfModal: ['showOrfModal'],
-    cutsites: ['cutsites'],
     minimumOrfSize: ['minimumOrfSize'],
     readOnly: ['readOnly'],
     sidebarType: ['sidebarType'],
@@ -32,58 +31,56 @@ export default class SideBar extends React.Component {
     constructor() {
         super(arguments);
         this.state = {
-            selectedFeatures: [],
-            selectedOrfs: [],
-            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
             editFeature: -1,
+            featureError: '',
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
-            featureError: false,
+            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
+            selectedCutsites: [],
+            selectedFeatures: [],
+            selectedOrfs: [],
         };
     }
 
     componentWillReceiveProps(newProps) {
-        // newProps are passed in from things like switching tabs or clicking on the circular view
         let signals = this.props.signals;
         if (newProps.selectionLayer.selected && newProps.selectionLayer.id) {
-            var found = false;
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
 
+                // open sidebar to correct tab
+                var type = 'Features';
+                if (annotation.numberOfCuts) {
+                    type = 'Cutsites';
+                } else if (annotation.internalStartCodonIndices) {
+                    type = 'Orfs';
+                }
+                signals.sidebarDisplay({ type: type });
+
+                // highlighting is stupid if the annotation's type isn't even being shown on the display
+                signals.toggleAnnotationDisplay({ type: type, value: true });
+
                 if (annotation.id === newProps.selectionLayer.id) {
-                    found = true;
-                    if (newProps.annotationType === 'Features') {
-                        // highlighting is stupid if features aren't even being shown on the display
-                        signals.toggleAnnotationDisplay({type: 'Features', value: true});
+                    if (type === 'Features') {
                         this.setState({selectedFeatures: [annotation.id]});
                     }
-                    if (newProps.annotationType === 'Orfs') {
-                        // highlighting is stupid if orfs aren't even being shown on the display
-                        signals.toggleAnnotationDisplay({type: 'Orfs', value: true});
+                    if (type === 'Cutsites') {
+                        this.setState({selectedCutsites: [annotation.id]});
+                    }
+                    if (type === 'Orfs') {
                         this.setState({selectedOrfs: [annotation.id]});
                     }
                 }
             }
 
-            // if feature/orf wasn't found on current tab, jump to the other tab (this works because there's only 2 tabs with selectable objects)
-            if (!found) {
-                newProps.annotationType === 'Features' ? signals.sidebarDisplay({ type: 'Orfs' }) : signals.sidebarDisplay({ type: 'Features' })
-            }
-
-        // deselecting a feature/orf from the circular view clears selected features/orfs
+        // deselecting a feature/orf from the circular view clears selected annotations
         } else if (newProps.annotationType === 'Features' && this.state.selectedFeatures.length === 1){
             this.setState({selectedFeatures: []});
+        } else if (newProps.annotationType === 'Cutsites' && this.state.selectedCutsites.length === 1) {
+            this.setState({selectedCutsites: []});
         } else if (newProps.annotationType === 'Orfs' && this.state.selectedOrfs.length === 1) {
             this.setState({selectedOrfs: []});
-        }
-    }
-
-    /* this really shouldn't be in the sidebar, but it works for now because the sidebar
-       updates state anytime a change to sequenceData is made (whether in the sidebar or not) */
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.sequenceData !== prevProps.sequenceData) {
-            this.props.signals.updateHistory({ newHistory: prevProps.sequenceData });
         }
     }
 
@@ -110,7 +107,24 @@ export default class SideBar extends React.Component {
         }
         this.setState({ selectedFeatures: selected });
         if (this.state.selectedFeatures.length === 1) {
-            this.annotationHighlight(this.state.selectedFeatures[0]);
+            this.annotationHighlight(selected[0]);
+        } else {
+            this.annotationHighlight(null);
+        }
+    }
+
+    onCutsiteSelection(id) {
+        let selected = this.state.selectedCutsites;
+        let idx = selected.indexOf(id);
+        if (idx === -1) {
+            selected.push(id);
+        } else {
+            selected.splice(idx, 1);
+        }
+        this.setState({ selectedCutsites: selected });
+
+        if (selected.length === 1) {
+            this.annotationHighlight(selected[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -127,7 +141,7 @@ export default class SideBar extends React.Component {
         this.setState({ selectedOrfs: selected });
 
         if (selected.length === 1) {
-            this.annotationHighlight(this.state.selectedOrfs[0]);
+            this.annotationHighlight(selected[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -135,13 +149,18 @@ export default class SideBar extends React.Component {
 
     annotationHighlight(id) {
         let signals = this.props.signals;
+        let bpsPerRow = this.props.bpsPerRow;
         if (id) {
             let annotations = this.props.annotations;
             for (var i=0; i<annotations.length; i++) {
                 if (annotations[i].id === id) {
                     var annotation = annotations[i];
+                    break;
                 }
             }
+            var row = Math.floor((annotation.start-1)/(bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            signals.jumpToRow({rowToJumpTo: row});
             signals.featureClicked({annotation: annotation});
         } else {
             signals.featureClicked({annotation: {}});
@@ -155,7 +174,11 @@ export default class SideBar extends React.Component {
 
     editFeature(currentFeature) {
         if (parseInt(currentFeature.start) === parseInt(currentFeature.end)) {
-            this.setState({featureError: true});
+            this.setState({ featureError: 'Feature length cannot be zero' });
+            return;
+        }
+        if (currentFeature.badType) {
+            this.setState({ featureError: 'Unrecognized feature type' });
             return;
         }
         this.props.signals.updateFeature({ feature: currentFeature });
@@ -163,7 +186,7 @@ export default class SideBar extends React.Component {
     }
 
     closeErrorDialog() {
-        this.setState({featureError: false});
+        this.setState({featureError: ''});
     }
 
     deleteFeatures() {
@@ -186,7 +209,11 @@ export default class SideBar extends React.Component {
 
     addFeature() {
         if (parseInt(this.state.newFeature.start) === parseInt(this.state.newFeature.end)) {
-            this.setState({featureError: true});
+            this.setState({featureError: 'Feature length cannot be zero'});
+            return;
+        }
+        if (this.state.newFeature.badType) {
+            this.setState({ featureError: 'Unrecognized feature type' });
             return;
         }
         let temporaryId = this.props.annotations.length;
@@ -275,7 +302,6 @@ export default class SideBar extends React.Component {
     render() {
         var {
             annotations,
-            cutsites,
             minimumOrfSize,
             readOnly,
             signals,
@@ -286,6 +312,7 @@ export default class SideBar extends React.Component {
             sequenceLength,
             sequenceData
         } = this.props;
+
         var sidebarContent;
         var controls;
         var tableHeaderCells;
@@ -364,12 +391,17 @@ export default class SideBar extends React.Component {
 
         // FEATURE DETAIL
         var annotationForm;
+        var sorted = annotations.slice(0);
+        sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
+
         if (this.state.editFeature > -1 && this.props.annotationType === "Features") {
             let id = this.state.editFeature;
             var annotation;
-            for (var i=0; i<annotations.length; i++) {
-                if (annotations[i].id === id) {
-                    annotation = annotations[i];
+            var rowPosition;
+            for (var i=0; i<sorted.length; i++) {
+                if (sorted[i].id === id) {
+                    annotation = sorted[i];
+                    rowPosition = i;
                 }
             }
 
@@ -377,7 +409,9 @@ export default class SideBar extends React.Component {
                 <SidebarEdit
                     editFeature={this.editFeature.bind(this)}
                     sequenceLength={sequenceLength}
-                    feature={ annotation }
+                    feature={annotation}
+                    rowPosition={rowPosition}
+                    totalFeatures={sorted.length}
                     />
             )
         }
@@ -386,7 +420,7 @@ export default class SideBar extends React.Component {
         if (this.props.annotationType === 'Features') {
             tableHeaderCells = [];
             tableHeaderCells.push(
-                <th key='feathead0' style={{width:'30%', color:'black'}}>name
+                <th key='feathead0' style={{width:'28%', color:'black'}}>name
                     <IconButton onClick={this.onFeatureSort.bind(this, 'name')}
                     id='Features_name'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
@@ -410,7 +444,7 @@ export default class SideBar extends React.Component {
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='feathead3' style={{textAlign:'center', width:'10%', color:'black'}}>strand
+                <th key='feathead3' style={{textAlign:'center', width:'15%', color:'black'}}>strand
                     <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
                     id='Features_forward'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
@@ -420,8 +454,6 @@ export default class SideBar extends React.Component {
             // placeholder column for edit-icon
             tableHeaderCells.push(<th key='null' style={{minWidth: '48px'}}> </th>);
 
-            var sorted = annotations.slice(0);
-            sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
             annotationTableRows = [];
             for (let i = 0; i < sorted.length; i++) {
                 let annotationTableCells = [];
@@ -452,6 +484,9 @@ export default class SideBar extends React.Component {
                                 cellEntry = "-";
                             }
                         }
+                        if (cellEntry.length > 20) {
+                            cellEntry = cellEntry.slice(0, 17) + "...";
+                        }
                         annotationTableCells.push(
                             <td style={cellStyle} key={j}
                                 onClick={this.onFeatureSelection.bind(this, sorted[i].id)}>
@@ -462,7 +497,7 @@ export default class SideBar extends React.Component {
                     // show edit-icon if row is selected
                     var rowStyle = { backgroundColor: 'white' };
                     if (this.state.selectedFeatures.indexOf(sorted[i].id) !== -1) {
-                        rowStyle = { backgroundColor: '#E1E1E1' };
+                        rowStyle = { backgroundColor: 'lightblue' };
                         let cellStyle = {textAlign: 'center', cursor: 'pointer'};
                         var editCell = (
                             <td key={j+1}>
@@ -544,90 +579,23 @@ export default class SideBar extends React.Component {
                     </IconButton>
                 </th>);
 
-            // this is horrible and nasty and i'm sorry. i'm trying to sort by an attribute of an object, in an array, in a hash...
-            var sorted = Object.assign({}, annotations);
-
-            // turning hash into an array to be sorted
-            var array = [];
-            for (var key in sorted) {
-                let numberOfCuts = sorted[key].length
-                for (var i=0; i<numberOfCuts; i++) {
-                    let obj = Object.assign({}, sorted[key][i]);
-                    obj.name = key;
-                    obj.numberOfCuts = numberOfCuts;
-                    array.push(obj);
-                }
-            }
-            array = array.sort(this.dynamicSort(this.state.cutsiteOrder));
-
-            // turning array back into hash for rendering
-            sorted = {};
-            for (var j=0; j<array.length; j++) {
-                let name = array[j].name;
-
-                // if cuts with the same name happen to end up together again after the sort, awesome
-                if (j>0 && array[j-1].name === name) {
-                    sorted[name].push(array[j]);
-                } else {
-                    // otherwise, a hacky workaround for creating multiple entries with the same key
-                    while (sorted[name]) {
-                        name = name + " ";
-                    }
-                    sorted[name] = [array[j]];
-                }
-            }
+            var sorted = annotations.slice(0);
+            sorted = sorted.sort(this.dynamicSort(this.state.cutsiteOrder));
 
             annotationTableRows = [];
             var color = '#FFFFFF';
-            var dummyIdx = 0; // just to make react stop screaming at me about unique keys
-            for (var enzyme in sorted) { // this is an object so we loop differently
+            var highlight;
+
+            for (var i=0; i<sorted.length; i++) {
                 let annotationTableCells = [];
-                let annotation = sorted[enzyme];
-                // first loop for enzyme name and number of cuts + first cut
-                for (let i = 0; i < 4; i++) {
-                    let column = tableHeaderCells[i].props.children.toString().split(',')[0];
-                    let cellStyle = {};
-                    let cellEntry = '';
-                    let cut = annotation[0];
+                let cut = sorted[i];
 
-                    if(column === 'name') {
-                        cellStyle = {};
-                        cellEntry = enzyme;
-                    }
-                    if (column === '# cuts') {
-                        cellStyle = {textAlign: 'center'};
-                        cellEntry = cut['numberOfCuts'] || annotation.length;
-                    }
-                    if (column === 'position') {
-                        cellEntry = cut['start'] + " - " + cut['end'];
-
-                    }
-                    if (column === 'strand') {
-                        cellStyle = {textAlign: 'center'};
-                        if (cut['forward']) {
-                            cellEntry = "+";
-                        } else {
-                            cellEntry = "-";
-                        }
-                    }
-                    annotationTableCells.push(
-                        <td style={cellStyle} key={i}>{ cellEntry }</td>);
-                }
-                color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
-                annotationTableRows.push(
-                    <tr key={'rowA'+dummyIdx}
-                        style={{backgroundColor: color}}>
-                        { annotationTableCells }
-                    </tr>);
-
-                annotationTableCells = [];
-                // sub loop for each additional cut
-                for (var j=1; j<annotation.length; j++) {
+                // if the prev row was same enzyme, lump them together, leave off name & #cuts columns
+                if (i>0 && sorted[i-1].name === sorted[i].name) {
                     for (let k = 0; k < 4; k++) {
                         let column = tableHeaderCells[k].props.children.toString().split(',')[0];
                         let cellEntry = '';
                         let cellStyle = {};
-                        let cut = annotation[j];
 
                         // if it's name or number of cuts it'll stay blank
                         if (column === 'position') {
@@ -642,17 +610,61 @@ export default class SideBar extends React.Component {
                                 cellEntry = "-";
                             }
                         }
+                        if (cellEntry.length > 20) {
+                            cellEntry = cellEntry.slice(0, 17) + "...";
+                        }
                         annotationTableCells.push(
                             <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
-                    annotationTableRows.push(
-                        <tr key={'rowB'+dummyIdx}style={{backgroundColor: color}}>
-                            { annotationTableCells }
-                        </tr>);
 
-                    annotationTableCells = [];
+                // otherwise, alternate background color and create new row with all columns
+                } else {
+                    color = color === '#F0F0F0' ? '#FFFFFF' : '#F0F0F0';
+                    for (let j = 0; j < 4; j++) {
+                        let column = tableHeaderCells[j].props.children.toString().split(',')[0];
+                        let cellStyle = {};
+                        let cellEntry = '';
+
+                        if(column === 'name') {
+                            cellStyle = {};
+                            cellEntry = cut['name'];
+                        }
+                        if (column === '# cuts') {
+                            cellStyle = {textAlign: 'center'};
+                            cellEntry = cut['numberOfCuts'];
+                        }
+                        if (column === 'position') {
+                            cellEntry = cut['start'] + " - " + cut['end'];
+
+                        }
+                        if (column === 'strand') {
+                            cellStyle = {textAlign: 'center'};
+                            if (cut['forward']) {
+                                cellEntry = "+";
+                            } else {
+                                cellEntry = "-";
+                            }
+                        }
+                        if (cellEntry.length > 20) {
+                            cellEntry = cellEntry.slice(0, 17) + "...";
+                        }
+                        annotationTableCells.push(
+                            <td style={cellStyle} key={j}>{ cellEntry }</td>);
+                    }
                 }
-                dummyIdx += 1;
+
+                if (this.state.selectedCutsites.indexOf(sorted[i].id) !== -1) {
+                    highlight = 'lightblue';
+                } else {
+                    highlight = color;
+                }
+
+                annotationTableRows.push(
+                    <tr key={i}
+                        style={{backgroundColor: highlight}}
+                        onClick={this.onCutsiteSelection.bind(this, sorted[i].id)}>
+                        { annotationTableCells }
+                    </tr>);
             }
         }
 
@@ -704,7 +716,6 @@ export default class SideBar extends React.Component {
                     let column = tableHeaderCells[j].props.children.toString().split(',')[0];
                     let cellEntry = '';
                     let cellStyle = {};
-
                     if (column === 'position') {
                         cellStyle = {};
                         cellEntry = annotation['start'] + " - " + annotation['end'];
@@ -725,13 +736,15 @@ export default class SideBar extends React.Component {
                         cellStyle = {};
                         cellEntry = annotation[column].toString();
                     }
-
+                    if (cellEntry.length > 20) {
+                        cellEntry = cellEntry.slice(0, 17) + "...";
+                    }
                     annotationTableCells.push(
                         <td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
                 var rowStyle = { backgroundColor: 'white' };
                 if (this.state.selectedOrfs.indexOf(sorted[i].id) !== -1) {
-                    rowStyle = { backgroundColor: '#E1E1E1' };
+                    rowStyle = { backgroundColor: 'lightblue' };
                 }
                 annotationTableRows.push(
                     <tr style={rowStyle} key={i}
@@ -788,7 +801,8 @@ export default class SideBar extends React.Component {
                         this.state.newFeature['start'] < 0 || this.state.newFeature['start'] > sequenceLength ||
                         this.state.newFeature['end'] < 0 || this.state.newFeature['end'] > sequenceLength ||
                         this.state.newFeature['strand']*this.state.newFeature['strand'] !== 1 ||
-                        this.state.newFeature.start === this.state.newFeature.end
+                        this.state.newFeature.start === this.state.newFeature.end ||
+                        this.state.newFeature.badType
                     }
                     />
             </div>
@@ -820,12 +834,12 @@ export default class SideBar extends React.Component {
 
         var errorDialog = (
             <Dialog
-                open={this.state.featureError}
+                open={this.state.featureError.length > 0}
                 onRequestClose={this.closeErrorDialog.bind(this)}
                 style={{height: '500px', position: 'absolute', maxWidth: '500px'}}
                 actions={[<FlatButton onClick={this.closeErrorDialog.bind(this)}>ok</FlatButton>]}
                 >
-                Feature length cannot be zero
+                {this.state.featureError}
             </Dialog>
         );
 
@@ -834,7 +848,7 @@ export default class SideBar extends React.Component {
 
                 { topTabs }
 
-                <div className={styles.tableContainer}>
+                <div className={styles.tableContainer} id="tableContainer">
                     <table ref="sideBar">
                         <thead><tr>{ tableHeaderCells }</tr></thead>
                         <tbody>{ annotationTableRows }</tbody>

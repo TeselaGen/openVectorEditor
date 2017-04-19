@@ -3,7 +3,7 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React, { PropTypes } from 'react';
 import each from 'lodash/collection/each';
 
-export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteWidth=.25, annotationHeight, sequenceLength, signals}) {
+export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteWidth=.25, annotationHeight, sequenceLength, signals, bpsPerRow}) {
     var svgGroup = [];
     var labels = {};
     var index = 0;
@@ -11,20 +11,41 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
     each(cutsites,function(annotation, key) {
         index++;
         function onClick(event) {
-            // cutsiteClicked({event, annotation, namespace})
-            event.stopPropagation()
+            event.stopPropagation();
+            signals.cutsiteClicked({ annotation: annotation });
         }
+        // function onDoubleClick(event) {
+        //     event.stopPropagation()
+        //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" })
+        // }
+
+        function onClick(event) {
+            event.stopPropagation();
+            var row = Math.floor((annotation.start-1)/(bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            signals.jumpToRow({rowToJumpTo: row});
+            signals.cutsiteClicked({ annotation: annotation });
+        }
+
         if (!(annotation.downstreamTopSnip > -1)) {
-            debugger; //we need this to be present 
+            debugger; //we need this to be present
         }
-        var {startAngle} = getRangeAngles({start: annotation.downstreamTopSnip, end: annotation.downstreamTopSnip}, sequenceLength);
+        var { startAngle } = getRangeAngles({
+                                start: annotation.downstreamTopSnip,
+                                end: annotation.downstreamTopSnip},
+                                sequenceLength);
+        // check if it's a singleton enzyme
+        var cutColor = 'black';
+        if(annotation.numberOfCuts === 1) { // this should really go on the enzyme obj
+            cutColor = 'red';
+        }
 
         // add label info
         labels[index]={
             annotationCenterAngle: startAngle,
             annotationCenterRadius: radius,
             text: annotation.restrictionEnzyme.name,
-            color: annotation.restrictionEnzyme.color,
+            color: cutColor,
             className: 'veCutsiteLabel',
             id: index,
             onClick,
@@ -37,8 +58,8 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
                 >
                 <PositionAnnotationOnCircle
                     className='cutsiteDrawing'
-                    sAngle={startAngle}
-                    eAngle={startAngle}
+                    sAngle={ startAngle }
+                    eAngle={ startAngle }
                     height={ radius }
                     >
                     <rect
@@ -48,7 +69,7 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
                 </PositionAnnotationOnCircle>
             </g>
         )
-      
+
     })
     return {
         height: annotationHeight,

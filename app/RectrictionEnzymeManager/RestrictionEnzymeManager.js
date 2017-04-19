@@ -12,9 +12,7 @@ const Dialog = require('material-ui/lib/dialog');
 @Cerebral({
     showRestrictionEnzymeManager: ['showRestrictionEnzymeManager'],
     originalUserEnzymesList: ['originalUserEnzymesList'],
-    currentUserEnzymesList: ['currentUserEnzymesList'],
-    cancelButtonValue: ['cancelButtonValue'],
-    applyButtonValue: ['applyButtonValue'],
+    currentUserEnzymesList: ['currentUserEnzymesList']
 })
 
 export default class RestrictionEnzymeManager extends  React.Component {
@@ -31,15 +29,12 @@ export default class RestrictionEnzymeManager extends  React.Component {
             signals,
             showRestrictionEnzymeManager,
             originalUserEnzymesList,
-            currentUserEnzymesList,
-            cancelButtonValue,
-            applyButtonValue,
+            currentUserEnzymesList
         } = this.props;
 
         var tileTitleStyle = {
             textAlign: "center",
             color: "black",
-            opacity: "0.54",
         };
 
         var tileLeft = (
@@ -50,12 +45,8 @@ export default class RestrictionEnzymeManager extends  React.Component {
 
         var tileRight = (
             <div>
-                <RightTile /> <br />
+                <RightTile />
             </div>
-        );
-
-        var leftTileTitle = (
-            <h4 style={tileTitleStyle}>Enzymes groups</h4>
         );
 
         var rightTileTitle = (
@@ -68,11 +59,20 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     cols={2}
                     cellHeight={400}
                     padding={10}
-                >
-                    <GridTile rows={1} cols={1} title={leftTileTitle} titlePosition={"top"} titleBackground="#E0E0E0">
+                    >
+                    <GridTile
+                        rows={1}
+                        cols={1}
+                        >
                         {tileLeft}
                     </GridTile>
-                    <GridTile rows={1} cols={1} title={rightTileTitle} titlePosition={"top"} titleBackground="#E0E0E0">
+                    <GridTile
+                        rows={1}
+                        cols={1}
+                        title={rightTileTitle}
+                        titlePosition={"top"}
+                        titleBackground="#E0E0E0"
+                        >
                         {tileRight}
                     </GridTile>
                 </GridList>
@@ -81,22 +81,30 @@ export default class RestrictionEnzymeManager extends  React.Component {
 
         var toOpen = showRestrictionEnzymeManager;
 
-        var actions = [
+        var actionButtons = [
             <FlatButton
-                label={cancelButtonValue}
+                label={"Cancel"}
                 onTouchTap={function() {
-                        signals.updateUserEnzymes({selectedButton: cancelButtonValue, currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
+                        signals.updateUserEnzymes({
+                            selectedButton: "Cancel",
+                            currentUserList: currentUserEnzymesList,
+                            originalUserList: originalUserEnzymesList
+                        });
                         signals.restrictionEnzymeManagerDisplay();
                     }}
-            />,
+                />,
             <FlatButton
-                label={applyButtonValue}
+                label={"Apply"}
                 style={{color: "#03A9F4"}}
                 onTouchTap={function() {
-                        signals.updateUserEnzymes({selectedButton: applyButtonValue, currentUserList: currentUserEnzymesList, originalUserList: originalUserEnzymesList});
+                        signals.updateUserEnzymes({
+                            selectedButton: "Apply",
+                            currentUserList: currentUserEnzymesList,
+                            originalUserList: originalUserEnzymesList
+                        });
                         signals.restrictionEnzymeManagerDisplay();
                     }}
-            />,
+                />,
         ];
 
         return (
@@ -105,11 +113,11 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     ref="enzymeManager"
                     title="Restriction Enzyme Manager"
                     autoDetectWindowHeight={true}
-                    actions={actions}
+                    actions={actionButtons}
                     open={toOpen}
-                    titleStyle={{color: "white", background: "#3F51B5", paddingBottom: "20px"}}
-                > <br />
-                        {grid}
+                    titleStyle={{padding:'50px 0 0 50px', color:"black", background:"white"}}
+                    >
+                    {grid}
                 </Dialog>
             </div>
         );

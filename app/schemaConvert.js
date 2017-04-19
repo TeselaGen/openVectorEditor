@@ -1,13 +1,13 @@
-var colorOfFeature = require('./constants/colorOfFeature');
+// var colorOfFeature = require('./constants/feature-colors');
 module.exports = {
     toOpenVectorEditor: function(contents, services){
         return {
             state: {
                 sequenceData: {
-                    features: contents.featureList.map(function (elem) {                       
+                    features: contents.features.map(function (elem) {                       
                         elem.start = elem.locations[0].genbankStart;                       
-                        elem.end = elem.locations[0].end;  
-                        elem.color = colorOfFeature(elem);
+                        elem.end = elem.locations[0].end;
+                        // elem.color = colorOfFeature(elem);
                         return elem;
                     }),
                     name: contents.name,
@@ -16,7 +16,7 @@ module.exports = {
                     circular: contents.isCircular
                 },
                 embedded: document.location.pathname.match(/\/entry\//),
-                readOnly: !contents.canEdit 
+                readOnly: !contents.canEdit
             },
             services: services,
             actions: {

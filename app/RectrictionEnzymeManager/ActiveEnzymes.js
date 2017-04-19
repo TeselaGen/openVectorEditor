@@ -10,9 +10,7 @@ import styles from './manager-list.scss';
 
 @Cerebral({
     userEnzymeList: ['userEnzymeList'],
-    currentUserEnzymesList: ['currentUserEnzymesList'],
-    removeEnzymeButtonValue: ['removeEnzymeButtonValue'],
-    removeAllEnzymesButtonValue: ['removeAllEnzymesButtonValue'],
+    currentUserEnzymesList: ['currentUserEnzymesList']
 })
 
 export default class ActiveEnzymes extends React.Component {
@@ -28,44 +26,41 @@ export default class ActiveEnzymes extends React.Component {
     render() {
         var {
             currentUserEnzymesList,
-            removeEnzymeButtonValue,
-            removeAllEnzymesButtonValue,
             signals,
         } = this.props;
 
         return (
             <div>
-                <br />
-                <br />
-                <br />
                 <List className={styles.managerListRight}>
                     {currentUserEnzymesList.map((enzyme, index) => (
                         <ListItem
-                            style={{maxHeight: 40}}
+                            key={index}
+                            style={{maxHeight:'40px', fontSize:'11pt', verticalAlign:'middle', borderBottom:'1px solid #E0E0E0'}}
                             primaryText={enzyme}
                             rightIconButton={
                                 <IconButton
                                     onTouchTap={
                                         function() {
                                             signals.editUserEnzymes({currentUserList: currentUserEnzymesList,
-                                                enzyme: enzyme, action: removeEnzymeButtonValue});
+                                                enzyme: enzyme, action: "remove"});
                                         }
                                     }
-                                >
+                                    >
                                     <CloseIcon />
                                 </IconButton>
                             }
-                        />
+                            />
                     ))}
                 </List>
-                <br />
+
                 <RaisedButton
+                    className={styles.raisedButton}
                     label="Remove all"
                     primary={true}
                     onTouchTap={function () {
-                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: removeAllEnzymesButtonValue});
+                        signals.editUserEnzymes({currentUserList: currentUserEnzymesList, action: "remove all"});
                     }}
-                />
+                    />
             </div>
         );
     }

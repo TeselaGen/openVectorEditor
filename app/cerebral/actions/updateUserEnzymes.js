@@ -1,9 +1,9 @@
 module.exports = function updateUserEnzymes({input: {selectedButton, currentUserList, originalUserList}, state, output}) {
     var actualList = [];
-    if (selectedButton === state.get('applyButtonValue')) {
+    if (selectedButton === "Apply") {
         actualList = currentUserList.slice();
         state.set('originalUserEnzymesList', actualList);
-    } else if (selectedButton === state.get('cancelButtonValue')) {
+    } else if (selectedButton === "Cancel") {
         actualList = originalUserList.slice();
         state.set('currentUserEnzymesList', actualList);
     }

@@ -2,15 +2,15 @@ import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 
 export default class Orf extends React.Component {
-    
+
     render() {
         var {
-            height, 
-            rangeType, 
-            normalizedInternalStartCodonIndices=[], 
-            forward, 
-            annotation, 
-            widthInBps, 
+            height,
+            rangeType,
+            normalizedInternalStartCodonIndices=[],
+            forward,
+            annotation,
+            widthInBps,
             // orfClicked,
             charWidth=16,
             signals
@@ -27,13 +27,15 @@ export default class Orf extends React.Component {
         } else if (frame === 2) {
             color = 'blue';
         }
-        var width = widthInBps * (charWidth * 1.2) - 20;
+        // var width = widthInBps * (charWidth * 1.2) - 20;
+        var width = widthInBps * (charWidth-1) * 1.2;
+
         var heightWithArrow = height + 12;
         var halfwayPoint = heightWithArrow/2;
         var endCircle;
         var arrow = null;
         var arrowOffset = 0;
-        var circle = <circle 
+        var circle = <circle
                         key='circle'
                         r={height*1.5}
                         cx='0'
@@ -41,7 +43,7 @@ export default class Orf extends React.Component {
                         />
         if (rangeType === 'end'||rangeType === 'beginningAndEnd') {
             arrowOffset = 16;
-            arrow = (<path 
+            arrow = (<path
 
                         transform={
                             `translate(${width},0)`
@@ -55,10 +57,10 @@ export default class Orf extends React.Component {
         }
 
         var path = `
-            M 0,${halfwayPoint+height/2} 
-            L ${width - arrowOffset},${halfwayPoint+height/2} 
+            M 0,${halfwayPoint+height/2}
+            L ${width - arrowOffset},${halfwayPoint+height/2}
             L ${width - arrowOffset},${halfwayPoint-height/2}
-            L 0,${halfwayPoint-height/2} 
+            L 0,${halfwayPoint-height/2}
             z`
 
         var codonIndices = normalizedInternalStartCodonIndices.map(function (internalStartCodon,index) {
@@ -70,9 +72,13 @@ export default class Orf extends React.Component {
                 id={annotation.id}
                 key={'Orfs' + annotation.id}
                 onClick={ function (e) {
-                            e.stopPropagation()
-                            signals.orfClicked({annotation: annotation}) 
-                        }}
+                    e.stopPropagation();
+                    signals.orfClicked({ annotation: annotation });
+                }}
+                // onDoubleClick={ function (e) {
+                //     e.stopPropagation();
+                //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "row" });
+                // }}
                 className={`veRowViewOrf clickable frame${frame}`}
                 strokeWidth="2"
                 stroke={ color}

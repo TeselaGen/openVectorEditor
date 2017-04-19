@@ -1,62 +1,65 @@
 import React, {PropTypes} from 'react';
+import {Decorator as Cerebral} from 'cerebral-view-react';
 
-var Sequence = React.createClass({
+class Sequence extends React.Component {
 
-    componentDidMount: function() {
+    render() {
         var {
             bpsPerRow,
-            charWidth, 
-            children,            
+            children,
             className,
             reverse,
-            sequence            
-        } = this.props;        
-
-        // check if we have a partial final row
-        var rowWidth = this.refs.rowViewTextContainer.viewBox.baseVal.width;        
-        if(sequence.length < bpsPerRow) {
-            rowWidth = sequence.length * charWidth * 1.2;
-        }
-        if(rowWidth && rowWidth > 0)
-        this.refs.rowViewTextContainer.children[0].setAttribute("textLength", rowWidth);
-        this.setState({ rowWidth: rowWidth });
-    },
-
-    render: function() {
-        var {
-            bpsPerRow,
-            charWidth, 
-            children,            
-            className,
-            reverse,
-            sequence            
+            sequence,
+            sequenceHeight,
+            charWidth,
         } = this.props;
 
-        if (charWidth < 10) {
-            return null;
-        }
+        // dynamic letter-spacing fixes rounding errors on window resize
+        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
+        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
+        let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
+        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
+
         var style = {
             position: 'relative',
             fontFamily: 'monospace',
-            padding: '0 20px'
+            padding: '10px 25px 10px 25px',
+            overflow: 'visible',
+            letterSpacing: letterSpacing + 'px',
+            fontSize: '12pt',
+            height: sequenceHeight + 'px'
         }
-        var rowWidth = bpsPerRow * charWidth * 1.2;
+
         var textColor = "#000"; // black
-        if(reverse==="true") textColor = "#aaa"; // gray
-        
+        if (reverse==="true") textColor = "#aaa"; // gray
+
+        var svgText = [];
+        for (var i=0; i<sequence.length; i++) {
+            svgText.push(
+                <text
+                ref="sequenceRow"
+                fill={ textColor }
+                y="5"
+                x={(letterSpacing+11.2)*i} // this 11.2 is actual char width
+                >
+                { sequence[i] }
+                </text>
+            )
+        };
+
         return (
-            <div style={style} className='Sequence'>
-                <svg ref="rowViewTextContainer" className="rowViewTextContainer" 
-                    viewBox={ "0 " + charWidth*-0.85 + " " + rowWidth + " " + charWidth } // in future the radio should be bpsPerRow*charWidth x charHeight 
+            <div className='Sequence' id='sequenceText'>
+                <svg
+                    style={style}
+                    ref="rowViewTextContainer"
+                    className="rowViewTextContainer"
                     >
-                    <text ref="sequenceRow" fill={ textColor }>
-                        { sequence }
-                    </text>
+                    { svgText }
                 </svg>
                 { children }
             </div>
         )
     }
-});
+}
 
 module.exports = Sequence;
