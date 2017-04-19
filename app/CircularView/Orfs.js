@@ -7,7 +7,7 @@ import React from 'react';
 import noop from 'lodash/utility/noop';
 import drawArc from './drawArc.js';
 
-export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
+export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals, bpsPerRow}) {
     annotationHeight = 2;
     var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
     var orfITree = new intervalTree2(Math.PI);
@@ -63,6 +63,15 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             maxYOffset = annotationCopy.yOffset;
         }
 
+
+        function onClick(event) {
+            event.stopPropagation();
+            var row = Math.floor((annotation.start-1)/(bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            signals.jumpToRow({rowToJumpTo: row});
+            signals.featureClicked({ annotation: annotation });
+        }
+
         var codonIndices = [];
         var endNode;
         // we always need an end dot, figure out which end to put it on
@@ -74,7 +83,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             bpNumber={ annotation.start }
                             totalBps = { sequenceLength }
                             >
-                            <circle r='1.5' fill={ orfColor } stroke="none"/>
+                            <circle onClick={onClick} r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
                 )
         } else {
@@ -85,7 +94,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             bpNumber={ annotation.end }
                             totalBps = { sequenceLength }
                             >
-                            <circle r='1.5' fill={ orfColor } stroke="none"/>
+                            <circle onClick={onClick} r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
                 )
         }
@@ -127,6 +136,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             forward = { annotationCopy.forward }
                             >
                             <path
+                                onClick={onClick}
                                 fill = { orfColor }
                                 stroke = "none"
                                 // the arrowhead is contained in the orf,
@@ -150,14 +160,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         direction={ 'reverse' } // buh
                         >
                         <path
-                            onClick={ function (e) {
-                                e.stopPropagation();
-                                signals.orfClicked({ annotation: annotation });
-                            }}
-                            // onDoubleClick={ function (e) {
-                            //     e.stopPropagation();
-                            //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
-                            // }}
+                            onClick={onClick}
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }

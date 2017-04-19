@@ -24,6 +24,7 @@ function toDegrees(radians) {
 
 @Cerebral({
     annotationHeight: ['annotationHeight'],
+    bpsPerRow: ['bpsPerRow'],
     caretPosition: ['caretPosition'],
     charWidth: ['charWidth'],
     circularViewData: ['circularViewData'],
@@ -90,6 +91,7 @@ export default class CircularView extends React.Component {
             spaceBetweenAnnotations,
             annotationVisibility,
             caretPosition,
+            bpsPerRow,
             componentOverrides={}
         } = this.props;
 
@@ -118,7 +120,8 @@ export default class CircularView extends React.Component {
                 annotationHeight,
                 spaceBetweenAnnotations,
                 sequenceLength,
-                signals
+                signals,
+                bpsPerRow
             })
             // console.log('features results ' + featureResults.component)
             // update the radius, labels, and svg
@@ -146,7 +149,8 @@ export default class CircularView extends React.Component {
                 radius: radius - 4,
                 annotationHeight,
                 sequenceLength,
-                signals
+                signals,
+                bpsPerRow
             })
             //update the radius, labels, and svg
             radius+= cutsiteResults.height
@@ -161,7 +165,8 @@ export default class CircularView extends React.Component {
                 radius,
                 annotationHeight,
                 sequenceLength,
-                signals
+                signals,
+                bpsPerRow
             })
             radius+= orfResults.height
             // orfs don't get labels since they don't have names

@@ -8,7 +8,7 @@ import React from 'react';
 import noop from 'lodash/utility/noop';
 import colorOfFeature from '../constants/feature-colors';
 
-export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals}) {
+export default function Features({radius, features=[], annotationHeight, spaceBetweenAnnotations=2, sequenceLength, signals, bpsPerRow}) {
     //console.log('RENDERING FEATURES');
     var totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
     var featureITree = new intervalTree2(Math.PI);
@@ -54,6 +54,9 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
 
         function onClick(event) {
             event.stopPropagation();
+            var row = Math.floor((annotation.start-1)/(bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            signals.jumpToRow({rowToJumpTo: row});
             signals.featureClicked({ annotation: annotation });
         }
 
@@ -91,6 +94,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                             signals = { signals }
                             >
                             <CircularFeature
+                                onClick={onClick}
                                 color={ featureColor }
                                 key={ 'feature' + index }
                                 radius={ annotationRadius }
