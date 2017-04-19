@@ -1,13 +1,16 @@
 import React from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
+import Draggable from 'react-draggable'
 import styles from './Highlight.scss';
 import getXStartAndWidthOfRowAnnotation from '../../shared-utils/getXStartAndWidthOfRowAnnotation';
+var assign = require('lodash/object/assign');
 
 @Cerebral({
-    charWidth: ['charWidth'],
     bpsPerRow: ['bpsPerRow'],
+    caretPosition: ['caretPosition'],
+    charWidth: ['charWidth'],
+    selectionLayer: ['selectionLayer'],
     sequenceLength: ['sequenceLength'],
-    caretPosition: ['caretPosition']
 })
 export default class Highlight extends React.Component {
 
@@ -43,20 +46,17 @@ export default class Highlight extends React.Component {
         return dimensions;
     }
 
-    // componentWillReceiveProps(newProps) {
-    //     this._dimensions(newProps.start, newProps.end);
-    // }
-
     render() {
         var {
             start,
             end,
-            color="blue"
+            color="blue",
+            signals,
+            selectionLayer
         } = this.props;
 
         var dimensions = this._dimensions(start, end);
         var overlays = [];
-
         var dummyKey = 0; // please stop yelling at me react
         dimensions.forEach((d) => {
             var {x, width, rowWidth} = d;
@@ -69,7 +69,9 @@ export default class Highlight extends React.Component {
                     preserveAspectRatio={'none'}
                     viewBox={ x + " 0 " + rowWidth + " 1"}
                     >
-                    <rect fill={color} x={0} y={0} width={width} height={1}/>
+                    <rect fill={color} x={0} y={0} width={width} height={1}
+                        style={{ opacity:'0.7', zIndex:'50' }}
+                        />
                 </svg>
             );
             dummyKey += 1;
