@@ -2,9 +2,15 @@ var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 
 export default function pasteSequenceString({input, state, output}) {
+    debugger
     var clipboardData = state.get('clipboardData');
+    if (!clipboardData) {
+        output.error({errMessage: "clipboard data not found or invalid"});
+        return;
+    }
+
     var cleanedUpClipboardData;
-    var { sequenceString } = input;
+    var sequenceString = clipboardData.sequence;
 
     // delete id instead of putting anything there, remove entirely
     function removeIds(annotations) {
@@ -34,6 +40,6 @@ export default function pasteSequenceString({input, state, output}) {
     if(cleanedUpClipboardData.sequence) {
         output.success({'newSequenceData': cleanedUpClipboardData})
     } else {
-        output.error("clipboard data not found or invalid")
+        output.error({errMessage: "clipboard data not found or invalid"});
     }
 }
