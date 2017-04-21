@@ -58,13 +58,6 @@ export default function(options) {
             }
         ],
 
-        // copySelection: [ // earavina: not used for now
-        //     a.copySelection, {
-        //         success: [a.setData('clipboardData')],
-        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
-        //     }
-        // ],
-
         cutsiteClicked: c.selectAnnotation(a),
 
         editorClicked: [
@@ -198,6 +191,10 @@ export default function(options) {
 
         clickSaveFile: [
             a.saveToFile
+        ],
+
+        copySelection: [
+            a.copySelection
         ],
 
         deleteFeatures: a.addEditModeOnly([
