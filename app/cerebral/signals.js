@@ -197,6 +197,11 @@ export default function(options) {
             a.copySelection
         ],
 
+        cutSelection: [
+            a.copySelection,
+            a.deleteSequence
+        ],
+
         deleteFeatures: a.addEditModeOnly([
             a.deleteFeatures
         ]),

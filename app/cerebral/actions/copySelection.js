@@ -10,7 +10,6 @@ export default function copySelection({input, state, output}) {
     var selectionEnd = selectionLayer.end;
 
     function copyRangeOfSequenceData(sequenceData, rangeToCopy, allowPartialAnnotationsOnCopy) {
-        debugger
         selectionStart = rangeToCopy.start;
         selectionEnd = rangeToCopy.end;
         var newSequenceData = {};

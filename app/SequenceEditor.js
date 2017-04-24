@@ -47,12 +47,6 @@ export default class SequenceEditor extends React.Component {
         }.bind(this));
     }
 
-    componentWillReceiveProps(newProps) {
-        if (this.props.clipboardData !== newProps.clipboardData) {
-            console.log(newProps.clipboardData);
-        }
-    }
-
     componentDidMount() {
         var {
             sequenceDataInserted,
@@ -62,6 +56,7 @@ export default class SequenceEditor extends React.Component {
             updateHistory,
             copySelection,
             pasteSequenceString,
+            cutSelection,
         } = this.props.signals;
 
         var self = this;
@@ -129,6 +124,10 @@ export default class SequenceEditor extends React.Component {
         });
         combokeys.bindGlobal('command+c', function(event) { // Handle shortcut
             copySelection();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+x', function(event) { // Handle shortcut
+            cutSelection();
             event.stopPropagation();
         });
         combokeys.bindGlobal('command+v', function(event) { // Handle shortcut
