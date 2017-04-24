@@ -1,0 +1,27 @@
+.veRowView {
+  overflow-x: visible; }
+
+.veRowItem {
+  overflow-x: visible; }
+  .veRowItem div {
+    overflow-x: visible; }
+
+.cutsiteLabelSelectionLayer {
+  background: none !important;
+  height: 107%;
+  opacity: 1;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black; }
+  .cutsiteLabelSelectionLayer.isTrueStart {
+    border-left: 2px solid black; }
+  .cutsiteLabelSelectionLayer.isTrueEnd {
+    border-right: 2px solid black; }
+
+.veRowViewCutsite {
+  margin-left: -2px;
+  background: black !important; }
+
+.veRowItemSequenceContainer {
+  height: 105%; }
+
+/*# sourceMappingURL=style.css.map */

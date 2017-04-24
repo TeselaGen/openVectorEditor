@@ -1,0 +1,107 @@
+/* Popover */
+.Popover-body {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 10px;
+  background: white;
+  color: black;
+  box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  margin-top: 10px; }
+
+.Popover-tipShape {
+  fill: white; }
+
+.Popover-tip {
+  display: none; }
+
+.veToolbar {
+  display: flex;
+  justify-content: center;
+  height: 32px;
+  margin-bottom: 10px; }
+  .veToolbar .veToolbarItemOuter {
+    height: 100%;
+    display: flex;
+    height: 32px; }
+    .veToolbar .veToolbarItemOuter .veToolbarItem {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      height: 32px; }
+    .veToolbar .veToolbarItemOuter .veToolbarSpacer {
+      height: 80%;
+      width: 1px;
+      margin-left: 10px;
+      margin-right: 10px;
+      background: lightgrey; }
+    .veToolbar .veToolbarItemOuter .veToolbarIcon {
+      padding: 3px;
+      padding-bottom: 2px;
+      border-radius: 3px;
+      border: 1px solid white; }
+      .veToolbar .veToolbarItemOuter .veToolbarIcon.veToolbarItemToggled {
+        background: lightgrey;
+        border-color: #006CAB; }
+      .veToolbar .veToolbarItemOuter .veToolbarIcon:hover {
+        border-color: #006CAB; }
+      .veToolbar .veToolbarItemOuter .veToolbarIcon:active {
+        opacity: .7; }
+      .veToolbar .veToolbarItemOuter .veToolbarIcon img, .veToolbar .veToolbarItemOuter .veToolbarIcon svg, .veToolbar .veToolbarItemOuter .veToolbarIcon object {
+        height: 24px;
+        width: 24px;
+        cursor: pointer; }
+        .veToolbar .veToolbarItemOuter .veToolbarIcon img svg, .veToolbar .veToolbarItemOuter .veToolbarIcon svg svg, .veToolbar .veToolbarItemOuter .veToolbarIcon object svg {
+          color: #006BAA; }
+
+.minOrfSizeInput::-webkit-inner-spin-button,
+.minOrfSizeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
+.minOrfSizeInput {
+  padding-bottom: .25em;
+  width: 5em;
+  margin-left: 10px;
+  text-align: center;
+  padding-top: .25em;
+  border: 1px solid lightgrey;
+  justify-content: center;
+  display: flex;
+  flex-direction: column; }
+
+.veToolbarDropdown {
+  cursor: pointer;
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid white; }
+  .veToolbarDropdown:hover {
+    background: lightgrey; }
+
+.veToolbarCutsiteFilterHolder {
+  min-width: 300px; }
+  .veToolbarCutsiteFilterHolder > div {
+    margin: 10px; }
+  .veToolbarCutsiteFilterHolder .title {
+    margin: 10px;
+    background: blue;
+    width: 100%; }
+
+.translateInfoSpan {
+  font-size: .8em;
+  padding: 4px; }
+
+.showOrfTranslateSpan {
+  padding: 8px; }
+
+.veToolbarOrfOptionsHolder {
+  min-width: 300px;
+  margin-bottom: 10px; }
+
+.veToolbarViewOptionsHolder div {
+  margin-left: 10px;
+  margin-bottom: 10px; }
+.veToolbarViewOptionsHolder label {
+  margin: 40px 10px; }
+
+/*# sourceMappingURL=style.css.map */

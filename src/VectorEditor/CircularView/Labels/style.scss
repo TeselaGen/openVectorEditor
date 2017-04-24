@@ -1,0 +1,18 @@
+.veLabels {
+    font-weight: lighter;
+}
+.labelTspan:hover {
+    fill: red!important;
+}
+.labelText {
+    cursor: pointer;
+}
+
+.veCircularViewLabelText {
+    fill: black !important;
+
+    &.veAnnotationHovered {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+}
