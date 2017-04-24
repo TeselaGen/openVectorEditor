@@ -23,6 +23,7 @@ var combokeys;
     historyIdx: ['historyIdx'],
     newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
     orfData: ['orfData'],
+    savedIdx: ['savedIdx'],
     selectedSequenceString: ['selectedSequenceString'],
     searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
@@ -42,9 +43,11 @@ export default class SequenceEditor extends React.Component {
         // trying to fix cross origin problem
         this.props.sequenceData.features.forEach(function(feature) {
             if (!feature.end || feature.end === 0) {
-                this.props.signals.updateFeature({ feature : feature });
+                console.log(feature);
+                this.props.signals.updateFeature({ feature: feature, reset: true });
             }
         }.bind(this));
+        this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
     }
 
     componentDidMount() {
@@ -58,7 +61,6 @@ export default class SequenceEditor extends React.Component {
             pasteSequenceString,
             cutSelection,
         } = this.props.signals;
-
         var self = this;
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
