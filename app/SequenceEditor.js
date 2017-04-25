@@ -8,6 +8,7 @@ import styles from './sequence-editor.css';
 var assign = require('lodash/object/assign');
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var CircularView = require('./CircularView/CircularView');
+var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
 var RowView = require('./RowView/RowView');
 var combokeys;
@@ -43,7 +44,6 @@ export default class SequenceEditor extends React.Component {
         // trying to fix cross origin problem
         this.props.sequenceData.features.forEach(function(feature) {
             if (!feature.end || feature.end === 0) {
-                console.log(feature);
                 this.props.signals.updateFeature({ feature: feature, reset: true });
             }
         }.bind(this));
@@ -138,14 +138,12 @@ export default class SequenceEditor extends React.Component {
         });
     }
 
+
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
             this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
-    }
 
-    componentWillUnmount() {
-        combokeys.detach()
     }
 
     render() {
@@ -213,6 +211,8 @@ export default class SequenceEditor extends React.Component {
 
         return (
             <div ref="sequenceEditor" className={styles.app}>
+
+                <Clipboard clipboardData={clipboardData} />
 
                 <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />

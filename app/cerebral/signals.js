@@ -125,8 +125,13 @@ export default function(options) {
         ],
 
         selectInverse: [
-            a.selectInverse,
-            a.setSelectionLayer
+            a.checkLayerIsSelected, {
+                selected: [
+                    a.selectInverse,
+                    a.setSelectionLayer
+                ],
+                notSelected: [] // do nothing
+            },
         ],
 
         // setCutsiteLabelSelection:[
@@ -199,7 +204,10 @@ export default function(options) {
 
         cutSelection: [
             a.copySelection,
-            a.deleteSequence
+            a.checkLayerIsSelected, {
+                selected: [a.deleteSequence],
+                notSelected: [] // do nothing
+            },
         ],
 
         deleteFeatures: a.addEditModeOnly([
