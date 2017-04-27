@@ -1,9 +1,22 @@
 .managerListLeft {
-  height: 230px;
-  overflow: scroll;
+  height: 265px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #E0E0E0;
+  padding: 0 !important;
+  margin-bottom: 15px;
 }
 
 .managerListRight {
   height: 265px;
-  overflow: scroll;
+  margin-top: 83px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #E0E0E0;
+  padding: 0 !important;
+  margin-bottom: 15px;
+}
+
+.raisedButton {
+    background-color: #00bcd4 !important;
 }

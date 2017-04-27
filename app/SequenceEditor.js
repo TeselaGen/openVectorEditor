@@ -8,7 +8,6 @@ import styles from './sequence-editor.css';
 var assign = require('lodash/object/assign');
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var CircularView = require('./CircularView/CircularView');
-var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
 var RowView = require('./RowView/RowView');
 var combokeys;
@@ -40,13 +39,18 @@ var combokeys;
 export default class SequenceEditor extends React.Component {
 
     componentWillMount() {
-        // still trying to fix cross origin problem
+        // trying to fix cross origin problem
         this.props.sequenceData.features.forEach(function(feature) {
             if (!feature.end || feature.end === 0) {
                 this.props.signals.updateFeature({ feature : feature });
             }
         }.bind(this));
-        // this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (this.props.clipboardData !== newProps.clipboardData) {
+            console.log(newProps.clipboardData);
+        }
     }
 
     componentDidMount() {
@@ -55,7 +59,9 @@ export default class SequenceEditor extends React.Component {
             backspacePressed,
             selectAll,
             selectInverse,
-            updateHistory
+            updateHistory,
+            copySelection,
+            pasteSequenceString,
         } = this.props.signals;
 
         var self = this;
@@ -121,42 +127,20 @@ export default class SequenceEditor extends React.Component {
             event.preventDefault();
             event.stopPropagation();
         });
+        combokeys.bindGlobal('command+c', function(event) { // Handle shortcut
+            copySelection();
+            event.stopPropagation();
+        });
+        combokeys.bindGlobal('command+v', function(event) { // Handle shortcut
+            pasteSequenceString();
+            event.stopPropagation();
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
             this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
-    }
-
-    // copy and paste events are handled by a listener in the DOM element as listed below
-    handlePaste(event) {
-        var {
-            pasteSequenceString,
-        } = this.props.signals;
-
-        pasteSequenceString({sequenceString: event.clipboardData.getData("text/plain")});
-        event.preventDefault();
-    }
-
-    handleCopy(event) {
-        /*
-        earavina:
-        This is an async call leading to a bug
-        when copy is successful only if user copies the range twice.
-        This action assigns this.props.clipboardData after it has been passed to a system clipboard.
-        Replaced with a module used each time the user makes a selection
-        */
-        // var {
-        //     copySelection,
-        // } = this.props.signals;
-        // copySelection();
-
-        let val = this.props.clipboardData;
-        // console.log(val);
-        event.clipboardData.setData("application/json", JSON.stringify(val));
-        event.clipboardData.setData("text/plain", val.sequence);
-        event.preventDefault();
     }
 
     componentWillUnmount() {
@@ -228,11 +212,6 @@ export default class SequenceEditor extends React.Component {
 
         return (
             <div ref="sequenceEditor" className={styles.app}>
-                <Clipboard
-                    value={JSON.stringify(clipboardData)}
-                    onCopy={this.handleCopy.bind(this)}
-                    onPaste={this.handlePaste.bind(this)}
-                />
 
                 <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />

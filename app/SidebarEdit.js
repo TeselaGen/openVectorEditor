@@ -23,11 +23,23 @@ export default class SidebarDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        // rows near the bottom should have the dropdown menu drop-up
+        var rowHeight = 49.33; // probably shouldn't be hardcoded...
+        var sidebarHeight = this.props.totalFeatures * rowHeight;
+        var clientHeight = document.getElementById("tableContainer").clientHeight;
+        var maxHeight = clientHeight > sidebarHeight ? clientHeight : sidebarHeight;
+        var dropDownHeight = 315; // this is harcoded in sidebar.css (offset by 10 for padding), which i still feel bad about, but slightly less bad
+        var dropUp = '';
+        if (((this.props.rowPosition + 1) * rowHeight) + dropDownHeight > maxHeight && clientHeight > dropDownHeight) {
+            dropUp = ((this.props.rowPosition+1) * rowHeight) - dropDownHeight;
+        }
+
         this.state = {
-            feature: assign({}, this.props.feature),
             dropdown: "hidden",
+            feature: assign({}, this.props.feature),
             featureTypes: FEATURE_TYPES,
-            type: this.props.feature.type
+            type: this.props.feature.type,
+            dropUp: dropUp
         };
 
         if (this.state.feature.notes === undefined) {
@@ -69,7 +81,9 @@ export default class SidebarDetail extends React.Component {
             var badType = true;
             try {
                 regex = new RegExp(string.toLowerCase(), 'i');
-            } catch (e){}
+            } catch (e) {
+                return;
+            }
 
             var filteredFeatureTypes = [];
             FEATURE_TYPES.forEach(function(type) {
@@ -82,6 +96,11 @@ export default class SidebarDetail extends React.Component {
             }.bind(this))
             this.state.feature.badType = badType;
             this.setState({ feature: this.state.feature, featureTypes: filteredFeatureTypes });
+            if (filteredFeatureTypes.length < 11 && parseInt(this.state.dropUp)) {
+                this.setState({ dropUp: ((this.props.rowPosition+1) * 49.33) - (30 * filteredFeatureTypes.length) + 15});
+            } else if (parseInt(this.state.dropUp)) {
+                this.setState({dropUp: ((this.props.rowPosition+1) * 49.33) - 315});
+            }
         } else {
             this.setState({ featureTypes: FEATURE_TYPES });
         }
@@ -125,7 +144,7 @@ export default class SidebarDetail extends React.Component {
                         placeholder="type"
                         className={styles.typeValue}
                         value={this.state.type.toString()}
-                        onClick={this.toggleDropDown.bind(this, 'visible')}
+                        onClick={this.toggleDropDown.bind(this, "visible")}
                         onChange={this.filterList.bind(this)}
                         />
                     <IconButton style={{verticalAlign: 'middle', marginLeft: '-10px'}}
@@ -133,6 +152,7 @@ export default class SidebarDetail extends React.Component {
                         <ArrowDropDown/>
                     </IconButton>
                     <ul className={styles[this.state.dropdown]}
+                        style={{top: this.state.dropUp+'px'}}
                         onClick={this.selectDropDown.bind(this)}>
                         {options}
                     </ul>

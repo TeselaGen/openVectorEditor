@@ -3,7 +3,7 @@ import PositionAnnotationOnCircle from './PositionAnnotationOnCircle';
 import React, { PropTypes } from 'react';
 import each from 'lodash/collection/each';
 
-export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteWidth=.25, annotationHeight, sequenceLength, signals}) {
+export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteWidth=.25, annotationHeight, sequenceLength, signals, bpsPerRow}) {
     var svgGroup = [];
     var labels = {};
     var index = 0;
@@ -18,6 +18,15 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
         //     event.stopPropagation()
         //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" })
         // }
+
+        function onClick(event) {
+            event.stopPropagation();
+            var row = Math.floor((annotation.start-1)/(bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            signals.jumpToRow({rowToJumpTo: row});
+            signals.cutsiteClicked({ annotation: annotation });
+        }
+
         if (!(annotation.downstreamTopSnip > -1)) {
             debugger; //we need this to be present
         }
@@ -38,7 +47,8 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
             text: annotation.restrictionEnzyme.name,
             color: cutColor,
             className: 'veCutsiteLabel',
-            id: index
+            id: index,
+            onClick,
         }
 
         svgGroup.push(

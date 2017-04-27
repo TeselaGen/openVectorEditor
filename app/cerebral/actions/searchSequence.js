@@ -1,13 +1,15 @@
 var assign = require('lodash/object/assign');
 
 function searchSequence({input: { searchString, dna, literal }, state, output}) {
-    var originalInput = searchString;
-    searchString = searchString.toLowerCase();
     state.set('searchString', searchString)
-    if (searchString.length === 0) {
-        output({ searchLayers: [] });
+
+    if (!searchString || searchString.length < 3) {
+        state.set('searchLayers', []);
         return;
     }
+
+    var originalInput = searchString;
+    searchString = searchString.toLowerCase();
 
     var dnaComplement = {
         'a':'t', 'c':'g', 'g':'c', 't':'a',
@@ -59,6 +61,7 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
     var layers = [];
 
     // amino acid search
+    // (i have no idea if the amino acids search is actually working the way scientists expect it to...)
     if (dna === "Amino Acids") {
         var string = "";
         for (let i=0; i<searchString.length; i++) {
@@ -106,8 +109,8 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         }
     }
 
-    // make sure input is valid regexp
     var reg = '('+searchString+')|('+reverseSearchString+')';
+    // make sure input is valid regexp
     try {
         var regex = new RegExp(reg, 'gi');
     } catch(e) {
@@ -122,11 +125,16 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         extend *= 3;
     }
     var sequenceExtended = sequence + sequence.slice(0, extend-1);
-
     // finally execute the search
     do {
         match = regex.exec(sequenceExtended);
+        if (match && match[0].length === 0) {
+            state.set('searchLayers', []);
+            return;
+            // because even though the regex may be "technically" valid, it can still do some weird stuff and crash the app
+        }
         if (match) {
+            // wraps around origin
             var end = match.index + match[0].length - 1;
             if (end > sequence.length - 1) {
                 end -= sequence.length;

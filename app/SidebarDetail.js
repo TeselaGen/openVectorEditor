@@ -67,7 +67,9 @@ export default class SidebarDetail extends React.Component {
             var badType = true;
             try {
                 regex = new RegExp(string.toLowerCase(), 'i');
-            } catch (e){}
+            } catch (e) {
+                return;
+            }
             var filteredFeatureTypes = [];
             FEATURE_TYPES.forEach(function(type) {
                 if (regex.test(type)) {

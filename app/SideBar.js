@@ -15,6 +15,7 @@ import styles from './side-bar.css'
 var assign = require('lodash/object/assign');
 
 @Cerebral({
+    bpsPerRow: ['bpsPerRow'],
     showAddFeatureModal: ['showAddFeatureModal'],
     showOrfModal: ['showOrfModal'],
     minimumOrfSize: ['minimumOrfSize'],
@@ -30,15 +31,15 @@ export default class SideBar extends React.Component {
     constructor() {
         super(arguments);
         this.state = {
-            selectedFeatures: [],
-            selectedCutsites: [],
-            selectedOrfs: [],
-            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
             editFeature: -1,
+            featureError: '',
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
-            featureError: '',
+            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
+            selectedCutsites: [],
+            selectedFeatures: [],
+            selectedOrfs: [],
         };
     }
 
@@ -106,7 +107,7 @@ export default class SideBar extends React.Component {
         }
         this.setState({ selectedFeatures: selected });
         if (this.state.selectedFeatures.length === 1) {
-            this.annotationHighlight(this.state.selectedFeatures[0]);
+            this.annotationHighlight(selected[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -123,7 +124,7 @@ export default class SideBar extends React.Component {
         this.setState({ selectedCutsites: selected });
 
         if (selected.length === 1) {
-            this.annotationHighlight(this.state.selectedCutsites[0]);
+            this.annotationHighlight(selected[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -140,7 +141,7 @@ export default class SideBar extends React.Component {
         this.setState({ selectedOrfs: selected });
 
         if (selected.length === 1) {
-            this.annotationHighlight(this.state.selectedOrfs[0]);
+            this.annotationHighlight(selected[0]);
         } else {
             this.annotationHighlight(null);
         }
@@ -148,13 +149,18 @@ export default class SideBar extends React.Component {
 
     annotationHighlight(id) {
         let signals = this.props.signals;
+        let bpsPerRow = this.props.bpsPerRow;
         if (id) {
             let annotations = this.props.annotations;
             for (var i=0; i<annotations.length; i++) {
                 if (annotations[i].id === id) {
                     var annotation = annotations[i];
+                    break;
                 }
             }
+            var row = Math.floor((annotation.start-1)/(bpsPerRow));
+            row = row <= 0 ? "0" : row;
+            signals.jumpToRow({rowToJumpTo: row});
             signals.featureClicked({annotation: annotation});
         } else {
             signals.featureClicked({annotation: {}});
@@ -385,12 +391,17 @@ export default class SideBar extends React.Component {
 
         // FEATURE DETAIL
         var annotationForm;
+        var sorted = annotations.slice(0);
+        sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
+
         if (this.state.editFeature > -1 && this.props.annotationType === "Features") {
             let id = this.state.editFeature;
             var annotation;
-            for (var i=0; i<annotations.length; i++) {
-                if (annotations[i].id === id) {
-                    annotation = annotations[i];
+            var rowPosition;
+            for (var i=0; i<sorted.length; i++) {
+                if (sorted[i].id === id) {
+                    annotation = sorted[i];
+                    rowPosition = i;
                 }
             }
 
@@ -398,7 +409,9 @@ export default class SideBar extends React.Component {
                 <SidebarEdit
                     editFeature={this.editFeature.bind(this)}
                     sequenceLength={sequenceLength}
-                    feature={ annotation }
+                    feature={annotation}
+                    rowPosition={rowPosition}
+                    totalFeatures={sorted.length}
                     />
             )
         }
@@ -407,7 +420,7 @@ export default class SideBar extends React.Component {
         if (this.props.annotationType === 'Features') {
             tableHeaderCells = [];
             tableHeaderCells.push(
-                <th key='feathead0' style={{width:'30%', color:'black'}}>name
+                <th key='feathead0' style={{width:'28%', color:'black'}}>name
                     <IconButton onClick={this.onFeatureSort.bind(this, 'name')}
                     id='Features_name'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
@@ -431,7 +444,7 @@ export default class SideBar extends React.Component {
                     </IconButton>
                 </th>);
             tableHeaderCells.push(
-                <th key='feathead3' style={{textAlign:'center', width:'10%', color:'black'}}>strand
+                <th key='feathead3' style={{textAlign:'center', width:'15%', color:'black'}}>strand
                     <IconButton onClick={this.onFeatureSort.bind(this, 'forward')}
                     id='Features_forward'
                     style={{verticalAlign:'middle', marginLeft:'-10px'}}>
@@ -441,8 +454,6 @@ export default class SideBar extends React.Component {
             // placeholder column for edit-icon
             tableHeaderCells.push(<th key='null' style={{minWidth: '48px'}}> </th>);
 
-            var sorted = annotations.slice(0);
-            sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
             annotationTableRows = [];
             for (let i = 0; i < sorted.length; i++) {
                 let annotationTableCells = [];
@@ -472,6 +483,9 @@ export default class SideBar extends React.Component {
                             } else {
                                 cellEntry = "-";
                             }
+                        }
+                        if (cellEntry.length > 20) {
+                            cellEntry = cellEntry.slice(0, 17) + "...";
                         }
                         annotationTableCells.push(
                             <td style={cellStyle} key={j}
@@ -596,6 +610,9 @@ export default class SideBar extends React.Component {
                                 cellEntry = "-";
                             }
                         }
+                        if (cellEntry.length > 20) {
+                            cellEntry = cellEntry.slice(0, 17) + "...";
+                        }
                         annotationTableCells.push(
                             <td style={cellStyle} key={k}>{ cellEntry }</td>);
                     }
@@ -627,6 +644,9 @@ export default class SideBar extends React.Component {
                             } else {
                                 cellEntry = "-";
                             }
+                        }
+                        if (cellEntry.length > 20) {
+                            cellEntry = cellEntry.slice(0, 17) + "...";
                         }
                         annotationTableCells.push(
                             <td style={cellStyle} key={j}>{ cellEntry }</td>);
@@ -716,7 +736,9 @@ export default class SideBar extends React.Component {
                         cellStyle = {};
                         cellEntry = annotation[column].toString();
                     }
-
+                    if (cellEntry.length > 20) {
+                        cellEntry = cellEntry.slice(0, 17) + "...";
+                    }
                     annotationTableCells.push(
                         <td style={cellStyle} key={j}>{ cellEntry }</td>);
                 }
@@ -826,7 +848,7 @@ export default class SideBar extends React.Component {
 
                 { topTabs }
 
-                <div className={styles.tableContainer}>
+                <div className={styles.tableContainer} id="tableContainer">
                     <table ref="sideBar">
                         <thead><tr>{ tableHeaderCells }</tr></thead>
                         <tbody>{ annotationTableRows }</tbody>
