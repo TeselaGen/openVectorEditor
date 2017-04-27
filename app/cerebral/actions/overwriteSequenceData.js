@@ -2,7 +2,7 @@ var assign = require('lodash/object/assign');
 var insertSequenceDataAtPosition = require('ve-sequence-utils/insertSequenceDataAtPosition');
 var setSelectionLayer = require('./setSelectionLayer');
 
-function insertSequenceData({input, state, output}) {
+function overwriteSequenceData({input, state, output}) {
     var { newSequenceData } = input;
     var newSeq = newSequenceData.sequence;
     var newName = newSequenceData.name;
@@ -13,7 +13,7 @@ function insertSequenceData({input, state, output}) {
     state.set('caretPosition', 0);
     state.set('history', [])
     state.set(['sequenceData', 'name'], newName);
-    // state.set(['sequenceData', 'name'], newName)
+
 }
 
-export default insertSequenceData;
+export default overwriteSequenceData;
