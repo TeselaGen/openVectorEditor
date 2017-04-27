@@ -23,3 +23,19 @@
     padding: 0 !important;
     overflow: hidden !important;
 }
+
+.overlay {
+    position: absolute;
+    cursor: col-resize;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    opacity: 9;
+    z-index: 150;
+}
+
+.overlay * {
+    cursor: col-resize;
+    transform: translate(0,0) !important;
+    z-index: 200;
+}
