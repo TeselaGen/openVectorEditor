@@ -3,12 +3,12 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
 import SideBar from './SideBar';
+import Clipboard from './Clipboard';
 import styles from './sequence-editor.css';
 
 var assign = require('lodash/object/assign');
 var bindGlobalPlugin = require('combokeys/plugins/global-bind');
 var CircularView = require('./CircularView/CircularView');
-var Clipboard = require('./Clipboard');
 var Combokeys = require("combokeys");
 var RowView = require('./RowView/RowView');
 var combokeys;
@@ -132,10 +132,7 @@ export default class SequenceEditor extends React.Component {
             cutSelection();
             event.stopPropagation();
         });
-        combokeys.bindGlobal('command+v', function(event) { // Handle shortcut
-            pasteSequenceString();
-            event.stopPropagation();
-        });
+        // no paste, that's handled by the clipboard component only
     }
 
 
@@ -143,7 +140,6 @@ export default class SequenceEditor extends React.Component {
         if (this.props.sequenceData !== prevProps.sequenceData) {
             this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
-
     }
 
     render() {
@@ -212,7 +208,7 @@ export default class SequenceEditor extends React.Component {
         return (
             <div ref="sequenceEditor" className={styles.app}>
 
-                <Clipboard clipboardData={clipboardData} />
+                <Clipboard />
 
                 <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />

@@ -1,61 +1,46 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
+import { Decorator as Cerebral } from 'cerebral-view-react';
+
+@Cerebral({
+    clipboardData: ['clipboardData'],
+})
 
 export default class Clipboard extends React.Component {
 
-    componentWillMount() {
-        this.state = {
-            clipboardData: null,
-        };
+    constructor() {
+        super(arguments);
+    }
+
+    componentDidMount() {
+        function paste(event) {
+            var string = event.clipboardData.getData('text/plain');
+            event.preventDefault();
+            this.props.signals.pasteSequenceString({ selection: string });
+        }
+        document.addEventListener('paste', paste.bind(this), true);
     }
 
     componentWillReceiveProps(newProps) {
-        if (this.props.clipboardData !== newProps.clipboardData) {
-            this.setState({ clipboardData: newProps.clipboardData});
+        function copy(event) {
+            event.clipboardData.setData('application/json', JSON.stringify(newProps.clipboardData));
+            event.clipboardData.setData('text/plain', newProps.clipboardData.sequence);
+            event.preventDefault();
+            document.removeEventListener('copy', copy, true);
+            document.removeEventListener('cut', copy, true);
+        }
+        if (this.props.clipboardData !== newProps.clipboardData && newProps.clipboardData.sequence) {
+            document.addEventListener('copy', copy, true);
+            document.addEventListener('cut', copy, true);
         }
     }
 
-    componentDidUpdate(newState) {
-        if (this.state.clipboardData !== newState.clipboardData) {
-            var clipboard = document.getElementById("clipboard");
-            clipboard.select();
-            try {
-                document.execCommand('copy');
-            } catch (err) {
-                console.log('unable to copy');
-            }
-        }
-    }
-
-    // i can't use this onChange method, but it'll yell if it's taken out
-    onChange() {
-        return; // do nothing
+    componentWillUnmount() {
+        document.removeEventListener('paste', paste, true);
+        document.removeEventListener('copy', copy, true);
+        document.removeEventListener('cut', copy, true);
     }
 
     render() {
-
-        if (!this.state.clipboardData) {
-            return (<div></div>);
-        }
-
-        var value = this.state.clipboardData.sequence;
-        var style = {
-            position: 'fixed',
-            opacity: 0,
-            left: 0,
-            padding: 0,
-            top: 0,
-            margin: 0,
-            zIndex: 100,
-        };
-
-        return (
-            <textarea
-                id="clipboard"
-                value={value}
-                onChange={this.onChange}
-                style={style}>
-            </textarea>
-        );
+        return (<div></div>);
     }
 }
