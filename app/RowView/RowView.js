@@ -51,6 +51,16 @@ export default class RowView extends React.Component {
         }.bind(this)
     }
 
+    calculateLetterSpacing() {
+        let bpsPerRow = this.props.bpsPerRow;
+        let charWidth = this.props.charWidth;
+        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
+        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
+        let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
+        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
+        return letterSpacing;
+    }
+
     componentWillReceiveProps(newProps) {
         if (newProps.rowToJumpTo === "0" || parseInt(newProps.rowToJumpTo)) {
             var row = parseInt(newProps.rowToJumpTo);
@@ -59,6 +69,9 @@ export default class RowView extends React.Component {
                 this.props.signals.jumpToRow({ rowToJumpTo: null });
             }
             if (newProps.showSidebar !== this.props.showSidebar) {
+                this.props.signals.adjustWidth();
+            }
+            if (newProps.selectionLayer !== this.props.selectionLayer) {
                 this.props.signals.adjustWidth();
             }
         }
@@ -101,13 +114,8 @@ export default class RowView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, callback) {
         var bpsPerRow = this.props.bpsPerRow;
         var charWidth = this.props.charWidth;
-
-        let viewBoxWidth = bpsPerRow * charWidth * 1.2 + 40; // 1.2 & 40 for padding
-        let rowWidth = bpsPerRow * (charWidth-1) * 1.2;
-        let width = (rowWidth * (bpsPerRow * (charWidth - 1))) / viewBoxWidth;
-        var letterSpacing = ((width - 10) - 11.2*bpsPerRow) / (bpsPerRow - 1); // this 11.2 is default letterSpacing
-
         var nearestBP = 0;
+
         var target = event.target;
         while (target.className !== 'app-RowView-RowItem-RowItem---rowItem---2HAWf') {
             target = target.parentElement;
@@ -115,9 +123,11 @@ export default class RowView extends React.Component {
                 return;
             }
         }
+
         var rowNumber = parseInt(target.id);
         var row = this.props.rowData[rowNumber];
         var boundingRowRect = target.getBoundingClientRect();
+        var letterSpacing = this.calculateLetterSpacing();
         var textWidth = ((letterSpacing + 11.2) * bpsPerRow); // 10 for left & right padding around text box
 
         var clickXPositionRelativeToRowContainer = event.clientX - boundingRowRect.left - 25; // 25 for left-padding
@@ -131,10 +141,15 @@ export default class RowView extends React.Component {
             }
         }
 
+        var caretGrabbed = false;
+        if (event.target.className.animVal && event.target.className.animVal.split(" ")[0] === "cursor") {
+            caretGrabbed = true;
+        }
+
         callback({
             shiftHeld: event.shiftKey,
             nearestBP,
-            caretGrabbed: event.target.className === "cursor"
+            caretGrabbed: event.target.className === "cursor" || caretGrabbed
         });
     }
 
@@ -144,6 +159,7 @@ export default class RowView extends React.Component {
             annotationVisibility,
             bpsPerRow,
             caretPosition,
+            charWidth,
             cutsites,
             cutsitesByName,
             orfs,
@@ -167,15 +183,94 @@ export default class RowView extends React.Component {
 
         var searchRows = this.getSearchOverlays();
 
+        var letterSpacing = this.calculateLetterSpacing();
+        var textWidth = ((letterSpacing + 11.2) * bpsPerRow);
+
+        var xShiftStart = (textWidth * (selectionLayer.start%bpsPerRow) / bpsPerRow) + 18;
+        var xShiftEnd = (textWidth * ((selectionLayer.end+1)%bpsPerRow) / bpsPerRow) + 18;
+
+        if ((selectionLayer.end + 1) % bpsPerRow === 0) {
+            xShiftEnd = (textWidth * (selectionLayer.end%bpsPerRow) / bpsPerRow) + 18;
+            xShiftEnd += textWidth/bpsPerRow;
+        }
+
+        // if there's no selection layer, just have a single line where cursor is
+        if (selectionLayer.start === -1) {
+            xShiftStart = (textWidth * (caretPosition%bpsPerRow) / bpsPerRow) + 18;
+            xShiftEnd = xShiftStart;
+        }
+
+        var selectionLeftEdge = (
+            <svg className={styles.overlay} style={{left: xShiftStart}}
+                preserveAspectRatio={'none'}
+                viewBox={"0 0 1 1"}
+                >
+                <Draggable
+                    onDrag={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)
+                    }}
+                    onStart={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)
+                    }}
+                    onStop={signals.editorDragStopped}
+                    >
+                    <rect fill={"blue"} className={"cursor"}
+                        x={0} y={0} width={2} height={1}
+                        />
+                </Draggable>
+            </svg>
+        );
+
+
+        var selectionRightEdge = (
+            <svg className={styles.overlay} style={{left: xShiftEnd}}
+                preserveAspectRatio={'none'}
+                viewBox={"0 0 1 1"}
+                >
+                <Draggable
+                    onDrag={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)
+                    }}
+                    onStart={(event) => {
+                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)
+                    }}
+                    onStop={signals.editorDragStopped}
+                    >
+                    <rect fill={"blue"} className={"cursor"}
+                        x={0} y={0} width={2} height={1}
+                        />
+                </Draggable>
+            </svg>
+        );
+
+        var selectionStart;
+        var selectionEnd;
+        var selectionStartRow = Math.floor(selectionLayer.start / bpsPerRow);
+        var selectionEndRow = Math.floor(selectionLayer.end / bpsPerRow);
+
+        // if no selection layer
+        if (selectionLayer.start === -1) {
+            selectionStartRow = Math.floor(caretPosition / bpsPerRow);
+            selectionEndRow = Math.floor(caretPosition / bpsPerRow);
+        }
+
         var renderItem = (index,key) => {
             if (rowData[index]) {
                 if (!searchRows[index]) {
                     searchRows[index] = [];
                 }
+                selectionStart = selectionStartRow === index ? selectionLeftEdge : <div></div>
+                selectionEnd = selectionEndRow === index ? selectionRightEdge : <div></div>
                 return (
                     <div key={key}>
                         <div className={'veRowItemSpacer'} />
-                        <RowItem row={rowData[index]} searchRows={searchRows[index]}/>
+                        <RowItem
+                            selectionStart={selectionStart}
+                            row={rowData[index]}
+                            searchRows={searchRows[index]}
+                            getNearestCursorPosition={this.getNearestCursorPositionToMouseEvent.bind(this)}
+                            selectionEnd={selectionEnd}
+                            />
                     </div>
                 );
             } else {
@@ -185,6 +280,7 @@ export default class RowView extends React.Component {
 
         if (showRow) {
             return (
+                <div>
                 <Draggable
                     bounds={{top: 0, left: 0, right: 0, bottom: 0}}
                     onDrag={(event) => {
@@ -215,6 +311,7 @@ export default class RowView extends React.Component {
                             />
                     </div>
                 </Draggable>
+                </div>
             );
         }
 

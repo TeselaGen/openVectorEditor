@@ -52,18 +52,11 @@ export default function(options) {
 
         // there's weird bracketing here to deal with the async superagent request
         clickLoadFile: [
-            [a.loadFromFile], {
-                success: [a.insertSequenceData],
-                error: []
-            }
+            [a.loadFromFile, {
+                success: [a.overwriteSequenceData],
+                error: [a.displayError]
+            }]
         ],
-
-        // copySelection: [ // earavina: not used for now
-        //     a.copySelection, {
-        //         success: [a.setData('clipboardData')],
-        //         error: [] //tnr: we should probably have some sort of generic info/warning message that we can display when things go wrong
-        //     }
-        // ],
 
         cutsiteClicked: c.selectAnnotation(a),
 
@@ -198,6 +191,10 @@ export default function(options) {
 
         clickSaveFile: [
             a.saveToFile
+        ],
+
+        copySelection: [
+            a.copySelection
         ],
 
         deleteFeatures: a.addEditModeOnly([

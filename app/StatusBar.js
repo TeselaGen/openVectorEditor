@@ -60,7 +60,7 @@ export default class StatusBar extends React.Component {
         } = this.props;
 
         var selectionStart = (selectionLayer.start != -1) ? selectionLayer.start : '--';
-        var selectionEnd = (selectionLayer.end != -1) ? selectionLayer.end : '--';
+        var selectionEnd = (selectionLayer.end != -1) ? selectionLayer.end + 1 : '--';
 
         // {{}} needs styling
         var shortcuts = (

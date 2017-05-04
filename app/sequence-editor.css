@@ -28,7 +28,6 @@
     display: block;
     position: relative;
     overflow: scroll;
-    /*padding-bottom: 40px;*/
     text-align: center;
 }
 
@@ -39,15 +38,9 @@
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    /*padding-bottom: 40px;*/
 }
 
 .foot {
     display: block;
-    margin-bottom: 64px;
-/*    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;*/
+    /*margin-bottom: 64px;*/
 }

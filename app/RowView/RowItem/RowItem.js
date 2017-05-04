@@ -72,6 +72,8 @@ class RowItem extends React.Component {
             spaceBetweenAnnotations,
             tickSpacing,
             width,
+            selectionStart,
+            selectionEnd,
         } = this.props;
 
         var {
@@ -167,7 +169,10 @@ class RowItem extends React.Component {
                         />
                 }
 
+                { selectionStart }
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
+                { selectionEnd }
+
                 { searchHighlight }
 
                 <div className='veRowItemSequenceContainer'>
