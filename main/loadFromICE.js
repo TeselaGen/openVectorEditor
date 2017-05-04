@@ -5,7 +5,7 @@ import {toOpenVectorEditor} from '../app/schemaConvert';
 
 var query = location.search;
 var id;
-    id = query.match(/entryId=[\d]+/) + "";
+    id = query.match(/entryId=[0-9a-z\-]+/) + "";
     id = id.replace(/entryId=/, "");
 
 var cookie = document.cookie;

@@ -7,6 +7,7 @@ function overwriteSequenceData({input, state, output}) {
     var newSeq = newSequenceData.sequence;
     var newName = newSequenceData.name;
     var newFeatures = newSequenceData.features;
+    console.log(newSequenceData)
     // do schemaConvert's job again
     var feature;
     for(var f = 0; f < newFeatures.length; f++) {
@@ -23,7 +24,8 @@ function overwriteSequenceData({input, state, output}) {
     state.set(['sequenceData', 'name'], newName);
     state.set(['sequenceData', 'sequence'], newSeq);
     state.set(['sequenceData', 'features'], newFeatures);
-    // state.set('sequenceData', {newSequenceData}); // do we need schemaconvert here?
+    state.set(['sequenceData', 'id'], ''); // I think ICE will fill this in
+    state.set(['sequenceData', 'circular'], newSequenceData.isCircular);
 }
 
 export default overwriteSequenceData;
