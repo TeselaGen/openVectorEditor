@@ -4,6 +4,7 @@
     justify-content: flex-end;
     background-color: rgb(232,232,232);
     border-top: 1px solid #ddd;
+    margin-bottom: 64px;
 }
 
 .box {
