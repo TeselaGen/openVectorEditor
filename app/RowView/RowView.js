@@ -186,9 +186,22 @@ export default class RowView extends React.Component {
         var letterSpacing = this.calculateLetterSpacing();
         var textWidth = ((letterSpacing + 11.2) * bpsPerRow);
 
-        var xShift = (textWidth * (selectionLayer.start%bpsPerRow) / bpsPerRow) + 18;
+        var xShiftStart = (textWidth * (selectionLayer.start%bpsPerRow) / bpsPerRow) + 18;
+        var xShiftEnd = (textWidth * ((selectionLayer.end+1)%bpsPerRow) / bpsPerRow) + 18;
+
+        if ((selectionLayer.end + 1) % bpsPerRow === 0) {
+            xShiftEnd = (textWidth * (selectionLayer.end%bpsPerRow) / bpsPerRow) + 18;
+            xShiftEnd += textWidth/bpsPerRow;
+        }
+
+        // if there's no selection layer, just have a single line where cursor is
+        if (selectionLayer.start === -1) {
+            xShiftStart = (textWidth * (caretPosition%bpsPerRow) / bpsPerRow) + 18;
+            xShiftEnd = xShiftStart;
+        }
+
         var selectionLeftEdge = (
-            <svg className={styles.overlay} style={{left: xShift}}
+            <svg className={styles.overlay} style={{left: xShiftStart}}
                 preserveAspectRatio={'none'}
                 viewBox={"0 0 1 1"}
                 >
@@ -208,9 +221,9 @@ export default class RowView extends React.Component {
             </svg>
         );
 
-        xShift = (textWidth * ((selectionLayer.end+1)%bpsPerRow) / bpsPerRow) + 18;
+
         var selectionRightEdge = (
-            <svg className={styles.overlay} style={{left: xShift}}
+            <svg className={styles.overlay} style={{left: xShiftEnd}}
                 preserveAspectRatio={'none'}
                 viewBox={"0 0 1 1"}
                 >
@@ -234,6 +247,12 @@ export default class RowView extends React.Component {
         var selectionEnd;
         var selectionStartRow = Math.floor(selectionLayer.start / bpsPerRow);
         var selectionEndRow = Math.floor(selectionLayer.end / bpsPerRow);
+
+        // if no selection layer
+        if (selectionLayer.start === -1) {
+            selectionStartRow = Math.floor(caretPosition / bpsPerRow);
+            selectionEndRow = Math.floor(caretPosition / bpsPerRow);
+        }
 
         var renderItem = (index,key) => {
             if (rowData[index]) {
