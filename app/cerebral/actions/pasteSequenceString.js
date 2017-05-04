@@ -23,12 +23,18 @@ export default function pasteSequenceString({input, state, output}) {
     var clipboardData = state.get('clipboardData');
     var cleanedUpClipboardData;
 
+    // something external has been copied to the computer's clipboard more recently
+    // than whatever was copied in-app, so use external computer's clipboard data
     if (clipboardData.sequence && input.selection && clipboardData.sequence !== input.selection) {
         sequenceString = input.selection;
         cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});
+
+    // the in-app clipboard is the most recent, so use in-app clipboard data
     } else if (clipboardData.sequence) {
         sequenceString = clipboardData.sequence;
         cleanedUpClipboardData = removeFeatureIds();
+
+    // no in-app data exists, so use external computer's clipboard data
     } else if (input.selection) {
         sequenceString = input.selection;
         cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});

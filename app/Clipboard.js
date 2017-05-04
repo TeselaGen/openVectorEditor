@@ -21,6 +21,7 @@ export default class Clipboard extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        // this copy function handles the computer's external clipboard. in-app copying is handled by actions/copySelection
         function copy(event) {
             event.clipboardData.setData('application/json', JSON.stringify(newProps.clipboardData));
             event.clipboardData.setData('text/plain', newProps.clipboardData.sequence);
