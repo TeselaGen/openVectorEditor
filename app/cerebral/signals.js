@@ -52,10 +52,10 @@ export default function(options) {
 
         // there's weird bracketing here to deal with the async superagent request
         clickLoadFile: [
-            [a.loadFromFile], {
-                success: [a.insertSequenceData],
-                error: []
-            }
+            [a.loadFromFile, {
+                success: [a.overwriteSequenceData],
+                error: [a.displayError]
+            }]
         ],
 
         cutsiteClicked: c.selectAnnotation(a),
