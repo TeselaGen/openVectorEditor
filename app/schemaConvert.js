@@ -14,7 +14,8 @@ module.exports = {
                     circular: contents.isCircular
                 },
                 embedded: document.location.search.match(/embedded=true/),
-                readOnly: !contents.canEdit || document.location.search.match(/embedded=true/) // only editable in full version with permission
+                readOnly: !contents.canEdit || document.location.search.match(/embedded=true/), // only editable in full version with permission
+                iceEntryId: contents.uri // this isn't preserved anywhere else and we need it for download links
             },
             services: services,
             actions: {

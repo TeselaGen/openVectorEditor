@@ -12,7 +12,7 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 export default function Labels({labels={}, outerRadius}) {
     var radius = outerRadius;
     var outerPointRadius = outerRadius - 20;
-    var fontWidth = 4;
+    var fontWidth = 6;
     var fontHeight = fontWidth * 1.5;
 
     var labelPoints = Object.keys(labels).map(function (key, index) {
