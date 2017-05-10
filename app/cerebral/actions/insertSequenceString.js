@@ -2,7 +2,6 @@
 
 var insertSequenceData = require('./insertSequenceData');
 export default function insertSequenceString({input, tree, output}) {
-    debugger
     var { sequenceString } = input;
     insertSequenceData({
         sequence: sequenceString

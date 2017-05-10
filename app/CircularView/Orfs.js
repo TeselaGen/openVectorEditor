@@ -83,7 +83,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             bpNumber={ annotation.start }
                             totalBps = { sequenceLength }
                             >
-                            <circle onClick={onClick} r='1.5' fill={ orfColor } stroke="none"/>
+                            <circle r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
                 )
         } else {
@@ -94,7 +94,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             bpNumber={ annotation.end }
                             totalBps = { sequenceLength }
                             >
-                            <circle onClick={onClick} r='1.5' fill={ orfColor } stroke="none"/>
+                            <circle r='1.5' fill={ orfColor } stroke="none"/>
                         </PlacePointOnCircle>
                 )
         }
@@ -136,7 +136,6 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                             forward = { annotationCopy.forward }
                             >
                             <path
-                                onClick={onClick}
                                 fill = { orfColor }
                                 stroke = "none"
                                 // the arrowhead is contained in the orf,
@@ -150,6 +149,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             <g
                 id={annotation.id}
                 key={'Orfs' + annotation.id}
+                onClick={onClick}
                 >
                 <g className='Orfs clickable'>
                     { arrowHead }
@@ -160,7 +160,6 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
                         direction={ 'reverse' } // buh
                         >
                         <path
-                            onClick={onClick}
                             d={ path.print() }
                             fill="none"
                             stroke={ orfColor }

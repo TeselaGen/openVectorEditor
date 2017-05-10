@@ -47,12 +47,6 @@ export default class SequenceEditor extends React.Component {
         }.bind(this));
     }
 
-    componentWillReceiveProps(newProps) {
-        if (this.props.clipboardData !== newProps.clipboardData) {
-            console.log(newProps.clipboardData);
-        }
-    }
-
     componentDidMount() {
         var {
             sequenceDataInserted,
