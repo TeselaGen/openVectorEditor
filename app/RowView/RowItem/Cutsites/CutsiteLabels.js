@@ -81,6 +81,7 @@ let CutsiteLabels = React.createClass({
                 width="100%"
                 style={{
                     position: 'relative',
+                    marginTop: '5px',
                     height: 15*(maxAnnotationYOffset+1),
                     display: 'block'
                 }}

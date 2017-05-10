@@ -1,15 +1,16 @@
-import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString'
+import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
 import React from 'react';
-import Draggable from 'react-draggable'
+import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { columnizeString, elementWidth, calculateRowLength } from '../utils';
 import SelectionLayer from './SelectionLayer';
-import _Sequence from './Sequence'
-import _Orfs from './Orfs'
-import _Features from './Features'
-import _CutsiteLabels from './Cutsites/CutsiteLabels'
-import _Cutsites from './Cutsites'
-import Caret from './Caret'
+import _Sequence from './Sequence';
+import _Orfs from './Orfs';
+import _AminoAcids from './AminoAcids';
+import _Features from './Features';
+import _CutsiteLabels from './Cutsites/CutsiteLabels';
+import _Cutsites from './Cutsites';
+import Caret from './Caret';
 import Highlight from './Highlight';
 import styles from './RowItem.scss';
 
@@ -34,6 +35,7 @@ function noop() {
     sequenceHeight: ['sequenceHeight'],
     sequenceLength: ['sequenceLength'],
     sequenceName: ['sequenceData', 'name'],
+    showAminoAcids: ['showAminoAcids'],
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showParts: ['showParts'],
@@ -64,6 +66,7 @@ class RowItem extends React.Component {
             sequenceData,
             sequenceHeight,
             sequenceLength,
+            showAminoAcids,
             showCutsites,
             showFeatures,
             showOrfs,
@@ -76,6 +79,10 @@ class RowItem extends React.Component {
             selectionEnd,
         } = this.props;
 
+        if (!row) {
+            return null;
+        }
+
         var {
             sequence='',
             features= [],
@@ -85,10 +92,11 @@ class RowItem extends React.Component {
         } = row
 
         var reverseSequence = getComplementSequenceString(sequence);
+        var wrappedSequence = sequenceData.sequence + sequenceData.sequence.slice(0,2);
 
-        if (!row) {
-            return null;
-        }
+        // each row needs to be extended by 2 bps to get all amino acids
+        var addOnBps = wrappedSequence.slice(row.start+sequence.length,row.start+sequence.length+2);
+        var aminoAcidSequence = sequence + addOnBps;
 
         var {
             Sequence = _Sequence,
@@ -98,6 +106,7 @@ class RowItem extends React.Component {
             Features = _Features,
             CutsiteLabels = _CutsiteLabels,
             Cutsites = _Cutsites,
+            AminoAcids = _AminoAcids,
         } = componentOverrides
 
         var annotationCommonProps = {
@@ -158,6 +167,13 @@ class RowItem extends React.Component {
                     <Orfs
                         annotationRanges={orfs}
                         signals={signals}
+                        {...annotationCommonProps}
+                        />
+                }
+
+                {(showAminoAcids) &&
+                    <AminoAcids
+                        sequence={aminoAcidSequence}
                         {...annotationCommonProps}
                         />
                 }
