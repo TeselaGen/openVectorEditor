@@ -5,16 +5,23 @@ import {toOpenVectorEditor} from '../app/schemaConvert';
 
 var query = location.search;
 var id;
-    id = query.match(/entryId=[0-9a-z\-]+/) + "";
-    id = id.replace(/entryId=/, "");
+    // id = query.match(/entryId=[0-9a-z\-]+/) + "";
+    // id = id.replace(/entryId=/, "");
+// if(document.referrer != "") { // we're embedded, grab parent
+    id = document.referrer;
+    id = id.replace(/.+entry\//, "");
+// }
 
 var cookie = document.cookie;
 var sid = cookie.match(/sessionId=%22[0-9a-z\-]+%22/) + "";
     sid = sid.replace(/sessionId=|%22/g, "");
 
+var ORIGIN = document.location.origin
+console.log(ORIGIN + '/rest/parts/' + id + '/sequence')
+
 // async response call
 request
-    .get('rest/parts/' + id + '/sequence')
+    .get(ORIGIN + '/rest/parts/' + id + '/sequence')
     .set('X-ICE-Authentication-sessionId', sid)
     .accept('application/json')
     .end(function(err, result) {
