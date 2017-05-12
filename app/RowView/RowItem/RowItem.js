@@ -182,6 +182,7 @@ class RowItem extends React.Component {
                         sequence={aminoAcidSequence}
                         sequenceData={sequenceData}
                         rowNumber={Math.floor(row.start / bpsPerRow)}
+                        topStrand={true}
                         {...annotationCommonProps}
                         />
                 }
@@ -210,6 +211,7 @@ class RowItem extends React.Component {
                                 sequenceLength={sequenceLength}
                                 annotationRanges={cutsites}
                                 topStrand={true}
+                                showAminoAcids={showAminoAcids}
                                 {...annotationCommonProps}
                                 />
                         }
@@ -226,12 +228,24 @@ class RowItem extends React.Component {
                                     sequenceLength={sequenceLength}
                                     annotationRanges={cutsites}
                                     topStrand={false}
+                                    showAminoAcids={showAminoAcids}
+
                                     {...annotationCommonProps}
                                     />
                             }
                         </Sequence>
                     }
                 </div>
+
+                {(showAminoAcids && showReverseSequence) &&
+                    <AminoAcids
+                        sequence={reverseAminoAcidSequence}
+                        sequenceData={sequenceData}
+                        rowNumber={Math.floor(row.start / bpsPerRow)}
+                        topStrand={false}
+                        {...annotationCommonProps}
+                        />
+                }
 
             </div>
         );

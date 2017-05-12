@@ -98,11 +98,15 @@ let Cutsites = React.createClass({
             sequenceHeight,
             sequenceLength,
             topStrand,
+            showAminoAcids,
         } = this.props
         var letterSpacing = this.state.letterSpacing;
 
-        sequenceHeight += 5; // 5px from sequence's bottom padding
-        var divPadding = 16; // 16px from div's bottom padding
+        // sequenceHeight += 5; // 5px from sequence's bottom padding
+        var divPadding = 18; // 16px from div's bottom padding
+        if (showAminoAcids) {
+            divPadding = divPadding + document.getElementsByClassName("aminoAcidContainer")[0].clientHeight - 3;
+        }
         var offset = sequenceHeight + divPadding;
         var snipStyle = {
             height: sequenceHeight + "px",

@@ -33,6 +33,7 @@ let AminoAcids = React.createClass({
             sequence,
             sequenceData,
             rowNumber,
+            topStrand,
         } = this.props;
 
         if (sequence.length < 3) {
@@ -65,7 +66,11 @@ let AminoAcids = React.createClass({
 
         for ( i; i<sequenceLength-2; i++) {
             if (sequence[i] && sequence[i+2]) {
-                aminoAcid = getAminoAcidFromSequenceTriplet(sequence.slice(i,i+3));
+                if (topStrand) {
+                    aminoAcid = getAminoAcidFromSequenceTriplet(sequence.slice(i,i+3));
+                } else {
+                    aminoAcid = getAminoAcidFromSequenceTriplet(sequence[i+2]+sequence[i+1]+sequence[i]);
+                }
                 xShift = (letterSpacing + 11.2) * (i - 2);
 
                 // amino acids that wrap around rows need adjustments
@@ -91,7 +96,6 @@ let AminoAcids = React.createClass({
                     <g
                         key={"amino" + i}
                         id={i}
-                        style={{border:'1px black solid'}}
                         onClick={this.handleClick}>
                         <path
                             style={{opacity:'0.25'}}
@@ -121,17 +125,17 @@ let AminoAcids = React.createClass({
             height: '20px',
             width: '100%'
         }
-
+        var padding = topStrand ? {marginBottom: '10px'} : {marginTop: '-5px'};
         return (
-            <div className="aminoAcidContainer" style={{paddingBottom:'5px'}}>
+            <div className="aminoAcidContainer" style={padding}>
                 <svg style={style}>
-                    { rows[1] }
+                    { topStrand ? rows[1] : rows[2] }
                 </svg>
                 <svg style={style}>
                     { rows[0] }
                 </svg>
                 <svg style={style}>
-                    { rows[2] }
+                    { topStrand ? rows[2] : rows[1] }
                 </svg>
             </div>
         );
