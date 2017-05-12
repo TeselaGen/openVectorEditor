@@ -5,10 +5,20 @@ let AminoAcids = React.createClass({
 
     handleClick: function(event) {
         event.stopPropagation();
-        var id = parseInt(event.currentTarget.id);
+        var id = parseInt(event.currentTarget.id) - 2;
+        let start = this.props.row.start + id;
+        let end = this.props.row.start + id + 2;
+
+        if (start < 0) {
+            start = this.props.sequenceData.sequence.length + start;
+        }
+        if (end >= this.props.sequenceData.sequence.length) {
+            end -= this.props.sequenceData.sequence.length;
+        }
+
         var selection = {
-            start: this.props.row.start + id,
-            end: this.props.row.start + id + 2,
+            start: start,
+            end: end,
             id: null,
             selected: true,
             cursorAtEnd: true
@@ -21,6 +31,8 @@ let AminoAcids = React.createClass({
             bpsPerRow,
             charWidth,
             sequence,
+            sequenceData,
+            rowNumber,
         } = this.props;
 
         if (sequence.length < 3) {
@@ -36,13 +48,38 @@ let AminoAcids = React.createClass({
         var aminoAcid;
         var path;
         var xShift;
-        var width = (letterSpacing+11.2)*3 - 10;
+        var width;
         var height = 20;
 
-        for (var i = 0; i<sequence.length-2; i++) {
+        // the first and last row need adjusting if the part isn't circular
+        // (default behavior is for a circular part)
+        var i = 0;
+        var sequenceLength = sequence.length;
+        if (rowNumber === 0 && !sequenceData.circular) {
+            i = 2;
+        }
+        let lastRow = Math.floor((sequenceData.sequence.length-1) / bpsPerRow);
+        if (rowNumber === lastRow && !sequenceData.circular) {
+            sequenceLength -= 2;
+        }
+
+        for ( i; i<sequenceLength-2; i++) {
             if (sequence[i] && sequence[i+2]) {
                 aminoAcid = getAminoAcidFromSequenceTriplet(sequence.slice(i,i+3));
-                xShift = (letterSpacing+11.2)*i;
+                xShift = (letterSpacing + 11.2) * (i - 2);
+
+                // amino acids that wrap around rows need adjustments
+                if (i === sequence.length - 3 || i === 0) {
+                    width = (letterSpacing+11.2) - 5;
+                } else if (i === sequence.length - 4 || i === 1) {
+                    width = (letterSpacing+11.2)*2 - 5;
+                } else {
+                    width = (letterSpacing+11.2)*3 - 5;
+                }
+                if (i === 0 || i === 1) {
+                    xShift = 0;
+                }
+
                 path = `
                     M ${xShift},0
                     L ${width + xShift},0
@@ -88,13 +125,13 @@ let AminoAcids = React.createClass({
         return (
             <div className="aminoAcidContainer" style={{paddingBottom:'5px'}}>
                 <svg style={style}>
-                    { rows[2] }
-                </svg>
-                <svg style={style}>
                     { rows[1] }
                 </svg>
                 <svg style={style}>
                     { rows[0] }
+                </svg>
+                <svg style={style}>
+                    { rows[2] }
                 </svg>
             </div>
         );

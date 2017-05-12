@@ -92,11 +92,17 @@ class RowItem extends React.Component {
         } = row
 
         var reverseSequence = getComplementSequenceString(sequence);
-        var wrappedSequence = sequenceData.sequence + sequenceData.sequence.slice(0,2);
 
-        // each row needs to be extended by 2 bps to get all amino acids
-        var addOnBps = wrappedSequence.slice(row.start+sequence.length,row.start+sequence.length+2);
-        var aminoAcidSequence = sequence + addOnBps;
+        //extend the entire sequence by 2 bps around the origin in both directions for amino acids
+        var lastTwoBps = sequenceData.sequence.slice(sequenceData.sequence.length - 2, sequenceData.sequence.length);
+        var firstTwoBps = sequenceData.sequence.slice(0,2);
+        var wrappedSequence = lastTwoBps + sequenceData.sequence + firstTwoBps;
+
+        // extended each row by 2 bps in both directions for amino acids
+        var addOnBpsLeft = wrappedSequence.slice(row.start,row.start+2);
+        var addOnBpsRight = wrappedSequence.slice(row.start+sequence.length+2,row.start+sequence.length+4);
+        var aminoAcidSequence = addOnBpsLeft + sequence + addOnBpsRight;
+        var reverseAminoAcidSequence = getComplementSequenceString(aminoAcidSequence);
 
         var {
             Sequence = _Sequence,
@@ -174,6 +180,8 @@ class RowItem extends React.Component {
                 {(showAminoAcids) &&
                     <AminoAcids
                         sequence={aminoAcidSequence}
+                        sequenceData={sequenceData}
+                        rowNumber={Math.floor(row.start / bpsPerRow)}
                         {...annotationCommonProps}
                         />
                 }
