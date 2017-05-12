@@ -71,7 +71,7 @@ let AminoAcids = React.createClass({
                 } else {
                     aminoAcid = getAminoAcidFromSequenceTriplet(sequence[i+2]+sequence[i+1]+sequence[i]);
                 }
-                xShift = (letterSpacing + 11.2) * (i - 2);
+                xShift = (letterSpacing + 11.2) * (i - 2) - 2.5;
 
                 // amino acids that wrap around rows need adjustments
                 if (i === sequence.length - 3 || i === 0) {
@@ -82,7 +82,7 @@ let AminoAcids = React.createClass({
                     width = (letterSpacing+11.2)*3 - 5;
                 }
                 if (i === 0 || i === 1) {
-                    xShift = 0;
+                    xShift = -2.5;
                 }
 
                 path = `

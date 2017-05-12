@@ -194,6 +194,28 @@ class RowItem extends React.Component {
                         />
                 }
 
+                {(showCutsites && Object.keys(cutsites).length > 0) &&
+                    <div style={{position:'fixed'}}>
+                    <Cutsites
+                        sequenceLength={sequenceLength}
+                        annotationRanges={cutsites}
+                        topStrand={true}
+                        showAminoAcids={showAminoAcids}
+                        showReverseSequence={showReverseSequence}
+                        {...annotationCommonProps}
+                        />
+                    <Cutsites
+                        sequenceLength={sequenceLength}
+                        annotationRanges={cutsites}
+                        topStrand={false}
+                        showAminoAcids={showAminoAcids}
+                        showReverseSequence={showReverseSequence}
+                        {...annotationCommonProps}
+                        />
+                    </div>
+                }
+
+
                 { selectionStart }
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
                 { selectionEnd }
@@ -206,15 +228,6 @@ class RowItem extends React.Component {
                         sequence={sequence}
                         {...annotationCommonProps}
                         >
-                        {(showCutsites && Object.keys(cutsites).length > 0) &&
-                            <Cutsites
-                                sequenceLength={sequenceLength}
-                                annotationRanges={cutsites}
-                                topStrand={true}
-                                showAminoAcids={showAminoAcids}
-                                {...annotationCommonProps}
-                                />
-                        }
                     </Sequence>
 
                     {showReverseSequence &&
@@ -223,16 +236,6 @@ class RowItem extends React.Component {
                             sequence={reverseSequence}
                             {...annotationCommonProps}
                             >
-                            {(showCutsites && Object.keys(cutsites).length > 0) &&
-                                <Cutsites
-                                    sequenceLength={sequenceLength}
-                                    annotationRanges={cutsites}
-                                    topStrand={false}
-                                    showAminoAcids={showAminoAcids}
-
-                                    {...annotationCommonProps}
-                                    />
-                            }
                         </Sequence>
                     }
                 </div>

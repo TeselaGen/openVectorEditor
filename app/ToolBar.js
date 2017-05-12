@@ -32,13 +32,15 @@ import styles from './tool-bar.css'
 @Cerebral({
     embedded: ['embedded'],
     readOnly: ['readOnly'],
+    showAminoAcids: ['showAminoAcids'],
     showOrfs: ['showOrfs'],
     showCutsites: ['showCutsites'],
     showParts: ['showParts'],
     showFeatures: ['showFeatures'],
+    showReverseSequence: ['showReverseSequence'],
     showRow: ['showRow'],
-    showTranslations: ['showTranslations'],
     showSidebar: ['showSidebar'],
+    showTranslations: ['showTranslations'],
     history: ['history'],
     historyIdx: ['historyIdx'],
     savedIdx: ['savedIdx']
@@ -50,13 +52,15 @@ export default class ToolBar extends React.Component {
         var {
             embedded,
             readOnly,
-            showFeatures,
-            showParts,
-            showTranslations,
-            showOrfs,
+            showAminoAcids,
             showCutsites,
+            showFeatures,
+            showOrfs,
+            showParts,
+            showReverseSequence,
             showRow,
             showSidebar,
+            showTranslations,
             signals,
             history,
             historyIdx,
@@ -168,6 +172,12 @@ export default class ToolBar extends React.Component {
                 <div title="Toggle ORFs" style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Orfs'});
                 }}> O </div>
+                <div title="Toggle Amino Acids" style={ showAminoAcids ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleAminoAcids' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'AminoAcids'});
+                }}> AA </div>
+                <div title="Toggle Reverse Sequence" style={ showReverseSequence ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleReverseSequence' onClick={function () {
+                    signals.toggleAnnotationDisplay({type: 'ReverseSequence'});
+                }}> R </div>
             </div>
         );
 

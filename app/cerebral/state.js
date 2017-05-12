@@ -48,7 +48,7 @@ module.exports = {
     searchString: "",
     sequenceHeight: 20,
     showAddFeatureModal: false,
-    showAminoAcids: true, // this will need to be changed to false once there's a toggle button for it
+    showAminoAcids: false,
     showAxis: true,
     showCircular: true,
     showCutsites: false,
