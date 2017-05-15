@@ -98,7 +98,7 @@ let AminoAcids = React.createClass({
                         id={i}
                         onClick={this.handleClick}>
                         <path
-                            style={{opacity:'0.25'}}
+                            style={{opacity:'0.5'}}
                             fill={ aminoAcid.color }
                             transform={null}
                             d={ path }

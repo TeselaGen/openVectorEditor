@@ -6,15 +6,15 @@ export default function adjustWidth({input, state, output}) {
     if (draggable && rowView) {
         var rowWidth = rowView.clientWidth;
         rowWidth -= (rowWidth % (charWidth - 1));
-        rowWidth -= rowWidth % 3;
+        rowWidth = Math.round(rowWidth/3) * 3;
+        var newBps =  rowWidth / (charWidth - 1);
+        newBps = Math.round(newBps/3) * 3;// forces bpsPerRow to be multiple of 3, which makes amino acids cleaner
+        rowWidth = newBps * (charWidth - 1);
 
         if (rowWidth <= 0) {
             return;
         }
 
-        var newBps =  rowWidth / (charWidth - 1);
-        newBps -= newBps % 3; // forces bpsPerRow to be multiple of 3, which makes amino acids cleaner
-        rowWidth = newBps * (charWidth - 1);
         draggable.style.width = rowWidth + 'px';
         state.set('bpsPerRow', newBps);
     }

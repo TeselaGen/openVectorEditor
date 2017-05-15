@@ -104,7 +104,7 @@ let Cutsites = React.createClass({
         var letterSpacing = this.state.letterSpacing;
 
         sequenceHeight += 5;
-        var offset = sequenceHeight - 1;
+        var offset = sequenceHeight - 2;
         var snipStyle = {
             height: sequenceHeight + "px",
             position: "absolute",
