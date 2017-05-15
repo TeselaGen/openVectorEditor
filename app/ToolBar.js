@@ -172,12 +172,6 @@ export default class ToolBar extends React.Component {
                 <div title="Toggle ORFs" style={ showOrfs ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleOrfs' onClick={function () {
                     signals.toggleAnnotationDisplay({type: 'Orfs'});
                 }}> O </div>
-                <div title="Toggle Amino Acids" style={ showAminoAcids ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleAminoAcids' onClick={function () {
-                    signals.toggleAnnotationDisplay({type: 'AminoAcids'});
-                }}> AA </div>
-                <div title="Toggle Reverse Sequence" style={ showReverseSequence ? buttonStyles : Object.assign(disabledStyle, buttonStyles) } id='toggleReverseSequence' onClick={function () {
-                    signals.toggleAnnotationDisplay({type: 'ReverseSequence'});
-                }}> R </div>
             </div>
         );
 
