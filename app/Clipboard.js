@@ -14,8 +14,12 @@ export default class Clipboard extends React.Component {
     componentDidMount() {
         function paste(event) {
             var string = event.clipboardData.getData('text/plain');
-            event.preventDefault();
-            this.props.signals.pasteSequenceString({ selection: string });
+            if (event.target.nodeName === "BODY") {
+                // paste the whole JSON object
+                event.preventDefault();
+                this.props.signals.pasteSequenceString({ selection: string });
+            }
+            // otherwise, paste event gets handled automatically with only the plain text
         }
         document.addEventListener('paste', paste.bind(this), true);
     }
