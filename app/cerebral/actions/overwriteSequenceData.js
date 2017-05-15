@@ -7,16 +7,15 @@ function overwriteSequenceData({input, state, output}) {
     var newSeq = newSequenceData.sequence;
     var newName = newSequenceData.name;
     var newFeatures = newSequenceData.features;
-    console.log(newSequenceData)
     // do schemaConvert's job again
     var feature;
     for(var f = 0; f < newFeatures.length; f++) {
         feature = newFeatures[f];
         feature.start = feature.locations[0].genbankStart;
         feature.end = feature.locations[0].end;
-        feature.id = "feature_" + f;
+        feature.id = f+1; // i don't want to assign an id of 0, because then !!feature.id will return false
     }
-    
+
     // keep in mind there may be no features and no name / labels
     // clear previous state and delete sequence and features
     state.set('caretPosition', 0);

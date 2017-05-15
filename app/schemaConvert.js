@@ -3,8 +3,8 @@ module.exports = {
         return {
             state: {
                 sequenceData: {
-                    features: contents.features.map(function (elem) {                       
-                        elem.start = elem.locations[0].genbankStart;                       
+                    features: contents.features.map(function (elem) {
+                        elem.start = elem.locations[0].genbankStart;
                         elem.end = elem.locations[0].end;
                         return elem;
                     }),
