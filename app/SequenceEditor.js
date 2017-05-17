@@ -163,12 +163,11 @@ export default class SequenceEditor extends React.Component {
 
         // check if we have just circ or just row and pad it out a little
         // using the bitwise xor here might be a little sketchy
-        // {{}} currently not working
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         var rowStyle = {}
-        if(embedded || !showRow) rowStyle = {display: 'none'}
+        if(!showRow) rowStyle = {display: 'none'}
 
 
         var borderStyle = 'none';

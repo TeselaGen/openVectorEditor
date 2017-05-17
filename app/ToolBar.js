@@ -81,7 +81,7 @@ export default class ToolBar extends React.Component {
                 </IconButton>
                 { embedded ? null :
                     <IconButton tooltip="Display Side-by-side View"
-                        disabled = { showSidebar }
+                        disabled = { (showSidebar) }
                         onTouchTap={function() {
                             signals.toggleShowCircular({ showCircular: true });
                             signals.toggleShowRow({ showRow: true });
@@ -228,7 +228,7 @@ export default class ToolBar extends React.Component {
                         <SearchIcon />
                     </IconButton>
 
-                    <Search/>
+                    <Search />
 
                     { toggleFeatures }
 
