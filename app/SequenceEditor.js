@@ -42,11 +42,12 @@ export default class SequenceEditor extends React.Component {
         // trying to fix cross origin problem
         this.props.sequenceData.features.forEach(function(feature) {
             if (!feature.end || feature.end === 0) {
-                this.props.signals.updateFeature({ feature : feature });
+                this.props.signals.updateFeature({ feature: feature, reset: true });
             }
         }.bind(this));
+        this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
     }
-
+    
     componentDidMount() {
         var {
             sequenceDataInserted,

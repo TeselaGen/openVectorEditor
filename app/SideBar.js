@@ -36,15 +36,29 @@ export default class SideBar extends React.Component {
             featureOrder: 'name',
             cutsiteOrder: 'name',
             orfOrder: 'start',
-            newFeature: {start: '0', end: '0', strand: '-1', name: "", type: ""},
+            newFeature: {},
             selectedCutsites: [],
             selectedFeatures: [],
             selectedOrfs: [],
+            shiftedFeatures: [],
         };
     }
 
     componentWillReceiveProps(newProps) {
         let signals = this.props.signals;
+
+        var shiftedFeatures = [];
+        if (this.props.annotationType === 'Features') {
+            var featureCopy;
+            for (var i=0; i<this.props.annotations.length; i++) {
+                featureCopy = Object.assign({}, this.props.annotations[i]);
+                featureCopy.start += 1;
+                featureCopy.end += 1;
+                shiftedFeatures.push(featureCopy);
+            }
+            this.setState({ shiftedFeatures: shiftedFeatures });
+        }
+
         if (newProps.selectionLayer.selected && newProps.selectionLayer.id) {
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
@@ -173,16 +187,16 @@ export default class SideBar extends React.Component {
     }
 
     editFeature(currentFeature) {
-        if (parseInt(currentFeature.start) === parseInt(currentFeature.end)) {
-            this.setState({ featureError: 'Feature length cannot be zero' });
-            return;
-        }
         if (currentFeature.badType) {
             this.setState({ featureError: 'Unrecognized feature type' });
             return;
         }
-        this.props.signals.updateFeature({ feature: currentFeature });
-        this.setState({ selectedFeatures: [], editFeature: -1 })
+        var featureCopy = Object.assign({}, currentFeature);
+        featureCopy.start -= 1;
+        featureCopy.end -= 1;
+        this.setState({ editFeature: -1 });
+        this.props.signals.updateFeature({ feature: featureCopy });
+        this.props.signals.featureClicked({ annotation: featureCopy });
     }
 
     closeErrorDialog() {
@@ -199,7 +213,7 @@ export default class SideBar extends React.Component {
 
     openAddFeatureDisplay() {
         this.setState({ editFeature: -1, selectedFeatures: [] });
-        this.annotationHighlight(null);
+        // this.annotationHighlight(null);
         this.props.signals.addFeatureModalDisplay();
     }
 
@@ -208,10 +222,6 @@ export default class SideBar extends React.Component {
     }
 
     addFeature() {
-        if (parseInt(this.state.newFeature.start) === parseInt(this.state.newFeature.end)) {
-            this.setState({featureError: 'Feature length cannot be zero'});
-            return;
-        }
         if (this.state.newFeature.badType) {
             this.setState({ featureError: 'Unrecognized feature type' });
             return;
@@ -219,13 +229,17 @@ export default class SideBar extends React.Component {
         let temporaryId = this.props.annotations.length;
         this.state.newFeature.id = temporaryId;
         this.props.signals.addFeatureModalDisplay();
+        var featureCopy = Object.assign({}, this.state.newFeature);
+        featureCopy.start -= 1;
+        featureCopy.end -= 1;
+
         this.props.signals.addAnnotations({
             sidebarType: 'Features',
-            annotationsToInsert: [this.state.newFeature],
+            annotationsToInsert: [featureCopy],
             thidErrors: true
         });
         this.setState({selectedFeatures: [temporaryId]});
-        this.props.signals.featureClicked({annotation: this.state.newFeature});
+        this.props.signals.featureClicked({annotation: featureCopy});
     }
 
     onFeatureSort(column) {
@@ -391,7 +405,7 @@ export default class SideBar extends React.Component {
 
         // FEATURE DETAIL
         var annotationForm;
-        var sorted = annotations.slice(0);
+        var sorted = this.state.shiftedFeatures.slice(0);
         sorted = sorted.sort(this.dynamicSort(this.state.featureOrder));
 
         if (this.state.editFeature > -1 && this.props.annotationType === "Features") {
@@ -798,23 +812,28 @@ export default class SideBar extends React.Component {
                         !this.state.newFeature['start'] || isNaN(this.state.newFeature['start']) ||
                         !this.state.newFeature['end'] || isNaN(this.state.newFeature['end']) ||
                         !this.state.newFeature['strand'] || isNaN(this.state.newFeature['strand']) ||
-                        this.state.newFeature['start'] < 0 || this.state.newFeature['start'] > sequenceLength ||
-                        this.state.newFeature['end'] < 0 || this.state.newFeature['end'] > sequenceLength ||
+                        this.state.newFeature['start'] < 1 || this.state.newFeature['start'] > sequenceLength ||
+                        this.state.newFeature['end'] < 1 || this.state.newFeature['end'] > sequenceLength ||
                         this.state.newFeature['strand']*this.state.newFeature['strand'] !== 1 ||
-                        this.state.newFeature.start === this.state.newFeature.end ||
                         this.state.newFeature.badType
                     }
                     />
             </div>
         );
 
+        var start = 1;
+        var end = 1;
+        if (selectionLayer.start > 0) {
+            start = selectionLayer.start+1;
+            end = selectionLayer.end+1;
+        }
         var sidebarDetail = (
-                <SidebarDetail
-                    createFeature={this.createFeature.bind(this)}
-                    sequenceLength={sequenceLength}
-                    feature = {{start: '0', end: '0', strand: '-1', name: "", type: ""}}
-                    />
-            );
+            <SidebarDetail
+                createFeature={this.createFeature.bind(this)}
+                sequenceLength={sequenceLength}
+                feature = {{start: start, end: end, strand: -1, name: "", type: ""}}
+                />
+        );
 
         if (showAddFeatureModal) {
             var addFeatureDialog = (

@@ -51,15 +51,14 @@ export default class StatusBar extends React.Component {
         var {
             sequenceLength,
             selectedSeqMeltingTemp,
-            caretPosition,
             selectionLayer,
             readOnly,
             signals,
             history,
             historyIdx,
         } = this.props;
-
-        var selectionStart = (selectionLayer.start != -1) ? selectionLayer.start : '--';
+        var caretPosition = this.props.caretPosition + 1;
+        var selectionStart = (selectionLayer.start != -1) ? selectionLayer.start + 1 : '--';
         var selectionEnd = (selectionLayer.end != -1) ? selectionLayer.end + 1 : '--';
 
         // {{}} needs styling
