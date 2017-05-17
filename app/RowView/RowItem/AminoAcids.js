@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import colorOfAminoAcid from '../../constants/amino-acid-colors';
+
 let getAminoAcidFromSequenceTriplet = require('ve-sequence-utils/getAminoAcidFromSequenceTriplet');
 
 let AminoAcids = React.createClass({
@@ -47,6 +49,7 @@ let AminoAcids = React.createClass({
 
         var rows = [[],[],[]];
         var aminoAcid;
+        var color;
         var path;
         var xShift;
         var width;
@@ -71,6 +74,7 @@ let AminoAcids = React.createClass({
                 } else {
                     aminoAcid = getAminoAcidFromSequenceTriplet(sequence[i+2]+sequence[i+1]+sequence[i]);
                 }
+                color = colorOfAminoAcid(aminoAcid.value.toUpperCase());
                 xShift = (letterSpacing + 11.2) * (i - 2) - 2.5;
 
                 // amino acids that wrap around rows need adjustments
@@ -99,7 +103,7 @@ let AminoAcids = React.createClass({
                         onClick={this.handleClick}>
                         <path
                             style={{opacity:'0.5'}}
-                            fill={ aminoAcid.color }
+                            fill={ color }
                             transform={null}
                             d={ path }
                             />
