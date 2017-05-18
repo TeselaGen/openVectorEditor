@@ -72,8 +72,6 @@ export default class ToolBar extends React.Component {
             <div style={{display: 'inline-block'}}>
                 <IconButton tooltip="Display Sequence View"
                     onTouchTap={function() {
-                        // document.getElementById("circularView").setAttribute("style", "display: none");
-                        // document.getElementById("rowView").setAttribute("style", "display: block");
                         signals.toggleShowCircular({ showCircular: false });
                         signals.toggleShowRow({ showRow: true });
                         signals.adjustWidth();
@@ -81,22 +79,20 @@ export default class ToolBar extends React.Component {
                     >
                     <RowIcon />
                 </IconButton>
-                <IconButton tooltip="Display Side-by-side View"
-                    disabled = { showSidebar }
-                    onTouchTap={function() {
-                        // document.getElementById("circularView").setAttribute("style", "display: block");
-                        // document.getElementById("rowView").setAttribute("style", "display: block");
-                        signals.toggleShowCircular({ showCircular: true });
-                        signals.toggleShowRow({ showRow: true });
-                        signals.adjustWidth();
-                    }}
-                    >
-                    <BothViewsIcon />
-                </IconButton>
+                { embedded ? null :
+                    <IconButton tooltip="Display Side-by-side View"
+                        disabled = { (showSidebar) }
+                        onTouchTap={function() {
+                            signals.toggleShowCircular({ showCircular: true });
+                            signals.toggleShowRow({ showRow: true });
+                            signals.adjustWidth();
+                        }}
+                        >
+                        <BothViewsIcon />
+                    </IconButton>
+                }
                 <IconButton tooltip="Display Circular View"
                     onTouchTap={function() {
-                        // document.getElementById("circularView").setAttribute("style", "display: block");
-                        // document.getElementById("rowView").setAttribute("style", "display: none");
                         signals.toggleShowCircular({ showCircular: true });
                         signals.toggleShowRow({ showRow: false });
                     }}
@@ -129,18 +125,20 @@ export default class ToolBar extends React.Component {
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'fasta'});
                     }} />
-                <MenuItem key={5} primaryText="Upload from file ..." insetChildren={false}
-                    style={{padding:'0 20px'}}
-                    onClick={function () {
-                        var element = document.getElementById("uploadFileInput");
-                        element.click();
-                        element.addEventListener("change", handleFiles, false);
-                        function handleFiles() {
-                            let file = this.files[0];
-                             signals.clickLoadFile({inputFile: file});
-                        }
-                    }} />
-
+                { embedded ? null :
+                    <MenuItem key={5} primaryText="Upload from file ..." insetChildren={false}
+                        style={{padding:'0 20px'}}
+                        onClick={function () {
+                            var element = document.getElementById("uploadFileInput");
+                            element.click();
+                            element.addEventListener("change", handleFiles, false);
+                            function handleFiles() {
+                                let file = this.files[0];
+                                 signals.clickLoadFile({inputFile: file});
+                            }
+                        }} 
+                        />
+                }
                 <input type="file" id="uploadFileInput" style={{display:'none'}} onChange={function() {
                 }} />
             </div>
@@ -230,7 +228,7 @@ export default class ToolBar extends React.Component {
                         <SearchIcon />
                     </IconButton>
 
-                    <Search/>
+                    <Search />
 
                     { toggleFeatures }
 

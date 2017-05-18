@@ -162,7 +162,7 @@ export default class StatusBar extends React.Component {
                         {helpItems}
                     </IconMenu>
 
-                    {readOnly ? <div></div>
+                    { readOnly ? <div></div>
                               : <div>
                                     <IconButton
                                         label="undo"
