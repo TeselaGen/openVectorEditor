@@ -77,8 +77,9 @@ export default function copySelection({input, state, output}) {
             sequence: selectionData.sequence,
             url: url,
         };
+
+        state.set('clipboardData', newClipboardData);
     } else {
-        var newClipboardData = null;
+        state.set('clipboardData', {})
     }
-    state.set('clipboardData', newClipboardData);
 }

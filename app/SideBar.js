@@ -181,7 +181,7 @@ export default class SideBar extends React.Component {
             this.setState({ featureError: 'Unrecognized feature type' });
             return;
         }
-        this.props.signals.updateFeature({ feature: currentFeature });
+        this.props.signals.updateFeature({ feature: currentFeature, reset: false });
         this.setState({ selectedFeatures: [], editFeature: -1 })
     }
 

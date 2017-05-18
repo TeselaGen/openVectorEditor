@@ -20,3 +20,10 @@
 .data {
     margin: 15px 15px 15px 0;
 }
+
+.shortcutsDialog {
+    position: absolute;
+    right: 50%;
+    width: 1000px;
+    height: 100%;
+}
