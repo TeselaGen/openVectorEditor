@@ -318,7 +318,7 @@ export default class RowView extends React.Component {
         }
 
         return (
-            <div style={{display: "none"}}></div>
+            <div style={{display: "none"}} id="draggable"></div>
         );
     }
 }
