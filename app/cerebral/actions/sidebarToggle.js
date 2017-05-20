@@ -28,7 +28,6 @@ module.exports = function sidebarToggle({input: {sidebar, annotation, view}, sta
     }
 
     state.set('showSidebar', !currentSidebar);
-    state.set('sidebarType', 'Features'); // features are default but making sure
 
     var sidebarCSS = {
         "transform": ["scaleX(1)", "scaleX(-1)"],
