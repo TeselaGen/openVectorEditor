@@ -2,15 +2,6 @@ var assign = require('lodash/object/assign');
 var filterSequenceString = require('ve-sequence-utils/filterSequenceString');
 
 export default function pasteSequenceString({input, state, output}) {
-    var clipboardData = state.get('clipboardData');
-    if (!clipboardData) {
-        output.error({errMessage: "clipboard data not found or invalid"});
-        return;
-    }
-
-    var cleanedUpClipboardData;
-    var sequenceString = clipboardData.sequence;
-
     // delete id instead of putting anything there, remove entirely
     function removeIds(annotations) {
         var newFeature;
@@ -27,16 +18,28 @@ export default function pasteSequenceString({input, state, output}) {
         });
     }
 
-    if (clipboardData && clipboardData.sequence /*&& clipboardData.sequence === sequenceString*/) {
-        // handle clipboardData which was copied from within the app
-        // remove ids from the copied features so the server can give them new ones
+    var sequenceString;
+    var clipboardData = state.get('clipboardData');
+    var cleanedUpClipboardData;
+
+    // something external has been copied to the computer's clipboard more recently
+    // than whatever was copied in-app, so use external computer's clipboard data
+    if (clipboardData.sequence && input.selection && clipboardData.sequence !== input.selection) {
+        sequenceString = input.selection;
+        cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});
+
+    // the in-app clipboard is the most recent, so use in-app clipboard data
+    } else if (clipboardData.sequence) {
+        sequenceString = clipboardData.sequence;
         cleanedUpClipboardData = removeFeatureIds();
-    } else {
-        // clean up the sequence string coming from elsewhere so we can insert it
+
+    // no in-app data exists, so use external computer's clipboard data
+    } else if (input.selection) {
+        sequenceString = input.selection;
         cleanedUpClipboardData = assign({}, {sequence: filterSequenceString(sequenceString)});
     }
 
-    if(cleanedUpClipboardData.sequence) {
+    if(cleanedUpClipboardData && cleanedUpClipboardData.sequence) {
         output.success({'newSequenceData': cleanedUpClipboardData})
     } else {
         output.error({errMessage: "clipboard data not found or invalid"});

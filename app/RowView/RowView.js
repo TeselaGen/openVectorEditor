@@ -35,6 +35,7 @@ import getXStartAndWidthOfRowAnnotation from '../shared-utils/getXStartAndWidthO
     showCaret: ['showCaret'],
     showCutsites: ['showCutsites'],
     showReverseSequence: ['showReverseSequence'],
+    showRow: ['showRow'],
     showSequence: ['showSequence'],
     showSidebar: ['showSidebar'],
     spaceBetweenAnnotations: ['spaceBetweenAnnotations']
@@ -263,7 +264,8 @@ export default class RowView extends React.Component {
                 selectionEnd = selectionEndRow === index ? selectionRightEdge : <div></div>
                 return (
                     <div key={key}>
-                        <div className={'veRowItemSpacer'} />
+                        <div className={'veRowItemSpacer'} 
+                            />
                         <RowItem
                             selectionStart={selectionStart}
                             row={rowData[index]}
@@ -281,42 +283,42 @@ export default class RowView extends React.Component {
         if (showRow) {
             return (
                 <div>
-                <Draggable
-                    bounds={{top: 0, left: 0, right: 0, bottom: 0}}
-                    onDrag={(event) => {
-                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}
-                    }
-                    onStart={(event) => {
-                        this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}
-                    }
-                    onStop={signals.editorDragStopped}
-                    >
-                    <div id="draggable"
-                        style={{display: "block"}}
-                        onClick={(event) => {
-                            this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
-                        }}
-                        ref="rowView"
-                        className={styles.RowView + " veRowView"}
+                    <Draggable
+                        bounds={{top: 0, left: 0, right: 0, bottom: 0}}
+                        onDrag={(event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, signals.editorDragged)}
+                        }
+                        onStart={(event) => {
+                            this.getNearestCursorPositionToMouseEvent(event, signals.editorDragStarted)}
+                        }
+                        onStop={signals.editorDragStopped}
                         >
-                        <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
-                        <ReactList
-                            ref={c => {
-                                this.InfiniteScroller = c
+                        <div id="draggable"
+                            style={{display: "block"}}
+                            onClick={(event) => {
+                                this.getNearestCursorPositionToMouseEvent(event, signals.editorClicked);
                             }}
-                            itemRenderer={renderItem}
-                            length={rowData.length}
-                            itemSizeEstimator={itemSizeEstimator.bind(this)}
-                            type='variable'
-                            />
-                    </div>
-                </Draggable>
+                            ref="rowView"
+                            className={styles.RowView + " veRowView"}
+                            >
+                            <div ref={'fontMeasure'} className={styles.fontMeasure}>m</div>
+                            <ReactList
+                                ref={c => {
+                                    this.InfiniteScroller = c
+                                }}
+                                itemRenderer={renderItem}
+                                length={rowData.length}
+                                itemSizeEstimator={itemSizeEstimator.bind(this)}
+                                type='variable'
+                                />
+                        </div>
+                    </Draggable>
                 </div>
             );
         }
 
         return (
-            <div style={{display: "none"}}></div>
+            <div style={{display: "none"}} id="draggable"></div>
         );
     }
 }

@@ -1,10 +1,12 @@
 module.exports = {
     toOpenVectorEditor: function(contents, services){
+        var locations;
+        var isEmbedded = document.location.search.match(/embedded=true/);
         return {
             state: {
                 sequenceData: {
-                    features: contents.features.map(function (elem) {                       
-                        elem.start = elem.locations[0].genbankStart;                       
+                    features: contents.features.map(function (elem) {
+                        elem.start = elem.locations[0].genbankStart;
                         elem.end = elem.locations[0].end;
                         return elem;
                     }),
@@ -13,8 +15,10 @@ module.exports = {
                     sequence: contents.sequence,
                     circular: contents.isCircular
                 },
-                embedded: document.location.search.match(/embedded=true/),
-                readOnly: !contents.canEdit || document.location.search.match(/embedded=true/) // only editable in full version with permission
+                embedded: isEmbedded,
+                readOnly: !contents.canEdit || isEmbedded, // only editable in full version with permission
+                iceEntryId: contents.uri, // this isn't preserved anywhere else and we need it for download links
+                showRow: !isEmbedded
             },
             services: services,
             actions: {
