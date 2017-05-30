@@ -113,6 +113,11 @@ export default class RowView extends React.Component {
     }
 
     getNearestCursorPositionToMouseEvent(event, callback) {
+        if (event.target.nodeName.toLowerCase() === "path" ||
+            event.target.nodeName.toLowerCase() === "circle" ||
+            event.target.className === "cutsiteLabel") {
+            return;
+        }
         var bpsPerRow = this.props.bpsPerRow;
         var charWidth = this.props.charWidth;
         var nearestBP = 0;

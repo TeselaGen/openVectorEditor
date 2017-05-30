@@ -50,6 +50,15 @@ function toDegrees(radians) {
 
 export default class CircularView extends React.Component {
     getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
+
+        if (event.target.nodeName.toLowerCase() === "path" ||
+            event.target.nodeName.toLowerCase() === "circle" ||
+            event.target.className === "cutsiteLabel" ||
+            event.target.className.baseVal === "velabelText veCircularViewLabelText clickable veCutsiteLabel" ||
+            event.target.className.baseVal === "velabelText veCircularViewLabelText clickable veFeatureLabel") {
+            return;
+        }
+
         if (!event.clientX) {
             return;
         }

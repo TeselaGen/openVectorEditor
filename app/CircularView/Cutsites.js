@@ -8,23 +8,44 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
     var labels = {};
     var index = 0;
     radius = radius;
+
+    function singleClick(annotation) {
+        var row = Math.floor((annotation.start-1)/(bpsPerRow));
+        row = row <= 0 ? "0" : row;
+        signals.jumpToRow({rowToJumpTo: row});
+        signals.cutsiteClicked({ annotation: annotation });
+    }
+
+    function doubleClick(annotation) {
+        var row = Math.floor((annotation.start-1)/(bpsPerRow));
+        row = row <= 0 ? "0" : row;
+        signals.jumpToRow({rowToJumpTo: row})
+        signals.cutsiteClicked({ annotation: annotation });
+        signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
+        signals.adjustWidth();
+    }
+
     each(cutsites,function(annotation, key) {
         index++;
-        function onClick(event) {
-            event.stopPropagation();
-            signals.cutsiteClicked({ annotation: annotation });
-        }
-        // function onDoubleClick(event) {
-        //     event.stopPropagation()
-        //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" })
-        // }
 
-        function onClick(event) {
-            event.stopPropagation();
-            var row = Math.floor((annotation.start-1)/(bpsPerRow));
-            row = row <= 0 ? "0" : row;
-            signals.jumpToRow({rowToJumpTo: row});
-            signals.cutsiteClicked({ annotation: annotation });
+        function handleClick(event) {
+            var clicks = 0;
+            var timeout;
+
+            return function() {
+                clicks += 1;
+                if (clicks === 1) {
+                    timeout = setTimeout(function() {
+                        singleClick(annotation);
+                        clicks = 0;
+                    }, 250);
+
+                } else {
+                    clearTimeout(timeout);
+                    doubleClick(annotation);
+                    clicks = 0;
+                }
+            }
         }
 
         if (!(annotation.downstreamTopSnip > -1)) {
@@ -48,7 +69,7 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
             color: cutColor,
             className: 'veCutsiteLabel',
             id: index,
-            onClick,
+            handleClick,
         }
 
         svgGroup.push(

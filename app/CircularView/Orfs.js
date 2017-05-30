@@ -14,6 +14,22 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
     var maxYOffset = 0;
     var svgGroup = [];
 
+    function singleClick(annotation) {
+        var row = Math.floor((annotation.start-1)/(bpsPerRow));
+        row = row <= 0 ? "0" : row;
+        signals.jumpToRow({rowToJumpTo: row});
+        signals.featureClicked({ annotation: annotation });
+    }
+
+    function doubleClick(annotation) {
+        var row = Math.floor((annotation.start-1)/(bpsPerRow));
+        row = row <= 0 ? "0" : row;
+        signals.jumpToRow({rowToJumpTo: row})
+        signals.featureClicked({ annotation: annotation });
+        signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
+        signals.adjustWidth();
+    }
+
     Object.keys(orfs).forEach(function(key, index) {
         var annotation = orfs[key]
         var annotationCopy = {...annotation}
@@ -64,12 +80,24 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
         }
 
 
-        function onClick(event) {
-            event.stopPropagation();
-            var row = Math.floor((annotation.start-1)/(bpsPerRow));
-            row = row <= 0 ? "0" : row;
-            signals.jumpToRow({rowToJumpTo: row});
-            signals.featureClicked({ annotation: annotation });
+        function handleClick(event) {
+            var clicks = 0;
+            var timeout;
+
+            return function() {
+                clicks += 1;
+                if (clicks === 1) {
+                    timeout = setTimeout(function() {
+                        singleClick(annotation);
+                        clicks = 0;
+                    }, 250);
+
+                } else {
+                    clearTimeout(timeout);
+                    doubleClick(annotation);
+                    clicks = 0;
+                }
+            }
         }
 
         var codonIndices = [];
@@ -149,7 +177,7 @@ export default function Orfs({radius, orfs=[], annotationHeight, spaceBetweenAnn
             <g
                 id={annotation.id}
                 key={'Orfs' + annotation.id}
-                onClick={onClick}
+                onClick={handleClick()}
                 >
                 <g className='Orfs clickable'>
                     { arrowHead }
