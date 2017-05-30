@@ -28,7 +28,7 @@ module.exports = {
     caretPosition: 0,
     charHeight: 15,
     charWidth: 25,
-    clipboardData: null,
+    clipboardData: {},
     commonEnzymes: COMMON_ENZYMES,
     currentEnzymesList: COMMON_ENZYMES, //chosen enzymes list to show under enzymes groups
     currentUserEnzymesList: COMMON_ENZYMES, //edited, not saved list of active enzymes
@@ -48,6 +48,7 @@ module.exports = {
     searchString: "",
     sequenceHeight: 20,
     showAddFeatureModal: false,
+    showAminoAcids: false,
     showAxis: true,
     showCircular: true,
     showCutsites: false,

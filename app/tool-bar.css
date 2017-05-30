@@ -5,3 +5,10 @@
 .saved div svg {
     fill: black;
 }
+
+.openableIcon:after {
+    height: 6px;
+    width: 6px;
+    border: 2px solid red;
+    translate: rotate(45deg);
+}

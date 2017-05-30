@@ -75,6 +75,9 @@ export default class StatusBar extends React.Component {
                 <li>Mod + Shift + Up/Down:  extend selection to the beginning/end of sequence</li>
                 <br/>
                 <li>Cmd + a:  select all</li>
+                <li>Cmd + c:  copy</li>
+                <li>Cmd + x:  cut</li>
+                <li>Cmd + v:  paste</li>
                 <li>Cmd + Ctrl + i:  select inverse</li>
                 <li>Cmd + z:  undo</li>
                 <li>Cmd + y:  redo</li>
@@ -86,8 +89,8 @@ export default class StatusBar extends React.Component {
         if (this.state.showShortcuts) {
             var shortcutsDialog = (
                 <Dialog
+                className={styles.shortcutsDialog}
                 title="Keyboard Shortcuts"
-                style={{position:'absolute', right:'100px', width:'1000px', height:'100%'}}
                 open={this.state.showShortcuts}
                 onRequestClose={this.toggleShortcuts.bind(this, false)}
                 >
@@ -161,7 +164,7 @@ export default class StatusBar extends React.Component {
                         {helpItems}
                     </IconMenu>
 
-                    {readOnly ? <div></div>
+                    { readOnly ? <div></div>
                               : <div>
                                     <IconButton
                                         label="undo"

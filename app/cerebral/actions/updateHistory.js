@@ -32,9 +32,14 @@ export default function updateHistory({input: { newHistory, idx }, state, output
     // undo & redo, idx will be either -1 or 1 respectively
     } else if (idx) {
         let newIdx = state.get('historyIdx') + idx;
+
+        // the buttons are disabled, but the keyboard shortcuts can't be disabled and can cause errors
+        if (newIdx < 0 || newIdx >= history.length) {
+            return;
+        }
+
         state.set('sequenceData', history[newIdx]);
         state.set('historyIdx', newIdx);
         state.set('undo', true);
     }
-
 }

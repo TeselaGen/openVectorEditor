@@ -3,6 +3,7 @@ import {Decorator as Cerebral} from 'cerebral-view-react';
 import ToolBar from './ToolBar';
 import StatusBar from './StatusBar';
 import SideBar from './SideBar';
+import Clipboard from './Clipboard';
 import styles from './sequence-editor.css';
 
 var assign = require('lodash/object/assign');
@@ -23,6 +24,7 @@ var combokeys;
     historyIdx: ['historyIdx'],
     newRandomRowToJumpTo: ['newRandomRowToJumpTo'],
     orfData: ['orfData'],
+    savedIdx: ['savedIdx'],
     selectedSequenceString: ['selectedSequenceString'],
     searchLayers: ['searchLayers'],
     selectionLayer: ['selectionLayer'],
@@ -57,8 +59,8 @@ export default class SequenceEditor extends React.Component {
             updateHistory,
             copySelection,
             pasteSequenceString,
+            cutSelection,
         } = this.props.signals;
-
         var self = this;
         combokeys = new Combokeys(document.documentElement);
         bindGlobalPlugin(combokeys);
@@ -126,20 +128,18 @@ export default class SequenceEditor extends React.Component {
             copySelection();
             event.stopPropagation();
         });
-        combokeys.bindGlobal('command+v', function(event) { // Handle shortcut
-            pasteSequenceString();
+        combokeys.bindGlobal('command+x', function(event) { // Handle shortcut
+            cutSelection();
             event.stopPropagation();
         });
+        // no paste, that's handled by the clipboard component only
     }
+
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
             this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
         }
-    }
-
-    componentWillUnmount() {
-        combokeys.detach()
     }
 
     render() {
@@ -164,12 +164,11 @@ export default class SequenceEditor extends React.Component {
 
         // check if we have just circ or just row and pad it out a little
         // using the bitwise xor here might be a little sketchy
-        // {{}} currently not working
         var oneViewOnly = !showSidebar && (showCircular ^ showRow)
         var circularStyle = {}
         if(!showCircular) circularStyle = {display: 'none'}
         var rowStyle = {}
-        if(embedded || !showRow) rowStyle = {display: 'none'}
+        if(!showRow) rowStyle = {display: 'none'}
 
 
         var borderStyle = 'none';
@@ -207,6 +206,8 @@ export default class SequenceEditor extends React.Component {
 
         return (
             <div ref="sequenceEditor" className={styles.app}>
+
+                <Clipboard />
 
                 <div className={styles.head} style={{marginBottom: toolbarStyle}}>
                     <ToolBar />

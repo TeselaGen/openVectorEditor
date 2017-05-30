@@ -41,13 +41,14 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         'm':'atg',
         'f':'tt(c|t)',
         'p':'cc(a|c|g|t)',
-        'u':'((ta(a|g))|(tga))', // stop
-        'o':'((ta(a|g))|(tga))', // also stop
         's':'((tc(a|c|g|t))|(ag(c|t)))',
         't':'ac(a|c|g|t)',
         'w':'tgg',
         'y':'ta(c|t)',
-        'v':'gt(a|c|g|t)'
+        'v':'gt(a|c|g|t)',
+        'u':'((ta(a|g))|(tga))', // stop
+        'o':'((ta(a|g))|(tga))', // also stop
+        '*':'((ta(a|g))|(tga))' //  yet another stop
     };
 
     var ambiguousAminoAcids = {
@@ -61,7 +62,6 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
     var layers = [];
 
     // amino acid search
-    // (i have no idea if the amino acids search is actually working the way scientists expect it to...)
     if (dna === "Amino Acids") {
         var string = "";
         for (let i=0; i<searchString.length; i++) {

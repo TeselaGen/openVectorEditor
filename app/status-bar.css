@@ -4,7 +4,7 @@
     justify-content: flex-end;
     background-color: rgb(232,232,232);
     border-top: 1px solid #ddd;
-    margin-bottom: 64px;
+    /*margin-bottom: 64px;*/
 }
 
 .box {
@@ -19,4 +19,11 @@
 
 .data {
     margin: 15px 15px 15px 0;
+}
+
+.shortcutsDialog {
+    position: absolute;
+    right: 50%;
+    width: 1000px;
+    height: 100%;
 }

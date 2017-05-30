@@ -98,22 +98,29 @@ let Cutsites = React.createClass({
             sequenceHeight,
             sequenceLength,
             topStrand,
+            showAminoAcids,
+            showReverseSequence,
         } = this.props
         var letterSpacing = this.state.letterSpacing;
 
-        sequenceHeight += 5; // 5px from sequence's bottom padding
-        var divPadding = 16; // 16px from div's bottom padding
-        var offset = sequenceHeight + divPadding;
+        sequenceHeight += 5;
+        var offset = sequenceHeight - 2;
         var snipStyle = {
             height: sequenceHeight + "px",
             position: "absolute",
-            bottom: divPadding + "px",
+            top: "-1px",
+            width: "2px",
+        };
+        var reverseHiddenSnipStyle = {
+            height: "8px",
+            position: "absolute",
+            top: "-1px",
             width: "2px",
         };
         var snipConnectorStyle = {
             height: "2px",
             position: "absolute",
-            bottom: offset + "px",
+            top: offset + "px",
         };
 
         var snips = [];
@@ -135,6 +142,7 @@ let Cutsites = React.createClass({
                 downstreamTopBeforeBottom
             } = annotation
             snipStyle = {...snipStyle, background: annotation.restrictionEnzyme.color || 'black'}
+            reverseHiddenSnipStyle = {...reverseHiddenSnipStyle, background: annotation.restrictionEnzyme.color || 'black'}
             snipConnectorStyle = {...snipConnectorStyle, background: annotation.restrictionEnzyme.color || 'black'}
 
             var newSnip;
@@ -142,13 +150,13 @@ let Cutsites = React.createClass({
             var snipRange = {};
             if (areNonNegativeIntegers([downstreamBottomSnip, downstreamTopSnip])) {
                 if (topStrand) {
-                    snipStyle.bottom = offset + 'px';
                     newSnip = getSnipForRow(downstreamTopSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key+'downstream', letterSpacing);
                     if (newSnip) {
                         snips.push(newSnip)
                     }
                 } else {
-                    snipStyle.bottom = divPadding + 'px';
+                    snipStyle = showReverseSequence ? snipStyle : reverseHiddenSnipStyle;
+                    snipStyle.top = offset + 'px';
                     newSnip = getSnipForRow(downstreamBottomSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key+'downstream', letterSpacing);
                     if (newSnip) {
                         snips.push(newSnip)
@@ -166,13 +174,13 @@ let Cutsites = React.createClass({
             }
             if (areNonNegativeIntegers([upstreamBottomSnip, upstreamTopSnip])) {
                 if (topStrand) {
-                    snipStyle.bottom = offset + 'px';
                     newSnip = getSnipForRow(upstreamTopSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key + 'upstream', letterSpacing);
                     if (newSnip) {
                         snips.push(newSnip)
                     }
                 } else {
-                    snipStyle.bottom = divPadding + 'px';
+                    snipStyle = showReverseSequence ? snipStyle : reverseHiddenSnipStyle;
+                    snipStyle.top = offset + 'px';
                     newSnip = getSnipForRow(upstreamBottomSnip, row, sequenceLength, bpsPerRow, snipStyle, charWidth, key + 'upstream', letterSpacing);
                     if (newSnip) {
                         snips.push(newSnip)
