@@ -48,6 +48,7 @@ module.exports = {
     searchString: "",
     sequenceHeight: 20,
     showAddFeatureModal: false,
+    showAminoAcids: false,
     showAxis: true,
     showCircular: true,
     showCutsites: false,

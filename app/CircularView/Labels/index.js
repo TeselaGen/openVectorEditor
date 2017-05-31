@@ -40,7 +40,7 @@ export default function Labels({labels={}, outerRadius}) {
     });
     var groupedLabels = relaxLabelAngles(labelPoints, fontHeight)
 
-    return <g 
+    return <g
         key={'veLabels'}
         className='veLabels'>
         {groupedLabels.map(function (label) {
@@ -67,11 +67,11 @@ function LabelGroup ({label, ...rest}) {
     var multipleLabels = sublabels.length > 1;
 
     return (
-        <g 
+        <g
             mouseAware={true}
             id={label.id}
             >
-            <DrawLabelGroup 
+            <DrawLabelGroup
                 {...{label, ...rest, className: 'DrawLabelGroup', sublabels, multipleLabels, labelIds}}
                 />
         </g>
@@ -81,13 +81,13 @@ function LabelGroup ({label, ...rest}) {
 
 function DrawLabelGroup (props) {
     var {
-        label, 
-        sublabels, 
-        fontWidth, 
-        fontHeight, 
-        outerRadius, 
-        labelIds, 
-        multipleLabels,  
+        label,
+        sublabels,
+        fontWidth,
+        fontHeight,
+        outerRadius,
+        labelIds,
+        multipleLabels,
         ...rest
     } = props;
 
@@ -107,7 +107,7 @@ function DrawLabelGroup (props) {
     maxLabelLength = sublabels.reduce(function (currentLength, {text}) {
         if (text.length > currentLength) {
             return text.length
-        } 
+        }
         return currentLength
     }, 0)
     maxLabelWidth = maxLabelLength * fontWidth;
@@ -124,11 +124,11 @@ function DrawLabelGroup (props) {
           if (labelYStart < outerRadius * -1) {
             //we need to make another row of labels!
             // {{}} this is not yet implemented, does it need to be?
-            
+
           }
         }
         var labelClass = "velabelText veCircularViewLabelText clickable "
-        
+
         var line = LabelLine([label.innerPoint, label], {style: {opacity: 1}})
         content = [
             line,
@@ -139,11 +139,11 @@ function DrawLabelGroup (props) {
                         flipLabel = -1; // stack labels up not down
                     }
                     return (
-                        <text 
-                            x = { labelXStart } 
-                            onClick = { label.onClick }
-                            dy = { index === 0 ? 0 : dy * index * flipLabel } 
-                            style = {{ fill: label.color, fontSize: fontWidth }} 
+                        <text
+                            x = { labelXStart }
+                            onClick = { label.handleClick() }
+                            dy = { index === 0 ? 0 : dy * index * flipLabel }
+                            style = {{ fill: label.color, fontSize: fontWidth }}
                             className = { labelClass + label.className }
                             y = { labelYStart }
                             >
@@ -159,17 +159,18 @@ function DrawLabelGroup (props) {
             <text
                 key = 'text'
                 x = { labelXStart }
+                onClick = { label.handleClick() }
                 className = { labelClass + label.className }
                 y = { labelYStart }
                 style = {{ fill: label.color, fontSize: fontWidth }}
                 >
                 { text }
-            </text>, 
+            </text>,
             LabelLine([label.innerPoint, label])
         ]
     }
-           
-    return <g {...{...rest, onClick: label.onClick}}>
+
+    return <g {...{...rest}}>
             { content }
         </g>
 }
@@ -184,7 +185,7 @@ function LabelLine(pointArray) {
 
     return <polyline {... {
             key: 'polyline',
-            points, 
+            points,
             stroke:'black',
             fill: 'none',
             strokeWidth: .25,
@@ -192,4 +193,3 @@ function LabelLine(pointArray) {
         }}
     />
 }
-

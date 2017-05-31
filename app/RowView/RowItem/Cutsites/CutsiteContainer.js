@@ -44,10 +44,10 @@ let CutsiteContainer = React.createClass({
                             e.stopPropagation();
                             signals.cutsiteClicked({ annotation: annotation });
                         }}
-                        // onDoubleClick={ function (e) {
-                        //     e.stopPropagation();
-                        //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "row" });
-                        // }}
+                        ondblclick={ function (e) {
+                            e.stopPropagation();
+                            signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "row" });
+                        }}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}

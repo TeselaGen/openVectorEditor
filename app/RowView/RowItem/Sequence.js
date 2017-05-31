@@ -37,6 +37,7 @@ class Sequence extends React.Component {
         for (var i=0; i<sequence.length; i++) {
             svgText.push(
                 <text
+                key={"bp" + i}
                 ref="sequenceRow"
                 fill={ textColor }
                 y="5"

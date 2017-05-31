@@ -15,6 +15,23 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
     var maxYOffset = 0;
     var svgGroup = [];
     var labels = {};
+
+    function singleClick(annotation) {
+        var row = Math.floor((annotation.start-1)/(bpsPerRow));
+        row = row <= 0 ? "0" : row;
+        signals.jumpToRow({rowToJumpTo: row});
+        signals.featureClicked({ annotation: annotation });
+    }
+
+    function doubleClick(annotation) {
+        var row = Math.floor((annotation.start-1)/(bpsPerRow));
+        row = row <= 0 ? "0" : row;
+        signals.jumpToRow({rowToJumpTo: row})
+        signals.featureClicked({ annotation: annotation });
+        signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
+        signals.adjustWidth();
+    }
+
     Object.keys(features).reverse().forEach(function(key, index) {
         var annotation = features[key];
         var annotationCopy = {...annotation};
@@ -52,18 +69,25 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
             maxYOffset = annotationCopy.yOffset;
         }
 
-        function onClick(event) {
-            event.stopPropagation();
-            var row = Math.floor((annotation.start-1)/(bpsPerRow));
-            row = row <= 0 ? "0" : row;
-            signals.jumpToRow({rowToJumpTo: row});
-            signals.featureClicked({ annotation: annotation });
-        }
+        function handleClick(event) {
+            var clicks = 0;
+            var timeout;
 
-        // function onDoubleClick(event) {
-        //     event.stopPropagation();
-        //     signals.sidebarToggle({ sidebar: true, annotation: annotation, view: "circular" });
-        // }
+            return function() {
+                clicks += 1;
+                if (clicks === 1) {
+                    timeout = setTimeout(function() {
+                        singleClick(annotation);
+                        clicks = 0;
+                    }, 250);
+
+                } else {
+                    clearTimeout(timeout);
+                    doubleClick(annotation);
+                    clicks = 0;
+                }
+            }
+        }
 
         // add label info to labels
         labels[annotation.id] ={
@@ -72,8 +96,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
             text: annotation.name,
             id: annotation.id,
             className: 'veFeatureLabel',
-            onClick,
-            // onDoubleClick,
+            handleClick,
         };
 
         svgGroup.push(
@@ -94,7 +117,7 @@ export default function Features({radius, features=[], annotationHeight, spaceBe
                             signals = { signals }
                             >
                             <CircularFeature
-                                onClick={onClick}
+                                onClick={handleClick()}
                                 color={ featureColor }
                                 key={ 'feature' + index }
                                 radius={ annotationRadius }

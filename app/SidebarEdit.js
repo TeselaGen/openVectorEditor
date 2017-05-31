@@ -187,9 +187,9 @@ export default class SidebarDetail extends React.Component {
                 <IconButton
                     disabled={
                         !this.state.feature['start'] || isNaN(this.state.feature['start']) ||
-                        this.state.feature['start'] < 0 || this.state.feature['start'] > max ||
+                        this.state.feature['start'] < 1 || this.state.feature['start'] > max ||
                         !this.state.feature['end'] || isNaN(this.state.feature['end']) ||
-                        this.state.feature['end'] < 0 || this.state.feature['end'] > max ||
+                        this.state.feature['end'] < 1 || this.state.feature['end'] > max ||
                         !this.state.feature['strand'] || isNaN(this.state.feature['strand'] ||
                         this.state.feature['strand']*this.state.feature['strand'] !== 1)
                     }

@@ -49,7 +49,7 @@ export default class SequenceEditor extends React.Component {
         }.bind(this));
         this.props.signals.updateHistory({ newHistory: this.props.sequenceData });
     }
-
+    
     componentDidMount() {
         var {
             sequenceDataInserted,

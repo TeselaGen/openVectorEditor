@@ -6,8 +6,8 @@ module.exports = {
             state: {
                 sequenceData: {
                     features: contents.features.map(function (elem) {
-                        elem.start = elem.locations[0].genbankStart;
-                        elem.end = elem.locations[0].end;
+                        elem.start = elem.locations[0].genbankStart-1;
+                        elem.end = elem.locations[0].end-1;
                         return elem;
                     }),
                     name: contents.name,
@@ -41,7 +41,7 @@ module.exports = {
                     name: elem.name,
                     strand: elem.strand,
                     notes: elem.notes,
-                    locations: [{genbankStart: elem.start, end: elem.end}]
+                    locations: [{genbankStart: elem.start+1, end: elem.end+1}]
                 }
             })
         }

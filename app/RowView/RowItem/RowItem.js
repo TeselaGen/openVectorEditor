@@ -1,15 +1,16 @@
-import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString'
+import getComplementSequenceString from 've-sequence-utils/getComplementSequenceString';
 import React from 'react';
-import Draggable from 'react-draggable'
+import Draggable from 'react-draggable';
 import { Decorator as Cerebral } from 'cerebral-view-react';
 import { columnizeString, elementWidth, calculateRowLength } from '../utils';
 import SelectionLayer from './SelectionLayer';
-import _Sequence from './Sequence'
-import _Orfs from './Orfs'
-import _Features from './Features'
-import _CutsiteLabels from './Cutsites/CutsiteLabels'
-import _Cutsites from './Cutsites'
-import Caret from './Caret'
+import _Sequence from './Sequence';
+import _Orfs from './Orfs';
+import _AminoAcids from './AminoAcids';
+import _Features from './Features';
+import _CutsiteLabels from './Cutsites/CutsiteLabels';
+import _Cutsites from './Cutsites';
+import Caret from './Caret';
 import Highlight from './Highlight';
 import styles from './RowItem.scss';
 
@@ -34,6 +35,7 @@ function noop() {
     sequenceHeight: ['sequenceHeight'],
     sequenceLength: ['sequenceLength'],
     sequenceName: ['sequenceData', 'name'],
+    showAminoAcids: ['showAminoAcids'],
     showFeatures: ['showFeatures'],
     showTranslations: ['showTranslations'],
     showParts: ['showParts'],
@@ -64,6 +66,7 @@ class RowItem extends React.Component {
             sequenceData,
             sequenceHeight,
             sequenceLength,
+            showAminoAcids,
             showCutsites,
             showFeatures,
             showOrfs,
@@ -76,6 +79,10 @@ class RowItem extends React.Component {
             selectionEnd,
         } = this.props;
 
+        if (!row) {
+            return null;
+        }
+
         var {
             sequence='',
             features= [],
@@ -86,9 +93,16 @@ class RowItem extends React.Component {
 
         var reverseSequence = getComplementSequenceString(sequence);
 
-        if (!row) {
-            return null;
-        }
+        //extend the entire sequence by 2 bps around the origin in both directions for amino acids
+        var lastTwoBps = sequenceData.sequence.slice(sequenceData.sequence.length - 2, sequenceData.sequence.length);
+        var firstTwoBps = sequenceData.sequence.slice(0,2);
+        var wrappedSequence = lastTwoBps + sequenceData.sequence + firstTwoBps;
+
+        // extended each row by 2 bps in both directions for amino acids
+        var addOnBpsLeft = wrappedSequence.slice(row.start,row.start+2);
+        var addOnBpsRight = wrappedSequence.slice(row.start+sequence.length+2,row.start+sequence.length+4);
+        var aminoAcidSequence = addOnBpsLeft + sequence + addOnBpsRight;
+        var reverseAminoAcidSequence = getComplementSequenceString(aminoAcidSequence);
 
         var {
             Sequence = _Sequence,
@@ -98,6 +112,7 @@ class RowItem extends React.Component {
             Features = _Features,
             CutsiteLabels = _CutsiteLabels,
             Cutsites = _Cutsites,
+            AminoAcids = _AminoAcids,
         } = componentOverrides
 
         var annotationCommonProps = {
@@ -162,12 +177,44 @@ class RowItem extends React.Component {
                         />
                 }
 
+                {(showAminoAcids) &&
+                    <AminoAcids
+                        sequence={aminoAcidSequence}
+                        sequenceData={sequenceData}
+                        rowNumber={Math.floor(row.start / bpsPerRow)}
+                        topStrand={true}
+                        {...annotationCommonProps}
+                        />
+                }
+
                 {(showCutsites && Object.keys(cutsites).length > 0) &&
                     <CutsiteLabels
                         annotationRanges={cutsites}
                         {...annotationCommonProps}
                         />
                 }
+
+                {(showCutsites && Object.keys(cutsites).length > 0) &&
+                    <div style={{position:'fixed'}}>
+                    <Cutsites
+                        sequenceLength={sequenceLength}
+                        annotationRanges={cutsites}
+                        topStrand={true}
+                        showAminoAcids={showAminoAcids}
+                        showReverseSequence={showReverseSequence}
+                        {...annotationCommonProps}
+                        />
+                    <Cutsites
+                        sequenceLength={sequenceLength}
+                        annotationRanges={cutsites}
+                        topStrand={false}
+                        showAminoAcids={showAminoAcids}
+                        showReverseSequence={showReverseSequence}
+                        {...annotationCommonProps}
+                        />
+                    </div>
+                }
+
 
                 { selectionStart }
                 <Highlight start={selectionLayer.start} end={selectionLayer.end} rowStart={row.start} rowEnd={row.end} />
@@ -181,14 +228,6 @@ class RowItem extends React.Component {
                         sequence={sequence}
                         {...annotationCommonProps}
                         >
-                        {(showCutsites && Object.keys(cutsites).length > 0) &&
-                            <Cutsites
-                                sequenceLength={sequenceLength}
-                                annotationRanges={cutsites}
-                                topStrand={true}
-                                {...annotationCommonProps}
-                                />
-                        }
                     </Sequence>
 
                     {showReverseSequence &&
@@ -197,17 +236,19 @@ class RowItem extends React.Component {
                             sequence={reverseSequence}
                             {...annotationCommonProps}
                             >
-                            {(showCutsites && Object.keys(cutsites).length > 0) &&
-                                <Cutsites
-                                    sequenceLength={sequenceLength}
-                                    annotationRanges={cutsites}
-                                    topStrand={false}
-                                    {...annotationCommonProps}
-                                    />
-                            }
                         </Sequence>
                     }
                 </div>
+
+                {(showAminoAcids && showReverseSequence) &&
+                    <AminoAcids
+                        sequence={reverseAminoAcidSequence}
+                        sequenceData={sequenceData}
+                        rowNumber={Math.floor(row.start / bpsPerRow)}
+                        topStrand={false}
+                        {...annotationCommonProps}
+                        />
+                }
 
             </div>
         );

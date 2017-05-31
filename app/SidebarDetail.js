@@ -152,7 +152,7 @@ export default class SidebarDetail extends React.Component {
                     errorText={
                         !this.state.feature.start && "not a number" ||
                         isNaN(this.state.feature.start) && "not a number" ||
-                        this.state.feature.start < 0 && "cannot be negative" ||
+                        this.state.feature.start < 1 && "cannot be less than 1" ||
                         this.state.feature.start > sequenceLength && "cannot exceed sequence length"
                     }
                     value={this.state.feature.start.toString()}
@@ -166,9 +166,8 @@ export default class SidebarDetail extends React.Component {
                     errorText={
                         !this.state.feature.end && "not a number" ||
                         isNaN(this.state.feature.end) && "not a number" ||
-                        this.state.feature.end < 0 && "cannot be negative" ||
-                        this.state.feature.end > sequenceLength && "cannot exceed sequence length" ||
-                        this.state.feature.end === this.state.feature.start && "feature length cannot be zero"
+                        this.state.feature.end < 1 && "cannot be less than 1" ||
+                        this.state.feature.end > sequenceLength && "cannot exceed sequence length"
                     }
                     value={this.state.feature.end.toString()}
                     />
