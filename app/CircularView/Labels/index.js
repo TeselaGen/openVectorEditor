@@ -69,6 +69,7 @@ function LabelGroup ({label, ...rest}) {
     return (
         <g
             mouseAware={true}
+            key={label.id}
             id={label.id}
             >
             <DrawLabelGroup
@@ -140,6 +141,7 @@ function DrawLabelGroup (props) {
                     }
                     return (
                         <text
+                            key = 'text'
                             x = { labelXStart }
                             onClick = { label.handleClick() }
                             dy = { index === 0 ? 0 : dy * index * flipLabel }

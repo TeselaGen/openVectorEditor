@@ -800,10 +800,12 @@ export default class SideBar extends React.Component {
             // {{}} why are the function calls different?
             <div>
                 <FlatButton
+                    key="cancel"
                     label="Cancel"
                     onTouchTap={function() {signals.addFeatureModalDisplay()}}
                     />
                 <FlatButton
+                    key="addFeature"
                     className={styles.saveButton}
                     label="Add Feature"
                     style={{color: "#03A9F4"}}
@@ -856,7 +858,7 @@ export default class SideBar extends React.Component {
                 open={this.state.featureError.length > 0}
                 onRequestClose={this.closeErrorDialog.bind(this)}
                 style={{height: '500px', position: 'absolute', maxWidth: '500px'}}
-                actions={[<FlatButton onClick={this.closeErrorDialog.bind(this)}>ok</FlatButton>]}
+                actions={[<FlatButton key="cancel" onClick={this.closeErrorDialog.bind(this)}>ok</FlatButton>]}
                 >
                 {this.state.featureError}
             </Dialog>

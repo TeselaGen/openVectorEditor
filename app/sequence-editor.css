@@ -27,7 +27,8 @@
     flex-basis: 0;
     display: block;
     position: relative;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     text-align: center;
 }
 

@@ -83,6 +83,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
 
         var actionButtons = [
             <FlatButton
+                key="cancel"
                 label={"Cancel"}
                 onTouchTap={function() {
                         signals.updateUserEnzymes({
@@ -94,6 +95,7 @@ export default class RestrictionEnzymeManager extends  React.Component {
                     }}
                 />,
             <FlatButton
+                key="apply"
                 label={"Apply"}
                 style={{color: "#03A9F4"}}
                 onTouchTap={function() {

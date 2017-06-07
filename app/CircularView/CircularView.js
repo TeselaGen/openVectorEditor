@@ -236,6 +236,7 @@ export default class CircularView extends React.Component {
         if (caretPosition !== -1 && !selectionLayer.selected) {
             annotationsSvgs.push(
                 <Caret
+                    key="caret"
                     caretPosition={caretPosition}
                     sequenceLength={sequenceLength}
                     innerRadius={innerRadius}
