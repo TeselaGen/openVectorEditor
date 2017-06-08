@@ -132,6 +132,11 @@ module.exports = {
                 cutsite.id = i;
                 cutsite.name = cutsite.restrictionEnzyme.name;
                 cutsite.numberOfCuts = cutsitesByName[cutsite.restrictionEnzyme.name].length;
+                var color = 'black';
+                if (cutsite.numberOfCuts === 1) {
+                    color = 'red';
+                }
+                cutsite.color = color;
                 cutsitesArray.push(cutsite);
             }
             return cutsitesArray;

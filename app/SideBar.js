@@ -59,21 +59,25 @@ export default class SideBar extends React.Component {
             this.setState({ shiftedFeatures: shiftedFeatures });
         }
 
-        if (newProps.selectionLayer.selected && newProps.selectionLayer.id) {
+        if (newProps.selectionLayer.selected && newProps.selectionLayer.id && newProps.selectionLayer !== this.props.selectionLayer) {
             for (var key in newProps.annotations) {
                 let annotation = newProps.annotations[key];
 
                 // open sidebar to correct tab
-                var type = 'Features';
+                var type;
                 if (annotation.numberOfCuts) {
                     type = 'Cutsites';
                 } else if (annotation.internalStartCodonIndices) {
                     type = 'Orfs';
+                } else if (annotation.name) {
+                    type = 'Features';
                 }
-                signals.sidebarDisplay({ type: type });
 
                 // highlighting is stupid if the annotation's type isn't even being shown on the display
-                signals.toggleAnnotationDisplay({ type: type, value: true });
+                if (type) {
+                    signals.sidebarDisplay({ type: type });
+                    signals.toggleAnnotationDisplay({ type: type, value: true });
+                }
 
                 if (annotation.id === newProps.selectionLayer.id) {
                     if (type === 'Features') {

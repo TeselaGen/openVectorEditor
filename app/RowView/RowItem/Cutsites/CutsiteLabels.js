@@ -92,7 +92,8 @@ let CutsiteLabels = React.createClass({
                             position: 'absolute',
                             left: xStart,
                             bottom: yOffset * 15,
-                            zIndex: 10
+                            zIndex: 10,
+                            color: annotation.color
                         }}
                         >
                         {annotation.restrictionEnzyme.name}

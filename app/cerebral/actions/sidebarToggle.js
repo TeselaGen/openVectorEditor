@@ -10,13 +10,18 @@ module.exports = function sidebarToggle({input: {sidebar, annotation, view}, sta
     }
 
     // makesure sidebar open to correct tab
-    var type = 'Features';
+    var type;
     if (annotation && annotation.numberOfCuts) {
         type = 'Cutsites';
     } else if (annotation && annotation.internalStartCodonIndices) {
         type = 'Orfs';
+    } else if (annotation && annotation.name) {
+        type = 'Features';
     }
-    state.set('sidebarType', type);
+
+    if (type) {
+        state.set('sidebarType', type);
+    }
 
     // keep view that was clicked on, close the other
     if (view === "row") {

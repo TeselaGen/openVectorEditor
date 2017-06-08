@@ -55,18 +55,13 @@ export default function Cutsites({radius, cutsites, cutsiteHeight = 10, cutsiteW
                                 start: annotation.downstreamTopSnip,
                                 end: annotation.downstreamTopSnip},
                                 sequenceLength);
-        // check if it's a singleton enzyme
-        var cutColor = 'black';
-        if(annotation.numberOfCuts === 1) { // this should really go on the enzyme obj
-            cutColor = 'red';
-        }
 
         // add label info
         labels[index]={
             annotationCenterAngle: startAngle,
             annotationCenterRadius: radius,
             text: annotation.restrictionEnzyme.name,
-            color: cutColor,
+            color: annotation.color,
             className: 'veCutsiteLabel',
             id: index,
             handleClick,
