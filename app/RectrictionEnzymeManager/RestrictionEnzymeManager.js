@@ -112,12 +112,13 @@ export default class RestrictionEnzymeManager extends  React.Component {
         return (
             <div align="center">
                 <Dialog
+                    bodyStyle={{padding:'25px 25px 0 25px'}}
                     ref="enzymeManager"
                     title="Restriction Enzyme Manager"
                     autoDetectWindowHeight={true}
                     actions={actionButtons}
                     open={toOpen}
-                    titleStyle={{padding:'50px 0 0 50px', color:"black", background:"white"}}
+                    titleStyle={{padding:'25px 0 0 50px', color:"black", background:"white"}}
                     >
                     {grid}
                 </Dialog>

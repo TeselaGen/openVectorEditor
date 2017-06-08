@@ -114,25 +114,25 @@ export default class ToolBar extends React.Component {
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'sbol1'});
-                    }} 
+                    }}
                     />
                 <MenuItem key={2} primaryText="Download SBOL 2.0" insetChildren={false}
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'sbol2'});
-                    }} 
+                    }}
                     />
                 <MenuItem key={3} primaryText="Download GenBank" insetChildren={false}
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'genbank'});
-                    }} 
+                    }}
                     />
                 <MenuItem key={4} primaryText="Download Fasta" insetChildren={false}
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.clickSaveFile({fileExt: 'fasta'});
-                    }} 
+                    }}
                     />
                 { embedded ? null :
                     <MenuItem key={5} primaryText="Upload from file ..." insetChildren={false}
@@ -145,7 +145,7 @@ export default class ToolBar extends React.Component {
                                 let file = this.files[0];
                                  signals.clickLoadFile({inputFile: file});
                             }
-                        }} 
+                        }}
                         />
                 }
                 <input type="file" id="uploadFileInput" style={{display:'none'}} onChange={function() {
@@ -166,26 +166,26 @@ export default class ToolBar extends React.Component {
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.toggleAnnotationDisplay({type: 'Cutsites'});
-                    }} 
+                    }}
                     />
                 <MenuItem key={3} primaryText="ORFs" insetChildren={false}
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.toggleAnnotationDisplay({type: 'Orfs'});
-                    }} 
+                    }}
                     />
                 <MenuItem key={4} primaryText="Complementary Seq" insetChildren={false}
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.toggleAnnotationDisplay({type: 'ReverseSequence'});
-                    }} 
+                    }}
                     />
                 <MenuItem key={5} primaryText="Amino Acids" insetChildren={false}
                     style={{padding:'0 20px'}}
                     onClick={function () {
                         signals.toggleAnnotationDisplay({type: 'AminoAcids'});
-                    }} 
-                    />                                        
+                    }}
+                    />
             </div>
         );
 
@@ -283,7 +283,7 @@ export default class ToolBar extends React.Component {
 
                     <IconMenu
                         className = {styles.openableIcon}
-                        iconButtonElement = {visibleButtonElement} 
+                        iconButtonElement = {visibleButtonElement}
                         open-direction = "bottom-right"
                         >
                         { visibilityMenuItems }
@@ -300,9 +300,9 @@ export default class ToolBar extends React.Component {
                         <SaveIcon />
                     </IconButton>
 
-                    <IconMenu 
+                    <IconMenu
                         className={styles.openableIcon}
-                        iconButtonElement={fileButtonElement} 
+                        iconButtonElement={fileButtonElement}
                         openDirection="bottom-right"
                         >
                         { fileMenuItems }
