@@ -141,7 +141,7 @@ function DrawLabelGroup (props) {
                     }
                     return (
                         <text
-                            key = 'text'
+                            key = { 'text'+index }
                             x = { labelXStart }
                             onClick = { label.handleClick() }
                             dy = { index === 0 ? 0 : dy * index * flipLabel }
