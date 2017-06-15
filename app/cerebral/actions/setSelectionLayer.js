@@ -9,18 +9,21 @@ export default function setSelectionLayer({input: {selectionLayer, view}, state}
         state.set('selectionLayer', updatedSelectionLayer);
     }
     if (updatedSelectionLayer.selected) {
+        // makesure sidebar is on correct tab
+        var type;
+        if (selectionLayer.numberOfCuts) {
+            type = 'Cutsites';
+        } else if (selectionLayer.internalStartCodonIndices) {
+            type = 'Orfs';
+        } else if (selectionLayer.name) {
+            type = 'Features';
+        }
+        if (type) {
+            state.set('sidebarType', type);
+        }
+
         if (updatedSelectionLayer.cursorAtEnd) {
             state.set('caretPosition', updatedSelectionLayer.end + 1);
-
-            // makesure sidebar is on correct tab
-            var type = 'Features';
-            if (selectionLayer.numberOfCuts) {
-                type = 'Cutsites';
-            } else if (selectionLayer.internalStartCodonIndices) {
-                type = 'Orfs';
-            }
-            state.set('sidebarType', type);
-
         } else {
             state.set('caretPosition', updatedSelectionLayer.start);
         }
