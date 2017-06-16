@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Decorator as Cerebral } from 'cerebral-view-react';
+var assign = require('lodash/object/assign');
 
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
@@ -33,6 +34,10 @@ export default class Search extends React.Component {
             var row = Math.floor((newProps.searchLayers[0].start-1)/(this.props.bpsPerRow));
             row = row <= 0 ? "0" : row;
             this.props.signals.jumpToRow({rowToJumpTo: row});
+
+            var layer = Object.assign({}, newProps.searchLayers[0]);
+            layer.selected = true;
+            this.props.signals.setSelectionLayer({ selectionLayer: layer });
         }
     }
 
@@ -42,6 +47,10 @@ export default class Search extends React.Component {
             var row = Math.floor((this.props.searchLayers[this.state.searchIdx-1].start-1)/(this.props.bpsPerRow));
             row = row <= 0 ? "0" : row;
             this.props.signals.jumpToRow({rowToJumpTo: row});
+
+            var layer = Object.assign({}, this.props.searchLayers[this.state.searchIdx-1]);
+            layer.selected = true;
+            this.props.signals.setSelectionLayer({ selectionLayer: layer });
         }
     }
 
@@ -80,14 +89,12 @@ export default class Search extends React.Component {
 
         // rerun search if search params are changed
         // (state is updating asynchronously, so I can't use this.state in this fn call)
-        if (this.refs.searchField.getValue().length > 2) {
-            this.setState({ searchIdx: 1 });
-            this.props.signals.searchSequence({
-                searchString: this.refs.searchField.getValue(),
-                dna: dna,
-                literal: literal
-            });
-        }
+        this.setState({ searchIdx: 1 });
+        this.props.signals.searchSequence({
+            searchString: this.refs.searchField.getValue(),
+            dna: dna,
+            literal: literal
+        });
     }
 
     prevResult() {
@@ -191,7 +198,7 @@ export default class Search extends React.Component {
                     style={{marginRight:'10px', width:'150px', verticalAlign:'middle'}}
                     onChange={this.search.bind(this)}
                     errorText={
-                        searchLayers.length === 0 && searchString.length > 2 && "no results"
+                        searchLayers.length === 0 && "no results"
                     }
                     />
                 { navigateSearchResults }
