@@ -46,7 +46,7 @@ function searchSequence({input: { searchString, dna, literal }, state, output}) 
         'b':'(g|a)a(c|t)', // N or D
         'z':'(c|g)a(a|g)', // Q or E
         'j':'((at(a|c|t))|(tt(a|g))|(ct(a|c|g|t)))', // I or L
-        'x':'(([^t]..)|(t[^ag].)|(ta[^ag])|(tg[^a]))', // anything except stop
+        'x':'(([^t]..)|(t[^ag].)|(ta[^ag])|(tg[^a]))', // anything except stop (there's probably a more elegant regexp i could use, but this works...)
     };
 
     var match;

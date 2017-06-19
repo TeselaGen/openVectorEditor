@@ -136,7 +136,6 @@ export default class SequenceEditor extends React.Component {
         // no paste, that's handled by the clipboard component only
     }
 
-
     componentDidUpdate(prevProps, prevState) {
         if (this.props.sequenceData !== prevProps.sequenceData) {
             this.props.signals.updateHistory({ newHistory: this.props.sequenceData });

@@ -198,7 +198,7 @@ export default class Search extends React.Component {
                     style={{marginRight:'10px', width:'150px', verticalAlign:'middle'}}
                     onChange={this.search.bind(this)}
                     errorText={
-                        searchLayers.length === 0 && "no results"
+                        searchLayers.length === 0 && searchString.length > 0 && "no results"
                     }
                     />
                 { navigateSearchResults }
