@@ -53,6 +53,7 @@ let Orfs = React.createClass({
                     >
                     <Orf
                         annotation={annotation}
+                        bpsPerRow={bpsPerRow}
                         widthInBps={annotationRange.end - annotationRange.start + 1}
                         charWidth={charWidth}
                         forward={annotation.forward}
