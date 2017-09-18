@@ -1,3 +1,8 @@
+
+# DEPRECATED 
+Please go to https://github.com/TeselaGen/teselagen-react-components and find the vector editor there
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
