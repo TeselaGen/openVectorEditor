@@ -16,6 +16,8 @@ export { default as VeToolBar } from "./VeToolBar";
 export { default as CutsiteFilter } from "./CutsiteFilter";
 export { default as LinearView } from "./LinearView";
 export { default as StatusBar } from "./StatusBar";
+export { default as DigestTool } from "./DigestTool/DigestTool";
+
 export { default as HoverHelper } from "./HoverHelper";
 export {
   default as getRangeAnglesSpecial

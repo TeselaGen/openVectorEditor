@@ -6,6 +6,7 @@ import InfoCircle from "react-icons/lib/fa/info-circle";
 import Popover from "react-popover";
 import jsonToGenbank from "bio-parsers/parsers/jsonToGenbank";
 import React from "react";
+
 // import get from 'lodash/get'
 import "./style.css";
 import CutsiteFilter from "../CutsiteFilter";
@@ -75,6 +76,7 @@ export default class VeToolBar extends React.Component {
       panelsShown,
       panelsShownUpdate,
       sequenceLength,
+      showDigestTool,
       excludeObj = {}
     } = this.props;
 
@@ -148,6 +150,7 @@ export default class VeToolBar extends React.Component {
               }}
               {...this.props}
             />
+            {showDigestTool && <DigestTool></DigestTool>}
           </div>
         ),
         dropdowntooltip: "Cut site options",

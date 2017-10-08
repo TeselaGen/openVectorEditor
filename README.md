@@ -8,13 +8,19 @@ Demo: http://reactcomponents.teselagen.com/
 [![codecov](https://codecov.io/gh/TeselaGen/teselagen-react-components/branch/master/graph/badge.svg)](https://codecov.io/gh/TeselaGen/teselagen-react-components)
 
 # Using: 
+
+Universal build can be used as window.tg_editor
+//todo!
+
 ```
-yarn add teselagen-react-components
+yarn add tg-editor
 ```
 Add peer-dependencies: 
 ```
-yarn add @blueprintjs/core @blueprintjs/datetime @blueprintjs/table react-addons-css-transition-group react-redux react-select redux 
+yarn add react react-redux react-select redux 
 ```
+
+
 
 ## Enhancers:
 
@@ -71,11 +77,10 @@ Redux connected:
 import {vectorEditorReducer as VectorEditor} from 'teselagen-react-components'
 const store = createStore(
   combineReducers({
-    form: formReducer, 
     VectorEditor: VectorEditor({
-		DemoEditor: {
-			sequenceData: exampleSequenceData
-		}
+			DemoEditor: { //you can pass initial values here to the editor if you want or they can be passed at render time
+				sequenceData: exampleSequenceData
+			}
 	})
   }),
   undefined,

@@ -1,3 +1,4 @@
+//optionally connect to the redux store
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import {vectorEditorReducer as VectorEditor} from '../../src'
 import thunk from 'redux-thunk';
