@@ -4,6 +4,7 @@ import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
+import withEditorInteractions from '../withEditorInteractions';
 import "./style.css";
 
 let defaultMarginWidth = 10;
@@ -12,7 +13,7 @@ let defaultMarginWidth = 10;
 
 function noop() {}
 
-export default class LinearView extends React.Component {
+export class LinearView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     let rowNotFound = true;
     //loop through all the rendered rows to see if the click event lands in one of them
@@ -241,3 +242,5 @@ function SequenceName({ sequenceName, sequenceLength }) {
     </div>
   );
 }
+
+export default withEditorInteractions(LinearView)

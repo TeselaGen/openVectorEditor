@@ -7,6 +7,7 @@ import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
 import ReactList from "react-list";
+import withEditorInteractions from '../withEditorInteractions';
 import "./style.css";
 import Combokeys from "combokeys";
 
@@ -430,7 +431,7 @@ class RowView extends React.Component {
   }
 }
 
-export default RowView;
+export default withEditorInteractions(RowView)
 
 function getBpsPerRow({
   charWidth = defaultCharWidth,

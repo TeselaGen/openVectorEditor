@@ -19,6 +19,7 @@ import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRa
 import getPositionFromAngle from "ve-range-utils/getPositionFromAngle";
 import React from "react";
 import Draggable from "react-draggable";
+import withEditorInteractions from '../withEditorInteractions';
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 function noop() {}
@@ -36,7 +37,7 @@ let defaultSequenceData = {
 //     return radians / 2 / Math.PI * 360
 // }
 
-export default class CircularView extends React.Component {
+export class CircularView extends React.Component {
   getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
     if (!event.clientX) {
       return;
@@ -600,3 +601,6 @@ function pareDownAnnotations(annotations, max) {
 //     displayMessage &&
 //   })
 // }
+
+
+export default withEditorInteractions(CircularView)

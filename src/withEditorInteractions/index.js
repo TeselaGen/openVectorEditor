@@ -1,7 +1,9 @@
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
+import {compose} from 'redux';
 import Clipboard from "./Clipboard";
-import updateSelectionOrCaret
-  from "../utils/selectionAndCaretUtils/updateSelectionOrCaret";
+
+import withEditorProps from '../withEditorProps';
+import updateSelectionOrCaret from '../utils/selectionAndCaretUtils/updateSelectionOrCaret';
 import normalizePositionByRangeLength
   from "ve-range-utils/normalizePositionByRangeLength";
 import getRangeLength from "ve-range-utils/getRangeLength";
@@ -158,7 +160,7 @@ function VectorInteractionHOC(Component) {
   };
 }
 
-export default VectorInteractionHOC;
+
 
 function handleSelectionStartGrabbed({
   caretPosition,
@@ -283,3 +285,5 @@ function handleCaretDrag({
     console.warn("we should never be here...");
   }
 }
+
+export default compose(withEditorProps, VectorInteractionHOC);

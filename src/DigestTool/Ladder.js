@@ -38,8 +38,8 @@ export default class Ladder extends React.Component {
 
     render() {
         let {
-            gelDigestEnzymes,
-            fragments,
+            gelDigestEnzymes=[],
+            fragments=[],
             fragmentsNum,
         } = this.props;
 

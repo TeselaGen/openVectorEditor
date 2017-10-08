@@ -6,6 +6,7 @@ import InfoCircle from "react-icons/lib/fa/info-circle";
 import Popover from "react-popover";
 import jsonToGenbank from "bio-parsers/parsers/jsonToGenbank";
 import React from "react";
+import withEditorProps from '../withEditorProps';
 
 // import get from 'lodash/get'
 import "./style.css";
@@ -21,7 +22,7 @@ import show_orfs_img from "./veToolbarIcons/show_orfs.png";
 import fullscreen_img from "./veToolbarIcons/fullscreen.png";
 // import toggle_views_img from './veToolbarIcons/toggle_views.svg';
 
-export default class VeToolBar extends React.Component {
+export class VeToolBar extends React.Component {
   state = {
     openItem: -1
   };
@@ -379,3 +380,5 @@ export default class VeToolBar extends React.Component {
     );
   }
 }
+
+export default withEditorProps(VeToolBar)
