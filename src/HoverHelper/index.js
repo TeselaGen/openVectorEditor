@@ -66,7 +66,7 @@ class HoverHelper extends React.Component {
 }
 
 let WrappedHoverHelper = connect(function(state, { id, meta }) {
-  let editorState = state.VectorEditor[meta.namespace] || {};
+  let editorState = state.VectorEditor[meta.editorName] || {};
   let isIdHashmap = typeof id === "object";
   let hoveredId = editorState.hoveredAnnotation;
   let hovered = isIdHashmap ? id[hoveredId] : hoveredId === id;

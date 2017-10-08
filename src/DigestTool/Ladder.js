@@ -1,15 +1,14 @@
-import React, {PropTypes} from 'react';
-import {Decorator as Cerebral} from 'cerebral-view-react';
-import styles from './ruler.scss';
+import React from 'react';
+import styles from './ruler.css';
 
-import List from 'material-ui/lib/lists/list';
-import DropDownMenu from 'material-ui/lib/drop-down-menu';
+import {List, DropDownMenu} from 'material-ui';
+// import DropDownMenu from 'material-ui/lib/drop-down-menu';
 
-@Cerebral({
-    gelDigestEnzymes: ['gelDigestEnzymes'],
-    fragments: ['fragments'],
-    fragmentsNum: ['fragmentsNum'],
-})
+// @Cerebral({
+//     gelDigestEnzymes: ['gelDigestEnzymes'],
+//     fragments: ['fragments'],
+//     fragmentsNum: ['fragmentsNum'],
+// })
 
 export default class Ladder extends React.Component {
     constructor(props) {
@@ -17,7 +16,7 @@ export default class Ladder extends React.Component {
         this.state = {
             geneRuler: 'geneRuler1kb'
         }
-        this.props.signals.createFragmentsLines({ geneRuler: 'geneRuler1kb', enzymes: this.props.gelDigestEnzymes });
+        this.props.signals && this.props.signals.createFragmentsLines({ geneRuler: 'geneRuler1kb', enzymes: this.props.gelDigestEnzymes });
     }
 
     handleChange = (event, index, value) => {

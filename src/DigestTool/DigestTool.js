@@ -1,11 +1,16 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import CutsiteFilter from '../CutsiteFilter';
+import withEditorProps from '../withEditorProps';
+import Ladder from './Ladder';
 
-export default class DigestTool extends React.Component {
+export class DigestTool extends React.Component {
     render() {
+        const {editorName} = this.props
         return <div>
-        
+        <CutsiteFilter editorName={editorName}/>
+        <Ladder/>
     </div>
-    
     }
 }
 
+export default withEditorProps(DigestTool)

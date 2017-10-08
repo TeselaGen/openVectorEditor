@@ -93,7 +93,7 @@ const store = createStore(
 import {createVectorEditor} from 'teselagen-react-components'
 
 export default createVectorEditor({
-  namespace: 'DemoEditor', 
+  editorName: 'DemoEditor', 
   //you can pass editor specific action overrides at this level or at render time
   // actionOverrides(actions) {
   //   return {

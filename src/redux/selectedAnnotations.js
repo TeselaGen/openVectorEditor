@@ -254,7 +254,7 @@ export function selectionLayerRightClicked(
   event.preventDefault();
   event.stopPropagation();
   return function(dispatch, getState) {
-    let editorState = getState().VectorEditor[meta.namespace];
+    let editorState = getState().VectorEditor[meta.editorName];
     let sequence = sequenceSelector(editorState);
     let { selectionLayer } = editorState;
     let selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
@@ -373,7 +373,7 @@ export function updateSelectionOrCaretBasedOnAnnotation({
     dispatch,
     meta
   );
-  let editorState = getState().VectorEditor[meta.namespace];
+  let editorState = getState().VectorEditor[meta.editorName];
   let { caretPosition, selectionLayer } = editorState;
   let sequenceLength = sequenceLengthSelector(editorState);
   updateSelectionOrCaret({

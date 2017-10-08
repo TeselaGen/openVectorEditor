@@ -20,7 +20,7 @@ const data = tidyUpSequenceData(exampleSequenceData, {
 });
 
 const { withEditorInteractions, withEditorProps } = createVectorEditor({
-  namespace: "DemoEditor"
+  editorName: "DemoEditor"
 });
 
 const CircularViewConnected = withEditorInteractions(CircularView);

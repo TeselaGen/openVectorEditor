@@ -67,26 +67,26 @@ export default function reducerFactory(initialState) {
     );
   }
   return function(state = initialState, action) {
-    let namespaces;
+    let editorNames;
     let newState = {};
-    if (action.meta && action.meta.EditorNamespace) {
-      namespaces = Array.isArray(action.meta.EditorNamespace)
-        ? action.meta.EditorNamespace
-        : [action.meta.EditorNamespace];
+    if (action.meta && action.meta.EditorName) {
+      editorNames = Array.isArray(action.meta.EditorName)
+        ? action.meta.EditorName
+        : [action.meta.EditorName];
     }
     let stateToReturn;
-    if (namespaces) {
+    if (editorNames) {
       //we're dealing with an action specific to a given editor
-      namespaces.forEach(function(namespace) {
-        let currentState = state[namespace];
+      editorNames.forEach(function(editorName) {
+        let currentState = state[editorName];
         if (action.type === "VECTOR_EDITOR_INITIALIZE") {
           //merge the exisiting state with the new payload of props (if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
-          currentState = { ...state[namespace], ...(action.payload || {}) };
+          currentState = { ...state[editorName], ...(action.payload || {}) };
         }
         if (action.type === "VECTOR_EDITOR_CLEAR") {
           currentState = undefined;
         }
-        newState[namespace] = combineReducers(reducers)(currentState, action);
+        newState[editorName] = combineReducers(reducers)(currentState, action);
       });
       stateToReturn = {
         ...state,
@@ -94,9 +94,9 @@ export default function reducerFactory(initialState) {
       };
     } else {
       //just a normal action
-      Object.keys(state).forEach(function(namespace) {
-        newState[namespace] = combineReducers(reducers)(
-          state[namespace],
+      Object.keys(state).forEach(function(editorName) {
+        newState[editorName] = combineReducers(reducers)(
+          state[editorName],
           action
         );
       });
