@@ -1,0 +1,17 @@
+machine:
+  pre:
+    - mkdir ~/.yarn-cache
+  node:
+    version: v7.10.0
+
+dependencies:
+  override:
+    - yarn install && yarn global add codecov
+  cache_directories:
+    - ~/.yarn-cache
+
+test:
+  override:
+    - yarn test && codecov --token=a54a622d-d976-4a45-af49-7303dba7bd86
+    #- cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
+    #- cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

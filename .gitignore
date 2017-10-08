@@ -1,6 +1,7 @@
-.git/
-node_modules/
-stats.json
-bundle.js
-.DS_Store
-npm-debug.log
+/coverage
+/es
+/lib
+/node_modules
+/umd
+/demo/dist/
+npm-debug.log*

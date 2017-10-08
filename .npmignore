@@ -1,0 +1,4 @@
+/coverage
+/demo/dist
+/src
+npm-debug.log*

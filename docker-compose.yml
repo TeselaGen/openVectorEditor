@@ -1,0 +1,13 @@
+version: '3'
+services:
+  lims_app:
+    restart: always
+    working_dir: /app
+    container_name: teselagen-components
+    image: mhart/alpine-node:6
+    ports:
+      - "3333:3333"
+      - "9001:9001"
+    entrypoint: "sh /app/entrypoint.sh"
+    volumes:
+      - ./:/app

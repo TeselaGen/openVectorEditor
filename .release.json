@@ -1,0 +1,7 @@
+{
+  "non-interactive": true,
+  "verbose": true,
+  "npm": {
+    "publish": true
+  }
+}

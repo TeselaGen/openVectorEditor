@@ -1,0 +1,26 @@
+.veRowItemSpacer {
+  height: 10px;
+}
+
+.veRowItem svg:not(:root) {
+  overflow: visible;
+}
+
+.veRowView,
+.veCircularView {
+  outline: none;
+}
+
+.jumpButton {
+  border-radius: 4px;
+  margin-top: 4px;
+  background: lightblue;
+  color: white;
+  font-size: 0.9em;
+  padding: 4px 6px 4px 6px;
+}
+.jumpButton:hover {
+  opacity: 0.8;
+}
+
+/*# sourceMappingURL=style.css.map */

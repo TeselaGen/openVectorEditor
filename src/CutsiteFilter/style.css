@@ -1,0 +1,11 @@
+.ta_link {
+  cursor: pointer;
+  color: blue;
+}
+
+.ta_link:hover {
+  color: lightblue;
+}
+ 
+
+ /*# sourceMappingURL= style.css.map */

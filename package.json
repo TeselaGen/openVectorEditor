@@ -1,27 +1,170 @@
 {
-  "name": "editor",
-  "version": "0.1.0",
-  "private": true,
+  "name": "teselagen-react-components",
+  "version": "17.3.12",
+  "description": "Teselagen React Component Library",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
+  "scripts": {
+    "build": "nwb build-react-component --copy-files --no-demo",
+    "buildWithDemo": "nwb build-react-component --copy-files",
+    "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
+    "clean": "nwb clean-module && npm clean-demo",
+    "start": "nwb serve-react-demo --port 3333",
+    "precommit": "lint-staged",
+    "prepublish": "in-publish && npm run build || not-in-publish",
+    "fontopen": "make fontopen",
+    "fontsave": "make fontsave",
+    "release": "release-it",
+    "test": "jest --env=jsdom --maxWorkers 2",
+    "test-coverage": "yarn test -- --coverage",
+    "test:staged": "cross-env CI=true yarn test -- --findRelatedTests",
+    "test-fix": "git reset . && cross-env CI=true yarn test --onlyChanged --updateSnapshot",
+    "test-watch": "yarn test -- --watch",
+    "test-debug": "node --inspect --debug-brk ./node_modules/.bin/jest src --runInBand "
+  },
   "dependencies": {
+    "basiccontext": "^3.5.1",
+    "bio-parsers": "^4.2.0",
+    "classnames": "^2.2.5",
+    "clipboard": "^1.7.1",
+    "clone": "^2.1.1",
+    "color": "^2.0.0",
+    "combokeys": "^2.4.6",
+    "cross-env": "^5.0.5",
     "deep-equal": "^1.0.1",
-    "interval-tree2": "^1.1.0",
+    "file-saver": "^1.3.3",
+    "json.sortify": "^2.2.2",
     "lodash": "^4.17.4",
+    "lodash.flatmap": "^4.5.0",
     "lru-memoize": "^1.0.2",
+    "material-ui": "^0.19.3",
+    "math-expression-evaluator": "^1.2.17",
+    "nodemon": "^1.12.1",
+    "pascal-case": "^2.0.1",
     "paths-js": "^0.4.5",
-    "randomcolor": "^0.5.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "pluralize": "^5.0.0",
+    "query-string": "^4.3.4",
+    "randomcolor": "^0.5.3",
+    "rc-slider": "^8.3.1",
+    "react-addons-pure-render-mixin": "^15.6.0",
     "react-draggable": "^2.2.3",
+    "react-dropzone": "^3.13.3",
     "react-icons": "^2.2.3",
-    "ve-range-utils": "^2.0.35"
+    "react-list": "^0.8.7",
+    "react-measure": "^1.4.7",
+    "react-mouse-aware": "^0.3.0",
+    "react-popover": "^0.4.16",
+    "recompose": "^0.24.0",
+    "redux": "^3.7.2",
+    "redux-act": "^1.3.2",
+    "reselect": "^3.0.0",
+    "teselagen-interval-tree": "1.1.1",
+    "uniqid": "^4.1.1",
+    "ve-range-utils": "^2.0.37",
+    "ve-sequence-utils": "^3.1.18"
+  },
+  "peerDependencies": {
+    "@blueprintjs/core": "^1.18.0",
+    "@blueprintjs/datetime": "^1.16.0",
+    "@blueprintjs/table": "^1.15.0",
+    "apollo-cache-invalidation": "^0.0.3",
+    "react-addons-css-transition-group": "^15.5.2",
+    "react-apollo": "^1.4.15",
+    "react-redux": "^5.0.4",
+    "react-router-dom": "^4.1.1",
+    "react-select": "^1.0.0-rc.3",
+    "react-table": "^6.5.3",
+    "redux-form": "^6.7.0",
+    "tg-client-query-builder": "^2.6.0"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "@blueprintjs/core": "^1.27.0",
+    "@blueprintjs/datetime": "^1.22.0",
+    "@blueprintjs/table": "^1.24.1",
+    "apollo-cache-invalidation": "^0.0.3",
+    "axios": "^0.16.2",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "chance": "^1.0.11",
+    "enzyme": "^2.9.1",
+    "enzyme-to-json": "^1.5.1",
+    "eslint": "^3.19.0",
+    "eslint-config-react-app": "^1.0.4",
+    "eslint-config-teselagen": "^1.0.7",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-flowtype": "^2.34.0",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-react": "^7.0.1",
+    "husky": "^0.14.3",
+    "identity-obj-proxy": "^3.0.0",
+    "in-publish": "^2.0.0",
+    "jest": "^20.0.4",
+    "lint-staged": "^4.1.0",
+    "nwb": "^0.18.10",
+    "prettier": "^1.6.1",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-perf": "^15.4.2",
+    "react-apollo": "^1.4.15",
+    "react-collapsible": "^2.0.3",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-select": "^1.0.0-rc.5",
+    "react-table": "^6.5.3",
+    "react-test-renderer": "^15.6.1",
+    "redux-form": "^7.0.4",
+    "redux-thunk": "*",
+    "release-it": "^2.8.5",
+    "sinon": "^3.2.1",
+    "tap": "^10.7.2",
+    "tg-client-query-builder": "^2.6.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "lint-staged": {
+    "src/**/*.js ": [
+      "eslint --fix",
+      "prettier --write",
+      "yarn test:staged",
+      "git add"
+    ],
+    "*.css": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|scss|png)$": "identity-obj-proxy"
+    },
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/enzyme-to-json/serializer"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/lib/",
+      "/es/"
+    ]
+  },
+  "license": "MIT",
+  "repository": "https://github.com/TeselaGen/teselagen-react-components",
+  "keywords": [
+    "react-component",
+    "teselagen"
+  ],
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ]
   }
 }

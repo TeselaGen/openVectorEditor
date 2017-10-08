@@ -1,0 +1,58 @@
+/* Button styling */
+.__custom_radio_button {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* HIDE UNDERLYING RADIO & CHECKBOX */
+.__custom_radio_button > input {
+  opacity: 0;
+  position: absolute;
+}
+
+label.__custom_radio_button {
+  cursor: pointer;
+}
+
+/* RADIO & CHECKBOX STYLES */
+.__custom_radio_button > input:focus ~ i::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: -3px;
+  right: -3px;
+  border-radius: 50%;
+  border: 1px solid lightblue;
+}
+
+/* RADIO & CHECKBOX STYLES */
+.__custom_radio_button > i {
+  /* DEFAULT <i> STYLE */
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  transition: 0s;
+  box-shadow: inset 0 0 0 24px #fff;
+  border: 1px solid gray;
+  background: gray;
+  position: relative;
+}
+
+.__custom_radio_button:hover > i {
+  /* HOVER <i> STYLE */
+  transition: 0.2s;
+  box-shadow: inset 0 0 0 1px #fff;
+  background: grey;
+}
+.__custom_radio_button > input:checked + i {
+  /* (RADIO CHECKED) <i> STYLE */
+  box-shadow: inset 0 0 0 1px #fff;
+  background: blue;
+  border: 1px solid blue;
+}

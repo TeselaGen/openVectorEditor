@@ -1,0 +1,10 @@
+{
+  "port": 9000,
+  "path": "/webhook",
+  "secret": "mygithubsecret",
+  "log": "/var/log/webhook.log",
+  "rules": [{
+    "event": "push",
+    "exec": "bash /app/update.sh"
+  }]
+}

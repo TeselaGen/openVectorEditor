@@ -1,0 +1,9 @@
+{
+  "search.exclude": {
+    "**/es": true,
+    "**/lib": true
+  },
+  "prettier.singleQuote": false,
+  "prettier.semi": true,
+  "javascript.validate.enable": false
+}

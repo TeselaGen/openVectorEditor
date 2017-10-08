@@ -1,0 +1,21 @@
+.veStatusBar {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 14px;
+  border-top: lightgrey .1px solid;
+  border-bottom: lightgrey .1px solid;
+}
+
+.veStatusBar .spacer {
+  height: 80%;
+  width: 1px;
+  background: lightgrey;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+ 
+
+ /*# sourceMappingURL= style.css.map */

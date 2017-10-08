@@ -1,0 +1,83 @@
+.managerListLadder {
+  height: 265px;
+  overflow: visible;
+  border: 1px solid #E0E0E0;
+  padding: 0 !important;
+  position: fixed;
+  width: 225px;
+}
+
+.left {
+  border-color: black;
+  position: absolute;
+  height: 5px;
+  width: 80%;
+}
+
+.right {
+  border-color: black;
+  position: absolute;
+  height: 5px;
+  width: 80%;
+}
+
+.tooltip {
+    position: absolute;
+    height: 0;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  width: auto;
+  background-color: black;
+  color: white;
+  text-align: left;
+  padding: 5px;
+  font-size: 7pt;
+  bottom: 5px;
+  white-space: nowrap;
+  border-radius: 6px;
+}
+.tooltip .tooltiptext::after {
+    content: " "; /* i don't know what this content attribute does, but it works... */
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.rightLabel {
+  margin-right: 2%;
+  margin-left: 60%;
+  position: relative;
+}
+
+.leftLabel {
+  margin-left: 2%;
+  margin-right: 60%;
+  position: relative;
+}
+
+.block {
+  height: 265px;
+  max-height: none;
+  padding-bottom: 40px;
+  padding-top: 10px;
+  overflow: scroll;
+}
+
+.fragmentsNumLabel {
+  text-align: left;
+  padding: 0 5px;
+  color: rgb(51,51,51);
+  height: 30px;
+  width: 100%;
+}

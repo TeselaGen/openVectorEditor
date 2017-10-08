@@ -1,0 +1,26 @@
+.managerListLeft {
+  height: 265px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #E0E0E0;
+  padding: 0 !important;
+  margin-bottom: 15px;
+}
+
+.managerListRight {
+  height: 265px;
+  margin-top: 83px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #E0E0E0;
+  padding: 0 !important;
+  margin-bottom: 15px;
+}
+
+.raisedBlueButton {
+    background-color: #00bcd4 !important;
+}
+
+.raisedPurpleButton {
+    background-color: #a065d3 !important;
+}
