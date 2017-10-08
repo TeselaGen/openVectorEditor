@@ -1,9 +1,10 @@
 import getInsertBetweenVals from "ve-sequence-utils/getInsertBetweenVals";
 import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
+import withEditorProps from '../withEditorProps';
 import "./style.css";
 
-export default function StatusBar({
+export function StatusBar({
   selectionLayer,
   caretPosition,
   sequenceLength,
@@ -62,3 +63,5 @@ function StatusBarItem({ children }) {
     </div>
   );
 }
+
+export default withEditorProps(StatusBar)

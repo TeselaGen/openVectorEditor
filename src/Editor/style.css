@@ -1,0 +1,14 @@
+.veRowView:focus, .veCircularView:focus {
+  box-shadow: 0 4px 2px -2px #9ecaed;
+}
+
+.taProductViewer {
+  display: flex;
+}
+
+.RowViewSide, .CircularViewSide {
+  width: 100%;
+}
+ .tg-editor-container {
+   display: flex;
+ }

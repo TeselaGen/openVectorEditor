@@ -1,8 +1,8 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+
 import store from "./store";
-import tidyUpSequenceData from "ve-sequence-utils/tidyUpSequenceData";
-import exampleSequenceData from "./exampleSequenceData";
 import { render } from "react-dom";
 
 import {
@@ -14,25 +14,48 @@ import {
   // createVectorEditor,
   LinearView,
   DigestTool,
+  Editor
 } from "../../../src";
-// const sequence = tidyUpSequenceData(exampleSequenceData, {
-//   annotationsAsObjects: true
-// });
 
-// const { withEditorInteractions, withEditorProps } = createVectorEditor({
-//   editorName: "DemoEditor"
-// });
+const links = [{name:'Editor', url:'Editor'}, 
+{name: 'CircularView', url: 'CircularView'},
+{name: 'DigestTool', url: 'DigestTool'},
+{name: 'RowView', url: 'RowView'},
+{name: 'LinearView', url: 'LinearView'},
+{name: 'VeToolBar', url: 'VeToolBar'},
+].map(({url, name}) => {return <Link key={name} style={{marginLeft: 10, }} to={url}> {name} </Link>})
 
 function Demo() {
   return (
     <Provider store={store}>
-        <div>
-        <CircularView editorName="DemoEditor" /> 
-        <DigestTool editorName="DemoEditor" /> 
-        <RowView editorName="DemoEditor" /> 
-        <LinearView editorName="DemoEditor" /> 
-        <VeToolBar editorName="DemoEditor" /> 
-        </div>
+    <Router>
+
+      <div>
+        {links}
+        
+        <Route exact path="/" render={() => (
+          <Redirect to="/Editor"/>
+        )}/>
+        <Route render={() => {
+          return <Editor editorName="DemoEditor" />
+        }} path="/Editor"></Route>
+        <Route  render={() => {
+          return <CircularView editorName="DemoEditor" />
+        }} path="/CircularView"></Route>
+        <Route  render={() => {
+          return <DigestTool editorName="DemoEditor" />
+        }} path="/DigestTool"></Route>
+        <Route  render={() => {
+          return <RowView editorName="DemoEditor" />
+        }} path="/RowView"></Route>
+        <Route  render={() => {
+          return <LinearView editorName="DemoEditor" />
+        }} path="/LinearView"></Route>
+        <Route  render={() => {
+          return <VeToolBar editorName="DemoEditor" />
+        }} path="/VeToolBar"></Route>
+      </div>
+    </Router>
     </Provider>
   );
 }

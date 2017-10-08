@@ -52,7 +52,6 @@ export class VeToolBar extends React.Component {
     annotationVisibility: {},
     annotationLabelVisibilityToggle: () => {},
     labelVisibility: {},
-    AdditionalTools: [],
     minimumOrfSizeUpdate: () => {},
     minimumOrfSize: 300,
     panelsShown: {},
@@ -72,6 +71,7 @@ export class VeToolBar extends React.Component {
       annotationVisibility,
       annotationLabelVisibility,
       AdditionalTools = [],
+      modifyTools,
       minimumOrfSizeUpdate,
       minimumOrfSize,
       panelsShown,
@@ -303,6 +303,10 @@ export class VeToolBar extends React.Component {
       },
       ...AdditionalTools
     ];
+
+    if (modifyTools ) {
+      items = modifyTools(items)
+    }
 
     items = items.filter(function(item) {
       if (excludeObj[item.id]) {

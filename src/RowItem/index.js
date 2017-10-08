@@ -41,7 +41,6 @@ class RowItem extends React.Component {
       tickSpacing = 10,
       sequenceHeight = 16,
       spaceBetweenAnnotations = 2,
-      meta,
       width,
       annotationVisibility = {},
       additionalSelectionLayers = [],

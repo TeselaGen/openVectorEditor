@@ -72,77 +72,6 @@ export class LinearView extends React.Component {
     callback(callbackVals);
   }
 
-  // componentDidMount() {
-  //     var {
-  //         sequenceDataInserted=noop,
-  //         backspacePressed=noop,
-  //         selectAll=noop,
-  //         selectInverse=noop,
-  //     } = {...this.props.veWrapperProvidedProps, ...this.props};
-
-  //     // combokeys = new Combokeys(document.documentElement);
-  //     // if (!this.linearView) {
-  //     //     console.warn('thomas yargh1!@#!@#!@#')
-  //     // }
-  //     combokeys = new Combokeys(this.linearView);
-  //     // bindGlobalPlugin(combokeys);
-  //     var self = this
-
-  //     //bind a bunch of keyboard shortcuts we're interested in catching
-  //     //we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
-  //     //documentation: https://craig.is/killing/mice
-  //     combokeys.bind(['a', 'b', 'c', 'd', 'g', 'h', 'k', 'm', 'n', 'r', 's', 't', 'v', 'w', 'y'], function(event) { // type in bases
-  //         sequenceDataInserted({newSequenceData: {sequence: String.fromCharCode(event.charCode)}});
-  //     });
-
-  //     var moveCaretBindings = [
-  //         { keyCombo: ['left','shift+left'] ,type: 'moveCaretLeftOne'},
-  //         { keyCombo: ['right','shift+right'] ,type: 'moveCaretRightOne'},
-  //         { keyCombo: ['up','shift+up']  ,type: 'moveCaretUpARow'},
-  //         { keyCombo: ['down','shift+down'] ,type: 'moveCaretDownARow'},
-  //         { keyCombo: ['mod+right','mod+shift+right'] ,type: 'moveCaretToEndOfRow'},
-  //         { keyCombo: ['mod+left','mod+shift+left'] ,type: 'moveCaretToStartOfRow'},
-  //         { keyCombo: ['mod+up','mod+shift+up'] ,type: 'moveCaretToStartOfSequence'},
-  //         { keyCombo: ['mod+down','mod+shift+down'] ,type: 'moveCaretToEndOfSequence'},
-  //     ]
-
-  //     moveCaretBindings.forEach(function ({keyCombo, type}) {
-  //         combokeys.bind(keyCombo, function (event) {
-  //             var shiftHeld = event.shiftKey;
-  //             var bpsPerRow = getBpsPerRow(self.props)
-  //             var {selectionLayer, caretPosition, sequenceLength, circular, caretPositionUpdate, selectionLayerUpdate} = self.props
-  //             var moveBy = moveCaret({sequenceLength, bpsPerRow, caretPosition, selectionLayer, shiftHeld, type})
-  //             handleCaretMoved({
-  //                 moveBy,
-  //                 circular,
-  //                 sequenceLength,
-  //                 bpsPerRow,
-  //                 caretPosition,
-  //                 selectionLayer,
-  //                 shiftHeld,
-  //                 type,
-  //                 caretPositionUpdate,
-  //                 selectionLayerUpdate,
-  //             })
-  //             event.stopPropagation();
-  //         })
-  //     })
-
-  //     combokeys.bind('backspace', function(event) { // Handle shortcut
-  //         backspacePressed();
-  //         event.stopPropagation();
-  //         event.preventDefault();
-  //     });
-  //     combokeys.bind('command+a', function(event) { // Handle shortcut
-  //         selectAll();
-  //         event.stopPropagation();
-  //     });
-  //     combokeys.bind('command+ctrl+i', function(event) { // Handle shortcut
-  //         selectInverse();
-  //         event.stopPropagation();
-  //     });
-  // }
-
   render() {
     let propsToUse = { ...this.props.veWrapperProvidedProps, ...this.props };
     let {
@@ -155,6 +84,7 @@ export class LinearView extends React.Component {
       editorClicked = noop,
       editorDragStopped = noop,
       width = 400,
+      RowItemProps={},
       marginWidth = defaultMarginWidth,
       height,
       ...rest
@@ -215,7 +145,8 @@ export class LinearView extends React.Component {
                 caret: false,
                 yellowAxis: true,
                 translations: false
-              }
+              },
+              ...RowItemProps
             }}
             row={rowData[0]}
           />

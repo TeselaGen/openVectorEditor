@@ -8,7 +8,7 @@ export class DigestTool extends React.Component {
         const {editorName} = this.props
         return <div>
         <CutsiteFilter editorName={editorName}/>
-        <Ladder/>
+        {/* <Ladder/> */}
     </div>
     }
 }

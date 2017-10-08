@@ -1,10 +1,11 @@
 // import cleanSequenceData from './utils/cleanSequenceData';
 // import deepEqual from 'deep-equal';
-import "./coreStyle.css";
+import "./style.css";
 export { default as vectorEditorReducer } from "./redux";
 export { default as CircularView } from "./CircularView";
 export { default as RowView } from "./RowView";
 export { default as RowItem } from "./RowItem";
+export { default as Editor } from "./Editor";
 export { default as VeToolBar } from "./VeToolBar";
 export { default as CutsiteFilter } from "./CutsiteFilter";
 export { default as LinearView } from "./LinearView";

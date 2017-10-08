@@ -29,7 +29,8 @@ const defaultProps = {
   width: defaultContainerWidth,
   marginWidth: defaultMarginWidth,
   height: 400,
-  veWrapperProvidedProps: {}
+  veWrapperProvidedProps: {},
+  RowItemProps: {},
 };
 
 class RowView extends React.Component {
@@ -311,6 +312,7 @@ class RowView extends React.Component {
       width,
       marginWidth,
       height,
+      RowItemProps,
       ...rest
     } = propsToUse;
     if (marginWidth < defaultMarginWidth) {
@@ -366,7 +368,8 @@ class RowView extends React.Component {
                 sequenceLength: sequenceData.sequence.length,
                 width: containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp,
                 bpsPerRow,
-                fullSequence: sequenceData.sequence
+                fullSequence: sequenceData.sequence,
+                ...RowItemProps
               }}
               row={rowData[indexToUse]}
             />
