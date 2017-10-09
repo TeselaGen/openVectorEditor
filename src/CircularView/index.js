@@ -1,4 +1,4 @@
-import VeWarning from "../VeWarning";
+import VeWarning from '../helperComponents/VeWarning';
 import getRangeLength from "ve-range-utils/getRangeLength";
 import PassThrough from "../utils/PassThrough";
 import _Labels from "./Labels";

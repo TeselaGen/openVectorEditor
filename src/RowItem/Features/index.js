@@ -107,7 +107,7 @@ Features.propTypes = {
       annotation: PropTypes.shape({
         start: PropTypes.number.isRequired,
         end: PropTypes.number.isRequired,
-        forward: PropTypes.bool.isRequired,
+        forward: PropTypes.bool,
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       })
     })

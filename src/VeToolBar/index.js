@@ -12,7 +12,7 @@ import withEditorProps from '../withEditorProps';
 import "./style.css";
 import CutsiteFilter from "../CutsiteFilter";
 import FileSaver from "file-saver";
-import Radio from "../Radio";
+import Radio from "../helperComponents/Radio";
 import save_img from "./veToolbarIcons/save.png";
 // import print_img from './veToolbarIcons/print.png';
 import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";

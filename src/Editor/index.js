@@ -18,7 +18,7 @@ export class Editor extends React.Component {
       contentRect: { bounds },
       panelsShown = { circular: true, sequence: true },
       editorName,
-      height=500,
+      height = 500
     } = this.props;
     const { width } = bounds;
     const showBoth = panelsShown.circular && panelsShown.sequence;
@@ -30,36 +30,38 @@ export class Editor extends React.Component {
     return (
       <div ref={measureRef}>
         <VeToolBar {...VeToolBarProps} editorName={editorName} />
-        <div className="tg-editor-container" id="section-to-print">
-          {panelsShown.circular && (
-            <div
-              style={{ borderRight: showBoth ? "1px solid lightgrey" : "" }}
-              className="CircularViewSide"
-            >
-              <CircularView
-                {...CircularViewProps}
-                editorName={editorName}
-                {...{
-                  ...editorDimensions,
-                  hideName: true
-                }}
-              />
-            </div>
-          )}
-          {panelsShown.sequence && (
-            <div className="RowViewSide">
-              <div>
-                <RowView
-                  {...RowViewProps}
+        {width ? (
+          <div className="tg-editor-container" id="section-to-print">
+            {panelsShown.circular && (
+              <div
+                style={{ borderRight: showBoth ? "1px solid lightgrey" : "" }}
+                className="CircularViewSide"
+              >
+                <CircularView
+                  {...CircularViewProps}
                   editorName={editorName}
                   {...{
-                    ...editorDimensions
+                    ...editorDimensions,
+                    hideName: true
                   }}
                 />
               </div>
-            </div>
-          )}
-        </div>
+            )}
+            {panelsShown.sequence && (
+              <div className="RowViewSide">
+                <div>
+                  <RowView
+                    {...RowViewProps}
+                    editorName={editorName}
+                    {...{
+                      ...editorDimensions
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        ) : <div style={{height}}/>}
         <StatusBar {...StatusBarProps} editorName={editorName} />
       </div>
     );

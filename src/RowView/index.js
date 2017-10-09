@@ -29,6 +29,7 @@ const defaultProps = {
   width: defaultContainerWidth,
   marginWidth: defaultMarginWidth,
   height: 400,
+  charWidth: defaultCharWidth,
   veWrapperProvidedProps: {},
   RowItemProps: {},
 };
@@ -319,10 +320,13 @@ class RowView extends React.Component {
       marginWidth = defaultMarginWidth;
     }
     let containerWidthMinusMargin = width - marginWidth;
+    console.log('containerWidthMinusMargin:',containerWidthMinusMargin)
     let bpsPerRow = getBpsPerRow(propsToUse);
+
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
     let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
-      Math.floor(containerWidthMinusMargin / propsToUse.charWidth) * bpsPerRow;
+     propsToUse.charWidth * bpsPerRow;
+      console.log('containerWidthMinusMarginMinus:',containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp)
     let rowData = prepareRowData(sequenceData, bpsPerRow);
     let showJumpButtons = rowData.length > 15;
     let renderItem = (index, key) => {
@@ -407,7 +411,7 @@ class RowView extends React.Component {
             overflowY: "auto",
             overflowX: "visible",
             height,
-            width,
+            width: containerWidthMinusMargin + marginWidth/2,
             paddingLeft: marginWidth / 2
           }}
           onScroll={onScroll}

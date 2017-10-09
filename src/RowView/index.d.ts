@@ -4,6 +4,7 @@ export interface RowViewProps {
   height: number, //default = 400
   width: number,
   marginWidth: number,
+  charWidth: number,
   RowItemProps: object, //props passed to RowItem
 }
 export default class RowView extends React.Component <RowViewProps> {}

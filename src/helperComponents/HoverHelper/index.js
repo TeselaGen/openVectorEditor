@@ -1,8 +1,8 @@
 import classnames from "classnames";
 import deepEqual from "deep-equal";
 import { mouseAware } from "react-mouse-aware";
-import "./style.css";
-import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
+import './style.css';
+import * as hoveredAnnotationActions from '../../redux/hoveredAnnotation';
 import { connect } from "react-redux";
 import React from "react";
 

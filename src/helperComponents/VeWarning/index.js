@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+import './style.css';
 import WarningOutline from "react-icons/lib/ti/warning-outline";
 
 function VeWarning(props) {

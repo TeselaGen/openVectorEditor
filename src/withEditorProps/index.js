@@ -3,7 +3,7 @@ import React from "react";
 import {connect} from 'react-redux';
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
-import HoverHelperComp from "../HoverHelper";
+import HoverHelperComp from '../helperComponents/HoverHelper';
 import s from "../selectors";
 
 export default connect((state, ownProps) => {

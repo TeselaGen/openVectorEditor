@@ -12,7 +12,7 @@ export { default as LinearView } from "./LinearView";
 export { default as StatusBar } from "./StatusBar";
 export { default as DigestTool } from "./DigestTool/DigestTool";
 
-export { default as HoverHelper } from "./HoverHelper";
+export { default as HoverHelper } from './helperComponents/HoverHelper';
 export {
   default as getRangeAnglesSpecial
 } from "./CircularView/getRangeAnglesSpecial";
