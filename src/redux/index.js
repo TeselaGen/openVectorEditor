@@ -16,6 +16,7 @@ import deletionLayers, * as fromDeletionLayers from "./deletionLayers";
 import replacementLayers, * as fromReplacementLayers from "./replacementLayers";
 import panelsShown, * as fromPanelsShown from "./panelsShown";
 import lineageLines, * as fromLineageLines from "./lineageLines";
+import readOnly, * as fromReadOnly from "./readOnly";
 
 // import pickBy from 'lodash/pickBy'
 // import startsWith from 'lodash/startsWith'
@@ -38,6 +39,7 @@ export const actions = {
   ...fromDeletionLayers,
   ...fromReplacementLayers,
   ...fromLineageLines,
+  ...fromReadOnly,
   ...fromPanelsShown,
   vectorEditorInitialize,
   vectorEditorClear
@@ -55,24 +57,25 @@ let reducers = {
   caretPosition,
   selectionLayer,
   lineageLines,
+  readOnly,
   panelsShown,
   deletionLayers,
   replacementLayers
 };
 
-export default function reducerFactory(initialState) {
-  if (!initialState || !Object.keys(initialState).length) {
-    throw new Error(
-      "Please pass an initial state to the vector editor reducer like: {DemoEditor: {}}!"
-    );
-  }
+export default function reducerFactory(initialState={}) {
+  // if (!initialState || !Object.keys(initialState).length) {
+  //   throw new Error(
+  //     "Please pass an initial state to the vector editor reducer like: {DemoEditor: {}}!"
+  //   );
+  // }
   return function(state = initialState, action) {
     let editorNames;
     let newState = {};
-    if (action.meta && action.meta.EditorName) {
-      editorNames = Array.isArray(action.meta.EditorName)
-        ? action.meta.EditorName
-        : [action.meta.EditorName];
+    if (action.meta && action.meta.editorName) {
+      editorNames = Array.isArray(action.meta.editorName)
+        ? action.meta.editorName
+        : [action.meta.editorName];
     }
     let stateToReturn;
     if (editorNames) {

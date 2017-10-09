@@ -6,7 +6,7 @@ import InfoCircle from "react-icons/lib/fa/info-circle";
 import Popover from "react-popover";
 import jsonToGenbank from "bio-parsers/parsers/jsonToGenbank";
 import React from "react";
-import withEditorProps from '../withEditorProps';
+import withEditorProps from "../withEditorProps";
 
 // import get from 'lodash/get'
 import "./style.css";
@@ -31,53 +31,42 @@ export class VeToolBar extends React.Component {
     let self = this;
     return function() {
       if (self.state.openItem === popover) {
-        return self.setState({ openItem: -1 });
+        return self.setState({
+          openItem: -1
+        });
       }
-      self.setState({ openItem: popover });
+      self.setState({
+        openItem: popover
+      });
     };
   };
 
   handleClose = () => {
-    this.setState({ openItem: "" });
-  };
-
-  static defaultProps = {
-    onChangeHook: () => {},
-    sequenceData: {
-      sequence: ""
-    },
-    annotationVisibilityToggle: () => {},
-    annotationVisibilityShow: () => {},
-    annotationVisibilityHide: () => {},
-    annotationVisibility: {},
-    annotationLabelVisibilityToggle: () => {},
-    labelVisibility: {},
-    minimumOrfSizeUpdate: () => {},
-    minimumOrfSize: 300,
-    panelsShown: {},
-    panelsShownUpdate: () => {},
-    sequenceLength: 0,
-    excludeObj: {}
+    this.setState({
+      openItem: ""
+    });
   };
 
   render() {
-    let self = this;
-    let {
-      sequenceData,
-      annotationVisibilityToggle,
-      annotationLabelVisibilityToggle,
-      annotationVisibilityShow,
-      annotationVisibilityHide,
-      annotationVisibility,
-      annotationLabelVisibility,
+    const self = this;
+    const {
+      sequenceData = {
+        sequence: ""
+      },
+      annotationVisibilityToggle = noop,
+      annotationLabelVisibilityToggle = noop,
+      annotationVisibilityShow = noop,
+      annotationVisibilityHide = noop,
+      annotationLabelVisibility = noop,
+      minimumOrfSizeUpdate = noop,
       AdditionalTools = [],
+      annotationVisibility = {},
       modifyTools,
-      minimumOrfSizeUpdate,
-      minimumOrfSize,
-      panelsShown,
+      minimumOrfSize = 300,
+      panelsShown = {},
       panelsShownUpdate,
-      sequenceLength,
-      showDigestTool,
+      sequenceLength = 0,
+      // showDigestTool,
       excludeObj = {}
     } = this.props;
 
@@ -151,7 +140,7 @@ export class VeToolBar extends React.Component {
               }}
               {...this.props}
             />
-            {showDigestTool && <DigestTool></DigestTool>}
+            {/* {showDigestTool && <DigestTool></DigestTool>} */}
           </div>
         ),
         dropdowntooltip: "Cut site options",
@@ -181,9 +170,7 @@ export class VeToolBar extends React.Component {
               id="showFeatureLabels"
               type="checkbox"
             />
-            <span>
-              {"  "} Show feature labels
-            </span>
+            <span>{"  "} Show feature labels</span>
           </div>
         ),
         dropdowntooltip: "Feature options",
@@ -304,8 +291,8 @@ export class VeToolBar extends React.Component {
       ...AdditionalTools
     ];
 
-    if (modifyTools ) {
-      items = modifyTools(items)
+    if (modifyTools) {
+      items = modifyTools(items);
     }
 
     items = items.filter(function(item) {
@@ -334,7 +321,7 @@ export class VeToolBar extends React.Component {
       }
       return (
         <div key={index} className={"veToolbarItemOuter"}>
-          {component &&
+          {component && (
             <div
               aria-label={tooltipToDisplay}
               className={" hint--bottom-left veToolbarItem"}
@@ -347,8 +334,9 @@ export class VeToolBar extends React.Component {
               >
                 {component}
               </div>
-            </div>}
-          {dropdown &&
+            </div>
+          )}
+          {dropdown && (
             <Popover
               preferPlace="below"
               onOuterAction={self.handleClose}
@@ -364,25 +352,24 @@ export class VeToolBar extends React.Component {
                   (dropdownicon ? "" : " veToolbarDropdown")
                 }
               >
-                {dropdownicon
-                  ? <div className={"veToolbarIcon"}>
-                      <div>
-                        {dropdownicon}
-                      </div>
-                    </div>
-                  : <DropDown />}
+                {dropdownicon ? (
+                  <div className={"veToolbarIcon"}>
+                    <div>{dropdownicon}</div>
+                  </div>
+                ) : (
+                  <DropDown />
+                )}
               </div>
-            </Popover>}
+            </Popover>
+          )}
         </div>
       );
     });
 
-    return (
-      <div className={"veToolbar"}>
-        {content}
-      </div>
-    );
+    return <div className={"veToolbar"}>{content}</div>;
   }
 }
 
-export default withEditorProps(VeToolBar)
+export default withEditorProps(VeToolBar);
+
+function noop() {}

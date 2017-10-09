@@ -20,9 +20,9 @@ export default connect((state, ownProps) => {
       />
     );
   };  
-  let { VectorEditor } = state;
-  //then use the fake blankEditor data as a substitute
+  let { VectorEditor } = state; 
   let editorState = VectorEditor[editorName];
+  if (!editorState) return {}
   let cutsites = s.filteredCutsitesSelector(editorState).cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState

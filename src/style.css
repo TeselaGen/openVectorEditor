@@ -1,4 +1,9 @@
+@import url(~@blueprintjs/core/dist/blueprint.css);
+@import url(~@blueprintjs/table/dist/table.css);
+@import url(~@blueprintjs/datetime/dist/blueprint-datetime.css);
 @import url(~react-select/dist/react-select.css);
+@import url(~hint.css/hint.min.css);
+
 .monospaceFont {
   font-family: "Lucida Console", Monaco, monospace;
 }

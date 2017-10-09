@@ -2,7 +2,7 @@ module.exports = {
   type: 'react-component',
   npm: {
     esModules: true,
-    umd: false
+    umd: true
   },
   webpack: {
     uglify: false,

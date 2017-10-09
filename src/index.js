@@ -1,3 +1,5 @@
+import './tg_createEditor';
+
 // import cleanSequenceData from './utils/cleanSequenceData';
 // import deepEqual from 'deep-equal';
 import "./style.css";
@@ -10,6 +12,7 @@ export { default as VeToolBar } from "./VeToolBar";
 export { default as CutsiteFilter } from "./CutsiteFilter";
 export { default as LinearView } from "./LinearView";
 export { default as StatusBar } from "./StatusBar";
+export { default as instantiateEditor } from "./instantiateEditor";
 export { default as DigestTool } from "./DigestTool/DigestTool";
 
 export { default as HoverHelper } from './helperComponents/HoverHelper';
@@ -19,7 +22,6 @@ export {
 export {
   default as PositionAnnotationOnCircle
 } from "./CircularView/PositionAnnotationOnCircle";
-
 
 
 

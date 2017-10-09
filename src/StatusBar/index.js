@@ -22,7 +22,7 @@ export function StatusBar({
     <div className={"veStatusBar"}>
       {showReadOnly &&
         <StatusBarItem>
-          {readOnly ? "Editable" : "Read Only"}
+          {readOnly ? "Read Only" : "Editable"}
         </StatusBarItem>}
       <div className={"spacer"} />
       {

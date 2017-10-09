@@ -4,10 +4,11 @@ import Clipboard from "./Clipboard";
 
 import withEditorProps from '../withEditorProps';
 import updateSelectionOrCaret from '../utils/selectionAndCaretUtils/updateSelectionOrCaret';
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+import AddOrEditFeatureDialog from '../helperComponents/AddOrEditFeatureDialog';
+import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRangeLength";
 import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
+
 // import draggableClassnames from "../constants/draggableClassnames";
 
 function noop() {}
@@ -153,6 +154,7 @@ function VectorInteractionHOC(Component) {
             onCopy={handleCopy}
             onPaste={this.handlePaste.bind(this)}
           />
+          <AddOrEditFeatureDialog dialogName="AddOrEditFeatureDialog" noTarget/> {/* we pass this dialog here */}
           <Component veWrapperProvidedProps={propsToPass} />
         </div>
       );

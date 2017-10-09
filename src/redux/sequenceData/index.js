@@ -8,7 +8,7 @@ import cleanSequenceData from "../../utils/cleanSequenceData";
 import { createReducer } from "redux-act";
 // export * from './sharedActionCreators';
 export * from "./primers";
-// export * from './features';
+export * from './features';
 // export * from './sequence';
 // export * from './circular';
 export * from "./translations";

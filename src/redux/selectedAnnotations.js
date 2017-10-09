@@ -1,3 +1,4 @@
+import {convertRangeTo1Based} from 've-range-utils';
 import getReverseComplementSequenceString
   from "ve-sequence-utils/getReverseComplementSequenceString";
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
@@ -15,6 +16,7 @@ import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import * as caretPositionActions from "./caretPosition";
 import * as selectionLayerActions from "./selectionLayer";
+
 import bindActionCreatorsWithMeta from "./utils/bindActionCreatorsWithMeta";
 // ------------------------------------
 // Actions
@@ -63,7 +65,29 @@ export function featureRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
   return function(dispatch, getState) {
+    const editorName = meta.editorName
+    const editorState = getState().VectorEditor[editorName];
+    const { readOnly } = editorState;
+
     let items = [
+      ...readOnly ? [] : [{
+        title: "Create Feature",
+        fn: function() {
+          dispatch({
+            type: "TG_SHOW_MODAL",
+            name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
+            props: {
+              editorName,
+              dialogProps: {
+                title: 'Create Feature'
+              },
+              initialValues: {
+                ...convertRangeTo1Based(annotation)
+              }
+            }
+          });
+        }
+      }],
       {
         title: "View Translation",
         icon: "ion-plus-round",
@@ -254,10 +278,11 @@ export function selectionLayerRightClicked(
   event.preventDefault();
   event.stopPropagation();
   return function(dispatch, getState) {
-    let editorState = getState().VectorEditor[meta.editorName];
-    let sequence = sequenceSelector(editorState);
-    let { selectionLayer } = editorState;
-    let selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
+    const editorName = meta.editorName
+    const editorState = getState().VectorEditor[editorName];
+    const sequence = sequenceSelector(editorState);
+    const { selectionLayer, readOnly } = editorState;
+    const selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
     function makeTextCopyable(stringToCopy) {
       let text = "";
       let clipboard = new Clipboard(".basicContext", {
@@ -289,6 +314,21 @@ export function selectionLayerRightClicked(
           makeTextCopyable(getReverseComplementSequenceString(selectedSeq));
         }
       },
+      ...readOnly ? [] : [{
+        title: "Create Feature",
+        fn: function() {
+          dispatch({
+            type: "TG_SHOW_MODAL",
+            name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
+            props: {
+              editorName,
+              dialogProps: {
+                title: 'Add Feature'
+              }
+            }
+          });
+        }
+      }],
       {
         title: "View Translation",
         fn: function() {

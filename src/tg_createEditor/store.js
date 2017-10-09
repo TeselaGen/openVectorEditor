@@ -1,8 +1,12 @@
 //optionally connect to the redux store
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
-import {vectorEditorReducer as VectorEditor} from '../../../src'
+import {tg_modalState} from 'teselagen-react-components';
+import VectorEditor from '../redux';
 import thunk from 'redux-thunk';
+import {reducer as form} from 'redux-form';
 import exampleSequenceData from './exampleSequenceData';
+import cleanSequenceData from '../utils/cleanSequenceData';
+
 
 const composeEnhancer = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
 	actionsBlacklist: ['HOVEREDANNOTATIONUPDATE', 'HOVEREDANNOTATIONCLEAR']
@@ -10,7 +14,9 @@ const composeEnhancer = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window._
 
 const store = createStore(
   combineReducers({
-    VectorEditor: VectorEditor({DemoEditor: {sequenceData: exampleSequenceData}})
+    form,
+    tg_modalState,
+    VectorEditor: VectorEditor({StandaloneEditor: {sequenceData: cleanSequenceData(exampleSequenceData), readOnly: false}})
   }),
   undefined,
   composeEnhancer(
