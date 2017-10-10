@@ -1,12 +1,14 @@
 import React from "react";
 import { withContentRect } from "react-measure";
 import { compose } from "redux";
-import { connect } from "react-redux";
 import VeToolBar from "../VeToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
+import FindBar from "../FindBar";
+import withEditorProps from '../withEditorProps';
 import "./style.css";
+
 export class Editor extends React.Component {
   render() {
     const {
@@ -14,10 +16,12 @@ export class Editor extends React.Component {
       CircularViewProps = {},
       RowViewProps = {},
       StatusBarProps = {},
+      FindBarProps = {},
       measureRef,
       contentRect: { bounds },
       panelsShown = { circular: true, sequence: true },
       editorName,
+      findTool={},
       height = 500
     } = this.props;
     const { width } = bounds;
@@ -31,7 +35,7 @@ export class Editor extends React.Component {
       <div ref={measureRef}>
         <VeToolBar {...VeToolBarProps} editorName={editorName} />
         {width ? (
-          <div className="tg-editor-container" id="section-to-print">
+          <div style={{position: 'relative'}} className="tg-editor-container" id="section-to-print">
             {panelsShown.circular && (
               <div
                 style={{ borderRight: showBoth ? "1px solid lightgrey" : "" }}
@@ -60,8 +64,12 @@ export class Editor extends React.Component {
                 </div>
               </div>
             )}
+            {
+              findTool.isOpen && <FindBar {...FindBarProps} editorName={editorName} />
+            }
           </div>
         ) : <div style={{height}}/>}
+        
         <StatusBar {...StatusBarProps} editorName={editorName} />
       </div>
     );
@@ -69,12 +77,6 @@ export class Editor extends React.Component {
 }
 
 export default compose(
-  connect((state, { editorName }) => {
-    const editorState = state.VectorEditor[editorName] || {};
-    const { panelsShown } = editorState;
-    return {
-      panelsShown
-    };
-  }),
+  withEditorProps,
   withContentRect("bounds")
 )(Editor);

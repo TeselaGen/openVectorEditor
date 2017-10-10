@@ -1,28 +1,19 @@
 import jsonToGenbank from "bio-parsers/parsers/jsonToGenbank";
 import FileSaver from "file-saver";
 import React from "react";
-import save_img from "./veToolbarIcons/save.png";
+import {Icon, IconClasses} from '@blueprintjs/core';
 
-export default () => {
+export default ({sequenceData}) => {
   return {
-    Icon: DownloadTool,
+    Icon: <Icon iconName={IconClasses.IMPORT}></Icon>,
+    onIconClick: function() {
+      let blob = new Blob([jsonToGenbank(sequenceData)], {
+        type: "text/plain"
+      });
+      FileSaver.saveAs(blob, "result_plasmid.gb");
+      // downloadSequenceData(sequenceData || )
+    },
     tooltip: "Download .gb file",
     id: "download"
   };
 };
-
-function DownloadTool({ sequenceData }) {
-  return (
-    <div
-      onClick={function() {
-        let blob = new Blob([jsonToGenbank(sequenceData)], {
-          type: "text/plain"
-        });
-        FileSaver.saveAs(blob, "result_plasmid.gb");
-        // downloadSequenceData(sequenceData || )
-      }}
-    >
-      <img src={save_img} alt="Download .gb file" />
-    </div>
-  );
-}

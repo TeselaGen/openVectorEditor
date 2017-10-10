@@ -29,6 +29,7 @@
     "test-debug": "node --inspect --debug-brk ./node_modules/.bin/jest src --runInBand "
   },
   "dependencies": {
+    "@blueprintjs/labs": "^0.11.0",
     "basiccontext": "^3.5.1",
     "bio-parsers": "^4.2.0",
     "classnames": "^2.2.5",

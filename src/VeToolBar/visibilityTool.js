@@ -2,13 +2,14 @@ import {Icon, Checkbox} from '@blueprintjs/core';
 import React from "react";
 import {map, startCase} from 'lodash';
 
-export default ({readOnly, toggleDropdown}) => {
+export default ({readOnly, toggleDropdown, isOpen}) => {
 
   return {
     Icon: <Icon iconName={"eye-open"}></Icon>,
     onIconClick: toggleDropdown,
     Dropdown: VisibilityOptions,
     noDropdownIcon: true,
+    toggled: isOpen,
     tooltip: !readOnly ? "Hide Visibility Options" : "Show Visibility Options",
     id: "editMode"
   }

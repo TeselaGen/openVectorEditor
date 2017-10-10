@@ -65,6 +65,7 @@ export default class ToolbarItem extends React.Component {
                 <div
                   aria-label={dropdowntooltip}
                   className={
+                    (isOpen ? ' isOpen ' : '') +
                     " hint--bottom-left " +
                     (dropdownicon ? "" : " veToolbarDropdown")
                   }

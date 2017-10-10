@@ -6,9 +6,13 @@ import { actions } from "../redux";
 import HoverHelperComp from '../helperComponents/HoverHelper';
 import s from "../selectors";
 
+
+/**
+ * This function basically connects the wrapped component with all of the state stored in a given editor instance
+ * and then some extra goodies like computed properties and namespace bound action handlers
+ */
 export default connect((state, ownProps) => {
   const {editorName} = ownProps
-  
   let meta = { editorName };
   let HoverHelper = function(props) {
     return (

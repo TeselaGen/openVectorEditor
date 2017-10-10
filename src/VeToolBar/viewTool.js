@@ -7,6 +7,7 @@ export default ({toggleDropdown, isOpen}) => {
     Dropdown: ViewToolDropdown,
     Icon: <img src={fullscreen} alt="Toggle Views" />,
     onIconClick: toggleDropdown,
+    toggled: isOpen,
     tooltip: isOpen ? "Hide View Options" : "Show View Options",
     noDropdownIcon: true,
     id: "toggleViews"

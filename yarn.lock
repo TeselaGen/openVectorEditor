@@ -28,6 +28,19 @@
     tether "^1.4"
     tslib "^1.5.0"
 
+"@blueprintjs/core@^1.30.0":
+  version "1.31.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-1.31.0.tgz#1008244b25fe47379650478dc5969c559c619d08"
+  dependencies:
+    "@types/dom4" "^1.5.20"
+    "@types/tether" "^1.1.27"
+    classnames "^2.2"
+    dom4 "^1.8"
+    normalize.css "4.1.1"
+    pure-render-decorator "^1.1"
+    tether "^1.4"
+    tslib "^1.5.0"
+
 "@blueprintjs/datetime@^1.22.0":
   version "1.22.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-1.22.0.tgz#a62f6234ffe50526f8bec557ee31327c9488f852"
@@ -36,6 +49,20 @@
     classnames "^2.2"
     moment "^2.14.1"
     react-day-picker "^5.3.0"
+    tslib "^1.5.0"
+
+"@blueprintjs/labs@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/labs/-/labs-0.11.0.tgz#538494e6b209be342aa951abc5bd34729e1c72b2"
+  dependencies:
+    "@blueprintjs/core" "^1.30.0"
+    classnames "^2.2"
+    fuzzaldrin-plus "^0.5.0"
+    moment "^2.14.1"
+    moment-timezone "^0.5.13"
+    popper.js "1.11.0"
+    pure-render-decorator "^1.2.1"
+    react-popper "^0.7.2"
     tslib "^1.5.0"
 
 "@blueprintjs/table@^1.24.1":
@@ -3702,6 +3729,10 @@ function.prototype.name@^1.0.0:
     function-bind "^1.1.0"
     is-callable "^1.1.2"
 
+fuzzaldrin-plus@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/fuzzaldrin-plus/-/fuzzaldrin-plus-0.5.0.tgz#ef5f26f0c2fc7e9e9a16ea149a802d6cb4804b1e"
+
 gauge@~2.7.3:
   version "2.7.4"
   resolved "https://registry.yarnpkg.com/gauge/-/gauge-2.7.4.tgz#2c03405c7538c39d7eb37b317022e325fb018bf7"
@@ -5866,6 +5897,16 @@ mocha@3.4.2:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
+moment-timezone@^0.5.13:
+  version "0.5.13"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.13.tgz#99ce5c7d827262eb0f1f702044177f60745d7b90"
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0":
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.0.tgz#44f675ef6b944942762581b1c179fb679e599d67"
+
 moment@^2.14.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
@@ -6709,6 +6750,14 @@ pluralize@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-5.0.0.tgz#e8b9073af9a0cb02e4c2efa95b55bebbdbf01299"
 
+popper.js@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.11.0.tgz#0103f23ac0c9221d944e7f25e3aba4c2f73987de"
+
+popper.js@^1.12.5:
+  version "1.12.5"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
+
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -7132,7 +7181,7 @@ punycode@^1.2.4, punycode@^1.3.2, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-pure-render-decorator@^1.1:
+pure-render-decorator@^1.1, pure-render-decorator@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pure-render-decorator/-/pure-render-decorator-1.2.1.tgz#568870eeca17a1cee536b4fe94a3477fcd31eeb9"
   dependencies:
@@ -7400,6 +7449,13 @@ react-popover@^0.4.16:
     css-vendor "^0.3.1"
     debug "^2.6.8"
     lodash.throttle "^3.0.3"
+    prop-types "^15.5.10"
+
+react-popper@^0.7.2:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.3.tgz#fa2809a80fbe7ec516e9bac01d81bc47a8b5cd3b"
+  dependencies:
+    popper.js "^1.12.5"
     prop-types "^15.5.10"
 
 react-proxy@^1.1.7:

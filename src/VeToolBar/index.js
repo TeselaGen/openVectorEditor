@@ -8,6 +8,8 @@ import oligoTool from "./oligoTool";
 import orfTool from "./orfTool";
 import viewTool from "./viewTool";
 import editTool from "./editTool";
+import findTool from "./findTool";
+import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 
 
@@ -42,6 +44,7 @@ export class VeToolBar extends React.Component {
     } = this.props;
 
     let items = [
+      saveTool,
       downloadTool,
       cutsiteTool,
       featureTool,
@@ -49,6 +52,7 @@ export class VeToolBar extends React.Component {
       orfTool,
       viewTool,
       editTool,
+      findTool,
       visibilityTool,
       ...AdditionalTools
     ];

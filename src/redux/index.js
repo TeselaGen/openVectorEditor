@@ -1,25 +1,20 @@
 import { combineReducers } from "redux";
-import selectionLayer, * as fromSelectionLayer from "./selectionLayer";
-import caretPosition, * as fromCaretPosition from "./caretPosition";
-import hoveredAnnotation, * as fromHoveredAnnotation from "./hoveredAnnotation";
-import minimumOrfSize, * as fromMinimumOrfSize from "./minimumOrfSize";
-import sequenceData, * as fromSequenceData from "./sequenceData";
-import annotationVisibility, * as fromAnnotationVisibility
-  from "./annotationVisibility";
-import annotationLabelVisibility, * as fromAnnotationLabelVisibility
-  from "./annotationLabelVisibility";
-import selectedAnnotations, * as fromSelectedAnnotations
-  from "./selectedAnnotations";
-import restrictionEnzymes, * as fromRestrictionEnzymes
-  from "./restrictionEnzymes";
-import deletionLayers, * as fromDeletionLayers from "./deletionLayers";
-import replacementLayers, * as fromReplacementLayers from "./replacementLayers";
-import panelsShown, * as fromPanelsShown from "./panelsShown";
-import lineageLines, * as fromLineageLines from "./lineageLines";
-import readOnly, * as fromReadOnly from "./readOnly";
+import * as selectionLayer from "./selectionLayer";
+import * as caretPosition from "./caretPosition";
+import * as hoveredAnnotation from "./hoveredAnnotation";
+import * as minimumOrfSize from "./minimumOrfSize";
+import * as sequenceData from "./sequenceData";
+import * as annotationVisibility from "./annotationVisibility";
+import * as annotationLabelVisibility from "./annotationLabelVisibility";
+import * as selectedAnnotations from "./selectedAnnotations";
+import * as restrictionEnzymes from "./restrictionEnzymes";
+import * as deletionLayers from "./deletionLayers";
+import * as replacementLayers from "./replacementLayers";
+import * as panelsShown from "./panelsShown";
+import * as lineageLines from "./lineageLines";
+import * as readOnly from "./readOnly";
+import * as findTool from "./findTool";
 
-// import pickBy from 'lodash/pickBy'
-// import startsWith from 'lodash/startsWith'
 import createAction from "./utils/createMetaAction";
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_INITIALIZE");
@@ -27,44 +22,46 @@ const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
 
 //export the actions for use elsewhere
 export const actions = {
-  ...fromSelectionLayer,
-  ...fromCaretPosition,
-  ...fromRestrictionEnzymes,
-  ...fromSelectedAnnotations,
-  ...fromAnnotationLabelVisibility,
-  ...fromAnnotationVisibility,
-  ...fromSequenceData,
-  ...fromMinimumOrfSize,
-  ...fromHoveredAnnotation,
-  ...fromDeletionLayers,
-  ...fromReplacementLayers,
-  ...fromLineageLines,
-  ...fromReadOnly,
-  ...fromPanelsShown,
+  ...selectionLayer,
+  ...caretPosition,
+  ...restrictionEnzymes,
+  ...selectedAnnotations,
+  ...annotationLabelVisibility,
+  ...annotationVisibility,
+  ...sequenceData,
+  ...minimumOrfSize,
+  ...hoveredAnnotation,
+  ...deletionLayers,
+  ...replacementLayers,
+  ...lineageLines,
+  ...readOnly,
+  ...panelsShown,
+  ...findTool,
   vectorEditorInitialize,
   vectorEditorClear
 };
 
 //define the reducer
 let reducers = {
-  restrictionEnzymes,
-  selectedAnnotations,
-  annotationLabelVisibility,
-  annotationVisibility,
-  sequenceData,
-  minimumOrfSize,
-  hoveredAnnotation,
-  caretPosition,
-  selectionLayer,
-  lineageLines,
-  readOnly,
-  panelsShown,
-  deletionLayers,
-  replacementLayers,
-  instantiated: () => true,
+  restrictionEnzymes: restrictionEnzymes.default,
+  selectedAnnotations: selectedAnnotations.default,
+  annotationLabelVisibility: annotationLabelVisibility.default,
+  annotationVisibility: annotationVisibility.default,
+  sequenceData: sequenceData.default,
+  minimumOrfSize: minimumOrfSize.default,
+  hoveredAnnotation: hoveredAnnotation.default,
+  caretPosition: caretPosition.default,
+  selectionLayer: selectionLayer.default,
+  lineageLines: lineageLines.default,
+  readOnly: readOnly.default,
+  findTool: findTool.default,
+  panelsShown: panelsShown.default,
+  deletionLayers: deletionLayers.default,
+  replacementLayers: replacementLayers.default,
+  instantiated: () => true
 };
 
-export default function reducerFactory(initialState={}) {
+export default function reducerFactory(initialState = {}) {
   // if (!initialState || !Object.keys(initialState).length) {
   //   throw new Error(
   //     "Please pass an initial state to the vector editor reducer like: {DemoEditor: {}}!"

@@ -106,6 +106,9 @@
 .veToolbarDropdown:hover {
   background: lightgrey;
 }
+.veToolbarDropdown.isOpen {
+  background: lightgrey;
+}
 
 .veToolbarCutsiteFilterHolder {
   min-width: 300px;
