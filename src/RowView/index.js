@@ -34,7 +34,7 @@ const defaultProps = {
   RowItemProps: {},
 };
 
-class RowView extends React.Component {
+export class RowView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     let { charWidth = defaultCharWidth } = {
       ...defaultProps,
@@ -320,13 +320,11 @@ class RowView extends React.Component {
       marginWidth = defaultMarginWidth;
     }
     let containerWidthMinusMargin = width - marginWidth;
-    console.log('containerWidthMinusMargin:',containerWidthMinusMargin)
     let bpsPerRow = getBpsPerRow(propsToUse);
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
     let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
      propsToUse.charWidth * bpsPerRow;
-      console.log('containerWidthMinusMarginMinus:',containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp)
     let rowData = prepareRowData(sequenceData, bpsPerRow);
     let showJumpButtons = rowData.length > 15;
     let renderItem = (index, key) => {

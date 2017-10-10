@@ -1,7 +1,6 @@
 import isPositionWithinRange from "ve-range-utils/isPositionWithinRange";
 import norm from "ve-range-utils/normalizePositionByRangeLength";
 import assign from "lodash/assign";
-import PropTypes from "prop-types";
 import React from "react";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import getOverlapsOfPotentiallyCircularRanges
@@ -250,13 +249,13 @@ function Cutsites(props) {
   );
 }
 
-Cutsites.propTypes = {
-  // annotationRanges: React.PropTypes.object.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  bpsPerRow: PropTypes.number.isRequired,
-  row: PropTypes.object.isRequired,
-  sequenceLength: PropTypes.number.isRequired,
-  topStrand: PropTypes.bool.isRequired
-};
+// Cutsites.propTypes = {
+//   // annotationRanges: React.PropTypes.object.isRequired,
+//   charWidth: PropTypes.number.isRequired,
+//   bpsPerRow: PropTypes.number.isRequired,
+//   row: PropTypes.object.isRequired,
+//   sequenceLength: PropTypes.number.isRequired,
+//   topStrand: PropTypes.bool.isRequired
+// };
 
 export default Cutsites;

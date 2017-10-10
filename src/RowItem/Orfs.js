@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React from "react";
 import getXStartAndWidthOfRowAnnotation
   from "./getXStartAndWidthOfRowAnnotation";
@@ -88,13 +88,13 @@ function Orfs(props) {
   );
 }
 
-Orfs.propTypes = {
-  annotationRanges: PropTypes.array.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  bpsPerRow: PropTypes.number.isRequired,
-  annotationHeight: PropTypes.number.isRequired,
-  spaceBetweenAnnotations: PropTypes.number.isRequired,
-  orfClicked: PropTypes.func.isRequired
-};
+// Orfs.propTypes = {
+//   annotationRanges: PropTypes.array.isRequired,
+//   charWidth: PropTypes.number.isRequired,
+//   bpsPerRow: PropTypes.number.isRequired,
+//   annotationHeight: PropTypes.number.isRequired,
+//   spaceBetweenAnnotations: PropTypes.number.isRequired,
+//   orfClicked: PropTypes.func.isRequired
+// };
 
 export default Orfs;

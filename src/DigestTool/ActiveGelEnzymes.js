@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 
 import IconButton from 'material-ui/lib/icon-button';
 import CloseIcon from 'material-ui/lib/svg-icons/navigation/close';

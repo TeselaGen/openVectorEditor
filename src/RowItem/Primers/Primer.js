@@ -1,7 +1,7 @@
 import getAnnotationNameAndStartStopString
   from "../../utils/getAnnotationNameAndStartStopString";
 
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import React from "react";
 
@@ -117,14 +117,14 @@ function Primer(props) {
   );
 }
 
-Primer.propTypes = {
-  widthInBps: PropTypes.number.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  rangeType: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  forward: PropTypes.bool.isRequired,
-  primerClicked: PropTypes.func.isRequired
-};
+// Primer.propTypes = {
+//   widthInBps: PropTypes.number.isRequired,
+//   charWidth: PropTypes.number.isRequired,
+//   height: PropTypes.number.isRequired,
+//   rangeType: PropTypes.string.isRequired,
+//   name: PropTypes.string.isRequired,
+//   forward: PropTypes.bool.isRequired,
+//   primerClicked: PropTypes.func.isRequired
+// };
 
 export default Primer;

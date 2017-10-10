@@ -19,10 +19,10 @@ const store = createStore(
     form,
     tg_modalState,
     VectorEditor: VectorEditor({
-      DemoEditor: {
-        sequenceData: cleanSequenceData(exampleSequenceData),
-        readOnly: false
-      }
+      // DemoEditor: {
+      //   sequenceData: cleanSequenceData(exampleSequenceData),
+      //   readOnly: false
+      // }
     })
   }),
   undefined,

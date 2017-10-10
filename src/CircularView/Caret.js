@@ -2,7 +2,6 @@ import isNumber from "lodash/isNumber";
 import getRangeAngles from "ve-range-utils/getRangeAngles";
 import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import PropTypes from "prop-types";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 

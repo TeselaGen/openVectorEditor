@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
@@ -6,19 +6,19 @@ import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 function noop() {}
 
 class InfiniteScoller extends React.Component {
-  static propTypes = {
-    averageElementHeight: PropTypes.number,
-    containerHeight: PropTypes.number.isRequired,
-    totalNumberOfRows: PropTypes.number.isRequired,
-    renderRow: PropTypes.func.isRequired,
-    rowToJumpTo: PropTypes.shape({
-      row: PropTypes.number
-    }),
-    style: PropTypes.object,
-    jumpToBottomOfRow: PropTypes.bool,
-    containerClassName: PropTypes.string,
-    onScroll: PropTypes.func
-  };
+  // static propTypes = {
+  //   averageElementHeight: PropTypes.number,
+  //   containerHeight: PropTypes.number.isRequired,
+  //   totalNumberOfRows: PropTypes.number.isRequired,
+  //   renderRow: PropTypes.func.isRequired,
+  //   rowToJumpTo: PropTypes.shape({
+  //     row: PropTypes.number
+  //   }),
+  //   style: PropTypes.object,
+  //   jumpToBottomOfRow: PropTypes.bool,
+  //   containerClassName: PropTypes.string,
+  //   onScroll: PropTypes.func
+  // };
 
   static defaultProps = {
     onScroll: noop,

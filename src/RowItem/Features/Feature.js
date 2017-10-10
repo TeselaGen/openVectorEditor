@@ -1,8 +1,6 @@
 import getAnnotationNameAndStartStopString
   from "../../utils/getAnnotationNameAndStartStopString";
 
-import PropTypes from "prop-types";
-
 import React from "react";
 
 function Feature(props) {
@@ -105,14 +103,14 @@ function Feature(props) {
   );
 }
 
-Feature.propTypes = {
-  widthInBps: PropTypes.number.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  rangeType: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  forward: PropTypes.bool.isRequired,
-  featureClicked: PropTypes.func.isRequired
-};
+// Feature.propTypes = {
+//   widthInBps: PropTypes.number.isRequired,
+//   charWidth: PropTypes.number.isRequired,
+//   height: PropTypes.number.isRequired,
+//   rangeType: PropTypes.string.isRequired,
+//   name: PropTypes.string.isRequired,
+//   forward: PropTypes.bool.isRequired,
+//   featureClicked: PropTypes.func.isRequired
+// };
 
 export default Feature;

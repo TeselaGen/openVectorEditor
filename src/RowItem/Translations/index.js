@@ -1,5 +1,5 @@
 import "./style.css";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React from "react";
 import getAnnotationRangeType from "ve-range-utils/getAnnotationRangeType";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
@@ -71,25 +71,25 @@ function Translations(props) {
   );
 }
 
-Translations.propTypes = {
-  annotationRanges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      end: PropTypes.number.isRequired,
-      yOffset: PropTypes.number.isRequired,
-      annotation: PropTypes.shape({
-        start: PropTypes.number.isRequired,
-        end: PropTypes.number.isRequired,
-        forward: PropTypes.bool.isRequired,
-        id: PropTypes.string.isRequired
-      })
-    })
-  ),
-  charWidth: PropTypes.number.isRequired,
-  bpsPerRow: PropTypes.number.isRequired,
-  annotationHeight: PropTypes.number.isRequired,
-  spaceBetweenAnnotations: PropTypes.number.isRequired,
-  sequenceLength: PropTypes.number.isRequired
-};
+// Translations.propTypes = {
+//   annotationRanges: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       start: PropTypes.number.isRequired,
+//       end: PropTypes.number.isRequired,
+//       yOffset: PropTypes.number.isRequired,
+//       annotation: PropTypes.shape({
+//         start: PropTypes.number.isRequired,
+//         end: PropTypes.number.isRequired,
+//         forward: PropTypes.bool.isRequired,
+//         id: PropTypes.string.isRequired
+//       })
+//     })
+//   ),
+//   charWidth: PropTypes.number.isRequired,
+//   bpsPerRow: PropTypes.number.isRequired,
+//   annotationHeight: PropTypes.number.isRequired,
+//   spaceBetweenAnnotations: PropTypes.number.isRequired,
+//   sequenceLength: PropTypes.number.isRequired
+// };
 
 export default Translations;

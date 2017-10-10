@@ -47,6 +47,12 @@
   padding-bottom: 2px;
   border-radius: 3px;
   border: 1px solid white;
+  height: 32px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #006cab;
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon.veToolbarItemToggled {
   background: lightgrey;
@@ -91,7 +97,9 @@
 
 .veToolbarDropdown {
   cursor: pointer;
-  padding: 3px;
+  padding: 0px;
+  padding-bottom: 5px;
+  padding-top: 5px;
   border-radius: 3px;
   border: 1px solid white;
 }

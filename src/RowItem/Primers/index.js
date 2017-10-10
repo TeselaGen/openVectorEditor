@@ -1,8 +1,8 @@
-import Sequence from "../Sequence";
+// import Sequence from "../Sequence";
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
 import "./style.css";
 import forEach from "lodash/forEach";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React from "react";
 
 // import './style.css'
@@ -97,27 +97,27 @@ function Primers(props) {
   );
 }
 
-Primers.propTypes = {
-  annotationRanges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      end: PropTypes.number.isRequired,
-      yOffset: PropTypes.number.isRequired,
-      annotation: PropTypes.shape({
-        start: PropTypes.number.isRequired,
-        end: PropTypes.number.isRequired,
-        forward: PropTypes.bool.isRequired,
-        id: PropTypes.string.isRequired
-      })
-    })
-  ),
-  charWidth: PropTypes.number.isRequired,
-  bpsPerRow: PropTypes.number.isRequired,
-  annotationHeight: PropTypes.number.isRequired,
-  spaceBetweenAnnotations: PropTypes.number.isRequired,
-  sequenceLength: PropTypes.number.isRequired,
-  primerClicked: PropTypes.func.isRequired
-};
+// Primers.propTypes = {
+//   annotationRanges: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       start: PropTypes.number.isRequired,
+//       end: PropTypes.number.isRequired,
+//       yOffset: PropTypes.number.isRequired,
+//       annotation: PropTypes.shape({
+//         start: PropTypes.number.isRequired,
+//         end: PropTypes.number.isRequired,
+//         forward: PropTypes.bool.isRequired,
+//         id: PropTypes.string.isRequired
+//       })
+//     })
+//   ),
+//   charWidth: PropTypes.number.isRequired,
+//   bpsPerRow: PropTypes.number.isRequired,
+//   annotationHeight: PropTypes.number.isRequired,
+//   spaceBetweenAnnotations: PropTypes.number.isRequired,
+//   sequenceLength: PropTypes.number.isRequired,
+//   primerClicked: PropTypes.func.isRequired
+// };
 
 export default Primers;
 

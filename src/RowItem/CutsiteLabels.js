@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 import getXStartAndWidthOfRowAnnotation
   from "./getXStartAndWidthOfRowAnnotation";
@@ -93,14 +92,5 @@ function CutsiteLabels(props) {
     </div>
   );
 }
-
-CutsiteLabels.propTypes = {
-  annotationRanges: PropTypes.array.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  bpsPerRow: PropTypes.number.isRequired,
-  annotationHeight: PropTypes.number.isRequired,
-  spaceBetweenAnnotations: PropTypes.number.isRequired,
-  cutsiteClicked: PropTypes.func.isRequired
-};
 
 export default CutsiteLabels;

@@ -1,5 +1,4 @@
 import draggableClassnames from "../../constants/draggableClassnames";
-import PropTypes from "prop-types";
 import React from "react";
 import Caret from "../Caret";
 

@@ -1,6 +1,6 @@
 import cleanSequenceData from '../lib/utils/cleanSequenceData'
 
-export default function instantiateEditor(
+export default function updateEditor(
   store,
   editorName,
   initialValues={}

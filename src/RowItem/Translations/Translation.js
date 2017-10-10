@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 import zeroSubrangeByContainerRange
   from "ve-range-utils/zeroSubrangeByContainerRange";
@@ -80,12 +79,12 @@ function Translation(props) {
   );
 }
 
-Translation.propTypes = {
-  widthInBps: PropTypes.number.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  rangeType: PropTypes.string.isRequired,
-  translationClicked: PropTypes.func.isRequired
-};
+// Translation.propTypes = {
+//   widthInBps: PropTypes.number.isRequired,
+//   charWidth: PropTypes.number.isRequired,
+//   height: PropTypes.number.isRequired,
+//   rangeType: PropTypes.string.isRequired,
+//   translationClicked: PropTypes.func.isRequired
+// };
 
 export default Translation;

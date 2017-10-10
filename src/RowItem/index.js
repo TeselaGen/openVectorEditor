@@ -25,7 +25,7 @@ import pure from "recompose/pure";
 import "./style.css";
 function noop() {}
 
-class RowItem extends React.Component {
+export class RowItem extends React.Component {
   render() {
     let {
       charWidth = 12,
@@ -183,7 +183,7 @@ class RowItem extends React.Component {
         // onMouseUp={this.onMouseUp}
         // onMouseDown={this.onMouseDown}
       >
-        <div className="taSpacer" />
+        <div className="ve-spacer" />
 
         <SelectionLayer
           color={"yellow"}

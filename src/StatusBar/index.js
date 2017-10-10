@@ -5,13 +5,13 @@ import withEditorProps from '../withEditorProps';
 import "./style.css";
 
 export function StatusBar({
-  selectionLayer,
-  caretPosition,
-  sequenceLength,
+  selectionLayer={start: -1, end:-1},
+  caretPosition=-1,
+  sequenceLength=0,
   readOnly,
   showReadOnly = true
 }) {
-  let length = getRangeLength(selectionLayer, sequenceLength);
+  let length = getRangeLength(selectionLayer, sequenceLength)
   let insertBetween = getInsertBetweenVals(
     caretPosition,
     selectionLayer,

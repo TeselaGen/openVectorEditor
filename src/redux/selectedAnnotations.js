@@ -79,7 +79,7 @@ export function featureRightClicked({ event, annotation }, meta) {
             props: {
               editorName,
               dialogProps: {
-                title: 'Create Feature'
+                title: 'Edit Feature'
               },
               initialValues: {
                 ...convertRangeTo1Based(annotation)
@@ -123,7 +123,7 @@ export function primerClicked({ event, annotation }, meta) {
 export function primerRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
-  return function(dispatch, getState) {
+  return function(dispatch, /* getState */) {
     let items = [
       {
         title: "View Translation",
@@ -173,7 +173,7 @@ export function translationRightClicked(
 ) {
   event.preventDefault();
   event.stopPropagation();
-  return function(dispatch, getState) {
+  return function(dispatch, /* getState */) {
     if (annotation.isOrf) {
       return;
     }
@@ -219,7 +219,7 @@ export function deletionLayerClicked({ event, annotation }, meta) {
 export function deletionLayerRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
-  return function(dispatch, getState) {
+  return function(dispatch, /* getState */) {
     let items = [
       {
         title: "Remove Deletion",
@@ -252,7 +252,7 @@ export function replacementLayerClicked({ event, annotation }, meta) {
 export function replacementLayerRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
-  return function(dispatch, getState) {
+  return function(dispatch, /* getState */) {
     let items = [
       {
         title: "Remove Edit",
@@ -366,7 +366,7 @@ export function selectionLayerRightClicked(
 export function orfRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
-  return function(dispatch, getState) {
+  return function(dispatch, /* getState */) {
     let items = [
       {
         title: "View Translation",
@@ -467,7 +467,7 @@ const startingState = {
 export default createReducer(
   {
     [annotationSelect]: (state, payload) => {
-      if (!payload.id) debugger;
+      if (!payload.id) throw new Error('Annotation must have an id!');
       let newState = {
         idMap: {
           ...state.idMap,

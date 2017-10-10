@@ -5,6 +5,7 @@ import createAction from "./utils/createMetaAction";
 // ------------------------------------
 // Actions
 // ------------------------------------
+export const toggleReadOnlyMode = createAction("TOGGLE_READ_ONLY_MODE");
 export const turnReadOnlyModeOn = createAction("TURN_READ_ONLY_MODE_ON");
 export const turnReadOnlyModeOff = createAction("TURN_READ_ONLY_MODE_OFF");
 
@@ -13,6 +14,9 @@ export const turnReadOnlyModeOff = createAction("TURN_READ_ONLY_MODE_OFF");
 // ------------------------------------
 export default createReducer(
   {
+    [toggleReadOnlyMode]: (state) => {
+      return !state;
+    },
     [turnReadOnlyModeOn]: () => {
       return true;
     },

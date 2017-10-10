@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React from "react";
 
 function AASliver(props) {
@@ -81,17 +81,17 @@ function AASliver(props) {
   // }
 }
 
-AASliver.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
-  forward: PropTypes.bool.isRequired,
-  positionInCodon: PropTypes.number.isRequired,
-  letter: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onContextMenu: PropTypes.func.isRequired,
-  onDoubleClick: PropTypes.func.isRequired,
-  relativeAAPositionInTranslation: PropTypes.number.isRequired
-};
+// AASliver.propTypes = {
+//   width: PropTypes.number.isRequired,
+//   height: PropTypes.number.isRequired,
+//   color: PropTypes.string.isRequired,
+//   forward: PropTypes.bool.isRequired,
+//   positionInCodon: PropTypes.number.isRequired,
+//   letter: PropTypes.string.isRequired,
+//   onClick: PropTypes.func.isRequired,
+//   onContextMenu: PropTypes.func.isRequired,
+//   onDoubleClick: PropTypes.func.isRequired,
+//   relativeAAPositionInTranslation: PropTypes.number.isRequired
+// };
 
 export default AASliver;

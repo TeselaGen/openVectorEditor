@@ -7,3 +7,7 @@
 .monospaceFont {
   font-family: "Lucida Console", Monaco, monospace;
 }
+
+.ve-spacer {
+  height: 15px;
+}

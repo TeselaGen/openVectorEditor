@@ -32,9 +32,9 @@ function VectorInteractionHOC(Component) {
 
     render() {
       let {
-        caretPosition,
-        selectionLayer,
-        sequenceData,
+        caretPosition=-1,
+        selectionLayer={start:-1,end:-1},
+        sequenceData={sequence: ''},
         handleCopy = noop
       } = this.props;
       //do this in two steps to determine propsToPass
@@ -48,7 +48,9 @@ function VectorInteractionHOC(Component) {
         sequenceData.sequence
       );
 
-      const selectionLayerUpdate = ({ start, end }) => {
+      const selectionLayerUpdate = (newSelection) => {
+        if (!newSelection) return
+        const { start, end } = newSelection
         if (selectionLayer.start === start && selectionLayer.end === end) {
           return;
         }

@@ -102,7 +102,8 @@ export class CircularView extends React.Component {
       maxAnnotationsToDisplay = {},
       lineageLines = [],
       deletionLayers = {},
-      replacementLayers = {}
+      replacementLayers = {},
+      instantiated
       // modifyLayers = function (layers) {
       //   return layers
       // },
@@ -536,7 +537,8 @@ export class CircularView extends React.Component {
             <svg
               key="circViewSvg"
               onClick={event => {
-                this.getNearestCursorPositionToMouseEvent(
+                console.log('instantiated:',instantiated)
+                instantiated && this.getNearestCursorPositionToMouseEvent(
                   event,
                   sequenceLength,
                   editorClicked

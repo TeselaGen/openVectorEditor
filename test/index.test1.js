@@ -1,12 +1,12 @@
 import {mount} from 'enzyme'
 import React from 'react'
-import {Editor, instantiateEditor} from '../src'
+import {Editor, updateEditor} from '../src'
 import HarnessComponent from './HarnessComponent'
 import testStore from './testStore'
 import exampleSequenceData from '../src/tg_createEditor/exampleSequenceData'
 
 
-// instantiateEditor(testStore, 'testEditor', {
+// updateEditor(testStore, 'testEditor', {
 //   sequenceData: exampleSequenceData,
 //   readOnly: false
 // })

@@ -1,6 +1,5 @@
 import getAnnotationNameAndStartStopString
   from "../utils/getAnnotationNameAndStartStopString";
-import PropTypes from "prop-types";
 import React from "react";
 import orfFrameToColorMap from "../constants/orfFrameToColorMap";
 
@@ -89,13 +88,13 @@ function Orf(props) {
   );
 }
 
-Orf.propTypes = {
-  width: PropTypes.number.isRequired,
-  charWidth: PropTypes.number.isRequired,
-  frame: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  rangeType: PropTypes.string.isRequired,
-  forward: PropTypes.bool.isRequired
-};
+// Orf.propTypes = {
+//   width: PropTypes.number.isRequired,
+//   charWidth: PropTypes.number.isRequired,
+//   frame: PropTypes.number.isRequired,
+//   height: PropTypes.number.isRequired,
+//   rangeType: PropTypes.string.isRequired,
+//   forward: PropTypes.bool.isRequired
+// };
 
 export default Orf;

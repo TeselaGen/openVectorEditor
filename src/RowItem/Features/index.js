@@ -1,6 +1,5 @@
 import "./style.css";
 import forEach from "lodash/forEach";
-import PropTypes from "prop-types";
 import React from "react";
 import featureColorMap from "../../constants/featureColorMap.json";
 
@@ -98,26 +97,26 @@ function Features(props) {
   );
 }
 
-Features.propTypes = {
-  annotationRanges: PropTypes.arrayOf(
-    PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      end: PropTypes.number.isRequired,
-      yOffset: PropTypes.number.isRequired,
-      annotation: PropTypes.shape({
-        start: PropTypes.number.isRequired,
-        end: PropTypes.number.isRequired,
-        forward: PropTypes.bool,
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      })
-    })
-  ),
-  charWidth: PropTypes.number.isRequired,
-  bpsPerRow: PropTypes.number.isRequired,
-  annotationHeight: PropTypes.number.isRequired,
-  spaceBetweenAnnotations: PropTypes.number.isRequired,
-  sequenceLength: PropTypes.number.isRequired,
-  featureClicked: PropTypes.func.isRequired
-};
+// Features.propTypes = {
+//   annotationRanges: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       start: PropTypes.number.isRequired,
+//       end: PropTypes.number.isRequired,
+//       yOffset: PropTypes.number.isRequired,
+//       annotation: PropTypes.shape({
+//         start: PropTypes.number.isRequired,
+//         end: PropTypes.number.isRequired,
+//         forward: PropTypes.bool,
+//         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+//       })
+//     })
+//   ),
+//   charWidth: PropTypes.number.isRequired,
+//   bpsPerRow: PropTypes.number.isRequired,
+//   annotationHeight: PropTypes.number.isRequired,
+//   spaceBetweenAnnotations: PropTypes.number.isRequired,
+//   sequenceLength: PropTypes.number.isRequired,
+//   featureClicked: PropTypes.func.isRequired
+// };
 
 export default Features;

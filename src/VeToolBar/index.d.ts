@@ -17,11 +17,11 @@ export interface excludeObj { //an object of ids of the default tool
 }
 
 export interface additionalTool {
-  component: jsx,
+  Icon: jsx,
   toggled: boolean,
   tooltip: string | jsx,
   tooltipToggled: string | jsx,
-  dropdown: jsx,
+  Dropdown: jsx,
   dropdowntooltip: string| jsx, 
   id: string //a unique id
 }

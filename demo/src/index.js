@@ -19,9 +19,11 @@ import {
   // createVectorEditor,
   LinearView,
   DigestTool,
-  Editor
+  Editor,
+  updateEditor
 } from "../../src";
 import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
+import exampleSequenceData from './exampleSequenceData';
 
 const links = [
   { name: "Editor", url: "Editor" },
@@ -39,21 +41,17 @@ const links = [
   );
 });
 
+updateEditor(store, "DemoEditor", {
+  sequenceData: exampleSequenceData
+})
+
+
 function Demo() {
   return (
     <Provider store={store}>
       <Router>
         <div>
-          <AddOrEditFeatureDialog
-            dialogProps={{
-              title: "Add Feature"
-            }}
-          >
-            <button>Show Add New</button>
-          </AddOrEditFeatureDialog>
-
           {links}
-
           <Route exact path="/" render={() => <Redirect to="/Editor" />} />
           <Route
             render={() => {

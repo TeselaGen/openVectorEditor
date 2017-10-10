@@ -3,7 +3,6 @@ import sector from "paths-js/sector";
 import getRangeAngles from "./getRangeAnglesSpecial";
 import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-// import PropTypes from "prop-types";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 

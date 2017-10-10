@@ -60,7 +60,8 @@ let reducers = {
   readOnly,
   panelsShown,
   deletionLayers,
-  replacementLayers
+  replacementLayers,
+  instantiated: () => true,
 };
 
 export default function reducerFactory(initialState={}) {
