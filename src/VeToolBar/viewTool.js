@@ -2,13 +2,13 @@ import React from "react";
 import {Radio} from '@blueprintjs/core';
 import fullscreen from "./veToolbarIcons/fullscreen.png";
 
-export default ({toggleDropdown}) => {
+export default ({toggleDropdown, isOpen}) => {
   return {
     Dropdown: ViewToolDropdown,
     Icon: <img src={fullscreen} alt="Toggle Views" />,
     onIconClick: toggleDropdown,
-    tooltip: "Toggle Views",
-    noDropIcon: true,
+    tooltip: isOpen ? "Hide View Options" : "Show View Options",
+    noDropdownIcon: true,
     id: "toggleViews"
   }
 };
@@ -16,7 +16,7 @@ export default ({toggleDropdown}) => {
 function ViewToolDropdown({ panelsShown, panelsShownUpdate }) {
   return (
     <div className={"veToolbarViewOptionsHolder"}>
-      <div>Show View:</div>
+      <div>View:</div>
       <Radio
         style={{marginTop: 6, marginBottom: 6}}
         onChange={() => {

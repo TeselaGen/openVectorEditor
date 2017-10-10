@@ -23,7 +23,7 @@ export default class ToolbarItem extends React.Component {
       tooltipToggled,
       dropdowntooltip = "",
       Dropdown,
-      noDropIcon,
+      noDropdownIcon,
       dropdownicon,
       toggled = false
     } = item({ ...rest, isOpen, toggleDropdown: this.toggleDropdown });
@@ -61,7 +61,7 @@ export default class ToolbarItem extends React.Component {
                 </div>
               )}
               {(Dropdown &&
-              !noDropIcon) ? (
+              !noDropdownIcon) ? (
                 <div
                   aria-label={dropdowntooltip}
                   className={
@@ -85,7 +85,7 @@ export default class ToolbarItem extends React.Component {
           }
           content={
             <div
-              style={{ padding: 10, minWidth: 250 }}
+              style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
               className={"ve-toolbar-dropdown content"}
             >
               {Dropdown && <Dropdown {...rest} toggleDropdown={this.toggleDropdown} />}

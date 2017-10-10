@@ -30,7 +30,7 @@ function CutsiteTool({ annotationVisibilityToggle }) {
 function CutsiteToolDropDown({ editorName, annotationVisibilityShow }) {
   return (
     <div className={"veToolbarCutsiteFilterHolder"}>
-      <span>Filter Cut sites:</span>
+      <h6>Filter Cut sites:</h6>
       <CutsiteFilter
         editorName={editorName}
         onChangeHook={function() {

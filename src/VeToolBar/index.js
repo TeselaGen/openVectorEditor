@@ -8,6 +8,9 @@ import oligoTool from "./oligoTool";
 import orfTool from "./orfTool";
 import viewTool from "./viewTool";
 import editTool from "./editTool";
+import visibilityTool from "./visibilityTool";
+
+
 import ToolbarItem from './ToolbarItem';
 
 // import get from 'lodash/get'
@@ -46,6 +49,7 @@ export class VeToolBar extends React.Component {
       orfTool,
       viewTool,
       editTool,
+      visibilityTool,
       ...AdditionalTools
     ];
 
