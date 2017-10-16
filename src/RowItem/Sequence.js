@@ -13,7 +13,6 @@ class Sequence extends React.Component {
       startOffset = 0
     } = this.props;
     let width = length * charWidth;
-
     let style = {
       position: "relative",
       height,
@@ -27,7 +26,7 @@ class Sequence extends React.Component {
     };
 
     return (
-      <div style={style} className="Sequence">
+      <div style={style} className={(className ? className : "") + " Sequence"}>
         <svg
           style={{
             left: startOffset * charWidth,
@@ -42,7 +41,6 @@ class Sequence extends React.Component {
           <text className={"monospaceFont"} {...textAttrs}>
             {sequence}
           </text>
-
         </svg>
         {children}
       </div>

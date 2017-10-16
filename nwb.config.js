@@ -4,6 +4,9 @@ module.exports = {
     esModules: true,
     umd: true
   },
+  babel: {
+    "presets": ["es2015","react","stage-0"]
+ },
   webpack: {
     uglify: false,
     extra: {

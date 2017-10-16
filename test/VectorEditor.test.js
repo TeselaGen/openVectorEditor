@@ -12,8 +12,7 @@ import exampleSequenceData from '../src/tg_createEditor/exampleSequenceData'
 // })
 
 
-class WrappedEditor extends React.Component {
-  componentWillMount
+class Wrapper extends React.Component {
   render(){
     return <HarnessComponent>
       <Editor editorName={'testEditor'}></Editor>
@@ -22,9 +21,10 @@ class WrappedEditor extends React.Component {
 }
 
 describe('Editor', function() {
-  const node = mount(
-    <WrappedEditor></WrappedEditor>
-  );
-  debugger
-
+  it('renders with no data', function() {
+    const node = mount(
+      <Wrapper></Wrapper>
+    );
+    node.exists()
+  })
 })

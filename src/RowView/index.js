@@ -1,3 +1,4 @@
+import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
 import some from "lodash/some";
 import moveCaret from "../withEditorInteractions/moveCaret";
@@ -7,7 +8,7 @@ import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
 import ReactList from "react-list";
-import withEditorInteractions from '../withEditorInteractions';
+import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 import Combokeys from "combokeys";
 
@@ -31,7 +32,7 @@ const defaultProps = {
   height: 400,
   charWidth: defaultCharWidth,
   veWrapperProvidedProps: {},
-  RowItemProps: {},
+  RowItemProps: {}
 };
 
 export class RowView extends React.Component {
@@ -263,12 +264,27 @@ export class RowView extends React.Component {
       ...props
     };
 
-    let { caretPosition, selectionLayer } = propsToUse;
-    let bpsPerRow = getBpsPerRow(propsToUse);
+    let { caretPosition, selectionLayer, matchedSearchLayer } = propsToUse;
+
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     let previousBp;
     let scrollToBp = -1;
-    if (caretPosition > -1 && caretPosition !== thisPropsToUse.caretPosition) {
+    if (
+      matchedSearchLayer.start > -1 &&
+      matchedSearchLayer.start !== thisPropsToUse.matchedSearchLayer.start
+    ) {
+      previousBp = thisPropsToUse.matchedSearchLayer.start;
+      scrollToBp = matchedSearchLayer.start;
+    } else if (
+      matchedSearchLayer.end > -1 &&
+      matchedSearchLayer.end !== thisPropsToUse.selectionLayer.end
+    ) {
+      previousBp = thisPropsToUse.selectionLayer.end;
+      scrollToBp = selectionLayer.end;
+    } else if (
+      caretPosition > -1 &&
+      caretPosition !== thisPropsToUse.caretPosition
+    ) {
       previousBp = thisPropsToUse.caretPosition;
       scrollToBp = caretPosition;
     } else if (
@@ -284,6 +300,9 @@ export class RowView extends React.Component {
       previousBp = thisPropsToUse.selectionLayer.end;
       scrollToBp = selectionLayer.end;
     }
+
+    let bpsPerRow = getBpsPerRow(propsToUse);
+
     if (scrollToBp > -1 && this.InfiniteScroller.scrollTo) {
       let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
       let [start, end] = this.InfiniteScroller.getVisibleRange();
@@ -323,8 +342,8 @@ export class RowView extends React.Component {
     let bpsPerRow = getBpsPerRow(propsToUse);
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
-    let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
-     propsToUse.charWidth * bpsPerRow;
+    // let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
+    //  propsToUse.charWidth * bpsPerRow;
     let rowData = prepareRowData(sequenceData, bpsPerRow);
     let showJumpButtons = rowData.length > 15;
     let renderItem = (index, key) => {
@@ -332,29 +351,27 @@ export class RowView extends React.Component {
         if (index === 0) {
           return (
             <div data-row-number={index} key={key}>
-              <button
-                className={"jumpButton"}
+              <Button
                 onClick={e => {
                   e.stopPropagation();
                   this.InfiniteScroller.scrollTo(rowData.length);
                 }}
               >
                 Jump to end
-              </button>
+              </Button>
             </div>
           );
         } else if (index === rowData.length + 1) {
           return (
             <div data-row-number={index - 2} key={key}>
-              <button
-                className={"jumpButton"}
+              <Button
                 onClick={e => {
                   e.stopPropagation();
                   this.InfiniteScroller.scrollTo(0);
                 }}
               >
                 Jump to start
-              </button>
+              </Button>
             </div>
           );
         }
@@ -368,7 +385,6 @@ export class RowView extends React.Component {
               {...{
                 ...rest,
                 sequenceLength: sequenceData.sequence.length,
-                width: containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp,
                 bpsPerRow,
                 fullSequence: sequenceData.sequence,
                 ...RowItemProps
@@ -409,8 +425,9 @@ export class RowView extends React.Component {
             overflowY: "auto",
             overflowX: "visible",
             height,
-            width: containerWidthMinusMargin + marginWidth/2,
-            paddingLeft: marginWidth / 2
+            width: containerWidthMinusMargin + marginWidth,
+            paddingLeft: marginWidth / 2,
+            paddingRight: marginWidth / 2
           }}
           onScroll={onScroll}
           onClick={event => {
@@ -436,7 +453,7 @@ export class RowView extends React.Component {
   }
 }
 
-export default withEditorInteractions(RowView)
+export default withEditorInteractions(RowView);
 
 function getBpsPerRow({
   charWidth = defaultCharWidth,

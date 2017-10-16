@@ -2,20 +2,19 @@ import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
 
-export default ({annotationVisibility, isOpen}) => {
+export default function CutsiteTool({ annotationVisibility = {}, isOpen }) {
   return {
-    
-    Icon: CutsiteTool,
+    Icon: CutsiteToolIcon,
     toggled: annotationVisibility.cutsites,
     tooltip: "Show cut sites",
     tooltipToggled: "Hide cut sites",
     Dropdown: CutsiteToolDropDown,
-    dropdowntooltip: (!isOpen ? "Show" : "Hide") +  " Cut Site Options",
+    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options",
     id: "cutsites"
-  }
-};
+  };
+}
 
-function CutsiteTool({ annotationVisibilityToggle }) {
+function CutsiteToolIcon({ annotationVisibilityToggle }) {
   return (
     <div
       onClick={function() {

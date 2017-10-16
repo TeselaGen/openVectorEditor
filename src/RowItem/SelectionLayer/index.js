@@ -5,8 +5,7 @@ import Caret from "../Caret";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import getOverlapsOfPotentiallyCircularRanges
-  from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
+import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
 
 function SelectionLayer(props) {
   let {
@@ -15,13 +14,14 @@ function SelectionLayer(props) {
     row,
     sequenceLength,
     regions,
+    color: topLevelColor,
     hideCarets = false,
     selectionLayerRightClicked,
     className: globalClassname = ""
   } = props;
   return (
     <div>
-      {regions.map(function(selectionLayer, index) {
+      {regions.map(function(selectionLayer, topIndex) {
         let { className = "", style = {}, start, end, color } = selectionLayer;
         let classNameToPass =
           "veRowViewSelectionLayer " +
@@ -58,30 +58,34 @@ function SelectionLayer(props) {
             if (!hideCarets) {
               //DRAW CARETS
               caretSvgs = [
-                overlap.start === start &&
+                overlap.start === start && (
                   <Caret
                     {...{
                       charWidth,
                       row,
                       sequenceLength,
-                      className: classNameToPass +
+                      className:
+                        classNameToPass +
                         " " +
                         draggableClassnames.selectionStart,
                       caretPosition: overlap.start
                     }}
-                  />,
-                overlap.end === end &&
+                  />
+                ),
+                overlap.end === end && (
                   <Caret
                     {...{
                       charWidth,
                       row,
                       sequenceLength,
-                      className: classNameToPass +
+                      className:
+                        classNameToPass +
                         " " +
                         draggableClassnames.selectionEnd,
                       caretPosition: overlap.end + 1
                     }}
                   />
+                )
               ];
             }
             return [
@@ -92,22 +96,24 @@ function SelectionLayer(props) {
                     annotation: selectionLayer
                   });
                 }}
-                key={index}
+                key={topIndex + "-" + index}
                 className={
                   classNameToPass +
-                    (isTrueStart ? " isTrueStart " : "") +
-                    (isTrueEnd ? " isTrueEnd " : "")
+                  (isTrueStart ? " isTrueStart " : "") +
+                  (isTrueEnd ? " isTrueEnd " : "")
                 }
                 style={{
                   width,
                   left: xStart,
                   ...style,
-                  background: color
+                  background: color || topLevelColor
                 }}
               />,
               ...caretSvgs
             ];
           });
+        } else {
+          return null;
         }
       })}
     </div>

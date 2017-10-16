@@ -6,9 +6,9 @@ import sequenceSelector from "./sequenceSelector";
 import circularSelector from "./circularSelector";
 import orfsSelector from "./orfsSelector";
 import selectedCutsitesSelector from "./selectedCutsitesSelector";
-import filteredRestrictionEnzymesSelector
-  from "./filteredRestrictionEnzymesSelector";
+import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import filteredCutsitesSelector from "./filteredCutsitesSelector";
+import searchLayersSelector from "./searchLayersSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 
 export default {
@@ -19,6 +19,7 @@ export default {
   selectedCutsitesSelector,
   orfsSelector,
   circularSelector,
+  searchLayersSelector,
   filteredCutsitesSelector,
   filteredRestrictionEnzymesSelector,
   restrictionEnzymesSelector,

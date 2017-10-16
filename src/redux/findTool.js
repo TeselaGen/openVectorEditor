@@ -7,21 +7,24 @@ import createAction from "./utils/createMetaAction";
 export const toggleFindTool = createAction("TOGGLE_FIND_TOOL", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
 export const toggleHighlightAll = createAction("toggleHighlightAll", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
 export const updateSearchText = createAction("updateSearchText");
-export const updateAmbiguousOrLiteral = createAction("updateAmbiguousOrLiteral");
+export const updateAmbiguousOrLiteral = createAction(
+  "updateAmbiguousOrLiteral"
+);
 export const updateDnaOrAA = createAction("updateDnaOrAA");
+export const updateMatchNumber = createAction("updateMatchNumber");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createReducer(
   {
-    [toggleFindTool]: (state) => {
+    [toggleFindTool]: state => {
       return {
         ...state,
         isOpen: !state.isOpen
       };
     },
-    [toggleHighlightAll]: (state) => {
+    [toggleHighlightAll]: state => {
       return {
         ...state,
         highlightAll: !state.highlightAll
@@ -30,27 +33,37 @@ export default createReducer(
     [updateAmbiguousOrLiteral]: (state, payload) => {
       return {
         ...state,
-        ambiguousOrLiteral: payload,
+        matchNumber: 0,
+        ambiguousOrLiteral: payload
       };
     },
     [updateDnaOrAA]: (state, payload) => {
       return {
         ...state,
-        dnaOrAA: payload,
+        matchNumber: 0,
+        dnaOrAA: payload
       };
     },
     [updateSearchText]: (state, payload) => {
       return {
         ...state,
-        searchText: payload,
+        matchNumber: 0,
+        searchText: payload
       };
     },
+    [updateMatchNumber]: (state, payload) => {
+      return {
+        ...state,
+        matchNumber: payload
+      };
+    }
   },
   {
     isOpen: false,
-    searchText: '',
+    searchText: "",
     dnaOrAA: "DNA",
     ambiguousOrLiteral: "AMBIGUOUS",
-    highlightAll: false
+    highlightAll: false,
+    matchNumber: 0
   }
 );

@@ -1,5 +1,4 @@
 import React from "react";
-
 import withEditorProps from "../withEditorProps";
 import downloadTool from "./downloadTool";
 import cutsiteTool from "./cutsiteTool";
@@ -12,8 +11,7 @@ import findTool from "./findTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 
-
-import ToolbarItem from './ToolbarItem';
+import ToolbarItem from "./ToolbarItem";
 
 // import get from 'lodash/get'
 import "./style.css";
@@ -67,13 +65,23 @@ export class VeToolBar extends React.Component {
       } else {
         return true;
       }
-    }); 
-    let content = items.map((item, index) => <ToolbarItem key={item.id} {...{item, toggleOpen: this.toggleOpen, isOpen: index === this.state.openItem, index, ...rest}}></ToolbarItem>);
+    });
+    // let content = items.map((item, index) => <ToolbarItem key={item.id} {...{item, toggleOpen: this.toggleOpen, isOpen: index === this.state.openItem, index, ...rest}}></ToolbarItem>);
+    let content = items.map((item, index) => (
+      <ToolbarItem
+        key={item.id}
+        {...{
+          item,
+          toggleOpen: this.toggleOpen,
+          isOpen: index === this.state.openItem,
+          index,
+          ...rest
+        }}
+      />
+    ));
 
     return <div className={"veToolbar"}>{content}</div>;
   }
 }
 
 export default withEditorProps(VeToolBar);
-
-function noop() {}

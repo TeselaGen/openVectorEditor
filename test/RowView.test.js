@@ -6,7 +6,6 @@ import testStore from './testStore'
 import exampleSequenceData from '../src/tg_createEditor/exampleSequenceData'
 
 class Wrapper extends React.Component {
-  componentWillMount
   render(){
     return <HarnessComponent>
       <RowView editorName={'testEditor'}></RowView>

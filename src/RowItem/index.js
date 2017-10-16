@@ -1,13 +1,10 @@
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRangeLength";
 import map from "lodash/map";
 import flatMap from "lodash/flatMap";
-import getOverlapsOfPotentiallyCircularRanges
-  from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
+import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
 import PassThrough from "../utils/PassThrough";
-import getComplementSequenceString
-  from "ve-sequence-utils/getComplementSequenceString";
+import getComplementSequenceString from "ve-sequence-utils/getComplementSequenceString";
 import React from "react";
 import SelectionLayer from "./SelectionLayer";
 import _Sequence from "./Sequence";
@@ -21,7 +18,6 @@ import _Primers from "./Primers";
 import _CutsiteLabels from "./CutsiteLabels";
 import _Cutsites from "./Cutsites";
 import Caret from "./Caret";
-import pure from "recompose/pure";
 import "./style.css";
 function noop() {}
 
@@ -197,17 +193,18 @@ export class RowItem extends React.Component {
         />
 
         {showFeatures &&
-          Object.keys(features).length > 0 &&
+        Object.keys(features).length > 0 && (
           <Features
             featureClicked={featureClicked}
             featureRightClicked={featureRightClicked}
             annotationRanges={features}
             {...annotationCommonProps}
             annotationHeight={featureHeight}
-          />}
+          />
+        )}
 
         {showPrimers &&
-          Object.keys(primers).length > 0 &&
+        Object.keys(primers).length > 0 && (
           <Primers
             sequence={fullSequence}
             primerClicked={primerClicked}
@@ -215,42 +212,46 @@ export class RowItem extends React.Component {
             annotationRanges={primers}
             {...annotationCommonProps}
             annotationHeight={primerHeight}
-          />}
+          />
+        )}
 
         {showOrfs &&
-          Object.keys(orfs).length > 0 &&
+        Object.keys(orfs).length > 0 && (
           <Orfs
             orfClicked={orfClicked}
             orfRightClicked={orfRightClicked}
             annotationRanges={orfs}
             {...annotationCommonProps}
-          />}
+          />
+        )}
 
         {showTranslations &&
-          Object.keys(translations).length > 0 &&
+        Object.keys(translations).length > 0 && (
           <Translations
             translationClicked={translationClicked}
             translationRightClicked={translationRightClicked}
             translationDoubleClicked={translationDoubleClicked}
             annotationRanges={translations}
             {...annotationCommonProps}
-          />}
+          />
+        )}
 
         {showCutsiteLabels &&
-          showCutsites &&
-          Object.keys(cutsites).length > 0 &&
+        showCutsites &&
+        Object.keys(cutsites).length > 0 && (
           <CutsiteLabels
             cutsiteClicked={cutsiteClicked}
             annotationRanges={cutsites}
             {...annotationCommonProps}
-          />}
+          />
+        )}
 
         <div
           className="veRowItemSequenceContainer"
           style={{ position: "relative" }}
         >
           {showSequence &&
-            charWidth > 7 &&
+          charWidth > 7 && (
             <Sequence
               sequence={sequence}
               height={sequenceHeight}
@@ -258,18 +259,20 @@ export class RowItem extends React.Component {
               charWidth={charWidth}
             >
               {showCutsites &&
-                Object.keys(cutsites).length > 0 &&
+              Object.keys(cutsites).length > 0 && (
                 <Cutsites
                   sequenceLength={sequenceLength}
                   annotationRanges={cutsites}
                   topStrand
                   {...annotationCommonProps}
-                />}
+                />
+              )}
               {deletionLayerStrikeThrough}
-            </Sequence>}
+            </Sequence>
+          )}
 
           {showReverseSequence &&
-            charWidth > 7 &&
+          charWidth > 7 && (
             <Sequence
               length={sequence.length}
               sequence={reverseSequence}
@@ -277,67 +280,74 @@ export class RowItem extends React.Component {
               charWidth={charWidth}
             >
               {showCutsites &&
-                Object.keys(cutsites).length > 0 &&
+              Object.keys(cutsites).length > 0 && (
                 <Cutsites
                   topStrand={false}
                   annotationRanges={cutsites}
                   {...annotationCommonProps}
-                />}
+                />
+              )}
               {deletionLayerStrikeThrough}
-            </Sequence>}
-          {cutsiteLabelSelectionLayer.map(function(layer) {
-            return "";
-            let { color = "black" } = layer;
-            return (
-              layer.start > -1 &&
-              <SelectionLayer
-                {...{
-                  height: showReverseSequence
-                    ? sequenceHeight * 2 + 1
-                    : sequenceHeight + 1,
-                  hideCarets: true,
-                  opacity: 0.3,
-                  className: "cutsiteLabelSelectionLayer",
-                  border: `2px solid ${color}`,
-                  // background: 'none',
-                  background: color,
-                  regions: [layer]
-                }}
-                {...annotationCommonProps}
-              />
-            );
-          })}
+            </Sequence>
+          )}
+          {cutsiteLabelSelectionLayer.map(
+            function(/* layer */) {
+              return "";
+              // let { color = "black" } = layer;
+              // return (
+              //   layer.start > -1 && (
+              //     <SelectionLayer
+              //       {...{
+              //         height: showReverseSequence
+              //           ? sequenceHeight * 2 + 1
+              //           : sequenceHeight + 1,
+              //         hideCarets: true,
+              //         opacity: 0.3,
+              //         className: "cutsiteLabelSelectionLayer",
+              //         border: `2px solid ${color}`,
+              //         // background: 'none',
+              //         background: color,
+              //         regions: [layer]
+              //       }}
+              //       {...annotationCommonProps}
+              //     />
+              //   )
+              // );
+            }
+          )}
           {showCutsites &&
             Object.keys(cutsites).map(function(id, index) {
               let cutsite = cutsites[id];
               let layer = cutsite.annotation.recognitionSiteRange;
               return (
-                layer.start > -1 &&
-                <SelectionLayer
-                  {...{
-                    key: "restrictionSiteRange" + index,
-                    height: showReverseSequence
-                      ? sequenceHeight * 2 + 1
-                      : sequenceHeight + 1,
-                    hideCarets: true,
-                    opacity: 0.3,
-                    className: "cutsiteLabelSelectionLayer",
-                    border: `2px solid ${"lightblue"}`,
-                    // background: 'none',
-                    background: "lightblue",
-                    regions: [layer]
-                  }}
-                  {...annotationCommonProps}
-                />
+                layer.start > -1 && (
+                  <SelectionLayer
+                    {...{
+                      key: "restrictionSiteRange" + index,
+                      height: showReverseSequence
+                        ? sequenceHeight * 2 + 1
+                        : sequenceHeight + 1,
+                      hideCarets: true,
+                      opacity: 0.3,
+                      className: "cutsiteLabelSelectionLayer",
+                      border: `2px solid ${"lightblue"}`,
+                      // background: 'none',
+                      background: "lightblue",
+                      regions: [layer]
+                    }}
+                    {...annotationCommonProps}
+                  />
+                )
               );
             })}
         </div>
 
-        {showLineageLines &&
+        {showLineageLines && (
           <LineageLines
             lineageLines={lineageLines}
             {...annotationCommonProps}
-          />}
+          />
+        )}
 
         {map(replacementLayers, function(replacementLayer) {
           let atCaret = replacementLayer.caretPosition > -1;
@@ -351,7 +361,8 @@ export class RowItem extends React.Component {
           let insertedBpsLayer = {
             ...replacementLayer,
             start: atCaret ? normedCaretPos : replacementLayer.start,
-            end: (atCaret ? normedCaretPos : replacementLayer.start) +
+            end:
+              (atCaret ? normedCaretPos : replacementLayer.start) +
               replacementLayer.sequence.length
           };
           let { sequence } = insertedBpsLayer;
@@ -412,7 +423,10 @@ export class RowItem extends React.Component {
                   height={height}
                 >
                   <polyline
-                    points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${charWidth / 2},0 ${width},0 ${width},${height + bufferBottom} ${-bufferLeft},${height + bufferBottom} ${-bufferLeft},0`}
+                    points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${charWidth /
+                      2},0 ${width},0 ${width},${height +
+                      bufferBottom} ${-bufferLeft},${height +
+                      bufferBottom} ${-bufferLeft},0`}
                     fill="none"
                     stroke="black"
                     strokeWidth="2px"
@@ -429,7 +443,7 @@ export class RowItem extends React.Component {
           {...annotationCommonProps}
         />
 
-        {showYellowAxis &&
+        {showYellowAxis && (
           <svg width="100%" height="6px">
             <rect
               x="0"
@@ -440,17 +454,20 @@ export class RowItem extends React.Component {
               stroke="grey"
               strokeWidth="1"
             />
-          </svg>}
-        {showAxis &&
-          <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />}
+          </svg>
+        )}
+        {showAxis && (
+          <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
+        )}
 
         {caretPosition > -1 &&
-          showCaret &&
+        showCaret && (
           <Caret
             caretPosition={caretPosition}
             shouldBlink
             {...annotationCommonProps}
-          />}
+          />
+        )}
       </div>
     );
   }

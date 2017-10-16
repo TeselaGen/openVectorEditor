@@ -1,13 +1,14 @@
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
-import {compose} from 'redux';
-import Clipboard from "./Clipboard";
+import { compose } from "redux";
+import Keyboard from "./Keyboard";
 
-import withEditorProps from '../withEditorProps';
-import updateSelectionOrCaret from '../utils/selectionAndCaretUtils/updateSelectionOrCaret';
-import AddOrEditFeatureDialog from '../helperComponents/AddOrEditFeatureDialog';
+import withEditorProps from "../withEditorProps";
+import updateSelectionOrCaret from "../utils/selectionAndCaretUtils/updateSelectionOrCaret";
+import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
 import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRangeLength";
 import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
+import createSequenceInputPopup from "./createSequenceInputPopup";
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
@@ -20,7 +21,7 @@ let selectionEndGrabbed;
 
 function VectorInteractionHOC(Component) {
   return class VectorInteractionWrapper extends React.Component {
-    handlePaste(event) {
+    handlePaste(/* event */) {
       //tnr: commenting paste handling out for the time being
       // var {
       //     handlePaste=noop,
@@ -32,10 +33,11 @@ function VectorInteractionHOC(Component) {
 
     render() {
       let {
-        caretPosition=-1,
-        selectionLayer={start:-1,end:-1},
-        sequenceData={sequence: ''},
-        handleCopy = noop
+        caretPosition = -1,
+        selectionLayer = { start: -1, end: -1 },
+        sequenceData = { sequence: "" },
+        handleCopy = noop,
+        readOnly
       } = this.props;
       //do this in two steps to determine propsToPass
       let {
@@ -48,9 +50,20 @@ function VectorInteractionHOC(Component) {
         sequenceData.sequence
       );
 
-      const selectionLayerUpdate = (newSelection) => {
-        if (!newSelection) return
-        const { start, end } = newSelection
+      function onDnaInsert() {
+        !readOnly &&
+          createSequenceInputPopup({
+            isReplace: selectionLayer.start > -1,
+            selectionLayer,
+            sequenceLength,
+            caretPosition,
+            replacementLayerUpdate: () => {}
+          });
+      }
+
+      const selectionLayerUpdate = newSelection => {
+        if (!newSelection) return;
+        const { start, end } = newSelection;
         if (selectionLayer.start === start && selectionLayer.end === end) {
           return;
         }
@@ -151,20 +164,23 @@ function VectorInteractionHOC(Component) {
           ref={c => (this.veVectorInteractionWrapper = c)}
           className={"veVectorInteractionWrapper"}
         >
-          <Clipboard
+          <Keyboard
             value={selectedBps}
+            onDnaInsert={onDnaInsert}
             onCopy={handleCopy}
             onPaste={this.handlePaste.bind(this)}
           />
-          <AddOrEditFeatureDialog dialogName="AddOrEditFeatureDialog" noTarget/> {/* we pass this dialog here */}
+          <AddOrEditFeatureDialog
+            dialogName="AddOrEditFeatureDialog"
+            noTarget
+          />{" "}
+          {/* we pass this dialog here */}
           <Component veWrapperProvidedProps={propsToPass} />
         </div>
       );
     }
   };
 }
-
-
 
 function handleSelectionStartGrabbed({
   caretPosition,

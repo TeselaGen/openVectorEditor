@@ -1,18 +1,19 @@
 import React from "react";
-import {Checkbox} from '@blueprintjs/core';
+import { Checkbox } from "@blueprintjs/core";
 import show_orfs from "./veToolbarIcons/show_orfs.png";
 import InfoCircle from "react-icons/lib/fa/info-circle";
 
-export default ({annotationVisibility, isOpen}) => {
+export default ({ annotationVisibility = {}, isOpen }) => {
   return {
     Icon: OrfTool,
     toggled: annotationVisibility.orfs,
     tooltip: "Show Open Reading Frames",
     tooltipToggled: "Hide Open Reading Frames",
     Dropdown: OrfToolDropdown,
-    dropdowntooltip: (!isOpen ? "Show" : "Hide") +  " Open Reading Frame Options",
+    dropdowntooltip:
+      (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
     id: "orfs"
-  }
+  };
 };
 
 function OrfTool({ annotationVisibilityToggle }) {
@@ -28,7 +29,13 @@ function OrfTool({ annotationVisibilityToggle }) {
   );
 }
 
-function OrfToolDropdown({ sequenceLength, minimumOrfSizeUpdate, minimumOrfSize, annotationVisibility, annotationVisibilityToggle }) {
+function OrfToolDropdown({
+  sequenceLength,
+  minimumOrfSizeUpdate,
+  minimumOrfSize,
+  annotationVisibility,
+  annotationVisibilityToggle
+}) {
   return (
     <div className={"veToolbarOrfOptionsHolder"}>
       <div style={{ display: "flex" }}>
@@ -46,12 +53,13 @@ function OrfToolDropdown({ sequenceLength, minimumOrfSizeUpdate, minimumOrfSize,
         />
       </div>
       <div className="ve-spacer" />
-      <Checkbox onChange={function() {
+      <Checkbox
+        onChange={function() {
           annotationVisibilityToggle("orfTranslations");
         }}
-        checked={annotationVisibility.orfTranslations} label={"Show ORF translations"}>
-
-      </Checkbox>
+        checked={annotationVisibility.orfTranslations}
+        label={"Show ORF translations"}
+      />
       <div className="ve-spacer" />
       <InfoCircle />
       <span className={"translateInfoSpan"}>
@@ -60,4 +68,3 @@ function OrfToolDropdown({ sequenceLength, minimumOrfSizeUpdate, minimumOrfSize,
     </div>
   );
 }
-

@@ -1,0 +1,80 @@
+.insertReplaceButton {
+  width: 140px;
+}
+
+.insertInputBubble {
+  height: 140px !important;
+}
+
+.borderRed {
+  box-shadow: 0 0 5px red !important;
+  outline: none;
+  border: 1px solid red !important;
+}
+
+.sequenceInputBubble {
+  position: relative;
+  width: 230px;
+  height: 160px;
+  padding: 8px;
+  font-size: 14px;
+  background: #e9e9e9;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 5px 15px 3px rgba(0, 0, 0, 0.3);
+}
+
+.sequenceInputBubble.tether-out-of-bounds-right {
+  position: relative;
+  padding: 8px;
+  background: #e9e9e9;
+  margin-left: -165px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 5px 15px 3px rgba(0, 0, 0, 0.3);
+}
+
+.sequenceInputBubble.tether-element-attached-bottom {
+  margin-top: -28px;
+}
+
+.sequenceInputBubble:after {
+  content: "";
+  position: absolute;
+  border-style: solid;
+  border-color: #e9e9e9 transparent;
+  display: block;
+  width: 0;
+  left: 9px;
+  border-width: 0 13px 12px;
+  top: -12px;
+}
+
+.sequenceInputBubble.tether-element-attached-bottom:after {
+  border-width: 12px 13px 0;
+  top: 100%;
+}
+
+.sequenceInputBubble.tether-out-of-bounds-right:after {
+  left: 76%;
+}
+
+.sequenceInputBubble.tether-out-of-bounds-top,
+.sequenceInputBubble.tether-out-of-bounds-bottom {
+  display: none;
+}
+
+.sequenceInputBubble input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+.sequenceInputBubble input:focus,
+.sequenceInputBubble input.focus {
+  border: solid 1px #1585c5;
+}
