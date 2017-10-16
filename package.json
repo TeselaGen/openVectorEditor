@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -10,7 +10,6 @@
     "lib",
     "umd"
   ],
-  
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
     "buildWithDemo": "nwb build-react-component --copy-files",
