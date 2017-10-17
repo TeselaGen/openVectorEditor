@@ -6,7 +6,7 @@ import CircularView from "../CircularView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import FindBar from "../FindBar";
-import withEditorProps from '../withEditorProps';
+import withEditorProps from "../withEditorProps";
 import "./style.css";
 
 export class Editor extends React.Component {
@@ -21,8 +21,9 @@ export class Editor extends React.Component {
       contentRect: { bounds },
       panelsShown = { circular: true, sequence: true },
       editorName,
-      findTool={},
-      height = 500
+      findTool = {},
+      height = 500,
+      ...rest
     } = this.props;
     const { width } = bounds;
     const showBoth = panelsShown.circular && panelsShown.sequence;
@@ -30,20 +31,28 @@ export class Editor extends React.Component {
       width: showBoth ? width / 2 : width,
       height
     };
+    const sharedProps = {
+      editorName,
+      ...rest
+    };
 
     return (
       <div ref={measureRef}>
-        <VeToolBar {...VeToolBarProps} editorName={editorName} />
+        <VeToolBar {...sharedProps} {...VeToolBarProps} />
         {width ? (
-          <div style={{position: 'relative'}} className="tg-editor-container" id="section-to-print">
+          <div
+            style={{ position: "relative" }}
+            className="tg-editor-container"
+            id="section-to-print"
+          >
             {panelsShown.circular && (
               <div
                 style={{ borderRight: showBoth ? "1px solid lightgrey" : "" }}
                 className="CircularViewSide"
               >
                 <CircularView
+                  {...sharedProps}
                   {...CircularViewProps}
-                  editorName={editorName}
                   {...{
                     ...editorDimensions,
                     hideName: true
@@ -55,8 +64,8 @@ export class Editor extends React.Component {
               <div className="RowViewSide">
                 <div>
                   <RowView
+                    {...sharedProps}
                     {...RowViewProps}
-                    editorName={editorName}
                     {...{
                       ...editorDimensions
                     }}
@@ -64,19 +73,16 @@ export class Editor extends React.Component {
                 </div>
               </div>
             )}
-            {
-              findTool.isOpen && <FindBar {...FindBarProps} editorName={editorName} />
-            }
+            {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
           </div>
-        ) : <div style={{height}}/>}
-        
-        <StatusBar {...StatusBarProps} editorName={editorName} />
+        ) : (
+          <div style={{ height }} />
+        )}
+
+        <StatusBar {...sharedProps} {...StatusBarProps} />
       </div>
     );
   }
 }
 
-export default compose(
-  withEditorProps,
-  withContentRect("bounds")
-)(Editor);
+export default compose(withEditorProps, withContentRect("bounds"))(Editor);

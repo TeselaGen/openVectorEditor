@@ -23,7 +23,7 @@ import {
   updateEditor
 } from "../../src";
 
-import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
+// import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from './exampleSequenceData';
 import StandaloneDemo from './StandaloneDemo';
 

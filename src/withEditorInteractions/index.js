@@ -36,7 +36,7 @@ function VectorInteractionHOC(Component) {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        handleCopy = noop,
+        onCopy = noop,
         readOnly
       } = this.props;
       //do this in two steps to determine propsToPass
@@ -167,7 +167,9 @@ function VectorInteractionHOC(Component) {
           <Keyboard
             value={selectedBps}
             onDnaInsert={onDnaInsert}
-            onCopy={handleCopy}
+            onCopy={e => {
+              onCopy(e, sequenceData, this.props);
+            }}
             onPaste={this.handlePaste.bind(this)}
           />
           <AddOrEditFeatureDialog

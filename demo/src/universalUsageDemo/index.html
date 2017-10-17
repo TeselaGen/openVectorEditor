@@ -4,28 +4,26 @@
 <head>
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
     <title>Universal Usage Demo</title>
-    <link rel="stylesheet" type="text/css" href="/umd/main.css"> 
+    <link rel="stylesheet" type="text/css" href="/umd/main.css">
 </head>
 
 <body>
     <div id='root'>
     </div>
     <script type="text/javascript" src="/umd/open-vector-editor.js"></script>
-    
+
     <script>
         const editor = window.tg_createEditor(document.querySelector("#root"))
         editor.updateEditor({
-            sequenceData: editor.cleanUpSequenceData({
+            sequenceData: {
                 sequence: 'atagag',
                 features: [{
-                    start: 0,  //start and end are 0-based inclusive for all annotations
+                    start: 0, //start and end are 0-based inclusive for all annotations
                     end: 10,
                     forward: true //strand
                 }],
                 parts: [],
-                
-
-            })
+            }
         })
     </script>
 </body>

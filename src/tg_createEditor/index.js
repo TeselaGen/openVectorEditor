@@ -26,6 +26,7 @@ export default function tg_createEditor(
   editor.updateEditor = values => {
     updateEditor(store, editorName, values);
   };
+
   return editor;
 }
 

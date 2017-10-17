@@ -4,18 +4,14 @@
 - [Open Vector Editor](#open-vector-editor)
       - [Teselagen's Open Source Vector Editor Component](#teselagens-open-source-vector-editor-component)
 - [Universal Build](#universal-build)
-  - [Installation](#installation)
+  - [Univeral Installation (Old school)](#univeral-installation-old-school)
+  - [Universal Usage:](#universal-usage)
 - [React Version](#react-version)
-  - [Installation](#installation-1)
+  - [Installation](#installation)
   - [Data Table](#data-table)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation-2)
-  - [Demo Development Server](#demo-development-server)
-  - [Developing linked to another folder: aka lims/hde](#developing-linked-to-another-folder-aka-limshde)
-  - [Running Tests](#running-tests)
-  - [Releasing](#releasing)
-  - [Adding custom svg icons](#adding-custom-svg-icons)
+  - [Installation](#installation-1)
 
 <!-- /TOC -->
 # Open Vector Editor
@@ -24,11 +20,39 @@
  - Built for easy extensibility + embed-ibility 
 # Universal Build
 The univeral build can be used in any app, where as the react build should be used if using react because it will allow for more flexibility
-## Installation 
+## Univeral Installation (Old school)
+via npm: 
+
 npm install open-vector-editor
+then add the links
+<link rel="stylesheet" type="text/css" href="your-path-to-node-modules/open-vector-editor/umd/main.css">
+<script type="text/javascript" src="your-path-to-node-modules/open-vector-editor/umd/open-vector-editor.js"></script>
+
+via CDN: 
+<link rel="stylesheet" type="text/css" href="unpkg.com/open-vector-editor/umd/main.css"> 
+<script type="text/javascript" src="unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
 
 
-The Universal build can be used as window.tg_editor
+## Universal Usage: 
+```html
+<script>
+		const editor = window.tg_createEditor(document.querySelector("#root"))
+		editor.updateEditor({
+				sequenceData: {
+						sequence: 'atagag',
+						features: [{
+								start: 0, //start and end are 0-based inclusive for all annotations
+								end: 10,
+								forward: true //strand
+						}],
+						parts: [],
+				}
+		})
+
+		
+		
+</script>
+```
 
 
 
@@ -191,50 +215,8 @@ import {
 [Node.js](http://nodejs.org/) >= v4 must be installed.
 
 ## Installation
-
-- Running `npm install` in the components's root directory will install everything you need for development.
-
-## Demo Development Server
-
-- `npm start` will run a development server with the component's demo app at [http://localhost:3000](http://localhost:3000) with hot module reloading. You can check the /demo folder for the source code.
-
-## Developing linked to another folder: aka lims/hde
 ```
-//link everything up:
-cd lims/node_modules/react
-yarn link 
-cd teselagen-react-components
-yarn link
-yarn link react
-cd lims
-yarn link teselagen-react-components
-
-//start the auto rebuild:
-cd teselagen-react-components
-yarn build-watch
+yarn
+yarn start
 ```
 
-## Running Tests
-
-- `npm test` will run the tests once.
-
-- `npm run test:coverage` will run the tests and produce a coverage report in `coverage/`.
-
-- `npm run test:watch` will run the tests on every change.
-
-## Releasing
-
-- `npm whoami` you should be teselagen
-- `npm login` 
-teselagen//ourMasterPass//team@teselagen.com
-- git pull
-- npm version patch|minor|major
-- npm publish
-- git push
-
-
-## Adding custom svg icons
- - `yarn fontopen` this opens up our custom font file in the fontello webtool
- - add the svg icons you want, hit **Save Session** to commit your changes
- - then run `yarn fontsave`
- - commit the changes :)

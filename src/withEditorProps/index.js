@@ -11,7 +11,7 @@ import s from "../selectors";
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default connect((state, ownProps) => {
-  const { editorName } = ownProps;
+  const { editorName, onSave = () => {} } = ownProps;
   let meta = { editorName };
   let HoverHelper = function(props) {
     return (
@@ -55,6 +55,9 @@ export default connect((state, ownProps) => {
 
   return {
     ...editorState,
+    onSave: e => {
+      onSave(e, editorState.sequenceData, editorState);
+    },
     selectedCutsites,
     sequenceLength,
     allCutsites,
