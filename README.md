@@ -6,7 +6,7 @@
 - [Open Vector Editor](#open-vector-editor)
       - [Teselagen's Open Source Vector Editor Component](#teselagens-open-source-vector-editor-component)
 - [Universal Build](#universal-build)
-  - [Univeral Installation (Old school)](#univeral-installation-old-school)
+  - [Univeral Installation](#univeral-installation)
   - [Universal Usage:](#universal-usage)
 - [React Version](#react-version)
   - [Installation](#installation)
@@ -21,38 +21,58 @@
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
 # Universal Build
-The univeral build can be used in any app, where as the react build should be used if using react because it will allow for more flexibility
-## Univeral Installation (Old school)
+The univeral build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
+## Univeral Installation
 via npm: 
-
+```
 npm install open-vector-editor
+```
 then add the links
+```html
 <link rel="stylesheet" type="text/css" href="your-path-to-node-modules/open-vector-editor/umd/main.css">
 <script type="text/javascript" src="your-path-to-node-modules/open-vector-editor/umd/open-vector-editor.js"></script>
+```
 
-via CDN: 
+Or via CDN: 
+```html
 <link rel="stylesheet" type="text/css" href="unpkg.com/open-vector-editor/umd/main.css"> 
 <script type="text/javascript" src="unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
-
+```
 
 ## Universal Usage: 
 ```html
 <script>
-		const editor = window.createVectorEditor(document.querySelector("#root"))
-		editor.updateEditor({
-				sequenceData: {
-						sequence: 'atagag',
-						features: [{
-								start: 0, //start and end are 0-based inclusive for all annotations
-								end: 10,
-								forward: true //strand
-						}],
-						parts: [],
-				}
-		})
-
-		
-		
+const editor = window.createVectorEditor(this.node, {
+	onSave: function(event, sequenceData, editorState) {
+		console.log("event:", event);
+		console.log("sequenceData:", sequenceData);
+		console.log("editorState:", editorState);
+	},
+	onCopy: function(event, sequenceData, editorState) {
+		console.log("event:", event);
+		console.log("sequenceData:", sequenceData);
+		console.log("editorState:", editorState);
+		const clipboardData  = event.clipboardData || window.clipboardData || event.originalEvent.clipboardData
+		clipboardData.setData('text/plain', JSON.stringify(sequenceData.sequence));
+		clipboardData.setData('application/json', JSON.stringify(sequenceData));
+		event.preventDefault();
+		//in onPaste in your app you can do: 
+		// e.clipboardData.getData('application/json')
+	}
+});
+editor.updateEditor({
+	sequenceData: { //note, sequence data passed here will be coerced to fit the Teselagen Open Vector Editor data model
+		sequence: "atagatagagaggcccg",
+		features: [
+			{
+				start: 0, //start and end are 0-based inclusive for all annotations
+				end: 10,
+				forward: true //strand
+			}
+		],
+		parts: []
+	}
+});	
 </script>
 ```
 
