@@ -42,7 +42,7 @@ Or via CDN:
 ## Universal Usage: 
 ```html
 <script>
-const editor = window.createVectorEditor(this.node, {
+const editor = window.createVectorEditor(yourDomNodeHere, {
 	onSave: function(event, sequenceData, editorState) {
 		console.log("event:", event);
 		console.log("sequenceData:", sequenceData);
