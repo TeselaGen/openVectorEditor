@@ -6,7 +6,7 @@
 - [Open Vector Editor](#open-vector-editor)
       - [Teselagen's Open Source Vector Editor Component](#teselagens-open-source-vector-editor-component)
 - [Universal Build](#universal-build)
-  - [Univeral Installation](#univeral-installation)
+  - [Universal Installation](#universal-installation)
   - [Universal Usage:](#universal-usage)
 - [React Version](#react-version)
   - [Installation](#installation)
@@ -21,8 +21,8 @@
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
 # Universal Build
-The univeral build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
-## Univeral Installation
+The universal build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
+## Universal Installation
 via npm: 
 ```
 npm install open-vector-editor
