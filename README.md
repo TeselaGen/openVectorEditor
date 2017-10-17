@@ -17,7 +17,7 @@
 
 <!-- /TOC -->
 
-####Teselagen's Open Source Vector Editor Component 
+#### Teselagen's Open Source Vector Editor Component 
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
 # Universal Build
