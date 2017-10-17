@@ -22,7 +22,7 @@
     "clean": "nwb clean-module && npm clean-demo",
     "start": "nwb serve-react-demo --port 3333",
     "precommit": "lint-staged",
-    "//prepublish": "in-publish && npm run build || not-in-publish",
+    "prepublish": "in-publish && npm run build || not-in-publish",
     "fontopen": "make fontopen",
     "fontsave": "make fontsave",
     "release": "release-it",

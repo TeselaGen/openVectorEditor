@@ -4,8 +4,6 @@ import { tg_modalState } from "teselagen-react-components";
 import { vectorEditorReducer as VectorEditor } from "../../src";
 import thunk from "redux-thunk";
 import { reducer as form } from "redux-form";
-import exampleSequenceData from "./exampleSequenceData";
-import cleanSequenceData from "../../src/utils/cleanSequenceData";
 
 const actionSanitizer = action => {
   try {
@@ -30,14 +28,7 @@ const store = createStore(
   combineReducers({
     form,
     tg_modalState,
-    VectorEditor: VectorEditor(
-      {
-        // DemoEditor: {
-        //   sequenceData: cleanSequenceData(exampleSequenceData),
-        //   readOnly: false
-        // }
-      }
-    )
+    VectorEditor: VectorEditor()
   }),
   undefined,
   composeEnhancer(
