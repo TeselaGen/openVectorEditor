@@ -21,6 +21,8 @@ Table of Contents
 
 # Universal Build
 The universal build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
+
+Universal Demo: http://teselagen.github.io/openVectorEditor/
 ## Universal Installation
 via npm: 
 ```
@@ -34,8 +36,8 @@ then add the links
 
 Or via CDN: 
 ```html
-<link rel="stylesheet" type="text/css" href="unpkg.com/open-vector-editor/umd/main.css"> 
-<script type="text/javascript" src="unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/open-vector-editor/umd/main.css"> 
+<script type="text/javascript" src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
 ```
 
 ## Universal Usage: 
