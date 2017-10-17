@@ -1,12 +1,11 @@
 
-
-# Open Vector Editor
-Teselagen's Open Source Vector Editor Component 
+Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor Component 
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
+
+Table of Contents
 <!-- TOC -->
 
-- [Open Vector Editor](#open-vector-editor)
 - [Universal Build](#universal-build)
   - [Universal Installation](#universal-installation)
   - [Universal Usage:](#universal-usage)
