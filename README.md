@@ -1,10 +1,12 @@
 
 
 # Open Vector Editor
+Teselagen's Open Source Vector Editor Component 
+ - Built With React & Redux
+ - Built for easy extensibility + embed-ibility 
 <!-- TOC -->
 
 - [Open Vector Editor](#open-vector-editor)
-      - [Teselagen's Open Source Vector Editor Component](#teselagens-open-source-vector-editor-component)
 - [Universal Build](#universal-build)
   - [Universal Installation](#universal-installation)
   - [Universal Usage:](#universal-usage)
@@ -17,9 +19,7 @@
 
 <!-- /TOC -->
 
-#### Teselagen's Open Source Vector Editor Component 
- - Built With React & Redux
- - Built for easy extensibility + embed-ibility 
+
 # Universal Build
 The universal build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
 ## Universal Installation
