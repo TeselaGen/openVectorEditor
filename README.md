@@ -1,3 +1,4 @@
+
 # TeselaGen-React-Components
 
 Demo: http://reactcomponents.teselagen.com/
@@ -7,67 +8,25 @@ Demo: http://reactcomponents.teselagen.com/
 [![npm package][npm-badge]][npm]
 [![codecov](https://codecov.io/gh/TeselaGen/teselagen-react-components/branch/master/graph/badge.svg)](https://codecov.io/gh/TeselaGen/teselagen-react-components)
 
-# Using: 
 
-Universal build can be used as window.tg_editor
-//todo!
+# Universal Build
+The univeral build can be used in any app, where as the react build should be used if using react because it will allow for more flexibility
+## Installation 
 
+
+The Universal build can be used as window.tg_editor
+
+
+
+# React Version
+## Installation
 ```
-yarn add tg-editor
+yarn add install-peerdeps open-vector-editor
 ```
 Add peer-dependencies: 
 ```
-yarn add react react-redux react-select redux 
+install-peerdeps open-vector-editor --dev --only-peers
 ```
-
-
-
-## Enhancers:
-
-```js
-import {withDelete, withUpsert, withQuery} from "teselagen-react-components";
-import jobWorkflowRunsQuery from '../graphql/queries/jobWorkflowRunsQuery';
-import workQueueItemFragment from '../graphql/fragments/workQueueItemFragment';
-
-export default compose(
-	//withUpsert takes a fragment/string as its first argument and an options object as its second param.
-	//in the case below it will pass a prop to the wrapped component called upsertWorkQueueItem
-	//upsertWorkQueueItem() can be passed an array or single object and will perform a create or an update based on 
-	//if it detects an id
-  withUpsert(workQueueItemFragment,
-		{extraMutateArgs: {
-			refetchQueries: [ { query: jobWorkflowRunsQuery } ]
-			//any additional options are spread onto the usual apollo mutation enhancer 
-	}}),
-	//withDelete takes a fragment/string as its first argument and an options object as its second param.
-	//in the case below it will pass a prop to the wrapped component called deleteWorkQueueItem
-	//deleteWorkQueueItem() can be passed an array of ids or a single id and will delete those items with the given id
-  withDelete(workQueueItemFragment, { 
-    mutationName: "deleteWorkQueueItems",
-		//any additional options are spread onto the usual apollo mutation enhancer 
-  })
-	//withQuery takes only a fragment as its first argument and an options object as its second param.
-	//in the case below it will pass several props to the wrapped component: 
-	//data  --- the usual apollo query data object 
-	//workQueueItemsQuery  ---  the usual apollo query data object just on a unique name
-	//workQueueItem/s  --- the actual workQueueItem record or the workQueueItems records array  
-	//workQueueItemsCount --- the count of the records coming back if isPlural:true
-	withQuery(workQueueItemFragment, {
-		//isPlural: boolean whether or not to search for just one item or multiple
-    //any additional options are spread onto the usual apollo query enhancer 
-		options: props => {
-      const id = parseInt(get(props, "match.params.id"), 10);
-      return {
-        variables: {
-          id
-        }
-      };
-    }
-  }),
-)(AddToWorkQueueDialog);
-```
-
-Any of the withQuery/withDelete/withUpsert enhancers can be passed an `{asFunction: true}` option which will make them return a function that can then be invoked. 
 
 ##Vector Editor: 
 Redux connected: 

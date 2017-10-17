@@ -1,12 +1,24 @@
+import { Icon, IconClasses } from "@blueprintjs/core";
 import { Checkbox, Button } from "@blueprintjs/core";
 import React from "react";
 import { connect } from "react-redux";
 import { convertRangeTo1Based } from "ve-range-utils";
-import show_features from "./veToolbarIcons/show_features.png";
+// import show_features from "./veToolbarIcons/show_features.png";
 
-export default ({ annotationVisibility = {}, isOpen }) => {
+export default ({
+  annotationVisibilityToggle,
+  annotationVisibility = {},
+  isOpen
+}) => {
   return {
-    Icon: FeatureTool,
+    Icon: (
+      <Icon
+        onClick={function() {
+          annotationVisibilityToggle("features");
+        }}
+        iconName={IconClasses.BOOKMARK}
+      />
+    ),
     toggled: annotationVisibility.features,
     tooltip: "Show features",
     tooltipToggled: "Hide features",
@@ -16,17 +28,17 @@ export default ({ annotationVisibility = {}, isOpen }) => {
   };
 };
 
-function FeatureTool({ annotationVisibilityToggle }) {
-  return (
-    <div
-      onClick={function() {
-        annotationVisibilityToggle("features");
-      }}
-    >
-      <img src={show_features} alt="Show features" />
-    </div>
-  );
-}
+// function FeatureTool({ annotationVisibilityToggle }) {
+//   return (
+//     <div
+//       onClick={function() {
+//         annotationVisibilityToggle("features");
+//       }}
+//     >
+//       <img src={show_features} alt="Show features" />
+//     </div>
+//   );
+// }
 
 function FeatureToolDropDown({
   dispatch,

@@ -1,4 +1,4 @@
-import VeWarning from '../helperComponents/VeWarning';
+import VeWarning from "../helperComponents/VeWarning";
 import getRangeLength from "ve-range-utils/getRangeLength";
 import PassThrough from "../utils/PassThrough";
 import _Labels from "./Labels";
@@ -19,7 +19,7 @@ import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRa
 import getPositionFromAngle from "ve-range-utils/getPositionFromAngle";
 import React from "react";
 import Draggable from "react-draggable";
-import withEditorInteractions from '../withEditorInteractions';
+import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 function noop() {}
@@ -234,6 +234,7 @@ export class CircularView extends React.Component {
       .filter(function(i) {
         return !!i;
       });
+
     annotationsSvgs = sortBy(output, "zIndex").reduce(function(
       arr,
       { result }
@@ -443,25 +444,34 @@ export class CircularView extends React.Component {
         ...additionalSelectionLayers,
         ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
       ];
-      return selectionLayers.map(function(selectionLayer, index) {
-        if (
-          selectionLayer.start >= 0 &&
-          selectionLayer.end >= 0 &&
-          sequenceLength > 0
-        ) {
-          return SelectionLayer({
-            index,
-            selectionLayer,
-            selectionLayerRightClicked,
-            sequenceLength,
-            baseRadius,
-            radius,
-            innerRadius
-          });
-        } else {
-          return <div key={index} />;
-        }
-      });
+      return selectionLayers
+        .map(function(selectionLayer, index) {
+          if (
+            selectionLayer.start >= 0 &&
+            selectionLayer.end >= 0 &&
+            sequenceLength > 0
+          ) {
+            return (
+              <SelectionLayer
+                {...{
+                  index,
+                  key: "veCircularViewSelectionLayer" + index,
+                  selectionLayer,
+                  selectionLayerRightClicked,
+                  sequenceLength,
+                  baseRadius,
+                  radius,
+                  innerRadius
+                }}
+              />
+            );
+          } else {
+            return null;
+          }
+        })
+        .filter(el => {
+          return !!el;
+        });
     }
 
     function drawCaret() {
@@ -478,7 +488,8 @@ export class CircularView extends React.Component {
               caretPosition,
               sequenceLength,
               innerRadius,
-              outerRadius: radius
+              outerRadius: radius,
+              key: "veCircularViewCaret"
             }}
           />
         );
@@ -525,24 +536,21 @@ export class CircularView extends React.Component {
                 className={"veCircularViewMiddleOfVectorText"}
                 style={{ width: innerRadius, textAlign: "center" }}
               >
-                <span>
-                  {sequenceName}{" "}
-                </span>
+                <span>{sequenceName} </span>
                 <br />
-                <span>
-                  {sequenceLength + " bps"}
-                </span>
+                <span>{sequenceLength + " bps"}</span>
               </div>
             </div>
             <svg
               key="circViewSvg"
               onClick={event => {
-                console.log('instantiated:',instantiated)
-                instantiated && this.getNearestCursorPositionToMouseEvent(
-                  event,
-                  sequenceLength,
-                  editorClicked
-                );
+                console.log("instantiated:", instantiated);
+                instantiated &&
+                  this.getNearestCursorPositionToMouseEvent(
+                    event,
+                    sequenceLength,
+                    editorClicked
+                  );
               }}
               style={{ overflow: "visible" }}
               width={width}
@@ -556,22 +564,26 @@ export class CircularView extends React.Component {
               {annotationsSvgs}
             </svg>
             <div className={"veCircularViewWarningContainer1"}>
-              {paredDownOrfs &&
+              {paredDownOrfs && (
                 <VeWarning
                   message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
-                />}
-              {paredDownCutsites &&
+                />
+              )}
+              {paredDownCutsites && (
                 <VeWarning
                   message={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
-                />}
-              {paredDownFeatures &&
+                />
+              )}
+              {paredDownFeatures && (
                 <VeWarning
                   message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
-                />}
-              {paredDownPrimers &&
+                />
+              )}
+              {paredDownPrimers && (
                 <VeWarning
                   message={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
-                />}
+                />
+              )}
             </div>
           </div>
         </Draggable>
@@ -604,5 +616,4 @@ function pareDownAnnotations(annotations, max) {
 //   })
 // }
 
-
-export default withEditorInteractions(CircularView)
+export default withEditorInteractions(CircularView);

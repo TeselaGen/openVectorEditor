@@ -22,11 +22,14 @@ import {
   Editor,
   updateEditor
 } from "../../src";
+
 import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from './exampleSequenceData';
+import StandaloneDemo from './StandaloneDemo';
 
 const links = [
   { name: "Editor", url: "Editor" },
+  { name: "Standalone", url: "Standalone" },
   { name: "CircularView", url: "CircularView" },
   { name: "DigestTool", url: "DigestTool" },
   { name: "RowView", url: "RowView" },
@@ -58,6 +61,12 @@ function Demo() {
               return <Editor editorName="DemoEditor" />;
             }}
             path="/Editor"
+          />
+          <Route
+            render={() => {
+              return <StandaloneDemo />;
+            }}
+            path="/Standalone"
           />
           <Route
             render={() => {

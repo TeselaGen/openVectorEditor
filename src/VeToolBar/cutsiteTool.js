@@ -1,10 +1,22 @@
+import { Icon, IconClasses } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
-import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
+// import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
 
-export default function CutsiteTool({ annotationVisibility = {}, isOpen }) {
+export default function CutsiteTool({
+  annotationVisibilityToggle,
+  annotationVisibility = {},
+  isOpen
+}) {
   return {
-    Icon: CutsiteToolIcon,
+    Icon: (
+      <Icon
+        onClick={function() {
+          annotationVisibilityToggle("cutsites");
+        }}
+        iconName={IconClasses.CUT}
+      />
+    ),
     toggled: annotationVisibility.cutsites,
     tooltip: "Show cut sites",
     tooltipToggled: "Hide cut sites",
@@ -14,17 +26,17 @@ export default function CutsiteTool({ annotationVisibility = {}, isOpen }) {
   };
 }
 
-function CutsiteToolIcon({ annotationVisibilityToggle }) {
-  return (
-    <div
-      onClick={function() {
-        annotationVisibilityToggle("cutsites");
-      }}
-    >
-      <img src={show_cut_sites_img} alt="Show cut sites" />
-    </div>
-  );
-}
+// function CutsiteToolIcon({ annotationVisibilityToggle }) {
+//   return (
+//     <div
+//       onClick={function() {
+//         annotationVisibilityToggle("cutsites");
+//       }}
+//     >
+//       <img src={show_cut_sites_img} alt="Show cut sites" />
+//     </div>
+//   );
+// }
 
 function CutsiteToolDropDown({ editorName, annotationVisibilityShow }) {
   return (

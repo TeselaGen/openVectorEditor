@@ -1,9 +1,17 @@
+import { Icon } from "@blueprintjs/core";
 import React from "react";
-import show_primers from "./veToolbarIcons/show_primers.png";
+// import show_primers from "./veToolbarIcons/show_primers.png";
 
-export default ({ annotationVisibility = {} }) => {
+export default ({ annotationVisibilityToggle, annotationVisibility = {} }) => {
   return {
-    Icon: OligoTool,
+    Icon: (
+      <Icon
+        onClick={function() {
+          annotationVisibilityToggle("primers");
+        }}
+        iconName={"swap-horizontal"}
+      />
+    ),
     toggled: annotationVisibility.primers,
     tooltip: "Show oligos",
     tooltipToggled: "Hide oligos",
@@ -11,14 +19,14 @@ export default ({ annotationVisibility = {} }) => {
   };
 };
 
-function OligoTool({ annotationVisibilityToggle }) {
-  return (
-    <div
-      onClick={function() {
-        annotationVisibilityToggle("primers");
-      }}
-    >
-      <img src={show_primers} alt="Show oligos" />
-    </div>
-  );
-}
+// function OligoTool({ annotationVisibilityToggle }) {
+//   return (
+//     <div
+//       onClick={function() {
+//         annotationVisibilityToggle("primers");
+//       }}
+//     >
+//       <img src={show_primers} alt="Show oligos" />
+//     </div>
+//   );
+// }
