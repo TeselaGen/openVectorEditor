@@ -1,17 +1,18 @@
 import React from "react";
-import {Radio} from '@blueprintjs/core';
-import fullscreen from "./veToolbarIcons/fullscreen.png";
+import { Radio, Icon, IconClasses } from "@blueprintjs/core";
 
-export default ({toggleDropdown, isOpen}) => {
+// import fullscreen from "./veToolbarIcons/fullscreen.png";
+
+export default ({ toggleDropdown, isOpen }) => {
   return {
     Dropdown: ViewToolDropdown,
-    Icon: <img src={fullscreen} alt="Toggle Views" />,
+    Icon: <Icon iconName={IconClasses.DESKTOP} />,
     onIconClick: toggleDropdown,
     toggled: isOpen,
     tooltip: isOpen ? "Hide View Options" : "Show View Options",
     noDropdownIcon: true,
     id: "toggleViews"
-  }
+  };
 };
 
 function ViewToolDropdown({ panelsShown, panelsShownUpdate }) {
@@ -19,7 +20,7 @@ function ViewToolDropdown({ panelsShown, panelsShownUpdate }) {
     <div className={"veToolbarViewOptionsHolder"}>
       <div>View:</div>
       <Radio
-        style={{marginTop: 6, marginBottom: 6}}
+        style={{ marginTop: 6, marginBottom: 6 }}
         onChange={() => {
           panelsShownUpdate({
             circular: true,
@@ -30,7 +31,7 @@ function ViewToolDropdown({ panelsShown, panelsShownUpdate }) {
         label="Circular"
       />
       <Radio
-        style={{marginTop: 6, marginBottom: 6}}
+        style={{ marginTop: 6, marginBottom: 6 }}
         onChange={() => {
           panelsShownUpdate({
             circular: false,
@@ -41,7 +42,7 @@ function ViewToolDropdown({ panelsShown, panelsShownUpdate }) {
         label="Sequence"
       />
       <Radio
-        style={{marginTop: 6, marginBottom: 6}}
+        style={{ marginTop: 6, marginBottom: 6 }}
         onChange={() => {
           panelsShownUpdate({
             circular: true,
