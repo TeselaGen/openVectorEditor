@@ -1,4 +1,6 @@
 
+
+# Open Vector Editor
 <!-- TOC -->
 
 - [Open Vector Editor](#open-vector-editor)
@@ -14,7 +16,7 @@
   - [Installation](#installation-1)
 
 <!-- /TOC -->
-# Open Vector Editor
+
 ####Teselagen's Open Source Vector Editor Component 
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
@@ -36,7 +38,7 @@ via CDN:
 ## Universal Usage: 
 ```html
 <script>
-		const editor = window.tg_createEditor(document.querySelector("#root"))
+		const editor = window.createVectorEditor(document.querySelector("#root"))
 		editor.updateEditor({
 				sequenceData: {
 						sequence: 'atagag',
@@ -86,23 +88,6 @@ const store = createStore(
   	)
 )
 
-//DemoEditor.js
-import {createVectorEditor} from 'teselagen-react-components'
-
-export default createVectorEditor({
-  editorName: 'DemoEditor', 
-  //you can pass editor specific action overrides at this level or at render time
-  // actionOverrides(actions) {
-  //   return {
-  //     featureClicked: function ({annotation}) {
-  //       return actions.caretPositionUpdate(annotation.start)
-  //     },
-  //     selectionLayerUpdate: function (selectionLayer) {
-  //       return actions.caretPositionUpdate(selectionLayer.start)
-  //     }
-  //   }
-  // }
-})
 
 //file where you want to display the editor: 
 import DemoEditor from '../DemoEditor';

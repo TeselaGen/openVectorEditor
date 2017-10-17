@@ -11,29 +11,17 @@ class Clipboard extends React.Component {
   };
 
   componentDidMount() {
-    this.component.parentNode.addEventListener(
-      "keydown",
-      this.handleKeyDown,
-      false
-    );
-    this.component.parentNode.addEventListener(
-      "keyup",
-      this.handleKeyUp,
-      false
-    );
+    this.node.parentNode.addEventListener("keydown", this.handleKeyDown, false);
+    this.node.parentNode.addEventListener("keyup", this.handleKeyUp, false);
   }
 
   componentWillUnmount() {
-    this.component.parentNode.removeEventListener(
+    this.node.parentNode.removeEventListener(
       "keydown",
       this.handleKeyDown,
       false
     );
-    this.component.parentNode.removeEventListener(
-      "keyup",
-      this.handleKeyUp,
-      false
-    );
+    this.node.parentNode.removeEventListener("keyup", this.handleKeyUp, false);
   }
 
   handleKeyDown = e => {
@@ -47,14 +35,12 @@ class Clipboard extends React.Component {
       return;
     }
 
-    let element = ReactDOM.findDOMNode(this);
-    element.focus();
-    element.select();
+    // this.node.focus();
+    this.node.select();
   };
 
   handleKeyUp = () => {
-    let element = ReactDOM.findDOMNode(this);
-    element.blur();
+    this.node.parentNode.focus();
   };
 
   render() {
@@ -74,7 +60,7 @@ class Clipboard extends React.Component {
       <input
         ref={c => {
           if (c) {
-            this.component = c;
+            this.node = c;
           }
         }}
         style={style}

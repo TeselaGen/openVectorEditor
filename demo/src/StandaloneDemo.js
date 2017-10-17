@@ -1,7 +1,7 @@
 import React from "react";
 export default class StandaloneDemo extends React.Component {
   componentDidMount() {
-    const editor = window.tg_createEditor(this.node, {
+    const editor = window.createVectorEditor(this.node, {
       onSave: function(event, sequenceData, editorState) {
         console.log("event:", event);
         console.log("sequenceData:", sequenceData);
@@ -11,9 +11,9 @@ export default class StandaloneDemo extends React.Component {
         console.log("event:", event);
         console.log("sequenceData:", sequenceData);
         console.log("editorState:", editorState);
-        
-        
-        event.clipboardData.setData('application/json', JSON.stringify(sequenceData));
+        const clipboardData  = event.clipboardData || window.clipboardData || event.originalEvent.clipboardData
+        clipboardData.setData('text/plain', JSON.stringify(sequenceData.sequence));
+        clipboardData.setData('application/json', JSON.stringify(sequenceData));
         event.preventDefault();
         //in onPaste in your app you can do: 
         // e.clipboardData.getData('application/json')

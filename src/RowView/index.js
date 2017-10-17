@@ -1,8 +1,8 @@
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
 import some from "lodash/some";
-import moveCaret from "../withEditorInteractions/moveCaret";
-import handleCaretMoved from "../withEditorInteractions/handleCaretMoved";
+// import moveCaret from "../withEditorInteractions/moveCaret";
+// import handleCaretMoved from "../withEditorInteractions/handleCaretMoved";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -10,7 +10,7 @@ import RowItem from "../RowItem";
 import ReactList from "react-list";
 import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
-import Combokeys from "combokeys";
+// import Combokeys from "combokeys";
 
 let defaultContainerWidth = 400;
 let defaultCharWidth = 12;
@@ -116,141 +116,141 @@ export class RowView extends React.Component {
     this.combokeys.detach();
   }
 
-  componentDidMount() {
-    let self = this;
+  // componentDidMount() {
+  //   let self = this;
 
-    let {
-      sequenceDataInserted = noop,
-      backspacePressed = noop,
-      selectAll = noop,
-      selectInverse = noop,
-      readOnly
-    } = {
-      ...defaultProps,
-      ...self.props.veWrapperProvidedProps,
-      ...self.props
-    };
+  //   let {
+  //     sequenceDataInserted = noop,
+  //     backspacePressed = noop,
+  //     selectAll = noop,
+  //     selectInverse = noop,
+  //     readOnly
+  //   } = {
+  //     ...defaultProps,
+  //     ...self.props.veWrapperProvidedProps,
+  //     ...self.props
+  //   };
 
-    // combokeys.stop();
-    // combokeys.watch(self.rowViewComp)
+  //   // combokeys.stop();
+  //   // combokeys.watch(self.node)
 
-    self.combokeys = new Combokeys(self.rowViewComp);
-    // bindGlobalPlugin(self.combokeys);
+  //   self.combokeys = new Combokeys(self.node);
+  //   // bindGlobalPlugin(self.combokeys);
 
-    // bind a bunch of self.combokeys shortcuts we're interested in catching
-    // we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
-    // documentation: https://craig.is/killing/mice
-    !readOnly &&
-      self.combokeys.bind(
-        [
-          "a",
-          "b",
-          "c",
-          "d",
-          "g",
-          "h",
-          "k",
-          "m",
-          "n",
-          "r",
-          "s",
-          "t",
-          "v",
-          "w",
-          "y"
-        ],
-        function(event) {
-          // type in bases
-          sequenceDataInserted({
-            newSequenceData: { sequence: String.fromCharCode(event.charCode) }
-          });
-        }
-      );
+  //   // bind a bunch of self.combokeys shortcuts we're interested in catching
+  //   // we're using the "mousetrap" library (available thru npm: https://www.npmjs.com/package/br-mousetrap)
+  //   // documentation: https://craig.is/killing/mice
+  //   !readOnly &&
+  //     self.combokeys.bind(
+  //       [
+  //         "a",
+  //         "b",
+  //         "c",
+  //         "d",
+  //         "g",
+  //         "h",
+  //         "k",
+  //         "m",
+  //         "n",
+  //         "r",
+  //         "s",
+  //         "t",
+  //         "v",
+  //         "w",
+  //         "y"
+  //       ],
+  //       function(event) {
+  //         // type in bases
+  //         sequenceDataInserted({
+  //           newSequenceData: { sequence: String.fromCharCode(event.charCode) }
+  //         });
+  //       }
+  //     );
 
-    let moveCaretBindings = [
-      { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
-      { keyCombo: ["right", "shift+right"], type: "moveCaretRightOne" },
-      { keyCombo: ["up", "shift+up"], type: "moveCaretUpARow" },
-      { keyCombo: ["down", "shift+down"], type: "moveCaretDownARow" },
-      {
-        keyCombo: ["alt+right", "alt+shift+right"],
-        type: "moveCaretToEndOfRow"
-      },
-      {
-        keyCombo: ["alt+left", "alt+shift+left"],
-        type: "moveCaretToStartOfRow"
-      },
-      {
-        keyCombo: ["alt+up", "alt+shift+up"],
-        type: "moveCaretToStartOfSequence"
-      },
-      {
-        keyCombo: ["alt+down", "alt+shift+down"],
-        type: "moveCaretToEndOfSequence"
-      }
-    ];
+  //   let moveCaretBindings = [
+  //     { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
+  //     { keyCombo: ["right", "shift+right"], type: "moveCaretRightOne" },
+  //     { keyCombo: ["up", "shift+up"], type: "moveCaretUpARow" },
+  //     { keyCombo: ["down", "shift+down"], type: "moveCaretDownARow" },
+  //     {
+  //       keyCombo: ["alt+right", "alt+shift+right"],
+  //       type: "moveCaretToEndOfRow"
+  //     },
+  //     {
+  //       keyCombo: ["alt+left", "alt+shift+left"],
+  //       type: "moveCaretToStartOfRow"
+  //     },
+  //     {
+  //       keyCombo: ["alt+up", "alt+shift+up"],
+  //       type: "moveCaretToStartOfSequence"
+  //     },
+  //     {
+  //       keyCombo: ["alt+down", "alt+shift+down"],
+  //       type: "moveCaretToEndOfSequence"
+  //     }
+  //   ];
 
-    moveCaretBindings.forEach(function({ keyCombo, type }) {
-      self.combokeys.bind(keyCombo, function(event) {
-        let shiftHeld = event.shiftKey;
-        let bpsPerRow = getBpsPerRow({
-          ...defaultProps,
-          ...self.props.veWrapperProvidedProps,
-          ...self.props
-        });
-        let {
-          selectionLayer,
-          caretPosition,
-          sequenceLength,
-          circular,
-          caretPositionUpdate,
-          selectionLayerUpdate
-        } = {
-          ...defaultProps,
-          ...self.props.veWrapperProvidedProps,
-          ...self.props
-        };
-        let moveBy = moveCaret({
-          sequenceLength,
-          bpsPerRow,
-          caretPosition,
-          selectionLayer,
-          shiftHeld,
-          type
-        });
-        handleCaretMoved({
-          moveBy,
-          circular,
-          sequenceLength,
-          bpsPerRow,
-          caretPosition,
-          selectionLayer,
-          shiftHeld,
-          type,
-          caretPositionUpdate,
-          selectionLayerUpdate
-        });
-        event.stopPropagation();
-      });
-    });
+  //   moveCaretBindings.forEach(function({ keyCombo, type }) {
+  //     self.combokeys.bind(keyCombo, function(event) {
+  //       let shiftHeld = event.shiftKey;
+  //       let bpsPerRow = getBpsPerRow({
+  //         ...defaultProps,
+  //         ...self.props.veWrapperProvidedProps,
+  //         ...self.props
+  //       });
+  //       let {
+  //         selectionLayer,
+  //         caretPosition,
+  //         sequenceLength,
+  //         circular,
+  //         caretPositionUpdate,
+  //         selectionLayerUpdate
+  //       } = {
+  //         ...defaultProps,
+  //         ...self.props.veWrapperProvidedProps,
+  //         ...self.props
+  //       };
+  //       let moveBy = moveCaret({
+  //         sequenceLength,
+  //         bpsPerRow,
+  //         caretPosition,
+  //         selectionLayer,
+  //         shiftHeld,
+  //         type
+  //       });
+  //       handleCaretMoved({
+  //         moveBy,
+  //         circular,
+  //         sequenceLength,
+  //         bpsPerRow,
+  //         caretPosition,
+  //         selectionLayer,
+  //         shiftHeld,
+  //         type,
+  //         caretPositionUpdate,
+  //         selectionLayerUpdate
+  //       });
+  //       event.stopPropagation();
+  //     });
+  //   });
 
-    self.combokeys.bind("backspace", function(event) {
-      // Handle shortcut
-      backspacePressed();
-      event.stopPropagation();
-      event.preventDefault();
-    });
-    self.combokeys.bind("command+a", function(event) {
-      // Handle shortcut
-      selectAll();
-      event.stopPropagation();
-    });
-    self.combokeys.bind("command+ctrl+i", function(event) {
-      // Handle shortcut
-      selectInverse();
-      event.stopPropagation();
-    });
-  }
+  //   self.combokeys.bind("backspace", function(event) {
+  //     // Handle shortcut
+  //     backspacePressed();
+  //     event.stopPropagation();
+  //     event.preventDefault();
+  //   });
+  //   self.combokeys.bind("command+a", function(event) {
+  //     // Handle shortcut
+  //     selectAll();
+  //     event.stopPropagation();
+  //   });
+  //   self.combokeys.bind("command+ctrl+i", function(event) {
+  //     // Handle shortcut
+  //     selectInverse();
+  //     event.stopPropagation();
+  //   });
+  // }
 
   componentWillReceiveProps(props) {
     let thisPropsToUse = {
@@ -419,7 +419,7 @@ export class RowView extends React.Component {
       >
         <div
           tabIndex="0"
-          ref={ref => (this.rowViewComp = ref)}
+          ref={ref => (this.node = ref)}
           className="veRowView"
           style={{
             overflowY: "auto",

@@ -16,7 +16,6 @@ import {
   // RowItem,
   VeToolBar,
   // CutsiteFilter,
-  // createVectorEditor,
   LinearView,
   DigestTool,
   Editor,

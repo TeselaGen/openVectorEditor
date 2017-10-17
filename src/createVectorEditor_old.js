@@ -5,7 +5,7 @@ import React from "react";
 import addMetaToActionCreators from "./redux/utils/addMetaToActionCreators";
 import { bindActionCreators } from "redux";
 import _withEditorInteractions from "./withEditorInteractions";
-import HoverHelperComp from './helperComponents/HoverHelper';
+import HoverHelperComp from "./helperComponents/HoverHelper";
 
 function fakeActionOverrides() {
   return {};

@@ -3,7 +3,7 @@ import React from 'react'
 import {CircularView, CircularViewUnconnected, updateEditor} from '../src'
 import HarnessComponent from './HarnessComponent'
 import testStore from './testStore'
-import exampleSequenceData from '../src/tg_createEditor/exampleSequenceData'
+import exampleSequenceData from '../src/createVectorEditor/exampleSequenceData'
 
 class Wrapper extends React.Component {
   render(){

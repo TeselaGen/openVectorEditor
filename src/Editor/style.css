@@ -1,4 +1,4 @@
-.veRowView:focus, .veCircularView:focus {
+.veVectorInteractionWrapper:focus {
   box-shadow: 0 4px 2px -2px #9ecaed;
 }
 
@@ -6,9 +6,10 @@
   display: flex;
 }
 
-.RowViewSide, .CircularViewSide {
+.RowViewSide,
+.CircularViewSide {
   width: 100%;
 }
- .tg-editor-container {
-   display: flex;
- }
+.tg-editor-container {
+  display: flex;
+}

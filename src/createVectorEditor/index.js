@@ -14,7 +14,7 @@ function StandaloneEditor(props) {
   );
 }
 
-export default function tg_createEditor(
+export default function createVectorEditor(
   node,
   { editorName = "StandaloneEditor", ...rest } = {}
 ) {
@@ -30,4 +30,4 @@ export default function tg_createEditor(
   return editor;
 }
 
-window.tg_createEditor = tg_createEditor;
+window.createVectorEditor = createVectorEditor;

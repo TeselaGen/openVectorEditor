@@ -10,6 +10,10 @@ import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
 import createSequenceInputPopup from "./createSequenceInputPopup";
 
+import moveCaret from "../withEditorInteractions/moveCaret";
+import handleCaretMoved from "../withEditorInteractions/handleCaretMoved";
+import Combokeys from "combokeys";
+
 // import draggableClassnames from "../constants/draggableClassnames";
 
 function noop() {}
@@ -19,8 +23,153 @@ let caretPositionOnDragStart;
 let selectionStartGrabbed;
 let selectionEndGrabbed;
 
-function VectorInteractionHOC(Component) {
+let defaultContainerWidth = 400;
+let defaultCharWidth = 12;
+let defaultMarginWidth = 50;
+
+function getBpsPerRow({
+  charWidth = defaultCharWidth,
+  width = defaultContainerWidth,
+  marginWidth = defaultMarginWidth
+}) {
+  return Math.floor((width - marginWidth) / charWidth);
+}
+
+function VectorInteractionHOC(Component, options) {
+  console.log("options:", options);
   return class VectorInteractionWrapper extends React.Component {
+    componentDidMount() {
+      let {
+        sequenceDataInserted = noop,
+        backspacePressed = noop,
+        selectAll = noop,
+        selectInverse = noop,
+        readOnly
+      } = {
+        ...this.props
+      };
+
+      // combokeys.stop();
+      // combokeys.watch(this.node)
+
+      this.combokeys = new Combokeys(this.node);
+      // bindGlobalPlugin(this.combokeys);
+
+      // bind a bunch of this.combokeys shortcuts we're interested in catching
+      // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
+      // documentation: https://craig.is/killing/mice
+      // this.combokeys.bind(
+      //     "meta+c",
+      //   (event)=> {
+      //     // type in bases
+      //     console.log('event:',event)
+      //     onCopy(event)
+      //   }
+      // )
+
+      !readOnly &&
+        this.combokeys.bind(
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "g",
+            "h",
+            "k",
+            "m",
+            "n",
+            "r",
+            "s",
+            "t",
+            "v",
+            "w",
+            "y"
+          ],
+          function(event) {
+            // type in bases
+            sequenceDataInserted({
+              newSequenceData: { sequence: String.fromCharCode(event.charCode) }
+            });
+          }
+        );
+
+      let moveCaretBindings = [
+        { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
+        { keyCombo: ["right", "shift+right"], type: "moveCaretRightOne" },
+        { keyCombo: ["up", "shift+up"], type: "moveCaretUpARow" },
+        { keyCombo: ["down", "shift+down"], type: "moveCaretDownARow" },
+        {
+          keyCombo: ["alt+right", "alt+shift+right"],
+          type: "moveCaretToEndOfRow"
+        },
+        {
+          keyCombo: ["alt+left", "alt+shift+left"],
+          type: "moveCaretToStartOfRow"
+        },
+        {
+          keyCombo: ["alt+up", "alt+shift+up"],
+          type: "moveCaretToStartOfSequence"
+        },
+        {
+          keyCombo: ["alt+down", "alt+shift+down"],
+          type: "moveCaretToEndOfSequence"
+        }
+      ];
+
+      moveCaretBindings.forEach(({ keyCombo, type }) => {
+        this.combokeys.bind(keyCombo, event => {
+          let shiftHeld = event.shiftKey;
+          let bpsPerRow = getBpsPerRow(this.props);
+          let {
+            selectionLayer,
+            caretPosition,
+            sequenceLength,
+            circular,
+            caretPositionUpdate,
+            selectionLayerUpdate
+          } = this.props;
+          let moveBy = moveCaret({
+            sequenceLength,
+            bpsPerRow,
+            caretPosition,
+            selectionLayer,
+            shiftHeld,
+            type
+          });
+          handleCaretMoved({
+            moveBy,
+            circular,
+            sequenceLength,
+            bpsPerRow,
+            caretPosition,
+            selectionLayer,
+            shiftHeld,
+            type,
+            caretPositionUpdate,
+            selectionLayerUpdate
+          });
+          event.stopPropagation();
+        });
+      });
+
+      this.combokeys.bind("backspace", event => {
+        // Handle shortcut
+        backspacePressed();
+        event.stopPropagation();
+        event.preventDefault();
+      });
+      this.combokeys.bind("command+a", event => {
+        // Handle shortcut
+        selectAll();
+        event.stopPropagation();
+      });
+      this.combokeys.bind("command+ctrl+i", event => {
+        // Handle shortcut
+        selectInverse();
+        event.stopPropagation();
+      });
+    }
     handlePaste(/* event */) {
       //tnr: commenting paste handling out for the time being
       // var {
@@ -161,7 +310,8 @@ function VectorInteractionHOC(Component) {
       }
       return (
         <div
-          ref={c => (this.veVectorInteractionWrapper = c)}
+          tabIndex={-1} //this helps with focusing using Keyboard's parentElement.focus()
+          ref={c => (this.node = c)}
           className={"veVectorInteractionWrapper"}
         >
           <Keyboard
