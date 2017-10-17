@@ -2,8 +2,13 @@
   "name": "open-vector-editor",
   "version": "0.1.1",
   "description": "Teselagen's Open Source Vector Editor",
-  "main": "src/index.js",
-  "module": "src/index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "author": {
+    "name": "tnrich",
+    "email": "tnrich@teselagen.com",
+    "url": "https://github.com/tnrich"
+  },
   "files": [
     "css",
     "es",
@@ -17,7 +22,7 @@
     "clean": "nwb clean-module && npm clean-demo",
     "start": "nwb serve-react-demo --port 3333",
     "precommit": "lint-staged",
-    "prepublish": "in-publish && npm run build || not-in-publish",
+    "//prepublish": "in-publish && npm run build || not-in-publish",
     "fontopen": "make fontopen",
     "fontsave": "make fontsave",
     "release": "release-it",
@@ -162,9 +167,12 @@
     ]
   },
   "license": "MIT",
-  "repository": "https://github.com/TeselaGen/teselagen-react-components",
+  "repository": "https://github.com/TeselaGen/openVectorEditor",
   "keywords": [
     "react-component",
+    "plasmid",
+    "vector",
+    "editor",
     "teselagen"
   ],
   "babel": {

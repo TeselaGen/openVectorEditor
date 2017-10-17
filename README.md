@@ -1,17 +1,31 @@
 
-# TeselaGen-React-Components
+<!-- TOC -->
 
-Demo: http://reactcomponents.teselagen.com/
+- [Open Vector Editor](#open-vector-editor)
+      - [Teselagen's Open Source Vector Editor Component](#teselagens-open-source-vector-editor-component)
+- [Universal Build](#universal-build)
+  - [Installation](#installation)
+- [React Version](#react-version)
+  - [Installation](#installation-1)
+  - [Data Table](#data-table)
+- [Development:](#development)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation-2)
+  - [Demo Development Server](#demo-development-server)
+  - [Developing linked to another folder: aka lims/hde](#developing-linked-to-another-folder-aka-limshde)
+  - [Running Tests](#running-tests)
+  - [Releasing](#releasing)
+  - [Adding custom svg icons](#adding-custom-svg-icons)
 
-
-[![CircleCI](https://circleci.com/gh/TeselaGen/teselagen-react-components/tree/master.svg?style=shield)](https://circleci.com/gh/TeselaGen/teselagen-react-components/tree/master)
-[![npm package][npm-badge]][npm]
-[![codecov](https://codecov.io/gh/TeselaGen/teselagen-react-components/branch/master/graph/badge.svg)](https://codecov.io/gh/TeselaGen/teselagen-react-components)
-
-
+<!-- /TOC -->
+# Open Vector Editor
+####Teselagen's Open Source Vector Editor Component 
+ - Built With React & Redux
+ - Built for easy extensibility + embed-ibility 
 # Universal Build
 The univeral build can be used in any app, where as the react build should be used if using react because it will allow for more flexibility
 ## Installation 
+npm install open-vector-editor
 
 
 The Universal build can be used as window.tg_editor
@@ -28,7 +42,7 @@ Add peer-dependencies:
 install-peerdeps open-vector-editor --dev --only-peers
 ```
 
-##Vector Editor: 
+
 Redux connected: 
 
 ```js
