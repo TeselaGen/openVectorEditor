@@ -11,7 +11,7 @@ Table of Contents
   - [Universal Usage:](#universal-usage)
 - [React Version](#react-version)
   - [Installation](#installation)
-  - [Data Table](#data-table)
+- [Data Model](#data-model)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation-1)
@@ -62,12 +62,14 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 	}
 });
 editor.updateEditor({
-	sequenceData: { //note, sequence data passed here will be coerced to fit the Teselagen Open Vector Editor data model
+	//note, sequence data passed here will be coerced to fit the Teselagen data model
+	sequenceData: { Open Vector Editor data model
 		sequence: "atagatagagaggcccg",
 		features: [
 			{
 				start: 0, //start and end are 0-based inclusive for all annotations
 				end: 10,
+				id: 'yourUniqueID',
 				forward: true //strand
 			}
 		],
@@ -190,31 +192,11 @@ var {veActions} = DemoEditor
 dispatch(veActions.updateSequenceData(sequenceData)) //dispatch an update action the sequence data for the demo editor
 ```
 
-##Data Table
-```js
-import {DataTable, routeDoubleClick, queryParams} from "teselagen-react-components";
-import {toastr} from 'teselagen-react-components';
-import {
-	InputField,
-	SelectField,
-	DateInputField,
-	CheckboxField,
-	TextareaField,
-	EditableTextField,
-	ReactSelectField,
-	NumericInputField,
-	RadioGroupField,
-	FileUploadField
-} from 'teselagen-react-components'
+#Data Model 
+The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+Here is the top level editor state:
+[Example Editor State](./editorStateExample.js)
 
-<InputField
-  name={"fieldName"}
-  label="fieldLabel"
-  placeholder="Enter text..."
-  inputClassName="className(s) for input"
-/>
-
-```
 #Development: 
 ## Prerequisites
 
