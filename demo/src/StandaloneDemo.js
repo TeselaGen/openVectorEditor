@@ -35,13 +35,13 @@ export default class StandaloneDemo extends React.Component {
   }
   render() {
     return (
-      <div
-        className={"standaloneDemoNode"}
-        style={{ width: "100%", height: "100%" }}
-        ref={node => {
-          this.node = node;
-        }}
-      />
+        <div
+          className={"standaloneDemoNode"}
+          style={{ width: "100%", height: "100%" }}
+          ref={node => {
+            this.node = node;
+          }}
+        />
     );
   }
 }

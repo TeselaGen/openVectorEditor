@@ -1,6 +1,6 @@
 import React from "react";
-import { withContentRect } from "react-measure";
 import { compose } from "redux";
+import Dimensions from "react-dimensions";
 import VeToolBar from "../VeToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
@@ -17,15 +17,13 @@ export class Editor extends React.Component {
       RowViewProps = {},
       StatusBarProps = {},
       FindBarProps = {},
-      measureRef,
-      contentRect: { bounds },
+      containerWidth: width,
       panelsShown = { circular: true, sequence: true },
       editorName,
       findTool = {},
       height = 500,
       ...rest
     } = this.props;
-    const { width } = bounds;
     const showBoth = panelsShown.circular && panelsShown.sequence;
     let editorDimensions = {
       width: showBoth ? width / 2 : width,
@@ -37,7 +35,7 @@ export class Editor extends React.Component {
     };
 
     return (
-      <div ref={measureRef}>
+      <div style={{ width: "100%" }} className={"VectorEditor"}>
         <VeToolBar {...sharedProps} {...VeToolBarProps} />
         {width ? (
           <div
@@ -85,4 +83,4 @@ export class Editor extends React.Component {
   }
 }
 
-export default compose(withEditorProps, withContentRect("bounds"))(Editor);
+export default compose(withEditorProps, Dimensions())(Editor);

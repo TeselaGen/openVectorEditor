@@ -1,5 +1,6 @@
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
 import { compose } from "redux";
+import { insertSequenceDataAtPositionOrRange } from "ve-sequence-utils";
 import Keyboard from "./Keyboard";
 
 import withEditorProps from "../withEditorProps";
@@ -38,6 +39,9 @@ function getBpsPerRow({
 function VectorInteractionHOC(Component, options) {
   console.log("options:", options);
   return class VectorInteractionWrapper extends React.Component {
+    componentWillUnmount() {
+      this.combokeys && this.combokeys.detach();
+    }
     componentDidMount() {
       let {
         sequenceDataInserted = noop,
@@ -58,14 +62,6 @@ function VectorInteractionHOC(Component, options) {
       // bind a bunch of this.combokeys shortcuts we're interested in catching
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
-      // this.combokeys.bind(
-      //     "meta+c",
-      //   (event)=> {
-      //     // type in bases
-      //     console.log('event:',event)
-      //     onCopy(event)
-      //   }
-      // )
 
       !readOnly &&
         this.combokeys.bind(
@@ -74,23 +70,31 @@ function VectorInteractionHOC(Component, options) {
             "b",
             "c",
             "d",
+            "e",
+            "f",
             "g",
             "h",
+            "i",
+            "j",
             "k",
+            "l",
             "m",
             "n",
+            "o",
+            "p",
+            "q",
             "r",
             "s",
             "t",
+            "u",
             "v",
             "w",
-            "y"
+            "x",
+            "y",
+            "z"
           ],
-          function(event) {
-            // type in bases
-            sequenceDataInserted({
-              newSequenceData: { sequence: String.fromCharCode(event.charCode) }
-            });
+          event => {
+            this.handleDnaInsert(event);
           }
         );
 
@@ -170,23 +174,59 @@ function VectorInteractionHOC(Component, options) {
         event.stopPropagation();
       });
     }
-    handlePaste(/* event */) {
-      //tnr: commenting paste handling out for the time being
-      // var {
-      //     handlePaste=noop,
-      // } = this.props
-      // event.clipboardData.items[0].getAsString(function(clipboardString) {
-      //     handlePaste({sequenceString:clipboardString});
-      // });
+    handlePaste = e => {
+      this.handleDnaInsert(e);
+    };
+
+    handleCopy = e => {
+      const { onCopy = () => {}, sequenceData } = this.props;
+      onCopy(e, sequenceData, this.props);
+    };
+
+    handleDnaInsert() {
+      let {
+        caretPosition = -1,
+        selectionLayer = { start: -1, end: -1 },
+        sequenceData = { sequence: "" },
+        readOnly,
+        updateSequenceData,
+        handleInsert
+      } = this.props;
+      const sequenceLength = sequenceData.sequence.length;
+      const isReplace = selectionLayer.start > -1;
+      !readOnly &&
+        createSequenceInputPopup({
+          isReplace,
+          selectionLayer,
+          sequenceLength,
+
+          caretPosition,
+          handleInsert: seqDataToInsert => {
+            console.log("seqDataToInsert:", seqDataToInsert);
+            console.log(
+              "insertSequenceDataAtPositionOrRange(seqDataToInsert, sequenceData, caretPosition > -1 ? caretPosition : selectionLayer):",
+              insertSequenceDataAtPositionOrRange(
+                seqDataToInsert,
+                sequenceData,
+                caretPosition > -1 ? caretPosition : selectionLayer
+              )
+            );
+            updateSequenceData(
+              insertSequenceDataAtPositionOrRange(
+                seqDataToInsert,
+                sequenceData,
+                caretPosition > -1 ? caretPosition : selectionLayer
+              )
+            );
+          }
+        });
     }
 
     render() {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
-        sequenceData = { sequence: "" },
-        onCopy = noop,
-        readOnly
+        sequenceData = { sequence: "" }
       } = this.props;
       //do this in two steps to determine propsToPass
       let {
@@ -198,17 +238,6 @@ function VectorInteractionHOC(Component, options) {
         selectionLayer,
         sequenceData.sequence
       );
-
-      function onDnaInsert() {
-        !readOnly &&
-          createSequenceInputPopup({
-            isReplace: selectionLayer.start > -1,
-            selectionLayer,
-            sequenceLength,
-            caretPosition,
-            replacementLayerUpdate: () => {}
-          });
-      }
 
       const selectionLayerUpdate = newSelection => {
         if (!newSelection) return;
@@ -316,11 +345,8 @@ function VectorInteractionHOC(Component, options) {
         >
           <Keyboard
             value={selectedBps}
-            onDnaInsert={onDnaInsert}
-            onCopy={e => {
-              onCopy(e, sequenceData, this.props);
-            }}
-            onPaste={this.handlePaste.bind(this)}
+            onCopy={this.handleCopy}
+            onPaste={this.handlePaste}
           />
           <AddOrEditFeatureDialog
             dialogName="AddOrEditFeatureDialog"

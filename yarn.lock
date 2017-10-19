@@ -2832,6 +2832,10 @@ elegant-spinner@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/elegant-spinner/-/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
 
+element-resize-event@^2.0.4:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/element-resize-event/-/element-resize-event-2.0.9.tgz#2f5e1581a296eb5275210c141bc56342e218f876"
+
 elliptic@^6.0.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.0.tgz#cac9af8762c85836187003c8dfe193e5e2eae5df"
@@ -5130,10 +5134,6 @@ jodid25519@^1.0.0:
   resolved "https://registry.yarnpkg.com/jodid25519/-/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
   dependencies:
     jsbn "~0.1.0"
-
-jquery@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
 js-base64@^2.1.9:
   version "2.1.9"
@@ -7564,6 +7564,12 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
+react-dimensions@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-dimensions/-/react-dimensions-1.3.0.tgz#f5dec8e7b84644a605a900cae0f4a6654acf4e9f"
+  dependencies:
+    element-resize-event "^2.0.4"
+
 react-display-name@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-display-name/-/react-display-name-0.2.0.tgz#0e1f7086e45a32d07764df35ed32ff16f1259790"
@@ -9417,6 +9423,13 @@ vary@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.1.tgz#67535ebb694c1d52257457984665323f587e8d37"
 
+ve-range-utils@2.0.39:
+  version "2.0.39"
+  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.0.39.tgz#4b270a20b3ad81fa210ee0bf0bb278cd683da4af"
+  dependencies:
+    lodash "^3.10.1"
+    validate.io-nonnegative-integer-array "^1.0.1"
+
 ve-range-utils@^2.0.34, ve-range-utils@^2.0.37:
   version "2.0.37"
   resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.0.37.tgz#ecc086d9eaae4fde4327331ef39ef50de8e32ad5"
@@ -9446,6 +9459,18 @@ ve-sequence-utils@3.1.22:
     string-splice "^1.3.0"
     validate.io-nonnegative-integer-array "^1.0.1"
     ve-range-utils "^2.0.34"
+
+ve-sequence-utils@3.1.24:
+  version "3.1.24"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.1.24.tgz#0791e6eb2b3f5af1ba5006ba133a35709e65d15a"
+  dependencies:
+    bson-objectid "^1.1.1"
+    install-peerdeps "^1.2.0"
+    lodash "^4.10.0"
+    randomcolor "^0.4.3"
+    string-splice "^1.3.0"
+    validate.io-nonnegative-integer-array "^1.0.1"
+    ve-range-utils "2.0.39"
 
 vendors@^1.0.0:
   version "1.0.1"

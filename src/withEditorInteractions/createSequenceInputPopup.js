@@ -1,73 +1,41 @@
-import bsonObjectid from "bson-objectid";
+import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
+
 import getRangeLength from "ve-range-utils/getRangeLength";
-import $ from "jquery";
 import Tether from "tether";
-import getInsertBetweenVals from "ve-sequence-utils/getInsertBetweenVals";
+
+import { getInsertBetweenVals } from "ve-sequence-utils";
+import React from "react";
 import "./createSequenceInputPopupStyle.css";
-export default function createSequenceInputPopup({
-  isReplace,
-  selectionLayer,
-  sequenceLength,
-  caretPosition,
-  replacementLayerUpdate
-}) {
-  // changes the text in the popup editor
-  function changeText(isReplace, length) {
-    let pair = length > 1 || length === 0 ? "pairs" : "pair";
-    if (isReplace) {
-      $(".sequenceInputBubble p").html(
-        "Press <b>ENTER</b> to replace bases between " +
-          insertPosition[0] +
-          " and " +
-          insertPosition[1] +
-          " with " +
-          length +
-          " base " +
-          pair +
-          "<br><br> Press <b>ESC</b> to cancel"
-      );
-    } else {
-      $(".sequenceInputBubble p").html(
-        "Press <b>ENTER</b> to insert " +
-          length +
-          " base " +
-          pair +
-          " after base " +
-          insertPosition +
-          "<br><br> Press <b>ESC</b> to cancel"
-      );
-    }
-  }
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 
-  function closeInput() {
-    sequenceInputBubble.remove();
-  }
+let div;
 
-  let body = $(document.body);
-  let caretEl = body.find(".veRowViewCaret");
-  if (caretEl.length === 0) {
+export default function createSequenceInputPopup(props) {
+  // function closeInput() {
+  //   sequenceInputBubble.remove();
+  // }
+  div = document.createElement("div");
+  div.id = "sequenceInputBubble";
+  document.body.appendChild(div);
+
+  render(<SequenceInput {...props} />, div);
+  let caretEl = document.querySelector(".veRowViewCaret");
+
+  // let body = $(document.body);
+  // let caretEl = body.find(".veRowViewCaret");
+  if (!caretEl === 0) {
     //todo: eventually we should probably jump to the row view caret if it isn't visible
-    caretEl = body.find(".veCaretSVG");
+    // caretEl = body.find(".veCaretSVG");
+    caretEl = document.querySelector(".veCaretSVG");
   }
-  if (!caretEl.length) {
+  if (!caretEl) {
     return console.error(
       "there must be a caret element present in order to display the insertSequence popup"
     );
   }
-  let sequenceInputBubble;
-  sequenceInputBubble = $(
-    `<div class='sequenceInputBubble ${isReplace ? "" : "insertInputBubble"}'> 
-			<input type='text'> 
-			<p></p> 
-			</div>`
-  );
-  let insertPosition = isReplace
-    ? getInsertBetweenVals(-1, selectionLayer, sequenceLength)
-    : caretPosition;
-  $("body").append(sequenceInputBubble);
 
   new Tether({
-    element: sequenceInputBubble,
+    element: div,
     target: caretEl,
     attachment: "top left",
     targetAttachment: "bottom left",
@@ -80,92 +48,122 @@ export default function createSequenceInputPopup({
       }
     ]
   });
-
-  if (
-    sequenceInputBubble.hasClass("tether-out-of-bounds-top") ||
-    sequenceInputBubble.hasClass("tether-out-of-bounds-bottom")
-  ) {
-    closeInput(caretEl, sequenceInputBubble);
-  }
-  changeText(isReplace, 0);
-
-  let input = $(".sequenceInputBubble input");
-  input.focus();
-  input.blur(function() {
-    closeInput(caretEl, sequenceInputBubble);
-  });
-
-  input.bind("input", function(e) {
-    let sanitizedVal = "";
-    e.target.value.split("").forEach(letter => {
-      if (isDnaLetter(letter.toLowerCase())) {
-        sanitizedVal += letter;
-      }
+}
+class SequenceInput extends React.Component {
+  state = {
+    bpsToInsert: "",
+    hasTempError: false
+  };
+  handleUnmount = () => {
+    setTimeout(() => {
+      unmountComponentAtNode(findDOMNode(this).parentNode);
+      document.getElementById("sequenceInputBubble").outerHTML = "";
     });
-    if (e.target.value.length !== sanitizedVal.length) {
-      input.addClass("borderRed");
-      setTimeout(function() {
-        input.removeClass("borderRed");
-      }, 200);
-    }
-    e.target.value = sanitizedVal;
-
-    if (sanitizedVal.length < 66) {
-      changeText(isReplace, input.val().length);
-    }
-  });
-
-  input.data("oldValue", "").bind("input propertychange", function() {
-    let $this = $(this);
-    let newValue = $this.val();
-    if (newValue.length > 65) {
-      window.toastr.error("Can only insert up to 65 bps");
-      return $this.val($this.data("oldValue"));
-    }
-    return $this.data("oldValue", newValue);
-  });
-
-  input.keydown(function(event) {
-    // enter pressed
-    if (event.keyCode === 13) {
-      let rangeOrCaret = isReplace ? selectionLayer : { caretPosition };
-      let inputLength = input.val() ? input.val().length : 0;
-      if (inputLength > 65) {
-        window.toastr.error("Can only insert up to 65 bps");
-        return;
-      }
-      if (inputLength < 1) {
-        window.toastr.error("Please insert at least 1 bp");
-        return;
-      }
-      let toBeDeletedLength = isReplace
-        ? getRangeLength(rangeOrCaret, sequenceLength)
-        : 0;
-      if (sequenceLength - toBeDeletedLength + inputLength < 100) {
-        window.toastr.error("Insert plus backbone must be greater than 100bps");
-        return;
-      }
-      replacementLayerUpdate({
-        id: bsonObjectid().toString(),
-        range: { ...rangeOrCaret, sequence: input.val() }
-      });
-      closeInput(caretEl, sequenceInputBubble);
-    } else if (event.keyCode === 27) {
-      // escape pressed
-      closeInput(caretEl, sequenceInputBubble);
-    }
-  });
-}
-
-let letters = {
-  a: true,
-  t: true,
-  c: true,
-  g: true
-};
-function isDnaLetter(char) {
-  if (!char || !char.toLowerCase) {
-    return false;
+  };
+  handleInsert() {
+    const { handleInsert = () => {} } = this.props;
+    const { bpsToInsert } = this.state;
+    handleInsert({
+      sequence: bpsToInsert
+    });
   }
-  return letters[char.toLowerCase()];
+  renderHotkeys() {
+    return (
+      <Hotkeys>
+        <Hotkey
+          global={true}
+          combo="esc"
+          label="Escape"
+          onKeyDown={this.handleUnmount}
+        />
+        <Hotkey combo="enter" label="Enter" onKeyDown={this.handleInsert} />
+      </Hotkeys>
+    );
+  }
+  render() {
+    const {
+      isReplace,
+      selectionLayer,
+      sequenceLength,
+      caretPosition,
+      acceptedChars = "atgc",
+      maxInsertSize
+    } = this.props;
+    const { bpsToInsert, hasTempError } = this.state;
+
+    let message;
+    if (isReplace) {
+      const betweenVals = getInsertBetweenVals(
+        -1,
+        selectionLayer,
+        sequenceLength
+      );
+      message = (
+        <span>
+          Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}
+          {getRangeLength(selectionLayer, sequenceLength)} base pairs between{" "}
+          {betweenVals[0]} and {betweenVals[1]}
+        </span>
+      );
+    } else {
+      message = (
+        <span>
+          Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to insert{" "}
+          {bpsToInsert.length} base pairs after base {caretPosition}
+        </span>
+      );
+    }
+    return (
+      <div onBlur={this.handleUnmount} className={"sequenceInputBubble"}>
+        <input
+          autoCorrect={"off"}
+          onKeyDown={e => {
+            if (e.keyCode === 27) {
+              this.handleUnmount();
+            }
+            if (e.keyCode === 13) {
+              this.handleInsert();
+              this.handleUnmount();
+            }
+          }}
+          className={"pt-input"}
+          value={bpsToInsert}
+          ref={input => input && input.focus()}
+          style={hasTempError ? { borderColor: "red" } : {}}
+          onChange={e => {
+            let sanitizedVal = "";
+            e.target.value.split("").forEach(letter => {
+              if (acceptedChars.includes(letter.toLowerCase())) {
+                sanitizedVal += letter;
+              }
+            });
+            if (e.target.value.length !== sanitizedVal.length) {
+              this.setState({
+                hasTempError: true
+              });
+              setTimeout(() => {
+                this.setState({
+                  hasTempError: false
+                });
+              }, 200);
+            }
+            if (maxInsertSize && sanitizedVal.lenth > maxInsertSize) {
+              return window.toastr.error(
+                "Sorry, your insert is greater than ",
+                maxInsertSize
+              );
+            }
+            e.target.value = sanitizedVal;
+
+            this.setState({ bpsToInsert: sanitizedVal });
+          }}
+        />
+        <div style={{ marginTop: 10 }}>{message}</div>
+        <div style={{ marginTop: 10 }}>
+          Press <span style={{ fontWeight: "bolder" }}>ESC</span> to cancel
+        </div>
+      </div>
+    );
+  }
 }
+HotkeysTarget(SequenceInput);

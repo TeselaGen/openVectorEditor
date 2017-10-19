@@ -31,7 +31,7 @@ class Clipboard extends React.Component {
       return;
     }
     if (!metaKeyIsDown) {
-      this.props.onDnaInsert && this.props.onDnaInsert(e);
+      // this.props.onDnaInsert && this.props.onDnaInsert(e);
       return;
     }
 
