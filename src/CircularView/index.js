@@ -69,7 +69,6 @@ export class CircularView extends React.Component {
   }
 
   render() {
-    let propsToUse = { ...this.props.veWrapperProvidedProps, ...this.props };
     let {
       //set defaults for all of these vars
       width = 400,
@@ -107,7 +106,7 @@ export class CircularView extends React.Component {
       // modifyLayers = function (layers) {
       //   return layers
       // },
-    } = propsToUse;
+    } = this.props;
     let {
       Labels = _Labels,
       SelectionLayer = _SelectionLayer,

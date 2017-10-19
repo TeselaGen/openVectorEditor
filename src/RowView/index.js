@@ -18,30 +18,25 @@ let defaultMarginWidth = 50;
 
 function noop() {}
 
-const defaultProps = {
-  sequenceData: { sequence: "" },
-  selectionLayer: {},
-  // bpToJumpTo:0,
-  editorDragged: noop,
-  editorDragStarted: noop,
-  editorClicked: noop,
-  editorDragStopped: noop,
-  onScroll: noop,
-  width: defaultContainerWidth,
-  marginWidth: defaultMarginWidth,
-  height: 400,
-  charWidth: defaultCharWidth,
-  veWrapperProvidedProps: {},
-  RowItemProps: {}
-};
-
 export class RowView extends React.Component {
-  getNearestCursorPositionToMouseEvent(rowData, event, callback) {
-    let { charWidth = defaultCharWidth } = {
-      ...defaultProps,
-      ...this.props.veWrapperProvidedProps,
-      ...this.props
-    };
+  static defaultProps = {
+
+    sequenceData: { sequence: "" },
+    selectionLayer: {},
+    // bpToJumpTo:0,
+    editorDragged: noop,
+    editorDragStarted: noop,
+    editorClicked: noop,
+    editorDragStopped: noop,
+    onScroll: noop,
+    width: defaultContainerWidth,
+    marginWidth: defaultMarginWidth,
+    height: 400,
+    charWidth: defaultCharWidth,
+    RowItemProps: {}
+  }
+  getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
+    let { charWidth = defaultCharWidth } = this.props
     let rowNotFound = true;
     let visibleRowsContainer = this.InfiniteScroller.items;
     //loop through all the rendered rows to see if the click event lands in one of them
@@ -111,58 +106,47 @@ export class RowView extends React.Component {
         draggableClassnames.selectionEnd
       )
     });
-  }
+  };
 
   componentWillReceiveProps(props) {
-    let thisPropsToUse = {
-      ...defaultProps,
-      ...this.props.veWrapperProvidedProps,
-      ...this.props
-    };
-    let propsToUse = {
-      ...defaultProps,
-      ...props.veWrapperProvidedProps,
-      ...props
-    };
-
-    let { caretPosition, selectionLayer, matchedSearchLayer } = propsToUse;
+    let { caretPosition, selectionLayer, matchedSearchLayer } = props;
 
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     let previousBp;
     let scrollToBp = -1;
     if (
       matchedSearchLayer.start > -1 &&
-      matchedSearchLayer.start !== thisPropsToUse.matchedSearchLayer.start
+      matchedSearchLayer.start !== this.props.matchedSearchLayer.start
     ) {
-      previousBp = thisPropsToUse.matchedSearchLayer.start;
+      previousBp = this.props.matchedSearchLayer.start;
       scrollToBp = matchedSearchLayer.start;
     } else if (
       matchedSearchLayer.end > -1 &&
-      matchedSearchLayer.end !== thisPropsToUse.selectionLayer.end
+      matchedSearchLayer.end !== this.props.selectionLayer.end
     ) {
-      previousBp = thisPropsToUse.selectionLayer.end;
+      previousBp = this.props.selectionLayer.end;
       scrollToBp = selectionLayer.end;
     } else if (
       caretPosition > -1 &&
-      caretPosition !== thisPropsToUse.caretPosition
+      caretPosition !== this.props.caretPosition
     ) {
-      previousBp = thisPropsToUse.caretPosition;
+      previousBp = this.props.caretPosition;
       scrollToBp = caretPosition;
     } else if (
       selectionLayer.start > -1 &&
-      selectionLayer.start !== thisPropsToUse.selectionLayer.start
+      selectionLayer.start !== this.props.selectionLayer.start
     ) {
-      previousBp = thisPropsToUse.selectionLayer.start;
+      previousBp = this.props.selectionLayer.start;
       scrollToBp = selectionLayer.start;
     } else if (
       selectionLayer.end > -1 &&
-      selectionLayer.end !== thisPropsToUse.selectionLayer.end
+      selectionLayer.end !== this.props.selectionLayer.end
     ) {
-      previousBp = thisPropsToUse.selectionLayer.end;
+      previousBp = this.props.selectionLayer.end;
       scrollToBp = selectionLayer.end;
     }
 
-    let bpsPerRow = getBpsPerRow(propsToUse);
+    let bpsPerRow = getBpsPerRow(props);
 
     if (scrollToBp > -1 && this.InfiniteScroller.scrollTo) {
       let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
@@ -176,11 +160,6 @@ export class RowView extends React.Component {
   }
 
   render() {
-    let propsToUse = {
-      ...defaultProps,
-      ...this.props.veWrapperProvidedProps,
-      ...this.props
-    };
     let {
       //currently found in props
       sequenceData,
@@ -195,7 +174,7 @@ export class RowView extends React.Component {
       height,
       RowItemProps,
       ...rest
-    } = propsToUse;
+    } = this.props;
     if (marginWidth < defaultMarginWidth) {
       marginWidth = defaultMarginWidth;
     }

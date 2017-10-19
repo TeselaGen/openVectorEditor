@@ -283,14 +283,23 @@ export function selectionLayerRightClicked(
     const sequence = sequenceSelector(editorState);
     const { selectionLayer, readOnly } = editorState;
     const selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
+    
     function makeTextCopyable(stringToCopy) {
       let text = "";
+      document.querySelector('.basicContext').addEventListener('copy', (e) => {
+        console.log('eT:',e)
+      })
+      
       let clipboard = new Clipboard(".basicContext", {
         text: function() {
+          document.addEventListener('copy', (e) => {
+            
+          })
           return stringToCopy;
         }
       });
-      clipboard.on("success", function() {
+      clipboard.on("success", function(e) {
+        document.removeEventListener('copy')
         if (text.length === 0) {
           console.log("No Sequence To Copy");
         } else {
@@ -298,6 +307,7 @@ export function selectionLayerRightClicked(
         }
       });
       clipboard.on("error", function() {
+        document.removeEventListener('copy')
         console.error("Error copying selection.");
       });
     }
@@ -305,6 +315,7 @@ export function selectionLayerRightClicked(
       {
         title: "Copy",
         fn: function() {
+          console.log('selectedSeq:',selectedSeq)
           makeTextCopyable(selectedSeq);
         }
       },

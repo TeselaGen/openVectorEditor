@@ -73,7 +73,6 @@ export class LinearView extends React.Component {
   }
 
   render() {
-    let propsToUse = { ...this.props.veWrapperProvidedProps, ...this.props };
     let {
       //currently found in props
       sequenceData = {},
@@ -88,7 +87,7 @@ export class LinearView extends React.Component {
       marginWidth = defaultMarginWidth,
       height,
       ...rest
-    } = propsToUse;
+    } = this.props;
     let innerWidth = width - marginWidth;
     this.charWidth = innerWidth / sequenceData.sequence.length;
     // var containerWidthMinusMargin = width - marginWidth

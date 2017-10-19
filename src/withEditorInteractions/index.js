@@ -11,9 +11,10 @@ import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
 import createSequenceInputPopup from "./createSequenceInputPopup";
 
-import moveCaret from "../withEditorInteractions/moveCaret";
-import handleCaretMoved from "../withEditorInteractions/handleCaretMoved";
+import moveCaret from "./moveCaret";
+import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
+import * as actions from "./actions";
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
@@ -44,7 +45,7 @@ function VectorInteractionHOC(Component, options) {
     }
     componentDidMount() {
       let {
-        sequenceDataInserted = noop,
+        // sequenceDataInserted = noop,
         backspacePressed = noop,
         selectAll = noop,
         selectInverse = noop,
@@ -174,6 +175,24 @@ function VectorInteractionHOC(Component, options) {
         event.stopPropagation();
       });
     }
+    updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
+      const {
+        selectionLayer,
+        caretPosition,
+        sequenceData = { sequence: "" }
+      } = this.props;
+      const sequenceLength = sequenceData.sequence.length;
+      updateSelectionOrCaret({
+        shiftHeld,
+        sequenceLength,
+        newRangeOrCaret,
+        caretPosition,
+        selectionLayer,
+        selectionLayerUpdate: this.selectionLayerUpdate,
+        caretPositionUpdate: this.caretPositionUpdate
+      });
+    };
+
     handlePaste = e => {
       this.handleDnaInsert(e);
     };
@@ -189,8 +208,8 @@ function VectorInteractionHOC(Component, options) {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly,
-        updateSequenceData,
-        handleInsert
+        updateSequenceData
+        // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
@@ -221,13 +240,126 @@ function VectorInteractionHOC(Component, options) {
           }
         });
     }
+    caretPositionUpdate = position => {
+      let { caretPosition = -1 } = this.props;
+      if (caretPosition === position) {
+        return;
+      }
+      //we only call caretPositionUpdate if we're actually changing something
+      this.props.caretPositionUpdate(position);
+    };
+    selectionLayerUpdate = newSelection => {
+      let { selectionLayer = { start: -1, end: -1 } } = this.props;
+      if (!newSelection) return;
+      const { start, end } = newSelection;
+      if (selectionLayer.start === start && selectionLayer.end === end) {
+        return;
+      }
+      //we only call selectionLayerUpdate if we're actually changing something
+      this.props.selectionLayerUpdate({
+        start,
+        end
+      });
+    };
 
-    render() {
+    featureClicked = ({ event, annotation }) => {
+      console.log('feat cliiii')
+      event.preventDefault();
+      event.stopPropagation();
+      const { annotationSelect, annotationDeselectAll } = this.props;
+      this.updateSelectionOrCaret(event.shiftKey, annotation)
+      annotationDeselectAll(undefined);
+      annotationSelect(annotation);
+    };
+
+    editorDragged = ({ nearestCaretPos }) => {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" }
       } = this.props;
+      let sequenceLength = sequenceData.sequence.length;
+
+      if (!dragInProgress) {
+        //we're starting the drag, so update the caret position!
+        if (!selectionStartGrabbed && !selectionEndGrabbed) {
+          //we're not dragging the caret or selection handles
+          this.caretPositionUpdate(nearestCaretPos);
+        }
+        dragInProgress = true;
+        return;
+      }
+      if (selectionStartGrabbed) {
+        handleSelectionStartGrabbed({
+          caretPosition,
+          selectionLayer,
+          selectionLayerUpdate: this.selectionLayerUpdate,
+          nearestCaretPos,
+          sequenceLength
+        });
+      } else if (selectionEndGrabbed) {
+        handleSelectionEndGrabbed({
+          caretPosition,
+          selectionLayer,
+          selectionLayerUpdate: this.selectionLayerUpdate,
+          nearestCaretPos,
+          sequenceLength
+        });
+      } else {
+        // else if (caretGrabbed) {
+        //     handleCaretDrag({
+        //         caretPosition,
+        //         selectionLayer,
+        //         selectionLayerUpdate,
+        //         nearestCaretPos,
+        //         sequenceLength
+        //     })
+        // }
+        //dragging somewhere within the sequence
+        //pass the caret position of the drag start
+        handleCaretDrag({
+          caretPosition: caretPositionOnDragStart,
+          selectionLayer,
+          selectionLayerUpdate: this.selectionLayerUpdate,
+          nearestCaretPos,
+          sequenceLength
+        });
+      }
+    };
+
+    editorClicked = ({ nearestCaretPos, shiftHeld }) => {
+      const {
+        caretPosition = -1,
+        selectionLayer = { start: -1, end: -1 },
+        sequenceData = { sequence: "" }
+      } = this.props;
+      const sequenceLength = sequenceData.sequence.length;
+      if (!dragInProgress) {
+        //we're not dragging the caret or selection handles
+        this.updateSelectionOrCaret(
+          shiftHeld,
+          nearestCaretPos,
+        );
+      }
+    };
+
+    editorDragStarted = opts => {
+      caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
+      selectionStartGrabbed = opts.selectionStartGrabbed;
+      selectionEndGrabbed = opts.selectionEndGrabbed;
+    };
+    editorDragStopped = () => {
+      setTimeout(function() {
+        dragInProgress = false;
+      });
+    };
+
+    render() {
+      const {
+        selectionLayer = { start: -1, end: -1 },
+        sequenceData = { sequence: "" }
+      } = this.props;
+
       //do this in two steps to determine propsToPass
       let {
         children,
@@ -239,102 +371,14 @@ function VectorInteractionHOC(Component, options) {
         sequenceData.sequence
       );
 
-      const selectionLayerUpdate = newSelection => {
-        if (!newSelection) return;
-        const { start, end } = newSelection;
-        if (selectionLayer.start === start && selectionLayer.end === end) {
-          return;
-        }
-        //we only call selectionLayerUpdate if we're actually changing something
-        this.props.selectionLayerUpdate({
-          start,
-          end
-        });
-      };
-      const caretPositionUpdate = position => {
-        if (caretPosition === position) {
-          return;
-        }
-        //we only call caretPositionUpdate if we're actually changing something
-        this.props.caretPositionUpdate(position);
-      };
-
-      let sequenceLength = sequenceData.sequence.length;
-
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          editorDragged: function({ nearestCaretPos }) {
-            if (!dragInProgress) {
-              //we're starting the drag, so update the caret position!
-              if (!selectionStartGrabbed && !selectionEndGrabbed) {
-                //we're not dragging the caret or selection handles
-                caretPositionUpdate(nearestCaretPos);
-              }
-              dragInProgress = true;
-              return;
-            }
-            if (selectionStartGrabbed) {
-              handleSelectionStartGrabbed({
-                caretPosition,
-                selectionLayer,
-                selectionLayerUpdate,
-                nearestCaretPos,
-                sequenceLength
-              });
-            } else if (selectionEndGrabbed) {
-              handleSelectionEndGrabbed({
-                caretPosition,
-                selectionLayer,
-                selectionLayerUpdate,
-                nearestCaretPos,
-                sequenceLength
-              });
-            } else {
-              // else if (caretGrabbed) {
-              //     handleCaretDrag({
-              //         caretPosition,
-              //         selectionLayer,
-              //         selectionLayerUpdate,
-              //         nearestCaretPos,
-              //         sequenceLength
-              //     })
-              // }
-              //dragging somewhere within the sequence
-              //pass the caret position of the drag start
-              handleCaretDrag({
-                caretPosition: caretPositionOnDragStart,
-                selectionLayer,
-                selectionLayerUpdate,
-                nearestCaretPos,
-                sequenceLength
-              });
-            }
-          },
-          editorDragStarted: function(opts) {
-            caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
-            selectionStartGrabbed = opts.selectionStartGrabbed;
-            selectionEndGrabbed = opts.selectionEndGrabbed;
-          },
-          editorClicked: function({ nearestCaretPos, shiftHeld }) {
-            if (!dragInProgress) {
-              //we're not dragging the caret or selection handles
-              updateSelectionOrCaret({
-                shiftHeld,
-                sequenceLength,
-                newRangeOrCaret: nearestCaretPos,
-                caretPosition,
-                selectionLayer,
-                selectionLayerUpdate,
-                caretPositionUpdate
-              });
-            }
-          },
-          editorDragStopped: function() {
-            setTimeout(function() {
-              dragInProgress = false;
-            });
-          }
+          featureClicked: this.featureClicked,
+          editorDragged: this.editorDragged,
+          editorDragStarted: this.editorDragStarted,
+          editorClicked: this.editorClicked,
+          editorDragStopped: this.editorDragStopped
         };
       }
       return (
@@ -353,7 +397,7 @@ function VectorInteractionHOC(Component, options) {
             noTarget
           />{" "}
           {/* we pass this dialog here */}
-          <Component veWrapperProvidedProps={propsToPass} />
+          <Component {...propsToPass} />
         </div>
       );
     }
@@ -384,6 +428,7 @@ function handleSelectionStartGrabbed({
     });
   }
 }
+
 function handleSelectionEndGrabbed({
   caretPosition,
   selectionLayer,
