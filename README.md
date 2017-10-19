@@ -74,7 +74,15 @@ editor.updateEditor({
 			}
 		],
 		parts: []
-	}
+	},
+	annotationVisibility: {
+		features: false
+	},
+	panelsShown: {
+		circular: false
+	},
+	caretPosition: 10,
+	...additional editor props can be passed here [Example Editor State](./editorStateExample.js)
 });	
 </script>
 ```
