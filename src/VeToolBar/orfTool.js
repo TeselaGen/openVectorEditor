@@ -25,7 +25,7 @@ export default ({
     Dropdown: OrfToolDropdown,
     dropdowntooltip:
       (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
-    id: "orfs"
+    id: "orfTool"
   };
 };
 

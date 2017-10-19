@@ -22,7 +22,7 @@ export default function CutsiteTool({
     tooltipToggled: "Hide cut sites",
     Dropdown: CutsiteToolDropDown,
     dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options",
-    id: "cutsites"
+    id: "cutsiteTool"
   };
 }
 

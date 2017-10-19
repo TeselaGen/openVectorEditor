@@ -69,7 +69,7 @@ export class VeToolBar extends React.Component {
     // let content = items.map((item, index) => <ToolbarItem key={item.id} {...{item, toggleOpen: this.toggleOpen, isOpen: index === this.state.openItem, index, ...rest}}></ToolbarItem>);
     let content = items.map((item, index) => (
       <ToolbarItem
-        key={item.id}
+        key={index}
         {...{
           item,
           toggleOpen: this.toggleOpen,

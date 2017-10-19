@@ -24,7 +24,7 @@ export default ({
     tooltipToggled: "Hide features",
     Dropdown: ConnectedFeatureToolDropdown,
     dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options",
-    id: "features"
+    id: "featureTool"
   };
 };
 

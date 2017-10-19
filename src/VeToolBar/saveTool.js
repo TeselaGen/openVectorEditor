@@ -6,6 +6,6 @@ export default ({ onSave = () => {} }) => {
     Icon: <Icon iconName={IconClasses.FLOPPY_DISK} />,
     onIconClick: onSave,
     tooltip: "Save",
-    id: "save"
+    id: "saveTool"
   };
 };

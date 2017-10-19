@@ -10,7 +10,7 @@ export default ({ isOpen, toggleDropdown }) => {
     noDropdownIcon: true,
     toggled: isOpen,
     tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options",
-    id: "editMode"
+    id: "visibilityTool"
   };
 };
 

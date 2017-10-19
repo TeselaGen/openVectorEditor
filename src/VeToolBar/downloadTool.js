@@ -1,11 +1,11 @@
 import jsonToGenbank from "bio-parsers/parsers/jsonToGenbank";
 import FileSaver from "file-saver";
 import React from "react";
-import {Icon, IconClasses} from '@blueprintjs/core';
+import { Icon, IconClasses } from "@blueprintjs/core";
 
-export default ({sequenceData}) => {
+export default ({ sequenceData }) => {
   return {
-    Icon: <Icon iconName={IconClasses.IMPORT}></Icon>,
+    Icon: <Icon iconName={IconClasses.IMPORT} />,
     onIconClick: function() {
       let blob = new Blob([jsonToGenbank(sequenceData)], {
         type: "text/plain"
@@ -14,6 +14,6 @@ export default ({sequenceData}) => {
       // downloadSequenceData(sequenceData || )
     },
     tooltip: "Download .gb file",
-    id: "download"
+    id: "downloadTool"
   };
 };
