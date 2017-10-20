@@ -209,6 +209,7 @@ function VectorInteractionHOC(Component, options) {
     };
 
     handleCopy = e => {
+      window.toastr.success("Selection Copied");
       const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
       onCopy(
         e,
@@ -307,6 +308,7 @@ function VectorInteractionHOC(Component, options) {
         let clipboard = new Clipboard(".basicContext", {
           text: function() {
             document.body.addEventListener("copy", handleDaCopy);
+            text = stringToCopy;
             return stringToCopy;
           }
         });
