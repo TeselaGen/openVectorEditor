@@ -19,6 +19,7 @@ function Cutsites({
   let svgGroup = [];
   let labels = {};
   let index = 0;
+  if (!Object.keys(cutsites).length) return null;
   each(cutsites, function(annotation /* key */) {
     index++;
     function onClick(event) {

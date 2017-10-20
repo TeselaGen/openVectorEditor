@@ -29,7 +29,9 @@ function Orfs({
   let maxYOffset = 0;
   let svgGroup = [];
   let labels = {};
-
+  if (!Object.keys(orfs).length) {
+    return null;
+  }
   Object.keys(orfs).forEach(function(key, index) {
     let annotation = orfs[key];
     function onClick(event) {

@@ -31,6 +31,7 @@ function Features({
   let maxYOffset = 0;
   let svgGroup = [];
   let labels = {};
+  if (!Object.keys(features).length) return null;
   Object.keys(features).forEach(function(key, index) {
     let annotation = features[key];
     function onClick(event) {

@@ -20,6 +20,7 @@ function LineageLines(props) {
     lineageLinesToUse = [lineageLines];
   }
   let height = 0;
+  if (!lineageLinesToUse.length) return null;
   let component = (
     <g key="veLineageLines" className="veLineageLines">
       {lineageLinesToUse

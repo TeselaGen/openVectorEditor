@@ -20,6 +20,7 @@ function Labels({
   condenseOverflowingXLabels = true //set to true to make labels tha
   /*radius*/
 }) {
+  if (!Object.keys(labels).length) return null;
   outerRadius += 25;
   let radius = outerRadius;
   let outerPointRadius = outerRadius - 35;

@@ -215,7 +215,10 @@ export class CircularView extends React.Component {
         //   console.warn('radius before draw:',JSON.stringify(radius,null,4))
         radius += spaceBefore;
         let result = layer();
-        if (!result) return null;
+        if (!result) {
+          radius -= spaceBefore;
+          return null;
+        }
         radius += spaceAfter;
         // console.warn('radius after draw:',JSON.stringify(radius,null,4))
         return {
@@ -265,6 +268,7 @@ export class CircularView extends React.Component {
           editorName,
           ...featureOptions
         });
+        if (!results) return null;
         //update the radius, labels, and svg
         radius += results.height;
         labels = { ...labels, ...results.labels };
@@ -289,6 +293,8 @@ export class CircularView extends React.Component {
           sequenceLength,
           editorName
         });
+        if (!results) return null;
+
         //update the radius, labels, and svg
         radius += results.height;
         labels = { ...labels, ...results.labels };
@@ -348,6 +354,8 @@ export class CircularView extends React.Component {
           editorName,
           ...featureOptions
         });
+        if (!results) return null;
+
         //update the radius, labels, and svg
         radius += results.height;
         labels = { ...labels, ...results.labels };
@@ -400,7 +408,7 @@ export class CircularView extends React.Component {
 
     function drawLineageLines() {
       if (showLineageLines) {
-        let result = LineageLines({
+        let results = LineageLines({
           radius,
           sequenceLength,
           annotationHeight: 6,
@@ -408,9 +416,10 @@ export class CircularView extends React.Component {
           lineageLines
           // lineageLines: [{start: 10, end:2000,},{start: 201, end:9,}],
         });
+        if (!results) return null;
         //update the radius, and svg
-        radius += result.height;
-        return result.component;
+        radius += results.height;
+        return results.component;
       }
     }
 
@@ -422,7 +431,7 @@ export class CircularView extends React.Component {
           maxCutsitesToDisplay
         );
         paredDownCutsites = paredDown;
-        let cutsiteResults = Cutsites({
+        let results = Cutsites({
           cutsites: annotationsToPass,
           radius,
           annotationHeight,
@@ -430,10 +439,11 @@ export class CircularView extends React.Component {
           editorName,
           cutsiteClicked
         });
+        if (!results) return null;
         //update the radius, labels, and svg
-        radius += cutsiteResults.height;
-        labels = { ...labels, ...cutsiteResults.labels };
-        return cutsiteResults.component;
+        radius += results.height;
+        labels = { ...labels, ...results.labels };
+        return results.component;
       }
     }
 
@@ -496,9 +506,10 @@ export class CircularView extends React.Component {
     }
 
     function drawLabels() {
-      let res = Labels({ editorName, labels, outerRadius: radius });
-      radius += res.height;
-      return res.component;
+      let results = Labels({ editorName, labels, outerRadius: radius });
+      if (!results) return null;
+      radius += results.height;
+      return results.component;
     }
 
     return (

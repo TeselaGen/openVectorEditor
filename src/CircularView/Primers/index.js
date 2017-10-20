@@ -26,6 +26,7 @@ function Primers({
   primers = {},
   sequenceLength
 }) {
+  if (!Object.keys(primers).length) return null;
   let totalAnnotationHeight = primerHeight + spaceBetweenAnnotations;
   let primerITree = new intervalTree2(Math.PI);
   let maxYOffset = 0;
