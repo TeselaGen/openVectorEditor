@@ -1,6 +1,6 @@
 import VeWarning from "../helperComponents/VeWarning";
 import getRangeLength from "ve-range-utils/getRangeLength";
-import PassThrough from "../utils/PassThrough";
+// import PassThrough from "../utils/PassThrough";
 import _Labels from "./Labels";
 import _SelectionLayer from "./SelectionLayer";
 import _Caret from "./Caret";
@@ -76,7 +76,7 @@ export class CircularView extends React.Component {
       scale = 1,
       sequenceData = {},
       hideName = false,
-      HoverHelper = PassThrough,
+      editorName,
       selectionLayer = { start: -1, end: -1 },
       annotationHeight = 15,
       spaceBetweenAnnotations = 2,
@@ -262,7 +262,7 @@ export class CircularView extends React.Component {
           annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
-          HoverHelper,
+          editorName,
           ...featureOptions
         });
         //update the radius, labels, and svg
@@ -287,7 +287,7 @@ export class CircularView extends React.Component {
           annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
-          HoverHelper
+          editorName
         });
         //update the radius, labels, and svg
         radius += results.height;
@@ -304,7 +304,7 @@ export class CircularView extends React.Component {
         annotationHeight,
         spaceBetweenAnnotations,
         sequenceLength,
-        HoverHelper
+        editorName
       });
       if (!results) return null;
       //update the radius, labels, and svg
@@ -321,7 +321,7 @@ export class CircularView extends React.Component {
         annotationHeight,
         spaceBetweenAnnotations,
         sequenceLength,
-        HoverHelper
+        editorName
       });
       if (!results) return null;
       //update the radius, labels, and svg
@@ -345,7 +345,7 @@ export class CircularView extends React.Component {
           annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
-          HoverHelper,
+          editorName,
           ...featureOptions
         });
         //update the radius, labels, and svg
@@ -404,7 +404,7 @@ export class CircularView extends React.Component {
           radius,
           sequenceLength,
           annotationHeight: 6,
-          HoverHelper,
+          editorName,
           lineageLines
           // lineageLines: [{start: 10, end:2000,},{start: 201, end:9,}],
         });
@@ -427,7 +427,7 @@ export class CircularView extends React.Component {
           radius,
           annotationHeight,
           sequenceLength,
-          HoverHelper,
+          editorName,
           cutsiteClicked
         });
         //update the radius, labels, and svg
@@ -496,7 +496,7 @@ export class CircularView extends React.Component {
     }
 
     function drawLabels() {
-      let res = Labels({ HoverHelper, labels, outerRadius: radius });
+      let res = Labels({ editorName, labels, outerRadius: radius });
       radius += res.height;
       return res.component;
     }
@@ -543,7 +543,6 @@ export class CircularView extends React.Component {
             <svg
               key="circViewSvg"
               onClick={event => {
-                console.log("instantiated:", instantiated);
                 instantiated &&
                   this.getNearestCursorPositionToMouseEvent(
                     event,

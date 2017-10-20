@@ -3,7 +3,7 @@ import map from "lodash/map";
 import randomcolor from "randomcolor";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 import getRangeAngles from "./getRangeAnglesSpecial";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 
@@ -21,9 +21,11 @@ function DeletionLayers(props) {
     <g key="veDeletionLayers" className="veDeletionLayers">
       {map(deletionLayers, function(deletionLayer, index) {
         if (
-          !(deletionLayer.start > -1 &&
+          !(
+            deletionLayer.start > -1 &&
             deletionLayer.end > -1 &&
-            sequenceLength > 0)
+            sequenceLength > 0
+          )
         ) {
           return;
         }
@@ -71,7 +73,6 @@ function DeletionLayers(props) {
               eAngle={endAngle}
               forward
             >
-
               <path
                 className="veDeletionLayer"
                 // strokeWidth=".5"
@@ -91,4 +92,5 @@ function DeletionLayers(props) {
   };
 }
 
-export default lruMemoize(5, undefined, true)(DeletionLayers);
+// export default lruMemoize(5, undefined, true)(DeletionLayers);
+export default DeletionLayers;

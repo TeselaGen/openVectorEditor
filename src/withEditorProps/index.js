@@ -1,9 +1,7 @@
 import { bindActionCreators } from "redux";
-import React from "react";
 import { connect } from "react-redux";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
-import HoverHelperComp from "../helperComponents/HoverHelper";
 import s from "../selectors";
 
 /**
@@ -13,16 +11,6 @@ import s from "../selectors";
 export default connect((state, ownProps) => {
   const { editorName, onSave = () => {} } = ownProps;
   let meta = { editorName };
-  let HoverHelper = function(props) {
-    return (
-      <HoverHelperComp
-        {...{
-          ...props,
-          meta
-        }}
-      />
-    );
-  };
   let { VectorEditor } = state;
   let editorState = VectorEditor[editorName];
   if (!editorState) return {};
@@ -74,8 +62,6 @@ export default connect((state, ownProps) => {
       orfs,
       translations
     },
-    HoverHelper,
-    // HoverHelper: _HoverHelper,
     meta
   };
 }, mapDispatchToActions);

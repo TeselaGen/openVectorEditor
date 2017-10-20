@@ -3,7 +3,7 @@ import map from "lodash/map";
 import flatMap from "lodash/flatMap";
 import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
-import PassThrough from "../utils/PassThrough";
+// import PassThrough from "../utils/PassThrough";
 import getComplementSequenceString from "ve-sequence-utils/getComplementSequenceString";
 import React from "react";
 import SelectionLayer from "./SelectionLayer";
@@ -66,7 +66,7 @@ export class RowItem extends React.Component {
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       bpsPerRow,
-      HoverHelper = PassThrough,
+      editorName,
       componentOverrides = {}
     } = this.props;
     let {
@@ -128,7 +128,7 @@ export class RowItem extends React.Component {
       width: width + "px"
     };
     let annotationCommonProps = {
-      HoverHelper,
+      editorName,
       charWidth,
       bpsPerRow,
       sequenceLength,

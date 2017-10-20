@@ -32,7 +32,7 @@ export {
   default as DigestTool,
   DigestTool as DigestToolUnconnected
 } from "./DigestTool/DigestTool";
-export { default as HoverHelper } from "./helperComponents/HoverHelper";
+export { default as withHover } from "./helperComponents/withHover";
 
 export { default as vectorEditorReducer } from "./redux";
 export { default as updateEditor } from "./updateEditor";

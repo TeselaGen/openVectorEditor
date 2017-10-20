@@ -1,4 +1,12 @@
+import basicContext from "basiccontext";
+import "basiccontext/dist/basicContext.min.css";
+import "basiccontext/dist/themes/default.min.css";
+import {
+  getReverseComplementSequenceString,
+  getSequenceDataBetweenRange
+} from "ve-sequence-utils";
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
+import Clipboard from "clipboard";
 import { compose } from "redux";
 import { insertSequenceDataAtPositionOrRange } from "ve-sequence-utils";
 import Keyboard from "./Keyboard";
@@ -6,7 +14,11 @@ import Keyboard from "./Keyboard";
 import withEditorProps from "../withEditorProps";
 import updateSelectionOrCaret from "../utils/selectionAndCaretUtils/updateSelectionOrCaret";
 import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
-import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRangeLength";
+import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
+import {
+  normalizePositionByRangeLength,
+  convertRangeTo1Based
+} from "ve-range-utils";
 import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
 import createSequenceInputPopup from "./createSequenceInputPopup";
@@ -14,7 +26,6 @@ import createSequenceInputPopup from "./createSequenceInputPopup";
 import moveCaret from "./moveCaret";
 import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
-import * as actions from "./actions";
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
@@ -198,8 +209,12 @@ function VectorInteractionHOC(Component, options) {
     };
 
     handleCopy = e => {
-      const { onCopy = () => {}, sequenceData } = this.props;
-      onCopy(e, sequenceData, this.props);
+      const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
+      onCopy(
+        e,
+        getSequenceDataBetweenRange(sequenceData, selectionLayer),
+        this.props
+      );
     };
 
     handleDnaInsert() {
@@ -262,14 +277,265 @@ function VectorInteractionHOC(Component, options) {
       });
     };
 
-    featureClicked = ({ event, annotation }) => {
-      console.log('feat cliiii')
+    annotationClicked = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
-      this.updateSelectionOrCaret(event.shiftKey, annotation)
+      this.updateSelectionOrCaret(event.shiftKey, annotation);
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
+    };
+    selectionLayerRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const {
+        editorName,
+        sequenceData,
+        selectionLayer,
+        readOnly,
+        dispatch,
+        upsertTranslation
+      } = this.props;
+      const { sequence } = sequenceData;
+      const selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
+      const handleDaCopy = e => {
+        this.handleCopy(e);
+        document.body.removeEventListener("copy", handleDaCopy);
+      };
+      const makeTextCopyable = stringToCopy => {
+        let text = "";
+        let clipboard = new Clipboard(".basicContext", {
+          text: function() {
+            document.body.addEventListener("copy", handleDaCopy);
+            return stringToCopy;
+          }
+        });
+        clipboard.on(
+          "success",
+          (/* e */) => {
+            clipboard.destroy();
+            if (text.length === 0) {
+              console.log("No Sequence To Copy");
+            } else {
+              console.log("Selection Copied!");
+            }
+          }
+        );
+        clipboard.on("error", () => {
+          clipboard.destroy();
+          console.error("Error copying selection.");
+        });
+      };
+      let items = [
+        {
+          title: "Copy",
+          fn: function() {
+            console.log("selectedSeq:", selectedSeq);
+            makeTextCopyable(selectedSeq);
+          }
+        },
+        {
+          title: "Copy Reverse Complement",
+          fn: function() {
+            makeTextCopyable(getReverseComplementSequenceString(selectedSeq));
+          }
+        },
+        ...(readOnly
+          ? []
+          : [
+              {
+                title: "Create Feature",
+                fn: function() {
+                  dispatch({
+                    type: "TG_SHOW_MODAL",
+                    name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
+                    props: {
+                      editorName,
+                      dialogProps: {
+                        title: "Add Feature"
+                      }
+                    }
+                  });
+                }
+              }
+            ]),
+        {
+          title: "View Translation",
+          // icon: "ion-plus-round",
+          fn: function() {
+            upsertTranslation({
+              start: annotation.start,
+              end: annotation.end,
+              forward: true
+            });
+          }
+        },
+        {
+          title: "View Translation",
+          // icon: "ion-plus-round",
+          fn: function() {
+            upsertTranslation({
+              start: annotation.start,
+              end: annotation.end,
+              forward: false
+            });
+          }
+        }
+        // ...extraItems
+
+        // { title: 'Reset Login', icon: 'ion-person', fn: clicked },
+        // { title: 'Help', icon: 'ion-help-buoy', fn: clicked },
+        // { },
+        // { title: 'Disabled', icon: 'ion-minus-circled', fn: clicked, disabled: true },
+        // { title: 'Invisible', icon: 'ion-eye-disabled', fn: clicked, visible: false },
+        // { title: 'Logout', icon: 'ion-log-out', fn: clicked }
+      ];
+
+      basicContext.show(items, event);
+    };
+
+    deletionLayerRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { editorName, dispatch } = this.props;
+      let items = [
+        {
+          title: "Remove Deletion",
+          // icon: "ion-plus-round",
+          fn: function() {
+            dispatch({
+              type: "DELETION_LAYER_DELETE",
+              meta: { editorName },
+              payload: { ...annotation }
+            });
+          }
+        }
+      ];
+
+      basicContext.show(items, event);
+    };
+    featureRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { editorName, readOnly, dispatch, upsertTranslation } = this.props;
+      let items = [
+        ...(readOnly
+          ? []
+          : [
+              {
+                title: "Edit Feature",
+                fn: function() {
+                  dispatch({
+                    type: "TG_SHOW_MODAL",
+                    name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
+                    props: {
+                      editorName,
+                      dialogProps: {
+                        title: "Edit Feature"
+                      },
+                      initialValues: {
+                        ...convertRangeTo1Based(annotation)
+                      }
+                    }
+                  });
+                }
+              }
+            ]),
+        {
+          title: "View Translation",
+          // icon: "ion-plus-round",
+          fn: function() {
+            upsertTranslation({
+              start: annotation.start,
+              end: annotation.end,
+              forward: annotation.forward
+            });
+          }
+        }
+      ];
+
+      basicContext.show(items, event);
+    };
+    primerRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { editorName, readOnly, dispatch, upsertTranslation } = this.props;
+      let items = [
+        ...(readOnly
+          ? []
+          : [
+              {
+                title: "Edit Primer",
+                fn: function() {
+                  dispatch({
+                    type: "TG_SHOW_MODAL",
+                    name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
+                    props: {
+                      editorName,
+                      dialogProps: {
+                        title: "Edit Primer"
+                      },
+                      initialValues: {
+                        ...convertRangeTo1Based(annotation)
+                      }
+                    }
+                  });
+                }
+              }
+            ]),
+        {
+          title: "View Translation",
+          // icon: "ion-plus-round",
+          fn: function() {
+            upsertTranslation({
+              start: annotation.start,
+              end: annotation.end,
+              forward: annotation.forward
+            });
+          }
+        }
+      ];
+
+      basicContext.show(items, event);
+    };
+    orfRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { upsertTranslation } = this.props;
+      let items = [
+        {
+          title: "View Translation",
+          // icon: "ion-plus-round",
+          fn: function() {
+            upsertTranslation({
+              start: annotation.start,
+              end: annotation.end,
+              forward: annotation.forward
+            });
+          }
+        }
+      ];
+
+      basicContext.show(items, event);
+    };
+    translationRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { readOnly, deleteTranslation } = this.props;
+      let items = [
+        ...(readOnly
+          ? []
+          : [
+              {
+                title: "Delete Translation",
+                fn: function() {
+                  deleteTranslation(annotation);
+                }
+              }
+            ])
+      ];
+
+      basicContext.show(items, event);
     };
 
     editorDragged = ({ nearestCaretPos }) => {
@@ -328,18 +594,9 @@ function VectorInteractionHOC(Component, options) {
     };
 
     editorClicked = ({ nearestCaretPos, shiftHeld }) => {
-      const {
-        caretPosition = -1,
-        selectionLayer = { start: -1, end: -1 },
-        sequenceData = { sequence: "" }
-      } = this.props;
-      const sequenceLength = sequenceData.sequence.length;
       if (!dragInProgress) {
         //we're not dragging the caret or selection handles
-        this.updateSelectionOrCaret(
-          shiftHeld,
-          nearestCaretPos,
-        );
+        this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
       }
     };
 
@@ -370,11 +627,22 @@ function VectorInteractionHOC(Component, options) {
         selectionLayer,
         sequenceData.sequence
       );
-
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          featureClicked: this.featureClicked,
+          primerRightClick: this.primerRightClick,
+          selectionLayerRightClicked: this.selectionLayerRightClicked,
+          featureRightClicked: this.featureRightClicked,
+          orfRightClicked: this.orfRightClicked,
+          translationRightClicked: this.translationRightClicked,
+          deletionLayerRightClicked: this.deletionLayerRightClicked,
+          primerClicked: this.annotationClicked,
+          orfClicked: this.annotationClicked,
+          translationClicked: this.annotationClicked,
+          translationDoubleClicked: this.annotationClicked,
+          deletionLayerClicked: this.annotationClicked,
+          replacementLayerClicked: this.annotationClicked,
+          featureClicked: this.annotationClicked,
           editorDragged: this.editorDragged,
           editorDragStarted: this.editorDragStarted,
           editorClicked: this.editorClicked,
@@ -394,6 +662,10 @@ function VectorInteractionHOC(Component, options) {
           />
           <AddOrEditFeatureDialog
             dialogName="AddOrEditFeatureDialog"
+            noTarget
+          />{" "}
+          <AddOrEditPrimerDialog
+            dialogName="AddOrEditPrimerDialog"
             noTarget
           />{" "}
           {/* we pass this dialog here */}

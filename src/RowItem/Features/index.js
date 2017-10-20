@@ -20,7 +20,7 @@ function Features(props) {
     spaceBetweenAnnotations = 2,
     featureClicked,
     featureRightClicked,
-    HoverHelper
+    editorName
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -44,45 +44,35 @@ function Features(props) {
       charWidth
     );
     annotationsSVG.push(
-      <HoverHelper
-        passJustOnMouseOverAndClassname
-        // onHover={function () {
-        //     debugger
-        // }}
-        key={"feature" + index}
-        id={annotation.id}
+      <AnnotationPositioner
+        height={annotationHeight}
+        width={result.width}
+        key={index}
+        top={
+          annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)
+        }
+        left={result.xStart}
       >
-        <div onClick={function() {}}>
-          <AnnotationPositioner
-            height={annotationHeight}
-            width={result.width}
-            key={index}
-            top={
-              annotationRange.yOffset *
-              (annotationHeight + spaceBetweenAnnotations)
-            }
-            left={result.xStart}
-          >
-            <Feature
-              key={index}
-              featureClicked={featureClicked}
-              featureRightClicked={featureRightClicked}
-              annotation={annotation}
-              color={annotationColor}
-              widthInBps={annotationRange.end - annotationRange.start + 1}
-              charWidth={charWidth}
-              forward={annotation.forward}
-              rangeType={getAnnotationRangeType(
-                annotationRange,
-                annotation,
-                annotation.forward
-              )}
-              height={annotationHeight}
-              name={annotation.name}
-            />
-          </AnnotationPositioner>
-        </div>
-      </HoverHelper>
+        <Feature
+          key={index}
+          editorName={editorName}
+          id={annotation.id}
+          featureClicked={featureClicked}
+          featureRightClicked={featureRightClicked}
+          annotation={annotation}
+          color={annotationColor}
+          widthInBps={annotationRange.end - annotationRange.start + 1}
+          charWidth={charWidth}
+          forward={annotation.forward}
+          rangeType={getAnnotationRangeType(
+            annotationRange,
+            annotation,
+            annotation.forward
+          )}
+          height={annotationHeight}
+          name={annotation.name}
+        />
+      </AnnotationPositioner>
     );
   });
   let containerHeight =

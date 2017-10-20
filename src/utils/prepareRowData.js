@@ -1,6 +1,6 @@
 // var ac = require('ve-api-check');
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 
 import mapAnnotationsToRows from "ve-sequence-utils/mapAnnotationsToRows";
 import annotationTypes from "ve-sequence-utils/annotationTypes";
@@ -18,13 +18,14 @@ function prepareRowData(sequenceData, bpsPerRow) {
     );
   });
 
-  for (var rowNumber = 0; rowNumber < totalRows; rowNumber++) {
-    var row = {};
+  for (let rowNumber = 0; rowNumber < totalRows; rowNumber++) {
+    const row = {};
     row.rowNumber = rowNumber;
     row.start = rowNumber * bpsPerRow;
-    row.end = (rowNumber + 1) * bpsPerRow - 1 < sequenceLength
-      ? (rowNumber + 1) * bpsPerRow - 1
-      : sequenceLength - 1;
+    row.end =
+      (rowNumber + 1) * bpsPerRow - 1 < sequenceLength
+        ? (rowNumber + 1) * bpsPerRow - 1
+        : sequenceLength - 1;
     if (row.end < 0) {
       row.end = 0;
     }
@@ -38,4 +39,5 @@ function prepareRowData(sequenceData, bpsPerRow) {
   return rows;
 }
 
-export default lruMemoize(5, undefined, true)(prepareRowData);
+export default prepareRowData;
+// export default lruMemoize(5, undefined, true)(prepareRowData);

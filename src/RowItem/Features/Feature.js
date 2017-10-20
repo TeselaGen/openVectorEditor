@@ -1,10 +1,12 @@
-import getAnnotationNameAndStartStopString
-  from "../../utils/getAnnotationNameAndStartStopString";
+import withHover from "../../helperComponents/withHover";
+import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
 import React from "react";
 
 function Feature(props) {
   let {
+    hoverActions,
+    hoverProps: { className },
     widthInBps,
     charWidth,
     height,
@@ -37,7 +39,8 @@ function Feature(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${height}
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L ${0},${height}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -45,7 +48,8 @@ function Feature(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0 
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${height}
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L 0,${height} 
         z`;
   } else if (rangeType === "beginningAndEnd") {
@@ -77,7 +81,8 @@ function Feature(props) {
   // path=path.replace(/\n/g,'')
   return (
     <g
-      className="veRowViewFeature clickable"
+      {...hoverActions}
+      className={"veRowViewFeature clickable " + className}
       onClick={function(event) {
         featureClicked({ annotation, event });
       }}
@@ -113,4 +118,4 @@ function Feature(props) {
 //   featureClicked: PropTypes.func.isRequired
 // };
 
-export default Feature;
+export default withHover(Feature);

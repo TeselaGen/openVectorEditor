@@ -1,5 +1,5 @@
-import getAnnotationNameAndStartStopString
-  from "../../utils/getAnnotationNameAndStartStopString";
+import withHover from "../../helperComponents/withHover";
+import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
 // import PropTypes from "prop-types";
 
@@ -14,7 +14,7 @@ function Primer(props) {
     forward,
     name,
     pointiness = 8,
-    fontWidth = 9,
+    // fontWidth = 9,
     color = "orange",
     primerClicked,
     primerRightClicked,
@@ -39,7 +39,8 @@ function Primer(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${height}
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L ${0},${height}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -47,7 +48,8 @@ function Primer(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0 
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${height}
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L 0,${height} 
         z`;
   } else if (rangeType === "beginningAndEnd") {
@@ -127,4 +129,4 @@ function Primer(props) {
 //   primerClicked: PropTypes.func.isRequired
 // };
 
-export default Primer;
+export default withHover(Primer);

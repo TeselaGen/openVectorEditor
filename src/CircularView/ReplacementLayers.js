@@ -4,7 +4,7 @@ import map from "lodash/map";
 import randomcolor from "randomcolor";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 import getRangeAngles from "./getRangeAnglesSpecial";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 
@@ -24,9 +24,11 @@ function ReplacementLayers(props) {
         let insertingAtCaret = !!(replacementLayer.caretPosition > -1);
         if (
           !insertingAtCaret &&
-          !(replacementLayer.start > -1 &&
+          !(
+            replacementLayer.start > -1 &&
             replacementLayer.end > -1 &&
-            sequenceLength > 0)
+            sequenceLength > 0
+          )
         ) {
           return;
         }
@@ -83,7 +85,6 @@ function ReplacementLayers(props) {
               eAngle={endAngle}
               forward
             >
-
               <path
                 className="veReplacementLayer"
                 // strokeWidth=".5"
@@ -103,4 +104,5 @@ function ReplacementLayers(props) {
   };
 }
 
-export default lruMemoize(5, undefined, true)(ReplacementLayers);
+// export default lruMemoize(5, undefined, true)(ReplacementLayers);
+export default ReplacementLayers;

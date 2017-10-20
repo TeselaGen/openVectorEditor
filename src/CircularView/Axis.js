@@ -1,10 +1,9 @@
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import shouldFlipText from "./shouldFlipText";
 import React from "react";
-import calculateTickMarkPositionsForGivenRange
-  from "../utils/calculateTickMarkPositionsForGivenRange";
+import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
 
 function Axis({
   radius,
@@ -44,7 +43,9 @@ function Axis({
             <text
               transform={
                 (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
-                  ` translate(0, ${shouldFlipText(tickAngle) ? -textOffset : textOffset})`
+                ` translate(0, ${shouldFlipText(tickAngle)
+                  ? -textOffset
+                  : textOffset})`
               }
               style={{
                 textAnchor: "middle",
@@ -83,4 +84,5 @@ function Axis({
   };
 }
 
-export default lruMemoize(5, undefined, true)(Axis);
+// export default lruMemoize(5, undefined, true)(Axis);
+export default Axis;

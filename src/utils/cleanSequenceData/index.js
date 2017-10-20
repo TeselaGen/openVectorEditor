@@ -1,13 +1,13 @@
 import featureColors from "ve-sequence-utils/featureColors";
-import featureColorMap from "../../constants/featureColorMap.json";
-import lruMemoize from "lru-memoize";
+// import featureColorMap from "../../constants/featureColorMap.json";
+// import lruMemoize from "lru-memoize";
 import arrayToObjWithIds from "./arrayToObjWithIds";
 
 // TODO: figure out where to insert this validation exactly..
 import bsonObjectid from "bson-objectid";
 
 import assign from "lodash/assign";
-import randomColor from "randomcolor";
+// import randomColor from "randomcolor";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import { userDefinedTypes, getSingular } from "../annotationTypes";
 
@@ -26,7 +26,11 @@ function cleanSequenceData(seqData, options = {}) {
   sequenceData.size = sequenceData.sequence.length;
   if (
     sequenceData.circular === "false" ||
+    /* eslint-disable */
+
     sequenceData.circular == -1 ||
+    /* eslint-enable */
+
     !sequenceData.circular
   ) {
     sequenceData.circular = false;
@@ -60,6 +64,7 @@ function cleanSequenceData(seqData, options = {}) {
     sequenceData[annotationType] = newAnnotations;
   });
   if (options.logMessages) {
+    console.log(response.messages);
   }
 
   return sequenceData;
@@ -69,8 +74,8 @@ function cleanSequenceData(seqData, options = {}) {
       response.messages.push("Invalid annotation detected and removed");
       return false;
     }
-    annotation.start = parseInt(annotation.start);
-    annotation.end = parseInt(annotation.end);
+    annotation.start = parseInt(annotation.start, 10);
+    annotation.end = parseInt(annotation.end, 10);
 
     if (!annotation.name || typeof annotation.name !== "string") {
       response.messages.push(
@@ -79,7 +84,6 @@ function cleanSequenceData(seqData, options = {}) {
       annotation.name = "Untitled annotation";
     }
     if (!annotation.id && annotation.id !== 0) {
-      debugger;
       annotation.id = bsonObjectid().str;
       response.messages.push(
         "Unable to detect valid ID for annotation, setting ID to " +
@@ -150,4 +154,5 @@ function cleanSequenceData(seqData, options = {}) {
     return annotation;
   }
 }
-export default lruMemoize(5, undefined, true)(cleanSequenceData);
+export default cleanSequenceData;
+// export default lruMemoize(5, undefined, true)(cleanSequenceData);

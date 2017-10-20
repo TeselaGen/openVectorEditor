@@ -17,7 +17,8 @@ export default function upsertDeleteActionGenerator(
       };
     },
     [deleteAction]: (state, payload) => {
-      return omit(state, payload.id);
+      const id = payload.id || payload;
+      return omit(state, id);
     }
   };
 }

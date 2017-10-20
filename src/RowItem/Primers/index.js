@@ -1,5 +1,5 @@
 // import Sequence from "../Sequence";
-import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
+// import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
 import "./style.css";
 import forEach from "lodash/forEach";
 // import PropTypes from "prop-types";
@@ -22,9 +22,9 @@ function Primers(props) {
     spaceBetweenAnnotations = 2,
     primerClicked,
     primerRightClicked,
-    HoverHelper,
+    editorName
 
-    sequence = ""
+    // sequence = ""
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -32,7 +32,7 @@ function Primers(props) {
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
   forEach(annotationRanges, function(annotationRange, index) {
-    let seqInRow = getSequenceWithinRange(annotationRange, sequence);
+    // let seqInRow = getSequenceWithinRange(annotationRange, sequence);
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
@@ -43,45 +43,35 @@ function Primers(props) {
       charWidth
     );
     annotationsSVG.push(
-      <HoverHelper
-        passJustOnMouseOverAndClassname
-        // onHover={function () {
-        //     debugger
-        // }}
-        key={"primer" + index}
-        id={annotation.id}
+      <AnnotationPositioner
+        height={annotationHeight}
+        width={result.width}
+        key={index}
+        top={
+          annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)
+        }
+        left={result.xStart}
       >
-        <div onClick={function() {}}>
-          <AnnotationPositioner
-            height={annotationHeight}
-            width={result.width}
-            key={index}
-            top={
-              annotationRange.yOffset *
-              (annotationHeight + spaceBetweenAnnotations)
-            }
-            left={result.xStart}
-          >
-            <Primer
-              key={index}
-              primerClicked={primerClicked}
-              primerRightClicked={primerRightClicked}
-              annotation={annotation}
-              color={annotation.color}
-              widthInBps={annotationRange.end - annotationRange.start + 1}
-              charWidth={charWidth}
-              forward={annotation.forward}
-              rangeType={getAnnotationRangeType(
-                annotationRange,
-                annotation,
-                annotation.forward
-              )}
-              height={annotationHeight}
-              name={annotation.name}
-            />
-          </AnnotationPositioner>
-        </div>
-      </HoverHelper>
+        <Primer
+          key={index}
+          editorName={editorName}
+          id={annotation.id}
+          primerClicked={primerClicked}
+          primerRightClicked={primerRightClicked}
+          annotation={annotation}
+          color={annotation.color}
+          widthInBps={annotationRange.end - annotationRange.start + 1}
+          charWidth={charWidth}
+          forward={annotation.forward}
+          rangeType={getAnnotationRangeType(
+            annotationRange,
+            annotation,
+            annotation.forward
+          )}
+          height={annotationHeight}
+          name={annotation.name}
+        />
+      </AnnotationPositioner>
     );
   });
   let containerHeight =

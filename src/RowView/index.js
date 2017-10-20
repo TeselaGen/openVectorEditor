@@ -20,7 +20,6 @@ function noop() {}
 
 export class RowView extends React.Component {
   static defaultProps = {
-
     sequenceData: { sequence: "" },
     selectionLayer: {},
     // bpToJumpTo:0,
@@ -34,9 +33,9 @@ export class RowView extends React.Component {
     height: 400,
     charWidth: defaultCharWidth,
     RowItemProps: {}
-  }
+  };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
-    let { charWidth = defaultCharWidth } = this.props
+    let { charWidth = defaultCharWidth } = this.props;
     let rowNotFound = true;
     let visibleRowsContainer = this.InfiniteScroller.items;
     //loop through all the rendered rows to see if the click event lands in one of them
@@ -179,7 +178,7 @@ export class RowView extends React.Component {
       marginWidth = defaultMarginWidth;
     }
     let containerWidthMinusMargin = width - marginWidth;
-    let bpsPerRow = getBpsPerRow(propsToUse);
+    let bpsPerRow = getBpsPerRow(this.props);
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
     // let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =

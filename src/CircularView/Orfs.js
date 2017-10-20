@@ -1,12 +1,11 @@
-import getAnnotationNameAndStartStopString
-  from "../utils/getAnnotationNameAndStartStopString";
+import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import orfFrameToColorMap from "../constants/orfFrameToColorMap";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 import intervalTree2 from "teselagen-interval-tree";
 import getRangeAngles from "./getRangeAnglesSpecial";
-import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
+// import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import getYOffset from "./getYOffset";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import noop from "lodash/noop";
@@ -18,7 +17,7 @@ function Orfs({
   orfHeight = 6,
   orfClicked = noop,
   //non-configurable
-  HoverHelper,
+  editorName,
   orfs = {},
   sequenceLength
   // annotationHeight
@@ -90,52 +89,19 @@ function Orfs({
 
     let color = orfFrameToColorMap[annotation.frame];
     svgGroup.push(
-      <HoverHelper
+      <DrawOrf
         id={annotation.id}
         key={"orf" + index}
-        passJustOnMouseOverAndClassname
-      >
-        <g onClick={onClick} className="Orfs clickable">
-          <title>
-            {" "}
-            {getAnnotationNameAndStartStopString(annotation, {
-              startText: "Open Reading Frame:"
-            })}
-            {" "}
-          </title>
-          <PositionAnnotationOnCircle
-            sAngle={startAngle}
-            eAngle={endAngle}
-            forward={!annotation.forward}
-          >
-            <path
-              className="veOrf"
-              strokeWidth=".5"
-              stroke={color}
-              fill={color}
-              d={path}
-            />
-          </PositionAnnotationOnCircle>
-          {/*{
-                      [annotation.forward ? annotation.start : annotation.end,...annotation.internalStartCodonIndices].map(function (position) {
-                        var circleAngle = getAngleForPositionMidpoint(position, sequenceLength);
-                        return <PositionAnnotationOnCircle
-                          sAngle={ circleAngle }
-                          eAngle={ circleAngle }
-                          height={ annotationRadius }
-                          forward={!annotation.forward}>
-                          <circle
-                              r={3}
-                              strokeWidth=".5"
-                              stroke={ color }
-                              fill={ color }
-                              d={ path }
-                            />
-                        </PositionAnnotationOnCircle>
-                      })
-                    }*/}
-        </g>
-      </HoverHelper>
+        {...{
+          onClick,
+          editorName,
+          annotation,
+          startAngle,
+          endAngle,
+          color,
+          path
+        }}
+      />
     );
   });
   return {
@@ -149,4 +115,62 @@ function Orfs({
   };
 }
 
-export default lruMemoize(5, undefined, true)(Orfs);
+// export default lruMemoize(5, undefined, true)(Orfs);
+export default Orfs;
+
+const DrawOrf = ({
+  hoverActions,
+  hoverProps: { className },
+  onClick,
+  annotation,
+  startAngle,
+  endAngle,
+  color,
+  path
+}) => {
+  return (
+    <g
+      {...hoverActions}
+      onClick={onClick}
+      className={"Orfs clickable " + className}
+    >
+      <title>
+        {" "}
+        {getAnnotationNameAndStartStopString(annotation, {
+          startText: "Open Reading Frame:"
+        })}{" "}
+      </title>
+      <PositionAnnotationOnCircle
+        sAngle={startAngle}
+        eAngle={endAngle}
+        forward={!annotation.forward}
+      >
+        <path
+          className="veOrf"
+          strokeWidth=".5"
+          stroke={color}
+          fill={color}
+          d={path}
+        />
+      </PositionAnnotationOnCircle>
+      {/*{
+              [annotation.forward ? annotation.start : annotation.end,...annotation.internalStartCodonIndices].map(function (position) {
+                var circleAngle = getAngleForPositionMidpoint(position, sequenceLength);
+                return <PositionAnnotationOnCircle
+                  sAngle={ circleAngle }
+                  eAngle={ circleAngle }
+                  height={ annotationRadius }
+                  forward={!annotation.forward}>
+                  <circle
+                      r={3}
+                      strokeWidth=".5"
+                      stroke={ color }
+                      fill={ color }
+                      d={ path }
+                    />
+                </PositionAnnotationOnCircle>
+              })
+            }*/}
+    </g>
+  );
+};

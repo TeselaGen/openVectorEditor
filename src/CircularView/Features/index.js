@@ -1,4 +1,5 @@
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
+import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import Feature from "./Feature";
 import drawCircularLabel2 from "../drawCircularLabel2";
@@ -6,7 +7,7 @@ import intervalTree2 from "teselagen-interval-tree";
 import getRangeAngles from "../getRangeAnglesSpecial";
 import featureColorMap from "../../constants/featureColorMap.json";
 import getYOffset from "../getYOffset";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "../PositionAnnotationOnCircle";
 import React from "react";
 import noop from "lodash/noop";
@@ -15,13 +16,13 @@ function Features({
   radius,
   showFeatureLabels = true,
   //configurable
+  editorName,
   forceInlineFeatureLabels = true,
   forceOuterFeatureLabels = true,
   spaceBetweenAnnotations = 2,
   featureHeight = 10,
   featureClicked = noop,
   //non-configurable
-  HoverHelper,
   features = {},
   sequenceLength
 }) {
@@ -138,49 +139,30 @@ function Features({
         annotationColor = featureColorMap[annotation.type];
       }
     }
+    /* eslint-disable */
 
     if (!annotation.id) debugger;
+    /* eslint-enable */
+
     svgGroup.push(
-      <HoverHelper
+      <DrawFeature
+        {...{
+          editorName,
+          showFeatureLabels,
+          labelCenter,
+          startAngle,
+          endAngle,
+          onClick,
+          annotation,
+          totalAngle,
+          annotationColor,
+          annotationRadius,
+          featureHeight,
+          labelFits
+        }}
         id={annotation.id}
         key={"Features" + index}
-        passJustOnMouseOverAndClassname
-      >
-        <g onClick={onClick} className="Features clickable">
-          <title>
-            {getAnnotationNameAndStartStopString(annotation)}
-          </title>
-          <PositionAnnotationOnCircle
-            key={"feature" + index}
-            sAngle={startAngle}
-            eAngle={endAngle}
-            forward={!annotation.forward}
-          >
-            <Feature
-              totalAngle={totalAngle}
-              color={annotationColor}
-              key={"feature" + index}
-              radius={annotationRadius}
-              annotationHeight={featureHeight}
-            />
-          </PositionAnnotationOnCircle>
-          {labelFits &&
-            showFeatureLabels &&
-            <PositionAnnotationOnCircle
-              key={"inlineLabel" + index}
-              sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
-              eAngle={labelCenter + Math.PI}
-            >
-              {drawCircularLabel2({
-                centerAngle: labelCenter, //used to flip label if necessary
-                radius: annotationRadius,
-                height: featureHeight,
-                text: annotation.name,
-                id: annotation.id
-              })}
-            </PositionAnnotationOnCircle>}
-        </g>
-      </HoverHelper>
+      />
     );
   });
   return {
@@ -194,4 +176,54 @@ function Features({
   };
 }
 
-export default lruMemoize(5, undefined, true)(Features);
+// export default lruMemoize(5, undefined, true)(Features);
+export default Features;
+
+const DrawFeature = withHover(function({
+  hoverActions,
+  hoverProps: { className },
+  showFeatureLabels,
+  labelCenter,
+  startAngle,
+  endAngle,
+  onClick,
+  annotation,
+  totalAngle,
+  annotationColor,
+  annotationRadius,
+  featureHeight,
+  labelFits
+}) {
+  return (
+    <g {...hoverActions} className={className} onClick={onClick}>
+      <title>{getAnnotationNameAndStartStopString(annotation)}</title>
+      <PositionAnnotationOnCircle
+        sAngle={startAngle}
+        eAngle={endAngle}
+        forward={!annotation.forward}
+      >
+        <Feature
+          totalAngle={totalAngle}
+          color={annotationColor}
+          radius={annotationRadius}
+          annotationHeight={featureHeight}
+        />
+      </PositionAnnotationOnCircle>
+      {labelFits &&
+      showFeatureLabels && (
+        <PositionAnnotationOnCircle
+          sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
+          eAngle={labelCenter + Math.PI}
+        >
+          {drawCircularLabel2({
+            centerAngle: labelCenter, //used to flip label if necessary
+            radius: annotationRadius,
+            height: featureHeight,
+            text: annotation.name,
+            id: annotation.id
+          })}
+        </PositionAnnotationOnCircle>
+      )}
+    </g>
+  );
+});

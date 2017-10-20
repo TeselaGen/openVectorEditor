@@ -1,10 +1,12 @@
 .veAnnotationHovered .veRowViewFeature {
   stroke-dasharray: 3px;
 }
+.veAnnotationHovered {
+  stroke-dasharray: 3px;
+}
 
 .veRowViewFeatureContainer {
   z-index: 20;
 }
- 
 
- /*# sourceMappingURL= style.css.map */
+/*# sourceMappingURL= style.css.map */

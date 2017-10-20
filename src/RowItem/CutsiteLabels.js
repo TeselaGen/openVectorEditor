@@ -1,6 +1,6 @@
 import React from "react";
-import getXStartAndWidthOfRowAnnotation
-  from "./getXStartAndWidthOfRowAnnotation";
+import withHover from "../helperComponents/withHover";
+import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
 import intervalTree2 from "teselagen-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import forEach from "lodash/forEach";
@@ -14,7 +14,7 @@ function CutsiteLabels(props) {
     spaceBetweenAnnotations,
     cutsiteClicked,
     textWidth = 12,
-    HoverHelper
+    editorName
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -48,32 +48,11 @@ function CutsiteLabels(props) {
     }
     let height = yOffset * (annotationHeight + spaceBetweenAnnotations);
     annotationsSVG.push(
-      <HoverHelper
+      <DrawCutsiteLabel
         id={annotation.id}
         key={"cutsiteLabel" + index}
-        passJustOnMouseOverAndClassname
-      >
-        <div
-          className={""}
-          onClick={function(event) {
-            cutsiteClicked({ event, annotation });
-            event.stopPropagation();
-          }}
-          style={{
-            // left: xStart,
-            position: "absolute",
-            top: height,
-            // display: 'inline-block',
-            // position: (relative) ? 'relative' : 'absolute',
-            // // float: 'left',
-            left: xStart,
-            zIndex: 10
-            // left: '100 % ',
-          }}
-        >
-          {annotation.restrictionEnzyme.name}
-        </div>
-      </HoverHelper>
+        {...{ editorName, annotation, cutsiteClicked, height, xStart }}
+      />
     );
   });
   let containerHeight =
@@ -94,3 +73,38 @@ function CutsiteLabels(props) {
 }
 
 export default CutsiteLabels;
+
+const DrawCutsiteLabel = withHover(
+  ({
+    hoverActions,
+    hoverProps: { className },
+    annotation,
+    cutsiteClicked,
+    height,
+    xStart
+  }) => {
+    return (
+      <div
+        {...hoverActions}
+        className={className}
+        onClick={function(event) {
+          cutsiteClicked({ event, annotation });
+          event.stopPropagation();
+        }}
+        style={{
+          // left: xStart,
+          position: "absolute",
+          top: height,
+          // display: 'inline-block',
+          // position: (relative) ? 'relative' : 'absolute',
+          // // float: 'left',
+          left: xStart,
+          zIndex: 10
+          // left: '100 % ',
+        }}
+      >
+        {annotation.restrictionEnzyme.name}
+      </div>
+    );
+  }
+);

@@ -1,9 +1,10 @@
 import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
 // import relaxLabels from './relaxLabels';
 import relaxLabelAngles from "./relaxLabelAngles";
-import deepEqual from "deep-equal";
+// import deepEqual from "deep-equal";
+import withHover from "../../helperComponents/withHover";
 import "./style.css";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import React from "react";
 
 function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
@@ -15,7 +16,6 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 
 function Labels({
   labels = {},
-  HoverHelper,
   outerRadius,
   condenseOverflowingXLabels = true //set to true to make labels tha
   /*radius*/
@@ -64,16 +64,39 @@ function Labels({
     component: (
       <g key={"veLabels"} className="veLabels monospaceFont">
         {groupedLabels.map(function(label, index) {
-          return LabelGroup({
-            label,
-            labelAndSublabels: label.labelAndSublabels,
-            key: index,
-            fontWidth,
-            fontHeight,
-            HoverHelper,
-            condenseOverflowingXLabels,
-            outerRadius
+          let { labelAndSublabels } = label;
+          let labelIds = {};
+          labelAndSublabels.forEach(label => {
+            labelIds[label.id] = true;
           });
+          let multipleLabels = labelAndSublabels.length > 1;
+          return (
+            <DrawLabelGroup
+              key={index}
+              id={labelIds}
+              {...{
+                label,
+                // ...rest,
+                className: "DrawLabelGroup",
+                multipleLabels,
+                labelAndSublabels,
+                labelIds,
+                fontWidth,
+                fontHeight,
+                condenseOverflowingXLabels,
+                outerRadius
+              }}
+            />
+          );
+          // return LabelGroup({
+          //   label,
+          //   labelAndSublabels: label.labelAndSublabels,
+          //   key: index,
+          //   fontWidth,
+          //   fontHeight,
+          //   condenseOverflowingXLabels,
+          //   outerRadius
+          // });
         })
         //we use the <use> tag to position the hovered label group at the top of the stack
         //point events: none is to fix a click bug..
@@ -85,54 +108,50 @@ function Labels({
     height: 120
   };
 }
-export default lruMemoize(5, deepEqual)(Labels);
+// export default lruMemoize(5, deepEqual)(Labels);
+export default Labels;
 
-function LabelGroup({ label, HoverHelper, key, ...rest }) {
-  let { labelAndSublabels } = label;
-  let labelIds = {};
-  labelAndSublabels.forEach(label => {
-    labelIds[label.id] = true;
-  });
-  let multipleLabels = labelAndSublabels.length > 1;
-  return (
-    //wrap the entire label group in a HoverHelper
-    (
-      <HoverHelper mouseAware key={key} id={labelIds}>
-        <DrawLabelGroup
-          key={key}
-          {...{
-            label,
-            HoverHelper,
-            ...rest,
-            className: "DrawLabelGroup",
-            multipleLabels,
-            labelAndSublabels,
-            labelIds
-          }}
-        />
-      </HoverHelper>
-    )
-  );
-}
+// function LabelGroup({ label, key, ...rest }) {
+//   let { labelAndSublabels } = label;
+//   let labelIds = {};
+//   labelAndSublabels.forEach(label => {
+//     labelIds[label.id] = true;
+//   });
+//   let multipleLabels = labelAndSublabels.length > 1;
+//   return (
+//     <DrawLabelGroup
+//       key={key}
+//       id={labelIds}
+//       {...{
+//         label,
+//         ...rest,
+//         className: "DrawLabelGroup",
+//         multipleLabels,
+//         labelAndSublabels,
+//         labelIds
+//       }}
+//     />
+//   );
+// }
 
-function DrawLabelGroup(props) {
-  let {
-    label,
-    labelAndSublabels,
-    HoverHelper,
-    fontWidth,
-    fontHeight,
-    outerRadius,
-    condenseOverflowingXLabels,
-    hoveredId,
-    labelIds,
-    multipleLabels,
-    hovered,
-    isIdHashmap,
-    ...rest
-  } = props;
+const DrawLabelGroup = withHover(function({
+  hoverActions = {},
+  hoverProps = {},
+  label,
+  labelAndSublabels,
+  fontWidth,
+  fontHeight,
+  outerRadius,
+  condenseOverflowingXLabels,
+  hoveredId,
+  labelIds,
+  multipleLabels,
+  isIdHashmap,
+  ...rest
+}) {
   let { text } = label;
   let groupLabelXStart;
+  const { hovered, className } = hoverProps;
 
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
@@ -192,6 +211,7 @@ function DrawLabelGroup(props) {
         hoveredLabel = label;
         return true;
       }
+      return false;
     });
     if (!hoveredLabel) {
       hoveredLabel = label;
@@ -214,7 +234,7 @@ function DrawLabelGroup(props) {
       [
         hoveredLabel.innerPoint,
         hoveredLabel.labelAndSublabels &&
-          hoveredLabel.labelAndSublabels.length > 0
+        hoveredLabel.labelAndSublabels.length > 0
           ? hoveredLabel.outerPoint
           : {},
         label
@@ -223,7 +243,7 @@ function DrawLabelGroup(props) {
     );
     content = [
       line,
-      <g id="topLevelHomie" key="gGroup">
+      <g className={className} id="topLevelHomie" key="gGroup">
         <rect
           x={labelXStart - 4}
           y={labelYStart - dy / 2}
@@ -235,24 +255,13 @@ function DrawLabelGroup(props) {
         <text x={labelXStart} y={labelYStart} style={{}}>
           {labelAndSublabels.map(function(label, index) {
             return (
-              <HoverHelper
+              <DrawLabel
                 key={"labelItem" + index}
                 doNotTriggerOnMouseOut
+                className={labelClass + label.className}
                 id={label.id}
-                passJustOnMouseOverAndClassname
-              >
-                <tspan
-                  x={labelXStart}
-                  textLength={label.text.length * fontWidth}
-                  lengthAdjust="spacing"
-                  onClick={label.onClick}
-                  dy={index === 0 ? dy / 2 : dy}
-                  style={{ fill: label.color ? label.color : "black" }}
-                  className={labelClass + label.className}
-                >
-                  {label.text}
-                </tspan>
-              </HoverHelper>
+                {...{ labelXStart, label, fontWidth, index, dy }}
+              />
             );
           })}
         </text>
@@ -282,11 +291,11 @@ function DrawLabelGroup(props) {
     ];
   }
   return (
-    <g {...{ ...rest, onClick: label.onClick }}>
+    <g {...hoverActions} {...{ ...rest, onClick: label.onClick }}>
       {content}
     </g>
   );
-}
+});
 
 function LabelLine(pointArray, options) {
   let points = "";
@@ -311,3 +320,30 @@ function LabelLine(pointArray, options) {
     />
   );
 }
+
+const DrawLabel = withHover(
+  ({
+    hoverActions,
+    hoverProps: { className },
+    labelXStart,
+    label,
+    fontWidth,
+    index,
+    dy
+  }) => {
+    return (
+      <tspan
+        x={labelXStart}
+        textLength={label.text.length * fontWidth}
+        lengthAdjust="spacing"
+        onClick={label.onClick}
+        dy={index === 0 ? dy / 2 : dy}
+        style={{ fill: label.color ? label.color : "black" }}
+        {...hoverActions}
+        className={className}
+      >
+        {label.text}
+      </tspan>
+    );
+  }
+);

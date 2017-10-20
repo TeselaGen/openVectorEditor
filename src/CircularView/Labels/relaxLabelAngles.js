@@ -1,7 +1,8 @@
 import clone from "clone";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 
-export default lruMemoize(5, undefined, true)(relaxLabelAngles);
+// export default lruMemoize(5, undefined, true)(relaxLabelAngles);
+export default relaxLabelAngles;
 
 function normalizeAngle(angle) {
   if (angle > Math.PI * 2) {
@@ -55,15 +56,15 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     }
   }
 
-  function repositionAndGroupLabels(labels, logtrue) {
+  function repositionAndGroupLabels(labels /* logtrue */) {
     let extraSpaces = Math.max(maxLabelsPerQuadrant - labels.length, 0);
     let lastLabelYPosition = 0 - spacing / 2; // spacing to count label height
     let lastlabel;
     return labels
-      .map(function(label, index) {
+      .map(function(label /* index */) {
         if (Math.abs(lastLabelYPosition) > maxradius + 40) {
           lastlabel.labelAndSublabels.push(label);
-          return;
+          return false;
         }
         lastlabel = label;
         if (label.y < lastLabelYPosition) {

@@ -1,6 +1,6 @@
 import isNumber from "lodash/isNumber";
 import getRangeAngles from "ve-range-utils/getRangeAngles";
-import lruMemoize from "lru-memoize";
+// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
@@ -41,4 +41,5 @@ function Caret({
   );
 }
 
-export default lruMemoize(5, undefined, true)(Caret);
+// export default lruMemoize(5, undefined, true)(Caret);
+export default Caret;

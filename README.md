@@ -50,16 +50,23 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 		console.log("editorState:", editorState);
 	},
 	onCopy: function(event, sequenceData, editorState) {
-		console.log("event:", event);
-		console.log("sequenceData:", sequenceData);
-		console.log("editorState:", editorState);
-		const clipboardData  = event.clipboardData || window.clipboardData || event.originalEvent.clipboardData
-		clipboardData.setData('text/plain', JSON.stringify(sequenceData.sequence));
-		clipboardData.setData('application/json', JSON.stringify(sequenceData));
-		event.preventDefault();
-		//in onPaste in your app you can do: 
-		// e.clipboardData.getData('application/json')
-	}
+      onSave: function(event, copiedSequenceData, editorState) {
+        console.log("event:", event);
+        console.log("sequenceData:", copiedSequenceData);
+        console.log("editorState:", editorState);
+      },
+      onCopy: function(event, copiedSequenceData, editorState) {
+        console.log("event:", event);
+        console.log("sequenceData:", copiedSequenceData);
+        console.log("editorState:", editorState);
+        const clipboardData  = event.clipboardData
+        clipboardData.setData('text/plain', copiedSequenceData.sequence);
+        clipboardData.setData('application/json', JSON.stringify(copiedSequenceData));
+        event.preventDefault();
+        //in onPaste in your app you can do: 
+        // e.clipboardData.getData('application/json')
+      }
+    }
 });
 editor.updateEditor({
 	//note, sequence data passed here will be coerced to fit the Teselagen data model
@@ -122,7 +129,7 @@ const store = createStore(
 
 //file where you want to display the editor: 
 import DemoEditor from '../DemoEditor';
-var {withEditorInteractions, withEditorProps, veSelectors, HoverHelper} = SelectInsertEditor
+var {withEditorInteractions, withEditorProps, veSelectors} = SelectInsertEditor
 import {CircularView, LinearView, CutsiteFilter} from 'teselagen-react-components';
 
 var CutsiteFilterConnected = withEditorProps(CutsiteFilter)
