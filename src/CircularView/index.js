@@ -504,11 +504,10 @@ export class CircularView extends React.Component {
         );
       }
     }
-
     function drawLabels() {
       let results = Labels({
         editorName,
-        circularViewWidth: width,
+        circularViewWidthVsHeightRatio: width / height,
         labels,
         outerRadius: radius
       });
@@ -516,7 +515,6 @@ export class CircularView extends React.Component {
       radius += results.height;
       return results.component;
     }
-
     return (
       <div tabIndex="0" className={"veCircularView"}>
         <Draggable

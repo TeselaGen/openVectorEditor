@@ -223,6 +223,26 @@
 // }
 
 export default {
+	"primers": [
+			{
+					"notes": {
+							"ApEinfo_fwdcolor": [
+									"pink"
+							],
+							"ApEinfo_revcolor": [
+									"pink"
+							],
+							"featureType": [
+									"width"
+							]
+					},
+					"type": "misc_feature",
+					"strand": 1,
+					"name": "pBAD teeeaaa a a a promoter",
+					"start": 4,
+					"end": 4
+			}
+		],
 	"features": [
 			{
 					"notes": {

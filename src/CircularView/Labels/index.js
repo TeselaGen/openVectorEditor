@@ -17,7 +17,7 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 function Labels({
   labels = {},
   outerRadius,
-  circularViewWidth, //width of the circular view
+  circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
   /*radius*/
 }) {
@@ -83,7 +83,7 @@ function Labels({
                 multipleLabels,
                 labelAndSublabels,
                 labelIds,
-                circularViewWidth,
+                circularViewWidthVsHeightRatio,
                 fontWidth,
                 fontHeight,
                 condenseOverflowingXLabels,
@@ -145,7 +145,7 @@ const DrawLabelGroup = withHover(function({
   fontWidth,
   fontHeight,
   outerRadius,
-  circularViewWidth,
+  circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
   labelIds,
@@ -180,11 +180,11 @@ const DrawLabelGroup = withHover(function({
   let maxLabelWidth = maxLabelLength * fontWidth;
   let labelOnLeft = label.x < 0;
   let labelXStart = label.x - (labelOnLeft ? labelLength : 0);
-  //we're on the left side of the circle
   if (condenseOverflowingXLabels) {
     let distancePastBoundary =
       Math.abs(label.x + (labelOnLeft ? -labelLength : labelLength)) -
-      (circularViewWidth / 2 + 80);
+      (outerRadius + 90) * Math.max(1, circularViewWidthVsHeightRatio);
+    // Math.max(outerRadius (circularViewWidthVsHeightRatio / 2 + 80));
     if (distancePastBoundary > 0) {
       let numberOfCharsToChop = Math.ceil(distancePastBoundary / fontWidth) + 2;
       //   if (numberOfCharsToChop > text.length) numberOfCharsToChop = text.length
