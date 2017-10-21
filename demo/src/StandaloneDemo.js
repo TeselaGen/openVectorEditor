@@ -1,5 +1,14 @@
 import React from "react";
-import exampleSequenceData from '../../src/createVectorEditor/exampleSequenceData';
+
+import {connect} from 'react-redux';
+
+import exampleSequenceData from './exampleSequenceData';
+
+console.log('exampleSequenceData:',exampleSequenceData)
+connect((state, ownProps) => {}, (dispatch) => {
+  dispatch()
+})
+
 
 export default class StandaloneDemo extends React.Component {
   componentDidMount() {

@@ -506,7 +506,12 @@ export class CircularView extends React.Component {
     }
 
     function drawLabels() {
-      let results = Labels({ editorName, labels, outerRadius: radius });
+      let results = Labels({
+        editorName,
+        circularViewWidth: width,
+        labels,
+        outerRadius: radius
+      });
       if (!results) return null;
       radius += results.height;
       return results.component;
@@ -548,7 +553,9 @@ export class CircularView extends React.Component {
               >
                 <span>{sequenceName} </span>
                 <br />
-                <span>{sequenceLength + " bps"}</span>
+                <span style={{ fontSize: 10 }}>
+                  ({sequenceLength + " bps"})
+                </span>
               </div>
             </div>
             <svg

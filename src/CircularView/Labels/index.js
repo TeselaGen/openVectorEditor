@@ -17,6 +17,7 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 function Labels({
   labels = {},
   outerRadius,
+  circularViewWidth, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
   /*radius*/
 }) {
@@ -82,6 +83,7 @@ function Labels({
                 multipleLabels,
                 labelAndSublabels,
                 labelIds,
+                circularViewWidth,
                 fontWidth,
                 fontHeight,
                 condenseOverflowingXLabels,
@@ -143,6 +145,7 @@ const DrawLabelGroup = withHover(function({
   fontWidth,
   fontHeight,
   outerRadius,
+  circularViewWidth,
   condenseOverflowingXLabels,
   hoveredId,
   labelIds,
@@ -181,12 +184,12 @@ const DrawLabelGroup = withHover(function({
   if (condenseOverflowingXLabels) {
     let distancePastBoundary =
       Math.abs(label.x + (labelOnLeft ? -labelLength : labelLength)) -
-      (outerRadius + 90);
+      (circularViewWidth / 2 + 80);
     if (distancePastBoundary > 0) {
-      let numberOfCharsToChop = Math.ceil(distancePastBoundary / fontWidth) + 3;
+      let numberOfCharsToChop = Math.ceil(distancePastBoundary / fontWidth) + 2;
       //   if (numberOfCharsToChop > text.length) numberOfCharsToChop = text.length
       //label overflows the boundaries!
-      text = text.slice(0, -numberOfCharsToChop) + "...";
+      text = text.slice(0, -numberOfCharsToChop) + "..";
       groupLabelXStart =
         labelXStart +
         (labelOnLeft ? distancePastBoundary : -distancePastBoundary);
@@ -222,7 +225,7 @@ const DrawLabelGroup = withHover(function({
     let labelGroupHeight = labelAndSublabels.length * dy;
     let labelGroupBottom = label.y + labelGroupHeight;
     // var numberOfLabelsToFitAbove = 0
-    if (labelGroupBottom > outerRadius + 10) {
+    if (labelGroupBottom > outerRadius + 20) {
       // var diff = labelGroupBottom - (outerRadius+10)
       //calculate new label y start if necessary (the group is too long)
       labelYStart -= (label.labelAndSublabels.length - 1) * dy;

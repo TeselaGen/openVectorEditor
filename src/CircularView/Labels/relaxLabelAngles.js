@@ -62,7 +62,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     let lastlabel;
     return labels
       .map(function(label /* index */) {
-        if (Math.abs(lastLabelYPosition) > maxradius + 40) {
+        if (Math.abs(lastLabelYPosition) > maxradius + 80) {
           lastlabel.labelAndSublabels.push(label);
           return false;
         }
