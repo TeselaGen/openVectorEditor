@@ -48,8 +48,7 @@ function getBpsPerRow({
   return Math.floor((width - marginWidth) / charWidth);
 }
 
-function VectorInteractionHOC(Component, options) {
-  console.log("options:", options);
+function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
@@ -237,15 +236,6 @@ function VectorInteractionHOC(Component, options) {
 
           caretPosition,
           handleInsert: seqDataToInsert => {
-            console.log("seqDataToInsert:", seqDataToInsert);
-            console.log(
-              "insertSequenceDataAtPositionOrRange(seqDataToInsert, sequenceData, caretPosition > -1 ? caretPosition : selectionLayer):",
-              insertSequenceDataAtPositionOrRange(
-                seqDataToInsert,
-                sequenceData,
-                caretPosition > -1 ? caretPosition : selectionLayer
-              )
-            );
             updateSequenceData(
               insertSequenceDataAtPositionOrRange(
                 seqDataToInsert,
@@ -286,9 +276,8 @@ function VectorInteractionHOC(Component, options) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
-    selectionLayerRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
+
+    generateSelectionMenuOptions = annotation => {
       const {
         editorName,
         sequenceData,
@@ -304,11 +293,9 @@ function VectorInteractionHOC(Component, options) {
         document.body.removeEventListener("copy", handleDaCopy);
       };
       const makeTextCopyable = stringToCopy => {
-        let text = "";
         let clipboard = new Clipboard(".basicContext", {
           text: function() {
             document.body.addEventListener("copy", handleDaCopy);
-            text = stringToCopy;
             return stringToCopy;
           }
         });
@@ -316,11 +303,6 @@ function VectorInteractionHOC(Component, options) {
           "success",
           (/* e */) => {
             clipboard.destroy();
-            if (text.length === 0) {
-              console.log("No Sequence To Copy");
-            } else {
-              console.log("Selection Copied!");
-            }
           }
         );
         clipboard.on("error", () => {
@@ -332,7 +314,6 @@ function VectorInteractionHOC(Component, options) {
         {
           title: "Copy",
           fn: function() {
-            console.log("selectedSeq:", selectedSeq);
             makeTextCopyable(selectedSeq);
           }
         },
@@ -371,27 +352,14 @@ function VectorInteractionHOC(Component, options) {
               forward: true
             });
           }
-        },
-        {
-          title: "View Translation",
-          // icon: "ion-plus-round",
-          fn: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: false
-            });
-          }
         }
-        // ...extraItems
-
-        // { title: 'Reset Login', icon: 'ion-person', fn: clicked },
-        // { title: 'Help', icon: 'ion-help-buoy', fn: clicked },
-        // { },
-        // { title: 'Disabled', icon: 'ion-minus-circled', fn: clicked, disabled: true },
-        // { title: 'Invisible', icon: 'ion-eye-disabled', fn: clicked, visible: false },
-        // { title: 'Logout', icon: 'ion-log-out', fn: clicked }
       ];
+      return items;
+    };
+    selectionLayerRightClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const items = this.generateSelectionMenuOptions(annotation);
 
       basicContext.show(items, event);
     };

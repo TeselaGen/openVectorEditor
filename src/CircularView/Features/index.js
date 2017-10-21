@@ -35,7 +35,6 @@ function Features({
   let labels = {};
   if (!Object.keys(features).length) return null;
   sortBy(features, a => {
-    console.log("a:", a);
     return -getRangeLength(a, sequenceLength);
   })
     .map(annotation => {
@@ -98,7 +97,6 @@ function Features({
     })
     .forEach(function(annotation, index) {
       annotation.yOffset = maxYOffset - annotation.yOffset;
-      // console.log('getRangeLength(annotation, sequenceLength):',getRangeLength(annotation, sequenceLength))
       function onClick(event) {
         featureClicked({ event, annotation });
       }

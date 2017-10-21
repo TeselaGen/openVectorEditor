@@ -35,13 +35,11 @@ function withHover(Component) {
       let mouseAway = doNotTriggerOnMouseOut
         ? noop
         : function(e) {
-            console.log("mouseout");
             hoveredAnnotationClear(idToPass, { editorName });
             e.stopPropagation();
           };
       let hoverActions = {
         onMouseOver: function(e) {
-          console.log("mouseover");
           e.stopPropagation();
           hoveredAnnotationUpdate(idToPass, { editorName });
           onHover({ e, idToPass, meta: { editorName } });
