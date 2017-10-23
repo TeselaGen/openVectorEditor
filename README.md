@@ -3,6 +3,10 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
 
+Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor 
+
+Demo: http://teselagen.github.io/openVectorEditor/ 
+
 Table of Contents
 <!-- TOC -->
 
@@ -17,6 +21,7 @@ Table of Contents
   - [Installation](#installation-1)
 
 <!-- /TOC -->
+
 
 
 # Universal Build
