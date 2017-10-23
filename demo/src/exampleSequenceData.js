@@ -240,7 +240,7 @@ export default {
 					"strand": 1,
 					"name": "pBAD teeeaaa a a a promoter",
 					"start": 4,
-					"end": 4
+					"end": 400
 			}
 		],
 	"features": [

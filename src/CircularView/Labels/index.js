@@ -1,10 +1,7 @@
 import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
-// import relaxLabels from './relaxLabels';
 import relaxLabelAngles from "./relaxLabelAngles";
-// import deepEqual from "deep-equal";
 import withHover from "../../helperComponents/withHover";
 import "./style.css";
-// import lruMemoize from "lru-memoize";
 import React from "react";
 
 function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
@@ -35,7 +32,7 @@ function Labels({
       let { annotationCenterAngle, annotationCenterRadius } = label;
 
       return {
-        ...label,
+        id: label.id,
         ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
         //three points define the label:
         innerPoint: {
@@ -57,11 +54,24 @@ function Labels({
       };
     })
     .map(function(label) {
-      label.labelAndSublabels = [label];
+      label.labelAndSublabels = [];
       return label;
     });
-
-  let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius);
+  let groupedLabels = relaxLabelAngles(
+    labelPoints,
+    fontHeight,
+    outerRadius
+  ).map(label => {
+    //in order to memoize the relaxLabelAngles function, we don't pass the full label above because it has function handlers that cause the deep equal to fail
+    const originalLabel = {
+      ...labels[label.id],
+      ...label
+    };
+    return {
+      ...originalLabel,
+      labelAndSublabels: [originalLabel].concat(originalLabel.labelAndSublabels)
+    };
+  });
   return {
     component: (
       <g key={"veLabels"} className="veLabels monospaceFont">
@@ -156,7 +166,6 @@ const DrawLabelGroup = withHover(function({
   let { text } = label;
   let groupLabelXStart;
   const { hovered, className } = hoverProps;
-
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
     // if (label.x > 0) {

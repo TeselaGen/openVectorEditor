@@ -1,6 +1,4 @@
-// var ac = require('ve-api-check');
-// ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-// import lruMemoize from "lru-memoize";
+import lruMemoize from "lru-memoize";
 
 import mapAnnotationsToRows from "ve-sequence-utils/mapAnnotationsToRows";
 import annotationTypes from "ve-sequence-utils/annotationTypes";
@@ -39,5 +37,4 @@ function prepareRowData(sequenceData, bpsPerRow) {
   return rows;
 }
 
-export default prepareRowData;
-// export default lruMemoize(5, undefined, true)(prepareRowData);
+export default lruMemoize(1, undefined, true)(prepareRowData);

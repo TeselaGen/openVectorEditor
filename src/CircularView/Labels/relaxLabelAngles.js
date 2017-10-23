@@ -1,8 +1,8 @@
 import clone from "clone";
-// import lruMemoize from "lru-memoize";
+import lruMemoize from "lru-memoize";
 
-// export default lruMemoize(5, undefined, true)(relaxLabelAngles);
-export default relaxLabelAngles;
+export default lruMemoize(1, undefined, true)(relaxLabelAngles);
+// export default relaxLabelAngles;
 
 function normalizeAngle(angle) {
   if (angle > Math.PI * 2) {
