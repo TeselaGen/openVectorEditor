@@ -83,12 +83,17 @@ function cleanSequenceData(seqData, options = {}) {
       );
       annotation.name = "Untitled annotation";
     }
+
     if (!annotation.id && annotation.id !== 0) {
       annotation.id = bsonObjectid().str;
       response.messages.push(
         "Unable to detect valid ID for annotation, setting ID to " +
           annotation.id
       );
+    }
+    annotation.id = annotation.id.toString();
+    if (!annotation.id.contains("_&&_")) {
+      annotation.id = annotationType + annotation.id;
     }
     if (
       !areNonNegativeIntegers([annotation.start]) ||

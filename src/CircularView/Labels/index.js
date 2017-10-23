@@ -32,7 +32,7 @@ function Labels({
       let { annotationCenterAngle, annotationCenterRadius } = label;
 
       return {
-        id: label.id,
+        ...label,
         ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
         //three points define the label:
         innerPoint: {
@@ -57,21 +57,22 @@ function Labels({
       label.labelAndSublabels = [];
       return label;
     });
-  let groupedLabels = relaxLabelAngles(
-    labelPoints,
-    fontHeight,
-    outerRadius
-  ).map(label => {
-    //in order to memoize the relaxLabelAngles function, we don't pass the full label above because it has function handlers that cause the deep equal to fail
-    const originalLabel = {
-      ...labels[label.id],
-      ...label
-    };
-    return {
-      ...originalLabel,
-      labelAndSublabels: [originalLabel].concat(originalLabel.labelAndSublabels)
-    };
-  });
+  let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius);
+  // let groupedLabels = relaxLabelAngles(
+  //   labelPoints,
+  //   fontHeight,
+  //   outerRadius
+  // ).map(label => {
+  //   //in order to memoize the relaxLabelAngles function, we don't pass the full label above because it has function handlers that cause the deep equal to fail
+  //   const originalLabel = {
+  //     ...labels[label.id],
+  //     ...label
+  //   };
+  //   return {
+  //     ...originalLabel,
+  //     labelAndSublabels: [originalLabel].concat(originalLabel.labelAndSublabels)
+  //   };
+  // });
   return {
     component: (
       <g key={"veLabels"} className="veLabels monospaceFont">

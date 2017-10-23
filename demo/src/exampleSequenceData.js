@@ -238,7 +238,7 @@ export default {
 					},
 					"type": "misc_feature",
 					"strand": 1,
-					"name": "pBAD teeeaaa a a a promoter",
+					"name": "primer 1",
 					"start": 4,
 					"end": 400
 			}
