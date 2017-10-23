@@ -7,6 +7,7 @@ import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
+import DropHandler from "./DropHandler";
 import "./style.css";
 
 export class Editor extends React.Component {
@@ -22,6 +23,7 @@ export class Editor extends React.Component {
       editorName,
       findTool = {},
       height = 500,
+      updateSequenceData,
       ...rest
     } = this.props;
     const showBoth = panelsShown.circular && panelsShown.sequence;
@@ -35,7 +37,11 @@ export class Editor extends React.Component {
     };
 
     return (
-      <div style={{ width: "100%" }} className={"VectorEditor"}>
+      <DropHandler
+        updateSequenceData={updateSequenceData}
+        style={{ width: "100%" }}
+        className={"veEditor"}
+      >
         <VeToolBar {...sharedProps} {...VeToolBarProps} />
         {width ? (
           <div
@@ -78,7 +84,7 @@ export class Editor extends React.Component {
         )}
 
         <StatusBar {...sharedProps} {...StatusBarProps} />
-      </div>
+      </DropHandler>
     );
   }
 }

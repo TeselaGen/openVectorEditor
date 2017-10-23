@@ -92,7 +92,7 @@ function cleanSequenceData(seqData, options = {}) {
       );
     }
     annotation.id = annotation.id.toString();
-    if (!annotation.id.contains("_&&_")) {
+    if (annotation.id.indexOf("_&&_") < 0) {
       annotation.id = annotationType + annotation.id;
     }
     if (

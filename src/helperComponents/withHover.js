@@ -23,13 +23,17 @@ function withHover(Component) {
         children,
         hoveredAnnotationUpdate,
         hoveredAnnotationClear,
-        onHover = noop,
+        onHover,
 
         editorName,
         doNotTriggerOnMouseOut,
         passJustOnMouseOverAndClassname,
         ...rest
       } = this.props;
+      /* eslint-disable */
+
+      if (!idToPass) debugger;
+      /* eslint-enable */
 
       let { className = "" } = (children && children.props) || {};
       let mouseAway = doNotTriggerOnMouseOut
@@ -42,7 +46,7 @@ function withHover(Component) {
         onMouseOver: function(e) {
           e.stopPropagation();
           hoveredAnnotationUpdate(idToPass, { editorName });
-          onHover({ e, idToPass, meta: { editorName } });
+          onHover && onHover({ e, idToPass, meta: { editorName } });
         },
         onMouseLeave: mouseAway
       };
@@ -74,6 +78,11 @@ export default compose(
     let hoveredId = editorState.hoveredAnnotation;
     let hovered = isIdHashmap ? id[hoveredId] : hoveredId === id;
     let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
+    /* eslint-disable */
+
+    if (!idToPass) debugger;
+    /* eslint-enable */
+
     return {
       hovered,
       id,

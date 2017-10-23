@@ -1,0 +1,21 @@
+.dropzone-dragging-message {
+  position: absolute;
+  z-index: -1;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 30%;
+  width: 310px;
+  border-radius: 3px;
+  border: 7px dotted lightblue;
+  background: rgb(232, 232, 232);
+  padding: 30px;
+  font-size: 24px;
+  opacity: 0;
+  transition: 0.5s all;
+}
+.veEditor.isActive .dropzone-dragging-message {
+  z-index: 10;
+  opacity: 1;
+}

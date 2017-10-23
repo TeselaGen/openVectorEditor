@@ -54,7 +54,7 @@ function Labels({
       };
     })
     .map(function(label) {
-      label.labelAndSublabels = [];
+      label.labelAndSublabels = [label];
       return label;
     });
   let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius);
