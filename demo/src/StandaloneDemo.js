@@ -28,7 +28,8 @@ export default class StandaloneDemo extends React.Component {
         event.preventDefault();
         //in onPaste in your app you can do: 
         // e.clipboardData.getData('application/json')
-      }
+      },
+      // height: 200,
     });
     // editor.updateEditor({
     //   sequenceData: { //note, sequence data passed here will be coerced to fit the Teselagen Open Vector Editor data model

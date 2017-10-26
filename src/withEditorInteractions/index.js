@@ -1,4 +1,5 @@
 import basicContext from "basiccontext";
+import PropertiesDialog from "../helperComponents/PropertiesDialog";
 import "basiccontext/dist/basicContext.min.css";
 import "basiccontext/dist/themes/default.min.css";
 import {
@@ -284,7 +285,8 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer,
         readOnly,
         dispatch,
-        upsertTranslation
+        upsertTranslation,
+        showAddOrEditFeatureDialog
       } = this.props;
       const { sequence } = sequenceData;
       const selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
@@ -299,12 +301,9 @@ function VectorInteractionHOC(Component /* options */) {
             return stringToCopy;
           }
         });
-        clipboard.on(
-          "success",
-          (/* e */) => {
-            clipboard.destroy();
-          }
-        );
+        clipboard.on("success", (/* e */) => {
+          clipboard.destroy();
+        });
         clipboard.on("error", () => {
           clipboard.destroy();
           console.error("Error copying selection.");
@@ -329,16 +328,7 @@ function VectorInteractionHOC(Component /* options */) {
               {
                 title: "Create Feature",
                 fn: function() {
-                  dispatch({
-                    type: "TG_SHOW_MODAL",
-                    name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
-                    props: {
-                      editorName,
-                      dialogProps: {
-                        title: "Add Feature"
-                      }
-                    }
-                  });
+                  showAddOrEditFeatureDialog();
                 }
               }
             ]),
@@ -387,7 +377,11 @@ function VectorInteractionHOC(Component /* options */) {
     featureRightClicked = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
-      const { editorName, readOnly, dispatch, upsertTranslation } = this.props;
+      const {
+        readOnly,
+        upsertTranslation,
+        showAddOrEditFeatureDialog
+      } = this.props;
       let items = [
         ...(readOnly
           ? []
@@ -395,19 +389,7 @@ function VectorInteractionHOC(Component /* options */) {
               {
                 title: "Edit Feature",
                 fn: function() {
-                  dispatch({
-                    type: "TG_SHOW_MODAL",
-                    name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
-                    props: {
-                      editorName,
-                      dialogProps: {
-                        title: "Edit Feature"
-                      },
-                      initialValues: {
-                        ...convertRangeTo1Based(annotation)
-                      }
-                    }
-                  });
+                  showAddOrEditFeatureDialog(annotation);
                 }
               }
             ]),
@@ -429,7 +411,11 @@ function VectorInteractionHOC(Component /* options */) {
     primerRightClicked = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
-      const { editorName, readOnly, dispatch, upsertTranslation } = this.props;
+      const {
+        showAddOrEditPrimerDialog,
+        readOnly,
+        upsertTranslation
+      } = this.props;
       let items = [
         ...(readOnly
           ? []
@@ -437,19 +423,7 @@ function VectorInteractionHOC(Component /* options */) {
               {
                 title: "Edit Primer",
                 fn: function() {
-                  dispatch({
-                    type: "TG_SHOW_MODAL",
-                    name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
-                    props: {
-                      editorName,
-                      dialogProps: {
-                        title: "Edit Primer"
-                      },
-                      initialValues: {
-                        ...convertRangeTo1Based(annotation)
-                      }
-                    }
-                  });
+                  showAddOrEditPrimerDialog(annotation);
                 }
               }
             ]),
@@ -584,7 +558,8 @@ function VectorInteractionHOC(Component /* options */) {
     render() {
       const {
         selectionLayer = { start: -1, end: -1 },
-        sequenceData = { sequence: "" }
+        sequenceData = { sequence: "" },
+        editorName
       } = this.props;
 
       //do this in two steps to determine propsToPass
@@ -630,11 +605,18 @@ function VectorInteractionHOC(Component /* options */) {
             onCopy={this.handleCopy}
             onPaste={this.handlePaste}
           />
+          <PropertiesDialog
+            editorName={editorName}
+            dialogName="PropertiesDialog"
+            noTarget
+          />{" "}
           <AddOrEditFeatureDialog
+            editorName={editorName}
             dialogName="AddOrEditFeatureDialog"
             noTarget
           />{" "}
           <AddOrEditPrimerDialog
+            editorName={editorName}
             dialogName="AddOrEditPrimerDialog"
             noTarget
           />{" "}

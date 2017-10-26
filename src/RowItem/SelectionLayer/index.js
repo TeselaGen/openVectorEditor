@@ -39,6 +39,7 @@ function SelectionLayer(props) {
           //DRAW SELECTION LAYER
 
           return overlaps.map(function(overlap, index) {
+            const key = topIndex + "-" + index;
             let isTrueStart = false;
             let isTrueEnd = false;
             if (overlap.start === selectionLayer.start) {
@@ -63,6 +64,7 @@ function SelectionLayer(props) {
                     {...{
                       charWidth,
                       row,
+                      key: key + "caret1",
                       sequenceLength,
                       className:
                         classNameToPass +
@@ -77,6 +79,7 @@ function SelectionLayer(props) {
                     {...{
                       charWidth,
                       row,
+                      key: key + "caret2",
                       sequenceLength,
                       className:
                         classNameToPass +
@@ -96,7 +99,7 @@ function SelectionLayer(props) {
                     annotation: selectionLayer
                   });
                 }}
-                key={topIndex + "-" + index}
+                key={key}
                 className={
                   classNameToPass +
                   (isTrueStart ? " isTrueStart " : "") +

@@ -186,10 +186,12 @@ export class RowView extends React.Component {
     let rowData = prepareRowData(sequenceData, bpsPerRow);
     let showJumpButtons = rowData.length > 15;
     let renderItem = (index, key) => {
+      let rowTopComp;
+      let rowBottomComp;
       if (showJumpButtons) {
         if (index === 0) {
-          return (
-            <div data-row-number={index} key={key}>
+          rowTopComp = (
+            <div key={key}>
               <Button
                 onClick={e => {
                   e.stopPropagation();
@@ -200,9 +202,9 @@ export class RowView extends React.Component {
               </Button>
             </div>
           );
-        } else if (index === rowData.length + 1) {
-          return (
-            <div data-row-number={index - 2} key={key}>
+        } else if (index === rowData.length - 1) {
+          rowBottomComp = (
+            <div key={key}>
               <Button
                 onClick={e => {
                   e.stopPropagation();
@@ -215,20 +217,21 @@ export class RowView extends React.Component {
           );
         }
       }
-      let indexToUse = showJumpButtons ? index - 1 : index;
-      if (rowData[indexToUse]) {
+      if (rowData[index]) {
         return (
-          <div data-row-number={indexToUse} key={key}>
+          <div data-row-number={index} key={key}>
             <div className={"veRowItemSpacer"} />
             <RowItem
               {...{
                 ...rest,
+                rowTopComp,
+                rowBottomComp,
                 sequenceLength: sequenceData.sequence.length,
                 bpsPerRow,
                 fullSequence: sequenceData.sequence,
                 ...RowItemProps
               }}
-              row={rowData[indexToUse]}
+              row={rowData[index]}
             />
           </div>
         );
@@ -282,7 +285,7 @@ export class RowView extends React.Component {
               this.InfiniteScroller = c;
             }}
             itemRenderer={renderItem}
-            length={rowData.length > 10 ? rowData.length + 2 : rowData.length}
+            length={rowData.length}
             itemSizeEstimator={itemSizeEstimator}
             type="variable"
           />

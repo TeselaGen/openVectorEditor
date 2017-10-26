@@ -173,7 +173,12 @@ export class CircularView extends React.Component {
 
     let layersToDraw = [
       { layer: drawSequenceChars, zIndex: 10, layerName: "SequenceChars" },
-      { layer: drawFeatures, zIndex: 20, layerName: "Features" },
+      {
+        layer: drawFeatures,
+        zIndex: 20,
+        layerName: "Features",
+        spaceBefore: 10
+      },
       { layer: drawPrimers, zIndex: 20, layerName: "Primers" },
       { layer: drawCaret, zIndex: 15, layerName: "Caret" },
       { layer: drawSelectionLayer, zIndex: 10, layerName: "SelectionLayer" },
@@ -242,7 +247,8 @@ export class CircularView extends React.Component {
       { result }
     ) {
       return arr.concat(result);
-    }, []);
+    },
+    []);
 
     //debug hash marks
     // annotationsSvgs = annotationsSvgs.concat([0,50,100,150,190].map(function (pos) {

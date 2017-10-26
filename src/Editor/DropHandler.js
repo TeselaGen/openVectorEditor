@@ -21,15 +21,14 @@ export default class DropHandler extends React.Component {
     };
   };
   render() {
-    const { children, ...rest } = this.props;
-
+    const { children, style, className } = this.props;
     return (
       <Dropzone
         disableClick
         multiple={false}
         activeClassName={"isActive"}
         onDrop={this.handleDrop}
-        {...rest}
+        {...{ style, className }}
       >
         <DraggingMessage />
         {children}

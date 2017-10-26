@@ -10,6 +10,7 @@ import editTool from "./editTool";
 import findTool from "./findTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
+import propertiesTool from "./propertiesTool";
 
 import ToolbarItem from "./ToolbarItem";
 
@@ -52,6 +53,7 @@ export class VeToolBar extends React.Component {
       editTool,
       findTool,
       visibilityTool,
+      propertiesTool,
       ...AdditionalTools
     ];
 

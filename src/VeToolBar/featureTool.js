@@ -11,14 +11,10 @@ export default ({
   isOpen
 }) => {
   return {
-    Icon: (
-      <Icon
-        onClick={function() {
-          annotationVisibilityToggle("features");
-        }}
-        iconName={IconClasses.BOOKMARK}
-      />
-    ),
+    Icon: <Icon iconName={IconClasses.BOOKMARK} />,
+    onIconClick: function() {
+      annotationVisibilityToggle("features");
+    },
     toggled: annotationVisibility.features,
     tooltip: "Show features",
     tooltipToggled: "Hide features",

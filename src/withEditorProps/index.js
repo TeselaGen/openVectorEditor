@@ -13,7 +13,15 @@ export default connect((state, ownProps) => {
   let meta = { editorName };
   let { VectorEditor } = state;
   let editorState = VectorEditor[editorName];
-  if (!editorState) return {};
+
+  if (!editorState) {
+    /* eslint-disable */
+
+    debugger;
+    /* eslint-enable */
+
+    return {};
+  }
   let cutsites = s.filteredCutsitesSelector(editorState).cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState

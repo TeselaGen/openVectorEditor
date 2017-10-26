@@ -17,8 +17,15 @@ export default function upsertDeleteActionGenerator(
       };
     },
     [deleteAction]: (state, payload) => {
-      const id = payload.id || payload;
-      return omit(state, id);
+      let ids;
+      if (Array.isArray(payload)) {
+        ids = payload.map(val => {
+          return val.id || val;
+        });
+      } else {
+        ids = [payload.id || payload];
+      }
+      return omit(state, ids);
     }
   };
 }

@@ -23,8 +23,14 @@ import {
 } from "../../src";
 
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
-import exampleSequenceData from './exampleSequenceData';
-import StandaloneDemo from './StandaloneDemo';
+import exampleSequenceData from "./exampleSequenceData";
+import StandaloneDemo from "./StandaloneDemo";
+// import _CutsiteProperties from "../../src/helperComponents/PropertiesDialog/CutsiteProperties";
+// import withEditorProps from "../../src/withEditorProps";
+// import _OrfProperties from "../../src/helperComponents/PropertiesDialog/OrfProperties";
+
+// const OrfProperties = withEditorProps(_OrfProperties);
+// const CutsiteProperties = withEditorProps(_CutsiteProperties)
 
 const links = [
   { name: "Editor", url: "Editor" },
@@ -45,14 +51,15 @@ const links = [
 
 updateEditor(store, "DemoEditor", {
   sequenceData: exampleSequenceData
-})
-
+});
 
 function Demo() {
   return (
     <Provider store={store}>
       <Router>
         <div>
+          {/* <OrfProperties editorName={"DemoEditor"} /> */}
+          {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
           {links}
           <Route exact path="/" render={() => <Redirect to="/Editor" />} />
           <Route

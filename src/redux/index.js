@@ -13,7 +13,9 @@ import * as replacementLayers from "./replacementLayers";
 import * as panelsShown from "./panelsShown";
 import * as lineageLines from "./lineageLines";
 import * as readOnly from "./readOnly";
+import * as propertiesTool from "./propertiesTool";
 import * as findTool from "./findTool";
+import * as modalActions from "./modalActions";
 
 import createAction from "./utils/createMetaAction";
 
@@ -37,6 +39,8 @@ export const actions = {
   ...readOnly,
   ...panelsShown,
   ...findTool,
+  ...modalActions,
+  ...propertiesTool,
   vectorEditorInitialize,
   vectorEditorClear
 };
@@ -55,6 +59,7 @@ let reducers = {
   lineageLines: lineageLines.default,
   readOnly: readOnly.default,
   findTool: findTool.default,
+  propertiesTool: propertiesTool.default,
   panelsShown: panelsShown.default,
   deletionLayers: deletionLayers.default,
   replacementLayers: replacementLayers.default,

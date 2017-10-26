@@ -4,14 +4,10 @@ import React from "react";
 
 export default ({ annotationVisibilityToggle, annotationVisibility = {} }) => {
   return {
-    Icon: (
-      <Icon
-        onClick={function() {
-          annotationVisibilityToggle("primers");
-        }}
-        iconName={"swap-horizontal"}
-      />
-    ),
+    Icon: <Icon iconName={"swap-horizontal"} />,
+    onIconClick: function() {
+      annotationVisibilityToggle("primers");
+    },
     toggled: annotationVisibility.primers,
     tooltip: "Show oligos",
     tooltipToggled: "Hide oligos",

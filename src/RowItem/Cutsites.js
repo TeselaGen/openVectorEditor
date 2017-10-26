@@ -6,7 +6,7 @@ import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 let snipStyle = {
-  height: "111%",
+  height: "100%",
   // background: 'black',
   position: "absolute",
   top: 3,

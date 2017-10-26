@@ -5,8 +5,8 @@ import upsertDeleteActionGenerator from "./upsertDeleteActionGenerator";
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const upsertPrimer = createAction("UPSERT_Primer");
-export const deletePrimer = createAction("DELETE_Primer");
+export const upsertPrimer = createAction("UPSERT_PRIMER");
+export const deletePrimer = createAction("DELETE_PRIMER");
 
 // ------------------------------------
 // Reducer

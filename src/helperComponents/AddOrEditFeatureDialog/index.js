@@ -12,33 +12,31 @@ import {
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent } from "@blueprintjs/core";
-import { connect } from "react-redux";
 import { convertRangeTo0Based } from "ve-range-utils";
 
 import featureTypes from "../../constants/feature-types";
-import { actions } from "../../redux";
-const { upsertFeature } = actions;
+import withEditorProps from "../../withEditorProps";
 
 export class AddOrEditFeatureDialog extends React.Component {
   render() {
     const {
-      editorName,
       hideModal,
-      sequenceLength = 100,
+      sequenceData = { sequence: "" },
       handleSubmit,
       upsertFeature
     } = this.props;
+    const sequenceLength = sequenceData.sequence.length;
     return (
       <div style={{ padding: 20 }} className={"tg-upsert-feature"}>
         <InputField validate={required} name={"name"} label={"Name:"} />
         <RadioGroupField
-          defaultValue
           options={[
-            { label: "Positive", value: true },
-            { label: "Negative", value: false }
+            { label: "Positive", value: "true" },
+            { label: "Negative", value: "" }
           ]}
           name={"forward"}
           label={"Strand:"}
+          defaultValue={"true"}
         />
         <SelectField
           defaultValue={"misc_feature"}
@@ -67,7 +65,7 @@ export class AddOrEditFeatureDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertFeature(convertRangeTo0Based(data), { editorName });
+              upsertFeature(convertRangeTo0Based(data));
               hideModal();
             })}
             intent={Intent.PRIMARY}
@@ -86,7 +84,7 @@ function required(val) {
 
 export default compose(
   withDialog(),
-  connect(null, { upsertFeature }),
+  withEditorProps,
   reduxForm({
     form: "AddOrEditFeatureDialog"
   })

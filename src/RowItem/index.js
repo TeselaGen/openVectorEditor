@@ -29,6 +29,8 @@ export class RowItem extends React.Component {
       deletionLayers = {},
       replacementLayers = {},
       searchLayers = [],
+      rowTopComp,
+      rowBottomComp,
       // setSelectionLayer = noop,
       cutsiteLabelSelectionLayer = [{ start: -1, end: -1, color: "black" }],
       annotationHeight = 14,
@@ -152,11 +154,12 @@ export class RowItem extends React.Component {
       }
     );
     let deletionLayerStrikeThrough = deletionLayersToDisplay.length
-      ? deletionLayersToDisplay.map(function(layer) {
+      ? deletionLayersToDisplay.map(function(layer, index) {
           let left = (layer.start - row.start) * charWidth;
           let width = (layer.end - layer.start + 1) * charWidth;
           return (
             <div
+              key={"deletionLayer" + index}
               className={"ve_sequence_strikethrough"}
               style={{
                 left,
@@ -172,126 +175,127 @@ export class RowItem extends React.Component {
       : null;
 
     return (
-      <div
-        className="veRowItem"
-        style={rowContainerStyle}
-        // onMouseMove={this.onMouseMove}
-        // onMouseUp={this.onMouseUp}
-        // onMouseDown={this.onMouseDown}
-      >
-        <div className="ve-spacer" />
-
-        <SelectionLayer
-          color={"yellow"}
-          regions={searchLayers}
-          {...annotationCommonProps}
-        />
-        <SelectionLayer
-          selectionLayerRightClicked={selectionLayerRightClicked}
-          {...annotationCommonProps}
-          regions={selectionLayers}
-        />
-
-        {showFeatures &&
-        Object.keys(features).length > 0 && (
-          <Features
-            featureClicked={featureClicked}
-            featureRightClicked={featureRightClicked}
-            annotationRanges={features}
-            {...annotationCommonProps}
-            annotationHeight={featureHeight}
-          />
-        )}
-
-        {showPrimers &&
-        Object.keys(primers).length > 0 && (
-          <Primers
-            sequence={fullSequence}
-            primerClicked={primerClicked}
-            primerRightClicked={primerRightClicked}
-            annotationRanges={primers}
-            {...annotationCommonProps}
-            annotationHeight={primerHeight}
-          />
-        )}
-
-        {showOrfs &&
-        Object.keys(orfs).length > 0 && (
-          <Orfs
-            orfClicked={orfClicked}
-            orfRightClicked={orfRightClicked}
-            annotationRanges={orfs}
-            {...annotationCommonProps}
-          />
-        )}
-
-        {showTranslations &&
-        Object.keys(translations).length > 0 && (
-          <Translations
-            translationClicked={translationClicked}
-            translationRightClicked={translationRightClicked}
-            translationDoubleClicked={translationDoubleClicked}
-            annotationRanges={translations}
-            {...annotationCommonProps}
-          />
-        )}
-
-        {showCutsiteLabels &&
-        showCutsites &&
-        Object.keys(cutsites).length > 0 && (
-          <CutsiteLabels
-            cutsiteClicked={cutsiteClicked}
-            annotationRanges={cutsites}
-            {...annotationCommonProps}
-          />
-        )}
-
+      <div className="veRowItemWrapper">
+        {rowTopComp && rowTopComp}
         <div
-          className="veRowItemSequenceContainer"
-          style={{ position: "relative" }}
+          className="veRowItem"
+          style={rowContainerStyle}
+          // onMouseMove={this.onMouseMove}
+          // onMouseUp={this.onMouseUp}
+          // onMouseDown={this.onMouseDown}
         >
-          {showSequence &&
-          charWidth > 7 && (
-            <Sequence
-              sequence={sequence}
-              height={sequenceHeight}
-              length={sequence.length}
-              charWidth={charWidth}
-            >
-              {showCutsites &&
-              Object.keys(cutsites).length > 0 && (
-                <Cutsites
-                  sequenceLength={sequenceLength}
-                  annotationRanges={cutsites}
-                  topStrand
-                  {...annotationCommonProps}
-                />
-              )}
-              {deletionLayerStrikeThrough}
-            </Sequence>
-          )}
+          <div className="ve-spacer" />
 
-          {showReverseSequence &&
-          charWidth > 7 && (
-            <Sequence
-              length={sequence.length}
-              sequence={reverseSequence}
-              height={sequenceHeight}
-              charWidth={charWidth}
-            >
-              {showCutsites &&
-              Object.keys(cutsites).length > 0 && (
-                <Cutsites
-                  topStrand={false}
-                  annotationRanges={cutsites}
-                  {...annotationCommonProps}
-                />
+          <SelectionLayer
+            color={"yellow"}
+            regions={searchLayers}
+            {...annotationCommonProps}
+          />
+          <SelectionLayer
+            selectionLayerRightClicked={selectionLayerRightClicked}
+            {...annotationCommonProps}
+            regions={selectionLayers}
+          />
+
+          {showFeatures &&
+            Object.keys(features).length > 0 && (
+              <Features
+                featureClicked={featureClicked}
+                featureRightClicked={featureRightClicked}
+                annotationRanges={features}
+                {...annotationCommonProps}
+                annotationHeight={featureHeight}
+              />
+            )}
+
+          {showPrimers &&
+            Object.keys(primers).length > 0 && (
+              <Primers
+                sequence={fullSequence}
+                primerClicked={primerClicked}
+                primerRightClicked={primerRightClicked}
+                annotationRanges={primers}
+                {...annotationCommonProps}
+                annotationHeight={primerHeight}
+              />
+            )}
+
+          {showOrfs &&
+            Object.keys(orfs).length > 0 && (
+              <Orfs
+                orfClicked={orfClicked}
+                orfRightClicked={orfRightClicked}
+                annotationRanges={orfs}
+                {...annotationCommonProps}
+              />
+            )}
+
+          {showTranslations &&
+            Object.keys(translations).length > 0 && (
+              <Translations
+                translationClicked={translationClicked}
+                translationRightClicked={translationRightClicked}
+                translationDoubleClicked={translationDoubleClicked}
+                annotationRanges={translations}
+                {...annotationCommonProps}
+              />
+            )}
+
+          {showCutsiteLabels &&
+            showCutsites &&
+            Object.keys(cutsites).length > 0 && (
+              <CutsiteLabels
+                cutsiteClicked={cutsiteClicked}
+                annotationRanges={cutsites}
+                {...annotationCommonProps}
+              />
+            )}
+
+          <div
+            className="veRowItemSequenceContainer"
+            style={{ position: "relative" }}
+          >
+            {showSequence &&
+              charWidth > 7 && (
+                <Sequence
+                  sequence={sequence}
+                  height={sequenceHeight}
+                  length={sequence.length}
+                  charWidth={charWidth}
+                >
+                  {showCutsites &&
+                    Object.keys(cutsites).length > 0 && (
+                      <Cutsites
+                        sequenceLength={sequenceLength}
+                        annotationRanges={cutsites}
+                        topStrand
+                        {...annotationCommonProps}
+                      />
+                    )}
+                  {deletionLayerStrikeThrough}
+                </Sequence>
               )}
-              {deletionLayerStrikeThrough}
-            </Sequence>
-          )}
-          {cutsiteLabelSelectionLayer.map(
-            function(/* layer */) {
+
+            {showReverseSequence &&
+              charWidth > 7 && (
+                <Sequence
+                  length={sequence.length}
+                  sequence={reverseSequence}
+                  height={sequenceHeight}
+                  charWidth={charWidth}
+                >
+                  {showCutsites &&
+                    Object.keys(cutsites).length > 0 && (
+                      <Cutsites
+                        topStrand={false}
+                        annotationRanges={cutsites}
+                        {...annotationCommonProps}
+                      />
+                    )}
+                  {deletionLayerStrikeThrough}
+                </Sequence>
+              )}
+            {cutsiteLabelSelectionLayer.map(function(/* layer */) {
               return "";
               // let { color = "black" } = layer;
               // return (
@@ -313,161 +317,162 @@ export class RowItem extends React.Component {
               //     />
               //   )
               // );
-            }
-          )}
-          {showCutsites &&
-            Object.keys(cutsites).map(function(id, index) {
-              let cutsite = cutsites[id];
-              let layer = cutsite.annotation.recognitionSiteRange;
-              return (
-                layer.start > -1 && (
-                  <SelectionLayer
-                    {...{
-                      key: "restrictionSiteRange" + index,
-                      height: showReverseSequence
-                        ? sequenceHeight * 2 + 1
-                        : sequenceHeight + 1,
-                      hideCarets: true,
-                      opacity: 0.3,
-                      className: "cutsiteLabelSelectionLayer",
-                      border: `2px solid ${"lightblue"}`,
-                      // background: 'none',
-                      background: "lightblue",
-                      regions: [layer]
-                    }}
-                    {...annotationCommonProps}
-                  />
-                )
-              );
             })}
-        </div>
+            {showCutsites &&
+              Object.keys(cutsites).map(function(id, index) {
+                let cutsite = cutsites[id];
+                let layer = cutsite.annotation.recognitionSiteRange;
+                return (
+                  layer.start > -1 && (
+                    <SelectionLayer
+                      {...{
+                        key: "restrictionSiteRange" + index,
+                        height: showReverseSequence
+                          ? sequenceHeight * 2 + 1
+                          : sequenceHeight + 1,
+                        hideCarets: true,
+                        opacity: 0.3,
+                        className: "cutsiteLabelSelectionLayer",
+                        border: `2px solid ${"lightblue"}`,
+                        // background: 'none',
+                        background: "lightblue",
+                        regions: [layer]
+                      }}
+                      {...annotationCommonProps}
+                    />
+                  )
+                );
+              })}
+          </div>
 
-        {showLineageLines && (
-          <LineageLines
-            lineageLines={lineageLines}
-            {...annotationCommonProps}
-          />
-        )}
+          {showLineageLines && (
+            <LineageLines
+              lineageLines={lineageLines}
+              {...annotationCommonProps}
+            />
+          )}
 
-        {map(replacementLayers, function(replacementLayer) {
-          let atCaret = replacementLayer.caretPosition > -1;
-          let normedCaretPos;
-          if (atCaret) {
-            normedCaretPos = normalizePositionByRangeLength(
-              replacementLayer.caretPosition,
+          {map(replacementLayers, function(replacementLayer) {
+            let atCaret = replacementLayer.caretPosition > -1;
+            let normedCaretPos;
+            if (atCaret) {
+              normedCaretPos = normalizePositionByRangeLength(
+                replacementLayer.caretPosition,
+                sequenceLength
+              );
+            }
+            let insertedBpsLayer = {
+              ...replacementLayer,
+              start: atCaret ? normedCaretPos : replacementLayer.start,
+              end:
+                (atCaret ? normedCaretPos : replacementLayer.start) +
+                replacementLayer.sequence.length
+            };
+            let { sequence } = insertedBpsLayer;
+            let layerRangeOverlaps = getOverlapsOfPotentiallyCircularRanges(
+              insertedBpsLayer,
+              row,
               sequenceLength
             );
-          }
-          let insertedBpsLayer = {
-            ...replacementLayer,
-            start: atCaret ? normedCaretPos : replacementLayer.start,
-            end:
-              (atCaret ? normedCaretPos : replacementLayer.start) +
-              replacementLayer.sequence.length
-          };
-          let { sequence } = insertedBpsLayer;
-          let layerRangeOverlaps = getOverlapsOfPotentiallyCircularRanges(
-            insertedBpsLayer,
-            row,
-            sequenceLength
-          );
-          return layerRangeOverlaps.map(function(layer, index) {
-            let isStart = layer.start === insertedBpsLayer.start;
-            let seqInRow = getSequenceWithinRange(
-              {
-                start: layer.start - insertedBpsLayer.start,
-                end: layer.end - insertedBpsLayer.start
-              },
-              sequence
-            );
-            let startOffset = layer.start - row.start;
-            let width = seqInRow.length * charWidth;
-            let height = sequenceHeight;
-            let bufferBottom = 4;
-            let bufferLeft = 2;
-            let arrowHeight = isStart ? 8 : 0;
-            return (
-              <Sequence
-                key={index}
-                sequence={seqInRow}
-                startOffset={startOffset}
-                height={height}
-                containerStyle={{
-                  marginTop: 8,
-                  marginBottom: 6
-                }}
-                length={seqInRow.length}
-                charWidth={charWidth}
-              >
-                <svg
-                  style={{
-                    left: startOffset * charWidth,
-                    height: sequenceHeight,
-                    position: "absolute"
-                  }}
-                  ref="rowViewTextContainer"
-                  onClick={function(event) {
-                    replacementLayerClicked({
-                      annotation: replacementLayer,
-                      event
-                    });
-                  }}
-                  onContextMenu={function(event) {
-                    replacementLayerRightClicked({
-                      annotation: replacementLayer,
-                      event
-                    });
-                  }}
-                  className="rowViewTextContainer clickable"
-                  width={width}
+            return layerRangeOverlaps.map(function(layer, index) {
+              let isStart = layer.start === insertedBpsLayer.start;
+              let seqInRow = getSequenceWithinRange(
+                {
+                  start: layer.start - insertedBpsLayer.start,
+                  end: layer.end - insertedBpsLayer.start
+                },
+                sequence
+              );
+              let startOffset = layer.start - row.start;
+              let width = seqInRow.length * charWidth;
+              let height = sequenceHeight;
+              let bufferBottom = 4;
+              let bufferLeft = 2;
+              let arrowHeight = isStart ? 8 : 0;
+              return (
+                <Sequence
+                  key={index}
+                  sequence={seqInRow}
+                  startOffset={startOffset}
                   height={height}
+                  containerStyle={{
+                    marginTop: 8,
+                    marginBottom: 6
+                  }}
+                  length={seqInRow.length}
+                  charWidth={charWidth}
                 >
-                  <polyline
-                    points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${charWidth /
-                      2},0 ${width},0 ${width},${height +
-                      bufferBottom} ${-bufferLeft},${height +
-                      bufferBottom} ${-bufferLeft},0`}
-                    fill="none"
-                    stroke="black"
-                    strokeWidth="2px"
-                  />
-                </svg>
-              </Sequence>
-            );
-          });
-        })}
-        <DeletionLayers
-          deletionLayerClicked={deletionLayerClicked}
-          deletionLayerRightClicked={deletionLayerRightClicked}
-          deletionLayers={deletionLayers}
-          {...annotationCommonProps}
-        />
-
-        {showYellowAxis && (
-          <svg width="100%" height="6px">
-            <rect
-              x="0"
-              y="0"
-              width="100%"
-              height="6px"
-              fill="#FFFFB3"
-              stroke="grey"
-              strokeWidth="1"
-            />
-          </svg>
-        )}
-        {showAxis && (
-          <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
-        )}
-
-        {caretPosition > -1 &&
-        showCaret && (
-          <Caret
-            caretPosition={caretPosition}
-            shouldBlink
+                  <svg
+                    style={{
+                      left: startOffset * charWidth,
+                      height: sequenceHeight,
+                      position: "absolute"
+                    }}
+                    ref="rowViewTextContainer"
+                    onClick={function(event) {
+                      replacementLayerClicked({
+                        annotation: replacementLayer,
+                        event
+                      });
+                    }}
+                    onContextMenu={function(event) {
+                      replacementLayerRightClicked({
+                        annotation: replacementLayer,
+                        event
+                      });
+                    }}
+                    className="rowViewTextContainer clickable"
+                    width={width}
+                    height={height}
+                  >
+                    <polyline
+                      points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${charWidth /
+                        2},0 ${width},0 ${width},${height +
+                        bufferBottom} ${-bufferLeft},${height +
+                        bufferBottom} ${-bufferLeft},0`}
+                      fill="none"
+                      stroke="black"
+                      strokeWidth="2px"
+                    />
+                  </svg>
+                </Sequence>
+              );
+            });
+          })}
+          <DeletionLayers
+            deletionLayerClicked={deletionLayerClicked}
+            deletionLayerRightClicked={deletionLayerRightClicked}
+            deletionLayers={deletionLayers}
             {...annotationCommonProps}
           />
-        )}
+
+          {showYellowAxis && (
+            <svg width="100%" height="6px">
+              <rect
+                x="0"
+                y="0"
+                width="100%"
+                height="6px"
+                fill="#FFFFB3"
+                stroke="grey"
+                strokeWidth="1"
+              />
+            </svg>
+          )}
+          {showAxis && (
+            <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
+          )}
+
+          {caretPosition > -1 &&
+            showCaret && (
+              <Caret
+                caretPosition={caretPosition}
+                shouldBlink
+                {...annotationCommonProps}
+              />
+            )}
+        </div>
+        {rowBottomComp && rowBottomComp}
       </div>
     );
   }

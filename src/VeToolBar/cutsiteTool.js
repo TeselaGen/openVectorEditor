@@ -9,14 +9,10 @@ export default function CutsiteTool({
   isOpen
 }) {
   return {
-    Icon: (
-      <Icon
-        onClick={function() {
-          annotationVisibilityToggle("cutsites");
-        }}
-        iconName={IconClasses.CUT}
-      />
-    ),
+    Icon: <Icon iconName={IconClasses.CUT} />,
+    onIconClick: function() {
+      annotationVisibilityToggle("cutsites");
+    },
     toggled: annotationVisibility.cutsites,
     tooltip: "Show cut sites",
     tooltipToggled: "Hide cut sites",

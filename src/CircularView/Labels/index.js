@@ -154,15 +154,14 @@ const DrawLabelGroup = withHover(function({
   label,
   labelAndSublabels,
   fontWidth,
-  fontHeight,
+  // fontHeight,
   outerRadius,
   circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
-  labelIds,
-  multipleLabels,
-  isIdHashmap,
-  ...rest
+  // labelIds,
+  multipleLabels
+  // isIdHashmap,
 }) {
   let { text } = label;
   let groupLabelXStart;
@@ -185,7 +184,8 @@ const DrawLabelGroup = withHover(function({
       return text.length;
     }
     return currentLength;
-  }, 0);
+  },
+  0);
 
   let maxLabelWidth = maxLabelLength * fontWidth;
   let labelOnLeft = label.x < 0;
@@ -305,7 +305,7 @@ const DrawLabelGroup = withHover(function({
     ];
   }
   return (
-    <g {...hoverActions} {...{ ...rest, onClick: label.onClick }}>
+    <g {...hoverActions} {...{ onClick: label.onClick }}>
       {content}
     </g>
   );

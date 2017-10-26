@@ -12,7 +12,7 @@
 
 .cutsiteLabelSelectionLayer {
   background: none !important;
-  height: 107%;
+  height: 119%;
   opacity: 1;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
@@ -32,12 +32,11 @@
 }
 
 .veRowItemSequenceContainer {
-  height: 105%;
+  height: 80%;
 }
-
+/* TNR: ENABLING THIS WILL BREAK SMOOTH SCROLLING FOR THE ROW VIEW
 .rowViewTextContainer {
   user-select: none;
-}
- 
+} */
 
- /*# sourceMappingURL= style.css.map */
+/*# sourceMappingURL= style.css.map */
