@@ -1,8 +1,9 @@
+import { filter } from "lodash";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
-import getAminoAcidDataForEachBaseOfDna
-  from "ve-sequence-utils/getAminoAcidDataForEachBaseOfDna";
+
+import getAminoAcidDataForEachBaseOfDna from "ve-sequence-utils/getAminoAcidDataForEachBaseOfDna";
 // import lruMemoize from 'lru-memoize';
 // import bsonObjectid from 'bson-objectid';
 import each from "lodash/each";
@@ -15,7 +16,9 @@ function translationsSelector(
   translations
 ) {
   let translationsToPass = {
-    ...translations,
+    ...filter(translations, translation => {
+      return !translation.isOrf;
+    }),
     ...(showOrfTranslations && showOrfs ? orfs : {})
   };
   each(translationsToPass, function(translation) {

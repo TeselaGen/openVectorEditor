@@ -9,7 +9,10 @@ import {
 import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
 import Clipboard from "clipboard";
 import { compose } from "redux";
-import { insertSequenceDataAtPositionOrRange } from "ve-sequence-utils";
+import {
+  insertSequenceDataAtPositionOrRange,
+  deleteSequenceDataAtRange
+} from "ve-sequence-utils";
 import Keyboard from "./Keyboard";
 
 import withEditorProps from "../withEditorProps";
@@ -17,8 +20,8 @@ import updateSelectionOrCaret from "../utils/selectionAndCaretUtils/updateSelect
 import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
 import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
 import {
-  normalizePositionByRangeLength,
-  convertRangeTo1Based
+  normalizePositionByRangeLength
+  // convertRangeTo1Based
 } from "ve-range-utils";
 import getRangeLength from "ve-range-utils/getRangeLength";
 import React from "react";
@@ -57,7 +60,6 @@ function VectorInteractionHOC(Component /* options */) {
     componentDidMount() {
       let {
         // sequenceDataInserted = noop,
-        backspacePressed = noop,
         selectAll = noop,
         selectInverse = noop,
         readOnly
@@ -74,41 +76,39 @@ function VectorInteractionHOC(Component /* options */) {
       // bind a bunch of this.combokeys shortcuts we're interested in catching
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
-
-      !readOnly &&
-        this.combokeys.bind(
-          [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z"
-          ],
-          event => {
-            this.handleDnaInsert(event);
-          }
-        );
+      this.combokeys.bind(
+        [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "q",
+          "r",
+          "s",
+          "t",
+          "u",
+          "v",
+          "w",
+          "x",
+          "y",
+          "z"
+        ],
+        event => {
+          !readOnly && this.handleDnaInsert(event);
+        }
+      );
 
       let moveCaretBindings = [
         { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
@@ -171,7 +171,7 @@ function VectorInteractionHOC(Component /* options */) {
 
       this.combokeys.bind("backspace", event => {
         // Handle shortcut
-        backspacePressed();
+        !readOnly && this.handleDnaDelete(event);
         event.stopPropagation();
         event.preventDefault();
       });
@@ -247,6 +247,38 @@ function VectorInteractionHOC(Component /* options */) {
           }
         });
     }
+    handleDnaDelete() {
+      let {
+        caretPosition = -1,
+        selectionLayer = { start: -1, end: -1 },
+        sequenceData = { sequence: "" },
+        readOnly,
+        updateSequenceData
+        // handleInsert
+      } = this.props;
+      const sequenceLength = sequenceData.sequence.length;
+      if (sequenceLength > 0 && !readOnly) {
+        let rangeToDelete = selectionLayer;
+        if (caretPosition > 0) {
+          rangeToDelete = {
+            start: normalizePositionByRangeLength(
+              caretPosition - 1,
+              sequenceLength
+            ),
+            end: normalizePositionByRangeLength(
+              caretPosition - 1,
+              sequenceLength
+            )
+          };
+        }
+        const newSeqData = deleteSequenceDataAtRange(
+          sequenceData,
+          rangeToDelete
+        );
+        updateSequenceData(newSeqData);
+      }
+    }
+
     caretPositionUpdate = position => {
       let { caretPosition = -1 } = this.props;
       if (caretPosition === position) {
@@ -280,11 +312,11 @@ function VectorInteractionHOC(Component /* options */) {
 
     generateSelectionMenuOptions = annotation => {
       const {
-        editorName,
+        // editorName,
         sequenceData,
         selectionLayer,
         readOnly,
-        dispatch,
+        // dispatch,
         upsertTranslation,
         showAddOrEditFeatureDialog
       } = this.props;

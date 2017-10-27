@@ -1968,9 +1968,9 @@ chalk@^2.0.0, chalk@^2.0.1:
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
 
-chance@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/chance/-/chance-1.0.11.tgz#48e82f7583df356053e0ad122d4654c5066c570d"
+chance@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/chance/-/chance-1.0.12.tgz#6764c9cb7b4f34856fb780d07f0e17a6601c6c08"
 
 change-emitter@^0.1.2:
   version "0.1.6"
@@ -2022,7 +2022,7 @@ clap@^1.0.9:
   dependencies:
     chalk "^1.1.3"
 
-classnames@2.2.5, classnames@^2.2, classnames@^2.2.4, classnames@^2.2.5:
+classnames@^2.2, classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -7249,7 +7249,7 @@ prop-types@15, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
-prop-types@15.6.0, prop-types@^15.5.9, prop-types@^15.6.0:
+prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -7419,7 +7419,7 @@ rc-animate@2.x:
     css-animation "^1.3.0"
     prop-types "^15.5.6"
 
-rc-slider@^8.3.1, rc-slider@^8.3.3:
+rc-slider@^8.3.1:
   version "8.3.3"
   resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.3.3.tgz#a819896f930e78bdd7d6d20dcb8b20445267c821"
   dependencies:
@@ -7642,14 +7642,6 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-sanfona@^1.0.0-rc3:
-  version "1.0.0-rc3"
-  resolved "https://registry.yarnpkg.com/react-sanfona/-/react-sanfona-1.0.0-rc3.tgz#c6fd5c379697d1653c2f42a1e259253f02be3837"
-  dependencies:
-    classnames "2.2.5"
-    prop-types "15.6.0"
-    uuid "3.1.0"
-
 react-select@^1.0.0-rc.10:
   version "1.0.0-rc.10"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.0.0-rc.10.tgz#f137346250f9255c979fbfa21860899928772350"
@@ -7821,11 +7813,10 @@ redux-act@^1.3.2, redux-act@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/redux-act/-/redux-act-1.4.1.tgz#99143c821e41529502dcdbe80b6ab210b3cdc577"
 
-redux-form@^7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.1.1.tgz#4d9ab1d9c03beb3a8b5f8e5d0f398cff4209081f"
+redux-form@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.1.2.tgz#6b0f25c57fd8130a05ce00f6435fe1b051f402af"
   dependencies:
-    babel-jest "^21.2.0"
     deep-equal "^1.0.1"
     es6-error "^4.0.0"
     hoist-non-react-statics "^2.3.1"
@@ -8752,9 +8743,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^18.1.8:
-  version "18.1.8"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.8.tgz#267681b1b820f8317550448eff91480eaf574bd2"
+teselagen-react-components@^18.1.11:
+  version "18.1.12"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.12.tgz#a9c10d02904e674010cab7b66fb61e3ec71eb419"
   dependencies:
     basiccontext "^3.5.1"
     bio-parsers "^4.2.0"
@@ -9149,10 +9140,6 @@ utils-merge@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
 
-uuid@3.1.0, uuid@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
-
 uuid@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
@@ -9160,6 +9147,10 @@ uuid@^2.0.2:
 uuid@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
+
+uuid@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
 v8flags@^2.1.1:
   version "2.1.1"
@@ -9244,6 +9235,18 @@ ve-sequence-utils@*:
 ve-sequence-utils@3.1.31:
   version "3.1.31"
   resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.1.31.tgz#8f53567546e714e6327a0bb92c249c11145cf1bc"
+  dependencies:
+    bson-objectid "^1.1.1"
+    install-peerdeps "^1.2.0"
+    lodash "^4.10.0"
+    randomcolor "^0.4.3"
+    string-splice "^1.3.0"
+    validate.io-nonnegative-integer-array "^1.0.1"
+    ve-range-utils "2.0.43"
+
+ve-sequence-utils@3.1.34:
+  version "3.1.34"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.1.34.tgz#9ff00868dab84b5836cc87e35c4eeceecf643b96"
   dependencies:
     bson-objectid "^1.1.1"
     install-peerdeps "^1.2.0"
