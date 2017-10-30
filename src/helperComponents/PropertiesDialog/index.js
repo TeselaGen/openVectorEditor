@@ -17,7 +17,7 @@ export class PropertiesInner extends React.Component {
     const {
       propertiesTool = {},
       propertiesViewTabUpdate,
-      annotationsToInclude = {}
+      annotationsToSupport = {}
     } = this.props;
     const {
       features,
@@ -26,7 +26,7 @@ export class PropertiesInner extends React.Component {
       primers,
       translations,
       cutsites
-    } = annotationsToInclude;
+    } = annotationsToSupport;
     const { tabId } = propertiesTool;
     return (
       <div style={{ marginLeft: 5, marginRight: 5 }}>

@@ -1,8 +1,8 @@
-//./caretPosition.js
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 
-const includeInitialValues = {
+//this determines whether or not to
+const initialSupportedTypes = {
   parts: true,
   features: true,
   translations: true,
@@ -14,34 +14,34 @@ const includeInitialValues = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const annotationIncludeToggle = createAction("annotationIncludeToggle");
-//eg: annotationIncludeToggle('features')
-export const annotationInclude = createAction("annotationInclude");
-export const annotationExclude = createAction("annotationExclude");
+export const annotationSupportToggle = createAction("annotationSupportToggle");
+//eg: annotationSupportToggle('features')
+export const annotationSupportOn = createAction("annotationSupportOn");
+export const annotationSupportOff = createAction("annotationSupportOff");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createReducer(
   {
-    [annotationIncludeToggle]: (state, payload) => {
+    [annotationSupportToggle]: (state, payload) => {
       return {
         ...state,
         [payload]: !state[payload]
       };
     },
-    [annotationInclude]: (state, payload) => {
+    [annotationSupportOn]: (state, payload) => {
       return {
         ...state,
         [payload]: false
       };
     },
-    [annotationExclude]: (state, payload) => {
+    [annotationSupportOff]: (state, payload) => {
       return {
         ...state,
         [payload]: true
       };
     }
   },
-  includeInitialValues
+  initialSupportedTypes
 );

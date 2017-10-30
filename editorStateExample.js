@@ -82,7 +82,7 @@ const exampleEditorState = {
     cutsites: true,
     reverseSequence: true
   },
-  annotationsToInclude: { 
+  annotationsToSupport: { 
     features: true,
     translations: true,
     parts: true,

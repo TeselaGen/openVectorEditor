@@ -53,7 +53,7 @@ export default class StandaloneDemo extends React.Component {
     setTimeout(() => {
       editor.updateEditor({
         sequenceData: exampleSequenceData,
-        annotationsToInclude: { 
+        annotationsToSupport: { 
           //these are the defaults, change to false to exclude 
           features: true,
           translations: true,

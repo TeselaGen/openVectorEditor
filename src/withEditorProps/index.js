@@ -25,11 +25,11 @@ export default connect((state, ownProps) => {
     findTool,
     annotationVisibility,
     annotationLabelVisibility,
-    annotationsToInclude
+    annotationsToSupport
   } = editorState;
   let typesToOmit = {};
-  Object.keys(annotationsToInclude).forEach(type => {
-    if (!annotationsToInclude[type]) typesToOmit[type] = false;
+  Object.keys(annotationsToSupport).forEach(type => {
+    if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
   const annotationVisibilityToUse = {
     ...annotationVisibility,
