@@ -29,6 +29,7 @@ export default class StandaloneDemo extends React.Component {
         //in onPaste in your app you can do: 
         // e.clipboardData.getData('application/json')
       },
+      
       ToolBarProps: {
         toolList: [
           "saveTool",
@@ -51,7 +52,16 @@ export default class StandaloneDemo extends React.Component {
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
     setTimeout(() => {
       editor.updateEditor({
-        sequenceData: exampleSequenceData
+        sequenceData: exampleSequenceData,
+        annotationsToInclude: { 
+          //these are the defaults, change to false to exclude 
+          features: true,
+          translations: true,
+          parts: true,
+          orfs: true,
+          cutsites: true,
+          primers: true,
+        },
       });
     }, 10)
   }

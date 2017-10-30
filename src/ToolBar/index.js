@@ -54,18 +54,20 @@ export class ToolBar extends React.Component {
 
   render() {
     const { modifyTools, toolList = [], ...rest } = this.props;
-    console.log("toolList:", toolList);
 
-    let items = toolList.map(toolName => {
-      const tool = allTools[toolName];
-      if (!tool) {
-        console.error(
-          "You're trying to load a tool that doesn't appear to exist: " +
-            toolName
-        );
-      }
-      return tool;
-    });
+    let items = toolList
+      .map(toolName => {
+        const tool = allTools[toolName];
+        if (!tool) {
+          console.error(
+            "You're trying to load a tool that doesn't appear to exist: " +
+              toolName
+          );
+          return false;
+        }
+        return tool;
+      })
+      .filter(tool => tool);
 
     if (modifyTools) {
       items = modifyTools(items);

@@ -10,7 +10,10 @@ const visibilityInitialValues = {
   orfTranslations: true,
   axis: true,
   cutsites: true,
-  reverseSequence: true
+  primers: true,
+  reverseSequence: true,
+  lineageLines: true,
+  axisNumbers: false
 };
 
 // ------------------------------------

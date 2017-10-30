@@ -6,6 +6,7 @@ import * as caretPosition from "./caretPosition";
 import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as sequenceData from "./sequenceData";
+import * as annotationsToInclude from "./annotationsToInclude";
 import * as annotationVisibility from "./annotationVisibility";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as selectedAnnotations from "./selectedAnnotations";
@@ -32,6 +33,7 @@ export const actions = {
   ...selectedAnnotations,
   ...annotationLabelVisibility,
   ...annotationVisibility,
+  ...annotationsToInclude,
   ...sequenceData,
   ...minimumOrfSize,
   ...hoveredAnnotation,
@@ -53,6 +55,7 @@ let reducers = {
   selectedAnnotations: selectedAnnotations.default,
   annotationLabelVisibility: annotationLabelVisibility.default,
   annotationVisibility: annotationVisibility.default,
+  annotationsToInclude: annotationsToInclude.default,
   sequenceDataHistory: undoable(sequenceData.default, {
     ignoreInitialState: true,
     filter: distinctState

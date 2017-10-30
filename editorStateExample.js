@@ -82,6 +82,14 @@ const exampleEditorState = {
     cutsites: true,
     reverseSequence: true
   },
+  annotationsToInclude: { 
+    features: true,
+    translations: true,
+    parts: true,
+    orfs: true,
+    cutsites: true,
+    primers: true,
+  },
   panelsShown: {
     sequence: true,
     circular: true,

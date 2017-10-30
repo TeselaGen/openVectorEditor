@@ -29,6 +29,23 @@
           event.preventDefault();
           //in onPaste in your app you can do: 
           // e.clipboardData.getData('application/json')
+        },
+        ToolBarProps: {
+            toolList: [
+            "saveTool",
+            "downloadTool",
+            "undoTool",
+            "redoTool",
+            "cutsiteTool",
+            "featureTool",
+            "oligoTool",
+            "orfTool",
+            "viewTool",
+            "editTool",
+            "findTool",
+            "visibilityTool",
+            "propertiesTool",
+            ]
         }
       });
       editor.updateEditor({sequenceData: {

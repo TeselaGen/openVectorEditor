@@ -1,14 +1,17 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreators as UndoActionCreators } from "redux-undo";
+import { omit } from "lodash";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
+import { allTypes } from "../utils/annotationTypes";
 
 /**
  * This function basically connects the wrapped component with all of the state stored in a given editor instance
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
+
 export default connect((state, ownProps) => {
   const { editorName, onSave = () => {} } = ownProps;
   let meta = { editorName };
@@ -18,12 +21,29 @@ export default connect((state, ownProps) => {
   if (!editorState) {
     return {};
   }
+  const {
+    findTool,
+    annotationVisibility,
+    annotationLabelVisibility,
+    annotationsToInclude
+  } = editorState;
+  let typesToOmit = {};
+  Object.keys(annotationsToInclude).forEach(type => {
+    if (!annotationsToInclude[type]) typesToOmit[type] = false;
+  });
+  const annotationVisibilityToUse = {
+    ...annotationVisibility,
+    ...typesToOmit
+  };
+  const annotationLabelVisibilityToUse = {
+    ...annotationLabelVisibility,
+    ...typesToOmit
+  };
   let sequenceData = s.sequenceDataSelector(editorState);
   let cutsites = s.filteredCutsitesSelector(editorState).cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
   );
-  const { findTool } = editorState;
   let orfs = s.orfsSelector(editorState);
   let selectedCutsites = s.selectedCutsitesSelector(editorState);
   let allCutsites = s.cutsitesSelector(editorState);
@@ -58,9 +78,11 @@ export default connect((state, ownProps) => {
     searchLayers,
     matchedSearchLayer,
     findTool: {
-      ...editorState.findTool,
+      ...findTool,
       matchesTotal
     },
+    annotationVisibility: annotationVisibilityToUse,
+    annotationLabelVisibility: annotationLabelVisibilityToUse,
     sequenceData: {
       ...sequenceData,
       cutsites,
