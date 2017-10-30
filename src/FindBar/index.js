@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, IconClasses, InputGroup } from "@blueprintjs/core";
+import { Button, IconClasses, InputGroup, Switch } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
 
@@ -16,6 +16,7 @@ export function FindBar({
   const {
     searchText,
     dnaOrAA,
+    highlightAll,
     ambiguousOrLiteral,
     matchesTotal = 0,
     matchNumber = 0
@@ -27,6 +28,7 @@ export function FindBar({
         bottom: 0,
         left: 0,
         display: "flex",
+        alignItems: "center",
         paddingBottom: 5,
         background: "white"
       }}
@@ -105,7 +107,10 @@ export function FindBar({
           })}{" "}
         </select>
       </div>
-      <Button onClick={toggleHighlightAll}> Highlight All</Button>
+      <Switch value={highlightAll} onChange={toggleHighlightAll}>
+        Highlight All
+      </Switch>
+      {/* <Button onClick={}> </Button> */}
     </div>
   );
 }

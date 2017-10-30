@@ -2,8 +2,8 @@ import React from "react";
 
 import {connect} from 'react-redux';
 
-// import exampleSequenceData from './exampleData/exampleSequenceData';
-import exampleSequenceData from './exampleData/simpleSequenceData';
+import exampleSequenceData from './exampleData/exampleSequenceData';
+// import exampleSequenceData from './exampleData/simpleSequenceData';
 
 connect((state, ownProps) => {}, (dispatch) => {
   dispatch()
@@ -44,9 +44,13 @@ export default class StandaloneDemo extends React.Component {
     //     parts: []
     //   }
     // });
-    editor.updateEditor({
-      sequenceData: exampleSequenceData
-    });
+    
+    //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
+    setTimeout(() => {
+      editor.updateEditor({
+        sequenceData: exampleSequenceData
+      });
+    }, 10)
   }
   render() {
     return (

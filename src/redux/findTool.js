@@ -62,7 +62,7 @@ export default createReducer(
     isOpen: false,
     searchText: "",
     dnaOrAA: "DNA",
-    ambiguousOrLiteral: "AMBIGUOUS",
+    ambiguousOrLiteral: "LITERAL",
     highlightAll: false,
     matchNumber: 0
   }

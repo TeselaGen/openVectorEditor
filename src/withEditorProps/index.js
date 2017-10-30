@@ -16,11 +16,6 @@ export default connect((state, ownProps) => {
   let editorState = VectorEditor[editorName];
 
   if (!editorState) {
-    /* eslint-disable */
-
-    debugger;
-    /* eslint-enable */
-
     return {};
   }
   let sequenceData = s.sequenceDataSelector(editorState);

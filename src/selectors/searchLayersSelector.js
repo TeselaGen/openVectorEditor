@@ -15,7 +15,7 @@ function searchLayersSelector(
   }
   return findSequenceMatches(sequence, searchString, {
     isCircular,
-    ambiguous: ambiguousOrLiteral !== "AMBIGUOUS",
+    isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
     isProteinSearch: dnaOrAA !== "DNA"
   });
 }

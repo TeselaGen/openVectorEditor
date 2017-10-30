@@ -1,3 +1,6 @@
+.veFindBar > .pt-control {
+  margin-bottom: 0px;
+}
 .veFindBar > * {
   margin-right: 10px;
   width: fit-content;
