@@ -13,6 +13,8 @@ import visibilityTool from "./visibilityTool";
 import propertiesTool from "./propertiesTool";
 
 import ToolbarItem from "./ToolbarItem";
+import undoTool from "./undoTool";
+import redoTool from "./redoTool";
 
 // import get from 'lodash/get'
 import "./style.css";
@@ -45,6 +47,8 @@ export class VeToolBar extends React.Component {
     let items = [
       saveTool,
       downloadTool,
+      undoTool,
+      redoTool,
       cutsiteTool,
       featureTool,
       oligoTool,

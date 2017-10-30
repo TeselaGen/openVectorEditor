@@ -1,4 +1,6 @@
+import undoable from "redux-undo";
 import { combineReducers } from "redux";
+import deepEqual from "deep-equal";
 import * as selectionLayer from "./selectionLayer";
 import * as caretPosition from "./caretPosition";
 import * as hoveredAnnotation from "./hoveredAnnotation";
@@ -51,7 +53,10 @@ let reducers = {
   selectedAnnotations: selectedAnnotations.default,
   annotationLabelVisibility: annotationLabelVisibility.default,
   annotationVisibility: annotationVisibility.default,
-  sequenceData: sequenceData.default,
+  sequenceDataHistory: undoable(sequenceData.default, {
+    ignoreInitialState: true,
+    filter: distinctState
+  }),
   minimumOrfSize: minimumOrfSize.default,
   hoveredAnnotation: hoveredAnnotation.default,
   caretPosition: caretPosition.default,
@@ -114,3 +119,9 @@ export default function reducerFactory(initialState = {}) {
 
 // export const getBlankEditor = (state) => (state.blankEditor)
 export const getEditorByName = (state, editorName) => state[editorName];
+
+function distinctState(action, currentState, previousHistory) {
+  let { present } = previousHistory;
+  const equal = deepEqual(currentState, present);
+  return !equal;
+}

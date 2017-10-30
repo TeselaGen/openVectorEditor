@@ -1,17 +1,15 @@
-import cleanSequenceData from '../lib/utils/cleanSequenceData'
+import cleanSequenceData from "../lib/utils/cleanSequenceData";
 
-export default function updateEditor(
-  store,
-  editorName,
-  initialValues={}
-) {
-  const {
-    sequenceData = {}
-  } = initialValues
+export default function updateEditor(store, editorName, initialValues = {}) {
+  const { sequenceData = {}, ...rest } = initialValues;
   const initialValuesToUse = {
-    ...initialValues,
-    sequenceData: cleanSequenceData(sequenceData)
-  }
+    ...rest,
+    sequenceDataHistory: {
+      past: [],
+      present: cleanSequenceData(sequenceData),
+      future: []
+    }
+  };
 
   store.dispatch({
     type: "VECTOR_EDITOR_INITIALIZE",
@@ -19,5 +17,5 @@ export default function updateEditor(
     meta: {
       editorName
     }
-  })
+  });
 }

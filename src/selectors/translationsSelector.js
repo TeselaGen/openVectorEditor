@@ -7,6 +7,7 @@ import getAminoAcidDataForEachBaseOfDna from "ve-sequence-utils/getAminoAcidData
 // import lruMemoize from 'lru-memoize';
 // import bsonObjectid from 'bson-objectid';
 import each from "lodash/each";
+import translationsRawSelector from "./translationsRawSelector";
 
 function translationsSelector(
   sequence,
@@ -40,8 +41,6 @@ export default createSelector(
   function(state) {
     return state.annotationVisibility.orfs;
   },
-  function(state) {
-    return state.sequenceData.translations;
-  },
+  translationsRawSelector,
   translationsSelector
 );

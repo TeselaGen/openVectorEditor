@@ -1,5 +1,6 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
@@ -22,6 +23,7 @@ export default connect((state, ownProps) => {
 
     return {};
   }
+  let sequenceData = s.sequenceDataSelector(editorState);
   let cutsites = s.filteredCutsitesSelector(editorState).cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
@@ -48,12 +50,12 @@ export default connect((state, ownProps) => {
   if (!findTool.highlightAll && searchLayers[findTool.matchNumber]) {
     searchLayers = [searchLayers[findTool.matchNumber]];
   }
-
   return {
     ...editorState,
     onSave: e => {
-      onSave(e, editorState.sequenceData, editorState);
+      onSave(e, sequenceData, editorState);
     },
+
     selectedCutsites,
     sequenceLength,
     allCutsites,
@@ -65,7 +67,7 @@ export default connect((state, ownProps) => {
       matchesTotal
     },
     sequenceData: {
-      ...editorState.sequenceData,
+      ...sequenceData,
       cutsites,
       orfs,
       translations
@@ -97,7 +99,26 @@ function mapDispatchToActions(dispatch, ownProps) {
     ...metaActions,
     ...metaOverrides
   };
-  return { ...bindActionCreators(actionsToPass, dispatch), dispatch };
+  return {
+    ...bindActionCreators(actionsToPass, dispatch),
+    undo: () => {
+      dispatch({
+        ...UndoActionCreators.undo(),
+        meta: {
+          editorName
+        }
+      });
+    },
+    redo: () => {
+      dispatch({
+        ...UndoActionCreators.redo(),
+        meta: {
+          editorName
+        }
+      });
+    },
+    dispatch
+  };
 }
 
 function fakeActionOverrides() {

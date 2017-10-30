@@ -36,10 +36,10 @@ export default function(state, action) {
     primers,
     features,
     sequence,
+    translations,
     parts: (state = {}) => state,
     size: (state = {}) => state,
     circular: createReducer({}, true),
-    translations,
     name: createReducer({}, ""),
     fromFileUpload: createReducer({}, false)
   })(stateToPass, action);

@@ -1,14 +1,15 @@
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
 import some from "lodash/some";
-// import moveCaret from "../withEditorInteractions/moveCaret";
-// import handleCaretMoved from "../withEditorInteractions/handleCaretMoved";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
-import ReactList from "react-list";
+// import ReactList from "react-list";
+
 import withEditorInteractions from "../withEditorInteractions";
+import ReactList from "./ReactList";
+// import ReactList from './ReactVariable';
 import "./style.css";
 // import Combokeys from "combokeys";
 
@@ -271,7 +272,6 @@ export class RowView extends React.Component {
             paddingLeft: marginWidth / 2,
             paddingRight: marginWidth / 2
           }}
-          onScroll={onScroll}
           onClick={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
@@ -306,11 +306,8 @@ function getBpsPerRow({
 }
 
 function itemSizeEstimator(index, cache) {
-  if (cache[index + 1]) {
-    return cache[index + 1];
+  if (cache[index]) {
+    return cache[index];
   }
-  if (cache[index - 1]) {
-    return cache[index - 1];
-  }
-  return 100;
+  return 400;
 }

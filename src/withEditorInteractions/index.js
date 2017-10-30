@@ -52,6 +52,7 @@ function getBpsPerRow({
   return Math.floor((width - marginWidth) / charWidth);
 }
 
+//withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
     componentWillUnmount() {
@@ -61,8 +62,7 @@ function VectorInteractionHOC(Component /* options */) {
       let {
         // sequenceDataInserted = noop,
         selectAll = noop,
-        selectInverse = noop,
-        readOnly
+        selectInverse = noop
       } = {
         ...this.props
       };
@@ -106,7 +106,7 @@ function VectorInteractionHOC(Component /* options */) {
           "z"
         ],
         event => {
-          !readOnly && this.handleDnaInsert(event);
+          this.handleDnaInsert(event);
         }
       );
 
@@ -171,9 +171,7 @@ function VectorInteractionHOC(Component /* options */) {
 
       this.combokeys.bind("backspace", event => {
         // Handle shortcut
-        !readOnly && this.handleDnaDelete(event);
-        event.stopPropagation();
-        event.preventDefault();
+        this.handleDnaDelete(event);
       });
       this.combokeys.bind("command+a", event => {
         // Handle shortcut
@@ -229,7 +227,9 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
-      !readOnly &&
+      if (readOnly) {
+        window.toastr.warning("Sorry the sequence is Read-Only");
+      } else {
         createSequenceInputPopup({
           isReplace,
           selectionLayer,
@@ -244,8 +244,10 @@ function VectorInteractionHOC(Component /* options */) {
                 caretPosition > -1 ? caretPosition : selectionLayer
               )
             );
+            window.toastr.success("Sequence Updated Successfully");
           }
         });
+      }
     }
     handleDnaDelete() {
       let {
@@ -257,7 +259,10 @@ function VectorInteractionHOC(Component /* options */) {
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
-      if (sequenceLength > 0 && !readOnly) {
+      if (readOnly) {
+        return window.toastr.warning("Sorry the sequence is Read-Only");
+      }
+      if (sequenceLength > 0) {
         let rangeToDelete = selectionLayer;
         if (caretPosition > 0) {
           rangeToDelete = {
@@ -276,6 +281,7 @@ function VectorInteractionHOC(Component /* options */) {
           rangeToDelete
         );
         updateSequenceData(newSeqData);
+        window.toastr.success("Sequence Deleted Successfully");
       }
     }
 

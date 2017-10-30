@@ -55,11 +55,15 @@
   justify-content: center;
   color: #006cab;
 }
+.veToolbarItemOuter.disabled .veToolbarIcon {
+  color: #c0c0c0;
+}
 .veToolbar .veToolbarItemOuter .veToolbarIcon.veToolbarItemToggled {
   background: lightgrey;
   border-color: #006cab;
 }
-.veToolbar .veToolbarItemOuter .veToolbarIcon:hover {
+
+.veToolbar :not(.disabled).veToolbarItemOuter .veToolbarIcon:hover {
   border-color: #006cab;
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon:active {

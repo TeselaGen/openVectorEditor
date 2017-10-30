@@ -23,11 +23,12 @@ export default class ToolbarItem extends React.Component {
       tooltipToggled,
       dropdowntooltip = "",
       Dropdown,
+      disabled,
       noDropdownIcon,
       dropdownicon,
       toggled = false
     } = item({ ...rest, isOpen, toggleDropdown: this.toggleDropdown });
-    
+
     let tooltipToDisplay = tooltip;
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;
@@ -38,10 +39,12 @@ export default class ToolbarItem extends React.Component {
           isOpen={!!Dropdown && isOpen}
           position={Position.BOTTOM}
           target={
-            <div className={"veToolbarItemOuter"}>
+            <div
+              className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}
+            >
               {Icon && (
                 <div
-                  onClick={onIconClick}
+                  onClick={disabled ? noop : onIconClick}
                   aria-label={tooltipToDisplay}
                   className={" hint--bottom-left veToolbarItem"}
                 >
@@ -60,12 +63,11 @@ export default class ToolbarItem extends React.Component {
                   </div>
                 </div>
               )}
-              {(Dropdown &&
-              !noDropdownIcon) ? (
+              {Dropdown && !noDropdownIcon ? (
                 <div
                   aria-label={dropdowntooltip}
                   className={
-                    (isOpen ? ' isOpen ' : '') +
+                    (isOpen ? " isOpen " : "") +
                     " hint--bottom-left " +
                     (dropdownicon ? "" : " veToolbarDropdown")
                   }
@@ -89,7 +91,9 @@ export default class ToolbarItem extends React.Component {
               style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
               className={"ve-toolbar-dropdown content"}
             >
-              {Dropdown && <Dropdown {...rest} toggleDropdown={this.toggleDropdown} />}
+              {Dropdown && (
+                <Dropdown {...rest} toggleDropdown={this.toggleDropdown} />
+              )}
             </div>
           }
         />

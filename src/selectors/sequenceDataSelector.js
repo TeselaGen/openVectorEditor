@@ -1,2 +1,2 @@
-const sequenceDataSelector = state => state.sequenceData;
+const sequenceDataSelector = state => state.sequenceDataHistory.present;
 export default sequenceDataSelector;
