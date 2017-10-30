@@ -55,23 +55,41 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 		console.log("editorState:", editorState);
 	},
 	onCopy: function(event, sequenceData, editorState) {
-      onSave: function(event, copiedSequenceData, editorState) {
-        console.log("event:", event);
-        console.log("sequenceData:", copiedSequenceData);
-        console.log("editorState:", editorState);
-      },
-      onCopy: function(event, copiedSequenceData, editorState) {
-        console.log("event:", event);
-        console.log("sequenceData:", copiedSequenceData);
-        console.log("editorState:", editorState);
-        const clipboardData  = event.clipboardData
-        clipboardData.setData('text/plain', copiedSequenceData.sequence);
-        clipboardData.setData('application/json', JSON.stringify(copiedSequenceData));
-        event.preventDefault();
-        //in onPaste in your app you can do: 
-        // e.clipboardData.getData('application/json')
-      }
-    }
+		onSave: function(event, copiedSequenceData, editorState) {
+			console.log("event:", event);
+			console.log("sequenceData:", copiedSequenceData);
+			console.log("editorState:", editorState);
+		},
+		onCopy: function(event, copiedSequenceData, editorState) {
+			console.log("event:", event);
+			console.log("sequenceData:", copiedSequenceData);
+			console.log("editorState:", editorState);
+			const clipboardData  = event.clipboardData
+			clipboardData.setData('text/plain', copiedSequenceData.sequence);
+			clipboardData.setData('application/json', JSON.stringify(copiedSequenceData));
+			event.preventDefault();
+			//in onPaste in your app you can do: 
+			// e.clipboardData.getData('application/json')
+		}
+	},
+	ToolBarProps: {
+			//name the tools you want to see in the toolbar in the order you want to see them
+			toolList: [
+				"saveTool",
+				"downloadTool",
+				"undoTool",
+				"redoTool",
+				"cutsiteTool",
+				"featureTool",
+				"oligoTool",
+				"orfTool",
+				"viewTool",
+				"editTool",
+				"findTool",
+				"visibilityTool",
+				"propertiesTool",
+			]
+		},
 });
 editor.updateEditor({
 	//note, sequence data passed here will be coerced to fit the Teselagen data model
