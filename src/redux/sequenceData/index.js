@@ -1,3 +1,5 @@
+import { cloneDeep } from "lodash";
+
 import createAction from "../utils/createMetaAction";
 import features from "./features";
 import primers from "./primers";
@@ -31,6 +33,8 @@ export default function(state, action) {
   if (action.type === "SEQUENCE_DATA_UPDATE") {
     stateToPass = action.payload;
   }
+  //tnr: do a clone deep here in order to make sure we are using a totally new object for undo/redo tracking
+  stateToPass = cloneDeep(stateToPass);
 
   return combineReducersDontIgnoreKeys({
     primers,

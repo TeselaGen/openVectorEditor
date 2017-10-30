@@ -23,7 +23,7 @@ import {
 } from "../../src";
 
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
-import exampleSequenceData from "./exampleSequenceData";
+import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
 // import _CutsiteProperties from "../../src/helperComponents/PropertiesDialog/CutsiteProperties";
 // import withEditorProps from "../../src/withEditorProps";

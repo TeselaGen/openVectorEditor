@@ -2,9 +2,9 @@ import React from "react";
 
 import {connect} from 'react-redux';
 
-import exampleSequenceData from './exampleSequenceData';
+// import exampleSequenceData from './exampleData/exampleSequenceData';
+import exampleSequenceData from './exampleData/simpleSequenceData';
 
-console.log('exampleSequenceData:',exampleSequenceData)
 connect((state, ownProps) => {}, (dispatch) => {
   dispatch()
 })

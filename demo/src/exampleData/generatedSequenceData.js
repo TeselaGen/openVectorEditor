@@ -1,9 +1,9 @@
 import generateRandomRange from "ve-range-utils/generateRandomRange";
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+// import normalizePositionByRangeLength
+//   from "ve-range-utils/normalizePositionByRangeLength";
 // var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
-let seqLen = 10000;
 import objectid from "bson-objectid";
+let seqLen = 10000;
 
 let exampleData = {
   // "sequence" : "gtggatgcatgtgtcatggtcat",
