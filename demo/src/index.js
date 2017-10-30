@@ -14,7 +14,7 @@ import {
   CircularView,
   RowView,
   // RowItem,
-  VeToolBar,
+  ToolBar,
   // CutsiteFilter,
   LinearView,
   DigestTool,
@@ -39,7 +39,7 @@ const links = [
   { name: "DigestTool", url: "DigestTool" },
   { name: "RowView", url: "RowView" },
   { name: "LinearView", url: "LinearView" },
-  { name: "VeToolBar", url: "VeToolBar" }
+  { name: "ToolBar", url: "ToolBar" }
 ].map(({ url, name }) => {
   return (
     <Link key={name} style={{ marginLeft: 10 }} to={url}>
@@ -100,9 +100,9 @@ function Demo() {
           />
           <Route
             render={() => {
-              return <VeToolBar editorName="DemoEditor" />;
+              return <ToolBar editorName="DemoEditor" />;
             }}
-            path="/VeToolBar"
+            path="/ToolBar"
           />
         </div>
       </Router>

@@ -1,5 +1,5 @@
 import React from "react";
-export interface VeToolBarProps {
+export interface ToolBarProps {
   editorName: string, //the name of the editor instance (this should match what you've set up in your redux store)
   additionalTools: [additionalTool],
   toolList: [string], //array of strings
@@ -28,4 +28,4 @@ export interface additionalTool {
   dropdowntooltip: string| jsx, 
   id: string //a unique id
 }
-export default class VeToolBar extends React.Component <VeToolBarProps> {}
+export default class ToolBar extends React.Component <ToolBarProps> {}

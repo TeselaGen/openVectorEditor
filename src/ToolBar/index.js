@@ -3,7 +3,6 @@ import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
 import "./style.css";
 
-
 import downloadTool from "./downloadTool";
 import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
@@ -31,13 +30,12 @@ const allTools = {
   visibilityTool,
   propertiesTool,
   undoTool,
-  redoTool,
-} 
-
+  redoTool
+};
 
 // import get from 'lodash/get'
 
-export class VeToolBar extends React.Component {
+export class ToolBar extends React.Component {
   state = {
     openItem: -1
   };
@@ -55,27 +53,23 @@ export class VeToolBar extends React.Component {
   };
 
   render() {
-    const {
-      modifyTools,
-      toolList = [],
-      ...rest
-    } = this.props;
+    const { modifyTools, toolList = [], ...rest } = this.props;
+    console.log("toolList:", toolList);
 
-    let items = toolList.map((toolName) => {
-      return allTools[toolName]
-    })
+    let items = toolList.map(toolName => {
+      const tool = allTools[toolName];
+      if (!tool) {
+        console.error(
+          "You're trying to load a tool that doesn't appear to exist: " +
+            toolName
+        );
+      }
+      return tool;
+    });
 
     if (modifyTools) {
       items = modifyTools(items);
     }
-
-    items = items.filter(function(item) {
-      if (toolList[item.id]) {
-        return true;
-      } else {
-        return false;
-      }
-    });
 
     // let content = items.map((item, index) => <ToolbarItem key={item.id} {...{item, toggleOpen: this.toggleOpen, isOpen: index === this.state.openItem, index, ...rest}}></ToolbarItem>);
     let content = items.map((item, index) => (
@@ -95,4 +89,4 @@ export class VeToolBar extends React.Component {
   }
 }
 
-export default withEditorProps(VeToolBar);
+export default withEditorProps(ToolBar);

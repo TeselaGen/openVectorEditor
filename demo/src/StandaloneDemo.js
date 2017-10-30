@@ -29,21 +29,24 @@ export default class StandaloneDemo extends React.Component {
         //in onPaste in your app you can do: 
         // e.clipboardData.getData('application/json')
       },
-      // height: 200,
+      ToolBarProps: {
+        toolList: [
+          "saveTool",
+          "downloadTool",
+          "undoTool",
+          "redoTool",
+          "cutsiteTool",
+          "featureTool",
+          "oligoTool",
+          "orfTool",
+          "viewTool",
+          "editTool",
+          "findTool",
+          "visibilityTool",
+          "propertiesTool",
+        ]
+      }
     });
-    // editor.updateEditor({
-    //   sequenceData: { //note, sequence data passed here will be coerced to fit the Teselagen Open Vector Editor data model
-    //     sequence: "atagatagagaggcccg",
-    //     features: [
-    //       {
-    //         start: 0, //start and end are 0-based inclusive for all annotations
-    //         end: 10,
-    //         forward: true //strand
-    //       }
-    //     ],
-    //     parts: []
-    //   }
-    // });
     
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
     setTimeout(() => {

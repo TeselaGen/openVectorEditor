@@ -1,12 +1,12 @@
 import React from "react";
-import {Icon, IconClasses} from '@blueprintjs/core';
+import { Icon, IconClasses } from "@blueprintjs/core";
 
-export default ({findTool={}, toggleFindTool}) => {
+export default ({ findTool = {}, toggleFindTool }) => {
   return {
-    Icon: <Icon iconName={IconClasses.SEARCH}></Icon>,
+    Icon: <Icon iconName={IconClasses.SEARCH} />,
     toggled: findTool.isOpen,
     onIconClick: toggleFindTool,
     tooltip: findTool.isOpen ? "Hide Find Tool" : "Show Find Tool",
     id: "findTool"
-  }
+  };
 };

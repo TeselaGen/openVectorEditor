@@ -1,6 +1,6 @@
 import {mount} from 'enzyme'
 import React from 'react'
-import {VeToolBar, VeToolBarUnconnected, updateEditor} from '../src'
+import {ToolBar, ToolBarUnconnected, updateEditor} from '../src'
 import HarnessComponent from './HarnessComponent'
 import testStore from './testStore'
 import exampleSequenceData from '../src/createVectorEditor/exampleSequenceData'
@@ -8,12 +8,12 @@ import exampleSequenceData from '../src/createVectorEditor/exampleSequenceData'
 class Wrapper extends React.Component {
   render(){
     return <HarnessComponent>
-      <VeToolBar editorName={'testEditor'}></VeToolBar>
+      <ToolBar editorName={'testEditor'}></ToolBar>
     </HarnessComponent>
   }
 }
 
-describe.only('VeToolBar', function() {
+describe.only('ToolBar', function() {
   it('renders with no data', function() {
     const node = mount(
       <Wrapper></Wrapper>
@@ -29,7 +29,7 @@ describe.only('VeToolBar', function() {
     const node = mount(
       <Wrapper></Wrapper>
     );
-    const subnode = node.find(VeToolBarUnconnected)
+    const subnode = node.find(ToolBarUnconnected)
     const p = subnode.props()
   })
 

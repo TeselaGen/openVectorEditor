@@ -1,7 +1,7 @@
 import React from "react";
 import { compose } from "redux";
 import Dimensions from "react-dimensions";
-import VeToolBar from "../VeToolBar";
+import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
@@ -13,7 +13,7 @@ import "./style.css";
 export class Editor extends React.Component {
   render() {
     const {
-      VeToolBarProps = {},
+      ToolBarProps = {},
       CircularViewProps = {},
       RowViewProps = {},
       StatusBarProps = {},
@@ -42,7 +42,7 @@ export class Editor extends React.Component {
         style={{ width: "100%" }}
         className={"veEditor"}
       >
-        <VeToolBar {...sharedProps} {...VeToolBarProps} />
+        <ToolBar {...sharedProps} {...ToolBarProps} />
         {width ? (
           <div
             style={{ position: "relative" }}
