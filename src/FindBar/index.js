@@ -110,7 +110,6 @@ export function FindBar({
       <Switch value={highlightAll} onChange={toggleHighlightAll}>
         Highlight All
       </Switch>
-      {/* <Button onClick={}> </Button> */}
     </div>
   );
 }

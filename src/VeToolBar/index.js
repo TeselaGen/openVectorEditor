@@ -1,5 +1,9 @@
 import React from "react";
 import withEditorProps from "../withEditorProps";
+import ToolbarItem from "./ToolbarItem";
+import "./style.css";
+
+
 import downloadTool from "./downloadTool";
 import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
@@ -11,13 +15,27 @@ import findTool from "./findTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 import propertiesTool from "./propertiesTool";
-
-import ToolbarItem from "./ToolbarItem";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 
+const allTools = {
+  downloadTool,
+  cutsiteTool,
+  featureTool,
+  oligoTool,
+  orfTool,
+  viewTool,
+  editTool,
+  findTool,
+  saveTool,
+  visibilityTool,
+  propertiesTool,
+  undoTool,
+  redoTool,
+} 
+
+
 // import get from 'lodash/get'
-import "./style.css";
 
 export class VeToolBar extends React.Component {
   state = {
@@ -38,40 +56,27 @@ export class VeToolBar extends React.Component {
 
   render() {
     const {
-      AdditionalTools = [],
       modifyTools,
-      excludeObj = {},
+      toolList = [],
       ...rest
     } = this.props;
 
-    let items = [
-      saveTool,
-      downloadTool,
-      undoTool,
-      redoTool,
-      cutsiteTool,
-      featureTool,
-      oligoTool,
-      orfTool,
-      viewTool,
-      editTool,
-      findTool,
-      visibilityTool,
-      propertiesTool,
-      ...AdditionalTools
-    ];
+    let items = toolList.map((toolName) => {
+      return allTools[toolName]
+    })
 
     if (modifyTools) {
       items = modifyTools(items);
     }
 
     items = items.filter(function(item) {
-      if (excludeObj[item.id]) {
-        return false;
-      } else {
+      if (toolList[item.id]) {
         return true;
+      } else {
+        return false;
       }
     });
+
     // let content = items.map((item, index) => <ToolbarItem key={item.id} {...{item, toggleOpen: this.toggleOpen, isOpen: index === this.state.openItem, index, ...rest}}></ToolbarItem>);
     let content = items.map((item, index) => (
       <ToolbarItem
