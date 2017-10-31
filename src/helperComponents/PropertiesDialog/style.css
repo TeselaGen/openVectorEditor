@@ -1,0 +1,8 @@
+.ve-propertiesPanel .pt-tabs {
+  display: flex;
+  flex-direction: column;
+}
+.ve-propertiesPanel .pt-tabs .pt-tab-panel {
+  display: flex;
+  flex-direction: column;
+}

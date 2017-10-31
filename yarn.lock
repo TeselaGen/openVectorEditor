@@ -8758,9 +8758,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^18.1.13:
-  version "18.1.13"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.13.tgz#7e2fb6c6b46404de915b4f7745de2068f89be429"
+teselagen-react-components@18.1.17:
+  version "18.1.17"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.17.tgz#4895cae6c3dc78b5442280d8a0f7ea2b5f9b171c"
   dependencies:
     basiccontext "^3.5.1"
     bio-parsers "^4.2.0"

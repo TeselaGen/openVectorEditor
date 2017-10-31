@@ -21,7 +21,7 @@ class FeatureProperties extends React.Component {
       };
     });
     return (
-      <div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
           withCheckboxes
           noPadding

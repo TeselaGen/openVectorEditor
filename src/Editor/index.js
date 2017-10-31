@@ -8,6 +8,7 @@ import StatusBar from "../StatusBar";
 import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
+import { PropertiesInner } from "../helperComponents/PropertiesDialog";
 import "./style.css";
 
 export class Editor extends React.Component {
@@ -23,9 +24,11 @@ export class Editor extends React.Component {
       editorName,
       findTool = {},
       height = 500,
+      propertiesTool = {},
       updateSequenceData,
       ...rest
     } = this.props;
+    const { propertiesSideBarOpen } = propertiesTool;
     const showBoth = panelsShown.circular && panelsShown.sequence;
     let editorDimensions = {
       width: showBoth ? width / 2 : width,
@@ -75,6 +78,24 @@ export class Editor extends React.Component {
                     }}
                   />
                 </div>
+              </div>
+            )}
+            {propertiesSideBarOpen && (
+              <div
+                style={{
+                  borderLeft: "1px solid lightgrey",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: 10,
+                  background: "white",
+                  zIndex: 10,
+                  position: "absolute",
+                  right: 0,
+                  width: width / 3,
+                  height
+                }}
+              >
+                <PropertiesInner {...{ ...this.props }} />
               </div>
             )}
             {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}

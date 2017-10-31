@@ -113,7 +113,7 @@ class CutsiteProperties extends React.Component {
           schema={{
             fields: [
               { path: "name", type: "string" },
-              { path: "numberOfCuts", type: "string" }
+              { path: "numberOfCuts", type: "number" }
             ]
           }}
           entities={cutsitesToUse}

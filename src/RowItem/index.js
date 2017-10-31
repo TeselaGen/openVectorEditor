@@ -192,6 +192,7 @@ export class RowItem extends React.Component {
             {...annotationCommonProps}
           />
           <SelectionLayer
+            isDraggable
             selectionLayerRightClicked={selectionLayerRightClicked}
             {...annotationCommonProps}
             regions={selectionLayers}

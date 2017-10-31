@@ -72,7 +72,7 @@
     "redux-undo": "1.0.0-beta9-9-7",
     "reselect": "^3.0.1",
     "teselagen-interval-tree": "1.1.1",
-    "teselagen-react-components": "^18.1.13",
+    "teselagen-react-components": "18.1.17",
     "tether": "^1.4.0",
     "uniqid": "^4.1.1",
     "uuid": "^3.1.0",

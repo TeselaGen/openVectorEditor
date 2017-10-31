@@ -6,6 +6,7 @@ import withEditorProps from "../../withEditorProps";
 import FeatureProperties from "./FeatureProperties";
 import CutsiteProperties from "./CutsiteProperties";
 import OrfProperties from "./OrfProperties";
+import "./style.css";
 
 //temp:
 const PartProperties = FeatureProperties;
@@ -17,7 +18,9 @@ export class PropertiesInner extends React.Component {
     const {
       propertiesTool = {},
       propertiesViewTabUpdate,
-      annotationsToSupport = {}
+      annotationsToSupport = {},
+      width,
+      height
     } = this.props;
     const {
       features,
@@ -29,8 +32,21 @@ export class PropertiesInner extends React.Component {
     } = annotationsToSupport;
     const { tabId } = propertiesTool;
     return (
-      <div style={{ marginLeft: 5, marginRight: 5 }}>
-        <Tabs2 selectedTabId={tabId} onChange={propertiesViewTabUpdate}>
+      <div
+        className={"ve-propertiesPanel"}
+        style={{
+          display: "flex",
+          width,
+          height,
+          marginLeft: 5,
+          marginRight: 5
+        }}
+      >
+        <Tabs2
+          renderActiveTabPanelOnly
+          selectedTabId={tabId}
+          onChange={propertiesViewTabUpdate}
+        >
           <Tabs2.Expander />
           {features && (
             <Tab2

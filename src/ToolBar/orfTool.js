@@ -10,15 +10,11 @@ export default ({
   isOpen
 }) => {
   return {
-    Icon: (
-      <Icon
-        onClick={function() {
-          annotationVisibilityToggle("orfs");
-          annotationVisibilityToggle("orfTranslations");
-        }}
-        iconName={IconClasses.CIRCLE}
-      />
-    ),
+    Icon: <Icon iconName={IconClasses.CIRCLE} />,
+    onIconClick: function() {
+      annotationVisibilityToggle("orfs");
+      annotationVisibilityToggle("orfTranslations");
+    },
     toggled: annotationVisibility.orfs,
     tooltip: "Show Open Reading Frames",
     tooltipToggled: "Hide Open Reading Frames",

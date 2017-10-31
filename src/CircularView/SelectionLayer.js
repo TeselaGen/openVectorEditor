@@ -7,6 +7,7 @@ import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 
 function SelectionLayer({
+  isDraggable,
   selectionLayer,
   sequenceLength,
   radius,
@@ -77,7 +78,8 @@ function SelectionLayer({
         <Caret
           key="caret1"
           className={
-            "selectionLayerCaret " + draggableClassnames.selectionStart
+            "selectionLayerCaret " +
+            (isDraggable ? draggableClassnames.selectionStart : "")
           }
           caretPosition={start}
           sequenceLength={sequenceLength}
@@ -88,7 +90,10 @@ function SelectionLayer({
       {!showCaret && (
         <Caret
           key="caret2"
-          className={"selectionLayerCaret " + draggableClassnames.selectionEnd}
+          className={
+            "selectionLayerCaret " +
+            (isDraggable ? draggableClassnames.selectionEnd : "")
+          }
           caretPosition={end + 1}
           sequenceLength={sequenceLength}
           innerRadius={innerRadius}

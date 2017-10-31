@@ -19,7 +19,7 @@ export default createReducer(
     [propertiesViewToggle]: state => {
       return {
         ...state,
-        isOpen: !state.isOpen
+        propertiesSideBarOpen: !state.propertiesSideBarOpen
       };
     },
     [propertiesViewTabUpdate]: (state, tabId) => {
@@ -30,7 +30,8 @@ export default createReducer(
     }
   },
   {
-    isOpen: true,
+    propertiesSideBarOpen: false,
+    // propertiesSideBarOpen: true,
     tabId: "features"
   }
 );

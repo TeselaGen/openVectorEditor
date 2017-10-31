@@ -11,6 +11,7 @@ function SelectionLayer(props) {
   let {
     charWidth,
     bpsPerRow,
+    isDraggable,
     row,
     sequenceLength,
     regions,
@@ -69,7 +70,7 @@ function SelectionLayer(props) {
                       className:
                         classNameToPass +
                         " " +
-                        draggableClassnames.selectionStart,
+                        (isDraggable ? draggableClassnames.selectionStart : ""),
                       caretPosition: overlap.start
                     }}
                   />
@@ -84,7 +85,7 @@ function SelectionLayer(props) {
                       className:
                         classNameToPass +
                         " " +
-                        draggableClassnames.selectionEnd,
+                        (isDraggable ? draggableClassnames.selectionEnd : ""),
                       caretPosition: overlap.end + 1
                     }}
                   />

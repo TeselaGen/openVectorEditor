@@ -470,6 +470,7 @@ export class CircularView extends React.Component {
               <SelectionLayer
                 {...{
                   index,
+                  isDraggable: true,
                   key: "veCircularViewSelectionLayer" + index,
                   selectionLayer,
                   selectionLayerRightClicked,
