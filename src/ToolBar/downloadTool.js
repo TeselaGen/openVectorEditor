@@ -1,4 +1,4 @@
-import jsonToGenbank from "bio-parsers/parsers/jsonToGenbank";
+import { jsonToGenbank } from "bio-parsers";
 import FileSaver from "file-saver";
 import React from "react";
 import { Icon, IconClasses } from "@blueprintjs/core";
