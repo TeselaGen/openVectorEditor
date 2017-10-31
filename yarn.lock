@@ -1622,7 +1622,7 @@ binary-extensions@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
 
-bio-parsers@^4.2.0, bio-parsers@^4.2.2:
+bio-parsers@^4.2.0:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.2.2.tgz#86676fd16d1f53e6cc725bcc003c0c77c11c7ef3"
   dependencies:
@@ -1631,6 +1631,19 @@ bio-parsers@^4.2.0, bio-parsers@^4.2.2:
     safe-access "^0.1.0"
     validate.io-nonnegative-integer-array "^1.0.1"
     ve-sequence-utils "*"
+    waldojs "^0.1.9"
+    xml2js "^0.4.15"
+
+bio-parsers@^4.2.4:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.2.4.tgz#e1e30685cf1689a0505c6356ff63a94bb927c153"
+  dependencies:
+    flatmap "0.0.3"
+    lint-staged "^4.0.4"
+    lodash "^4.13.1"
+    prettier "^1.6.1"
+    safe-access "^0.1.0"
+    validate.io-nonnegative-integer-array "^1.0.1"
     waldojs "^0.1.9"
     xml2js "^0.4.15"
 
@@ -5474,7 +5487,7 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-lint-staged@^4.3.0:
+lint-staged@^4.0.4, lint-staged@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-4.3.0.tgz#ed0779ad9a42c0dc62bb3244e522870b41125879"
   dependencies:
@@ -7178,7 +7191,7 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@^1.7.4:
+prettier@^1.6.1, prettier@^1.7.4:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.7.4.tgz#5e8624ae9363c80f95ec644584ecdf55d74f93fa"
 
