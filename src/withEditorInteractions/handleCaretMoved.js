@@ -1,7 +1,5 @@
-import trimNumberToFitWithin0ToAnotherNumber
-  from "ve-range-utils/trimNumberToFitWithin0ToAnotherNumber";
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+import { trimNumberToFitWithin0ToAnotherNumber } from "ve-range-utils";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 export default function handleCaretMoved({
   moveBy,
   circular,

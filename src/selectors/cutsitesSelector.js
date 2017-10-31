@@ -5,7 +5,7 @@ import { createSelector } from "reselect";
 // import lruMemoize from 'lru-memoize';
 import bsonObjectid from "bson-objectid";
 import flatmap from "lodash.flatmap";
-import getCutsitesFromSequence from "ve-sequence-utils/getCutsitesFromSequence";
+import { getCutsitesFromSequence } from "ve-sequence-utils";
 
 // Object.keys(enzymeList).forEach(function(key){
 //   var enzyme = enzymeList[key]

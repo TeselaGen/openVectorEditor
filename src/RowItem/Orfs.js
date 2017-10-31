@@ -1,8 +1,7 @@
 // import PropTypes from "prop-types";
 import React from "react";
-import getXStartAndWidthOfRowAnnotation
-  from "./getXStartAndWidthOfRowAnnotation";
-import getAnnotationRangeType from "ve-range-utils/getAnnotationRangeType";
+import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
+import { getAnnotationRangeType } from "ve-range-utils";
 import Orf from "./Orf";
 import AnnotationContainerHolder from "./AnnotationContainerHolder";
 import AnnotationPositioner from "./AnnotationPositioner";
@@ -31,7 +30,9 @@ function Orfs(props) {
     let { internalStartCodonIndices = [] } = annotation;
     let normalizedInternalStartCodonIndices = internalStartCodonIndices
       .filter(function(position) {
-        if (position >= row.start && position <= row.end) return true;
+        if (position >= row.start && position <= row.end) {
+          return true;
+        } else return false;
       })
       .map(function(position) {
         return position - row.start;

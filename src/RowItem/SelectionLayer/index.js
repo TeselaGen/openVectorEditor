@@ -5,7 +5,7 @@ import Caret from "../Caret";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
+import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 
 function SelectionLayer(props) {
   let {

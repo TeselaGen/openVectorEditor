@@ -3,7 +3,7 @@ import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
 
-import getAminoAcidDataForEachBaseOfDna from "ve-sequence-utils/getAminoAcidDataForEachBaseOfDna";
+import { getAminoAcidDataForEachBaseOfDna } from "ve-sequence-utils";
 // import lruMemoize from 'lru-memoize';
 // import bsonObjectid from 'bson-objectid';
 import each from "lodash/each";

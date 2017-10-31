@@ -1,9 +1,8 @@
-import isPositionWithinRange from "ve-range-utils/isPositionWithinRange";
-// import norm from "ve-range-utils/normalizePositionByRangeLength";
+import { isPositionWithinRange } from "ve-range-utils";
 import assign from "lodash/assign";
 import React from "react";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
-import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
+import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 let snipStyle = {
   height: "100%",

@@ -1,6 +1,4 @@
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
-import getRangeLength from "ve-range-utils/getRangeLength";
+import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
 export default function handleNoSelectionLayerYet({
   caretPosition,
   selectionLayerUpdate,

@@ -6,7 +6,7 @@ import {
   getReverseComplementSequenceString,
   getSequenceDataBetweenRange
 } from "ve-sequence-utils";
-import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
+import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
@@ -23,7 +23,7 @@ import {
   normalizePositionByRangeLength
   // convertRangeTo1Based
 } from "ve-range-utils";
-import getRangeLength from "ve-range-utils/getRangeLength";
+import { getRangeLength } from "ve-range-utils";
 import React from "react";
 import createSequenceInputPopup from "./createSequenceInputPopup";
 

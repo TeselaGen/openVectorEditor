@@ -1,11 +1,9 @@
-import getRangeLength from "ve-range-utils/getRangeLength";
-import checkIfPotentiallyCircularRangesOverlap
-  from "ve-range-utils/checkIfPotentiallyCircularRangesOverlap";
-import expandOrContractRangeToPosition
-  from "ve-range-utils/expandOrContractRangeToPosition";
-import trimRangeByAnotherRange from "ve-range-utils/trimRangeByAnotherRange";
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+import {
+  getRangeLength,
+  trimRangeByAnotherRange,
+  normalizePositionByRangeLength,
+  expandOrContractRangeToPosition
+} from "ve-range-utils";
 import handleNoSelectionLayerYet from "./handleNoSelectionLayerYet";
 
 export default function updateSelectionOrCaret({
@@ -130,10 +128,12 @@ export default function updateSelectionOrCaret({
   }
 }
 
-function isRangeShorterIfFlipped(start, end, sequenceLength) {
-  return !(getRangeLength({ start, end }, sequenceLength) <
-    getRangeLength({ start: end, end: start }, sequenceLength));
-}
+// function isRangeShorterIfFlipped(start, end, sequenceLength) {
+//   return !(
+//     getRangeLength({ start, end }, sequenceLength) <
+//     getRangeLength({ start: end, end: start }, sequenceLength)
+//   );
+// }
 
 function getMinRangeLength(start, end, sequenceLength) {
   let range1 = getRangeLength({ start, end }, sequenceLength);

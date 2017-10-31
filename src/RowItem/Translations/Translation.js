@@ -1,9 +1,8 @@
 import React from "react";
-import zeroSubrangeByContainerRange
-  from "ve-range-utils/zeroSubrangeByContainerRange";
-import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
-import getCodonRangeForAASliver
-  from "ve-sequence-utils/getCodonRangeForAASliver";
+import {
+  getSequenceWithinRange,
+  zeroSubrangeByContainerRange
+} from "ve-range-utils";
 import AASliver from "./AASliver";
 
 function Translation(props) {

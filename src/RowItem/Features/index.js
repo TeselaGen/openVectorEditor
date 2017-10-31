@@ -6,7 +6,7 @@ import featureColorMap from "../../constants/featureColorMap.json";
 // import './style.css'
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
-import getAnnotationRangeType from "ve-range-utils/getAnnotationRangeType";
+import { getAnnotationRangeType } from "ve-range-utils";
 import Feature from "./Feature";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";

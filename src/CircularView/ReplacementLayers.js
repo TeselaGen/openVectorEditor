@@ -1,4 +1,4 @@
-import normalizeRange from "ve-range-utils/normalizeRange";
+import { normalizeRange } from "ve-range-utils";
 import drawCircularLabel2 from "./drawCircularLabel2";
 import map from "lodash/map";
 import randomcolor from "randomcolor";

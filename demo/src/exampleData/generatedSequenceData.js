@@ -1,7 +1,4 @@
-import generateRandomRange from "ve-range-utils/generateRandomRange";
-// import normalizePositionByRangeLength
-//   from "ve-range-utils/normalizePositionByRangeLength";
-// var tidyUpSequenceData = require('ve-sequence-utils/tidyUpSequenceData');
+import {generateRandomRange} from "ve-range-utils";
 import objectid from "bson-objectid";
 let seqLen = 10000;
 

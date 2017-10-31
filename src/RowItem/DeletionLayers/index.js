@@ -5,8 +5,7 @@ import React from "react";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import getOverlapsOfPotentiallyCircularRanges
-  from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
+import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 
 function DeletionLayers(props) {
   let {
@@ -38,13 +37,13 @@ function DeletionLayers(props) {
             deletionLayer.start === deletionLayer.end + 1 ||
             (deletionLayer.start === 0 &&
               deletionLayer.end === sequenceLength - 1);
-          let { className = "", style = {}, color } = deletionLayer;
+          let { /* className = "", style = {},  */ color } = deletionLayer;
           let overlaps = getOverlapsOfPotentiallyCircularRanges(
             deletionLayer,
             row,
             sequenceLength
           );
-          return overlaps.map(function(overlap, index2) {
+          return overlaps.map(function(overlap) {
             let { xStart, width } = getXStartAndWidthOfRangeWrtRow(
               overlap,
               row,
@@ -86,23 +85,25 @@ function DeletionLayers(props) {
                     width={width}
                   />
                   {rangeSpansSequence &&
-                    deletionStart &&
-                    <rect
-                      fill={"blue"}
-                      x="0"
-                      y="0"
-                      height={deletionLineHeight}
-                      width={4}
-                    />}
+                    deletionStart && (
+                      <rect
+                        fill={"blue"}
+                        x="0"
+                        y="0"
+                        height={deletionLineHeight}
+                        width={4}
+                      />
+                    )}
                   {rangeSpansSequence &&
-                    deletionEnd &&
-                    <rect
-                      fill={"blue"}
-                      x={width - 4}
-                      y="0"
-                      height={deletionLineHeight}
-                      width={4}
-                    />}
+                    deletionEnd && (
+                      <rect
+                        fill={"blue"}
+                        x={width - 4}
+                        y="0"
+                        height={deletionLineHeight}
+                        width={4}
+                      />
+                    )}
                 </g>
               </AnnotationPositioner>
             ];

@@ -1,6 +1,6 @@
-import _getRangeAngles from "ve-range-utils/getRangeAngles";
+import { getRangeAngles } from "ve-range-utils";
 export default function getRangeAnglesSpecial() {
-  let { startAngle, endAngle, totalAngle, centerAngle } = _getRangeAngles.apply(
+  let { startAngle, endAngle, totalAngle, centerAngle } = getRangeAngles.apply(
     this,
     arguments
   );

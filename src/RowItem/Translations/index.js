@@ -1,12 +1,11 @@
 import "./style.css";
 // import PropTypes from "prop-types";
 import React from "react";
-import getAnnotationRangeType from "ve-range-utils/getAnnotationRangeType";
+import { getAnnotationRangeType } from "ve-range-utils";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";
 import Translation from "./Translation";
-import getXStartAndWidthOfRowAnnotation
-  from "../getXStartAndWidthOfRowAnnotation";
+import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
 function Translations(props) {
   let {

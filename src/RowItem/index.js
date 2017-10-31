@@ -1,10 +1,11 @@
-import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRangeLength";
+import {
+  normalizePositionByRangeLength,
+  getSequenceWithinRange,
+  getOverlapsOfPotentiallyCircularRanges
+} from "ve-range-utils";
 import map from "lodash/map";
 import flatMap from "lodash/flatMap";
-import getOverlapsOfPotentiallyCircularRanges from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
-import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
-// import PassThrough from "../utils/PassThrough";
-import getComplementSequenceString from "ve-sequence-utils/getComplementSequenceString";
+import { getComplementSequenceString } from "ve-sequence-utils";
 import React from "react";
 import SelectionLayer from "./SelectionLayer";
 import _Sequence from "./Sequence";

@@ -1,10 +1,8 @@
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 import React from "react";
-import calculateTickMarkPositionsForGivenRange
-  from "../utils/calculateTickMarkPositionsForGivenRange";
-import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
+import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
+// import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
 
 let Axis = function(props) {
   let {

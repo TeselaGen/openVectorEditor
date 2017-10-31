@@ -1,5 +1,4 @@
 import VeWarning from "../helperComponents/VeWarning";
-import getRangeLength from "ve-range-utils/getRangeLength";
 // import PassThrough from "../utils/PassThrough";
 import _Labels from "./Labels";
 import _SelectionLayer from "./SelectionLayer";
@@ -15,8 +14,11 @@ import _Cutsites from "./Cutsites";
 import sortBy from "lodash/sortBy";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
-import normalizePositionByRangeLength from "ve-range-utils/normalizePositionByRangeLength";
-import getPositionFromAngle from "ve-range-utils/getPositionFromAngle";
+import {
+  normalizePositionByRangeLength,
+  getPositionFromAngle,
+  getRangeLength
+} from "ve-range-utils";
 import React from "react";
 import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";

@@ -1,4 +1,4 @@
-import getInsertBetweenVals from "ve-sequence-utils/getInsertBetweenVals";
+import { getInsertBetweenVals } from "ve-sequence-utils";
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import React from "react";
 import { Button } from "@blueprintjs/core";

@@ -1,14 +1,9 @@
-// import Sequence from "../Sequence";
-// import getSequenceWithinRange from "ve-range-utils/getSequenceWithinRange";
 import "./style.css";
 import forEach from "lodash/forEach";
-// import PropTypes from "prop-types";
 import React from "react";
-
-// import './style.css'
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
-import getAnnotationRangeType from "ve-range-utils/getAnnotationRangeType";
+import { getAnnotationRangeType } from "ve-range-utils";
 import Primer from "./Primer";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";

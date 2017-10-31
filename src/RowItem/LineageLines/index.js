@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import AnnotationPositioner from "../AnnotationPositioner";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import React from "react";
@@ -6,8 +5,7 @@ import React from "react";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import getOverlapsOfPotentiallyCircularRanges
-  from "ve-range-utils/getOverlapsOfPotentiallyCircularRanges";
+import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 
 function LineageLines(props) {
   let {
@@ -36,13 +34,13 @@ function LineageLines(props) {
           let rangeSpansSequence =
             lineageLine.start === lineageLine.end + 1 ||
             (lineageLine.start === 0 && lineageLine.end === sequenceLength - 1);
-          let { className = "", style = {}, color } = lineageLine;
+          let { /* className = "", style = {}, */ color } = lineageLine;
           let overlaps = getOverlapsOfPotentiallyCircularRanges(
             lineageLine,
             row,
             sequenceLength
           );
-          return overlaps.map(function(overlap, index2) {
+          return overlaps.map(function(overlap) {
             let { xStart, width } = getXStartAndWidthOfRangeWrtRow(
               overlap,
               row,
@@ -71,23 +69,25 @@ function LineageLines(props) {
                     width={width}
                   />
                   {rangeSpansSequence &&
-                    lineageStart &&
-                    <rect
-                      fill={"#408CE1"}
-                      x="0"
-                      y="0"
-                      height={lineageLineHeight}
-                      width={4}
-                    />}
+                    lineageStart && (
+                      <rect
+                        fill={"#408CE1"}
+                        x="0"
+                        y="0"
+                        height={lineageLineHeight}
+                        width={4}
+                      />
+                    )}
                   {rangeSpansSequence &&
-                    lineageEnd &&
-                    <rect
-                      fill={"#408CE1"}
-                      x={width - 4}
-                      y="0"
-                      height={lineageLineHeight}
-                      width={4}
-                    />}
+                    lineageEnd && (
+                      <rect
+                        fill={"#408CE1"}
+                        x={width - 4}
+                        y="0"
+                        height={lineageLineHeight}
+                        width={4}
+                      />
+                    )}
                 </g>
               </AnnotationPositioner>
             ];

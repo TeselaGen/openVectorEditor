@@ -1,5 +1,5 @@
 import isNumber from "lodash/isNumber";
-import getRangeAngles from "ve-range-utils/getRangeAngles";
+import { getRangeAngles } from "ve-range-utils";
 // import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";

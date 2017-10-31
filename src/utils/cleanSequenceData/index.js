@@ -1,4 +1,4 @@
-import featureColors from "ve-sequence-utils/featureColors";
+import { featureColors } from "ve-sequence-utils";
 // import featureColorMap from "../../constants/featureColorMap.json";
 // import lruMemoize from "lru-memoize";
 import arrayToObjWithIds from "./arrayToObjWithIds";

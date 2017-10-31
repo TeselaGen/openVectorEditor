@@ -1,7 +1,7 @@
 import lruMemoize from "lru-memoize";
 
-import mapAnnotationsToRows from "ve-sequence-utils/mapAnnotationsToRows";
-import annotationTypes from "ve-sequence-utils/annotationTypes";
+import { mapAnnotationsToRows } from "ve-sequence-utils";
+import { annotationTypes } from "ve-sequence-utils";
 function prepareRowData(sequenceData, bpsPerRow) {
   // ac.throw([ac.sequenceData, ac.posInt], arguments);
   let sequenceLength = sequenceData.sequence.length;

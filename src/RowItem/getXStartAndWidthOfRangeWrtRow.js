@@ -1,19 +1,4 @@
-// import getOverlapsOfPotentiallyCircularRanges from 've-range-utils/getOverlapsOfPotentiallyCircularRanges';
-// import normalizePositionByRangeLength from 've-range-utils/normalizePositionByRangeLength';
-// module.exports = function getXStartAndWidthOfRangeWrtRow(range, row, bpsPerRow, charWidth, sequenceLength) {
-//     var overlaps = getOverlapsOfPotentiallyCircularRanges(range, row, sequenceLength);
-//     return overlaps.map(function (overlap) {
-//     	return {
-//     		...overlap,
-//         	xStart: normalizePositionByRangeLength(overlap.start - row.start, sequenceLength) * charWidth,
-//         	width: (normalizePositionByRangeLength(range.end + 1 - range.start, sequenceLength)) * charWidth,
-
-//     	}
-//     })
-// };
-
-import normalizePositionByRangeLength
-  from "ve-range-utils/normalizePositionByRangeLength";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 
 export default function getXStartAndWidthOfRangeWrtRow(
   range,
@@ -27,11 +12,16 @@ export default function getXStartAndWidthOfRangeWrtRow(
     charWidth;
   let obj = {
     xStart,
-    width: normalizePositionByRangeLength(
-      range.end + 1 - range.start,
-      sequenceLength + 1
-    ) * charWidth
+    width:
+      normalizePositionByRangeLength(
+        range.end + 1 - range.start,
+        sequenceLength + 1
+      ) * charWidth
   };
+  /* eslint-disable no-debugger */
+
   if (xStart > bpsPerRow * charWidth) debugger;
+  /* eslint-enable */
+
   return obj;
 }

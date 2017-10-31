@@ -1,6 +1,6 @@
 import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
 
-import getRangeLength from "ve-range-utils/getRangeLength";
+import { getRangeLength } from "ve-range-utils";
 import Tether from "tether";
 
 import { getInsertBetweenVals } from "ve-sequence-utils";
