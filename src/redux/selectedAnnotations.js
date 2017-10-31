@@ -14,28 +14,6 @@ export const updateSelectedAnnotation = createAction(
 export const annotationDeselect = createAction("VE_ANNOTATION_DESELECT");
 export const annotationDeselectAll = createAction("VE_ANNOTATION_DESELECT_ALL");
 
-export function deletionLayerRightClicked({ event, annotation }, meta) {
-  event.preventDefault();
-  event.stopPropagation();
-  return function(dispatch /* getState */) {
-    let items = [
-      {
-        title: "Remove Deletion",
-        icon: "ion-plus-round",
-        fn: function() {
-          dispatch({
-            type: "DELETION_LAYER_DELETE",
-            meta,
-            payload: { ...annotation }
-          });
-        }
-      }
-    ];
-
-    basicContext.show(items, event);
-  };
-}
-
 export function replacementLayerRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
@@ -54,31 +32,6 @@ export function replacementLayerRightClicked({ event, annotation }, meta) {
       }
     ];
 
-    basicContext.show(items, event);
-  };
-}
-
-export function orfRightClicked({ event, annotation }, meta) {
-  event.preventDefault();
-  event.stopPropagation();
-  return function(dispatch /* getState */) {
-    let items = [
-      {
-        title: "View Translation",
-        icon: "ion-plus-round",
-        fn: function() {
-          dispatch({
-            type: "CREATE_TRANSLATION",
-            meta,
-            payload: {
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            }
-          });
-        }
-      }
-    ];
     basicContext.show(items, event);
   };
 }

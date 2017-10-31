@@ -72,12 +72,12 @@
     "redux-undo": "1.0.0-beta9-9-7",
     "reselect": "^3.0.1",
     "teselagen-interval-tree": "1.1.1",
-    "teselagen-react-components": "18.1.17",
+    "teselagen-react-components": "^18.1.18",
     "tether": "^1.4.0",
     "uniqid": "^4.1.1",
     "uuid": "^3.1.0",
-    "ve-range-utils": "^2.0.44",
-    "ve-sequence-utils": "3.1.35"
+    "ve-range-utils": "^2.3.0",
+    "ve-sequence-utils": "^3.2.0"
   },
   "peerDependencies": {
     "@blueprintjs/core": "^1.18.0",
