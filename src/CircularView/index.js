@@ -524,6 +524,8 @@ export class CircularView extends React.Component {
       radius += results.height;
       return results.component;
     }
+    //tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
+    if (radius < 150) radius = 150;
     return (
       <div tabIndex="0" className={"veCircularView"}>
         <Draggable
