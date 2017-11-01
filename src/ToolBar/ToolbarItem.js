@@ -2,9 +2,11 @@
 import DropDownIcon from "react-icons/lib/md/arrow-drop-down";
 import DropUpIcon from "react-icons/lib/md/arrow-drop-up";
 // import Popover from "react-popover2";
-import { Popover, Position } from "@blueprintjs/core";
+import { Popover, Position, Tooltip as Tooltip2 } from "@blueprintjs/core";
 // import Popover from "react-popover";
 import React from "react";
+// import { Tooltip2 } from "@blueprintjs/labs";
+
 // import get from 'lodash/get'
 import "./style.css";
 
@@ -43,46 +45,47 @@ export default class ToolbarItem extends React.Component {
               className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}
             >
               {Icon && (
-                <div
-                  onClick={disabled ? noop : onIconClick}
-                  aria-label={tooltipToDisplay}
-                  className={" hint--bottom-left veToolbarItem"}
-                >
-                  {index !== 0 && <div className={"veToolbarSpacer"} />}
+                <Tooltip2 useSmartPositioning content={tooltipToDisplay}>
                   <div
-                    className={
-                      "veToolbarIcon " +
-                      (toggled ? " veToolbarItemToggled" : "")
-                    }
+                    onClick={disabled ? noop : onIconClick}
+                    className={" veToolbarItem"}
                   >
-                    {React.isValidElement(Icon) ? (
-                      Icon
-                    ) : (
-                      <Icon {...rest} toggleDropdown={this.toggleDropdown} />
-                    )}
+                    {index !== 0 && <div className={"veToolbarSpacer"} />}
+                    <div
+                      className={
+                        "veToolbarIcon " +
+                        (toggled ? " veToolbarItemToggled" : "")
+                      }
+                    >
+                      {React.isValidElement(Icon) ? (
+                        Icon
+                      ) : (
+                        <Icon {...rest} toggleDropdown={this.toggleDropdown} />
+                      )}
+                    </div>
                   </div>
-                </div>
+                </Tooltip2>
               )}
               {Dropdown && !noDropdownIcon ? (
-                <div
-                  aria-label={dropdowntooltip}
-                  className={
-                    (isOpen ? " isOpen " : "") +
-                    " hint--bottom-left " +
-                    (dropdownicon ? "" : " veToolbarDropdown")
-                  }
-                  onClick={this.toggleDropdown}
-                >
-                  {dropdownicon ? (
-                    <div className={"veToolbarIcon"}>
-                      <div>{dropdownicon}</div>
-                    </div>
-                  ) : isOpen ? (
-                    <DropUpIcon style={{ width: 20, height: 20 }} />
-                  ) : (
-                    <DropDownIcon style={{ width: 20, height: 20 }} />
-                  )}
-                </div>
+                <Tooltip2 useSmartPositioning content={dropdowntooltip}>
+                  <div
+                    className={
+                      (isOpen ? " isOpen " : "") +
+                      (dropdownicon ? "" : " veToolbarDropdown")
+                    }
+                    onClick={this.toggleDropdown}
+                  >
+                    {dropdownicon ? (
+                      <div className={"veToolbarIcon"}>
+                        <div>{dropdownicon}</div>
+                      </div>
+                    ) : isOpen ? (
+                      <DropUpIcon style={{ width: 20, height: 20 }} />
+                    ) : (
+                      <DropDownIcon style={{ width: 20, height: 20 }} />
+                    )}
+                  </div>
+                </Tooltip2>
               ) : null}
             </div>
           }
