@@ -19,9 +19,7 @@ export default ({
     tooltip: "Show Open Reading Frames",
     tooltipToggled: "Hide Open Reading Frames",
     Dropdown: OrfToolDropdown,
-    dropdowntooltip:
-      (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
-    id: "orfTool"
+    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options"
   };
 };
 

@@ -21,7 +21,6 @@ export default ({
     // },
     toggled: propertiesSideBarOpen,
     tooltip: "Show Properties",
-    tooltipToggled: "Hide Properties",
-    id: "propertiesTool"
+    tooltipToggled: "Hide Properties"
   };
 };

@@ -6,7 +6,6 @@ export default ({ findTool = {}, toggleFindTool }) => {
     Icon: <Icon iconName={IconClasses.SEARCH} />,
     toggled: findTool.isOpen,
     onIconClick: toggleFindTool,
-    tooltip: findTool.isOpen ? "Hide Find Tool" : "Show Find Tool",
-    id: "findTool"
+    tooltip: findTool.isOpen ? "Hide Find Tool" : "Show Find Tool"
   };
 };

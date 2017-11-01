@@ -134,10 +134,10 @@
     "react-table": "^6.7.4",
     "redux-form": "^7.1.2",
     "redux-thunk": "*",
-    "teselagen-react-components": "^18.1.18",
+    "teselagen-react-components": "^18.1.20",
     "tg-client-query-builder": "^2.12.1",
-    "ve-range-utils": "^2.3.0",
-    "ve-sequence-utils": "^3.2.0"
+    "ve-range-utils": "^2.3.3",
+    "ve-sequence-utils": "^3.2.3"
   },
   "lint-staged": {
     "src/**/*.js ": [

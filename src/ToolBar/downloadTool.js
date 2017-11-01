@@ -13,7 +13,6 @@ export default ({ sequenceData }) => {
       FileSaver.saveAs(blob, "result_plasmid.gb");
       // downloadSequenceData(sequenceData || )
     },
-    tooltip: "Download .gb file",
-    id: "downloadTool"
+    tooltip: "Download .gb file"
   };
 };

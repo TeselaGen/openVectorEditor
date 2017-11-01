@@ -4,6 +4,7 @@ import ToolbarItem from "./ToolbarItem";
 import "./style.css";
 
 import downloadTool from "./downloadTool";
+import importTool from "./importTool";
 import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
 import oligoTool from "./oligoTool";
@@ -19,6 +20,7 @@ import redoTool from "./redoTool";
 
 const allTools = {
   downloadTool,
+  importTool,
   cutsiteTool,
   featureTool,
   oligoTool,
@@ -73,7 +75,6 @@ export class ToolBar extends React.Component {
       items = modifyTools(items);
     }
 
-    // let content = items.map((item, index) => <ToolbarItem key={item.id} {...{item, toggleOpen: this.toggleOpen, isOpen: index === this.state.openItem, index, ...rest}}></ToolbarItem>);
     let content = items.map((item, index) => (
       <ToolbarItem
         key={index}

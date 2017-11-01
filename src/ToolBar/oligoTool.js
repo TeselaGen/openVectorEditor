@@ -9,9 +9,8 @@ export default ({ annotationVisibilityToggle, annotationVisibility = {} }) => {
       annotationVisibilityToggle("primers");
     },
     toggled: annotationVisibility.primers,
-    tooltip: "Show oligos",
-    tooltipToggled: "Hide oligos",
-    id: "oligoTool"
+    tooltip: "Show Primers",
+    tooltipToggled: "Hide Primers"
   };
 };
 

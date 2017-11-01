@@ -25,12 +25,11 @@ import {
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
+// import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
+
 // import _CutsiteProperties from "../../src/helperComponents/PropertiesDialog/CutsiteProperties";
 // import withEditorProps from "../../src/withEditorProps";
 // import _OrfProperties from "../../src/helperComponents/PropertiesDialog/OrfProperties";
-
-// const OrfProperties = withEditorProps(_OrfProperties);
-// const CutsiteProperties = withEditorProps(_CutsiteProperties)
 
 const links = [
   { name: "Editor", url: "Editor" },
@@ -58,6 +57,7 @@ function Demo() {
     <Provider store={store}>
       <Router>
         <div>
+          {/* <GenbankView editorName={"DemoEditor"} /> */}
           {/* <OrfProperties editorName={"DemoEditor"} /> */}
           {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
           {links}

@@ -10,8 +10,7 @@ export default ({ toggleDropdown, isOpen }) => {
     onIconClick: toggleDropdown,
     toggled: isOpen,
     tooltip: isOpen ? "Hide View Options" : "Show View Options",
-    noDropdownIcon: true,
-    id: "viewTool"
+    noDropdownIcon: true
   };
 };
 

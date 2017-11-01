@@ -77,6 +77,7 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 			toolList: [
 				"saveTool",
 				"downloadTool",
+				"importTool",
 				"undoTool",
 				"redoTool",
 				"cutsiteTool",

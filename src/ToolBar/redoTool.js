@@ -7,7 +7,6 @@ export default ({ sequenceDataHistory = {}, redo }) => {
     Icon: <Icon iconName={IconClasses.REDO} />,
     disabled: !future.length,
     onIconClick: redo,
-    tooltip: "Redo",
-    id: "redoTool"
+    tooltip: "Redo"
   };
 };

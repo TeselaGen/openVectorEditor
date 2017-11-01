@@ -6,12 +6,12 @@ import withEditorProps from "../../withEditorProps";
 import FeatureProperties from "./FeatureProperties";
 import CutsiteProperties from "./CutsiteProperties";
 import OrfProperties from "./OrfProperties";
-import "./style.css";
+import GenbankView from "./GenbankView";
+import TranslationProperties from "./TranslationProperties";
+import PrimerProperties from "./PrimerProperties";
+import PartProperties from "./PartProperties";
 
-//temp:
-const PartProperties = FeatureProperties;
-const PrimerProperties = FeatureProperties;
-const TranslationProperties = FeatureProperties;
+import "./style.css";
 
 export class PropertiesInner extends React.Component {
   render() {
@@ -90,6 +90,11 @@ export class PropertiesInner extends React.Component {
               panel={<OrfProperties {...this.props} />}
             />
           )}
+          <Tab2
+            title="Genbank"
+            id={"genbank"}
+            panel={<GenbankView {...this.props} />}
+          />
           <Tabs2.Expander />
         </Tabs2>
       </div>

@@ -17,8 +17,7 @@ export default function CutsiteTool({
     tooltip: "Show cut sites",
     tooltipToggled: "Hide cut sites",
     Dropdown: CutsiteToolDropDown,
-    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options",
-    id: "cutsiteTool"
+    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
   };
 }
 

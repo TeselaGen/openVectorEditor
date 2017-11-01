@@ -9,8 +9,7 @@ export default ({ isOpen, toggleDropdown }) => {
     Dropdown: VisibilityOptions,
     noDropdownIcon: true,
     toggled: isOpen,
-    tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options",
-    id: "visibilityTool"
+    tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options"
   };
 };
 

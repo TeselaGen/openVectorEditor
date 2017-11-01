@@ -25,7 +25,6 @@ export default () => {
       // pri.print();
       // downloadSequenceData(sequenceData || )
     },
-    tooltip: "Print Vector",
-    id: "printTool"
+    tooltip: "Print Vector"
   };
 };

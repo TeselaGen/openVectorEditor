@@ -7,7 +7,6 @@ export default ({ sequenceDataHistory = {}, undo }) => {
     Icon: <Icon iconName={IconClasses.UNDO} />,
     disabled: !past.length,
     onIconClick: undo,
-    tooltip: "Undo",
-    id: "undoTool"
+    tooltip: "Undo"
   };
 };
