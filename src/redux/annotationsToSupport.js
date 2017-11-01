@@ -1,5 +1,5 @@
-import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
+import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
 //this determines whether or not to
 const initialSupportedTypes = {
@@ -22,7 +22,7 @@ export const annotationSupportOff = createAction("annotationSupportOff");
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default createReducer(
+export default createMergedDefaultStateReducer(
   {
     [annotationSupportToggle]: (state, payload) => {
       return {

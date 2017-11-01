@@ -1,5 +1,5 @@
-import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
+import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
 // ------------------------------------
 // Actions
@@ -9,7 +9,7 @@ export const panelsShownUpdate = createAction("PANELS_SHOWN_UPDATE");
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default createReducer(
+export default createMergedDefaultStateReducer(
   {
     [panelsShownUpdate]: (state, payload) => {
       return payload;
@@ -18,6 +18,6 @@ export default createReducer(
   {
     sequence: true,
     circular: true,
-    rail: true
+    rail: false
   }
 );

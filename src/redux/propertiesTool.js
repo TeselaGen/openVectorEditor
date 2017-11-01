@@ -1,6 +1,5 @@
-//./caretPosition.js
-import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
+import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
 // ------------------------------------
 // Actions
@@ -14,7 +13,7 @@ export const propertiesViewTabUpdate = createAction("propertiesViewTabUpdate"); 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default createReducer(
+export default createMergedDefaultStateReducer(
   {
     [propertiesViewToggle]: state => {
       return {

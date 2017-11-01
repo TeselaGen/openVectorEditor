@@ -1,6 +1,7 @@
 //./caretPosition.js
-import { createReducer } from "redux-act";
+
 import createAction from "./utils/createMetaAction";
+import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
 const visibilityInitialValues = {
   features: true,
@@ -33,7 +34,7 @@ export const annotationVisibilityShow = createAction(
 // ------------------------------------
 // Reducer
 // ------------------------------------
-let annotationVisibility = createReducer(
+let annotationVisibility = createMergedDefaultStateReducer(
   {
     [annotationVisibilityToggle]: (state, payload) => {
       return {
