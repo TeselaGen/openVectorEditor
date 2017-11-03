@@ -1,6 +1,6 @@
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
-import { map } from "lodash";
+import { filter } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
@@ -14,7 +14,9 @@ class TranslationProperties extends React.Component {
       deleteTranslation
     } = this.props;
     const { translations } = sequenceData;
-    const translationsToUse = map(translations, translation => {
+    const translationsToUse = filter(translations, translation => {
+      return !translation.isOrf;
+    }).map(translation => {
       return {
         ...translation,
         size: getRangeLength(translation, sequenceData.sequence.length)

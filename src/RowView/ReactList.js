@@ -94,6 +94,7 @@ export default class ReactList extends Component {
   }
 
   componentWillReceiveProps(next) {
+    this.cache = {};
     let { from, size, itemsPerRow } = this.state;
     this.maybeSetState(this.constrain(from, size, itemsPerRow, next), NOOP);
   }

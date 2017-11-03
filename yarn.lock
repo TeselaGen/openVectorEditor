@@ -3030,9 +3030,9 @@ entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
-enzyme-to-json@^3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.1.4.tgz#a4a85a8f7b561cb8c9c0d728ad1b619a3fed7df2"
+enzyme-to-json@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.2.0.tgz#f3274ff1c1444fb6e638cca67b22e1da4eecf49c"
   dependencies:
     lodash "^4.17.4"
 
@@ -4498,9 +4498,9 @@ inquirer@3.3.0, inquirer@^3.0.6:
     strip-ansi "^4.0.0"
     through "^2.3.6"
 
-install-peerdeps@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/install-peerdeps/-/install-peerdeps-1.2.0.tgz#d1e67dcf938eedea3aa5a509c64f0bede7456085"
+install-peerdeps@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/install-peerdeps/-/install-peerdeps-1.3.0.tgz#6b8feb56fa1a826c44b5ed9826fcb23333c0981f"
   dependencies:
     cli-color "^1.1.0"
     commander "^2.9.0"
@@ -6011,6 +6011,10 @@ moment-timezone@^0.5.13:
 moment@^2.14.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+
+moment@^2.19.1:
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
 
 ms@0.7.1:
   version "0.7.1"
@@ -8643,9 +8647,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^18.1.20:
-  version "18.1.20"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.20.tgz#9bbbcec094d89d571de583d567c2005f3408f52e"
+teselagen-react-components@^18.1.21:
+  version "18.1.21"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.21.tgz#9c3d08da1d010084feb192cac03d858e0374b34f"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.1"

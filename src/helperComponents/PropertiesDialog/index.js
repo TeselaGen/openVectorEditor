@@ -2,6 +2,7 @@ import React from "react";
 import { compose } from "redux";
 import { Tab2, Tabs2 } from "@blueprintjs/core";
 import { withDialog } from "teselagen-react-components";
+import { startCase } from "lodash";
 import withEditorProps from "../../withEditorProps";
 import FeatureProperties from "./FeatureProperties";
 import CutsiteProperties from "./CutsiteProperties";
@@ -12,25 +13,37 @@ import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
 
 import "./style.css";
-
+const allTabs = {
+  features: FeatureProperties,
+  parts: PartProperties,
+  primers: PrimerProperties,
+  translations: TranslationProperties,
+  cutsites: CutsiteProperties,
+  orfs: OrfProperties,
+  genbank: GenbankView
+};
 export class PropertiesInner extends React.Component {
   render() {
     const {
       propertiesTool = {},
       propertiesViewTabUpdate,
-      annotationsToSupport = {},
       width,
-      height
+      height,
+      propertiesList
     } = this.props;
-    const {
-      features,
-      parts,
-      orfs,
-      primers,
-      translations,
-      cutsites
-    } = annotationsToSupport;
+
     const { tabId } = propertiesTool;
+    const propertiesTabs = propertiesList.map(name => {
+      const Comp = allTabs[name];
+      return (
+        <Tab2
+          key={name}
+          title={startCase(name)}
+          id={name}
+          panel={<Comp {...this.props} />}
+        />
+      );
+    });
     return (
       <div
         className={"ve-propertiesPanel"}
@@ -42,61 +55,21 @@ export class PropertiesInner extends React.Component {
           marginRight: 5
         }}
       >
-        <Tabs2
-          renderActiveTabPanelOnly
-          selectedTabId={tabId}
-          onChange={propertiesViewTabUpdate}
-        >
-          <Tabs2.Expander />
-          {features && (
-            <Tab2
-              title="Features"
-              id={"features"}
-              panel={<FeatureProperties {...this.props} />}
-            />
-          )}
-          {parts && (
-            <Tab2
-              title="Parts"
-              id={"parts"}
-              panel={<PartProperties {...this.props} />}
-            />
-          )}
-          {primers && (
-            <Tab2
-              title="Primers"
-              id={"primers"}
-              panel={<PrimerProperties {...this.props} />}
-            />
-          )}
-          {translations && (
-            <Tab2
-              title="Translations"
-              id={"translations"}
-              panel={<TranslationProperties {...this.props} />}
-            />
-          )}
-          {cutsites && (
-            <Tab2
-              title="Cutsites"
-              id={"cutsites"}
-              panel={<CutsiteProperties {...this.props} />}
-            />
-          )}
-          {orfs && (
-            <Tab2
-              title="Orfs"
-              id={"orfs"}
-              panel={<OrfProperties {...this.props} />}
-            />
-          )}
-          <Tab2
-            title="Genbank"
-            id={"genbank"}
-            panel={<GenbankView {...this.props} />}
-          />
-          <Tabs2.Expander />
-        </Tabs2>
+        {propertiesTabs.length ? (
+          <Tabs2
+            renderActiveTabPanelOnly
+            selectedTabId={tabId}
+            onChange={propertiesViewTabUpdate}
+          >
+            <Tabs2.Expander />
+            {propertiesTabs}
+            <Tabs2.Expander />
+          </Tabs2>
+        ) : (
+          <div style={{ margin: 20, fontSize: 20 }}>
+            No Properties to display
+          </div>
+        )}
       </div>
     );
   }

@@ -34,7 +34,18 @@ export default class StandaloneDemo extends React.Component {
         //in onPaste in your app you can do:
         // e.clipboardData.getData('application/json')
       },
-
+      showMenuBar: true,
+      PropertiesProps: {
+        propertiesList: [
+          "features",
+          "parts",
+          "primers",
+          "translations",
+          "cutsites",
+          "orfs",
+          "genbank"
+        ]
+      },
       ToolBarProps: {
         toolList: [
           "saveTool",

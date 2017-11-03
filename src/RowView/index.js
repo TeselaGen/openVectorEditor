@@ -109,6 +109,7 @@ export class RowView extends React.Component {
   };
 
   componentWillReceiveProps(props) {
+    this.cache = {};
     let { caretPosition, selectionLayer, matchedSearchLayer } = props;
 
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
@@ -158,6 +159,7 @@ export class RowView extends React.Component {
       }
     }
   }
+  cache = {};
 
   render() {
     let {
@@ -186,13 +188,14 @@ export class RowView extends React.Component {
     //  propsToUse.charWidth * bpsPerRow;
     let rowData = prepareRowData(sequenceData, bpsPerRow);
     let showJumpButtons = rowData.length > 15;
-    let renderItem = (index, key) => {
+    let renderItem = index => {
+      if (this.cache[index]) return this.cache[index];
       let rowTopComp;
       let rowBottomComp;
       if (showJumpButtons) {
         if (index === 0) {
           rowTopComp = (
-            <div key={key}>
+            <div>
               <Button
                 onClick={e => {
                   e.stopPropagation();
@@ -205,7 +208,7 @@ export class RowView extends React.Component {
           );
         } else if (index === rowData.length - 1) {
           rowBottomComp = (
-            <div key={key}>
+            <div>
               <Button
                 onClick={e => {
                   e.stopPropagation();
@@ -219,8 +222,8 @@ export class RowView extends React.Component {
         }
       }
       if (rowData[index]) {
-        return (
-          <div data-row-number={index} key={key}>
+        let rowItem = (
+          <div data-row-number={index} key={index}>
             <div className={"veRowItemSpacer"} />
             <RowItem
               {...{
@@ -236,6 +239,8 @@ export class RowView extends React.Component {
             />
           </div>
         );
+        this.cache[index] = rowItem;
+        return rowItem;
       } else {
         return null;
       }

@@ -2,6 +2,7 @@ import React from "react";
 export interface EditorProps {
   editorName: string, //the name of the editor instance (this should match what you've set up in your redux store)
   height: number,//
+  PropertiesProps: object, //props which will get passed directly to Properties view
   ToolBarProps: object, //props which will get passed directly to ToolBar
   CircularViewProps: object, //props which will get passed directly to CircularView
   RowViewProps: object, //props which will get passed directly to RowView

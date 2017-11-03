@@ -1,13 +1,8 @@
 // import download from 'in-browser-download'
 import DropDownIcon from "react-icons/lib/md/arrow-drop-down";
 import DropUpIcon from "react-icons/lib/md/arrow-drop-up";
-// import Popover from "react-popover2";
 import { Popover, Position, Tooltip as Tooltip2 } from "@blueprintjs/core";
-// import Popover from "react-popover";
 import React from "react";
-// import { Tooltip2 } from "@blueprintjs/labs";
-
-// import get from 'lodash/get'
 import "./style.css";
 
 export default class ToolbarItem extends React.Component {

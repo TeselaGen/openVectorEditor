@@ -11,3 +11,7 @@
 .ve-spacer {
   height: 15px;
 }
+
+.clickable {
+  cursor: pointer;
+}

@@ -9,11 +9,13 @@ import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import { PropertiesInner } from "../helperComponents/PropertiesDialog";
+import MenuBar from "../MenuBar";
 import "./style.css";
 
 export class Editor extends React.Component {
   render() {
     const {
+      PropertiesProps = {},
       ToolBarProps = {},
       CircularViewProps = {},
       RowViewProps = {},
@@ -24,6 +26,7 @@ export class Editor extends React.Component {
       editorName,
       findTool = {},
       height = 500,
+      showMenuBar,
       propertiesTool = {},
       updateSequenceData,
       ...rest
@@ -45,6 +48,7 @@ export class Editor extends React.Component {
         style={{ width: "100%" }}
         className={"veEditor"}
       >
+        {showMenuBar && <MenuBar />}
         <ToolBar {...sharedProps} {...ToolBarProps} />
         {width ? (
           <div
@@ -95,7 +99,7 @@ export class Editor extends React.Component {
                   height
                 }}
               >
-                <PropertiesInner {...{ ...this.props }} />
+                <PropertiesInner {...{ ...this.props, ...PropertiesProps }} />
               </div>
             )}
             {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
