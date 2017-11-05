@@ -347,15 +347,15 @@ export class RowItem extends React.Component {
               })}
           </div>
 
-          {showLineageLines &&
-            lineageLines.length && (
-              <LineageLines
-                lineageLines={lineageLines}
-                {...annotationCommonProps}
-              />
-            )}
+          {showLineageLines && lineageLines.length ? (
+            <LineageLines
+              lineageLines={lineageLines}
+              {...annotationCommonProps}
+            />
+          ) : null}
 
           {map(replacementLayers, function(replacementLayer) {
+            if (!replacementLayer) return null;
             let atCaret = replacementLayer.caretPosition > -1;
             let normedCaretPos;
             if (atCaret) {

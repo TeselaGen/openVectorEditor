@@ -34,6 +34,11 @@ export default class ToolbarItem extends React.Component {
       <div>
         <Popover
           isOpen={!!Dropdown && isOpen}
+          onClose={e => {
+            if (e.keyCode === 27) {
+              this.toggleDropdown();
+            }
+          }}
           position={Position.BOTTOM}
           target={
             <div

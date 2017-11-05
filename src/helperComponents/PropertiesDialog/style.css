@@ -1,6 +1,13 @@
 .ve-propertiesPanel .pt-tabs {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+.ve-propertiesPanel .pt-tab-list::-webkit-scrollbar {
+  display: none;
+}
+.ve-propertiesPanel .pt-tab-list {
+  overflow: scroll;
 }
 .ve-propertiesPanel .pt-tabs .pt-tab-panel {
   display: flex;

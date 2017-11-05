@@ -1,6 +1,12 @@
+import "react-reflex/styles.css";
 import React from "react";
 import { compose } from "redux";
-import Dimensions from "react-dimensions";
+// import Dimensions from "react-dimensions";
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+import { flatMap } from "lodash";
+
+// import SplitPane from "react-split-pane";
+// import SplitPane from "../helperComponents/SplitPane/SplitPane";
 import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
@@ -13,6 +19,19 @@ import MenuBar from "../MenuBar";
 import "./style.css";
 
 export class Editor extends React.Component {
+  getPanelsToShow = () => {
+    const {
+      propertiesTool = {},
+      panelsShown = { circular: true, sequence: true }
+    } = this.props;
+    const panelsToShow = [];
+    if (panelsShown.circular) panelsToShow.push("circular");
+    if (panelsShown.sequence) panelsToShow.push("sequence");
+    if (panelsShown.rail) panelsToShow.push("rail");
+    if (propertiesTool.propertiesSideBarOpen) panelsToShow.push("properties");
+    return panelsToShow;
+  };
+
   render() {
     const {
       PropertiesProps = {},
@@ -21,27 +40,76 @@ export class Editor extends React.Component {
       RowViewProps = {},
       StatusBarProps = {},
       FindBarProps = {},
-      containerWidth: width,
-      panelsShown = { circular: true, sequence: true },
       editorName,
       findTool = {},
       height = 500,
       showMenuBar,
-      propertiesTool = {},
       updateSequenceData,
       ...rest
     } = this.props;
-    const { propertiesSideBarOpen } = propertiesTool;
-    const showBoth = panelsShown.circular && panelsShown.sequence;
     let editorDimensions = {
-      width: showBoth ? width / 2 : width,
       height
     };
     const sharedProps = {
       editorName,
       ...rest
     };
+    const panelsToShow = this.getPanelsToShow();
 
+    const panels = flatMap(panelsToShow, (panelName, index) => {
+      let panel;
+      if (panelName === "circular") {
+        panel = (
+          <CircularView
+            key="circularView"
+            {...sharedProps}
+            {...CircularViewProps}
+            {...{
+              ...editorDimensions,
+              hideName: true
+            }}
+          />
+        );
+      }
+      if (panelName === "sequence") {
+        panel = (
+          <RowView
+            key="rowView"
+            {...sharedProps}
+            {...RowViewProps}
+            {...{
+              ...editorDimensions
+            }}
+          />
+        );
+      }
+      if (panelName === "properties") {
+        panel = <PropertiesInner {...{ ...this.props, ...PropertiesProps }} />;
+      }
+      const toReturn = [];
+      if (index > 0) {
+        toReturn.push(
+          <ReflexSplitter
+            key={index + "splitter"}
+            style={{ height }}
+            propagate
+          />
+        );
+      }
+      toReturn.push(
+        <ReflexElement
+          key={index}
+          minSize="100"
+          propagateDimensions={true}
+          renderOnResizeRate={50}
+          renderOnResize={true}
+          className="left-pane"
+        >
+          {panel}
+        </ReflexElement>
+      );
+      return toReturn;
+    });
     return (
       <DropHandler
         updateSequenceData={updateSequenceData}
@@ -50,63 +118,16 @@ export class Editor extends React.Component {
       >
         {showMenuBar && <MenuBar />}
         <ToolBar {...sharedProps} {...ToolBarProps} />
-        {width ? (
-          <div
-            style={{ position: "relative" }}
-            className="tg-editor-container"
-            id="section-to-print"
-          >
-            {panelsShown.circular && (
-              <div
-                style={{ borderRight: showBoth ? "1px solid lightgrey" : "" }}
-                className="CircularViewSide"
-              >
-                <CircularView
-                  {...sharedProps}
-                  {...CircularViewProps}
-                  {...{
-                    ...editorDimensions,
-                    hideName: true
-                  }}
-                />
-              </div>
-            )}
-            {panelsShown.sequence && (
-              <div className="RowViewSide">
-                <div>
-                  <RowView
-                    {...sharedProps}
-                    {...RowViewProps}
-                    {...{
-                      ...editorDimensions
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-            {propertiesSideBarOpen && (
-              <div
-                style={{
-                  borderLeft: "1px solid lightgrey",
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 10,
-                  background: "white",
-                  zIndex: 10,
-                  position: "absolute",
-                  right: 0,
-                  width: width / 3,
-                  height
-                }}
-              >
-                <PropertiesInner {...{ ...this.props, ...PropertiesProps }} />
-              </div>
-            )}
-            {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
-          </div>
-        ) : (
-          <div style={{ height }} />
-        )}
+
+        <div
+          style={{ position: "relative" }}
+          className="tg-editor-container"
+          id="section-to-print"
+        >
+          <ReflexContainer orientation="vertical">{panels}</ReflexContainer>
+
+          {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
+        </div>
 
         <StatusBar {...sharedProps} {...StatusBarProps} />
       </DropHandler>
@@ -114,4 +135,4 @@ export class Editor extends React.Component {
   }
 }
 
-export default compose(withEditorProps, Dimensions())(Editor);
+export default compose(withEditorProps)(Editor);

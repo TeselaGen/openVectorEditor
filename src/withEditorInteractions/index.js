@@ -597,7 +597,8 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        editorName
+        editorName,
+        fitHeight
       } = this.props;
 
       //do this in two steps to determine propsToPass
@@ -606,6 +607,11 @@ function VectorInteractionHOC(Component /* options */) {
         disableEditorClickAndDrag = false,
         ...propsToPass
       } = this.props;
+      const { width, height } = this.props.dimensions;
+      propsToPass.width = width;
+      if (fitHeight) {
+        propsToPass.height = height;
+      }
       let selectedBps = getSequenceWithinRange(
         selectionLayer,
         sequenceData.sequence

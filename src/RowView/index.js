@@ -177,6 +177,10 @@ export class RowView extends React.Component {
       RowItemProps,
       ...rest
     } = this.props;
+    if (width === "100%") {
+      //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
+      return <div style={{ width, height }} />;
+    }
     if (marginWidth < defaultMarginWidth) {
       marginWidth = defaultMarginWidth;
     }

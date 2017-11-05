@@ -27,10 +27,11 @@ export class PropertiesInner extends React.Component {
     const {
       propertiesTool = {},
       propertiesViewTabUpdate,
-      width,
+      dimensions = {},
       height,
       propertiesList
     } = this.props;
+    const { width } = dimensions;
 
     const { tabId } = propertiesTool;
     const propertiesTabs = propertiesList.map(name => {
@@ -44,6 +45,7 @@ export class PropertiesInner extends React.Component {
         />
       );
     });
+
     return (
       <div
         className={"ve-propertiesPanel"}
@@ -51,12 +53,13 @@ export class PropertiesInner extends React.Component {
           display: "flex",
           width,
           height,
-          marginLeft: 5,
-          marginRight: 5
+          zIndex: 10,
+          padding: 10
         }}
       >
         {propertiesTabs.length ? (
           <Tabs2
+            style={{ width }}
             renderActiveTabPanelOnly
             selectedTabId={tabId}
             onChange={propertiesViewTabUpdate}

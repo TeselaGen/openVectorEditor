@@ -3,79 +3,105 @@ import {
   getSequenceWithinRange,
   zeroSubrangeByContainerRange
 } from "ve-range-utils";
+import { isEqual } from "lodash";
 import AASliver from "./AASliver";
 
-function Translation(props) {
-  let {
-    annotationRange,
-    height,
-    charWidth,
-    translationClicked,
-    translationRightClicked,
-    translationDoubleClicked,
-    sequenceLength
-  } = props;
-  let { annotation } = annotationRange;
-  //we have an amino acid representation of our entire annotation, but it is an array
-  //starting at 0, even if the annotation starts at some arbitrary point in the sequence
-  let { aminoAcids = [] } = annotation;
-  //so we "zero" our subRange by the annotation start
-  let subrangeStartRelativeToAnnotationStart = zeroSubrangeByContainerRange(
-    annotationRange,
-    annotation,
-    sequenceLength
-  );
-  //which allows us to then get the amino acids for the subRange
-  let aminoAcidsForSubrange = getSequenceWithinRange(
-    subrangeStartRelativeToAnnotationStart,
-    aminoAcids
-  );
-  //we then loop over all the amino acids in the sub range and draw them onto the row
-  let translationSVG = aminoAcidsForSubrange.map(function(
-    aminoAcidSliver,
-    index
-  ) {
-    // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
-    let relativeAAPositionInTranslation = index;
-    //get the codonIndices relative to
-    return (
-      <AASliver
-        onClick={function(event) {
-          translationClicked({
-            annotation,
-            codonRange: aminoAcidSliver.codonRange,
-            event
-          });
-        }}
-        onContextMenu={function(event) {
-          translationRightClicked({
-            annotation,
-            codonRange: aminoAcidSliver.codonRange,
-            event
-          });
-        }}
-        onDoubleClick={function(event) {
-          translationDoubleClicked({ annotation, event });
-        }}
-        key={annotation.id + aminoAcidSliver.sequenceIndex}
-        forward={annotation.forward}
-        width={charWidth}
-        height={height}
-        relativeAAPositionInTranslation={relativeAAPositionInTranslation}
-        letter={aminoAcidSliver.aminoAcid.value}
-        color={aminoAcidSliver.aminoAcid.color}
-        positionInCodon={aminoAcidSliver.positionInCodon}
-      />
+export default class Translation extends React.Component {
+  // shouldComponentUpdate(newProps){
+  //   const eq = (isEqual(newProps, this.props))
+  //   return eq
+  // }
+  state = {
+    hasMounted: false
+  };
+  componentDidMount() {
+    this.timeout = setTimeout(() => {
+      this.setState({
+        hasMounted: true
+      });
+    }, 100);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+  render() {
+    let {
+      annotationRange,
+      height,
+      charWidth,
+      translationClicked,
+      translationRightClicked,
+      translationDoubleClicked,
+      sequenceLength
+    } = this.props;
+    const { hasMounted } = this.state;
+
+    let { annotation } = annotationRange;
+    if (!hasMounted) {
+      return <g height={height} className={"translationLayer"} />;
+    }
+    //we have an amino acid representation of our entire annotation, but it is an array
+    //starting at 0, even if the annotation starts at some arbitrary point in the sequence
+    let { aminoAcids = [] } = annotation;
+    //so we "zero" our subRange by the annotation start
+    let subrangeStartRelativeToAnnotationStart = zeroSubrangeByContainerRange(
+      annotationRange,
+      annotation,
+      sequenceLength
     );
-  });
-  return (
-    <g
-      className={"translationLayer"}
-      // onClick={this.props.translationClicked}
-    >
-      {translationSVG}
-    </g>
-  );
+    //which allows us to then get the amino acids for the subRange
+    let aminoAcidsForSubrange = getSequenceWithinRange(
+      subrangeStartRelativeToAnnotationStart,
+      aminoAcids
+    );
+    //we then loop over all the amino acids in the sub range and draw them onto the row
+    let translationSVG = aminoAcidsForSubrange.map(function(
+      aminoAcidSliver,
+      index
+    ) {
+      // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
+      let relativeAAPositionInTranslation = index;
+      //get the codonIndices relative to
+      return (
+        <AASliver
+          onClick={function(event) {
+            translationClicked({
+              annotation,
+              codonRange: aminoAcidSliver.codonRange,
+              event
+            });
+          }}
+          onContextMenu={function(event) {
+            translationRightClicked({
+              annotation,
+              codonRange: aminoAcidSliver.codonRange,
+              event
+            });
+          }}
+          onDoubleClick={function(event) {
+            translationDoubleClicked({ annotation, event });
+          }}
+          key={annotation.id + aminoAcidSliver.sequenceIndex}
+          forward={annotation.forward}
+          width={charWidth}
+          height={height}
+          relativeAAPositionInTranslation={relativeAAPositionInTranslation}
+          letter={aminoAcidSliver.aminoAcid.value}
+          color={aminoAcidSliver.aminoAcid.color}
+          positionInCodon={aminoAcidSliver.positionInCodon}
+        />
+      );
+    });
+
+    return (
+      <g
+        className={"translationLayer"}
+        // onClick={this.props.translationClicked}
+      >
+        {translationSVG}
+      </g>
+    );
+  }
 }
 
 // Translation.propTypes = {
@@ -85,5 +111,3 @@ function Translation(props) {
 //   rangeType: PropTypes.string.isRequired,
 //   translationClicked: PropTypes.func.isRequired
 // };
-
-export default Translation;
