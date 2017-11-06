@@ -94,7 +94,6 @@ export default class ReactList extends Component {
   }
 
   componentWillReceiveProps(next) {
-    this.cache = {};
     let { from, size, itemsPerRow } = this.state;
     this.maybeSetState(this.constrain(from, size, itemsPerRow, next), NOOP);
   }
@@ -120,26 +119,30 @@ export default class ReactList extends Component {
         delete this.updateCounterTimeoutId;
       }, 0);
     }
-    //TNR: extra code to "fix" the scroll height when scrolling upwards
-    if (this.rowToFixScroll && this.cache[this.rowToFixScroll]) {
-      const actualSize = this.cache[this.rowToFixScroll];
-      this.getScrollParent().scrollBy({
-        top: -(
-          this.props.itemSizeEstimator(this.rowToFixScroll, {}) - actualSize
-        )
-      });
-      this.rowToFixScroll = null;
-    }
 
     this.updateFrame();
+
+    //TNR: extra code to "fix" the scroll height when scrolling upwards
+    if (this.rowToFixScroll) {
+      const { row, cache: previousSize } = this.rowToFixScroll;
+      const actualSize = this.cache[row];
+      if (actualSize && actualSize !== previousSize) {
+        this.getScrollParent().scrollBy({
+          top: -(
+            (previousSize || this.props.itemSizeEstimator(row, {})) - actualSize
+          )
+        });
+        this.rowToFixScroll = null;
+      }
+    }
   }
 
   maybeSetState(b, cb) {
     if (isEqualSubset(this.state, b)) return cb();
 
     //TNR: extra code to "fix" the scroll height when scrolling upwards
-    if (this.state.from === b.from + 1 && !this.cache[b.from]) {
-      this.rowToFixScroll = b.from;
+    if (this.state.from === b.from + 1) {
+      this.rowToFixScroll = { row: b.from, cache: this.cache[b.from] };
     }
 
     this.setState(b, cb);

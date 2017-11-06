@@ -91,7 +91,7 @@ export class Editor extends React.Component {
         toReturn.push(
           <ReflexSplitter
             key={index + "splitter"}
-            style={{ height }}
+            style={{ height, zIndex: 1 }}
             propagate
           />
         );
