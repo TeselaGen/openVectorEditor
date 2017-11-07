@@ -113,37 +113,37 @@ export class RowView extends React.Component {
     let { caretPosition, selectionLayer, matchedSearchLayer } = props;
 
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
-    let previousBp;
+    // let previousBp;
     let scrollToBp = -1;
     if (
       matchedSearchLayer.start > -1 &&
       matchedSearchLayer.start !== this.props.matchedSearchLayer.start
     ) {
-      previousBp = this.props.matchedSearchLayer.start;
+      // previousBp = this.props.matchedSearchLayer.start;
       scrollToBp = matchedSearchLayer.start;
     } else if (
       matchedSearchLayer.end > -1 &&
       matchedSearchLayer.end !== this.props.selectionLayer.end
     ) {
-      previousBp = this.props.selectionLayer.end;
+      // previousBp = this.props.selectionLayer.end;
       scrollToBp = selectionLayer.end;
     } else if (
       caretPosition > -1 &&
       caretPosition !== this.props.caretPosition
     ) {
-      previousBp = this.props.caretPosition;
+      // previousBp = this.props.caretPosition;
       scrollToBp = caretPosition;
     } else if (
       selectionLayer.start > -1 &&
       selectionLayer.start !== this.props.selectionLayer.start
     ) {
-      previousBp = this.props.selectionLayer.start;
+      // previousBp = this.props.selectionLayer.start;
       scrollToBp = selectionLayer.start;
     } else if (
       selectionLayer.end > -1 &&
       selectionLayer.end !== this.props.selectionLayer.end
     ) {
-      previousBp = this.props.selectionLayer.end;
+      // previousBp = this.props.selectionLayer.end;
       scrollToBp = selectionLayer.end;
     }
 
@@ -152,10 +152,10 @@ export class RowView extends React.Component {
     if (scrollToBp > -1 && this.InfiniteScroller.scrollTo) {
       let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
       let [start, end] = this.InfiniteScroller.getVisibleRange();
-      const jumpToBottomOfRow = scrollToBp > previousBp;
+      // const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
         this.InfiniteScroller.scrollAround(
-          Math.max(rowToScrollTo + (jumpToBottomOfRow ? 2 : -2), 0)
+          Math.max(rowToScrollTo + (rowToScrollTo < start ? 2 : -2), 0)
         );
       }
     }

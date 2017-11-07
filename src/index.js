@@ -31,7 +31,7 @@ export {
 } from "./DigestTool/DigestTool";
 export { default as withHover } from "./helperComponents/withHover";
 
-export { default as vectorEditorReducer } from "./redux";
+export { default as vectorEditorReducer, actions } from "./redux";
 export { default as updateEditor } from "./updateEditor";
 
 export {
