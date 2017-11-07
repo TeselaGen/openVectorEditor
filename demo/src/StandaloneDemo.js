@@ -6,7 +6,7 @@ import exampleSequenceData from "./exampleData/exampleSequenceData";
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
 connect(
-  (state, ownProps) => {},
+  (/* state, ownProps */) => {},
   dispatch => {
     dispatch();
   }

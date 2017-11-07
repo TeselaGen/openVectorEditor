@@ -2,9 +2,10 @@
   stroke-dasharray: 3px;
 }
 
-.veRowViewPrimerContainer {
+.veRowViewPrimer {
+  stroke-dasharray: 3px;
+}
+
+.veRowViewPrimerContainer > svg {
   z-index: 20;
 }
- 
-
- /*# sourceMappingURL= style.css.map */

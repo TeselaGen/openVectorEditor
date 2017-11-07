@@ -4,23 +4,27 @@ import { Checkbox } from "@blueprintjs/core";
 // import show_orfs from "./veToolbarIcons/show_orfs.png";
 import InfoCircle from "react-icons/lib/fa/info-circle";
 
-export default ({
-  annotationVisibilityToggle,
-  annotationVisibility = {},
-  isOpen
-}) => {
-  return {
-    Icon: <Icon iconName={IconClasses.CIRCLE} />,
-    onIconClick: function() {
-      annotationVisibilityToggle("orfs");
-      annotationVisibilityToggle("orfTranslations");
-    },
-    toggled: annotationVisibility.orfs,
-    tooltip: "Show Open Reading Frames",
-    tooltipToggled: "Hide Open Reading Frames",
-    Dropdown: OrfToolDropdown,
-    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options"
-  };
+export default {
+  updateKeys: ["annotationVisibility", "annotationVisibilityToggle", "isOpen"],
+  itemProps: ({
+    annotationVisibilityToggle,
+    annotationVisibility = {},
+    isOpen
+  }) => {
+    return {
+      Icon: <Icon iconName={IconClasses.CIRCLE} />,
+      onIconClick: function() {
+        annotationVisibilityToggle("orfs");
+        annotationVisibilityToggle("orfTranslations");
+      },
+      toggled: annotationVisibility.orfs,
+      tooltip: "Show Open Reading Frames",
+      tooltipToggled: "Hide Open Reading Frames",
+      Dropdown: OrfToolDropdown,
+      dropdowntooltip:
+        (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options"
+    };
+  }
 };
 
 // function OrfTool({ annotationVisibilityToggle }) {

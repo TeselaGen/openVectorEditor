@@ -1,3 +1,6 @@
+.veFindBar {
+  z-index: 20;
+}
 .veFindBar > .pt-control {
   margin-bottom: 0px;
 }

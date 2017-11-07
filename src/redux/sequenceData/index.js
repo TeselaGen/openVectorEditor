@@ -1,4 +1,5 @@
 import { cloneDeep } from "lodash";
+import deepEqual from "deep-equal";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
@@ -34,9 +35,9 @@ export default function(state, action) {
     stateToPass = action.payload;
   }
   //tnr: do a clone deep here in order to make sure we are using a totally new object for undo/redo tracking
-  stateToPass = cloneDeep(stateToPass);
+  // stateToPass = cloneDeep(stateToPass);
 
-  return combineReducersDontIgnoreKeys({
+  const newState = combineReducersDontIgnoreKeys({
     primers,
     features,
     sequence,
@@ -47,4 +48,10 @@ export default function(state, action) {
     name: createReducer({}, ""),
     fromFileUpload: createReducer({}, false)
   })(stateToPass, action);
+  if (deepEqual(newState, state)) {
+    return state;
+  } else {
+    //tnr: do a clone deep here in order to make sure we are using a totally new object for undo/redo tracking
+    return cloneDeep(newState);
+  }
 }

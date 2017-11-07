@@ -1,3 +1,4 @@
+import reactDimensions from "react-dimensions";
 import "react-reflex/styles.css";
 import React from "react";
 import { compose } from "redux";
@@ -42,6 +43,7 @@ export class Editor extends React.Component {
       FindBarProps = {},
       editorName,
       findTool = {},
+      containerWidth,
       height = 500,
       showMenuBar,
       updateSequenceData,
@@ -124,7 +126,12 @@ export class Editor extends React.Component {
           className="tg-editor-container"
           id="section-to-print"
         >
-          <ReflexContainer orientation="vertical">{panels}</ReflexContainer>
+          <ReflexContainer
+            style={{ maxWidth: containerWidth }}
+            orientation="vertical"
+          >
+            {panels}
+          </ReflexContainer>
 
           {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
         </div>
@@ -135,4 +142,4 @@ export class Editor extends React.Component {
   }
 }
 
-export default compose(withEditorProps)(Editor);
+export default compose(withEditorProps, reactDimensions())(Editor);

@@ -1,4 +1,5 @@
 import { normalizePositionByRangeLength } from "ve-range-utils";
+import { onlyUpdateForKeys } from "recompose";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 import React from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
@@ -83,4 +84,11 @@ let Axis = function(props) {
   );
 };
 
-export default Axis;
+export default onlyUpdateForKeys(
+  "row",
+  "tickSpacing",
+  "bpsPerRow",
+  "charWidth",
+  "annotationHeight",
+  "sequenceLength"
+)(Axis);

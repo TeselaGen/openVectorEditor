@@ -152,10 +152,11 @@ export class RowView extends React.Component {
     if (scrollToBp > -1 && this.InfiniteScroller.scrollTo) {
       let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
       let [start, end] = this.InfiniteScroller.getVisibleRange();
+      const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
-        this.InfiniteScroller.scrollTo(rowToScrollTo, {
-          jumpToBottomOfRow: scrollToBp > previousBp
-        });
+        this.InfiniteScroller.scrollAround(
+          Math.max(rowToScrollTo + (jumpToBottomOfRow ? 2 : -2), 0)
+        );
       }
     }
   }

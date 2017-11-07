@@ -3,15 +3,18 @@ import { Radio, Icon, IconClasses } from "@blueprintjs/core";
 
 // import fullscreen from "./veToolbarIcons/fullscreen.png";
 
-export default ({ toggleDropdown, isOpen }) => {
-  return {
-    Dropdown: ViewToolDropdown,
-    Icon: <Icon iconName={IconClasses.DESKTOP} />,
-    onIconClick: toggleDropdown,
-    toggled: isOpen,
-    tooltip: isOpen ? "Hide View Options" : "Show View Options",
-    noDropdownIcon: true
-  };
+export default {
+  updateKeys: ["toggleDropdown", "isOpen"],
+  itemProps: ({ toggleDropdown, isOpen }) => {
+    return {
+      Dropdown: ViewToolDropdown,
+      Icon: <Icon iconName={IconClasses.DESKTOP} />,
+      onIconClick: toggleDropdown,
+      toggled: isOpen,
+      tooltip: isOpen ? "Hide View Options" : "Show View Options",
+      noDropdownIcon: true
+    };
+  }
 };
 
 function ViewToolDropdown({ panelsShown, panelsShownUpdate }) {

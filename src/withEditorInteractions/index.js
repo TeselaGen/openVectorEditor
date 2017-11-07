@@ -1,5 +1,4 @@
 import basicContext from "basiccontext";
-import PropertiesDialog from "../helperComponents/PropertiesDialog";
 import "basiccontext/dist/basicContext.min.css";
 import "basiccontext/dist/themes/default.min.css";
 import {
@@ -234,7 +233,6 @@ function VectorInteractionHOC(Component /* options */) {
           isReplace,
           selectionLayer,
           sequenceLength,
-
           caretPosition,
           handleInsert: seqDataToInsert => {
             updateSequenceData(
@@ -308,6 +306,8 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     annotationClicked = ({ event, annotation }) => {
+      event.persist();
+      console.log("event:", event);
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
@@ -384,12 +384,20 @@ function VectorInteractionHOC(Component /* options */) {
       ];
       return items;
     };
+    normalizeAction = ({ event, ...rest }, handler) => {
+      event.preventDefault();
+      event.stopPropagation();
+      return handler({ event, ...rest }, this.props);
+    };
+    normalizeRightClickAction = (...args) => {
+      const items = this.normalizeAction(...args);
+      basicContext.show(items, args[0].event);
+    };
+
     selectionLayerRightClicked = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
       const items = this.generateSelectionMenuOptions(annotation);
-
-      basicContext.show(items, event);
     };
 
     deletionLayerRightClicked = ({ event, annotation }) => {
@@ -619,15 +627,15 @@ function VectorInteractionHOC(Component /* options */) {
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          primerRightClick: this.primerRightClick,
           selectionLayerRightClicked: this.selectionLayerRightClicked,
           featureRightClicked: this.featureRightClicked,
+          orfClicked: this.annotationClicked,
           orfRightClicked: this.orfRightClicked,
-          translationRightClicked: this.translationRightClicked,
           deletionLayerRightClicked: this.deletionLayerRightClicked,
           primerClicked: this.annotationClicked,
-          orfClicked: this.annotationClicked,
+          primerRightClick: this.primerRightClick,
           translationClicked: this.annotationClicked,
+          translationRightClicked: this.translationRightClicked,
           translationDoubleClicked: this.annotationClicked,
           deletionLayerClicked: this.annotationClicked,
           replacementLayerClicked: this.annotationClicked,
@@ -649,11 +657,6 @@ function VectorInteractionHOC(Component /* options */) {
             onCopy={this.handleCopy}
             onPaste={this.handlePaste}
           />
-          <PropertiesDialog
-            editorName={editorName}
-            dialogName="PropertiesDialog"
-            noTarget
-          />{" "}
           <AddOrEditFeatureDialog
             editorName={editorName}
             dialogName="AddOrEditFeatureDialog"

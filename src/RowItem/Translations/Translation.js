@@ -3,10 +3,10 @@ import {
   getSequenceWithinRange,
   zeroSubrangeByContainerRange
 } from "ve-range-utils";
-import { isEqual } from "lodash";
+import { onlyUpdateForKeys } from "recompose";
 import AASliver from "./AASliver";
 
-export default class Translation extends React.Component {
+class Translation extends React.Component {
   // shouldComponentUpdate(newProps){
   //   const eq = (isEqual(newProps, this.props))
   //   return eq
@@ -111,3 +111,9 @@ export default class Translation extends React.Component {
 //   rangeType: PropTypes.string.isRequired,
 //   translationClicked: PropTypes.func.isRequired
 // };
+export default onlyUpdateForKeys(
+  "annotationRange",
+  "height",
+  "charWidth",
+  "sequenceLength"
+)(Translation);

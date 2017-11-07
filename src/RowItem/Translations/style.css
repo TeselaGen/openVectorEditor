@@ -1,9 +1,13 @@
+.veRowViewTranslations {
+  z-index: 20;
+}
+
 .translationLayer-R,
 .translationLayer-H,
 .translationLayer-K {
   fill: green;
 }
-,
+
 .translationLayer-D,
 .translationLayer-E {
   fill: orange;
@@ -29,7 +33,6 @@
 .translationLayer-P {
   fill: grey;
 }
-,
 .translationLayer-STOP {
   fill: red;
 }

@@ -1,6 +1,10 @@
 import React from "react";
-import withEditorProps from "../withEditorProps";
+import { onlyUpdateForKeys, withProps } from "recompose";
+import { compose } from "redux";
+
+// import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
+import withEditorProps from "../withEditorProps";
 import "./style.css";
 
 import downloadTool from "./downloadTool";
@@ -55,7 +59,7 @@ export class ToolBar extends React.Component {
   };
 
   render() {
-    const { modifyTools, toolList = [], ...rest } = this.props;
+    const { modifyTools, toolList = [], editorName } = this.props;
 
     let items = toolList
       .map(toolName => {
@@ -75,21 +79,37 @@ export class ToolBar extends React.Component {
       items = modifyTools(items);
     }
 
-    let content = items.map((item, index) => (
-      <ToolbarItem
-        key={index}
-        {...{
-          item,
-          toggleOpen: this.toggleOpen,
+    let content = items.map((item, index) => {
+      const updateKeys = item.updateKeys || [];
+      const itemProps = item.itemProps || item;
+      const WrappedItem = compose(
+        withProps({
+          editorName,
           isOpen: index === this.state.openItem,
-          index,
-          ...rest
-        }}
-      />
-    ));
+          toggleOpen: this.toggleOpen,
+          toggleDropdown: () => {
+            this.toggleOpen(index);
+          },
+          index
+        }),
+        withEditorProps,
+        onlyUpdateForKeys([
+          ...updateKeys,
+          "isOpen",
+          "toggleOpen",
+          "toggleDropdown",
+          "editorName"
+        ]),
+        withProps(itemProps)
+      )(ToolbarItem);
+      return <WrappedItem key={index} />;
+    });
 
     return <div className={"veToolbar"}>{content}</div>;
   }
 }
 
-export default withEditorProps(ToolBar);
+export default withEditorProps(
+  onlyUpdateForKeys("modifyTools", "toolList")(ToolBar)
+);
+// export default withEditorProps(ToolBar);

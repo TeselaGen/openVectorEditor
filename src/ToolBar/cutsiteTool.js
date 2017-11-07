@@ -3,23 +3,26 @@ import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 // import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
 
-export default function CutsiteTool({
-  annotationVisibilityToggle,
-  annotationVisibility = {},
-  isOpen
-}) {
-  return {
-    Icon: <Icon iconName={IconClasses.CUT} />,
-    onIconClick: function() {
-      annotationVisibilityToggle("cutsites");
-    },
-    toggled: annotationVisibility.cutsites,
-    tooltip: "Show cut sites",
-    tooltipToggled: "Hide cut sites",
-    Dropdown: CutsiteToolDropDown,
-    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
-  };
-}
+export default {
+  updateKeys: ["annotationVisibilityToggle", "annotationVisibility", "isOpen"],
+  itemProps: function CutsiteTool({
+    annotationVisibilityToggle,
+    annotationVisibility = {},
+    isOpen
+  }) {
+    return {
+      Icon: <Icon iconName={IconClasses.CUT} />,
+      onIconClick: function() {
+        annotationVisibilityToggle("cutsites");
+      },
+      toggled: annotationVisibility.cutsites,
+      tooltip: "Show cut sites",
+      tooltipToggled: "Hide cut sites",
+      Dropdown: CutsiteToolDropDown,
+      dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
+    };
+  }
+};
 
 // function CutsiteToolIcon({ annotationVisibilityToggle }) {
 //   return (

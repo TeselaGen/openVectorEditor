@@ -2,15 +2,18 @@ import { Icon, Checkbox } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
 
-export default ({ isOpen, toggleDropdown }) => {
-  return {
-    Icon: <Icon iconName={"eye-open"} />,
-    onIconClick: toggleDropdown,
-    Dropdown: VisibilityOptions,
-    noDropdownIcon: true,
-    toggled: isOpen,
-    tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options"
-  };
+export default {
+  updateKeys: ["isOpen", "toggleDropdown"],
+  itemProps: ({ isOpen, toggleDropdown }) => {
+    return {
+      Icon: <Icon iconName={"eye-open"} />,
+      onIconClick: toggleDropdown,
+      Dropdown: VisibilityOptions,
+      noDropdownIcon: true,
+      toggled: isOpen,
+      tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options"
+    };
+  }
 };
 
 function VisibilityOptions({

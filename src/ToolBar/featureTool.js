@@ -5,22 +5,30 @@ import { connect } from "react-redux";
 import { convertRangeTo1Based } from "ve-range-utils";
 // import show_features from "./veToolbarIcons/show_features.png";
 
-export default ({
-  annotationVisibilityToggle,
-  annotationVisibility = {},
-  isOpen
-}) => {
-  return {
-    Icon: <Icon iconName={IconClasses.BOOKMARK} />,
-    onIconClick: function() {
-      annotationVisibilityToggle("features");
-    },
-    toggled: annotationVisibility.features,
-    tooltip: "Show features",
-    tooltipToggled: "Hide features",
-    Dropdown: ConnectedFeatureToolDropdown,
-    dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options"
-  };
+export default {
+  updateKeys: [
+    "itemProps",
+    "annotationLabelVisibility",
+    "annotationLabelVisibilityToggle",
+    "isOpen"
+  ],
+  itemProps: ({
+    annotationVisibilityToggle,
+    annotationVisibility = {},
+    isOpen
+  }) => {
+    return {
+      Icon: <Icon iconName={IconClasses.BOOKMARK} />,
+      onIconClick: function() {
+        annotationVisibilityToggle("features");
+      },
+      toggled: annotationVisibility.features,
+      tooltip: "Show features",
+      tooltipToggled: "Hide features",
+      Dropdown: ConnectedFeatureToolDropdown,
+      dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options"
+    };
+  }
 };
 
 // function FeatureTool({ annotationVisibilityToggle }) {

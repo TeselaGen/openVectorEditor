@@ -3,6 +3,7 @@ import DropDownIcon from "react-icons/lib/md/arrow-drop-down";
 import DropUpIcon from "react-icons/lib/md/arrow-drop-up";
 import { Popover, Position, Tooltip as Tooltip2 } from "@blueprintjs/core";
 import React from "react";
+import withEditorProps from "../withEditorProps";
 import "./style.css";
 
 export default class ToolbarItem extends React.Component {
@@ -12,24 +13,39 @@ export default class ToolbarItem extends React.Component {
   };
 
   render() {
-    const { item, isOpen, index, ...rest } = this.props;
     const {
+      isOpen,
+      index,
       Icon,
+      editorName,
       onIconClick = noop,
       tooltip = "",
       tooltipToggled,
       dropdowntooltip = "",
-      Dropdown,
+      Dropdown: _DropDown,
       disabled,
       noDropdownIcon,
       dropdownicon,
       toggled = false
-    } = item({ ...rest, isOpen, toggleDropdown: this.toggleDropdown });
+    } = this.props;
+    // const {
+    //   Icon,
+    //   onIconClick = noop,
+    //   tooltip = "",
+    //   tooltipToggled,
+    //   dropdowntooltip = "",
+    //   Dropdown,
+    //   disabled,
+    //   noDropdownIcon,
+    //   dropdownicon,
+    //   toggled = false
+    // } = item({ isOpen, toggleDropdown: this.toggleDropdown });
 
     let tooltipToDisplay = tooltip;
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;
     }
+    const Dropdown = _DropDown && withEditorProps(_DropDown);
     return (
       <div>
         <Popover
@@ -60,7 +76,7 @@ export default class ToolbarItem extends React.Component {
                       {React.isValidElement(Icon) ? (
                         Icon
                       ) : (
-                        <Icon {...rest} toggleDropdown={this.toggleDropdown} />
+                        <Icon toggleDropdown={this.toggleDropdown} />
                       )}
                     </div>
                   </div>
@@ -95,7 +111,10 @@ export default class ToolbarItem extends React.Component {
               className={"ve-toolbar-dropdown content"}
             >
               {Dropdown && (
-                <Dropdown {...rest} toggleDropdown={this.toggleDropdown} />
+                <Dropdown
+                  editorName={editorName}
+                  toggleDropdown={this.toggleDropdown}
+                />
               )}
             </div>
           }
