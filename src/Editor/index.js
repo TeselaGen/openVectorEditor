@@ -115,31 +115,32 @@ export class Editor extends React.Component {
     return (
       <DropHandler
         updateSequenceData={updateSequenceData}
-        style={{ width: "100%" }}
+        style={{ width: "100%", position: "relative", height: "100%" }}
         className={"veEditor"}
       >
-        {showMenuBar && <MenuBar />}
-        <ToolBar {...sharedProps} {...ToolBarProps} />
+        <div style={{ width: "100%", position: "absolute" }}>
+          {showMenuBar && <MenuBar />}
+          <ToolBar {...sharedProps} {...ToolBarProps} />
 
-        <div
-          style={{ position: "relative" }}
-          className="tg-editor-container"
-          id="section-to-print"
-        >
-          <ReflexContainer
-            style={{ maxWidth: containerWidth }}
-            orientation="vertical"
+          <div
+            style={{ position: "relative" }}
+            className="tg-editor-container"
+            id="section-to-print"
           >
-            {panels}
-          </ReflexContainer>
+            <ReflexContainer /* style={{}} */
+            orientation="vertical">
+              {panels}
+            </ReflexContainer>
 
-          {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
+            {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
+          </div>
+
+          <StatusBar {...sharedProps} {...StatusBarProps} />
         </div>
-
-        <StatusBar {...sharedProps} {...StatusBarProps} />
       </DropHandler>
     );
   }
 }
 
 export default compose(withEditorProps, reactDimensions())(Editor);
+// export default compose(withEditorProps, reactDimensions())(Editor);
