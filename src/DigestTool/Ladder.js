@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ruler.css';
+// import styles from './ruler.css';
 
 import {List, DropDownMenu} from 'material-ui';
 // import DropDownMenu from 'material-ui/lib/drop-down-menu';

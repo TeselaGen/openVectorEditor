@@ -1,4 +1,4 @@
-.managerListLadder {
+/* .managerListLadder {
   height: 265px;
   overflow: visible;
   border: 1px solid #E0E0E0;
@@ -43,7 +43,7 @@
 .tooltip .tooltiptext::after {
   content: " ";
   /* i don't know what this content attribute does, but it works... */
-  position: absolute;
+/* position: absolute;
   top: 100%;
   left: 50%;
   margin-left: -5px;
@@ -85,4 +85,4 @@
 }
  
 
- /*# sourceMappingURL= ruler.css.map */
+ # sourceMappingURL= ruler.css.map */
