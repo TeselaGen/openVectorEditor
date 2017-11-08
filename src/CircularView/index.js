@@ -147,7 +147,10 @@ export class CircularView extends React.Component {
       // sequence: showSequence = true,
       // reverseSequence: showReverseSequence = true,
     } = annotationVisibility;
-    let { features: showFeatureLabels = true } = annotationLabelVisibility;
+    let {
+      features: showFeatureLabels = true,
+      cutsites: showCutsiteLabels = true
+    } = annotationLabelVisibility;
     let {
       features: maxFeaturesToDisplay = 50,
       primers: maxPrimersToDisplay = 50,
@@ -440,6 +443,7 @@ export class CircularView extends React.Component {
         );
         paredDownCutsites = paredDown;
         let results = Cutsites({
+          showCutsiteLabels,
           cutsites: annotationsToPass,
           radius,
           annotationHeight,

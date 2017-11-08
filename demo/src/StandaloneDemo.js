@@ -38,8 +38,8 @@ export default class StandaloneDemo extends React.Component {
       PropertiesProps: {
         propertiesList: [
           "features",
-          "parts",
-          "primers",
+          // "parts",
+          // "primers",
           "translations",
           "cutsites",
           "orfs",
@@ -55,7 +55,7 @@ export default class StandaloneDemo extends React.Component {
           "redoTool",
           "cutsiteTool",
           "featureTool",
-          "oligoTool",
+          // "oligoTool",
           "orfTool",
           "viewTool",
           "editTool",
@@ -77,10 +77,10 @@ export default class StandaloneDemo extends React.Component {
           //these are the defaults, change to false to exclude
           features: true,
           translations: true,
-          parts: true,
+          parts: false,
           orfs: true,
           cutsites: true,
-          primers: true
+          primers: false
         }
       });
     }, 10);

@@ -26,7 +26,7 @@ export default connect(function(state, ownProps) {
     findTool,
     annotationVisibility,
     annotationLabelVisibility,
-    annotationsToSupport
+    annotationsToSupport = {}
   } = editorState;
   let visibilities = getVisibilities(
     annotationVisibility,
@@ -90,6 +90,7 @@ export default connect(function(state, ownProps) {
       matchesTotal
     },
     annotationVisibility: visibilities.annotationVisibilityToUse,
+    typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
     sequenceData: sequenceDataToUse,
     meta
@@ -166,9 +167,10 @@ function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
 
 const getTypesToOmit = annotationsToSupport => {
   let typesToOmit = {};
-  Object.keys(annotationsToSupport).forEach(type => {
+  allTypes.forEach(type => {
     if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
+  return typesToOmit;
 };
 
 const getVisibilities = lruMemoize(
@@ -187,6 +189,7 @@ const getVisibilities = lruMemoize(
   };
   return {
     annotationVisibilityToUse,
-    annotationLabelVisibilityToUse
+    annotationLabelVisibilityToUse,
+    typesToOmit
   };
 });

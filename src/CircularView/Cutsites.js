@@ -9,6 +9,7 @@ import withHover from "../helperComponents/withHover";
 function Cutsites({
   radius,
   editorName,
+  showCutsiteLabels,
   cutsiteClicked,
   cutsites,
   cutsiteWidth = 1,
@@ -33,18 +34,19 @@ function Cutsites({
       { start: annotation.topSnipPosition, end: annotation.topSnipPosition },
       sequenceLength
     );
-    //expand the end angle if annotation spans the origin
-    labels[annotation.id] = {
-      annotationCenterAngle: startAngle,
-      annotationCenterRadius: radius,
-      text: annotation.restrictionEnzyme.name,
-      color: annotation.restrictionEnzyme.color,
-      className: " veCutsiteLabel",
-      id: annotation.id,
-      onClick
-    };
+    if (showCutsiteLabels) {
+      //expand the end angle if annotation spans the origin
+      labels[annotation.id] = {
+        annotationCenterAngle: startAngle,
+        annotationCenterRadius: radius,
+        text: annotation.restrictionEnzyme.name,
+        color: annotation.restrictionEnzyme.color,
+        className: " veCutsiteLabel",
+        id: annotation.id,
+        onClick
+      };
+    }
     /* eslint-disable */
-
     if (!annotation.id) debugger;
     /* eslint-enable */
 

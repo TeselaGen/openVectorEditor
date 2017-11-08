@@ -18,6 +18,7 @@ export default {
 
 function VisibilityOptions({
   annotationVisibility = {},
+  typesToOmit = {},
   annotationVisibilityToggle,
   annotationLabelVisibility = {},
   annotationLabelVisibilityToggle
@@ -26,6 +27,11 @@ function VisibilityOptions({
     <div>
       <h6>View:</h6>
       {map(annotationVisibility, (visible, annotationName) => {
+        if (
+          typesToOmit[annotationName] !== undefined &&
+          !typesToOmit[annotationName]
+        )
+          return null;
         return (
           <div key={annotationName}>
             <Checkbox
@@ -40,6 +46,11 @@ function VisibilityOptions({
       })}
       <h6>View Labels:</h6>
       {map(annotationLabelVisibility, (visible, annotationName) => {
+        if (
+          typesToOmit[annotationName] !== undefined &&
+          !typesToOmit[annotationName]
+        )
+          return null;
         return (
           <div key={annotationName}>
             <Checkbox

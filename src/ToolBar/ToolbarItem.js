@@ -61,7 +61,11 @@ export default class ToolbarItem extends React.Component {
               className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}
             >
               {Icon && (
-                <Tooltip2 useSmartPositioning content={tooltipToDisplay}>
+                <Tooltip2
+                  tooltipClassName="ve-toolbar-item-popover"
+                  useSmartPositioning
+                  content={tooltipToDisplay}
+                >
                   <div
                     onClick={disabled ? noop : onIconClick}
                     className={" veToolbarItem"}

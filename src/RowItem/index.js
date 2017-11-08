@@ -42,6 +42,7 @@ export class RowItem extends React.Component {
       spaceBetweenAnnotations = 2,
       width,
       annotationVisibility = {},
+      annotationLabelVisibility = {},
       additionalSelectionLayers = [],
       lineageLines = [],
       caretPosition = -1,
@@ -84,13 +85,16 @@ export class RowItem extends React.Component {
       lineageLines: showLineageLines = true,
       // orfLabels: showOrfLabels=true,
       cutsites: showCutsites = true,
-      cutsiteLabels: showCutsiteLabels = true,
       axis: showAxis = true,
       yellowAxis: showYellowAxis = false,
       caret: showCaret = true,
       reverseSequence: showReverseSequence = true,
       sequence: showSequence = true
     } = annotationVisibility;
+    let {
+      features: showFeatureLabels = true,
+      cutsites: showCutsiteLabels = true
+    } = annotationLabelVisibility;
     let {
       sequence = "",
       features = [],
@@ -202,6 +206,7 @@ export class RowItem extends React.Component {
           {showFeatures &&
             Object.keys(features).length > 0 && (
               <Features
+                showFeatureLabels={showFeatureLabels}
                 featureClicked={featureClicked}
                 featureRightClicked={featureRightClicked}
                 annotationRanges={features}
