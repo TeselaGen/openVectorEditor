@@ -110,6 +110,9 @@ export class RowView extends React.Component {
 
   componentWillReceiveProps(props) {
     this.cache = {};
+    if (this.dragging === true) {
+      return;
+    }
     let { caretPosition, selectionLayer, matchedSearchLayer } = props;
 
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
@@ -155,6 +158,14 @@ export class RowView extends React.Component {
       // const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
         this.InfiniteScroller.scrollTo(rowToScrollTo);
+        clearTimeout(this.jumpTimeoutId);
+        this.jumpTimeoutId = setTimeout(() => {
+          const [el] = this.InfiniteScroller.items.querySelectorAll(
+            `[data-row-number="${rowToScrollTo}"]`
+          );
+          if (!el) return;
+          el.scrollIntoView && el.scrollIntoView();
+        }, 1);
         //   Math.max(rowToScrollTo + (rowToScrollTo < start ? 2 : -2), 0)
         // );
       }
@@ -255,6 +266,7 @@ export class RowView extends React.Component {
       <Draggable
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
         onDrag={event => {
+          this.dragging = true;
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
@@ -262,13 +274,17 @@ export class RowView extends React.Component {
           );
         }}
         onStart={event => {
+          this.dragging = true;
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
             editorDragStarted
           );
         }}
-        onStop={editorDragStopped}
+        onStop={e => {
+          this.dragging = false;
+          editorDragStopped(e);
+        }}
       >
         <div
           tabIndex="0"
