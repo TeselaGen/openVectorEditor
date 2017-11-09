@@ -36,9 +36,14 @@ export function StatusBar({
       <div className={"spacer"} />
       {
         <StatusBarItem>
-          Selecting {isSelecting ? length : 0} bps from{" "}
-          {isSelecting ? selectionLayer.start + 1 : "-"} to{" "}
-          {isSelecting ? selectionLayer.end + 1 : "-"}
+          {isSelecting
+            ? `Selecting ${length} bps from ${selectionLayer.end +
+                1} to ${selectionLayer.start + 1}`
+            : caretPosition > -1
+              ? `Caret Between Bases ${insertBetween[0]} and ${
+                  insertBetween[1]
+                }`
+              : "No Selection"}
           <Button
             disabled={sequenceLength <= 0}
             onClick={() => {
