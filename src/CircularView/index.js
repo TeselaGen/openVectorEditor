@@ -1,16 +1,16 @@
 import VeWarning from "../helperComponents/VeWarning";
 // import PassThrough from "../utils/PassThrough";
-import _Labels from "./Labels";
-import _SelectionLayer from "./SelectionLayer";
-import _Caret from "./Caret";
-import _Axis from "./Axis";
+import Labels from "./Labels";
+import SelectionLayer from "./SelectionLayer";
+import Caret from "./Caret";
+import Axis from "./Axis";
 import LineageLines from "./LineageLines";
-import _Orfs from "./Orfs";
-import _Features from "./Features";
-import _Primers from "./Primers";
+import Orfs from "./Orfs";
+import Features from "./Features";
+import Primers from "./Primers";
 import DeletionLayers from "./DeletionLayers";
 import ReplacementLayers from "./ReplacementLayers";
-import _Cutsites from "./Cutsites";
+import Cutsites from "./Cutsites";
 import sortBy from "lodash/sortBy";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
@@ -25,15 +25,6 @@ import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 function noop() {}
-
-let defaultSequenceData = {
-  features: [],
-  primers: [],
-  orfs: [],
-  sequence: "",
-  cutsites: [],
-  name: ""
-};
 
 // function toDegrees(radians) {
 //     return radians / 2 / Math.PI * 360
@@ -99,7 +90,6 @@ export class CircularView extends React.Component {
       cutsiteClicked = noop,
       featureOptions = {},
       additionalSelectionLayers = [],
-      componentOverrides = {},
       maxAnnotationsToDisplay = {},
       lineageLines = [],
       deletionLayers = {},
@@ -109,23 +99,9 @@ export class CircularView extends React.Component {
       //   return layers
       // },
     } = this.props;
-    let {
-      Labels = _Labels,
-      SelectionLayer = _SelectionLayer,
-      Caret = _Caret,
-      Axis = _Axis,
-      Features = _Features,
-      Primers = _Primers,
-      Orfs = _Orfs,
-      Cutsites = _Cutsites
-    } = componentOverrides;
-    let sequenceDataToUse = {
-      ...defaultSequenceData,
-      ...sequenceData
-    };
-    let { sequence = "atgc" } = sequenceDataToUse;
+    let { sequence = "atgc" } = sequenceData;
     let sequenceLength = sequence.length;
-    let sequenceName = hideName ? "" : sequenceDataToUse.name || "";
+    let sequenceName = hideName ? "" : sequenceData.name || "";
     circularAndLinearTickSpacing =
       circularAndLinearTickSpacing ||
       (sequenceLength < 10
@@ -262,9 +238,9 @@ export class CircularView extends React.Component {
 
     function drawFeatures() {
       //DRAW FEATURES
-      if (showFeatures) {
+      if (showFeatures && sequenceData.features) {
         let [annotationsToPass, paredDown] = pareDownAnnotations(
-          sequenceDataToUse.features,
+          sequenceData.features,
           maxFeaturesToDisplay
         );
         paredDownFeatures = paredDown;
@@ -289,9 +265,9 @@ export class CircularView extends React.Component {
 
     function drawPrimers() {
       //DRAW FEATURES
-      if (showPrimers) {
+      if (showPrimers && sequenceData.primers) {
         let [annotationsToPass, paredDown] = pareDownAnnotations(
-          sequenceDataToUse.primers,
+          sequenceData.primers,
           maxPrimersToDisplay
         );
         paredDownPrimers = paredDown;
@@ -314,6 +290,7 @@ export class CircularView extends React.Component {
     }
 
     function drawDeletionLayers() {
+      if (!deletionLayers || !deletionLayers.length) return null;
       let results = DeletionLayers({
         radius,
         deletionLayerClicked,
@@ -331,6 +308,7 @@ export class CircularView extends React.Component {
     }
 
     function drawReplacementLayers() {
+      if (!replacementLayers || !replacementLayers.length) return null;
       let results = ReplacementLayers({
         radius,
         replacementLayerClicked,
@@ -349,9 +327,9 @@ export class CircularView extends React.Component {
 
     function drawOrfs() {
       //DRAW FEATURES
-      if (showOrfs) {
+      if (showOrfs && sequenceData.orfs) {
         let [annotationsToPass, paredDown] = pareDownAnnotations(
-          sequenceDataToUse.orfs,
+          sequenceData.orfs,
           maxOrfsToDisplay
         );
         paredDownOrfs = paredDown;
@@ -376,9 +354,9 @@ export class CircularView extends React.Component {
 
     function drawSequenceChars() {
       //DRAW CHARS (only if there are fewer than 85 of them)
-      if (sequenceLength < 85) {
+      if (sequenceLength < 85 && sequenceData.sequence) {
         radius += 25;
-        sequenceDataToUse.sequence.split("").forEach(function(bp, index) {
+        sequenceData.sequence.split("").forEach(function(bp, index) {
           let tickAngle = getAngleForPositionMidpoint(index, sequenceLength);
           return (
             <PositionAnnotationOnCircle
@@ -418,7 +396,7 @@ export class CircularView extends React.Component {
     }
 
     function drawLineageLines() {
-      if (showLineageLines) {
+      if (showLineageLines && lineageLines && lineageLines.length) {
         let results = LineageLines({
           radius,
           sequenceLength,
@@ -436,9 +414,9 @@ export class CircularView extends React.Component {
 
     function drawCutsites() {
       //DRAW CUTSITES
-      if (showCutsites) {
+      if (showCutsites && sequenceData.cutsites) {
         let [annotationsToPass, paredDown] = pareDownAnnotations(
-          sequenceDataToUse.cutsites,
+          sequenceData.cutsites,
           maxCutsitesToDisplay
         );
         paredDownCutsites = paredDown;
@@ -595,22 +573,36 @@ export class CircularView extends React.Component {
             <div className={"veCircularViewWarningContainer1"}>
               {paredDownOrfs && (
                 <VeWarning
-                  message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
+                  message={`Warning: More than ${
+                    maxOrfsToDisplay
+                  } Open Reading Frames. Displaying only the largest ${
+                    maxOrfsToDisplay
+                  }`}
                 />
               )}
               {paredDownCutsites && (
                 <VeWarning
-                  message={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
+                  message={`Only the first ${
+                    maxCutsitesToDisplay
+                  } cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
                 />
               )}
               {paredDownFeatures && (
                 <VeWarning
-                  message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
+                  message={`Warning: More than ${
+                    maxFeaturesToDisplay
+                  } Features. Displaying only the largest ${
+                    maxFeaturesToDisplay
+                  }`}
                 />
               )}
               {paredDownPrimers && (
                 <VeWarning
-                  message={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
+                  message={`Warning: More than ${
+                    maxPrimersToDisplay
+                  } Primers. Displaying only the largest ${
+                    maxPrimersToDisplay
+                  }`}
                 />
               )}
             </div>

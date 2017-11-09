@@ -222,12 +222,6 @@ function MyReactComp () {
                   },
                   // selectionLayer: [],
                   lineageLines
-                    // componentOverrides: restrictionDigest
-                    //   ? {
-                    //     SelectionLayer: SelectionLayerOverride,
-                    //     Caret: CaretOverride,
-                    //   }
-                    //  : undefined
                   }
                 }
                 />

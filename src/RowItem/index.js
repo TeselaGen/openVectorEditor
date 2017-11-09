@@ -8,16 +8,16 @@ import flatMap from "lodash/flatMap";
 import { getComplementSequenceString } from "ve-sequence-utils";
 import React from "react";
 import SelectionLayer from "./SelectionLayer";
-import _Sequence from "./Sequence";
+import Sequence from "./Sequence";
 import LineageLines from "./LineageLines";
 import DeletionLayers from "./DeletionLayers";
-import _Axis from "./Axis";
-import _Orfs from "./Orfs";
-import _Translations from "./Translations";
-import _Features from "./Features";
-import _Primers from "./Primers";
-import _CutsiteLabels from "./CutsiteLabels";
-import _Cutsites from "./Cutsites";
+import Axis from "./Axis";
+import Orfs from "./Orfs";
+import Translations from "./Translations";
+import Features from "./Features";
+import Primers from "./Primers";
+import CutsiteLabels from "./CutsiteLabels";
+import Cutsites from "./Cutsites";
 import Caret from "./Caret";
 import "./style.css";
 function noop() {}
@@ -70,8 +70,7 @@ export class RowItem extends React.Component {
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       bpsPerRow,
-      editorName,
-      componentOverrides = {}
+      editorName
     } = this.props;
     let {
       features: showFeatures = true,
@@ -112,18 +111,6 @@ export class RowItem extends React.Component {
       ...additionalSelectionLayers,
       ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
     ];
-
-    let {
-      Sequence = _Sequence,
-      Axis = _Axis,
-      Orfs = _Orfs,
-      Translations = _Translations,
-      Features = _Features,
-      Primers = _Primers,
-      CutsiteLabels = _CutsiteLabels,
-      Cutsites = _Cutsites
-      // Caret = _Caret,
-    } = componentOverrides;
 
     if (!width) {
       width = bpsPerRow * charWidth;

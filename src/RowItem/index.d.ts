@@ -9,7 +9,6 @@ export interface RowItemProps {
   spaceBetweenAnnotations: number, // default = 2,
   width: number, // default = autosized for ya,
   annotationVisibility: RowItemAnnotationVisibility,
-  componentOverrides,
 }
 
 export interface RowItemAnnotationVisibility {
@@ -30,18 +29,6 @@ export interface RowItemAnnotationVisibility {
   caret: boolean,
   reverseSequence: boolean,
   sequence: boolean,
-}
-
-export interface componentOverrides {
-  Sequence: any,
-  Axis: any,
-  Orfs: any,
-  Translations: any,
-  Features: any,
-  Primers: any,
-  CutsiteLabels: any,
-  Cutsites: any,
-  // Caret: any,
 }
 
 

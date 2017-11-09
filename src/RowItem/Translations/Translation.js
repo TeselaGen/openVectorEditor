@@ -19,7 +19,7 @@ class Translation extends React.Component {
       this.setState({
         hasMounted: true
       });
-    }, 100);
+    }, 5);
   }
   componentWillUnmount() {
     clearTimeout(this.timeout);

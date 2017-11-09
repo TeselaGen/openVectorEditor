@@ -28,11 +28,11 @@ export function StatusBar({
         <StatusBarItem>{readOnly ? "Read Only" : "Editable"}</StatusBarItem>
       )}
       <div className={"spacer"} />
-      {
+      {!readOnly && (
         <StatusBarItem>
           {`Insert between bases ${insertBetween[0]} and ${insertBetween[1]}`}
         </StatusBarItem>
-      }
+      )}
       <div className={"spacer"} />
       {
         <StatusBarItem>
