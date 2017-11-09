@@ -161,8 +161,6 @@ export class CircularView extends React.Component {
         spaceBefore: 10
       },
       { layer: drawPrimers, zIndex: 20, layerName: "Primers" },
-      { layer: drawCaret, zIndex: 15, layerName: "Caret" },
-      { layer: drawSelectionLayer, zIndex: 10, layerName: "SelectionLayer" },
       {
         layer: drawAxis,
         zIndex: 0,
@@ -170,6 +168,8 @@ export class CircularView extends React.Component {
         spaceBefore: 0,
         spaceAfter: 0
       },
+      { layer: drawCaret, zIndex: 15, layerName: "Caret" },
+      { layer: drawSelectionLayer, zIndex: 10, layerName: "SelectionLayer" },
       {
         layer: drawReplacementLayers,
         zIndex: 20,

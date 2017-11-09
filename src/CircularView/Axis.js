@@ -17,7 +17,9 @@ function Axis({
 }) {
   let height =
     ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
-  // var radius = radius + height
+  const radiusToUse = showAxisNumbers
+    ? radius + textOffset + tickMarkHeight
+    : radius;
   let tickPositions = calculateTickMarkPositionsForGivenRange({
     range: {
       start: 0,
@@ -33,46 +35,50 @@ function Axis({
           tickPosition,
           sequenceLength
         );
+        console.log("tickPosition + 1:", tickPosition + 1);
         return (
           <PositionAnnotationOnCircle
             key={"axis" + index}
             sAngle={tickAngle}
             eAngle={tickAngle}
-            height={radius}
+            height={radiusToUse}
           >
-            <text
-              transform={
-                (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
-                ` translate(0, ${shouldFlipText(tickAngle)
-                  ? -textOffset
-                  : textOffset})`
-              }
-              style={{
-                textAnchor: "middle",
-                dominantBaseline: "central",
-                fontSize: "small"
-              }}
-            >
-              {tickPosition + 1}
-            </text>
-            <rect width={tickMarkWidth} height={tickMarkHeight} />
+            <g>
+              <text
+                transform={
+                  (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
+                  ` translate(0, ${
+                    shouldFlipText(tickAngle) ? -textOffset : textOffset
+                  })`
+                }
+                style={{
+                  textAnchor: "middle",
+                  dominantBaseline: "central",
+                  fontSize: "small"
+                }}
+              >
+                {tickPosition + 1 + ""}
+              </text>
+              <rect width={tickMarkWidth} height={tickMarkHeight} />
+            </g>
           </PositionAnnotationOnCircle>
         );
       })
-    : "";
+    : null;
+  console.log("tickMarksAndLabels:", tickMarksAndLabels);
   let component = (
     <g key="veAxis" className="veAxis">
       <circle
         className="veAxisFill"
         id="circularViewAxis"
         key="circleOuter"
-        r={radius + ringThickness}
+        r={radiusToUse + ringThickness}
         style={{ fill: "#FFFFB3", stroke: "black", strokeWidth: 0.5 }}
       />
       <circle
         id="circularViewAxis"
         key="circle"
-        r={radius}
+        r={radiusToUse}
         style={{ fill: "white", stroke: "black", strokeWidth: 0.5 }}
       />
       {tickMarksAndLabels}

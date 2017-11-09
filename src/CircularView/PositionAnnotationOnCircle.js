@@ -13,8 +13,15 @@ export default function PositionAnnotationOnCircle({
   if (forward) {
     transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;
   } else {
-    transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `;
+    transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${
+      height
+    }) `;
   }
   let props = { transform, ...rest };
+  /* eslint-disable */
+
+  if (!children) debugger;
+  /* eslint-enable */
+
   return React.cloneElement(children, props);
 }
