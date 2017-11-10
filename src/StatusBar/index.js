@@ -37,8 +37,8 @@ export function StatusBar({
       {
         <StatusBarItem>
           {isSelecting
-            ? `Selecting ${length} bps from ${selectionLayer.end +
-                1} to ${selectionLayer.start + 1}`
+            ? `Selecting ${length} bps from ${selectionLayer.start +
+                1} to ${selectionLayer.end + 1}`
             : caretPosition > -1
               ? `Caret Between Bases ${insertBetween[0]} and ${
                   insertBetween[1]
