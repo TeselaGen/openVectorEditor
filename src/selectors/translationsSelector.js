@@ -1,4 +1,5 @@
 import { filter } from "lodash";
+import uuid from "uuid";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
@@ -8,8 +9,10 @@ import { getAminoAcidDataForEachBaseOfDna } from "ve-sequence-utils";
 // import bsonObjectid from 'bson-objectid';
 import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
+import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
 
 function translationsSelector(
+  translationSearchMatches,
   sequence,
   orfs,
   showOrfTranslations,
@@ -17,6 +20,17 @@ function translationsSelector(
   translations
 ) {
   let translationsToPass = {
+    ...translationSearchMatches.reduce((acc, match) => {
+      if (!match) return acc;
+      const id = match.id || uuid();
+      acc[id] = {
+        ...match,
+        id,
+        isOrf: true,
+        forward: !match.bottomStrand
+      };
+      return acc;
+    }, {}),
     ...filter(translations, translation => {
       return !translation.isOrf;
     }),
@@ -33,6 +47,7 @@ function translationsSelector(
 }
 
 export default createSelector(
+  translationSearchMatchesSelector,
   sequenceSelector,
   orfsSelector,
   function(state) {

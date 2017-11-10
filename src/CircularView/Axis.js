@@ -65,7 +65,6 @@ function Axis({
         );
       })
     : null;
-  console.log("tickMarksAndLabels:", tickMarksAndLabels);
   let component = (
     <g key="veAxis" className="veAxis">
       <circle
