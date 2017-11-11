@@ -1,9 +1,15 @@
 import reactDimensions from "react-dimensions";
 import "react-reflex/styles.css";
 import React from "react";
-import { compose } from "redux";
+import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 // import Dimensions from "react-dimensions";
-import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+/* eslint-disable */ import {
+  ReflexContainer,
+  ReflexSplitter,
+  ReflexElement
+} from "react-reflex";
+/* eslint-enable */
+
 import { flatMap } from "lodash";
 
 // import SplitPane from "react-split-pane";
@@ -35,6 +41,7 @@ export class Editor extends React.Component {
 
   render() {
     const {
+      doNotUseAbsolutePosition = false,
       PropertiesProps = {},
       ToolBarProps = {},
       CircularViewProps = {},
@@ -118,7 +125,12 @@ export class Editor extends React.Component {
         style={{ width: "100%", position: "relative", height: "100%" }}
         className={"veEditor"}
       >
-        <div style={{ width: "100%", position: "absolute" }}>
+        <div
+          style={{
+            width: "100%",
+            ...(doNotUseAbsolutePosition ? {} : { position: "absolute" })
+          }}
+        >
           {showMenuBar && <MenuBar />}
           <ToolBar {...sharedProps} {...ToolBarProps} />
 
@@ -127,8 +139,7 @@ export class Editor extends React.Component {
             className="tg-editor-container"
             id="section-to-print"
           >
-            <ReflexContainer /* style={{}} */
-            orientation="vertical">
+            <ReflexContainer /* style={{}} */ orientation="vertical">
               {panels}
             </ReflexContainer>
 
