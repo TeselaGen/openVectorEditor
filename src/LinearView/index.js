@@ -4,7 +4,7 @@ import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
-import withEditorInteractions from '../withEditorInteractions';
+import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 
 let defaultMarginWidth = 10;
@@ -83,7 +83,7 @@ export class LinearView extends React.Component {
       editorClicked = noop,
       editorDragStopped = noop,
       width = 400,
-      RowItemProps={},
+      RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
       ...rest
@@ -141,7 +141,6 @@ export class LinearView extends React.Component {
               tickSpacing: Math.floor(bpsPerRow / 10),
               annotationVisibility: {
                 ...rest.annotationVisibility,
-                caret: false,
                 yellowAxis: true,
                 translations: false
               },
@@ -162,15 +161,11 @@ function SequenceName({ sequenceName, sequenceLength }) {
       //className={"veCircularViewMiddleOfVectorText"}
       style={{ textAlign: "center" }}
     >
-      <span>
-        {sequenceName}{" "}
-      </span>
+      <span>{sequenceName} </span>
       <br />
-      <span>
-        {sequenceLength + " bps"}
-      </span>
+      <span>{sequenceLength + " bps"}</span>
     </div>
   );
 }
 
-export default withEditorInteractions(LinearView)
+export default withEditorInteractions(LinearView);

@@ -1,7 +1,8 @@
 import React from "react";
+import { onlyUpdateForKeys } from "recompose";
 import withHover from "../helperComponents/withHover";
 import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
-import intervalTree2 from "teselagen-interval-tree";
+import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import forEach from "lodash/forEach";
 
@@ -13,7 +14,7 @@ function CutsiteLabels(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     cutsiteClicked,
-    textWidth = 12,
+    textWidth = 10,
     editorName
   } = props;
   if (annotationRanges.length === 0) {
@@ -34,10 +35,10 @@ function CutsiteLabels(props) {
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
   let rowCenter = rowLength / 2;
-  let iTree = new intervalTree2(rowCenter);
+  let iTree = new IntervalTree(rowCenter);
   forEach(annotationRanges, function(annotationRange, index) {
     counter++;
-    if (counter > 3) return;
+    if (counter > 50) return;
     let annotation = annotationRange.annotation;
     if (!annotation) {
       annotation = annotationRange;
@@ -48,6 +49,7 @@ function CutsiteLabels(props) {
       bpsPerRow,
       charWidth
     );
+    const xStartOriginal = xStart;
 
     let xEnd = xStart + annotationLength;
 
@@ -55,9 +57,8 @@ function CutsiteLabels(props) {
       xStart = xStart - (xEnd - rowLength);
       xEnd = rowLength;
     }
-
     let yOffset = getYOffset(iTree, xStart, xEnd);
-    iTree.add(xStart, xEnd, annotationRange.id, {
+    iTree.insert(xStart, xEnd, {
       ...annotationRange,
       yOffset
     });
@@ -70,7 +71,14 @@ function CutsiteLabels(props) {
       <DrawCutsiteLabel
         id={annotation.id}
         key={"cutsiteLabel" + index}
-        {...{ editorName, annotation, cutsiteClicked, height, xStart }}
+        {...{
+          editorName,
+          annotation,
+          xStartOriginal,
+          cutsiteClicked,
+          height,
+          xStart
+        }}
       />
     );
   });
@@ -94,38 +102,63 @@ function CutsiteLabels(props) {
   );
 }
 
-export default CutsiteLabels;
+export default onlyUpdateForKeys([
+  "annotationRanges",
+  "bpsPerRow",
+  "charWidth",
+  "annotationHeight",
+  "spaceBetweenAnnotations",
+  "cutsiteClicked",
+  "textWidth",
+  "editorName"
+])(CutsiteLabels);
 
 const DrawCutsiteLabel = withHover(
   ({
     hoverActions,
-    hoverProps: { className },
+    hoverProps: { hovered, className },
     annotation,
     cutsiteClicked,
     height,
+    xStartOriginal,
     xStart
   }) => {
     return (
-      <div
-        {...hoverActions}
-        className={className}
-        onClick={function(event) {
-          cutsiteClicked({ event, annotation });
-          event.stopPropagation();
-        }}
-        style={{
-          // left: xStart,
-          position: "absolute",
-          bottom: height,
-          // display: 'inline-block',
-          // position: (relative) ? 'relative' : 'absolute',
-          // // float: 'left',
-          left: xStart,
-          zIndex: 10
-          // left: '100 % ',
-        }}
-      >
-        {annotation.restrictionEnzyme.name}
+      <div>
+        <div
+          {...hoverActions}
+          className={className}
+          onClick={function(event) {
+            cutsiteClicked({ event, annotation });
+            event.stopPropagation();
+          }}
+          style={{
+            cursor: "pointer",
+            // left: xStart,
+            position: "absolute",
+            bottom: height,
+            // display: 'inline-block',
+            // position: (relative) ? 'relative' : 'absolute',
+            // // float: 'left',
+            left: xStart,
+            zIndex: 10
+            // left: '100 % ',
+          }}
+        >
+          {annotation.restrictionEnzyme.name}
+        </div>
+        {hovered && (
+          <div
+            style={{
+              position: "absolute",
+              left: xStartOriginal,
+              bottom: 0,
+              height: Math.max(height, 3),
+              width: 2,
+              background: "black"
+            }}
+          />
+        )}
       </div>
     );
   }

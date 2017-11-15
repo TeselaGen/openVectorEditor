@@ -1,5 +1,6 @@
 // import PropTypes from "prop-types";
 import React from "react";
+import { onlyUpdateForKeys } from "recompose";
 import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
 import { getAnnotationRangeType } from "ve-range-utils";
 import Orf from "./Orf";
@@ -98,4 +99,13 @@ function Orfs(props) {
 //   orfClicked: PropTypes.func.isRequired
 // };
 
-export default Orfs;
+export default onlyUpdateForKeys([
+  "annotationRanges",
+  "bpsPerRow",
+  "charWidth",
+  "annotationHeight",
+  "spaceBetweenAnnotations",
+  "orfClicked",
+  "orfRightClicked",
+  "row"
+])(Orfs);

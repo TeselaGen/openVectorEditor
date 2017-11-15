@@ -306,12 +306,19 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     annotationClicked = ({ event, annotation }) => {
-      event.persist();
-      console.log("event:", event);
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
       this.updateSelectionOrCaret(event.shiftKey, annotation);
+      annotationDeselectAll(undefined);
+      annotationSelect(annotation);
+    };
+
+    cutsiteClicked = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { annotationSelect, annotationDeselectAll } = this.props;
+      this.updateSelectionOrCaret(event.shiftKey, annotation.topSnipPosition);
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
@@ -398,6 +405,7 @@ function VectorInteractionHOC(Component /* options */) {
       event.preventDefault();
       event.stopPropagation();
       const items = this.generateSelectionMenuOptions(annotation);
+      basicContext.show(items, event);
     };
 
     deletionLayerRightClicked = ({ event, annotation }) => {
@@ -635,6 +643,7 @@ function VectorInteractionHOC(Component /* options */) {
           primerClicked: this.annotationClicked,
           primerRightClick: this.primerRightClick,
           translationClicked: this.annotationClicked,
+          cutsiteClicked: this.cutsiteClicked,
           translationRightClicked: this.translationRightClicked,
           translationDoubleClicked: this.annotationClicked,
           deletionLayerClicked: this.annotationClicked,

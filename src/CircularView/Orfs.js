@@ -1,7 +1,7 @@
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import orfFrameToColorMap from "../constants/orfFrameToColorMap";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
-import intervalTree2 from "teselagen-interval-tree";
+import IntervalTree from "node-interval-tree";
 import getRangeAngles from "./getRangeAnglesSpecial";
 // import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import getYOffset from "./getYOffset";
@@ -25,7 +25,7 @@ function Orfs({
 }) {
   // var orfHeight
   let totalAnnotationHeight = orfHeight + spaceBetweenAnnotations;
-  let itree = new intervalTree2(Math.PI);
+  let itree = new IntervalTree(Math.PI);
   let maxYOffset = 0;
   let svgGroup = [];
   let labels = {};
@@ -64,15 +64,15 @@ function Orfs({
     }
 
     if (spansOrigin) {
-      itree.add(startAngle, expandedEndAngle, undefined, { ...annotationCopy });
+      itree.insert(startAngle, expandedEndAngle, { ...annotationCopy });
     } else {
       //normal orf
       // we need to add it twice to the interval tree to accomodate orfs which span the origin
-      itree.add(startAngle, expandedEndAngle, undefined, { ...annotationCopy });
-      itree.add(
+      itree.insert(startAngle, expandedEndAngle, { ...annotationCopy });
+      itree.insert(
         startAngle + 2 * Math.PI,
         expandedEndAngle + 2 * Math.PI,
-        undefined,
+
         { ...annotationCopy }
       );
     }

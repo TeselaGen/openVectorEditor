@@ -3,7 +3,7 @@ import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAn
 import "./style.css";
 import Primer from "./Primer";
 import drawCircularLabel2 from "../drawCircularLabel2";
-import intervalTree2 from "teselagen-interval-tree";
+import IntervalTree from "node-interval-tree";
 import getRangeAngles from "../getRangeAnglesSpecial";
 
 import getYOffset from "../getYOffset";
@@ -28,7 +28,7 @@ function Primers({
 }) {
   if (!Object.keys(primers).length) return null;
   let totalAnnotationHeight = primerHeight + spaceBetweenAnnotations;
-  let primerITree = new intervalTree2(Math.PI);
+  let primerITree = new IntervalTree();
   let maxYOffset = 0;
   let svgGroup = [];
   let labels = {};
@@ -114,19 +114,18 @@ function Primers({
       };
     }
     if (spansOrigin) {
-      primerITree.add(startAngle, expandedEndAngle, undefined, {
+      primerITree.insert(startAngle, expandedEndAngle, {
         ...annotationCopy
       });
     } else {
       //normal primer
       // we need to add it twice to the interval tree to accomodate primers which span the origin
-      primerITree.add(startAngle, expandedEndAngle, undefined, {
+      primerITree.insert(startAngle, expandedEndAngle, {
         ...annotationCopy
       });
-      primerITree.add(
+      primerITree.insert(
         startAngle + 2 * Math.PI,
         expandedEndAngle + 2 * Math.PI,
-        undefined,
         { ...annotationCopy }
       );
     }
@@ -208,20 +207,20 @@ const DrawPrimer = withHover(
           />
         </PositionAnnotationOnCircle>
         {labelFits &&
-        !noPrimerLabels && (
-          <PositionAnnotationOnCircle
-            sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
-            eAngle={labelCenter + Math.PI}
-          >
-            {drawCircularLabel2({
-              centerAngle: labelCenter, //used to flip label if necessary
-              radius: annotationRadius,
-              height: primerHeight,
-              text: annotation.name,
-              id: annotation.id
-            })}
-          </PositionAnnotationOnCircle>
-        )}
+          !noPrimerLabels && (
+            <PositionAnnotationOnCircle
+              sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
+              eAngle={labelCenter + Math.PI}
+            >
+              {drawCircularLabel2({
+                centerAngle: labelCenter, //used to flip label if necessary
+                radius: annotationRadius,
+                height: primerHeight,
+                text: annotation.name,
+                id: annotation.id
+              })}
+            </PositionAnnotationOnCircle>
+          )}
       </g>
     );
   }

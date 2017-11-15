@@ -5,7 +5,7 @@ import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import Feature from "./Feature";
 import drawCircularLabel2 from "../drawCircularLabel2";
-import intervalTree2 from "teselagen-interval-tree";
+import IntervalTree from "node-interval-tree";
 import getRangeAngles from "../getRangeAnglesSpecial";
 import featureColorMap from "../../constants/featureColorMap.json";
 import getYOffset from "../getYOffset";
@@ -29,7 +29,7 @@ function Features({
   sequenceLength
 }) {
   let totalAnnotationHeight = featureHeight + spaceBetweenAnnotations;
-  let featureITree = new intervalTree2(Math.PI);
+  let featureITree = new IntervalTree();
   let maxYOffset = 0;
   let svgGroup = [];
   let labels = {};
@@ -73,19 +73,19 @@ function Features({
       }
 
       if (spansOrigin) {
-        featureITree.add(startAngle, expandedEndAngle, undefined, {
+        featureITree.insert(startAngle, expandedEndAngle, {
           ...annotationCopy
         });
       } else {
         //normal feature
         // we need to add it twice to the interval tree to accomodate features which span the origin
-        featureITree.add(startAngle, expandedEndAngle, undefined, {
+        featureITree.insert(startAngle, expandedEndAngle, {
           ...annotationCopy
         });
-        featureITree.add(
+        featureITree.insert(
           startAngle + 2 * Math.PI,
           expandedEndAngle + 2 * Math.PI,
-          undefined,
+
           { ...annotationCopy }
         );
       }
@@ -225,20 +225,20 @@ const DrawFeature = withHover(function({
         />
       </PositionAnnotationOnCircle>
       {labelFits &&
-      showFeatureLabels && (
-        <PositionAnnotationOnCircle
-          sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
-          eAngle={labelCenter + Math.PI}
-        >
-          {drawCircularLabel2({
-            centerAngle: labelCenter, //used to flip label if necessary
-            radius: annotationRadius,
-            height: featureHeight,
-            text: annotation.name,
-            id: annotation.id
-          })}
-        </PositionAnnotationOnCircle>
-      )}
+        showFeatureLabels && (
+          <PositionAnnotationOnCircle
+            sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
+            eAngle={labelCenter + Math.PI}
+          >
+            {drawCircularLabel2({
+              centerAngle: labelCenter, //used to flip label if necessary
+              radius: annotationRadius,
+              height: featureHeight,
+              text: annotation.name,
+              id: annotation.id
+            })}
+          </PositionAnnotationOnCircle>
+        )}
     </g>
   );
 });

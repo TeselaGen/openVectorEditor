@@ -234,7 +234,6 @@ export class RowItem extends React.Component {
                 {...annotationCommonProps}
               />
             )}
-
           {showCutsiteLabels &&
             showCutsites &&
             Object.keys(cutsites).length > 0 && (
@@ -457,7 +456,6 @@ export class RowItem extends React.Component {
           {showAxis && (
             <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
           )}
-
           {caretPosition > -1 &&
             showCaret && (
               <Caret
