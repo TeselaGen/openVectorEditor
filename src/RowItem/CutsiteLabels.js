@@ -19,11 +19,25 @@ function CutsiteLabels(props) {
   if (annotationRanges.length === 0) {
     return null;
   }
+  let warningMessage = null;
+  if (Object.keys(annotationRanges).length > 50) {
+    warningMessage = (
+      <span style={{ color: "red" }}>
+        <br />
+        Warning: Only the first 50 cutsites will be displayed. Filter the
+        cutsites you wish to see using the filter tool <br />
+      </span>
+    );
+  }
+  let rowLength = bpsPerRow * charWidth;
+  let counter = 0;
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
-  let rowCenter = bpsPerRow * textWidth / 2;
+  let rowCenter = rowLength / 2;
   let iTree = new intervalTree2(rowCenter);
   forEach(annotationRanges, function(annotationRange, index) {
+    counter++;
+    if (counter > 3) return;
     let annotation = annotationRange.annotation;
     if (!annotation) {
       annotation = annotationRange;
@@ -34,14 +48,19 @@ function CutsiteLabels(props) {
       bpsPerRow,
       charWidth
     );
+
     let xEnd = xStart + annotationLength;
-    let rowLength = bpsPerRow * charWidth;
+
     if (xEnd > rowLength) {
       xStart = xStart - (xEnd - rowLength);
       xEnd = rowLength;
     }
+
     let yOffset = getYOffset(iTree, xStart, xEnd);
-    iTree.add(xStart, xEnd, undefined, { ...annotationRange, yOffset });
+    iTree.add(xStart, xEnd, annotationRange.id, {
+      ...annotationRange,
+      yOffset
+    });
 
     if (yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = yOffset;
@@ -58,16 +77,19 @@ function CutsiteLabels(props) {
   let containerHeight =
     (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
   return (
-    <div
-      width="100%"
-      style={{
-        position: "relative",
-        height: containerHeight,
-        display: "block"
-      }}
-      className="cutsiteContainer"
-    >
-      {annotationsSVG}
+    <div>
+      {warningMessage}
+      <div
+        width="100%"
+        style={{
+          position: "relative",
+          height: containerHeight,
+          display: "block"
+        }}
+        className="cutsiteContainer"
+      >
+        {annotationsSVG}
+      </div>
     </div>
   );
 }
@@ -94,7 +116,7 @@ const DrawCutsiteLabel = withHover(
         style={{
           // left: xStart,
           position: "absolute",
-          top: height,
+          bottom: height,
           // display: 'inline-block',
           // position: (relative) ? 'relative' : 'absolute',
           // // float: 'left',

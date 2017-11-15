@@ -73,6 +73,9 @@ export default class StandaloneDemo extends React.Component {
         annotationVisibility: {
           features: false
         },
+        panelsShown: {
+          rail: true,
+        },
         annotationsToSupport: {
           //these are the defaults, change to false to exclude
           features: true,

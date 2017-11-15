@@ -62,7 +62,7 @@ export default class ToolbarItem extends React.Component {
             >
               {Icon && (
                 <Tooltip2
-                  tooltipClassName="ve-toolbar-item-popover"
+                  portalClassName="ve-toolbar-item-popover"
                   useSmartPositioning
                   content={tooltipToDisplay}
                 >

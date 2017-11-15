@@ -111,9 +111,10 @@ class Translation extends React.Component {
 //   rangeType: PropTypes.string.isRequired,
 //   translationClicked: PropTypes.func.isRequired
 // };
-export default onlyUpdateForKeys(
+// export default Translation
+export default onlyUpdateForKeys([
   "annotationRange",
   "height",
   "charWidth",
   "sequenceLength"
-)(Translation);
+])(Translation);

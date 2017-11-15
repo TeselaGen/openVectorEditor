@@ -84,11 +84,12 @@ let Axis = function(props) {
   );
 };
 
-export default onlyUpdateForKeys(
+// export default Axis
+export default onlyUpdateForKeys([
   "row",
   "tickSpacing",
   "bpsPerRow",
   "charWidth",
   "annotationHeight",
   "sequenceLength"
-)(Axis);
+])(Axis);

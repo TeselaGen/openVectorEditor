@@ -1,4 +1,5 @@
 import reactDimensions from "react-dimensions";
+import LinearView from "../LinearView";
 import "react-reflex/styles.css";
 import React from "react";
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
@@ -46,6 +47,7 @@ export class Editor extends React.Component {
       ToolBarProps = {},
       CircularViewProps = {},
       RowViewProps = {},
+      LinearViewProps = {},
       StatusBarProps = {},
       FindBarProps = {},
       editorName,
@@ -86,6 +88,18 @@ export class Editor extends React.Component {
             key="rowView"
             {...sharedProps}
             {...RowViewProps}
+            {...{
+              ...editorDimensions
+            }}
+          />
+        );
+      }
+      if (panelName === "rail") {
+        panel = (
+          <LinearView
+            key="linearView"
+            {...sharedProps}
+            {...LinearViewProps}
             {...{
               ...editorDimensions
             }}
