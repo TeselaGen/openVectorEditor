@@ -38,7 +38,7 @@ class Sequence extends React.Component {
           width={width}
           height={height}
         >
-          <text className={"monospaceFont"} {...textAttrs}>
+          <text className={"ve-monospace-font"} {...textAttrs}>
             {sequence}
           </text>
         </svg>

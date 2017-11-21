@@ -9,7 +9,7 @@ import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 
 class CutsiteProperties extends React.Component {
   SubComponent = row => {
-    const { selectionLayerUpdate } = this.props;
+    // const { selectionLayerUpdate } = this.props;
     const { name, cutsiteGroup } = row.original;
     const entities = cutsiteGroup.map(
       ({
@@ -51,10 +51,10 @@ class CutsiteProperties extends React.Component {
               maxHeight={300}
               formName={"cutLocations"}
               isSingleSelect
-              onRowSelect={row => {
-                console.log("row:", row);
-                console.log("selectionLayerUpdate:", selectionLayerUpdate);
-              }}
+              // onRowSelect={row => {
+              //   // console.log("row:", row);
+              //   // console.log("selectionLayerUpdate:", selectionLayerUpdate);
+              // }}
               compact
               noRouter
               noHeader

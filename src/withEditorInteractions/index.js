@@ -16,8 +16,6 @@ import Keyboard from "./Keyboard";
 
 import withEditorProps from "../withEditorProps";
 import updateSelectionOrCaret from "../utils/selectionAndCaretUtils/updateSelectionOrCaret";
-import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
-import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
 import {
   normalizePositionByRangeLength
   // convertRangeTo1Based
@@ -613,7 +611,6 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        editorName,
         fitHeight
       } = this.props;
 
@@ -666,16 +663,7 @@ function VectorInteractionHOC(Component /* options */) {
             onCopy={this.handleCopy}
             onPaste={this.handlePaste}
           />
-          <AddOrEditFeatureDialog
-            editorName={editorName}
-            dialogName="AddOrEditFeatureDialog"
-            noTarget
-          />{" "}
-          <AddOrEditPrimerDialog
-            editorName={editorName}
-            dialogName="AddOrEditPrimerDialog"
-            noTarget
-          />{" "}
+
           {/* we pass this dialog here */}
           <Component {...propsToPass} />
         </div>

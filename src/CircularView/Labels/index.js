@@ -75,7 +75,7 @@ function Labels({
   // });
   return {
     component: (
-      <g key={"veLabels"} className="veLabels monospaceFont">
+      <g key={"veLabels"} className="veLabels ve-monospace-font">
         {groupedLabels.map(function(label, index) {
           let { labelAndSublabels } = label;
           let labelIds = {};

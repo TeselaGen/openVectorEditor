@@ -121,7 +121,9 @@ editor.updateEditor({
 		features: false
 	},
 	panelsShown: {
-		circular: false
+		circular: false,
+		sequence: true,
+		rail: true,
 	},
 	caretPosition: 10,
 	...additional editor props can be passed here [Example Editor State](./editorStateExample.js)

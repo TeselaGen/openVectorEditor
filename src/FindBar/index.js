@@ -36,6 +36,7 @@ export function FindBar({
     >
       <Button onClick={toggleFindTool} className={IconClasses.CROSS} />
       <InputGroup
+        autoFocus
         rightElement={
           <span>
             <span style={{ marginRight: 3, color: "lightgrey" }}>

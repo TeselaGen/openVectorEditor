@@ -9,7 +9,11 @@ export default {
       Icon: <Icon iconName={IconClasses.UNDO} />,
       disabled: !past.length,
       onIconClick: undo,
-      tooltip: "Undo"
+      tooltip: (
+        <span>
+          Undo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Z)</span>
+        </span>
+      )
     };
   }
 };

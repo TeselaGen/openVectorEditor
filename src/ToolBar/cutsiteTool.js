@@ -1,6 +1,7 @@
 import { Icon, IconClasses } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
+
 // import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
 
 export default {
@@ -46,6 +47,9 @@ function CutsiteToolDropDown({ editorName, annotationVisibilityShow }) {
           annotationVisibilityShow("cutsites");
         }}
       />
+      {/* <Button onClick={() => {
+
+      }}> Add Additional Enzymes</Button> */}
       {/* {showDigestTool && <DigestTool></DigestTool>} */}
     </div>
   );

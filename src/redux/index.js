@@ -8,6 +8,7 @@ import * as minimumOrfSize from "./minimumOrfSize";
 import * as sequenceData from "./sequenceData";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
+import * as addYourOwnEnzyme from "./addYourOwnEnzyme";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as selectedAnnotations from "./selectedAnnotations";
 import * as restrictionEnzymes from "./restrictionEnzymes";
@@ -45,6 +46,7 @@ export const actions = {
   ...findTool,
   ...modalActions,
   ...propertiesTool,
+  ...addYourOwnEnzyme,
   vectorEditorInitialize,
   vectorEditorClear
 };
@@ -109,6 +111,7 @@ export default function reducerFactory(initialState = {}) {
     } else {
       //just a normal action
       Object.keys(state).forEach(function(editorName) {
+        if (editorName === "addYourOwnEnzyme") return; //we deal with add your own enzyme
         newState[editorName] = combineReducers(reducers)(
           state[editorName],
           action
@@ -116,7 +119,11 @@ export default function reducerFactory(initialState = {}) {
       });
       stateToReturn = newState;
     }
-    return stateToReturn;
+    return {
+      ...stateToReturn,
+      //these are reducers that are not editor specific (aka shared across editor instances)
+      addYourOwnEnzyme: addYourOwnEnzyme.default(state.addYourOwnEnzyme, action)
+    };
   };
 }
 

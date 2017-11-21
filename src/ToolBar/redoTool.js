@@ -9,7 +9,11 @@ export default {
       Icon: <Icon iconName={IconClasses.REDO} />,
       disabled: !future.length,
       onIconClick: redo,
-      tooltip: "Redo"
+      tooltip: (
+        <span>
+          Redo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Shift+Z)</span>
+        </span>
+      )
     };
   }
 };

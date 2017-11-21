@@ -35,7 +35,6 @@ function Axis({
           tickPosition,
           sequenceLength
         );
-        console.log("tickPosition + 1:", tickPosition + 1);
         return (
           <PositionAnnotationOnCircle
             key={"axis" + index}

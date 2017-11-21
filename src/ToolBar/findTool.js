@@ -8,7 +8,15 @@ export default {
       Icon: <Icon iconName={IconClasses.SEARCH} />,
       toggled: findTool.isOpen,
       onIconClick: toggleFindTool,
-      tooltip: findTool.isOpen ? "Hide Find Tool" : "Show Find Tool"
+      tooltip: findTool.isOpen ? (
+        <span>
+          Hide Find Tool <span style={{ fontSize: 10 }}>(Cmd/Ctrl+F)</span>
+        </span>
+      ) : (
+        <span>
+          Show Find Tool <span style={{ fontSize: 10 }}>(Cmd/Ctrl+F)</span>
+        </span>
+      )
     };
   }
 };

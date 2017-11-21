@@ -127,7 +127,7 @@ const DrawCutsiteLabel = withHover(
       <div>
         <div
           {...hoverActions}
-          className={className}
+          className={className + " ve-monospace-font"}
           onClick={function(event) {
             cutsiteClicked({ event, annotation });
             event.stopPropagation();

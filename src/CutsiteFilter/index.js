@@ -3,8 +3,7 @@ import { compose } from "redux";
 
 import withEditorProps from "../withEditorProps";
 import Plus from "react-icons/lib/fa/plus";
-import specialCutsiteFilterOptions
-  from "../constants/specialCutsiteFilterOptions";
+import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 import React from "react";
 import "./style.css";
 import Select from "react-select";
@@ -57,16 +56,13 @@ export class CutsiteFilter extends React.Component {
           allowCreate
           noResultsText={
             <div className={"noResultsTextPlusButton"}>
-              No results found.
-              {" "}
-              <span onClick={openAddYourOwn} className={"ta_link"}>
-                Add additional enzymes <Plus />
-              </span>
-              {" "}
+              No results found.{" "}
+              <AddAdditionalEnzymeLink onClick={openAddYourOwn} />{" "}
             </div>
           }
           placeholder="Filter cut sites..."
           options={options}
+          optionRenderer={renderOptions}
           onChange={filteredRestrictionEnzymes => {
             if (
               filteredRestrictionEnzymes &&
@@ -88,3 +84,18 @@ export class CutsiteFilter extends React.Component {
 }
 
 export default compose(withEditorProps, connect())(CutsiteFilter);
+function renderOptions({ label, value }) {
+  if (value === "addYourOwn") {
+    return <AddAdditionalEnzymeLink />;
+  }
+
+  return label;
+}
+
+function AddAdditionalEnzymeLink({ onClick }) {
+  return (
+    <span onClick={onClick} className={"ta_link"}>
+      Add additional enzymes <Plus />
+    </span>
+  );
+}

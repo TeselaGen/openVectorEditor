@@ -1,8 +1,7 @@
 import { combineReducers } from "redux";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
-import specialCutsiteFilterOptions
-  from "../constants/specialCutsiteFilterOptions";
+import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 import defaultEnzymeList from "./utils/defaultEnzymeList.json";
 // ------------------------------------
 // Actions
@@ -25,17 +24,23 @@ export const allRestrictionEnzymesUpdate = createAction(
 // ------------------------------------
 let initialState = [specialCutsiteFilterOptions.single];
 export default combineReducers({
+  //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
   filteredRestrictionEnzymes: createReducer(
     {
       [filteredRestrictionEnzymesReset]: (state, payload) => initialState,
       [filteredRestrictionEnzymesUpdate]: (state, payload) => payload,
       [filteredRestrictionEnzymesAdd]: function(state, payload) {
+        /* eslint-disable */
+
         if (!payload.value || !payload.label) debugger; //tnr: it must have these things
+        /* eslint-enable */
+
         return [...state, payload];
       }
     },
     initialState
   ),
+
   allRestrictionEnzymes: createReducer(
     {
       [addRestrictionEnzyme]: function(state, payload) {
@@ -47,7 +52,11 @@ export default combineReducers({
           (!payload.topSnipOffset && payload.topSnipOffset !== 0) ||
           (!payload.bottomSnipOffset && payload.bottomSnipOffset !== 0)
         )
+          /* eslint-disable */
+
           debugger; //tnr: it should have all these properties
+        /* eslint-enable */
+
         return {
           ...state,
           [payload.name]: payload

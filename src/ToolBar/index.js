@@ -1,5 +1,5 @@
 import React from "react";
-import { onlyUpdateForKeys, withProps } from "recompose";
+import { onlyUpdateForKeys, withProps, withHandlers } from "recompose";
 import { compose } from "redux";
 
 // import withEditorProps from "../withEditorProps";
@@ -87,21 +87,23 @@ export class ToolBar extends React.Component {
           editorName,
           isOpen: index === this.state.openItem,
           toggleOpen: this.toggleOpen,
-          toggleDropdown: () => {
-            this.toggleOpen(index);
-          },
           index
+        }),
+        withHandlers({
+          toggleDropdown: () => () => {
+            this.toggleOpen(index);
+          }
         }),
         withEditorProps,
         onlyUpdateForKeys([
           ...updateKeys,
           "isOpen",
           "toggleOpen",
-          "toggleDropdown",
           "editorName"
         ]),
         withProps(itemProps)
       )(ToolbarItem);
+      WrappedItem.displayName = "thomas-thomas";
       return <WrappedItem key={index} />;
     });
 

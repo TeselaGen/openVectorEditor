@@ -451,14 +451,12 @@ export default class ReactList extends Component {
   }
 
   scrollTo(index) {
-    console.log("this.getSpaceBefore(index):", this.getSpaceBefore(index));
     if (index != null) this.setScroll(this.getSpaceBefore(index) - 100);
   }
 
   scrollAround(index) {
     const current = this.getScroll();
     const bottom = this.getSpaceBefore(index);
-    console.log("this.getViewportSize():", this.getViewportSize());
     const top = bottom - this.getViewportSize() + this.getSizeOf(index);
     const min = Math.min(top, bottom);
     const max = Math.max(top, bottom);

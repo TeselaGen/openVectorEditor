@@ -13,12 +13,15 @@ function searchLayersSelector(
   if (!searchString) {
     return [];
   }
-  return findSequenceMatches(sequence, searchString, {
+  const matches = findSequenceMatches(sequence, searchString, {
     isCircular,
     isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
     isProteinSearch: dnaOrAA !== "DNA",
     searchReverseStrand: true
+  }).sort(({ start }, { start: start2 }) => {
+    return start - start2;
   });
+  return matches;
 }
 
 export default createSelector(

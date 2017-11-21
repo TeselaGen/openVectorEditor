@@ -1,3 +1,4 @@
+import { onlyUpdateForKeys } from "recompose";
 import draggableClassnames from "../../constants/draggableClassnames";
 import React from "react";
 import Caret from "../Caret";
@@ -124,4 +125,15 @@ function SelectionLayer(props) {
   );
 }
 
-export default SelectionLayer;
+export default onlyUpdateForKeys([
+  "charWidth",
+  "bpsPerRow",
+  "isDraggable",
+  "row",
+  "sequenceLength",
+  "regions",
+  "color",
+  "hideCarets",
+  "selectionLayerRightClicked",
+  "className"
+])(SelectionLayer);

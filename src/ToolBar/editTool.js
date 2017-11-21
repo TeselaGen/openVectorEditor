@@ -7,7 +7,16 @@ export default {
     return {
       Icon: <Icon iconName={readOnly ? "lock" : "unlock"} />,
       onIconClick: toggleReadOnlyMode,
-      tooltip: readOnly ? "Switch to edit mode" : "Switch to read only mode"
+      tooltip: readOnly ? (
+        <span>
+          Switch to edit mode <span style={{ fontSize: 10 }}>(Cmd/Ctrl+E)</span>
+        </span>
+      ) : (
+        <span>
+          Switch to read only mode{" "}
+          <span style={{ fontSize: 10 }}>(Cmd/Ctrl+E)</span>
+        </span>
+      )
     };
   }
 };

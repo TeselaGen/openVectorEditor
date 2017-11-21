@@ -40,7 +40,6 @@ export default class ToolbarItem extends React.Component {
     //   dropdownicon,
     //   toggled = false
     // } = item({ isOpen, toggleDropdown: this.toggleDropdown });
-
     let tooltipToDisplay = tooltip;
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;
@@ -51,9 +50,18 @@ export default class ToolbarItem extends React.Component {
         <Popover
           isOpen={!!Dropdown && isOpen}
           onClose={e => {
-            if (e.keyCode === 27) {
-              this.toggleDropdown();
+            if (
+              e.srcElement &&
+              this.dropdownNode &&
+              (this.dropdownNode.contains(e.srcElement) ||
+                !document.body.contains(e.srcElement))
+            ) {
+              return;
             }
+            this.toggleDropdown();
+            // if (e.keyCode === 27) {
+            //   this.toggleDropdown();
+            // }
           }}
           position={Position.BOTTOM}
           target={
@@ -111,6 +119,13 @@ export default class ToolbarItem extends React.Component {
           }
           content={
             <div
+              ref={n => {
+                if (n) this.dropdownNode = n;
+              }}
+              onMouseDown={e => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
               style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
               className={"ve-toolbar-dropdown content"}
             >

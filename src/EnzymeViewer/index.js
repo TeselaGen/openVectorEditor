@@ -21,6 +21,9 @@ export default ({
             cutsiteLabels: false,
             axis: false
           },
+          annotationLabelVisibility: {
+            cutsites: false
+          },
           sequenceLength: seqPlusPadding.length,
           bpsPerRow: seqPlusPadding.length,
           row: {

@@ -1,8 +1,8 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreators as UndoActionCreators } from "redux-undo";
-import { omit, memoize } from "lodash";
 import lruMemoize from "lru-memoize";
+import { compose, withHandlers } from "recompose";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
@@ -12,9 +12,27 @@ import { allTypes } from "../utils/annotationTypes";
  * This function basically connects the wrapped component with all of the state stored in a given editor instance
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
+export default compose(
+  connect(mapPropsToState, mapDispatchToActions),
+  withHandlers({
+    onSave: props => e => {
+      const { onSave = () => {}, readOnly, sequenceData } = props;
+      !readOnly && onSave(e, sequenceData, props);
+    },
+    //add additional "computed handlers here"
+    selectAll: props => () => {
+      const { sequenceLength, selectionLayerUpdate } = props;
+      sequenceLength > 0 &&
+        selectionLayerUpdate({
+          start: 0,
+          end: sequenceLength - 1
+        });
+    }
+  })
+);
 
-export default connect(function(state, ownProps) {
-  const { editorName, onSave = () => {} } = ownProps;
+function mapPropsToState(state, ownProps) {
+  const { editorName } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
   let editorState = VectorEditor[editorName];
@@ -75,9 +93,6 @@ export default connect(function(state, ownProps) {
 
   return {
     ...editorState,
-    onSave: e => {
-      onSave(e, sequenceData, editorState);
-    },
 
     selectedCutsites,
     sequenceLength,
@@ -95,7 +110,7 @@ export default connect(function(state, ownProps) {
     sequenceData: sequenceDataToUse,
     meta
   };
-}, mapDispatchToActions);
+}
 
 const combineSequenceData = lruMemoize()(
   (sequenceData, cutsites, orfs, translations) => ({
@@ -173,23 +188,21 @@ const getTypesToOmit = annotationsToSupport => {
   return typesToOmit;
 };
 
-const getVisibilities = lruMemoize(
-  1,
-  undefined,
-  true
-)((annotationVisibility, annotationLabelVisibility, annotationsToSupport) => {
-  const typesToOmit = getTypesToOmit(annotationsToSupport);
-  const annotationVisibilityToUse = {
-    ...annotationVisibility,
-    ...typesToOmit
-  };
-  const annotationLabelVisibilityToUse = {
-    ...annotationLabelVisibility,
-    ...typesToOmit
-  };
-  return {
-    annotationVisibilityToUse,
-    annotationLabelVisibilityToUse,
-    typesToOmit
-  };
-});
+const getVisibilities = lruMemoize(1, undefined, true)(
+  (annotationVisibility, annotationLabelVisibility, annotationsToSupport) => {
+    const typesToOmit = getTypesToOmit(annotationsToSupport);
+    const annotationVisibilityToUse = {
+      ...annotationVisibility,
+      ...typesToOmit
+    };
+    const annotationLabelVisibilityToUse = {
+      ...annotationLabelVisibility,
+      ...typesToOmit
+    };
+    return {
+      annotationVisibilityToUse,
+      annotationLabelVisibilityToUse,
+      typesToOmit
+    };
+  }
+);
