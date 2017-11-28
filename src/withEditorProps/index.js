@@ -15,9 +15,11 @@ import { allTypes } from "../utils/annotationTypes";
 export default compose(
   connect(mapPropsToState, mapDispatchToActions),
   withHandlers({
-    onSave: props => e => {
-      const { onSave = () => {}, readOnly, sequenceData } = props;
-      !readOnly && onSave(e, sequenceData, props);
+    handleSave: props => {
+      return e => {
+        const { onSave, readOnly, sequenceData } = props;
+        !readOnly && onSave && onSave(e, sequenceData, props);
+      };
     },
     //add additional "computed handlers here"
     selectAll: props => () => {

@@ -59,7 +59,7 @@ export class ToolBar extends React.Component {
   };
 
   render() {
-    const { modifyTools, toolList = [], editorName } = this.props;
+    const { modifyTools, toolList = [], ...rest } = this.props;
 
     let items = toolList
       .map(toolName => {
@@ -84,7 +84,7 @@ export class ToolBar extends React.Component {
       const itemProps = item.itemProps || item;
       const WrappedItem = compose(
         withProps({
-          editorName,
+          ...rest,
           isOpen: index === this.state.openItem,
           toggleOpen: this.toggleOpen,
           index
@@ -103,7 +103,7 @@ export class ToolBar extends React.Component {
         ]),
         withProps(itemProps)
       )(ToolbarItem);
-      WrappedItem.displayName = "thomas-thomas";
+      WrappedItem.displayName = toolList[index];
       return <WrappedItem key={index} />;
     });
 

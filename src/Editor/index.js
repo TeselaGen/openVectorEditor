@@ -90,7 +90,7 @@ export class Editor extends React.Component {
           global={true}
           combo={"cmd+s"}
           label="Save"
-          onKeyDown={this.props.onSave}
+          onKeyDown={this.props.handleSave}
         />
         <Hotkey
           preventDefault
@@ -224,18 +224,18 @@ export class Editor extends React.Component {
       FindBarProps = {},
       editorName,
       findTool = {},
-      containerWidth,
+      // containerWidth,
       height = 500,
       showMenuBar,
-      updateSequenceData,
-      ...rest
+      updateSequenceData
+      // ...rest
     } = this.props;
     let editorDimensions = {
       height
     };
     const sharedProps = {
       editorName,
-      ...rest
+      ...this.props
     };
     const panelsToShow = this.getPanelsToShow();
 
@@ -317,7 +317,7 @@ export class Editor extends React.Component {
             ...(doNotUseAbsolutePosition ? {} : { position: "absolute" })
           }}
         >
-          <button
+          {/* <button
             onClick={() => {
               document.body.addEventListener("keydown", e => {
                 console.log("e:", e);
@@ -345,7 +345,7 @@ export class Editor extends React.Component {
           >
             {" "}
             show key dialog{" "}
-          </button>
+          </button> */}
           <Dialogs editorName={editorName} />
           {showMenuBar && <MenuBar />}
           <ToolBar {...sharedProps} {...ToolBarProps} />

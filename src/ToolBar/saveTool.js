@@ -2,11 +2,11 @@ import React from "react";
 import { Icon, IconClasses } from "@blueprintjs/core";
 
 export default {
-  updateKeys: ["onSave", "readOnly"],
-  itemProps: ({ readOnly, onSave = () => {} }) => {
+  updateKeys: ["handleSave", "readOnly"],
+  itemProps: ({ readOnly, handleSave = () => {} }) => {
     return {
       Icon: <Icon iconName={IconClasses.FLOPPY_DISK} />,
-      onIconClick: onSave,
+      onIconClick: handleSave,
       disabled: readOnly,
       tooltip: (
         <span>

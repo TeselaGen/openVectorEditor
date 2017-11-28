@@ -94,9 +94,22 @@
     tether "^1.4"
     tslib "^1.5.0"
 
-"@blueprintjs/datetime@^1.23.0":
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-1.23.0.tgz#e0cef3d708ced2eab124be110ef981cad132474d"
+"@blueprintjs/core@^1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-1.33.0.tgz#8c48924e8cb9df2c154f1a1d3c8087c02af70196"
+  dependencies:
+    "@types/dom4" "^1.5.20"
+    "@types/tether" "^1.1.27"
+    classnames "^2.2"
+    dom4 "^1.8"
+    normalize.css "4.1.1"
+    pure-render-decorator "^1.1"
+    tether "^1.4"
+    tslib "^1.5.0"
+
+"@blueprintjs/datetime@^1.24.0":
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-1.24.0.tgz#fdadbc072779c2c2b7b6679db58fa624b7911556"
   dependencies:
     "@blueprintjs/core" "^1.3.0"
     classnames "^2.2"
@@ -104,9 +117,9 @@
     react-day-picker "^5.3.0"
     tslib "^1.5.0"
 
-"@blueprintjs/labs@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/labs/-/labs-0.12.0.tgz#6d964f9f447b8758085f8ac831de3f2f467a87bd"
+"@blueprintjs/labs@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/labs/-/labs-0.13.0.tgz#bae065ea7db9ffebd6205e292201be730ac813c5"
   dependencies:
     "@blueprintjs/core" "^1.30.0"
     classnames "^2.2"
@@ -118,9 +131,9 @@
     react-popper "^0.7.2"
     tslib "^1.5.0"
 
-"@blueprintjs/table@^1.29.1":
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/table/-/table-1.29.1.tgz#1ee9276a3e9062e1b7a0b6ed2be0d76fadb007b8"
+"@blueprintjs/table@^1.30.0":
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/table/-/table-1.30.0.tgz#11ef3259650ea7e86cabd0e56a24c80d05a2a0d8"
   dependencies:
     "@blueprintjs/core" "^1.32.0"
     classnames "^2.2"
@@ -6127,9 +6140,9 @@ moment@^2.14.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
-moment@^2.19.1:
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
+moment@^2.19.2:
+  version "2.19.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.2.tgz#8a7f774c95a64550b4c7ebd496683908f9419dbe"
 
 ms@0.7.1:
   version "0.7.1"
@@ -8878,9 +8891,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^18.1.30:
-  version "18.1.30"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.1.30.tgz#d556110802e96d7c5f8d2ecade34ef0c5cf16a66"
+teselagen-react-components@^18.3.5:
+  version "18.3.5"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-18.3.5.tgz#917385085f61041ae0ccdeb68b3945aa65f1d25c"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.1"
@@ -8902,6 +8915,7 @@ teselagen-react-components@^18.1.30:
     recompose "^0.26.0"
     redux "^3.7.2"
     uniqid "^4.1.1"
+    ve-range-utils "^2.3.3"
 
 test-exclude@^4.1.1:
   version "4.1.1"

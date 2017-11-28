@@ -17,7 +17,6 @@ export default class ToolbarItem extends React.Component {
       isOpen,
       index,
       Icon,
-      editorName,
       onIconClick = noop,
       tooltip = "",
       tooltipToggled,
@@ -131,7 +130,7 @@ export default class ToolbarItem extends React.Component {
             >
               {Dropdown && (
                 <Dropdown
-                  editorName={editorName}
+                  {...this.props}
                   toggleDropdown={this.toggleDropdown}
                 />
               )}

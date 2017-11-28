@@ -33,7 +33,7 @@
     "test-debug": "node --inspect --debug-brk ./node_modules/.bin/jest src --runInBand "
   },
   "dependencies": {
-    "@blueprintjs/labs": "^0.12.0",
+    "@blueprintjs/labs": "^0.13.0",
     "apollo-client": "^2.0.2",
     "basiccontext": "^3.5.1",
     "classnames": "^2.2.5",
@@ -97,9 +97,9 @@
     "ve-sequence-utils": "^3.2.0"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^1.32.0",
-    "@blueprintjs/datetime": "^1.23.0",
-    "@blueprintjs/table": "^1.29.1",
+    "@blueprintjs/core": "^1.33.0",
+    "@blueprintjs/datetime": "^1.24.0",
+    "@blueprintjs/table": "^1.30.0",
     "apollo-cache-invalidation": "^0.0.3",
     "axios": "^0.17.0",
     "babel-eslint": "8.0.2",
@@ -124,7 +124,7 @@
     "install-peerdeps": "^1.4.0",
     "jest": "^21.2.1",
     "lint-staged": "^4.3.0",
-    "moment": "^2.19.1",
+    "moment": "^2.19.2",
     "nwb": "^0.19.2",
     "prettier": "^1.8.2",
     "react": "^16.1.0",
@@ -139,7 +139,7 @@
     "react-table": "^6.7.4",
     "redux-form": "^7.1.2",
     "redux-thunk": "*",
-    "teselagen-react-components": "^18.1.30",
+    "teselagen-react-components": "^18.3.5",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.3.3",
     "ve-sequence-utils": "3.2.5"

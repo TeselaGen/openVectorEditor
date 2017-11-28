@@ -2,11 +2,13 @@ import React from "react";
 import {
   Menu,
   MenuItem,
-  InputGroup,
+  // InputGroup,
   Popover,
   Position,
   Button
 } from "@blueprintjs/core";
+// import {Popover2 as Popover, Suggest} from '@blueprintjs/labs';
+
 import withEditorProps from "../withEditorProps";
 import defaultConfig from "./defaultConfig";
 
@@ -37,7 +39,7 @@ export class MenuBar extends React.Component {
           content={<Menu text={text}>{getMenu(menu)}</Menu>}
           popoverClassName="pt-minimal"
           useSmartPositioning
-          position={Position.BOTTOM_LEFT}
+          position={Position.BOTTOM}
         >
           <Button text={text} />
         </Popover>
@@ -47,10 +49,31 @@ export class MenuBar extends React.Component {
     return (
       <div className={"pt-button-group"}>
         {inner}{" "}
-        <InputGroup
-          inputValueRenderer={() => {}}
-          leftIconName={"search"}
-        />{" "}
+        <Popover
+          content={
+            <Menu>
+              {/* tnr comment the following back in once the momentjs issue is fixed https://github.com/palantir/blueprint/issues/1847 */}
+              {/* <Suggest
+                autoFocus
+                items={["yo", "my", "dude"]}
+                onItemSelect={(one) => {
+                  console.log('chose this one:', one)
+                }}
+                onChange={yup => {
+                  console.log('hup:')
+                }}
+                leftIconName={"search"}
+              /> */}
+
+              <MenuItem />
+            </Menu>
+          }
+          popoverClassName="pt-minimal"
+          useSmartPositioning
+          position={Position.BOTTOM}
+        >
+          <Button text={"Help"} />
+        </Popover>{" "}
       </div>
     );
   }
