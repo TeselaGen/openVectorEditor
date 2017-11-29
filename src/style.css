@@ -15,3 +15,6 @@
 .clickable {
   cursor: pointer;
 }
+.pt-toast-container {
+  z-index: 4000 !important;
+}
