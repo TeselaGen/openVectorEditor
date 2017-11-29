@@ -153,6 +153,6 @@
   z-index: 4000;
 }
 .pt-overlay-content {
-  z-index: 4000;
+  z-index: 4000 !important;
 }
 /*# sourceMappingURL=style.css.map */
