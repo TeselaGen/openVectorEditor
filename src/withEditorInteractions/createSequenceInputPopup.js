@@ -15,6 +15,7 @@ export default function createSequenceInputPopup(props) {
   //   sequenceInputBubble.remove();
   // }
   div = document.createElement("div");
+  div.style.zIndex = "4000";
   div.id = "sequenceInputBubble";
   document.body.appendChild(div);
 
