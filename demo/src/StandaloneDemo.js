@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import exampleSequenceData from "./exampleData/exampleSequenceData";
-import { Dialog } from "@blueprintjs/core";
+import { Dialog, Button } from "@blueprintjs/core";
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
 connect(
@@ -14,10 +14,14 @@ connect(
 );
 
 export default class StandaloneDemo extends React.Component {
-  componentDidMount() {
-    let editor
+  state = {
+    isDialogOpen: false
+  };
+  mountEditor = () => {
+
+    let editor;
     setTimeout(() => {
-       editor = window.createVectorEditor(this.node, {
+      editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
         onSave: function(event, copiedSequenceData, editorState) {
           console.log("event:", event);
@@ -94,19 +98,54 @@ export default class StandaloneDemo extends React.Component {
         }
       });
     }, 1000);
+  
+  }
+  componentDidMount() {
+    this.mountEditor()
   }
   render() {
-    return (
-      <Dialog backdropProps={{style: {zIndex: 1050}}} title="yooo" isOpen>
-  <div
+    const inner = (
+      <div
         className={"standaloneDemoNode"}
-        style={{ width: "100%", height: "100%", background: "white", zIndex: 1050 }}
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "white",
+          zIndex: 1050
+        }}
         ref={node => {
           this.node = node;
         }}
       />
-        
-      </Dialog>
+    );
+    const { isDialogOpen } = this.state;
+    return (
+      <div>
+        <Button
+          onClick={() => {
+            this.setState({ isDialogOpen: !isDialogOpen });
+            this.mountEditor()
+          }}
+        >
+          Open in a dialog
+        </Button>
+        {isDialogOpen ? (
+          <Dialog
+            style={{width: 600}}
+            onClose={() => {
+              this.setState({ isDialogOpen: false });
+              this.mountEditor()
+            }}
+            backdropProps={{ style: { zIndex: 1050 } }}
+            title="yooo"
+            isOpen={isDialogOpen}
+          >
+            {inner}
+          </Dialog>
+        ) : (
+          inner
+        )}
+      </div>
     );
   }
 }

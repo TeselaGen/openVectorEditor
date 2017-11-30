@@ -371,5 +371,5 @@ export class Editor extends React.Component {
 
 HotkeysTarget(Editor);
 
-export default compose(withEditorProps, reactDimensions())(Editor);
+export default compose(withEditorProps)(Editor);
 // export default compose(withEditorProps, reactDimensions())(Editor);

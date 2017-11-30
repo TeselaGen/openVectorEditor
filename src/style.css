@@ -17,10 +17,9 @@
 }
 .pt-toast-container,
 .basicContext,
+.pt-overlay-content,
+.pt-overlay,
 .basicContextContainer,
 .pt-dialog {
-  z-index: 4000 !important;
-}
-.pt-overlay-content {
   z-index: 4000 !important;
 }

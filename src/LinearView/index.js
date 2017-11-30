@@ -88,7 +88,7 @@ export class LinearView extends React.Component {
       height,
       ...rest
     } = this.props;
-    let innerWidth = width - marginWidth;
+    let innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = innerWidth / sequenceData.sequence.length;
     // var containerWidthMinusMargin = width - marginWidth
     let bpsPerRow = sequenceData.sequence.length;
