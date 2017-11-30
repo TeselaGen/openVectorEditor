@@ -113,7 +113,11 @@ export class RowView extends React.Component {
     if (this.dragging === true) {
       return;
     }
-    let { caretPosition, selectionLayer, matchedSearchLayer } = props;
+    let {
+      caretPosition = -1,
+      selectionLayer = {},
+      matchedSearchLayer = {}
+    } = props;
 
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     // let previousBp;

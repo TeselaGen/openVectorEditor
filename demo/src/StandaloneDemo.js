@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import exampleSequenceData from "./exampleData/exampleSequenceData";
+import { Dialog } from "@blueprintjs/core";
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
 connect(
@@ -14,57 +15,61 @@ connect(
 
 export default class StandaloneDemo extends React.Component {
   componentDidMount() {
-    const editor = window.createVectorEditor(this.node, {
-      onSave: function(event, copiedSequenceData, editorState) {
-        console.log("event:", event);
-        console.log("sequenceData:", copiedSequenceData);
-        console.log("editorState:", editorState);
-      },
-      onCopy: function(event, copiedSequenceData, editorState) {
-        console.log("event:", event);
-        console.log("sequenceData:", copiedSequenceData);
-        console.log("editorState:", editorState);
-        const clipboardData = event.clipboardData;
-        clipboardData.setData("text/plain", copiedSequenceData.sequence);
-        clipboardData.setData(
-          "application/json",
-          JSON.stringify(copiedSequenceData)
-        );
-        event.preventDefault();
-        //in onPaste in your app you can do:
-        // e.clipboardData.getData('application/json')
-      },
-      showMenuBar: true,
-      PropertiesProps: {
-        propertiesList: [
-          "features",
-          // "parts",
-          // "primers",
-          "translations",
-          "cutsites",
-          "orfs",
-          "genbank"
-        ]
-      },
-      ToolBarProps: {
-        toolList: [
-          "saveTool",
-          "downloadTool",
-          "importTool",
-          "undoTool",
-          "redoTool",
-          "cutsiteTool",
-          "featureTool",
-          // "oligoTool",
-          "orfTool",
-          "viewTool",
-          "editTool",
-          "findTool",
-          "visibilityTool",
-          "propertiesTool"
-        ]
-      }
-    });
+    let editor
+    setTimeout(() => {
+       editor = window.createVectorEditor(this.node, {
+        doNotUseAbsolutePosition: true,
+        onSave: function(event, copiedSequenceData, editorState) {
+          console.log("event:", event);
+          console.log("sequenceData:", copiedSequenceData);
+          console.log("editorState:", editorState);
+        },
+        onCopy: function(event, copiedSequenceData, editorState) {
+          console.log("event:", event);
+          console.log("sequenceData:", copiedSequenceData);
+          console.log("editorState:", editorState);
+          const clipboardData = event.clipboardData;
+          clipboardData.setData("text/plain", copiedSequenceData.sequence);
+          clipboardData.setData(
+            "application/json",
+            JSON.stringify(copiedSequenceData)
+          );
+          event.preventDefault();
+          //in onPaste in your app you can do:
+          // e.clipboardData.getData('application/json')
+        },
+        showMenuBar: true,
+        PropertiesProps: {
+          propertiesList: [
+            "features",
+            // "parts",
+            // "primers",
+            "translations",
+            "cutsites",
+            "orfs",
+            "genbank"
+          ]
+        },
+        ToolBarProps: {
+          toolList: [
+            "saveTool",
+            "downloadTool",
+            "importTool",
+            "undoTool",
+            "redoTool",
+            "cutsiteTool",
+            "featureTool",
+            // "oligoTool",
+            "orfTool",
+            "viewTool",
+            "editTool",
+            "findTool",
+            "visibilityTool",
+            "propertiesTool"
+          ]
+        }
+      });
+    }, 100);
 
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
     setTimeout(() => {
@@ -88,17 +93,20 @@ export default class StandaloneDemo extends React.Component {
           primers: false
         }
       });
-    }, 10);
+    }, 1000);
   }
   render() {
     return (
-      <div
+      <Dialog backdropProps={{style: {zIndex: 1050}}} title="yooo" isOpen>
+  <div
         className={"standaloneDemoNode"}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%", background: "white", zIndex: 1050 }}
         ref={node => {
           this.node = node;
         }}
       />
+        
+      </Dialog>
     );
   }
 }

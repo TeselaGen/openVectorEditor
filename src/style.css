@@ -17,6 +17,10 @@
 }
 .pt-toast-container,
 .basicContext,
+.basicContextContainer,
 .pt-dialog {
+  z-index: 4000 !important;
+}
+.pt-overlay-content {
   z-index: 4000 !important;
 }
