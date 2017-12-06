@@ -1,21 +1,47 @@
-import { jsonToGenbank } from "bio-parsers";
+import { jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 import React from "react";
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon, IconClasses, Button } from "@blueprintjs/core";
 
 export default {
-  updateKeys: ["sequenceData"],
-  itemProps: ({ sequenceData }) => {
+  updateKeys: ["toggleDropdown"],
+  itemProps: ({ toggleDropdown }) => {
     return {
       Icon: <Icon iconName={IconClasses.IMPORT} />,
-      onIconClick: function() {
-        let blob = new Blob([jsonToGenbank(sequenceData)], {
-          type: "text/plain"
-        });
-        FileSaver.saveAs(blob, "result_plasmid.gb");
-        // downloadSequenceData(sequenceData || )
-      },
-      tooltip: "Download .gb file"
+      onIconClick: toggleDropdown,
+      Dropdown,
+      noDropdownIcon: true,
+      tooltip: "Download"
     };
   }
 };
+
+function Dropdown({ sequenceData }) {
+  return (
+    <div>
+      <Button
+        style={{ marginRight: 10 }}
+        onClick={() => {
+          let blob = new Blob([jsonToGenbank(sequenceData)], {
+            type: "text/plain"
+          });
+          FileSaver.saveAs(blob, "result_plasmid.gb");
+        }}
+      >
+        {" "}
+        Download Genbank{" "}
+      </Button>
+      <Button
+        onClick={() => {
+          let blob = new Blob([jsonToFasta(sequenceData)], {
+            type: "text/plain"
+          });
+          FileSaver.saveAs(blob, "result_plasmid.fasta");
+        }}
+      >
+        {" "}
+        Download Fasta{" "}
+      </Button>
+    </div>
+  );
+}
