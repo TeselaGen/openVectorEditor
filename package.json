@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "@blueprintjs/labs": "^0.13.0",
-    "apollo-client": "^2.0.2",
     "basiccontext": "^3.5.1",
     "classnames": "^2.2.5",
     "clipboard": "^1.7.1",
@@ -97,9 +96,9 @@
     "ve-sequence-utils": "^3.2.0"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^1.33.0",
-    "@blueprintjs/datetime": "^1.24.0",
-    "@blueprintjs/table": "^1.30.0",
+    "@blueprintjs/core": "^1.34.0",
+    "@blueprintjs/datetime": "^1.25.0",
+    "@blueprintjs/table": "^1.31.0",
     "apollo-cache-invalidation": "^0.0.3",
     "axios": "^0.17.0",
     "babel-eslint": "8.0.2",
@@ -112,7 +111,7 @@
     "enzyme-to-json": "^3.2.2",
     "eslint": "^4.10.0",
     "eslint-config-react-app": "^2.0.1",
-    "eslint-config-teselagen": "^4.0.8",
+    "eslint-config-teselagen": "^4.0.9",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-flowtype": "2.39.1",
     "eslint-plugin-import": "2.8.0",
@@ -139,7 +138,7 @@
     "react-table": "^6.7.4",
     "redux-form": "^7.1.2",
     "redux-thunk": "*",
-    "teselagen-react-components": "^18.3.5",
+    "teselagen-react-components": "^19.0.3",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.3.3",
     "ve-sequence-utils": "3.2.5"

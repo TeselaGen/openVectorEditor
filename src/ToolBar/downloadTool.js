@@ -25,7 +25,10 @@ function Dropdown({ sequenceData }) {
           let blob = new Blob([jsonToGenbank(sequenceData)], {
             type: "text/plain"
           });
-          FileSaver.saveAs(blob, "result_plasmid.gb");
+          FileSaver.saveAs(
+            blob,
+            `${sequenceData.name ? sequenceData.name : "Untitled_Sequence"}.gb`
+          );
         }}
       >
         {" "}
@@ -36,7 +39,12 @@ function Dropdown({ sequenceData }) {
           let blob = new Blob([jsonToFasta(sequenceData)], {
             type: "text/plain"
           });
-          FileSaver.saveAs(blob, "result_plasmid.fasta");
+          FileSaver.saveAs(
+            blob,
+            `${
+              sequenceData.name ? sequenceData.name : "Untitled_Sequence"
+            }.fasta`
+          );
         }}
       >
         {" "}
