@@ -10,7 +10,8 @@ import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
   insertSequenceDataAtPositionOrRange,
-  deleteSequenceDataAtRange
+  deleteSequenceDataAtRange,
+  getReverseComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
 import Keyboard from "./Keyboard";
 
@@ -208,7 +209,8 @@ function VectorInteractionHOC(Component /* options */) {
       const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
       onCopy(
         e,
-        getSequenceDataBetweenRange(sequenceData, selectionLayer),
+        this.sequenceDataToCopy ||
+          getSequenceDataBetweenRange(sequenceData, selectionLayer),
         this.props
       );
     };
@@ -323,25 +325,26 @@ function VectorInteractionHOC(Component /* options */) {
 
     generateSelectionMenuOptions = annotation => {
       const {
-        // editorName,
         sequenceData,
         selectionLayer,
         readOnly,
-        // dispatch,
         upsertTranslation,
         showAddOrEditFeatureDialog
       } = this.props;
-      const { sequence } = sequenceData;
-      const selectedSeq = getSequenceWithinRange(selectionLayer, sequence);
+      const selectedSeqData = getSequenceDataBetweenRange(
+        sequenceData,
+        selectionLayer
+      );
       const handleDaCopy = e => {
         this.handleCopy(e);
         document.body.removeEventListener("copy", handleDaCopy);
       };
-      const makeTextCopyable = stringToCopy => {
+      const makeTextCopyable = sequenceDataToCopy => {
+        this.sequenceDataToCopy = sequenceDataToCopy;
         let clipboard = new Clipboard(".basicContext", {
           text: function() {
             document.body.addEventListener("copy", handleDaCopy);
-            return stringToCopy;
+            return sequenceDataToCopy.sequence;
           }
         });
         clipboard.on("success", (/* e */) => {
@@ -356,13 +359,15 @@ function VectorInteractionHOC(Component /* options */) {
         {
           title: "Copy",
           fn: function() {
-            makeTextCopyable(selectedSeq);
+            makeTextCopyable(selectedSeqData);
           }
         },
         {
           title: "Copy Reverse Complement",
           fn: function() {
-            makeTextCopyable(getReverseComplementSequenceString(selectedSeq));
+            makeTextCopyable(
+              getReverseComplementSequenceAndAnnotations(selectedSeqData)
+            );
           }
         },
         ...(readOnly
