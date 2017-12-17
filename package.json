@@ -76,7 +76,7 @@
     "teselagen-interval-tree": "1.1.1",
     "tether": "^1.4.1",
     "uniqid": "^4.1.1",
-    "uuid": "^3.1.0"
+    "uuidv4": "^0.5.0"
   },
   "peerDependencies": {
     "@blueprintjs/core": "^1.18.0",

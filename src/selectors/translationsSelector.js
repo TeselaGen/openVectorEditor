@@ -1,5 +1,5 @@
-import { filter } from "lodash";
-import uuid from "uuid";
+import { reduce } from "lodash";
+import uuid from "uuidv4";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
@@ -26,16 +26,24 @@ function translationsSelector(
       acc[id] = {
         ...match,
         id,
-        isOrf: true,
+        isOrf: true, //pass isOrf = true here in order to not have it show up in the properties window
         forward: !match.bottomStrand
       };
       return acc;
     }, {}),
-    ...filter(translations, translation => {
-      return !translation.isOrf;
-    }),
+    ...reduce(
+      translations,
+      (acc, translation) => {
+        if (!translation.isOrf) {
+          acc[translation.id] = translation;
+        }
+        return acc;
+      },
+      {}
+    ),
     ...(showOrfTranslations && showOrfs ? orfs : {})
   };
+  console.log("translationsToPass:", translationsToPass);
   each(translationsToPass, function(translation) {
     translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
       sequence,

@@ -19,7 +19,13 @@ class TranslationProperties extends React.Component {
     }).map(translation => {
       return {
         ...translation,
-        size: getRangeLength(translation, sequenceData.sequence.length)
+        sizeBps: getRangeLength(translation, sequenceData.sequence.length),
+        sizeAa: Math.floor(
+          getRangeLength(translation, sequenceData.sequence.length) / 3
+        ),
+        ...(translation.strand === undefined && {
+          strand: translation.forward ? 1 : -1
+        })
       };
     });
     return (
@@ -34,10 +40,16 @@ class TranslationProperties extends React.Component {
           isInfinite
           schema={{
             fields: [
-              { path: "name", type: "string" },
-              { path: "type", type: "string" },
+              // { path: "name", type: "string" },
+              // { path: "type", type: "string" },
               {
-                path: "size",
+                path: "sizeAa",
+                displayName: "Size (aa)",
+                type: "string"
+              },
+              {
+                path: "sizeBps",
+                displayName: "Size (bps)",
                 type: "string",
                 render: (val, record) => {
                   const base1Range = convertRangeTo1Based(record);
@@ -51,7 +63,7 @@ class TranslationProperties extends React.Component {
                   );
                 }
               },
-              { path: "strand", type: "string" }
+              { path: "strand", type: "number" }
             ]
           }}
           entities={translationsToUse}

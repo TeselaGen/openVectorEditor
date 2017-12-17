@@ -1,5 +1,5 @@
 import omit from "lodash/omit";
-import uuid from "uuid";
+import uuid from "uuidv4";
 
 // ------------------------------------
 // Reducer
