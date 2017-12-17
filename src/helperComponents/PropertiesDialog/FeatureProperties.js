@@ -17,6 +17,9 @@ class FeatureProperties extends React.Component {
     const featuresToUse = map(features, feature => {
       return {
         ...feature,
+        ...(feature.strand === undefined && {
+          strand: feature.forward ? 1 : -1
+        }),
         size: getRangeLength(feature, sequenceData.sequence.length)
       };
     });

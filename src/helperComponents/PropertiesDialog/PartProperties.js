@@ -17,6 +17,9 @@ class PartProperties extends React.Component {
     const partsToUse = map(parts, part => {
       return {
         ...part,
+        ...(part.strand === undefined && {
+          strand: part.forward ? 1 : -1
+        }),
         size: getRangeLength(part, sequenceData.sequence.length)
       };
     });

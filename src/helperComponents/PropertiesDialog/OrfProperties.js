@@ -12,7 +12,9 @@ class OrfProperties extends React.Component {
       return {
         ...orf,
         frame: orf.frame + 1,
-        strand: orf.forward ? 1 : -1,
+        ...(orf.strand === undefined && {
+          strand: orf.forward ? 1 : -1
+        }),
         size: getRangeLength(orf, sequenceData.sequence.length)
       };
     });

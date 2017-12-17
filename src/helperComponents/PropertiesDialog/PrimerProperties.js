@@ -17,6 +17,9 @@ class PrimerProperties extends React.Component {
     const primersToUse = map(primers, primer => {
       return {
         ...primer,
+        ...(primer.strand === undefined && {
+          strand: primer.forward ? 1 : -1
+        }),
         size: getRangeLength(primer, sequenceData.sequence.length)
       };
     });
