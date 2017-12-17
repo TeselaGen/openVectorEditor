@@ -1,10 +1,7 @@
 import basicContext from "basiccontext";
 import "basiccontext/dist/basicContext.min.css";
 import "basiccontext/dist/themes/default.min.css";
-import {
-  getReverseComplementSequenceString,
-  getSequenceDataBetweenRange
-} from "ve-sequence-utils";
+import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
@@ -376,7 +373,7 @@ function VectorInteractionHOC(Component /* options */) {
               {
                 title: "Create Feature",
                 fn: function() {
-                  showAddOrEditFeatureDialog();
+                  showAddOrEditFeatureDialog(selectionLayer);
                 }
               }
             ]),
@@ -437,6 +434,7 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         readOnly,
         upsertTranslation,
+        deleteFeature,
         showAddOrEditFeatureDialog
       } = this.props;
       let items = [
@@ -447,6 +445,12 @@ function VectorInteractionHOC(Component /* options */) {
                 title: "Edit Feature",
                 fn: function() {
                   showAddOrEditFeatureDialog(annotation);
+                }
+              },
+              {
+                title: "Delete Feature",
+                fn: function() {
+                  deleteFeature(annotation);
                 }
               }
             ]),
