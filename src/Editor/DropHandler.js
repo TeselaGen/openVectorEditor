@@ -12,9 +12,13 @@ export default class DropHandler extends React.Component {
     reader.readAsText(file, "UTF-8");
     reader.onload = function(evt: Object) {
       const content: string = evt.target.result;
-      anyToJson(content, result => {
-        updateSequenceData(result[0].parsedSequence);
-      });
+      anyToJson(
+        content,
+        result => {
+          updateSequenceData(result[0].parsedSequence);
+        },
+        { fileName: file.name }
+      );
     };
     reader.onerror = function() {
       window.toastr.error("Failure reading file.");
