@@ -18,7 +18,8 @@ function Feature(props) {
     color = "orange",
     featureClicked,
     featureRightClicked,
-    annotation
+    annotation,
+    isPart
   } = props;
 
   let width = widthInBps * charWidth;
@@ -39,8 +40,9 @@ function Feature(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0
-        Q ${width + pointiness / 2},${height / 2} ${width -
-      pointiness / 2},${height}
+        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
+      height
+    }
         L ${0},${height}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -48,8 +50,9 @@ function Feature(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0 
-        Q ${width + pointiness / 2},${height / 2} ${width -
-      pointiness / 2},${height}
+        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
+      height
+    }
         L 0,${height} 
         z`;
   } else if (rangeType === "beginningAndEnd") {
@@ -93,8 +96,9 @@ function Feature(props) {
       <title>{getAnnotationNameAndStartStopString(annotation)}</title>
       <path
         strokeWidth="1"
-        stroke={"black"}
-        fill={color}
+        {...(isPart
+          ? { stroke: "purple", fill: "purple", fillOpacity: 0 }
+          : { stroke: "black", fill: color })}
         transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
         d={path}
       />
