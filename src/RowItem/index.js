@@ -37,7 +37,7 @@ export class RowItem extends React.Component {
       cutsiteLabelSelectionLayer = [{ start: -1, end: -1, color: "black" }],
       annotationHeight = 14,
       featureHeight = 16,
-      partHeight = 16,
+      partHeight = 12,
       primerHeight = 16,
       tickSpacing = 10,
       sequenceHeight = 16,
@@ -207,27 +207,6 @@ export class RowItem extends React.Component {
               />
             )}
 
-          {showParts &&
-            Object.keys(parts).length > 0 && (
-              /* <Parts
-                showPartLabels={showPartLabels}
-                partClicked={partClicked}
-                partRightClicked={partRightClicked}
-                annotationRanges={parts}
-                {...annotationCommonProps}
-                annotationHeight={partHeight}
-              /> */
-              <Features
-                isPart
-                showFeatureLabels={showPartLabels}
-                featureClicked={partClicked}
-                featureRightClicked={partRightClicked}
-                annotationRanges={parts}
-                {...annotationCommonProps}
-                annotationHeight={partHeight}
-              />
-            )}
-
           {showPrimers &&
             Object.keys(primers).length > 0 && (
               <Primers
@@ -363,6 +342,19 @@ export class RowItem extends React.Component {
                 );
               })}
           </div>
+
+          {showParts &&
+            Object.keys(parts).length > 0 && (
+              <Parts
+                showPartLabels={showPartLabels}
+                partClicked={partClicked}
+                partRightClicked={partRightClicked}
+                annotationRanges={parts}
+                {...annotationCommonProps}
+                annotationHeight={partHeight}
+                marginTop={10}
+              />
+            )}
 
           {showLineageLines && lineageLines.length ? (
             <LineageLines

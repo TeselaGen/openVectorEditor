@@ -20,8 +20,7 @@ function Features(props) {
     spaceBetweenAnnotations = 2,
     featureClicked,
     featureRightClicked,
-    editorName,
-    isPart = false
+    editorName
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -55,7 +54,6 @@ function Features(props) {
         left={result.xStart}
       >
         <Feature
-          isPart={isPart}
           key={index}
           editorName={editorName}
           id={annotation.id}

@@ -1,0 +1,10 @@
+.veAnnotationHovered .veRowViewPart {
+  stroke-dasharray: 3px;
+}
+.veAnnotationHovered {
+  stroke-dasharray: 3px;
+}
+
+.veRowViewPartContainer > svg {
+  z-index: 20;
+}
