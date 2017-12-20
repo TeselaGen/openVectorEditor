@@ -2,7 +2,6 @@ import React from "react";
 import drawDirectedPiePiece from "../drawDirectedPiePiece";
 
 export default function CircularPart({
-  color = "purple",
   radius,
   arrowheadLength = 0.5,
   annotationHeight,
@@ -21,8 +20,8 @@ export default function CircularPart({
       {...rest}
       className="vePart veCircularViewPart"
       strokeWidth="0.5"
-      stroke={color}
-      fill={color}
+      stroke="purple"
+      fill="purple"
       fillOpacity={0}
       d={path.print()}
     />
