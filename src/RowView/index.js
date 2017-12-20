@@ -38,7 +38,8 @@ export class RowView extends React.Component {
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
     let { charWidth = defaultCharWidth } = this.props;
     let rowNotFound = true;
-    let visibleRowsContainer = this.InfiniteScroller.items;
+    let visibleRowsContainer =
+      this.InfiniteScroller && this.InfiniteScroller.items;
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
     some(visibleRowsContainer.childNodes, function(rowDomNode) {
@@ -156,7 +157,11 @@ export class RowView extends React.Component {
 
     let bpsPerRow = getBpsPerRow(props);
 
-    if (scrollToBp > -1 && this.InfiniteScroller.scrollTo) {
+    if (
+      scrollToBp > -1 &&
+      this.InfiniteScroller &&
+      this.InfiniteScroller.scrollTo
+    ) {
       let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
       let [start, end] = this.InfiniteScroller.getVisibleRange();
       // const jumpToBottomOfRow = scrollToBp > previousBp;
@@ -219,7 +224,8 @@ export class RowView extends React.Component {
               <Button
                 onClick={e => {
                   e.stopPropagation();
-                  this.InfiniteScroller.scrollTo(rowData.length);
+                  this.InfiniteScroller &&
+                    this.InfiniteScroller.scrollTo(rowData.length);
                 }}
               >
                 Jump to end
@@ -232,7 +238,7 @@ export class RowView extends React.Component {
               <Button
                 onClick={e => {
                   e.stopPropagation();
-                  this.InfiniteScroller.scrollTo(0);
+                  this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);
                 }}
               >
                 Jump to start
