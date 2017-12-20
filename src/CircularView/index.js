@@ -22,6 +22,7 @@ import {
 import React from "react";
 import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";
+import Parts from "./Parts";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 function noop() {}
@@ -113,7 +114,7 @@ export class CircularView extends React.Component {
       features: showFeatures = true,
       primers: showPrimers = true,
       // translations: showTranslations = true,
-      // parts: showParts = true,
+      parts: showParts = true,
       orfs: showOrfs = true,
       cutsites: showCutsites = true,
       // firstCut: showFirstCut = true,
@@ -131,7 +132,7 @@ export class CircularView extends React.Component {
       features: maxFeaturesToDisplay = 50,
       primers: maxPrimersToDisplay = 50,
       // translations: maxTranslationsToDisplay = 50,
-      // parts: maxPartsToDisplay = 50,
+      parts: maxPartsToDisplay = 50,
       orfs: maxOrfsToDisplay = 50,
       cutsites: maxCutsitesToDisplay = 100
     } = maxAnnotationsToDisplay;
@@ -139,6 +140,7 @@ export class CircularView extends React.Component {
     let paredDownCutsites;
     let paredDownFeatures;
     let paredDownPrimers;
+    let paredDownParts;
 
     const baseRadius = 80;
     let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
@@ -168,6 +170,7 @@ export class CircularView extends React.Component {
         spaceBefore: 0,
         spaceAfter: 0
       },
+
       { layer: drawCaret, zIndex: 15, layerName: "Caret" },
       { layer: drawSelectionLayer, zIndex: 10, layerName: "SelectionLayer" },
       {
@@ -185,6 +188,12 @@ export class CircularView extends React.Component {
       { layer: drawLineageLines, zIndex: 0, layerName: "LineageLines" },
       { layer: drawCutsites, zIndex: 10, layerName: "Cutsites" },
       { layer: drawOrfs, zIndex: 20, layerName: "Orfs", spaceBefore: 10 },
+      {
+        layer: drawParts,
+        zIndex: 20,
+        layerName: "Parts",
+        spaceBefore: 20
+      },
       { layer: drawLabels, zIndex: 30, layerName: "Labels" }
     ];
 
@@ -254,6 +263,30 @@ export class CircularView extends React.Component {
           sequenceLength,
           editorName,
           ...featureOptions
+        });
+        if (!results) return null;
+        //update the radius, labels, and svg
+        radius += results.height;
+        labels = { ...labels, ...results.labels };
+        return results.component;
+      }
+    }
+
+    function drawParts() {
+      if (showParts && sequenceData.parts) {
+        const [annotationsToPass, paredDown] = pareDownAnnotations(
+          sequenceData.parts,
+          maxPartsToDisplay
+        );
+        paredDownParts = paredDown;
+
+        const results = Parts({
+          radius,
+          parts: annotationsToPass,
+          partHeight: annotationHeight,
+          spaceBetweenAnnotations,
+          sequenceLength,
+          editorName
         });
         if (!results) return null;
         //update the radius, labels, and svg
@@ -594,6 +627,14 @@ export class CircularView extends React.Component {
                   } Features. Displaying only the largest ${
                     maxFeaturesToDisplay
                   }`}
+                />
+              )}
+
+              {paredDownParts && (
+                <VeWarning
+                  message={`Warning: More than ${
+                    maxPartsToDisplay
+                  } Parts. Displaying only the largest ${maxPartsToDisplay}`}
                 />
               )}
               {paredDownPrimers && (

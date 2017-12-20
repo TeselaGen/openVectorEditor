@@ -1,4 +1,4 @@
-import cleanSequenceData from "../lib/utils/cleanSequenceData";
+import cleanSequenceData from "./utils/cleanSequenceData";
 
 export default function updateEditor(store, editorName, initialValues = {}) {
   const { sequenceData = {}, ...rest } = initialValues;
