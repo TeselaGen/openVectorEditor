@@ -38,7 +38,9 @@ export class MenuBar extends React.Component {
           key={index}
           content={<Menu text={text}>{getMenu(menu)}</Menu>}
           popoverClassName="pt-minimal"
-          useSmartPositioning
+          tetherOptions={{
+            constraints: [{ attachment: "together", to: "scrollParent" }]
+          }}
           position={Position.BOTTOM}
         >
           <Button text={text} />
@@ -69,7 +71,9 @@ export class MenuBar extends React.Component {
             </Menu>
           }
           popoverClassName="pt-minimal"
-          useSmartPositioning
+          tetherOptions={{
+            constraints: [{ attachment: "together", to: "scrollParent" }]
+          }}
           position={Position.BOTTOM}
         >
           <Button text={"Help"} />
