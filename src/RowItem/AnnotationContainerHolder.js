@@ -8,7 +8,8 @@ let AnnotationContainerHolder = function(props) {
       style={{
         height: props.containerHeight,
         position: "relative",
-        display: "block"
+        display: "block",
+        marginTop: props.marginTop
       }}
     >
       {props.children}

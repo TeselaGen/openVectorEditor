@@ -19,6 +19,7 @@ import Primers from "./Primers";
 import CutsiteLabels from "./CutsiteLabels";
 import Cutsites from "./Cutsites";
 import Caret from "./Caret";
+import Parts from "./Parts";
 import "./style.css";
 function noop() {}
 
@@ -36,6 +37,7 @@ export class RowItem extends React.Component {
       cutsiteLabelSelectionLayer = [{ start: -1, end: -1, color: "black" }],
       annotationHeight = 14,
       featureHeight = 16,
+      partHeight = 12,
       primerHeight = 16,
       tickSpacing = 10,
       sequenceHeight = 16,
@@ -60,6 +62,8 @@ export class RowItem extends React.Component {
       replacementLayerRightClicked = noop,
       featureClicked = noop,
       featureRightClicked = noop,
+      partClicked = noop,
+      partRightClicked = noop,
       translationRightClicked = noop,
       primerClicked = noop,
       primerRightClicked = noop,
@@ -78,7 +82,7 @@ export class RowItem extends React.Component {
       // featureLabels: showFeatureLabels=true,
       translations: showTranslations = true,
       // translationLabels: showTranslationLabels=true,
-      // parts: showParts= true,
+      parts: showParts = true,
       // partLabels: showPartLabels=true,
       orfs: showOrfs = true,
       lineageLines: showLineageLines = true,
@@ -92,6 +96,7 @@ export class RowItem extends React.Component {
     } = annotationVisibility;
     let {
       features: showFeatureLabels = true,
+      parts: showPartLabels = true,
       cutsites: showCutsiteLabels = true
     } = annotationLabelVisibility;
     let {
@@ -99,7 +104,7 @@ export class RowItem extends React.Component {
       features = [],
       primers = [],
       translations = [],
-      //   parts= [],
+      parts = [],
       cutsites = [],
       orfs = []
     } = row;
@@ -337,6 +342,19 @@ export class RowItem extends React.Component {
                 );
               })}
           </div>
+
+          {showParts &&
+            Object.keys(parts).length > 0 && (
+              <Parts
+                showPartLabels={showPartLabels}
+                partClicked={partClicked}
+                partRightClicked={partRightClicked}
+                annotationRanges={parts}
+                {...annotationCommonProps}
+                annotationHeight={partHeight}
+                marginTop={10}
+              />
+            )}
 
           {showLineageLines && lineageLines.length ? (
             <LineageLines

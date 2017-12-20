@@ -243,6 +243,14 @@ export default {
 					"end": 400
 			}
 		],
+	"parts": [
+		{
+			name: "Test Part",
+			start: 50,
+			end: 5000,
+			strand: 1
+		}
+	],
 	"features": [
 			{
 					"notes": {

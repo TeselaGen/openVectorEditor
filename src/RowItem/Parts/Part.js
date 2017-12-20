@@ -3,7 +3,7 @@ import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAn
 
 import React from "react";
 
-function Feature(props) {
+function Part(props) {
   let {
     hoverActions,
     hoverProps: { className },
@@ -15,9 +15,8 @@ function Feature(props) {
     name,
     pointiness = 8,
     fontWidth = 12,
-    color = "orange",
-    featureClicked,
-    featureRightClicked,
+    partClicked,
+    partRightClicked,
     annotation
   } = props;
 
@@ -84,19 +83,20 @@ function Feature(props) {
   return (
     <g
       {...hoverActions}
-      className={"veRowViewFeature clickable " + className}
+      className={"veRowViewPart clickable " + className}
       onClick={function(event) {
-        featureClicked({ annotation, event });
+        partClicked({ annotation, event });
       }}
       onContextMenu={function(event) {
-        featureRightClicked({ annotation, event });
+        partRightClicked({ annotation, event });
       }}
     >
       <title>{getAnnotationNameAndStartStopString(annotation)}</title>
       <path
         strokeWidth="1"
-        stroke="black"
-        fill={color}
+        stroke="purple"
+        fill="purple"
+        fillOpacity={0}
         transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
         d={path}
       />
@@ -110,14 +110,4 @@ function Feature(props) {
   );
 }
 
-// Feature.propTypes = {
-//   widthInBps: PropTypes.number.isRequired,
-//   charWidth: PropTypes.number.isRequired,
-//   height: PropTypes.number.isRequired,
-//   rangeType: PropTypes.string.isRequired,
-//   name: PropTypes.string.isRequired,
-//   forward: PropTypes.bool.isRequired,
-//   featureClicked: PropTypes.func.isRequired
-// };
-
-export default withHover(Feature);
+export default withHover(Part);
