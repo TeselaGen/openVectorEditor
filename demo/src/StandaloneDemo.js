@@ -23,6 +23,14 @@ export default class StandaloneDemo extends React.Component {
     setTimeout(() => {
       editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
+        rightClickOverrides: {
+          selectionLayerRightClicked: (items, {annotation}, props) => {
+            return [...items, {
+              text: "Create Part",
+              onClick: () => console.log('hey!≈')
+            }]
+          }
+        },
         onSave: function(event, copiedSequenceData, editorState) {
           console.log("event:", event);
           console.log("sequenceData:", copiedSequenceData);
@@ -46,8 +54,8 @@ export default class StandaloneDemo extends React.Component {
         PropertiesProps: {
           propertiesList: [
             "features",
-            // "parts",
-            // "primers",
+            "parts",
+            "primers",
             "translations",
             "cutsites",
             "orfs",
@@ -83,15 +91,15 @@ export default class StandaloneDemo extends React.Component {
           features: false
         },
         panelsShown: {
-          rail: true,
-          sequence: false,
+          rail: false,
+          sequence: true,
           circular: false
         },
         annotationsToSupport: {
           //these are the defaults, change to false to exclude
           features: true,
           translations: true,
-          parts: false,
+          parts: true,
           orfs: true,
           cutsites: true,
           primers: false

@@ -66,6 +66,7 @@ export class RowItem extends React.Component {
       partRightClicked = noop,
       translationRightClicked = noop,
       primerClicked = noop,
+      backgroundRightClicked = noop,
       primerRightClicked = noop,
       selectionLayerRightClicked = noop,
       orfClicked = noop,
@@ -73,6 +74,8 @@ export class RowItem extends React.Component {
       translationClicked = noop,
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
+      cutsiteRightClicked = noop,
+
       bpsPerRow,
       editorName
     } = this.props;
@@ -172,7 +175,7 @@ export class RowItem extends React.Component {
       : null;
 
     return (
-      <div className="veRowItemWrapper">
+      <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}
         <div
           className="veRowItem"
@@ -244,6 +247,7 @@ export class RowItem extends React.Component {
             Object.keys(cutsites).length > 0 && (
               <CutsiteLabels
                 cutsiteClicked={cutsiteClicked}
+                cutsiteRightClicked={cutsiteRightClicked}
                 annotationRanges={cutsites}
                 {...annotationCommonProps}
               />

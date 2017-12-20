@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
 import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
+import AddOrEditPartDialog from "../helperComponents/AddOrEditPartDialog";
 import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
 import { withDialog } from "teselagen-react-components";
 import { addYourOwnEnzymeClose } from "../redux/addYourOwnEnzyme";
@@ -32,6 +33,11 @@ export default connect(
       <AddOrEditFeatureDialog
         editorName={editorName}
         dialogName="AddOrEditFeatureDialog"
+        noTarget
+      />{" "}
+      <AddOrEditPartDialog
+        editorName={editorName}
+        dialogName="AddOrEditPartDialog"
         noTarget
       />{" "}
       <AddOrEditPrimerDialog

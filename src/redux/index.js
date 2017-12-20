@@ -16,6 +16,7 @@ import * as deletionLayers from "./deletionLayers";
 import * as replacementLayers from "./replacementLayers";
 import * as panelsShown from "./panelsShown";
 import * as lineageLines from "./lineageLines";
+import * as frameTranslations from "./frameTranslations";
 import * as readOnly from "./readOnly";
 import * as propertiesTool from "./propertiesTool";
 import * as findTool from "./findTool";
@@ -41,6 +42,7 @@ export const actions = {
   ...deletionLayers,
   ...replacementLayers,
   ...lineageLines,
+  ...frameTranslations,
   ...readOnly,
   ...panelsShown,
   ...findTool,
@@ -67,6 +69,7 @@ let reducers = {
   caretPosition: caretPosition.default,
   selectionLayer: selectionLayer.default,
   lineageLines: lineageLines.default,
+  frameTranslations: frameTranslations.default,
   readOnly: readOnly.default,
   findTool: findTool.default,
   propertiesTool: propertiesTool.default,

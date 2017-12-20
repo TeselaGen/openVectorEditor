@@ -29,7 +29,8 @@ export class PropertiesInner extends React.Component {
       propertiesViewTabUpdate,
       dimensions = {},
       height,
-      propertiesList
+      propertiesList,
+      closePanelButton
     } = this.props;
     const { width } = dimensions;
 
@@ -48,31 +49,38 @@ export class PropertiesInner extends React.Component {
 
     return (
       <div
-        className={"ve-propertiesPanel"}
         style={{
-          display: "flex",
-          width,
-          height,
-          zIndex: 10,
-          padding: 10
+          position: "relative"
         }}
       >
-        {propertiesTabs.length ? (
-          <Tabs2
-            style={{ width }}
-            renderActiveTabPanelOnly
-            selectedTabId={tabId}
-            onChange={propertiesViewTabUpdate}
-          >
-            <Tabs2.Expander />
-            {propertiesTabs}
-            <Tabs2.Expander />
-          </Tabs2>
-        ) : (
-          <div style={{ margin: 20, fontSize: 20 }}>
-            No Properties to display
-          </div>
-        )}
+        {closePanelButton}
+        <div
+          className={"ve-propertiesPanel"}
+          style={{
+            display: "flex",
+            width,
+            height,
+            zIndex: 10,
+            padding: 10
+          }}
+        >
+          {propertiesTabs.length ? (
+            <Tabs2
+              style={{ width }}
+              renderActiveTabPanelOnly
+              selectedTabId={tabId}
+              onChange={propertiesViewTabUpdate}
+            >
+              <Tabs2.Expander />
+              {propertiesTabs}
+              <Tabs2.Expander />
+            </Tabs2>
+          ) : (
+            <div style={{ margin: 20, fontSize: 20 }}>
+              No Properties to display
+            </div>
+          )}
+        </div>
       </div>
     );
   }

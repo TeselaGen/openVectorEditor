@@ -6,6 +6,7 @@ export interface CutsiteLabels {
   annotationHeight: number,
   spaceBetweenAnnotations: number,
   cutsiteClicked: func,
+  cutsiteRightClicked: func,
 }
 
 export default function(opts: CutsiteLabels) {

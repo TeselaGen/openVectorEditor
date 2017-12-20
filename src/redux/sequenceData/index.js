@@ -3,6 +3,7 @@ import deepEqual from "deep-equal";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
+import parts from "./parts";
 import primers from "./primers";
 import sequence from "./sequence";
 import translations from "./translations";
@@ -13,6 +14,7 @@ import { createReducer } from "redux-act";
 // export * from './sharedActionCreators';
 export * from "./primers";
 export * from "./features";
+export * from "./parts";
 // export * from './sequence';
 // export * from './circular';
 export * from "./translations";
@@ -40,9 +42,9 @@ export default function(state, action) {
   const newState = combineReducersDontIgnoreKeys({
     primers,
     features,
+    parts,
     sequence,
     translations,
-    parts: (state = {}) => state,
     size: (state = {}) => state,
     circular: createReducer({}, true),
     name: createReducer({}, ""),

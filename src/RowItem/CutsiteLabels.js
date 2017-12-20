@@ -14,6 +14,7 @@ function CutsiteLabels(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     cutsiteClicked,
+    cutsiteRightClicked,
     textWidth = 10,
     editorName
   } = props;
@@ -76,6 +77,7 @@ function CutsiteLabels(props) {
           annotation,
           xStartOriginal,
           cutsiteClicked,
+          cutsiteRightClicked,
           height,
           xStart
         }}
@@ -119,6 +121,7 @@ const DrawCutsiteLabel = withHover(
     hoverProps: { hovered, className },
     annotation,
     cutsiteClicked,
+    cutsiteRightClicked,
     height,
     xStartOriginal,
     xStart
@@ -130,6 +133,10 @@ const DrawCutsiteLabel = withHover(
           className={className + " ve-monospace-font"}
           onClick={function(event) {
             cutsiteClicked({ event, annotation });
+            event.stopPropagation();
+          }}
+          onContextMenu={function(event) {
+            cutsiteRightClicked({ event, annotation });
             event.stopPropagation();
           }}
           style={{

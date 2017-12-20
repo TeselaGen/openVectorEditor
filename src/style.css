@@ -1,6 +1,4 @@
 @import url(~@blueprintjs/core/dist/blueprint.css);
-@import url(~@blueprintjs/table/dist/table.css);
-@import url(~@blueprintjs/datetime/dist/blueprint-datetime.css);
 @import url(~react-select/dist/react-select.css);
 @import url(~hint.css/hint.min.css);
 
@@ -16,10 +14,8 @@
   cursor: pointer;
 }
 .pt-toast-container,
-.basicContext,
 .pt-overlay-content,
 .pt-overlay,
-.basicContextContainer,
 .pt-dialog {
   z-index: 4000 !important;
 }

@@ -10,6 +10,7 @@ import { getAminoAcidDataForEachBaseOfDna } from "ve-sequence-utils";
 import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
+import { normalizePositionByRangeLength } from "ve-range-utils/lib";
 
 function translationsSelector(
   translationSearchMatches,
@@ -17,7 +18,8 @@ function translationsSelector(
   orfs,
   showOrfTranslations,
   showOrfs,
-  translations
+  translations,
+  frameTranslations
 ) {
   let translationsToPass = {
     ...translationSearchMatches.reduce((acc, match) => {
@@ -41,9 +43,29 @@ function translationsSelector(
       },
       {}
     ),
-    ...(showOrfTranslations && showOrfs ? orfs : {})
+    ...(showOrfTranslations && showOrfs ? orfs : {}),
+    ...reduce(
+      frameTranslations,
+      (acc, isActive, frameName) => {
+        const frameOffset = Number(frameName);
+        if (isActive) {
+          const id = uuid();
+          acc[id] = {
+            id,
+            start: 0 + Math.abs(frameOffset) - 1,
+            end: normalizePositionByRangeLength(
+              sequence.length - 1 + Math.abs(frameOffset) - 1,
+              sequence.length
+            ),
+            forward: frameOffset > 0,
+            isOrf: true //pass isOrf = true here in order to not have it show up in the properties window
+          };
+        }
+        return acc;
+      },
+      {}
+    )
   };
-  console.log("translationsToPass:", translationsToPass);
   each(translationsToPass, function(translation) {
     translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
       sequence,
@@ -58,12 +80,9 @@ export default createSelector(
   translationSearchMatchesSelector,
   sequenceSelector,
   orfsSelector,
-  function(state) {
-    return state.annotationVisibility.orfTranslations;
-  },
-  function(state) {
-    return state.annotationVisibility.orfs;
-  },
+  state => state.annotationVisibility.orfTranslations,
+  state => state.annotationVisibility.orfs,
   translationsRawSelector,
+  state => state.frameTranslations,
   translationsSelector
 );

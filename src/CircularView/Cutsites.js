@@ -11,6 +11,7 @@ function Cutsites({
   editorName,
   showCutsiteLabels,
   cutsiteClicked,
+  cutsiteRightClicked,
   cutsites,
   cutsiteWidth = 1,
   annotationHeight = 15,
@@ -23,10 +24,7 @@ function Cutsites({
   if (!Object.keys(cutsites).length) return null;
   each(cutsites, function(annotation /* key */) {
     index++;
-    function onClick(event) {
-      cutsiteClicked({ event, annotation });
-      event.stopPropagation();
-    }
+
     if (!(annotation.topSnipPosition > -1)) {
       //we need this to be present
     }
@@ -43,7 +41,14 @@ function Cutsites({
         color: annotation.restrictionEnzyme.color,
         className: " veCutsiteLabel",
         id: annotation.id,
-        onClick
+        onClick: event => {
+          cutsiteClicked({ event, annotation });
+          event.stopPropagation();
+        },
+        onContextMenu: event => {
+          cutsiteRightClicked({ event, annotation });
+          event.stopPropagation();
+        }
       };
     }
     /* eslint-disable */

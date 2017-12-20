@@ -84,11 +84,13 @@ export class CircularView extends React.Component {
       editorDragStopped = noop,
       featureClicked = noop,
       selectionLayerRightClicked = noop,
+      backgroundRightClicked = noop,
       primerClicked = noop,
       deletionLayerClicked = noop,
       replacementLayerClicked = noop,
       orfClicked = noop,
       cutsiteClicked = noop,
+      cutsiteRightClicked = noop,
       featureOptions = {},
       additionalSelectionLayers = [],
       maxAnnotationsToDisplay = {},
@@ -460,7 +462,8 @@ export class CircularView extends React.Component {
           annotationHeight,
           sequenceLength,
           editorName,
-          cutsiteClicked
+          cutsiteClicked,
+          cutsiteRightClicked
         });
         if (!results) return null;
         //update the radius, labels, and svg
@@ -592,6 +595,7 @@ export class CircularView extends React.Component {
                     editorClicked
                   );
               }}
+              onContextMenu={backgroundRightClicked}
               style={{ overflow: "visible" }}
               width={width}
               height={height}

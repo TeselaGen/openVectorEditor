@@ -1,4 +1,3 @@
-import reactDimensions from "react-dimensions";
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
@@ -12,7 +11,7 @@ import { compose } from "redux"; //tnr: this can be removed once https://github.
 } from "react-reflex";
 /* eslint-enable */
 
-import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget, Button } from "@blueprintjs/core";
 
 import { flatMap } from "lodash";
 
@@ -31,14 +30,35 @@ import "./style.css";
 
 export class Editor extends React.Component {
   handlePrint = () => {
-    console.log("handlePrint");
+    console.warn("handlePrint");
   };
   handleReverseComplementSelection = () => {
     // const {selectionLayerUpdate}
-    console.log("handleReverseComplementSelection");
+    console.warn("handleReverseComplementSelection");
   };
   handleRotateToCaretPosition = () => {
-    console.log("handleRotateToCaretPosition");
+    console.warn("handleRotateToCaretPosition");
+  };
+  handleNewPrimer = () => {
+    const {
+      selectionLayer,
+      caretPosition,
+      showAddOrEditPrimerDialog,
+      readOnly
+    } = this.props;
+    const rangeToUse =
+      selectionLayer.start > -1
+        ? selectionLayer
+        : caretPosition > -1
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
+    if (readOnly) {
+      window.toastr.warning(
+        "Sorry, can't create new primers in read-only mode"
+      );
+    } else {
+      showAddOrEditPrimerDialog(rangeToUse);
+    }
   };
   handleNewFeature = () => {
     const {
@@ -65,7 +85,7 @@ export class Editor extends React.Component {
     const {
       selectionLayer,
       caretPosition,
-      showAddOrEditPrimerDialog,
+      showAddOrEditPartDialog,
       readOnly
     } = this.props;
     const rangeToUse =
@@ -77,7 +97,7 @@ export class Editor extends React.Component {
     if (readOnly) {
       window.toastr.warning("Sorry, can't create new parts in read-only mode");
     } else {
-      showAddOrEditPrimerDialog(rangeToUse);
+      showAddOrEditPartDialog(rangeToUse);
     }
   };
 
@@ -212,6 +232,43 @@ export class Editor extends React.Component {
     return panelsToShow;
   };
 
+  getClosePanelButton = panelName => {
+    const panelsToShow = this.getPanelsToShow();
+    const { propertiesViewToggle, panelsShownUpdate, panelsShown } = this.props;
+    let onClose;
+    if (panelName === "properties") {
+      onClose = propertiesViewToggle;
+    } else if (
+      panelsToShow.length - (panelsToShow.indexOf("properties") > -1 ? 1 : 0) >
+      1
+    ) {
+      onClose = () => {
+        panelsShownUpdate({
+          ...panelsShown,
+          [panelName]: false
+        });
+      };
+    }
+
+    return (
+      onClose && (
+        <div
+          style={{
+            color: "lightgrey",
+            position: "absolute",
+            zIndex: 100
+            // top: 5, left: 5
+          }}
+        >
+          <Button
+            onClick={onClose}
+            className={"pt-small pt-minimal pt-icon-cross"}
+          />
+        </div>
+      )
+    );
+  };
+
   render() {
     const {
       doNotUseAbsolutePosition = false,
@@ -244,6 +301,7 @@ export class Editor extends React.Component {
       if (panelName === "circular") {
         panel = (
           <CircularView
+            closePanelButton={this.getClosePanelButton("circular")}
             key="circularView"
             {...sharedProps}
             {...CircularViewProps}
@@ -257,6 +315,7 @@ export class Editor extends React.Component {
       if (panelName === "sequence") {
         panel = (
           <RowView
+            closePanelButton={this.getClosePanelButton("sequence")}
             key="rowView"
             {...sharedProps}
             {...RowViewProps}
@@ -269,6 +328,7 @@ export class Editor extends React.Component {
       if (panelName === "rail") {
         panel = (
           <LinearView
+            closePanelButton={this.getClosePanelButton("rail")}
             key="linearView"
             {...sharedProps}
             {...LinearViewProps}
@@ -279,7 +339,12 @@ export class Editor extends React.Component {
         );
       }
       if (panelName === "properties") {
-        panel = <PropertiesInner {...{ ...this.props, ...PropertiesProps }} />;
+        panel = (
+          <PropertiesInner
+            closePanelButton={this.getClosePanelButton("properties")}
+            {...{ ...this.props, ...PropertiesProps }}
+          />
+        );
       }
       const toReturn = [];
       if (index > 0) {

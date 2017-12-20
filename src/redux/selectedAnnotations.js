@@ -1,9 +1,8 @@
-import basicContext from "basiccontext";
-import "basiccontext/dist/basicContext.min.css";
-import "basiccontext/dist/themes/default.min.css";
 import without from "lodash/without";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
+import bpContext from "../withEditorInteractions/bpContext";
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -20,9 +19,8 @@ export function replacementLayerRightClicked({ event, annotation }, meta) {
   return function(dispatch /* getState */) {
     let items = [
       {
-        title: "Remove Edit",
-        icon: "ion-plus-round",
-        fn: function() {
+        text: "Remove Edit",
+        onClick: function() {
           dispatch({
             type: "REPLACEMENT_LAYER_DELETE",
             meta,
@@ -32,7 +30,7 @@ export function replacementLayerRightClicked({ event, annotation }, meta) {
       }
     ];
 
-    basicContext.show(items, event);
+    bpContext(items, event);
   };
 }
 

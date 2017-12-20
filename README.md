@@ -49,6 +49,7 @@ Or via CDN:
 ```html
 <script>
 const editor = window.createVectorEditor(yourDomNodeHere, {
+	
 	onSave: function(event, sequenceData, editorState) {
 		console.log("event:", event);
 		console.log("sequenceData:", sequenceData);
@@ -70,6 +71,15 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 			event.preventDefault();
 			//in onPaste in your app you can do: 
 			// e.clipboardData.getData('application/json')
+		}
+	},
+	rightClickOverrides: {
+		selectionLayerRightClicked: (items, {annotation}, props) => {
+			return [...items, { 
+				//props here get passed directly to blueprintjs MenuItems
+				text: "Create Part",
+				onClick: () => console.log('hey!≈')
+			}]
 		}
 	},
 	PropertiesProps: {
@@ -141,101 +151,6 @@ yarn add install-peerdeps open-vector-editor
 Add peer-dependencies: 
 ```
 install-peerdeps open-vector-editor --dev --only-peers
-```
-
-
-Redux connected: 
-
-```js
-//store.js
-import {vectorEditorReducer as VectorEditor} from 'teselagen-react-components'
-const store = createStore(
-  combineReducers({
-    VectorEditor: VectorEditor({
-			DemoEditor: { //you can pass initial values here to the editor if you want or they can be passed at render time
-				sequenceData: exampleSequenceData
-			}
-	})
-  }),
-  undefined,
-  composeEnhancer(
-  	  applyMiddleware(thunk) //your store should be redux-thunk enabled!
-  	)
-)
-
-
-//file where you want to display the editor: 
-import DemoEditor from '../DemoEditor';
-var {withEditorInteractions, withEditorProps, veSelectors} = SelectInsertEditor
-import {CircularView, LinearView, CutsiteFilter} from 'teselagen-react-components';
-
-var CutsiteFilterConnected = withEditorProps(CutsiteFilter)
-var CircularViewConnected = withEditorInteractions(CircularView)
-var LinearViewConnected = withEditorInteractions(LinearView)
-
-
-function actionOverrides(actions) {
-	return {
-		selectionLayerRightClicked(firstArg, ...otherArgs) {
-			return actions.selectionLayerRightClicked(
-				{
-					...firstArg,
-					extraItems: [
-						{
-							title: "Delete Selection",
-							fn: onDeleteClick,
-							disabled: deletionButtonDisabled
-						},
-						{
-							title: "Replace Selection",
-							fn: onReplaceClick,
-							disabled: replaceDisabled
-						}
-					]
-				},
-				...otherArgs
-			);
-		}
-	};
-}
-
-function MyReactComp () {
-	var editorProps = { //
-		actionOverrides: (restrictionDigest || alreadyLinearized) ? actionOverrides : undefined,
-		disableEditorClickAndDrag: restrictionDigest || alreadyLinearized,
-		annotationVisibility: { 
-			//only show custites if the user is doing a restriction digest
-			cutsites: restrictionDigest,
-			orfs: false
-		}
-	}
-	return <div>
-		<LinearViewConnected 
-		    //props passed here will take precedence over redux provided props
-			{...editorProps}/>
-		<CircularViewConnected
-                {... {
-                  ...editorProps,
-                  scale: .8,
-                  width: Math.max(containerWidth - 100, 200),
-                  height: Math.max(containerWidth - 300, 200),
-                  featureOptions: {
-                    showFeatureLabels: restrictionDigest
-                  },
-                  // selectionLayer: [],
-                  lineageLines
-                  }
-                }
-                />
-	</div>
-}
-
-//some file where you want to do things to the demo editor
-import DemoEditor from '../DemoEditor';
-var {veActions} = DemoEditor
-//see all actions by console logging veActions
-
-dispatch(veActions.updateSequenceData(sequenceData)) //dispatch an update action the sequence data for the demo editor
 ```
 
 #Data Model 

@@ -10,7 +10,7 @@ class TranslationProperties extends React.Component {
       readOnly,
       sequenceData = {},
       translationPropertiesSelectedEntities,
-      showAddOrEditTranslationDialog,
+      // showAddOrEditTranslationDialog,
       deleteTranslation
     } = this.props;
     const { translations } = sequenceData;
@@ -70,7 +70,7 @@ class TranslationProperties extends React.Component {
         />
         {!readOnly && (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button
+            {/* <Button
               style={{ marginRight: 15 }}
               onClick={() => {
                 showAddOrEditTranslationDialog();
@@ -88,7 +88,7 @@ class TranslationProperties extends React.Component {
               disabled={translationPropertiesSelectedEntities.length !== 1}
             >
               Edit
-            </Button>
+            </Button> */}
             <Button
               onClick={() => {
                 deleteTranslation(translationPropertiesSelectedEntities);

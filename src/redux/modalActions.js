@@ -21,6 +21,23 @@ export function showAddOrEditFeatureDialog(annotation, { editorName }) {
     }
   };
 }
+export function showAddOrEditPartDialog(annotation, { editorName }) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "AddOrEditPartDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props: {
+      editorName: editorName,
+      dialogProps: {
+        title: annotation && annotation.id ? "Edit Part" : "Add Part"
+      },
+      initialValues: annotation
+        ? {
+            ...convertRangeTo1Based(annotation)
+          }
+        : {}
+    }
+  };
+}
 export function showAddOrEditPrimerDialog(annotation, { editorName }) {
   return {
     type: "TG_SHOW_MODAL",

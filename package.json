@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "@blueprintjs/labs": "^0.13.0",
-    "basiccontext": "^3.5.1",
     "classnames": "^2.2.5",
     "clipboard": "^1.7.1",
     "clone": "^2.1.1",

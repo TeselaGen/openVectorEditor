@@ -1,6 +1,3 @@
-import basicContext from "basiccontext";
-import "basiccontext/dist/basicContext.min.css";
-import "basiccontext/dist/themes/default.min.css";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
@@ -10,6 +7,11 @@ import {
   deleteSequenceDataAtRange,
   getReverseComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
+import { map, get } from "lodash";
+
+import { MenuItem } from "@blueprintjs/core";
+import { connect } from "react-redux";
+import { getContext } from "recompose";
 import Keyboard from "./Keyboard";
 
 import withEditorProps from "../withEditorProps";
@@ -25,6 +27,8 @@ import createSequenceInputPopup from "./createSequenceInputPopup";
 import moveCaret from "./moveCaret";
 import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
+import bpContext from "./bpContext";
+import PropTypes from "prop-types";
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
@@ -202,14 +206,14 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handleCopy = e => {
-      window.toastr.success("Selection Copied");
-      const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
-      onCopy(
-        e,
-        this.sequenceDataToCopy ||
-          getSequenceDataBetweenRange(sequenceData, selectionLayer),
-        this.props
-      );
+      if (this.sequenceDataToCopy) {
+        window.toastr.success("Selection Copied");
+        const { onCopy = () => {} } = this.props;
+        onCopy(e, this.sequenceDataToCopy, this.props);
+        this.sequenceDataToCopy = undefined;
+      }
+
+      document.body.removeEventListener("copy", this.handleCopy);
     };
 
     handleDnaInsert() {
@@ -320,67 +324,148 @@ function VectorInteractionHOC(Component /* options */) {
       annotationSelect(annotation);
     };
 
-    generateSelectionMenuOptions = annotation => {
+    getViewFrameTranslationsItems = () => {
       const {
-        sequenceData,
-        selectionLayer,
-        readOnly,
-        upsertTranslation,
-        showAddOrEditFeatureDialog
+        frameTranslations,
+        editorName,
+        store,
+        annotationsToSupport: { translations } = {},
+        frameTranslationToggle
       } = this.props;
+      return !translations
+        ? []
+        : [
+            {
+              text: "View AA Frames",
+              innerJsx: map(frameTranslations, (unused, frame) => {
+                return (
+                  <FrameTranslationMenuItem
+                    key={frame}
+                    {...{
+                      text: "Frame " + frame,
+                      frame,
+                      editorName,
+                      store,
+                      onClick: function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        frameTranslationToggle(frame);
+                      }
+                    }}
+                  />
+                );
+              })
+            }
+          ];
+    };
+    getCreateItems = range => {
+      const {
+        readOnly,
+        showAddOrEditFeatureDialog,
+        showAddOrEditPartDialog,
+        showAddOrEditPrimerDialog,
+        annotationsToSupport: { parts, primers, features } = {},
+        selectionLayer,
+        caretPosition,
+        sequenceLength
+      } = this.props;
+      const rangeToUse =
+        range ||
+        (selectionLayer.start > -1
+          ? selectionLayer
+          : caretPosition > -1
+            ? { start: caretPosition, end: caretPosition }
+            : { start: 0, end: 0 });
+      return sequenceLength && readOnly
+        ? []
+        : [
+            {
+              text: "Create",
+              menu: [
+                features && {
+                  text: "Feature",
+                  onClick: function() {
+                    showAddOrEditFeatureDialog(rangeToUse);
+                  }
+                },
+                parts && {
+                  text: "Part",
+                  onClick: function() {
+                    showAddOrEditPartDialog(rangeToUse);
+                  }
+                },
+                primers && {
+                  text: "Primer",
+                  onClick: function() {
+                    showAddOrEditPrimerDialog(rangeToUse);
+                  }
+                }
+              ]
+            }
+          ];
+    };
+
+    generateSelectionMenuOptions = annotation => {
+      const { sequenceData, selectionLayer, upsertTranslation } = this.props;
       const selectedSeqData = getSequenceDataBetweenRange(
         sequenceData,
         selectionLayer
       );
-      const handleDaCopy = e => {
-        this.handleCopy(e);
-        document.body.removeEventListener("copy", handleDaCopy);
-      };
-      const makeTextCopyable = sequenceDataToCopy => {
-        this.sequenceDataToCopy = sequenceDataToCopy;
-        let clipboard = new Clipboard(".basicContext", {
-          text: function() {
-            document.body.addEventListener("copy", handleDaCopy);
+      // const handleDaCopy = e => {
+      //   this.handleCopy(e);
+      //   document.body.removeEventListener("copy", handleDaCopy);
+      // };
+      const makeTextCopyable = (sequenceDataToCopy, className) => {
+        // console.log('className:',className)
+        // console.log('document.querySelector(".openVeContextMenu"):',document.querySelectorAll(`.${className}`))
+        return new Clipboard(`.${className}`, {
+          // container: document.querySelector(".openVeContextMenu"),
+          text: () => {
+            this.sequenceDataToCopy = sequenceDataToCopy;
+            document.body.addEventListener("copy", this.handleCopy);
             return sequenceDataToCopy.sequence;
           }
         });
-        clipboard.on("success", (/* e */) => {
-          clipboard.destroy();
-        });
-        clipboard.on("error", () => {
-          clipboard.destroy();
-          console.error("Error copying selection.");
-        });
+        // clipboard.on("success", (/* e */) => {
+        //   // console.log('destroying')
+        //   clipboard.destroy();
+        // });
+        // clipboard.on("error", () => {
+        //   // console.log('destroying err')
+        //   clipboard.destroy();
+        //   console.error("Error copying selection.");
+        // });
       };
       let items = [
         {
-          title: "Copy",
-          fn: function() {
-            makeTextCopyable(selectedSeqData);
+          text: "Copy",
+          label: "⌘X",
+          className: "openVeCopy",
+          willUnmount: () => {
+            this.copyClipboard && this.copyClipboard.destroy();
+          },
+          didMount: ({ className }) => {
+            this.copyClipboard = makeTextCopyable(selectedSeqData, className);
           }
+          // menu: [{text: "hahaha", menu: [{text: "yup"}, {text: "nope"}]}]
         },
         {
-          title: "Copy Reverse Complement",
-          fn: function() {
-            makeTextCopyable(
-              getReverseComplementSequenceAndAnnotations(selectedSeqData)
+          text: "Copy Reverse Complement",
+          className: "openVeCopyReverse",
+          willUnmount: () => {
+            this.copyReverseClipboard && this.copyReverseClipboard.destroy();
+          },
+          didMount: ({ className }) => {
+            this.copyReverseClipboard = makeTextCopyable(
+              getReverseComplementSequenceAndAnnotations(selectedSeqData),
+              className
             );
           }
         },
-        ...(readOnly
-          ? []
-          : [
-              {
-                title: "Create Feature",
-                fn: function() {
-                  showAddOrEditFeatureDialog(selectionLayer);
-                }
-              }
-            ]),
+        ...this.getCreateItems(annotation),
         {
-          title: "View Translation",
-          // icon: "ion-plus-round",
-          fn: function() {
+          text: "View Translation",
+          onClick: function() {
             upsertTranslation({
               start: annotation.start,
               end: annotation.end,
@@ -396,27 +481,49 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation();
       return handler({ event, ...rest }, this.props);
     };
-    normalizeRightClickAction = (...args) => {
-      const items = this.normalizeAction(...args);
-      basicContext.show(items, args[0].event);
+    normalizeRightClickActions = actions => {
+      const normalizedActions = {};
+      const { rightClickOverrides = {} } = this.props;
+      Object.keys(actions).forEach(key => {
+        const action = actions[key];
+        normalizedActions[key] = opts => {
+          const items = action(opts);
+          const e = opts.event || opts;
+          e.preventDefault && e.preventDefault();
+          e.stopPropagation && e.stopPropagation();
+          //override hook here
+          const override = rightClickOverrides[key];
+          bpContext(override ? override(items, opts, this.props) : items, e);
+        };
+      });
+      return normalizedActions;
     };
 
-    selectionLayerRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const items = this.generateSelectionMenuOptions(annotation);
-      basicContext.show(items, event);
+    selectionLayerRightClicked = ({ annotation }) => {
+      return this.generateSelectionMenuOptions(annotation);
     };
 
-    deletionLayerRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const { editorName, dispatch } = this.props;
-      let items = [
+    backgroundRightClicked = () => {
+      const { propertiesViewToggle } = this.props;
+      return [
+        ...this.getCreateItems(),
+        ...this.getViewFrameTranslationsItems(),
         {
-          title: "Remove Deletion",
+          text: "Toggle Properties Panel",
+          onClick: function() {
+            propertiesViewToggle();
+          }
+        }
+      ];
+    };
+
+    deletionLayerRightClicked = ({ annotation }) => {
+      const { editorName, dispatch } = this.props;
+      return [
+        {
+          text: "Remove Deletion",
           // icon: "ion-plus-round",
-          fn: function() {
+          onClick: function() {
             dispatch({
               type: "DELETION_LAYER_DELETE",
               meta: { editorName },
@@ -425,122 +532,206 @@ function VectorInteractionHOC(Component /* options */) {
           }
         }
       ];
-
-      basicContext.show(items, event);
     };
-    featureRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
+
+    partRightClicked = ({ annotation }) => {
       const {
         readOnly,
         upsertTranslation,
-        deleteFeature,
-        showAddOrEditFeatureDialog
+        deletePart,
+        showAddOrEditPartDialog,
+        propertiesViewOpen,
+        propertiesViewTabUpdate
       } = this.props;
-      let items = [
+      return [
         ...(readOnly
           ? []
           : [
               {
-                title: "Edit Feature",
-                fn: function() {
+                text: "Edit Part",
+                onClick: function() {
+                  showAddOrEditPartDialog(annotation);
+                }
+              },
+              {
+                text: "Delete Part",
+                onClick: function() {
+                  deletePart(annotation);
+                }
+              }
+            ]),
+        {
+          text: "View Translation",
+          // icon: "ion-plus-round",
+          onClick: function() {
+            upsertTranslation({
+              start: annotation.start,
+              end: annotation.end,
+              forward: annotation.forward
+            });
+          }
+        },
+        {
+          text: "View Part Properties",
+          onClick: function() {
+            propertiesViewOpen();
+            propertiesViewTabUpdate("parts");
+          }
+        }
+      ];
+    };
+    featureRightClicked = ({ annotation }) => {
+      const {
+        readOnly,
+        upsertTranslation,
+        deleteFeature,
+        showAddOrEditFeatureDialog,
+        propertiesViewOpen,
+        propertiesViewTabUpdate
+      } = this.props;
+      return [
+        ...(readOnly
+          ? []
+          : [
+              {
+                text: "Edit Feature",
+                onClick: function() {
                   showAddOrEditFeatureDialog(annotation);
                 }
               },
               {
-                title: "Delete Feature",
-                fn: function() {
+                text: "Delete Feature",
+                onClick: function() {
                   deleteFeature(annotation);
                 }
               }
             ]),
         {
-          title: "View Translation",
+          text: "View Translation",
           // icon: "ion-plus-round",
-          fn: function() {
+          onClick: function() {
             upsertTranslation({
               start: annotation.start,
               end: annotation.end,
               forward: annotation.forward
             });
           }
+        },
+        {
+          text: "View Feature Properties",
+          onClick: function() {
+            propertiesViewOpen();
+            propertiesViewTabUpdate("features");
+          }
         }
       ];
-
-      basicContext.show(items, event);
     };
-    primerRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
+
+    cutsiteRightClicked = () => {
+      const { propertiesViewOpen, propertiesViewTabUpdate } = this.props;
+      return [
+        {
+          text: "View Cutsite Properties",
+          onClick: function() {
+            propertiesViewOpen();
+            propertiesViewTabUpdate("cutsites");
+          }
+        }
+      ];
+    };
+    primerRightClicked = ({ annotation }) => {
       const {
         showAddOrEditPrimerDialog,
         readOnly,
-        upsertTranslation
+        upsertTranslation,
+        propertiesViewOpen,
+        propertiesViewTabUpdate
       } = this.props;
-      let items = [
+      return [
         ...(readOnly
           ? []
           : [
               {
-                title: "Edit Primer",
-                fn: function() {
+                text: "Edit Primer",
+                onClick: function() {
                   showAddOrEditPrimerDialog(annotation);
                 }
               }
             ]),
         {
-          title: "View Translation",
+          text: "View Translation",
           // icon: "ion-plus-round",
-          fn: function() {
+          onClick: function() {
             upsertTranslation({
               start: annotation.start,
               end: annotation.end,
               forward: annotation.forward
             });
           }
-        }
-      ];
-
-      basicContext.show(items, event);
-    };
-    orfRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const { upsertTranslation } = this.props;
-      let items = [
+        },
         {
-          title: "View Translation",
-          // icon: "ion-plus-round",
-          fn: function() {
+          text: "View Primer Properties",
+          onClick: function() {
+            propertiesViewOpen();
+            propertiesViewTabUpdate("primers");
+          }
+        }
+      ];
+    };
+    orfRightClicked = ({ annotation }) => {
+      const {
+        upsertTranslation,
+        propertiesViewOpen,
+        propertiesViewTabUpdate
+      } = this.props;
+      return [
+        {
+          text: "View Translation",
+          onClick: function() {
             upsertTranslation({
               start: annotation.start,
               end: annotation.end,
               forward: annotation.forward
             });
           }
+        },
+        {
+          text: "View Orf Properties",
+          onClick: function() {
+            propertiesViewOpen();
+            propertiesViewTabUpdate("orfs");
+          }
         }
       ];
-
-      basicContext.show(items, event);
     };
     translationRightClicked = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
-      const { readOnly, deleteTranslation } = this.props;
-      let items = [
+      const {
+        readOnly,
+        deleteTranslation,
+        propertiesViewOpen,
+        propertiesViewTabUpdate
+      } = this.props;
+      return [
         ...(readOnly
           ? []
           : [
               {
-                title: "Delete Translation",
-                fn: function() {
+                text: "Delete Translation",
+                onClick: function() {
                   deleteTranslation(annotation);
                 }
               }
-            ])
+            ]),
+        {
+          text: "View Translation Properties",
+          onClick: function() {
+            propertiesViewOpen();
+            propertiesViewTabUpdate("translations");
+          }
+        }
       ];
-
-      basicContext.show(items, event);
     };
 
     editorDragged = ({ nearestCaretPos }) => {
@@ -618,6 +809,7 @@ function VectorInteractionHOC(Component /* options */) {
 
     render() {
       const {
+        closePanelButton,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         fitHeight
@@ -641,16 +833,23 @@ function VectorInteractionHOC(Component /* options */) {
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          selectionLayerRightClicked: this.selectionLayerRightClicked,
-          featureRightClicked: this.featureRightClicked,
+          ...this.normalizeRightClickActions({
+            selectionLayerRightClicked: this.selectionLayerRightClicked,
+            backgroundRightClicked: this.backgroundRightClicked,
+            featureRightClicked: this.featureRightClicked,
+            partRightClicked: this.partRightClicked,
+            orfRightClicked: this.orfRightClicked,
+            deletionLayerRightClicked: this.deletionLayerRightClicked,
+            cutsiteRightClicked: this.cutsiteRightClicked,
+            translationRightClicked: this.translationRightClicked
+          }),
           orfClicked: this.annotationClicked,
-          orfRightClicked: this.orfRightClicked,
-          deletionLayerRightClicked: this.deletionLayerRightClicked,
+
           primerClicked: this.annotationClicked,
           primerRightClick: this.primerRightClick,
           translationClicked: this.annotationClicked,
           cutsiteClicked: this.cutsiteClicked,
-          translationRightClicked: this.translationRightClicked,
+
           translationDoubleClicked: this.annotationClicked,
           deletionLayerClicked: this.annotationClicked,
           replacementLayerClicked: this.annotationClicked,
@@ -666,7 +865,9 @@ function VectorInteractionHOC(Component /* options */) {
           tabIndex={-1} //this helps with focusing using Keyboard's parentElement.focus()
           ref={c => (this.node = c)}
           className={"veVectorInteractionWrapper"}
+          style={{ position: "relative" }}
         >
+          {closePanelButton}
           <Keyboard
             value={selectedBps}
             onCopy={this.handleCopy}
@@ -806,4 +1007,24 @@ function handleCaretDrag({
   }
 }
 
-export default compose(withEditorProps, VectorInteractionHOC);
+export default compose(
+  //tnr: get the store from the context somehow and pass it to the FrameTranslationMenuItems
+  // withContext({ store: PropTypes.object }, ({ store }) => {
+  //   return { store };
+  // }),
+  getContext({
+    store: PropTypes.object
+  }),
+  withEditorProps,
+  VectorInteractionHOC
+);
+
+const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
+  return {
+    isActive: get(state, `VectorEditor[${editorName}].frameTranslations`, {})[
+      frame
+    ]
+  };
+})(({ isActive, ...rest }) => {
+  return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
+});

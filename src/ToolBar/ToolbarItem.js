@@ -70,7 +70,11 @@ export default class ToolbarItem extends React.Component {
               {Icon && (
                 <Tooltip2
                   portalClassName="ve-toolbar-item-popover"
-                  useSmartPositioning
+                  tetherOptions={{
+                    constraints: [
+                      { attachment: "together", to: "scrollParent" }
+                    ]
+                  }}
                   content={tooltipToDisplay}
                 >
                   <div
@@ -94,7 +98,14 @@ export default class ToolbarItem extends React.Component {
                 </Tooltip2>
               )}
               {Dropdown && !noDropdownIcon ? (
-                <Tooltip2 useSmartPositioning content={dropdowntooltip}>
+                <Tooltip2
+                  tetherOptions={{
+                    constraints: [
+                      { attachment: "together", to: "scrollParent" }
+                    ]
+                  }}
+                  content={dropdowntooltip}
+                >
                   <div
                     className={
                       (isOpen ? " isOpen " : "") +
