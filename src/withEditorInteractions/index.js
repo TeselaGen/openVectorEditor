@@ -314,7 +314,7 @@ function VectorInteractionHOC(Component /* options */) {
       const { annotationSelect, annotationDeselectAll } = this.props;
       this.updateSelectionOrCaret(event.shiftKey, annotation);
       annotationDeselectAll(undefined);
-      annotationSelect(annotation);
+      annotation.id && annotationSelect(annotation);
     };
 
     cutsiteClicked = ({ event, annotation }) => {

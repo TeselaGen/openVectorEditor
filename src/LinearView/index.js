@@ -96,60 +96,65 @@ export class LinearView extends React.Component {
     let sequenceName = hideName ? "" : sequenceData.name || "";
     let rowData = prepareRowData(sequenceData, bpsPerRow);
     return (
-      <Draggable
-        bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={event => {
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragged
-          );
+      <div
+        style={{
+          height
         }}
-        onStart={event => {
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragStarted
-          );
-        }}
-        onStop={editorDragStopped}
       >
-        <div
-          ref={ref => (this.linearView = ref)}
-          className="veLinearView"
-          style={{
-            height,
-            width,
-            marginLeft: marginWidth / 2
-            // marginRight: marginWidth/2
-          }}
-          onClick={event => {
+        <Draggable
+          bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
+          onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
-              editorClicked
+              editorDragged
             );
           }}
+          onStart={event => {
+            this.getNearestCursorPositionToMouseEvent(
+              rowData,
+              event,
+              editorDragStarted
+            );
+          }}
+          onStop={editorDragStopped}
         >
-          <SequenceName {...{ sequenceName, sequenceLength }} />
-          <RowItem
-            {...{
-              ...rest,
-              sequenceLength: sequenceData.sequence.length,
-              width: innerWidth,
-              bpsPerRow,
-              tickSpacing: Math.floor(bpsPerRow / 10),
-              annotationVisibility: {
-                ...rest.annotationVisibility,
-                yellowAxis: true,
-                translations: false
-              },
-              ...RowItemProps
+          <div
+            ref={ref => (this.linearView = ref)}
+            className="veLinearView"
+            style={{
+              width,
+              marginLeft: marginWidth / 2
+              // marginRight: marginWidth/2
             }}
-            row={rowData[0]}
-          />
-        </div>
-      </Draggable>
+            onClick={event => {
+              this.getNearestCursorPositionToMouseEvent(
+                rowData,
+                event,
+                editorClicked
+              );
+            }}
+          >
+            <SequenceName {...{ sequenceName, sequenceLength }} />
+            <RowItem
+              {...{
+                ...rest,
+                sequenceLength: sequenceData.sequence.length,
+                width: innerWidth,
+                bpsPerRow,
+                tickSpacing: Math.floor(bpsPerRow / 10),
+                annotationVisibility: {
+                  ...rest.annotationVisibility,
+                  yellowAxis: true,
+                  translations: false
+                },
+                ...RowItemProps
+              }}
+              row={rowData[0]}
+            />
+          </div>
+        </Draggable>
+      </div>
     );
   }
 }
