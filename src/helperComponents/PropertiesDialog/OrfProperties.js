@@ -1,7 +1,7 @@
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
-import { Button } from "@blueprintjs/core";
+// import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class OrfProperties extends React.Component {
@@ -15,7 +15,10 @@ class OrfProperties extends React.Component {
         ...(orf.strand === undefined && {
           strand: orf.forward ? 1 : -1
         }),
-        size: getRangeLength(orf, sequenceData.sequence.length)
+        size: getRangeLength(orf, sequenceData.sequence.length),
+        sizeAa: Math.floor(
+          getRangeLength(orf, sequenceData.sequence.length) / 3
+        )
       };
     });
     return (
@@ -30,6 +33,11 @@ class OrfProperties extends React.Component {
           isInfinite
           schema={{
             fields: [
+              {
+                path: "sizeAa",
+                displayName: "Size (aa)",
+                type: "string"
+              },
               {
                 path: "size",
                 type: "string",
