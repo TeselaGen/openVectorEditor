@@ -342,7 +342,7 @@ export class Editor extends React.Component {
         panel = (
           <PropertiesInner
             closePanelButton={this.getClosePanelButton("properties")}
-            {...{ ...this.props, ...PropertiesProps }}
+            {...{ ...this.props, height, ...PropertiesProps }}
           />
         );
       }
@@ -373,7 +373,7 @@ export class Editor extends React.Component {
     return (
       <DropHandler
         updateSequenceData={updateSequenceData}
-        style={{ width: "100%", position: "relative", height: "100%" }}
+        style={{ width: "100%", position: "relative", height }}
         className={"veEditor"}
       >
         <div
