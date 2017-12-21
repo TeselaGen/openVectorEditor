@@ -305,10 +305,7 @@ export class Editor extends React.Component {
             key="circularView"
             {...sharedProps}
             {...CircularViewProps}
-            {...{
-              ...editorDimensions,
-              hideName: true
-            }}
+            {...editorDimensions}
           />
         );
       }
@@ -319,9 +316,7 @@ export class Editor extends React.Component {
             key="rowView"
             {...sharedProps}
             {...RowViewProps}
-            {...{
-              ...editorDimensions
-            }}
+            {...editorDimensions}
           />
         );
       }
@@ -332,9 +327,7 @@ export class Editor extends React.Component {
             key="linearView"
             {...sharedProps}
             {...LinearViewProps}
-            {...{
-              ...editorDimensions
-            }}
+            {...editorDimensions}
           />
         );
       }
