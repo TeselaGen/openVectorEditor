@@ -19,7 +19,8 @@ function SelectionLayer(props) {
     color: topLevelColor,
     hideCarets = false,
     selectionLayerRightClicked,
-    className: globalClassname = ""
+    className: globalClassname = "",
+    onClick
   } = props;
   return (
     <div>
@@ -101,6 +102,16 @@ function SelectionLayer(props) {
                     annotation: selectionLayer
                   });
                 }}
+                onClick={
+                  onClick
+                    ? function(event) {
+                        onClick({
+                          event,
+                          annotation: selectionLayer
+                        });
+                      }
+                    : () => {}
+                }
                 key={key}
                 className={
                   classNameToPass +

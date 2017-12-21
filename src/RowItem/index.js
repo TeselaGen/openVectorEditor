@@ -61,6 +61,7 @@ export class RowItem extends React.Component {
       replacementLayerClicked = noop,
       replacementLayerRightClicked = noop,
       featureClicked = noop,
+      searchLayerClicked = noop,
       featureRightClicked = noop,
       partClicked = noop,
       partRightClicked = noop,
@@ -190,6 +191,7 @@ export class RowItem extends React.Component {
             color={"yellow"}
             regions={searchLayers}
             {...annotationCommonProps}
+            onClick={searchLayerClicked}
           />
           <SelectionLayer
             isDraggable

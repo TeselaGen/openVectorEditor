@@ -441,7 +441,7 @@ function VectorInteractionHOC(Component /* options */) {
       let items = [
         {
           text: "Copy",
-          label: "⌘X",
+          // label: "⌘X",
           className: "openVeCopy",
           willUnmount: () => {
             this.copyClipboard && this.copyClipboard.destroy();
@@ -852,6 +852,7 @@ function VectorInteractionHOC(Component /* options */) {
           deletionLayerClicked: this.annotationClicked,
           replacementLayerClicked: this.annotationClicked,
           featureClicked: this.annotationClicked,
+          searchLayerClicked: this.annotationClicked,
           editorDragged: this.editorDragged,
           editorDragStarted: this.editorDragStarted,
           editorClicked: this.editorClicked,
