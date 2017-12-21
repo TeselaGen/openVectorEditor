@@ -37,6 +37,10 @@
 /* TNR: ENABLING THIS WILL BREAK SMOOTH SCROLLING FOR THE ROW VIEW
 .rowViewTextContainer {
   user-select: none;
-} */
+} 
+*/
 
+/* .rowViewTextContainer {
+  user-select: none;
+}  */
 /*# sourceMappingURL= style.css.map */

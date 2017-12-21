@@ -206,13 +206,15 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handleCopy = e => {
-      if (this.sequenceDataToCopy) {
-        window.toastr.success("Selection Copied");
-        const { onCopy = () => {} } = this.props;
-        onCopy(e, this.sequenceDataToCopy, this.props);
-        this.sequenceDataToCopy = undefined;
-      }
-
+      window.toastr.success("Selection Copied");
+      const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
+      onCopy(
+        e,
+        this.sequenceDataToCopy ||
+          getSequenceDataBetweenRange(sequenceData, selectionLayer),
+        this.props
+      );
+      this.sequenceDataToCopy = undefined;
       document.body.removeEventListener("copy", this.handleCopy);
     };
 
