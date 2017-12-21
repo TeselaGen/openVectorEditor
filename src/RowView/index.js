@@ -131,10 +131,10 @@ export class RowView extends React.Component {
       scrollToBp = matchedSearchLayer.start;
     } else if (
       matchedSearchLayer.end > -1 &&
-      matchedSearchLayer.end !== this.props.selectionLayer.end
+      matchedSearchLayer.end !== this.props.matchedSearchLayer.end
     ) {
       // previousBp = this.props.selectionLayer.end;
-      scrollToBp = selectionLayer.end;
+      scrollToBp = matchedSearchLayer.end;
     } else if (
       caretPosition > -1 &&
       caretPosition !== this.props.caretPosition
