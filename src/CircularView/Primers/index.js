@@ -21,6 +21,7 @@ function Primers({
   noPrimerLabels = false,
   primerHeight = 10,
   primerClicked = noop,
+  primerRightClicked = noop,
   //non-configurable
   editorName,
   primers = {},
@@ -36,6 +37,10 @@ function Primers({
     let annotation = primers[key];
     function onClick(event) {
       primerClicked({ event, annotation });
+      event.stopPropagation();
+    }
+    function onContextMenu(event) {
+      primerRightClicked({ event, annotation });
       event.stopPropagation();
     }
     let annotationCopy = { ...annotation };
@@ -110,7 +115,8 @@ function Primers({
         text: annotation.name,
         id: annotation.id,
         className: "vePrimerLabel",
-        onClick
+        onClick,
+        onContextMenu
       };
     }
     if (spansOrigin) {
@@ -144,6 +150,7 @@ function Primers({
         key={"Primers" + index}
         {...{
           onClick,
+          onContextMenu,
           editorName,
           annotation,
           startAngle,
@@ -177,6 +184,7 @@ const DrawPrimer = withHover(
     hoverActions,
     hoverProps: { className },
     onClick,
+    onContextMenu,
     annotation,
     startAngle,
     endAngle,
@@ -191,6 +199,7 @@ const DrawPrimer = withHover(
       <g
         {...hoverActions}
         onClick={onClick}
+        onContextMenu={onContextMenu}
         className={"Primers clickable" + className}
       >
         <title>{getAnnotationNameAndStartStopString(annotation)}</title>

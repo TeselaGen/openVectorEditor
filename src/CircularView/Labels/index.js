@@ -305,7 +305,13 @@ const DrawLabelGroup = withHover(function({
     ];
   }
   return (
-    <g {...hoverActions} {...{ onClick: label.onClick }}>
+    <g
+      {...hoverActions}
+      {...{
+        onClick: label.onClick,
+        onContextMenu: label.onContextMenu || noop
+      }}
+    >
       {content}
     </g>
   );
@@ -351,6 +357,7 @@ const DrawLabel = withHover(
         textLength={label.text.length * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
+        onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
         style={{ fill: label.color ? label.color : "black" }}
         {...hoverActions}
@@ -361,3 +368,4 @@ const DrawLabel = withHover(
     );
   }
 );
+function noop() {}

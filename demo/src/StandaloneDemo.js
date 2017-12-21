@@ -93,7 +93,7 @@ export default class StandaloneDemo extends React.Component {
         panelsShown: {
           rail: false,
           sequence: true,
-          circular: false
+          circular: true
         },
         annotationsToSupport: {
           //these are the defaults, change to false to exclude

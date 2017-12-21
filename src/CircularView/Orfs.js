@@ -17,6 +17,7 @@ function Orfs({
   spaceBetweenAnnotations = 2,
   orfHeight = 6,
   orfClicked = noop,
+  orfRightClicked = noop,
   //non-configurable
   editorName,
   orfs = {},
@@ -36,6 +37,10 @@ function Orfs({
     let annotation = orfs[key];
     function onClick(event) {
       orfClicked({ event, annotation });
+      event.stopPropagation();
+    }
+    function onContextMenu(event) {
+      orfRightClicked({ event, annotation });
       event.stopPropagation();
     }
     let annotationCopy = { ...annotation };
@@ -97,6 +102,7 @@ function Orfs({
         key={"orf" + index}
         {...{
           onClick,
+          onContextMenu,
           editorName,
           annotation,
           startAngle,
@@ -126,6 +132,7 @@ const DrawOrf = withHover(
     hoverActions,
     hoverProps: { className },
     onClick,
+    onContextMenu,
     annotation,
     startAngle,
     endAngle,
@@ -136,6 +143,7 @@ const DrawOrf = withHover(
       <g
         {...hoverActions}
         onClick={onClick}
+        onContextMenu={onContextMenu}
         className={"Orfs clickable " + className}
       >
         <title>

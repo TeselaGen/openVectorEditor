@@ -10,6 +10,7 @@ export default withHover(function({
   startAngle,
   endAngle,
   onClick,
+  onContextMenu,
   annotation,
   totalAngle,
   annotationColor,
@@ -17,7 +18,12 @@ export default withHover(function({
   partHeight
 }) {
   return (
-    <g {...hoverActions} className={className} onClick={onClick}>
+    <g
+      {...hoverActions}
+      className={className}
+      onContextMenu={onContextMenu}
+      onClick={onClick}
+    >
       <title>{getAnnotationNameAndStartStopString(annotation)}</title>
       <PositionAnnotationOnCircle
         sAngle={startAngle}

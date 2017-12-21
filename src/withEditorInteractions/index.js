@@ -708,22 +708,18 @@ function VectorInteractionHOC(Component /* options */) {
       event.preventDefault();
       event.stopPropagation();
       const {
-        readOnly,
+        // readOnly,
         deleteTranslation,
         propertiesViewOpen,
         propertiesViewTabUpdate
       } = this.props;
       return [
-        ...(readOnly
-          ? []
-          : [
-              {
-                text: "Delete Translation",
-                onClick: function() {
-                  deleteTranslation(annotation);
-                }
-              }
-            ]),
+        {
+          text: "Delete Translation",
+          onClick: function() {
+            deleteTranslation(annotation);
+          }
+        },
         {
           text: "View Translation Properties",
           onClick: function() {

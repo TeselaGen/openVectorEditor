@@ -14,6 +14,7 @@ function Parts({
   sequenceLength,
   editorName,
   partClicked = noop,
+  partRightClicked = noop,
   showPartLabels = true
 }) {
   const totalAnnotationHeight = partHeight + spaceBetweenAnnotations;
@@ -90,6 +91,9 @@ function Parts({
       function onClick(event) {
         partClicked({ event, annotation });
       }
+      function onContextMenu(event) {
+        partRightClicked({ event, annotation });
+      }
 
       const { startAngle, endAngle, totalAngle, centerAngle } = annotation;
 
@@ -104,7 +108,8 @@ function Parts({
           text: annotation.name,
           id: annotation.id,
           className: "vePartLabel",
-          onClick
+          onClick,
+          onContextMenu
         };
       }
 
@@ -124,6 +129,7 @@ function Parts({
             startAngle,
             endAngle,
             onClick,
+            onContextMenu,
             annotation,
             totalAngle,
             annotationColor,

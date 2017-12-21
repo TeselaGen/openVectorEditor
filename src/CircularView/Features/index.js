@@ -24,6 +24,7 @@ function Features({
   spaceBetweenAnnotations = 2,
   featureHeight = 10,
   featureClicked = noop,
+  featureRightClicked = noop,
   //non-configurable
   features = {},
   sequenceLength
@@ -97,9 +98,12 @@ function Features({
     })
     .forEach(function(annotation, index) {
       annotation.yOffset = maxYOffset - annotation.yOffset;
-      function onClick(event) {
-        featureClicked({ event, annotation });
-      }
+      const onClick = e => {
+        featureClicked({ event: e, annotation });
+      };
+      const onContextMenu = e => {
+        featureRightClicked({ event: e, annotation });
+      };
 
       let { startAngle, endAngle, totalAngle, centerAngle } = annotation;
 
@@ -144,7 +148,8 @@ function Features({
           text: annotation.name,
           id: annotation.id,
           className: "veFeatureLabel",
-          onClick
+          onClick,
+          onContextMenu
         };
       }
 
@@ -168,6 +173,7 @@ function Features({
             startAngle,
             endAngle,
             onClick,
+            onContextMenu,
             annotation,
             totalAngle,
             annotationColor,
@@ -202,6 +208,7 @@ const DrawFeature = withHover(function({
   startAngle,
   endAngle,
   onClick,
+  onContextMenu,
   annotation,
   totalAngle,
   annotationColor,
@@ -210,7 +217,12 @@ const DrawFeature = withHover(function({
   labelFits
 }) {
   return (
-    <g {...hoverActions} className={className} onClick={onClick}>
+    <g
+      {...hoverActions}
+      className={className}
+      onContextMenu={onContextMenu}
+      onClick={onClick}
+    >
       <title>{getAnnotationNameAndStartStopString(annotation)}</title>
       <PositionAnnotationOnCircle
         sAngle={startAngle}
