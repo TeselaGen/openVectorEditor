@@ -88,7 +88,8 @@ export default class StandaloneDemo extends React.Component {
       editor.updateEditor({
         sequenceData: exampleSequenceData,
         annotationVisibility: {
-          features: false
+          features: false,
+          orfTranslations: false,
         },
         panelsShown: {
           rail: false,

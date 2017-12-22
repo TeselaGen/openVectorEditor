@@ -34,6 +34,10 @@
 .veRowItemSequenceContainer {
   height: 80%;
 }
+
+.veRowViewOrfs {
+  z-index: 20;
+}
 /* TNR: ENABLING THIS WILL BREAK SMOOTH SCROLLING FOR THE ROW VIEW
 .rowViewTextContainer {
   user-select: none;

@@ -366,7 +366,7 @@ export class Editor extends React.Component {
     return (
       <DropHandler
         updateSequenceData={updateSequenceData}
-        style={{ width: "100%", position: "relative", height }}
+        style={{ width: "100%", position: "relative" }}
         className={"veEditor"}
       >
         <div
