@@ -5,7 +5,14 @@ import { Checkbox } from "@blueprintjs/core";
 import InfoCircle from "react-icons/lib/fa/info-circle";
 
 export default {
-  updateKeys: ["annotationVisibility", "annotationVisibilityToggle", "isOpen"],
+  updateKeys: [
+    "annotationVisibility",
+    "annotationVisibilityToggle",
+    "useAdditionalOrfStartCodonsToggle",
+    "useAdditionalStartCodons",
+    "useAdditionalOrfStartCodons",
+    "isOpen"
+  ],
   itemProps: ({
     annotationVisibilityToggle,
     annotationVisibility = {},
@@ -44,6 +51,8 @@ function OrfToolDropdown({
   sequenceLength,
   minimumOrfSizeUpdate,
   minimumOrfSize,
+  useAdditionalOrfStartCodons,
+  useAdditionalOrfStartCodonsToggle,
   annotationVisibility,
   annotationVisibilityToggle
 }) {
@@ -70,6 +79,11 @@ function OrfToolDropdown({
         }}
         checked={annotationVisibility.orfTranslations}
         label={"Show ORF translations"}
+      />
+      <Checkbox
+        onChange={useAdditionalOrfStartCodonsToggle}
+        checked={useAdditionalOrfStartCodons}
+        label={"Use GTG and CTG as start codons"}
       />
       <div className="ve-spacer" />
       <InfoCircle />

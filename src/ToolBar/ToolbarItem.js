@@ -2,6 +2,7 @@
 import DropDownIcon from "react-icons/lib/md/arrow-drop-down";
 import DropUpIcon from "react-icons/lib/md/arrow-drop-up";
 import { Popover, Position, Tooltip as Tooltip2 } from "@blueprintjs/core";
+// import { Popover2 as Popover } from "@blueprintjs/labs";
 import React from "react";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
@@ -62,6 +63,7 @@ export default class ToolbarItem extends React.Component {
             //   this.toggleDropdown();
             // }
           }}
+          minimal
           position={Position.BOTTOM}
           target={
             <div
@@ -132,10 +134,10 @@ export default class ToolbarItem extends React.Component {
               ref={n => {
                 if (n) this.dropdownNode = n;
               }}
-              onMouseDown={e => {
-                e.stopPropagation();
-                e.preventDefault();
-              }}
+              // onClick={e => {
+              //   e.stopPropagation();
+              //   e.preventDefault();
+              // }}
               style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
               className={"ve-toolbar-dropdown content"}
             >

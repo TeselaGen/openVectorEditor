@@ -5,6 +5,7 @@ import * as selectionLayer from "./selectionLayer";
 import * as caretPosition from "./caretPosition";
 import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as minimumOrfSize from "./minimumOrfSize";
+import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as sequenceData from "./sequenceData";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
@@ -37,6 +38,7 @@ export const actions = {
   ...annotationVisibility,
   ...annotationsToSupport,
   ...sequenceData,
+  ...useAdditionalOrfStartCodons,
   ...minimumOrfSize,
   ...hoveredAnnotation,
   ...deletionLayers,
@@ -64,6 +66,7 @@ let reducers = {
     ignoreInitialState: true,
     filter: distinctState
   }),
+  useAdditionalOrfStartCodons: useAdditionalOrfStartCodons.default,
   minimumOrfSize: minimumOrfSize.default,
   hoveredAnnotation: hoveredAnnotation.default,
   caretPosition: caretPosition.default,

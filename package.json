@@ -33,7 +33,6 @@
     "test-debug": "node --inspect --debug-brk ./node_modules/.bin/jest src --runInBand "
   },
   "dependencies": {
-    "@blueprintjs/labs": "^0.13.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.7.1",
     "clone": "^2.1.1",
@@ -80,11 +79,11 @@
   "peerDependencies": {
     "@blueprintjs/core": "^1.18.0",
     "@blueprintjs/datetime": "^1.16.0",
+    "@blueprintjs/labs": "^0.13.0",
     "@blueprintjs/table": "^1.15.0",
     "apollo-cache-invalidation": "^0.0.3",
     "bio-parsers": "^4.2.2",
     "react-addons-css-transition-group": "^15.5.2",
-    "react-apollo": "^2.0.0",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.3",
@@ -97,9 +96,10 @@
   "devDependencies": {
     "@blueprintjs/core": "^1.34.0",
     "@blueprintjs/datetime": "^1.25.0",
+    "@blueprintjs/labs": "^0.13.0",
     "@blueprintjs/table": "^1.31.0",
     "apollo-cache-invalidation": "^0.0.3",
-    "axios": "^0.17.0",
+    "axios": "^0.17.1",
     "babel-eslint": "8.0.2",
     "babel-jest": "^21.2.0",
     "babel-preset-es2015": "^6.24.1",
@@ -116,6 +116,7 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.4.0",
+    "graphql-tag": "^2.6.1",
     "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",
     "in-publish": "^2.0.0",
@@ -128,7 +129,7 @@
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-perf": "^15.4.2",
-    "react-apollo": "1.4.15",
+    "react-apollo": "^2.0.4",
     "react-collapsible": "^2.0.3",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
@@ -140,7 +141,7 @@
     "teselagen-react-components": "^19.0.3",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.3.3",
-    "ve-sequence-utils": "3.2.5"
+    "ve-sequence-utils": "3.2.6"
   },
   "lint-staged": {
     "src/**/*.js ": [

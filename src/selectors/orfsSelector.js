@@ -9,7 +9,6 @@ export default createSelector(
   sequenceSelector,
   circularSelector,
   minimumOrfSizeSelector,
-  function() {
-    return findOrfsInPlasmid(...arguments);
-  }
+  state => state.useAdditionalOrfStartCodons,
+  findOrfsInPlasmid
 );
