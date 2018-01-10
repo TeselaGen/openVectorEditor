@@ -35,6 +35,7 @@ class FeatureProperties extends React.Component {
           isInfinite
           schema={{
             fields: [
+              { path: "color", type: "string" },
               { path: "name", type: "string" },
               { path: "type", type: "string" },
               {

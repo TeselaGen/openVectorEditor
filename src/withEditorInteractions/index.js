@@ -1,13 +1,18 @@
-import { getSequenceDataBetweenRange } from "ve-sequence-utils";
+import {
+  getSequenceDataBetweenRange,
+  tidyUpSequenceData,
+  getAminoAcidStringFromSequenceString
+} from "ve-sequence-utils";
 import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
   insertSequenceDataAtPositionOrRange,
   deleteSequenceDataAtRange,
-  getReverseComplementSequenceAndAnnotations
+  getReverseComplementSequenceAndAnnotations,
+  getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { map, get } from "lodash";
+import { map, get, startCase } from "lodash";
 
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
@@ -202,7 +207,47 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handlePaste = e => {
-      this.handleDnaInsert(e);
+      let {
+        caretPosition = -1,
+        selectionLayer = { start: -1, end: -1 },
+        sequenceData = { sequence: "" },
+        readOnly,
+        onPaste,
+        updateSequenceData,
+        selectionLayerUpdate
+        // handleInsert
+      } = this.props;
+
+      if (readOnly) {
+        return window.toastr.warning("Sorry the sequence is Read-Only");
+      }
+
+      let seqDataToInsert = onPaste
+        ? onPaste(e, this.props)
+        : { sequence: e.target.value };
+
+      seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
+        provideNewIdsForAnnotations: true
+      });
+      if (!seqDataToInsert.sequence.length)
+        return window.toastr.warning("Sorry no valid base pairs to paste");
+
+      updateSequenceData(
+        insertSequenceDataAtPositionOrRange(
+          seqDataToInsert,
+          sequenceData,
+          caretPosition > -1 ? caretPosition : selectionLayer
+        )
+      );
+      const newSelectionLayerStart =
+        caretPosition > -1 ? caretPosition : selectionLayer.start;
+      selectionLayerUpdate({
+        start: newSelectionLayerStart,
+        end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+      });
+
+      window.toastr.success("Sequence Pasted Successfully");
+      e.preventDefault();
     };
 
     handleCopy = e => {
@@ -408,7 +453,15 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     generateSelectionMenuOptions = annotation => {
-      const { sequenceData, selectionLayer, upsertTranslation } = this.props;
+      const {
+        sequenceData,
+        selectionLayer,
+        upsertTranslation,
+        toggleCopyOption,
+        editorName,
+        store,
+        copyOptions
+      } = this.props;
       const selectedSeqData = getSequenceDataBetweenRange(
         sequenceData,
         selectionLayer
@@ -442,27 +495,116 @@ function VectorInteractionHOC(Component /* options */) {
         {
           text: "Copy",
           // label: "⌘X",
-          className: "openVeCopy",
+          className: "openVeCopy1",
           willUnmount: () => {
-            this.copyClipboard && this.copyClipboard.destroy();
+            this.openVeCopy1 && this.openVeCopy1.destroy();
           },
           didMount: ({ className }) => {
-            this.copyClipboard = makeTextCopyable(selectedSeqData, className);
-          }
+            this.openVeCopy1 = makeTextCopyable(selectedSeqData, className);
+          },
+          menu: [
+            {
+              text: "Copy",
+              // label: "⌘X",
+              className: "openVeCopy2",
+              willUnmount: () => {
+                this.openVeCopy2 && this.openVeCopy2.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopy2 = makeTextCopyable(selectedSeqData, className);
+              }
+            },
+            {
+              text: "Copy Complement",
+              // label: "⌘X",
+              className: "openVeCopyComplement",
+              willUnmount: () => {
+                this.openVeCopyComplement &&
+                  this.openVeCopyComplement.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyComplement = makeTextCopyable(
+                  getComplementSequenceAndAnnotations(selectedSeqData),
+                  className
+                );
+              }
+            },
+            {
+              text: "Copy Reverse Complement",
+              className: "openVeCopyReverse",
+              willUnmount: () => {
+                this.openVeCopyReverse && this.openVeCopyReverse.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyReverse = makeTextCopyable(
+                  getReverseComplementSequenceAndAnnotations(selectedSeqData),
+                  className
+                );
+              }
+            },
+            {
+              text: "Copy AA Sequence",
+              className: "openVeCopyAA",
+              willUnmount: () => {
+                this.openVeCopyAA && this.openVeCopyAA.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyAA = makeTextCopyable(
+                  {
+                    sequence: getAminoAcidStringFromSequenceString(
+                      selectedSeqData.sequence
+                    )
+                  },
+                  className
+                );
+              }
+            },
+            {
+              text: "Copy Reverse Complement AA Sequence",
+              className: "openVeCopyAAReverse",
+              willUnmount: () => {
+                this.openVeCopyAAReverse && this.openVeCopyAAReverse.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyAAReverse = makeTextCopyable(
+                  {
+                    sequence: getAminoAcidStringFromSequenceString(
+                      getReverseComplementSequenceAndAnnotations(
+                        selectedSeqData
+                      ).sequence
+                    )
+                  },
+                  className
+                );
+              }
+            },
+            {
+              text: "Copy Options",
+              innerJsx: [
+                <MenuItem disabled key={"aghah"} text={"Include:"} />
+              ].concat(
+                map(copyOptions, (unused, copyOption) => {
+                  return (
+                    <CopyOptionMenuItem
+                      key={copyOption}
+                      {...{
+                        text: startCase(copyOption),
+                        copyOption,
+                        editorName,
+                        store,
+                        onClick: function(e) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleCopyOption(copyOption);
+                        }
+                      }}
+                    />
+                  );
+                })
+              )
+            }
+          ]
           // menu: [{text: "hahaha", menu: [{text: "yup"}, {text: "nope"}]}]
-        },
-        {
-          text: "Copy Reverse Complement",
-          className: "openVeCopyReverse",
-          willUnmount: () => {
-            this.copyReverseClipboard && this.copyReverseClipboard.destroy();
-          },
-          didMount: ({ className }) => {
-            this.copyReverseClipboard = makeTextCopyable(
-              getReverseComplementSequenceAndAnnotations(selectedSeqData),
-              className
-            );
-          }
         },
         ...this.getCreateItems(annotation),
         {
@@ -852,6 +994,7 @@ function VectorInteractionHOC(Component /* options */) {
           deletionLayerClicked: this.annotationClicked,
           replacementLayerClicked: this.annotationClicked,
           featureClicked: this.annotationClicked,
+          partClicked: this.annotationClicked,
           searchLayerClicked: this.annotationClicked,
           editorDragged: this.editorDragged,
           editorDragStarted: this.editorDragStarted,
@@ -1022,6 +1165,16 @@ const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
   return {
     isActive: get(state, `VectorEditor[${editorName}].frameTranslations`, {})[
       frame
+    ]
+  };
+})(({ isActive, ...rest }) => {
+  return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
+});
+
+const CopyOptionMenuItem = connect((state, { editorName, copyOption }) => {
+  return {
+    isActive: get(state, `VectorEditor[${editorName}].copyOptions`, {})[
+      copyOption
     ]
   };
 })(({ isActive, ...rest }) => {

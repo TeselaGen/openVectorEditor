@@ -1,11 +1,12 @@
 import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
 import React from "react";
 import { lifecycle } from "recompose";
+import { KeyCombo } from "@blueprintjs/core/dist/esm/components/hotkeys/keyCombo";
 
 function filterMenuForCorrectness(menu) {
   return menu && menu.length && menu.filter(item => item);
 }
-export default function(_menu, e) {
+export default function bpContext(_menu, e) {
   const menu = filterMenuForCorrectness(_menu);
   if (!menu || !menu.length) return;
   const menuToRender = (
@@ -33,10 +34,31 @@ const Child = lifecycle({
     const { willUnmount = () => {}, className } = this.props;
     willUnmount({ className });
   }
-})(({ className = "openVeContextMenuItem", innerJsx, menu, ...rest }) => {
-  const filteredMenu = filterMenuForCorrectness(menu);
-  const innerMenu =
-    innerJsx ||
-    (filteredMenu && filteredMenu.length && getChildren(filteredMenu));
-  return <MenuItem {...{ className, ...rest }}>{innerMenu}</MenuItem>;
-});
+})(
+  ({
+    className = "openVeContextMenuItem",
+    innerJsx,
+    hotkey,
+    menu,
+    ...rest
+  }) => {
+    const filteredMenu = filterMenuForCorrectness(menu);
+    const innerMenu =
+      innerJsx ||
+      (filteredMenu && filteredMenu.length && getChildren(filteredMenu));
+    return (
+      <MenuItem
+        {...hotkey && {
+          label: (
+            <span style={{ paddingLeft: 3 }}>
+              <KeyCombo combo={hotkey} />
+            </span>
+          )
+        }}
+        {...{ className, ...rest }}
+      >
+        {innerMenu}
+      </MenuItem>
+    );
+  }
+);

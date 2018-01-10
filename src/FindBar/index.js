@@ -25,8 +25,8 @@ export function FindBar({
     <div
       style={{
         position: "absolute",
-        bottom: 0,
-        left: 0,
+        top: 0,
+        left: 25,
         display: "flex",
         alignItems: "center",
         paddingBottom: 5,

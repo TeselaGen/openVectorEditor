@@ -37,6 +37,7 @@ export default class StandaloneDemo extends React.Component {
           console.log("editorState:", editorState);
         },
         onCopy: function(event, copiedSequenceData, editorState) {
+          //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
           console.log("event:", event);
           console.log("sequenceData:", copiedSequenceData);
           console.log("editorState:", editorState);
@@ -49,6 +50,19 @@ export default class StandaloneDemo extends React.Component {
           event.preventDefault();
           //in onPaste in your app you can do:
           // e.clipboardData.getData('application/json')
+        },
+        onPaste: function(event, editorState) {
+          //the onPaste here must return sequenceData in the teselagen data format
+          const clipboardData = event.clipboardData;
+          let jsonData = clipboardData.getData("application/json")
+          if (jsonData) {
+            jsonData = JSON.parse(jsonData)
+            if (jsonData.isJbeiSeq) {
+              jsonData = convertJbeiToTeselagen(jsonData)
+            }
+          }
+          const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
+          return sequenceData
         },
         showMenuBar: true,
         PropertiesProps: {
@@ -157,4 +171,9 @@ export default class StandaloneDemo extends React.Component {
       </div>
     );
   }
+}
+
+
+function convertJbeiToTeselagen (seq) {
+  return seq
 }

@@ -17,6 +17,7 @@ import * as deletionLayers from "./deletionLayers";
 import * as replacementLayers from "./replacementLayers";
 import * as panelsShown from "./panelsShown";
 import * as lineageLines from "./lineageLines";
+import * as copyOptions from "./copyOptions";
 import * as frameTranslations from "./frameTranslations";
 import * as readOnly from "./readOnly";
 import * as propertiesTool from "./propertiesTool";
@@ -43,6 +44,7 @@ export const actions = {
   ...hoveredAnnotation,
   ...deletionLayers,
   ...replacementLayers,
+  ...copyOptions,
   ...lineageLines,
   ...frameTranslations,
   ...readOnly,
@@ -71,6 +73,7 @@ let reducers = {
   hoveredAnnotation: hoveredAnnotation.default,
   caretPosition: caretPosition.default,
   selectionLayer: selectionLayer.default,
+  copyOptions: copyOptions.default,
   lineageLines: lineageLines.default,
   frameTranslations: frameTranslations.default,
   readOnly: readOnly.default,
