@@ -13,12 +13,12 @@ import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
 import oligoTool from "./oligoTool";
 import orfTool from "./orfTool";
-import viewTool from "./viewTool";
+// import viewTool from "./viewTool";
 import editTool from "./editTool";
 import findTool from "./findTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
-import propertiesTool from "./propertiesTool";
+// import propertiesTool from "./propertiesTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 
@@ -29,12 +29,12 @@ const allTools = {
   featureTool,
   oligoTool,
   orfTool,
-  viewTool,
+  // viewTool,
   editTool,
   findTool,
   saveTool,
   visibilityTool,
-  propertiesTool,
+  // propertiesTool,
   undoTool,
   redoTool
 };

@@ -4,14 +4,14 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const propertiesViewToggle = createAction(
-  "TOGGLE_PROPERTIES_VIEW",
-  () => {}
-); //NOTE!!:: second argument sanitizes actions so no payload is passed
-export const propertiesViewOpen = createAction(
-  "Open_PROPERTIES_VIEW",
-  () => {}
-); //NOTE!!:: second argument sanitizes actions so no payload is passed
+// export const propertiesViewToggle = createAction(
+//   "TOGGLE_PROPERTIES_VIEW",
+//   () => {}
+// ); //NOTE!!:: second argument sanitizes actions so no payload is passed
+// export const propertiesViewOpen = createAction(
+//   "Open_PROPERTIES_VIEW",
+//   () => {}
+// ); //NOTE!!:: second argument sanitizes actions so no payload is passed
 export const propertiesViewTabUpdate = createAction("propertiesViewTabUpdate"); //NOTE!!:: second argument sanitizes actions so no payload is passed
 
 // ------------------------------------
@@ -19,18 +19,6 @@ export const propertiesViewTabUpdate = createAction("propertiesViewTabUpdate"); 
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    [propertiesViewToggle]: state => {
-      return {
-        ...state,
-        propertiesSideBarOpen: !state.propertiesSideBarOpen
-      };
-    },
-    [propertiesViewOpen]: state => {
-      return {
-        ...state,
-        propertiesSideBarOpen: true
-      };
-    },
     [propertiesViewTabUpdate]: (state, tabId) => {
       return {
         ...state,

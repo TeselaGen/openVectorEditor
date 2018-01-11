@@ -1,17 +1,18 @@
 import React from "react";
 import CutsiteFilter from "../CutsiteFilter";
 import withEditorProps from "../withEditorProps";
-import Ladder from "./Ladder";
+import Ladder from "./LadderContainer";
 
 export class DigestTool extends React.Component {
   render() {
-    const { editorName } = this.props;
+    const { editorName, height = "100%" } = this.props;
     return (
-      <div>
-        Choose your enzyme:
+      <div style={{ height, margin: 10 }}>
+        Choose your enzymes:
         <CutsiteFilter editorName={editorName} />
+        <br />
         Ladder:
-        <Ladder />
+        <Ladder editorName={editorName} />
       </div>
     );
   }

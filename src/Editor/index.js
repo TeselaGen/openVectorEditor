@@ -2,6 +2,7 @@ import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
+
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 // import Dimensions from "react-dimensions";
 /* eslint-disable */ import {
@@ -11,9 +12,21 @@ import { compose } from "redux"; //tnr: this can be removed once https://github.
 } from "react-reflex";
 /* eslint-enable */
 
-import { Hotkey, Hotkeys, HotkeysTarget, Button } from "@blueprintjs/core";
+import {
+  Hotkey,
+  Hotkeys,
+  HotkeysTarget
+  // Button
+  // Tab2,
+  // Tabs2
+} from "@blueprintjs/core";
 
-import { flatMap } from "lodash";
+import {
+  flatMap,
+  // startCase,
+  map,
+  filter
+} from "lodash";
 
 // import SplitPane from "react-split-pane";
 // import SplitPane from "../helperComponents/SplitPane/SplitPane";
@@ -28,7 +41,72 @@ import { PropertiesInner } from "../helperComponents/PropertiesDialog";
 import MenuBar from "../MenuBar";
 import "./style.css";
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DigestTool } from "../DigestTool/DigestTool";
+import { insertItem, removeItem } from "../utils/arrayUtils";
+
+// fake data generator
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+// using some little inline style helpers to make the app look okay
+// const grid = 8;
+const getItemStyle = (draggableStyle, isDragging) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: "none",
+
+  // change background colour if dragging
+  background: isDragging ? "lightgreen" : "none",
+  cursor: "move",
+  flex: "0 0 auto",
+  // styles we need to apply on draggables
+  ...draggableStyle
+});
+const sharedListStyles = {
+  position: "absolute",
+  // top: "-20px",
+  height: "100%",
+  // background: "lightgreen",
+  width: "50%",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  wordWrap: "normal",
+  opacity: 0.5
+};
+const getListStyle = isDraggingOver => {
+  return {
+    display: "flex",
+    alignItems: "flex-end",
+    flex: "0 0 auto",
+    flexDirection: "row",
+    overflowX: "scroll",
+    borderBottom: "1px solid lightgray",
+    borderTop: "1px solid lightgray",
+    paddingTop: 3,
+    paddingBottom: 3,
+    ...(isDraggingOver && { background: "#e5f3ff" })
+  };
+};
+
+const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
+  return {
+    ...sharedListStyles,
+    ...(isDragging && { zIndex: 10000, background: "lightgrey" }),
+    ...(isDraggingOver && { background: "lightblue" }),
+    left: "50%"
+  };
+};
+
 export class Editor extends React.Component {
+  state = {
+    tabDragging: false
+  };
   handlePrint = () => {
     console.warn("handlePrint");
   };
@@ -99,6 +177,72 @@ export class Editor extends React.Component {
     } else {
       showAddOrEditPartDialog(rangeToUse);
     }
+  };
+
+  onTabDragStart = () => {
+    this.setState({ tabDragging: true });
+  };
+  onTabDragEnd = result => {
+    this.setState({ tabDragging: false });
+    const { panelsShownUpdate, panelsShown } = this.props;
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    let newPanelsShown;
+    if (result.destination.droppableId !== result.source.droppableId) {
+      //we're moving a tab from one group to another group
+      newPanelsShown = map(
+        [...panelsShown, ...(panelsShown.length === 1 && [[]])],
+        (panelGroup, groupIndex) => {
+          const panelToMove =
+            panelsShown[Number(result.source.droppableId)][result.source.index];
+          if (Number(groupIndex) === Number(result.destination.droppableId)) {
+            //we're adding to this group
+            return insertItem(
+              panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
+              { ...panelToMove, active: true },
+              result.destination.index
+            );
+          } else if (Number(groupIndex) === Number(result.source.droppableId)) {
+            // we're removing from this group
+            return removeItem(panelGroup, result.source.index).map(
+              (tabPanel, index) => {
+                return {
+                  ...tabPanel,
+                  ...(panelToMove.active && index === 0 && { active: true })
+                };
+              }
+            );
+          } else {
+            return panelGroup;
+          }
+        }
+      );
+    } else {
+      //we're moving tabs within the same group
+      newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
+        if (Number(groupIndex) === Number(result.destination.droppableId)) {
+          //we'removing a tab around in this group
+          return reorder(
+            panelGroup.map((tabPanel, i) => {
+              return {
+                ...tabPanel,
+                active: result.source.index === i
+              };
+            }),
+            result.source.index,
+            result.destination.index
+          );
+        }
+        return panelGroup;
+      });
+    }
+    filter(newPanelsShown, panelGroup => {
+      return panelGroup.length;
+    });
+    panelsShownUpdate(newPanelsShown);
   };
 
   renderHotkeys() {
@@ -221,52 +365,15 @@ export class Editor extends React.Component {
 
   getPanelsToShow = () => {
     const {
-      propertiesTool = {},
-      panelsShown = { circular: true, sequence: true }
+      // propertiesTool = {},
+      panelsShown
     } = this.props;
-    const panelsToShow = [];
-    if (panelsShown.circular) panelsToShow.push("circular");
-    if (panelsShown.sequence) panelsToShow.push("sequence");
-    if (panelsShown.rail) panelsToShow.push("rail");
-    if (propertiesTool.propertiesSideBarOpen) panelsToShow.push("properties");
-    return panelsToShow;
-  };
-
-  getClosePanelButton = panelName => {
-    const panelsToShow = this.getPanelsToShow();
-    const { propertiesViewToggle, panelsShownUpdate, panelsShown } = this.props;
-    let onClose;
-    if (panelName === "properties") {
-      onClose = propertiesViewToggle;
-    } else if (
-      panelsToShow.length - (panelsToShow.indexOf("properties") > -1 ? 1 : 0) >
-      1
-    ) {
-      onClose = () => {
-        panelsShownUpdate({
-          ...panelsShown,
-          [panelName]: false
-        });
-      };
-    }
-
-    return (
-      onClose && (
-        <div
-          style={{
-            color: "lightgrey",
-            position: "absolute",
-            zIndex: 100
-            // top: 5, left: 5
-          }}
-        >
-          <Button
-            onClick={onClose}
-            className={"pt-small pt-minimal pt-icon-cross"}
-          />
-        </div>
-      )
-    );
+    // const panelsToShow = [];
+    // if (panelsShown.circular) panelsToShow.push("circular");
+    // if (panelsShown.sequence) panelsToShow.push("sequence");
+    // if (panelsShown.rail) panelsToShow.push("rail");
+    // if (propertiesTool.propertiesSideBarOpen) panelsToShow.push("properties");
+    return map(panelsShown);
   };
 
   render() {
@@ -284,7 +391,9 @@ export class Editor extends React.Component {
       // containerWidth,
       height = 500,
       showMenuBar,
-      updateSequenceData
+      updateSequenceData,
+      setPanelAsActive,
+      closePanel
       // ...rest
     } = this.props;
     let editorDimensions = {
@@ -294,57 +403,66 @@ export class Editor extends React.Component {
       editorName,
       ...this.props
     };
-    const panelsToShow = this.getPanelsToShow();
+    const { tabDragging } = this.state;
 
-    const panels = flatMap(panelsToShow, (panelName, index) => {
+    const panelsToShow = this.getPanelsToShow();
+    const panels = flatMap(panelsToShow, (panelGroup, index) => {
+      // let activePanelId
+      let activePanelId;
+      panelGroup.forEach(({ id, active }) => {
+        if (active) {
+          activePanelId = id;
+        }
+      });
       let panel;
-      if (panelName === "circular") {
+
+      if (activePanelId === "circular") {
         panel = (
           <CircularView
-            closePanelButton={this.getClosePanelButton("circular")}
             key="circularView"
             {...sharedProps}
             {...CircularViewProps}
             {...editorDimensions}
           />
         );
-      }
-      if (panelName === "sequence") {
+      } else if (activePanelId === "sequence") {
         panel = (
           <RowView
-            closePanelButton={this.getClosePanelButton("sequence")}
             key="rowView"
             {...sharedProps}
             {...RowViewProps}
             {...editorDimensions}
           />
         );
-      }
-      if (panelName === "rail") {
+      } else if (activePanelId === "rail") {
         panel = (
           <LinearView
-            closePanelButton={this.getClosePanelButton("rail")}
             key="linearView"
             {...sharedProps}
             {...LinearViewProps}
             {...editorDimensions}
           />
         );
-      }
-      if (panelName === "properties") {
+      } else if (activePanelId === "digestTool") {
+        panel = (
+          <DigestTool key="DigestTool" {...sharedProps} {...editorDimensions} />
+        );
+      } else if (activePanelId === "properties") {
         panel = (
           <PropertiesInner
-            closePanelButton={this.getClosePanelButton("properties")}
+            key={"Properties"}
             {...{ ...this.props, height, ...PropertiesProps }}
           />
         );
+      } else {
+        panel = <div> No Panel Found!</div>;
       }
       const toReturn = [];
       if (index > 0) {
         toReturn.push(
           <ReflexSplitter
             key={index + "splitter"}
-            style={{ height, zIndex: 1 }}
+            style={{ height: height + 38, zIndex: 1 }}
             propagate
           />
         );
@@ -358,7 +476,120 @@ export class Editor extends React.Component {
           renderOnResize={true}
           className="left-pane"
         >
-          {panel}
+          {[
+            // <Tabs2
+            //   key={activePanelId}
+            //       // style={{ paddingLeft:15 }}
+            //       renderActiveTabPanelOnly
+            //       selectedTabId={activePanelId}
+            //       onChange={setPanelAsActive}
+            //     >
+            <Droppable
+              key={"asdfasdf"}
+              direction="horizontal"
+              droppableId={index.toString()}
+            >
+              {(provided, snapshot) => (
+                <div
+                  className={"ve-draggable-tabs"}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver, tabDragging)}
+                >
+                  {/* {console.log('snapshot:',JSON.stringify(snapshot,null,4))}
+                  {console.log('provided:',JSON.stringify(provided,null,4))} */}
+                  {panelGroup.map(({ id, name, canClose }) => {
+                    return (
+                      <Draggable key={id} draggableId={id}>
+                        {(provided, snapshot) => (
+                          <div
+                            style={{
+                              // overflow: 'hidden',
+                              // textOverflow: 'ellipsis',
+                              // whiteSpace: 'nowrap',
+                              wordWrap: "normal",
+                              flex: "0 0 auto",
+                              // position: 'relative',
+                              maxWidth: "100%",
+                              // verticalAlign: 'top',
+                              fontSize: "14px"
+                            }}
+                            onClick={() => {
+                              setPanelAsActive(id);
+                            }}
+                          >
+                            <div
+                              ref={provided.innerRef}
+                              style={getItemStyle(
+                                provided.draggableStyle,
+                                snapshot.isDragging
+                              )}
+                              {...provided.dragHandleProps}
+                            >
+                              <div
+                                style={{
+                                  padding: 3,
+                                  borderBottom:
+                                    id === activePanelId
+                                      ? "2px solid #106ba3"
+                                      : "none",
+                                  color:
+                                    id === activePanelId ? "#106ba3" : "black",
+                                  marginLeft: 13,
+                                  marginRight: 13
+                                }}
+                              >
+                                {/* <span onClick={() => {
+                                closePanel(id)
+                              }} style={{paddingRight: 3, paddingBottom: 3, fontSize: 10}} className={"pt-icon-menu"}></span> */}
+                                {name || id}
+                                {canClose && (
+                                  <span
+                                    onClick={() => {
+                                      closePanel(id);
+                                    }}
+                                    style={{ paddingLeft: 5 }}
+                                    className={"pt-icon-small-cross"}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                    //   return <Tab2
+                    //   key={id}
+                    //   title={startCase(name || id)}
+                    //   id={id}
+                    // />
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>,
+            ...(panelsToShow.length === 1 && [
+              <Droppable
+                key={"extra-drop-box"}
+                direction="horizontal"
+                droppableId={(index + 1).toString()}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    style={getSplitScreenListStyle(
+                      snapshot.isDraggingOver,
+                      tabDragging
+                    )}
+                  >
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            ]),
+
+            panel
+          ]}
         </ReflexElement>
       );
       return toReturn;
@@ -413,9 +644,14 @@ export class Editor extends React.Component {
             className="tg-editor-container"
             id="section-to-print"
           >
-            <ReflexContainer /* style={{}} */ orientation="vertical">
-              {panels}
-            </ReflexContainer>
+            <DragDropContext
+              onDragStart={this.onTabDragStart}
+              onDragEnd={this.onTabDragEnd}
+            >
+              <ReflexContainer /* style={{}} */ orientation="vertical">
+                {panels}
+              </ReflexContainer>
+            </DragDropContext>
 
             {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
           </div>

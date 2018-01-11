@@ -87,11 +87,11 @@ export default class StandaloneDemo extends React.Component {
             "featureTool",
             // "oligoTool",
             "orfTool",
-            "viewTool",
+            // "viewTool",
             "editTool",
             "findTool",
             "visibilityTool",
-            "propertiesTool"
+            // "propertiesTool"
           ]
         }
       });
@@ -105,11 +105,32 @@ export default class StandaloneDemo extends React.Component {
           features: false,
           orfTranslations: false,
         },
-        panelsShown: {
-          rail: false,
-          sequence: true,
-          circular: true
-        },
+        panelsShown: [
+          [
+            {
+              id: "sequence",
+              name: "Sequence Map",
+              active: true
+            }
+          ],
+          [
+            {
+              id: "circular",
+              name: "Plasmid",
+              active: true
+            },
+            {
+              id: "rail",
+              name: "Linear Map",
+              active: false
+            },
+            {
+              id: "properties",
+              name: "Properties",
+              active: false
+            }
+          ]
+        ],
         annotationsToSupport: {
           //these are the defaults, change to false to exclude
           features: true,

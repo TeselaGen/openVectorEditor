@@ -73,7 +73,7 @@ function VectorInteractionHOC(Component /* options */) {
 
       // combokeys.stop();
       // combokeys.watch(this.node)
-
+      if (!this.node) return;
       this.combokeys = new Combokeys(this.node);
       // bindGlobalPlugin(this.combokeys);
 

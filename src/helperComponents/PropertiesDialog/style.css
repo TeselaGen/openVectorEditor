@@ -6,6 +6,9 @@
 .ve-propertiesPanel .pt-tab-list::-webkit-scrollbar {
   display: none;
 }
+.ve-draggable-tabs::-webkit-scrollbar {
+  display: none;
+}
 .ve-propertiesPanel .pt-tab-list {
   overflow: scroll;
 }

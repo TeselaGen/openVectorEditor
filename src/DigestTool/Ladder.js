@@ -19,8 +19,12 @@ export default class Ladder extends React.Component {
     let { gelDigestEnzymes = [], fragments = [], fragmentsNum } = this.props;
 
     let menuItems = [
-      { value: "1", label: "GeneRuler 1kb + DNA" },
-      { value: "2", label: "GeneRuler 100bp + DNA" }
+      { value: "geneRuler1KB", label: "GeneRuler 1kb + DNA 75-20,000 bp" },
+      { value: "geneRuler100BP", label: "GeneRuler 100bp + DNA 100-3000 bp" },
+      {
+        value: "geneRuler100LowRange",
+        label: "GeneRuler 100bp + DNA 100-3000 bp"
+      }
     ];
 
     let fragmentsCount;
@@ -51,15 +55,8 @@ export default class Ladder extends React.Component {
 
     return (
       <div>
-        <Select
-          onChange={this.handleChange}
-          options={menuItems}
-          style={{ backgroundColor: "#E0E0E0", zIndex: "20", width: "100%" }}
-          underlineStyle={{ opacity: 0 }}
-          iconStyle={{ fill: "black" }}
-          labelStyle={{ fontSize: 15, color: "black", lineHeight: "48px" }}
-        />
-
+        <Select onChange={this.handleChange} options={menuItems} />
+        <br />
         {fragmentsCount}
 
         <ul className={"ve-managerListLadder"}>
