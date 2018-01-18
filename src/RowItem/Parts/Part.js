@@ -73,7 +73,7 @@ function Part(props) {
   }
   let nameToDisplay = name;
   let textLength = name.length * fontWidth;
-  let textOffset = widthMinusOne / 4;
+  let textOffset = widthMinusOne / 2;
   if (textLength > widthMinusOne) {
     textOffset = 0;
     nameToDisplay = "";

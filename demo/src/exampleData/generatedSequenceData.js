@@ -1,6 +1,6 @@
 import {generateRandomRange} from "ve-range-utils";
 import objectid from "bson-objectid";
-let seqLen = 10000;
+let seqLen = 1000000;
 
 let exampleData = {
   // "sequence" : "gtggatgcatgtgtcatggtcat",

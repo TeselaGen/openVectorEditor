@@ -1,4 +1,4 @@
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon, IconClasses, Button } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 
@@ -37,16 +37,34 @@ export default {
 //   );
 // }
 
-function CutsiteToolDropDown({ editorName, annotationVisibilityShow }) {
+function CutsiteToolDropDown({
+  editorName,
+  toggleDropdown,
+  annotationVisibilityShow,
+  withDigestTool,
+  createNewDigest
+}) {
   return (
     <div className={"veToolbarCutsiteFilterHolder"}>
-      <h6>Filter Cut sites:</h6>
+      <h6>Filter Cut Sites:</h6>
       <CutsiteFilter
         editorName={editorName}
         onChangeHook={function() {
           annotationVisibilityShow("cutsites");
         }}
       />
+      {withDigestTool && (
+        <Button
+          onClick={() => {
+            createNewDigest();
+            toggleDropdown();
+          }}
+        >
+          {" "}
+          Run Virtual Digest{" "}
+        </Button>
+      )}
+
       {/* <Button onClick={() => {
 
       }}> Add Additional Enzymes</Button> */}

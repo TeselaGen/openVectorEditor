@@ -108,26 +108,37 @@ export default class StandaloneDemo extends React.Component {
         panelsShown: [
           [
             {
-              id: "sequence",
-              name: "Sequence Map",
-              active: true
-            }
+              // fullScreen: true,
+              active: true,
+              id: "circular",
+              name: "Plasmid",
+            },
           ],
           [
             {
-              id: "circular",
-              name: "Plasmid",
-              active: true
+              id: "sequence",
+              name: "Sequence Map",
+            },
+            {
+              id: "alignmentTool",
+              name: "New Alignment",
+              canClose: true
+            },
+            {
+              id: "digestTool",
+              name: "New Digest",
+              canClose: true
             },
             {
               id: "rail",
               name: "Linear Map",
-              active: false
             },
             {
               id: "properties",
               name: "Properties",
-              active: false
+              active: true,
+              
+              // active: true
             }
           ]
         ],

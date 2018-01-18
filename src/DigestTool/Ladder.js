@@ -1,84 +1,241 @@
+/* eslint-disable react/jsx-no-bind */
 import React from "react";
 import Select from "react-select";
-
-// import {List, DropDownMenu} from 'material-ui';
+import "./Ladder.css";
 
 export default class Ladder extends React.Component {
-  // handleChange = (event, index, value) => {
-  //     let geneRuler;
-  //     if (value.text === 'GeneRuler 100bp + DNA') {
-  //         geneRuler = "geneRuler100bp";
-  //     } else {
-  //         geneRuler = "geneRuler1kb";
-  //     }
-  //     this.setState({ geneRuler });
-  //     this.props.signals.createFragmentsLines({ geneRuler, enzymes: this.props.gelDigestEnzymes });
-  // };
-
+  constructor(props) {
+    super(props);
+    this.state = { highlightedFragment: undefined };
+  }
   render() {
-    let { gelDigestEnzymes = [], fragments = [], fragmentsNum } = this.props;
-
-    let menuItems = [
-      { value: "geneRuler1KB", label: "GeneRuler 1kb + DNA 75-20,000 bp" },
-      { value: "geneRuler100BP", label: "GeneRuler 100bp + DNA 100-3000 bp" },
-      {
-        value: "geneRuler100LowRange",
-        label: "GeneRuler 100bp + DNA 100-3000 bp"
-      }
-    ];
-
-    let fragmentsCount;
-    let pluralFragments = "fragments";
-    let pluralEnzymes = "enzymes";
-    if (gelDigestEnzymes.length === 0) {
-      fragmentsCount = (
-        <div className={"ve-fragmentsNumLabel"}>No digestion</div>
-      );
-    } else {
-      if (fragmentsNum === 1) {
-        pluralFragments = "fragment";
-      }
-      if (gelDigestEnzymes.length === 1) {
-        pluralEnzymes = "enzyme";
-      }
-      fragmentsCount = (
-        <div className={"ve-fragmentsNumLabel"}>
-          <div style={{ float: "left" }}>
-            {fragmentsNum} {pluralFragments}
-          </div>
-          <div style={{ float: "right" }}>
-            {gelDigestEnzymes.length} {pluralEnzymes}
-          </div>
-        </div>
-      );
+    let {
+      // gelDigestEnzymes = [],
+      boxHeight = 550,
+      lanes = [],
+      selectedFragment,
+      selectedLadder = "geneRuler1KB",
+      ladders = [
+        {
+          value: "geneRuler1KB",
+          label: "GeneRuler 1kb + DNA 75-20,000 bp",
+          markings: [
+            20000,
+            10000,
+            7000,
+            5000,
+            4000,
+            3000,
+            2000,
+            1500,
+            1000,
+            700,
+            500,
+            400,
+            300,
+            200,
+            75
+          ]
+        },
+        {
+          value: "geneRuler100BP",
+          label: "GeneRuler 100bp + DNA 100-3000 bp",
+          markings: [
+            3000,
+            2000,
+            1500,
+            1200,
+            1000,
+            900,
+            800,
+            700,
+            600,
+            500,
+            400,
+            300,
+            200,
+            100
+          ]
+        },
+        {
+          value: "geneRuler100LowRange",
+          label: "GeneRuler 100bp + DNA 100-3000 bp"
+        }
+      ]
+    } = this.props;
+    const { highlightedFragment } = this.state;
+    let ladderInfo;
+    ladders.forEach(ladder => {
+      if (ladder.value === selectedLadder)
+        ladderInfo = {
+          ...ladder,
+          markings: ladder.markings.sort((a, b) => {
+            return b - a;
+          })
+        };
+    });
+    if (!ladderInfo) {
+      return console.error("Uh oh there needs to be ladder info here!");
     }
 
+    const upperBoundary = ladderInfo.markings[0];
     return (
       <div>
-        <Select onChange={this.handleChange} options={menuItems} />
+        Ladder:
+        <Select
+          value={selectedLadder}
+          onChange={this.handleChange}
+          options={ladders}
+        />
         <br />
-        {fragmentsCount}
-
-        <ul className={"ve-managerListLadder"}>
-          {fragments.map((fragment, index) => (
+        <div
+          style={{ width: "fit-content", color: "white", background: "black" }}
+        >
+          <div style={{ padding: 3, paddingLeft: 7, width: 290 }}>
+            Highlighted Fragment:{" "}
+            {highlightedFragment ? highlightedFragment.size : "--"}{" "}
+          </div>
+          <div style={{ height: boxHeight }} className="ve-digest-container">
             <div
-              className={"ve-tooltip"}
-              key={index}
-              style={{
-                bottom: fragment.bottom,
-                left: fragment.left,
-                width: fragment.width
-              }}
+              style={{ width: 100 }}
+              className="ve-digest-column ve-digest-ladder"
             >
-              <span className={"ve-tooltiptext"}>{fragment.tooltip}</span>
-              <hr
-                style={{ margin: "0" }}
-                className={fragment.align === "left" ? "ve-left" : "ve-right"}
-              />
+              <div className="ve-digest-header"> </div>
+              {ladderInfo.markings.map((val, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      fontSize: 12,
+                      position: "absolute",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      color: "white",
+                      bottom: calculateOffset(boxHeight, val, upperBoundary) - 3 //subtract 3 to get the labels to align better
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "white",
+                        paddingLeft: 6,
+                        paddingRight: 4
+                      }}
+                    >
+                      {val}{" "}
+                    </span>
+                    <span style={{ color: "white", paddingRight: 4 }}>
+                      {" "}
+                      bp{" "}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </ul>
+            <div className="ve-digest-column ve-digest-ladder">
+              <div className="ve-digest-header">Ladder </div>
+              {ladderInfo.markings.map((val, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      fontSize: 12,
+                      position: "absolute",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      color: "white",
+                      height: "2px",
+                      background: "white",
+                      bottom: calculateOffset(boxHeight, val, upperBoundary)
+                    }}
+                  />
+                );
+              })}
+            </div>
+            {lanes.map((fragments, index) => {
+              return (
+                <Lane
+                  key={index}
+                  {...{
+                    onMouseOver: fragment => {
+                      this.setState({
+                        highlightedFragment: fragment
+                      });
+                    },
+                    onMouseOut: () => {
+                      this.setState({
+                        highlightedFragment: undefined
+                      });
+                    },
+                    laneNumber: index + 1,
+                    fragments,
+                    highlightedFragment,
+                    selectedFragment,
+                    boxHeight,
+                    upperBoundary
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   }
+}
+
+function Lane({
+  laneNumber,
+  onMouseOver,
+  onMouseOut,
+  fragments,
+  highlightedFragment,
+  selectedFragment,
+  boxHeight,
+  upperBoundary
+}) {
+  return (
+    <div
+      style={{ marginLeft: 20, marginRight: 20 }}
+      className="ve-digest-column ve-digest-lane"
+    >
+      <div className="ve-digest-header">Lane {laneNumber} </div>
+      {fragments.map((fragment, index) => {
+        const { size, id } = fragment;
+        const isHighlighted =
+          (highlightedFragment && id === highlightedFragment.id) ||
+          (selectedFragment && id === highlightedFragment.id);
+        return (
+          <div
+            onMouseOver={() => {
+              onMouseOver(fragment);
+            }}
+            onMouseOut={() => {
+              onMouseOut(fragment);
+            }}
+            onClick={() => {
+              fragment.onFragmentSelect();
+            }}
+            key={index}
+            style={{
+              fontSize: 12,
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              color: isHighlighted ? "#fdffdd" : "white",
+              width: "90%",
+              height: isHighlighted ? "3px" : "2px",
+              background: "white",
+              bottom: calculateOffset(boxHeight, size, upperBoundary)
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function calculateOffset(boxHeight, size, upperBoundary) {
+  return boxHeight * Math.log(size) / Math.log(upperBoundary) - 55;
 }

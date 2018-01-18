@@ -1,5 +1,4 @@
-import getAnnotationNameAndStartStopString
-  from "../utils/getAnnotationNameAndStartStopString";
+import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import React from "react";
 import orfFrameToColorMap from "../constants/orfFrameToColorMap";
 
@@ -31,7 +30,9 @@ function Orf(props) {
   if (rangeType === "end" || rangeType === "beginningAndEnd") {
     arrow = (
       <path
-        transform={`translate(${width - charWidth},0) scale(${charWidth / 64},${heightToUse / 64})`}
+        transform={`translate(${width -
+          Math.max(charWidth, 5)},0) scale(${Math.max(charWidth, 8) /
+          64},${heightToUse / 64})`}
         d={
           rangeType === "start"
             ? "M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z"
@@ -69,7 +70,8 @@ function Orf(props) {
       <path
         transform={
           (rangeType === "start" ? `translate(${charWidth},0)` : "") +
-            `scale(${(width - (rangeType === "middle" ? 0 : charWidth)) / 64},${heightToUse / 64})`
+          `scale(${(width - (rangeType === "middle" ? 0 : charWidth)) /
+            64},${heightToUse / 64})`
         }
         d="M0 40 L64 40 L64 20 L0 20 Z"
       />
@@ -80,10 +82,8 @@ function Orf(props) {
         {" "}
         {getAnnotationNameAndStartStopString(annotation, {
           startText: "Open Reading Frame:"
-        })}
-        {" "}
+        })}{" "}
       </title>
-
     </g>
   );
 }

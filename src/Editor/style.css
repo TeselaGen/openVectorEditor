@@ -16,3 +16,25 @@
 .tg-editor-container {
   display: flex;
 }
+.ve-clickable {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.ve-clickable:hover {
+  opacity: 1;
+}
+.ve-clickable-black {
+  cursor: pointer;
+  color: rgb(78, 78, 78);
+}
+.ve-clickable-black:hover {
+  color: black;
+}
+.ve-close-panel-button {
+  display: none;
+  z-index: 400;
+  color: grey;
+}
+.ve-panel:hover .ve-close-panel-button {
+  display: inherit;
+}

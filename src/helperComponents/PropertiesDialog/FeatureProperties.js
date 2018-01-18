@@ -3,6 +3,8 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { Popover } from "@blueprintjs/core";
+import ColorPicker from "./ColorPicker";
 
 class FeatureProperties extends React.Component {
   render() {
@@ -26,7 +28,7 @@ class FeatureProperties extends React.Component {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
-          withCheckboxes
+          // withCheckboxes
           noPadding
           maxHeight={400}
           formName={"featureProperties"}
@@ -35,7 +37,19 @@ class FeatureProperties extends React.Component {
           isInfinite
           schema={{
             fields: [
-              { path: "color", type: "string" },
+              {
+                path: "color",
+                type: "string",
+                render: color => {
+                  return (
+                    <ColorPickerPopover>
+                      <div
+                        style={{ height: 20, width: 20, background: color }}
+                      />
+                    </ColorPickerPopover>
+                  );
+                }
+              },
               { path: "name", type: "string" },
               { path: "type", type: "string" },
               {
@@ -96,3 +110,14 @@ class FeatureProperties extends React.Component {
 }
 
 export default withSelectedEntities("featureProperties")(FeatureProperties);
+
+const ColorPickerPopover = ({ readOnly, onColorSelect, children }) => {
+  return (
+    <Popover
+      isDisabled={readOnly}
+      content={<ColorPicker onColorSelect={onColorSelect} />}
+    >
+      {children}
+    </Popover>
+  );
+};

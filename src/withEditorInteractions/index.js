@@ -301,7 +301,8 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly,
-        updateSequenceData
+        updateSequenceData,
+        caretPositionUpdate
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
@@ -327,6 +328,12 @@ function VectorInteractionHOC(Component /* options */) {
           rangeToDelete
         );
         updateSequenceData(newSeqData);
+        caretPositionUpdate(
+          normalizePositionByRangeLength(
+            rangeToDelete.start,
+            newSeqData.sequence.length
+          )
+        );
         window.toastr.success("Sequence Deleted Successfully");
       }
     }
@@ -651,13 +658,13 @@ function VectorInteractionHOC(Component /* options */) {
       const { propertiesViewToggle } = this.props;
       return [
         ...this.getCreateItems(),
-        ...this.getViewFrameTranslationsItems(),
-        {
-          text: "Toggle Properties Panel",
-          onClick: function() {
-            propertiesViewToggle();
-          }
-        }
+        ...this.getViewFrameTranslationsItems()
+        // {
+        //   text: "Toggle Properties Panel",
+        //   onClick: function() {
+        //     propertiesViewToggle();
+        //   }
+        // }
       ];
     };
 
@@ -824,19 +831,16 @@ function VectorInteractionHOC(Component /* options */) {
     };
     orfRightClicked = ({ annotation }) => {
       const {
-        upsertTranslation,
+        // upsertTranslation,
         propertiesViewOpen,
-        propertiesViewTabUpdate
+        propertiesViewTabUpdate,
+        annotationVisibilityToggle
       } = this.props;
       return [
         {
-          text: "View Translation",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
+          text: "Toggle Orf Translations",
+          onClick: () => {
+            annotationVisibilityToggle("orfTranslations");
           }
         },
         {
@@ -855,8 +859,26 @@ function VectorInteractionHOC(Component /* options */) {
         // readOnly,
         deleteTranslation,
         propertiesViewOpen,
-        propertiesViewTabUpdate
+        propertiesViewTabUpdate,
+        annotationVisibilityToggle
       } = this.props;
+      if (annotation.isOrf) {
+        return [
+          {
+            text: "Hide Orf Translations",
+            onClick: () => {
+              annotationVisibilityToggle("orfTranslations");
+            }
+          },
+          {
+            text: "View Orf Properties",
+            onClick: function() {
+              propertiesViewOpen();
+              propertiesViewTabUpdate("orfs");
+            }
+          }
+        ];
+      }
       return [
         {
           text: "Delete Translation",

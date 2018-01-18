@@ -90,11 +90,32 @@ const exampleEditorState = {
     cutsites: true,
     primers: true,
   },
-  panelsShown: {
-    sequence: true,
-    circular: true,
-    rail: true
-  },
+  panelsShown: [
+    [
+      {
+        id: "sequence",
+        name: "Sequence Map",
+        active: true
+      }
+    ],
+    [
+      {
+        id: "circular",
+        name: "Plasmid",
+        active: true
+      },
+      {
+        id: "rail",
+        name: "Linear Map",
+        active: false
+      },
+      {
+        id: "properties",
+        name: "Properties",
+        active: false
+      }
+    ]
+  ],
   restrictionEnzymes: {
     filteredRestrictionEnzymes: [
       {

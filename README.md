@@ -130,11 +130,32 @@ editor.updateEditor({
 	annotationVisibility: {
 		features: false
 	},
-	panelsShown: {
-		circular: false,
-		sequence: true,
-		rail: true,
-	},
+	panelsShown: [
+		[
+			{
+				id: "sequence",
+				name: "Sequence Map",
+				active: true
+			}
+		],
+		[
+			{
+				id: "circular",
+				name: "Plasmid",
+				active: true
+			},
+			{
+				id: "rail",
+				name: "Linear Map",
+				active: false
+			},
+			{
+				id: "properties",
+				name: "Properties",
+				active: false
+			}
+		]
+	],
 	caretPosition: 10,
 	...additional editor props can be passed here [Example Editor State](./editorStateExample.js)
 });	

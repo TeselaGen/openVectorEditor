@@ -1,0 +1,23 @@
+.ve-digest-markings {
+}
+.ve-digest-ladder {
+}
+.ve-digest-lane {
+  /* background: lightgrey */
+}
+.ve-digest-column {
+  position: relative;
+  width: 90px;
+}
+.ve-digest-header {
+  height: 40px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+.ve-digest-container {
+  display: flex;
+  width: fit-content;
+  /* background: #fdffdd */
+
+  /* flex-direction: column; */
+}

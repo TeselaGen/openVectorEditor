@@ -130,7 +130,7 @@ const DrawCutsiteLabel = withHover(
       <div>
         <div
           {...hoverActions}
-          className={className + " ve-monospace-font"}
+          className={className + " veCutsiteLabel ve-monospace-font"}
           onClick={function(event) {
             cutsiteClicked({ event, annotation });
             event.stopPropagation();
@@ -144,6 +144,7 @@ const DrawCutsiteLabel = withHover(
             // left: xStart,
             position: "absolute",
             bottom: height,
+            ...(hovered && { fontWeight: "bold" }),
             // display: 'inline-block',
             // position: (relative) ? 'relative' : 'absolute',
             // // float: 'left',

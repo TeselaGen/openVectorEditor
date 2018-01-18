@@ -1,3 +1,4 @@
+// import { Popover, Menu, MenuItem, Position } from "@blueprintjs/core";
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
@@ -37,13 +38,25 @@ import StatusBar from "../StatusBar";
 import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
-import { PropertiesInner } from "../helperComponents/PropertiesDialog";
+import Properties from "../helperComponents/PropertiesDialog";
 import MenuBar from "../MenuBar";
 import "./style.css";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { DigestTool } from "../DigestTool/DigestTool";
+import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
+// import sequence from "../redux/sequenceData/sequence";
+import AlignmentTool from "../AlignmentTool/index";
+import bpContext from "../withEditorInteractions/bpContext";
+
+const panelMap = {
+  circular: CircularView,
+  sequence: RowView,
+  rail: LinearView,
+  alignmentTool: AlignmentTool,
+  digestTool: DigestTool,
+  properties: Properties
+};
 
 // fake data generator
 // a little function to help us with reordering the result
@@ -379,11 +392,9 @@ export class Editor extends React.Component {
   render() {
     const {
       doNotUseAbsolutePosition = false,
-      PropertiesProps = {},
+
       ToolBarProps = {},
-      CircularViewProps = {},
-      RowViewProps = {},
-      LinearViewProps = {},
+
       StatusBarProps = {},
       FindBarProps = {},
       editorName,
@@ -393,70 +404,109 @@ export class Editor extends React.Component {
       showMenuBar,
       updateSequenceData,
       setPanelAsActive,
+      togglePanelFullScreen,
+      collapseSplitScreen,
+      expandTabToSplitScreen,
       closePanel
       // ...rest
     } = this.props;
-    let editorDimensions = {
-      height
-    };
+
     const sharedProps = {
       editorName,
       ...this.props
     };
     const { tabDragging } = this.state;
+    const windowDimensions = {
+      width: document.body.getBoundingClientRect().width,
+      height: 700
+      //  document.body.getBoundingClientRect().height
+    };
 
     const panelsToShow = this.getPanelsToShow();
+    let isOnePanelFullScreen;
+    map(panelsToShow, panelGroup => {
+      panelGroup.forEach(({ fullScreen }) => {
+        if (fullScreen) isOnePanelFullScreen = true;
+      });
+    });
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
       // let activePanelId
       let activePanelId;
-      panelGroup.forEach(({ id, active }) => {
+      let isFullScreen;
+      panelGroup.forEach(({ id, active, fullScreen }) => {
+        if (fullScreen) isFullScreen = true;
         if (active) {
           activePanelId = id;
         }
       });
-      let panel;
-
-      if (activePanelId === "circular") {
-        panel = (
-          <CircularView
-            key="circularView"
-            {...sharedProps}
-            {...CircularViewProps}
-            {...editorDimensions}
-          />
-        );
-      } else if (activePanelId === "sequence") {
-        panel = (
-          <RowView
-            key="rowView"
-            {...sharedProps}
-            {...RowViewProps}
-            {...editorDimensions}
-          />
-        );
-      } else if (activePanelId === "rail") {
-        panel = (
-          <LinearView
-            key="linearView"
-            {...sharedProps}
-            {...LinearViewProps}
-            {...editorDimensions}
-          />
-        );
-      } else if (activePanelId === "digestTool") {
-        panel = (
-          <DigestTool key="DigestTool" {...sharedProps} {...editorDimensions} />
-        );
-      } else if (activePanelId === "properties") {
-        panel = (
-          <PropertiesInner
-            key={"Properties"}
-            {...{ ...this.props, height, ...PropertiesProps }}
-          />
-        );
-      } else {
-        panel = <div> No Panel Found!</div>;
+      if (isOnePanelFullScreen && !isFullScreen) {
+        return;
       }
+
+      let editorDimensions = {
+        height,
+        ...(isFullScreen && {
+          ...windowDimensions,
+          dimensions: windowDimensions
+        })
+      };
+
+      const Panel = panelMap[activePanelId];
+      let panel = Panel ? (
+        <Panel key={activePanelId} {...sharedProps} {...editorDimensions} />
+      ) : (
+        <div> No Panel Found!</div>
+      );
+
+      // if (activePanelId === "circular") {
+      //   panel = (
+      //     <CircularView
+      //       key="circularView"
+      //       {...sharedProps}
+      //       {...CircularViewProps}
+      //       {...editorDimensions}
+      //     />
+      //   );
+      // } else if (activePanelId === "sequence") {
+      //   panel = (
+      //     <RowView
+      //       key="rowView"
+      //       {...sharedProps}
+      //       {...RowViewProps}
+      //       {...editorDimensions}
+      //     />
+      //   );
+      // } else if (activePanelId === "rail") {
+      //   panel = (
+      //     <LinearView
+      //       key="linearView"
+      //       {...sharedProps}
+      //       {...LinearViewProps}
+      //       {...editorDimensions}
+      //     />
+      //   );
+      // }
+      // else if (activePanelId === "alignmentTool") {
+      //   panel = (
+      //     <AlignmentTool key="AlignmentTool" {...sharedProps} {...editorDimensions} />
+      //   );
+      // }
+      // else if (activePanelId === "digestTool") {
+      //   panel = (
+      //     <DigestTool key="DigestTool" {...sharedProps} {...editorDimensions} />
+      //   );
+      // }
+      // else if (activePanelId === "properties") {
+      //   panel = (
+      //     <PropertiesInner
+      //       key={"Properties"}
+      //       {...{ ...this.props, height, ...PropertiesProps }}
+      //     />
+      //   );
+      // } else {
+      //   panel = <div> No Panel Found!</div>;
+      // }
+
       const toReturn = [];
       if (index > 0) {
         toReturn.push(
@@ -474,8 +524,61 @@ export class Editor extends React.Component {
           propagateDimensions={true}
           renderOnResizeRate={50}
           renderOnResize={true}
-          className="left-pane"
+          className="left-panel ve-panel"
         >
+          {isFullScreen ? (
+            <div
+              onClick={() => {
+                togglePanelFullScreen(activePanelId);
+              }}
+              className={"ve-clickable ve-close-panel-button pt-icon-minimize"}
+              style={{
+                zIndex: 15001,
+                position: "fixed",
+                top: 15,
+                right: 15
+              }}
+            />
+          ) : (
+            <div
+              className={
+                "ve-clickable-black ve-close-panel-button pt-icon-menu"
+              }
+              onClick={e => {
+                bpContext(
+                  [
+                    {
+                      onClick: () => {
+                        panelsToShow.length > 1
+                          ? collapseSplitScreen(activePanelId)
+                          : expandTabToSplitScreen(activePanelId);
+                      },
+                      text:
+                        panelsToShow.length > 1
+                          ? "Collapse Split Screen"
+                          : "View as Split Screen"
+                    },
+                    {
+                      onClick: () => {
+                        togglePanelFullScreen(activePanelId);
+                      },
+                      text: "Make Tab Fullscreen"
+                    }
+                  ],
+                  e
+                );
+              }}
+              style={{
+                background: "white",
+                padding: "4px",
+                top: "5px",
+                paddingRight: "5px",
+                right: "0px",
+                position: "absolute"
+              }}
+            />
+          )}
+
           {[
             // <Tabs2
             //   key={activePanelId}
@@ -548,7 +651,9 @@ export class Editor extends React.Component {
                                       closePanel(id);
                                     }}
                                     style={{ paddingLeft: 5 }}
-                                    className={"pt-icon-small-cross"}
+                                    className={
+                                      "ve-clickable pt-icon-small-cross"
+                                    }
                                   />
                                 )}
                               </div>
@@ -587,8 +692,22 @@ export class Editor extends React.Component {
                 )}
               </Droppable>
             ]),
-
-            panel
+            isFullScreen ? (
+              <div
+                style={{
+                  background: "white",
+                  zIndex: 15000,
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  ...windowDimensions
+                }}
+              >
+                {panel}
+              </div>
+            ) : (
+              panel
+            )
           ]}
         </ReflexElement>
       );
@@ -637,7 +756,7 @@ export class Editor extends React.Component {
           </button> */}
           <Dialogs editorName={editorName} />
           {showMenuBar && <MenuBar />}
-          <ToolBar {...sharedProps} {...ToolBarProps} />
+          <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
 
           <div
             style={{ position: "relative" }}

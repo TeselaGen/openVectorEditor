@@ -19,6 +19,7 @@ import * as panelsShown from "./panelsShown";
 import * as lineageLines from "./lineageLines";
 import * as copyOptions from "./copyOptions";
 import * as frameTranslations from "./frameTranslations";
+import * as digestTool from "./digestTool";
 import * as readOnly from "./readOnly";
 import * as propertiesTool from "./propertiesTool";
 import * as findTool from "./findTool";
@@ -46,6 +47,7 @@ export const actions = {
   ...replacementLayers,
   ...copyOptions,
   ...lineageLines,
+  ...digestTool,
   ...frameTranslations,
   ...readOnly,
   ...panelsShown,
@@ -75,6 +77,7 @@ let reducers = {
   selectionLayer: selectionLayer.default,
   copyOptions: copyOptions.default,
   lineageLines: lineageLines.default,
+  digestTool: digestTool.default,
   frameTranslations: frameTranslations.default,
   readOnly: readOnly.default,
   findTool: findTool.default,

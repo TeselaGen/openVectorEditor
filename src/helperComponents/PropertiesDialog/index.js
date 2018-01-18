@@ -13,6 +13,7 @@ import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
 
 import "./style.css";
+import { withProps } from "recompose";
 const allTabs = {
   features: FeatureProperties,
   parts: PartProperties,
@@ -87,7 +88,7 @@ export class PropertiesInner extends React.Component {
 }
 
 export default compose(
-  // withDialog(),
-  withDialog({ title: "Properties" /* isOpen: true */ }),
-  withEditorProps
+  withProps(({ PropertiesProps }) => {
+    return { ...PropertiesProps };
+  })
 )(PropertiesInner);

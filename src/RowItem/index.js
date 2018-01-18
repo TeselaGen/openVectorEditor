@@ -124,7 +124,7 @@ export class RowItem extends React.Component {
     if (!width) {
       width = bpsPerRow * charWidth;
     } else {
-      charWidth = width / bpsPerRow;
+      charWidth = width / Math.max(bpsPerRow, 1);
     }
     let rowContainerStyle = {
       position: "relative",

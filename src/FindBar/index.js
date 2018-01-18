@@ -24,9 +24,10 @@ export function FindBar({
   return (
     <div
       style={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
-        left: 25,
+        right: 25,
+        padding: 10,
         display: "flex",
         alignItems: "center",
         paddingBottom: 5,

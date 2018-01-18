@@ -1,4 +1,4 @@
-import { map } from "lodash";
+import { map, flatMap } from "lodash";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import { removeItem } from "../utils/arrayUtils";
@@ -9,10 +9,38 @@ import { removeItem } from "../utils/arrayUtils";
 // Actions
 // ------------------------------------
 export const panelsShownUpdate = createAction("PANELS_SHOWN_UPDATE");
+export const addPanelIfItDoesntAlreadyExist = createAction(
+  "addPanelIfItDoesntAlreadyExist"
+);
+export const togglePanelFullScreen = createAction("togglePanelFullScreen");
 export const closePanel = createAction("closePanel");
+export const _collapseSplitScreen = createAction("_collapseSplitScreen");
 export const setPanelAsActive = createAction("setPanelAsActive");
+export const expandTabToSplitScreen = createAction("expandTabToSplitScreen");
 export const propertiesViewOpen = (unused, meta) => {
   return setPanelAsActive("properties", meta);
+};
+export const createNewDigest = (unused, meta) => {
+  return dispatch => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          id: "digestTool",
+          name: "New Digest",
+          active: true,
+          canClose: true
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive("digestTool", meta));
+  };
+};
+export const collapseSplitScreen = (activePanelId, meta) => {
+  return dispatch => {
+    dispatch(_collapseSplitScreen(activePanelId, meta));
+    dispatch(setPanelAsActive(activePanelId, meta));
+  };
 };
 
 // ------------------------------------
@@ -20,6 +48,21 @@ export const propertiesViewOpen = (unused, meta) => {
 // ------------------------------------
 export default createReducer(
   {
+    [addPanelIfItDoesntAlreadyExist]: (state, panelToAdd) => {
+      if (
+        !state.some(panelGroup => {
+          return panelGroup.some(({ id }) => {
+            return id === panelToAdd.id;
+          });
+        })
+      ) {
+        return state.map((panelGroup, index) => {
+          if (index === 0) return [panelToAdd, ...panelGroup];
+          return panelGroup;
+        });
+      }
+      return state;
+    },
     [panelsShownUpdate]: (state, payload) => {
       return payload.filter(group => group.length); //filter out any empty groups
     },
@@ -41,6 +84,30 @@ export default createReducer(
       });
       return newState.filter(group => group.length); //filter out any empty groups
     },
+    [_collapseSplitScreen]: state => {
+      return [
+        flatMap(state, panelGroup => {
+          return panelGroup;
+        })
+      ];
+    },
+    [expandTabToSplitScreen]: (state, activePanelId) => {
+      let panelToMove;
+      return [
+        state[0]
+          .filter(panel => {
+            if (panel.id === activePanelId) {
+              panelToMove = panel;
+              return false;
+            }
+            return true;
+          })
+          .map((panel, i) => {
+            return i === 0 ? { ...panel, active: true } : panel;
+          }),
+        [panelToMove]
+      ];
+    },
     [setPanelAsActive]: (state, panelId) => {
       return map(state, panelGroup => {
         const isPanelInGroup = panelGroup.some(({ id }) => {
@@ -56,6 +123,22 @@ export default createReducer(
           };
         });
       });
+    },
+    [togglePanelFullScreen]: (state, panelId) => {
+      return map(state, panelGroup => {
+        const isPanelInGroup = panelGroup.some(({ id }) => {
+          return panelId === id;
+        });
+        return panelGroup.map(panel => {
+          return {
+            ...panel,
+            fullScreen:
+              panelId === panel.id
+                ? !panel.fullScreen
+                : isPanelInGroup ? false : panel.fullScreen
+          };
+        });
+      });
     }
   },
   [
@@ -63,7 +146,8 @@ export default createReducer(
       {
         id: "sequence",
         name: "Sequence Map",
-        active: true
+        active: true,
+        fullScreen: true
       }
     ],
     [
