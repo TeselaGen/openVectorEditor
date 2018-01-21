@@ -7411,7 +7411,7 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-raf-schd@^2.0.2:
+raf-schd@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.1.0.tgz#64d645723380ec25cc1714e909b953ef1cf254bf"
 
@@ -7503,15 +7503,15 @@ react-apollo@^2.0.4:
     lodash.pick "^4.4.0"
     prop-types "^15.5.8"
 
-react-beautiful-dnd@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-3.0.0.tgz#b07fb06111b7d6ae9908eb71033320fa849b1000"
+react-beautiful-dnd@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-4.0.1.tgz#3b0a49bf6be75af351176c904f012611dd292b81"
   dependencies:
     babel-runtime "^6.26.0"
     invariant "^2.2.2"
     memoize-one "^3.0.1"
     prop-types "^15.6.0"
-    raf-schd "^2.0.2"
+    raf-schd "^2.1.0"
     react-motion "^0.5.2"
     react-redux "^5.0.6"
     redux "^3.7.2"
@@ -8876,9 +8876,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^19.1.20:
-  version "19.1.20"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-19.1.20.tgz#689e4dee7999a3a64ad54eefbb12dc8d8212c64f"
+teselagen-react-components@^19.1.23:
+  version "19.1.23"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-19.1.23.tgz#5f2c472ff423b3869d36c9787e74c3870c95afa4"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.1"
@@ -9345,9 +9345,9 @@ ve-range-utils@^2.3.3:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.2.10:
-  version "3.2.10"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.10.tgz#4bbef5d697ca00dedbe3738d5a8b9b0753f96463"
+ve-sequence-utils@3.2.13:
+  version "3.2.13"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.13.tgz#8a686a4bd85b1509b5948caa7dc1fc3fe378861e"
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

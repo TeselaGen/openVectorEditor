@@ -1,10 +1,9 @@
 import React from "react";
 import { compose } from "redux";
 import { Tab2, Tabs2 } from "@blueprintjs/core";
-import { withDialog } from "teselagen-react-components";
 import { startCase } from "lodash";
-import withEditorProps from "../../withEditorProps";
 import FeatureProperties from "./FeatureProperties";
+import GeneralProperties from "./GeneralProperties";
 import CutsiteProperties from "./CutsiteProperties";
 import OrfProperties from "./OrfProperties";
 import GenbankView from "./GenbankView";
@@ -15,6 +14,7 @@ import PartProperties from "./PartProperties";
 import "./style.css";
 import { withProps } from "recompose";
 const allTabs = {
+  general: GeneralProperties,
   features: FeatureProperties,
   parts: PartProperties,
   primers: PrimerProperties,

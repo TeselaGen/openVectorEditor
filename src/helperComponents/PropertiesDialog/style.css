@@ -16,3 +16,16 @@
   display: flex;
   flex-direction: column;
 }
+.ve-flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: top;
+  min-height: 40px;
+  /* padding-top: 15px; */
+}
+/* .ve-column-right {
+  display: flex;
+  
+  align-items: center;
+} */

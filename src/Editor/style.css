@@ -38,3 +38,7 @@
 .ve-panel:hover .ve-close-panel-button {
   display: inherit;
 }
+
+.reflex-layout > .reflex-element {
+  overflow-y: inherit !important;
+}

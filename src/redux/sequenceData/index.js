@@ -4,6 +4,7 @@ import deepEqual from "deep-equal";
 import createAction from "../utils/createMetaAction";
 import features from "./features";
 import parts from "./parts";
+import name from "./name";
 import primers from "./primers";
 import sequence from "./sequence";
 import translations from "./translations";
@@ -15,6 +16,7 @@ import { createReducer } from "redux-act";
 export * from "./primers";
 export * from "./features";
 export * from "./parts";
+export * from "./name";
 // export * from './sequence';
 // export * from './circular';
 export * from "./translations";
@@ -47,7 +49,7 @@ export default function(state, action) {
     translations,
     size: (state = {}) => state,
     circular: createReducer({}, true),
-    name: createReducer({}, ""),
+    name,
     fromFileUpload: createReducer({}, false)
   })(stateToPass, action);
   if (deepEqual(newState, state)) {

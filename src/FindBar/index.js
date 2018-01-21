@@ -38,6 +38,18 @@ export function FindBar({
       <Button onClick={toggleFindTool} className={IconClasses.CROSS} />
       <InputGroup
         autoFocus
+        onKeyDown={e => {
+          e.persist();
+          if (e.metaKey && e.keyCode === 70) {
+            toggleFindTool();
+            e.preventDefault();
+            e.stopPropagation();
+          } else if (e.keyCode === 13) {
+            updateMatchNumber(
+              matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
+            );
+          }
+        }}
         rightElement={
           <span>
             <span style={{ marginRight: 3, color: "lightgrey" }}>

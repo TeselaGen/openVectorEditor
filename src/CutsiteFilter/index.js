@@ -32,12 +32,29 @@ export class CutsiteFilter extends React.Component {
       dispatch
       // ...rest
     } = this.props;
-
     // var {handleOpen, handleClose} = this
     let options = [
       ...map(specialCutsiteFilterOptions, opt => opt),
       ...Object.keys(cutsitesByName).map(function(key) {
-        return { label: key, value: key };
+        const cutNumber = cutsitesByName[key].length;
+        return {
+          label: (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between"
+              }}
+            >
+              {" "}
+              <div>{key}</div>{" "}
+              <div style={{ fontSize: 12 }}>
+                &nbsp;({cutNumber} cut{cutNumber > 1 && "s"}){" "}
+              </div>
+            </div>
+          ),
+          value: key
+        };
       })
     ];
     function openAddYourOwn() {

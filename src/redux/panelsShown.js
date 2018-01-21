@@ -105,7 +105,7 @@ export default createReducer(
           .map((panel, i) => {
             return i === 0 ? { ...panel, active: true } : panel;
           }),
-        [panelToMove]
+        [{ ...panelToMove, active: true }]
       ];
     },
     [setPanelAsActive]: (state, panelId) => {
@@ -132,6 +132,10 @@ export default createReducer(
         return panelGroup.map(panel => {
           return {
             ...panel,
+            active:
+              panelId === panel.id
+                ? true
+                : isPanelInGroup ? false : panel.active,
             fullScreen:
               panelId === panel.id
                 ? !panel.fullScreen

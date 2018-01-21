@@ -29,6 +29,6 @@ export default createMergedDefaultStateReducer(
   {
     propertiesSideBarOpen: false,
     // propertiesSideBarOpen: true,
-    tabId: "features"
+    tabId: "general"
   }
 );

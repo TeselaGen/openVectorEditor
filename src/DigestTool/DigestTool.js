@@ -1,9 +1,10 @@
 import React from "react";
 import { DataTable } from "teselagen-react-components";
+import { getCutsiteType } from "ve-sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
 import DigestContainer from "./DigestContainer";
-import getCutsiteType from "./getCutsiteType";
+// import getCutsiteType from "./getCutsiteType";
 import { Tabs2, Tab2, Button, InputGroup, Intent } from "@blueprintjs/core";
 
 export class DigestTool extends React.Component {

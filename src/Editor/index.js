@@ -78,7 +78,7 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   background: isDragging ? "lightgreen" : "none",
   cursor: "move",
   flex: "0 0 auto",
-  // styles we need to apply on draggables
+  // styles we need to apply on draggables,
   ...draggableStyle
 });
 const sharedListStyles = {
@@ -416,9 +416,15 @@ export class Editor extends React.Component {
       ...this.props
     };
     const { tabDragging } = this.state;
+    let w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName("body")[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
-      width: document.body.getBoundingClientRect().width,
-      height: 700
+      width: x,
+      height: y
       //  document.body.getBoundingClientRect().height
     };
 
@@ -457,6 +463,34 @@ export class Editor extends React.Component {
       ) : (
         <div> No Panel Found!</div>
       );
+
+      const showTabRightClickContextMenu = (e, id) => {
+        const tabIdToUse = id || activePanelId;
+        bpContext(
+          [
+            {
+              onClick: () => {
+                panelsToShow.length > 1
+                  ? collapseSplitScreen(tabIdToUse)
+                  : expandTabToSplitScreen(tabIdToUse);
+              },
+              text:
+                panelsToShow.length > 1
+                  ? "Collapse Split Screen"
+                  : "View as Split Screen"
+            },
+            {
+              onClick: () => {
+                togglePanelFullScreen(tabIdToUse);
+              },
+              text: "Make Tab Fullscreen"
+            }
+          ],
+          e
+        );
+        e.preventDefault();
+        e.stopPropagation();
+      };
 
       // if (activePanelId === "circular") {
       //   panel = (
@@ -544,30 +578,7 @@ export class Editor extends React.Component {
               className={
                 "ve-clickable-black ve-close-panel-button pt-icon-menu"
               }
-              onClick={e => {
-                bpContext(
-                  [
-                    {
-                      onClick: () => {
-                        panelsToShow.length > 1
-                          ? collapseSplitScreen(activePanelId)
-                          : expandTabToSplitScreen(activePanelId);
-                      },
-                      text:
-                        panelsToShow.length > 1
-                          ? "Collapse Split Screen"
-                          : "View as Split Screen"
-                    },
-                    {
-                      onClick: () => {
-                        togglePanelFullScreen(activePanelId);
-                      },
-                      text: "Make Tab Fullscreen"
-                    }
-                  ],
-                  e
-                );
-              }}
+              onClick={showTabRightClickContextMenu}
               style={{
                 background: "white",
                 padding: "4px",
@@ -600,9 +611,9 @@ export class Editor extends React.Component {
                 >
                   {/* {console.log('snapshot:',JSON.stringify(snapshot,null,4))}
                   {console.log('provided:',JSON.stringify(provided,null,4))} */}
-                  {panelGroup.map(({ id, name, canClose }) => {
+                  {panelGroup.map(({ id, name, canClose }, index) => {
                     return (
-                      <Draggable key={id} draggableId={id}>
+                      <Draggable key={id} index={index} draggableId={id}>
                         {(provided, snapshot) => (
                           <div
                             style={{
@@ -621,12 +632,24 @@ export class Editor extends React.Component {
                             }}
                           >
                             <div
+                              onContextMenu={e => {
+                                console.log("id:", id);
+                                showTabRightClickContextMenu(e, id);
+                              }}
                               ref={provided.innerRef}
-                              style={getItemStyle(
-                                provided.draggableStyle,
-                                snapshot.isDragging
-                              )}
+                              {...provided.draggableProps}
                               {...provided.dragHandleProps}
+                              style={{
+                                // some basic styles to make the items look a bit nicer
+                                userSelect: "none",
+                                // change background colour if dragging
+                                background: snapshot.isDragging
+                                  ? "lightgreen"
+                                  : "none",
+                                cursor: "move",
+                                flex: "0 0 auto",
+                                ...provided.draggableProps.style
+                              }}
                             >
                               <div
                                 style={{
