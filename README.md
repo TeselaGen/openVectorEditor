@@ -10,6 +10,7 @@ Demo: http://teselagen.github.io/openVectorEditor/
 Table of Contents
 <!-- TOC -->
 
+- [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Universal Build](#universal-build)
   - [Universal Installation](#universal-installation)
   - [Universal Usage:](#universal-usage)
@@ -23,6 +24,14 @@ Table of Contents
 <!-- /TOC -->
 
 
+# Upgrade Instructions for Major and Minor Versions
+This repo follows semantic versioning (major/minor/patche)
+
+The commit log can be seen here:
+https://github.com/TeselaGen/openVectorEditor/commits/master 
+
+Upgrade instructions for any major or minor change can be found here:
+[Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
 
 # Universal Build
 The universal build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
@@ -50,28 +59,38 @@ Or via CDN:
 <script>
 const editor = window.createVectorEditor(yourDomNodeHere, {
 	
-	onSave: function(event, sequenceData, editorState) {
+	onSave: function(event, copiedSequenceData, editorState) {
+          console.log("event:", event);
+          console.log("sequenceData:", copiedSequenceData);
+          console.log("editorState:", editorState);
+        },
+	onCopy: function(event, copiedSequenceData, editorState) {
+		//the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
 		console.log("event:", event);
-		console.log("sequenceData:", sequenceData);
+		console.log("sequenceData:", copiedSequenceData);
 		console.log("editorState:", editorState);
+		const clipboardData = event.clipboardData;
+		clipboardData.setData("text/plain", copiedSequenceData.sequence);
+		clipboardData.setData(
+			"application/json",
+			JSON.stringify(copiedSequenceData)
+		);
+		event.preventDefault();
+		//in onPaste in your app you can do:
+		// e.clipboardData.getData('application/json')
 	},
-	onCopy: function(event, sequenceData, editorState) {
-		onSave: function(event, copiedSequenceData, editorState) {
-			console.log("event:", event);
-			console.log("sequenceData:", copiedSequenceData);
-			console.log("editorState:", editorState);
-		},
-		onCopy: function(event, copiedSequenceData, editorState) {
-			console.log("event:", event);
-			console.log("sequenceData:", copiedSequenceData);
-			console.log("editorState:", editorState);
-			const clipboardData  = event.clipboardData
-			clipboardData.setData('text/plain', copiedSequenceData.sequence);
-			clipboardData.setData('application/json', JSON.stringify(copiedSequenceData));
-			event.preventDefault();
-			//in onPaste in your app you can do: 
-			// e.clipboardData.getData('application/json')
+	onPaste: function(event, editorState) {
+		//the onPaste here must return sequenceData in the teselagen data format
+		const clipboardData = event.clipboardData;
+		let jsonData = clipboardData.getData("application/json")
+		if (jsonData) {
+			jsonData = JSON.parse(jsonData)
+			if (jsonData.isJbeiSeq) {
+				jsonData = convertJbeiToTeselagen(jsonData)
+			}
 		}
+		const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
+		return sequenceData
 	},
 	rightClickOverrides: {
 		selectionLayerRightClicked: (items, {annotation}, props) => {
@@ -84,6 +103,7 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 	},
 	PropertiesProps: {
 		propertiesList: [
+			"general",
 			"features",
 			"parts",
 			"primers",
@@ -163,7 +183,6 @@ editor.updateEditor({
 ```
 
 
-
 # React Version
 ## Installation
 ```
@@ -178,6 +197,8 @@ install-peerdeps open-vector-editor --dev --only-peers
 The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
+
+
 
 #Development: 
 ## Prerequisites

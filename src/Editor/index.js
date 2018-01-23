@@ -70,28 +70,18 @@ const reorder = (list, startIndex, endIndex) => {
 
 // using some little inline style helpers to make the app look okay
 // const grid = 8;
-const getItemStyle = (draggableStyle, isDragging) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
+// const getItemStyle = (draggableStyle, isDragging) => ({
+//   // some basic styles to make the items look a bit nicer
+//   userSelect: "none",
 
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "none",
-  cursor: "move",
-  flex: "0 0 auto",
-  // styles we need to apply on draggables,
-  ...draggableStyle
-});
-const sharedListStyles = {
-  position: "absolute",
-  // top: "-20px",
-  height: "100%",
-  // background: "lightgreen",
-  width: "50%",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  wordWrap: "normal",
-  opacity: 0.5
-};
+//   // change background colour if dragging
+//   background: isDragging ? "lightgreen" : "none",
+//   cursor: "move",
+//   flex: "0 0 auto",
+//   // styles we need to apply on draggables,
+//   ...draggableStyle
+// });
+
 const getListStyle = isDraggingOver => {
   return {
     display: "flex",
@@ -109,8 +99,16 @@ const getListStyle = isDraggingOver => {
 
 const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
   return {
-    ...sharedListStyles,
-    ...(isDragging && { zIndex: 10000, background: "lightgrey" }),
+    position: "absolute",
+    // top: "-20px",
+    height: "100%",
+    // background: "lightgreen",
+    width: "50%",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    wordWrap: "normal",
+    opacity: 0,
+    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
     ...(isDraggingOver && { background: "lightblue" }),
     left: "50%"
   };
@@ -633,7 +631,6 @@ export class Editor extends React.Component {
                           >
                             <div
                               onContextMenu={e => {
-                                console.log("id:", id);
                                 showTabRightClickContextMenu(e, id);
                               }}
                               ref={provided.innerRef}
@@ -710,6 +707,17 @@ export class Editor extends React.Component {
                       tabDragging
                     )}
                   >
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "45%",
+                        top: "45%",
+                        fontSize: 26
+                      }}
+                    >
+                      {" "}
+                      + Add Tab
+                    </div>
                     {provided.placeholder}
                   </div>
                 )}

@@ -65,7 +65,13 @@ function Demo() {
           <Route exact path="/" render={() => <Redirect to="/Editor" />} />
           <Route
             render={() => {
-              return <Editor editorName="DemoEditor" />;
+              return <div   style={{height: 600, display: "flex", flexDirection: "column", padding: 40,}}  >
+                <div  style={{display: 'flex', flexDirection: 'column', flexWrap: 'wrap', justifyContent: 'center'}}  >
+
+                <Editor editorName="DemoEditor" />
+                </div>
+                <div style={{display: "flex", margin: 20}}     ></div>
+              </div>
             }}
             path="/Editor"
           />

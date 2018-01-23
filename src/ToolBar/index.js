@@ -59,7 +59,26 @@ export class ToolBar extends React.Component {
   };
 
   render() {
-    const { modifyTools, toolList = [], ...rest } = this.props;
+    const {
+      modifyTools,
+      toolList = [
+        "saveTool",
+        "downloadTool",
+        "importTool",
+        "undoTool",
+        "redoTool",
+        "cutsiteTool",
+        "featureTool",
+        // "oligoTool",
+        "orfTool",
+        // "viewTool",
+        "editTool",
+        "findTool",
+        "visibilityTool"
+        // "propertiesTool"
+      ],
+      ...rest
+    } = this.props;
 
     let items = toolList
       .map(toolName => {

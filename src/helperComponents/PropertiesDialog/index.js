@@ -30,7 +30,16 @@ export class PropertiesInner extends React.Component {
       propertiesViewTabUpdate,
       dimensions = {},
       height,
-      propertiesList,
+      propertiesList = [
+        "general",
+        "features",
+        "parts",
+        "primers",
+        "translations",
+        "cutsites",
+        "orfs",
+        "genbank"
+      ],
       closePanelButton
     } = this.props;
     const { width } = dimensions;

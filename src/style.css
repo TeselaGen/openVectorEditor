@@ -7,6 +7,10 @@
   font-size: 12px;
 }
 
+.veCircularView .ve-monospace-font {
+  font-size: 14px;
+}
+
 .ve-spacer {
   height: 15px;
 }
@@ -18,7 +22,7 @@
 .pt-overlay-content,
 .pt-overlay,
 .pt-dialog {
-  z-index: 4000 !important;
+  z-index: 40000 !important;
 }
 
 .openVeContextMenu .pt-key {

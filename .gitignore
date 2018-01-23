@@ -5,3 +5,4 @@
 /umd
 /demo/dist/
 npm-debug.log*
+/.cache
