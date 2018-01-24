@@ -449,6 +449,9 @@ export class Editor extends React.Component {
 
       let editorDimensions = {
         height,
+        dimensions: {
+          height
+        },
         ...(isFullScreen && {
           ...windowDimensions,
           dimensions: windowDimensions
