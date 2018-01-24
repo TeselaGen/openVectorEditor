@@ -132,6 +132,7 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 				"propertiesTool",
 			]
 		},
+		onDigestSave: () => {} //tnr: NOT YET IMPLEMENTED
 });
 editor.updateEditor({
 	//note, sequence data passed here will be coerced to fit the Teselagen data model

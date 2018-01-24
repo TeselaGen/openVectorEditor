@@ -14,26 +14,28 @@ export class DigestTool extends React.Component {
       editorName,
       height = "100%",
       lanes,
-      handleDigestSave,
-      digestTool: { selectedFragment }
+      digestTool: { selectedFragment },
+      onDigestSave
     } = this.props;
     const { selectedTab } = this.state;
     // console.log("rest:", rest);
     return (
       <div style={{ height, overflow: "auto", padding: 10 }}>
-        <div style={{ display: "flex", marginBottom: 10 }}>
-          <InputGroup placeholder={"My Digest"} />
-          <Button
-            intent={Intent.PRIMARY}
-            onClick={() => {
-              handleDigestSave({});
-            }}
-            style={{ marginLeft: 5 }}
-          >
-            {" "}
-            Save
-          </Button>
-        </div>
+        {onDigestSave && (
+          <div style={{ display: "flex", marginBottom: 10 }}>
+            <InputGroup placeholder={"My Digest"} />
+            <Button
+              intent={Intent.PRIMARY}
+              onClick={() => {
+                onDigestSave({});
+              }}
+              style={{ marginLeft: 5 }}
+            >
+              {" "}
+              Save
+            </Button>
+          </div>
+        )}
         Choose your enzymes:
         <CutsiteFilter editorName={editorName} />
         <br />

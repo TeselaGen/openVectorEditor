@@ -3,7 +3,7 @@ import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import { removeItem } from "../utils/arrayUtils";
 
-// import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+//manages which tab panels are shown in the editor
 
 // ------------------------------------
 // Actions
