@@ -10,7 +10,7 @@ import { compose } from "redux"; //tnr: this can be removed once https://github.
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
-} from "react-reflex";
+} from "tg-react-reflex";
 /* eslint-enable */
 
 import {
@@ -493,55 +493,6 @@ export class Editor extends React.Component {
         e.stopPropagation();
       };
 
-      // if (activePanelId === "circular") {
-      //   panel = (
-      //     <CircularView
-      //       key="circularView"
-      //       {...sharedProps}
-      //       {...CircularViewProps}
-      //       {...editorDimensions}
-      //     />
-      //   );
-      // } else if (activePanelId === "sequence") {
-      //   panel = (
-      //     <RowView
-      //       key="rowView"
-      //       {...sharedProps}
-      //       {...RowViewProps}
-      //       {...editorDimensions}
-      //     />
-      //   );
-      // } else if (activePanelId === "rail") {
-      //   panel = (
-      //     <LinearView
-      //       key="linearView"
-      //       {...sharedProps}
-      //       {...LinearViewProps}
-      //       {...editorDimensions}
-      //     />
-      //   );
-      // }
-      // else if (activePanelId === "alignmentTool") {
-      //   panel = (
-      //     <AlignmentTool key="AlignmentTool" {...sharedProps} {...editorDimensions} />
-      //   );
-      // }
-      // else if (activePanelId === "digestTool") {
-      //   panel = (
-      //     <DigestTool key="DigestTool" {...sharedProps} {...editorDimensions} />
-      //   );
-      // }
-      // else if (activePanelId === "properties") {
-      //   panel = (
-      //     <PropertiesInner
-      //       key={"Properties"}
-      //       {...{ ...this.props, height, ...PropertiesProps }}
-      //     />
-      //   );
-      // } else {
-      //   panel = <div> No Panel Found!</div>;
-      // }
-
       const toReturn = [];
       if (index > 0) {
         toReturn.push(
@@ -557,6 +508,7 @@ export class Editor extends React.Component {
           key={index}
           minSize="100"
           propagateDimensions={true}
+          resizeHeight={false}
           renderOnResizeRate={50}
           renderOnResize={true}
           className="left-panel ve-panel"

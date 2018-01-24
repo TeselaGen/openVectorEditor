@@ -73,6 +73,7 @@
     "reselect": "^3.0.1",
     "teselagen-interval-tree": "1.1.1",
     "tether": "^1.4.1",
+    "tg-react-reflex": "^2.0.10",
     "uniqid": "^4.1.1",
     "uuidv4": "^0.5.0"
   },

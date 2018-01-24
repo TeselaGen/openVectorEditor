@@ -974,7 +974,7 @@ function VectorInteractionHOC(Component /* options */) {
         closePanelButton,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        fitHeight
+        fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
 
       //do this in two steps to determine propsToPass
