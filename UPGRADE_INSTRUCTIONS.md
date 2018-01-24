@@ -1,5 +1,20 @@
 # Upgrade instructions for Major and Minor versions
 Not every minor version will be documented here, only ones where user configuration is necessary to implement the feature. 
+## v1.1.1
+- adding a general properties tab
+access it by adding "general" to the propertiesList
+```
+propertiesList: [
+			"general",
+			"features",
+			"parts",
+			"primers",
+			"translations",
+			"cutsites",
+			"orfs",
+			"genbank"
+		]
+```
 
  ## v1.0 
 - panelsShown api changed: 
