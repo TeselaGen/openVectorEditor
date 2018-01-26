@@ -21,3 +21,7 @@
 
   /* flex-direction: column; */
 }
+.ve-digest-fragment-tooltip {
+  height: 100%;
+  width: 100%;
+}

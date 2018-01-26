@@ -2,6 +2,7 @@
 import React from "react";
 import Select from "react-select";
 import "./Ladder.css";
+import { Tooltip } from "@blueprintjs/core";
 
 export default class Ladder extends React.Component {
   constructor(props) {
@@ -208,6 +209,7 @@ function Lane({
           (selectedFragment && id === highlightedFragment.id);
         return (
           <div
+            key={index}
             onMouseOver={() => {
               onMouseOver(fragment);
             }}
@@ -217,7 +219,6 @@ function Lane({
             onClick={() => {
               fragment.onFragmentSelect();
             }}
-            key={index}
             style={{
               fontSize: 12,
               position: "absolute",
@@ -229,7 +230,25 @@ function Lane({
               background: "white",
               bottom: calculateOffset(boxHeight, size, upperBoundary)
             }}
-          />
+          >
+            <Tooltip
+              className={"ve-digest-fragment-tooltip"}
+              content={
+                <div>
+                  {fragment.cut1.restrictionEnzyme.name} &nbsp; -- &nbsp;
+                  {fragment.cut2.restrictionEnzyme.name} &nbsp; &nbsp;
+                  {fragment.size} bps
+                </div>
+              }
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: isHighlighted ? "3px" : "2px"
+                }}
+              />
+            </Tooltip>
+          </div>
         );
       })}
     </div>
