@@ -72,11 +72,14 @@ function withHover(Component) {
 }
 
 export default compose(
-  connect(function(state, { id, editorName = "StandaloneEditor" }) {
+  connect(function(state, { id, editorName = "StandaloneEditor", annotation }) {
     let editorState = state.VectorEditor[editorName] || {};
     let isIdHashmap = typeof id === "object";
     let hoveredId = editorState.hoveredAnnotation;
-    let hovered = isIdHashmap ? id[hoveredId] : hoveredId === id;
+    let hovered =
+      (annotation && annotation.isHovered) || isIdHashmap
+        ? id[hoveredId]
+        : hoveredId === id;
     let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
     /* eslint-disable */
 
