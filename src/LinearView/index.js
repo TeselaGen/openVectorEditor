@@ -135,7 +135,9 @@ export class LinearView extends React.Component {
               );
             }}
           >
-            <SequenceName {...{ sequenceName, sequenceLength }} />
+            {!hideName && (
+              <SequenceName {...{ sequenceName, sequenceLength }} />
+            )}
             <RowItem
               {...{
                 ...rest,

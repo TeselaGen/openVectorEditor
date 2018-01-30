@@ -133,6 +133,7 @@ export class CircularView extends React.Component {
     } = annotationVisibility;
     let {
       features: showFeatureLabels = true,
+      parts: showPartLabels = true,
       cutsites: showCutsiteLabels = true
     } = annotationLabelVisibility;
     let {
@@ -290,6 +291,7 @@ export class CircularView extends React.Component {
 
         const results = Parts({
           radius,
+          showPartLabels,
           partClicked,
           partRightClicked,
           parts: annotationsToPass,
@@ -575,26 +577,28 @@ export class CircularView extends React.Component {
           onStop={editorDragStopped}
         >
           <div>
-            <div
-              style={{
-                position: "absolute",
-                width,
-                height,
-                pointerEvents: "none"
-              }}
-            >
+            {!hideName && (
               <div
-                key="circViewSvgCenterText"
-                className={"veCircularViewMiddleOfVectorText"}
-                style={{ width: innerRadius, textAlign: "center" }}
+                style={{
+                  position: "absolute",
+                  width,
+                  height,
+                  pointerEvents: "none"
+                }}
               >
-                <span>{sequenceName} </span>
-                <br />
-                <span style={{ fontSize: 10 }}>
-                  ({sequenceLength + " bps"})
-                </span>
+                <div
+                  key="circViewSvgCenterText"
+                  className={"veCircularViewMiddleOfVectorText"}
+                  style={{ width: innerRadius, textAlign: "center" }}
+                >
+                  <span>{sequenceName} </span>
+                  <br />
+                  <span style={{ fontSize: 10 }}>
+                    ({sequenceLength + " bps"})
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
             <svg
               key="circViewSvg"
               onClick={event => {
