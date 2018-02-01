@@ -18,14 +18,17 @@ export default class ToolbarItem extends React.Component {
       isOpen,
       index,
       Icon,
+      dynamicIcon,
       onIconClick = noop,
       tooltip = "",
       tooltipToggled,
       dropdowntooltip = "",
       Dropdown: _DropDown,
       disabled,
+      renderIconAbove,
       noDropdownIcon,
       dropdownicon,
+      tooltipDisabled,
       toggled = false
     } = this.props;
     // const {
@@ -69,36 +72,48 @@ export default class ToolbarItem extends React.Component {
             <div
               className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}
             >
-              {Icon && (
-                <Tooltip2
-                  portalClassName="ve-toolbar-item-popover"
-                  tetherOptions={{
-                    constraints: [
-                      { attachment: "together", to: "scrollParent" }
-                    ]
-                  }}
-                  content={tooltipToDisplay}
-                >
-                  <div
-                    onClick={disabled ? noop : onIconClick}
-                    className={" veToolbarItem"}
-                  >
+              {renderIconAbove && (
+                <div>
+                  <div className={"veToolbarItem"}>
                     {index !== 0 && <div className={"veToolbarSpacer"} />}
-                    <div
-                      className={
-                        "veToolbarIcon " +
-                        (toggled ? " veToolbarItemToggled" : "")
-                      }
-                    >
-                      {React.isValidElement(Icon) ? (
-                        Icon
-                      ) : (
-                        <Icon toggleDropdown={this.toggleDropdown} />
-                      )}
-                    </div>
+
+                    {Icon}
                   </div>
-                </Tooltip2>
+                </div>
               )}
+
+              {Icon &&
+                !renderIconAbove && (
+                  <Tooltip2
+                    isDisabled={tooltipDisabled}
+                    portalClassName="ve-toolbar-item-popover"
+                    tetherOptions={{
+                      constraints: [
+                        { attachment: "together", to: "scrollParent" }
+                      ]
+                    }}
+                    content={tooltipToDisplay}
+                  >
+                    <div
+                      onClick={disabled ? noop : onIconClick}
+                      className={"veToolbarItem"}
+                    >
+                      {index !== 0 && <div className={"veToolbarSpacer"} />}
+                      <div
+                        className={
+                          "veToolbarIcon " +
+                          (toggled ? " veToolbarItemToggled" : "")
+                        }
+                      >
+                        {React.isValidElement(Icon) ? (
+                          Icon
+                        ) : (
+                          <Icon toggleDropdown={this.toggleDropdown} />
+                        )}
+                      </div>
+                    </div>
+                  </Tooltip2>
+                )}
               {Dropdown && !noDropdownIcon ? (
                 <Tooltip2
                   tetherOptions={{

@@ -16,11 +16,13 @@ import orfTool from "./orfTool";
 // import viewTool from "./viewTool";
 import editTool from "./editTool";
 import findTool from "./findTool";
+import inlineFindTool from "./inlineFindTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 // import propertiesTool from "./propertiesTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
+// import fullScreenTool from "./fullScreenTool";
 
 const allTools = {
   downloadTool,
@@ -32,11 +34,13 @@ const allTools = {
   // viewTool,
   editTool,
   findTool,
+  inlineFindTool,
   saveTool,
   visibilityTool,
   // propertiesTool,
   undoTool,
   redoTool
+  // fullScreenTool
 };
 
 // import get from 'lodash/get'
@@ -73,8 +77,10 @@ export class ToolBar extends React.Component {
         "orfTool",
         // "viewTool",
         "editTool",
-        "findTool",
+        // "findTool",
+        "inlineFindTool",
         "visibilityTool"
+        // "fullScreenTool"
         // "propertiesTool"
       ],
       ...rest
