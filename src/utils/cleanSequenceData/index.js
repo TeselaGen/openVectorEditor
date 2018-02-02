@@ -1,6 +1,18 @@
+// TNR DEPRECATED!!!!!
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
+// DEPRECATED
 import { featureColors } from "ve-sequence-utils";
-// import featureColorMap from "../../constants/featureColorMap.json";
-// import lruMemoize from "lru-memoize";
 import arrayToObjWithIds from "./arrayToObjWithIds";
 
 // TODO: figure out where to insert this validation exactly..

@@ -32,6 +32,8 @@ export class AddOrEditPartDialog extends React.Component {
             { label: "Positive", value: "true" },
             { label: "Negative", value: "false" }
           ]}
+          normalize={value => value === "true" || false}
+          format={value => (value ? "true" : "false")}
           name={"forward"}
           label={"Strand:"}
           defaultValue={"true"}
@@ -58,12 +60,7 @@ export class AddOrEditPartDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertPart(
-                convertRangeTo0Based({
-                  ...data,
-                  forward: data.forward !== "false"
-                })
-              );
+              upsertPart(convertRangeTo0Based(data));
 
               hideModal();
             })}

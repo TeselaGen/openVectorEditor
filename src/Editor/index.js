@@ -146,7 +146,7 @@ export class Editor extends React.Component {
         "Sorry, can't create new primers in read-only mode"
       );
     } else {
-      showAddOrEditPrimerDialog(rangeToUse);
+      showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
     }
   };
   handleNewFeature = () => {
@@ -167,7 +167,7 @@ export class Editor extends React.Component {
         "Sorry, can't create new features in read-only mode"
       );
     } else {
-      showAddOrEditFeatureDialog(rangeToUse);
+      showAddOrEditFeatureDialog({ ...rangeToUse, forward: true });
     }
   };
   handleNewPart = () => {
@@ -186,7 +186,7 @@ export class Editor extends React.Component {
     if (readOnly) {
       window.toastr.warning("Sorry, can't create new parts in read-only mode");
     } else {
-      showAddOrEditPartDialog(rangeToUse);
+      showAddOrEditPartDialog({ ...rangeToUse, forward: true });
     }
   };
 

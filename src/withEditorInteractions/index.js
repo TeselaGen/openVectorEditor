@@ -423,13 +423,14 @@ function VectorInteractionHOC(Component /* options */) {
         caretPosition,
         sequenceLength
       } = this.props;
-      const rangeToUse =
+      let rangeToUse =
         range ||
         (selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
             ? { start: caretPosition, end: caretPosition }
             : { start: 0, end: 0 });
+      rangeToUse = { ...rangeToUse, forward: true };
       return sequenceLength && readOnly
         ? []
         : [

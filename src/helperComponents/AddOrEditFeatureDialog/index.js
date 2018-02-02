@@ -40,15 +40,15 @@ export class AddOrEditFeatureDialog extends React.Component {
             { label: "Positive", value: "true" },
             { label: "Negative", value: "false" }
           ]}
+          normalize={value => value === "true" || false}
+          format={value => (value ? "true" : "false")}
           name={"forward"}
           label={"Strand:"}
-          defaultValue={"true"}
+          defaultValue={true}
         />
         <ReactSelectField
           defaultValue={"misc_feature"}
           options={featureTypes.map(type => {
-            console.log("type:", type);
-            console.log("featureColors[type]:", featureColors[type]);
             return {
               label: (
                 <div
@@ -96,12 +96,7 @@ export class AddOrEditFeatureDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertFeature(
-                convertRangeTo0Based({
-                  ...data,
-                  forward: data.forward !== "false"
-                })
-              );
+              upsertFeature(convertRangeTo0Based(data));
               hideModal();
             })}
             intent={Intent.PRIMARY}

@@ -1,7 +1,7 @@
+import { featureColors } from "ve-sequence-utils";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
-import featureColorMap from "../../constants/featureColorMap.json";
 
 // import './style.css'
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
@@ -34,8 +34,8 @@ function Features(props) {
     let annotation = annotationRange.annotation;
     let annotationColor = annotation.color || "#BBBBBB";
     if (annotation.type) {
-      if (featureColorMap[annotation.type]) {
-        annotationColor = featureColorMap[annotation.type];
+      if (featureColors[annotation.type]) {
+        annotationColor = featureColors[annotation.type];
       }
     }
     let result = getXStartAndWidthOfRowAnnotation(

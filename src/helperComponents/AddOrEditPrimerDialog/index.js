@@ -20,7 +20,7 @@ const { upsertPrimer } = actions;
 export class AddOrEditPrimerDialog extends React.Component {
   render() {
     const {
-      editorName,
+      // editorName,
       hideModal,
       sequenceLength = 100,
       handleSubmit,
@@ -35,6 +35,8 @@ export class AddOrEditPrimerDialog extends React.Component {
             { label: "Positive", value: "true" },
             { label: "Negative", value: "false" }
           ]}
+          normalize={value => value === "true" || false}
+          format={value => (value ? "true" : "false")}
           name={"forward"}
           label={"Strand:"}
         />
@@ -60,12 +62,7 @@ export class AddOrEditPrimerDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertPrimer(
-                convertRangeTo0Based({
-                  ...data,
-                  forward: data.forward !== "false"
-                })
-              );
+              upsertPrimer(convertRangeTo0Based(data));
 
               hideModal();
             })}
