@@ -1,4 +1,5 @@
-import cleanSequenceData from "./utils/cleanSequenceData";
+import { tidyUpSequenceData } from "ve-sequence-utils";
+// import cleanSequenceData from "./utils/cleanSequenceData";
 
 export default function updateEditor(store, editorName, initialValues = {}) {
   const { sequenceData = {}, ...rest } = initialValues;
@@ -6,7 +7,7 @@ export default function updateEditor(store, editorName, initialValues = {}) {
     ...rest,
     sequenceDataHistory: {
       past: [],
-      present: cleanSequenceData(sequenceData),
+      present: tidyUpSequenceData(sequenceData),
       future: []
     }
   };

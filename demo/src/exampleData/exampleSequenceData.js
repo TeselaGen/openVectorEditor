@@ -222,762 +222,768 @@
 
 // }
 
+
+
+// export default {
+// 	"primers": [
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "primer 1",
+// 					"start": 4,
+// 					"end": 400
+// 			}
+// 		],
+// 	"parts": [
+// 		{
+// 			name: "Test Part",
+// 			start: 50,
+// 			end: 5000,
+// 			strand: 1
+// 		}
+// 	],
+// 	"features": [
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "pBAD promoter",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff8000"
+// 							],
+// 							"ApEinfo_label": [
+// 									"BsaI"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"green"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "BsaI(2)",
+// 					"start": 2079,
+// 					"end": 2084
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": 1,
+// 					"name": "DVA02685_(ttgBC-3)_forward",
+// 					"start": 3790,
+// 					"end": 3807
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff80ff"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"#8080ff"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": -1,
+// 					"name": "ttgB",
+// 					"start": 3790,
+// 					"end": 4310
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "araC",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"green"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff8000"
+// 							],
+// 							"ApEinfo_label": [
+// 									"BsaI"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "BsaI(1)",
+// 					"start": 1583,
+// 					"end": 1588
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": -1,
+// 					"name": "DVA02679_(ttgBC-1)_reverse",
+// 					"start": 5739,
+// 					"end": 5774
+// 			},
+// 			{
+// 					"notes": {
+// 							"vntifkey": [
+// 									"43"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							]
+// 					},
+// 					"type": "terminator",
+// 					"strand": 1,
+// 					"name": "terminator",
+// 					"start": 7218,
+// 					"end": 7323
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": 1,
+// 					"name": "DVA02680_(pBbB8k-backbone)_forward",
+// 					"start": 5748,
+// 					"end": 5787
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							]
+// 					},
+// 					"type": "RBS",
+// 					"strand": 1,
+// 					"name": "RBS",
+// 					"start": 9505,
+// 					"end": 9524
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": 1,
+// 					"name": "DVA02699_(ttgB-1)_forward",
+// 					"start": 2221,
+// 					"end": 2210
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"green"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"cyan"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "S878P butanol var1-2 (T->C)",
+// 					"start": 3790,
+// 					"end": 3791
+// 			},
+// 			{
+// 					"notes": {
+// 							"vntifkey": [
+// 									"33"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							]
+// 					},
+// 					"type": "rep_origin",
+// 					"strand": -1,
+// 					"name": "rep_origin",
+// 					"start": 5921,
+// 					"end": 7211
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"30"
+// 							]
+// 					},
+// 					"type": "promoter",
+// 					"strand": -1,
+// 					"name": "promoter",
+// 					"start": 9315,
+// 					"end": 9343
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "araC promoter",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"#8080ff"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff80ff"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": -1,
+// 					"name": "ttgB",
+// 					"start": 1158,
+// 					"end": 2219
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"31"
+// 							]
+// 					},
+// 					"type": "protein_bind",
+// 					"strand": 1,
+// 					"name": "protein_bind",
+// 					"start": 9351,
+// 					"end": 9372
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "CAP site",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "operator O1",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "operator O2",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"#804040"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff8000"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": -1,
+// 					"name": "ttgC",
+// 					"start": 4307,
+// 					"end": 5761
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "dbl term",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": -1,
+// 					"name": "DVA02681_(pBbB8k-backbone)_reverse",
+// 					"start": 9489,
+// 					"end": 17
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"21"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "misc_feature",
+// 					"start": 5786,
+// 					"end": 5914
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"31"
+// 							]
+// 					},
+// 					"type": "protein_bind",
+// 					"strand": 1,
+// 					"name": "protein_bind",
+// 					"start": 9193,
+// 					"end": 9210
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"20"
+// 							]
+// 					},
+// 					"type": "misc_binding",
+// 					"strand": 1,
+// 					"name": "misc_binding",
+// 					"start": 9394,
+// 					"end": 9407
+// 			},
+// 			{
+// 					"notes": {
+// 							"vntifkey": [
+// 									"30"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							]
+// 					},
+// 					"type": "promoter",
+// 					"strand": 1,
+// 					"name": "promoter",
+// 					"start": 9440,
+// 					"end": 9467
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"cyan"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"green"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "M355L butanol var2 (A->C)",
+// 					"start": 2221,
+// 					"end": 2222
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "T0",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"#ff0080"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff8080"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": -1,
+// 					"name": "ttgA",
+// 					"start": 0,
+// 					"end": 1154
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": 1,
+// 					"name": "DVA02676_(ttgAB-1)_forward",
+// 					"start": 9503,
+// 					"end": 24
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff80ff"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"#8080ff"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": -1,
+// 					"name": "ttgB",
+// 					"start": 2554,
+// 					"end": 3788
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"cyan"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"green"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "I466F butanol var1 (A->T)",
+// 					"start": 2554,
+// 					"end": 2555
+// 			},
+// 			{
+// 					"notes": {
+// 							"note": [
+// 									"From pMBIS, introduced point mutation to increas"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "BBR1 ori",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"note": [
+// 									"encodes nptII (aka AphA, neoR), gives kan and ne"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "Kan/neoR",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": -1,
+// 					"name": "DVA02700_(ttgB-1)_(I466F)_reverse",
+// 					"start": 2535,
+// 					"end": 2570
+// 			},
+// 			{
+// 					"notes": {
+// 							"SerialCloner_Protect": [
+// 									"True"
+// 							],
+// 							"SerialCloner_Desc": [
+// 									"vntifkey"
+// 							],
+// 							"SerialCloner_Show": [
+// 									"True"
+// 							],
+// 							"SerialCloner_Arrow": [
+// 									"True"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"SerialCloner_Color": [
+// 									"&h84A4C0"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "RBS",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": -1,
+// 					"name": "DVA02677_(ttgAB-1)_(M355L)_reverse",
+// 					"start": 2197,
+// 					"end": 2246
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": -1,
+// 					"name": "DVA02684_(ttgAB-3)_(S878P)_reverse",
+// 					"start": 3771,
+// 					"end": 3815
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"22"
+// 							]
+// 					},
+// 					"type": "misc_marker",
+// 					"strand": -1,
+// 					"name": "misc_marker",
+// 					"start": 7349,
+// 					"end": 8143
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"pink"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"pink"
+// 							],
+// 							"featureType": [
+// 									"width"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "operator I2 and I1",
+// 					"start": 4,
+// 					"end": 4
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff8040"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"green"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": 1,
+// 					"name": "BsaI",
+// 					"start": 756,
+// 					"end": 761
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {}0"
+// 							],
+// 							"ApEinfo_fwdcolor": [
+// 									"#ff80ff"
+// 							],
+// 							"ApEinfo_revcolor": [
+// 									"#8080ff"
+// 							]
+// 					},
+// 					"type": "misc_feature",
+// 					"strand": -1,
+// 					"name": "ttgB",
+// 					"start": 2221,
+// 					"end": 2552
+// 			},
+// 			{
+// 					"notes": {
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							],
+// 							"vntifkey": [
+// 									"4"
+// 							]
+// 					},
+// 					"type": "CDS",
+// 					"strand": -1,
+// 					"name": "CDS",
+// 					"start": 8286,
+// 					"end": 9164
+// 			},
+// 			{
+// 					"notes": {
+// 							"vntifkey": [
+// 									"31"
+// 							],
+// 							"ApEinfo_graphicformat": [
+// 									"arrow_data {{0 1 2 0 0 -1} {} 0"
+// 							]
+// 					},
+// 					"type": "protein_bind",
+// 					"strand": 1,
+// 					"name": "protein_bind",
+// 					"start": 9403,
+// 					"end": 9441
+// 			},
+// 			{
+// 					"notes": {},
+// 					"type": "primer_bind",
+// 					"strand": 1,
+// 					"name": "DVA02701_(ttgB-2)_forward",
+// 					"start": 2539,
+// 					"end": 2576
+// 			}
+// 	],
+// 	"name": "pBbB8k-ttg",
+// 	"sequence": "atgcaattcaagccagccgttaccgctctggtttccgccgtcgccctggcaaccctgctcagtggctgtaagaaagaagaagcagcgccagcggcgcaggctcctcaggtcggcgtcgtgaccatccagccgcaagccttcaccctcacctcggaattgccggggcgaaccagtgcctaccgcgttgccgaagtgcgcccgcaggtcaacggcatcatcctcaagcgcctgttcaaggaaggcagtgaggtcaaggaaggccagcagttgtatcagatcgaccctgccgtgtacgaagccaccctggccaatgccaaggccaacctgctggctacacgctcactggccgaacgctacaagcaactgattgacgaacaggccgtctccaaacaggaatacgacgacgccaatgccaaacgattgcaggctgaggcttcgctcaagagcgcacagatcgacctgcgctacaccaaggttctggcgccgatcagcggccgtatcggtcgctcttcgttcaccgaaggtgcactggtgagcaacggtcagaccgacgccatggccaccatccagcagctcgatcctatttatgtcgacgttacccagtccaccgccgagctgctcaagctgcgccgtgacctggaaagcggccagttgcagaaggctggcaacaacgccgcctcggttcagctggtgctggaagacggcagcctgttcaagcaggaaggtcgcctggagttctccgaagtcgcggttgacgagaccaccggctcggtgaccctgcgcgcgctgttccccaaccccgatcacaccctgctgccaggcatgttcgtgcatgcgcggctcaaggccggggtcaacgccaacgccatcctggcaccgcaacaaggcgtgacccgcgacctcaagggcgcacccaccgccctggtggtcaaccaggagaacaaggttgaactgcgccagctcaaggccagccgcaccttgggtagcgactggctgatcgaggaaggcctcaacccgggtgaccgcctgatcaccgaagggctgcagtacgtgcgcccaggcgtcgaggtgaaggtcagcgatgccaccaacgtcaagaagccggccggccctgatcaggccaacgcggcgaaagcagacgccaaagcggagtaaaccatgtcgaagttctttatcgatcgcccgatcttcgcctgggtgatcgccttggtgatcatgctggtcggggccttgtctatcctgaagctgccgatcaaccagtaccccagtatcgcgccgccggccatcgccatcgccgtgacctacccgggcgcctcggcgcaaaccgtgcaggacaccgtggtgcaggtgatcgagcagcagctcaacggtatcgacaacctgcgttatgtgtcgtcggaaagtaactccgacggcagcatgaccattaccgccaccttcgaacagggcaccaaccccgacaccgcgcaggtacaggtacagaacaagctgaacctggccaccccgctgctgccgcaggaagtgcagcagcaaggtatccgcgtcaccaaagcagtgaagaacttcctgctggtgattggtctggtctccgaagacggcagcatgaccaaggacgacctggccaactacatcgtctcgaacatgcaggacccgatctcgcgtaccgccggtgtgggtgacttccaggtgttcggtgcgcagtacgccatgcgtatctggctcgatccggccaagctgaacaagttccagctgaccccggtcgacgtcaagaccgctgtggccgcacagaacgtgcaggtgtcttccggccagctcggcggcctgccagccctgccgggcacccagctgaacgccaccatcatcggcaagacccgcctgcaaaccgccgagcagttcgagagcattctgctcaaggtcaacaaagacggttcacaggtgcgcctgggtgacgtcgcccaagtaggcctggggggtgaaaactacgccgtcagcgcccagttcaacggcaagccggcttccggcctggcggtaaaactggcaaccggcgccaacgccctggacaccgccaaggcactgcgcgagaccatcaaaggcctggaaccgttcttcccgccgggggtcaaggcggtattcccgtatgacaccacccccgtggtcaccgaatcgatcagcggcgtgatccacaccctgatcgaagccgtggtgctggtgttcctggtgctgtacctgttcctgcagaacttccgcgccaccatcatcaccaccatgaccgtgccggtcgtattgctgggtaccttcggtatccttgccgccgcgggcttcagcatcaacaccctgaccatgttcgccatggtcctggccatcggcttgctggtggacgacgccatcgtcgtggtggagaacgtcgagcgggtcatgtccgaagaaggcttgccgcccaaggaagcgaccaagcgctcgatggaacagatccagggcgccctggtgggtatcgccctggtgctctcggccgtactgctgcccatggcgttctttggcggctccacgggtgtgttctaccggcagttctccatcaccatcgtctcggccatgggcctgtcggtgctggttgcgcttatcttcaccccggcgctctgcgcgaccatgctcaaaccgctgaagaagggcgagcaccacaccgccaaaggcggcttcttcggctggttcaaccgcaacttcgaccgcagcgtcaacggctacgagcgtagcgtaggcaccatcctgcgcaacaaggtgccattcctgctggcctatgcgctgatcgtggtcggcatgatctggctgttcgcccgcatccctaccgcgttcctgccagaagaagaccagggcgtactgttcgctcaggtgcagaccccggccggttccagtgccgagcgcacgcaggtcgtggtcgaccagatgcgtgaatacctgctcaaggacgaagccgataccgtatcgtcggtgttcacggtcaacggtttcaacttcgcaggccgcggccagagctcaggcatggccttcatcatgctcaaaccctgggatgaacgctcgaaggagaacagcgtgttcgccctggcccagcgcgcccagcagcacttcttcaccttccgtgatgcgatggtgttcgccttcgccccgccagcggtgcttgaactgggtaacgccaccggcttcgacgtgttccttcaggaccgcggcggtgtcggccacgcgaagttgatggaggcacgcaaccagttcctggccaaagctgcgcagagcaagatcctcagcgccgtgcgcccgaacggcctgaacgatgaaccgcagtaccaactgaccattgatgacgaacgtgccagcgccttgggcgtgaccattgccgacatcaacaacaccctgtcgattgccttgggtgccagctacgtcaacgacttcatcgaccgtggccgggtcaagaaggtgtacatccagggcgaacccagcgcgcggatgagcccggaagacctgcaaaaatggtacgtgcgcaacggcgcaggcgagatggtgccgttctcctccttcgccaaaggcgaatggacctacggttcgccgaagctgtcgcgttacaacggtgtcgaagcgatggaaatcctcggtgcaccggcgcctggttacagtaccggtgaagccatggccgaggtcgagcgcattgcaggcgagctgccgagcggtatcggcttctcctggaccggcatgtcctacgaggaaaaactctccggctcgcagatgccggcgctgttcgccctcccggtgctgttcgtgttcctgtgcctggcggccctgtacgaaagctggtcgattccgatcgctgtggtgctggtggtaccgctgggtatcatcggtgcgctgatcgccaccagcctgcgcggcctgtccaacgacgtgtacttcctggttggcctgttgaccaccatcggtcttgcggcgaaaaacgccattttgatcgtggaattcgccaaggagctgcacgaacaaggccgtagcctgtacgacgcagcgatcgaagcgtgccgcatgcgtctgcgcccgatcatcatgacctcgctggcgttcatcctgggcgtggtgccgttgaccatcgccagcggcgccggcgccggcagccagcacgccatcggtactggcgtgatcggcggtatgatcagtgcgaccgtgctggctatcttctgggtaccactgttcttcgtcgcagtgtcgtcgctgttcggcagcaaagagccggaaaaagacgtcacccctgaaaatccacgttatgaggctgggcaatgaccaagtctttgttgtccctggcggtaaccgctttcattcttggcggctgctcgctgatccctgactaccagaccccagaggcgccggtggctgcacagtggccgcaaggccctgcatactcgccgacgcaatcggcggatgttgccgctgctgaacagggctggcgccagttcttccacgacccggcgctgcaacagctgatccagacctcgctggtcaataaccgcgacctgcgcgtcgcggcgttgaacctcgacgcctaccgtgcgcaataccgcattcagcgcgccgacctgttcccggcggtttcggccaccggcagcggcagccgccagcgtgtcccggcgaacatgtcgcaaacaggcgaatctggcatcaccagccagtactcggccaccttgggcgtcagcgcctacgagctggacctgttcggccgcgtgcgcagcctgaccgagcaggccctggaaacctacctctccagcgagcaggcgcgtcgttccacgcaaatcgccctggtcgccagcgtggccaacgcctactacacctggcaggccgaccaggccctgttcaagctgaccgaagaaacgctgaagacctacgaggaaagctacaacctcacccgtcgcagcaacgaggtcggcgtggcgtcggccttggacgtcagccaggcgcgtaccgccgtggaaggcgccagggtcaagtactcgcagtaccagcgcctggtcgcccaggacgtcaacagcctgaccgtgctgctgggcaccggcattcctgccgacctggccaagccgctggagcttgatgccgaccaactggccgaagtaccggccggcctgccatcggatatccttcagcgtcgcccggacattcaggaagccgagcacctgctcaaggctgccaacgccaacattggtgcagcccgcgcagcgttcttcccgagcatcagcctgaccgcgaacgccggcagcctgagccccgacatgggccacctgttcgcgggcggccagggcacctggctgttccagccgcagatcaacctgccgatcttcaacgccggtagcctgaaagccagcctggactactcgaaaatccagaaggacatcaacgtcgccaagtacgaaaaaaccatccagacggccttccaggaagtctccgatggcctggcggcacgcaagaccttcgaagagcagttgcaggcccagcgcgacctggtgcaggcgaaccaggactactaccgcttggccgaacgccgttaccgcatcgggattgacagcaacctgaccttcctcgatgcccaacgcaacctgttcagtgcccagcaagcgctgatcggcgaccgcctgtcgcagctgaccagcgaggtcaacctgtacaaggcgcttggcggtggctggtacgagcagaccgggcaggccaaccagcaggcatcggtggaaacaccgaaaggctgaggatccaaactcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctaggctacagccgatagtctggaacagcgcacttacgggttgctgcgcaacccaagtgctaccggcgcggcagcgtgacccgtgtcggcggctccaacggctcgccatcgtccagaaaacacggctcatcgggcatcggcaggcgctgctgcccgcgccgttcccattcctccgtttcggtcaaggctggcaggtctggttccatgcccggaatgccgggctggctgggcggctcctcgccggggccggtcggtagttgctgctcgcccggatacagggtcgggatgcggcgcaggtcgccatgccccaacagcgattcgtcctggtcgtcgtgatcaaccaccacggcggcactgaacaccgacaggcgcaactggtcgcggggctggccccacgccacgcggtcattgaccacgtaggccaacacggtgccggggccgttgagcttcacgacggagatccagcgctcggccaccaagtccttgactgcgtattggaccgtccgcaaagaacgtccgatgagcttggaaagtgtcttctggctgaccaccacggcgttctggtggcccatctgcgccacgaggtgatgcagcagcattgccgccgtgggtttcctcgcaataagcccggcccacgcctcatgcgctttgcgttccgtttgcacccagtgaccgggcttgttcttggcttgaatgccgatttctctggactgcgtggccatgcttatctccatgcggtaggggtgccgcacggttgcggcaccatgcgcaatcagctgcaacttttcggcagcgcgacaacaattatgcgttgcgtaaaagtggcagtcaattacagattttctttaacctacgcaatgagctattgcggggggtgccgcaatgagctgttgcgtaccccccttttttaagttgttgatttttaagtctttcgcatttcgccctatatctagttctttggtgcccaaagaagggcacccctgcggggttcccccacgccttcggcgcggctccccctccggcaaaaagtggcccctccggggcttgttgatcgactgcgcggccttcggccttgcccaaggtggcgctgcccccttggaacccccgcactcgccgccgtgaggctcggggggcaggcgggcgggcttcgcccttcgactgcccccactcgcataggcttgggtcgttccaggcgcgtcaaggccaagccgctgcgcggtcgctgcgcgagccttgacccgccttccacttggtgtccaaccggcaagcgaagcgcgcaggccgcaggccggaggcactagtgcttggattctcaccaataaaaaacgcccggcggcaaccgagcgttctgaacaaatccagatggagttctgaggtcattactggatctatcaacaggagtccaagcgagctctcgaaccccagagtcccgctcagaagaactcgtcaagaaggcgatagaaggcgatgcgctgcgaatcgggagcggcgataccgtaaagcacgaggaagcggtcagcccattcgccgccaagctcttcagcaatatcacgggtagccaacgctatgtcctgatagcggtccgccacacccagccggccacagtcgatgaatccagaaaagcggccattttccaccatgatattcggcaagcaggcatcgccatgggtcacgacgagatcctcgccgtcgggcatgcgcgccttgagcctggcgaacagttcggctggcgcgagcccctgatgctcttcgtccagatcatcctgatcgacaagaccggcttccatccgagtacgtgctcgctcgatgcgatgtttcgcttggtggtcgaatgggcaggtagccggatcaagcgtatgcagccgccgcattgcatcagccatgatggatactttctcggcaggagcaaggtgagatgacaggagatcctgccccggcacttcgcccaatagcagccagtcccttcccgcttcagtgacaacgtcgagcacagctgcgcaaggaacgcccgtcgtggccagccacgatagccgcgctgcctcgtcctgcagttcattcagggcaccggacaggtcggtcttgacaaaaagaaccgggcgcccctgcgctgacagccggaacacggcggcatcagagcagccgattgtctgttgtgcccagtcatagccgaatagcctctccacccaagcggccggagaacctgcgtgcaatccatcttgttcaatcatgcgaaacgatcctcatcctgtctcttgatcagatcatgatcccctgcgccatcagatccttggcggcaagaaagccatccagtttactttgcagggcttcccaaccttaccagagggcgccccagctggcaattccgacgtcttatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcgctcgggctggccccggtgcattttttaaatacccgcgagaaatagagttgatcgtcaaaaccaacattgcgaccgacggtggcgataggcatccgggtggtgctcaaaagcagcttcgcctggctgatacgttggtcctcgcgccagcttaagacgctaatccctaactgctggcggaaaagatgtgacagacgcgacggcgacaagcaaacatgctgtgcgacgctggcgatatcaaaattgctgtctgccaggtgatcgctgatgtactgacaagcctcgcgtacccgattatccatcggtggatggagcgactcgttaatcgcttccatgcgccgcagtaacaattgctcaagcagatttatcgccagcagctccgaatagcgcccttccccttgcccggcgttaatgatttgcccaaacaggtcgctgaaatgcggctggtgcgcttcatccgggcgaaagaaccccgtattggcaaatattgacggccagttaagccattcatgccagtaggcgcgcggacgaaagtaaacccactggtgataccattcgcgagcctccggatgacgaccgtagtgatgaatctctcctggcgggaacagcaaaatatcacccggtcggcaaacaaattctcgtccctgatttttcaccaccccctgaccgcgaatggtgagattgagaatataacctttcattcccagcggtcggtcgataaaaaaatcgagataaccgttggcctcaatcggcgttaaacccgccaccagatgggcattaaacgagtatcccggcagcaggggatcattttgcgcttcagccatacttttcatactcccgccattcagagaagaaaccaattgtccatattgcatcagacattgccgtcactgcgtcttttactggctcttctcgctaaccaaaccggtaaccccgcttattaaaagcattctgtaacaaagcgggaccaaagccatgacaaaaacgcgtaacaaaagtgtctataatcacggcagaaaagtccacattgattatttgcacggcgtcacactttgctatgccatagcatttttatccataagattagcggattctacctgacgctttttatcgcaactctctactgtttctccatacccgtttttttgggaattcaaaagatcttttaagaaggagatatacat",
+// 	"circular": true,
+// 	"extraLines": [
+// 			"ACCESSION   pBbB8k-ttgABC-M355L-I466F-S878P (copy)",
+// 			"VERSION     pBbB8k-ttgABC-M355L-I466F-S878P (copy).1",
+// 			"KEYWORDS    ."
+// 	],
+// 	"comments": [],
+// 	"type": "DNA",
+// 	"size": 9525
+// }
+
 export default {
-	"primers": [
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "primer 1",
-					"start": 4,
-					"end": 400
-			}
-		],
-	"parts": [
-		{
-			name: "Test Part",
-			start: 50,
-			end: 5000,
-			strand: 1
-		}
-	],
-	"features": [
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "pBAD promoter",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"#ff8000"
-							],
-							"ApEinfo_label": [
-									"BsaI"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_revcolor": [
-									"green"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "BsaI(2)",
-					"start": 2079,
-					"end": 2084
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": 1,
-					"name": "DVA02685_(ttgBC-3)_forward",
-					"start": 3790,
-					"end": 3807
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff80ff"
-							],
-							"ApEinfo_revcolor": [
-									"#8080ff"
-							]
-					},
-					"type": "misc_feature",
-					"strand": -1,
-					"name": "ttgB",
-					"start": 3790,
-					"end": 4310
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "araC",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"green"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff8000"
-							],
-							"ApEinfo_label": [
-									"BsaI"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "BsaI(1)",
-					"start": 1583,
-					"end": 1588
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": -1,
-					"name": "DVA02679_(ttgBC-1)_reverse",
-					"start": 5739,
-					"end": 5774
-			},
-			{
-					"notes": {
-							"vntifkey": [
-									"43"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							]
-					},
-					"type": "terminator",
-					"strand": 1,
-					"name": "terminator",
-					"start": 7218,
-					"end": 7323
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": 1,
-					"name": "DVA02680_(pBbB8k-backbone)_forward",
-					"start": 5748,
-					"end": 5787
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							]
-					},
-					"type": "RBS",
-					"strand": 1,
-					"name": "RBS",
-					"start": 9505,
-					"end": 9524
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": 1,
-					"name": "DVA02699_(ttgB-1)_forward",
-					"start": 2221,
-					"end": 2210
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"green"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_fwdcolor": [
-									"cyan"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "S878P butanol var1-2 (T->C)",
-					"start": 3790,
-					"end": 3791
-			},
-			{
-					"notes": {
-							"vntifkey": [
-									"33"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							]
-					},
-					"type": "rep_origin",
-					"strand": -1,
-					"name": "rep_origin",
-					"start": 5921,
-					"end": 7211
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"30"
-							]
-					},
-					"type": "promoter",
-					"strand": -1,
-					"name": "promoter",
-					"start": 9315,
-					"end": 9343
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "araC promoter",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"#8080ff"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff80ff"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							]
-					},
-					"type": "misc_feature",
-					"strand": -1,
-					"name": "ttgB",
-					"start": 1158,
-					"end": 2219
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"31"
-							]
-					},
-					"type": "protein_bind",
-					"strand": 1,
-					"name": "protein_bind",
-					"start": 9351,
-					"end": 9372
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "CAP site",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "operator O1",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "operator O2",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_revcolor": [
-									"#804040"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff8000"
-							]
-					},
-					"type": "misc_feature",
-					"strand": -1,
-					"name": "ttgC",
-					"start": 4307,
-					"end": 5761
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "dbl term",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": -1,
-					"name": "DVA02681_(pBbB8k-backbone)_reverse",
-					"start": 9489,
-					"end": 17
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"21"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "misc_feature",
-					"start": 5786,
-					"end": 5914
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"31"
-							]
-					},
-					"type": "protein_bind",
-					"strand": 1,
-					"name": "protein_bind",
-					"start": 9193,
-					"end": 9210
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"20"
-							]
-					},
-					"type": "misc_binding",
-					"strand": 1,
-					"name": "misc_binding",
-					"start": 9394,
-					"end": 9407
-			},
-			{
-					"notes": {
-							"vntifkey": [
-									"30"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							]
-					},
-					"type": "promoter",
-					"strand": 1,
-					"name": "promoter",
-					"start": 9440,
-					"end": 9467
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"cyan"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_revcolor": [
-									"green"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "M355L butanol var2 (A->C)",
-					"start": 2221,
-					"end": 2222
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "T0",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"#ff0080"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff8080"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							]
-					},
-					"type": "misc_feature",
-					"strand": -1,
-					"name": "ttgA",
-					"start": 0,
-					"end": 1154
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": 1,
-					"name": "DVA02676_(ttgAB-1)_forward",
-					"start": 9503,
-					"end": 24
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff80ff"
-							],
-							"ApEinfo_revcolor": [
-									"#8080ff"
-							]
-					},
-					"type": "misc_feature",
-					"strand": -1,
-					"name": "ttgB",
-					"start": 2554,
-					"end": 3788
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_fwdcolor": [
-									"cyan"
-							],
-							"ApEinfo_revcolor": [
-									"green"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "I466F butanol var1 (A->T)",
-					"start": 2554,
-					"end": 2555
-			},
-			{
-					"notes": {
-							"note": [
-									"From pMBIS, introduced point mutation to increas"
-							],
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "BBR1 ori",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"note": [
-									"encodes nptII (aka AphA, neoR), gives kan and ne"
-							],
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "Kan/neoR",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": -1,
-					"name": "DVA02700_(ttgB-1)_(I466F)_reverse",
-					"start": 2535,
-					"end": 2570
-			},
-			{
-					"notes": {
-							"SerialCloner_Protect": [
-									"True"
-							],
-							"SerialCloner_Desc": [
-									"vntifkey"
-							],
-							"SerialCloner_Show": [
-									"True"
-							],
-							"SerialCloner_Arrow": [
-									"True"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"SerialCloner_Color": [
-									"&h84A4C0"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "RBS",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": -1,
-					"name": "DVA02677_(ttgAB-1)_(M355L)_reverse",
-					"start": 2197,
-					"end": 2246
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": -1,
-					"name": "DVA02684_(ttgAB-3)_(S878P)_reverse",
-					"start": 3771,
-					"end": 3815
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"22"
-							]
-					},
-					"type": "misc_marker",
-					"strand": -1,
-					"name": "misc_marker",
-					"start": 7349,
-					"end": 8143
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"pink"
-							],
-							"ApEinfo_revcolor": [
-									"pink"
-							],
-							"featureType": [
-									"width"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "operator I2 and I1",
-					"start": 4,
-					"end": 4
-			},
-			{
-					"notes": {
-							"ApEinfo_fwdcolor": [
-									"#ff8040"
-							],
-							"ApEinfo_revcolor": [
-									"green"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							]
-					},
-					"type": "misc_feature",
-					"strand": 1,
-					"name": "BsaI",
-					"start": 756,
-					"end": 761
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {}0"
-							],
-							"ApEinfo_fwdcolor": [
-									"#ff80ff"
-							],
-							"ApEinfo_revcolor": [
-									"#8080ff"
-							]
-					},
-					"type": "misc_feature",
-					"strand": -1,
-					"name": "ttgB",
-					"start": 2221,
-					"end": 2552
-			},
-			{
-					"notes": {
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							],
-							"vntifkey": [
-									"4"
-							]
-					},
-					"type": "CDS",
-					"strand": -1,
-					"name": "CDS",
-					"start": 8286,
-					"end": 9164
-			},
-			{
-					"notes": {
-							"vntifkey": [
-									"31"
-							],
-							"ApEinfo_graphicformat": [
-									"arrow_data {{0 1 2 0 0 -1} {} 0"
-							]
-					},
-					"type": "protein_bind",
-					"strand": 1,
-					"name": "protein_bind",
-					"start": 9403,
-					"end": 9441
-			},
-			{
-					"notes": {},
-					"type": "primer_bind",
-					"strand": 1,
-					"name": "DVA02701_(ttgB-2)_forward",
-					"start": 2539,
-					"end": 2576
-			}
-	],
-	"name": "pBbB8k-ttg",
-	"sequence": "atgcaattcaagccagccgttaccgctctggtttccgccgtcgccctggcaaccctgctcagtggctgtaagaaagaagaagcagcgccagcggcgcaggctcctcaggtcggcgtcgtgaccatccagccgcaagccttcaccctcacctcggaattgccggggcgaaccagtgcctaccgcgttgccgaagtgcgcccgcaggtcaacggcatcatcctcaagcgcctgttcaaggaaggcagtgaggtcaaggaaggccagcagttgtatcagatcgaccctgccgtgtacgaagccaccctggccaatgccaaggccaacctgctggctacacgctcactggccgaacgctacaagcaactgattgacgaacaggccgtctccaaacaggaatacgacgacgccaatgccaaacgattgcaggctgaggcttcgctcaagagcgcacagatcgacctgcgctacaccaaggttctggcgccgatcagcggccgtatcggtcgctcttcgttcaccgaaggtgcactggtgagcaacggtcagaccgacgccatggccaccatccagcagctcgatcctatttatgtcgacgttacccagtccaccgccgagctgctcaagctgcgccgtgacctggaaagcggccagttgcagaaggctggcaacaacgccgcctcggttcagctggtgctggaagacggcagcctgttcaagcaggaaggtcgcctggagttctccgaagtcgcggttgacgagaccaccggctcggtgaccctgcgcgcgctgttccccaaccccgatcacaccctgctgccaggcatgttcgtgcatgcgcggctcaaggccggggtcaacgccaacgccatcctggcaccgcaacaaggcgtgacccgcgacctcaagggcgcacccaccgccctggtggtcaaccaggagaacaaggttgaactgcgccagctcaaggccagccgcaccttgggtagcgactggctgatcgaggaaggcctcaacccgggtgaccgcctgatcaccgaagggctgcagtacgtgcgcccaggcgtcgaggtgaaggtcagcgatgccaccaacgtcaagaagccggccggccctgatcaggccaacgcggcgaaagcagacgccaaagcggagtaaaccatgtcgaagttctttatcgatcgcccgatcttcgcctgggtgatcgccttggtgatcatgctggtcggggccttgtctatcctgaagctgccgatcaaccagtaccccagtatcgcgccgccggccatcgccatcgccgtgacctacccgggcgcctcggcgcaaaccgtgcaggacaccgtggtgcaggtgatcgagcagcagctcaacggtatcgacaacctgcgttatgtgtcgtcggaaagtaactccgacggcagcatgaccattaccgccaccttcgaacagggcaccaaccccgacaccgcgcaggtacaggtacagaacaagctgaacctggccaccccgctgctgccgcaggaagtgcagcagcaaggtatccgcgtcaccaaagcagtgaagaacttcctgctggtgattggtctggtctccgaagacggcagcatgaccaaggacgacctggccaactacatcgtctcgaacatgcaggacccgatctcgcgtaccgccggtgtgggtgacttccaggtgttcggtgcgcagtacgccatgcgtatctggctcgatccggccaagctgaacaagttccagctgaccccggtcgacgtcaagaccgctgtggccgcacagaacgtgcaggtgtcttccggccagctcggcggcctgccagccctgccgggcacccagctgaacgccaccatcatcggcaagacccgcctgcaaaccgccgagcagttcgagagcattctgctcaaggtcaacaaagacggttcacaggtgcgcctgggtgacgtcgcccaagtaggcctggggggtgaaaactacgccgtcagcgcccagttcaacggcaagccggcttccggcctggcggtaaaactggcaaccggcgccaacgccctggacaccgccaaggcactgcgcgagaccatcaaaggcctggaaccgttcttcccgccgggggtcaaggcggtattcccgtatgacaccacccccgtggtcaccgaatcgatcagcggcgtgatccacaccctgatcgaagccgtggtgctggtgttcctggtgctgtacctgttcctgcagaacttccgcgccaccatcatcaccaccatgaccgtgccggtcgtattgctgggtaccttcggtatccttgccgccgcgggcttcagcatcaacaccctgaccatgttcgccatggtcctggccatcggcttgctggtggacgacgccatcgtcgtggtggagaacgtcgagcgggtcatgtccgaagaaggcttgccgcccaaggaagcgaccaagcgctcgatggaacagatccagggcgccctggtgggtatcgccctggtgctctcggccgtactgctgcccatggcgttctttggcggctccacgggtgtgttctaccggcagttctccatcaccatcgtctcggccatgggcctgtcggtgctggttgcgcttatcttcaccccggcgctctgcgcgaccatgctcaaaccgctgaagaagggcgagcaccacaccgccaaaggcggcttcttcggctggttcaaccgcaacttcgaccgcagcgtcaacggctacgagcgtagcgtaggcaccatcctgcgcaacaaggtgccattcctgctggcctatgcgctgatcgtggtcggcatgatctggctgttcgcccgcatccctaccgcgttcctgccagaagaagaccagggcgtactgttcgctcaggtgcagaccccggccggttccagtgccgagcgcacgcaggtcgtggtcgaccagatgcgtgaatacctgctcaaggacgaagccgataccgtatcgtcggtgttcacggtcaacggtttcaacttcgcaggccgcggccagagctcaggcatggccttcatcatgctcaaaccctgggatgaacgctcgaaggagaacagcgtgttcgccctggcccagcgcgcccagcagcacttcttcaccttccgtgatgcgatggtgttcgccttcgccccgccagcggtgcttgaactgggtaacgccaccggcttcgacgtgttccttcaggaccgcggcggtgtcggccacgcgaagttgatggaggcacgcaaccagttcctggccaaagctgcgcagagcaagatcctcagcgccgtgcgcccgaacggcctgaacgatgaaccgcagtaccaactgaccattgatgacgaacgtgccagcgccttgggcgtgaccattgccgacatcaacaacaccctgtcgattgccttgggtgccagctacgtcaacgacttcatcgaccgtggccgggtcaagaaggtgtacatccagggcgaacccagcgcgcggatgagcccggaagacctgcaaaaatggtacgtgcgcaacggcgcaggcgagatggtgccgttctcctccttcgccaaaggcgaatggacctacggttcgccgaagctgtcgcgttacaacggtgtcgaagcgatggaaatcctcggtgcaccggcgcctggttacagtaccggtgaagccatggccgaggtcgagcgcattgcaggcgagctgccgagcggtatcggcttctcctggaccggcatgtcctacgaggaaaaactctccggctcgcagatgccggcgctgttcgccctcccggtgctgttcgtgttcctgtgcctggcggccctgtacgaaagctggtcgattccgatcgctgtggtgctggtggtaccgctgggtatcatcggtgcgctgatcgccaccagcctgcgcggcctgtccaacgacgtgtacttcctggttggcctgttgaccaccatcggtcttgcggcgaaaaacgccattttgatcgtggaattcgccaaggagctgcacgaacaaggccgtagcctgtacgacgcagcgatcgaagcgtgccgcatgcgtctgcgcccgatcatcatgacctcgctggcgttcatcctgggcgtggtgccgttgaccatcgccagcggcgccggcgccggcagccagcacgccatcggtactggcgtgatcggcggtatgatcagtgcgaccgtgctggctatcttctgggtaccactgttcttcgtcgcagtgtcgtcgctgttcggcagcaaagagccggaaaaagacgtcacccctgaaaatccacgttatgaggctgggcaatgaccaagtctttgttgtccctggcggtaaccgctttcattcttggcggctgctcgctgatccctgactaccagaccccagaggcgccggtggctgcacagtggccgcaaggccctgcatactcgccgacgcaatcggcggatgttgccgctgctgaacagggctggcgccagttcttccacgacccggcgctgcaacagctgatccagacctcgctggtcaataaccgcgacctgcgcgtcgcggcgttgaacctcgacgcctaccgtgcgcaataccgcattcagcgcgccgacctgttcccggcggtttcggccaccggcagcggcagccgccagcgtgtcccggcgaacatgtcgcaaacaggcgaatctggcatcaccagccagtactcggccaccttgggcgtcagcgcctacgagctggacctgttcggccgcgtgcgcagcctgaccgagcaggccctggaaacctacctctccagcgagcaggcgcgtcgttccacgcaaatcgccctggtcgccagcgtggccaacgcctactacacctggcaggccgaccaggccctgttcaagctgaccgaagaaacgctgaagacctacgaggaaagctacaacctcacccgtcgcagcaacgaggtcggcgtggcgtcggccttggacgtcagccaggcgcgtaccgccgtggaaggcgccagggtcaagtactcgcagtaccagcgcctggtcgcccaggacgtcaacagcctgaccgtgctgctgggcaccggcattcctgccgacctggccaagccgctggagcttgatgccgaccaactggccgaagtaccggccggcctgccatcggatatccttcagcgtcgcccggacattcaggaagccgagcacctgctcaaggctgccaacgccaacattggtgcagcccgcgcagcgttcttcccgagcatcagcctgaccgcgaacgccggcagcctgagccccgacatgggccacctgttcgcgggcggccagggcacctggctgttccagccgcagatcaacctgccgatcttcaacgccggtagcctgaaagccagcctggactactcgaaaatccagaaggacatcaacgtcgccaagtacgaaaaaaccatccagacggccttccaggaagtctccgatggcctggcggcacgcaagaccttcgaagagcagttgcaggcccagcgcgacctggtgcaggcgaaccaggactactaccgcttggccgaacgccgttaccgcatcgggattgacagcaacctgaccttcctcgatgcccaacgcaacctgttcagtgcccagcaagcgctgatcggcgaccgcctgtcgcagctgaccagcgaggtcaacctgtacaaggcgcttggcggtggctggtacgagcagaccgggcaggccaaccagcaggcatcggtggaaacaccgaaaggctgaggatccaaactcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctaggctacagccgatagtctggaacagcgcacttacgggttgctgcgcaacccaagtgctaccggcgcggcagcgtgacccgtgtcggcggctccaacggctcgccatcgtccagaaaacacggctcatcgggcatcggcaggcgctgctgcccgcgccgttcccattcctccgtttcggtcaaggctggcaggtctggttccatgcccggaatgccgggctggctgggcggctcctcgccggggccggtcggtagttgctgctcgcccggatacagggtcgggatgcggcgcaggtcgccatgccccaacagcgattcgtcctggtcgtcgtgatcaaccaccacggcggcactgaacaccgacaggcgcaactggtcgcggggctggccccacgccacgcggtcattgaccacgtaggccaacacggtgccggggccgttgagcttcacgacggagatccagcgctcggccaccaagtccttgactgcgtattggaccgtccgcaaagaacgtccgatgagcttggaaagtgtcttctggctgaccaccacggcgttctggtggcccatctgcgccacgaggtgatgcagcagcattgccgccgtgggtttcctcgcaataagcccggcccacgcctcatgcgctttgcgttccgtttgcacccagtgaccgggcttgttcttggcttgaatgccgatttctctggactgcgtggccatgcttatctccatgcggtaggggtgccgcacggttgcggcaccatgcgcaatcagctgcaacttttcggcagcgcgacaacaattatgcgttgcgtaaaagtggcagtcaattacagattttctttaacctacgcaatgagctattgcggggggtgccgcaatgagctgttgcgtaccccccttttttaagttgttgatttttaagtctttcgcatttcgccctatatctagttctttggtgcccaaagaagggcacccctgcggggttcccccacgccttcggcgcggctccccctccggcaaaaagtggcccctccggggcttgttgatcgactgcgcggccttcggccttgcccaaggtggcgctgcccccttggaacccccgcactcgccgccgtgaggctcggggggcaggcgggcgggcttcgcccttcgactgcccccactcgcataggcttgggtcgttccaggcgcgtcaaggccaagccgctgcgcggtcgctgcgcgagccttgacccgccttccacttggtgtccaaccggcaagcgaagcgcgcaggccgcaggccggaggcactagtgcttggattctcaccaataaaaaacgcccggcggcaaccgagcgttctgaacaaatccagatggagttctgaggtcattactggatctatcaacaggagtccaagcgagctctcgaaccccagagtcccgctcagaagaactcgtcaagaaggcgatagaaggcgatgcgctgcgaatcgggagcggcgataccgtaaagcacgaggaagcggtcagcccattcgccgccaagctcttcagcaatatcacgggtagccaacgctatgtcctgatagcggtccgccacacccagccggccacagtcgatgaatccagaaaagcggccattttccaccatgatattcggcaagcaggcatcgccatgggtcacgacgagatcctcgccgtcgggcatgcgcgccttgagcctggcgaacagttcggctggcgcgagcccctgatgctcttcgtccagatcatcctgatcgacaagaccggcttccatccgagtacgtgctcgctcgatgcgatgtttcgcttggtggtcgaatgggcaggtagccggatcaagcgtatgcagccgccgcattgcatcagccatgatggatactttctcggcaggagcaaggtgagatgacaggagatcctgccccggcacttcgcccaatagcagccagtcccttcccgcttcagtgacaacgtcgagcacagctgcgcaaggaacgcccgtcgtggccagccacgatagccgcgctgcctcgtcctgcagttcattcagggcaccggacaggtcggtcttgacaaaaagaaccgggcgcccctgcgctgacagccggaacacggcggcatcagagcagccgattgtctgttgtgcccagtcatagccgaatagcctctccacccaagcggccggagaacctgcgtgcaatccatcttgttcaatcatgcgaaacgatcctcatcctgtctcttgatcagatcatgatcccctgcgccatcagatccttggcggcaagaaagccatccagtttactttgcagggcttcccaaccttaccagagggcgccccagctggcaattccgacgtcttatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcgctcgggctggccccggtgcattttttaaatacccgcgagaaatagagttgatcgtcaaaaccaacattgcgaccgacggtggcgataggcatccgggtggtgctcaaaagcagcttcgcctggctgatacgttggtcctcgcgccagcttaagacgctaatccctaactgctggcggaaaagatgtgacagacgcgacggcgacaagcaaacatgctgtgcgacgctggcgatatcaaaattgctgtctgccaggtgatcgctgatgtactgacaagcctcgcgtacccgattatccatcggtggatggagcgactcgttaatcgcttccatgcgccgcagtaacaattgctcaagcagatttatcgccagcagctccgaatagcgcccttccccttgcccggcgttaatgatttgcccaaacaggtcgctgaaatgcggctggtgcgcttcatccgggcgaaagaaccccgtattggcaaatattgacggccagttaagccattcatgccagtaggcgcgcggacgaaagtaaacccactggtgataccattcgcgagcctccggatgacgaccgtagtgatgaatctctcctggcgggaacagcaaaatatcacccggtcggcaaacaaattctcgtccctgatttttcaccaccccctgaccgcgaatggtgagattgagaatataacctttcattcccagcggtcggtcgataaaaaaatcgagataaccgttggcctcaatcggcgttaaacccgccaccagatgggcattaaacgagtatcccggcagcaggggatcattttgcgcttcagccatacttttcatactcccgccattcagagaagaaaccaattgtccatattgcatcagacattgccgtcactgcgtcttttactggctcttctcgctaaccaaaccggtaaccccgcttattaaaagcattctgtaacaaagcgggaccaaagccatgacaaaaacgcgtaacaaaagtgtctataatcacggcagaaaagtccacattgattatttgcacggcgtcacactttgctatgccatagcatttttatccataagattagcggattctacctgacgctttttatcgcaactctctactgtttctccatacccgtttttttgggaattcaaaagatcttttaagaaggagatatacat",
-	"circular": true,
-	"extraLines": [
-			"ACCESSION   pBbB8k-ttgABC-M355L-I466F-S878P (copy)",
-			"VERSION     pBbB8k-ttgABC-M355L-I466F-S878P (copy).1",
-			"KEYWORDS    ."
-	],
-	"comments": [],
-	"type": "DNA",
-	"size": 9525
+	sequence: "atgagagaccaacacacaca"
 }

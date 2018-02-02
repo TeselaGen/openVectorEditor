@@ -6,15 +6,15 @@ import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  SelectField,
+  ReactSelectField,
   TextareaField,
   withDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
+import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
 
-import featureTypes from "../../constants/feature-types";
 import withEditorProps from "../../withEditorProps";
 
 export class AddOrEditFeatureDialog extends React.Component {
@@ -28,7 +28,13 @@ export class AddOrEditFeatureDialog extends React.Component {
     const sequenceLength = sequenceData.sequence.length;
     return (
       <div style={{ padding: 20 }} className={"tg-upsert-feature"}>
-        <InputField validate={required} name={"name"} label={"Name:"} />
+        <InputField
+          autoFocus
+          placeholder="Untitled Sequence"
+          validate={required}
+          name={"name"}
+          label={"Name:"}
+        />
         <RadioGroupField
           options={[
             { label: "Positive", value: "true" },
@@ -38,9 +44,34 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Strand:"}
           defaultValue={"true"}
         />
-        <SelectField
+        <ReactSelectField
           defaultValue={"misc_feature"}
-          options={featureTypes}
+          options={featureTypes.map(type => {
+            console.log("type:", type);
+            console.log("featureColors[type]:", featureColors[type]);
+            return {
+              label: (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginRight: 10
+                  }}
+                >
+                  <div
+                    style={{
+                      background: featureColors[type],
+                      height: 15,
+                      width: 15,
+                      marginRight: 5
+                    }}
+                  />
+                  {type}
+                </div>
+              ),
+              value: type
+            };
+          })}
           name={"type"}
           label={"Type:"}
         />

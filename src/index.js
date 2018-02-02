@@ -1,7 +1,5 @@
 import "./createVectorEditor";
 
-// import cleanSequenceData from './utils/cleanSequenceData';
-// import deepEqual from 'deep-equal';
 import "./style.css";
 
 //export components

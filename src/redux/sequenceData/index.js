@@ -1,5 +1,6 @@
 import { cloneDeep } from "lodash";
 import deepEqual from "deep-equal";
+import { tidyUpSequenceData } from "ve-sequence-utils";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
@@ -9,7 +10,7 @@ import primers from "./primers";
 import sequence from "./sequence";
 import translations from "./translations";
 import combineReducersDontIgnoreKeys from "../../utils/combineReducersDontIgnoreKeys";
-import cleanSequenceData from "../../utils/cleanSequenceData";
+// import cleanSequenceData from "../../utils/cleanSequenceData";
 
 import { createReducer } from "redux-act";
 // export * from './sharedActionCreators';
@@ -27,7 +28,7 @@ export * from "./translations";
 
 const _updateSequenceData = createAction("SEQUENCE_DATA_UPDATE");
 export const updateSequenceData = function(seqData, ...rest) {
-  return _updateSequenceData(cleanSequenceData(seqData), ...rest);
+  return _updateSequenceData(tidyUpSequenceData(seqData), ...rest);
 };
 
 // ------------------------------------

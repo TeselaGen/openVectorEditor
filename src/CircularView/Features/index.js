@@ -1,5 +1,6 @@
 import { sortBy } from "lodash";
 import { getRangeLength } from "ve-range-utils";
+import { featureColors } from "ve-sequence-utils";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 import withHover from "../../helperComponents/withHover";
 import "./style.css";
@@ -7,7 +8,7 @@ import Feature from "./Feature";
 import drawCircularLabel2 from "../drawCircularLabel2";
 import IntervalTree from "node-interval-tree";
 import getRangeAngles from "../getRangeAnglesSpecial";
-import featureColorMap from "../../constants/featureColorMap.json";
+
 import getYOffset from "../getYOffset";
 // import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "../PositionAnnotationOnCircle";
@@ -155,8 +156,8 @@ function Features({
 
       let annotationColor = annotation.color || "#BBBBBB";
       if (annotation.type) {
-        if (featureColorMap[annotation.type]) {
-          annotationColor = featureColorMap[annotation.type];
+        if (featureColors[annotation.type]) {
+          annotationColor = featureColors[annotation.type];
         }
       }
       /* eslint-disable */

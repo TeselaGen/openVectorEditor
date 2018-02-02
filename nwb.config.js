@@ -2,7 +2,7 @@ module.exports = {
   type: 'react-component',
   npm: {
     esModules: true,
-    umd: true
+    umd: {}
   },
   babel: {
     "presets": ["es2015","react","stage-0"]
