@@ -30,7 +30,7 @@ export class AddOrEditPartDialog extends React.Component {
         <RadioGroupField
           options={[
             { label: "Positive", value: "true" },
-            { label: "Negative", value: "" }
+            { label: "Negative", value: "false" }
           ]}
           name={"forward"}
           label={"Strand:"}
@@ -58,7 +58,13 @@ export class AddOrEditPartDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertPart(convertRangeTo0Based(data));
+              upsertPart(
+                convertRangeTo0Based({
+                  ...data,
+                  forward: data.forward !== "false"
+                })
+              );
+
               hideModal();
             })}
             intent={Intent.PRIMARY}

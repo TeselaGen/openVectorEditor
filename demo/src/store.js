@@ -5,22 +5,30 @@ import { vectorEditorReducer as VectorEditor } from "../../src";
 import thunk from "redux-thunk";
 import { reducer as form } from "redux-form";
 
-const actionSanitizer = action => {
-  try {
-    JSON.stringify(action);
-  } catch (e) {
-    console.error("whoops! You're firing an action that can't be serialized. You shouldn't do that...")
-    /* eslint-disable */ 
-    debugger;
-    /* eslint-enable */ 
-  }
-};
+// const actionSanitizer = action => {
+//   try {
+//     JSON.stringify(action);
+//   } catch (e) {
+//     console.error("whoops! You're firing an action that can't be serialized. You shouldn't do that...")
+//     /* eslint-disable */ 
+//     debugger;
+//     /* eslint-enable */ 
+//   }
+// };
+
+// const composeEnhancer =
+//   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+//     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+//       actionsBlacklist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"]
+//     })) ||
+//   compose;
 
 const composeEnhancer =
   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       actionsBlacklist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"],
-      actionSanitizer
+      // actionSanitizer,
+      name: "openVE"
     })) ||
   compose;
 

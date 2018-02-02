@@ -405,7 +405,7 @@ export default {
 					"strand": 1,
 					"name": "DVA02699_(ttgB-1)_forward",
 					"start": 2221,
-					"end": 2246
+					"end": 2210
 			},
 			{
 					"notes": {

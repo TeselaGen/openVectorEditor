@@ -32,8 +32,8 @@ export class AddOrEditPrimerDialog extends React.Component {
         <RadioGroupField
           defaultValue
           options={[
-            { label: "Positive", value: true },
-            { label: "Negative", value: false }
+            { label: "Positive", value: "true" },
+            { label: "Negative", value: "false" }
           ]}
           name={"forward"}
           label={"Strand:"}
@@ -60,7 +60,13 @@ export class AddOrEditPrimerDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertPrimer(convertRangeTo0Based(data), { editorName });
+              upsertPrimer(
+                convertRangeTo0Based({
+                  ...data,
+                  forward: data.forward !== "false"
+                })
+              );
+
               hideModal();
             })}
             intent={Intent.PRIMARY}

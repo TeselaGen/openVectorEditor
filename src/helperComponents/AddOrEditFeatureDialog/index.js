@@ -32,7 +32,7 @@ export class AddOrEditFeatureDialog extends React.Component {
         <RadioGroupField
           options={[
             { label: "Positive", value: "true" },
-            { label: "Negative", value: "" }
+            { label: "Negative", value: "false" }
           ]}
           name={"forward"}
           label={"Strand:"}
@@ -65,7 +65,12 @@ export class AddOrEditFeatureDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertFeature(convertRangeTo0Based(data));
+              upsertFeature(
+                convertRangeTo0Based({
+                  ...data,
+                  forward: data.forward !== "false"
+                })
+              );
               hideModal();
             })}
             intent={Intent.PRIMARY}
