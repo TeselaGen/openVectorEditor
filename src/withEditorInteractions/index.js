@@ -256,8 +256,11 @@ function VectorInteractionHOC(Component /* options */) {
       const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
       onCopy(
         e,
-        this.sequenceDataToCopy ||
-          getSequenceDataBetweenRange(sequenceData, selectionLayer),
+        tidyUpSequenceData(
+          this.sequenceDataToCopy ||
+            getSequenceDataBetweenRange(sequenceData, selectionLayer),
+          { annotationsAsObjects: true }
+        ),
         this.props
       );
       this.sequenceDataToCopy = undefined;

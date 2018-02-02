@@ -7,6 +7,7 @@ import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
+import { tidyUpSequenceData } from "ve-sequence-utils";
 
 /**
  * This function basically connects the wrapped component with all of the state stored in a given editor instance
@@ -18,7 +19,13 @@ export default compose(
     handleSave: props => {
       return e => {
         const { onSave, readOnly, sequenceData } = props;
-        !readOnly && onSave && onSave(e, sequenceData, props);
+        !readOnly &&
+          onSave &&
+          onSave(
+            e,
+            tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+            props
+          );
       };
     },
     //add additional "computed handlers here"
