@@ -11,11 +11,8 @@ import {
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent } from "@blueprintjs/core";
-import { connect } from "react-redux";
 import { convertRangeTo0Based } from "ve-range-utils";
-
-import { actions } from "../../redux";
-const { upsertPrimer } = actions;
+import withEditorProps from "../../withEditorProps";
 
 export class AddOrEditPrimerDialog extends React.Component {
   render() {
@@ -82,7 +79,7 @@ function required(val) {
 
 export default compose(
   withDialog(),
-  connect(null, { upsertPrimer }),
+  withEditorProps,
   reduxForm({
     form: "AddOrEditPrimerDialog"
   })
