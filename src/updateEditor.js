@@ -7,7 +7,7 @@ export default function updateEditor(store, editorName, initialValues = {}) {
     ...rest,
     sequenceDataHistory: {
       past: [],
-      present: tidyUpSequenceData(sequenceData),
+      present: tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
       future: []
     }
   };

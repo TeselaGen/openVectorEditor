@@ -28,7 +28,10 @@ export * from "./translations";
 
 const _updateSequenceData = createAction("SEQUENCE_DATA_UPDATE");
 export const updateSequenceData = function(seqData, ...rest) {
-  return _updateSequenceData(tidyUpSequenceData(seqData), ...rest);
+  return _updateSequenceData(
+    tidyUpSequenceData(seqData, { annotationsAsObjects: true }),
+    ...rest
+  );
 };
 
 // ------------------------------------

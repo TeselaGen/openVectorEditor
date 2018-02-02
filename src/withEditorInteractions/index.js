@@ -227,7 +227,8 @@ function VectorInteractionHOC(Component /* options */) {
         : { sequence: e.target.value };
 
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
-        provideNewIdsForAnnotations: true
+        provideNewIdsForAnnotations: true,
+        annotationsAsObjects: true
       });
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");
