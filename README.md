@@ -3,23 +3,37 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility 
 
-Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor 
+## Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor 
 
-Demo: http://teselagen.github.io/openVectorEditor/ 
+## Demo: http://teselagen.github.io/openVectorEditor/ 
 
-Table of Contents
+# Table of Contents
 <!-- TOC -->
 
+  - [Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor](#issue-tracking-board-httpswaffleioteselagenopenvectoreditor)
+  - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
+- [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
-- [Universal Build](#universal-build)
-  - [Universal Installation](#universal-installation)
-  - [Universal Usage:](#universal-usage)
-- [React Version](#react-version)
-  - [Installation](#installation)
+- [Using this module in React](#using-this-module-in-react)
+  - [Installation (react)](#installation-react)
+  - [Code (react)](#code-react)
+    - [Editor](#editor)
+    - [CircularView/CircularViewUnconnected](#circularviewcircularviewunconnected)
+    - [LinearView/LinearViewUnconnected](#linearviewlinearviewunconnected)
+    - [RowView/RowViewUnconnected](#rowviewrowviewunconnected)
+    - [EnzymeViewer](#enzymeviewer)
+- [Using this module outside of react apps (Universal):](#using-this-module-outside-of-react-apps-universal)
+  - [Installation (Universal)](#installation-universal)
+    - [via npm:](#via-npm)
+    - [Or via CDN:](#or-via-cdn)
+  - [Code (Universal)](#code-universal)
+  - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
+- [editorProps](#editorprops)
+- [editorState](#editorstate)
 - [Data Model](#data-model)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation-1)
+  - [Installation](#installation)
 
 <!-- /TOC -->
 
@@ -33,12 +47,38 @@ https://github.com/TeselaGen/openVectorEditor/commits/master
 Upgrade instructions for any major or minor change can be found here:
 [Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
 
-# Universal Build
-The universal build can be used in any app, where as the react build should be used if using react because it allows for more flexibility
+# Using this module in React
+## Installation (react)
+```
+yarn add install-peerdeps open-vector-editor
+```
+Add peer-dependencies: 
+```
+install-peerdeps open-vector-editor --dev --only-peers
+```
 
-Universal Demo: http://teselagen.github.io/openVectorEditor/
-## Universal Installation
-via npm: 
+## Code (react)
+Require the following components like: 
+```
+import {Editor, RowView} from "open-vector-editor
+```
+### Editor
+The `<Editor {...editorProps}/>` component gives you a full blown editor.
+It takes in a list of editorProps as detailed below. 
+### CircularView/CircularViewUnconnected
+This gives you just the circular/plasmid map view. Either redux connected or unconnected (non-interactive)
+### LinearView/LinearViewUnconnected
+This gives you just the linear map view. Either redux connected or unconnected (non-interactive)
+### RowView/RowViewUnconnected
+This gives you just the detailed view of the sequence rows. Either redux connected or unconnected (non-interactive)
+### EnzymeViewer
+A component used for viewing enzymes 
+
+
+# Using this module outside of react apps (Universal): 
+The universal build can be used in any app with or without react. It corresponds to using the <Editor/> component in the React version. You will be able to customize the Editor just like in the react build, but you will not be able to use the individual components like <CircularView/> or <EnzymeViewer/>. For that you'll need to use React.
+## Installation (Universal)
+### via npm: 
 ```
 npm install open-vector-editor
 ```
@@ -48,22 +88,34 @@ then add the links
 <script type="text/javascript" src="your-path-to-node-modules/open-vector-editor/umd/open-vector-editor.js"></script>
 ```
 
-Or via CDN: 
+### Or via CDN: 
 ```html
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/open-vector-editor/umd/main.css"> 
 <script type="text/javascript" src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
 ```
 
-## Universal Usage: 
+## Code (Universal)
+
 ```html
 <script>
-const editor = window.createVectorEditor(yourDomNodeHere, {
+const editor = window.createVectorEditor(yourDomNodeHere, editorProps);
+editor.updateEditor(editorState);	
+</script>
+```
+
+## Demo (Universal): http://teselagen.github.io/openVectorEditor/
+
+# editorProps
+These props consist of hooks and editor config options that can be passed like so: `<Editor {...editorProps}/>`  or as seen above like `window.createVectorEditor(yourDomNodeHere, editorProps);`
+```js
+{
+
 	
 	onSave: function(event, copiedSequenceData, editorState) {
-          console.log("event:", event);
-          console.log("sequenceData:", copiedSequenceData);
-          console.log("editorState:", editorState);
-        },
+		console.log("event:", event);
+		console.log("sequenceData:", copiedSequenceData);
+		console.log("editorState:", editorState);
+	},
 	onCopy: function(event, copiedSequenceData, editorState) {
 		//the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
 		console.log("event:", event);
@@ -92,7 +144,14 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 		const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
 		return sequenceData
 	},
-	rightClickOverrides: {
+	//regular click overrides, eg: 
+	featureClicked: ({annotation, event}) => {
+		//do something here :)
+	}
+	// orf/primer/translation/cutsite/translationDouble/deletionLayer/replacementLayer/feature/part/searchLayer xxxxClicked can also be overridden
+
+	rightClickOverrides: { //override what happens when a given feature/part/primer/translation/orf/cutsite/selectionLayer/lineageLine gets right clicked
+		//the general format is xxxxRightClicked eg:
 		selectionLayerRightClicked: (items, {annotation}, props) => {
 			return [...items, { 
 				//props here get passed directly to blueprintjs MenuItems
@@ -101,7 +160,8 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 			}]
 		}
 	},
-	PropertiesProps: {
+	PropertiesProps: { 
+		// the list of tabs shown in the Properties panel
 		propertiesList: [
 			"general",
 			"features",
@@ -133,8 +193,13 @@ const editor = window.createVectorEditor(yourDomNodeHere, {
 			]
 		},
 		onDigestSave: () => {} //tnr: NOT YET IMPLEMENTED
-});
-editor.updateEditor({
+}
+```
+# editorState
+These are the options to the `updateEditor()` action (the most generic redux action we have)) and will cause the editor state stored in redux to be updated. Only the subset of options that are passed will be updated. 
+```js
+{
+
 	//note, sequence data passed here will be coerced to fit the Teselagen data model
 	sequenceData: { Open Vector Editor data model
 		sequence: "atagatagagaggcccg",
@@ -179,27 +244,13 @@ editor.updateEditor({
 	],
 	caretPosition: 10,
 	...additional editor props can be passed here [Example Editor State](./editorStateExample.js)
-});	
-</script>
-```
-
-
-# React Version
-## Installation
-```
-yarn add install-peerdeps open-vector-editor
-```
-Add peer-dependencies: 
-```
-install-peerdeps open-vector-editor --dev --only-peers
+}
 ```
 
 #Data Model 
 The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
-
-
 
 #Development: 
 ## Prerequisites

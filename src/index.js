@@ -38,3 +38,4 @@ export {
 export {
   default as PositionAnnotationOnCircle
 } from "./CircularView/PositionAnnotationOnCircle";
+export { default as EnzymeViewer } from "./EnzymeViewer";

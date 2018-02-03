@@ -637,7 +637,7 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation();
       return handler({ event, ...rest }, this.props);
     };
-    normalizeRightClickActions = actions => {
+    enhanceRightClickActions = actions => {
       const normalizedActions = {};
       const { rightClickOverrides = {} } = this.props;
       Object.keys(actions).forEach(key => {
@@ -1000,7 +1000,7 @@ function VectorInteractionHOC(Component /* options */) {
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          ...this.normalizeRightClickActions({
+          ...this.enhanceRightClickActions({
             selectionLayerRightClicked: this.selectionLayerRightClicked,
             backgroundRightClicked: this.backgroundRightClicked,
             featureRightClicked: this.featureRightClicked,
@@ -1008,21 +1008,21 @@ function VectorInteractionHOC(Component /* options */) {
             orfRightClicked: this.orfRightClicked,
             deletionLayerRightClicked: this.deletionLayerRightClicked,
             cutsiteRightClicked: this.cutsiteRightClicked,
-            translationRightClicked: this.translationRightClicked
+            translationRightClicked: this.translationRightClicked,
+            primerRightClicked: this.primerRightClicked
           }),
-          orfClicked: this.annotationClicked,
 
+          orfClicked: this.annotationClicked,
           primerClicked: this.annotationClicked,
-          primerRightClick: this.primerRightClick,
           translationClicked: this.annotationClicked,
           cutsiteClicked: this.cutsiteClicked,
-
           translationDoubleClicked: this.annotationClicked,
           deletionLayerClicked: this.annotationClicked,
           replacementLayerClicked: this.annotationClicked,
           featureClicked: this.annotationClicked,
           partClicked: this.annotationClicked,
           searchLayerClicked: this.annotationClicked,
+
           editorDragged: this.editorDragged,
           editorDragStarted: this.editorDragStarted,
           editorClicked: this.editorClicked,
