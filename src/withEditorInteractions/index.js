@@ -173,7 +173,7 @@ function VectorInteractionHOC(Component /* options */) {
         });
       });
 
-      this.combokeys.bind("backspace", event => {
+      this.combokeys.bind(["backspace", "del"], event => {
         // Handle shortcut
         this.handleDnaDelete(event);
       });
