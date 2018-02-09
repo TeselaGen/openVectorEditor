@@ -21,6 +21,7 @@
 .pt-toast-container,
 .pt-overlay-content,
 .pt-overlay,
+.pt-overlay-backdrop,
 .pt-dialog {
   z-index: 40000 !important;
 }
