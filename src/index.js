@@ -1,6 +1,8 @@
+import { FocusStyleManager } from "@blueprintjs/core";
 import "./createVectorEditor";
-
 import "./style.css";
+
+FocusStyleManager.onlyShowFocusOnTabs();
 
 //export components
 export {
