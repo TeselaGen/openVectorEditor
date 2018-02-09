@@ -54,6 +54,7 @@ class Translation extends React.Component {
       subrangeStartRelativeToAnnotationStart,
       aminoAcids
     );
+    console.log("aminoAcidsForSubrange:", aminoAcidsForSubrange);
     //we then loop over all the amino acids in the sub range and draw them onto the row
     let translationSVG = aminoAcidsForSubrange.map(function(
       aminoAcidSliver,
@@ -78,6 +79,11 @@ class Translation extends React.Component {
               event
             });
           }}
+          title={`${
+            aminoAcidSliver.aminoAcid.name
+          } -- Index: ${aminoAcidSliver.aminoAcidIndex + 1} -- Hydrophobicity ${
+            aminoAcidSliver.aminoAcid.hydrophobicity
+          }`}
           onDoubleClick={function(event) {
             translationDoubleClicked({ annotation, event });
           }}

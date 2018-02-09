@@ -27,14 +27,15 @@ function AASliver(props) {
       // onDoubleClick={this.props.onDoubleClick}
       transform={
         "scale(" +
-          props.width / 100 * 1.25 +
-          ", " +
-          props.height / 100 +
-          ") translate(" +
-          (props.relativeAAPositionInTranslation * 100 / 1.25 + offset) +
-          ",0)"
+        props.width / 100 * 1.25 +
+        ", " +
+        props.height / 100 +
+        ") translate(" +
+        (props.relativeAAPositionInTranslation * 100 / 1.25 + offset) +
+        ",0)"
       }
     >
+      <title>{props.title}</title>
       <polyline
         className={props.letter}
         transform={props.forward ? null : "translate(100,0) scale(-1,1) "}
@@ -46,7 +47,7 @@ function AASliver(props) {
         opacity={0.5}
         fill={props.color || "gray"}
       />
-      {props.positionInCodon === 1 &&
+      {props.positionInCodon === 1 && (
         <text
           fontSize={25}
           stroke={"black"}
@@ -57,7 +58,8 @@ function AASliver(props) {
           style={{ textAnchor: "middle" }}
         >
           {props.letter}
-        </text>}
+        </text>
+      )}
     </g>
   );
   // function getClickHandler(onClick, onDblClick, pDelay) {
