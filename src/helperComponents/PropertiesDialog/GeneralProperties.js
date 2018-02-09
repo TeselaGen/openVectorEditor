@@ -11,6 +11,7 @@ class GeneralProperties extends React.Component {
       readOnly,
       sequenceData: { name, sequence, circular },
       toggleReadOnlyMode,
+      onSave,
       sequenceNameUpdate
     } = this.props;
 
@@ -65,6 +66,7 @@ class GeneralProperties extends React.Component {
             {" "}
             <SelectField
               enableReinitialize
+              disabled={!onSave}
               onFieldSubmit={toggleReadOnlyMode}
               name="editable"
               value={readOnly ? "readOnly" : "editable"}
