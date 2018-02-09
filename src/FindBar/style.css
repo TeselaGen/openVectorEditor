@@ -1,11 +1,11 @@
-.veFindBar {
+/* .veFindBar {
   z-index: 20000;
   border-bottom: 1px solid lightgrey;
   border-left: 1px solid lightgrey;
   border-right: 1px solid lightgrey;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-}
+} */
 .veFindBar > .pt-control {
   margin-bottom: 0px;
 }
@@ -13,4 +13,8 @@
   margin-right: 10px;
   width: fit-content;
   background: white;
+}
+
+.ve-find-options-popover > * {
+  margin: 10px 5px;
 }

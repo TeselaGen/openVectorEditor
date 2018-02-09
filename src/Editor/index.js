@@ -758,7 +758,7 @@ export class Editor extends React.Component {
               </ReflexContainer>
             </DragDropContext>
 
-            {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />}
+            {/* {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />} */}
           </div>
 
           <StatusBar {...sharedProps} {...StatusBarProps} />
