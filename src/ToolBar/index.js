@@ -17,6 +17,7 @@ import orfTool from "./orfTool";
 import editTool from "./editTool";
 import findTool from "./findTool";
 import inlineFindTool from "./inlineFindTool";
+import alignmentTool from "./alignmentTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 // import propertiesTool from "./propertiesTool";
@@ -28,6 +29,7 @@ const allTools = {
   downloadTool,
   importTool,
   cutsiteTool,
+  alignmentTool,
   featureTool,
   oligoTool,
   orfTool,
@@ -75,6 +77,7 @@ export class ToolBar extends React.Component {
         "featureTool",
         // "oligoTool",
         "orfTool",
+        "alignmentTool",
         // "viewTool",
         "editTool",
         // "findTool",

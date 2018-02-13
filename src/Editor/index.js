@@ -1,6 +1,7 @@
 // import { Popover, Menu, MenuItem, Position } from "@blueprintjs/core";
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
+import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import "react-reflex/styles.css";
 import React from "react";
 
@@ -705,6 +706,7 @@ export class Editor extends React.Component {
         style={{ width: "100%", position: "relative" }}
         className={"veEditor"}
       >
+        <AlignmentToolInner />
         <div
           style={{
             width: "100%",
