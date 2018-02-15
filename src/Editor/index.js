@@ -35,6 +35,7 @@ import {
 import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
+import AlignmentView from "../AlignmentView";
 import StatusBar from "../StatusBar";
 import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
@@ -53,6 +54,7 @@ import bpContext from "../withEditorInteractions/bpContext";
 const panelMap = {
   circular: CircularView,
   sequence: RowView,
+  alignment: AlignmentView,
   rail: LinearView,
   alignmentTool: AlignmentTool,
   digestTool: DigestTool,

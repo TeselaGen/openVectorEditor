@@ -174,7 +174,7 @@ export class RowItem extends React.Component {
           );
         })
       : null;
-
+    console.log("sequence,showSequence:", sequence, showSequence);
     return (
       <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}

@@ -15,6 +15,7 @@ import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as lineageLines from "./lineageLines";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as modalActions from "./modalActions";
+import * as alignments from "./alignments";
 import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
 import * as readOnly from "./readOnly";
@@ -53,6 +54,7 @@ export const actions = {
   ...panelsShown,
   ...findTool,
   ...modalActions,
+  ...alignments,
   ...propertiesTool,
   ...addYourOwnEnzyme,
   vectorEditorInitialize,
@@ -75,6 +77,7 @@ let reducers = {
   hoveredAnnotation: hoveredAnnotation.default,
   caretPosition: caretPosition.default,
   selectionLayer: selectionLayer.default,
+  alignments: alignments.default,
   copyOptions: copyOptions.default,
   lineageLines: lineageLines.default,
   digestTool: digestTool.default,

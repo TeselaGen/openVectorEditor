@@ -1,3 +1,4 @@
+import Color from "color";
 import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
@@ -39,9 +40,8 @@ function Feature(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
-      height
-    }
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L ${0},${height}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -49,9 +49,8 @@ function Feature(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0 
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
-      height
-    }
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L 0,${height} 
         z`;
   } else if (rangeType === "beginningAndEnd") {
@@ -101,7 +100,10 @@ function Feature(props) {
         d={path}
       />
       <text
-        style={{ fill: "black", fontSize: ".75em" }}
+        style={{
+          fontSize: ".75em",
+          fill: Color(color).isDark() ? "white" : "black"
+        }}
         transform={`translate(${textOffset},${height - 2})`}
       >
         {nameToDisplay}

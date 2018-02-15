@@ -86,6 +86,7 @@ export class LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
+      linearViewAnnotationVisibilityOverrides,
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
@@ -148,7 +149,8 @@ export class LinearView extends React.Component {
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   yellowAxis: true,
-                  translations: false
+                  translations: false,
+                  ...linearViewAnnotationVisibilityOverrides
                 },
                 ...RowItemProps
               }}

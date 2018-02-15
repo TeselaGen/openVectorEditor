@@ -36,7 +36,7 @@
     "classnames": "^2.2.5",
     "clipboard": "^1.7.1",
     "clone": "^2.1.1",
-    "color": "^2.0.1",
+    "color": "^3.0.0",
     "combokeys": "^3.0.0",
     "cross-env": "^5.1.1",
     "deep-equal": "^1.0.1",
@@ -64,6 +64,7 @@
     "react-list": "^0.8.8",
     "react-popover": "^0.5.4",
     "react-reflex": "^2.0.10",
+    "react-scroll-percentage": "^1.0.4",
     "react-sizeme": "^2.3.6",
     "react-split-pane": "^0.1.68",
     "recompose": "^0.26.0",
@@ -146,7 +147,7 @@
     "teselagen-react-components": "^19.1.37",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.3.3",
-    "ve-sequence-utils": "3.2.19"
+    "ve-sequence-utils": "3.2.25"
   },
   "lint-staged": {
     "src/**/*.js ": [

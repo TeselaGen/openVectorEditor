@@ -54,7 +54,6 @@ class Translation extends React.Component {
       subrangeStartRelativeToAnnotationStart,
       aminoAcids
     );
-    console.log("aminoAcidsForSubrange:", aminoAcidsForSubrange);
     //we then loop over all the amino acids in the sub range and draw them onto the row
     let translationSVG = aminoAcidsForSubrange.map(function(
       aminoAcidSliver,

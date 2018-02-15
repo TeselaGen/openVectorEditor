@@ -17,7 +17,7 @@ function SelectionLayer(props) {
     sequenceLength,
     regions,
     color: topLevelColor,
-    hideCarets = false,
+    hideCarets: topLevelHideCarets = false,
     selectionLayerRightClicked,
     className: globalClassname = "",
     onClick
@@ -25,7 +25,14 @@ function SelectionLayer(props) {
   return (
     <div>
       {regions.map(function(selectionLayer, topIndex) {
-        let { className = "", style = {}, start, end, color } = selectionLayer;
+        let {
+          className = "",
+          style = {},
+          start,
+          end,
+          color,
+          hideCarets = false
+        } = selectionLayer;
         let classNameToPass =
           "veRowViewSelectionLayer " +
           className +
@@ -59,7 +66,7 @@ function SelectionLayer(props) {
               sequenceLength
             );
             let caretSvgs = [];
-            if (!hideCarets) {
+            if (!(hideCarets || topLevelHideCarets)) {
               //DRAW CARETS
               caretSvgs = [
                 overlap.start === start && (

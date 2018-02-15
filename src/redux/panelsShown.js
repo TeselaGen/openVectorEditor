@@ -148,9 +148,15 @@ export default createReducer(
   [
     [
       {
-        id: "sequence",
-        name: "Sequence Map",
+        id: "alignment",
+        name: "Alignment",
         active: true
+        // fullScreen: true
+      },
+      {
+        id: "sequence",
+        name: "Sequence Map"
+        // active: true
         // fullScreen: true
       }
     ],
