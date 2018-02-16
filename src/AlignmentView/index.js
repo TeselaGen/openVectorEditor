@@ -51,7 +51,7 @@ export class AlignmentView extends React.Component {
           renderLabel={false}
           stepSize={0.01}
           initialValue={10}
-          max={16}
+          max={charWidthInLinearViewDefault}
           min={0}
         />
         <div style={{ display: "flex" }}>
