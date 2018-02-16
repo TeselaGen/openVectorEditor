@@ -64,6 +64,7 @@ export default class StandaloneDemo extends React.Component {
           const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
           return sequenceData
         },
+        readOnly: false,
         showMenuBar: true,
         PropertiesProps: {
           propertiesList: [
@@ -119,6 +120,8 @@ export default class StandaloneDemo extends React.Component {
             {
               id: "sequence",
               name: "Sequence Map",
+              active: true,
+              
             },
             {
               id: "alignmentTool",
@@ -137,7 +140,6 @@ export default class StandaloneDemo extends React.Component {
             {
               id: "properties",
               name: "Properties",
-              active: true,
               
               // active: true
             }

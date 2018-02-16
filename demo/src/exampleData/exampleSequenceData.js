@@ -985,5 +985,10 @@
 // }
 
 export default {
-	sequence: "atgagagaccaacacacaca"
+	sequence: "atgagagaccaacacacaca",
+	features: {
+		asdf: {
+			start: 4, end: 7, id: "asdf"
+		}
+	}
 }

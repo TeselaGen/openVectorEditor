@@ -154,14 +154,12 @@ function Features({
         };
       }
 
-      let annotationColor = annotation.color || "#BBBBBB";
-      if (annotation.type) {
-        if (featureColors[annotation.type]) {
-          annotationColor = featureColors[annotation.type];
-        }
-      }
-      /* eslint-disable */
+      let annotationColor =
+        annotation.color ||
+        (annotation.type && featureColors[annotation.type]) ||
+        "#BBBBBB";
 
+      /* eslint-disable */
       if (!annotation.id) debugger;
       /* eslint-enable */
 
