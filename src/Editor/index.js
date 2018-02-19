@@ -118,6 +118,11 @@ export class Editor extends React.Component {
   state = {
     tabDragging: false
   };
+  // componentWillMount(){
+  //   window.onbeforeunload = function () {
+  //       return "You may not want to leave the editor if you have any unsaved work.";
+  //   };
+  // }
   handlePrint = () => {
     console.warn("handlePrint");
   };

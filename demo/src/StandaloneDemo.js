@@ -68,7 +68,7 @@ export default class StandaloneDemo extends React.Component {
         showMenuBar: true,
         PropertiesProps: {
           propertiesList: [
-            "general",
+            // "general",
             "features",
             "parts",
             "primers",

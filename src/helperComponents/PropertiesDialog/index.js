@@ -44,7 +44,10 @@ export class PropertiesInner extends React.Component {
     } = this.props;
     const { width } = dimensions;
 
-    const { tabId } = propertiesTool;
+    let { tabId } = propertiesTool;
+    if (propertiesList.indexOf(tabId) === -1) {
+      tabId = propertiesList[0];
+    }
     const propertiesTabs = propertiesList.map(name => {
       const Comp = allTabs[name];
       return (
