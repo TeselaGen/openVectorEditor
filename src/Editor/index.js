@@ -528,7 +528,9 @@ export class Editor extends React.Component {
               onClick={() => {
                 togglePanelFullScreen(activePanelId);
               }}
-              className={"ve-clickable ve-close-panel-button pt-icon-minimize"}
+              className={
+                "ve-clickable ve-close-panel-button pt-icon-standard pt-icon-minimize"
+              }
               style={{
                 zIndex: 15001,
                 position: "fixed",
@@ -539,7 +541,7 @@ export class Editor extends React.Component {
           ) : (
             <span
               className={
-                "ve-clickable-black ve-close-panel-button pt-icon-menu"
+                "ve-clickable-black ve-close-panel-button pt-icon-standard pt-icon-menu"
               }
               onClick={showTabRightClickContextMenu}
               style={{
@@ -637,7 +639,7 @@ export class Editor extends React.Component {
                                     }}
                                     style={{ paddingLeft: 5 }}
                                     className={
-                                      "ve-clickable pt-icon-small-cross"
+                                      "ve-clickable pt-icon-standard pt-icon-small-cross"
                                     }
                                   />
                                 )}
