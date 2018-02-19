@@ -31,10 +31,15 @@ export default class StandaloneDemo extends React.Component {
             }]
           }
         },
-        onSave: function(event, copiedSequenceData, editorState) {
+        onSave: function(event, copiedSequenceData, editorState, onSuccessCallback) {
           console.log("event:", event);
           console.log("sequenceData:", copiedSequenceData);
           console.log("editorState:", editorState);
+          // To disable the save button after successful saving
+          // either call the onSuccessCallback or return a successful promise :)
+          onSuccessCallback()
+          //or 
+          // return myPromiseBasedApiCall()
         },
         onCopy: function(event, copiedSequenceData, editorState) {
           //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format

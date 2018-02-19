@@ -17,6 +17,7 @@ import * as minimumOrfSize from "./minimumOrfSize";
 import * as modalActions from "./modalActions";
 import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
+import * as lastSavedId from "./lastSavedId";
 import * as readOnly from "./readOnly";
 import * as replacementLayers from "./replacementLayers";
 import * as restrictionEnzymes from "./restrictionEnzymes";
@@ -49,6 +50,7 @@ export const actions = {
   ...lineageLines,
   ...digestTool,
   ...frameTranslations,
+  ...lastSavedId,
   ...readOnly,
   ...panelsShown,
   ...findTool,
@@ -80,6 +82,7 @@ let reducers = {
   digestTool: digestTool.default,
   frameTranslations: frameTranslations.default,
   readOnly: readOnly.default,
+  lastSavedId: lastSavedId.default,
   findTool: findTool.default,
   propertiesTool: propertiesTool.default,
   panelsShown: panelsShown.default,

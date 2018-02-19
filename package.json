@@ -146,7 +146,7 @@
     "teselagen-react-components": "^19.1.37",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.3.3",
-    "ve-sequence-utils": "3.2.29"
+    "ve-sequence-utils": "3.2.30"
   },
   "lint-staged": {
     "src/**/*.js ": [

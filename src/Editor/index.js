@@ -119,9 +119,12 @@ export class Editor extends React.Component {
     tabDragging: false
   };
   // componentWillMount(){
-  //   window.onbeforeunload = function () {
-  //       return "You may not want to leave the editor if you have any unsaved work.";
-  //   };
+  //   console.log('this.props:',this.props)
+
+  //   // lastSavedId
+  //   // window.onbeforeunload = function () {
+  //   //     return "You may not want to leave the editor if you have any unsaved work.";
+  //   // };
   // }
   handlePrint = () => {
     console.warn("handlePrint");
@@ -394,6 +397,7 @@ export class Editor extends React.Component {
   };
 
   render() {
+    console.log("this.props render:", this.props);
     const {
       doNotUseAbsolutePosition = false,
 

@@ -18,14 +18,24 @@ export default compose(
   withHandlers({
     handleSave: props => {
       return e => {
-        const { onSave, readOnly, sequenceData } = props;
-        !readOnly &&
+        const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
+        const updateLastSavedIdToCurrent = () => {
+          lastSavedIdUpdate(sequenceData.stateTrackingId);
+        };
+        const promiseOrVal =
+          !readOnly &&
           onSave &&
           onSave(
             e,
             tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-            props
+            props,
+            updateLastSavedIdToCurrent
           );
+
+        if (promiseOrVal && promiseOrVal.then) {
+          return promiseOrVal.then(updateLastSavedIdToCurrent);
+        }
+        // return updateLastSavedIdToCurrent()
       };
     },
     //add additional "computed handlers here"
@@ -112,6 +122,9 @@ function mapPropsToState(state, ownProps) {
       ...findTool,
       matchesTotal
     },
+    hasBeenSaved:
+      sequenceData.stateTrackingId === "initialLoadId" ||
+      sequenceData.stateTrackingId === editorState.lastSavedId,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
