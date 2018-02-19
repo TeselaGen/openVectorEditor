@@ -102,7 +102,6 @@ function mapPropsToState(state, ownProps) {
 
   return {
     ...editorState,
-
     selectedCutsites,
     sequenceLength,
     allCutsites,

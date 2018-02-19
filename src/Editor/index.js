@@ -310,6 +310,7 @@ export class Editor extends React.Component {
           global
           combo="cmd+p"
         />
+        <Hotkey preventDefault stopPropagation global combo="backpace" />
         {/* see above comment */}
         <Hotkey
           preventDefault
@@ -519,7 +520,7 @@ export class Editor extends React.Component {
           className="left-panel ve-panel"
         >
           {isFullScreen ? (
-            <div
+            <span
               onClick={() => {
                 togglePanelFullScreen(activePanelId);
               }}
@@ -532,7 +533,7 @@ export class Editor extends React.Component {
               }}
             />
           ) : (
-            <div
+            <span
               className={
                 "ve-clickable-black ve-close-panel-button pt-icon-menu"
               }
