@@ -127,6 +127,7 @@
     "in-publish": "^2.0.0",
     "install-peerdeps": "^1.4.0",
     "jest": "^21.2.1",
+    "jsonfile": "^4.0.0",
     "lint-staged": "^4.3.0",
     "moment": "2.18.1",
     "nodemon": "^1.12.1",

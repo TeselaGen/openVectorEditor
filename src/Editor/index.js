@@ -2,6 +2,7 @@
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
+import DrawChromatogram from './DrawChromatogram';
 import "react-reflex/styles.css";
 import React from "react";
 
@@ -709,6 +710,7 @@ export class Editor extends React.Component {
         className={"veEditor"}
       >
         <AlignmentToolInner />
+        <DrawChromatogram></DrawChromatogram>
         <div
           style={{
             width: "100%",

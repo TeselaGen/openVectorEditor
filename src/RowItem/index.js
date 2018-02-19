@@ -21,6 +21,7 @@ import Cutsites from "./Cutsites";
 import Caret from "./Caret";
 import Parts from "./Parts";
 import "./style.css";
+import Chromatogram from "./Chromatograms/Chromatogram";
 function noop() {}
 
 export class RowItem extends React.Component {
@@ -55,6 +56,7 @@ export class RowItem extends React.Component {
         end: 0,
         rowNumber: 0
       },
+      chromatogramData,
       fullSequence = "",
       deletionLayerClicked = noop,
       deletionLayerRightClicked = noop,
@@ -254,6 +256,14 @@ export class RowItem extends React.Component {
                 {...annotationCommonProps}
               />
             )}
+
+          {chromatogramData && (
+            <Chromatogram
+              chromatogramData={chromatogramData}
+              {...annotationCommonProps}
+              annotationHeight={partHeight}
+            />
+          )}
 
           <div
             className="veRowItemSequenceContainer"
