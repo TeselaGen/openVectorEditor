@@ -985,5 +985,5 @@
 // }
 
 export default {
-	sequence: "atgagagaccaacacacaca"
+	sequence: "atgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacaca"
 }

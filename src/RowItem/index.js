@@ -260,7 +260,6 @@ export class RowItem extends React.Component {
             <Chromatogram
               chromatogramData={chromatogramData}
               {...annotationCommonProps}
-              annotationHeight={partHeight}
             />
           )}
 

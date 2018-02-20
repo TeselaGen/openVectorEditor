@@ -2,7 +2,7 @@
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
-import DrawChromatogram from './DrawChromatogram';
+import DrawChromatogram from "./DrawChromatogram";
 import "react-reflex/styles.css";
 import React from "react";
 
@@ -481,8 +481,8 @@ export class Editor extends React.Component {
               },
               text:
                 panelsToShow.length > 1
-                  ? "Collapse Split Screen"
-                  : "View as Split Screen"
+                  ? "Make Tab Primary"
+                  : "View Side By Side"
             },
             {
               onClick: () => {
@@ -710,7 +710,7 @@ export class Editor extends React.Component {
         className={"veEditor"}
       >
         <AlignmentToolInner />
-        <DrawChromatogram></DrawChromatogram>
+        <DrawChromatogram />
         <div
           style={{
             width: "100%",

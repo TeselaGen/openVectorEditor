@@ -41,9 +41,14 @@ export class AlignmentView extends React.Component {
   };
   render() {
     const { charWidthInLinearView, percentScrolled } = this.state;
-    const { alignment = [], dimensions: { width }, dimensions } = this.props;
+    const {
+      alignment = [],
+      dimensions: { width },
+      dimensions,
+      height
+    } = this.props;
     return (
-      <div className="alignmentView">
+      <div style={{ height }} className="alignmentView">
         <UncontrolledSlider
           onRelease={val => {
             this.setState({ charWidthInLinearView: val });
