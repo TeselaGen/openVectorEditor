@@ -40,5 +40,5 @@
 }
 
 .reflex-layout > .reflex-element {
-  overflow-y: inherit !important;
+  overflow-y: hidden !important;
 }

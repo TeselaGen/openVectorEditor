@@ -1,10 +1,11 @@
 // import { Popover, Menu, MenuItem, Position } from "@blueprintjs/core";
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
-import { AlignmentToolInner } from "../ToolBar/alignmentTool";
-import DrawChromatogram from "./DrawChromatogram";
 import "react-reflex/styles.css";
 import React from "react";
+import { AlignmentToolInner } from "../ToolBar/alignmentTool";
+import DrawChromatogram from "./DrawChromatogram";
+import AlignmentView from "../AlignmentView";
 
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 // import Dimensions from "react-dimensions";
@@ -36,7 +37,6 @@ import {
 import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
-import AlignmentView from "../AlignmentView";
 import StatusBar from "../StatusBar";
 import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
@@ -55,9 +55,9 @@ import bpContext from "../withEditorInteractions/bpContext";
 const panelMap = {
   circular: CircularView,
   sequence: RowView,
-  alignment: AlignmentView,
   rail: LinearView,
   alignmentTool: AlignmentTool,
+  alignment: AlignmentView,
   digestTool: DigestTool,
   properties: Properties
 };
@@ -122,6 +122,14 @@ export class Editor extends React.Component {
   state = {
     tabDragging: false
   };
+  // componentWillMount(){
+  //   console.log('this.props:',this.props)
+
+  //   // lastSavedId
+  //   // window.onbeforeunload = function () {
+  //   //     return "You may not want to leave the editor if you have any unsaved work.";
+  //   // };
+  // }
   handlePrint = () => {
     console.warn("handlePrint");
   };
@@ -309,6 +317,7 @@ export class Editor extends React.Component {
           global
           combo="cmd+p"
         />
+        <Hotkey preventDefault stopPropagation global combo="backpace" />
         {/* see above comment */}
         <Hotkey
           preventDefault
@@ -392,6 +401,7 @@ export class Editor extends React.Component {
   };
 
   render() {
+    console.log("this.props render:", this.props);
     const {
       doNotUseAbsolutePosition = false,
 
@@ -518,11 +528,13 @@ export class Editor extends React.Component {
           className="left-panel ve-panel"
         >
           {isFullScreen ? (
-            <div
+            <span
               onClick={() => {
                 togglePanelFullScreen(activePanelId);
               }}
-              className={"ve-clickable ve-close-panel-button pt-icon-minimize"}
+              className={
+                "ve-clickable ve-close-panel-button pt-icon-standard pt-icon-minimize"
+              }
               style={{
                 zIndex: 15001,
                 position: "fixed",
@@ -531,9 +543,9 @@ export class Editor extends React.Component {
               }}
             />
           ) : (
-            <div
+            <span
               className={
-                "ve-clickable-black ve-close-panel-button pt-icon-menu"
+                "ve-clickable-black ve-close-panel-button pt-icon-standard pt-icon-menu"
               }
               onClick={showTabRightClickContextMenu}
               style={{
@@ -631,7 +643,7 @@ export class Editor extends React.Component {
                                     }}
                                     style={{ paddingLeft: 5 }}
                                     className={
-                                      "ve-clickable pt-icon-small-cross"
+                                      "ve-clickable pt-icon-standard pt-icon-small-cross"
                                     }
                                   />
                                 )}

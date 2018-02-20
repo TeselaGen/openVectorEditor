@@ -32,12 +32,11 @@ function Features(props) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
     let annotation = annotationRange.annotation;
-    let annotationColor = annotation.color || "#BBBBBB";
-    if (annotation.type) {
-      if (featureColors[annotation.type]) {
-        annotationColor = featureColors[annotation.type];
-      }
-    }
+    let annotationColor =
+      annotation.color ||
+      (annotation.type && featureColors[annotation.type]) ||
+      "#BBBBBB";
+
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,

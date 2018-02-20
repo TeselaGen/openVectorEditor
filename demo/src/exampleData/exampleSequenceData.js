@@ -985,5 +985,10 @@
 // }
 
 export default {
-	sequence: "atgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacaca"
+	sequence: "atgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacacaatgagagaccaacacacaca",
+	features: {
+		asdf: {
+			start: 4, end: 7, id: "asdf"
+		}
+	}
 }

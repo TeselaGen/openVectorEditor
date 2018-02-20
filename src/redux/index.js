@@ -14,10 +14,11 @@ import * as frameTranslations from "./frameTranslations";
 import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as lineageLines from "./lineageLines";
 import * as minimumOrfSize from "./minimumOrfSize";
-import * as modalActions from "./modalActions";
 import * as alignments from "./alignments";
+import * as modalActions from "./modalActions";
 import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
+import * as lastSavedId from "./lastSavedId";
 import * as readOnly from "./readOnly";
 import * as replacementLayers from "./replacementLayers";
 import * as restrictionEnzymes from "./restrictionEnzymes";
@@ -48,13 +49,14 @@ export const actions = {
   ...replacementLayers,
   ...copyOptions,
   ...lineageLines,
+  ...alignments,
   ...digestTool,
   ...frameTranslations,
+  ...lastSavedId,
   ...readOnly,
   ...panelsShown,
   ...findTool,
   ...modalActions,
-  ...alignments,
   ...propertiesTool,
   ...addYourOwnEnzyme,
   vectorEditorInitialize,
@@ -77,15 +79,16 @@ let reducers = {
   hoveredAnnotation: hoveredAnnotation.default,
   caretPosition: caretPosition.default,
   selectionLayer: selectionLayer.default,
-  alignments: alignments.default,
   copyOptions: copyOptions.default,
   lineageLines: lineageLines.default,
   digestTool: digestTool.default,
   frameTranslations: frameTranslations.default,
   readOnly: readOnly.default,
+  lastSavedId: lastSavedId.default,
   findTool: findTool.default,
   propertiesTool: propertiesTool.default,
   panelsShown: panelsShown.default,
+  alignments: alignments.default,
   deletionLayers: deletionLayers.default,
   replacementLayers: replacementLayers.default,
   instantiated: () => true

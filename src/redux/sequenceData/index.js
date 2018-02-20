@@ -1,6 +1,7 @@
 import { cloneDeep } from "lodash";
 import deepEqual from "deep-equal";
 import { tidyUpSequenceData } from "ve-sequence-utils";
+import uuid from "uuidv4";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
@@ -60,6 +61,9 @@ export default function(state, action) {
     return state;
   } else {
     //tnr: do a clone deep here in order to make sure we are using a totally new object for undo/redo tracking
-    return cloneDeep(newState);
+    return {
+      ...cloneDeep(newState),
+      stateTrackingId: newState.stateTrackingId ? uuid() : "initialLoadId"
+    };
   }
 }

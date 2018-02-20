@@ -8,8 +8,10 @@ import {
   Popover,
   Position
 } from "@blueprintjs/core";
+import { reduxForm } from "redux-form";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
+import { SelectField } from "teselagen-react-components";
 
 export function FindBar({
   toggleFindTool,
@@ -31,44 +33,28 @@ export function FindBar({
     matchNumber = 0
   } = findTool;
   const findOptionsEls = [
-    <div key="dnaoraa" className={"pt-select"}>
-      <select
-        onChange={e => {
-          updateDnaOrAA(e.target.value);
-        }}
-        value={dnaOrAA}
-      >
-        {[
-          { label: "DNA", value: "DNA" },
-          { label: "Amino Acids", value: "AA" }
-        ].map(({ label, value }) => {
-          return (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          );
-        })}{" "}
-      </select>
-    </div>,
-    <div key="ambiguousorliteral" className={"pt-select"}>
-      <select
-        onChange={e => {
-          updateAmbiguousOrLiteral(e.target.value);
-        }}
-        value={ambiguousOrLiteral}
-      >
-        {[
-          { label: "Literal", value: "LITERAL" },
-          { label: "Ambiguous", value: "AMBIGUOUS" }
-        ].map(({ label, value }) => {
-          return (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          );
-        })}{" "}
-      </select>
-    </div>,
+    <SelectField
+      options={[
+        { label: "DNA", value: "DNA" },
+        { label: "Amino Acids", value: "AA" }
+      ]}
+      defaultValue={dnaOrAA}
+      onFieldSubmit={value => {
+        updateDnaOrAA(value);
+      }}
+      key="dnaoraa"
+    />,
+    <SelectField
+      options={[
+        { label: "Literal", value: "LITERAL" },
+        { label: "Ambiguous", value: "AMBIGUOUS" }
+      ]}
+      defaultValue={ambiguousOrLiteral}
+      onFieldSubmit={value => {
+        updateAmbiguousOrLiteral(value);
+      }}
+      key="ambiguousorliteral"
+    />,
     <Switch
       key="highlightall"
       value={highlightAll}
@@ -183,7 +169,7 @@ export function FindBar({
   );
 }
 
-export default withEditorProps(FindBar);
+export default reduxForm({ form: "findbar" })(withEditorProps(FindBar));
 
 function mod(n, m) {
   return (n % m + m) % m;
