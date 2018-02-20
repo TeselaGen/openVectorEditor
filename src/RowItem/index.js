@@ -49,13 +49,13 @@ export class RowItem extends React.Component {
       additionalSelectionLayers = [],
       lineageLines = [],
       caretPosition = -1,
-      sequenceLength = 0,
       row = {
         sequence: "",
         start: 0,
         end: 0,
         rowNumber: 0
       },
+      sequenceLength = row.sequence.length,
       chromatogramData,
       fullSequence = "",
       deletionLayerClicked = noop,
@@ -79,7 +79,7 @@ export class RowItem extends React.Component {
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
 
-      bpsPerRow,
+      bpsPerRow = row.sequence.length,
       editorName
     } = this.props;
     let {
@@ -176,7 +176,6 @@ export class RowItem extends React.Component {
           );
         })
       : null;
-    console.log("sequence,showSequence:", sequence, showSequence);
     return (
       <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}

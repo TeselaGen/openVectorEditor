@@ -1,31 +1,40 @@
-import withHover from "../../helperComponents/withHover";
-
 import React from "react";
 
 
 class Chromatogram extends React.Component {
 
   componentDidMount() {
-    const {chromatogramData} = this.props
-    const painter = new drawTrace(chromatogramData)
+    this.updatePeakDrawing()
+  }
+  componentWillReceiveProps(newProps) {
+    if (
+      newProps.chromatogramData !== this.props.chromatogramData
+    ) {
+      this.updatePeakDrawing()
+    }
+  }
+  updatePeakDrawing = () => {
+    const {chromatogramData, charWidth} = this.props
+    const painter = new drawTrace(chromatogramData, charWidth)
     painter.paintCanvas()
+
   }
 
   render(){
-    let {
-      editorName,
-        charWidth,
-        bpsPerRow,
-        sequenceLength,
-        annotationHeight,
-        spaceBetweenAnnotations,
-        row,
-      chromatogramData
-    } = this.props;
+    // let {
+    //   editorName,
+    //     charWidth,
+    //     bpsPerRow,
+    //     sequenceLength,
+    //     annotationHeight,
+    //     spaceBetweenAnnotations,
+    //     row,
+    //   chromatogramData
+    // } = this.props;
     // path=path.replace(/ /g,'')
     // path=path.replace(/\n/g,'')
     return (
-      <canvas id="peakCanvas" height="350" ></canvas>
+      <canvas id="peakCanvas" height="100" ></canvas>
     );
   }
 }
@@ -39,10 +48,12 @@ function drawTrace (traceData, charWidth = 12) {
   const ctx = peakCanvas.getContext("2d");
   
   const formattedPeaks = {a:[], t:[], g:[], c:[]};
-  const bottomBuffer = 50;
-  const baseBuffer = 35;
+  const bottomBuffer = 0;
+  // const bottomBuffer = 50;
+  const baseBuffer = 0;
+  // const baseBuffer = 35;
   const maxHeight = peakCanvas.height;
-  const maxWidth = traceData.basePos[traceData.basePos.length - 1];
+  const maxWidth = traceData.basePos.length * charWidth
   peakCanvas.width = maxWidth;
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, maxWidth, peakCanvas.height);
@@ -74,6 +85,47 @@ function drawTrace (traceData, charWidth = 12) {
   }
 
   this.drawPeaks = function(trace, lineColor) {
+      ctx.beginPath();
+      ctx.moveTo(0, scaledHeight - trace[0])
+      // const initialBasePosition = traceData.basePos[0]  
+      // trace = trace.slice(initialBasePosition)
+    console.log('traceData.basePos.length, charWidth, traceData.basePos.length * charWidth:',traceData.basePos.length, charWidth, traceData.basePos.length * charWidth)
+      //loop through base positions [ 43, 53, 70, 77, ...]
+      for (let baseIndex = 0; baseIndex < traceData.basePos.length - 1; baseIndex++) {
+        const startBasePos = traceData.basePos[baseIndex]  
+        const endBasePos = traceData.basePos[baseIndex + 1]
+        //grab the start and end (43, 53) , (53, 70) ...
+        for (let innerIndex = startBasePos; innerIndex < endBasePos; innerIndex++) {
+          // innerIndex = 43, 44, 45, ... 52
+          // const element = array[baseIndex];
+          const startXPosition = baseIndex * charWidth + charWidth/3
+          // const endXPosition = (baseIndex + 1) * charWidth
+
+          // const intervalsBetweenBases =  endBasePos - startBasePos
+          
+
+          // // const scaledStartXPosition = traceData.basePos[startBasePos - 1] || 0
+          
+          // const scaledStartXPosition = startBasePos - traceData.basePos[0]
+          // const unscaledXPosition = innerIndex - traceData.basePos[0]
+          
+          const scalingFactor = charWidth/ (endBasePos - startBasePos)
+          // baseIndex < charWidth && console.log('startXPosition, scalingFactor, innerIndex - startBasePos:',startXPosition, scalingFactor, innerIndex - startBasePos)
+          ctx.lineTo(startXPosition + scalingFactor * (innerIndex - startBasePos), scaledHeight - trace[innerIndex]);
+          ctx.moveTo(startXPosition + scalingFactor * (innerIndex - startBasePos), scaledHeight - trace[innerIndex]);
+        }
+      }
+      for (let counter = 1; counter < trace.length; counter++) {
+
+          
+          // const width = [endBasePos-startBasePos]
+
+          
+      }
+      ctx.strokeStyle = lineColor;
+      ctx.stroke();
+  }
+  this.drawPeaksSvg = function(trace, lineColor) {
       ctx.beginPath();
       ctx.moveTo(0, scaledHeight - trace[0])
       // const initialBasePosition = traceData.basePos[0]  
