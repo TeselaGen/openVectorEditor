@@ -48,7 +48,7 @@ export class AlignmentView extends React.Component {
       height
     } = this.props;
     return (
-      <div style={{ height }} className="alignmentView">
+      <div style={{ height, overflowY: "auto" }} className="alignmentView">
         <UncontrolledSlider
           onRelease={val => {
             this.setState({ charWidthInLinearView: val });
