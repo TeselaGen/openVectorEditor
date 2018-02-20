@@ -8,16 +8,17 @@ class Chromatogram extends React.Component {
   }
   componentWillReceiveProps(newProps) {
     if (
-      newProps.chromatogramData !== this.props.chromatogramData
+      newProps.chromatogramData !== this.props.chromatogramData ||
+      newProps.row.start !== this.props.row.start ||
+      newProps.row.end !== this.props.row.end
     ) {
       this.updatePeakDrawing()
     }
   }
   updatePeakDrawing = () => {
-    const {chromatogramData, charWidth} = this.props
-    const painter = new drawTrace(chromatogramData, charWidth)
+    const {chromatogramData, charWidth, row} = this.props
+    const painter = new drawTrace({traceData: chromatogramData, charWidth, startBp: row.start, endBp: row.end})
     painter.paintCanvas()
-
   }
 
   render(){
@@ -42,7 +43,7 @@ class Chromatogram extends React.Component {
 export default Chromatogram;
 
 
-function drawTrace (traceData, charWidth = 12) {
+function drawTrace ({traceData, charWidth = 12, startBp, endBp}) {
   const colors = {adenine:"green", thymine:"red", guanine:"black", cytosine:"blue", other:"pink"};
   const peakCanvas = document.getElementById("peakCanvas");
   const ctx = peakCanvas.getContext("2d");
@@ -53,7 +54,8 @@ function drawTrace (traceData, charWidth = 12) {
   const baseBuffer = 0;
   // const baseBuffer = 35;
   const maxHeight = peakCanvas.height;
-  const maxWidth = traceData.basePos.length * charWidth
+  const bpsToDrawLength = endBp - startBp + 1
+  const maxWidth = bpsToDrawLength * charWidth
   peakCanvas.width = maxWidth;
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, maxWidth, peakCanvas.height);
@@ -86,19 +88,18 @@ function drawTrace (traceData, charWidth = 12) {
 
   this.drawPeaks = function(trace, lineColor) {
       ctx.beginPath();
-      ctx.moveTo(0, scaledHeight - trace[0])
+      // ctx.moveTo(0, scaledHeight - trace[0])
       // const initialBasePosition = traceData.basePos[0]  
       // trace = trace.slice(initialBasePosition)
-    console.log('traceData.basePos.length, charWidth, traceData.basePos.length * charWidth:',traceData.basePos.length, charWidth, traceData.basePos.length * charWidth)
       //loop through base positions [ 43, 53, 70, 77, ...]
-      for (let baseIndex = 0; baseIndex < traceData.basePos.length - 1; baseIndex++) {
+      for (let baseIndex = startBp; baseIndex < endBp; baseIndex++) {
         const startBasePos = traceData.basePos[baseIndex]  
         const endBasePos = traceData.basePos[baseIndex + 1]
         //grab the start and end (43, 53) , (53, 70) ...
         for (let innerIndex = startBasePos; innerIndex < endBasePos; innerIndex++) {
           // innerIndex = 43, 44, 45, ... 52
           // const element = array[baseIndex];
-          const startXPosition = baseIndex * charWidth + charWidth/3
+          const startXPosition = (baseIndex - startBp) * charWidth + charWidth/3
           // const endXPosition = (baseIndex + 1) * charWidth
 
           // const intervalsBetweenBases =  endBasePos - startBasePos
@@ -125,48 +126,7 @@ function drawTrace (traceData, charWidth = 12) {
       ctx.strokeStyle = lineColor;
       ctx.stroke();
   }
-  this.drawPeaksSvg = function(trace, lineColor) {
-      ctx.beginPath();
-      ctx.moveTo(0, scaledHeight - trace[0])
-      // const initialBasePosition = traceData.basePos[0]  
-      // trace = trace.slice(initialBasePosition)
-
-      //loop through base positions [ 43, 53, 70, 77, ...]
-      for (let baseIndex = 0; baseIndex < traceData.basePos.length - 1; baseIndex++) {
-        const startBasePos = traceData.basePos[baseIndex]  
-        const endBasePos = traceData.basePos[baseIndex + 1]
-        //grab the start and end (43, 53) , (53, 70) ...
-        for (let innerIndex = startBasePos; innerIndex < endBasePos; innerIndex++) {
-          // innerIndex = 43, 44, 45, ... 52
-          // const element = array[baseIndex];
-          const startXPosition = baseIndex * charWidth
-          // const endXPosition = (baseIndex + 1) * charWidth
-
-          // const intervalsBetweenBases =  endBasePos - startBasePos
-          
-
-          // // const scaledStartXPosition = traceData.basePos[startBasePos - 1] || 0
-          
-          // const scaledStartXPosition = startBasePos - traceData.basePos[0]
-          // const unscaledXPosition = innerIndex - traceData.basePos[0]
-          
-          const scalingFactor = charWidth/ (endBasePos - startBasePos)
-          // baseIndex < charWidth && console.log('startXPosition, scalingFactor, innerIndex - startBasePos:',startXPosition, scalingFactor, innerIndex - startBasePos)
-          ctx.lineTo(startXPosition + scalingFactor * (innerIndex - startBasePos), scaledHeight - trace[innerIndex]);
-          ctx.moveTo(startXPosition + scalingFactor * (innerIndex - startBasePos), scaledHeight - trace[innerIndex]);
-        }
-      }
-      for (let counter = 1; counter < trace.length; counter++) {
-
-          
-          // const width = [endBasePos-startBasePos]
-
-          
-      }
-      ctx.strokeStyle = lineColor;
-      ctx.stroke();
-  }
-
+ 
   this.drawBases = function () {
       //ctx.font = "24px serif";
       for (let count = 0; count < traceData.baseCalls.length; count++) {
