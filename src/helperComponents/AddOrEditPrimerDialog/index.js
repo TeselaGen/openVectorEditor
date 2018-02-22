@@ -76,7 +76,6 @@ export class AddOrEditPrimerDialog extends React.Component {
 function required(val) {
   if (!val) return "Required";
 }
-
 export default compose(
   withDialog(),
   withEditorProps,

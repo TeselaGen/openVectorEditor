@@ -36,7 +36,7 @@
     "classnames": "^2.2.5",
     "clipboard": "^1.7.1",
     "clone": "^2.1.1",
-    "color": "^2.0.1",
+    "color": "^3.0.0",
     "combokeys": "^3.0.0",
     "cross-env": "^5.1.1",
     "deep-equal": "^1.0.1",
@@ -108,7 +108,7 @@
     "babel-jest": "^21.2.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "bio-parsers": "4.3.1",
+    "bio-parsers": "4.4.4",
     "chance": "^1.0.12",
     "enzyme": "^3.1.1",
     "enzyme-to-json": "^3.2.2",
@@ -143,10 +143,10 @@
     "react-table": "^6.7.4",
     "redux-form": "^7.1.2",
     "redux-thunk": "*",
-    "teselagen-react-components": "^19.1.37",
+    "teselagen-react-components": "^19.1.44",
     "tg-client-query-builder": "^2.12.1",
-    "ve-range-utils": "^2.3.3",
-    "ve-sequence-utils": "3.2.30"
+    "ve-range-utils": "^2.5.0",
+    "ve-sequence-utils": "3.2.31"
   },
   "lint-staged": {
     "src/**/*.js ": [

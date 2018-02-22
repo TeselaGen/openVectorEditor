@@ -37,8 +37,8 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 //   }
 // ];
 
-let alignment = [1, 2, 3, 4].map(() => {
-  return { sequenceData: generateSequenceData({ sequenceLength: 1000 }) };
+let alignment = [1, 2].map(() => {
+  return { sequenceData: generateSequenceData({ sequenceLength: 10 }) };
 });
 
 alignment = alignment.map(track => {

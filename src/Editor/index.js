@@ -3,8 +3,8 @@ import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
-import { AlignmentToolInner } from "../ToolBar/alignmentTool";
-import DrawChromatogram from "./DrawChromatogram";
+// import { AlignmentToolInner } from "../ToolBar/alignmentTool";
+// import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
 
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
@@ -38,7 +38,7 @@ import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
-import FindBar from "../FindBar";
+// import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
@@ -49,14 +49,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 // import sequence from "../redux/sequenceData/sequence";
-import AlignmentTool from "../AlignmentTool/index";
+// // import AlignmentTool from "../AlignmentTool/index";
 import bpContext from "../withEditorInteractions/bpContext";
 
 const panelMap = {
   circular: CircularView,
   sequence: RowView,
   rail: LinearView,
-  alignmentTool: AlignmentTool,
+  // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
   properties: Properties
@@ -721,8 +721,8 @@ export class Editor extends React.Component {
         style={{ width: "100%", position: "relative" }}
         className={"veEditor"}
       >
-        <AlignmentToolInner />
-        <DrawChromatogram />
+        {/* <AlignmentToolInner /> */}
+        {/* <DrawChromatogram /> */}
         <div
           style={{
             width: "100%",

@@ -72,7 +72,7 @@ function OrfToolDropdown({
           value={minimumOrfSize}
         />
       </div>
-      <div className="ve-spacer" />
+      <div className="vespacer" />
       <Checkbox
         onChange={function() {
           annotationVisibilityToggle("orfTranslations");
@@ -85,7 +85,7 @@ function OrfToolDropdown({
         checked={useAdditionalOrfStartCodons}
         label={"Use GTG and CTG as start codons"}
       />
-      <div className="ve-spacer" />
+      <div className="vespacer" />
       <InfoCircle />
       <span className={"translateInfoSpan"}>
         To translate an arbitrary area, right click a selection.

@@ -121,18 +121,18 @@ export class AlignmentView extends React.Component {
                           0
                       }}
                     />
-
+                    {console.log("sequenceData:", sequenceData)}
                     <LinearView
                       {...{
                         linearViewAnnotationVisibilityOverrides: {
                           axis: false,
                           yellowAxis: false,
-                          reverseSequence: false,
+                          reverseSequence: true,
                           // translations: charWidthInLinearView > 4.5,
                           // features: false,
                           parts: false,
                           primers: false,
-                          translations: false
+                          translations: true
                         },
                         marginWith: 0,
                         hideName: true,
