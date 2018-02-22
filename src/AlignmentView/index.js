@@ -49,16 +49,19 @@ export class AlignmentView extends React.Component {
     } = this.props;
     return (
       <div style={{ height, overflowY: "auto" }} className="alignmentView">
-        <UncontrolledSlider
-          onRelease={val => {
-            this.setState({ charWidthInLinearView: val });
-          }}
-          renderLabel={false}
-          stepSize={0.01}
-          initialValue={10}
-          max={16}
-          min={0}
-        />
+        <div style={{ maxWidth: 160, display: "flex" }}>
+          <h6 style={{ marginRight: 10 }}>Zoom: </h6>
+          <UncontrolledSlider
+            onRelease={val => {
+              this.setState({ charWidthInLinearView: val });
+            }}
+            renderLabel={false}
+            stepSize={0.01}
+            initialValue={10}
+            max={16}
+            min={0}
+          />
+        </div>
         <div style={{ display: "flex" }}>
           <div style={{ width: nameDivWidth, flex: 1 }}>
             {alignment.map((alignmentData, i) => {

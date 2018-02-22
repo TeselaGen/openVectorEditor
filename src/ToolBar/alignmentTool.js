@@ -4,7 +4,6 @@ import {
   FileUploadField,
   TextareaField,
   EditableTextField
-  // magicDownload
 } from "teselagen-react-components";
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
@@ -69,10 +68,18 @@ const instance = axios.create({
 });
 
 class AlignmentTool extends React.Component {
-  sendSelectedDataToBackendForAlignment = ({ addedSequences }) => {
-    return instance.post("http://j5server.teselagen.com/alignment/run", {
-      sequencesToAlign: addedSequences
-    });
+  sendSelectedDataToBackendForAlignment = async ({ addedSequences }) => {
+    const { hideModal, onAlignmentSuccess } = this.props;
+    hideModal();
+    window.toastr.success("Alignment submitted.");
+    const results = await instance.post(
+      "http://j5server.teselagen.com/alignment/run",
+      {
+        sequencesToAlign: addedSequences
+      }
+    );
+    onAlignmentSuccess && onAlignmentSuccess(results);
+
     // console.log("sending data to backend!");
   };
 

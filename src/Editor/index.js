@@ -317,7 +317,13 @@ export class Editor extends React.Component {
           global
           combo="cmd+p"
         />
-        <Hotkey preventDefault stopPropagation global combo="backpace" />
+        <Hotkey
+          label="Delete Sequence"
+          preventDefault
+          stopPropagation
+          global
+          combo="backpace"
+        />
         {/* see above comment */}
         <Hotkey
           preventDefault
@@ -450,10 +456,12 @@ export class Editor extends React.Component {
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
       // let activePanelId
       let activePanelId;
+      let activePanelType;
       let isFullScreen;
-      panelGroup.forEach(({ id, active, fullScreen }) => {
+      panelGroup.forEach(({ type, id, active, fullScreen }) => {
         if (fullScreen) isFullScreen = true;
         if (active) {
+          activePanelType = type || id;
           activePanelId = id;
         }
       });
@@ -472,7 +480,7 @@ export class Editor extends React.Component {
         })
       };
 
-      const Panel = panelMap[activePanelId];
+      const Panel = panelMap[activePanelType];
       let panel = Panel ? (
         <Panel key={activePanelId} {...sharedProps} {...editorDimensions} />
       ) : (
