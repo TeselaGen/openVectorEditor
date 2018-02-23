@@ -55,7 +55,9 @@ export class RowItem extends React.Component {
         end: 0,
         rowNumber: 0
       },
+      alignmentData={sequence: row.sequence.shuffle(50, "-")},
       sequenceLength = row.sequence.length,
+      // sequenceLength = alignmentData.sequence.length || row.sequence.length,
       chromatogramData,
       fullSequence = "",
       deletionLayerClicked = noop,
@@ -132,15 +134,37 @@ export class RowItem extends React.Component {
       position: "relative",
       width: width + "px"
     };
+    
+    const gapMap = getGapMap(alignmentData.sequence)
+    const getGaps = (rangeOrCaretPosition) => {
+      if (typeof range !== "object") {
+        return {
+          gapsBefore: gapMap[rangeOrCaretPosition]
+        }
+      }
+      //otherwise it is a range!
+      const {start, end} = rangeOrCaretPosition
+      return {
+        gapsBefore: gapMap[start],
+        gapsInside: gapMap[end] - gapMap[start]
+      }
+    }
     let annotationCommonProps = {
       editorName,
       charWidth,
       bpsPerRow,
+      getGaps,
       sequenceLength,
       annotationHeight,
       spaceBetweenAnnotations,
       row
     };
+
+    // a t g a t c a g g 
+    // 0 1 2 3 4 5 6 8 9
+    //0 1 2 3 4 5 6 7 9     
+    
+    
 
     let deletionLayersToDisplay = flatMap(
       { ...replacementLayers, ...deletionLayers },
@@ -270,9 +294,9 @@ export class RowItem extends React.Component {
             {showSequence &&
               charWidth > 7 && (
                 <Sequence
-                  sequence={sequence}
+                  sequence={alignmentData.sequence} //from alignment data and has "-"" chars in it
                   height={sequenceHeight}
-                  length={sequence.length}
+                  length={alignmentData.sequence.length}
                   charWidth={charWidth}
                 >
                   {showCutsites &&
@@ -505,3 +529,31 @@ export class RowItem extends React.Component {
 
 // module.exports = pure(RowItem);
 export default RowItem;
+
+
+function getGapMap(sequence) {
+  const gapMap = [] //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
+  sequence.split("").forEach((char) => {
+    if (char === "-") {
+      gapMap[Math.max(0, gapMap.length - 1)] = (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1
+    } else {
+      gapMap.push(gapMap[gapMap.length -1] || 0)
+      // gapMap[gapMap.length] = 
+    }
+  })
+  return gapMap
+}
+// var a = getGapMap("---tagccc---tagasdfw--gg")
+// console.log('a:',a)
+
+
+String.prototype.shuffle = function(n, char) {
+  var arr = this.split(''),
+      char= char || ' ';
+
+  while(n--) {
+    arr.splice(Math.floor(Math.random() * (arr.length+1)), 0, char);
+  }
+
+  return arr.join('');
+} //shuffle

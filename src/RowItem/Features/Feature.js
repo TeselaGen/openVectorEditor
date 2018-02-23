@@ -19,10 +19,11 @@ function Feature(props) {
     color = "orange",
     featureClicked,
     featureRightClicked,
+    gapsInside,
     annotation
   } = props;
 
-  let width = widthInBps * charWidth;
+  let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
   if (charWidth < 15) {
     //allow the arrow width to adapt

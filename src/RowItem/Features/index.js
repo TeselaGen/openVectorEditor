@@ -20,8 +20,10 @@ function Features(props) {
     spaceBetweenAnnotations = 2,
     featureClicked,
     featureRightClicked,
-    editorName
+    editorName,
+    getGaps
   } = props;
+  
   if (annotationRanges.length === 0) {
     return null;
   }
@@ -31,6 +33,7 @@ function Features(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
+    const {gapsBefore, gapsInside} = getGaps(annotationRange)
     let annotation = annotationRange.annotation;
     let annotationColor =
       annotation.color ||
@@ -40,7 +43,9 @@ function Features(props) {
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
-      charWidth
+      charWidth,
+      gapsBefore,
+      gapsInside
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -59,6 +64,7 @@ function Features(props) {
           featureClicked={featureClicked}
           featureRightClicked={featureRightClicked}
           annotation={annotation}
+          gapsInside={gapsInside}
           color={annotationColor}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}

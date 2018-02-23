@@ -18,10 +18,11 @@ function Primer(props) {
     color = "orange",
     primerClicked,
     primerRightClicked,
+    gapsInside = 0,
     annotation
   } = props;
 
-  let width = widthInBps * charWidth;
+  let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
   if (charWidth < 15) {
     //allow the arrow width to adapt

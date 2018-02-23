@@ -16,6 +16,7 @@ function SelectionLayer(props) {
     row,
     sequenceLength,
     regions,
+    getGaps,
     color: topLevelColor,
     hideCarets: topLevelHideCarets = false,
     selectionLayerRightClicked,
@@ -63,7 +64,8 @@ function SelectionLayer(props) {
               row,
               bpsPerRow,
               charWidth,
-              sequenceLength
+              sequenceLength,
+              ...getGaps(overlap)
             );
             let caretSvgs = [];
             if (!(hideCarets || topLevelHideCarets)) {
@@ -74,6 +76,7 @@ function SelectionLayer(props) {
                     {...{
                       charWidth,
                       row,
+                      getGaps,
                       key: key + "caret1",
                       sequenceLength,
                       className:
@@ -89,6 +92,7 @@ function SelectionLayer(props) {
                     {...{
                       charWidth,
                       row,
+                      getGaps,
                       key: key + "caret2",
                       sequenceLength,
                       className:

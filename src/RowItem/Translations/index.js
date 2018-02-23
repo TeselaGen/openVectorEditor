@@ -14,6 +14,7 @@ function Translations(props) {
     charWidth,
     annotationHeight,
     spaceBetweenAnnotations,
+    getGaps,
     ...rest
   } = props;
   if (annotationRanges.length === 0) {
@@ -30,7 +31,8 @@ function Translations(props) {
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
-      charWidth
+      charWidth,
+      ...getGaps(annotationRange)
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -50,6 +52,8 @@ function Translations(props) {
             annotation,
             annotation.forward
           )}
+          {...getGaps(annotationRange)}
+          getGaps={getGaps}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           height={annotationHeight}
