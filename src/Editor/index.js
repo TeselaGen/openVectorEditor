@@ -3,7 +3,7 @@ import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
-
+import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 // import Dimensions from "react-dimensions";
 /* eslint-disable */ import {
@@ -141,7 +141,8 @@ export class Editor extends React.Component {
       selectionLayer,
       caretPosition,
       showAddOrEditPrimerDialog,
-      readOnly
+      readOnly,
+      sequenceLength
     } = this.props;
     const rangeToUse =
       selectionLayer.start > -1
@@ -264,6 +265,43 @@ export class Editor extends React.Component {
     panelsShownUpdate(newPanelsShown);
   };
 
+  handleInverse(contex) {
+    const {
+      sequenceLength,
+      selectionLayer,
+      caretPosition,
+      selectionLayerUpdate,
+      caretPositionUpdate
+    } = contex.props;
+    if (sequenceLength <= 0) {
+      return false;
+    }
+    if (selectionLayer.start > -1) {
+      if (getRangeLength(selectionLayer) === sequenceLength) {
+        caretPositionUpdate(selectionLayer.start);
+      } else {
+        selectionLayerUpdate(invertRange(selectionLayer));
+      }
+    } else {
+      if (caretPosition > -1) {
+        selectionLayerUpdate(
+          normalizeRange(
+            {
+              start: caretPosition,
+              end: caretPosition - 1
+            },
+            sequenceLength
+          )
+        );
+      } else {
+        selectionLayerUpdate({
+          start: 0,
+          end: sequenceLength - 1
+        });
+      }
+    }
+  }
+
   renderHotkeys() {
     return (
       <Hotkeys>
@@ -282,6 +320,14 @@ export class Editor extends React.Component {
           global
           combo="cmd+p"
           onKeyDown={this.handlePrint}
+        />
+        <Hotkey
+          preventDefault
+          stopPropagation
+          label="Inverse"
+          global
+          combo="cmd+i"
+          onKeyDown={() => this.handleInverse(this)}
         />
         <Hotkey
           preventDefault
@@ -416,6 +462,7 @@ export class Editor extends React.Component {
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel
+
       // ...rest
     } = this.props;
 
