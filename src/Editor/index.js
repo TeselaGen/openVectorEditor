@@ -4,7 +4,7 @@ import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
 // import { AlignmentToolInner } from "../ToolBar/alignmentTool";
-// import DrawChromatogram from "./DrawChromatogram";
+import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
 
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
@@ -730,7 +730,7 @@ export class Editor extends React.Component {
         className={"veEditor"}
       >
         {/* <AlignmentToolInner /> */}
-        {/* <DrawChromatogram /> */}
+        <DrawChromatogram />
         <div
           style={{
             width: "100%",

@@ -142,6 +142,7 @@ export class LinearView extends React.Component {
             <RowItem
               {...{
                 ...rest,
+                // ...!rest.alignmentData && {alignmentData: sequenceData},
                 sequenceLength: sequenceData.sequence.length,
                 width: innerWidth,
                 bpsPerRow,

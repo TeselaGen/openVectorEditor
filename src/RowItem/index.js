@@ -153,7 +153,8 @@ export class RowItem extends React.Component {
         const toReturn = {
           gapsBefore: gapMap[start],
           gapsInside: gapMap[end] - gapMap[start]
-        }
+        };
+        // console.log('toReturn:',toReturn)
         return toReturn;
       };
     }
@@ -300,9 +301,15 @@ export class RowItem extends React.Component {
             {showSequence &&
               charWidth > 7 && (
                 <Sequence
-                  sequence={alignmentData.sequence} //from alignment data and has "-"" chars in it
+                  sequence={
+                    alignmentData ? alignmentData.sequence : row.sequence
+                  } //from alignment data and has "-"" chars in it
                   height={sequenceHeight}
-                  length={alignmentData.sequence.length}
+                  length={
+                    alignmentData
+                      ? alignmentData.sequence.length
+                      : row.sequence.length
+                  }
                   charWidth={charWidth}
                 >
                   {showCutsites &&

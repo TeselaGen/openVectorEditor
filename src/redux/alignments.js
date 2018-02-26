@@ -37,9 +37,8 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 //   }
 // ];
 
-
-function shuffle (string, n, char) {
-  let arr = string.split("")
+function shuffle(string, n, char) {
+  let arr = string.split("");
   let charToUse = char || " ";
 
   while (n--) {
@@ -49,19 +48,19 @@ function shuffle (string, n, char) {
   return arr.join("");
 } //shuffle
 
-
 let alignment = [1, 2].map(() => {
-  const sequenceData = generateSequenceData({ sequenceLength: 10 })
-  return { sequenceData, 
-    alignmentData: {sequence: shuffle(sequenceData.sequence, 50, "-")},
-  }
+  const sequenceData = generateSequenceData({ sequenceLength: 10 });
+  return {
+    sequenceData,
+    alignmentData: { sequence: shuffle(sequenceData.sequence, 50, "-") }
+  };
 });
 
 alignment = alignment.map(track => {
   const sequenceData = tidyUpSequenceData(track.sequenceData);
   const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
-    alignment[0].sequenceData.sequence,
-    track.sequenceData.sequence
+    alignment[0].alignmentData.sequence,
+    track.alignmentData.sequence
   );
   return {
     ...track,
