@@ -37,8 +37,24 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 //   }
 // ];
 
+
+function shuffle (string, n, char) {
+  let arr = string.split("")
+  let charToUse = char || " ";
+
+  while (n--) {
+    arr.splice(Math.floor(Math.random() * (arr.length + 1)), 0, charToUse);
+  }
+
+  return arr.join("");
+} //shuffle
+
+
 let alignment = [1, 2].map(() => {
-  return { sequenceData: generateSequenceData({ sequenceLength: 10 }) };
+  const sequenceData = generateSequenceData({ sequenceLength: 10 })
+  return { sequenceData, 
+    alignmentData: {sequence: shuffle(sequenceData.sequence, 50, "-")},
+  }
 });
 
 alignment = alignment.map(track => {

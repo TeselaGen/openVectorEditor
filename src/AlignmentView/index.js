@@ -26,7 +26,8 @@ export class AlignmentView extends React.Component {
   getNumBpsShownInLinearView = () => {
     const { charWidthInLinearView } = this.state;
     const { dimensions: { width } } = this.props;
-    return (width - nameDivWidth) / charWidthInLinearView;
+    const toReturn = (width - nameDivWidth) / charWidthInLinearView;
+    return toReturn || 0
   };
   handleScroll = () => {
     const scrollPercentage =
@@ -64,9 +65,9 @@ export class AlignmentView extends React.Component {
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ width: nameDivWidth, flex: 1 }}>
-            {alignment.map((alignmentData, i) => {
+            {alignment.map((ad, i) => {
               const { alignmentHeights } = this.state;
-              const { sequenceData } = alignmentData;
+              const { sequenceData,   } = ad;
               return (
                 <div
                   style={{ marginBottom: 5, height: alignmentHeights[i] || 10 }}
@@ -90,8 +91,8 @@ export class AlignmentView extends React.Component {
               className="alignmentHolder"
               onScroll={this.handleScroll}
             >
-              {alignment.map((alignmentData, i) => {
-                const { sequenceData, selectionLayer } = alignmentData;
+              {alignment.map((ad, i) => {
+                const { sequenceData, selectionLayer, alignmentData } = ad;
                 return (
                   <div
                     ref={n => {
@@ -124,7 +125,6 @@ export class AlignmentView extends React.Component {
                           0
                       }}
                     />
-                    {console.log("sequenceData:", sequenceData)}
                     <LinearView
                       {...{
                         linearViewAnnotationVisibilityOverrides: {
@@ -140,6 +140,7 @@ export class AlignmentView extends React.Component {
                         marginWith: 0,
                         hideName: true,
                         sequenceData,
+                        alignmentData,
                         // charWidth: charWidthInLinearView,
                         height: "100%",
                         selectionLayer,
@@ -160,7 +161,7 @@ export class AlignmentView extends React.Component {
               {...{
                 alignment,
                 dimensions: {
-                  width: Math.max(dimensions.width - nameDivWidth, 10)
+                  width: Math.max(dimensions.width - nameDivWidth, 10) || 10
                 },
                 percentScrolled,
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView()

@@ -36,7 +36,7 @@ let Axis = function(props) {
   });
   let tickMarkSVG = [];
 
-  tickMarkPositions.forEach(function(tickMarkPosition) {
+  tickMarkPositions.forEach(function(tickMarkPosition, i) {
     // var xCenter = getXCenterOfRowAnnotation({
     //     start: tickMarkPosition,
     //     end: tickMarkPosition
@@ -46,14 +46,14 @@ let Axis = function(props) {
     let yEnd = annotationHeight / 3;
     tickMarkSVG.push(
       <path
-        key={"axisTickMark " + row.rowNumber + " " + tickMarkPosition}
+        key={"axisTickMarkPath " + i + " " + tickMarkPosition}
         d={"M" + xCenter + "," + yStart + " L" + xCenter + "," + yEnd}
         stroke={"black"}
       />
     );
     tickMarkSVG.push(
       <text
-        key={"axisTickMarkText " + row.rowNumber + " " + tickMarkPosition}
+        key={"axisTickMarkText " + i + " " + tickMarkPosition}
         stroke={"black"}
         x={xCenter}
         y={annotationHeight}
@@ -76,7 +76,6 @@ let Axis = function(props) {
     >
       {tickMarkSVG}
       <path
-        key={"axis " + row.rowNumber}
         d={"M" + xStart + "," + yStart + " L" + xEnd + "," + yStart}
         stroke={"black"}
       />

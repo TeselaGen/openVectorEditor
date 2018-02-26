@@ -1,8 +1,10 @@
 import React from "react";
-import { getRangeLength } from "ve-range-utils/lib";
+// import { getRangeLength } from "ve-range-utils/lib";
 import Draggable from "react-draggable";
 import Axis from "../RowItem/Axis";
-import SelectionLayer from "../RowItem/SelectionLayer";
+// import SelectionLayer from "../RowItem/SelectionLayer";
+import getXStartAndWidthFromNonCircularRange from '../RowItem/getXStartAndWidthFromNonCircularRange';
+
 
 const laneHeight = 20;
 export default class Minimap extends React.Component {
@@ -69,9 +71,9 @@ export default class Minimap extends React.Component {
   getCharWidth = () => {
     const { alignment = [], dimensions: { width = 200 } } = this.props;
     const [template] = alignment;
-    const seqLength = template.sequenceData.sequence.length;
+    const seqLength = template.alignmentData.sequence.length;
     const charWidth = Math.min(16, width / seqLength);
-    return charWidth;
+    return charWidth || 12;
   };
   getScrollHandleWidthAndXStart = () => {
     const {
@@ -80,7 +82,7 @@ export default class Minimap extends React.Component {
       dimensions
     } = this.props;
     const charWidth = this.getCharWidth();
-    const { width } = getWidthAndXStartFromRange(
+    const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
       charWidth
     );
@@ -94,10 +96,10 @@ export default class Minimap extends React.Component {
   render() {
     const { alignment = [], dimensions: { width = 200 } } = this.props;
     const [template, ...nonTemplates] = alignment;
-    const seqLength = template.sequenceData.sequence.length;
+    const seqLength = template.alignmentData.sequence.length;
     const charWidth = this.getCharWidth();
     const scrollHandle = this.getScrollHandleWidthAndXStart();
-
+    
     return (
       <div
         ref={ref => (this.minimap = ref)}
@@ -129,18 +131,18 @@ export default class Minimap extends React.Component {
         </Draggable>
 
         <svg height={alignment.length * laneHeight} width={width}>
-          {alignment.map(({ sequenceData, matchHighlightRanges }, i) => {
+          {alignment.map(({ alignmentData, matchHighlightRanges }, i) => {
             //need to get the chunks that can be rendered
 
             return matchHighlightRanges.map((range, index) => {
-              const { x, width } = getWidthAndXStartFromRange(range, charWidth);
+              const { xStart, width } = getXStartAndWidthFromNonCircularRange(range, charWidth);
               return (
                 <rect
                   key={i + "-" + index}
                   y={laneHeight * i}
                   height={laneHeight - 3}
                   fill={range.isMatch ? "grey" : "red"}
-                  {...{ x, width }}
+                  {...{ x: xStart, width }}
                 />
               );
             });
@@ -161,10 +163,3 @@ export default class Minimap extends React.Component {
   }
 }
 
-function getWidthAndXStartFromRange(range, charWidth, sequenceLength) {
-  const rangeLength = getRangeLength(range);
-  return {
-    width: rangeLength * charWidth,
-    x: range.start * charWidth
-  };
-}
