@@ -48,7 +48,7 @@ function shuffle(string, n, char) {
   return arr.join("");
 } //shuffle
 
-let alignment = [1, 2].map(() => {
+let alignmentTracks = [1, 2].map(() => {
   const sequenceData = generateSequenceData({ sequenceLength: 10 });
   return {
     sequenceData,
@@ -56,10 +56,10 @@ let alignment = [1, 2].map(() => {
   };
 });
 
-alignment = alignment.map(track => {
+alignmentTracks = alignmentTracks.map(track => {
   const sequenceData = tidyUpSequenceData(track.sequenceData);
   const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
-    alignment[0].alignmentData.sequence,
+    alignmentTracks[0].alignmentData.sequence,
     track.alignmentData.sequence
   );
   return {
@@ -69,7 +69,7 @@ alignment = alignment.map(track => {
     selectionLayer: matchHighlightRanges
       .filter(({ isMatch }) => !isMatch)
       .map(range => {
-        return { ...range, color: "red", hideCarets: true };
+        return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
       })
   };
 });
@@ -87,7 +87,7 @@ export default createMergedDefaultStateReducer(
     // },
   },
   {
-    alignment
+    alignmentTracks
   }
 );
 

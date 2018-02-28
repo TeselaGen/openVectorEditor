@@ -730,7 +730,7 @@ export class Editor extends React.Component {
         className={"veEditor"}
       >
         {/* <AlignmentToolInner /> */}
-        <DrawChromatogram />
+        {/* <DrawChromatogram /> */}
         <div
           style={{
             width: "100%",

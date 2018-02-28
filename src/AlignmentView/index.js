@@ -19,7 +19,7 @@ export class AlignmentView extends React.Component {
   };
 
   getSequenceLength = () => {
-    const { alignment: [template] = [] } = this.props;
+    const { alignmentTracks: [template] = [] } = this.props;
     return template.sequenceData.sequence.length;
   };
 
@@ -27,7 +27,7 @@ export class AlignmentView extends React.Component {
     const { charWidthInLinearView } = this.state;
     const { dimensions: { width } } = this.props;
     const toReturn = (width - nameDivWidth) / charWidthInLinearView;
-    return toReturn || 0
+    return toReturn || 0;
   };
   handleScroll = () => {
     const scrollPercentage =
@@ -43,7 +43,7 @@ export class AlignmentView extends React.Component {
   render() {
     const { charWidthInLinearView, percentScrolled } = this.state;
     const {
-      alignment = [],
+      alignmentTracks = [],
       dimensions: { width },
       dimensions,
       height
@@ -65,9 +65,9 @@ export class AlignmentView extends React.Component {
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ width: nameDivWidth, flex: 1 }}>
-            {alignment.map((ad, i) => {
+            {alignmentTracks.map((track, i) => {
               const { alignmentHeights } = this.state;
-              const { sequenceData,   } = ad;
+              const { sequenceData } = track;
               return (
                 <div
                   style={{ marginBottom: 5, height: alignmentHeights[i] || 10 }}
@@ -91,8 +91,8 @@ export class AlignmentView extends React.Component {
               className="alignmentHolder"
               onScroll={this.handleScroll}
             >
-              {alignment.map((ad, i) => {
-                const { sequenceData, selectionLayer, alignmentData } = ad;
+              {alignmentTracks.map((track, i) => {
+                const { sequenceData, selectionLayer, alignmentData } = track;
                 return (
                   <div
                     ref={n => {
@@ -128,7 +128,7 @@ export class AlignmentView extends React.Component {
                     <LinearView
                       {...{
                         linearViewAnnotationVisibilityOverrides: {
-                          axis: false,
+                          axis: true,
                           yellowAxis: false,
                           reverseSequence: true,
                           // translations: charWidthInLinearView > 4.5,
@@ -145,7 +145,8 @@ export class AlignmentView extends React.Component {
                         height: "100%",
                         selectionLayer,
                         width:
-                          sequenceData.sequence.length * charWidthInLinearView
+                          (alignmentData || sequenceData).sequence.length *
+                          charWidthInLinearView
                         // dimensions: {
                         // }
                       }}
@@ -159,7 +160,7 @@ export class AlignmentView extends React.Component {
             </div>
             <Minimap
               {...{
-                alignment,
+                alignmentTracks,
                 dimensions: {
                   width: Math.max(dimensions.width - nameDivWidth, 10) || 10
                 },
@@ -176,9 +177,9 @@ export class AlignmentView extends React.Component {
 }
 
 export default connect((state, ownProps) => {
-  const { alignments: { alignment = [] } = {} } = ownProps;
+  const { alignments: { alignmentTracks = [] } = {} } = ownProps;
   return {
-    alignment
+    alignmentTracks
   };
 })(AlignmentView);
 

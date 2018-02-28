@@ -12,7 +12,8 @@ let Axis = function(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
-    sequenceLength
+    sequenceLength,
+    getGaps
   } = props;
   if (row.start === 0 && row.end === 0) {
     return null;
@@ -22,7 +23,8 @@ let Axis = function(props) {
     row,
     bpsPerRow,
     charWidth,
-    sequenceLength
+    sequenceLength,
+    ...(getGaps ? getGaps(row) : [])
   );
   //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
   //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
@@ -41,7 +43,11 @@ let Axis = function(props) {
     //     start: tickMarkPosition,
     //     end: tickMarkPosition
     // }, row, bpsPerRow, charWidth, sequenceLength);
-    let xCenter = tickMarkPosition * charWidth + charWidth / 2;
+    let xCenter =
+      (tickMarkPosition +
+        (getGaps ? getGaps(tickMarkPosition).gapsBefore : 0)) *
+        charWidth +
+      charWidth / 2;
     let yStart = 0;
     let yEnd = annotationHeight / 3;
     tickMarkSVG.push(
@@ -83,6 +89,7 @@ let Axis = function(props) {
   );
 };
 
+// export default Axis
 // export default Axis
 export default onlyUpdateForKeys([
   "row",

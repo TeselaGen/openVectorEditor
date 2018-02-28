@@ -76,6 +76,7 @@ export class LinearView extends React.Component {
     let {
       //currently found in props
       sequenceData = {},
+      alignmentData,
       // bpToJumpTo=0,
       hideName = false,
       editorDragged = noop,
@@ -92,10 +93,13 @@ export class LinearView extends React.Component {
     let innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = innerWidth / sequenceData.sequence.length;
     // var containerWidthMinusMargin = width - marginWidth
-    let bpsPerRow = sequenceData.sequence.length;
     let sequenceLength = sequenceData.sequence.length;
+    const bpsPerRow = alignmentData
+      ? alignmentData.sequence.length
+      : sequenceLength;
     let sequenceName = hideName ? "" : sequenceData.name || "";
-    let rowData = prepareRowData(sequenceData, bpsPerRow);
+    let rowData = prepareRowData(sequenceData, sequenceLength);
+    console.log("alignmentData:", alignmentData);
     return (
       <div
         style={{
@@ -142,11 +146,11 @@ export class LinearView extends React.Component {
             <RowItem
               {...{
                 ...rest,
-                // ...!rest.alignmentData && {alignmentData: sequenceData},
-                sequenceLength: sequenceData.sequence.length,
+                alignmentData,
+                sequenceLength: (alignmentData || sequenceData).sequence.length,
                 width: innerWidth,
                 bpsPerRow,
-                tickSpacing: Math.floor(bpsPerRow / 10),
+                tickSpacing: Math.floor(sequenceLength / 10),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   yellowAxis: true,

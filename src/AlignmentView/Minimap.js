@@ -3,8 +3,7 @@ import React from "react";
 import Draggable from "react-draggable";
 import Axis from "../RowItem/Axis";
 // import SelectionLayer from "../RowItem/SelectionLayer";
-import getXStartAndWidthFromNonCircularRange from '../RowItem/getXStartAndWidthFromNonCircularRange';
-
+import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 
 const laneHeight = 20;
 export default class Minimap extends React.Component {
@@ -69,8 +68,8 @@ export default class Minimap extends React.Component {
   };
 
   getCharWidth = () => {
-    const { alignment = [], dimensions: { width = 200 } } = this.props;
-    const [template] = alignment;
+    const { alignmentTracks = [], dimensions: { width = 200 } } = this.props;
+    const [template] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = Math.min(16, width / seqLength);
     return charWidth || 12;
@@ -94,12 +93,12 @@ export default class Minimap extends React.Component {
   };
 
   render() {
-    const { alignment = [], dimensions: { width = 200 } } = this.props;
-    const [template, ...nonTemplates] = alignment;
+    const { alignmentTracks = [], dimensions: { width = 200 } } = this.props;
+    const [template, ...nonTemplates] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = this.getCharWidth();
     const scrollHandle = this.getScrollHandleWidthAndXStart();
-    
+
     return (
       <div
         ref={ref => (this.minimap = ref)}
@@ -130,12 +129,15 @@ export default class Minimap extends React.Component {
           />
         </Draggable>
 
-        <svg height={alignment.length * laneHeight} width={width}>
-          {alignment.map(({ alignmentData, matchHighlightRanges }, i) => {
+        <svg height={alignmentTracks.length * laneHeight} width={width}>
+          {alignmentTracks.map(({ alignmentData, matchHighlightRanges }, i) => {
             //need to get the chunks that can be rendered
 
             return matchHighlightRanges.map((range, index) => {
-              const { xStart, width } = getXStartAndWidthFromNonCircularRange(range, charWidth);
+              const { xStart, width } = getXStartAndWidthFromNonCircularRange(
+                range,
+                charWidth
+              );
               return (
                 <rect
                   key={i + "-" + index}
@@ -162,4 +164,3 @@ export default class Minimap extends React.Component {
     );
   }
 }
-

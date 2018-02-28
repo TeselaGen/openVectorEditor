@@ -82,9 +82,12 @@ export class RowItem extends React.Component {
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
 
-      bpsPerRow = row.sequence.length,
+      bpsPerRow = sequenceLength,
       editorName
     } = this.props;
+
+    // let bpsPerRow = bpsPerRow || (alignmentData ? alignmentData.sequence.length : sequenceLength)
+
     let {
       features: showFeatures = true,
       primers: showPrimers = true,
@@ -117,7 +120,9 @@ export class RowItem extends React.Component {
       cutsites = [],
       orfs = []
     } = row;
-    let reverseSequence = getComplementSequenceString(sequence);
+    let reverseSequence = getComplementSequenceString(
+      alignmentData.sequence || sequence
+    );
     if (!row) {
       return null;
     }
@@ -154,7 +159,6 @@ export class RowItem extends React.Component {
           gapsBefore: gapMap[start],
           gapsInside: gapMap[end] - gapMap[start]
         };
-        // console.log('toReturn:',toReturn)
         return toReturn;
       };
     }
@@ -223,12 +227,22 @@ export class RowItem extends React.Component {
             color={"yellow"}
             regions={searchLayers}
             {...annotationCommonProps}
+            row={
+              alignmentData
+                ? { start: 0, end: alignmentData.sequence.length - 1 }
+                : row
+            }
             onClick={searchLayerClicked}
           />
           <SelectionLayer
             isDraggable
             selectionLayerRightClicked={selectionLayerRightClicked}
             {...annotationCommonProps}
+            row={
+              alignmentData
+                ? { start: 0, end: alignmentData.sequence.length - 1 }
+                : row
+            }
             regions={selectionLayers}
           />
 
@@ -328,7 +342,7 @@ export class RowItem extends React.Component {
             {showReverseSequence &&
               charWidth > 7 && (
                 <Sequence
-                  length={sequence.length}
+                  length={reverseSequence.length}
                   sequence={reverseSequence}
                   height={sequenceHeight}
                   charWidth={charWidth}
@@ -374,6 +388,7 @@ export class RowItem extends React.Component {
                 return (
                   layer.start > -1 && (
                     <SelectionLayer
+                      {...annotationCommonProps}
                       {...{
                         key: "restrictionSiteRange" + index,
                         height: showReverseSequence
@@ -385,9 +400,11 @@ export class RowItem extends React.Component {
                         border: `2px solid ${"lightblue"}`,
                         // background: 'none',
                         background: "lightblue",
-                        regions: [layer]
+                        regions: [layer],
+                        row: alignmentData
+                          ? { start: 0, end: alignmentData.sequence.length - 1 }
+                          : row
                       }}
-                      {...annotationCommonProps}
                     />
                   )
                 );
@@ -557,4 +574,3 @@ function getGapMap(sequence) {
   return gapMap;
 }
 // var a = getGapMap("---tagccc---tagasdfw--gg")
-// console.log('a:',a)

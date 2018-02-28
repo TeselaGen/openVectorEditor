@@ -23,7 +23,7 @@ function Features(props) {
     editorName,
     getGaps
   } = props;
-  
+
   if (annotationRanges.length === 0) {
     return null;
   }
@@ -33,13 +33,12 @@ function Features(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
-    const {gapsBefore, gapsInside} = getGaps(annotationRange)
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     let annotation = annotationRange.annotation;
     let annotationColor =
       annotation.color ||
       (annotation.type && featureColors[annotation.type]) ||
       "#BBBBBB";
-
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,

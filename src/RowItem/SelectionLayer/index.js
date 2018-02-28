@@ -32,7 +32,8 @@ function SelectionLayer(props) {
           start,
           end,
           color,
-          hideCarets = false
+          hideCarets = false,
+          ignoreGaps
         } = selectionLayer;
         let classNameToPass =
           "veRowViewSelectionLayer " +
@@ -65,7 +66,7 @@ function SelectionLayer(props) {
               bpsPerRow,
               charWidth,
               sequenceLength,
-              ...getGaps(overlap)
+              ...(ignoreGaps ? {} : getGaps(overlap))
             );
             let caretSvgs = [];
             if (!(hideCarets || topLevelHideCarets)) {

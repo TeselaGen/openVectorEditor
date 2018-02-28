@@ -483,8 +483,6 @@ function VectorInteractionHOC(Component /* options */) {
       //   document.body.removeEventListener("copy", handleDaCopy);
       // };
       const makeTextCopyable = (sequenceDataToCopy, className) => {
-        // console.log('className:',className)
-        // console.log('document.querySelector(".openVeContextMenu"):',document.querySelectorAll(`.${className}`))
         return new Clipboard(`.${className}`, {
           // container: document.querySelector(".openVeContextMenu"),
           text: () => {
@@ -494,11 +492,9 @@ function VectorInteractionHOC(Component /* options */) {
           }
         });
         // clipboard.on("success", (/* e */) => {
-        //   // console.log('destroying')
         //   clipboard.destroy();
         // });
         // clipboard.on("error", () => {
-        //   // console.log('destroying err')
         //   clipboard.destroy();
         //   console.error("Error copying selection.");
         // });
