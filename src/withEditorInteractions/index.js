@@ -12,7 +12,7 @@ import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { map, get, startCase } from "lodash";
+import { map, get, startCase, throttle } from "lodash";
 
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
@@ -55,6 +55,10 @@ function getBpsPerRow({
 }) {
   return Math.floor((width - marginWidth) / charWidth);
 }
+
+let readOnlyAlert = () =>
+  window.toastr.warning("Sorry the sequence is Read-Only");
+readOnlyAlert = throttle(readOnlyAlert, 3000);
 
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
@@ -219,7 +223,7 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
 
       if (readOnly) {
-        return window.toastr.warning("Sorry the sequence is Read-Only");
+        return readOnlyAlert();
       }
 
       let seqDataToInsert = onPaste
@@ -279,7 +283,7 @@ function VectorInteractionHOC(Component /* options */) {
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
       if (readOnly) {
-        window.toastr.warning("Sorry the sequence is Read-Only");
+        readOnlyAlert();
       } else {
         createSequenceInputPopup({
           isReplace,
@@ -311,7 +315,7 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       if (readOnly) {
-        return window.toastr.warning("Sorry the sequence is Read-Only");
+        return readOnlyAlert();
       }
       if (sequenceLength > 0) {
         let rangeToDelete = selectionLayer;
