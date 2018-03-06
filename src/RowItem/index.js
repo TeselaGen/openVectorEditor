@@ -121,7 +121,7 @@ export class RowItem extends React.Component {
       orfs = []
     } = row;
     let reverseSequence = getComplementSequenceString(
-      alignmentData.sequence || sequence
+      (alignmentData && alignmentData.sequence) || sequence
     );
     if (!row) {
       return null;

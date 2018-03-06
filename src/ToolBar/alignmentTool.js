@@ -9,6 +9,7 @@ import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import axios from "axios";
+import uniqid from "uniqid";
 
 export default {
   updateKeys: ["alignmentTool", "toggleFindTool"],
@@ -41,6 +42,7 @@ class AlignmentToolDropown extends React.Component {
           intent={Intent.PRIMARY}
           onClick={() => {
             showCreateAlignmentDialog({
+              ...this.props,
               initialValues: {
                 addedSequences: [sequenceData]
               }
@@ -69,15 +71,22 @@ const instance = axios.create({
 
 class AlignmentTool extends React.Component {
   sendSelectedDataToBackendForAlignment = async ({ addedSequences }) => {
-    const { hideModal, onAlignmentSuccess } = this.props;
+    const { hideModal, onAlignmentSuccess, createNewAlignment } = this.props;
     hideModal();
+    const alignmentId = uniqid();
+    createNewAlignment({
+      id: alignmentId,
+      name: addedSequences[0].name + " Alignment"
+    });
     window.toastr.success("Alignment submitted.");
     const results = await instance.post(
-      "http://j5server.teselagen.com/alignment/run",
+      "http://localhost:3000/alignment/run",
+      // "http://j5server.teselagen.com/alignment/run",
       {
         sequencesToAlign: addedSequences
       }
     );
+    console.log("results:", results);
     onAlignmentSuccess && onAlignmentSuccess(results);
 
     // console.log("sending data to backend!");
@@ -154,7 +163,7 @@ class AlignmentTool extends React.Component {
           <Button
             style={{ marginTop: 15, float: "right" }}
             intent={Intent.PRIMARY}
-            disabled={allFields.length <= 2}
+            disabled={allFields.length < 2}
             onClick={handleSubmit(this.sendSelectedDataToBackendForAlignment)}
           >
             Create alignment

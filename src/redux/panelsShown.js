@@ -36,6 +36,25 @@ export const createNewDigest = (unused, meta) => {
     dispatch(setPanelAsActive("digestTool", meta));
   };
 };
+
+export const createNewAlignment = (payload, meta) => {
+  return dispatch => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          type: "alignment",
+          name: "New Alignment",
+          active: true,
+          canClose: true,
+          ...payload
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive(payload.id, meta));
+  };
+};
+
 export const collapseSplitScreen = (activePanelId, meta) => {
   return dispatch => {
     dispatch(_collapseSplitScreen(activePanelId, meta));
