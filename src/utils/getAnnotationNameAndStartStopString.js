@@ -1,9 +1,12 @@
 export default function getAnnotationNameAndStartStopString(
   { name, start, end, type },
-  additionalOpts = {}
+  { startText, isPart } = {}
 ) {
-  let { startText } = additionalOpts;
-  return `${startText ? startText : ""} ${type} - ${
+  let typeToUse = type;
+  if (isPart) {
+    typeToUse = "Part";
+  }
+  return `${startText ? startText : ""} ${typeToUse ? typeToUse + " -" : ""} ${
     name ? name : ""
   } Start: ${start + 1} End: ${end + 1} `;
 }

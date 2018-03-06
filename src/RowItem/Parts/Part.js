@@ -38,9 +38,8 @@ function Part(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
-      height
-    }
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L ${0},${height}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -48,9 +47,8 @@ function Part(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0 
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
-      height
-    }
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L 0,${height} 
         z`;
   } else if (rangeType === "beginningAndEnd") {
@@ -91,7 +89,9 @@ function Part(props) {
         partRightClicked({ annotation, event });
       }}
     >
-      <title>{getAnnotationNameAndStartStopString(annotation)}</title>
+      <title>
+        {getAnnotationNameAndStartStopString(annotation, { isPart: true })}
+      </title>
       <path
         strokeWidth="1"
         stroke="purple"
