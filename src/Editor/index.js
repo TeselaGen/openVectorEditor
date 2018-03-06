@@ -324,7 +324,7 @@ export class Editor extends React.Component {
         <Hotkey
           preventDefault
           stopPropagation
-          label="Inverse"
+          label="Invert Selection"
           global
           combo="cmd+i"
           onKeyDown={() => this.handleInverse(this)}
@@ -359,7 +359,13 @@ export class Editor extends React.Component {
           global
           combo="cmd+p"
         />
-        <Hotkey preventDefault stopPropagation global combo="backpace" />
+        <Hotkey
+          label="Delete (edit mode only)"
+          preventDefault
+          stopPropagation
+          global
+          combo="backpace"
+        />
         {/* see above comment */}
         <Hotkey
           preventDefault

@@ -109,7 +109,18 @@ export class RowView extends React.Component {
     });
   };
 
+  // componentDidMount() {
+  //   debugger
+  //   this.updateScrollPosition({},this.props)
+  // }
   componentWillReceiveProps(props) {
+    //we haven't yet called this function yet, so to make sure it jumps to the selected bps we just set a variable on the class
+    this.updateScrollPosition(
+      this.calledUpdateScrollOnce ? this.props : {},
+      props
+    );
+  }
+  updateScrollPosition = (oldProps, newProps) => {
     this.cache = {};
     if (this.dragging === true) {
       return;
@@ -118,50 +129,53 @@ export class RowView extends React.Component {
       caretPosition = -1,
       selectionLayer = {},
       matchedSearchLayer = {}
-    } = props;
+    } = newProps;
 
+    let {
+      caretPosition: caretPositionOld = -1,
+      selectionLayer: selectionLayerOld = {},
+      matchedSearchLayer: matchedSearchLayerOld = {}
+    } = oldProps;
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     // let previousBp;
     let scrollToBp = -1;
     if (
       matchedSearchLayer.start > -1 &&
-      matchedSearchLayer.start !== this.props.matchedSearchLayer.start
+      matchedSearchLayer.start !== matchedSearchLayerOld.start
     ) {
-      // previousBp = this.props.matchedSearchLayer.start;
+      // previousBp = matchedSearchLayerOld.start;
       scrollToBp = matchedSearchLayer.start;
     } else if (
       matchedSearchLayer.end > -1 &&
-      matchedSearchLayer.end !== this.props.matchedSearchLayer.end
+      matchedSearchLayer.end !== matchedSearchLayerOld.end
     ) {
-      // previousBp = this.props.selectionLayer.end;
+      // previousBp = selectionLayerOld.end;
       scrollToBp = matchedSearchLayer.end;
-    } else if (
-      caretPosition > -1 &&
-      caretPosition !== this.props.caretPosition
-    ) {
-      // previousBp = this.props.caretPosition;
+    } else if (caretPosition > -1 && caretPosition !== caretPositionOld) {
+      // previousBp = caretPositionOld;
       scrollToBp = caretPosition;
     } else if (
       selectionLayer.start > -1 &&
-      selectionLayer.start !== this.props.selectionLayer.start
+      selectionLayer.start !== selectionLayerOld.start
     ) {
-      // previousBp = this.props.selectionLayer.start;
+      // previousBp = selectionLayerOld.start;
       scrollToBp = selectionLayer.start;
     } else if (
       selectionLayer.end > -1 &&
-      selectionLayer.end !== this.props.selectionLayer.end
+      selectionLayer.end !== selectionLayerOld.end
     ) {
-      // previousBp = this.props.selectionLayer.end;
+      // previousBp = selectionLayerOld.end;
       scrollToBp = selectionLayer.end;
     }
 
-    let bpsPerRow = getBpsPerRow(props);
+    let bpsPerRow = getBpsPerRow(newProps);
 
     if (
       scrollToBp > -1 &&
       this.InfiniteScroller &&
       this.InfiniteScroller.scrollTo
     ) {
+      this.calledUpdateScrollOnce = true;
       let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
       let [start, end] = this.InfiniteScroller.getVisibleRange();
       // const jumpToBottomOfRow = scrollToBp > previousBp;
@@ -172,14 +186,19 @@ export class RowView extends React.Component {
           const [el] = this.InfiniteScroller.items.querySelectorAll(
             `[data-row-number="${rowToScrollTo}"]`
           );
-          if (!el) return;
+          if (!el) {
+            //sometimes the el isn't on the page even after the jump because of drawing issues, so we'll try the scroll one more time
+            this.InfiniteScroller.scrollTo(rowToScrollTo);
+            return;
+          }
           el.scrollIntoView && el.scrollIntoView();
         }, 1);
         //   Math.max(rowToScrollTo + (rowToScrollTo < start ? 2 : -2), 0)
         // );
       }
     }
-  }
+  };
+
   cache = {};
 
   render() {
@@ -319,6 +338,8 @@ export class RowView extends React.Component {
           <ReactList
             ref={c => {
               this.InfiniteScroller = c;
+              !this.calledUpdateScrollOnce && //trigger the scroll here as well because now we actually have the infinite scroller component accessible
+                this.updateScrollPosition({}, this.props);
             }}
             itemRenderer={renderItem}
             length={rowData.length}
