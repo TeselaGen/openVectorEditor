@@ -20,7 +20,8 @@ function Parts(props) {
     partClicked,
     partRightClicked,
     editorName,
-    marginTop = 10
+    marginTop = 10,
+    getGaps
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -31,13 +32,16 @@ function Parts(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     const annotation = annotationRange.annotation;
     const annotationColor = "purple";
 
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
-      charWidth
+      charWidth,
+      gapsBefore,
+      gapsInside
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -56,6 +60,7 @@ function Parts(props) {
           partClicked={partClicked}
           partRightClicked={partRightClicked}
           annotation={annotation}
+          gapsInside={gapsInside}
           color={annotationColor}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}

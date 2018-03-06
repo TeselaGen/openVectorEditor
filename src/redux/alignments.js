@@ -50,6 +50,7 @@ function shuffle(string, n, char) {
 
 let alignmentTracks = [1, 2].map(() => {
   const sequenceData = generateSequenceData({ sequenceLength: 10 });
+  // sequenceData.orfs = [{ start: 2, end: 5, id: "orf" }]
   return {
     sequenceData,
     alignmentData: { sequence: shuffle(sequenceData.sequence, 50, "-") }

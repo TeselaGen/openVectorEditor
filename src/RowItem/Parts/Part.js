@@ -17,10 +17,11 @@ function Part(props) {
     fontWidth = 12,
     partClicked,
     partRightClicked,
-    annotation
+    annotation,
+    gapsInside
   } = props;
 
-  let width = widthInBps * charWidth;
+  let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
   if (charWidth < 15) {
     //allow the arrow width to adapt
@@ -38,9 +39,8 @@ function Part(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
-      height
-    }
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L ${0},${height}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -48,9 +48,8 @@ function Part(props) {
     path = `
         M 0,0 
         L ${width - pointiness / 2},0 
-        Q ${width + pointiness / 2},${height / 2} ${width - pointiness / 2},${
-      height
-    }
+        Q ${width + pointiness / 2},${height / 2} ${width -
+      pointiness / 2},${height}
         L 0,${height} 
         z`;
   } else if (rangeType === "beginningAndEnd") {

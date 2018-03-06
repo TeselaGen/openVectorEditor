@@ -132,8 +132,8 @@ export class AlignmentView extends React.Component {
                           yellowAxis: false,
                           reverseSequence: true,
                           // translations: charWidthInLinearView > 4.5,
-                          // features: false,
-                          parts: false,
+                          features: false,
+                          parts: true,
                           primers: false,
                           translations: true
                         },

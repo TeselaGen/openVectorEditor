@@ -13,7 +13,8 @@ function Orf(props) {
     width,
     orfClicked,
     orfRightClicked,
-    charWidth
+    charWidth,
+    gapsInside
   } = props;
   let heightToUse = height / 1.5;
   let color = orfFrameToColorMap[frame];
@@ -30,7 +31,8 @@ function Orf(props) {
   if (rangeType === "end" || rangeType === "beginningAndEnd") {
     arrow = (
       <path
-        transform={`translate(${width -
+        transform={`translate(${width +
+          gapsInside -
           Math.max(charWidth, 5)},0) scale(${Math.max(charWidth, 8) /
           64},${heightToUse / 64})`}
         d={
@@ -65,12 +67,16 @@ function Orf(props) {
       stroke={color}
       fillOpacity={1}
       fill={color}
-      transform={forward ? null : `translate(${width},0) scale(-1,1)`}
+      transform={
+        forward ? null : `translate(${width + gapsInside},0) scale(-1,1)`
+      }
     >
       <path
         transform={
           (rangeType === "start" ? `translate(${charWidth},0)` : "") +
-          `scale(${(width - (rangeType === "middle" ? 0 : charWidth)) /
+          `scale(${(width +
+            gapsInside -
+            (rangeType === "middle" ? 0 : charWidth)) /
             64},${heightToUse / 64})`
         }
         d="M0 40 L64 40 L64 20 L0 20 Z"
