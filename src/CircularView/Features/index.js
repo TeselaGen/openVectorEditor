@@ -155,8 +155,8 @@ function Features({
       }
 
       let annotationColor =
-        annotation.color ||
         (annotation.type && featureColors[annotation.type]) ||
+        annotation.color ||
         "#BBBBBB";
 
       /* eslint-disable */
