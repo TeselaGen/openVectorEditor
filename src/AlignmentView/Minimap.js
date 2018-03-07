@@ -87,7 +87,7 @@ export default class Minimap extends React.Component {
     );
     const x = percentScrolled * ((dimensions.width || 200) - width);
     return {
-      width,
+      width: Math.min(width, dimensions.width),
       x
     };
   };
