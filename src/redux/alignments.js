@@ -1,12 +1,12 @@
 import { tidyUpSequenceData, generateSequenceData } from "ve-sequence-utils";
 
-// import createAction from "./utils/createMetaAction";
+import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-// export const annotationSupportToggle = createAction("annotationSupportToggle");
+export const upsertAlignmentRun = createAction("upsertAlignmentRun");
 //eg: annotationSupportToggle('features')
 
 // let alignment = [
@@ -48,7 +48,7 @@ function shuffle(string, n, char) {
   return arr.join("");
 } //shuffle
 
-let alignmentTracks = [1, 2].map(() => {
+let alignmentTracks = [1, 2, 3].map(() => {
   const sequenceData = generateSequenceData({ sequenceLength: 10 });
   // sequenceData.orfs = [{ start: 2, end: 5, id: "orf" }]
   return {
@@ -57,38 +57,49 @@ let alignmentTracks = [1, 2].map(() => {
   };
 });
 
-alignmentTracks = alignmentTracks.map(track => {
-  const sequenceData = tidyUpSequenceData(track.sequenceData);
-  const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
-    alignmentTracks[0].alignmentData.sequence,
-    track.alignmentData.sequence
-  );
-  return {
-    ...track,
-    sequenceData,
-    matchHighlightRanges,
-    selectionLayer: matchHighlightRanges
-      .filter(({ isMatch }) => !isMatch)
-      .map(range => {
-        return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
-      })
-  };
-});
+function addHighlightedDifferences(alignmentTracks) {
+  return alignmentTracks.map(track => {
+    const sequenceData = tidyUpSequenceData(track.sequenceData);
+    const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
+      alignmentTracks[0].alignmentData.sequence,
+      track.alignmentData.sequence
+    );
+    return {
+      ...track,
+      sequenceData,
+      matchHighlightRanges,
+      selectionLayer: matchHighlightRanges
+        .filter(({ isMatch }) => !isMatch)
+        .map(range => {
+          return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
+        })
+    };
+  });
+}
+
+alignmentTracks = addHighlightedDifferences(alignmentTracks);
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    // [annotationSupportToggle]: (state, payload) => {
-    //   return {
-    //     ...state,
-    //     [payload]: !state[payload]
-    //   };
-    // },
+    [upsertAlignmentRun]: (state, payload) => {
+      let payloadToUse = { ...payload };
+      if (payloadToUse.alignmentTracks)
+        payloadToUse.alignmentTracks = addHighlightedDifferences(
+          payloadToUse.alignmentTracks
+        );
+      return {
+        ...state,
+        [payload.id]: payloadToUse
+      };
+    }
   },
   {
-    alignmentTracks
+    alignmentRun1: {
+      alignmentTracks
+    }
   }
 );
 

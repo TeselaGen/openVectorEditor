@@ -1,8 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Slider } from "@blueprintjs/core";
+import { Loading } from "teselagen-react-components";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
+import { compose, branch, renderNothing, renderComponent } from "recompose";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -176,12 +178,33 @@ export class AlignmentView extends React.Component {
   }
 }
 
-export default connect((state, ownProps) => {
-  const { alignments: { alignmentTracks = [] } = {} } = ownProps;
-  return {
-    alignmentTracks
-  };
-})(AlignmentView);
+export default compose(
+  connect((state, ownProps) => {
+    const { id: alignmentId, alignments = {} } = ownProps;
+    const { alignmentTracks, loading } = alignments[alignmentId] || {};
+    if (loading) {
+      return {
+        loading: true
+      };
+    }
+    if (!alignmentTracks)
+      return {
+        noTracks: true
+      };
+
+    console.log("alignmentTracks:", alignmentTracks);
+    return {
+      alignmentTracks
+    };
+  }),
+  branch(({ loading }) => loading, renderComponent(Loading)),
+  branch(
+    ({ noTracks }) => noTracks,
+    renderComponent(() => {
+      return "No Tracks Found";
+    })
+  )
+)(AlignmentView);
 
 class UncontrolledSlider extends React.Component {
   state = { value: 0 };

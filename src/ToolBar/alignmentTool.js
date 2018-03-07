@@ -71,25 +71,43 @@ const instance = axios.create({
 
 class AlignmentTool extends React.Component {
   sendSelectedDataToBackendForAlignment = async ({ addedSequences }) => {
-    const { hideModal, onAlignmentSuccess, createNewAlignment } = this.props;
+    const {
+      hideModal,
+      /* onAlignmentSuccess, */ createNewAlignment,
+      upsertAlignmentRun
+    } = this.props;
     hideModal();
     const alignmentId = uniqid();
     createNewAlignment({
       id: alignmentId,
       name: addedSequences[0].name + " Alignment"
     });
+    //set the alignemnt to loading
+    upsertAlignmentRun({
+      id: alignmentId,
+      loading: true
+    });
+
     window.toastr.success("Alignment submitted.");
-    const results = await instance.post(
+    const { data: { alignedSequences } = {} } = await instance.post(
       "http://localhost:3000/alignment/run",
       // "http://j5server.teselagen.com/alignment/run",
       {
         sequencesToAlign: addedSequences
       }
     );
-    console.log("results:", results);
-    onAlignmentSuccess && onAlignmentSuccess(results);
-
-    // console.log("sending data to backend!");
+    if (!alignedSequences)
+      window.toastr.error("Error running sequence alignment!");
+    //set the alignemnt to loading
+    upsertAlignmentRun({
+      id: alignmentId,
+      alignmentTracks: alignedSequences.map((alignmentData, i) => {
+        return {
+          sequenceData: addedSequences[i],
+          alignmentData
+        };
+      })
+    });
   };
 
   handleFileUpload = (files, onChange) => {

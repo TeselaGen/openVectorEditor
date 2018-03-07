@@ -167,13 +167,14 @@ export default createReducer(
   [
     [
       {
-        id: "alignment",
+        id: "alignmentRun1",
+        type: "alignment",
         name: "Alignment",
         active: true
         // fullScreen: true
       },
       {
-        id: "alignment2",
+        id: "alignmentRun2",
         type: "alignment",
         name: "Alignment",
         active: true

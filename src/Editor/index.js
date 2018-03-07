@@ -458,11 +458,14 @@ export class Editor extends React.Component {
       let activePanelId;
       let activePanelType;
       let isFullScreen;
-      panelGroup.forEach(({ type, id, active, fullScreen }) => {
+      let propsToSpread = {};
+      panelGroup.forEach(panelProps => {
+        const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
           activePanelType = type || id;
           activePanelId = id;
+          propsToSpread = panelProps;
         }
       });
       if (isOnePanelFullScreen && !isFullScreen) {
@@ -482,7 +485,12 @@ export class Editor extends React.Component {
 
       const Panel = panelMap[activePanelType];
       let panel = Panel ? (
-        <Panel key={activePanelId} {...sharedProps} {...editorDimensions} />
+        <Panel
+          key={activePanelId}
+          {...propsToSpread}
+          {...sharedProps}
+          {...editorDimensions}
+        />
       ) : (
         <div> No Panel Found!</div>
       );
