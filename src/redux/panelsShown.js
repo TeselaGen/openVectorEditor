@@ -174,13 +174,6 @@ export default createReducer(
         // fullScreen: true
       },
       {
-        id: "alignmentRun2",
-        type: "alignment",
-        name: "Alignment",
-        active: true
-        // fullScreen: true
-      },
-      {
         id: "sequence",
         name: "Sequence Map"
         // active: true

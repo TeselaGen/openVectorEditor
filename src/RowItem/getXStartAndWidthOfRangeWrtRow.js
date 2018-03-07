@@ -10,7 +10,8 @@ export default function getXStartAndWidthOfRangeWrtRow(
   gapsInside = 0
 ) {
   let xStart =
-    normalizePositionByRangeLength(range.start - row.start, sequenceLength) *
+    (gapsBefore +
+      normalizePositionByRangeLength(range.start - row.start, sequenceLength)) *
     charWidth;
   let obj = {
     xStart,

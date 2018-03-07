@@ -51,7 +51,14 @@ export class AlignmentView extends React.Component {
       height
     } = this.props;
     return (
-      <div style={{ height, overflowY: "auto" }} className="alignmentView">
+      <div
+        style={{
+          height,
+          display: "flex",
+          flexDirection: "column"
+        }}
+        className="alignmentView"
+      >
         <div style={{ maxWidth: 160, display: "flex" }}>
           <h6 style={{ marginRight: 10 }}>Zoom: </h6>
           <UncontrolledSlider
@@ -65,14 +72,24 @@ export class AlignmentView extends React.Component {
             min={0}
           />
         </div>
-        <div style={{ display: "flex" }}>
-          <div style={{ width: nameDivWidth, flex: 1 }}>
+        <div
+          className={"alignmentTracks"}
+          style={{ overflowY: "auto", display: "flex" }}
+        >
+          <div
+            className={"alignmentTrackNames"}
+            style={{ width: nameDivWidth, flex: 1 }}
+          >
             {alignmentTracks.map((track, i) => {
               const { alignmentHeights } = this.state;
               const { sequenceData } = track;
               return (
                 <div
-                  style={{ marginBottom: 5, height: alignmentHeights[i] || 10 }}
+                  style={{
+                    // borderBottom: "1px solid black",
+                    // marginBottom: 5,
+                    height: alignmentHeights[i] || 10
+                  }}
                   key={i}
                 >
                   Name: {sequenceData.name || sequenceData.id}
@@ -83,7 +100,7 @@ export class AlignmentView extends React.Component {
               // </div>
             })}
           </div>
-          <div style={{ flex: 1 }}>
+          <div className={"alignmentTrackDetails"} style={{ flex: 1 }}>
             <div
               style={{
                 overflowX: "auto",
@@ -111,9 +128,10 @@ export class AlignmentView extends React.Component {
                       }
                     }}
                     style={{
-                      position: "relative",
-                      marginBottom: 5,
-                      paddingTop: 10
+                      position: "relative"
+                      // marginBottom: 5,
+                      // paddingTop: 10,
+                      // borderBottom: "1px solid black"
                     }}
                     key={i}
                   >
@@ -160,19 +178,19 @@ export class AlignmentView extends React.Component {
                 // </div>
               })}
             </div>
-            <Minimap
-              {...{
-                alignmentTracks,
-                dimensions: {
-                  width: Math.max(dimensions.width - nameDivWidth, 10) || 10
-                },
-                percentScrolled,
-                numBpsShownInLinearView: this.getNumBpsShownInLinearView()
-              }}
-              onMinimapScroll={this.onMinimapScroll}
-            />
           </div>
         </div>
+        <Minimap
+          {...{
+            alignmentTracks,
+            dimensions: {
+              width: Math.max(dimensions.width - nameDivWidth, 10) || 10
+            },
+            percentScrolled,
+            numBpsShownInLinearView: this.getNumBpsShownInLinearView()
+          }}
+          onMinimapScroll={this.onMinimapScroll}
+        />
       </div>
     );
   }
