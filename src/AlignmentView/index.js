@@ -4,7 +4,7 @@ import { Slider } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
-import { compose, branch, renderNothing, renderComponent } from "recompose";
+import { compose, branch, renderComponent } from "recompose";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -210,12 +210,16 @@ export default compose(
         noTracks: true
       };
 
-    console.log("alignmentTracks:", alignmentTracks);
     return {
       alignmentTracks
     };
   }),
-  branch(({ loading }) => loading, renderComponent(Loading)),
+  branch(
+    ({ loading }) => loading,
+    renderComponent(() => {
+      return <Loading bounce />;
+    })
+  ),
   branch(
     ({ noTracks }) => noTracks,
     renderComponent(() => {

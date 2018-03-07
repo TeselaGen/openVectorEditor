@@ -26,7 +26,6 @@ let Axis = function(props) {
     sequenceLength,
     ...(getGaps ? [getGaps(row).gapsBefore, getGaps(row).gapsInside] : [])
   );
-  console.log("width:", width);
   //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
   //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
   let xEnd = xStart + width;
