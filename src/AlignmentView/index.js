@@ -18,12 +18,12 @@ export class AlignmentView extends React.Component {
 
   getMinCharWidth = () => {
     const { dimensions: { width } } = this.props;
-    return (width - nameDivWidth) / this.getSequenceLength();
+    return Math.min((width - nameDivWidth) / this.getSequenceLength(), 10);
   };
 
   getSequenceLength = () => {
     const { alignmentTracks: [template] = [] } = this.props;
-    return template.sequenceData.sequence.length;
+    return template.alignmentData.sequence.length;
   };
 
   getNumBpsShownInLinearView = () => {
@@ -177,7 +177,11 @@ export class AlignmentView extends React.Component {
           }}
         >
           <div
-            style={{ padding: 4, maxWidth: nameDivWidth, width: nameDivWidth }}
+            style={{
+              padding: "4px 10px",
+              maxWidth: nameDivWidth,
+              width: nameDivWidth
+            }}
           >
             <h6 style={{ marginRight: 10 }}>Zoom: </h6>
             <UncontrolledSlider
@@ -189,7 +193,7 @@ export class AlignmentView extends React.Component {
               stepSize={0.01}
               initialValue={10}
               max={16}
-              min={0}
+              min={this.getMinCharWidth()}
             />
           </div>
           <Minimap
