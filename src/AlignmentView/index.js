@@ -18,7 +18,10 @@ export class AlignmentView extends React.Component {
 
   getMinCharWidth = () => {
     const { dimensions: { width } } = this.props;
-    return Math.min((width - nameDivWidth) / this.getSequenceLength(), 10);
+    return Math.min(
+      Math.max(width - nameDivWidth - 5, 1) / this.getSequenceLength(),
+      10
+    );
   };
 
   getSequenceLength = () => {
@@ -192,7 +195,7 @@ export class AlignmentView extends React.Component {
               renderLabel={false}
               stepSize={0.01}
               initialValue={10}
-              max={16}
+              max={14}
               min={this.getMinCharWidth()}
             />
           </div>
