@@ -5,6 +5,7 @@ import { Loading } from "teselagen-react-components";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
+import "./style.css";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -59,19 +60,6 @@ export class AlignmentView extends React.Component {
         }}
         className="alignmentView"
       >
-        <div style={{ maxWidth: 160, display: "flex" }}>
-          <h6 style={{ marginRight: 10 }}>Zoom: </h6>
-          <UncontrolledSlider
-            onRelease={val => {
-              this.setState({ charWidthInLinearView: val });
-            }}
-            renderLabel={false}
-            stepSize={0.01}
-            initialValue={10}
-            max={16}
-            min={0}
-          />
-        </div>
         <div
           className={"alignmentTracks"}
           style={{ overflowY: "auto", display: "flex" }}
@@ -180,17 +168,42 @@ export class AlignmentView extends React.Component {
             </div>
           </div>
         </div>
-        <Minimap
-          {...{
-            alignmentTracks,
-            dimensions: {
-              width: Math.max(dimensions.width - nameDivWidth, 10) || 10
-            },
-            percentScrolled,
-            numBpsShownInLinearView: this.getNumBpsShownInLinearView()
+        <div
+          style={{
+            marginTop: 4,
+            paddingTop: 4,
+            borderTop: "1px solid lightgrey",
+            display: "flex"
           }}
-          onMinimapScroll={this.onMinimapScroll}
-        />
+        >
+          <div
+            style={{ padding: 4, maxWidth: nameDivWidth, width: nameDivWidth }}
+          >
+            <h6 style={{ marginRight: 10 }}>Zoom: </h6>
+            <UncontrolledSlider
+              onRelease={val => {
+                this.setState({ charWidthInLinearView: val });
+              }}
+              className={"alignment-zoom-slider"}
+              renderLabel={false}
+              stepSize={0.01}
+              initialValue={10}
+              max={16}
+              min={0}
+            />
+          </div>
+          <Minimap
+            {...{
+              alignmentTracks,
+              dimensions: {
+                width: Math.max(dimensions.width - nameDivWidth, 10) || 10
+              },
+              percentScrolled,
+              numBpsShownInLinearView: this.getNumBpsShownInLinearView()
+            }}
+            onMinimapScroll={this.onMinimapScroll}
+          />
+        </div>
       </div>
     );
   }

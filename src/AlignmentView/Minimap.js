@@ -13,58 +13,18 @@ export default class Minimap extends React.Component {
     const percent = x / (width - scrollHandle.width);
     onMinimapScroll(percent);
   };
-  onDragEnd = event => {
-    if (!event.clientX) {
-      return;
-    }
-    let boundingRect = this.refs.circularView.getBoundingClientRect();
-    //get relative click positions
-    // let clickX = event.clientX - boundingRect.left - boundingRect.width / 2;
-    // let clickY = event.clientY - boundingRect.top - boundingRect.height / 2;
 
-    let rowNotFound = true;
-    //loop through all the rendered rows to see if the click event lands in one of them
-    let nearestCaretPos = 0;
-    let rowDomNode = this.minimap;
-    let boundingRowRect = rowDomNode.getBoundingClientRect();
-    if (
-      event.clientY > boundingRowRect.top &&
-      event.clientY < boundingRowRect.top + boundingRowRect.height
-    ) {
-      //then the click is falls within this row
-      rowNotFound = false;
-      // let row = rowData[0];
-      // if (event.clientX - boundingRowRect.left < 0) {
-      //   nearestCaretPos = row.start;
-      // } else {
-      //   let clickXPositionRelativeToRowContainer =
-      //     event.clientX - boundingRowRect.left;
-      //   let numberOfBPsInFromRowStart = Math.floor(
-      //     (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
-      //       this.charWidth
-      //   );
-      //   nearestCaretPos = numberOfBPsInFromRowStart + row.start;
-      //   if (nearestCaretPos > row.end + 1) {
-      //     nearestCaretPos = row.end + 1;
-      //   }
-      // }
-    }
+  handleMinimapClick = e => {
+    const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
+    const scrollHandle = this.getScrollHandleWidthAndXStart();
 
-    if (rowNotFound) {
-      // var { top, bottom } = rowDomNode.getBoundingClientRect();
-      // var numbers = [top, bottom];
-      // var target = event.clientY;
-      // var topOrBottom = numbers
-      //   .map(function(value, index) {
-      //     return [Math.abs(value - target), index];
-      //   })
-      //   .sort()
-      //   .map(function(value) {
-      //     return numbers[value[1]];
-      //   })[0];
-
-      nearestCaretPos = 0;
-    }
+    const percent =
+      this.getXPositionOfClickInMinimap(e) / (width - scrollHandle.width);
+    onMinimapScroll(percent);
+  };
+  getXPositionOfClickInMinimap = e => {
+    const leftStart = this.minimap.getBoundingClientRect().left;
+    return Math.max(e.clientX - leftStart, 0);
   };
 
   getCharWidth = () => {
@@ -93,7 +53,11 @@ export default class Minimap extends React.Component {
   };
 
   render() {
-    const { alignmentTracks = [], dimensions: { width = 200 } } = this.props;
+    const {
+      alignmentTracks = [],
+      dimensions: { width = 200 },
+      style = {}
+    } = this.props;
     const [template, ...nonTemplates] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = this.getCharWidth();
@@ -103,7 +67,8 @@ export default class Minimap extends React.Component {
       <div
         ref={ref => (this.minimap = ref)}
         className={"alignmentMinimap"}
-        style={{ position: "relative" }}
+        style={{ position: "relative", width, ...style }}
+        onClick={this.handleMinimapClick}
       >
         <Draggable
           bounds={"parent"}
@@ -112,7 +77,6 @@ export default class Minimap extends React.Component {
           // start={{ x: scrollHandle.x, y: 0 }}
           axis={"x"}
           onDrag={this.onDrag}
-          // onStop={this.onDragEnd}
         >
           <div
             style={{
@@ -130,9 +94,8 @@ export default class Minimap extends React.Component {
         </Draggable>
 
         <svg height={alignmentTracks.length * laneHeight} width={width}>
-          {alignmentTracks.map(({ alignmentData, matchHighlightRanges }, i) => {
+          {alignmentTracks.map(({ matchHighlightRanges }, i) => {
             //need to get the chunks that can be rendered
-
             return matchHighlightRanges.map((range, index) => {
               const { xStart, width } = getXStartAndWidthFromNonCircularRange(
                 range,
