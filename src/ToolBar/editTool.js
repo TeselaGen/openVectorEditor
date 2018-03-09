@@ -5,7 +5,7 @@ export default {
   updateKeys: ["readOnly", "toggleReadOnlyMode"],
   itemProps: ({ readOnly, toggleReadOnlyMode }) => {
     return {
-      Icon: <Icon iconName={readOnly ? "lock" : "unlock"} />,
+      Icon: <Icon icon={readOnly ? "lock" : "unlock"} />,
       onIconClick: toggleReadOnlyMode,
       tooltip: readOnly ? (
         <span>

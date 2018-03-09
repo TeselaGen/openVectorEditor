@@ -1,10 +1,8 @@
 import React from "react";
 import {
   Button,
-  IconClasses,
   InputGroup,
   Switch,
-  Icon,
   Popover,
   Position
 } from "@blueprintjs/core";
@@ -90,7 +88,7 @@ export function FindBar({
       }
       className={"veFindBar"}
     >
-      <Button onClick={toggleFindTool} className={IconClasses.CROSS} />
+      <Button onClick={toggleFindTool} icon="cross" />
       <InputGroup
         autoFocus
         onKeyDown={e => {
@@ -110,12 +108,7 @@ export function FindBar({
             {isInline && (
               <Popover
                 position={Position.BOTTOM}
-                target={
-                  <Button
-                    className={"pt-minimal"}
-                    iconName={IconClasses.EDIT}
-                  />
-                }
+                target={<Button className={"pt-minimal"} icon={"edit"} />}
                 content={
                   <div
                     className={"ve-find-options-popover"}
@@ -144,7 +137,7 @@ export function FindBar({
                   matchesTotal <= 0 ? 0 : mod(matchNumber - 1, matchesTotal)
                 );
               }}
-              iconName={IconClasses.CARET_UP}
+              icon="caret-up"
             />
             <Button
               className={"pt-minimal"}
@@ -154,7 +147,7 @@ export function FindBar({
                   matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
                 );
               }}
-              iconName={IconClasses.CARET_DOWN}
+              icon="caret-down"
             />
           </span>
         }
@@ -162,7 +155,7 @@ export function FindBar({
           return updateSearchText(e.target.value);
         }}
         value={searchText}
-        leftIconName={IconClasses.SEARCH}
+        leftIcon="search"
       />
       {!isInline && findOptionsEls}
     </div>

@@ -1,4 +1,4 @@
-import { Icon, IconClasses, Button } from "@blueprintjs/core";
+import { Icon, Button } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 
@@ -12,7 +12,7 @@ export default {
     isOpen
   }) {
     return {
-      Icon: <Icon iconName={IconClasses.CUT} />,
+      Icon: <Icon icon="cut" />,
       onIconClick: function() {
         annotationVisibilityToggle("cutsites");
       },
