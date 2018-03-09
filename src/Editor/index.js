@@ -450,16 +450,15 @@ export class Editor extends React.Component {
   };
 
   render() {
-    console.log("this.props render:", this.props);
     const {
       doNotUseAbsolutePosition = false,
 
       ToolBarProps = {},
 
       StatusBarProps = {},
-      FindBarProps = {},
+      // FindBarProps = {},
       editorName,
-      findTool = {},
+      // findTool = {},
       // containerWidth,
       height = 500,
       showMenuBar,
