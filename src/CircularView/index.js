@@ -50,6 +50,7 @@ export class CircularView extends React.Component {
     ); //true because we're in between positions
 
     callback({
+      event,
       className: event.target.className.animVal,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
@@ -609,7 +610,13 @@ export class CircularView extends React.Component {
                     editorClicked
                   );
               }}
-              onContextMenu={backgroundRightClicked}
+              onContextMenu={e => {
+                this.getNearestCursorPositionToMouseEvent(
+                  e,
+                  sequenceLength,
+                  backgroundRightClicked
+                );
+              }}
               style={{ overflow: "visible" }}
               width={width}
               height={height}
@@ -624,44 +631,28 @@ export class CircularView extends React.Component {
             <div className={"veCircularViewWarningContainer1"}>
               {paredDownOrfs && (
                 <VeWarning
-                  message={`Warning: More than ${
-                    maxOrfsToDisplay
-                  } Open Reading Frames. Displaying only the largest ${
-                    maxOrfsToDisplay
-                  }`}
+                  message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
                 />
               )}
               {paredDownCutsites && (
                 <VeWarning
-                  message={`Only the first ${
-                    maxCutsitesToDisplay
-                  } cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
+                  message={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
                 />
               )}
               {paredDownFeatures && (
                 <VeWarning
-                  message={`Warning: More than ${
-                    maxFeaturesToDisplay
-                  } Features. Displaying only the largest ${
-                    maxFeaturesToDisplay
-                  }`}
+                  message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
                 />
               )}
 
               {paredDownParts && (
                 <VeWarning
-                  message={`Warning: More than ${
-                    maxPartsToDisplay
-                  } Parts. Displaying only the largest ${maxPartsToDisplay}`}
+                  message={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}
                 />
               )}
               {paredDownPrimers && (
                 <VeWarning
-                  message={`Warning: More than ${
-                    maxPrimersToDisplay
-                  } Primers. Displaying only the largest ${
-                    maxPrimersToDisplay
-                  }`}
+                  message={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
                 />
               )}
             </div>

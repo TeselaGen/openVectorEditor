@@ -9544,9 +9544,16 @@ ve-range-utils@^2.3.3:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.2.30:
-  version "3.2.30"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.30.tgz#8c234fca4797cf2ef2f99114e624919bccfe4ee2"
+ve-range-utils@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.0.tgz#4ad3ea1ed5d4f69b7db39a537e914b9a34eed2f7"
+  dependencies:
+    lodash "^4.17.4"
+    validate.io-nonnegative-integer-array "^1.0.1"
+
+ve-sequence-utils@3.2.35:
+  version "3.2.35"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.35.tgz#a73f28d500c2751ca927ce33dcdf83c1e338911c"
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

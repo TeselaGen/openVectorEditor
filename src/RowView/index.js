@@ -27,6 +27,7 @@ export class RowView extends React.Component {
     editorDragged: noop,
     editorDragStarted: noop,
     editorClicked: noop,
+    backgroundRightClicked: noop,
     editorDragStopped: noop,
     onScroll: noop,
     width: defaultContainerWidth,
@@ -97,6 +98,7 @@ export class RowView extends React.Component {
       }
     }
     callback({
+      event,
       className: event.target.className,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
@@ -209,6 +211,7 @@ export class RowView extends React.Component {
       editorDragged,
       editorDragStarted,
       editorClicked,
+      backgroundRightClicked,
       editorDragStopped,
       onScroll,
       width,
@@ -326,6 +329,13 @@ export class RowView extends React.Component {
             width: containerWidthMinusMargin + marginWidth,
             paddingLeft: marginWidth / 2,
             paddingRight: marginWidth / 2
+          }}
+          onContextMenu={event => {
+            this.getNearestCursorPositionToMouseEvent(
+              rowData,
+              event,
+              backgroundRightClicked
+            );
           }}
           onClick={event => {
             this.getNearestCursorPositionToMouseEvent(

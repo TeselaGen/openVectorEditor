@@ -35,7 +35,7 @@ import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
-import FindBar from "../FindBar";
+// import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
@@ -133,16 +133,14 @@ export class Editor extends React.Component {
     // const {selectionLayerUpdate}
     console.warn("handleReverseComplementSelection");
   };
-  handleRotateToCaretPosition = () => {
-    console.warn("handleRotateToCaretPosition");
-  };
+
   handleNewPrimer = () => {
     const {
       selectionLayer,
       caretPosition,
       showAddOrEditPrimerDialog,
-      readOnly,
-      sequenceLength
+      readOnly
+      // sequenceLength
     } = this.props;
     const rangeToUse =
       selectionLayer.start > -1
@@ -303,6 +301,15 @@ export class Editor extends React.Component {
   }
 
   renderHotkeys() {
+    const {
+      handleSave,
+      toggleReadOnlyMode,
+      undo,
+      redo,
+      toggleFindTool,
+      selectAll,
+      handleRotateToCaretPosition
+    } = this.props;
     return (
       <Hotkeys>
         <Hotkey
@@ -311,7 +318,7 @@ export class Editor extends React.Component {
           global={true}
           combo={"cmd+s"}
           label="Save"
-          onKeyDown={this.props.handleSave}
+          onKeyDown={handleSave}
         />
         <Hotkey
           preventDefault
@@ -335,7 +342,7 @@ export class Editor extends React.Component {
           label="Toggle Edit Mode"
           global
           combo="cmd+e"
-          onKeyDown={this.props.toggleReadOnlyMode}
+          onKeyDown={toggleReadOnlyMode}
         />
         {/* TNR: these are here just to be added to the blueprint generated hotkey dialog but their actual handlers live elsewhere */}
         <Hotkey
@@ -373,7 +380,7 @@ export class Editor extends React.Component {
           label="Undo"
           global
           combo="cmd+z"
-          onKeyDown={this.props.undo}
+          onKeyDown={undo}
         />
         <Hotkey
           preventDefault
@@ -381,7 +388,7 @@ export class Editor extends React.Component {
           label="Redo"
           global
           combo="cmd+shift+z"
-          onKeyDown={this.props.redo}
+          onKeyDown={redo}
         />
         <Hotkey
           preventDefault
@@ -389,7 +396,7 @@ export class Editor extends React.Component {
           label="Find"
           global
           combo="cmd+f"
-          onKeyDown={this.props.toggleFindTool}
+          onKeyDown={toggleFindTool}
         />
         <Hotkey
           preventDefault
@@ -397,7 +404,7 @@ export class Editor extends React.Component {
           label="Select All"
           global
           combo="cmd+a"
-          onKeyDown={this.props.selectAll}
+          onKeyDown={selectAll}
         />
         <Hotkey
           preventDefault
@@ -413,7 +420,7 @@ export class Editor extends React.Component {
           label="Rotate To Caret Position"
           global
           combo="cmd+b"
-          onKeyDown={this.handleRotateToCaretPosition}
+          onKeyDown={handleRotateToCaretPosition}
         />
         <Hotkey
           preventDefault
@@ -449,16 +456,15 @@ export class Editor extends React.Component {
   };
 
   render() {
-    console.log("this.props render:", this.props);
     const {
       doNotUseAbsolutePosition = false,
 
       ToolBarProps = {},
 
       StatusBarProps = {},
-      FindBarProps = {},
+      // FindBarProps = {},
       editorName,
-      findTool = {},
+      // findTool = {},
       // containerWidth,
       height = 500,
       showMenuBar,

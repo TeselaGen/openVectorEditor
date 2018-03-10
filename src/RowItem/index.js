@@ -67,7 +67,6 @@ export class RowItem extends React.Component {
       partRightClicked = noop,
       translationRightClicked = noop,
       primerClicked = noop,
-      backgroundRightClicked = noop,
       primerRightClicked = noop,
       selectionLayerRightClicked = noop,
       orfClicked = noop,
@@ -176,7 +175,7 @@ export class RowItem extends React.Component {
       : null;
 
     return (
-      <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
+      <div className="veRowItemWrapper">
         {rowTopComp && rowTopComp}
         <div
           className="veRowItem"
