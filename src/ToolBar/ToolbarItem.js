@@ -84,7 +84,7 @@ export default class ToolbarItem extends React.Component {
               {Icon &&
                 !renderIconAbove && (
                   <Tooltip
-                    isDisabled={tooltipDisabled}
+                    disabled={tooltipDisabled}
                     portalClassName="ve-toolbar-item-popover"
                     content={tooltipToDisplay}
                   >
