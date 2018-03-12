@@ -1,4 +1,4 @@
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 import React from "react";
 import { Checkbox } from "@blueprintjs/core";
 // import show_orfs from "./veToolbarIcons/show_orfs.png";
@@ -19,7 +19,7 @@ export default {
     isOpen
   }) => {
     return {
-      Icon: <Icon iconName={IconClasses.CIRCLE} />,
+      Icon: <Icon icon="circle" />,
       onIconClick: function() {
         annotationVisibilityToggle("orfs");
         annotationVisibilityToggle("orfTranslations");

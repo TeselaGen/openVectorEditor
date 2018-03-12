@@ -16,10 +16,11 @@ import { compose } from "redux"; //tnr: this can be removed once https://github.
 import {
   Hotkey,
   Hotkeys,
-  HotkeysTarget
+  HotkeysTarget,
+  Icon
   // Button
-  // Tab2,
-  // Tabs2
+  // Tab,
+  // Tabs
 } from "@blueprintjs/core";
 
 import {
@@ -583,13 +584,12 @@ export class Editor extends React.Component {
           className="left-panel ve-panel"
         >
           {isFullScreen ? (
-            <span
+            <Icon
               onClick={() => {
                 togglePanelFullScreen(activePanelId);
               }}
-              className={
-                "ve-clickable ve-close-panel-button pt-icon-standard pt-icon-minimize"
-              }
+              icon="minimize"
+              className={"ve-clickable ve-close-panel-button"}
               style={{
                 zIndex: 15001,
                 position: "fixed",
@@ -598,10 +598,9 @@ export class Editor extends React.Component {
               }}
             />
           ) : (
-            <span
-              className={
-                "ve-clickable-black ve-close-panel-button pt-icon-standard pt-icon-menu"
-              }
+            <Icon
+              icon="menu"
+              className={"ve-clickable-black ve-close-panel-button"}
               onClick={showTabRightClickContextMenu}
               style={{
                 background: "white",
@@ -615,7 +614,7 @@ export class Editor extends React.Component {
           )}
 
           {[
-            // <Tabs2
+            // <Tabs
             //   key={activePanelId}
             //       // style={{ paddingLeft:15 }}
             //       renderActiveTabPanelOnly
@@ -692,14 +691,13 @@ export class Editor extends React.Component {
                               }} style={{paddingRight: 3, paddingBottom: 3, fontSize: 10}} className={"pt-icon-menu"}></span> */}
                                 {name || id}
                                 {canClose && (
-                                  <span
+                                  <Icon
+                                    icon="small-cross"
                                     onClick={() => {
                                       closePanel(id);
                                     }}
                                     style={{ paddingLeft: 5 }}
-                                    className={
-                                      "ve-clickable pt-icon-standard pt-icon-small-cross"
-                                    }
+                                    className="ve-clickable"
                                   />
                                 )}
                               </div>
@@ -709,7 +707,7 @@ export class Editor extends React.Component {
                         )}
                       </Draggable>
                     );
-                    //   return <Tab2
+                    //   return <Tab
                     //   key={id}
                     //   title={startCase(name || id)}
                     //   id={id}

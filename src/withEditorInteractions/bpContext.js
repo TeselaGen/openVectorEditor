@@ -1,7 +1,6 @@
-import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
+import { ContextMenu, Menu, MenuItem, KeyCombo } from "@blueprintjs/core";
 import React from "react";
 import { lifecycle } from "recompose";
-import { KeyCombo } from "@blueprintjs/core/dist/esm/components/hotkeys/keyCombo";
 
 function filterMenuForCorrectness(menu) {
   return menu && menu.length && menu.filter(item => item);

@@ -1,8 +1,7 @@
 // import download from 'in-browser-download'
 import DropDownIcon from "react-icons/lib/md/arrow-drop-down";
 import DropUpIcon from "react-icons/lib/md/arrow-drop-up";
-import { Popover, Position, Tooltip as Tooltip2 } from "@blueprintjs/core";
-// import { Popover2 as Popover } from "@blueprintjs/labs";
+import { Popover, Position, Tooltip } from "@blueprintjs/core";
 import React from "react";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
@@ -84,14 +83,9 @@ export default class ToolbarItem extends React.Component {
 
               {Icon &&
                 !renderIconAbove && (
-                  <Tooltip2
+                  <Tooltip
                     isDisabled={tooltipDisabled}
                     portalClassName="ve-toolbar-item-popover"
-                    tetherOptions={{
-                      constraints: [
-                        { attachment: "together", to: "scrollParent" }
-                      ]
-                    }}
                     content={tooltipToDisplay}
                   >
                     <div
@@ -112,17 +106,10 @@ export default class ToolbarItem extends React.Component {
                         )}
                       </div>
                     </div>
-                  </Tooltip2>
+                  </Tooltip>
                 )}
               {Dropdown && !noDropdownIcon ? (
-                <Tooltip2
-                  tetherOptions={{
-                    constraints: [
-                      { attachment: "together", to: "scrollParent" }
-                    ]
-                  }}
-                  content={dropdowntooltip}
-                >
+                <Tooltip content={dropdowntooltip}>
                   <div
                     className={
                       (isOpen ? " isOpen " : "") +
@@ -140,7 +127,7 @@ export default class ToolbarItem extends React.Component {
                       <DropDownIcon style={{ width: 20, height: 20 }} />
                     )}
                   </div>
-                </Tooltip2>
+                </Tooltip>
               ) : null}
             </div>
           }

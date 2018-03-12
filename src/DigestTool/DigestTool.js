@@ -5,7 +5,7 @@ import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
 import DigestContainer from "./DigestContainer";
 // import getCutsiteType from "./getCutsiteType";
-import { Tabs2, Tab2, Button, InputGroup, Intent } from "@blueprintjs/core";
+import { Tabs, Tab, Button, InputGroup, Intent } from "@blueprintjs/core";
 
 export class DigestTool extends React.Component {
   state = { selectedTab: "virtualDigest" };
@@ -39,18 +39,18 @@ export class DigestTool extends React.Component {
         Choose your enzymes:
         <CutsiteFilter editorName={editorName} />
         <br />
-        <Tabs2
+        <Tabs
           selectedTabId={selectedTab}
           onChange={id => {
             this.setState({ selectedTab: id });
           }}
         >
-          <Tab2
+          <Tab
             title={"Virtual Digest"}
             id={"virtualDigest"}
             panel={<Ladder {...this.props} editorName={editorName} />}
           />
-          <Tab2
+          <Tab
             title={"Digest Info"}
             id={"table"}
             panel={
@@ -91,7 +91,7 @@ export class DigestTool extends React.Component {
               />
             }
           />
-        </Tabs2>
+        </Tabs>
         <br />
       </div>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 import FindBar from "../FindBar";
 
 export default {
@@ -7,7 +7,7 @@ export default {
   itemProps: ({ findTool = {}, editorName, toggleFindTool }) => {
     return {
       Icon: !findTool.isOpen ? (
-        <Icon iconName={IconClasses.SEARCH} />
+        <Icon icon="search" />
       ) : (
         <FindBar editorName={editorName} isInline />
       ),

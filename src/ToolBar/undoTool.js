@@ -1,12 +1,12 @@
 import React from "react";
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 
 export default {
   updateKeys: ["sequenceDataHistory", "undo"],
   itemProps: ({ sequenceDataHistory = {}, undo }) => {
     const { past = [] } = sequenceDataHistory;
     return {
-      Icon: <Icon iconName={IconClasses.UNDO} />,
+      Icon: <Icon icon="undo" />,
       disabled: !past.length,
       onIconClick: undo,
       tooltip: (

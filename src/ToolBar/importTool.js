@@ -26,7 +26,7 @@ export default {
             };
           }}
         >
-          <Icon iconName={IconClasses.EXPORT} />
+          <Icon icon="export" />
         </Dropzone>
       ),
       tooltip: "Click or drag to upload and view .fasta or .gb files"

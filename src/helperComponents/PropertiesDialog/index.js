@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "redux";
-import { Tab2, Tabs2 } from "@blueprintjs/core";
+import { Tab, Tabs } from "@blueprintjs/core";
 import { startCase } from "lodash";
 import FeatureProperties from "./FeatureProperties";
 import GeneralProperties from "./GeneralProperties";
@@ -51,7 +51,7 @@ export class PropertiesInner extends React.Component {
     const propertiesTabs = propertiesList.map(name => {
       const Comp = allTabs[name];
       return (
-        <Tab2
+        <Tab
           key={name}
           title={startCase(name)}
           id={name}
@@ -78,16 +78,16 @@ export class PropertiesInner extends React.Component {
           }}
         >
           {propertiesTabs.length ? (
-            <Tabs2
+            <Tabs
               style={{ width }}
               renderActiveTabPanelOnly
               selectedTabId={tabId}
               onChange={propertiesViewTabUpdate}
             >
-              <Tabs2.Expander />
+              <Tabs.Expander />
               {propertiesTabs}
-              <Tabs2.Expander />
-            </Tabs2>
+              <Tabs.Expander />
+            </Tabs>
           ) : (
             <div style={{ margin: 20, fontSize: 20 }}>
               No Properties to display

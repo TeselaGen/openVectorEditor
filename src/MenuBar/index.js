@@ -7,7 +7,6 @@ import {
   Position,
   Button
 } from "@blueprintjs/core";
-// import {Popover2 as Popover, Suggest} from '@blueprintjs/labs';
 
 import withEditorProps from "../withEditorProps";
 import defaultConfig from "./defaultConfig";
@@ -38,9 +37,6 @@ export class MenuBar extends React.Component {
           key={index}
           content={<Menu text={text}>{getMenu(menu)}</Menu>}
           popoverClassName="pt-minimal"
-          tetherOptions={{
-            constraints: [{ attachment: "together", to: "scrollParent" }]
-          }}
           position={Position.BOTTOM}
         >
           <Button text={text} />
@@ -64,16 +60,13 @@ export class MenuBar extends React.Component {
                 onChange={yup => {
                   console.log('hup:')
                 }}
-                leftIconName={"search"}
+                leftIcon={"search"}
               /> */}
 
               <MenuItem />
             </Menu>
           }
           popoverClassName="pt-minimal"
-          tetherOptions={{
-            constraints: [{ attachment: "together", to: "scrollParent" }]
-          }}
           position={Position.BOTTOM}
         >
           <Button text={"Help"} />

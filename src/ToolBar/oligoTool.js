@@ -6,7 +6,7 @@ export default {
   updateKeys: ["annotationVisibilityToggle", "annotationVisibility"],
   itemProps: ({ annotationVisibilityToggle, annotationVisibility = {} }) => {
     return {
-      Icon: <Icon iconName={"swap-horizontal"} />,
+      Icon: <Icon icon="swap-horizontal" />,
       onIconClick: function() {
         annotationVisibilityToggle("primers");
       },

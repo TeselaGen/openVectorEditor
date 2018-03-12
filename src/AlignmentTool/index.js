@@ -1,7 +1,7 @@
 import React from "react";
 // import { DataTable } from "teselagen-react-components";
 // import CutsiteFilter from "../CutsiteFilter";
-// import { Tabs2, Tab2, Button, InputGroup, Intent } from "@blueprintjs/core";
+// import { Tabs, Tab, Button, InputGroup, Intent } from "@blueprintjs/core";
 
 export default class AlignmentTool extends React.Component {
   // state={selectedTab: "virtualDigest"}
