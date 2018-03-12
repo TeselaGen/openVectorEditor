@@ -8,8 +8,8 @@ import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import "./style.css";
 
-import RowItem from '../RowItem'
-import ab1ParsedGFPuv54 from '../ToolBar/ab1ParsedGFPuv54.json'
+import RowItem from "../RowItem";
+import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -59,29 +59,6 @@ export class AlignmentView extends React.Component {
       height,
       alignmentVisibilityToolOptions
     } = this.props;
-    let {
-      alignmentAnnotationVisibility = {
-        features: false,
-        translations: false,
-        parts: false,
-        orfs: false,
-        orfTranslations: false,
-        axis: true,
-        cutsites: false,
-        primers: false,
-        reverseSequence: false,
-        lineageLines: false,
-        axisNumbers: true
-      },
-      typesToOmit = {},
-      alignmentAnnotationVisibilityToggle,
-      alignmentAnnotationLabelVisibility = {
-        features: true,
-        parts: true,
-        cutsites: true
-      },
-      alignmentAnnotationLabelVisibilityToggle
-    } = alignmentVisibilityToolOptions;
 
     return (
       <div
@@ -165,23 +142,25 @@ export class AlignmentView extends React.Component {
                           0
                       }}
                     />
-                    <RowItem {...{
-                      chromatogramData: ab1ParsedGFPuv54,
-                      row: {
-                        rowNumber: 0,
-                        // start: 10,
-                        // end: 30,
-                        // sequence: "GCGAATTCGAGCTCGGTACC",
-                        start: 0,
-                        end: ab1ParsedGFPuv54.qualNums.length,
-                        sequence: "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCGGCTTCAGCCGGTTTGCCGGCTGAAAGCGCTATTTCTTCCAGAATTGCCATGATTTTTTCCCCACGGGAGGCGTCACTGGCTCCCGTGTTGTCGGCAGCTTTGATTCGATAAGCAGCATCGCCTGTTTCAGGCTGTCTATGTGTGACTGTTGAGCTGTAACAAGTTGTCTCAGGTGTTCAATTTCATGTTCTAGTTGCTTTGTTTTACTGGTTTCACCTGTTCTATTAGGTGTTACATGCTGTTCATCTGTTACATTGTCGATCTGTTCATGGTGAACAGCTTTGAATGCACCAAAAACTCGTAAAAGCTCTGATGTATCTATCTTTTTTACACCGTTTTCATCTGTGCATATGGACAGTTTTCCCTTTGATATGTAACGGTGAACAGTTGTTCTACTTTTGTTTGTTAGTCTTGATGCTTCACTGATAGATACAAGAGCCATAAGAACCTCAGATCCTTCCGTATTTAGCCAGTATGTTCTCTAGTGTGGTTCGTTGTTTTGCCGTGGAGCAATGAGAACGAGCCATTGAGATCATACTTACCTTTGCATGTCACTCAAAATTTTGCCTCAAAACTGGGTGAGCTGAATTTTTGCAGTAGGCATCGTGTAAGTTTTTCTAGTCGGAATGATGATAGATCGTAAGTTATGGATGGTTGGCATTTGTCCAGTTCATGTTATCTGGGGTGTTCGTCAGTCGGTCAGCAGATCCACATAGTGGTTCATCTAGATCACAC"
-                      }
-                    }}>
-                    </RowItem>
+                    <RowItem
+                      {...{
+                        chromatogramData: ab1ParsedGFPuv54,
+                        row: {
+                          rowNumber: 0,
+                          // start: 10,
+                          // end: 30,
+                          // sequence: "GCGAATTCGAGCTCGGTACC",
+                          start: 0,
+                          end: ab1ParsedGFPuv54.qualNums.length,
+                          sequence:
+                            "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCGGCTTCAGCCGGTTTGCCGGCTGAAAGCGCTATTTCTTCCAGAATTGCCATGATTTTTTCCCCACGGGAGGCGTCACTGGCTCCCGTGTTGTCGGCAGCTTTGATTCGATAAGCAGCATCGCCTGTTTCAGGCTGTCTATGTGTGACTGTTGAGCTGTAACAAGTTGTCTCAGGTGTTCAATTTCATGTTCTAGTTGCTTTGTTTTACTGGTTTCACCTGTTCTATTAGGTGTTACATGCTGTTCATCTGTTACATTGTCGATCTGTTCATGGTGAACAGCTTTGAATGCACCAAAAACTCGTAAAAGCTCTGATGTATCTATCTTTTTTACACCGTTTTCATCTGTGCATATGGACAGTTTTCCCTTTGATATGTAACGGTGAACAGTTGTTCTACTTTTGTTTGTTAGTCTTGATGCTTCACTGATAGATACAAGAGCCATAAGAACCTCAGATCCTTCCGTATTTAGCCAGTATGTTCTCTAGTGTGGTTCGTTGTTTTGCCGTGGAGCAATGAGAACGAGCCATTGAGATCATACTTACCTTTGCATGTCACTCAAAATTTTGCCTCAAAACTGGGTGAGCTGAATTTTTGCAGTAGGCATCGTGTAAGTTTTTCTAGTCGGAATGATGATAGATCGTAAGTTATGGATGGTTGGCATTTGTCCAGTTCATGTTATCTGGGGTGTTCGTCAGTCGGTCAGCAGATCCACATAGTGGTTCATCTAGATCACAC"
+                        }
+                      }}
+                    />
                     <LinearView
                       {...{
-                        // linearViewAnnotationVisibilityOverrides: alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
-                        // linearViewAnnotationLabelVisibilityOverrides: alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
+                        linearViewAnnotationVisibilityOverrides: alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
+                        linearViewAnnotationLabelVisibilityOverrides: alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
                         marginWith: 0,
                         hideName: true,
                         sequenceData,
@@ -253,8 +232,15 @@ export class AlignmentView extends React.Component {
 
 export default compose(
   connect((state, ownProps) => {
-    const { id: alignmentId, alignments = {} } = ownProps;
-    const { alignmentTracks, loading, alignmentVisibilityToolOptions } = alignments[alignmentId] || {};
+    const { id: alignmentId, alignments = {}, upsertAlignmentRun } = ownProps;
+    const alignment = {...alignments[alignmentId], id: alignmentId};
+    const {
+      alignmentTracks,
+      loading,
+      alignmentAnnotationVisibility,
+      alignmentAnnotationLabelVisibility
+    } =
+      alignment || {};
     if (loading) {
       return {
         loading: true
@@ -267,7 +253,29 @@ export default compose(
 
     return {
       alignmentTracks,
-      alignmentVisibilityToolOptions
+      //manipulate the props coming in so we can pass a single clean prop to the visibility options tool
+      alignmentVisibilityToolOptions: {
+        alignmentAnnotationVisibility,
+        alignmentAnnotationLabelVisibility,
+        alignmentAnnotationVisibilityToggle: name => {
+          upsertAlignmentRun({
+            ...alignment,
+            alignmentAnnotationVisibility: {
+              ...alignment.alignmentAnnotationVisibility,
+              [name]: !alignment.alignmentAnnotationVisibility[name]
+            }
+          });
+        },
+        alignmentAnnotationLabelVisibilityToggle: name => {
+          upsertAlignmentRun({
+            ...alignment,
+            alignmentAnnotationLabelVisibility: {
+              ...alignment.alignmentAnnotationLabelVisibility,
+              [name]: !alignment.alignmentAnnotationLabelVisibility[name]
+            }
+          });
+        }
+      }
     };
   }),
   branch(

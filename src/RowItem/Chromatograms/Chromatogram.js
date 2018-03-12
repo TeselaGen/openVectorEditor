@@ -1,4 +1,5 @@
 import React from "react";
+import uuidv4 from "uuidv4";
 
 class Chromatogram extends React.Component {
   componentDidMount() {
@@ -14,21 +15,21 @@ class Chromatogram extends React.Component {
     }
   }
   updatePeakDrawing = () => {
-    const { chromatogramData, charWidth, row, getGaps, uniqueid } = this.props;
+    const { chromatogramData, charWidth, row, getGaps } = this.props;
     const painter = new drawTrace({
+      peakCanvas: this.canvasRef,
       traceData: chromatogramData,
       charWidth,
       startBp: row.start + getGaps(0).gapsBefore,
       endBp: row.end,
-      getGaps,
-      uniqueid
+      getGaps
     });
     painter.paintCanvas();
   };
 
   render() {
-    let { uniqueid } = this.props;
-    uniqueid = makeid();
+    // let { uniqueid } = this.props;
+    // uniqueid = makeid();
     // let {
     //   editorName,
     //     charWidth,
@@ -41,23 +42,22 @@ class Chromatogram extends React.Component {
     // } = this.props;
     // path=path.replace(/ /g,'')
     // path=path.replace(/\n/g,'')
-    return <canvas id={uniqueid} height="100" />;
+    return (
+      <canvas
+        ref={n => {
+          console.log('yuppp')
+          console.log('n:',n)
+          if (n) this.canvasRef = n;
+        }}
+        height="100"
+      />
+    );
   }
 }
 
 export default Chromatogram;
 
-function makeid() {
-  let text = "";
-  let possible = "abcdefghijklmnopqrstuvwxyz";
-
-  for (let i = 0; i < 5; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
-}
-
-function drawTrace({ traceData, charWidth = 12, startBp, endBp, getGaps, uniqueid }) {
+function drawTrace({ traceData, charWidth = 12, startBp, peakCanvas, endBp, getGaps }) {
   const colors = {
     adenine: "green",
     thymine: "red",
@@ -65,7 +65,6 @@ function drawTrace({ traceData, charWidth = 12, startBp, endBp, getGaps, uniquei
     cytosine: "blue",
     other: "pink"
   };
-  const peakCanvas = document.getElementById(uniqueid);
   const ctx = peakCanvas.getContext("2d");
 
   const formattedPeaks = { a: [], t: [], g: [], c: [] };

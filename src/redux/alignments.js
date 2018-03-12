@@ -3,34 +3,31 @@ import { tidyUpSequenceData, generateSequenceData } from "ve-sequence-utils";
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
-{
-  alignmentAnnotationVisibility: {
-    features: false,
-    translations: false,
-    parts: false,
-    orfs: false,
-    orfTranslations: false,
-    axis: true,
-    cutsites: false,
-    primers: false,
-    reverseSequence: false,
-    lineageLines: false,
-    axisNumbers: true
-  },
-  typesToOmit: {},
-  alignmentAnnotationVisibilityToggle,
-  alignmentAnnotationLabelVisibility: {
-    features: true,
-    parts: true,
-    cutsites: true
-  },
-  alignmentAnnotationLabelVisibilityToggle
-} 
+const defaultAlignmentAnnotationVisibility = {
+  features: false,
+  translations: false,
+  parts: false,
+  orfs: false,
+  orfTranslations: false,
+  axis: true,
+  cutsites: false,
+  primers: false,
+  reverseSequence: false,
+  lineageLines: false,
+  axisNumbers: true
+};
+
+const defaultAlignmentAnnotationLabelVisibility = {
+  features: true,
+  parts: true,
+  cutsites: true
+};
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const upsertAlignmentRun = createAction("upsertAlignmentRun");
+// export const alignmentAnnotationVisibilityToggle = createAction("alignmentAnnotationVisibilityToggle");
 //eg: annotationSupportToggle('features')
 
 // let alignment = [
@@ -77,7 +74,7 @@ let alignmentTracks = [1, 2, 3].map(() => {
   // sequenceData.orfs = [{ start: 2, end: 5, id: "orf" }]
   return {
     sequenceData,
-    alignmentData: { sequence: shuffle(sequenceData.sequence, 50, "-") },
+    alignmentData: { sequence: shuffle(sequenceData.sequence, 50, "-") }
   };
 });
 
@@ -108,8 +105,22 @@ alignmentTracks = addHighlightedDifferences(alignmentTracks);
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
+    // [alignmentAnnotationVisibilityToggle]: (state, {id, name})=> {
+    //   return {
+    //     ...state,
+    //     [id]: {...state[id], alignmentAnnotationVisibility: {
+    //       ...state[id].alignmentAnnotationVisibility,
+    //       [name]: !state[id].alignmentAnnotationVisibility.alignmentAnnotationVisibility[name]
+    //     }}
+        
+    //   }
+    // },
     [upsertAlignmentRun]: (state, payload) => {
-      let payloadToUse = { ...payload };
+      let payloadToUse = {
+        alignmentAnnotationVisibility: defaultAlignmentAnnotationVisibility,
+        alignmentAnnotationLabelVisibility: defaultAlignmentAnnotationLabelVisibility,
+        ...payload
+      };
       if (payloadToUse.alignmentTracks)
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
@@ -123,7 +134,8 @@ export default createMergedDefaultStateReducer(
   {
     alignmentRun1: {
       alignmentTracks,
-      // alignmentVisibilityToolOptions
+      alignmentAnnotationVisibility: defaultAlignmentAnnotationVisibility,
+      alignmentAnnotationLabelVisibility: defaultAlignmentAnnotationLabelVisibility
     }
   }
 );

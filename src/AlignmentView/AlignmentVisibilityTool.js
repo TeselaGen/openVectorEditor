@@ -2,7 +2,7 @@ import { Icon, Checkbox, Popover } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
 
-export default function AlignmentVisibilityTool({props}) {
+export default function AlignmentVisibilityTool(props) {
   return (
     <Popover
       content={<VisibilityOptions {...props} />}
@@ -18,6 +18,7 @@ function VisibilityOptions({
   alignmentAnnotationLabelVisibility = {},
   alignmentAnnotationLabelVisibilityToggle
 }) {
+
   return (
     <div>
       <h6>View:</h6>
