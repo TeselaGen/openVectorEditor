@@ -26,6 +26,8 @@ import * as selectedAnnotations from "./selectedAnnotations";
 import * as selectionLayer from "./selectionLayer";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
+import * as alignmentAnnotationVisibility from "./alignmentAnnotationVisibility";
+import * as alignmentAnnotationLabelVisibility from "./alignmentAnnotationLabelVisibility";
 
 import createAction from "./utils/createMetaAction";
 
@@ -59,6 +61,8 @@ export const actions = {
   ...modalActions,
   ...propertiesTool,
   ...addYourOwnEnzyme,
+  ...alignmentAnnotationLabelVisibility,
+  ...alignmentAnnotationVisibility,
   vectorEditorInitialize,
   vectorEditorClear
 };
@@ -91,6 +95,8 @@ let reducers = {
   alignments: alignments.default,
   deletionLayers: deletionLayers.default,
   replacementLayers: replacementLayers.default,
+  alignmentAnnotationLabelVisibility: alignmentAnnotationLabelVisibility.default,
+  alignmentAnnotationVisibility: alignmentAnnotationVisibility.default,
   instantiated: () => true
 };
 

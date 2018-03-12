@@ -3,6 +3,30 @@ import { tidyUpSequenceData, generateSequenceData } from "ve-sequence-utils";
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
+{
+  alignmentAnnotationVisibility: {
+    features: false,
+    translations: false,
+    parts: false,
+    orfs: false,
+    orfTranslations: false,
+    axis: true,
+    cutsites: false,
+    primers: false,
+    reverseSequence: false,
+    lineageLines: false,
+    axisNumbers: true
+  },
+  typesToOmit: {},
+  alignmentAnnotationVisibilityToggle,
+  alignmentAnnotationLabelVisibility: {
+    features: true,
+    parts: true,
+    cutsites: true
+  },
+  alignmentAnnotationLabelVisibilityToggle
+} 
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -53,7 +77,7 @@ let alignmentTracks = [1, 2, 3].map(() => {
   // sequenceData.orfs = [{ start: 2, end: 5, id: "orf" }]
   return {
     sequenceData,
-    alignmentData: { sequence: shuffle(sequenceData.sequence, 50, "-") }
+    alignmentData: { sequence: shuffle(sequenceData.sequence, 50, "-") },
   };
 });
 
@@ -98,7 +122,8 @@ export default createMergedDefaultStateReducer(
   },
   {
     alignmentRun1: {
-      alignmentTracks
+      alignmentTracks,
+      // alignmentVisibilityToolOptions
     }
   }
 );

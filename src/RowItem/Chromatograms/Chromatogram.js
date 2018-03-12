@@ -14,18 +14,21 @@ class Chromatogram extends React.Component {
     }
   }
   updatePeakDrawing = () => {
-    const { chromatogramData, charWidth, row, getGaps } = this.props;
+    const { chromatogramData, charWidth, row, getGaps, uniqueid } = this.props;
     const painter = new drawTrace({
       traceData: chromatogramData,
       charWidth,
       startBp: row.start + getGaps(0).gapsBefore,
       endBp: row.end,
-      getGaps
+      getGaps,
+      uniqueid
     });
     painter.paintCanvas();
   };
 
   render() {
+    let { uniqueid } = this.props;
+    uniqueid = makeid();
     // let {
     //   editorName,
     //     charWidth,
@@ -38,13 +41,23 @@ class Chromatogram extends React.Component {
     // } = this.props;
     // path=path.replace(/ /g,'')
     // path=path.replace(/\n/g,'')
-    return <canvas id="peakCanvas" height="100" />;
+    return <canvas id={uniqueid} height="100" />;
   }
 }
 
 export default Chromatogram;
 
-function drawTrace({ traceData, charWidth = 12, startBp, endBp, getGaps }) {
+function makeid() {
+  let text = "";
+  let possible = "abcdefghijklmnopqrstuvwxyz";
+
+  for (let i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+function drawTrace({ traceData, charWidth = 12, startBp, endBp, getGaps, uniqueid }) {
   const colors = {
     adenine: "green",
     thymine: "red",
@@ -52,7 +65,7 @@ function drawTrace({ traceData, charWidth = 12, startBp, endBp, getGaps }) {
     cytosine: "blue",
     other: "pink"
   };
-  const peakCanvas = document.getElementById("peakCanvas");
+  const peakCanvas = document.getElementById(uniqueid);
   const ctx = peakCanvas.getContext("2d");
 
   const formattedPeaks = { a: [], t: [], g: [], c: [] };
@@ -179,7 +192,7 @@ function drawTrace({ traceData, charWidth = 12, startBp, endBp, getGaps }) {
         (count + getGaps(count).gapsBefore) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,
         charWidth,
-        traceData.qualNums[count]
+        traceData.qualNums[count] * scalePctQual
       );
       // ctx.strokeStyle = 'rgba(192, 192, 192, 0.1)';
       ctx.strokeStyle = "rgba(230, 230, 250, 0.1)";

@@ -119,6 +119,7 @@ class AlignmentTool extends React.Component {
       return results.forEach(result => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
+          console.log(result.parsedSequence)
         } else {
           return window.toastr.warning("Error parsing file: ", file.name);
         }
