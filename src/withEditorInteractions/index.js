@@ -1,3 +1,4 @@
+import { rotateSequenceDataToPosition } from "ve-sequence-utils";
 import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
@@ -640,7 +641,7 @@ function VectorInteractionHOC(Component /* options */) {
         const action = actions[key];
         normalizedActions[key] = opts => {
           const items = action(opts);
-          const e = opts.event || opts;
+          const e = (items && items._event) || opts.event || opts;
           e.preventDefault && e.preventDefault();
           e.stopPropagation && e.stopPropagation();
           //override hook here
@@ -655,9 +656,33 @@ function VectorInteractionHOC(Component /* options */) {
       return this.generateSelectionMenuOptions(annotation);
     };
 
-    backgroundRightClicked = () => {
-      const { propertiesViewToggle } = this.props;
-      return [
+    handleRotateToCaretPosition = () => {
+      const {
+        caretPosition,
+        readOnly,
+        sequenceData,
+        updateSequenceData
+      } = this.props;
+      if (readOnly) {
+        return;
+      }
+      updateSequenceData(
+        rotateSequenceDataToPosition(sequenceData, caretPosition)
+      );
+    };
+
+    backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
+      this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
+      const { readOnly } = this.props;
+      const menu = [
+        ...(readOnly
+          ? []
+          : [
+              {
+                text: "Rotate Here",
+                onClick: this.handleRotateToCaretPosition
+              }
+            ]),
         ...this.getCreateItems(),
         ...this.getViewFrameTranslationsItems()
         // {
@@ -667,6 +692,8 @@ function VectorInteractionHOC(Component /* options */) {
         //   }
         // }
       ];
+      menu._event = event;
+      return menu;
     };
 
     deletionLayerRightClicked = ({ annotation }) => {
@@ -830,7 +857,11 @@ function VectorInteractionHOC(Component /* options */) {
         }
       ];
     };
-    orfRightClicked = ({ annotation }) => {
+    orfRightClicked = (
+      {
+        /* annotation */
+      }
+    ) => {
       const {
         // upsertTranslation,
         propertiesViewOpen,
@@ -1007,7 +1038,7 @@ function VectorInteractionHOC(Component /* options */) {
             translationRightClicked: this.translationRightClicked,
             primerRightClicked: this.primerRightClicked
           }),
-
+          handleRotateToCaretPosition: this.handleRotateToCaretPosition,
           orfClicked: this.annotationClicked,
           primerClicked: this.annotationClicked,
           translationClicked: this.annotationClicked,

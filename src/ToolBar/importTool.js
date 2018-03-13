@@ -1,6 +1,6 @@
 import { anyToJson } from "bio-parsers";
 import React from "react";
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
 
 export default {
@@ -26,7 +26,7 @@ export default {
             };
           }}
         >
-          <Icon iconName={IconClasses.EXPORT} />
+          <Icon icon="export" />
         </Dropzone>
       ),
       tooltip: "Click or drag to upload and view .fasta or .gb files"

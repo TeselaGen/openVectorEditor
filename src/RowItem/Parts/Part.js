@@ -90,7 +90,9 @@ function Part(props) {
         partRightClicked({ annotation, event });
       }}
     >
-      <title>{getAnnotationNameAndStartStopString(annotation)}</title>
+      <title>
+        {getAnnotationNameAndStartStopString(annotation, { isPart: true })}
+      </title>
       <path
         strokeWidth="1"
         stroke="purple"

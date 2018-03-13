@@ -6,7 +6,7 @@ export default function AlignmentVisibilityTool(props) {
   return (
     <Popover
       content={<VisibilityOptions {...props} />}
-      target={<Icon iconName={"eye-open"} />}
+      target={<Icon icon={"eye-open"} />}
     />
   );
 }
@@ -18,7 +18,6 @@ function VisibilityOptions({
   alignmentAnnotationLabelVisibility = {},
   alignmentAnnotationLabelVisibilityToggle
 }) {
-
   return (
     <div>
       <h6>View:</h6>

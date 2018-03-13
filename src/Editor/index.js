@@ -7,6 +7,7 @@ import React from "react";
 import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
 
+import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 // import Dimensions from "react-dimensions";
 /* eslint-disable */ import {
@@ -19,10 +20,11 @@ import { compose } from "redux"; //tnr: this can be removed once https://github.
 import {
   Hotkey,
   Hotkeys,
-  HotkeysTarget
+  HotkeysTarget,
+  Icon
   // Button
-  // Tab2,
-  // Tabs2
+  // Tab,
+  // Tabs
 } from "@blueprintjs/core";
 
 import {
@@ -137,15 +139,14 @@ export class Editor extends React.Component {
     // const {selectionLayerUpdate}
     console.warn("handleReverseComplementSelection");
   };
-  handleRotateToCaretPosition = () => {
-    console.warn("handleRotateToCaretPosition");
-  };
+
   handleNewPrimer = () => {
     const {
       selectionLayer,
       caretPosition,
       showAddOrEditPrimerDialog,
       readOnly
+      // sequenceLength
     } = this.props;
     const rangeToUse =
       selectionLayer.start > -1
@@ -268,7 +269,53 @@ export class Editor extends React.Component {
     panelsShownUpdate(newPanelsShown);
   };
 
+  handleInverse(contex) {
+    const {
+      sequenceLength,
+      selectionLayer,
+      caretPosition,
+      selectionLayerUpdate,
+      caretPositionUpdate
+    } = contex.props;
+    if (sequenceLength <= 0) {
+      return false;
+    }
+    if (selectionLayer.start > -1) {
+      if (getRangeLength(selectionLayer) === sequenceLength) {
+        caretPositionUpdate(selectionLayer.start);
+      } else {
+        selectionLayerUpdate(invertRange(selectionLayer));
+      }
+    } else {
+      if (caretPosition > -1) {
+        selectionLayerUpdate(
+          normalizeRange(
+            {
+              start: caretPosition,
+              end: caretPosition - 1
+            },
+            sequenceLength
+          )
+        );
+      } else {
+        selectionLayerUpdate({
+          start: 0,
+          end: sequenceLength - 1
+        });
+      }
+    }
+  }
+
   renderHotkeys() {
+    const {
+      handleSave,
+      toggleReadOnlyMode,
+      undo,
+      redo,
+      toggleFindTool,
+      selectAll,
+      handleRotateToCaretPosition
+    } = this.props;
     return (
       <Hotkeys>
         <Hotkey
@@ -277,7 +324,7 @@ export class Editor extends React.Component {
           global={true}
           combo={"cmd+s"}
           label="Save"
-          onKeyDown={this.props.handleSave}
+          onKeyDown={handleSave}
         />
         <Hotkey
           preventDefault
@@ -290,10 +337,18 @@ export class Editor extends React.Component {
         <Hotkey
           preventDefault
           stopPropagation
+          label="Invert Selection"
+          global
+          combo="cmd+i"
+          onKeyDown={() => this.handleInverse(this)}
+        />
+        <Hotkey
+          preventDefault
+          stopPropagation
           label="Toggle Edit Mode"
           global
           combo="cmd+e"
-          onKeyDown={this.props.toggleReadOnlyMode}
+          onKeyDown={toggleReadOnlyMode}
         />
         {/* TNR: these are here just to be added to the blueprint generated hotkey dialog but their actual handlers live elsewhere */}
         <Hotkey
@@ -318,7 +373,7 @@ export class Editor extends React.Component {
           combo="cmd+p"
         />
         <Hotkey
-          label="Delete Sequence"
+          label="Delete (edit mode only)"
           preventDefault
           stopPropagation
           global
@@ -331,7 +386,7 @@ export class Editor extends React.Component {
           label="Undo"
           global
           combo="cmd+z"
-          onKeyDown={this.props.undo}
+          onKeyDown={undo}
         />
         <Hotkey
           preventDefault
@@ -339,7 +394,7 @@ export class Editor extends React.Component {
           label="Redo"
           global
           combo="cmd+shift+z"
-          onKeyDown={this.props.redo}
+          onKeyDown={redo}
         />
         <Hotkey
           preventDefault
@@ -347,7 +402,7 @@ export class Editor extends React.Component {
           label="Find"
           global
           combo="cmd+f"
-          onKeyDown={this.props.toggleFindTool}
+          onKeyDown={toggleFindTool}
         />
         <Hotkey
           preventDefault
@@ -355,7 +410,7 @@ export class Editor extends React.Component {
           label="Select All"
           global
           combo="cmd+a"
-          onKeyDown={this.props.selectAll}
+          onKeyDown={selectAll}
         />
         <Hotkey
           preventDefault
@@ -371,7 +426,7 @@ export class Editor extends React.Component {
           label="Rotate To Caret Position"
           global
           combo="cmd+b"
-          onKeyDown={this.handleRotateToCaretPosition}
+          onKeyDown={handleRotateToCaretPosition}
         />
         <Hotkey
           preventDefault
@@ -407,16 +462,15 @@ export class Editor extends React.Component {
   };
 
   render() {
-    console.log("this.props render:", this.props);
     const {
       doNotUseAbsolutePosition = false,
 
       ToolBarProps = {},
 
       StatusBarProps = {},
-      FindBarProps = {},
+      // FindBarProps = {},
       editorName,
-      findTool = {},
+      // findTool = {},
       // containerWidth,
       height = 500,
       showMenuBar,
@@ -426,6 +480,7 @@ export class Editor extends React.Component {
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel
+
       // ...rest
     } = this.props;
 
@@ -544,13 +599,12 @@ export class Editor extends React.Component {
           className="left-panel ve-panel"
         >
           {isFullScreen ? (
-            <span
+            <Icon
               onClick={() => {
                 togglePanelFullScreen(activePanelId);
               }}
-              className={
-                "ve-clickable ve-close-panel-button pt-icon-standard pt-icon-minimize"
-              }
+              icon="minimize"
+              className={"ve-clickable ve-close-panel-button"}
               style={{
                 zIndex: 15001,
                 position: "fixed",
@@ -559,10 +613,9 @@ export class Editor extends React.Component {
               }}
             />
           ) : (
-            <span
-              className={
-                "ve-clickable-black ve-close-panel-button pt-icon-standard pt-icon-menu"
-              }
+            <Icon
+              icon="menu"
+              className={"ve-clickable-black ve-close-panel-button"}
               onClick={showTabRightClickContextMenu}
               style={{
                 background: "white",
@@ -576,7 +629,7 @@ export class Editor extends React.Component {
           )}
 
           {[
-            // <Tabs2
+            // <Tabs
             //   key={activePanelId}
             //       // style={{ paddingLeft:15 }}
             //       renderActiveTabPanelOnly
@@ -653,14 +706,13 @@ export class Editor extends React.Component {
                               }} style={{paddingRight: 3, paddingBottom: 3, fontSize: 10}} className={"pt-icon-menu"}></span> */}
                                 {name || id}
                                 {canClose && (
-                                  <span
+                                  <Icon
+                                    icon="small-cross"
                                     onClick={() => {
                                       closePanel(id);
                                     }}
                                     style={{ paddingLeft: 5 }}
-                                    className={
-                                      "ve-clickable pt-icon-standard pt-icon-small-cross"
-                                    }
+                                    className="ve-clickable"
                                   />
                                 )}
                               </div>
@@ -670,7 +722,7 @@ export class Editor extends React.Component {
                         )}
                       </Draggable>
                     );
-                    //   return <Tab2
+                    //   return <Tab
                     //   key={id}
                     //   title={startCase(name || id)}
                     //   id={id}

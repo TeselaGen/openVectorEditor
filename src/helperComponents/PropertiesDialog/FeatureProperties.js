@@ -114,7 +114,7 @@ export default withSelectedEntities("featureProperties")(FeatureProperties);
 const ColorPickerPopover = ({ readOnly, onColorSelect, children }) => {
   return (
     <Popover
-      isDisabled={readOnly}
+      disabled={readOnly}
       content={<ColorPicker onColorSelect={onColorSelect} />}
     >
       {children}

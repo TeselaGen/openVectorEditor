@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, IconClasses, Button, Intent } from "@blueprintjs/core";
+import { Icon, Button, Intent } from "@blueprintjs/core";
 import {
   FileUploadField,
   TextareaField,
@@ -15,7 +15,7 @@ export default {
   updateKeys: ["alignmentTool", "toggleFindTool"],
   itemProps: ({ alignmentTool = {}, toggleDropdown }) => {
     return {
-      Icon: <Icon iconName={IconClasses.ALIGN_LEFT} />,
+      Icon: <Icon icon={"align-left"} />,
       // toggled: alignmentTool.isOpen,
       renderIconAbove: alignmentTool.isOpen,
       // onIconClick: toggleFindTool,
@@ -119,7 +119,7 @@ class AlignmentTool extends React.Component {
       return results.forEach(result => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
-          console.log(result.parsedSequence)
+          console.log(result.parsedSequence);
         } else {
           return window.toastr.warning("Error parsing file: ", file.name);
         }

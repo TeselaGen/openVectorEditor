@@ -1,13 +1,13 @@
 import { jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 import React from "react";
-import { Icon, IconClasses, Button } from "@blueprintjs/core";
+import { Icon, Button } from "@blueprintjs/core";
 
 export default {
   updateKeys: ["toggleDropdown"],
   itemProps: ({ toggleDropdown }) => {
     return {
-      Icon: <Icon iconName={IconClasses.IMPORT} />,
+      Icon: <Icon icon="import" />,
       onIconClick: toggleDropdown,
       Dropdown,
       noDropdownIcon: true,

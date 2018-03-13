@@ -24,7 +24,9 @@ export default withHover(function({
       onContextMenu={onContextMenu}
       onClick={onClick}
     >
-      <title>{getAnnotationNameAndStartStopString(annotation)}</title>
+      <title>
+        {getAnnotationNameAndStartStopString(annotation, { isPart: true })}
+      </title>
       <PositionAnnotationOnCircle
         sAngle={startAngle}
         eAngle={endAngle}

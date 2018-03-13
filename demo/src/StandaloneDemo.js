@@ -112,6 +112,7 @@ export default class StandaloneDemo extends React.Component {
           features: false,
           orfTranslations: false,
         },
+        selectionLayer: {start: 500, end: 550},
         panelsShown: [
           [
             {

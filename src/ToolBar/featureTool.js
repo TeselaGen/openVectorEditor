@@ -1,4 +1,4 @@
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 import { Checkbox, Button } from "@blueprintjs/core";
 import React from "react";
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ export default {
     isOpen
   }) => {
     return {
-      Icon: <Icon iconName={IconClasses.BOOKMARK} />,
+      Icon: <Icon icon="bookmark" />,
       onIconClick: function() {
         annotationVisibilityToggle("features");
       },

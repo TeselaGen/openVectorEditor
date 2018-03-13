@@ -36,8 +36,8 @@ function Features(props) {
     const { gapsBefore, gapsInside } = getGaps(annotationRange);
     let annotation = annotationRange.annotation;
     let annotationColor =
-      annotation.color ||
       (annotation.type && featureColors[annotation.type]) ||
+      annotation.color ||
       "#BBBBBB";
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,

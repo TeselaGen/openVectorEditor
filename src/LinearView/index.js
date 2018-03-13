@@ -59,6 +59,7 @@ export class LinearView extends React.Component {
       nearestCaretPos = 0;
     }
     const callbackVals = {
+      event,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
       caretGrabbed: event.target.className === "cursor",
@@ -84,6 +85,7 @@ export class LinearView extends React.Component {
       editorClicked = noop,
       editorDragStopped = noop,
       width = 400,
+      backgroundRightClicked = noop,
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
@@ -132,6 +134,13 @@ export class LinearView extends React.Component {
               width,
               marginLeft: marginWidth / 2
               // marginRight: marginWidth/2
+            }}
+            onContextMenu={event => {
+              this.getNearestCursorPositionToMouseEvent(
+                rowData,
+                event,
+                backgroundRightClicked
+              );
             }}
             onClick={event => {
               this.getNearestCursorPositionToMouseEvent(

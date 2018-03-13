@@ -6,7 +6,7 @@ export default {
   updateKeys: ["isOpen", "toggleDropdown"],
   itemProps: ({ isOpen, toggleDropdown }) => {
     return {
-      Icon: <Icon iconName={"eye-open"} />,
+      Icon: <Icon icon="eye-open" />,
       onIconClick: toggleDropdown,
       Dropdown: VisibilityOptions,
       noDropdownIcon: true,

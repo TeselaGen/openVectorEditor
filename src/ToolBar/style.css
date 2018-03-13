@@ -72,8 +72,8 @@
 .veToolbar .veToolbarItemOuter .veToolbarIcon img,
 .veToolbar .veToolbarItemOuter .veToolbarIcon svg,
 .veToolbar .veToolbarItemOuter .veToolbarIcon object {
-  height: 24px;
-  width: 24px;
+  /* height: 24px;
+  width: 24px; */
   cursor: pointer;
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon img svg,
