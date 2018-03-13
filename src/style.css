@@ -43,3 +43,7 @@
 .veCutsiteLabel:hover {
   font-weight: bold;
 }
+
+/* .disable-hover .veRowItem {
+  pointer-events: none !important;
+} */
