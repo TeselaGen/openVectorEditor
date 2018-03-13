@@ -21,7 +21,8 @@ function Features(props) {
     featureClicked,
     featureRightClicked,
     editorName,
-    getGaps
+    getGaps,
+    marginTop = 10
   } = props;
 
   if (annotationRanges.length === 0) {
@@ -83,6 +84,7 @@ function Features(props) {
     (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
   return (
     <AnnotationContainerHolder
+      marginTop={marginTop}
       className={"veRowViewFeatureContainer"}
       containerHeight={containerHeight}
     >

@@ -246,15 +246,15 @@ export class RowItem extends React.Component {
             regions={selectionLayers}
           />
 
-          {showFeatures &&
-            Object.keys(features).length > 0 && (
-              <Features
-                showFeatureLabels={showFeatureLabels}
-                featureClicked={featureClicked}
-                featureRightClicked={featureRightClicked}
-                annotationRanges={features}
+          {showParts &&
+            Object.keys(parts).length > 0 && (
+              <Parts
+                showPartLabels={showPartLabels}
+                partClicked={partClicked}
+                partRightClicked={partRightClicked}
+                annotationRanges={parts}
                 {...annotationCommonProps}
-                annotationHeight={featureHeight}
+                annotationHeight={partHeight}
               />
             )}
 
@@ -411,15 +411,29 @@ export class RowItem extends React.Component {
               })}
           </div>
 
-          {showParts &&
-            Object.keys(parts).length > 0 && (
-              <Parts
-                showPartLabels={showPartLabels}
-                partClicked={partClicked}
-                partRightClicked={partRightClicked}
-                annotationRanges={parts}
+          {showYellowAxis && (
+            <svg width="100%" height="6px">
+              <rect
+                x="0"
+                y="0"
+                width="100%"
+                height="6px"
+                fill="#FFFFB3"
+                stroke="grey"
+                strokeWidth="1"
+              />
+            </svg>
+          )}
+
+          {showFeatures &&
+            Object.keys(features).length > 0 && (
+              <Features
+                showFeatureLabels={showFeatureLabels}
+                featureClicked={featureClicked}
+                featureRightClicked={featureRightClicked}
+                annotationRanges={features}
                 {...annotationCommonProps}
-                annotationHeight={partHeight}
+                annotationHeight={featureHeight}
                 marginTop={10}
               />
             )}
@@ -526,19 +540,6 @@ export class RowItem extends React.Component {
             {...annotationCommonProps}
           />
 
-          {showYellowAxis && (
-            <svg width="100%" height="6px">
-              <rect
-                x="0"
-                y="0"
-                width="100%"
-                height="6px"
-                fill="#FFFFB3"
-                stroke="grey"
-                strokeWidth="1"
-              />
-            </svg>
-          )}
           {showAxis && (
             <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
           )}
