@@ -8,6 +8,16 @@ import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class CutsiteProperties extends React.Component {
+  onRowSelect = ([record]) => {
+    const { dispatch, editorName } = this.props;
+    dispatch({
+      type: "CARET_POSITION_UPDATE",
+      payload: record.topSnipPosition,
+      meta: {
+        editorName
+      }
+    });
+  };
   SubComponent = row => {
     // const { selectionLayerUpdate } = this.props;
     const { name, cutsiteGroup } = row.original;
@@ -19,6 +29,7 @@ class CutsiteProperties extends React.Component {
         bottomSnipPosition
       }) => {
         return {
+          topSnipPosition,
           position: topSnipBeforeBottom
             ? topSnipPosition + " - " + bottomSnipPosition
             : bottomSnipPosition + " - " + topSnipPosition,
@@ -49,12 +60,9 @@ class CutsiteProperties extends React.Component {
             <DataTable
               //defaults={{order: ["numberOfCuts"]}}
               maxHeight={300}
+              onRowSelect={this.onRowSelect}
               formName={"cutLocations"}
               isSingleSelect
-              // onRowSelect={row => {
-              //   // console.log("row:", row);
-              //   // console.log("selectionLayerUpdate:", selectionLayerUpdate);
-              // }}
               compact
               noRouter
               noHeader
@@ -62,18 +70,27 @@ class CutsiteProperties extends React.Component {
               isInfinite
               withSearch={false}
               withFilter={false}
-              schema={{
-                fields: [
-                  { path: "position", type: "string" },
-                  { path: "strand", type: "number" }
-                ]
-              }}
+              schema={this.subComponentSchemna}
               entities={entities}
             />
           </div>
         </div>
       </div>
     );
+  };
+
+  subComponentSchemna = {
+    fields: [
+      { path: "position", type: "string" },
+      { path: "strand", type: "number" }
+    ]
+  };
+
+  schema = {
+    fields: [
+      { path: "name", type: "string" },
+      { path: "numberOfCuts", type: "number" }
+    ]
   };
 
   render() {
@@ -110,12 +127,7 @@ class CutsiteProperties extends React.Component {
           noRouter
           SubComponent={this.SubComponent}
           isInfinite
-          schema={{
-            fields: [
-              { path: "name", type: "string" },
-              { path: "numberOfCuts", type: "number" }
-            ]
-          }}
+          schema={this.schema}
           entities={cutsitesToUse}
         />
       </div>
