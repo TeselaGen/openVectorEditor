@@ -8,9 +8,11 @@ class Chromatogram extends React.Component {
   componentWillReceiveProps(newProps) {
     if (
       newProps.chromatogramData !== this.props.chromatogramData ||
+      newProps.charWidth !== this.props.charWidth ||
       newProps.row.start !== this.props.row.start ||
-      newProps.row.end !== this.props.row.end
+      newProps.row.end !== this.props.row.end 
     ) {
+      console.log('newProps.charWidth:',newProps.charWidth)
       this.updatePeakDrawing();
     }
   }
@@ -194,18 +196,17 @@ function drawTrace({
     for (let count = 0; count < traceData.qualNums.length; count++) {
       // ctx.lineWidth = "1";
       ctx.rect(
+        // count * charWidth,
         (count + getGaps(count).gapsBefore) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,
         charWidth,
         traceData.qualNums[count] * scalePctQual
       );
-      // ctx.strokeStyle = 'rgba(192, 192, 192, 0.1)';
-      ctx.strokeStyle = "rgba(230, 230, 250, 0.1)";
-      ctx.stroke();
-      // ctx.fillStyle = 'rgba(220, 220, 220, 0.05)';
-      ctx.fillStyle = "rgba(230, 230, 250, 0.05)";
-      ctx.fill();
     }
+    ctx.strokeStyle = "#a9a9e6";
+    ctx.fillStyle = "#a9a9e6";
+    // ctx.stroke();
+    ctx.fill();
   };
 
   this.paintCanvas = function() {

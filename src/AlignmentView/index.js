@@ -22,15 +22,18 @@ export class AlignmentView extends React.Component {
 
   getMinCharWidth = () => {
     const { dimensions: { width } } = this.props;
-    return Math.min(
+    
+    const toReturn = Math.min(
       Math.max(width - nameDivWidth - 5, 1) / this.getSequenceLength(),
       10
     );
+    if (isNaN(toReturn)) return 10
+    return toReturn
   };
 
   getSequenceLength = () => {
     const { alignmentTracks: [template] = [] } = this.props;
-    return template.alignmentData.sequence.length;
+    return template.alignmentData.sequence.length || 1;
   };
 
   getNumBpsShownInLinearView = () => {
@@ -70,7 +73,7 @@ export class AlignmentView extends React.Component {
     }
     // debugger
     let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
-    alignmentTracks.forEach(track => {
+    const returnEarlyMessage = alignmentTracks.some(track => {
       if (track.alignmentData.sequence.length !== alignmentTrackLength) {
         console.error("incorrect length", this.props);
         return "incorrect length";
@@ -85,15 +88,23 @@ export class AlignmentView extends React.Component {
       }
       if (
         track.sequenceData.sequence.length !==
-        track.alignmentData.sequence.replace("-", "").length
+        track.alignmentData.sequence.replace(/\-/g,"").length
       ) {
         console.error(
           "sequence data length does not match alignment data w/o gaps",
-          this.props
+          
         );
+        console.error('track.sequenceData.sequence:',track.sequenceData.sequence)
+        console.error('track.sequenceData.sequence.length:',track.sequenceData.sequence.length)
+        console.error('track.alignmentData.sequence:',track.alignmentData.sequence)
+        console.error('track.alignmentData.sequence.replace(/\-/g,""):',track.alignmentData.sequence.replace(/\-/g,""))
+        console.error('track.alignmentData.sequence.replace(/\-/g,"").length:',track.alignmentData.sequence.replace(/\-/g,"").length)
         return "sequence data length does not match alignment data w/o gaps";
       }
     });
+    if (returnEarlyMessage) {
+      return <div>Error: Data is corrupted!</div>
+    }
 
     return (
       <div
@@ -248,7 +259,7 @@ export class AlignmentView extends React.Component {
                 this.setState({ charWidthInLinearView: val });
               }}
               className={"alignment-zoom-slider"}
-              renderLabel={false}
+              labelRenderer={false}
               stepSize={0.01}
               initialValue={10}
               max={14}
@@ -349,6 +360,7 @@ class UncontrolledSlider extends React.Component {
 
     return (
       <Slider
+      
         {...{ ...rest, value }}
         onChange={value => {
           this.setState({ value });
