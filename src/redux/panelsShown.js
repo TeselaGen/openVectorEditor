@@ -166,16 +166,23 @@ export default createReducer(
   },
   [
     [
-      {
-        id: "alignmentRun1",
-        type: "alignment",
-        name: "Alignment",
-        active: true
-        // fullScreen: true
-      },
+      // {
+      //   id: "alignmentRun1",
+      //   type: "alignment",
+      //   name: "Jbei Alignment p1243124",
+      //   active: true
+      //   // fullScreen: true
+      // },
+      // {
+      //   id: "jbeiAlignment1",
+      //   type: "alignment",
+      //   name: "Jbei Alignment p1243124",
+      //   active: true
+      //   // fullScreen: true
+      // },
       {
         id: "sequence",
-        name: "Sequence Map",
+        name: "Sequence Map"
         // active: true
         // fullScreen: true
       }

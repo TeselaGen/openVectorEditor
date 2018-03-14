@@ -6,7 +6,7 @@ import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
 import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
 
 const defaultAlignmentAnnotationVisibility = {
-  features: false,
+  features: true,
   translations: false,
   parts: false,
   orfs: false,
@@ -28,7 +28,7 @@ const defaultAlignmentAnnotationLabelVisibility = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const upsertAlignmentRun = createAction("upsertAlignmentRun");
+export const upsertAlignmentRun = createAction("UPSERT_ALIGNMENT_RUN");
 // export const alignmentAnnotationVisibilityToggle = createAction("alignmentAnnotationVisibilityToggle");
 //eg: annotationSupportToggle('features')
 
