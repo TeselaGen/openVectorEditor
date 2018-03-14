@@ -1,5 +1,5 @@
 import React from "react";
-import uuidv4 from "uuidv4";
+// import uuidv4 from "uuidv4";
 
 class Chromatogram extends React.Component {
   componentDidMount() {
@@ -45,8 +45,7 @@ class Chromatogram extends React.Component {
     return (
       <canvas
         ref={n => {
-          console.log('yuppp')
-          console.log('n:',n)
+          // console.log('n:',n)
           if (n) this.canvasRef = n;
         }}
         height="100"
@@ -57,7 +56,14 @@ class Chromatogram extends React.Component {
 
 export default Chromatogram;
 
-function drawTrace({ traceData, charWidth = 12, startBp, peakCanvas, endBp, getGaps }) {
+function drawTrace({
+  traceData,
+  charWidth = 12,
+  startBp,
+  peakCanvas,
+  endBp,
+  getGaps
+}) {
   const colors = {
     adenine: "green",
     thymine: "red",

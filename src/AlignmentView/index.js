@@ -60,6 +60,41 @@ export class AlignmentView extends React.Component {
       alignmentVisibilityToolOptions
     } = this.props;
 
+    if (
+      !alignmentTracks ||
+      !alignmentTracks[0] ||
+      !alignmentTracks[0].alignmentData
+    ) {
+      console.error("corrupted data!", this.props);
+      return "corrupted data!";
+    }
+    // debugger
+    let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
+    alignmentTracks.forEach(track => {
+      if (track.alignmentData.sequence.length !== alignmentTrackLength) {
+        console.error("incorrect length", this.props);
+        return "incorrect length";
+      }
+      if (
+        track.chromatogramData &&
+        track.sequenceData.sequence.length !==
+          track.chromatogramData.baseCalls.length
+      ) {
+        console.error("incorrect chromatogram length", this.props);
+        return "incorrect chromatogram length";
+      }
+      if (
+        track.sequenceData.sequence.length !==
+        track.alignmentData.sequence.replace("-", "").length
+      ) {
+        console.error(
+          "sequence data length does not match alignment data w/o gaps",
+          this.props
+        );
+        return "sequence data length does not match alignment data w/o gaps";
+      }
+    });
+
     return (
       <div
         style={{
@@ -108,7 +143,12 @@ export class AlignmentView extends React.Component {
               onScroll={this.handleScroll}
             >
               {alignmentTracks.map((track, i) => {
-                const { sequenceData, selectionLayer, alignmentData } = track;
+                const {
+                  sequenceData,
+                  selectionLayer,
+                  alignmentData,
+                  chromatogramData
+                } = track;
                 return (
                   <div
                     ref={n => {
@@ -142,7 +182,7 @@ export class AlignmentView extends React.Component {
                           0
                       }}
                     />
-                    <RowItem
+                    {/* <RowItem
                       {...{
                         chromatogramData: ab1ParsedGFPuv54,
                         row: {
@@ -153,18 +193,21 @@ export class AlignmentView extends React.Component {
                           start: 0,
                           end: ab1ParsedGFPuv54.qualNums.length,
                           sequence:
-                            "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCGGCTTCAGCCGGTTTGCCGGCTGAAAGCGCTATTTCTTCCAGAATTGCCATGATTTTTTCCCCACGGGAGGCGTCACTGGCTCCCGTGTTGTCGGCAGCTTTGATTCGATAAGCAGCATCGCCTGTTTCAGGCTGTCTATGTGTGACTGTTGAGCTGTAACAAGTTGTCTCAGGTGTTCAATTTCATGTTCTAGTTGCTTTGTTTTACTGGTTTCACCTGTTCTATTAGGTGTTACATGCTGTTCATCTGTTACATTGTCGATCTGTTCATGGTGAACAGCTTTGAATGCACCAAAAACTCGTAAAAGCTCTGATGTATCTATCTTTTTTACACCGTTTTCATCTGTGCATATGGACAGTTTTCCCTTTGATATGTAACGGTGAACAGTTGTTCTACTTTTGTTTGTTAGTCTTGATGCTTCACTGATAGATACAAGAGCCATAAGAACCTCAGATCCTTCCGTATTTAGCCAGTATGTTCTCTAGTGTGGTTCGTTGTTTTGCCGTGGAGCAATGAGAACGAGCCATTGAGATCATACTTACCTTTGCATGTCACTCAAAATTTTGCCTCAAAACTGGGTGAGCTGAATTTTTGCAGTAGGCATCGTGTAAGTTTTTCTAGTCGGAATGATGATAGATCGTAAGTTATGGATGGTTGGCATTTGTCCAGTTCATGTTATCTGGGGTGTTCGTCAGTCGGTCAGCAGATCCACATAGTGGTTCATCTAGATCACAC"
+                          "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------cagaaagcgtcacaaaagatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacag-tttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatccggcttcagccggtttgccggctgaaagcgctatttcttccagaattgccatgattttttccccacgggaggcgtcactggctcccgtgttgtcggcagctttgattcgataagcagcatcgcctgtttcaggctgtctatgtgtgactgttgagctgtaacaagttgtctcaggtgttcaatttcatgttctagttgctttgttttactggtttcacctgttctattaggtgttacatgctgttcatctgttacattgtcgatctgttcatggtgaacagctttgaatgcaccaaaaactcgtaaaagctctgatgtatctatcttttttacaccgttttcatctgtgcatatggacagttttccctttgatatgtaacggtgaacagttgttctacttttgtttgttagtcttgatgcttcactgatagatacaagagccataagaacctcagatccttccgtatttagccagtatgttctctagtgtggttcgttgttttgccgtggagcaatgagaacgagccattgagatcatacttacctttgcatgtcactcaaaattttgcctcaaaactgggtgagctgaatttttgcagtaggcatcgtgtaagtttttctagtcggaatgatgatagatcgtaagttatggatggttggcatttgtccagttcatgttatctggggtgttcgtcagtcggtcagcagatccacatagtggttcatctagatcacac"
                         }
                       }}
-                    />
+                    /> */}
                     <LinearView
                       {...{
-                        linearViewAnnotationVisibilityOverrides: alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
-                        linearViewAnnotationLabelVisibilityOverrides: alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
+                        linearViewAnnotationVisibilityOverrides:
+                          alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
+                        linearViewAnnotationLabelVisibilityOverrides:
+                          alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
                         marginWith: 0,
                         hideName: true,
                         sequenceData,
                         alignmentData,
+                        chromatogramData,
                         // charWidth: charWidthInLinearView,
                         height: "100%",
                         selectionLayer,
@@ -233,7 +276,7 @@ export class AlignmentView extends React.Component {
 export default compose(
   connect((state, ownProps) => {
     const { id: alignmentId, alignments = {}, upsertAlignmentRun } = ownProps;
-    const alignment = {...alignments[alignmentId], id: alignmentId};
+    const alignment = { ...alignments[alignmentId], id: alignmentId };
     const {
       alignmentTracks,
       loading,

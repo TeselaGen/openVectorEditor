@@ -164,7 +164,7 @@ export class LinearView extends React.Component {
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   yellowAxis: true,
-                  translations: false,
+                  translations: true,
                   ...linearViewAnnotationVisibilityOverrides
                 },
                 ...RowItemProps

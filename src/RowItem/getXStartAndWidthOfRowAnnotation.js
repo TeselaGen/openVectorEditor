@@ -2,8 +2,8 @@ export default function getXStartAndWidthOfRowAnnotation(
   range,
   bpsPerRow,
   charWidth,
-  gapsBefore=0,
-  gapsInside=0
+  gapsBefore = 0,
+  gapsInside = 0
 ) {
   // // console.log('range, bpsPerRow, charWidth, gapsBefore, gapsInside:',range, bpsPerRow, charWidth, gapsBefore, gapsInside)
   // 24 bps long:
@@ -16,5 +16,5 @@ export default function getXStartAndWidthOfRowAnnotation(
     xStart: startOffset * charWidth,
     width: (range.end + 1 - range.start + gapsInside) * charWidth
   };
-  return toReturn
+  return toReturn;
 }

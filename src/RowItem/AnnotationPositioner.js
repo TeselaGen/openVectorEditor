@@ -1,6 +1,6 @@
 import React from "react";
 
-let AnnotationPositioner = function(props) {  
+let AnnotationPositioner = function(props) {
   return (
     <svg
       transform={props.transform || null}
