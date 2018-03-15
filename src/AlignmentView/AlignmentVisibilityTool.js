@@ -1,12 +1,17 @@
-import { Button, Checkbox, Popover } from "@blueprintjs/core";
+import { Button, Checkbox, Popover, Tooltip } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
 
 export default function AlignmentVisibilityTool(props) {
   return (
-    <Popover
-      content={<VisibilityOptions {...props} />}
-      target={<Button className={"pt-minimal"} icon={"eye-open"} />}
+    <Tooltip
+      content={"Visibility Options"}
+      target={
+        <Popover
+          content={<VisibilityOptions {...props} />}
+          target={<Button className={"pt-minimal"} icon={"eye-open"} />}
+        />
+      }
     />
   );
 }
