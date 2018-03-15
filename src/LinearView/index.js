@@ -1,5 +1,4 @@
 import draggableClassnames from "../constants/draggableClassnames";
-// import some from "lodash/some";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -8,8 +7,6 @@ import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 
 let defaultMarginWidth = 10;
-// import Combokeys from "combokeys";
-// var combokeys;
 
 function noop() {}
 
@@ -44,18 +41,6 @@ export class LinearView extends React.Component {
     }
 
     if (rowNotFound) {
-      // var { top, bottom } = rowDomNode.getBoundingClientRect();
-      // var numbers = [top, bottom];
-      // var target = event.clientY;
-      // var topOrBottom = numbers
-      //   .map(function(value, index) {
-      //     return [Math.abs(value - target), index];
-      //   })
-      //   .sort()
-      //   .map(function(value) {
-      //     return numbers[value[1]];
-      //   })[0];
-
       nearestCaretPos = 0;
     }
     const callbackVals = {
@@ -78,7 +63,6 @@ export class LinearView extends React.Component {
       //currently found in props
       sequenceData = {},
       alignmentData,
-      // bpToJumpTo=0,
       hideName = false,
       editorDragged = noop,
       editorDragStarted = noop,
@@ -94,7 +78,6 @@ export class LinearView extends React.Component {
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = innerWidth / sequenceData.sequence.length;
-    // var containerWidthMinusMargin = width - marginWidth
     let sequenceLength = sequenceData.sequence.length;
     const bpsPerRow = alignmentData
       ? alignmentData.sequence.length
@@ -131,7 +114,6 @@ export class LinearView extends React.Component {
             style={{
               width,
               marginLeft: marginWidth / 2
-              // marginRight: marginWidth/2
             }}
             onContextMenu={event => {
               this.getNearestCursorPositionToMouseEvent(
@@ -178,11 +160,7 @@ export class LinearView extends React.Component {
 
 function SequenceName({ sequenceName, sequenceLength }) {
   return (
-    <div
-      key="circViewSvgCenterText"
-      //className={"veCircularViewMiddleOfVectorText"}
-      style={{ textAlign: "center" }}
-    >
+    <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
       <span>{sequenceName} </span>
       <br />
       <span>{sequenceLength + " bps"}</span>

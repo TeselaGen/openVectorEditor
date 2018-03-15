@@ -6,7 +6,7 @@ export default function AlignmentVisibilityTool(props) {
   return (
     <Popover
       content={<VisibilityOptions {...props} />}
-      target={<Button className={'pt-minimal'} icon={"eye-open"} />}
+      target={<Button className={"pt-minimal"} icon={"eye-open"} />}
     />
   );
 }
@@ -19,7 +19,10 @@ function VisibilityOptions({
   alignmentAnnotationLabelVisibilityToggle
 }) {
   return (
-    <div>
+    <div
+      style={{ padding: 10 }}
+      className={"alignmentAnnotationVisibilityToolInner"}
+    >
       <h6>View:</h6>
       {map(alignmentAnnotationVisibility, (visible, annotationName) => {
         if (

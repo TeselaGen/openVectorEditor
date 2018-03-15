@@ -1,8 +1,6 @@
 import React from "react";
-// import { getRangeLength } from "ve-range-utils/lib";
 import Draggable from "react-draggable";
 import Axis from "../RowItem/Axis";
-// import SelectionLayer from "../RowItem/SelectionLayer";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 
 const laneHeight = 20;
@@ -74,7 +72,6 @@ export default class Minimap extends React.Component {
           bounds={"parent"}
           zIndex={105}
           position={{ x: scrollHandle.x, y: 0 }}
-          // start={{ x: scrollHandle.x, y: 0 }}
           axis={"x"}
           onDrag={this.onDrag}
         >
@@ -82,7 +79,6 @@ export default class Minimap extends React.Component {
             style={{
               height: "100%",
               border: "none",
-              // background: '#0099ff',
               opacity: ".3",
               top: "0px",
               position: "absolute",

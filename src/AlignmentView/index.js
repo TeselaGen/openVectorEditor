@@ -8,9 +8,6 @@ import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import "./style.css";
 
-import RowItem from "../RowItem";
-import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
-
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
 export class AlignmentView extends React.Component {
@@ -22,13 +19,13 @@ export class AlignmentView extends React.Component {
 
   getMinCharWidth = () => {
     const { dimensions: { width } } = this.props;
-    
+
     const toReturn = Math.min(
       Math.max(width - nameDivWidth - 5, 1) / this.getSequenceLength(),
       10
     );
-    if (isNaN(toReturn)) return 10
-    return toReturn
+    if (isNaN(toReturn)) return 10;
+    return toReturn;
   };
 
   getSequenceLength = () => {
@@ -88,22 +85,37 @@ export class AlignmentView extends React.Component {
       }
       if (
         track.sequenceData.sequence.length !==
-        track.alignmentData.sequence.replace(/\-/g,"").length
+        track.alignmentData.sequence.replace(/-/g, "").length
       ) {
         console.error(
-          "sequence data length does not match alignment data w/o gaps",
-          
+          "sequence data length does not match alignment data w/o gaps"
         );
-        console.error('track.sequenceData.sequence:',track.sequenceData.sequence)
-        console.error('track.sequenceData.sequence.length:',track.sequenceData.sequence.length)
-        console.error('track.alignmentData.sequence:',track.alignmentData.sequence)
-        console.error('track.alignmentData.sequence.replace(/\-/g,""):',track.alignmentData.sequence.replace(/\-/g,""))
-        console.error('track.alignmentData.sequence.replace(/\-/g,"").length:',track.alignmentData.sequence.replace(/\-/g,"").length)
+        console.error(
+          "track.sequenceData.sequence:",
+          track.sequenceData.sequence
+        );
+        console.error(
+          "track.sequenceData.sequence.length:",
+          track.sequenceData.sequence.length
+        );
+        console.error(
+          "track.alignmentData.sequence:",
+          track.alignmentData.sequence
+        );
+        console.error(
+          'track.alignmentData.sequence.replace(/-/g,""):',
+          track.alignmentData.sequence.replace(/-/g, "")
+        );
+        console.error(
+          'track.alignmentData.sequence.replace(/-/g,"").length:',
+          track.alignmentData.sequence.replace(/-/g, "").length
+        );
         return "sequence data length does not match alignment data w/o gaps";
       }
+      return false;
     });
     if (returnEarlyMessage) {
-      return <div>Error: Data is corrupted!</div>
+      return <div>Error: Data is corrupted!</div>;
     }
 
     return (
@@ -111,7 +123,8 @@ export class AlignmentView extends React.Component {
         style={{
           height,
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
+          justifyContent: "flex-end"
         }}
         className="alignmentView"
       >
@@ -129,8 +142,6 @@ export class AlignmentView extends React.Component {
               return (
                 <div
                   style={{
-                    // borderBottom: "1px solid black",
-                    // marginBottom: 5,
                     height: alignmentHeights[i] || 10
                   }}
                   key={i}
@@ -138,9 +149,6 @@ export class AlignmentView extends React.Component {
                   Name: {sequenceData.name || sequenceData.id}
                 </div>
               );
-              // return <div key={i}>
-              //   {seqData.sequence}
-              // </div>
             })}
           </div>
           <div className={"alignmentTrackDetails"} style={{ flex: 1 }}>
@@ -177,9 +185,6 @@ export class AlignmentView extends React.Component {
                     }}
                     style={{
                       position: "relative"
-                      // marginBottom: 5,
-                      // paddingTop: 10,
-                      // borderBottom: "1px solid black"
                     }}
                     key={i}
                   >
@@ -193,21 +198,6 @@ export class AlignmentView extends React.Component {
                           0
                       }}
                     />
-                    {/* <RowItem
-                      {...{
-                        chromatogramData: ab1ParsedGFPuv54,
-                        row: {
-                          rowNumber: 0,
-                          // start: 10,
-                          // end: 30,
-                          // sequence: "GCGAATTCGAGCTCGGTACC",
-                          start: 0,
-                          end: ab1ParsedGFPuv54.qualNums.length,
-                          sequence:
-                          "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------cagaaagcgtcacaaaagatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacag-tttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatccggcttcagccggtttgccggctgaaagcgctatttcttccagaattgccatgattttttccccacgggaggcgtcactggctcccgtgttgtcggcagctttgattcgataagcagcatcgcctgtttcaggctgtctatgtgtgactgttgagctgtaacaagttgtctcaggtgttcaatttcatgttctagttgctttgttttactggtttcacctgttctattaggtgttacatgctgttcatctgttacattgtcgatctgttcatggtgaacagctttgaatgcaccaaaaactcgtaaaagctctgatgtatctatcttttttacaccgttttcatctgtgcatatggacagttttccctttgatatgtaacggtgaacagttgttctacttttgtttgttagtcttgatgcttcactgatagatacaagagccataagaacctcagatccttccgtatttagccagtatgttctctagtgtggttcgttgttttgccgtggagcaatgagaacgagccattgagatcatacttacctttgcatgtcactcaaaattttgcctcaaaactgggtgagctgaatttttgcagtaggcatcgtgtaagtttttctagtcggaatgatgatagatcgtaagttatggatggttggcatttgtccagttcatgttatctggggtgttcgtcagtcggtcagcagatccacatagtggttcatctagatcacac"
-                        }
-                      }}
-                    /> */}
                     <LinearView
                       {...{
                         linearViewAnnotationVisibilityOverrides:
@@ -219,21 +209,15 @@ export class AlignmentView extends React.Component {
                         sequenceData,
                         alignmentData,
                         chromatogramData,
-                        // charWidth: charWidthInLinearView,
                         height: "100%",
                         selectionLayer,
                         width:
                           (alignmentData || sequenceData).sequence.length *
                           charWidthInLinearView
-                        // dimensions: {
-                        // }
                       }}
                     />
                   </div>
                 );
-                // return <div key={i}>
-                //   {seqData.sequence}
-                // </div>
               })}
             </div>
           </div>
@@ -360,7 +344,6 @@ class UncontrolledSlider extends React.Component {
 
     return (
       <Slider
-      
         {...{ ...rest, value }}
         onChange={value => {
           this.setState({ value });

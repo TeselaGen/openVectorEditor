@@ -1,46 +1,30 @@
-// import { Popover, Menu, MenuItem, Position } from "@blueprintjs/core";
 import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
-// import { AlignmentToolInner } from "../ToolBar/alignmentTool";
-import DrawChromatogram from "./DrawChromatogram";
+// import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
 
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
-import { compose } from "redux"; //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
-// import Dimensions from "react-dimensions";
-/* eslint-disable */ import {
+import { compose } from "redux";
+//tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
+/* eslint-disable */
+
+import {
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
 } from "tg-react-reflex";
 /* eslint-enable */
 
-import {
-  Hotkey,
-  Hotkeys,
-  HotkeysTarget,
-  Icon
-  // Button
-  // Tab,
-  // Tabs
-} from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget, Icon } from "@blueprintjs/core";
 
-import {
-  flatMap,
-  // startCase,
-  map,
-  filter
-} from "lodash";
+import { flatMap, map, filter } from "lodash";
 
-// import SplitPane from "react-split-pane";
-// import SplitPane from "../helperComponents/SplitPane/SplitPane";
 import ToolBar from "../ToolBar";
 import CircularView from "../CircularView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
-// import FindBar from "../FindBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
@@ -50,8 +34,6 @@ import "./style.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
-// import sequence from "../redux/sequenceData/sequence";
-// // import AlignmentTool from "../AlignmentTool/index";
 import bpContext from "../withEditorInteractions/bpContext";
 
 const panelMap = {
@@ -73,20 +55,6 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-
-// using some little inline style helpers to make the app look okay
-// const grid = 8;
-// const getItemStyle = (draggableStyle, isDragging) => ({
-//   // some basic styles to make the items look a bit nicer
-//   userSelect: "none",
-
-//   // change background colour if dragging
-//   background: isDragging ? "lightgreen" : "none",
-//   cursor: "move",
-//   flex: "0 0 auto",
-//   // styles we need to apply on draggables,
-//   ...draggableStyle
-// });
 
 const getListStyle = isDraggingOver => {
   return {
@@ -449,15 +417,7 @@ export class Editor extends React.Component {
   }
 
   getPanelsToShow = () => {
-    const {
-      // propertiesTool = {},
-      panelsShown
-    } = this.props;
-    // const panelsToShow = [];
-    // if (panelsShown.circular) panelsToShow.push("circular");
-    // if (panelsShown.sequence) panelsToShow.push("sequence");
-    // if (panelsShown.rail) panelsToShow.push("rail");
-    // if (propertiesTool.propertiesSideBarOpen) panelsToShow.push("properties");
+    const { panelsShown } = this.props;
     return map(panelsShown);
   };
 
@@ -629,13 +589,6 @@ export class Editor extends React.Component {
           )}
 
           {[
-            // <Tabs
-            //   key={activePanelId}
-            //       // style={{ paddingLeft:15 }}
-            //       renderActiveTabPanelOnly
-            //       selectedTabId={activePanelId}
-            //       onChange={setPanelAsActive}
-            //     >
             <Droppable
               key={"asdfasdf"}
               direction="horizontal"
@@ -647,22 +600,15 @@ export class Editor extends React.Component {
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver, tabDragging)}
                 >
-                  {/* {console.log('snapshot:',JSON.stringify(snapshot,null,4))}
-                  {console.log('provided:',JSON.stringify(provided,null,4))} */}
                   {panelGroup.map(({ id, name, canClose }, index) => {
                     return (
                       <Draggable key={id} index={index} draggableId={id}>
                         {(provided, snapshot) => (
                           <div
                             style={{
-                              // overflow: 'hidden',
-                              // textOverflow: 'ellipsis',
-                              // whiteSpace: 'nowrap',
                               wordWrap: "normal",
                               flex: "0 0 auto",
-                              // position: 'relative',
                               maxWidth: "100%",
-                              // verticalAlign: 'top',
                               fontSize: "14px"
                             }}
                             onClick={() => {
@@ -701,9 +647,6 @@ export class Editor extends React.Component {
                                   marginRight: 13
                                 }}
                               >
-                                {/* <span onClick={() => {
-                                closePanel(id)
-                              }} style={{paddingRight: 3, paddingBottom: 3, fontSize: 10}} className={"pt-icon-menu"}></span> */}
                                 {name || id}
                                 {canClose && (
                                   <Icon
@@ -722,11 +665,6 @@ export class Editor extends React.Component {
                         )}
                       </Draggable>
                     );
-                    //   return <Tab
-                    //   key={id}
-                    //   title={startCase(name || id)}
-                    //   id={id}
-                    // />
                   })}
                   {provided.placeholder}
                 </div>
@@ -843,8 +781,6 @@ export class Editor extends React.Component {
                 {panels}
               </ReflexContainer>
             </DragDropContext>
-
-            {/* {findTool.isOpen && <FindBar {...sharedProps} {...FindBarProps} />} */}
           </div>
 
           <StatusBar {...sharedProps} {...StatusBarProps} />
@@ -857,4 +793,3 @@ export class Editor extends React.Component {
 HotkeysTarget(Editor);
 
 export default compose(withEditorProps)(Editor);
-// export default compose(withEditorProps, reactDimensions())(Editor);
