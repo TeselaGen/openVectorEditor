@@ -1,4 +1,4 @@
-import uuidv4 from "uuidv4";
+// import uuidv4 from "uuidv4";
 import withEditorProps from "../withEditorProps";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
@@ -6,9 +6,7 @@ import {
   normalizePositionByRangeLength,
   getRangeLength
 } from "ve-range-utils/lib";
-import selectionLayer from "../redux/selectionLayer";
-
-// import {List, DropDownMenu} from 'material-ui';
+// import selectionLayer from "../redux/selectionLayer";
 
 export default compose(
   withEditorProps,
@@ -73,7 +71,7 @@ export default compose(
       }
       return true;
     });
-    console.log("fragments:", fragments);
+    // console.log("fragments:", fragments);
     // topSnipPosition
     // bottomSnipPosition
     return {
