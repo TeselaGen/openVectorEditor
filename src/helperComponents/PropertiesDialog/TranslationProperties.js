@@ -6,6 +6,7 @@ import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class TranslationProperties extends React.Component {
   onRowSelect = ([record]) => {
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
@@ -21,7 +22,8 @@ class TranslationProperties extends React.Component {
       sequenceData = {},
       translationPropertiesSelectedEntities,
       // showAddOrEditTranslationDialog,
-      deleteTranslation
+      deleteTranslation,
+      selectedAnnotationId
     } = this.props;
     const { translations } = sequenceData;
     const translationsToUse = filter(translations, translation => {
@@ -44,6 +46,7 @@ class TranslationProperties extends React.Component {
           noPadding
           onRowSelect={this.onRowSelect}
           maxHeight={400}
+          selectedIds={selectedAnnotationId}
           formName={"translationProperties"}
           noRouter
           compact

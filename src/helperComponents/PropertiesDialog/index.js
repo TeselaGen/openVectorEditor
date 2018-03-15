@@ -45,7 +45,7 @@ export class PropertiesInner extends React.Component {
 
     const { width } = dimensions;
 
-    let { tabId } = propertiesTool;
+    let { tabId, selectedAnnotationId } = propertiesTool;
     if (propertiesList.indexOf(tabId) === -1) {
       tabId = propertiesList[0];
     }
@@ -56,7 +56,7 @@ export class PropertiesInner extends React.Component {
           key={name}
           title={startCase(name)}
           id={name}
-          panel={<Comp {...this.props} />}
+          panel={<Comp {...{ ...this.props, selectedAnnotationId }} />}
         />
       );
     });

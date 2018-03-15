@@ -6,6 +6,7 @@ import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class PartProperties extends React.Component {
   onRowSelect = ([record]) => {
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
@@ -21,7 +22,8 @@ class PartProperties extends React.Component {
       sequenceData = {},
       partPropertiesSelectedEntities,
       showAddOrEditPartDialog,
-      deletePart
+      deletePart,
+      selectedAnnotationId
     } = this.props;
     const { parts } = sequenceData;
     const partsToUse = map(parts, part => {
@@ -38,6 +40,7 @@ class PartProperties extends React.Component {
         <DataTable
           noPadding
           onRowSelect={this.onRowSelect}
+          selectedIds={selectedAnnotationId}
           maxHeight={400}
           formName={"partProperties"}
           noRouter

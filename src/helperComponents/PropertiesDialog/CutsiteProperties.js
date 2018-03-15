@@ -9,6 +9,7 @@ import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 
 class CutsiteProperties extends React.Component {
   onRowSelect = ([record]) => {
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "CARET_POSITION_UPDATE",

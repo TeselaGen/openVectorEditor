@@ -6,6 +6,7 @@ import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class PrimerProperties extends React.Component {
   onRowSelect = ([record]) => {
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
@@ -21,7 +22,8 @@ class PrimerProperties extends React.Component {
       sequenceData = {},
       primerPropertiesSelectedEntities,
       showAddOrEditPrimerDialog,
-      deletePrimer
+      deletePrimer,
+      selectedAnnotationId
     } = this.props;
     const { primers } = sequenceData;
     const primersToUse = map(primers, primer => {
@@ -38,6 +40,7 @@ class PrimerProperties extends React.Component {
         <DataTable
           noPadding
           onRowSelect={this.onRowSelect}
+          selectedIds={selectedAnnotationId}
           maxHeight={400}
           formName={"primerProperties"}
           noRouter

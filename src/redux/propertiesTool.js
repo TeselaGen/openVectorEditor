@@ -19,9 +19,17 @@ export const propertiesViewTabUpdate = createAction("propertiesViewTabUpdate"); 
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    [propertiesViewTabUpdate]: (state, tabId) => {
+    [propertiesViewTabUpdate]: (
+      state,
+      tabId,
+      selectedAnnotationOrAnnotationId
+    ) => {
       return {
         ...state,
+        selectedAnnotationId: selectedAnnotationOrAnnotationId
+          ? selectedAnnotationOrAnnotationId.id ||
+            selectedAnnotationOrAnnotationId
+          : undefined,
         tabId
       };
     }

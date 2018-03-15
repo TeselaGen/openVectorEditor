@@ -754,7 +754,7 @@ function VectorInteractionHOC(Component /* options */) {
           text: "View Part Properties",
           onClick: function() {
             propertiesViewOpen();
-            propertiesViewTabUpdate("parts");
+            propertiesViewTabUpdate("parts", annotation);
           }
         }
       ];
@@ -800,20 +800,20 @@ function VectorInteractionHOC(Component /* options */) {
           text: "View Feature Properties",
           onClick: function() {
             propertiesViewOpen();
-            propertiesViewTabUpdate("features");
+            propertiesViewTabUpdate("features", annotation);
           }
         }
       ];
     };
 
-    cutsiteRightClicked = () => {
+    cutsiteRightClicked = ({ annotation }) => {
       const { propertiesViewOpen, propertiesViewTabUpdate } = this.props;
       return [
         {
           text: "View Cutsite Properties",
           onClick: function() {
             propertiesViewOpen();
-            propertiesViewTabUpdate("cutsites");
+            propertiesViewTabUpdate("cutsites", annotation);
           }
         }
       ];
@@ -852,16 +852,12 @@ function VectorInteractionHOC(Component /* options */) {
           text: "View Primer Properties",
           onClick: function() {
             propertiesViewOpen();
-            propertiesViewTabUpdate("primers");
+            propertiesViewTabUpdate("primers", annotation);
           }
         }
       ];
     };
-    orfRightClicked = (
-      {
-        /* annotation */
-      }
-    ) => {
+    orfRightClicked = ({ annotation }) => {
       const {
         // upsertTranslation,
         propertiesViewOpen,
@@ -879,7 +875,7 @@ function VectorInteractionHOC(Component /* options */) {
           text: "View Orf Properties",
           onClick: function() {
             propertiesViewOpen();
-            propertiesViewTabUpdate("orfs");
+            propertiesViewTabUpdate("orfs", annotation);
           }
         }
       ];
@@ -906,7 +902,7 @@ function VectorInteractionHOC(Component /* options */) {
             text: "View Orf Properties",
             onClick: function() {
               propertiesViewOpen();
-              propertiesViewTabUpdate("orfs");
+              propertiesViewTabUpdate("orfs", annotation);
             }
           }
         ];
@@ -922,7 +918,7 @@ function VectorInteractionHOC(Component /* options */) {
           text: "View Translation Properties",
           onClick: function() {
             propertiesViewOpen();
-            propertiesViewTabUpdate("translations");
+            propertiesViewTabUpdate("translations", annotation);
           }
         }
       ];

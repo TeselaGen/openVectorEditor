@@ -8,6 +8,7 @@ import ColorPicker from "./ColorPicker";
 
 class FeatureProperties extends React.Component {
   onRowSelect = ([record]) => {
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
@@ -23,7 +24,8 @@ class FeatureProperties extends React.Component {
       sequenceData = {},
       featurePropertiesSelectedEntities,
       showAddOrEditFeatureDialog,
-      deleteFeature
+      deleteFeature,
+      selectedAnnotationId
     } = this.props;
 
     const { features } = sequenceData;
@@ -42,6 +44,7 @@ class FeatureProperties extends React.Component {
           noPadding
           onRowSelect={this.onRowSelect}
           maxHeight={400}
+          selectedIds={selectedAnnotationId}
           formName={"featureProperties"}
           noRouter
           compact
