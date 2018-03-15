@@ -10,9 +10,9 @@ class Chromatogram extends React.Component {
       newProps.chromatogramData !== this.props.chromatogramData ||
       newProps.charWidth !== this.props.charWidth ||
       newProps.row.start !== this.props.row.start ||
-      newProps.row.end !== this.props.row.end 
+      newProps.row.end !== this.props.row.end
     ) {
-      console.log('newProps.charWidth:',newProps.charWidth)
+      console.log("newProps.charWidth:", newProps.charWidth);
       this.updatePeakDrawing();
     }
   }
