@@ -5,18 +5,23 @@ export default function getXStartAndWidthOfRangeWrtRow(
   row,
   bpsPerRow,
   charWidth,
-  sequenceLength
+  sequenceLength,
+  gapsBefore = 0,
+  gapsInside = 0
 ) {
   let xStart =
-    normalizePositionByRangeLength(range.start - row.start, sequenceLength) *
+    (gapsBefore +
+      normalizePositionByRangeLength(range.start - row.start, sequenceLength)) *
     charWidth;
   let obj = {
     xStart,
     width:
-      normalizePositionByRangeLength(
-        range.end + 1 - range.start,
-        sequenceLength + 1
-      ) * charWidth
+      (gapsInside +
+        normalizePositionByRangeLength(
+          range.end + 1 - range.start,
+          sequenceLength + 1
+        )) *
+      charWidth
   };
   /* eslint-disable no-debugger */
 

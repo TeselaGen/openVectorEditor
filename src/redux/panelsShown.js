@@ -36,6 +36,25 @@ export const createNewDigest = (unused, meta) => {
     dispatch(setPanelAsActive("digestTool", meta));
   };
 };
+
+export const createNewAlignment = (payload, meta) => {
+  return dispatch => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          type: "alignment",
+          name: "New Alignment",
+          active: true,
+          canClose: true,
+          ...payload
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive(payload.id, meta));
+  };
+};
+
 export const collapseSplitScreen = (activePanelId, meta) => {
   return dispatch => {
     dispatch(_collapseSplitScreen(activePanelId, meta));
@@ -148,9 +167,23 @@ export default createReducer(
   [
     [
       {
-        id: "sequence",
-        name: "Sequence Map",
+        id: "alignmentRun1",
+        type: "alignment",
+        name: "Test Alignment ",
         active: true
+        // fullScreen: true
+      },
+      // {
+      //   id: "jbeiAlignment1",
+      //   type: "alignment",
+      //   name: "Jbei Alignment p1243124",
+      //   active: true
+      //   // fullScreen: true
+      // },
+      {
+        id: "sequence",
+        name: "Sequence Map"
+        // active: true
         // fullScreen: true
       }
     ],

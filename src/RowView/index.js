@@ -330,6 +330,7 @@ export class RowView extends React.Component {
             paddingLeft: marginWidth / 2,
             paddingRight: marginWidth / 2
           }}
+          // onScroll={disablePointers} //tnr: this doesn't actually help much with scrolling performance
           onContextMenu={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
@@ -378,3 +379,14 @@ function itemSizeEstimator(index, cache) {
   }
   return 400;
 }
+
+// const disablePointers = () => {
+//   clearTimeout(this.timer);
+//   if(!document.body.classList.contains('disable-hover')) {
+//     document.body.classList.add('disable-hover')
+//   }
+
+//   this.timer = setTimeout(function(){
+//     document.body.classList.remove('disable-hover')
+//   },0);
+// }

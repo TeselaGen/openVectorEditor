@@ -1,5 +1,4 @@
 import draggableClassnames from "../constants/draggableClassnames";
-// import some from "lodash/some";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -8,8 +7,6 @@ import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 
 let defaultMarginWidth = 10;
-// import Combokeys from "combokeys";
-// var combokeys;
 
 function noop() {}
 
@@ -44,18 +41,6 @@ export class LinearView extends React.Component {
     }
 
     if (rowNotFound) {
-      // var { top, bottom } = rowDomNode.getBoundingClientRect();
-      // var numbers = [top, bottom];
-      // var target = event.clientY;
-      // var topOrBottom = numbers
-      //   .map(function(value, index) {
-      //     return [Math.abs(value - target), index];
-      //   })
-      //   .sort()
-      //   .map(function(value) {
-      //     return numbers[value[1]];
-      //   })[0];
-
       nearestCaretPos = 0;
     }
     const callbackVals = {
@@ -77,26 +62,28 @@ export class LinearView extends React.Component {
     let {
       //currently found in props
       sequenceData = {},
-      // bpToJumpTo=0,
+      alignmentData,
       hideName = false,
       editorDragged = noop,
       editorDragStarted = noop,
       editorClicked = noop,
-      backgroundRightClicked = noop,
       editorDragStopped = noop,
       width = 400,
+      backgroundRightClicked = noop,
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
+      linearViewAnnotationVisibilityOverrides,
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = innerWidth / sequenceData.sequence.length;
-    // var containerWidthMinusMargin = width - marginWidth
-    let bpsPerRow = sequenceData.sequence.length;
     let sequenceLength = sequenceData.sequence.length;
+    const bpsPerRow = alignmentData
+      ? alignmentData.sequence.length
+      : sequenceLength;
     let sequenceName = hideName ? "" : sequenceData.name || "";
-    let rowData = prepareRowData(sequenceData, bpsPerRow);
+    let rowData = prepareRowData(sequenceData, sequenceLength);
     return (
       <div
         style={{
@@ -127,20 +114,19 @@ export class LinearView extends React.Component {
             style={{
               width,
               marginLeft: marginWidth / 2
-              // marginRight: marginWidth/2
-            }}
-            onClick={event => {
-              this.getNearestCursorPositionToMouseEvent(
-                rowData,
-                event,
-                editorClicked
-              );
             }}
             onContextMenu={event => {
               this.getNearestCursorPositionToMouseEvent(
                 rowData,
                 event,
                 backgroundRightClicked
+              );
+            }}
+            onClick={event => {
+              this.getNearestCursorPositionToMouseEvent(
+                rowData,
+                event,
+                editorClicked
               );
             }}
           >
@@ -150,14 +136,16 @@ export class LinearView extends React.Component {
             <RowItem
               {...{
                 ...rest,
-                sequenceLength: sequenceData.sequence.length,
+                alignmentData,
+                sequenceLength: (alignmentData || sequenceData).sequence.length,
                 width: innerWidth,
                 bpsPerRow,
-                tickSpacing: Math.floor(bpsPerRow / 10),
+                tickSpacing: Math.floor(sequenceLength / 10),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   yellowAxis: true,
-                  translations: false
+                  translations: true,
+                  ...linearViewAnnotationVisibilityOverrides
                 },
                 ...RowItemProps
               }}
@@ -172,11 +160,7 @@ export class LinearView extends React.Component {
 
 function SequenceName({ sequenceName, sequenceLength }) {
   return (
-    <div
-      key="circViewSvgCenterText"
-      //className={"veCircularViewMiddleOfVectorText"}
-      style={{ textAlign: "center" }}
-    >
+    <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
       <span>{sequenceName} </span>
       <br />
       <span>{sequenceLength + " bps"}</span>

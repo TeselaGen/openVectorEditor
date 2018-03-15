@@ -6,6 +6,16 @@ import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import orfFrameToColorMap from "../../constants/orfFrameToColorMap";
 
 class OrfProperties extends React.Component {
+  onRowSelect = ([record]) => {
+    const { dispatch, editorName } = this.props;
+    dispatch({
+      type: "SELECTION_LAYER_UPDATE",
+      payload: record,
+      meta: {
+        editorName
+      }
+    });
+  };
   render() {
     const { sequenceData = {} } = this.props;
     const { orfs } = sequenceData;
@@ -27,6 +37,7 @@ class OrfProperties extends React.Component {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
           noPadding
+          onRowSelect={this.onRowSelect}
           withSearch={false}
           maxHeight={400}
           formName={"orfProperties"}

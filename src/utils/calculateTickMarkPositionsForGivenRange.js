@@ -2,7 +2,7 @@ import { normalizePositionByRangeLength as norm } from "ve-range-utils";
 import { getRangeLength } from "ve-range-utils";
 
 export default function calculateTickMarkPositionsForGivenRange({
-  tickSpacing,
+  tickSpacing = 10,
   range,
   sequenceLength
 }) {

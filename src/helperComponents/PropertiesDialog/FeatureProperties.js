@@ -7,6 +7,16 @@ import { Popover } from "@blueprintjs/core";
 import ColorPicker from "./ColorPicker";
 
 class FeatureProperties extends React.Component {
+  onRowSelect = ([record]) => {
+    const { dispatch, editorName } = this.props;
+    dispatch({
+      type: "SELECTION_LAYER_UPDATE",
+      payload: record,
+      meta: {
+        editorName
+      }
+    });
+  };
   render() {
     const {
       readOnly,
@@ -15,6 +25,7 @@ class FeatureProperties extends React.Component {
       showAddOrEditFeatureDialog,
       deleteFeature
     } = this.props;
+
     const { features } = sequenceData;
     const featuresToUse = map(features, feature => {
       return {
@@ -30,6 +41,7 @@ class FeatureProperties extends React.Component {
         <DataTable
           // withCheckboxes
           noPadding
+          onRowSelect={this.onRowSelect}
           maxHeight={400}
           formName={"featureProperties"}
           noRouter

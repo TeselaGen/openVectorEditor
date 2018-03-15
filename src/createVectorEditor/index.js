@@ -5,6 +5,7 @@ import { render } from "react-dom";
 
 import Editor from "../Editor";
 import updateEditor from "../updateEditor";
+import addAlignment from "../addAlignment";
 
 function StandaloneEditor(props) {
   return (
@@ -25,6 +26,9 @@ export default function createVectorEditor(
   );
   editor.updateEditor = values => {
     updateEditor(store, editorName, values);
+  };
+  editor.addAlignment = values => {
+    addAlignment(store, editorName, values);
   };
 
   return editor;

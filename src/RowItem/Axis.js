@@ -12,7 +12,8 @@ let Axis = function(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
-    sequenceLength
+    sequenceLength,
+    getGaps
   } = props;
   if (row.start === 0 && row.end === 0) {
     return null;
@@ -22,7 +23,8 @@ let Axis = function(props) {
     row,
     bpsPerRow,
     charWidth,
-    sequenceLength
+    sequenceLength,
+    ...(getGaps ? [getGaps(row).gapsBefore, getGaps(row).gapsInside] : [])
   );
   //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
   //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
@@ -36,24 +38,28 @@ let Axis = function(props) {
   });
   let tickMarkSVG = [];
 
-  tickMarkPositions.forEach(function(tickMarkPosition) {
+  tickMarkPositions.forEach(function(tickMarkPosition, i) {
     // var xCenter = getXCenterOfRowAnnotation({
     //     start: tickMarkPosition,
     //     end: tickMarkPosition
     // }, row, bpsPerRow, charWidth, sequenceLength);
-    let xCenter = tickMarkPosition * charWidth + charWidth / 2;
+    let xCenter =
+      (tickMarkPosition +
+        (getGaps ? getGaps(tickMarkPosition).gapsBefore : 0)) *
+        charWidth +
+      charWidth / 2;
     let yStart = 0;
     let yEnd = annotationHeight / 3;
     tickMarkSVG.push(
       <path
-        key={"axisTickMark " + row.rowNumber + " " + tickMarkPosition}
+        key={"axisTickMarkPath " + i + " " + tickMarkPosition}
         d={"M" + xCenter + "," + yStart + " L" + xCenter + "," + yEnd}
         stroke={"black"}
       />
     );
     tickMarkSVG.push(
       <text
-        key={"axisTickMarkText " + row.rowNumber + " " + tickMarkPosition}
+        key={"axisTickMarkText " + i + " " + tickMarkPosition}
         stroke={"black"}
         x={xCenter}
         y={annotationHeight}
@@ -76,7 +82,6 @@ let Axis = function(props) {
     >
       {tickMarkSVG}
       <path
-        key={"axis " + row.rowNumber}
         d={"M" + xStart + "," + yStart + " L" + xEnd + "," + yStart}
         stroke={"black"}
       />
@@ -84,6 +89,7 @@ let Axis = function(props) {
   );
 };
 
+// export default Axis
 // export default Axis
 export default onlyUpdateForKeys([
   "row",

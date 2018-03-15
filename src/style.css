@@ -9,7 +9,7 @@
   font-size: 14px;
 }
 
-.ve-spacer {
+.vespacer {
   height: 15px;
 }
 
@@ -43,3 +43,7 @@
 .veCutsiteLabel:hover {
   font-weight: bold;
 }
+
+/* .disable-hover .veRowItem {
+  pointer-events: none !important;
+} */

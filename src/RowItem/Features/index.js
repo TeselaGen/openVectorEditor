@@ -20,8 +20,11 @@ function Features(props) {
     spaceBetweenAnnotations = 2,
     featureClicked,
     featureRightClicked,
-    editorName
+    editorName,
+    getGaps,
+    marginTop = 10
   } = props;
+
   if (annotationRanges.length === 0) {
     return null;
   }
@@ -31,16 +34,18 @@ function Features(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     let annotation = annotationRange.annotation;
     let annotationColor =
       (annotation.type && featureColors[annotation.type]) ||
       annotation.color ||
       "#BBBBBB";
-
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
-      charWidth
+      charWidth,
+      gapsBefore,
+      gapsInside
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -59,6 +64,7 @@ function Features(props) {
           featureClicked={featureClicked}
           featureRightClicked={featureRightClicked}
           annotation={annotation}
+          gapsInside={gapsInside}
           color={annotationColor}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
@@ -78,6 +84,7 @@ function Features(props) {
     (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
   return (
     <AnnotationContainerHolder
+      marginTop={marginTop}
       className={"veRowViewFeatureContainer"}
       containerHeight={containerHeight}
     >

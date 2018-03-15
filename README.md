@@ -31,6 +31,10 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
 - [Data Model](#data-model)
+- [Alignments](#alignments)
+  - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
+  - [Data Model](#data-model-1)
+    - [Chromatogram Data](#chromatogram-data)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -252,12 +256,98 @@ These are the options to the `updateEditor()` action (the most generic redux act
 }
 ```
 
-#Data Model 
+# Data Model 
 The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
 
-#Development: 
+# Alignments
+## Integrating your own alignment data (only necessary if not using the built in alignment creation tool)
+Add a panel to the panelsShown prop like so: 
+```js
+panelsShown: [
+          [
+            {
+              id: "jbeiAlignment1",
+              type: "alignment", //panel must be of type alignment
+              name: "Jbei Alignment p1243124",
+              active: true
+						}
+          ],
+```
+After calling `editor.updateEditor(...)` call
+```js
+editor.addAlignment({
+        id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
+        alignmentTracks: [
+          {alignment Track Data Here}, //see Data Model below for specs
+          {alignment Track Data Here},
+          {alignment Track Data Here},
+        ]
+      });
+```
+
+
+## Data Model
+Note: `alignmentData.sequence` is assumed to be the same length for EVERY track within an alignemnt run!
+
+`alignmentData` can contain "-" characters, whereas sequenceData should not. Sequence Data is the "raw" data of the sequence being aligned with features/parts/etc. 
+
+```js
+{
+        id: "jbeiAlignment1", //the unique ID of the alignment run
+        alignmentTracks: [ //the array of tracks within the alignment run
+          {
+            //JBEI sequence 'GFPuv54'
+            // chromatogramData: ab1ParsedGFPuv54,
+            sequenceData: {
+              id: "1",
+							name: "GFPuv54",
+							features: [{start: 12, end: 15, name: "Ha1", id: "myFeat1"}]
+							// parts
+              sequence:
+                "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGAT"
+            },
+            alignmentData: {
+              id: "1",
+              sequence:
+                "---CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAG---ATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCA---TTACCTGTCGACACAATCTGCCCTTTCGAAAGAT"
+            }
+          },
+          {
+            //JBEI sequence 'GFPuv58'
+            // chromatogramData: ab1ParsedGFPuv58,
+            sequenceData: {
+              id: "2",
+              name: "GFPuv58",
+              sequence:
+                "GTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTT"
+            },
+            alignmentData: {
+              id: "2",
+              sequence:
+                "GTTCAA--TGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACA---GGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATAC--CCTTGTTAATCGTATCGAGTT--"
+            }
+          },
+          ...more tracks can go here
+        ]
+		}
+```
+
+### Chromatogram Data 
+```
+"chromatogramData": { //only if parsing in an ab1 file
+      "aTrace": [], //same as cTrace but for a
+      "tTrace": [], //same as cTrace but for t
+      "gTrace": [], //same as cTrace but for g
+      "cTrace": [0,0,0,1,3,5,11,24,56,68,54,30,21,3,1,4,1,0,0, ...etc], //heights of the curve spaced 1 per x position (aka if the cTrace.length === 1000, then the max basePos can be is 1000)
+      "basePos": [33, 46, 55,], //x position of the bases (can be unevenly spaced)
+      "baseCalls": ["A","T", ...etc],
+      "qualNums": [],
+    },
+```
+
+# Development: 
 ## Prerequisites
 
 [Node.js](http://nodejs.org/) >= v4 must be installed.

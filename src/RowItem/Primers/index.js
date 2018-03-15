@@ -17,8 +17,8 @@ function Primers(props) {
     spaceBetweenAnnotations = 2,
     primerClicked,
     primerRightClicked,
-    editorName
-
+    editorName,
+    getGaps
     // sequence = ""
   } = props;
   if (annotationRanges.length === 0) {
@@ -35,7 +35,8 @@ function Primers(props) {
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
-      charWidth
+      charWidth,
+      ...getGaps(annotationRange)
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -51,6 +52,7 @@ function Primers(props) {
           key={index}
           editorName={editorName}
           id={annotation.id}
+          {...getGaps(annotationRange)}
           primerClicked={primerClicked}
           primerRightClicked={primerRightClicked}
           annotation={annotation}

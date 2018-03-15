@@ -42,6 +42,7 @@ export class PropertiesInner extends React.Component {
       ],
       closePanelButton
     } = this.props;
+
     const { width } = dimensions;
 
     let { tabId } = propertiesTool;

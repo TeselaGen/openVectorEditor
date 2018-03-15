@@ -16,7 +16,8 @@ function Orfs(props) {
     spaceBetweenAnnotations,
     orfClicked,
     orfRightClicked,
-    row
+    row,
+    getGaps
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -27,6 +28,7 @@ function Orfs(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     let { annotation } = annotationRange;
     let { internalStartCodonIndices = [] } = annotation;
     let normalizedInternalStartCodonIndices = internalStartCodonIndices
@@ -42,7 +44,9 @@ function Orfs(props) {
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
-      charWidth
+      charWidth,
+      gapsBefore,
+      gapsInside
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -57,6 +61,7 @@ function Orfs(props) {
       >
         <Orf
           annotation={annotation}
+          gapsInside={gapsInside}
           color={annotation.color}
           orfClicked={orfClicked}
           orfRightClicked={orfRightClicked}
@@ -107,5 +112,6 @@ export default onlyUpdateForKeys([
   "spaceBetweenAnnotations",
   "orfClicked",
   "orfRightClicked",
-  "row"
+  "row",
+  "getGaps"
 ])(Orfs);

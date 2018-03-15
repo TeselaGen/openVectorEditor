@@ -1,6 +1,6 @@
 import { anyToJson } from "bio-parsers";
 import React from "react";
-import { Icon, IconClasses } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
 
 export default {

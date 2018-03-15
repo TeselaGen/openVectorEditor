@@ -5,6 +5,16 @@ import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class TranslationProperties extends React.Component {
+  onRowSelect = ([record]) => {
+    const { dispatch, editorName } = this.props;
+    dispatch({
+      type: "SELECTION_LAYER_UPDATE",
+      payload: record,
+      meta: {
+        editorName
+      }
+    });
+  };
   render() {
     const {
       readOnly,
@@ -33,6 +43,7 @@ class TranslationProperties extends React.Component {
         <DataTable
           withCheckboxes
           noPadding
+          onRowSelect={this.onRowSelect}
           maxHeight={400}
           formName={"translationProperties"}
           noRouter

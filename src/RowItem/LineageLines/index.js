@@ -14,7 +14,8 @@ function LineageLines(props) {
     row,
     sequenceLength,
     lineageLines = [],
-    lineageLineHeight = 6
+    lineageLineHeight = 6,
+    getGaps
   } = props;
 
   let lineageLinesToUse = lineageLines;
@@ -46,9 +47,13 @@ function LineageLines(props) {
               row,
               bpsPerRow,
               charWidth,
-              sequenceLength
+              sequenceLength,
+              ...(getGaps ? getGaps(row) : [])
             );
-            let lineageStart = overlap.start === lineageLine.start;
+            let lineageStart =
+              (getGaps ? getGaps(overlap.start).gapsBefore : 0) +
+                overlap.start ===
+              lineageLine.start;
             let lineageEnd = overlap.end === lineageLine.end;
 
             return [

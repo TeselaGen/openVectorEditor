@@ -18,27 +18,34 @@ export default class StandaloneDemo extends React.Component {
     isDialogOpen: false
   };
   mountEditor = () => {
-
     let editor;
     setTimeout(() => {
       editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
         rightClickOverrides: {
-          selectionLayerRightClicked: (items, {annotation}, props) => {
-            return [...items, {
-              text: "Create Part",
-              onClick: () => console.log('hey!≈')
-            }]
+          selectionLayerRightClicked: (items, { annotation }, props) => {
+            return [
+              ...items,
+              {
+                text: "Create Part",
+                onClick: () => console.log("hey!≈")
+              }
+            ];
           }
         },
-        onSave: function(event, copiedSequenceData, editorState, onSuccessCallback) {
+        onSave: function(
+          event,
+          copiedSequenceData,
+          editorState,
+          onSuccessCallback
+        ) {
           console.log("event:", event);
           console.log("sequenceData:", copiedSequenceData);
           console.log("editorState:", editorState);
           // To disable the save button after successful saving
           // either call the onSuccessCallback or return a successful promise :)
-          onSuccessCallback()
-          //or 
+          onSuccessCallback();
+          //or
           // return myPromiseBasedApiCall()
         },
         onCopy: function(event, copiedSequenceData, editorState) {
@@ -59,15 +66,17 @@ export default class StandaloneDemo extends React.Component {
         onPaste: function(event, editorState) {
           //the onPaste here must return sequenceData in the teselagen data format
           const clipboardData = event.clipboardData;
-          let jsonData = clipboardData.getData("application/json")
+          let jsonData = clipboardData.getData("application/json");
           if (jsonData) {
-            jsonData = JSON.parse(jsonData)
+            jsonData = JSON.parse(jsonData);
             if (jsonData.isJbeiSeq) {
-              jsonData = convertJbeiToTeselagen(jsonData)
+              jsonData = convertJbeiToTeselagen(jsonData);
             }
           }
-          const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
-          return sequenceData
+          const sequenceData = jsonData || {
+            sequence: clipboardData.getData("text/plain")
+          };
+          return sequenceData;
         },
         readOnly: false,
         showMenuBar: true,
@@ -97,7 +106,7 @@ export default class StandaloneDemo extends React.Component {
             // "viewTool",
             "editTool",
             "findTool",
-            "visibilityTool",
+            "visibilityTool"
             // "propertiesTool"
           ]
         }
@@ -110,24 +119,37 @@ export default class StandaloneDemo extends React.Component {
         sequenceData: exampleSequenceData,
         annotationVisibility: {
           features: false,
-          orfTranslations: false,
+          orfTranslations: false
         },
-        selectionLayer: {start: 500, end: 550},
+        // alignments: {
+        //   jbeiAlignment1: {
+        //     // alignmentTracks,
+        //     // alignmentAnnotationVisibility: defaultAlignmentAnnotationVisibility,
+        //     // alignmentAnnotationLabelVisibility: defaultAlignmentAnnotationLabelVisibility
+        //   }
+        // },
+        selectionLayer: { start: 500, end: 550 },
         panelsShown: [
           [
             {
               // fullScreen: true,
-              active: true,
+              // active: true,
               id: "circular",
-              name: "Plasmid",
+              name: "Plasmid"
             },
+            {
+              id: "jbeiAlignment1",
+              type: "alignment",
+              name: "Jbei Alignment p1243124",
+              active: true
+              // fullScreen: true
+            }
           ],
           [
             {
               id: "sequence",
               name: "Sequence Map",
-              active: true,
-              
+              active: true
             },
             {
               id: "alignmentTool",
@@ -141,12 +163,12 @@ export default class StandaloneDemo extends React.Component {
             },
             {
               id: "rail",
-              name: "Linear Map",
+              name: "Linear Map"
             },
             {
               id: "properties",
-              name: "Properties",
-              
+              name: "Properties"
+
               // active: true
             }
           ]
@@ -161,11 +183,62 @@ export default class StandaloneDemo extends React.Component {
           primers: false
         }
       });
+
+      editor.addAlignment({
+        id: "jbeiAlignment1",
+        alignmentTracks: [
+          {
+            //JBEI sequence 'GFPuv54'
+            // chromatogramData: ab1ParsedGFPuv54,
+            sequenceData: {
+              id: "1",
+              name: "GFPuv54",
+              features: [{start: 12,end: 24, id: "asdfa", name: "feat1"}],
+              sequence:
+                "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCGGCTTCAGCCGGTTTGCCGGCTGAAAGCGCTATTTCTTCCAGAATTGCCATGATTTTTTCCCCACGGGAGGCGTCACTGGCTCCCGTGTTGTCGGCAGCTTTGATTCGATAAGCAGCATCGCCTGTTTCAGGCTGTCTATGTGTGACTGTTGAGCTGTAACAAGTTGTCTCAGGTGTTCAATTTCATGTTCTAGTTGCTTTGTTTTACTGGTTTCACCTGTTCTATTAGGTGTTACATGCTGTTCATCTGTTACATTGTCGATCTGTTCATGGTGAACAGCTTTGAATGCACCAAAAACTCGTAAAAGCTCTGATGTATCTATCTTTTTTACACCGTTTTCATCTGTGCATATGGACAGTTTTCCCTTTGATATGTAACGGTGAACAGTTGTTCTACTTTTGTTTGTTAGTCTTGATGCTTCACTGATAGATACAAGAGCCATAAGAACCTCAGATCCTTCCGTATTTAGCCAGTATGTTCTCTAGTGTGGTTCGTTGTTTTGCCGTGGAGCAATGAGAACGAGCCATTGAGATCATACTTACCTTTGCATGTCACTCAAAATTTTGCCTCAAAACTGGGTGAGCTGAATTTTTGCAGTAGGCATCGTGTAAGTTTTTCTAGTCGGAATGATGATAGATCGTAAGTTATGGATGGTTGGCATTTGTCCAGTTCATGTTATCTGGGGTGTTCGTCAGTCGGTCAGCAGATCCACATAGTGGTTCATCTAGATCACAC"
+            },
+            alignmentData: {
+              id: "1",
+              sequence:
+                "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------cagaaagcgtcacaaaagatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacag-tttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatccggcttcagccggtttgccggctgaaagcgctatttcttccagaattgccatgattttttccccacgggaggcgtcactggctcccgtgttgtcggcagctttgattcgataagcagcatcgcctgtttcaggctgtctatgtgtgactgttgagctgtaacaagttgtctcaggtgttcaatttcatgttctagttgctttgttttactggtttcacctgttctattaggtgttacatgctgttcatctgttacattgtcgatctgttcatggtgaacagctttgaatgcaccaaaaactcgtaaaagctctgatgtatctatcttttttacaccgttttcatctgtgcatatggacagttttccctttgatatgtaacggtgaacagttgttctacttttgtttgttagtcttgatgcttcactgatagatacaagagccataagaacctcagatccttccgtatttagccagtatgttctctagtgtggttcgttgttttgccgtggagcaatgagaacgagccattgagatcatacttacctttgcatgtcactcaaaattttgcctcaaaactgggtgagctgaatttttgcagtaggcatcgtgtaagtttttctagtcggaatgatgatagatcgtaagttatggatggttggcatttgtccagttcatgttatctggggtgttcgtcagtcggtcagcagatccacatagtggttcatctagatcacac"
+            }
+          },
+          {
+            //JBEI sequence 'GFPuv58'
+            // chromatogramData: ab1ParsedGFPuv58,
+            sequenceData: {
+              id: "2",
+              name: "GFPuv58",
+              sequence:
+                "CGAAAAATGTCAATTCTTGTTGATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGAAGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCACACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGATCTCGGCGGCGGCGTCAGCAAGGTCTACGGCAAGGAACAGTTTTTTGCGGATGCCCCATATCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACCACAGGCTCAGTCTAAAGACTGGCCCTTTCTTTGATCTGTTGTTTGCC"
+            },
+            alignmentData: {
+              id: "2",
+              sequence:
+                "cgaaaaatgtcaattcttgttgattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgaagcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccacacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgatctcggcggcggcgtcagcaaggtctacggcaaggaacagttttttgcggatgccccatatcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaaccacaggctcagtctaaagactggccctttc-tttgatctgttgtttgcc--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+            }
+          },
+          {
+            //JBEI sequence 'GFPuv58'
+            // chromatogramData: ab1ParsedGFPuv58,
+            sequenceData: {
+              id: "3",
+              name: "asdfasdfasdf",
+              sequence:
+                "CGAAAAATGTCAATTCTTGTTGATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGAAGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCACACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGATCTCGGCGGCGGCGTCAGCAAGGTCTACGGCAAGGAACAGTTTTTTGCGGATGCCCCATATCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACCACAGGCTCAGTCTAAAGACTGGCCCTTTCTTTGATCTGTTGTTTGCC"
+            },
+            alignmentData: {
+              id: "3",
+              sequence:
+                "cgaaaaatgtcaattcttgttgattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgaagcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccacacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgatctcggcggcggcgtcagcaaggtctacggcaaggaacagttttttgcggatgccccatatcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaaccacaggctcagtctaaagactggccctttc-tttgatctgttgtttgcc--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+            }
+          }
+        ]
+      });
     }, 1000);
-  
-  }
+  };
   componentDidMount() {
-    this.mountEditor()
+    this.mountEditor();
   }
   render() {
     const inner = (
@@ -188,17 +261,17 @@ export default class StandaloneDemo extends React.Component {
         <Button
           onClick={() => {
             this.setState({ isDialogOpen: !isDialogOpen });
-            this.mountEditor()
+            this.mountEditor();
           }}
         >
           Open in a dialog
         </Button>
         {isDialogOpen ? (
           <Dialog
-            style={{width: 600}}
+            style={{ width: 600 }}
             onClose={() => {
               this.setState({ isDialogOpen: false });
-              this.mountEditor()
+              this.mountEditor();
             }}
             backdropProps={{ style: { zIndex: 1050 } }}
             title="yooo"
@@ -214,7 +287,6 @@ export default class StandaloneDemo extends React.Component {
   }
 }
 
-
-function convertJbeiToTeselagen (seq) {
-  return seq
+function convertJbeiToTeselagen(seq) {
+  return seq;
 }

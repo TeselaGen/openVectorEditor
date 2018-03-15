@@ -56,6 +56,10 @@ export function showAddOrEditPrimerDialog(annotation, { editorName }) {
   };
 }
 
-// function convertAnnotationNotes() {
-
-// }
+export function showCreateAlignmentDialog(props) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "CreateAlignmentDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props
+  };
+}

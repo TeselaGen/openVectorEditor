@@ -17,10 +17,11 @@ function Part(props) {
     fontWidth = 12,
     partClicked,
     partRightClicked,
-    annotation
+    annotation,
+    gapsInside
   } = props;
 
-  let width = widthInBps * charWidth;
+  let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
   if (charWidth < 15) {
     //allow the arrow width to adapt

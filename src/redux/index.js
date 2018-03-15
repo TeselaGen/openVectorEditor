@@ -14,6 +14,7 @@ import * as frameTranslations from "./frameTranslations";
 import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as lineageLines from "./lineageLines";
 import * as minimumOrfSize from "./minimumOrfSize";
+import * as alignments from "./alignments";
 import * as modalActions from "./modalActions";
 import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
@@ -48,6 +49,7 @@ export const actions = {
   ...replacementLayers,
   ...copyOptions,
   ...lineageLines,
+  ...alignments,
   ...digestTool,
   ...frameTranslations,
   ...lastSavedId,
@@ -86,6 +88,7 @@ let reducers = {
   findTool: findTool.default,
   propertiesTool: propertiesTool.default,
   panelsShown: panelsShown.default,
+  alignments: alignments.default,
   deletionLayers: deletionLayers.default,
   replacementLayers: replacementLayers.default,
   instantiated: () => true

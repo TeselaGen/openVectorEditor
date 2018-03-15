@@ -21,6 +21,7 @@ import Cutsites from "./Cutsites";
 import Caret from "./Caret";
 import Parts from "./Parts";
 import "./style.css";
+import Chromatogram from "./Chromatograms/Chromatogram";
 function noop() {}
 
 export class RowItem extends React.Component {
@@ -48,13 +49,17 @@ export class RowItem extends React.Component {
       additionalSelectionLayers = [],
       lineageLines = [],
       caretPosition = -1,
-      sequenceLength = 0,
       row = {
         sequence: "",
         start: 0,
         end: 0,
         rowNumber: 0
       },
+      // alignmentData={sequence: row.sequence.shuffle(50, "-")},
+      alignmentData,
+      sequenceLength = row.sequence.length,
+      // sequenceLength = alignmentData.sequence.length || row.sequence.length,
+      chromatogramData,
       fullSequence = "",
       deletionLayerClicked = noop,
       deletionLayerRightClicked = noop,
@@ -67,6 +72,7 @@ export class RowItem extends React.Component {
       partRightClicked = noop,
       translationRightClicked = noop,
       primerClicked = noop,
+      backgroundRightClicked = noop,
       primerRightClicked = noop,
       selectionLayerRightClicked = noop,
       orfClicked = noop,
@@ -76,9 +82,12 @@ export class RowItem extends React.Component {
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
 
-      bpsPerRow,
+      bpsPerRow = sequenceLength,
       editorName
     } = this.props;
+
+    // let bpsPerRow = bpsPerRow || (alignmentData ? alignmentData.sequence.length : sequenceLength)
+
     let {
       features: showFeatures = true,
       primers: showPrimers = true,
@@ -111,7 +120,9 @@ export class RowItem extends React.Component {
       cutsites = [],
       orfs = []
     } = row;
-    let reverseSequence = getComplementSequenceString(sequence);
+    let reverseSequence = getComplementSequenceString(
+      (alignmentData && alignmentData.sequence) || sequence
+    );
     if (!row) {
       return null;
     }
@@ -129,15 +140,42 @@ export class RowItem extends React.Component {
       position: "relative",
       width: width + "px"
     };
+    let getGaps = () => ({
+      gapsBefore: 0,
+      gapsInside: 0
+    });
+    if (alignmentData) {
+      const gapMap = getGapMap(alignmentData.sequence);
+      //this function is used to calculate the number of spaces that come before or inside a range
+      getGaps = rangeOrCaretPosition => {
+        if (typeof rangeOrCaretPosition !== "object") {
+          return {
+            gapsBefore: gapMap[rangeOrCaretPosition]
+          };
+        }
+        //otherwise it is a range!
+        const { start, end } = rangeOrCaretPosition;
+        const toReturn = {
+          gapsBefore: gapMap[start],
+          gapsInside: gapMap[end] - gapMap[start]
+        };
+        return toReturn;
+      };
+    }
     let annotationCommonProps = {
       editorName,
       charWidth,
       bpsPerRow,
+      getGaps,
       sequenceLength,
       annotationHeight,
       spaceBetweenAnnotations,
       row
     };
+
+    // a t g a t c a g g
+    // 0 1 2 3 4 5 6 8 9
+    //0 1 2 3 4 5 6 7 9
 
     let deletionLayersToDisplay = flatMap(
       { ...replacementLayers, ...deletionLayers },
@@ -173,9 +211,8 @@ export class RowItem extends React.Component {
           );
         })
       : null;
-
     return (
-      <div className="veRowItemWrapper">
+      <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}
         <div
           className="veRowItem"
@@ -184,30 +221,40 @@ export class RowItem extends React.Component {
           // onMouseUp={this.onMouseUp}
           // onMouseDown={this.onMouseDown}
         >
-          <div className="ve-spacer" />
+          <div className="vespacer" />
 
           <SelectionLayer
             color={"yellow"}
             regions={searchLayers}
             {...annotationCommonProps}
+            row={
+              alignmentData
+                ? { start: 0, end: alignmentData.sequence.length - 1 }
+                : row
+            }
             onClick={searchLayerClicked}
           />
           <SelectionLayer
             isDraggable
             selectionLayerRightClicked={selectionLayerRightClicked}
             {...annotationCommonProps}
+            row={
+              alignmentData
+                ? { start: 0, end: alignmentData.sequence.length - 1 }
+                : row
+            }
             regions={selectionLayers}
           />
 
-          {showFeatures &&
-            Object.keys(features).length > 0 && (
-              <Features
-                showFeatureLabels={showFeatureLabels}
-                featureClicked={featureClicked}
-                featureRightClicked={featureRightClicked}
-                annotationRanges={features}
+          {showParts &&
+            Object.keys(parts).length > 0 && (
+              <Parts
+                showPartLabels={showPartLabels}
+                partClicked={partClicked}
+                partRightClicked={partRightClicked}
+                annotationRanges={parts}
                 {...annotationCommonProps}
-                annotationHeight={featureHeight}
+                annotationHeight={partHeight}
               />
             )}
 
@@ -254,6 +301,13 @@ export class RowItem extends React.Component {
               />
             )}
 
+          {chromatogramData && (
+            <Chromatogram
+              chromatogramData={chromatogramData}
+              {...annotationCommonProps}
+            />
+          )}
+
           <div
             className="veRowItemSequenceContainer"
             style={{ position: "relative" }}
@@ -261,9 +315,15 @@ export class RowItem extends React.Component {
             {showSequence &&
               charWidth > 7 && (
                 <Sequence
-                  sequence={sequence}
+                  sequence={
+                    alignmentData ? alignmentData.sequence : row.sequence
+                  } //from alignment data and has "-"" chars in it
                   height={sequenceHeight}
-                  length={sequence.length}
+                  length={
+                    alignmentData
+                      ? alignmentData.sequence.length
+                      : row.sequence.length
+                  }
                   charWidth={charWidth}
                 >
                   {showCutsites &&
@@ -282,7 +342,7 @@ export class RowItem extends React.Component {
             {showReverseSequence &&
               charWidth > 7 && (
                 <Sequence
-                  length={sequence.length}
+                  length={reverseSequence.length}
                   sequence={reverseSequence}
                   height={sequenceHeight}
                   charWidth={charWidth}
@@ -328,6 +388,7 @@ export class RowItem extends React.Component {
                 return (
                   layer.start > -1 && (
                     <SelectionLayer
+                      {...annotationCommonProps}
                       {...{
                         key: "restrictionSiteRange" + index,
                         height: showReverseSequence
@@ -339,24 +400,40 @@ export class RowItem extends React.Component {
                         border: `2px solid ${"lightblue"}`,
                         // background: 'none',
                         background: "lightblue",
-                        regions: [layer]
+                        regions: [layer],
+                        row: alignmentData
+                          ? { start: 0, end: alignmentData.sequence.length - 1 }
+                          : row
                       }}
-                      {...annotationCommonProps}
                     />
                   )
                 );
               })}
           </div>
 
-          {showParts &&
-            Object.keys(parts).length > 0 && (
-              <Parts
-                showPartLabels={showPartLabels}
-                partClicked={partClicked}
-                partRightClicked={partRightClicked}
-                annotationRanges={parts}
+          {showYellowAxis && (
+            <svg width="100%" height="6px">
+              <rect
+                x="0"
+                y="0"
+                width="100%"
+                height="6px"
+                fill="#FFFFB3"
+                stroke="grey"
+                strokeWidth="1"
+              />
+            </svg>
+          )}
+
+          {showFeatures &&
+            Object.keys(features).length > 0 && (
+              <Features
+                showFeatureLabels={showFeatureLabels}
+                featureClicked={featureClicked}
+                featureRightClicked={featureRightClicked}
+                annotationRanges={features}
                 {...annotationCommonProps}
-                annotationHeight={partHeight}
+                annotationHeight={featureHeight}
                 marginTop={10}
               />
             )}
@@ -463,19 +540,6 @@ export class RowItem extends React.Component {
             {...annotationCommonProps}
           />
 
-          {showYellowAxis && (
-            <svg width="100%" height="6px">
-              <rect
-                x="0"
-                y="0"
-                width="100%"
-                height="6px"
-                fill="#FFFFB3"
-                stroke="grey"
-                strokeWidth="1"
-              />
-            </svg>
-          )}
           {showAxis && (
             <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
           )}
@@ -496,3 +560,18 @@ export class RowItem extends React.Component {
 
 // module.exports = pure(RowItem);
 export default RowItem;
+
+function getGapMap(sequence) {
+  const gapMap = []; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
+  sequence.split("").forEach(char => {
+    if (char === "-") {
+      gapMap[Math.max(0, gapMap.length - 1)] =
+        (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
+    } else {
+      gapMap.push(gapMap[gapMap.length - 1] || 0);
+      // gapMap[gapMap.length] =
+    }
+  });
+  return gapMap;
+}
+// var a = getGapMap("---tagccc---tagasdfw--gg")

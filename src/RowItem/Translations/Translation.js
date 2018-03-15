@@ -32,7 +32,8 @@ class Translation extends React.Component {
       translationClicked,
       translationRightClicked,
       translationDoubleClicked,
-      sequenceLength
+      sequenceLength,
+      getGaps
     } = this.props;
     const { hasMounted } = this.state;
 
@@ -86,9 +87,14 @@ class Translation extends React.Component {
           onDoubleClick={function(event) {
             translationDoubleClicked({ annotation, event });
           }}
+          getGaps={getGaps}
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
-          width={charWidth}
+          width={
+            charWidth * aminoAcidSliver.positionInCodon === 1
+              ? getGaps(aminoAcidSliver.codonRange).gapsInside
+              : 0
+          }
           height={height}
           relativeAAPositionInTranslation={relativeAAPositionInTranslation}
           letter={aminoAcidSliver.aminoAcid.value}

@@ -6,10 +6,15 @@ import AddOrEditPartDialog from "../helperComponents/AddOrEditPartDialog";
 import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
 import { withDialog } from "teselagen-react-components";
 import { addYourOwnEnzymeClose } from "../redux/addYourOwnEnzyme";
+import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 
 const AddAdditionalEnzymes = withDialog({
   title: "Add Additional Enzymes"
 })(_AddAdditionalEnzymes);
+
+const CreateAlignmentDialog = withDialog({
+  title: "Create New Alignment"
+})(AlignmentToolInner);
 
 export default connect(
   state => {
@@ -30,21 +35,26 @@ export default connect(
           onClose: addYourOwnEnzymeClose
         }}
       />
+      <CreateAlignmentDialog
+        editorName={editorName}
+        dialogName="CreateAlignmentDialog"
+        noTarget
+      />
       <AddOrEditFeatureDialog
         editorName={editorName}
         dialogName="AddOrEditFeatureDialog"
         noTarget
-      />{" "}
+      />
       <AddOrEditPartDialog
         editorName={editorName}
         dialogName="AddOrEditPartDialog"
         noTarget
-      />{" "}
+      />
       <AddOrEditPrimerDialog
         editorName={editorName}
         dialogName="AddOrEditPrimerDialog"
         noTarget
-      />{" "}
+      />
     </div>
   );
 });
