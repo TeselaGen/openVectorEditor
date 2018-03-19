@@ -57,6 +57,7 @@ export class AlignmentView extends React.Component {
       dimensions: { width },
       dimensions,
       height,
+      hideBottomBar = true,
       alignmentVisibilityToolOptions
     } = this.props;
 
@@ -146,7 +147,7 @@ export class AlignmentView extends React.Component {
                   }}
                   key={i}
                 >
-                  Name: {sequenceData.name || sequenceData.id}
+                  {sequenceData.name || sequenceData.id}
                 </div>
               );
             })}
@@ -233,47 +234,49 @@ export class AlignmentView extends React.Component {
             </div>
           </div>
         </div>
-        <div
-          style={{
-            marginTop: 4,
-            paddingTop: 4,
-            borderTop: "1px solid lightgrey",
-            display: "flex"
-          }}
-        >
+        {!hideBottomBar && (
           <div
             style={{
-              padding: "4px 10px",
-              maxWidth: nameDivWidth,
-              width: nameDivWidth
+              marginTop: 4,
+              paddingTop: 4,
+              borderTop: "1px solid lightgrey",
+              display: "flex"
             }}
           >
-            <h6 style={{ marginRight: 10 }}>Zoom: </h6>
-            <UncontrolledSlider
-              onRelease={val => {
-                this.setState({ charWidthInLinearView: val });
+            <div
+              style={{
+                padding: "4px 10px",
+                maxWidth: nameDivWidth,
+                width: nameDivWidth
               }}
-              className={"alignment-zoom-slider"}
-              labelRenderer={false}
-              stepSize={0.01}
-              initialValue={10}
-              max={14}
-              min={this.getMinCharWidth()}
+            >
+              <h6 style={{ marginRight: 10 }}>Zoom: </h6>
+              <UncontrolledSlider
+                onRelease={val => {
+                  this.setState({ charWidthInLinearView: val });
+                }}
+                className={"alignment-zoom-slider"}
+                labelRenderer={false}
+                stepSize={0.01}
+                initialValue={10}
+                max={14}
+                min={this.getMinCharWidth()}
+              />
+              <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
+            </div>
+            <Minimap
+              {...{
+                alignmentTracks,
+                dimensions: {
+                  width: Math.max(dimensions.width - nameDivWidth, 10) || 10
+                },
+                percentScrolled,
+                numBpsShownInLinearView: this.getNumBpsShownInLinearView()
+              }}
+              onMinimapScroll={this.onMinimapScroll}
             />
-            <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
           </div>
-          <Minimap
-            {...{
-              alignmentTracks,
-              dimensions: {
-                width: Math.max(dimensions.width - nameDivWidth, 10) || 10
-              },
-              percentScrolled,
-              numBpsShownInLinearView: this.getNumBpsShownInLinearView()
-            }}
-            onMinimapScroll={this.onMinimapScroll}
-          />
-        </div>
+        )}
       </div>
     );
   }
