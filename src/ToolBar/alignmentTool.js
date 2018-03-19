@@ -116,7 +116,14 @@ class AlignmentTool extends React.Component {
     //set the alignemnt to loading
     upsertAlignmentRun({
       id: alignmentId,
-      pairwiseAlignments,
+      pairwiseAlignments: pairwiseAlignments.map((alignedSequences, topIndex) => {
+        return alignedSequences.map((alignmentData, innerIndex) => {
+          return {
+            sequenceData: addedSequencesToUse[innerIndex > 0 ? topIndex : 0],
+            alignmentData
+          };
+        })
+      }),
       alignmentTracks:
         alignedSequences &&
         alignedSequences.map((alignmentData, i) => {

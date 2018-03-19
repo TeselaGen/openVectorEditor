@@ -57,7 +57,7 @@ export class AlignmentView extends React.Component {
       dimensions: { width },
       dimensions,
       height,
-      hideBottomBar = true,
+      hideBottomBar,
       alignmentVisibilityToolOptions
     } = this.props;
 
@@ -288,6 +288,8 @@ export default compose(
     const alignment = { ...alignments[alignmentId], id: alignmentId };
     const {
       alignmentTracks,
+      pairwiseAlignments,
+      pairwiseOverviewAlignmentTracks,
       loading,
       alignmentAnnotationVisibility,
       alignmentAnnotationLabelVisibility
@@ -298,13 +300,15 @@ export default compose(
         loading: true
       };
     }
-    if (!alignmentTracks)
+    if (!alignmentTracks && !pairwiseAlignments)
       return {
         noTracks: true
       };
 
     return {
+      pairwiseAlignments,
       alignmentTracks,
+      pairwiseOverviewAlignmentTracks,
       //manipulate the props coming in so we can pass a single clean prop to the visibility options tool
       alignmentVisibilityToolOptions: {
         alignmentAnnotationVisibility,
@@ -341,6 +345,12 @@ export default compose(
     renderComponent(() => {
       return "No Tracks Found";
     })
+  ),
+  branch(
+    ({ pairwiseAlignments }) => pairwiseAlignments,
+    renderComponent(props => {
+      return <PairwiseAlignmentView {...props} />;
+    })
   )
 )(AlignmentView);
 
@@ -364,5 +374,50 @@ class UncontrolledSlider extends React.Component {
         }}
       />
     );
+  }
+}
+
+class PairwiseAlignmentView extends React.Component {
+  state = {
+    currentPairwiseAlignmentIndex: undefined
+  };
+  render() {
+    const { pairwiseAlignments, pairwiseOverviewAlignmentTracks } = this.props;
+    const { currentPairwiseAlignmentIndex } = this.state;
+    if (currentPairwiseAlignmentIndex > -1) {
+      //we can render the AlignmentView directly
+      //get the alignmentTracks based on currentPairwiseAlignmentIndex
+      const alignmentTracks = pairwiseAlignments[0];
+      return (
+        <AlignmentView
+          {...{
+            ...this.props,
+            alignmentTracks,
+            handleBackButtonClicked: () => {
+              this.setState({
+                currentPairwiseAlignmentIndex: undefined
+              });
+            }
+          }}
+        />
+      );
+    } else {
+      //we haven't yet selected an alignment to view
+      // render the AlignmentView zoomed out for each track in pairwiseOverviewAlignmentTracks
+      // when the view eye icon is hit (maybe next to the name?)
+      return (
+        <AlignmentView
+          {...{
+            ...this.props,
+            alignmentTracks: pairwiseOverviewAlignmentTracks,
+            isFullyZoomedOut: true,
+            hideBottomBar: true,
+            handleSelectTrack: trackIndex => {
+              //set currentPairwiseAlignmentIndex
+            }
+          }}
+        />
+      );
+    }
   }
 }
