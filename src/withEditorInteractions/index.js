@@ -352,7 +352,10 @@ function VectorInteractionHOC(Component /* options */) {
       this.props.caretPositionUpdate(position);
     };
     selectionLayerUpdate = newSelection => {
-      let { selectionLayer = { start: -1, end: -1 } } = this.props;
+      let {
+        selectionLayer = { start: -1, end: -1 },
+        ignoreGapsOnHighlight
+      } = this.props;
       if (!newSelection) return;
       const { start, end } = newSelection;
       if (selectionLayer.start === start && selectionLayer.end === end) {
@@ -361,7 +364,8 @@ function VectorInteractionHOC(Component /* options */) {
       //we only call selectionLayerUpdate if we're actually changing something
       this.props.selectionLayerUpdate({
         start,
-        end
+        end,
+        ignoreGaps: ignoreGapsOnHighlight
       });
     };
 

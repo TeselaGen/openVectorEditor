@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Slider } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
-import { LinearView } from "../LinearView";
+import LinearView from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
@@ -207,10 +207,21 @@ export class AlignmentView extends React.Component {
                         marginWith: 0,
                         hideName: true,
                         sequenceData,
+                        editorName: "alignmentView" + i,
                         alignmentData,
                         chromatogramData,
                         height: "100%",
+                        charWidth: charWidthInLinearView,
+                        ignoreGapsOnHighlight: true,
+                        // editorDragged: (vals) => {
+                        //   console.log('vals:',vals)
+                        // },
                         selectionLayer,
+                        dimensions: {
+                          width:
+                            (alignmentData || sequenceData).sequence.length *
+                            charWidthInLinearView
+                        },
                         width:
                           (alignmentData || sequenceData).sequence.length *
                           charWidthInLinearView

@@ -73,11 +73,12 @@ export class LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
+      charWidth,
       linearViewAnnotationVisibilityOverrides,
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
-    this.charWidth = innerWidth / sequenceData.sequence.length;
+    this.charWidth = charWidth || innerWidth / sequenceData.sequence.length;
     let sequenceLength = sequenceData.sequence.length;
     const bpsPerRow = alignmentData
       ? alignmentData.sequence.length
@@ -136,6 +137,7 @@ export class LinearView extends React.Component {
             <RowItem
               {...{
                 ...rest,
+                charWidth,
                 alignmentData,
                 sequenceLength: (alignmentData || sequenceData).sequence.length,
                 width: innerWidth,

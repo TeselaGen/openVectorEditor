@@ -101,6 +101,7 @@ export default class StandaloneDemo extends React.Component {
             "redoTool",
             "cutsiteTool",
             "featureTool",
+            "alignmentTool",
             // "oligoTool",
             "orfTool",
             // "viewTool",

@@ -78,6 +78,7 @@ function SelectionLayer(props) {
                       charWidth,
                       row,
                       getGaps,
+                      ignoreGaps,
                       key: key + "caret1",
                       sequenceLength,
                       className:
@@ -94,6 +95,7 @@ function SelectionLayer(props) {
                       charWidth,
                       row,
                       getGaps,
+                      ignoreGaps,
                       key: key + "caret2",
                       sequenceLength,
                       className:

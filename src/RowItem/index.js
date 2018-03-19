@@ -221,7 +221,7 @@ export class RowItem extends React.Component {
           // onMouseUp={this.onMouseUp}
           // onMouseDown={this.onMouseDown}
         >
-          <div className="vespacer" />
+          {/* <div className="vespacer" /> */}
 
           <SelectionLayer
             color={"yellow"}

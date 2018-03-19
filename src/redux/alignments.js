@@ -9,23 +9,24 @@ import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
 // import { magicDownload } from "teselagen-react-components";
 
 const defaultAlignmentAnnotationVisibility = {
-  features: true,
+  features: false,
   translations: false,
   parts: false,
   orfs: false,
   orfTranslations: false,
-  axis: true,
+  axis: false,
   cutsites: false,
   primers: false,
   reverseSequence: false,
   lineageLines: false,
-  axisNumbers: true
+  axisNumbers: false,
+  yellowAxis: false
 };
 
 const defaultAlignmentAnnotationLabelVisibility = {
-  features: true,
-  parts: true,
-  cutsites: true
+  features: false,
+  parts: false,
+  cutsites: false
 };
 
 // ------------------------------------
