@@ -3,13 +3,17 @@ import { Icon, Button, Intent } from "@blueprintjs/core";
 import {
   FileUploadField,
   TextareaField,
-  EditableTextField
+  EditableTextField,
+  CheckboxField
 } from "teselagen-react-components";
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import axios from "axios";
 import uniqid from "uniqid";
+
+// import { Checkbox } from "material-ui";
+// import {  } from "teselagen-react-components/lib/FormComponents";
 
 export default {
   updateKeys: ["alignmentTool", "toggleFindTool"],
@@ -44,7 +48,7 @@ class AlignmentToolDropown extends React.Component {
             showCreateAlignmentDialog({
               ...this.props,
               initialValues: {
-                addedSequences: [sequenceData]
+                addedSequences: [{ ...sequenceData, isTemplate: true }]
               }
             });
           }}
@@ -70,17 +74,25 @@ const instance = axios.create({
 });
 
 class AlignmentTool extends React.Component {
-  sendSelectedDataToBackendForAlignment = async ({ addedSequences }) => {
+  state = {
+    templateSeqIndex: 0
+  };
+  sendSelectedDataToBackendForAlignment = async ({
+    addedSequences,
+    isPairwiseAlignment
+  }) => {
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
       upsertAlignmentRun
     } = this.props;
+    const { templateSeqIndex } = this.state;
+    const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
     hideModal();
     const alignmentId = uniqid();
     createNewAlignment({
       id: alignmentId,
-      name: addedSequences[0].name + " Alignment"
+      name: addedSequencesToUse[0].name + " Alignment"
     });
     //set the alignemnt to loading
     upsertAlignmentRun({
@@ -89,24 +101,30 @@ class AlignmentTool extends React.Component {
     });
 
     window.toastr.success("Alignment submitted.");
-    const { data: { alignedSequences } = {} } = await instance.post(
-      // "http://localhost:3000/alignment/run",
-      "http://j5server.teselagen.com/alignment/run",
+    const {
+      data: { alignedSequences, pairwiseAlignments } = {}
+    } = await instance.post(
+      "http://localhost:3000/alignment/run",
+      // "http://j5server.teselagen.com/alignment/run",
       {
-        sequencesToAlign: addedSequences
+        sequencesToAlign: addedSequencesToUse,
+        isPairwiseAlignment
       }
     );
-    if (!alignedSequences)
+    if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
     //set the alignemnt to loading
     upsertAlignmentRun({
       id: alignmentId,
-      alignmentTracks: alignedSequences.map((alignmentData, i) => {
-        return {
-          sequenceData: addedSequences[i],
-          alignmentData
-        };
-      })
+      pairwiseAlignments,
+      alignmentTracks:
+        alignedSequences &&
+        alignedSequences.map((alignmentData, i) => {
+          return {
+            sequenceData: addedSequencesToUse[i],
+            alignmentData
+          };
+        })
     });
   };
 
@@ -127,9 +145,10 @@ class AlignmentTool extends React.Component {
     });
     onChange([]);
   };
-  renderAddSequence = ({ fields }) => {
+  renderAddSequence = ({ fields, templateSeqIndex }) => {
     const { handleSubmit } = this.props;
-    const allFields = fields.getAll() || [];
+
+    const sequencesToAlign = fields.getAll() || [];
     return (
       <div>
         <h6>Or enter sequences in plain text format</h6>
@@ -145,9 +164,16 @@ class AlignmentTool extends React.Component {
             style={{ maxHeight: 180, overflowY: "auto" }}
             className="veAlignmentToolSelectedSequenceList"
           >
-            {allFields.map((addedSeq, index) => {
+            {sequencesToAlign.map((addedSeq, index) => {
               return (
                 <div
+                  onClick={() => {
+                    console.log("clickin");
+                    console.log("index:", index);
+                    this.setState({
+                      templateSeqIndex: index
+                    });
+                  }}
                   style={{
                     borderBottom: "1px solid lightgrey",
                     paddingBottom: 4,
@@ -166,10 +192,20 @@ class AlignmentTool extends React.Component {
                       ({addedSeq.sequence.length} bps)
                     </span>
                   </div>
+                  {index === templateSeqIndex && (
+                    <div className={"pt-tag pt-round pt-intent-primary"}>
+                      template
+                    </div>
+                  )}
 
                   <Button
-                    onClick={() => {
+                    onClick={e => {
+                      e.stopPropagation();
+                      e.preventDefault();
                       fields.remove(index);
+                      if (index === templateSeqIndex) {
+                        this.setState({ templateSeqIndex: 0 });
+                      }
                     }}
                   >
                     Remove
@@ -179,10 +215,24 @@ class AlignmentTool extends React.Component {
             })}
           </div>
 
+          <CheckboxField
+            name="isPairwiseAlignment"
+            label={
+              <div>
+                Create Pairwise Alignment{" "}
+                <span style={{ fontSize: 10 }}>
+                  Individually align each uploaded file against the template
+                  sequence (instead of creating a single Multiple Sequence
+                  Alignment)
+                </span>
+              </div>
+            }
+          />
+
           <Button
             style={{ marginTop: 15, float: "right" }}
             intent={Intent.PRIMARY}
-            disabled={allFields.length < 2}
+            disabled={sequencesToAlign.length < 2}
             onClick={handleSubmit(this.sendSelectedDataToBackendForAlignment)}
           >
             Create alignment
@@ -194,6 +244,7 @@ class AlignmentTool extends React.Component {
 
   render() {
     const { selectFromSequenceLibraryHook } = this.props;
+    const { templateSeqIndex } = this.state;
     return (
       <div style={{ padding: 20 }} className="veAlignmentTool">
         <h6>Upload files you'd like to align (.ab1, .fasta, .gb) </h6>
@@ -208,6 +259,7 @@ class AlignmentTool extends React.Component {
 
         <FieldArray
           name={`addedSequences`}
+          templateSeqIndex={templateSeqIndex}
           component={this.renderAddSequence}
         />
       </div>
@@ -259,3 +311,14 @@ const AddYourOwnSeqForm = reduxForm({
     </div>
   );
 });
+
+function array_move(arr, old_index, new_index) {
+  if (new_index >= arr.length) {
+    let k = new_index - arr.length + 1;
+    while (k--) {
+      arr.push(undefined);
+    }
+  }
+  arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+  return arr; // for testing
+}

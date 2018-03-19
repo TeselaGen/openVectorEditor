@@ -19,6 +19,7 @@ export default {
 function VisibilityOptions({
   annotationVisibility = {},
   typesToOmit = {},
+  sequenceData,
   annotationVisibilityToggle,
   annotationLabelVisibility = {},
   annotationLabelVisibilityToggle
@@ -32,6 +33,12 @@ function VisibilityOptions({
           !typesToOmit[annotationName]
         )
           return null;
+        let count;
+        let hasCount = false;
+        if (sequenceData[annotationName]) {
+          hasCount = true;
+          count = Object.keys(sequenceData[annotationName]).length;
+        }
         return (
           <div key={annotationName}>
             <Checkbox
@@ -39,7 +46,20 @@ function VisibilityOptions({
                 annotationVisibilityToggle(annotationName);
               }}
               checked={visible}
-              label={startCase(annotationName)}
+              label={
+                <div>
+                  {startCase(annotationName)}{" "}
+                  {hasCount && (
+                    <div
+                      style={{ marginLeft: 4 }}
+                      className={"pt-tag pt-round"}
+                    >
+                      {" "}
+                      {count}
+                    </div>
+                  )}
+                </div>
+              }
             />
           </div>
         );
