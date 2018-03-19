@@ -1,9 +1,12 @@
-import { tidyUpSequenceData, generateSequenceData } from "ve-sequence-utils";
+import {
+  tidyUpSequenceData /* generateSequenceData */
+} from "ve-sequence-utils";
 
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
-import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
+// import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
 import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
+// import { magicDownload } from "teselagen-react-components";
 
 const defaultAlignmentAnnotationVisibility = {
   features: true,
@@ -65,16 +68,16 @@ let alignmentTracks = [
   }
 ];
 
-function shuffle(string, n, char) {
-  let arr = string.split("");
-  let charToUse = char || " ";
+// function shuffle(string, n, char) {
+//   let arr = string.split("");
+//   let charToUse = char || " ";
 
-  while (n--) {
-    arr.splice(Math.floor(Math.random() * (arr.length + 1)), 0, charToUse);
-  }
+//   while (n--) {
+//     arr.splice(Math.floor(Math.random() * (arr.length + 1)), 0, charToUse);
+//   }
 
-  return arr.join("");
-} //shuffle
+//   return arr.join("");
+// } //shuffle
 
 // let alignmentTracks = [1, 2, 3].map(() => {
 //   const sequenceData = generateSequenceData({ sequenceLength: 10 });

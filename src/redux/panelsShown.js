@@ -166,13 +166,13 @@ export default createReducer(
   },
   [
     [
-      {
-        id: "alignmentRun1",
-        type: "alignment",
-        name: "Test Alignment ",
-        active: true
-        // fullScreen: true
-      },
+      // {
+      //   id: "alignmentRun1",
+      //   type: "alignment",
+      //   name: "Test Alignment ",
+      //   active: true
+      //   // fullScreen: true
+      // },
       // {
       //   id: "jbeiAlignment1",
       //   type: "alignment",

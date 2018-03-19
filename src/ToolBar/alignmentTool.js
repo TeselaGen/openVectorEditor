@@ -90,8 +90,8 @@ class AlignmentTool extends React.Component {
 
     window.toastr.success("Alignment submitted.");
     const { data: { alignedSequences } = {} } = await instance.post(
-      "http://localhost:3000/alignment/run",
-      // "http://j5server.teselagen.com/alignment/run",
+      // "http://localhost:3000/alignment/run",
+      "http://j5server.teselagen.com/alignment/run",
       {
         sequencesToAlign: addedSequences
       }
