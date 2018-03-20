@@ -4,6 +4,8 @@ import "./style.css";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
+export { default as withEditorProps } from "./withEditorProps";
+export { default as withEditorInteractions } from "./withEditorInteractions";
 //export components
 export {
   default as CircularView,

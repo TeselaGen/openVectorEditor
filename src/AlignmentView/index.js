@@ -6,6 +6,7 @@ import LinearView from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
+import withEditorProps from "../withEditorProps";
 import "./style.css";
 
 const nameDivWidth = 140;
@@ -285,6 +286,7 @@ export class AlignmentView extends React.Component {
 }
 
 export default compose(
+  withEditorProps,
   connect((state, ownProps) => {
     const { id: alignmentId, alignments = {}, upsertAlignmentRun } = ownProps;
     const alignment = { ...alignments[alignmentId], id: alignmentId };
