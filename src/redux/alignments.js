@@ -118,7 +118,7 @@ function addHighlightedDifferences(alignmentTracks) {
       ...track,
       sequenceData,
       matchHighlightRanges,
-      selectionLayer: matchHighlightRanges
+      additionalSelectionLayers: matchHighlightRanges
         .filter(({ isMatch }) => !isMatch)
         .map(range => {
           return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
