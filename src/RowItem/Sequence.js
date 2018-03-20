@@ -26,10 +26,10 @@ class Sequence extends React.Component {
     };
     const seqLen = sequence.length;
     const numChunks = Math.ceil(seqLen / chunkSize);
-    const chunkWidth = width / numChunks;
+    // const chunkWidth = width / numChunks;
+    const chunkWidth = chunkSize * charWidth;
     if (scrollData) {
       const { fractionScrolled, viewportWidth } = scrollData;
-      // const effectiveScrollWidth
       const visibleStart = fractionScrolled * (width - viewportWidth);
       const visibleEnd = visibleStart + viewportWidth;
 
@@ -52,8 +52,10 @@ class Sequence extends React.Component {
             {times(numChunks, i => {
               const seqChunk = getChunk(sequence, chunkSize, i);
 
-              const x = i * chunkWidth + i / 2 * charWidth + i * charWidth;
-              const textLength = charWidth * seqChunk.length;
+              const fudge = charWidth * 0.4;
+
+              const textLength = charWidth * seqChunk.length - fudge;
+              const x = i * chunkWidth;
 
               if (x > visibleEnd || x + textLength < visibleStart) return null;
               return (
