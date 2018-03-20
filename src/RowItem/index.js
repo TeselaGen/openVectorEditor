@@ -22,6 +22,7 @@ import Caret from "./Caret";
 import Parts from "./Parts";
 import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
+
 function noop() {}
 
 export class RowItem extends React.Component {
@@ -562,7 +563,7 @@ export class RowItem extends React.Component {
 export default RowItem;
 
 function getGapMap(sequence) {
-  const gapMap = []; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
+  const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
   sequence.split("").forEach(char => {
     if (char === "-") {
       gapMap[Math.max(0, gapMap.length - 1)] =

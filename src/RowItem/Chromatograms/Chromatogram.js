@@ -1,5 +1,4 @@
 import React from "react";
-// import uuidv4 from "uuidv4";
 
 class Chromatogram extends React.Component {
   componentDidMount() {
@@ -22,7 +21,7 @@ class Chromatogram extends React.Component {
       peakCanvas: this.canvasRef,
       traceData: chromatogramData,
       charWidth,
-      startBp: row.start + getGaps(0).gapsBefore,
+      startBp: row.start,
       endBp: row.end,
       getGaps
     });
@@ -60,7 +59,7 @@ export default Chromatogram;
 
 function drawTrace({
   traceData,
-  charWidth = 12,
+  charWidth,
   startBp,
   peakCanvas,
   endBp,
@@ -77,16 +76,13 @@ function drawTrace({
 
   const formattedPeaks = { a: [], t: [], g: [], c: [] };
   const bottomBuffer = 0;
-  // const bottomBuffer = 50;
-  //   const baseBuffer = 0;
-  // const baseBuffer = 35;
   const maxHeight = peakCanvas.height;
-  const bpsToDrawLength =
-    endBp - startBp + 1 + getGaps({ start: startBp, end: endBp }).gapsInside;
-  const maxWidth = bpsToDrawLength * charWidth;
+  const endBpIncludingGaps =
+    endBp + 1 + getGaps(0).gapsBefore + getGaps({ start: startBp, end: endBp }).gapsInside;
+  const maxWidth = endBpIncludingGaps * charWidth;
   peakCanvas.width = maxWidth;
   ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, maxWidth, peakCanvas.height);
+  ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
   const scaledHeight = maxHeight - bottomBuffer;
   let scalePct = 0;
 
@@ -124,10 +120,14 @@ function drawTrace({
     // looping through the entire sequence length
     for (let baseIndex = startBp; baseIndex < endBp; baseIndex++) {
       // each base's beginning and end of its peak
-      const startBasePos = traceData.basePos[baseIndex];
-      const endBasePos = traceData.basePos[baseIndex + 1];
-      //grab the start and end (43, 53) , (53, 70) ...
+      const startBasePos = traceData.basePos[baseIndex] - 5;
+      const endBasePos = traceData.basePos[baseIndex + 1] - 5;
+      // grab the start and end (43, 53) , (53, 70) ...
       // looping through each base's peak
+      // console.log('base', traceData.baseCalls[baseIndex]);
+      // console.log('baseIndex', baseIndex);
+      // console.log('getGaps', getGaps(baseIndex).gapsBefore);
+      
       for (
         let innerIndex = startBasePos;
         innerIndex < endBasePos;
@@ -136,24 +136,35 @@ function drawTrace({
         // innerIndex = 43, 44, 45, ... 52
         // const element = array[baseIndex];
         // shift x-position of the beginning of the base's peak if there are gaps before the base
-        const startXPosition =
-          (baseIndex - startBp + getGaps(innerIndex).gapsBefore) * charWidth +
-          charWidth / 3;
+        const scalingFactor = charWidth / (endBasePos - startBasePos);
+        let startXPosition = (baseIndex + getGaps(baseIndex).gapsBefore) * charWidth;
+
+        if (getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore) {
+          if (innerIndex === startBasePos) {
+            ctx.moveTo(
+            startXPosition + scalingFactor * (innerIndex - startBasePos),
+            scaledHeight - trace[innerIndex]
+            );
+          }
+          ctx.lineTo(
+            startXPosition + scalingFactor * (innerIndex - startBasePos),
+            scaledHeight - trace[innerIndex]
+          );
+        } else {
+          startXPosition = (baseIndex + getGaps(baseIndex - 1).gapsBefore) * charWidth;
+          ctx.lineTo(
+            startXPosition + scalingFactor * (innerIndex - startBasePos),
+            scaledHeight - trace[innerIndex]
+          );
+        }
+        
+          //  + (charWidth / 3);
         // const endXPosition = (baseIndex + 1) * charWidth
-
         // const intervalsBetweenBases =  endBasePos - startBasePos
-
-        // // const scaledStartXPosition = traceData.basePos[startBasePos - 1] || 0
-
+        // const scaledStartXPosition = traceData.basePos[startBasePos - 1] || 0
         // const scaledStartXPosition = startBasePos - traceData.basePos[0]
         // const unscaledXPosition = innerIndex - traceData.basePos[0]
-
-        const scalingFactor = charWidth / (endBasePos - startBasePos);
         // baseIndex < charWidth && console.log('startXPosition, scalingFactor, innerIndex - startBasePos:',startXPosition, scalingFactor, innerIndex - startBasePos)
-        ctx.lineTo(
-          startXPosition + scalingFactor * (innerIndex - startBasePos),
-          scaledHeight - trace[innerIndex]
-        );
         // ctx.moveTo(startXPosition + scalingFactor * (innerIndex - startBasePos), scaledHeight - trace[innerIndex]);
       }
     }
@@ -162,6 +173,8 @@ function drawTrace({
     // }
     ctx.strokeStyle = lineColor;
     ctx.stroke();
+      // console.log("startBp", startBp);
+      // console.log("endBp", endBp);
   };
 
   //   this.drawBases = function () {
@@ -196,17 +209,20 @@ function drawTrace({
     for (let count = 0; count < traceData.qualNums.length; count++) {
       // ctx.lineWidth = "1";
       ctx.rect(
-        // count * charWidth,
+        // (count + getGaps(count - 1).gapsBefore) * charWidth,
         (count + getGaps(count).gapsBefore) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,
         charWidth,
         traceData.qualNums[count] * scalePctQual
       );
+      // console.log('count', count);
+      // console.log('getGaps(count)', getGaps(count));
     }
-    ctx.strokeStyle = "#a9a9e6";
-    ctx.fillStyle = "#a9a9e6";
-    // ctx.stroke();
+    ctx.fillStyle = "#f4f1fa";
     ctx.fill();
+    // ctx.strokeStyle = "black";
+    ctx.strokeStyle = "#e9e3f4";
+    ctx.stroke();
   };
 
   this.paintCanvas = function() {
