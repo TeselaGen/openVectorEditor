@@ -6,7 +6,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
-import {Button} from '@blueprintjs/core';
+import { Switch } from "@blueprintjs/core";
 
 import store from "./store";
 import { render } from "react-dom";
@@ -53,68 +53,106 @@ updateEditor(store, "DemoEditor", {
   sequenceData: exampleSequenceData
 });
 
-function Demo() {
-  return (
-    <Provider store={store}>
-      <Router>
-        <div>
-          {/* <GenbankView editorName={"DemoEditor"} /> */}
-          {/* <OrfProperties editorName={"DemoEditor"} /> */}
-          {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
-          {links}
-          <Route exact path="/" render={() => <Redirect to="/Editor" />} />
-          <Route
-            render={() => {
-              return <div   style={{height: 600, display: "flex", flexDirection: "column", padding: 40,}}  >
-                <div  style={{display: 'flex', flexDirection: 'column', flexWrap: 'wrap', justifyContent: 'center'}}  >
+class Demo extends React.Component {
+  state = {
+    previewMode: false
+  };
 
-                <Editor editorName="DemoEditor" />
-                </div>
-                <div style={{display: "flex", margin: 20}}     ></div>
-              </div>
-            }}
-            path="/Editor"
-          />
-          <Route
-            render={() => {
-              return <StandaloneDemo />;
-            }}
-            path="/Standalone"
-          />
-          <Route
-            render={() => {
-              return <CircularView editorName="DemoEditor" />;
-            }}
-            path="/CircularView"
-          />
-          <Route
-            render={() => {
-              return <DigestTool editorName="DemoEditor" />;
-            }}
-            path="/DigestTool"
-          />
-          <Route
-            render={() => {
-              return <RowView editorName="DemoEditor" />;
-            }}
-            path="/RowView"
-          />
-          <Route
-            render={() => {
-              return <LinearView editorName="DemoEditor" />;
-            }}
-            path="/LinearView"
-          />
-          <Route
-            render={() => {
-              return <ToolBar editorName="DemoEditor" />;
-            }}
-            path="/ToolBar"
-          />
-        </div>
-      </Router>
-    </Provider>
-  );
+  changePreviewMode = e =>
+    this.setState({
+      previewMode: e.target.checked
+    });
+
+  render() {
+    const { previewMode } = this.state;
+    return (
+      <Provider store={store}>
+        <Router>
+          <div>
+            {/* <GenbankView editorName={"DemoEditor"} /> */}
+            {/* <OrfProperties editorName={"DemoEditor"} /> */}
+            {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
+            {links}
+            <Route exact path="/" render={() => <Redirect to="/Editor" />} />
+            <Route
+              render={() => {
+                return (
+                  <div>
+                    <Switch
+                      checked={previewMode}
+                      label="Preview Mode"
+                      onChange={this.changePreviewMode}
+                      style={{ margin: 30 }}
+                    />
+                    <div
+                      style={{
+                        height: 600,
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: 40
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          flexWrap: "wrap",
+                          justifyContent: "center"
+                        }}
+                      >
+                        <Editor
+                          editorName="DemoEditor"
+                          previewMode={previewMode}
+                        />
+                      </div>
+                      <div style={{ display: "flex", margin: 20 }} />
+                    </div>
+                  </div>
+                );
+              }}
+              path="/Editor"
+            />
+            <Route
+              render={() => {
+                return <StandaloneDemo />;
+              }}
+              path="/Standalone"
+            />
+            <Route
+              render={() => {
+                return <CircularView editorName="DemoEditor" />;
+              }}
+              path="/CircularView"
+            />
+            <Route
+              render={() => {
+                return <DigestTool editorName="DemoEditor" />;
+              }}
+              path="/DigestTool"
+            />
+            <Route
+              render={() => {
+                return <RowView editorName="DemoEditor" />;
+              }}
+              path="/RowView"
+            />
+            <Route
+              render={() => {
+                return <LinearView editorName="DemoEditor" />;
+              }}
+              path="/LinearView"
+            />
+            <Route
+              render={() => {
+                return <ToolBar editorName="DemoEditor" />;
+              }}
+              path="/ToolBar"
+            />
+          </div>
+        </Router>
+      </Provider>
+    );
+  }
 }
 
 render(<Demo />, document.querySelector("#demo"));

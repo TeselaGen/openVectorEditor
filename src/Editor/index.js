@@ -1,4 +1,3 @@
-import LinearView from "../LinearView";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
@@ -17,12 +16,23 @@ import {
 } from "tg-react-reflex";
 /* eslint-enable */
 
-import { Hotkey, Hotkeys, HotkeysTarget, Icon } from "@blueprintjs/core";
+import {
+  Hotkey,
+  Hotkeys,
+  HotkeysTarget,
+  Icon,
+  Button,
+  Classes,
+  Intent
+} from "@blueprintjs/core";
 
 import { flatMap, map, filter } from "lodash";
 
 import ToolBar from "../ToolBar";
-import CircularView from "../CircularView";
+import CircularView, {
+  CircularView as CircularViewUnconnected
+} from "../CircularView";
+import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import withEditorProps from "../withEditorProps";
@@ -90,7 +100,8 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
 
 export class Editor extends React.Component {
   state = {
-    tabDragging: false
+    tabDragging: false,
+    previewModeFullscreen: false
   };
   // componentWillMount(){
   //   console.log('this.props:',this.props)
@@ -100,6 +111,13 @@ export class Editor extends React.Component {
   //   //     return "You may not want to leave the editor if you have any unsaved work.";
   //   // };
   // }
+
+  togglePreviewFullscreen = () => {
+    this.setState({
+      previewModeFullscreen: !this.state.previewModeFullscreen
+    });
+  };
+
   handlePrint = () => {
     console.warn("handlePrint");
   };
@@ -290,7 +308,7 @@ export class Editor extends React.Component {
           preventDefault
           stopPropagation
           global={true}
-          combo={"cmd+s"}
+          combo={"mod+s"}
           label="Save"
           onKeyDown={handleSave}
         />
@@ -299,7 +317,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Print"
           global
-          combo="cmd+p"
+          combo="mod+p"
           onKeyDown={this.handlePrint}
         />
         <Hotkey
@@ -307,7 +325,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Invert Selection"
           global
-          combo="cmd+i"
+          combo="mod+i"
           onKeyDown={() => this.handleInverse(this)}
         />
         <Hotkey
@@ -315,7 +333,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Toggle Edit Mode"
           global
-          combo="cmd+e"
+          combo="mod+e"
           onKeyDown={toggleReadOnlyMode}
         />
         {/* TNR: these are here just to be added to the blueprint generated hotkey dialog but their actual handlers live elsewhere */}
@@ -324,21 +342,21 @@ export class Editor extends React.Component {
           stopPropagation
           label="Cut"
           global
-          combo="cmd+x"
+          combo="mod+x"
         />
         <Hotkey
           preventDefault
           stopPropagation
           label="Copy"
           global
-          combo="cmd+c"
+          combo="mod+c"
         />
         <Hotkey
           preventDefault
           stopPropagation
           label="Paste"
           global
-          combo="cmd+p"
+          combo="mod+p"
         />
         <Hotkey
           label="Delete (edit mode only)"
@@ -353,7 +371,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Undo"
           global
-          combo="cmd+z"
+          combo="mod+z"
           onKeyDown={undo}
         />
         <Hotkey
@@ -361,7 +379,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Redo"
           global
-          combo="cmd+shift+z"
+          combo="mod+shift+z"
           onKeyDown={redo}
         />
         <Hotkey
@@ -369,7 +387,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Find"
           global
-          combo="cmd+f"
+          combo="mod+f"
           onKeyDown={toggleFindTool}
         />
         <Hotkey
@@ -377,7 +395,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Select All"
           global
-          combo="cmd+a"
+          combo="mod+a"
           onKeyDown={selectAll}
         />
         <Hotkey
@@ -385,7 +403,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Reverse Complement Selection"
           global
-          combo="cmd+e"
+          combo="mod+e"
           onKeyDown={this.handleReverseComplementSelection}
         />
         <Hotkey
@@ -393,7 +411,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="Rotate To Caret Position"
           global
-          combo="cmd+b"
+          combo="mod+b"
           onKeyDown={handleRotateToCaretPosition}
         />
         <Hotkey
@@ -401,7 +419,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="New Feature"
           global
-          combo="cmd+k"
+          combo="mod+k"
           onKeyDown={this.handleNewFeature}
         />
         <Hotkey
@@ -409,7 +427,7 @@ export class Editor extends React.Component {
           stopPropagation
           label="New Part"
           global
-          combo="cmd+l"
+          combo="mod+l"
           onKeyDown={this.handleNewPart}
         />
       </Hotkeys>
@@ -422,6 +440,7 @@ export class Editor extends React.Component {
   };
 
   render() {
+    const { previewModeFullscreen } = this.state;
     const {
       doNotUseAbsolutePosition = false,
 
@@ -439,15 +458,55 @@ export class Editor extends React.Component {
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
-      closePanel
-
-      // ...rest
+      closePanel,
+      previewMode,
+      sequenceData = {}
     } = this.props;
 
     const sharedProps = {
       editorName,
       ...this.props
     };
+
+    let editorDimensions = {
+      height,
+      dimensions: {
+        height
+      }
+    };
+
+    if (previewMode && !previewModeFullscreen) {
+      const Panel = sequenceData.circular
+        ? CircularViewUnconnected
+        : LinearViewUnconnected;
+      return (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column"
+          }}
+        >
+          <Panel
+            {...sharedProps}
+            {...editorDimensions}
+            annotationLabelVisibility={{
+              features: false,
+              parts: false,
+              cutsites: false,
+              primers: false
+            }}
+          />
+          <Button
+            className={Classes.MINIMAL}
+            intent={Intent.PRIMARY}
+            text="View Fullscreen"
+            onClick={this.togglePreviewFullscreen}
+          />
+        </div>
+      );
+    }
+
     const { tabDragging } = this.state;
     let w = window,
       d = document,
@@ -487,16 +546,13 @@ export class Editor extends React.Component {
         return;
       }
 
-      let editorDimensions = {
-        height,
-        dimensions: {
-          height
-        },
-        ...(isFullScreen && {
+      if (isFullScreen) {
+        editorDimensions = {
+          ...editorDimensions,
           ...windowDimensions,
           dimensions: windowDimensions
-        })
-      };
+        };
+      }
 
       const Panel = panelMap[activePanelType];
       let panel = Panel ? (
@@ -721,14 +777,41 @@ export class Editor extends React.Component {
       );
       return toReturn;
     });
+
     return (
       <DropHandler
         updateSequenceData={updateSequenceData}
-        style={{ width: "100%", position: "relative" }}
-        className={"veEditor"}
+        style={{
+          width: "100%",
+          position: "relative",
+          ...(previewModeFullscreen && {
+            background: "white",
+            zIndex: 15000,
+            position: "fixed",
+            paddingTop: 20,
+            top: 0,
+            left: 0,
+            ...windowDimensions
+          })
+        }}
+        className="veEditor"
       >
         {/* <AlignmentToolInner /> */}
         {/* <DrawChromatogram /> */}
+        {previewModeFullscreen && (
+          <Icon
+            onClick={this.togglePreviewFullscreen}
+            icon="minimize"
+            className={"ve-clickable ve-close-panel-button"}
+            style={{
+              zIndex: 15001,
+              position: "fixed",
+              display: "inherit",
+              top: 15,
+              right: 15
+            }}
+          />
+        )}
         <div
           style={{
             width: "100%",
@@ -790,6 +873,4 @@ export class Editor extends React.Component {
   }
 }
 
-HotkeysTarget(Editor);
-
-export default compose(withEditorProps)(Editor);
+export default compose(withEditorProps, HotkeysTarget)(Editor);

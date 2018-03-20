@@ -10,47 +10,7 @@ import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 
 let div;
 
-export default function createSequenceInputPopup(props) {
-  // function closeInput() {
-  //   sequenceInputBubble.remove();
-  // }
-  div = document.createElement("div");
-  div.style.zIndex = "4000";
-  div.id = "sequenceInputBubble";
-  document.body.appendChild(div);
-
-  render(<SequenceInput {...props} />, div);
-  let caretEl = document.querySelector(".veRowViewCaret");
-
-  // let body = $(document.body);
-  // let caretEl = body.find(".veRowViewCaret");
-  if (!caretEl === 0) {
-    //todo: eventually we should probably jump to the row view caret if it isn't visible
-    // caretEl = body.find(".veCaretSVG");
-    caretEl = document.querySelector(".veCaretSVG");
-  }
-  if (!caretEl) {
-    return console.error(
-      "there must be a caret element present in order to display the insertSequence popup"
-    );
-  }
-
-  new Tether({
-    element: div,
-    target: caretEl,
-    attachment: "top left",
-    targetAttachment: "bottom left",
-    offset: "-15px 22px",
-    constraints: [
-      {
-        to: "scrollParent",
-        // pin: true,
-        attachment: "together"
-      }
-    ]
-  });
-}
-class SequenceInput extends React.Component {
+class SequenceInputNoHotkeys extends React.Component {
   state = {
     bpsToInsert: "",
     hasTempError: false
@@ -167,4 +127,46 @@ class SequenceInput extends React.Component {
     );
   }
 }
-HotkeysTarget(SequenceInput);
+
+const SequenceInput = HotkeysTarget(SequenceInputNoHotkeys);
+
+export default function createSequenceInputPopup(props) {
+  // function closeInput() {
+  //   sequenceInputBubble.remove();
+  // }
+  div = document.createElement("div");
+  div.style.zIndex = "4000";
+  div.id = "sequenceInputBubble";
+  document.body.appendChild(div);
+
+  render(<SequenceInput {...props} />, div);
+  let caretEl = document.querySelector(".veRowViewCaret");
+
+  // let body = $(document.body);
+  // let caretEl = body.find(".veRowViewCaret");
+  if (!caretEl === 0) {
+    //todo: eventually we should probably jump to the row view caret if it isn't visible
+    // caretEl = body.find(".veCaretSVG");
+    caretEl = document.querySelector(".veCaretSVG");
+  }
+  if (!caretEl) {
+    return console.error(
+      "there must be a caret element present in order to display the insertSequence popup"
+    );
+  }
+
+  new Tether({
+    element: div,
+    target: caretEl,
+    attachment: "top left",
+    targetAttachment: "bottom left",
+    offset: "-15px 22px",
+    constraints: [
+      {
+        to: "scrollParent",
+        // pin: true,
+        attachment: "together"
+      }
+    ]
+  });
+}

@@ -18,7 +18,7 @@ function Primers({
   forceInlinePrimerLabels = true,
   forceOuterPrimerLabels = true,
   spaceBetweenAnnotations = 2,
-  noPrimerLabels = false,
+  showPrimerLabels = true,
   primerHeight = 10,
   primerClicked = noop,
   primerRightClicked = noop,
@@ -78,7 +78,7 @@ function Primers({
     annotationRadius = radius + annotationCopy.yOffset * totalAnnotationHeight;
     //check if annotation name will fit
     let labelAngle = annotation.name.length * 9 / annotationRadius;
-    if (!forceOuterPrimerLabels && !noPrimerLabels) {
+    if (!forceOuterPrimerLabels && showPrimerLabels) {
       labelFits = labelAngle < totalAngle;
       if (!labelFits || forceInlinePrimerLabels) {
         //if the label doesn't fit within the annotation, draw it to the side
@@ -107,7 +107,7 @@ function Primers({
     //     return
     // }
 
-    if (!labelFits && !noPrimerLabels) {
+    if (!labelFits && showPrimerLabels) {
       //add labels to the exported label array (to be drawn by the label component)
       labels[annotation.id] = {
         annotationCenterAngle: centerAngle,
@@ -158,7 +158,7 @@ function Primers({
           totalAngle,
           annotationRadius,
           labelFits,
-          noPrimerLabels,
+          showPrimerLabels,
           labelCenter,
           primerHeight
         }}
@@ -191,7 +191,7 @@ const DrawPrimer = withHover(
     totalAngle,
     annotationRadius,
     labelFits,
-    noPrimerLabels,
+    showPrimerLabels,
     labelCenter,
     primerHeight
   }) => {
@@ -216,7 +216,7 @@ const DrawPrimer = withHover(
           />
         </PositionAnnotationOnCircle>
         {labelFits &&
-          !noPrimerLabels && (
+          showPrimerLabels && (
             <PositionAnnotationOnCircle
               sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
               eAngle={labelCenter + Math.PI}

@@ -135,7 +135,8 @@ export class CircularView extends React.Component {
     let {
       features: showFeatureLabels = true,
       parts: showPartLabels = true,
-      cutsites: showCutsiteLabels = true
+      cutsites: showCutsiteLabels = true,
+      primers: showPrimerLabels = true
     } = annotationLabelVisibility;
     let {
       features: maxFeaturesToDisplay = 50,
@@ -320,6 +321,7 @@ export class CircularView extends React.Component {
         let results = Primers({
           radius,
           primerClicked,
+          showPrimerLabels,
           primerRightClicked,
           primers: annotationsToPass,
           annotationHeight,
