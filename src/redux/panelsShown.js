@@ -182,8 +182,8 @@ export default createReducer(
       // },
       {
         id: "sequence",
-        name: "Sequence Map"
-        // active: true
+        name: "Sequence Map",
+        active: true
         // fullScreen: true
       }
     ],
