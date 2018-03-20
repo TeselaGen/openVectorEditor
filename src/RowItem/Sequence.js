@@ -1,4 +1,8 @@
 import React from "react";
+import { times } from "lodash";
+
+const getChunk = (sequence, chunkSize, chunkNumber) =>
+  sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
 
 class Sequence extends React.Component {
   render() {
@@ -10,7 +14,9 @@ class Sequence extends React.Component {
       length,
       height,
       className,
-      startOffset = 0
+      startOffset = 0,
+      chunkSize = 100,
+      scrollData
     } = this.props;
     let width = length * charWidth;
     let style = {
@@ -18,33 +24,92 @@ class Sequence extends React.Component {
       height,
       ...containerStyle
     };
-    let textAttrs = {
-      x: 0,
-      y: height,
-      textLength: width,
-      lengthAdjust: "spacing"
-    };
+    const seqLen = sequence.length;
+    const numChunks = Math.ceil(seqLen / chunkSize);
+    const chunkWidth = width / numChunks;
+    if (scrollData) {
+      const { fractionScrolled, viewportWidth } = scrollData;
+      // const effectiveScrollWidth
+      const visibleStart = fractionScrolled * (width - viewportWidth);
+      const visibleEnd = visibleStart + viewportWidth;
 
-    return (
-      <div style={style} className={(className ? className : "") + " Sequence"}>
-        <svg
-          style={{
-            left: startOffset * charWidth,
-            height,
-            position: "absolute"
-          }}
-          ref="rowViewTextContainer"
-          className="rowViewTextContainer"
-          width={width}
-          height={height}
+      return (
+        <div
+          style={style}
+          className={(className ? className : "") + " Sequence"}
         >
-          <text className={"ve-monospace-font"} {...textAttrs}>
-            {sequence}
-          </text>
-        </svg>
-        {children}
-      </div>
-    );
+          <svg
+            style={{
+              left: startOffset * charWidth,
+              height,
+              position: "absolute"
+            }}
+            ref="rowViewTextContainer"
+            className="rowViewTextContainer"
+            width={width}
+            height={height}
+          >
+            {times(numChunks, i => {
+              const seqChunk = getChunk(sequence, chunkSize, i);
+
+              const x = i * chunkWidth + i / 2 * charWidth + i * charWidth;
+              const textLength = charWidth * seqChunk.length;
+
+              if (x > visibleEnd || x + textLength < visibleStart) return null;
+              return (
+                <text
+                  key={i}
+                  className={"ve-monospace-font"}
+                  {...{
+                    // x: i * chunkWidth + i/2 * charWidth ,
+                    // textLength: charWidth * seqChunk.length - charWidth,
+                    x,
+                    textLength,
+                    y: height,
+                    lengthAdjust: "spacing"
+                  }}
+                >
+                  {seqChunk}
+                </text>
+              );
+            })}
+          </svg>
+          {children}
+        </div>
+      );
+    } else {
+      return (
+        <div
+          style={style}
+          className={(className ? className : "") + " Sequence"}
+        >
+          <svg
+            style={{
+              left: startOffset * charWidth,
+              height,
+              position: "absolute"
+            }}
+            ref="rowViewTextContainer"
+            className="rowViewTextContainer"
+            width={width}
+            height={height}
+          >
+            <text
+              className={"ve-monospace-font"}
+              {...{
+                x: 0,
+                y: height,
+                textLength: width,
+                lengthAdjust: "spacing"
+              }}
+            >
+              {sequence}
+            </text>
+          </svg>
+          {children}
+        </div>
+      );
+    }
   }
 }
 

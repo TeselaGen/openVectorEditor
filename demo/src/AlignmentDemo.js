@@ -14,7 +14,7 @@ export default class StandaloneDemo extends React.Component {
           editorName: "MppViewer",
           id: alignmentRunData.id,
           dimensions: {
-            width: 900
+            width: 1500
           },
           minimapLaneHeight: 10,
           minimapLaneSpacing: 2,
