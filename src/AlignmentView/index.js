@@ -8,6 +8,7 @@ import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
+import { isFunction } from "util";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -58,6 +59,8 @@ export class AlignmentView extends React.Component {
       dimensions: { width },
       dimensions,
       height,
+      minimapLaneHeight,
+      minimapLaneSpacing,
       hideBottomBar,
       linearViewOptions,
       alignmentVisibilityToolOptions
@@ -137,7 +140,7 @@ export class AlignmentView extends React.Component {
         >
           <div
             className={"alignmentTrackNames"}
-            style={{ width: nameDivWidth, flex: 1 }}
+            style={{ width: nameDivWidth }}
           >
             {alignmentTracks.map((track, i) => {
               const { alignmentHeights } = this.state;
@@ -219,7 +222,16 @@ export class AlignmentView extends React.Component {
                         // editorDragged: (vals) => {
                         //   console.log('vals:',vals)
                         // },
-                        linearViewOptions,
+                        ...(linearViewOptions &&
+                          (isFunction(linearViewOptions)
+                            ? linearViewOptions({
+                                index: i,
+                                alignmentVisibilityToolOptions,
+                                sequenceData,
+                                alignmentData,
+                                chromatogramData
+                              })
+                            : linearViewOptions)),
                         additionalSelectionLayers,
                         dimensions: {
                           width:
@@ -273,6 +285,8 @@ export class AlignmentView extends React.Component {
                 dimensions: {
                   width: Math.max(dimensions.width - nameDivWidth, 10) || 10
                 },
+                laneHeight: minimapLaneHeight,
+                laneSpacing: minimapLaneSpacing,
                 percentScrolled,
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView()
               }}

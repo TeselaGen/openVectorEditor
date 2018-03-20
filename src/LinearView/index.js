@@ -69,6 +69,7 @@ export class LinearView extends React.Component {
       editorClicked = noop,
       editorDragStopped = noop,
       width = 400,
+      tickSpacing,
       backgroundRightClicked = noop,
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
@@ -142,7 +143,7 @@ export class LinearView extends React.Component {
                 sequenceLength: (alignmentData || sequenceData).sequence.length,
                 width: innerWidth,
                 bpsPerRow,
-                tickSpacing: Math.floor(sequenceLength / 10),
+                tickSpacing: tickSpacing || Math.floor(sequenceLength / 10),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   yellowAxis: true,

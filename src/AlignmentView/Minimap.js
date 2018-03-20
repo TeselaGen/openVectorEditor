@@ -3,7 +3,6 @@ import Draggable from "react-draggable";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 
-const laneHeight = 20;
 export default class Minimap extends React.Component {
   onDrag = (e, { x }) => {
     const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
@@ -54,7 +53,9 @@ export default class Minimap extends React.Component {
     const {
       alignmentTracks = [],
       dimensions: { width = 200 },
-      style = {}
+      style = {},
+      laneHeight = 17,
+      laneSpacing = 3
     } = this.props;
     const [template, ...nonTemplates] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
@@ -101,7 +102,7 @@ export default class Minimap extends React.Component {
                 <rect
                   key={i + "-" + index}
                   y={laneHeight * i}
-                  height={laneHeight - 3}
+                  height={laneHeight - laneSpacing}
                   fill={range.isMatch ? "grey" : "red"}
                   {...{ x: xStart, width }}
                 />

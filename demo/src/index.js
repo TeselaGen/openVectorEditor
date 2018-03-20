@@ -26,6 +26,8 @@ import {
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
+import AlignmentDemo from "./AlignmentDemo";
+
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
 // import _CutsiteProperties from "../../src/helperComponents/PropertiesDialog/CutsiteProperties";
@@ -35,6 +37,7 @@ import StandaloneDemo from "./StandaloneDemo";
 const links = [
   { name: "Editor", url: "Editor" },
   { name: "Standalone", url: "Standalone" },
+  { name: "Alignment", url: "Alignment" },
   { name: "CircularView", url: "CircularView" },
   { name: "DigestTool", url: "DigestTool" },
   { name: "RowView", url: "RowView" },
@@ -117,6 +120,12 @@ class Demo extends React.Component {
                 return <StandaloneDemo />;
               }}
               path="/Standalone"
+            />
+            <Route
+              render={() => {
+                return <AlignmentDemo />;
+              }}
+              path="/Alignment"
             />
             <Route
               render={() => {
