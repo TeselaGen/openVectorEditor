@@ -58,6 +58,7 @@ export class AlignmentView extends React.Component {
       dimensions,
       height,
       hideBottomBar,
+      linearViewOptions,
       alignmentVisibilityToolOptions
     } = this.props;
 
@@ -217,6 +218,7 @@ export class AlignmentView extends React.Component {
                         // editorDragged: (vals) => {
                         //   console.log('vals:',vals)
                         // },
+                        linearViewOptions,
                         selectionLayer,
                         dimensions: {
                           width:
