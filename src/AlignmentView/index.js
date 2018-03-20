@@ -167,7 +167,7 @@ export class AlignmentView extends React.Component {
               {alignmentTracks.map((track, i) => {
                 const {
                   sequenceData,
-                  selectionLayer,
+                  additionalSelectionLayers,
                   alignmentData,
                   chromatogramData
                 } = track;
@@ -220,7 +220,7 @@ export class AlignmentView extends React.Component {
                         //   console.log('vals:',vals)
                         // },
                         linearViewOptions,
-                        selectionLayer,
+                        additionalSelectionLayers,
                         dimensions: {
                           width:
                             (alignmentData || sequenceData).sequence.length *
