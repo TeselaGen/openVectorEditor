@@ -91,9 +91,10 @@ class Translation extends React.Component {
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
           width={
-            charWidth * aminoAcidSliver.positionInCodon === 1
-              ? getGaps(aminoAcidSliver.codonRange).gapsInside
-              : 0
+            charWidth *
+            (getGaps && aminoAcidSliver.positionInCodon === 1
+              ? getGaps(aminoAcidSliver.codonRange).gapsInside || 1
+              : 1)
           }
           height={height}
           relativeAAPositionInTranslation={relativeAAPositionInTranslation}

@@ -134,7 +134,7 @@ export default class StandaloneDemo extends React.Component {
           [
             {
               // fullScreen: true,
-              // active: true,
+              active: true,
               id: "circular",
               name: "Plasmid"
             },
@@ -149,7 +149,7 @@ export default class StandaloneDemo extends React.Component {
               id: "alignmentRun1",
               type: "alignment",
               name: "Jbei Alignment p1243124",
-              active: true
+              // active: true
               // fullScreen: true
             }
           ],
