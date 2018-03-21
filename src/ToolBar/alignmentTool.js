@@ -104,8 +104,8 @@ class AlignmentTool extends React.Component {
     const {
       data: { alignedSequences, pairwiseAlignments } = {}
     } = await instance.post(
-      "http://localhost:3000/alignment/run",
-      // "http://j5server.teselagen.com/alignment/run",
+      // "http://localhost:3000/alignment/run",
+      "http://j5server.teselagen.com/alignment/run",
       {
         sequencesToAlign: addedSequencesToUse,
         isPairwiseAlignment
@@ -116,14 +116,16 @@ class AlignmentTool extends React.Component {
     //set the alignemnt to loading
     upsertAlignmentRun({
       id: alignmentId,
-      pairwiseAlignments: pairwiseAlignments.map((alignedSequences, topIndex) => {
-        return alignedSequences.map((alignmentData, innerIndex) => {
-          return {
-            sequenceData: addedSequencesToUse[innerIndex > 0 ? topIndex : 0],
-            alignmentData
-          };
-        })
-      }),
+      pairwiseAlignments: pairwiseAlignments.map(
+        (alignedSequences, topIndex) => {
+          return alignedSequences.map((alignmentData, innerIndex) => {
+            return {
+              sequenceData: addedSequencesToUse[innerIndex > 0 ? topIndex : 0],
+              alignmentData
+            };
+          });
+        }
+      ),
       alignmentTracks:
         alignedSequences &&
         alignedSequences.map((alignmentData, i) => {
