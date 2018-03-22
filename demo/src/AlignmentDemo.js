@@ -10,6 +10,7 @@ import {
   fakeActionOverrides
 } from "../../src/withEditorProps/index";
 import { caretPositionUpdate } from "../../src/redux/caretPosition";
+import { MenuItem } from "@blueprintjs/core";
 
 const basicActions = { selectionLayerUpdate, caretPositionUpdate };
 export default connect(null, dispatch => {
@@ -43,7 +44,10 @@ export default connect(null, dispatch => {
               const toReturn = {
                 tickSpacing: 10,
                 rightClickOverrides: {
-                  // selectionLayerRightClicked: (items, opts, props) => {},
+                  selectionLayerRightClicked: (items, opts, props) => {
+                    if(0) props(props^props)
+                    return [{ text: "Create Diversity Region" }];
+                  }
                   // partRightClicked: () => {}
                 },
                 selectionLayerUpdate,
