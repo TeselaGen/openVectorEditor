@@ -59,6 +59,7 @@ function mapPropsToState(state, ownProps) {
   if (!editorState) {
     return {};
   }
+
   const {
     findTool,
     annotationVisibility,
@@ -152,17 +153,21 @@ function mapDispatchToActions(dispatch, ownProps) {
     actionOverrides,
     dispatch
   );
-
   return {
     ...actionsToPass,
+    selectionLayerUpdate:
+      ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate,
+    caretPositionUpdate:
+      ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate,
     dispatch
   };
 }
 const defaultOverrides = {};
-function fakeActionOverrides() {
+export function fakeActionOverrides() {
   return defaultOverrides;
 }
-const getCombinedActions = lruMemoize()(_getCombinedActions);
+
+export const getCombinedActions = lruMemoize()(_getCombinedActions);
 
 function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
   let meta = { editorName };

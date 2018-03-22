@@ -86,6 +86,7 @@ export class LinearView extends React.Component {
       : sequenceLength;
     let sequenceName = hideName ? "" : sequenceData.name || "";
     let rowData = prepareRowData(sequenceData, sequenceLength);
+
     return (
       <div
         style={{
