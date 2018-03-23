@@ -152,24 +152,36 @@ export default createMergedDefaultStateReducer(
       };
       if (payloadToUse.pairwiseAlignments) {
         //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
-        const pairwiseOverviewAlignmentTracks = [payloadToUse.pairwiseAlignments[0][0]] // start with just the template seq in there!
-        payloadToUse.pairwiseAlignments.forEach(([template, alignedSeq], index) => {
-          const alignedSeqMinusInserts = {...alignedSeq, alignmentData: {sequence: turnInsertsIntoSingleBpMutations(alignedSeq.alignmentData.sequence, template.alignmentData.sequence)}}
-          pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts)
-        })
-        payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks
+        const pairwiseOverviewAlignmentTracks = [
+          payloadToUse.pairwiseAlignments[0][0]
+        ]; // start with just the template seq in there!
+        payloadToUse.pairwiseAlignments.forEach(
+          ([template, alignedSeq], index) => {
+            const alignedSeqMinusInserts = {
+              ...alignedSeq,
+              alignmentData: {
+                sequence: turnInsertsIntoSingleBpMutations(
+                  alignedSeq.alignmentData.sequence,
+                  template.alignmentData.sequence
+                )
+              }
+            };
+            pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
+          }
+        );
+        payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
 
-        payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map((alignmentTracks) => {
-          return addHighlightedDifferences(
-            alignmentTracks
-          );
-        })
+        payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
+          alignmentTracks => {
+            return addHighlightedDifferences(alignmentTracks);
+          }
+        );
       }
       if (payloadToUse.alignmentTracks)
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
         );
-        // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
+      // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
         ...state,
         [payload.id]: payloadToUse
@@ -213,7 +225,4 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   return ranges;
 }
 
-
-function turnInsertsIntoSingleBpMutations(alignedSeq, referenceSeq){
-
-}
+function turnInsertsIntoSingleBpMutations(alignedSeq, referenceSeq) {}

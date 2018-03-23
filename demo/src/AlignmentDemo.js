@@ -10,7 +10,7 @@ import {
   fakeActionOverrides
 } from "../../src/withEditorProps/index";
 import { caretPositionUpdate } from "../../src/redux/caretPosition";
-import { MenuItem } from "@blueprintjs/core";
+// import { MenuItem } from "@blueprintjs/core";
 
 const basicActions = { selectionLayerUpdate, caretPositionUpdate };
 export default connect(null, dispatch => {
@@ -26,6 +26,7 @@ export default connect(null, dispatch => {
   class StandaloneDemo extends React.Component {
     componentDidMount() {
       addAlignment(store, "MppViewer", alignmentRunData);
+      // addAlignment(store, "MppViewer", {...alignmentRunData, alignmentTracks: alignmentRunData.alignmentTracks.slice(0,10)});
     }
     render() {
       const { selectionLayerUpdate, caretPositionUpdate } = this.props;
@@ -45,7 +46,7 @@ export default connect(null, dispatch => {
                 tickSpacing: 10,
                 rightClickOverrides: {
                   selectionLayerRightClicked: (items, opts, props) => {
-                    if(0) props(props^props)
+                    if (0) props(props ^ props);
                     return [{ text: "Create Diversity Region" }];
                   }
                   // partRightClicked: () => {}
