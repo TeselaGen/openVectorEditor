@@ -148,7 +148,9 @@ export class AlignmentView extends React.Component {
               return (
                 <div
                   style={{
-                    height: alignmentHeights[i] || 10
+                    height: alignmentHeights[i] || 10,
+                    textOverflow: "ellipsis",
+                    overflowY: "auto"
                   }}
                   key={i}
                 >

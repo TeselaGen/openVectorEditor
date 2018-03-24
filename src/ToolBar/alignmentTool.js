@@ -116,22 +116,24 @@ class AlignmentTool extends React.Component {
     //set the alignemnt to loading
     upsertAlignmentRun({
       id: alignmentId,
-      pairwiseAlignments: pairwiseAlignments.map(
-        (alignedSequences, topIndex) => {
+      pairwiseAlignments:
+        pairwiseAlignments &&
+        pairwiseAlignments.map((alignedSequences, topIndex) => {
           return alignedSequences.map((alignmentData, innerIndex) => {
             return {
               sequenceData: addedSequencesToUse[innerIndex > 0 ? topIndex : 0],
-              alignmentData
+              alignmentData,
+              chromatogramData: addedSequencesToUse[innerIndex].chromatogramData
             };
           });
-        }
-      ),
+        }),
       alignmentTracks:
         alignedSequences &&
         alignedSequences.map((alignmentData, i) => {
           return {
             sequenceData: addedSequencesToUse[i],
-            alignmentData
+            alignmentData,
+            chromatogramData: addedSequencesToUse[i].chromatogramData
           };
         })
     });
@@ -177,8 +179,8 @@ class AlignmentTool extends React.Component {
               return (
                 <div
                   onClick={() => {
-                    console.log("clickin");
-                    console.log("index:", index);
+                    // console.log("clickin");
+                    // console.log("index:", index);
                     this.setState({
                       templateSeqIndex: index
                     });
@@ -224,7 +226,7 @@ class AlignmentTool extends React.Component {
             })}
           </div>
 
-          <CheckboxField
+          {/* <CheckboxField
             name="isPairwiseAlignment"
             label={
               <div>
@@ -236,7 +238,7 @@ class AlignmentTool extends React.Component {
                 </span>
               </div>
             }
-          />
+          /> */}
 
           <Button
             style={{ marginTop: 15, float: "right" }}

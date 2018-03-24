@@ -1,5 +1,6 @@
 import {
-  tidyUpSequenceData /* generateSequenceData */
+  tidyUpSequenceData /* generateSequenceData */,
+  turnInsertsIntoSingleBpMutations
 } from "ve-sequence-utils";
 
 import createAction from "./utils/createMetaAction";
@@ -19,7 +20,7 @@ const defaultAlignmentAnnotationVisibility = {
   parts: false,
   orfs: false,
   orfTranslations: false,
-  axis: false,
+  axis: true,
   cutsites: false,
   primers: false,
   reverseSequence: false,
@@ -122,6 +123,7 @@ function addHighlightedDifferences(alignmentTracks) {
         .filter(({ isMatch }) => !isMatch)
         .map(range => {
           return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
+          // height: 21
         })
     };
   });
@@ -152,24 +154,36 @@ export default createMergedDefaultStateReducer(
       };
       if (payloadToUse.pairwiseAlignments) {
         //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
-        const pairwiseOverviewAlignmentTracks = [payloadToUse.pairwiseAlignments[0][0]] // start with just the template seq in there!
-        payloadToUse.pairwiseAlignments.forEach(([template, alignedSeq], index) => {
-          const alignedSeqMinusInserts = {...alignedSeq, alignmentData: {sequence: turnInsertsIntoSingleBpMutations(alignedSeq.alignmentData.sequence, template.alignmentData.sequence)}}
-          pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts)
-        })
-        payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks
+        const pairwiseOverviewAlignmentTracks = [
+          payloadToUse.pairwiseAlignments[0][0]
+        ]; // start with just the template seq in there!
+        payloadToUse.pairwiseAlignments.forEach(
+          ([template, alignedSeq], index) => {
+            const alignedSeqMinusInserts = {
+              ...alignedSeq,
+              alignmentData: {
+                sequence: turnInsertsIntoSingleBpMutations(
+                  alignedSeq.alignmentData.sequence,
+                  template.alignmentData.sequence
+                )
+              }
+            };
+            pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
+          }
+        );
+        payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
 
-        payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map((alignmentTracks) => {
-          return addHighlightedDifferences(
-            alignmentTracks
-          );
-        })
+        payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
+          alignmentTracks => {
+            return addHighlightedDifferences(alignmentTracks);
+          }
+        );
       }
       if (payloadToUse.alignmentTracks)
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
         );
-        // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
+      // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
         ...state,
         [payload.id]: payloadToUse
@@ -178,6 +192,11 @@ export default createMergedDefaultStateReducer(
   },
   {
     alignmentRun1: alignmentsData
+    // alignmentRun1: {
+    //   alignmentTracks,
+    //   alignmentAnnotationVisibility: defaultAlignmentAnnotationVisibility,
+    //   alignmentAnnotationLabelVisibility: defaultAlignmentAnnotationLabelVisibility
+    // }
   }
 );
 
@@ -211,9 +230,4 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
     }
   }
   return ranges;
-}
-
-
-function turnInsertsIntoSingleBpMutations(alignedSeq, referenceSeq){
-
 }

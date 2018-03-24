@@ -4,10 +4,11 @@ import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 
 export default class Minimap extends React.Component {
-  onDrag = (e, { x }) => {
+  onDrag = e => {
     const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
     const scrollHandle = this.getScrollHandleWidthAndXStart();
-    const percent = x / (width - scrollHandle.width);
+    const percent =
+      this.getXPositionOfClickInMinimap(e) / (width - scrollHandle.width);
     onMinimapScroll(percent);
   };
 
@@ -32,11 +33,7 @@ export default class Minimap extends React.Component {
     return charWidth || 12;
   };
   getScrollHandleWidthAndXStart = () => {
-    const {
-      numBpsShownInLinearView = 20,
-      percentScrolled,
-      dimensions
-    } = this.props;
+    const { numBpsShownInLinearView, percentScrolled, dimensions } = this.props;
     const charWidth = this.getCharWidth();
     const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
