@@ -230,4 +230,5 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
     }
   }
   return ranges;
+  console.log("ranges", ranges);
 }

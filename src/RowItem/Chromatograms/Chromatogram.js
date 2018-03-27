@@ -5,8 +5,9 @@ class Chromatogram extends React.Component {
   state = { scalePct: 0.05 };
 
   componentDidMount() {
+    const { charWidth } = this.props;
     const { scalePct } = this.state;
-    this.updatePeakDrawing(scalePct);
+    this.updatePeakDrawing(scalePct, charWidth);
   }
   componentWillReceiveProps(newProps) {
     if (
@@ -15,18 +16,19 @@ class Chromatogram extends React.Component {
       newProps.row.start !== this.props.row.start ||
       newProps.row.end !== this.props.row.end
     ) {
-      console.log("newProps.charWidth:", newProps.charWidth);
+      // console.log("newProps.charWidth:", newProps.charWidth);
+      const charWidth = newProps.charWidth;
       const { scalePct } = this.state;
-      this.updatePeakDrawing(scalePct);
+      this.updatePeakDrawing(scalePct, charWidth);
     }
   }
 
-  updatePeakDrawing = scalePct => {
-    const { chromatogramData, charWidth, row, getGaps } = this.props;
+  updatePeakDrawing = (scalePct, charWidth) => {
+    const { chromatogramData, row, getGaps } = this.props;
     const painter = new drawTrace({
       peakCanvas: this.canvasRef,
       traceData: chromatogramData,
-      charWidth,
+      charWidth: charWidth,
       startBp: row.start,
       endBp: row.end,
       getGaps,
@@ -71,32 +73,32 @@ class Chromatogram extends React.Component {
     // path=path.replace(/\n/g,'')
 
     return (
-      <div className="chromatogram-plus-zoom">
-        <div className="zoom">
-          {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
-          <Button
-            className="pt-minimal"
-            icon="caret-up"
-            onClick={this.scaleChromatogramYPeaksHigher}
-          />
-          <Button
-            className="pt-minimal"
-            icon="caret-down"
-            onClick={this.scaleChromatogramYPeaksLower}
-          />
-          {/* </ButtonGroup> */}
-        </div>
+      // <div className="chromatogram-plus-zoom">
+      //   <div className="y-zoom-chromatogram">
+      //     {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
+      //     <Button
+      //       className="pt-minimal"
+      //       icon="caret-up"
+      //       onClick={this.scaleChromatogramYPeaksHigher}
+      //     />
+      //     <Button
+      //       className="pt-minimal"
+      //       icon="caret-down"
+      //       onClick={this.scaleChromatogramYPeaksLower}
+      //     />
+      //     {/* </ButtonGroup> */}
+      //   </div>
 
-        <div className="chromatogram">
-          <canvas
-            ref={n => {
-              // console.log('n:',n)
-              if (n) this.canvasRef = n;
-            }}
-            height="100"
-          />
-        </div>
+      <div className="chromatogram">
+        <canvas
+          ref={n => {
+            // console.log('n:',n)
+            if (n) this.canvasRef = n;
+          }}
+          height="100"
+        />
       </div>
+      // </div>
     );
   }
 }
@@ -112,6 +114,7 @@ function drawTrace({
   getGaps,
   scalePct
 }) {
+  // console.log('charWidth', charWidth);
   const colors = {
     adenine: "green",
     thymine: "red",
