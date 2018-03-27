@@ -226,7 +226,7 @@ class AlignmentTool extends React.Component {
             })}
           </div>
 
-          {/* <CheckboxField
+          <CheckboxField
             name="isPairwiseAlignment"
             label={
               <div>
@@ -238,7 +238,7 @@ class AlignmentTool extends React.Component {
                 </span>
               </div>
             }
-          /> */}
+          />
 
           <Button
             style={{ marginTop: 15, float: "right" }}

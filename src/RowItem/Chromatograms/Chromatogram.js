@@ -2,8 +2,11 @@ import React from "react";
 import { Button, ButtonGroup } from "@blueprintjs/core";
 
 class Chromatogram extends React.Component {
+  state = { scalePct: 0.05 };
+
   componentDidMount() {
-    this.updatePeakDrawing();
+    const { scalePct } = this.state;
+    this.updatePeakDrawing(scalePct);
   }
   componentWillReceiveProps(newProps) {
     if (
@@ -13,10 +16,12 @@ class Chromatogram extends React.Component {
       newProps.row.end !== this.props.row.end
     ) {
       console.log("newProps.charWidth:", newProps.charWidth);
-      this.updatePeakDrawing();
+      const { scalePct } = this.state;
+      this.updatePeakDrawing(scalePct);
     }
   }
-  updatePeakDrawing = () => {
+
+  updatePeakDrawing = scalePct => {
     const { chromatogramData, charWidth, row, getGaps } = this.props;
     const painter = new drawTrace({
       peakCanvas: this.canvasRef,
@@ -24,15 +29,29 @@ class Chromatogram extends React.Component {
       charWidth,
       startBp: row.start,
       endBp: row.end,
-      getGaps
+      getGaps,
+      scalePct: scalePct
     });
     painter.paintCanvas();
   };
-  scaleChromatogramY = () => {
+
+  scaleChromatogramYPeaksHigher = () => {
+    const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
     const ctx = peakCanvas.getContext("2d");
     ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
-    // this.updatePeakDrawing();
+    const newScalePct = scalePct + 0.01;
+    this.updatePeakDrawing(newScalePct);
+    this.setState({ scalePct: newScalePct });
+  };
+  scaleChromatogramYPeaksLower = () => {
+    const { scalePct } = this.state;
+    const peakCanvas = this.canvasRef;
+    const ctx = peakCanvas.getContext("2d");
+    ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
+    const newScalePct = scalePct - 0.01;
+    this.updatePeakDrawing(newScalePct);
+    this.setState({ scalePct: newScalePct });
   };
 
   render() {
@@ -50,23 +69,34 @@ class Chromatogram extends React.Component {
     // } = this.props;
     // path=path.replace(/ /g,'')
     // path=path.replace(/\n/g,'')
+
     return (
-      // <div className="chromatogram-plus-zoom">
-      //   <ButtonGroup className={"pt-minimal pt-vertical"}>
-      //     <Button
-      //       icon="caret-up"
-      //       onClick={this.scaleChromatogramY}/>
-      //     <Button
-      //       icon="caret-down" />
-      //   </ButtonGroup>
-      <canvas
-        ref={n => {
-          // console.log('n:',n)
-          if (n) this.canvasRef = n;
-        }}
-        height="100"
-      />
-      // </div>
+      <div className="chromatogram-plus-zoom">
+        <div className="zoom">
+          {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
+          <Button
+            className="pt-minimal"
+            icon="caret-up"
+            onClick={this.scaleChromatogramYPeaksHigher}
+          />
+          <Button
+            className="pt-minimal"
+            icon="caret-down"
+            onClick={this.scaleChromatogramYPeaksLower}
+          />
+          {/* </ButtonGroup> */}
+        </div>
+
+        <div className="chromatogram">
+          <canvas
+            ref={n => {
+              // console.log('n:',n)
+              if (n) this.canvasRef = n;
+            }}
+            height="100"
+          />
+        </div>
+      </div>
     );
   }
 }
@@ -79,7 +109,8 @@ function drawTrace({
   startBp,
   peakCanvas,
   endBp,
-  getGaps
+  getGaps,
+  scalePct
 }) {
   const colors = {
     adenine: "green",
@@ -103,15 +134,15 @@ function drawTrace({
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
   const scaledHeight = maxHeight - bottomBuffer;
-  let scalePct = 0;
+  // let scalePct = 0;
 
-  this.findTallest = function() {
-    const aMax = Math.max(...traceData.aTrace);
-    const tMax = Math.max(...traceData.tTrace);
-    const gMax = Math.max(...traceData.gTrace);
-    const cMax = Math.max(...traceData.cTrace);
-    scalePct = scaledHeight / Math.max(aMax, tMax, gMax, cMax);
-  };
+  // this.findTallest = function() {
+  //   const aMax = Math.max(...traceData.aTrace);
+  //   const tMax = Math.max(...traceData.tTrace);
+  //   const gMax = Math.max(...traceData.gTrace);
+  //   const cMax = Math.max(...traceData.cTrace);
+  //   scalePct = scaledHeight / Math.max(aMax, tMax, gMax, cMax);
+  // };
 
   this.scalePeaks = function(traceIn) {
     const newPeaks = [];
@@ -122,7 +153,7 @@ function drawTrace({
   };
 
   this.preparePeaks = function() {
-    this.findTallest();
+    // this.findTallest();
     formattedPeaks.a = this.scalePeaks(traceData.aTrace);
     formattedPeaks.t = this.scalePeaks(traceData.tTrace);
     formattedPeaks.g = this.scalePeaks(traceData.gTrace);
@@ -256,6 +287,7 @@ function drawTrace({
     this.drawPeaks(formattedPeaks.g, colors.guanine);
     this.drawPeaks(formattedPeaks.c, colors.cytosine);
     // this.drawBases();
+    ctx.closePath();
   };
 }
 
