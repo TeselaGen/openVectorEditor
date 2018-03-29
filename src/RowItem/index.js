@@ -82,6 +82,7 @@ export class RowItem extends React.Component {
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
+      scrollData,
 
       bpsPerRow = sequenceLength,
       editorName
@@ -326,6 +327,7 @@ export class RowItem extends React.Component {
                       : row.sequence.length
                   }
                   charWidth={charWidth}
+                  scrollData={scrollData}
                 >
                   {showCutsites &&
                     Object.keys(cutsites).length > 0 && (
@@ -347,6 +349,7 @@ export class RowItem extends React.Component {
                   sequence={reverseSequence}
                   height={sequenceHeight}
                   charWidth={charWidth}
+                  scrollData={scrollData}
                 >
                   {showCutsites &&
                     Object.keys(cutsites).length > 0 && (

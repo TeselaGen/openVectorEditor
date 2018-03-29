@@ -126,8 +126,7 @@ export class AlignmentView extends React.Component {
       return <div>Error: Data is corrupted!</div>;
     }
 
-    // const { scalePct } = this.props;
-    // console.log('scalePct', scalePct);
+    const trackWidth = width - nameDivWidth || 400;
 
     return (
       <div
@@ -189,7 +188,7 @@ export class AlignmentView extends React.Component {
             <div
               style={{
                 overflowX: "auto",
-                width: width - nameDivWidth || 400
+                width: trackWidth
               }}
               ref={ref => (this.alignmentHolder = ref)}
               className="alignmentHolder"
@@ -268,7 +267,11 @@ export class AlignmentView extends React.Component {
                         },
                         width:
                           (alignmentData || sequenceData).sequence.length *
-                          charWidthInLinearView
+                          charWidthInLinearView,
+                        scrollData: {
+                          viewportWidth: trackWidth,
+                          fractionScrolled: percentScrolled
+                        }
                       }}
                     />
                   </div>

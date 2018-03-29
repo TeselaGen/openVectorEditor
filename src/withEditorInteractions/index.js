@@ -1015,7 +1015,7 @@ function VectorInteractionHOC(Component /* options */) {
         disableEditorClickAndDrag = false,
         ...propsToPass
       } = this.props;
-      const { width, height } = this.props.dimensions;
+      const { width, height } = this.props.dimensions || {};
       propsToPass.width = width;
       if (fitHeight) {
         propsToPass.height = height;

@@ -12,14 +12,16 @@ function noop() {}
 
 export class LinearView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
+    const { ignoreYWhenSelecting } = this.props;
     let rowNotFound = true;
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
     let rowDomNode = this.linearView;
     let boundingRowRect = rowDomNode.getBoundingClientRect();
     if (
-      event.clientY > boundingRowRect.top &&
-      event.clientY < boundingRowRect.top + boundingRowRect.height
+      ignoreYWhenSelecting ||
+      (event.clientY > boundingRowRect.top &&
+        event.clientY < boundingRowRect.top + boundingRowRect.height)
     ) {
       //then the click is falls within this row
       rowNotFound = false;
@@ -39,7 +41,6 @@ export class LinearView extends React.Component {
         }
       }
     }
-
     if (rowNotFound) {
       nearestCaretPos = 0;
     }
@@ -86,6 +87,7 @@ export class LinearView extends React.Component {
       : sequenceLength;
     let sequenceName = hideName ? "" : sequenceData.name || "";
     let rowData = prepareRowData(sequenceData, sequenceLength);
+
     return (
       <div
         style={{

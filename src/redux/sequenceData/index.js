@@ -38,6 +38,19 @@ export const updateSequenceData = function(seqData, ...rest) {
 // ------------------------------------
 // Reducer
 // ------------------------------------
+
+const coreReducer = combineReducersDontIgnoreKeys({
+  primers,
+  features,
+  parts,
+  sequence,
+  translations,
+  size: (state = {}) => state,
+  circular: createReducer({}, true),
+  name,
+  fromFileUpload: createReducer({}, false)
+});
+
 export default function(state, action) {
   let stateToPass = state;
   if (action.type === "SEQUENCE_DATA_UPDATE") {
@@ -46,23 +59,15 @@ export default function(state, action) {
   //tnr: do a clone deep here in order to make sure we are using a totally new object for undo/redo tracking
   // stateToPass = cloneDeep(stateToPass);
 
-  const newState = combineReducersDontIgnoreKeys({
-    primers,
-    features,
-    parts,
-    sequence,
-    translations,
-    size: (state = {}) => state,
-    circular: createReducer({}, true),
-    name,
-    fromFileUpload: createReducer({}, false)
-  })(stateToPass, action);
+  const newState = coreReducer(stateToPass, action);
   if (deepEqual(newState, state)) {
     return state;
   } else {
     //tnr: do a clone deep here in order to make sure we are using a totally new object for undo/redo tracking
+    // mm: we don't need this if we are not mutating the newState, which we shouldn't be doing.
     return {
-      ...cloneDeep(newState),
+      // ...cloneDeep(newState),
+      ...newState,
       stateTrackingId: newState.stateTrackingId ? uuid() : "initialLoadId"
     };
   }

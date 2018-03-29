@@ -186,8 +186,6 @@ export default createMergedDefaultStateReducer(
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
         );
-        // console.log('payloadToUse.alignmentTracks', payloadToUse.alignmentTracks);
-        console.log("mismatches", payloadToUse.alignmentTracks[1].mismatches);
       }
       // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
