@@ -84,12 +84,14 @@ class AlignmentTool extends React.Component {
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
+      // createNewMismatchesList,
       upsertAlignmentRun
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
     hideModal();
     const alignmentId = uniqid();
+    // const alignmentIdMismatches = uniqid();
     createNewAlignment({
       id: alignmentId,
       name: addedSequencesToUse[0].name + " Alignment"
@@ -99,6 +101,14 @@ class AlignmentTool extends React.Component {
       id: alignmentId,
       loading: true
     });
+    // createNewMismatchesList({
+    //   id: alignmentIdMismatches,
+    //   name: addedSequencesToUse[0].name + " Mismatches"
+    // });
+    // upsertAlignmentRun({
+    //   id: alignmentIdMismatches,
+    //   loading: true
+    // });
 
     window.toastr.success("Alignment submitted.");
     const {
@@ -116,25 +126,31 @@ class AlignmentTool extends React.Component {
     //set the alignemnt to loading
     upsertAlignmentRun({
       id: alignmentId,
-      pairwiseAlignments: pairwiseAlignments.map(
-        (alignedSequences, topIndex) => {
+      pairwiseAlignments:
+        pairwiseAlignments &&
+        pairwiseAlignments.map((alignedSequences, topIndex) => {
           return alignedSequences.map((alignmentData, innerIndex) => {
             return {
               sequenceData: addedSequencesToUse[innerIndex > 0 ? topIndex : 0],
-              alignmentData
+              alignmentData,
+              chromatogramData: addedSequencesToUse[innerIndex].chromatogramData
             };
           });
-        }
-      ),
+        }),
       alignmentTracks:
         alignedSequences &&
         alignedSequences.map((alignmentData, i) => {
           return {
             sequenceData: addedSequencesToUse[i],
-            alignmentData
+            alignmentData,
+            chromatogramData: addedSequencesToUse[i].chromatogramData
           };
         })
     });
+    // upsertAlignmentRun({
+    //   id: alignmentIdMismatches,
+
+    // });
   };
 
   handleFileUpload = (files, onChange) => {
@@ -177,8 +193,8 @@ class AlignmentTool extends React.Component {
               return (
                 <div
                   onClick={() => {
-                    console.log("clickin");
-                    console.log("index:", index);
+                    // console.log("clickin");
+                    // console.log("index:", index);
                     this.setState({
                       templateSeqIndex: index
                     });

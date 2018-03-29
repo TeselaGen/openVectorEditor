@@ -55,6 +55,24 @@ export const createNewAlignment = (payload, meta) => {
   };
 };
 
+export const createNewMismatchesList = (payload, meta) => {
+  return dispatch => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          id: "mismatches",
+          name: "Mismatches",
+          active: false,
+          canClose: true,
+          ...payload
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive(payload.id, meta));
+  };
+};
+
 export const collapseSplitScreen = (activePanelId, meta) => {
   return dispatch => {
     dispatch(_collapseSplitScreen(activePanelId, meta));

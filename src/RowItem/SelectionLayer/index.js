@@ -33,7 +33,8 @@ function SelectionLayer(props) {
           end,
           color,
           hideCarets = false,
-          ignoreGaps
+          ignoreGaps,
+          height
         } = selectionLayer;
         let classNameToPass =
           "veRowViewSelectionLayer " +
@@ -136,7 +137,8 @@ function SelectionLayer(props) {
                   width,
                   left: xStart,
                   ...style,
-                  background: color || topLevelColor
+                  background: color || topLevelColor,
+                  height
                 }}
               />,
               ...caretSvgs
@@ -160,5 +162,6 @@ export default onlyUpdateForKeys([
   "color",
   "hideCarets",
   "selectionLayerRightClicked",
-  "className"
+  "className",
+  "height"
 ])(SelectionLayer);

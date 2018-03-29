@@ -1,5 +1,6 @@
 import {
-  tidyUpSequenceData /* generateSequenceData */
+  tidyUpSequenceData /* generateSequenceData */,
+  turnInsertsIntoSingleBpMutations
 } from "ve-sequence-utils";
 
 import createAction from "./utils/createMetaAction";
@@ -19,7 +20,7 @@ const defaultAlignmentAnnotationVisibility = {
   parts: false,
   orfs: false,
   orfTranslations: false,
-  axis: false,
+  axis: true,
   cutsites: false,
   primers: false,
   reverseSequence: false,
@@ -114,6 +115,8 @@ function addHighlightedDifferences(alignmentTracks) {
       alignmentTracks[0].alignmentData.sequence,
       track.alignmentData.sequence
     );
+    const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
+    // console.log('mismatches', mismatches);
     return {
       ...track,
       sequenceData,
@@ -122,7 +125,9 @@ function addHighlightedDifferences(alignmentTracks) {
         .filter(({ isMatch }) => !isMatch)
         .map(range => {
           return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
-        })
+          // height: 21
+        }),
+      mismatches
     };
   });
 }
@@ -177,10 +182,11 @@ export default createMergedDefaultStateReducer(
           }
         );
       }
-      if (payloadToUse.alignmentTracks)
+      if (payloadToUse.alignmentTracks) {
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
         );
+      }
       // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
         ...state,
@@ -224,5 +230,3 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   }
   return ranges;
 }
-
-function turnInsertsIntoSingleBpMutations(alignedSeq, referenceSeq) {}

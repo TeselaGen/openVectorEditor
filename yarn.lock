@@ -6647,6 +6647,53 @@ open-vector-editor@^1.1.29:
     uniqid "^4.1.1"
     uuidv4 "^0.5.0"
 
+open-vector-editor@^2.0.18:
+  version "2.0.18"
+  resolved "https://registry.yarnpkg.com/open-vector-editor/-/open-vector-editor-2.0.18.tgz#ae275bcdebf9f4221a46488cccf1e411be44a277"
+  dependencies:
+    classnames "^2.2.5"
+    clipboard "^1.7.1"
+    clone "^2.1.1"
+    color "^3.0.0"
+    combokeys "^3.0.0"
+    cross-env "^5.1.1"
+    deep-equal "^1.0.1"
+    file-saver "^1.3.3"
+    graphql "^0.11.7"
+    json.sortify "^2.2.2"
+    lodash "^4.17.4"
+    lodash.flatmap "^4.5.0"
+    lru-memoize "^1.0.2"
+    math-expression-evaluator "^1.2.17"
+    node-interval-tree "^1.3.3"
+    open-vector-editor "^1.1.29"
+    pascal-case "^2.0.1"
+    paths-js "^0.4.5"
+    pluralize "^7.0.0"
+    query-string "^5.0.1"
+    randomcolor "^0.5.3"
+    react-addons-pure-render-mixin "^15.6.2"
+    react-beautiful-dnd "^4.0.1"
+    react-dimensions "^1.3.0"
+    react-draggable "^3.0.3"
+    react-dropzone "^4.2.1"
+    react-icons "^2.2.7"
+    react-list "^0.8.8"
+    react-popover "^0.5.4"
+    react-reflex "^2.0.10"
+    react-sizeme "^2.3.6"
+    react-split-pane "^0.1.68"
+    recompose "^0.26.0"
+    redux "^3.7.2"
+    redux-act "^1.5.0"
+    redux-undo "1.0.0-beta9-9-7"
+    reselect "^3.0.1"
+    teselagen-interval-tree "1.1.1"
+    tether "^1.4.1"
+    tg-react-reflex "^2.0.10"
+    uniqid "^4.1.1"
+    uuidv4 "^0.5.0"
+
 opn@^5.1.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.2.0.tgz#71fdf934d6827d676cecbea1531f95d354641225"
@@ -8977,9 +9024,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^22.0.0:
-  version "22.0.1"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.1.tgz#29e34383870635c509f14523c5004625c0b2ae90"
+teselagen-react-components@^22.0.11:
+  version "22.0.11"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.11.tgz#5bcd70ebf20dff6523fe65543f8038053e2d278d"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.3"
@@ -9487,7 +9534,17 @@ ve-range-utils@^2.5.0:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.2.35, ve-sequence-utils@^3.2.34:
+ve-sequence-utils@3.2.38:
+  version "3.2.38"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.38.tgz#ae4f9a566f30551a1499fc7367f262b4c55b8886"
+  dependencies:
+    bson-objectid "^1.1.1"
+    escape-string-regexp "^1.0.5"
+    randomcolor "^0.4.3"
+    string-splice "^1.3.0"
+    validate.io-nonnegative-integer-array "^1.0.1"
+
+ve-sequence-utils@^3.2.34:
   version "3.2.35"
   resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.35.tgz#a73f28d500c2751ca927ce33dcdf83c1e338911c"
   dependencies:

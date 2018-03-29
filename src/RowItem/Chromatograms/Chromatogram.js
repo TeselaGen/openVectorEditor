@@ -1,8 +1,13 @@
 import React from "react";
+import { Button, ButtonGroup } from "@blueprintjs/core";
 
 class Chromatogram extends React.Component {
+  state = { scalePct: 0.05 };
+
   componentDidMount() {
-    this.updatePeakDrawing();
+    const { charWidth } = this.props;
+    const { scalePct } = this.state;
+    this.updatePeakDrawing(scalePct, charWidth);
   }
   componentWillReceiveProps(newProps) {
     if (
@@ -10,22 +15,48 @@ class Chromatogram extends React.Component {
       newProps.charWidth !== this.props.charWidth ||
       newProps.row.start !== this.props.row.start ||
       newProps.row.end !== this.props.row.end
+      // newProps.scalePct !== this.props.scalePct
     ) {
-      console.log("newProps.charWidth:", newProps.charWidth);
-      this.updatePeakDrawing();
+      // console.log("newProps.charWidth:", newProps.charWidth);
+      const charWidth = newProps.charWidth;
+      const { scalePct } = this.state;
+      this.updatePeakDrawing(scalePct, charWidth);
     }
   }
-  updatePeakDrawing = () => {
-    const { chromatogramData, charWidth, row, getGaps } = this.props;
+
+  updatePeakDrawing = (scalePct, charWidth) => {
+    const { chromatogramData, row, getGaps } = this.props;
     const painter = new drawTrace({
       peakCanvas: this.canvasRef,
       traceData: chromatogramData,
-      charWidth,
+      charWidth: charWidth,
       startBp: row.start,
       endBp: row.end,
-      getGaps
+      getGaps,
+      scalePct: scalePct
     });
     painter.paintCanvas();
+  };
+
+  scaleChromatogramYPeaksHigher = () => {
+    const { charWidth } = this.props;
+    const { scalePct } = this.state;
+    const peakCanvas = this.canvasRef;
+    const ctx = peakCanvas.getContext("2d");
+    ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
+    const newScalePct = scalePct + 0.01;
+    this.updatePeakDrawing(newScalePct, charWidth);
+    this.setState({ scalePct: newScalePct });
+  };
+  scaleChromatogramYPeaksLower = () => {
+    const { charWidth } = this.props;
+    const { scalePct } = this.state;
+    const peakCanvas = this.canvasRef;
+    const ctx = peakCanvas.getContext("2d");
+    ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
+    const newScalePct = scalePct - 0.01;
+    this.updatePeakDrawing(newScalePct, charWidth);
+    this.setState({ scalePct: newScalePct });
   };
 
   render() {
@@ -43,14 +74,34 @@ class Chromatogram extends React.Component {
     // } = this.props;
     // path=path.replace(/ /g,'')
     // path=path.replace(/\n/g,'')
+
     return (
-      <canvas
-        ref={n => {
-          // console.log('n:',n)
-          if (n) this.canvasRef = n;
-        }}
-        height="100"
-      />
+      <div className="chromatogram-plus-zoom">
+        <div className="y-zoom-chromatogram">
+          {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
+          <Button
+            className="pt-minimal"
+            icon="caret-up"
+            onClick={this.scaleChromatogramYPeaksHigher}
+          />
+          <Button
+            className="pt-minimal"
+            icon="caret-down"
+            onClick={this.scaleChromatogramYPeaksLower}
+          />
+          {/* </ButtonGroup> */}
+        </div>
+
+        <div className="chromatogram">
+          <canvas
+            ref={n => {
+              // console.log('n:',n)
+              if (n) this.canvasRef = n;
+            }}
+            height="100"
+          />
+        </div>
+      </div>
     );
   }
 }
@@ -63,8 +114,10 @@ function drawTrace({
   startBp,
   peakCanvas,
   endBp,
-  getGaps
+  getGaps,
+  scalePct
 }) {
+  // console.log('charWidth', charWidth);
   const colors = {
     adenine: "green",
     thymine: "red",
@@ -78,21 +131,24 @@ function drawTrace({
   const bottomBuffer = 0;
   const maxHeight = peakCanvas.height;
   const endBpIncludingGaps =
-    endBp + 1 + getGaps(0).gapsBefore + getGaps({ start: startBp, end: endBp }).gapsInside;
+    endBp +
+    1 +
+    getGaps(0).gapsBefore +
+    getGaps({ start: startBp, end: endBp }).gapsInside;
   const maxWidth = endBpIncludingGaps * charWidth;
   peakCanvas.width = maxWidth;
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
   const scaledHeight = maxHeight - bottomBuffer;
-  let scalePct = 0;
+  // let scalePct = 0;
 
-  this.findTallest = function() {
-    const aMax = Math.max(...traceData.aTrace);
-    const tMax = Math.max(...traceData.tTrace);
-    const gMax = Math.max(...traceData.gTrace);
-    const cMax = Math.max(...traceData.cTrace);
-    scalePct = scaledHeight / Math.max(aMax, tMax, gMax, cMax);
-  };
+  // this.findTallest = function() {
+  //   const aMax = Math.max(...traceData.aTrace);
+  //   const tMax = Math.max(...traceData.tTrace);
+  //   const gMax = Math.max(...traceData.gTrace);
+  //   const cMax = Math.max(...traceData.cTrace);
+  //   scalePct = scaledHeight / Math.max(aMax, tMax, gMax, cMax);
+  // };
 
   this.scalePeaks = function(traceIn) {
     const newPeaks = [];
@@ -103,7 +159,7 @@ function drawTrace({
   };
 
   this.preparePeaks = function() {
-    this.findTallest();
+    // this.findTallest();
     formattedPeaks.a = this.scalePeaks(traceData.aTrace);
     formattedPeaks.t = this.scalePeaks(traceData.tTrace);
     formattedPeaks.g = this.scalePeaks(traceData.gTrace);
@@ -127,7 +183,7 @@ function drawTrace({
       // console.log('base', traceData.baseCalls[baseIndex]);
       // console.log('baseIndex', baseIndex);
       // console.log('getGaps', getGaps(baseIndex).gapsBefore);
-      
+
       for (
         let innerIndex = startBasePos;
         innerIndex < endBasePos;
@@ -137,13 +193,16 @@ function drawTrace({
         // const element = array[baseIndex];
         // shift x-position of the beginning of the base's peak if there are gaps before the base
         const scalingFactor = charWidth / (endBasePos - startBasePos);
-        let startXPosition = (baseIndex + getGaps(baseIndex).gapsBefore) * charWidth;
+        let startXPosition =
+          (baseIndex + getGaps(baseIndex).gapsBefore) * charWidth;
 
-        if (getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore) {
+        if (
+          getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore
+        ) {
           if (innerIndex === startBasePos) {
             ctx.moveTo(
-            startXPosition + scalingFactor * (innerIndex - startBasePos),
-            scaledHeight - trace[innerIndex]
+              startXPosition + scalingFactor * (innerIndex - startBasePos),
+              scaledHeight - trace[innerIndex]
             );
           }
           ctx.lineTo(
@@ -151,14 +210,15 @@ function drawTrace({
             scaledHeight - trace[innerIndex]
           );
         } else {
-          startXPosition = (baseIndex + getGaps(baseIndex - 1).gapsBefore) * charWidth;
+          startXPosition =
+            (baseIndex + getGaps(baseIndex - 1).gapsBefore) * charWidth;
           ctx.lineTo(
             startXPosition + scalingFactor * (innerIndex - startBasePos),
             scaledHeight - trace[innerIndex]
           );
         }
-        
-          //  + (charWidth / 3);
+
+        //  + (charWidth / 3);
         // const endXPosition = (baseIndex + 1) * charWidth
         // const intervalsBetweenBases =  endBasePos - startBasePos
         // const scaledStartXPosition = traceData.basePos[startBasePos - 1] || 0
@@ -173,8 +233,8 @@ function drawTrace({
     // }
     ctx.strokeStyle = lineColor;
     ctx.stroke();
-      // console.log("startBp", startBp);
-      // console.log("endBp", endBp);
+    // console.log("startBp", startBp);
+    // console.log("endBp", endBp);
   };
 
   //   this.drawBases = function () {
@@ -233,6 +293,7 @@ function drawTrace({
     this.drawPeaks(formattedPeaks.g, colors.guanine);
     this.drawPeaks(formattedPeaks.c, colors.cytosine);
     // this.drawBases();
+    ctx.closePath();
   };
 }
 
