@@ -84,12 +84,14 @@ class AlignmentTool extends React.Component {
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
+      // createNewMismatchesList,
       upsertAlignmentRun
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
     hideModal();
     const alignmentId = uniqid();
+    // const alignmentIdMismatches = uniqid();
     createNewAlignment({
       id: alignmentId,
       name: addedSequencesToUse[0].name + " Alignment"
@@ -99,6 +101,14 @@ class AlignmentTool extends React.Component {
       id: alignmentId,
       loading: true
     });
+    // createNewMismatchesList({
+    //   id: alignmentIdMismatches,
+    //   name: addedSequencesToUse[0].name + " Mismatches"
+    // });
+    // upsertAlignmentRun({
+    //   id: alignmentIdMismatches,
+    //   loading: true
+    // });
 
     window.toastr.success("Alignment submitted.");
     const {
@@ -137,6 +147,10 @@ class AlignmentTool extends React.Component {
           };
         })
     });
+    // upsertAlignmentRun({
+    //   id: alignmentIdMismatches,
+
+    // });
   };
 
   handleFileUpload = (files, onChange) => {

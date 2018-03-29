@@ -9,6 +9,7 @@ import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
 import { isFunction } from "util";
+import { Button, ButtonGroup } from "@blueprintjs/core";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -17,6 +18,7 @@ export class AlignmentView extends React.Component {
     charWidthInLinearView: charWidthInLinearViewDefault,
     percentScrolled: 0,
     alignmentHeights: {}
+    // scalePct: 0.05
   };
 
   getMinCharWidth = () => {
@@ -124,6 +126,9 @@ export class AlignmentView extends React.Component {
       return <div>Error: Data is corrupted!</div>;
     }
 
+    // const { scalePct } = this.props;
+    // console.log('scalePct', scalePct);
+
     return (
       <div
         style={{
@@ -146,19 +151,40 @@ export class AlignmentView extends React.Component {
               const { alignmentHeights } = this.state;
               const { sequenceData } = track;
               return (
-                <div
-                  style={{
-                    height: alignmentHeights[i] || 10,
-                    textOverflow: "ellipsis",
-                    overflowY: "auto"
-                  }}
-                  key={i}
-                >
-                  {sequenceData.name || sequenceData.id}
+                <div className="side-bar" key={i}>
+                  <div
+                    style={{
+                      height: alignmentHeights[i] || 10,
+                      textOverflow: "ellipsis",
+                      overflowY: "auto"
+                    }}
+                  >
+                    {sequenceData.name || sequenceData.id}
+                  </div>
+
+                  {/* if (track.chromatogramData) { */}
+                  {/*   return ( */}
+                  {/* <div className="chromatogram-y-zoom" style={{ alignItems: "right" }}>
+                      <ButtonGroup className={"pt-minimal pt-vertical"}>
+                        <Button
+                          className="pt-minimal"
+                          icon="caret-up"
+                          onClick={this.setState({ scalePct: scalePct + 0.01 })}
+                        />
+                        <Button
+                          className="pt-minimal"
+                          icon="caret-down"
+                          onClick={this.setState({ scalePct: scalePct - 0.01 })}
+                        />
+                      </ButtonGroup>
+                    </div> */}
+                  {/* ); */}
+                  {/* } */}
                 </div>
               );
             })}
           </div>
+
           <div className={"alignmentTrackDetails"} style={{ flex: 1 }}>
             <div
               style={{

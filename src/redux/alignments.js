@@ -115,6 +115,8 @@ function addHighlightedDifferences(alignmentTracks) {
       alignmentTracks[0].alignmentData.sequence,
       track.alignmentData.sequence
     );
+    const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
+    // console.log('mismatches', mismatches);
     return {
       ...track,
       sequenceData,
@@ -124,7 +126,8 @@ function addHighlightedDifferences(alignmentTracks) {
         .map(range => {
           return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
           // height: 21
-        })
+        }),
+      mismatches
     };
   });
 }
@@ -179,10 +182,13 @@ export default createMergedDefaultStateReducer(
           }
         );
       }
-      if (payloadToUse.alignmentTracks)
+      if (payloadToUse.alignmentTracks) {
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
         );
+        // console.log('payloadToUse.alignmentTracks', payloadToUse.alignmentTracks);
+        console.log("mismatches", payloadToUse.alignmentTracks[1].mismatches);
+      }
       // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
         ...state,
@@ -192,11 +198,6 @@ export default createMergedDefaultStateReducer(
   },
   {
     alignmentRun1: alignmentsData
-    // alignmentRun1: {
-    //   alignmentTracks,
-    //   alignmentAnnotationVisibility: defaultAlignmentAnnotationVisibility,
-    //   alignmentAnnotationLabelVisibility: defaultAlignmentAnnotationLabelVisibility
-    // }
   }
 );
 
@@ -230,5 +231,4 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
     }
   }
   return ranges;
-  console.log("ranges", ranges);
 }

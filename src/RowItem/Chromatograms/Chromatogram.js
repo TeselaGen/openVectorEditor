@@ -15,6 +15,7 @@ class Chromatogram extends React.Component {
       newProps.charWidth !== this.props.charWidth ||
       newProps.row.start !== this.props.row.start ||
       newProps.row.end !== this.props.row.end
+      // newProps.scalePct !== this.props.scalePct
     ) {
       // console.log("newProps.charWidth:", newProps.charWidth);
       const charWidth = newProps.charWidth;
@@ -38,21 +39,23 @@ class Chromatogram extends React.Component {
   };
 
   scaleChromatogramYPeaksHigher = () => {
+    const { charWidth } = this.props;
     const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
     const ctx = peakCanvas.getContext("2d");
     ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
     const newScalePct = scalePct + 0.01;
-    this.updatePeakDrawing(newScalePct);
+    this.updatePeakDrawing(newScalePct, charWidth);
     this.setState({ scalePct: newScalePct });
   };
   scaleChromatogramYPeaksLower = () => {
+    const { charWidth } = this.props;
     const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
     const ctx = peakCanvas.getContext("2d");
     ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
     const newScalePct = scalePct - 0.01;
-    this.updatePeakDrawing(newScalePct);
+    this.updatePeakDrawing(newScalePct, charWidth);
     this.setState({ scalePct: newScalePct });
   };
 
@@ -73,32 +76,32 @@ class Chromatogram extends React.Component {
     // path=path.replace(/\n/g,'')
 
     return (
-      // <div className="chromatogram-plus-zoom">
-      //   <div className="y-zoom-chromatogram">
-      //     {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
-      //     <Button
-      //       className="pt-minimal"
-      //       icon="caret-up"
-      //       onClick={this.scaleChromatogramYPeaksHigher}
-      //     />
-      //     <Button
-      //       className="pt-minimal"
-      //       icon="caret-down"
-      //       onClick={this.scaleChromatogramYPeaksLower}
-      //     />
-      //     {/* </ButtonGroup> */}
-      //   </div>
+      <div className="chromatogram-plus-zoom">
+        <div className="y-zoom-chromatogram">
+          {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
+          <Button
+            className="pt-minimal"
+            icon="caret-up"
+            onClick={this.scaleChromatogramYPeaksHigher}
+          />
+          <Button
+            className="pt-minimal"
+            icon="caret-down"
+            onClick={this.scaleChromatogramYPeaksLower}
+          />
+          {/* </ButtonGroup> */}
+        </div>
 
-      <div className="chromatogram">
-        <canvas
-          ref={n => {
-            // console.log('n:',n)
-            if (n) this.canvasRef = n;
-          }}
-          height="100"
-        />
+        <div className="chromatogram">
+          <canvas
+            ref={n => {
+              // console.log('n:',n)
+              if (n) this.canvasRef = n;
+            }}
+            height="100"
+          />
+        </div>
       </div>
-      // </div>
     );
   }
 }
