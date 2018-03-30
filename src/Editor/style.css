@@ -52,3 +52,32 @@
   top: 0px;
   left: 0px;
 }
+
+.preview-mode-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.preview-mode-view-fullscreen {
+  width: 200px;
+  height: 40px;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+  background: #2b95d6;
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.preview-mode-container:hover .preview-mode-view-fullscreen {
+  display: flex;
+}
+
+.preview-mode-view-fullscreen:hover {
+  background: #0e5a8a;
+}
