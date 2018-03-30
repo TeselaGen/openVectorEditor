@@ -185,6 +185,7 @@ export class RowView extends React.Component {
         this.InfiniteScroller.scrollTo(rowToScrollTo);
         clearTimeout(this.jumpTimeoutId);
         this.jumpTimeoutId = setTimeout(() => {
+          if (!this.InfiniteScroller) return; //this might be undefined if we've already unmounted
           const [el] = this.InfiniteScroller.items.querySelectorAll(
             `[data-row-number="${rowToScrollTo}"]`
           );

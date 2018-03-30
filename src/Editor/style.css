@@ -45,6 +45,10 @@
   overflow-y: hidden !important;
 }
 
+.reflex-layout.reflex-container {
+  height: inherit !important;
+}
+
 .fullscreen {
   background: white;
   z-index: 15000;

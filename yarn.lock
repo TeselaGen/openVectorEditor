@@ -71,31 +71,31 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/core@^2.0.0-rc.2", "@blueprintjs/core@^2.0.0-rc.3":
-  version "2.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-2.0.0-rc.3.tgz#1eb7dbe82fadc06c754c268d1261e1d04a51727d"
+"@blueprintjs/core@^2.0.0", "@blueprintjs/core@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-2.0.1.tgz#0b2cf9b477c8a0d102030a5de0465c1709eb99e7"
   dependencies:
-    "@blueprintjs/icons" "^2.0.0-rc.3"
+    "@blueprintjs/icons" "^2.0.0"
     "@types/dom4" "^2.0.0"
     classnames "^2.2"
     dom4 "^2.0.1"
     normalize.css "^7.0.0"
-    popper.js "^1.12.6"
-    react-popper "~0.7.4"
+    popper.js "^1.14.1"
+    react-popper "^0.8.2"
     tslib "^1.9.0"
 
-"@blueprintjs/datetime@^2.0.0-rc.2":
-  version "2.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-2.0.0-rc.3.tgz#6b610a97ab1848c6f228de2543f0ed1d78262287"
+"@blueprintjs/datetime@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-2.0.0.tgz#f52b97f42ba4f65d07cbbd87d1f3e1c68df7564f"
   dependencies:
-    "@blueprintjs/core" "^2.0.0-rc.3"
+    "@blueprintjs/core" "^2.0.0"
     classnames "^2.2"
     react-day-picker "^7.0.7"
     tslib "^1.9.0"
 
-"@blueprintjs/icons@^2.0.0-rc.3":
-  version "2.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-2.0.0-rc.3.tgz#30235278a115c849b3d6a9a1f38495790b526c52"
+"@blueprintjs/icons@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-2.0.0.tgz#d3c149b0c70de20f16bf46eff30caa60b3e74370"
   dependencies:
     classnames "^2.2"
     tslib "^1.9.0"
@@ -104,7 +104,7 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/dom4/-/dom4-2.0.0.tgz#00dc42fed6b36a7a6dabb8f7a9c9e678ee644e05"
 
-"@types/node@*", "@types/node@^9.4.6":
+"@types/node@*":
   version "9.4.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.4.7.tgz#57d81cd98719df2c9de118f2d5f3b1120dcd7275"
 
@@ -264,18 +264,6 @@ apollo-cache-invalidation@^0.0.3:
   dependencies:
     object-path "^0.11.4"
     traverse "^0.6.6"
-
-apollo-link@^1.0.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.1.tgz#c120b16059f9bd93401b9f72b94d2f80f3f305d2"
-  dependencies:
-    "@types/node" "^9.4.6"
-    apollo-utilities "^1.0.0"
-    zen-observable-ts "^0.8.6"
-
-apollo-utilities@^1.0.0:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.10.tgz#0c35696891d4fa28d76768e0f7249d63c6da08b9"
 
 app-root-path@^2.0.0:
   version "2.0.1"
@@ -1414,9 +1402,9 @@ binary-extensions@^1.0.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
 
-bio-parsers@4.4.4:
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.4.4.tgz#bd59753363ecc452031c1b22bc2b499c77925562"
+bio-parsers@4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.4.5.tgz#d3f172c0f0c4d447f0d1b2055c5df1177fb26dcc"
   dependencies:
     flatmap "0.0.3"
     lint-staged "^4.0.4"
@@ -2229,6 +2217,12 @@ copy-template-dir@1.3.0:
     readdirp "^2.0.0"
     run-parallel "^1.1.4"
 
+copy-to-clipboard@^3:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.0.8.tgz#f4e82f4a8830dce4666b7eb8ded0c9bcc313aba9"
+  dependencies:
+    toggle-selection "^1.0.3"
+
 copy-webpack-plugin@4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-4.2.0.tgz#252bb94597f96399d23d7fad355f8d3a661ac096"
@@ -2312,7 +2306,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-env@^5.1.1, cross-env@^5.1.3:
+cross-env@^5.1.1, cross-env@^5.1.4:
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.1.4.tgz#f61c14291f7cc653bb86457002ea80a04699d022"
   dependencies:
@@ -3164,18 +3158,6 @@ eslint-plugin-import@2.9.0:
     minimatch "^3.0.3"
     read-pkg-up "^2.0.0"
 
-eslint-plugin-jsx-a11y@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-5.1.1.tgz#5c96bb5186ca14e94db1095ff59b3e2bd94069b1"
-  dependencies:
-    aria-query "^0.7.0"
-    array-includes "^3.0.3"
-    ast-types-flow "0.0.7"
-    axobject-query "^0.1.0"
-    damerau-levenshtein "^1.0.0"
-    emoji-regex "^6.1.0"
-    jsx-ast-utils "^1.4.0"
-
 eslint-plugin-jsx-a11y@6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.0.3.tgz#54583d1ae442483162e040e13cc31865465100e5"
@@ -3624,6 +3606,10 @@ file-loader@1.1.5:
 file-saver@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.3.tgz#cdd4c44d3aa264eac2f68ec165bc791c34af1232"
+
+file-saver@^1.3.8:
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.8.tgz#e68a30c7cb044e2fb362b428469feb291c2e09d8"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -4249,7 +4235,7 @@ hoek@4.x.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
 
-hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
@@ -5352,10 +5338,6 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jsx-ast-utils@^1.4.0:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-1.4.1.tgz#3867213e8dd79bf1e8f2300c0cfc1efb182c0df1"
-
 jsx-ast-utils@^2.0.0, jsx-ast-utils@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
@@ -5691,10 +5673,6 @@ lodash.flattendeep@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
 
-lodash.flowright@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.flowright/-/lodash.flowright-3.5.0.tgz#2b5fff399716d7e7dc5724fe9349f67065184d67"
-
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -5719,10 +5697,6 @@ lodash.merge@^4.6.0:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
 
-lodash.pick@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
-
 lodash.throttle@^3.0.3:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-3.0.4.tgz#bc4f471fb328e4d6fdc6df2b3d3caf113f0f89c9"
@@ -5737,13 +5711,13 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
+lodash@4.17.5, lodash@^4.0.1, lodash@^4.12.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.6.1:
+  version "4.17.5"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
+
 lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
-
-lodash@^4.0.1, lodash@^4.12.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.6.1:
-  version "4.17.5"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
 log-symbols@^1.0.2:
   version "1.0.2"
@@ -6258,9 +6232,24 @@ node-pre-gyp@^0.6.39:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-nodemon@^1.12.1, nodemon@^1.17.1:
+nodemon@^1.12.1:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.17.1.tgz#cdb4bc53d7a86d6162143a1a44d7adf927d8652f"
+  dependencies:
+    chokidar "^2.0.2"
+    debug "^3.1.0"
+    ignore-by-default "^1.0.1"
+    minimatch "^3.0.4"
+    pstree.remy "^1.1.0"
+    semver "^5.5.0"
+    supports-color "^5.2.0"
+    touch "^3.1.0"
+    undefsafe "^2.0.2"
+    update-notifier "^2.3.0"
+
+nodemon@^1.17.2:
+  version "1.17.2"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.17.2.tgz#17c0062629610e03dd01241c576f1c4068da9fdd"
   dependencies:
     chokidar "^2.0.2"
     debug "^3.1.0"
@@ -7044,7 +7033,7 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
-popper.js@^1.12.5, popper.js@^1.12.6:
+popper.js@^1.12.9, popper.js@^1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.1.tgz#b8815e5cda6f62fc2042e47618649f75866e6753"
 
@@ -7602,16 +7591,15 @@ react-addons-pure-render-mixin@^15.6.0, react-addons-pure-render-mixin@^15.6.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-apollo@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.0.4.tgz#01dd32a8e388672f5d7385b21cdd0b94009ee9ee"
+react-apollo@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.1.1.tgz#22a55d28cb54fb652415daf757fb1f743b9daaba"
   dependencies:
-    apollo-link "^1.0.0"
-    hoist-non-react-statics "^2.2.0"
-    invariant "^2.2.1"
-    lodash.flowright "^3.5.0"
-    lodash.pick "^4.4.0"
-    prop-types "^15.5.8"
+    fbjs "^0.8.16"
+    hoist-non-react-statics "^2.3.1"
+    invariant "^2.2.2"
+    lodash "4.17.5"
+    prop-types "^15.6.0"
 
 react-beautiful-dnd@^4.0.1:
   version "4.0.1"
@@ -7632,6 +7620,13 @@ react-collapsible@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.0.4.tgz#fb1761eda57599a045d602534e31cb23a6c3f52a"
 
+react-copy-to-clipboard@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.1.tgz#8eae107bb400be73132ed3b6a7b4fb156090208e"
+  dependencies:
+    copy-to-clipboard "^3"
+    prop-types "^15.5.8"
+
 react-day-picker@^7.0.7:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.1.2.tgz#9d6889c391dedc1665056882f06d237b5fb6cd41"
@@ -7648,9 +7643,9 @@ react-dimensions@^1.3.0:
   dependencies:
     element-resize-event "^2.0.4"
 
-react-dom@^16.2.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
+react-dom@^16.3.0:
+  version "16.3.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.3.0.tgz#b318e52184188ecb5c3e81117420cca40618643e"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -7727,12 +7722,12 @@ react-popover@^0.5.4:
     lodash.throttle "^3.0.3"
     prop-types "^15.5.10"
 
-react-popper@~0.7.4:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.5.tgz#71c25946f291db381231281f6b95729e8b801596"
+react-popper@^0.8.2:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.8.3.tgz#0f73333137c9fb0af6ec4074d2d0585a0a0461e1"
   dependencies:
-    popper.js "^1.12.5"
-    prop-types "^15.5.10"
+    popper.js "^1.12.9"
+    prop-types "^15.6.0"
 
 react-proxy@^1.1.7:
   version "1.1.8"
@@ -9024,36 +9019,36 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^22.0.11:
-  version "22.0.11"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.11.tgz#5bcd70ebf20dff6523fe65543f8038053e2d278d"
+teselagen-react-components@^22.0.17:
+  version "22.0.17"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.17.tgz#88f608e06fdfa8383dc22af7ca9fd11ffc786348"
   dependencies:
     classnames "^2.2.5"
-    cross-env "^5.1.3"
+    cross-env "^5.1.4"
     deep-equal "^1.0.1"
     dom-scroll-into-view "^1.2.1"
-    eslint-plugin-jsx-a11y "5.1.1"
-    file-saver "^1.3.3"
+    file-saver "^1.3.8"
     json.sortify "^2.2.2"
     lodash "^4.17.5"
     lodash.flatmap "^4.5.0"
     lru-memoize "^1.0.2"
     math-expression-evaluator "^1.2.17"
     moment "^2.21.0"
-    nodemon "^1.17.1"
+    nodemon "^1.17.2"
     papaparse "^4.3.7"
     pascal-case "^2.0.1"
     paths-js "^0.4.7"
     pluralize "^7.0.0"
     query-string "^5.1.0"
     react-addons-pure-render-mixin "^15.6.0"
+    react-copy-to-clipboard "^5.0.1"
     react-dropzone "^4.2.9"
     react-sortable-hoc "^0.6.8"
     recompose "^0.26.0"
     redux "^3.7.2"
     uniqid "^4.1.1"
     ve-range-utils "^2.5.0"
-    ve-sequence-utils "^3.2.34"
+    ve-sequence-utils "^3.2.38"
 
 test-exclude@^4.1.1, test-exclude@^4.2.1:
   version "4.2.1"
@@ -9193,6 +9188,10 @@ to-regex@^3.0.1:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toggle-selection@^1.0.3:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/toggle-selection/-/toggle-selection-1.0.6.tgz#6e45b1263f2017fa0acc7d89d78b15b8bf77da32"
 
 toposort@^1.0.0:
   version "1.0.6"
@@ -9534,19 +9533,9 @@ ve-range-utils@^2.5.0:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.2.38:
+ve-sequence-utils@3.2.38, ve-sequence-utils@^3.2.38:
   version "3.2.38"
   resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.38.tgz#ae4f9a566f30551a1499fc7367f262b4c55b8886"
-  dependencies:
-    bson-objectid "^1.1.1"
-    escape-string-regexp "^1.0.5"
-    randomcolor "^0.4.3"
-    string-splice "^1.3.0"
-    validate.io-nonnegative-integer-array "^1.0.1"
-
-ve-sequence-utils@^3.2.34:
-  version "3.2.35"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.35.tgz#a73f28d500c2751ca927ce33dcdf83c1e338911c"
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
@@ -9964,13 +9953,3 @@ yauzl@2.4.1:
 yeast@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
-
-zen-observable-ts@^0.8.6:
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.8.tgz#1a586dc204fa5632a88057f879500e0d2ba06869"
-  dependencies:
-    zen-observable "^0.7.0"
-
-zen-observable@^0.7.0:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.7.1.tgz#f84075c0ee085594d3566e1d6454207f126411b3"

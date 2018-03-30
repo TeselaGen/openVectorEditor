@@ -66,6 +66,7 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
+const tabHeight = 34;
 
 const getListStyle = isDraggingOver => {
   return {
@@ -476,6 +477,8 @@ export class Editor extends React.Component {
 
     const sharedProps = {
       editorName,
+      tabHeight,
+      fitHeight: previewMode && previewModeFullscreen,
       ...this.props
     };
 
@@ -606,7 +609,10 @@ export class Editor extends React.Component {
         toReturn.push(
           <ReflexSplitter
             key={index + "splitter"}
-            style={{ height: height + 38, zIndex: 1 }}
+            style={{
+              // height: height + 38,
+              zIndex: 1
+            }}
             propagate
           />
         );
@@ -616,7 +622,7 @@ export class Editor extends React.Component {
           key={index}
           minSize="100"
           propagateDimensions={true}
-          resizeHeight={false}
+          resizeHeight={previewMode && previewModeFullscreen}
           renderOnResizeRate={50}
           renderOnResize={true}
           className="left-panel ve-panel"
@@ -661,7 +667,10 @@ export class Editor extends React.Component {
                 <div
                   className={"ve-draggable-tabs"}
                   ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver, tabDragging)}
+                  style={{
+                    height: tabHeight,
+                    ...getListStyle(snapshot.isDraggingOver, tabDragging)
+                  }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
                     return (
@@ -820,9 +829,21 @@ export class Editor extends React.Component {
           />
         )}
         <div
+          className={"veEditorInner"}
           style={{
             width: "100%",
-            ...(doNotUseAbsolutePosition ? {} : { position: "absolute" })
+            height: "100%",
+            ...(previewMode &&
+              previewModeFullscreen && {
+                display: "flex",
+                flexDirection: "column"
+              }),
+            // display: "flex",
+            // flexDirection: "column",
+            ...(doNotUseAbsolutePosition ||
+            (previewMode && previewModeFullscreen)
+              ? {}
+              : { position: "absolute" })
           }}
         >
           {/* <button
@@ -859,7 +880,7 @@ export class Editor extends React.Component {
           <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
 
           <div
-            style={{ position: "relative" }}
+            style={{ position: "relative", flexGrow: "1" }}
             className="tg-editor-container"
             id="section-to-print"
           >
