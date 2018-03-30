@@ -51,7 +51,7 @@ export default compose(
 );
 
 function mapPropsToState(state, ownProps) {
-  const { editorName } = ownProps;
+  const { editorName, sequenceData: sequenceDataFromProps } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
   let editorState = VectorEditor[editorName];
@@ -71,6 +71,13 @@ function mapPropsToState(state, ownProps) {
     annotationLabelVisibility,
     annotationsToSupport
   );
+  let toReturn = {
+    ...editorState,
+    meta
+  };
+  if (sequenceDataFromProps) {
+    return toReturn;
+  }
 
   let sequenceData = s.sequenceDataSelector(editorState);
   let cutsites = s.filteredCutsitesSelector(editorState).cutsitesArray;
@@ -112,7 +119,7 @@ function mapPropsToState(state, ownProps) {
   );
 
   return {
-    ...editorState,
+    ...toReturn,
     selectedCutsites,
     sequenceLength,
     allCutsites,
@@ -129,8 +136,7 @@ function mapPropsToState(state, ownProps) {
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
-    sequenceData: sequenceDataToUse,
-    meta
+    sequenceData: sequenceDataToUse
   };
 }
 

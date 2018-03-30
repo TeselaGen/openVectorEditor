@@ -91,6 +91,7 @@
     "@blueprintjs/core": "^2.0.1",
     "@blueprintjs/datetime": "^2.0.0",
     "apollo-cache-invalidation": "^0.0.3",
+    "apollo-client": "^2.2.8",
     "axios": "^0.17.1",
     "babel-eslint": "8.2.2",
     "babel-jest": "^21.2.0",
