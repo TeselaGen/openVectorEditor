@@ -1,3 +1,4 @@
+import { debounce } from "lodash";
 import Dialogs from "../Dialogs";
 import "react-reflex/styles.css";
 import React from "react";
@@ -124,6 +125,16 @@ export class Editor extends React.Component {
   handleReverseComplementSelection = () => {
     // const {selectionLayerUpdate}
     console.warn("handleReverseComplementSelection");
+  };
+
+  updateDimensions = debounce(() => {
+    this.setState({ randomRerenderTrigger: Math.random() });
+  }, 100);
+  componentDidMount = () => {
+    window.addEventListener("resize", this.updateDimensions);
+  };
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.updateDimensions);
   };
 
   handleNewPrimer = () => {
