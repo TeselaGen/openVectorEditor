@@ -7591,7 +7591,7 @@ react-addons-pure-render-mixin@^15.6.0, react-addons-pure-render-mixin@^15.6.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-apollo@^2.1.1:
+react-apollo@^2.0.4:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.1.1.tgz#22a55d28cb54fb652415daf757fb1f743b9daaba"
   dependencies:

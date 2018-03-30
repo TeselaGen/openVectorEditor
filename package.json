@@ -121,7 +121,7 @@
     "prettier": "^1.8.2",
     "react": "^16.2.0",
     "react-addons-perf": "^15.4.2",
-    "react-apollo": "^2.1.1",
+    "react-apollo": "^2.0.4",
     "react-collapsible": "^2.0.3",
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.6",
