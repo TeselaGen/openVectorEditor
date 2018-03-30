@@ -491,29 +491,25 @@ export class Editor extends React.Component {
         ? CircularViewUnconnected
         : LinearViewUnconnected;
       return (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column"
-          }}
-        >
-          <Panel
-            {...sharedProps}
-            {...editorDimensions}
-            annotationLabelVisibility={{
-              features: false,
-              parts: false,
-              cutsites: false,
-              primers: false
-            }}
-          />
-          <Button
-            className={Classes.MINIMAL}
-            intent={Intent.PRIMARY}
-            text="View Fullscreen"
-            onClick={this.togglePreviewFullscreen}
-          />
+        <div className="preview-mode-container">
+          <div style={{ position: "relative" }}>
+            <Panel
+              {...sharedProps}
+              {...editorDimensions}
+              annotationLabelVisibility={{
+                features: false,
+                parts: false,
+                cutsites: false,
+                primers: false
+              }}
+            />
+            <div
+              className="preview-mode-view-fullscreen"
+              onClick={this.togglePreviewFullscreen}
+            >
+              Open Editor
+            </div>
+          </div>
         </div>
       );
     }
