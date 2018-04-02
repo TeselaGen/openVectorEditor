@@ -9069,9 +9069,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^22.0.17:
-  version "22.0.17"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.17.tgz#88f608e06fdfa8383dc22af7ca9fd11ffc786348"
+teselagen-react-components@^22.0.19:
+  version "22.0.19"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.19.tgz#d6d4519b0a9a7e798cbd01d8395627d8f64629a8"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.4"
@@ -9583,7 +9583,17 @@ ve-range-utils@^2.5.0:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.2.38, ve-sequence-utils@^3.2.38:
+ve-sequence-utils@3.2.39:
+  version "3.2.39"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.39.tgz#c69a1a19a89ec588d50224c582772f388013f2bc"
+  dependencies:
+    bson-objectid "^1.1.1"
+    escape-string-regexp "^1.0.5"
+    randomcolor "^0.4.3"
+    string-splice "^1.3.0"
+    validate.io-nonnegative-integer-array "^1.0.1"
+
+ve-sequence-utils@^3.2.38:
   version "3.2.38"
   resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.38.tgz#ae4f9a566f30551a1499fc7367f262b4c55b8886"
   dependencies:

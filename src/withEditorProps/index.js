@@ -76,6 +76,8 @@ function mapPropsToState(state, ownProps) {
     meta
   };
   if (sequenceDataFromProps) {
+    //return early here because we don't want to override the sequenceData being passed in
+    //this is a little hacky but allows us to track selectionLayer/caretIndex using redux but on a sequence that isn't being stored alongside that info
     return toReturn;
   }
 
