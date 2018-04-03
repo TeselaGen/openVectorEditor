@@ -13,6 +13,7 @@ let Axis = function(props) {
     charWidth,
     annotationHeight,
     sequenceLength,
+    showAxisNumbers = true,
     getGaps
   } = props;
   if (row.start === 0 && row.end === 0) {
@@ -57,20 +58,21 @@ let Axis = function(props) {
         stroke={"black"}
       />
     );
-    tickMarkSVG.push(
-      <text
-        key={"axisTickMarkText " + i + " " + tickMarkPosition}
-        stroke={"black"}
-        x={xCenter}
-        y={annotationHeight}
-        style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
-      >
-        {normalizePositionByRangeLength(
-          row.start + tickMarkPosition,
-          sequenceLength
-        ) + 1}
-      </text>
-    );
+    showAxisNumbers &&
+      tickMarkSVG.push(
+        <text
+          key={"axisTickMarkText " + i + " " + tickMarkPosition}
+          stroke={"black"}
+          x={xCenter}
+          y={annotationHeight}
+          style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
+        >
+          {normalizePositionByRangeLength(
+            row.start + tickMarkPosition,
+            sequenceLength
+          ) + 1}
+        </text>
+      );
   });
 
   return (

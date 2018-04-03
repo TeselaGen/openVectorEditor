@@ -1,6 +1,6 @@
 import {
   tidyUpSequenceData /* generateSequenceData */,
-  turnInsertsIntoSingleBpMutations
+  condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
 
 import createAction from "./utils/createMetaAction";
@@ -10,9 +10,7 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 import ab1ParsedGFPvv50 from "../ToolBar/ab1ParsedGFPvv50.json";
 import ab1ParsedGFPvv60 from "../ToolBar/ab1ParsedGFPvv60.json";
 import alignmentsData from "./alignments_data.json";
-
-// import { magicDownload } from "teselagen-react-components";
-// import { magicDownload } from "teselagen-react-components";
+import { magicDownload } from "teselagen-react-components";
 
 const defaultAlignmentAnnotationVisibility = {
   features: false,
@@ -25,13 +23,34 @@ const defaultAlignmentAnnotationVisibility = {
   primers: false,
   reverseSequence: false,
   lineageLines: false,
-  axisNumbers: false,
+  axisNumbers: true,
   yellowAxis: false
+};
+
+const defaultPairwiseAlignmentAnnotationVisibility = {
+  features: true,
+  yellowAxis: false,
+  translations: false,
+  parts: true,
+  orfs: true,
+  orfTranslations: false,
+  axis: true,
+  cutsites: false,
+  primers: true,
+  reverseSequence: false,
+  lineageLines: true,
+  axisNumbers: true
 };
 
 const defaultAlignmentAnnotationLabelVisibility = {
   features: false,
   parts: false,
+  cutsites: false
+};
+
+const defaultPairwiseAlignmentAnnotationLabelVisibility = {
+  features: true,
+  parts: true,
   cutsites: false
 };
 
@@ -108,6 +127,11 @@ let alignmentTracks = [
 //   }
 // ];
 
+const highlightRangeProps = {
+  color: "red",
+  hideCarets: true,
+  ignoreGaps: true
+};
 function addHighlightedDifferences(alignmentTracks) {
   return alignmentTracks.map(track => {
     const sequenceData = tidyUpSequenceData(track.sequenceData);
@@ -124,7 +148,7 @@ function addHighlightedDifferences(alignmentTracks) {
       additionalSelectionLayers: matchHighlightRanges
         .filter(({ isMatch }) => !isMatch)
         .map(range => {
-          return { ...range, color: "red", hideCarets: true, ignoreGaps: true };
+          return { ...range, ...highlightRangeProps };
           // height: 21
         }),
       mismatches
@@ -151,29 +175,54 @@ export default createMergedDefaultStateReducer(
     // },
     [upsertAlignmentRun]: (state, payload) => {
       let payloadToUse = {
-        alignmentAnnotationVisibility: defaultAlignmentAnnotationVisibility,
-        alignmentAnnotationLabelVisibility: defaultAlignmentAnnotationLabelVisibility,
+        alignmentAnnotationVisibility: payload.pairwiseAlignments
+          ? defaultPairwiseAlignmentAnnotationVisibility
+          : defaultAlignmentAnnotationVisibility,
+        alignmentAnnotationLabelVisibility: payload.pairwiseAlignments
+          ? defaultPairwiseAlignmentAnnotationLabelVisibility
+          : defaultAlignmentAnnotationLabelVisibility,
         ...payload
       };
       if (payloadToUse.pairwiseAlignments) {
+        const templateSeq = payloadToUse.pairwiseAlignments[0][0];
         //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
         const pairwiseOverviewAlignmentTracks = [
-          payloadToUse.pairwiseAlignments[0][0]
-        ]; // start with just the template seq in there!
-        payloadToUse.pairwiseAlignments.forEach(
-          ([template, alignedSeq], index) => {
-            const alignedSeqMinusInserts = {
-              ...alignedSeq,
-              alignmentData: {
-                sequence: turnInsertsIntoSingleBpMutations(
-                  alignedSeq.alignmentData.sequence,
-                  template.alignmentData.sequence
-                )
-              }
-            };
-            pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
+          {
+            //add the template seq as the first track in the Pairwise Alignment Overview
+            ...templateSeq,
+            alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
           }
-        );
+        ]; // start with just the template seq in there!
+
+        payloadToUse.pairwiseAlignments.forEach(([template, alignedSeq]) => {
+          const condensedSeq = condensePairwiseAlignmentDifferences(
+            template.alignmentData.sequence,
+            alignedSeq.alignmentData.sequence
+          );
+          const re = /r+/gi;
+          let match;
+          const additionalSelectionLayers = [];
+          while ((match = re.exec(condensedSeq)) != null) {
+            additionalSelectionLayers.push({
+              start: match.index,
+              end: match.index + match[0].length - 1,
+              ...highlightRangeProps
+            });
+          }
+
+          const alignedSeqMinusInserts = {
+            ...alignedSeq,
+            sequenceData: {
+              ...alignedSeq.sequenceData,
+              sequence: template.sequenceData.sequence
+            },
+            additionalSelectionLayers,
+            alignmentData: {
+              sequence: condensedSeq
+            }
+          };
+          pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
+        });
         payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
 
         payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(

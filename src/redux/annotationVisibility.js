@@ -14,7 +14,7 @@ const visibilityInitialValues = {
   primers: true,
   reverseSequence: true,
   lineageLines: true,
-  axisNumbers: false
+  axisNumbers: true
 };
 
 // ------------------------------------

@@ -128,7 +128,7 @@ export class CircularView extends React.Component {
       // firstCut: showFirstCut = true,
       axis: showAxis = true,
       lineageLines: showLineageLines = true,
-      axisNumbers: showAxisNumbers = false
+      axisNumbers: showAxisNumbers = true
       // sequence: showSequence = true,
       // reverseSequence: showReverseSequence = true,
     } = annotationVisibility;

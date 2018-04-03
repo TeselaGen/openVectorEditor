@@ -278,11 +278,23 @@ panelsShown: [
 After calling `editor.updateEditor(...)` call
 ```js
 editor.addAlignment({
-        id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
+				id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
+				//if you want a pairwise alignment:
+				pairwiseAlignments: [
+					[
+          	{Alignment Track Data Here}, //see Data Model below for specs
+          	{Alignment Track Data Here}, 
+					],
+					[
+          	{Alignment Track Data Here}, //see Data Model below for specs
+          	{Alignment Track Data Here}, 
+					],
+				]
+				//or if you want a multi-seq alignment:
         alignmentTracks: [
-          {alignment Track Data Here}, //see Data Model below for specs
-          {alignment Track Data Here},
-          {alignment Track Data Here},
+          {Alignment Track Data Here}, //see Data Model below for specs
+          {Alignment Track Data Here},
+          {Alignment Track Data Here},
         ]
       });
 ```

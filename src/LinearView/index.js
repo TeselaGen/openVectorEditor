@@ -145,7 +145,7 @@ export class LinearView extends React.Component {
                 sequenceLength: (alignmentData || sequenceData).sequence.length,
                 width: innerWidth,
                 bpsPerRow,
-                tickSpacing: tickSpacing || Math.floor(sequenceLength / 10),
+                tickSpacing: tickSpacing || Math.ceil(120 / charWidth),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   yellowAxis: true,

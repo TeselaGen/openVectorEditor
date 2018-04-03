@@ -38,6 +38,7 @@ class AlignmentToolDropown extends React.Component {
     const {
       savedAlignments = [],
       hasSavedAlignments,
+      toggleDropdown,
       showCreateAlignmentDialog,
       sequenceData
     } = this.props;
@@ -46,6 +47,7 @@ class AlignmentToolDropown extends React.Component {
         <Button
           intent={Intent.PRIMARY}
           onClick={() => {
+            toggleDropdown();
             showCreateAlignmentDialog({
               ...this.props,
               initialValues: {
@@ -119,8 +121,8 @@ class AlignmentTool extends React.Component {
     const {
       data: { alignedSequences, pairwiseAlignments } = {}
     } = await instance.post(
-      // "http://localhost:3000/alignment/run",
-      "http://j5server.teselagen.com/alignment/run",
+      "http://localhost:3000/alignment/run",
+      // "http://j5server.teselagen.com/alignment/run",
       {
         sequencesToAlign: addedSequencesToUse,
         isPairwiseAlignment
@@ -136,7 +138,8 @@ class AlignmentTool extends React.Component {
         pairwiseAlignments.map((alignedSequences, topIndex) => {
           return alignedSequences.map((alignmentData, innerIndex) => {
             return {
-              sequenceData: addedSequencesToUse[innerIndex > 0 ? topIndex : 0],
+              sequenceData:
+                addedSequencesToUse[innerIndex > 0 ? topIndex + 1 : 0],
               alignmentData,
               chromatogramData: addedSequencesToUse[innerIndex].chromatogramData
             };
@@ -167,7 +170,6 @@ class AlignmentTool extends React.Component {
       return results.forEach(result => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
-          console.log(result.parsedSequence);
         } else {
           return window.toastr.warning("Error parsing file: ", file.name);
         }

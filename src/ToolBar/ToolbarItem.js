@@ -46,7 +46,7 @@ export default class ToolbarItem extends React.Component {
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;
     }
-    const Dropdown = _DropDown && withEditorProps(_DropDown);
+    const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
     return (
       <div>
         <Popover

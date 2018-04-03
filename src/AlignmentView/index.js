@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Slider } from "@blueprintjs/core";
+import { Slider, Popover, Tooltip } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import LinearView from "../LinearView";
 import Minimap from "./Minimap";
@@ -55,7 +55,7 @@ export class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
   render() {
-    const { charWidthInLinearView, percentScrolled } = this.state;
+    let { charWidthInLinearView, percentScrolled } = this.state;
     const {
       alignmentTracks = [],
       dimensions: { width },
@@ -64,10 +64,16 @@ export class AlignmentView extends React.Component {
       minimapLaneHeight,
       minimapLaneSpacing,
       hideBottomBar,
+      isFullyZoomedOut,
+      handleSelectTrack,
       linearViewOptions,
+      handleBackButtonClicked,
       alignmentVisibilityToolOptions
     } = this.props;
 
+    if (isFullyZoomedOut) {
+      charWidthInLinearView = this.getMinCharWidth();
+    }
     if (
       !alignmentTracks ||
       !alignmentTracks[0] ||
@@ -134,10 +140,30 @@ export class AlignmentView extends React.Component {
           height,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
+          position: "relative"
         }}
         className="alignmentView"
       >
+        {handleBackButtonClicked && (
+          <div
+            style={{
+              position: "absolute",
+              background: "white",
+              opacity: 0.8,
+              top: 10,
+              left: 10
+            }}
+          >
+            <Tooltip content="Back to pairwise alignment overview">
+              <Button
+                icon="arrow-left"
+                onClick={handleBackButtonClicked}
+                className={"alignmentViewBackButton"}
+              />
+            </Tooltip>
+          </div>
+        )}
         <div
           className={"alignmentTracks"}
           style={{ overflowY: "auto", display: "flex" }}
@@ -149,16 +175,19 @@ export class AlignmentView extends React.Component {
             {alignmentTracks.map((track, i) => {
               const { alignmentHeights } = this.state;
               const { sequenceData } = track;
+              const name = sequenceData.name || sequenceData.id;
               return (
                 <div className="side-bar" key={i}>
                   <div
                     style={{
                       height: alignmentHeights[i] || 10,
                       textOverflow: "ellipsis",
-                      overflowY: "auto"
+                      overflowY: "auto",
+                      whiteSpace: "nowrap"
                     }}
+                    title={name}
                   >
-                    {sequenceData.name || sequenceData.id}
+                    {name}
                   </div>
 
                   {/* if (track.chromatogramData) { */}
@@ -216,11 +245,37 @@ export class AlignmentView extends React.Component {
                         }
                       }
                     }}
+                    className={"alignmentViewTrackContainer"}
                     style={{
                       position: "relative"
                     }}
                     key={i}
                   >
+                    {handleSelectTrack &&
+                      i > 0 && (
+                        <div
+                          onClick={() => {
+                            handleSelectTrack(i - 1);
+                          }}
+                          style={{
+                            position: "absolute",
+                            background: "white",
+                            opacity: 0,
+                            height: "100%",
+                            width: "100%",
+                            fontWeight: "bolder",
+                            cursor: "pointer",
+                            padding: 5,
+                            textAlign: "center",
+                            zIndex: 400
+                            // left: "50%",
+                            // transform: "translateX(-50%)"
+                          }}
+                          className={"alignmentViewSelectTrackPopover"}
+                        >
+                          Inspect track
+                        </div>
+                      )}
                     <div
                       style={{
                         position: "absolute",
@@ -426,6 +481,7 @@ class UncontrolledSlider extends React.Component {
   }
 }
 
+//this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {
   state = {
     currentPairwiseAlignmentIndex: undefined
@@ -436,7 +492,7 @@ class PairwiseAlignmentView extends React.Component {
     if (currentPairwiseAlignmentIndex > -1) {
       //we can render the AlignmentView directly
       //get the alignmentTracks based on currentPairwiseAlignmentIndex
-      const alignmentTracks = pairwiseAlignments[0];
+      const alignmentTracks = pairwiseAlignments[currentPairwiseAlignmentIndex];
       return (
         <AlignmentView
           {...{
@@ -459,14 +515,54 @@ class PairwiseAlignmentView extends React.Component {
           {...{
             ...this.props,
             alignmentTracks: pairwiseOverviewAlignmentTracks,
+            linearViewOptions: getPairwiseOverviewLinearViewOptions,
             isFullyZoomedOut: true,
             hideBottomBar: true,
             handleSelectTrack: trackIndex => {
               //set currentPairwiseAlignmentIndex
+              this.setState({ currentPairwiseAlignmentIndex: trackIndex });
             }
           }}
         />
       );
     }
+  }
+}
+
+function getPairwiseOverviewLinearViewOptions({ index }) {
+  if (index > 0) {
+    return {
+      linearViewAnnotationVisibilityOverrides: {
+        features: false,
+        yellowAxis: false,
+        translations: false,
+        parts: false,
+        orfs: false,
+        orfTranslations: false,
+        axis: true,
+        cutsites: false,
+        primers: false,
+        reverseSequence: false,
+        lineageLines: false,
+        axisNumbers: false
+      }
+    };
+  } else {
+    return {
+      // linearViewAnnotationVisibilityOverrides: {
+      //   features: false,
+      //   yellowAxis: false,
+      //   translations: false,
+      //   parts: false,
+      //   orfs: false,
+      //   orfTranslations: false,
+      //   axis: true,
+      //   cutsites: false,
+      //   primers: false,
+      //   reverseSequence: false,
+      //   lineageLines: false,
+      //   axisNumbers: false
+      // }
+    };
   }
 }

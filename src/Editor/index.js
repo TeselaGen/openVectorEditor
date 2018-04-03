@@ -849,7 +849,6 @@ export class Editor extends React.Component {
           {/* <button
             onClick={() => {
               document.body.addEventListener("keydown", e => {
-                console.log("e:", e);
               });
               let keyboardEvent = document.createEvent("KeyboardEvent");
               let initMethod =

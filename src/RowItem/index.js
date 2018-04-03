@@ -83,7 +83,7 @@ export class RowItem extends React.Component {
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
       scrollData,
-
+      minHeight = 25,
       bpsPerRow = sequenceLength,
       editorName
     } = this.props;
@@ -103,6 +103,7 @@ export class RowItem extends React.Component {
       // orfLabels: showOrfLabels=true,
       cutsites: showCutsites = true,
       axis: showAxis = true,
+      axisNumbers: showAxisNumbers = true,
       yellowAxis: showYellowAxis = false,
       caret: showCaret = true,
       reverseSequence: showReverseSequence = true,
@@ -140,6 +141,7 @@ export class RowItem extends React.Component {
     }
     let rowContainerStyle = {
       position: "relative",
+      minHeight,
       width: width + "px"
     };
     let getGaps = () => ({
@@ -545,7 +547,11 @@ export class RowItem extends React.Component {
           />
 
           {showAxis && (
-            <Axis tickSpacing={tickSpacing} {...annotationCommonProps} />
+            <Axis
+              tickSpacing={tickSpacing}
+              showAxisNumbers={showAxisNumbers}
+              {...annotationCommonProps}
+            />
           )}
           {caretPosition > -1 &&
             showCaret && (

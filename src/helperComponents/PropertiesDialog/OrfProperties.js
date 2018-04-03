@@ -50,7 +50,6 @@ class OrfProperties extends React.Component {
                 path: "color",
                 type: "string",
                 render: color => {
-                  console.log("color:", color);
                   return (
                     <div style={{ height: 20, width: 20, background: color }} />
                   );
