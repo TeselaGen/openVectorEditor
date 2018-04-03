@@ -5,6 +5,7 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 const visibilityInitialValues = {
   features: true,
   parts: true,
+  primers: true,
   cutsites: true
 };
 
