@@ -121,8 +121,8 @@ class AlignmentTool extends React.Component {
     const {
       data: { alignedSequences, pairwiseAlignments } = {}
     } = await instance.post(
-      "http://localhost:3000/alignment/run",
-      // "http://j5server.teselagen.com/alignment/run",
+      // "http://localhost:3000/alignment/run",
+      "http://j5server.teselagen.com/alignment/run",
       {
         sequencesToAlign: addedSequencesToUse,
         isPairwiseAlignment
