@@ -37,6 +37,7 @@ class AlignmentToolDropown extends React.Component {
   render() {
     const {
       savedAlignments = [],
+      hasSavedAlignments,
       showCreateAlignmentDialog,
       sequenceData
     } = this.props;
@@ -56,13 +57,17 @@ class AlignmentToolDropown extends React.Component {
           Create New Alignment
         </Button>
         <div className="vespacer" />
-        <h6>Saved Alignments:</h6>
-        {!savedAlignments.length && (
-          <div style={{ fontStyle: "italic" }}> No Alignments</div>
+        {hasSavedAlignments && (
+          <div>
+            <h6>Saved Alignments:</h6>
+            {!savedAlignments.length && (
+              <div style={{ fontStyle: "italic" }}> No Alignments</div>
+            )}
+            {savedAlignments.map((savedAlignment, i) => {
+              return <div key={i}>Saved Alignment {i}</div>;
+            })}
+          </div>
         )}
-        {savedAlignments.map((savedAlignment, i) => {
-          return <div key={i}>Saved Alignment {i}</div>;
-        })}
       </div>
     );
   }
