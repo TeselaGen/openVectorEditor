@@ -107,6 +107,7 @@ export default class Minimap extends React.Component {
             });
           })}
         </svg>
+
         <Axis
           {...{
             row: { start: 0, end: seqLength },

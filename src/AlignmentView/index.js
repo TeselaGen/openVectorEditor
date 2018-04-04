@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Slider, Popover, Tooltip } from "@blueprintjs/core";
+import { Slider, Tooltip } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import LinearView from "../LinearView";
 import Minimap from "./Minimap";
@@ -9,7 +9,7 @@ import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
 import { isFunction } from "util";
-import { Button, ButtonGroup } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -74,6 +74,7 @@ export class AlignmentView extends React.Component {
     if (isFullyZoomedOut) {
       charWidthInLinearView = this.getMinCharWidth();
     }
+
     if (
       !alignmentTracks ||
       !alignmentTracks[0] ||
@@ -81,55 +82,6 @@ export class AlignmentView extends React.Component {
     ) {
       console.error("corrupted data!", this.props);
       return "corrupted data!";
-    }
-    // debugger
-    let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
-    const returnEarlyMessage = alignmentTracks.some(track => {
-      if (track.alignmentData.sequence.length !== alignmentTrackLength) {
-        console.error("incorrect length", this.props);
-        return "incorrect length";
-      }
-      if (
-        track.chromatogramData &&
-        track.sequenceData.sequence.length !==
-          track.chromatogramData.baseCalls.length
-      ) {
-        console.error("incorrect chromatogram length", this.props);
-        return "incorrect chromatogram length";
-      }
-      if (
-        track.sequenceData.sequence.length !==
-        track.alignmentData.sequence.replace(/-/g, "").length
-      ) {
-        console.error(
-          "sequence data length does not match alignment data w/o gaps"
-        );
-        console.error(
-          "track.sequenceData.sequence:",
-          track.sequenceData.sequence
-        );
-        console.error(
-          "track.sequenceData.sequence.length:",
-          track.sequenceData.sequence.length
-        );
-        console.error(
-          "track.alignmentData.sequence:",
-          track.alignmentData.sequence
-        );
-        console.error(
-          'track.alignmentData.sequence.replace(/-/g,""):',
-          track.alignmentData.sequence.replace(/-/g, "")
-        );
-        console.error(
-          'track.alignmentData.sequence.replace(/-/g,"").length:',
-          track.alignmentData.sequence.replace(/-/g, "").length
-        );
-        return "sequence data length does not match alignment data w/o gaps";
-      }
-      return false;
-    });
-    if (returnEarlyMessage) {
-      return <div>Error: Data is corrupted!</div>;
     }
 
     const trackWidth = width - nameDivWidth || 400;
@@ -337,7 +289,10 @@ export class AlignmentView extends React.Component {
         </div>
         {!hideBottomBar && (
           <div
+            className={"alignmentViewBottomBar"}
             style={{
+              // flexGrow: 1,
+              minHeight: "-webkit-min-content",
               marginTop: 4,
               paddingTop: 4,
               borderTop: "1px solid lightgrey",

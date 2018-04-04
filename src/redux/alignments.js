@@ -10,7 +10,7 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 import ab1ParsedGFPvv50 from "../ToolBar/ab1ParsedGFPvv50.json";
 import ab1ParsedGFPvv60 from "../ToolBar/ab1ParsedGFPvv60.json";
 import alignmentsData from "./alignments_data.json";
-import { magicDownload } from "teselagen-react-components";
+// import { magicDownload } from "teselagen-react-components";
 
 const defaultAlignmentAnnotationVisibility = {
   features: false,
@@ -236,6 +236,10 @@ export default createMergedDefaultStateReducer(
           payloadToUse.alignmentTracks
         );
       }
+      //check for issues
+      checkForIssues(payloadToUse.alignmentTracks);
+      (payloadToUse.pairwiseAlignments || []).map(checkForIssues);
+
       // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
         ...state,
@@ -278,4 +282,69 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
     }
   }
   return ranges;
+}
+
+function checkForIssues(alignmentTracks) {
+  if (
+    !alignmentTracks ||
+    !alignmentTracks[0] ||
+    !alignmentTracks[0].alignmentData
+  ) {
+    return;
+  }
+
+  let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
+  const hasError = alignmentTracks.some(track => {
+    if (track.alignmentData.sequence.length !== alignmentTrackLength) {
+      console.error("incorrect length", this.props);
+
+      return "incorrect length";
+    }
+    if (
+      track.chromatogramData &&
+      track.sequenceData.sequence.length !==
+        track.chromatogramData.baseCalls.length
+    ) {
+      console.error("incorrect chromatogram length", this.props);
+
+      return "incorrect chromatogram length";
+    }
+    if (
+      track.sequenceData.sequence.length !==
+      track.alignmentData.sequence.replace(/-/g, "").length
+    ) {
+      console.error(
+        "sequence data length does not match alignment data w/o gaps"
+      );
+      console.error(
+        "track.sequenceData.sequence:",
+        track.sequenceData.sequence
+      );
+      console.error(
+        "track.sequenceData.sequence.length:",
+        track.sequenceData.sequence.length
+      );
+      console.error(
+        "track.alignmentData.sequence:",
+        track.alignmentData.sequence
+      );
+      console.error(
+        'track.alignmentData.sequence.replace(/-/g,""):',
+        track.alignmentData.sequence.replace(/-/g, "")
+      );
+      console.error(
+        'track.alignmentData.sequence.replace(/-/g,"").length:',
+        track.alignmentData.sequence.replace(/-/g, "").length
+      );
+
+      return "sequence data length does not match alignment data w/o gaps";
+    }
+    return false;
+  });
+  if (hasError) {
+    /* eslint-disable */
+
+    debugger;
+    /* eslint-enable */
+  }
 }
