@@ -86,27 +86,28 @@ export default class Minimap extends React.Component {
             }}
           />
         </Draggable>
-
-        <svg height={alignmentTracks.length * laneHeight} width={width}>
-          {alignmentTracks.map(({ matchHighlightRanges }, i) => {
-            //need to get the chunks that can be rendered
-            return matchHighlightRanges.map((range, index) => {
-              const { xStart, width } = getXStartAndWidthFromNonCircularRange(
-                range,
-                charWidth
-              );
-              return (
-                <rect
-                  key={i + "-" + index}
-                  y={laneHeight * i}
-                  height={laneHeight - laneSpacing}
-                  fill={range.isMatch ? "grey" : "red"}
-                  {...{ x: xStart, width }}
-                />
-              );
-            });
-          })}
-        </svg>
+        <div style={{ maxHeight: 150, overflowY: "auto" }}>
+          <svg height={alignmentTracks.length * laneHeight} width={width}>
+            {alignmentTracks.map(({ matchHighlightRanges }, i) => {
+              //need to get the chunks that can be rendered
+              return matchHighlightRanges.map((range, index) => {
+                const { xStart, width } = getXStartAndWidthFromNonCircularRange(
+                  range,
+                  charWidth
+                );
+                return (
+                  <rect
+                    key={i + "-" + index}
+                    y={laneHeight * i}
+                    height={laneHeight - laneSpacing}
+                    fill={range.isMatch ? "grey" : "red"}
+                    {...{ x: xStart, width }}
+                  />
+                );
+              });
+            })}
+          </svg>
+        </div>
 
         <Axis
           {...{

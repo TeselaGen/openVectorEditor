@@ -292,7 +292,7 @@ export class AlignmentView extends React.Component {
             className={"alignmentViewBottomBar"}
             style={{
               // flexGrow: 1,
-              minHeight: "-webkit-min-content",
+              minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
               marginTop: 4,
               paddingTop: 4,
               borderTop: "1px solid lightgrey",
