@@ -22,9 +22,7 @@ import {
   Hotkeys,
   HotkeysTarget,
   Icon,
-  Button,
-  Classes,
-  Intent
+  Tooltip
 } from "@blueprintjs/core";
 
 import { flatMap, map, filter } from "lodash";
@@ -628,22 +626,34 @@ export class Editor extends React.Component {
           className="left-panel ve-panel"
         >
           {isFullScreen ? (
-            <Icon
-              onClick={() => {
-                togglePanelFullScreen(activePanelId);
-              }}
-              icon="minimize"
+            <div
               className={"ve-clickable ve-close-panel-button"}
               style={{
-                zIndex: 15001,
+                zIndex: 15002,
                 position: "fixed",
+                display: "inherit",
                 top: 15,
                 right: 15
               }}
-            />
+            >
+              <Tooltip position={"left"} content="Minimize Tab">
+                <Icon
+                  style={{
+                    height: 30,
+                    width: 30
+                  }}
+                  title="Minimize Tab"
+                  onClick={() => {
+                    togglePanelFullScreen(activePanelId);
+                  }}
+                  icon="minimize"
+                />
+              </Tooltip>
+            </div>
           ) : (
             <Icon
               icon="menu"
+              title="Tab Options"
               className={"ve-clickable-black ve-close-panel-button"}
               onClick={showTabRightClickContextMenu}
               style={{
@@ -815,9 +825,7 @@ export class Editor extends React.Component {
         {/* <AlignmentToolInner /> */}
         {/* <DrawChromatogram /> */}
         {previewModeFullscreen && (
-          <Icon
-            onClick={this.togglePreviewFullscreen}
-            icon="minimize"
+          <div
             className={"ve-clickable ve-close-panel-button"}
             style={{
               zIndex: 15001,
@@ -826,7 +834,19 @@ export class Editor extends React.Component {
               top: 15,
               right: 15
             }}
-          />
+          >
+            <Tooltip content="Close Fullscreen Mode">
+              <Icon
+                style={{
+                  height: 30,
+                  width: 30
+                }}
+                title="Close Fullscreen Mode"
+                onClick={this.togglePreviewFullscreen}
+                icon="minimize"
+              />
+            </Tooltip>
+          </div>
         )}
         <div
           className={"veEditorInner"}
@@ -849,6 +869,7 @@ export class Editor extends React.Component {
           {/* <button
             onClick={() => {
               document.body.addEventListener("keydown", e => {
+                console.log("e:", e);
               });
               let keyboardEvent = document.createEvent("KeyboardEvent");
               let initMethod =
