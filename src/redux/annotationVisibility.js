@@ -8,7 +8,7 @@ const visibilityInitialValues = {
   translations: true,
   parts: true,
   orfs: true,
-  orfTranslations: true,
+  orfTranslations: false,
   axis: true,
   cutsites: true,
   primers: true,
