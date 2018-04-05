@@ -306,6 +306,7 @@ export class Editor extends React.Component {
   renderHotkeys() {
     const {
       handleSave,
+      createNewDigest,
       toggleReadOnlyMode,
       undo,
       redo,
@@ -333,6 +334,15 @@ export class Editor extends React.Component {
           combo={"mod+s"}
           label="Save"
           onKeyDown={handleSave}
+        />
+        <Hotkey
+          allowInInput
+          preventDefault
+          stopPropagation
+          global={true}
+          combo={"mod+shift+d"}
+          label="Create New Virtual Digest"
+          onKeyDown={createNewDigest}
         />
         <Hotkey
           allowInInput

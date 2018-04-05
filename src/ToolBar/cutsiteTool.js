@@ -1,4 +1,4 @@
-import { Icon, Button } from "@blueprintjs/core";
+import { Icon, Button, KeyCombo } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 
@@ -61,7 +61,7 @@ function CutsiteToolDropDown({
           }}
         >
           {" "}
-          Run Virtual Digest{" "}
+          Run Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
         </Button>
       )}
 
