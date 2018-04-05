@@ -11,6 +11,7 @@ import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
 import { normalizePositionByRangeLength } from "ve-range-utils/lib";
+import cdsFeaturesSelector from "./cdsFeaturesSelector";
 
 function translationsSelector(
   translationSearchMatches,
@@ -18,6 +19,9 @@ function translationsSelector(
   orfs,
   showOrfTranslations,
   showOrfs,
+  cdsFeatures,
+  showCdsFeatureTranslations,
+  showFeatures,
   translations,
   frameTranslations
 ) {
@@ -44,6 +48,16 @@ function translationsSelector(
       {}
     ),
     ...(showOrfTranslations && showOrfs ? orfs : {}),
+    ...(showCdsFeatureTranslations &&
+      showFeatures &&
+      reduce(
+        cdsFeatures,
+        (acc, cdsFeature) => {
+          acc[cdsFeature.id] = cdsFeature;
+          return acc;
+        },
+        {}
+      )),
     ...reduce(
       frameTranslations,
       (acc, isActive, frameName) => {
@@ -82,6 +96,9 @@ export default createSelector(
   orfsSelector,
   state => state.annotationVisibility.orfTranslations,
   state => state.annotationVisibility.orfs,
+  cdsFeaturesSelector,
+  state => state.annotationVisibility.cdsFeatureTranslations,
+  state => state.annotationVisibility.features,
   translationsRawSelector,
   state => state.frameTranslations,
   translationsSelector

@@ -768,6 +768,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         deleteFeature,
+        annotationVisibilityToggle,
         showAddOrEditFeatureDialog,
         propertiesViewOpen,
         propertiesViewTabUpdate
@@ -789,6 +790,12 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               }
             ]),
+        {
+          text: "Toggle CDS Feature Translations",
+          onClick: () => {
+            annotationVisibilityToggle("cdsFeatureTranslations");
+          }
+        },
         {
           text: "View Translation",
           // icon: "ion-plus-round",

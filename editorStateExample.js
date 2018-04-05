@@ -78,6 +78,7 @@ const exampleEditorState = {
     parts: true,
     orfs: true,
     orfTranslations: false,
+    cdsFeatureTranslations: true,
     axis: true,
     cutsites: true,
     reverseSequence: true

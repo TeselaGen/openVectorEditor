@@ -57,6 +57,7 @@ export default connect(
             parts: true,
             orfs: false,
             orfTranslations: false,
+            cdsFeatureTranslations: true,
             axis: false,
             cutsites: false,
             primers: false,

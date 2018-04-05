@@ -494,6 +494,7 @@ function getPairwiseOverviewLinearViewOptions({ index }) {
         parts: false,
         orfs: false,
         orfTranslations: false,
+        cdsFeatureTranslations: false,
         axis: true,
         cutsites: false,
         primers: false,

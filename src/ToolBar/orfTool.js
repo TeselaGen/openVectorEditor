@@ -81,6 +81,13 @@ function OrfToolDropdown({
         label={"Show ORF translations"}
       />
       <Checkbox
+        onChange={function() {
+          annotationVisibilityToggle("cdsFeatureTranslations");
+        }}
+        checked={annotationVisibility.cdsFeatureTranslations}
+        label={"Show translations for CDS features"}
+      />
+      <Checkbox
         onChange={useAdditionalOrfStartCodonsToggle}
         checked={useAdditionalOrfStartCodons}
         label={"Use GTG and CTG as start codons"}
