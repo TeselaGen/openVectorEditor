@@ -129,12 +129,13 @@ export class Editor extends React.Component {
   updateDimensions = debounce(() => {
     this.setState({ randomRerenderTrigger: Math.random() });
   }, 100);
-  componentDidMount = () => {
+
+  componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
-  };
-  componentWillUnmount = () => {
+  }
+  componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
-  };
+  }
 
   handleNewPrimer = () => {
     const {
@@ -314,7 +315,18 @@ export class Editor extends React.Component {
     } = this.props;
     return (
       <Hotkeys>
+        {/* <Hotkey
+          preventDefault  
+          stopPropagation
+          global={true}
+          combo={"esc"}
+          label="ee"
+          onKeyDown={() => {
+            alert('hee')
+          }}
+        /> */}
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           global={true}
@@ -323,6 +335,7 @@ export class Editor extends React.Component {
           onKeyDown={handleSave}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Print"
@@ -331,6 +344,7 @@ export class Editor extends React.Component {
           onKeyDown={this.handlePrint}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Invert Selection"
@@ -339,6 +353,7 @@ export class Editor extends React.Component {
           onKeyDown={() => this.handleInverse(this)}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Toggle Edit Mode"
@@ -348,6 +363,7 @@ export class Editor extends React.Component {
         />
         {/* TNR: these are here just to be added to the blueprint generated hotkey dialog but their actual handlers live elsewhere */}
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Cut"
@@ -355,6 +371,7 @@ export class Editor extends React.Component {
           combo="mod+x"
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Copy"
@@ -362,6 +379,7 @@ export class Editor extends React.Component {
           combo="mod+c"
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Paste"
@@ -370,6 +388,7 @@ export class Editor extends React.Component {
         />
         <Hotkey
           label="Delete (edit mode only)"
+          allowInInput
           preventDefault
           stopPropagation
           global
@@ -377,6 +396,7 @@ export class Editor extends React.Component {
         />
         {/* see above comment */}
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Undo"
@@ -385,6 +405,7 @@ export class Editor extends React.Component {
           onKeyDown={undo}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Redo"
@@ -393,6 +414,7 @@ export class Editor extends React.Component {
           onKeyDown={redo}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Find"
@@ -401,6 +423,7 @@ export class Editor extends React.Component {
           onKeyDown={toggleFindTool}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Select All"
@@ -409,6 +432,7 @@ export class Editor extends React.Component {
           onKeyDown={selectAll}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Reverse Complement Selection"
@@ -417,6 +441,7 @@ export class Editor extends React.Component {
           onKeyDown={this.handleReverseComplementSelection}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="Rotate To Caret Position"
@@ -425,6 +450,7 @@ export class Editor extends React.Component {
           onKeyDown={handleRotateToCaretPosition}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="New Feature"
@@ -433,6 +459,7 @@ export class Editor extends React.Component {
           onKeyDown={this.handleNewFeature}
         />
         <Hotkey
+          allowInInput
           preventDefault
           stopPropagation
           label="New Part"
