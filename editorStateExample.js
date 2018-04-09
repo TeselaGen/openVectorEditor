@@ -76,7 +76,7 @@ const exampleEditorState = {
     features: true,
     translations: true,
     parts: true,
-    orfs: true,
+    orfs: false,
     orfTranslations: false,
     cdsFeatureTranslations: true,
     axis: true,
