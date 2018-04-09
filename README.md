@@ -33,7 +33,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [Data Model](#data-model)
 - [Alignments](#alignments)
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
-  - [Data Model](#data-model-1)
+  - [Alignment Track Data Model](#alignment-track-data-model)
     - [Chromatogram Data](#chromatogram-data)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
@@ -279,8 +279,8 @@ After calling `editor.updateEditor(...)` call
 ```js
 editor.addAlignment({
 				id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
-				//if you want a pairwise alignment:
-				pairwiseAlignments: [
+				////optional! Use if you want a pairwise alignment:
+				pairwiseAlignments: [  
 					[
           	{Alignment Track Data Here}, //see Data Model below for specs
           	{Alignment Track Data Here}, 
@@ -290,8 +290,8 @@ editor.addAlignment({
           	{Alignment Track Data Here}, 
 					],
 				]
-				//or if you want a multi-seq alignment:
-        alignmentTracks: [
+				////optional! Use if you want a multi-seq alignment:
+        alignmentTracks: [ 
           {Alignment Track Data Here}, //see Data Model below for specs
           {Alignment Track Data Here},
           {Alignment Track Data Here},
@@ -300,50 +300,27 @@ editor.addAlignment({
 ```
 
 
-## Data Model
-Note: `alignmentData.sequence` is assumed to be the same length for EVERY track within an alignemnt run!
+## Alignment Track Data Model
+Note: `alignmentData.sequence` is assumed to be the same length for EVERY track within an alignment run or a pairwise alignment sub-alignment!
 
 `alignmentData` can contain "-" characters, whereas sequenceData should not. Sequence Data is the "raw" data of the sequence being aligned with features/parts/etc. 
 
 ```js
 {
-        id: "jbeiAlignment1", //the unique ID of the alignment run
-        alignmentTracks: [ //the array of tracks within the alignment run
-          {
-            //JBEI sequence 'GFPuv54'
-            // chromatogramData: ab1ParsedGFPuv54,
-            sequenceData: {
-              id: "1",
-							name: "GFPuv54",
-							features: [{start: 12, end: 15, name: "Ha1", id: "myFeat1"}]
-							// parts
-              sequence:
-                "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGAT"
-            },
-            alignmentData: {
-              id: "1",
-              sequence:
-                "---CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAG---ATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCA---TTACCTGTCGACACAATCTGCCCTTTCGAAAGAT"
-            }
-          },
-          {
-            //JBEI sequence 'GFPuv58'
-            // chromatogramData: ab1ParsedGFPuv58,
-            sequenceData: {
-              id: "2",
-              name: "GFPuv58",
-              sequence:
-                "GTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTT"
-            },
-            alignmentData: {
-              id: "2",
-              sequence:
-                "GTTCAA--TGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACA---GGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATAC--CCTTGTTAATCGTATCGAGTT--"
-            }
-          },
-          ...more tracks can go here
-        ]
-		}
+	//JBEI sequence 'GFPuv58'
+	// chromatogramData: ab1ParsedGFPuv58,
+	sequenceData: {
+		id: "2",
+		name: "GFPuv58",
+		sequence:
+			"GTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTT"
+	},
+	alignmentData: {
+		id: "2",
+		sequence:
+			"GTTCAA--TGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACA---GGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATAC--CCTTGTTAATCGTATCGAGTT--"
+	}
+}
 ```
 
 ### Chromatogram Data 
