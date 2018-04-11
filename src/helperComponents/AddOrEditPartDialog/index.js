@@ -25,9 +25,16 @@ export class AddOrEditPartDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div style={{ padding: 20 }} className={"pt-dialog-body tg-upsert-part"}>
-        <InputField validate={required} name={"name"} label={"Name:"} />
+      <div className={"pt-dialog-body tg-upsert-part"}>
+        <InputField
+          autoFocus
+          inlineLabel
+          validate={required}
+          name={"name"}
+          label={"Name:"}
+        />
         <RadioGroupField
+          inlineLabel
           options={[
             { label: "Positive", value: "true" },
             { label: "Negative", value: "false" }
@@ -40,6 +47,7 @@ export class AddOrEditPartDialog extends React.Component {
         />
 
         <NumericInputField
+          inlineLabel
           defaultValue={1}
           min={1}
           max={sequenceLength}
@@ -47,13 +55,14 @@ export class AddOrEditPartDialog extends React.Component {
           label={"Start:"}
         />
         <NumericInputField
+          inlineLabel
           defaultValue={1}
           min={1}
           max={sequenceLength}
           name={"end"}
           label={"End:"}
         />
-        <TextareaField name={"notes"} label={"Notes:"} />
+        <TextareaField inlineLabel name={"notes"} label={"Notes:"} />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
@@ -81,8 +90,8 @@ function required(val) {
 export default compose(
   withDialog({
     isDraggable: true,
-    height: 650,
-    width: 500
+    height: 430,
+    width: 400
   }),
   withEditorProps,
   reduxForm({

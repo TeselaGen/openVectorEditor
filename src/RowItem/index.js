@@ -166,7 +166,6 @@ export class RowItem extends React.Component {
         return toReturn;
       };
     }
-    console.log("row:", row);
     let annotationCommonProps = {
       editorName,
       charWidth,

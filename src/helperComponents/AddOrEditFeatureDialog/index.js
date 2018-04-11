@@ -28,11 +28,10 @@ export class AddOrEditFeatureDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div
-        style={{ padding: 20 }}
-        className={"pt-dialog-body tg-upsert-feature"}
-      >
+      <div className={"pt-dialog-body tg-upsert-feature"}>
         <InputField
+          inlineLabel
+          tooltipError
           autoFocus
           placeholder="Untitled Sequence"
           validate={required}
@@ -40,6 +39,8 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Name:"}
         />
         <RadioGroupField
+          inlineLabel
+          tooltipError
           options={[
             { label: "Positive", value: "true" },
             { label: "Negative", value: "false" }
@@ -51,6 +52,8 @@ export class AddOrEditFeatureDialog extends React.Component {
           defaultValue={true}
         />
         <ReactSelectField
+          inlineLabel
+          tooltipError
           defaultValue={"misc_feature"}
           options={featureTypes.map(type => {
             return {
@@ -80,6 +83,8 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Type:"}
         />
         <NumericInputField
+          inlineLabel
+          tooltipError
           defaultValue={1}
           min={1}
           max={sequenceLength}
@@ -87,13 +92,20 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Start:"}
         />
         <NumericInputField
+          inlineLabel
+          tooltipError
           defaultValue={1}
           min={1}
           max={sequenceLength}
           name={"end"}
           label={"End:"}
         />
-        <TextareaField name={"notes"} label={"Notes:"} />
+        <TextareaField
+          inlineLabel
+          tooltipError
+          name={"notes"}
+          label={"Notes:"}
+        />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
@@ -120,8 +132,8 @@ function required(val) {
 export default compose(
   withDialog({
     isDraggable: true,
-    height: 650,
-    width: 500
+    height: 440,
+    width: 400
   }),
   withEditorProps,
   reduxForm({

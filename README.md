@@ -280,10 +280,30 @@ After calling `editor.updateEditor(...)` call
 editor.addAlignment({
 				id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
 				////optional! Use if you want a pairwise alignment:
-				pairwiseAlignments: [  
+				pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
 					[
-          	{Alignment Track Data Here}, //see Data Model below for specs
-          	{Alignment Track Data Here}, 
+						{ //reference sequence must come first!
+							sequenceData: {
+								id: "FWER1231", //every sequenceData and alignmentData should have a unique id
+								name: "GFPuv58",
+								sequence:	"ttgagggg"
+							},
+							alignmentData: {
+								sequence:	"ttgag--ggg--" //this length should be the same as the below alignmentData length!
+							}
+						},{ //aligned sequence must come second!
+							sequenceData: {
+								name: "GFPuv58",
+								sequence:	"gagccgggtt"
+							},
+							alignmentData: {
+								sequence:	"--gagccgggtt" //this length should be the same as the above alignmentData length!
+							}
+						}
+					]
+					[
+          	{Alignment Track Data Here}, //reference sequence track (see Data Model below for specs)
+          	{Alignment Track Data Here}, //aligned sequence track (see Data Model below for specs)
 					],
 					[
           	{Alignment Track Data Here}, //see Data Model below for specs
