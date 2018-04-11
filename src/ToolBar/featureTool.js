@@ -27,7 +27,7 @@ export default {
       toggled: annotationVisibility.features,
       tooltip: "Show features",
       tooltipToggled: "Hide features",
-      Dropdown: ConnectedFeatureToolDropdown,
+      // Dropdown: ConnectedFeatureToolDropdown,
       dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options"
     };
   }
