@@ -3,6 +3,7 @@ import React from "react";
 import { Checkbox } from "@blueprintjs/core";
 // import show_orfs from "./veToolbarIcons/show_orfs.png";
 import InfoCircle from "react-icons/lib/fa/info-circle";
+import { orfIcon } from "teselagen-react-components";
 
 export default {
   updateKeys: [
@@ -19,7 +20,7 @@ export default {
     isOpen
   }) => {
     return {
-      Icon: <Icon icon="circle" />,
+      Icon: <Icon icon={orfIcon} />,
       onIconClick: function() {
         annotationVisibilityToggle("orfs");
         annotationVisibilityToggle("orfTranslations");

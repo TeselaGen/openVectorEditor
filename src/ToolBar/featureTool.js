@@ -3,6 +3,8 @@ import { Checkbox, Button } from "@blueprintjs/core";
 import React from "react";
 import { connect } from "react-redux";
 import { convertRangeTo1Based } from "ve-range-utils";
+import { featureIcon } from "teselagen-react-components";
+
 // import show_features from "./veToolbarIcons/show_features.png";
 
 export default {
@@ -18,7 +20,7 @@ export default {
     isOpen
   }) => {
     return {
-      Icon: <Icon icon="bookmark" />,
+      Icon: <Icon icon={featureIcon} />,
       onIconClick: function() {
         annotationVisibilityToggle("features");
       },

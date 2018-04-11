@@ -9899,9 +9899,9 @@ teselagen-interval-tree@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/teselagen-interval-tree/-/teselagen-interval-tree-1.1.1.tgz#941785eec6dd382a1e39d1c9908988264f36ef57"
 
-teselagen-react-components@^22.0.40:
-  version "22.0.40"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.40.tgz#d554d446008f4f17141127f8c3f9f43d58ebe95f"
+teselagen-react-components@^22.0.43:
+  version "22.0.43"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.0.43.tgz#f6f1e88a355fcc3a4418d4dfedd1b399e822bab5"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.4"
