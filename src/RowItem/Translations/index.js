@@ -1,3 +1,4 @@
+import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 // import PropTypes from "prop-types";
 import React from "react";
@@ -95,4 +96,4 @@ function Translations(props) {
 //   sequenceLength: PropTypes.number.isRequired
 // };
 
-export default Translations;
+export default pureNoFunc(Translations);

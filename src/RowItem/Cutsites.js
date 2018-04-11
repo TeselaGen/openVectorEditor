@@ -4,6 +4,8 @@ import React from "react";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
+import pureNoFunc from "../utils/pureNoFunc";
+
 let snipStyle = {
   height: "100%",
   // background: 'black',
@@ -256,4 +258,4 @@ function Cutsites(props) {
 //   topStrand: PropTypes.bool.isRequired
 // };
 
-export default Cutsites;
+export default pureNoFunc(Cutsites);

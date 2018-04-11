@@ -3,6 +3,8 @@ import { onlyUpdateForKeys } from "recompose";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 import React from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
+import pureNoFunc from "../utils/pureNoFunc";
+
 // import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
 
 let Axis = function(props) {
@@ -93,11 +95,4 @@ let Axis = function(props) {
 
 // export default Axis
 // export default Axis
-export default onlyUpdateForKeys([
-  "row",
-  "tickSpacing",
-  "bpsPerRow",
-  "charWidth",
-  "annotationHeight",
-  "sequenceLength"
-])(Axis);
+export default pureNoFunc(Axis);

@@ -1,6 +1,7 @@
 import AnnotationPositioner from "../AnnotationPositioner";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import React from "react";
+import pureNoFunc from "../../utils/pureNoFunc";
 
 import "./style.css";
 
@@ -102,4 +103,4 @@ function LineageLines(props) {
   );
 }
 
-export default LineageLines;
+export default pureNoFunc(LineageLines);

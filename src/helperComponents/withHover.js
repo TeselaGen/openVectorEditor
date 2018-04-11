@@ -44,6 +44,9 @@ function withHover(Component) {
           };
       let hoverActions = {
         onMouseOver: function(e) {
+          //because the calling onHover can slow things down, we disable it if dragging or scrolling
+          if (window.__veDragging || window.__veScrolling) return;
+
           e.stopPropagation();
           hoveredAnnotationUpdate(idToPass, { editorName });
           onHover && onHover({ e, idToPass, meta: { editorName } });
@@ -74,7 +77,13 @@ function withHover(Component) {
 export default compose(
   connect(function(
     state,
-    { id, editorName = "StandaloneEditor", annotation, isHovered }
+    {
+      id,
+      editorName = "StandaloneEditor",
+      annotation,
+      isHovered,
+      passHoveredId
+    }
   ) {
     let editorState = state.VectorEditor[editorName] || {};
     let isIdHashmap = typeof id === "object";
@@ -92,7 +101,7 @@ export default compose(
     return {
       hovered,
       id,
-      hoveredId: hovered ? hoveredId : "", //only pass the hoveredId in if the component is actually interested in it to prevent unecessary renders
+      ...(passHoveredId && { hoveredId: hovered ? hoveredId : "" }), //only pass the hoveredId in if the component is actually interested in it to prevent unecessary renders
       isIdHashmap,
       idToPass
     };

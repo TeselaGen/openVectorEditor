@@ -1,3 +1,4 @@
+import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
@@ -89,4 +90,4 @@ function Parts(props) {
   );
 }
 
-export default Parts;
+export default pureNoFunc(Parts);

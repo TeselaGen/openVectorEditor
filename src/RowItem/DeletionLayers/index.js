@@ -1,6 +1,7 @@
 import AnnotationPositioner from "../AnnotationPositioner";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import React from "react";
+import pureNoFunc from "../../utils/pureNoFunc";
 
 import "./style.css";
 
@@ -113,4 +114,4 @@ function DeletionLayers(props) {
   );
 }
 
-export default DeletionLayers;
+export default pureNoFunc(DeletionLayers);

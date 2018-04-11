@@ -5,6 +5,7 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import each from "lodash/each";
 import withHover from "../helperComponents/withHover";
+import pureNoFunc from "../utils/pureNoFunc";
 
 function Cutsites({
   radius,
@@ -83,26 +84,28 @@ function Cutsites({
 export default Cutsites;
 // export default lruMemoize(5, undefined, true)(Cutsites);
 
-const DrawCutsite = withHover(function({
-  hoverActions,
-  hoverProps: { className },
-  startAngle,
-  radius,
-  cutsiteWidth,
-  annotationHeight
-}) {
-  return (
-    <PositionAnnotationOnCircle
-      sAngle={startAngle}
-      eAngle={startAngle}
-      height={radius}
-    >
-      <rect
-        {...hoverActions}
-        className={className}
-        width={cutsiteWidth}
-        height={annotationHeight}
-      />
-    </PositionAnnotationOnCircle>
-  );
-});
+const DrawCutsite = pureNoFunc(
+  withHover(function({
+    hoverActions,
+    hoverProps: { className },
+    startAngle,
+    radius,
+    cutsiteWidth,
+    annotationHeight
+  }) {
+    return (
+      <PositionAnnotationOnCircle
+        sAngle={startAngle}
+        eAngle={startAngle}
+        height={radius}
+      >
+        <rect
+          {...hoverActions}
+          className={className}
+          width={cutsiteWidth}
+          height={annotationHeight}
+        />
+      </PositionAnnotationOnCircle>
+    );
+  })
+);

@@ -5,6 +5,7 @@ import getRangeAngles from "./getRangeAnglesSpecial";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
+import pureNoFunc from "../utils/pureNoFunc";
 
 function SelectionLayer({
   isDraggable,
@@ -105,4 +106,4 @@ function SelectionLayer({
 }
 
 // export default lruMemoize(5, undefined, true)(SelectionLayer);
-export default SelectionLayer;
+export default pureNoFunc(SelectionLayer);

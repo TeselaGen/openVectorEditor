@@ -4,6 +4,7 @@ import { getRangeAngles } from "ve-range-utils";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
+import pureNoFunc from "../utils/pureNoFunc";
 
 function Caret({
   caretPosition,
@@ -42,4 +43,4 @@ function Caret({
 }
 
 // export default lruMemoize(5, undefined, true)(Caret);
-export default Caret;
+export default pureNoFunc(Caret);

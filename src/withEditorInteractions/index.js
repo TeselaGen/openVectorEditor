@@ -998,11 +998,13 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     editorDragStarted = opts => {
+      window.__veDragging = true;
       caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
       selectionStartGrabbed = opts.selectionStartGrabbed;
       selectionEndGrabbed = opts.selectionEndGrabbed;
     };
     editorDragStopped = () => {
+      window.__veDragging = false;
       setTimeout(function() {
         dragInProgress = false;
       });

@@ -3,8 +3,8 @@ import {
   getSequenceWithinRange,
   zeroSubrangeByContainerRange
 } from "ve-range-utils";
-import { onlyUpdateForKeys } from "recompose";
 import AASliver from "./AASliver";
+import pureNoFunc from "../../utils/pureNoFunc";
 
 class Translation extends React.Component {
   // shouldComponentUpdate(newProps){
@@ -124,9 +124,4 @@ class Translation extends React.Component {
 //   translationClicked: PropTypes.func.isRequired
 // };
 // export default Translation
-export default onlyUpdateForKeys([
-  "annotationRange",
-  "height",
-  "charWidth",
-  "sequenceLength"
-])(Translation);
+export default pureNoFunc(Translation);

@@ -1,3 +1,4 @@
+import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
@@ -106,7 +107,7 @@ function Primers(props) {
 //   primerClicked: PropTypes.func.isRequired
 // };
 
-export default Primers;
+export default pureNoFunc(Primers);
 
 // <Sequence
 //     key={index}

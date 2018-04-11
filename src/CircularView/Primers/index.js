@@ -1,5 +1,6 @@
 import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
+import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import Primer from "./Primer";
 import drawCircularLabel2 from "../drawCircularLabel2";
@@ -179,58 +180,60 @@ function Primers({
 // export default lruMemoize(5, undefined, true)(Primers);
 export default Primers;
 
-const DrawPrimer = withHover(
-  ({
-    hoverActions,
-    hoverProps: { className },
-    onClick,
-    onContextMenu,
-    annotation,
-    startAngle,
-    endAngle,
-    totalAngle,
-    annotationRadius,
-    labelFits,
-    showPrimerLabels,
-    labelCenter,
-    primerHeight
-  }) => {
-    return (
-      <g
-        {...hoverActions}
-        onClick={onClick}
-        onContextMenu={onContextMenu}
-        className={"Primers clickable" + className}
-      >
-        <title>{getAnnotationNameAndStartStopString(annotation)}</title>
-        <PositionAnnotationOnCircle
-          sAngle={startAngle}
-          eAngle={endAngle}
-          forward={!annotation.forward}
+const DrawPrimer = pureNoFunc(
+  withHover(
+    ({
+      hoverActions,
+      hoverProps: { className },
+      onClick,
+      onContextMenu,
+      annotation,
+      startAngle,
+      endAngle,
+      totalAngle,
+      annotationRadius,
+      labelFits,
+      showPrimerLabels,
+      labelCenter,
+      primerHeight
+    }) => {
+      return (
+        <g
+          {...hoverActions}
+          onClick={onClick}
+          onContextMenu={onContextMenu}
+          className={"Primers clickable" + className}
         >
-          <Primer
-            totalAngle={totalAngle}
-            color={annotation.color}
-            radius={annotationRadius}
-            annotationHeight={primerHeight}
-          />
-        </PositionAnnotationOnCircle>
-        {labelFits &&
-          showPrimerLabels && (
-            <PositionAnnotationOnCircle
-              sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
-              eAngle={labelCenter + Math.PI}
-            >
-              {drawCircularLabel2({
-                centerAngle: labelCenter, //used to flip label if necessary
-                radius: annotationRadius,
-                height: primerHeight,
-                text: annotation.name,
-                id: annotation.id
-              })}
-            </PositionAnnotationOnCircle>
-          )}
-      </g>
-    );
-  }
+          <title>{getAnnotationNameAndStartStopString(annotation)}</title>
+          <PositionAnnotationOnCircle
+            sAngle={startAngle}
+            eAngle={endAngle}
+            forward={!annotation.forward}
+          >
+            <Primer
+              totalAngle={totalAngle}
+              color={annotation.color}
+              radius={annotationRadius}
+              annotationHeight={primerHeight}
+            />
+          </PositionAnnotationOnCircle>
+          {labelFits &&
+            showPrimerLabels && (
+              <PositionAnnotationOnCircle
+                sAngle={labelCenter + Math.PI} //add PI because drawCircularLabel is drawing 180
+                eAngle={labelCenter + Math.PI}
+              >
+                {drawCircularLabel2({
+                  centerAngle: labelCenter, //used to flip label if necessary
+                  radius: annotationRadius,
+                  height: primerHeight,
+                  text: annotation.name,
+                  id: annotation.id
+                })}
+              </PositionAnnotationOnCircle>
+            )}
+        </g>
+      );
+    }
+  )
 );

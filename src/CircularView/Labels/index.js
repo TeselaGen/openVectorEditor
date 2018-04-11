@@ -1,6 +1,7 @@
 import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
 import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
+import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import React from "react";
 
@@ -89,6 +90,7 @@ function Labels({
               id={labelIds}
               {...{
                 label,
+                passHoveredId: true,
                 // ...rest,
                 className: "DrawLabelGroup",
                 multipleLabels,
@@ -341,31 +343,33 @@ function LabelLine(pointArray, options) {
   );
 }
 
-const DrawLabel = withHover(
-  ({
-    hoverActions,
-    hoverProps: { className },
-    labelXStart,
-    label,
-    fontWidth,
-    index,
-    dy
-  }) => {
-    return (
-      <tspan
-        x={labelXStart}
-        textLength={label.text.length * fontWidth}
-        lengthAdjust="spacing"
-        onClick={label.onClick}
-        onContextMenu={label.onContextMenu}
-        dy={index === 0 ? dy / 2 : dy}
-        style={{ fill: label.color ? label.color : "black" }}
-        {...hoverActions}
-        className={className}
-      >
-        {label.text}
-      </tspan>
-    );
-  }
+const DrawLabel = pureNoFunc(
+  withHover(
+    ({
+      hoverActions,
+      hoverProps: { className },
+      labelXStart,
+      label,
+      fontWidth,
+      index,
+      dy
+    }) => {
+      return (
+        <tspan
+          x={labelXStart}
+          textLength={label.text.length * fontWidth}
+          lengthAdjust="spacing"
+          onClick={label.onClick}
+          onContextMenu={label.onContextMenu}
+          dy={index === 0 ? dy / 2 : dy}
+          style={{ fill: label.color ? label.color : "black" }}
+          {...hoverActions}
+          className={className}
+        >
+          {label.text}
+        </tspan>
+      );
+    }
+  )
 );
 function noop() {}

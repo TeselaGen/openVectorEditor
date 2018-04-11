@@ -68,6 +68,11 @@ class InfiniteScoller extends React.Component {
   };
 
   onEditorScroll = event => {
+    window.__veScrolling = true;
+    setTimeout(() => {
+      window.__veScrolling = false;
+    });
+
     // tnr: we should maybe keep this implemented..
     if (this.adjustmentScroll) {
       // adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)

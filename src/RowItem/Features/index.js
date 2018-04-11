@@ -1,4 +1,5 @@
 import { featureColors } from "ve-sequence-utils";
+import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
@@ -115,4 +116,4 @@ function Features(props) {
 //   featureClicked: PropTypes.func.isRequired
 // };
 
-export default Features;
+export default pureNoFunc(Features);
