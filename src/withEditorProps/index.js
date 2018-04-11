@@ -3,18 +3,22 @@ import { connect } from "react-redux";
 import { ActionCreators as UndoActionCreators } from "redux-undo";
 import lruMemoize from "lru-memoize";
 import { compose, withHandlers } from "recompose";
+import { getFormValues /* formValueSelector */ } from "redux-form";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 import { tidyUpSequenceData } from "ve-sequence-utils";
+// const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
+// const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
+// const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
 /**
  * This function basically connects the wrapped component with all of the state stored in a given editor instance
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(mapPropsToState, mapDispatchToActions),
+  connect(mapStateToProps, mapDispatchToActions),
   withHandlers({
     handleSave: props => {
       return e => {
@@ -50,7 +54,7 @@ export default compose(
   })
 );
 
-function mapPropsToState(state, ownProps) {
+function mapStateToProps(state, ownProps) {
   const { editorName, sequenceData: sequenceDataFromProps } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
@@ -71,9 +75,23 @@ function mapPropsToState(state, ownProps) {
     annotationLabelVisibility,
     annotationsToSupport
   );
+  const annotationToAdd =
+    // addFeatureSelector(state, "start", "end") ||
+    // addPrimerSelector(state, "start", "end") ||
+    // addPartSelector(state, "start", "end");
+    getFormValues("AddOrEditFeatureDialog")(state) ||
+    getFormValues("AddOrEditPrimerDialog")(state) ||
+    getFormValues("AddOrEditPartDialog")(state);
+
   let toReturn = {
     ...editorState,
-    meta
+    meta,
+    ...(annotationToAdd && {
+      selectionLayer: {
+        start: (annotationToAdd.start || 1) - 1,
+        end: (annotationToAdd.end || 1) - 1
+      }
+    })
   };
   if (sequenceDataFromProps) {
     //return early here because we don't want to override the sequenceData being passed in
@@ -113,18 +131,59 @@ function mapPropsToState(state, ownProps) {
   this.orfs = orfs;
   this.translations = translations;
 
-  const sequenceDataToUse = combineSequenceData(
+  let sequenceDataToUse = combineSequenceData(
     sequenceData,
     cutsites,
     orfs,
     translations
   );
 
+  // const featureToAdd = getFormValues("AddOrEditFeatureDialog")(state);
+  // if (featureToAdd) {
+  //   sequenceDataToUse.features = {
+  //     ...sequenceDataToUse.features,
+  //     [featureToAdd.id || "toAdd"]: {
+  //       ...featureToAdd,
+  //       id: featureToAdd.id || "toAdd",
+  //       name: featureToAdd.name || "Untitled Sequence",
+  //       start: featureToAdd.start || 0,
+  //       end: featureToAdd.end || 0,
+  //     }
+  //   };
+  // }
+  // const primerToAdd = getFormValues("AddOrEditPrimerDialog")(state);
+  // if (primerToAdd) {
+  //   sequenceDataToUse.primers = {
+  //     ...sequenceDataToUse.primers,
+  //     [primerToAdd.id || "toAdd"]: {
+  //       ...primerToAdd,
+  //       id: primerToAdd.id || "toAdd",
+  //       name: primerToAdd.name || "Untitled Sequence",
+  //       start: primerToAdd.start || 0,
+  //       end: primerToAdd.end || 0,
+  //     }
+  //   };
+  // }
+  // const partToAdd = getFormValues("AddOrEditPartDialog")(state);
+  // if (partToAdd) {
+  //   sequenceDataToUse.parts = {
+  //     ...sequenceDataToUse.parts,
+  //     [partToAdd.id || "toAdd"]: { ...partToAdd,
+  //       id: partToAdd.id || "toAdd" ,
+  //       name: partToAdd.name || "Untitled Sequence",
+  //       start: partToAdd.start || 0,
+  //       end: partToAdd.end || 0,
+  //     }
+  //   };
+  // }
+  // console.log('toReturn:',toReturn)
+  // console.log('annotationToAdd:',annotationToAdd)
   return {
     ...toReturn,
     selectedCutsites,
     sequenceLength,
     allCutsites,
+
     filteredRestrictionEnzymes,
     searchLayers,
     matchedSearchLayer,

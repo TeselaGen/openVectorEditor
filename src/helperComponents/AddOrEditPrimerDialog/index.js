@@ -24,7 +24,10 @@ export class AddOrEditPrimerDialog extends React.Component {
       upsertPrimer
     } = this.props;
     return (
-      <div style={{ padding: 20 }} className={"tg-upsert-Primer"}>
+      <div
+        style={{ padding: 20 }}
+        className={"pt-dialog-body tg-upsert-Primer"}
+      >
         <InputField validate={required} name={"name"} label={"Name:"} />
         <RadioGroupField
           defaultValue
@@ -77,7 +80,11 @@ function required(val) {
   if (!val) return "Required";
 }
 export default compose(
-  withDialog(),
+  withDialog({
+    isDraggable: true,
+    height: 650,
+    width: 500
+  }),
   withEditorProps,
   reduxForm({
     form: "AddOrEditPrimerDialog"

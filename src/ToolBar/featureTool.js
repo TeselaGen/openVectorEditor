@@ -48,6 +48,7 @@ function FeatureToolDropDown({
   readOnly,
   editorName,
   selectionLayer,
+  toggleDropdown,
   annotationLabelVisibility,
   annotationLabelVisibilityToggle
 }) {
@@ -64,6 +65,7 @@ function FeatureToolDropDown({
       {!readOnly && (
         <Button
           onClick={() => {
+            toggleDropdown();
             let initialValues = {};
             if (selectionLayer && selectionLayer.start) {
               initialValues = convertRangeTo1Based(selectionLayer);

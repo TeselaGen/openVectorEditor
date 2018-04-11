@@ -1016,7 +1016,6 @@ function VectorInteractionHOC(Component /* options */) {
         tabHeight, //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
         fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
-
       //do this in two steps to determine propsToPass
       let {
         children,

@@ -25,7 +25,7 @@ export class AddOrEditPartDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div style={{ padding: 20 }} className={"tg-upsert-part"}>
+      <div style={{ padding: 20 }} className={"pt-dialog-body tg-upsert-part"}>
         <InputField validate={required} name={"name"} label={"Name:"} />
         <RadioGroupField
           options={[
@@ -79,7 +79,11 @@ function required(val) {
 }
 
 export default compose(
-  withDialog(),
+  withDialog({
+    isDraggable: true,
+    height: 650,
+    width: 500
+  }),
   withEditorProps,
   reduxForm({
     form: "AddOrEditPartDialog"

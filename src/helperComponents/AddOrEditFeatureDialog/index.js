@@ -1,6 +1,6 @@
 import React from "react";
 
-import { reduxForm } from "redux-form";
+import { reduxForm, getFormValues } from "redux-form";
 
 import {
   InputField,
@@ -14,6 +14,7 @@ import { compose } from "redux";
 import { Button, Intent } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
 import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
+import { connect } from "react-redux";
 
 import withEditorProps from "../../withEditorProps";
 
@@ -27,7 +28,10 @@ export class AddOrEditFeatureDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div style={{ padding: 20 }} className={"tg-upsert-feature"}>
+      <div
+        style={{ padding: 20 }}
+        className={"pt-dialog-body tg-upsert-feature"}
+      >
         <InputField
           autoFocus
           placeholder="Untitled Sequence"
@@ -114,7 +118,11 @@ function required(val) {
 }
 
 export default compose(
-  withDialog(),
+  withDialog({
+    isDraggable: true,
+    height: 650,
+    width: 500
+  }),
   withEditorProps,
   reduxForm({
     form: "AddOrEditFeatureDialog"
