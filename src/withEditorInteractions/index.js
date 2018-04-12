@@ -665,7 +665,8 @@ function VectorInteractionHOC(Component /* options */) {
         caretPosition,
         readOnly,
         sequenceData,
-        updateSequenceData
+        updateSequenceData,
+        caretPositionUpdate
       } = this.props;
       if (readOnly) {
         return;
@@ -673,6 +674,7 @@ function VectorInteractionHOC(Component /* options */) {
       updateSequenceData(
         rotateSequenceDataToPosition(sequenceData, caretPosition)
       );
+      caretPositionUpdate(0);
     };
 
     backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
@@ -683,7 +685,7 @@ function VectorInteractionHOC(Component /* options */) {
           ? []
           : [
               {
-                text: "Rotate Here",
+                text: "Rotate To Here",
                 onClick: this.handleRotateToCaretPosition
               }
             ]),
