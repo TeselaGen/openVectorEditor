@@ -140,6 +140,7 @@ function addHighlightedDifferences(alignmentTracks) {
       alignmentTracks[0].alignmentData.sequence,
       track.alignmentData.sequence
     );
+    // .filter by the user-specified mismatch overrides (initially [])
     const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
     // console.log('mismatches', mismatches);
     return {
@@ -236,6 +237,7 @@ export default createMergedDefaultStateReducer(
         payloadToUse.alignmentTracks = addHighlightedDifferences(
           payloadToUse.alignmentTracks
         );
+        // console.log("mismatches", payloadToUse.alignmentTracks[1].mismatches);
       }
       //check for issues
       checkForIssues(payloadToUse.alignmentTracks);

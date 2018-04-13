@@ -25,7 +25,7 @@ function Caret(props) {
       <div
         className={" veRowViewCaret " + className}
         style={{
-          left: (caretPosition + gapsBefore - row.start) * charWidth - 2
+          left: (caretPosition - row.start) * charWidth - 2
         }}
       />
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
 
 class Chromatogram extends React.Component {
   state = { scalePct: 0.05 };
@@ -15,9 +15,7 @@ class Chromatogram extends React.Component {
       newProps.charWidth !== this.props.charWidth ||
       newProps.row.start !== this.props.row.start ||
       newProps.row.end !== this.props.row.end
-      // newProps.scalePct !== this.props.scalePct
     ) {
-      // console.log("newProps.charWidth:", newProps.charWidth);
       const charWidth = newProps.charWidth;
       const { scalePct } = this.state;
       this.updatePeakDrawing(scalePct, charWidth);
@@ -60,39 +58,34 @@ class Chromatogram extends React.Component {
   };
 
   render() {
-    // let { uniqueid } = this.props;
-    // uniqueid = makeid();
-    // let {
-    //   editorName,
-    //     charWidth,
-    //     bpsPerRow,
-    //     sequenceLength,
-    //     annotationHeight,
-    //     spaceBetweenAnnotations,
-    //     row,
-    //   chromatogramData
-    // } = this.props;
-    // path=path.replace(/ /g,'')
-    // path=path.replace(/\n/g,'')
-
     return (
-      <div className="chromatogram-plus-zoom">
-        <div className="y-zoom-chromatogram">
-          {/* <ButtonGroup className={"pt-minimal pt-vertical"}> */}
-          <Button
-            className="pt-minimal"
-            icon="caret-up"
-            onClick={this.scaleChromatogramYPeaksHigher}
-          />
-          <Button
-            className="pt-minimal"
-            icon="caret-down"
-            onClick={this.scaleChromatogramYPeaksLower}
-          />
-          {/* </ButtonGroup> */}
-        </div>
-
-        <div className="chromatogram">
+      <div
+        className="chromatogram"
+        style={{
+          position: "relative"
+        }}
+      >
+        <Button
+          className="pt-minimal"
+          icon="caret-up"
+          onClick={this.scaleChromatogramYPeaksHigher}
+          style={{
+            zIndex: 10,
+            position: "sticky",
+            left: 5
+          }}
+        />
+        <Button
+          className="pt-minimal"
+          icon="caret-down"
+          onClick={this.scaleChromatogramYPeaksLower}
+          style={{
+            zIndex: 10,
+            position: "sticky",
+            left: 35
+          }}
+        />
+        <div>
           <canvas
             ref={n => {
               // console.log('n:',n)
@@ -117,7 +110,6 @@ function drawTrace({
   getGaps,
   scalePct
 }) {
-  // console.log('charWidth', charWidth);
   const colors = {
     adenine: "green",
     thymine: "red",
@@ -168,11 +160,7 @@ function drawTrace({
 
   this.drawPeaks = function(trace, lineColor) {
     ctx.beginPath();
-    // ctx.moveTo(0, scaledHeight - trace[0])
-    // const initialBasePosition = traceData.basePos[0]
-    // trace = trace.slice(initialBasePosition)
     //loop through base positions [ 43, 53, 70, 77, ...]
-
     // looping through the entire sequence length
     for (let baseIndex = startBp; baseIndex < endBp; baseIndex++) {
       // each base's beginning and end of its peak
@@ -180,9 +168,6 @@ function drawTrace({
       const endBasePos = traceData.basePos[baseIndex + 1] - 5;
       // grab the start and end (43, 53) , (53, 70) ...
       // looping through each base's peak
-      // console.log('base', traceData.baseCalls[baseIndex]);
-      // console.log('baseIndex', baseIndex);
-      // console.log('getGaps', getGaps(baseIndex).gapsBefore);
 
       for (
         let innerIndex = startBasePos;
@@ -190,7 +175,6 @@ function drawTrace({
         innerIndex++
       ) {
         // innerIndex = 43, 44, 45, ... 52
-        // const element = array[baseIndex];
         // shift x-position of the beginning of the base's peak if there are gaps before the base
         const scalingFactor = charWidth / (endBasePos - startBasePos);
         let startXPosition =
@@ -217,24 +201,10 @@ function drawTrace({
             scaledHeight - trace[innerIndex]
           );
         }
-
-        //  + (charWidth / 3);
-        // const endXPosition = (baseIndex + 1) * charWidth
-        // const intervalsBetweenBases =  endBasePos - startBasePos
-        // const scaledStartXPosition = traceData.basePos[startBasePos - 1] || 0
-        // const scaledStartXPosition = startBasePos - traceData.basePos[0]
-        // const unscaledXPosition = innerIndex - traceData.basePos[0]
-        // baseIndex < charWidth && console.log('startXPosition, scalingFactor, innerIndex - startBasePos:',startXPosition, scalingFactor, innerIndex - startBasePos)
-        // ctx.moveTo(startXPosition + scalingFactor * (innerIndex - startBasePos), scaledHeight - trace[innerIndex]);
       }
     }
-    // for (let counter = 1; counter < trace.length; counter++) {
-    //   // const width = [endBasePos-startBasePos]
-    // }
     ctx.strokeStyle = lineColor;
     ctx.stroke();
-    // console.log("startBp", startBp);
-    // console.log("endBp", endBp);
   };
 
   //   this.drawBases = function () {
@@ -267,20 +237,15 @@ function drawTrace({
     const qualMax = Math.max(...traceData.qualNums);
     const scalePctQual = scaledHeight / qualMax;
     for (let count = 0; count < traceData.qualNums.length; count++) {
-      // ctx.lineWidth = "1";
       ctx.rect(
-        // (count + getGaps(count - 1).gapsBefore) * charWidth,
         (count + getGaps(count).gapsBefore) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,
         charWidth,
         traceData.qualNums[count] * scalePctQual
       );
-      // console.log('count', count);
-      // console.log('getGaps(count)', getGaps(count));
     }
     ctx.fillStyle = "#f4f1fa";
     ctx.fill();
-    // ctx.strokeStyle = "black";
     ctx.strokeStyle = "#e9e3f4";
     ctx.stroke();
   };
