@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Slider, Tooltip } from "@blueprintjs/core";
+import { Button, Slider, Tooltip } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import LinearView from "../LinearView";
 import Minimap from "./Minimap";
@@ -9,7 +9,6 @@ import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
 import { isFunction } from "util";
-import { Button } from "@blueprintjs/core";
 
 const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
@@ -18,7 +17,6 @@ export class AlignmentView extends React.Component {
     charWidthInLinearView: charWidthInLinearViewDefault,
     percentScrolled: 0,
     alignmentHeights: {}
-    // scalePct: 0.05
   };
 
   getMinCharWidth = () => {
@@ -129,37 +127,17 @@ export class AlignmentView extends React.Component {
               const { sequenceData } = track;
               const name = sequenceData.name || sequenceData.id;
               return (
-                <div className="side-bar" key={i}>
-                  <div
-                    style={{
-                      height: alignmentHeights[i] || 10,
-                      textOverflow: "ellipsis",
-                      overflowY: "auto",
-                      whiteSpace: "nowrap"
-                    }}
-                    title={name}
-                  >
-                    {name}
-                  </div>
-
-                  {/* if (track.chromatogramData) { */}
-                  {/*   return ( */}
-                  {/* <div className="chromatogram-y-zoom" style={{ alignItems: "right" }}>
-                      <ButtonGroup className={"pt-minimal pt-vertical"}>
-                        <Button
-                          className="pt-minimal"
-                          icon="caret-up"
-                          onClick={this.setState({ scalePct: scalePct + 0.01 })}
-                        />
-                        <Button
-                          className="pt-minimal"
-                          icon="caret-down"
-                          onClick={this.setState({ scalePct: scalePct - 0.01 })}
-                        />
-                      </ButtonGroup>
-                    </div> */}
-                  {/* ); */}
-                  {/* } */}
+                <div
+                  style={{
+                    height: alignmentHeights[i] || 10,
+                    textOverflow: "ellipsis",
+                    overflowY: "auto",
+                    whiteSpace: "nowrap"
+                  }}
+                  title={name}
+                  key={i}
+                >
+                  {name}
                 </div>
               );
             })}

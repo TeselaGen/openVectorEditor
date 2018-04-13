@@ -121,8 +121,8 @@ class AlignmentTool extends React.Component {
     const {
       data: { alignedSequences, pairwiseAlignments } = {}
     } = await instance.post(
-      "http://localhost:3000/alignment/run",
-      // "http://j5server.teselagen.com/alignment/run",
+      // "http://localhost:3000/alignment/run",
+      "http://j5server.teselagen.com:10000/alignment/run",
       {
         sequencesToAlign: addedSequencesToUse.map(({ sequence, name, id }) => {
           return {
@@ -177,6 +177,7 @@ class AlignmentTool extends React.Component {
       return results.forEach(result => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
+          // console.log(result.parsedSequence);
         } else {
           return window.toastr.warning("Error parsing file: ", file.name);
         }
@@ -207,8 +208,6 @@ class AlignmentTool extends React.Component {
               return (
                 <div
                   onClick={() => {
-                    // console.log("clickin");
-                    // console.log("index:", index);
                     this.setState({
                       templateSeqIndex: index
                     });

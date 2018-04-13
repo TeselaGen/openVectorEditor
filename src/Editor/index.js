@@ -4,6 +4,8 @@ import "react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
+// import * as customIcons from "teselagen-react-components";
+// import { Button } from "@blueprintjs/core";
 
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import { compose } from "redux";
@@ -860,6 +862,7 @@ export class Editor extends React.Component {
         className="veEditor"
       >
         {/* <AlignmentToolInner /> */}
+        {/* <Button icon={customIcons.flaskIcon} text="flask" /> */}
         {/* <DrawChromatogram /> */}
         {previewModeFullscreen && (
           <div
