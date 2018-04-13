@@ -67,7 +67,7 @@ class Translation extends React.Component {
         <AASliver
           onClick={function(event) {
             translationClicked({
-              annotation,
+              annotation: aminoAcidSliver.codonRange,
               codonRange: aminoAcidSliver.codonRange,
               event
             });

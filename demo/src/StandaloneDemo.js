@@ -8,6 +8,7 @@ import { Dialog, Button } from "@blueprintjs/core";
 // import ab1ParsedGFPuv58 from "../../src/ToolBar/ab1ParsedGFPuv58.json";
 import ab1ParsedGFPvv50 from "../../src/ToolBar/ab1ParsedGFPvv50.json";
 import ab1ParsedGFPvv60 from "../../src/ToolBar/ab1ParsedGFPvv60.json";
+import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
@@ -140,7 +141,7 @@ export default class StandaloneDemo extends React.Component {
           [
             {
               // fullScreen: true,
-              active: true,
+              // active: true,
               id: "circular",
               name: "Plasmid"
             },
@@ -152,10 +153,10 @@ export default class StandaloneDemo extends React.Component {
               // fullScreen: true
             },
             {
-              id: "alignmentRun1",
+              id: "pairwiseRun1",
               type: "alignment",
               name: "Pairwise Alignment",
-              // active: true
+              active: true
               // fullScreen: true
             }
           ],
@@ -197,7 +198,10 @@ export default class StandaloneDemo extends React.Component {
           primers: false
         }
       });
-
+      editor.addAlignment({
+        ...alignmentDataPairwise,
+        id: "pairwiseRun1",
+      })
       editor.addAlignment({
         id: "jbeiAlignment1",
         alignmentTracks: [

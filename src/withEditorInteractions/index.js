@@ -900,6 +900,7 @@ function VectorInteractionHOC(Component /* options */) {
         // readOnly,
         deleteTranslation,
         propertiesViewOpen,
+        selectionLayerUpdate,
         propertiesViewTabUpdate,
         annotationVisibilityToggle
       } = this.props;
@@ -925,6 +926,12 @@ function VectorInteractionHOC(Component /* options */) {
           text: "Delete Translation",
           onClick: function() {
             deleteTranslation(annotation);
+          }
+        },
+        {
+          text: "Select Translation",
+          onClick: function() {
+            selectionLayerUpdate(annotation);
           }
         },
         {
