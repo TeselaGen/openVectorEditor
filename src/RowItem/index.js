@@ -82,7 +82,7 @@ export class RowItem extends React.Component {
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
-      scrollData,
+      // scrollData,
       minHeight = 25,
       bpsPerRow = sequenceLength,
       editorName
@@ -99,6 +99,7 @@ export class RowItem extends React.Component {
       parts: showParts = true,
       // partLabels: showPartLabels=true,
       orfs: showOrfs = true,
+      chromatogram: showChromatogram = true,
       lineageLines: showLineageLines = true,
       // orfLabels: showOrfLabels=true,
       cutsites: showCutsites = true,
@@ -305,12 +306,13 @@ export class RowItem extends React.Component {
               />
             )}
 
-          {chromatogramData && (
-            <Chromatogram
-              chromatogramData={chromatogramData}
-              {...annotationCommonProps}
-            />
-          )}
+          {showChromatogram &&
+            chromatogramData && (
+              <Chromatogram
+                chromatogramData={chromatogramData}
+                {...annotationCommonProps}
+              />
+            )}
 
           <div
             className="veRowItemSequenceContainer"
@@ -329,7 +331,6 @@ export class RowItem extends React.Component {
                       : row.sequence.length
                   }
                   charWidth={charWidth}
-                  scrollData={scrollData}
                 >
                   {showCutsites &&
                     Object.keys(cutsites).length > 0 && (
@@ -351,7 +352,6 @@ export class RowItem extends React.Component {
                   sequence={reverseSequence}
                   height={sequenceHeight}
                   charWidth={charWidth}
-                  scrollData={scrollData}
                 >
                   {showCutsites &&
                     Object.keys(cutsites).length > 0 && (

@@ -82,7 +82,7 @@ let Axis = function(props) {
       className="veRowViewAxis veAxis"
       width="100%"
       height={annotationHeight * 1.2}
-      style={{ marginTop: 10 }}
+      style={{ marginTop: 10, overflow: "visible" }}
     >
       {tickMarkSVG}
       <path

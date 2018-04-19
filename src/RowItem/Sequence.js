@@ -29,8 +29,12 @@ class Sequence extends React.Component {
     // const chunkWidth = width / numChunks;
     const chunkWidth = chunkSize * charWidth;
     if (scrollData) {
-      const { fractionScrolled, viewportWidth } = scrollData;
-      const visibleStart = fractionScrolled * (width - viewportWidth);
+      const {
+        fractionScrolled: { percentScrolled },
+        viewportWidth
+      } = scrollData;
+
+      const visibleStart = percentScrolled * (width - viewportWidth);
       const visibleEnd = visibleStart + viewportWidth;
 
       return (

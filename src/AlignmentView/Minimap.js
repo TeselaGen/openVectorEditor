@@ -2,22 +2,23 @@ import React from "react";
 import Draggable from "react-draggable";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
+import { view } from "react-easy-state";
 
 export default class Minimap extends React.Component {
   onDrag = e => {
     const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
-    const scrollHandle = this.getScrollHandleWidthAndXStart();
+    const scrollHandleWidth = this.getScrollHandleWidth();
     const percent =
-      this.getXPositionOfClickInMinimap(e) / (width - scrollHandle.width);
+      this.getXPositionOfClickInMinimap(e) / (width - scrollHandleWidth);
     onMinimapScroll(percent);
   };
 
   handleMinimapClick = e => {
     const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
-    const scrollHandle = this.getScrollHandleWidthAndXStart();
+    const scrollHandleWidth = this.getScrollHandleWidth();
 
     const percent =
-      this.getXPositionOfClickInMinimap(e) / (width - scrollHandle.width);
+      this.getXPositionOfClickInMinimap(e) / (width - scrollHandleWidth);
     onMinimapScroll(percent);
   };
   getXPositionOfClickInMinimap = e => {
@@ -32,18 +33,14 @@ export default class Minimap extends React.Component {
     const charWidth = Math.min(16, width / seqLength);
     return charWidth || 12;
   };
-  getScrollHandleWidthAndXStart = () => {
-    const { numBpsShownInLinearView, percentScrolled, dimensions } = this.props;
+  getScrollHandleWidth = () => {
+    const { numBpsShownInLinearView, dimensions } = this.props;
     const charWidth = this.getCharWidth();
     const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
       charWidth
     );
-    const x = percentScrolled * ((dimensions.width || 200) - width);
-    return {
-      width: Math.min(width, dimensions.width),
-      x
-    };
+    return Math.min(width, dimensions.width);
   };
 
   render() {
@@ -52,12 +49,13 @@ export default class Minimap extends React.Component {
       dimensions: { width = 200 },
       style = {},
       laneHeight = 17,
-      laneSpacing = 3
+      laneSpacing = 3,
+      easyStore
     } = this.props;
-    const [template, ...nonTemplates] = alignmentTracks;
+    const [template /* ...nonTemplates */] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = this.getCharWidth();
-    const scrollHandle = this.getScrollHandleWidthAndXStart();
+    const scrollHandleWidth = this.getScrollHandleWidth();
 
     return (
       <div
@@ -66,26 +64,12 @@ export default class Minimap extends React.Component {
         style={{ position: "relative", width, ...style }}
         onClick={this.handleMinimapClick}
       >
-        <Draggable
-          bounds={"parent"}
-          zIndex={105}
-          position={{ x: scrollHandle.x, y: 0 }}
-          axis={"x"}
+        <YellowScrollHandle
+          width={width}
+          easyStore={easyStore} //we use react-easy-state here to prevent costly setStates from being called
+          scrollHandleWidth={scrollHandleWidth}
           onDrag={this.onDrag}
-        >
-          <div
-            style={{
-              height: "100%",
-              border: "none",
-              opacity: ".3",
-              top: "0px",
-              position: "absolute",
-              zIndex: "10",
-              width: scrollHandle.width,
-              background: "yellow"
-            }}
-          />
-        </Draggable>
+        />
         <div style={{ maxHeight: 150, overflowY: "auto" }}>
           <svg height={alignmentTracks.length * laneHeight} width={width}>
             {alignmentTracks.map(({ matchHighlightRanges }, i) => {
@@ -123,3 +107,37 @@ export default class Minimap extends React.Component {
     );
   }
 }
+
+const YellowScrollHandle = view(function YellowScrollHandleInner({
+  scrollHandleWidth,
+  width,
+  easyStore,
+  onDrag
+}) {
+  const xScroll = easyStore.percentScrolled * (width - scrollHandleWidth);
+  return (
+    <Draggable
+      bounds={"parent"}
+      zIndex={105}
+      position={{ x: xScroll, y: 0 }}
+      axis={"x"}
+      onDrag={onDrag}
+    >
+      <div
+        className={"syncscroll"}
+        dataName="scrollGroup"
+        style={{
+          height: "100%",
+          border: "none",
+          cursor: "move",
+          opacity: ".3",
+          top: "0px",
+          position: "absolute",
+          zIndex: "10",
+          width: scrollHandleWidth,
+          background: "yellow"
+        }}
+      />
+    </Draggable>
+  );
+});

@@ -31,7 +31,6 @@ function withHover(Component) {
         ...rest
       } = this.props;
       /* eslint-disable */
-
       if (!idToPass) debugger;
       /* eslint-enable */
 
@@ -95,7 +94,7 @@ export default compose(
     let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
     /* eslint-disable */
 
-    if (!idToPass) debugger;
+    // if (!idToPass) debugger;
     /* eslint-enable */
 
     return {

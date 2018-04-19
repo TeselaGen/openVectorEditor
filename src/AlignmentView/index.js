@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button, Slider, Tooltip } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
+import { store } from "react-easy-state";
 import LinearView from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
@@ -14,10 +15,9 @@ const nameDivWidth = 140;
 const charWidthInLinearViewDefault = 12;
 export class AlignmentView extends React.Component {
   state = {
-    charWidthInLinearView: charWidthInLinearViewDefault,
-    percentScrolled: 0,
-    alignmentHeights: {}
+    charWidthInLinearView: charWidthInLinearViewDefault
   };
+  easyStore = store({ percentScrolled: 0 });
 
   getMinCharWidth = () => {
     const { dimensions: { width } } = this.props;
@@ -34,6 +34,9 @@ export class AlignmentView extends React.Component {
     const { alignmentTracks: [template] = [] } = this.props;
     return template.alignmentData.sequence.length || 1;
   };
+  componentDidMount() {
+    reset();
+  }
 
   getNumBpsShownInLinearView = () => {
     const { charWidthInLinearView } = this.state;
@@ -41,11 +44,22 @@ export class AlignmentView extends React.Component {
     const toReturn = (width - nameDivWidth) / charWidthInLinearView;
     return toReturn || 0;
   };
+  // debouncedSetPercentScroll = debounce((scrollPercentage) => {
+  //   console.log('scrollPercentage:',scrollPercentage)
+  //   this.setState({ percentScrolled: scrollPercentage });
+  // }, 1000)
   handleScroll = () => {
+    // console.log('this.alignmentHolder.scrollLeft:',this.alignmentHolder.scrollLeft)
+    // this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
+
     const scrollPercentage =
       this.alignmentHolder.scrollLeft /
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
-    this.setState({ percentScrolled: scrollPercentage });
+    this.easyStore.percentScrolled = scrollPercentage;
+
+    // this.props.updateMinimapScrollPercentage(scrollPercentage);
+    // this.setState({ percentScrolled: scrollPercentage })
+    // this.debouncedSetPercentScroll(scrollPercentage)
   };
   onMinimapScroll = scrollPercentage => {
     this.alignmentHolder.scrollLeft =
@@ -53,7 +67,7 @@ export class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
   render() {
-    let { charWidthInLinearView, percentScrolled } = this.state;
+    let { charWidthInLinearView } = this.state;
     const {
       alignmentTracks = [],
       dimensions: { width },
@@ -64,6 +78,7 @@ export class AlignmentView extends React.Component {
       hideBottomBar,
       isFullyZoomedOut,
       handleSelectTrack,
+      hasTemplate = true,
       linearViewOptions,
       handleBackButtonClicked,
       alignmentVisibilityToolOptions
@@ -84,6 +99,150 @@ export class AlignmentView extends React.Component {
 
     const trackWidth = width - nameDivWidth || 400;
 
+    const getTrackVis = (alignmentTracks, isTemplate) => {
+      return (
+        <div
+          className={"alignmentTracks "}
+          style={{ overflowY: "auto", display: "flex" }}
+        >
+          <div
+            style={{
+              overflowX: "auto",
+              // width: trackWidth
+              width: dimensions.width
+            }}
+            ref={ref => {
+              this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] = ref;
+            }}
+            dataname="scrollGroup"
+            className="alignmentHolder syncscroll"
+            onScroll={isTemplate ? noop : this.handleScroll}
+          >
+            {alignmentTracks.map((track, i) => {
+              const {
+                sequenceData,
+                additionalSelectionLayers,
+                alignmentData,
+                chromatogramData
+              } = track;
+              const name = sequenceData.name || sequenceData.id;
+              return (
+                <div
+                  className={"alignmentViewTrackContainer"}
+                  style={{
+                    boxShadow: isTemplate
+                      ? "red 0px -1px 0px 0px inset, red 0px 1px 0px 0px inset"
+                      : "0px -1px 0px 0px inset",
+                    display: "flex",
+                    width: "fit-content",
+                    position: "relative"
+                  }}
+                  key={i}
+                >
+                  <div
+                    className={"alignmentTrackName"}
+                    style={{
+                      position: "sticky",
+                      left: 0,
+                      zIndex: 10,
+                      boxShadow: isTemplate
+                        ? "0px 0px 0px 1px red inset"
+                        : `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
+                      width: nameDivWidth,
+                      padding: 2,
+                      minWidth: nameDivWidth,
+                      background: "rgb(243, 243, 243)",
+                      textOverflow: "ellipsis",
+                      overflowY: "auto",
+                      whiteSpace: "nowrap"
+                    }}
+                    title={name}
+                    key={i}
+                  >
+                    {name}
+                  </div>
+                  {handleSelectTrack &&
+                    !isTemplate && (
+                      <div
+                        onClick={() => {
+                          handleSelectTrack(i);
+                        }}
+                        style={{
+                          position: "absolute",
+                          background: "white",
+                          opacity: 0,
+                          height: "100%",
+                          width: "100%",
+                          fontWeight: "bolder",
+                          cursor: "pointer",
+                          padding: 5,
+                          textAlign: "center",
+                          zIndex: 400
+                          // left: "50%",
+                          // transform: "translateX(-50%)"
+                        }}
+                        className={"alignmentViewSelectTrackPopover"}
+                      >
+                        Inspect track
+                      </div>
+                    )}
+                  <LinearView
+                    {...{
+                      linearViewAnnotationVisibilityOverrides:
+                        alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
+                      linearViewAnnotationLabelVisibilityOverrides:
+                        alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
+                      marginWith: 0,
+                      hideName: true,
+                      sequenceData,
+                      editorName: `${
+                        isTemplate ? "template_" : ""
+                      }alignmentView${i}`,
+                      alignmentData,
+                      chromatogramData,
+                      height: "100%",
+                      vectorInteractionWrapperStyle: {
+                        overflowY: "hidden"
+                      },
+                      charWidth: charWidthInLinearView,
+                      ignoreGapsOnHighlight: true,
+                      // editorDragged: (vals) => {
+                      //   console.log('vals:',vals)
+                      // },
+                      ...(linearViewOptions &&
+                        (isFunction(linearViewOptions)
+                          ? linearViewOptions({
+                              index: i,
+                              isTemplate,
+                              alignmentVisibilityToolOptions,
+                              sequenceData,
+                              alignmentData,
+                              chromatogramData
+                            })
+                          : linearViewOptions)),
+                      additionalSelectionLayers,
+                      dimensions: {
+                        width:
+                          (alignmentData || sequenceData).sequence.length *
+                          charWidthInLinearView
+                      },
+                      width:
+                        (alignmentData || sequenceData).sequence.length *
+                        charWidthInLinearView
+                      // scrollData: {
+                      //   viewportWidth: trackWidth,
+                      //   fractionScrolled: this.easyStore
+                      // }
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+    const [firstTrack, ...otherTracks] = alignmentTracks;
     return (
       <div
         style={{
@@ -114,157 +273,16 @@ export class AlignmentView extends React.Component {
             </Tooltip>
           </div>
         )}
-        <div
-          className={"alignmentTracks"}
-          style={{ overflowY: "auto", display: "flex" }}
-        >
-          <div
-            className={"alignmentTrackNames"}
-            style={{ width: nameDivWidth }}
-          >
-            {alignmentTracks.map((track, i) => {
-              const { alignmentHeights } = this.state;
-              const { sequenceData } = track;
-              const name = sequenceData.name || sequenceData.id;
-              return (
-                <div
-                  style={{
-                    height: alignmentHeights[i] || 10,
-                    textOverflow: "ellipsis",
-                    overflowY: "auto",
-                    whiteSpace: "nowrap"
-                  }}
-                  title={name}
-                  key={i}
-                >
-                  {name}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className={"alignmentTrackDetails"} style={{ flex: 1 }}>
-            <div
-              style={{
-                overflowX: "auto",
-                width: trackWidth
-              }}
-              ref={ref => (this.alignmentHolder = ref)}
-              className="alignmentHolder"
-              onScroll={this.handleScroll}
-            >
-              {alignmentTracks.map((track, i) => {
-                const {
-                  sequenceData,
-                  additionalSelectionLayers,
-                  alignmentData,
-                  chromatogramData
-                } = track;
-                return (
-                  <div
-                    ref={n => {
-                      const { alignmentHeights } = this.state;
-                      if (n && n.clientHeight) {
-                        if (n.clientHeight !== alignmentHeights[i]) {
-                          this.setState({
-                            alignmentHeights: {
-                              ...alignmentHeights,
-                              [i]: n.clientHeight
-                            }
-                          });
-                        }
-                      }
-                    }}
-                    className={"alignmentViewTrackContainer"}
-                    style={{
-                      position: "relative"
-                    }}
-                    key={i}
-                  >
-                    {handleSelectTrack &&
-                      i > 0 && (
-                        <div
-                          onClick={() => {
-                            handleSelectTrack(i - 1);
-                          }}
-                          style={{
-                            position: "absolute",
-                            background: "white",
-                            opacity: 0,
-                            height: "100%",
-                            width: "100%",
-                            fontWeight: "bolder",
-                            cursor: "pointer",
-                            padding: 5,
-                            textAlign: "center",
-                            zIndex: 400
-                            // left: "50%",
-                            // transform: "translateX(-50%)"
-                          }}
-                          className={"alignmentViewSelectTrackPopover"}
-                        >
-                          Inspect track
-                        </div>
-                      )}
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left:
-                          (this.alignmentHolder &&
-                            this.alignmentHolder.scrollLeft) ||
-                          0
-                      }}
-                    />
-                    <LinearView
-                      {...{
-                        linearViewAnnotationVisibilityOverrides:
-                          alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
-                        linearViewAnnotationLabelVisibilityOverrides:
-                          alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
-                        marginWith: 0,
-                        hideName: true,
-                        sequenceData,
-                        editorName: "alignmentView" + i,
-                        alignmentData,
-                        chromatogramData,
-                        height: "100%",
-                        charWidth: charWidthInLinearView,
-                        ignoreGapsOnHighlight: true,
-                        // editorDragged: (vals) => {
-                        //   console.log('vals:',vals)
-                        // },
-                        ...(linearViewOptions &&
-                          (isFunction(linearViewOptions)
-                            ? linearViewOptions({
-                                index: i,
-                                alignmentVisibilityToolOptions,
-                                sequenceData,
-                                alignmentData,
-                                chromatogramData
-                              })
-                            : linearViewOptions)),
-                        additionalSelectionLayers,
-                        dimensions: {
-                          width:
-                            (alignmentData || sequenceData).sequence.length *
-                            charWidthInLinearView
-                        },
-                        width:
-                          (alignmentData || sequenceData).sequence.length *
-                          charWidthInLinearView,
-                        scrollData: {
-                          viewportWidth: trackWidth,
-                          fractionScrolled: percentScrolled
-                        }
-                      }}
-                    />
-                  </div>
-                );
-              })}
+        {hasTemplate ? (
+          <React.Fragment>
+            <div className={"alignmentTrackFixedToTop"}>
+              {getTrackVis([firstTrack], true)}
             </div>
-          </div>
-        </div>
+            {getTrackVis(otherTracks)}
+          </React.Fragment>
+        ) : (
+          getTrackVis(alignmentTracks)
+        )}
         {!hideBottomBar && (
           <div
             className={"alignmentViewBottomBar"}
@@ -306,7 +324,7 @@ export class AlignmentView extends React.Component {
                 },
                 laneHeight: minimapLaneHeight,
                 laneSpacing: minimapLaneSpacing,
-                percentScrolled,
+                easyStore: this.easyStore,
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView()
               }}
               onMinimapScroll={this.onMinimapScroll}
@@ -462,8 +480,8 @@ class PairwiseAlignmentView extends React.Component {
   }
 }
 
-function getPairwiseOverviewLinearViewOptions({ index }) {
-  if (index > 0) {
+function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
+  if (!isTemplate) {
     return {
       linearViewAnnotationVisibilityOverrides: {
         features: false,
@@ -473,9 +491,10 @@ function getPairwiseOverviewLinearViewOptions({ index }) {
         orfs: false,
         orfTranslations: false,
         cdsFeatureTranslations: false,
-        axis: true,
+        axis: false,
         cutsites: false,
         primers: false,
+        chromatogram: false,
         reverseSequence: false,
         lineageLines: false,
         axisNumbers: false
@@ -499,4 +518,113 @@ function getPairwiseOverviewLinearViewOptions({ index }) {
       // }
     };
   }
-}
+} // this is code from https://github.com/asvd/syncscroll
+
+/* eslint-disable*/ var Width = "Width";
+var Height = "Height";
+var Top = "Top";
+var Left = "Left";
+var scroll = "scroll";
+var client = "client";
+var EventListener = "EventListener";
+var addEventListener = "add" + EventListener;
+var length = "length";
+var Math_round = Math.round;
+
+var names = {};
+
+var reset = function() {
+  var elems = document.getElementsByClassName("sync" + scroll);
+
+  // clearing existing listeners
+  var i, j, el, found, name;
+  for (name in names) {
+    if (names.hasOwnProperty(name)) {
+      for (i = 0; i < names[name][length]; i++) {
+        names[name][i]["remove" + EventListener](scroll, names[name][i].syn, 0);
+      }
+    }
+  }
+
+  // setting-up the new listeners
+  for (i = 0; i < elems[length]; ) {
+    found = j = 0;
+    el = elems[i++];
+    if (!(name = el.getAttribute("dataname"))) {
+      // name attribute is not set
+      continue;
+    }
+
+    el = el[scroll + "er"] || el; // needed for intence
+
+    // searching for existing entry in array of names;
+    // searching for the element in that entry
+    for (; j < (names[name] = names[name] || [])[length]; ) {
+      found |= names[name][j++] == el;
+    }
+
+    if (!found) {
+      names[name].push(el);
+    }
+
+    el.eX = el.eY = 0;
+
+    (function(el, name) {
+      el[addEventListener](
+        scroll,
+        (el.syn = function() {
+          var elems = names[name];
+
+          var scrollX = el[scroll + Left];
+          var scrollY = el[scroll + Top];
+
+          var xRate = scrollX / (el[scroll + Width] - el[client + Width]);
+          var yRate = scrollY / (el[scroll + Height] - el[client + Height]);
+
+          var updateX = scrollX != el.eX;
+          var updateY = scrollY != el.eY;
+
+          var otherEl,
+            i = 0;
+
+          el.eX = scrollX;
+          el.eY = scrollY;
+
+          for (; i < elems[length]; ) {
+            otherEl = elems[i++];
+            if (otherEl != el) {
+              if (
+                updateX &&
+                Math_round(
+                  otherEl[scroll + Left] -
+                    (scrollX = otherEl.eX = Math_round(
+                      xRate *
+                        (otherEl[scroll + Width] - otherEl[client + Width])
+                    ))
+                )
+              ) {
+                otherEl[scroll + Left] = scrollX;
+              }
+
+              if (
+                updateY &&
+                Math_round(
+                  otherEl[scroll + Top] -
+                    (scrollY = otherEl.eY = Math_round(
+                      yRate *
+                        (otherEl[scroll + Height] - otherEl[client + Height])
+                    ))
+                )
+              ) {
+                otherEl[scroll + Top] = scrollY;
+              }
+            }
+          }
+        }),
+        0
+      );
+    })(el, name);
+  }
+};
+/* eslint-enable */
+function noop() {}

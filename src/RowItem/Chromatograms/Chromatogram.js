@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@blueprintjs/core";
+import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
   state = { scalePct: 0.05 };
@@ -36,7 +37,8 @@ class Chromatogram extends React.Component {
     painter.paintCanvas();
   };
 
-  scaleChromatogramYPeaksHigher = () => {
+  scaleChromatogramYPeaksHigher = e => {
+    e.stopPropagation();
     const { charWidth } = this.props;
     const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
@@ -46,7 +48,8 @@ class Chromatogram extends React.Component {
     this.updatePeakDrawing(newScalePct, charWidth);
     this.setState({ scalePct: newScalePct });
   };
-  scaleChromatogramYPeaksLower = () => {
+  scaleChromatogramYPeaksLower = e => {
+    e.stopPropagation();
     const { charWidth } = this.props;
     const { scalePct } = this.state;
     const peakCanvas = this.canvasRef;
@@ -66,7 +69,9 @@ class Chromatogram extends React.Component {
         }}
       >
         <Button
-          className="pt-minimal"
+          content={"Scale Chromatogram Up"}
+          isButton
+          className="pt-minimal scaleChromatogramButton"
           icon="caret-up"
           onClick={this.scaleChromatogramYPeaksHigher}
           style={{
@@ -76,7 +81,9 @@ class Chromatogram extends React.Component {
           }}
         />
         <Button
-          className="pt-minimal"
+          content={"Scale Chromatogram Up"}
+          isButton
+          className="pt-minimal scaleChromatogramButton"
           icon="caret-down"
           onClick={this.scaleChromatogramYPeaksLower}
           style={{

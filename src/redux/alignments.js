@@ -176,6 +176,7 @@ export default createMergedDefaultStateReducer(
     //   }
     // },
     [upsertAlignmentRun]: (state, payload) => {
+      // magicDownload(JSON.stringify(payload), 'myFile.json')
       let payloadToUse = {
         alignmentAnnotationVisibility: payload.pairwiseAlignments
           ? defaultPairwiseAlignmentAnnotationVisibility
@@ -240,13 +241,18 @@ export default createMergedDefaultStateReducer(
         // console.log("mismatches", payloadToUse.alignmentTracks[1].mismatches);
       }
       //check for issues
-      checkForIssues(payloadToUse.alignmentTracks);
-      (payloadToUse.pairwiseAlignments || []).map(checkForIssues);
+      let hasError = checkForIssues(payloadToUse.alignmentTracks);
+      (payloadToUse.pairwiseAlignments || []).map(alignment => {
+        const error = alignment;
+        if (error) {
+          hasError = error;
+        }
+      });
 
       // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
       return {
         ...state,
-        [payload.id]: payloadToUse
+        [payload.id]: { ...payloadToUse, hasError }
       };
     }
   },
@@ -295,9 +301,10 @@ function checkForIssues(alignmentTracks) {
   }
 
   let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
-  const hasError = alignmentTracks.some(track => {
+  let hasError;
+  alignmentTracks.some(track => {
     if (track.alignmentData.sequence.length !== alignmentTrackLength) {
-      console.error("incorrect length", this.props);
+      console.error("incorrect length", alignmentTracks);
 
       return "incorrect length";
     }
@@ -306,7 +313,7 @@ function checkForIssues(alignmentTracks) {
       track.sequenceData.sequence.length !==
         track.chromatogramData.baseCalls.length
     ) {
-      console.error("incorrect chromatogram length", this.props);
+      console.error("incorrect chromatogram length", alignmentTracks);
 
       return "incorrect chromatogram length";
     }
@@ -337,14 +344,14 @@ function checkForIssues(alignmentTracks) {
         'track.alignmentData.sequence.replace(/-/g,"").length:',
         track.alignmentData.sequence.replace(/-/g, "").length
       );
-
-      return "sequence data length does not match alignment data w/o gaps";
+      hasError = "sequence data length does not match alignment data w/o gaps";
+      return true;
     }
     return false;
   });
   if (hasError) {
+    return hasError;
     /* eslint-disable */
-
     debugger;
     /* eslint-enable */
   }

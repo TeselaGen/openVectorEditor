@@ -1030,6 +1030,7 @@ function VectorInteractionHOC(Component /* options */) {
       //do this in two steps to determine propsToPass
       let {
         children,
+        vectorInteractionWrapperStyle = {},
         disableEditorClickAndDrag = false,
         ...propsToPass
       } = this.props;
@@ -1079,7 +1080,7 @@ function VectorInteractionHOC(Component /* options */) {
           tabIndex={-1} //this helps with focusing using Keyboard's parentElement.focus()
           ref={c => (this.node = c)}
           className={"veVectorInteractionWrapper"}
-          style={{ position: "relative" }}
+          style={{ position: "relative", ...vectorInteractionWrapperStyle }}
         >
           {closePanelButton}
           <Keyboard
