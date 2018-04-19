@@ -10,14 +10,14 @@ let snipStyle = {
   height: "100%",
   // background: 'black',
   position: "absolute",
-  top: 3,
+  top: 1,
   width: "2px"
 };
 let snipConnectorStyle = {
   height: "2px",
   // background: 'black',
   position: "absolute",
-  top: 3
+  top: 1
 };
 
 // var cursor = getCursorForRow(caretPosition, row, bpsPerRow, snipStyle, charWidth, true);
@@ -48,7 +48,7 @@ function getSnipForRow(
   // }
 
   let newCursorStyle = assign({}, snipStyle, {
-    left: xStart
+    left: xStart + 2
   });
   let cursorEl = (
     <div key={index} className="veRowViewCutsite snip" style={newCursorStyle} />
@@ -88,7 +88,7 @@ function getSnipConnector(
     width -= charWidth;
     //the second logical operator catches the special case where we're at the very end of the sequence..
     let newCursorStyle = assign({}, snipConnectorStyle, {
-      left: xStart,
+      left: xStart + 2,
       width
     });
     let cursorEl = (

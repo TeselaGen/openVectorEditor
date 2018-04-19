@@ -398,8 +398,8 @@ export class RowItem extends React.Component {
                       {...{
                         key: "restrictionSiteRange" + index,
                         height: showReverseSequence
-                          ? sequenceHeight * 2 + 1
-                          : sequenceHeight + 1,
+                          ? sequenceHeight * 2
+                          : sequenceHeight,
                         hideCarets: true,
                         opacity: 0.3,
                         className: "cutsiteLabelSelectionLayer",

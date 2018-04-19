@@ -79,6 +79,7 @@ export class AlignmentView extends React.Component {
       isFullyZoomedOut,
       handleSelectTrack,
       hasTemplate,
+      noVisibilityOptions,
       linearViewOptions,
       handleBackButtonClicked,
       alignmentVisibilityToolOptions
@@ -314,7 +315,9 @@ export class AlignmentView extends React.Component {
                 max={14}
                 min={this.getMinCharWidth()}
               />
-              <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
+              {!noVisibilityOptions && (
+                <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
+              )}
             </div>
             <Minimap
               {...{

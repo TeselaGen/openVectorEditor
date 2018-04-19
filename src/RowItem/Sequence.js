@@ -40,7 +40,7 @@ class Sequence extends React.Component {
       return (
         <div
           style={style}
-          className={(className ? className : "") + " Sequence"}
+          className={(className ? className : "") + " ve-row-item-sequence"}
         >
           <svg
             style={{
@@ -71,7 +71,7 @@ class Sequence extends React.Component {
                     // textLength: charWidth * seqChunk.length - charWidth,
                     x,
                     textLength,
-                    y: height,
+                    y: height / 2,
                     lengthAdjust: "spacing"
                   }}
                 >
@@ -104,7 +104,7 @@ class Sequence extends React.Component {
               className={"ve-monospace-font"}
               {...{
                 x: 0,
-                y: height,
+                y: height - height / 4,
                 textLength: width,
                 lengthAdjust: "spacing"
               }}
