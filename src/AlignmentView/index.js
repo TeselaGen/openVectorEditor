@@ -78,7 +78,7 @@ export class AlignmentView extends React.Component {
       hideBottomBar,
       isFullyZoomedOut,
       handleSelectTrack,
-      hasTemplate = true,
+      hasTemplate,
       linearViewOptions,
       handleBackButtonClicked,
       alignmentVisibilityToolOptions
@@ -448,6 +448,7 @@ class PairwiseAlignmentView extends React.Component {
         <AlignmentView
           {...{
             ...this.props,
+            hasTemplate: true,
             alignmentTracks,
             handleBackButtonClicked: () => {
               this.setState({
@@ -465,6 +466,7 @@ class PairwiseAlignmentView extends React.Component {
         <AlignmentView
           {...{
             ...this.props,
+            hasTemplate: true,
             alignmentTracks: pairwiseOverviewAlignmentTracks,
             linearViewOptions: getPairwiseOverviewLinearViewOptions,
             isFullyZoomedOut: true,
