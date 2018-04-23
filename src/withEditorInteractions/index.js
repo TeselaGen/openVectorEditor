@@ -33,8 +33,8 @@ import createSequenceInputPopup from "./createSequenceInputPopup";
 import moveCaret from "./moveCaret";
 import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
-import bpContext from "./bpContext";
 import PropTypes from "prop-types";
+import { createMenu } from "teselagen-react-components";
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
@@ -445,7 +445,7 @@ function VectorInteractionHOC(Component /* options */) {
         : [
             {
               text: "Create",
-              menu: [
+              submenu: [
                 features && {
                   text: "Feature",
                   onClick: function() {
@@ -515,7 +515,7 @@ function VectorInteractionHOC(Component /* options */) {
           didMount: ({ className }) => {
             this.openVeCopy1 = makeTextCopyable(selectedSeqData, className);
           },
-          menu: [
+          submenu: [
             {
               text: "Copy",
               // label: "⌘X",
@@ -650,7 +650,11 @@ function VectorInteractionHOC(Component /* options */) {
           e.stopPropagation && e.stopPropagation();
           //override hook here
           const override = rightClickOverrides[key];
-          bpContext(override ? override(items, opts, this.props) : items, e);
+          createMenu(
+            override ? override(items, opts, this.props) : items,
+            undefined,
+            e
+          );
         };
       });
       return normalizedActions;
@@ -679,13 +683,17 @@ function VectorInteractionHOC(Component /* options */) {
 
     backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
       this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
-      const { readOnly } = this.props;
+      const { readOnly, sequenceData: { circular } } = this.props;
       const menu = [
         ...(readOnly
           ? []
           : [
               {
+                disabled: !circular,
                 text: "Rotate To Here",
+                tooltip: !circular
+                  ? "Disabled because the sequence is linear"
+                  : undefined,
                 onClick: this.handleRotateToCaretPosition
               }
             ]),

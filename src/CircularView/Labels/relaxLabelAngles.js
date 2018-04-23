@@ -1,4 +1,6 @@
-import clone from "clone";
+import { cloneDeep } from "lodash";
+
+// import clone from "clone";
 // import lruMemoize from "lru-memoize";
 
 // export default lruMemoize(1, undefined, true)(relaxLabelAngles);
@@ -19,7 +21,7 @@ function normalizeAngle(angle) {
 function relaxLabelAngles(_labelPoints, spacing, maxradius) {
   spacing = 18;
   let maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
-  let labels = clone(_labelPoints);
+  let labels = cloneDeep(_labelPoints);
   if (labels.length > maxLabelsPerQuadrant * 4) {
     //group overlapping labels together
     labels = combineLabels(labels, maxLabelsPerQuadrant * 4);

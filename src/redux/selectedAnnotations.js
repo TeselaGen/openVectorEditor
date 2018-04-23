@@ -1,7 +1,7 @@
+import { createMenu } from "teselagen-react-components";
 import without from "lodash/without";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
-import bpContext from "../withEditorInteractions/bpContext";
 
 // ------------------------------------
 // Actions
@@ -30,7 +30,7 @@ export function replacementLayerRightClicked({ event, annotation }, meta) {
       }
     ];
 
-    bpContext(items, event);
+    createMenu(items, undefined, event);
   };
 }
 

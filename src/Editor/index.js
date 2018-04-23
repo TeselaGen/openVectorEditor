@@ -1,6 +1,7 @@
 import { debounce } from "lodash";
+import { createMenu } from "teselagen-react-components";
 import Dialogs from "../Dialogs";
-import "react-reflex/styles.css";
+import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
@@ -45,7 +46,6 @@ import "./style.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
-import bpContext from "../withEditorInteractions/bpContext";
 
 const panelMap = {
   circular: CircularView,
@@ -615,7 +615,7 @@ export class Editor extends React.Component {
 
       const showTabRightClickContextMenu = (e, id) => {
         const tabIdToUse = id || activePanelId;
-        bpContext(
+        createMenu(
           [
             {
               onClick: () => {
@@ -635,6 +635,7 @@ export class Editor extends React.Component {
               text: "Make Tab Fullscreen"
             }
           ],
+          undefined,
           e
         );
         e.preventDefault();

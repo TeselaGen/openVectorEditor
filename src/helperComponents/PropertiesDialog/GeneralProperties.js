@@ -1,5 +1,5 @@
 import React from "react";
-import { InputField, SelectField } from "teselagen-react-components";
+import { InputField, BPSelect } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
 
 // import { map } from "lodash";
@@ -9,8 +9,9 @@ class GeneralProperties extends React.Component {
   render() {
     const {
       readOnly,
+      updateCircular,
       sequenceData: { name, sequence, circular },
-      toggleReadOnlyMode,
+      updateReadOnlyMode,
       onSave,
       sequenceNameUpdate
     } = this.props;
@@ -44,11 +45,12 @@ class GeneralProperties extends React.Component {
           <div className="ve-column-left">Circular/Linear:</div>{" "}
           <div className="ve-column-right">
             {" "}
-            <SelectField
+            <BPSelect
               disabled={readOnly}
-              name="circular"
-              enableReinitialize
-              defaultValue={circular ? "circular" : "linear"}
+              onChange={val => {
+                updateCircular(val === "circular");
+              }}
+              value={circular ? "circular" : "linear"}
               options={[
                 { label: "Circular", value: "circular" },
                 { label: "Linear", value: "linear" }
@@ -64,11 +66,11 @@ class GeneralProperties extends React.Component {
           <div className="ve-column-left">Is Editable:</div>{" "}
           <div className="ve-column-right">
             {" "}
-            <SelectField
-              enableReinitialize
+            <BPSelect
               disabled={!onSave}
-              onFieldSubmit={toggleReadOnlyMode}
-              name="editable"
+              onChange={val => {
+                updateReadOnlyMode(val === "readOnly");
+              }}
               value={readOnly ? "readOnly" : "editable"}
               options={[
                 { label: "Read Only", value: "readOnly" },

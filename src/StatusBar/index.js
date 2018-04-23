@@ -2,6 +2,7 @@ import { getInsertBetweenVals } from "ve-sequence-utils";
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import React from "react";
 import { Button } from "@blueprintjs/core";
+import { BPSelect } from "teselagen-react-components";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
 
@@ -10,8 +11,13 @@ export function StatusBar({
   caretPosition = -1,
   sequenceLength = 0,
   readOnly,
+  sequenceData: { circular },
+  onSave,
+  updateCircular,
+  updateReadOnlyMode,
   selectionLayerUpdate,
   caretPositionUpdate,
+  showCircularity = true,
   showReadOnly = true
 }) {
   let length = getRangeLength(selectionLayer, sequenceLength);
@@ -23,9 +29,50 @@ export function StatusBar({
   let isSelecting = selectionLayer.start > -1;
   return (
     <div className={"veStatusBar"}>
-      <StatusBarItem />
       {showReadOnly && (
-        <StatusBarItem>{readOnly ? "Read Only" : "Editable"}</StatusBarItem>
+        <StatusBarItem>
+          {onSave ? (
+            <BPSelect
+              options={[
+                { label: "Read Only", value: "readOnly" },
+                { label: "Editable", value: "editable" }
+              ]}
+              className="pt-minimal"
+              value={readOnly ? "readOnly" : "editable"}
+              onChange={value => {
+                updateReadOnlyMode(value === "readOnly");
+              }}
+            />
+          ) : readOnly ? (
+            "Read Only"
+          ) : (
+            "Editable"
+          )}
+        </StatusBarItem>
+      )}
+      <div className={"spacer"} />
+      {showCircularity && (
+        <StatusBarItem>
+          {readOnly ? (
+            circular ? (
+              "Circular"
+            ) : (
+              "Linear"
+            )
+          ) : (
+            <BPSelect
+              onChange={val => {
+                updateCircular(val === "circular");
+              }}
+              className="pt-minimal"
+              value={circular ? "circular" : "linear"}
+              options={[
+                { label: "Circular", value: "circular" },
+                { label: "Linear", value: "linear" }
+              ]}
+            />
+          )}
+        </StatusBarItem>
       )}
       <div className={"spacer"} />
       {!readOnly && (

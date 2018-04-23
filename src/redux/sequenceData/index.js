@@ -1,7 +1,7 @@
 import { cloneDeep } from "lodash";
 import deepEqual from "deep-equal";
 import { tidyUpSequenceData } from "ve-sequence-utils";
-import uuid from "uuidv4";
+import uuid from "uniqid";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
@@ -9,6 +9,7 @@ import parts from "./parts";
 import name from "./name";
 import primers from "./primers";
 import sequence from "./sequence";
+import circular from "./circular";
 import translations from "./translations";
 import combineReducersDontIgnoreKeys from "../../utils/combineReducersDontIgnoreKeys";
 // import cleanSequenceData from "../../utils/cleanSequenceData";
@@ -20,7 +21,7 @@ export * from "./features";
 export * from "./parts";
 export * from "./name";
 // export * from './sequence';
-// export * from './circular';
+export * from "./circular";
 export * from "./translations";
 
 // ------------------------------------
@@ -46,7 +47,7 @@ const coreReducer = combineReducersDontIgnoreKeys({
   sequence,
   translations,
   size: (state = {}) => state,
-  circular: createReducer({}, true),
+  circular,
   name,
   fromFileUpload: createReducer({}, false)
 });

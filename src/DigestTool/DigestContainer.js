@@ -1,4 +1,4 @@
-// import uuidv4 from "uuidv4";
+// import uniqid from "uniqid";
 import withEditorProps from "../withEditorProps";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
@@ -44,7 +44,7 @@ export default compose(
       );
       const size = getRangeLength({ start, end }, sequenceLength);
 
-      // const id = uuidv4()
+      // const id = uniqid()
       const id = start + "-" + end + "-" + size + "-";
       getRangeLength({ start, end }, sequenceLength);
       fragments.push({

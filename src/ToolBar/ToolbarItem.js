@@ -1,7 +1,5 @@
 // import download from 'in-browser-download'
-import DropDownIcon from "react-icons/lib/md/arrow-drop-down";
-import DropUpIcon from "react-icons/lib/md/arrow-drop-up";
-import { Popover, Position, Tooltip } from "@blueprintjs/core";
+import { Popover, Position, Tooltip, Icon as BpIcon } from "@blueprintjs/core";
 import React from "react";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
@@ -122,9 +120,9 @@ export default class ToolbarItem extends React.Component {
                         <div>{dropdownicon}</div>
                       </div>
                     ) : isOpen ? (
-                      <DropUpIcon style={{ width: 20, height: 20 }} />
+                      <BpIcon iconSize={13} icon={"caret-up"} />
                     ) : (
-                      <DropDownIcon style={{ width: 20, height: 20 }} />
+                      <BpIcon iconSize={13} icon={"caret-down"} />
                     )}
                   </div>
                 </Tooltip>

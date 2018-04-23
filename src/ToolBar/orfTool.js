@@ -2,8 +2,7 @@ import { Icon } from "@blueprintjs/core";
 import React from "react";
 import { Checkbox } from "@blueprintjs/core";
 // import show_orfs from "./veToolbarIcons/show_orfs.png";
-import InfoCircle from "react-icons/lib/fa/info-circle";
-import { orfIcon } from "teselagen-react-components";
+import { orfIcon, InfoHelper } from "teselagen-react-components";
 
 export default {
   updateKeys: [
@@ -94,10 +93,11 @@ function OrfToolDropdown({
         label={"Use GTG and CTG as start codons"}
       />
       <div className="vespacer" />
-      <InfoCircle />
-      <span className={"translateInfoSpan"}>
-        To translate an arbitrary area, right click a selection.
-      </span>
+
+      <InfoHelper
+        displayToSide
+        content="To translate an arbitrary area, right click a selection."
+      />
     </div>
   );
 }

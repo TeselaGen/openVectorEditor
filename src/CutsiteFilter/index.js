@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { Icon } from "@blueprintjs/core";
 
 import withEditorProps from "../withEditorProps";
-import Plus from "react-icons/lib/fa/plus";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
+
 import React from "react";
 import "./style.css";
 import Select from "react-select";
@@ -112,7 +113,7 @@ function renderOptions({ label, value }) {
 function AddAdditionalEnzymeLink({ onClick }) {
   return (
     <span onClick={onClick} className={"ta_link"}>
-      Add additional enzymes <Plus />
+      Add additional enzymes <Icon small icon="plus" />
     </span>
   );
 }

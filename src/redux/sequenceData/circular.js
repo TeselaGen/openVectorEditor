@@ -4,9 +4,16 @@ import createAction from "../utils/createMetaAction";
 // ------------------------------------
 // Actions
 // ------------------------------------
-// export const caretPositionClear = createAction('caretPositionClear')
+export const updateCircular = createAction("UPDATE_CIRCULAR");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default createReducer({}, true);
+export default createReducer(
+  {
+    [updateCircular]: (state, payload) => {
+      return payload;
+    }
+  },
+  true
+);
