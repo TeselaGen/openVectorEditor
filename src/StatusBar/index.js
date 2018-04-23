@@ -11,7 +11,7 @@ export function StatusBar({
   caretPosition = -1,
   sequenceLength = 0,
   readOnly,
-  sequenceData: { circular },
+  sequenceData: { circular } = {},
   onSave,
   updateCircular,
   updateReadOnlyMode,
