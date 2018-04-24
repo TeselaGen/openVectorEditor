@@ -11,6 +11,7 @@ export default class ToolbarItem extends React.Component {
   };
 
   render() {
+    const { overrides = {} } = this.props;
     const {
       isOpen,
       index,
@@ -27,7 +28,8 @@ export default class ToolbarItem extends React.Component {
       dropdownicon,
       tooltipDisabled,
       toggled = false
-    } = this.props;
+    } = { ...this.props, ...overrides };
+
     // const {
     //   Icon,
     //   onIconClick = noop,

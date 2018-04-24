@@ -23,6 +23,7 @@ import visibilityTool from "./visibilityTool";
 // import propertiesTool from "./propertiesTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
+import { isString } from "util";
 // import fullScreenTool from "./fullScreenTool";
 
 const allTools = {
@@ -90,8 +91,18 @@ export class ToolBar extends React.Component {
     } = this.props;
 
     let items = toolList
-      .map(toolName => {
-        const tool = allTools[toolName];
+      .map(toolNameOrOverrides => {
+        let toolName;
+        let toolOverride;
+        if (isString(toolNameOrOverrides)) {
+          toolName = toolNameOrOverrides;
+        } else {
+          toolOverride = toolNameOrOverrides;
+        }
+
+        const tool = toolOverride
+          ? { ...allTools[toolOverride.name], overrides: toolOverride } //add any overrides here
+          : allTools[toolName];
         if (!tool) {
           console.error(
             "You're trying to load a tool that doesn't appear to exist: " +
@@ -115,7 +126,8 @@ export class ToolBar extends React.Component {
           ...rest,
           isOpen: index === this.state.openItem,
           toggleOpen: this.toggleOpen,
-          index
+          index,
+          overrides: item.overrides //spread any overrides here
         }),
         withHandlers({
           toggleDropdown: () => () => {

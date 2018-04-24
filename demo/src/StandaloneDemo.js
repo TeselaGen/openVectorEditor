@@ -101,7 +101,9 @@ export default class StandaloneDemo extends React.Component {
         ToolBarProps: {
           toolList: [
             "saveTool",
-            "downloadTool",
+            {name: "downloadTool", Dropdown: () => {
+              return "Hey!"
+            }},
             "importTool",
             "undoTool",
             "redoTool",

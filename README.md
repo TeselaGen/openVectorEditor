@@ -183,24 +183,27 @@ These props consist of hooks and editor config options that can be passed like s
 		]
 	},
 	ToolBarProps: {
-			//name the tools you want to see in the toolbar in the order you want to see them
 			toolList: [
 				"saveTool",
-				"downloadTool",
+				//you can override a tool like so:
+				{name: "downloadTool", Dropdown: () => { 
+					return "Hey!"
+				}},
 				"importTool",
 				"undoTool",
 				"redoTool",
 				"cutsiteTool",
 				"featureTool",
-				"oligoTool",
+				"alignmentTool",
+				// "oligoTool",
 				"orfTool",
-				"viewTool",
+				// "viewTool",
 				"editTool",
 				"findTool",
-				"visibilityTool",
-				"propertiesTool",
+				"visibilityTool"
+				// "propertiesTool"
 			]
-		},
+		}
 		onDigestSave: () => {} //tnr: NOT YET IMPLEMENTED
 }
 ```
