@@ -1,7 +1,8 @@
 import React from "react";
-import drawDirectedPiePiece from "../drawDirectedPiePiece";
+import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
-export default function CircularPart({
+export default function Feature({
+  color = "orange",
   radius,
   arrowheadLength = 0.5,
   annotationHeight,
@@ -18,11 +19,10 @@ export default function CircularPart({
   return (
     <path
       {...rest}
-      className="vePart veCircularViewPart"
-      strokeWidth="0.5"
-      stroke="purple"
-      fill="purple"
-      fillOpacity={0}
+      className="veFeature veCircularViewFeature"
+      strokeWidth=".5"
+      stroke={"black"}
+      fill={color}
       d={path.print()}
     />
   );

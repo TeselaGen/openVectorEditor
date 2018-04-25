@@ -12,6 +12,7 @@ function SelectionLayer({
   selectionLayer,
   sequenceLength,
   radius,
+  hideTitle,
   innerRadius,
   selectionLayerRightClicked,
   index
@@ -49,32 +50,25 @@ function SelectionLayer({
       key={"veSelectionLayer" + index}
       className="veSelectionLayer"
     >
-      <PositionAnnotationOnCircle
-        className="selectionLayerWrapper"
-        sAngle={startAngle}
-        eAngle={endAngle}
-        height={0}
-      >
-        <path
-          className="selectionLayer"
-          style={{ opacity: 0.3 }}
-          d={section.path.print()}
-          fill={color || "rgb(0, 153, 255)"}
-        />
-      </PositionAnnotationOnCircle>
-      <PositionAnnotationOnCircle
-        className="selectionLayerInverseWrapper"
-        sAngle={endAngle}
-        eAngle={startAngle}
-        height={0}
-      >
-        <path
-          className="selectionLayerInverse"
-          style={{ opacity: 0.2 }}
-          d={section2.path.print()}
-          fill={color || "red"}
-        />
-      </PositionAnnotationOnCircle>
+      {!hideTitle && (
+        <title>
+          {"Selecting between " +
+            (selectionLayer.start + 1) +
+            " - " +
+            (selectionLayer.end + 1)}
+        </title>
+      )}
+      <path
+        {...PositionAnnotationOnCircle({
+          sAngle: startAngle,
+          eAngle: endAngle,
+          height: 0
+        })}
+        className="selectionLayer"
+        style={{ opacity: 0.3 }}
+        d={section.path.print()}
+        fill={color || "rgb(0, 153, 255)"}
+      />
       {!showCaret && (
         <Caret
           key="caret1"

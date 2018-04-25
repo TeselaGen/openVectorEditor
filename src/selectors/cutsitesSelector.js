@@ -27,13 +27,26 @@ function cutsitesSelector(sequence, circular, enzymeList) {
   );
   //tag each cutsite with a unique id
   let cutsitesById = {};
+
   Object.keys(cutsitesByName).forEach(function(enzymeName) {
     let cutsitesForEnzyme = cutsitesByName[enzymeName];
     cutsitesForEnzyme.forEach(function(cutsite) {
-      let uniqueId = bsonObjectid().str;
+      const numberOfCuts = cutsitesByName[enzymeName].length;
+      const uniqueId = bsonObjectid().str;
       cutsite.id = uniqueId;
+      cutsite.numberOfCuts = numberOfCuts;
       cutsite.annotationType = "cutsite";
       cutsitesById[uniqueId] = cutsite;
+      if (numberOfCuts === 1) {
+        cutsite.labelColor = "salmon";
+        cutsite.labelClassname = "singleCutter";
+      } else if (numberOfCuts === 2) {
+        cutsite.labelColor = "lightblue";
+        cutsite.labelClassname = "doubleCutter";
+      } else {
+        cutsite.labelColor = "lightgrey";
+        cutsite.labelClassname = "multiCutter";
+      }
     });
   });
   // create an array of the cutsites

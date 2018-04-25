@@ -143,9 +143,9 @@ export default class StandaloneDemo extends React.Component {
           [
             {
               // fullScreen: true,
-              // active: true,
+              active: true,
               id: "circular",
-              name: "Plasmid"
+              name: "Plasmid",
             },
             {
               id: "jbeiAlignment1",
@@ -158,7 +158,7 @@ export default class StandaloneDemo extends React.Component {
               id: "pairwiseRun1",
               type: "alignment",
               name: "Pairwise Alignment",
-              active: true
+              // active: true
               // fullScreen: true
             }
           ],

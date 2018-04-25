@@ -1,20 +1,32 @@
 .veStatusBar {
-  padding-top: 3px;
-  padding-bottom: 3px;
   display: flex;
-  justify-content: space-around;
   align-items: center;
   font-size: 14px;
+  max-height: 25px;
+  min-height: 25px;
+  /* background: #f3f3f3; */
+  overflow-x: auto;
   border-top: lightgrey 0.1px solid;
   border-bottom: lightgrey 0.1px solid;
 }
+.veStatusBar::-webkit-scrollbar {
+  display: none;
+}
 
-.veStatusBar .spacer {
-  height: 80%;
+.veStatusBarItem {
+  min-width: fit-content;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.veStatusBarSpacer {
+  height: 100%;
+  height: stretch;
   width: 1px;
+  min-width: 1px;
   background: lightgrey;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 /*# sourceMappingURL= style.css.map */

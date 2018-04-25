@@ -36,31 +36,31 @@ function Axis({
           sequenceLength
         );
         return (
-          <PositionAnnotationOnCircle
+          <g
             key={"axis" + index}
-            sAngle={tickAngle}
-            eAngle={tickAngle}
-            height={radiusToUse}
+            {...PositionAnnotationOnCircle({
+              sAngle: tickAngle,
+              eAngle: tickAngle,
+              height: radiusToUse
+            })}
           >
-            <g>
-              <text
-                transform={
-                  (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
-                  ` translate(0, ${
-                    shouldFlipText(tickAngle) ? -textOffset : textOffset
-                  })`
-                }
-                style={{
-                  textAnchor: "middle",
-                  dominantBaseline: "central",
-                  fontSize: "small"
-                }}
-              >
-                {tickPosition + 1 + ""}
-              </text>
-              <rect width={tickMarkWidth} height={tickMarkHeight} />
-            </g>
-          </PositionAnnotationOnCircle>
+            <text
+              transform={
+                (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
+                ` translate(0, ${
+                  shouldFlipText(tickAngle) ? -textOffset : textOffset
+                })`
+              }
+              style={{
+                textAnchor: "middle",
+                dominantBaseline: "central",
+                fontSize: "small"
+              }}
+            >
+              {tickPosition + 1 + ""}
+            </text>
+            <rect width={tickMarkWidth} height={tickMarkHeight} />
+          </g>
         );
       })
     : null;

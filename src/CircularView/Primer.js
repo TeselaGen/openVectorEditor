@@ -1,7 +1,7 @@
 import React from "react";
-import drawDirectedPiePiece from "../drawDirectedPiePiece";
+import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
-export default function CircularFeature({
+export default function CircularPrimer({
   color = "orange",
   radius,
   arrowheadLength = 0.5,
@@ -19,7 +19,7 @@ export default function CircularFeature({
   return (
     <path
       {...rest}
-      className="veFeature veCircularViewFeature"
+      className="vePrimer veCircularViewPrimer"
       strokeWidth=".5"
       stroke={"black"}
       fill={color}

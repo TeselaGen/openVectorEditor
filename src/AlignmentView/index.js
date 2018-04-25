@@ -260,15 +260,22 @@ export class AlignmentView extends React.Component {
             style={{
               position: "absolute",
               background: "white",
-              opacity: 0.8,
+              opacity: 1,
+              padding: 3,
               top: 10,
-              left: 10
+              left: 10,
+              zIndex: 11
             }}
           >
             <Tooltip content="Back to pairwise alignment overview">
               <Button
                 icon="arrow-left"
-                onClick={handleBackButtonClicked}
+                onClick={() => {
+                  this.setState({
+                    charWidthInLinearView: charWidthInLinearViewDefault
+                  });
+                  handleBackButtonClicked();
+                }}
                 className={"alignmentViewBackButton"}
               />
             </Tooltip>

@@ -229,6 +229,7 @@ export class RowItem extends React.Component {
           {/* <div className="vespacer" /> */}
 
           <SelectionLayer
+            customTitleStart={"Search match"}
             color={"yellow"}
             regions={searchLayers}
             {...annotationCommonProps}
@@ -394,6 +395,7 @@ export class RowItem extends React.Component {
                 return (
                   layer.start > -1 && (
                     <SelectionLayer
+                      hideTitle
                       {...annotationCommonProps}
                       {...{
                         key: "restrictionSiteRange" + index,

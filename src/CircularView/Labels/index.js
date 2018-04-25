@@ -1,3 +1,4 @@
+import { connect } from "react-redux";
 import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
 import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
@@ -15,6 +16,7 @@ function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
 function Labels({
   labels = {},
   outerRadius,
+  editorName,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
   /*radius*/
@@ -31,10 +33,16 @@ function Labels({
     .map(function(key) {
       let label = labels[key];
       let { annotationCenterAngle, annotationCenterRadius } = label;
-
+      if (!label.text) {
+        console.log("label:", label);
+      }
       return {
         ...label,
-        ...getHeightAndWidthOfLabel(label.text, fontWidth, fontHeight),
+        ...getHeightAndWidthOfLabel(
+          label.text || "Unlabeled",
+          fontWidth,
+          fontHeight
+        ),
         //three points define the label:
         innerPoint: {
           ...polarToSpecialCartesian(
@@ -58,7 +66,11 @@ function Labels({
       label.labelAndSublabels = [label];
       return label;
     });
-  let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius);
+  let groupedLabels = relaxLabelAngles(
+    labelPoints,
+    fontHeight,
+    outerRadius
+  ).filter(l => !!l);
   // let groupedLabels = relaxLabelAngles(
   //   labelPoints,
   //   fontHeight,
@@ -74,81 +86,34 @@ function Labels({
   //     labelAndSublabels: [originalLabel].concat(originalLabel.labelAndSublabels)
   //   };
   // });
+  window.isLabelGroupOpen = false;
   return {
     component: (
       <g key={"veLabels"} className="veLabels ve-monospace-font">
-        {groupedLabels.map(function(label, index) {
-          let { labelAndSublabels } = label;
-          let labelIds = {};
-          labelAndSublabels.forEach(label => {
-            labelIds[label.id] = true;
-          });
-          let multipleLabels = labelAndSublabels.length > 1;
-          return (
-            <DrawLabelGroup
-              key={index}
-              id={labelIds}
-              {...{
-                label,
-                passHoveredId: true,
-                // ...rest,
-                className: "DrawLabelGroup",
-                multipleLabels,
-                labelAndSublabels,
-                labelIds,
-                circularViewWidthVsHeightRatio,
-                fontWidth,
-                fontHeight,
-                condenseOverflowingXLabels,
-                outerRadius
-              }}
-            />
-          );
-          // return LabelGroup({
-          //   label,
-          //   labelAndSublabels: label.labelAndSublabels,
-          //   key: index,
-          //   fontWidth,
-          //   fontHeight,
-          //   condenseOverflowingXLabels,
-          //   outerRadius
-          // });
-        })
-        //we use the <use> tag to position the hovered label group at the top of the stack
-        //point events: none is to fix a click bug..
-        //http://stackoverflow.com/questions/24078524/svg-click-events-not-firing-bubbling-when-using-use-element
+        {
+          <DrawGroupedLabels
+            {...{
+              editorName,
+              groupedLabels,
+              circularViewWidthVsHeightRatio,
+              fontWidth,
+              fontHeight,
+              condenseOverflowingXLabels,
+              outerRadius
+            }}
+          />
         }
-        <use style={{ pointerEvents: "none" }} xlinkHref="#topLevelHomie" />
       </g>
     ),
+    //we use the <use> tag to position the hovered label group at the top of the stack
+    //point events: none is to fix a click bug..
+    //http://stackoverflow.com/questions/24078524/svg-click-events-not-firing-bubbling-when-using-use-element
+
     height: 120
   };
 }
 // export default lruMemoize(5, deepEqual)(Labels);
 export default Labels;
-
-// function LabelGroup({ label, key, ...rest }) {
-//   let { labelAndSublabels } = label;
-//   let labelIds = {};
-//   labelAndSublabels.forEach(label => {
-//     labelIds[label.id] = true;
-//   });
-//   let multipleLabels = labelAndSublabels.length > 1;
-//   return (
-//     <DrawLabelGroup
-//       key={key}
-//       id={labelIds}
-//       {...{
-//         label,
-//         ...rest,
-//         className: "DrawLabelGroup",
-//         multipleLabels,
-//         labelAndSublabels,
-//         labelIds
-//       }}
-//     />
-//   );
-// }
 
 const DrawLabelGroup = withHover(function({
   hoverActions = {},
@@ -165,7 +130,7 @@ const DrawLabelGroup = withHover(function({
   multipleLabels
   // isIdHashmap,
 }) {
-  let { text } = label;
+  let { text = "Unlabeled" } = label;
   let groupLabelXStart;
   const { hovered, className } = hoverProps;
   //Add the number of unshown labels
@@ -180,7 +145,7 @@ const DrawLabelGroup = withHover(function({
   let labelLength = text.length * fontWidth;
   let maxLabelLength = labelAndSublabels.reduce(function(
     currentLength,
-    { text }
+    { text = "Unlabeled" }
   ) {
     if (text.length > currentLength) {
       return text.length;
@@ -214,10 +179,11 @@ const DrawLabelGroup = withHover(function({
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
 
   let content;
-  let labelClass = "velabelText veCircularViewLabelText clickable ";
+  const labelClass = " veLabelText veCircularViewLabelText clickable ";
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
+    window.isLabelGroupOpen = true;
     let hoveredLabel;
     if (groupLabelXStart !== undefined) {
       labelXStart = groupLabelXStart;
@@ -259,22 +225,25 @@ const DrawLabelGroup = withHover(function({
     );
     content = [
       line,
-      <g className={className} id="topLevelHomie" key="gGroup">
+      <g zIndex={10} className={className + " topLevelLabelGroup"} key="gGroup">
         <rect
+          onMouseOver={cancelFn}
+          zIndex={10}
           x={labelXStart - 4}
           y={labelYStart - dy / 2}
-          width={maxLabelWidth + 10}
+          width={maxLabelWidth + 24}
           height={labelGroupHeight + 4}
           fill="white"
           stroke="black"
         />
-        <text x={labelXStart} y={labelYStart} style={{}}>
+        <text zIndex={11} x={labelXStart} y={labelYStart} style={{}}>
           {labelAndSublabels.map(function(label, index) {
             return (
-              <DrawLabel
+              <DrawGroupInnerLabel
+                isSubLabel
                 key={"labelItem" + index}
                 doNotTriggerOnMouseOut
-                className={labelClass + label.className}
+                className={(label.className || "") + labelClass}
                 id={label.id}
                 {...{ labelXStart, label, fontWidth, index, dy }}
               />
@@ -286,7 +255,7 @@ const DrawLabelGroup = withHover(function({
   } else {
     //DRAW A SINGLE LABEL
     content = [
-      <title key="labeltitle">{label.text}</title>,
+      <title key="labeltitle">{label.title || label.text}</title>,
       <text
         key="text"
         x={labelXStart}
@@ -296,7 +265,10 @@ const DrawLabelGroup = withHover(function({
           labelClass + label.className + (hovered ? " veAnnotationHovered" : "")
         }
         y={textYStart}
-        style={{ fill: label.color ? label.color : "black" }}
+        style={{
+          fill: label.color || "black"
+          // stroke: label.color ? label.color : "black"
+        }}
       >
         {text}
       </text>,
@@ -334,7 +306,7 @@ function LabelLine(pointArray, options) {
         fill: "none",
         strokeWidth: 1,
         style: {
-          opacity: 0.4
+          opacity: 0.2
         },
         className: "veLabelLine",
         ...options
@@ -343,7 +315,7 @@ function LabelLine(pointArray, options) {
   );
 }
 
-const DrawLabel = pureNoFunc(
+const DrawGroupInnerLabel = pureNoFunc(
   withHover(
     ({
       hoverActions,
@@ -373,3 +345,62 @@ const DrawLabel = pureNoFunc(
   )
 );
 function noop() {}
+
+const DrawGroupedLabels = connect((state, { editorName }) => {
+  let editorState = state.VectorEditor[editorName] || {};
+  let hoveredId = editorState.hoveredAnnotation;
+  return {
+    hoveredId
+  };
+})(function({
+  groupedLabels,
+  circularViewWidthVsHeightRatio,
+  fontWidth,
+  fontHeight,
+  condenseOverflowingXLabels,
+  outerRadius,
+  hoveredId
+}) {
+  const hoveredIndex = groupedLabels.findIndex(
+    l =>
+      l.id === hoveredId || l.labelAndSublabels.some(l2 => l2.id === hoveredId)
+  );
+  if (hoveredIndex !== -1) {
+    const hoveredLabel = groupedLabels[hoveredIndex];
+    groupedLabels.splice(hoveredIndex, 1);
+    groupedLabels.push(hoveredLabel);
+  }
+
+  return groupedLabels.map(function(label, index) {
+    let { labelAndSublabels } = label;
+    let labelIds = {};
+    labelAndSublabels.forEach(label => {
+      labelIds[label.id] = true;
+    });
+    let multipleLabels = labelAndSublabels.length > 1;
+    return (
+      <DrawLabelGroup
+        key={label.id}
+        id={labelIds}
+        {...{
+          label,
+          isLabelGroup: true,
+          passHoveredId: true,
+          // ...rest,
+          className: "DrawLabelGroup",
+          multipleLabels,
+          labelAndSublabels,
+          labelIds,
+          circularViewWidthVsHeightRatio,
+          fontWidth,
+          fontHeight,
+          condenseOverflowingXLabels,
+          outerRadius
+        }}
+      />
+    );
+  });
+});
+function cancelFn(e) {
+  e.stopPropagation();
+}

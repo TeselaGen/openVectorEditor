@@ -1,7 +1,7 @@
 import React from "react";
-import drawDirectedPiePiece from "../drawDirectedPiePiece";
+import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
-export default function CircularPrimer({
+export default function DeletionLayer({
   color = "orange",
   radius,
   arrowheadLength = 0.5,
@@ -19,7 +19,7 @@ export default function CircularPrimer({
   return (
     <path
       {...rest}
-      className="vePrimer veCircularViewPrimer"
+      className="veFeature veCircularViewFeature"
       strokeWidth=".5"
       stroke={"black"}
       fill={color}

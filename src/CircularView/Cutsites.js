@@ -94,18 +94,17 @@ const DrawCutsite = pureNoFunc(
     annotationHeight
   }) {
     return (
-      <PositionAnnotationOnCircle
-        sAngle={startAngle}
-        eAngle={startAngle}
-        height={radius}
-      >
-        <rect
-          {...hoverActions}
-          className={className}
-          width={cutsiteWidth}
-          height={annotationHeight}
-        />
-      </PositionAnnotationOnCircle>
+      <rect
+        {...PositionAnnotationOnCircle({
+          sAngle: startAngle,
+          eAngle: startAngle,
+          height: radius
+        })}
+        {...hoverActions}
+        className={className}
+        width={cutsiteWidth}
+        height={annotationHeight}
+      />
     );
   })
 );

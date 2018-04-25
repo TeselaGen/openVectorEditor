@@ -11,6 +11,7 @@ export default createSelector(selectedAnnotationsSelector, function(
       cutsiteIdMap[id] = idMap[id];
       return true;
     }
+    return false;
   });
   return {
     idStack: cutsiteIdStack,

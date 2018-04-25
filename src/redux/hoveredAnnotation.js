@@ -16,7 +16,7 @@ export default createReducer(
     [hoveredAnnotationUpdate]: (state, payload) => {
       return payload;
     },
-    [hoveredAnnotationClear]: (state, payload) => {
+    [hoveredAnnotationClear]: () => {
       return "";
     }
   },

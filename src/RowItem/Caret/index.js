@@ -18,11 +18,12 @@ function Caret(props) {
     (row.start <= caretPosition && row.end + 1 >= caretPosition) ||
     (row.end === sequenceLength - 1 && row.end < caretPosition)
   ) {
-    const { gapsBefore = 0 } =
-      !ignoreGaps && getGaps ? getGaps(caretPosition) : {};
+    // const { gapsBefore = 0 } =
+    //   !ignoreGaps && getGaps ? getGaps(caretPosition) : {};
     //the second logical operator catches the special case where we're at the very end of the sequence..
     let cursorEl = (
       <div
+        title={"Caret before BP " + (caretPosition + 1)}
         className={" veRowViewCaret " + className}
         style={{
           left: (caretPosition - row.start) * charWidth - 2

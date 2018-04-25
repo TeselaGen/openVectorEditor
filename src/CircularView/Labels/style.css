@@ -10,14 +10,15 @@
   cursor: pointer;
 }
 
-.veCircularViewLabelText {
+.veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
+  font-weight: bold;
+  text-decoration: underline;
+  fill: black !important;
+}
+.veAnnotationHovered.veCutsiteLabel {
+  font-weight: bold;
+  text-decoration: underline;
   fill: black !important;
 }
 
-.veCircularViewLabelText.veAnnotationHovered {
-  font-weight: bold;
-  text-decoration: underline;
-}
- 
-
- /*# sourceMappingURL= style.css.map */
+/*# sourceMappingURL= style.css.map */

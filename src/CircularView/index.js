@@ -5,12 +5,12 @@ import SelectionLayer from "./SelectionLayer";
 import Caret from "./Caret";
 import Axis from "./Axis";
 import LineageLines from "./LineageLines";
-import Orfs from "./Orfs";
-import Features from "./Features";
-import Primers from "./Primers";
-import DeletionLayers from "./DeletionLayers";
-import ReplacementLayers from "./ReplacementLayers";
-import Cutsites from "./Cutsites";
+import Orf from "./Orf";
+import Feature from "./Feature";
+import Primer from "./Primer";
+// import DeletionLayer from "./DeletionLayer";
+// import ReplacementLayer from "./ReplacementLayer";
+import Cutsite from "./Cutsite";
 import sortBy from "lodash/sortBy";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
@@ -22,7 +22,8 @@ import {
 import React from "react";
 import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";
-import Parts from "./Parts";
+import Part from "./Part";
+import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 function noop() {}
@@ -258,17 +259,20 @@ export class CircularView extends React.Component {
     function drawFeatures() {
       //DRAW FEATURES
       if (showFeatures && sequenceData.features) {
-        let [annotationsToPass, paredDown] = pareDownAnnotations(
+        let [annotations, paredDown] = pareDownAnnotations(
           sequenceData.features,
           maxFeaturesToDisplay
         );
         paredDownFeatures = paredDown;
-        let results = Features({
-          showFeatureLabels,
+        const results = drawAnnotations({
+          Annotation: Feature,
+          annotationType: "feature",
           radius,
-          featureClicked,
-          featureRightClicked,
-          features: annotationsToPass,
+          reverseAnnotations: true,
+          showLabels: showFeatureLabels,
+          onClick: featureClicked,
+          onRightClicked: featureRightClicked,
+          annotations,
           annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
@@ -285,19 +289,22 @@ export class CircularView extends React.Component {
 
     function drawParts() {
       if (showParts && sequenceData.parts) {
-        const [annotationsToPass, paredDown] = pareDownAnnotations(
+        const [annotations, paredDown] = pareDownAnnotations(
           sequenceData.parts,
           maxPartsToDisplay
         );
         paredDownParts = paredDown;
 
-        const results = Parts({
+        const results = drawAnnotations({
+          Annotation: Part,
+          annotationType: "part",
           radius,
-          showPartLabels,
-          partClicked,
-          partRightClicked,
-          parts: annotationsToPass,
-          partHeight: annotationHeight,
+          reverseAnnotations: true,
+          showLabels: showPartLabels,
+          onClick: partClicked,
+          onRightClicked: partRightClicked,
+          annotations,
+          annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
           editorName
@@ -313,17 +320,20 @@ export class CircularView extends React.Component {
     function drawPrimers() {
       //DRAW FEATURES
       if (showPrimers && sequenceData.primers) {
-        let [annotationsToPass, paredDown] = pareDownAnnotations(
+        let [annotations, paredDown] = pareDownAnnotations(
           sequenceData.primers,
           maxPrimersToDisplay
         );
         paredDownPrimers = paredDown;
-        let results = Primers({
+        const results = drawAnnotations({
+          Annotation: Primer,
+          annotationType: "primer",
           radius,
-          primerClicked,
-          showPrimerLabels,
-          primerRightClicked,
-          primers: annotationsToPass,
+          reverseAnnotations: true,
+          showLabels: showPrimerLabels,
+          onClick: primerClicked,
+          onRightClicked: primerRightClicked,
+          annotations,
           annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
@@ -340,10 +350,15 @@ export class CircularView extends React.Component {
 
     function drawDeletionLayers() {
       if (!deletionLayers || !deletionLayers.length) return null;
-      let results = DeletionLayers({
+      const results = drawAnnotations({
+        // Annotation: DeletionLayer,
+        annotationType: "deletionLayer",
         radius,
-        deletionLayerClicked,
-        deletionLayers,
+        reverseAnnotations: true,
+        onClick: deletionLayerClicked,
+        // showLabels: showDeletionLayerLabels,
+        // onRightClicked: deletionLayerRightClicked,
+        annotations: deletionLayers,
         annotationHeight,
         spaceBetweenAnnotations,
         sequenceLength,
@@ -358,10 +373,15 @@ export class CircularView extends React.Component {
 
     function drawReplacementLayers() {
       if (!replacementLayers || !replacementLayers.length) return null;
-      let results = ReplacementLayers({
+      const results = drawAnnotations({
+        // Annotation: ReplacementLayer,
+        annotationType: "replacementLayer",
         radius,
-        replacementLayerClicked,
-        replacementLayers,
+        reverseAnnotations: true,
+        // showLabels: showReplacementLayerLabels,
+        onClick: replacementLayerClicked,
+        // onRightClicked: replacementLayerRightClicked,
+        annotations: replacementLayers,
         annotationHeight,
         spaceBetweenAnnotations,
         sequenceLength,
@@ -377,21 +397,24 @@ export class CircularView extends React.Component {
     function drawOrfs() {
       //DRAW FEATURES
       if (showOrfs && sequenceData.orfs) {
-        let [annotationsToPass, paredDown] = pareDownAnnotations(
+        let [annotations, paredDown] = pareDownAnnotations(
           sequenceData.orfs,
           maxOrfsToDisplay
         );
         paredDownOrfs = paredDown;
-        let results = Orfs({
+        const results = drawAnnotations({
+          Annotation: Orf,
+          annotationType: "orf",
           radius,
-          orfClicked,
-          orfRightClicked,
-          orfs: annotationsToPass,
+          reverseAnnotations: true,
+          // showLabels: showOrfLabels,
+          onClick: orfClicked,
+          onRightClicked: orfRightClicked,
+          annotations,
           annotationHeight,
           spaceBetweenAnnotations,
           sequenceLength,
-          editorName,
-          ...featureOptions
+          editorName
         });
         if (!results) return null;
 
@@ -409,23 +432,22 @@ export class CircularView extends React.Component {
         sequenceData.sequence.split("").forEach(function(bp, index) {
           let tickAngle = getAngleForPositionMidpoint(index, sequenceLength);
           return (
-            <PositionAnnotationOnCircle
+            <text
+              {...PositionAnnotationOnCircle({
+                sAngle: tickAngle,
+                eAngle: tickAngle,
+                height: radius
+              })}
               key={index}
-              sAngle={tickAngle}
-              eAngle={tickAngle}
-              height={radius}
+              transform={`rotate(180)`}
+              style={{
+                textAnchor: "middle",
+                dominantBaseline: "central",
+                fontSize: "small"
+              }}
             >
-              <text
-                transform={`rotate(180)`}
-                style={{
-                  textAnchor: "middle",
-                  dominantBaseline: "central",
-                  fontSize: "small"
-                }}
-              >
-                {bp}
-              </text>
-            </PositionAnnotationOnCircle>
+              {bp}
+            </text>
           );
         });
       }
@@ -465,20 +487,26 @@ export class CircularView extends React.Component {
     function drawCutsites() {
       //DRAW CUTSITES
       if (showCutsites && sequenceData.cutsites) {
-        let [annotationsToPass, paredDown] = pareDownAnnotations(
+        let [annotations, paredDown] = pareDownAnnotations(
           sequenceData.cutsites,
           maxCutsitesToDisplay
         );
         paredDownCutsites = paredDown;
-        let results = Cutsites({
-          showCutsiteLabels,
-          cutsites: annotationsToPass,
+        const results = drawAnnotations({
+          Annotation: Cutsite,
+          useStartAngle: true,
+          annotationType: "cutsite",
           radius,
+          allOnSameLevel: true,
+          positionBy: positionCutsites,
+          showLabels: showCutsiteLabels,
+          onClick: cutsiteClicked,
+          onRightClicked: cutsiteRightClicked,
+          annotations,
           annotationHeight,
+          spaceBetweenAnnotations,
           sequenceLength,
-          editorName,
-          cutsiteClicked,
-          cutsiteRightClicked
+          editorName
         });
         if (!results) return null;
         //update the radius, labels, and svg
@@ -690,3 +718,10 @@ function pareDownAnnotations(annotations, max) {
 // }
 
 export default withEditorInteractions(CircularView);
+
+function positionCutsites(annotation) {
+  return {
+    start: annotation.topSnipPosition,
+    end: annotation.topSnipPosition
+  };
+}

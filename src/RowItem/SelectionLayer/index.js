@@ -17,6 +17,8 @@ function SelectionLayer(props) {
     sequenceLength,
     regions,
     getGaps,
+    hideTitle: topLevelHideTitle,
+    customTitle: topLevelCustomTitle,
     color: topLevelColor,
     hideCarets: topLevelHideCarets = false,
     selectionLayerRightClicked,
@@ -32,6 +34,8 @@ function SelectionLayer(props) {
           start,
           end,
           color,
+          hideTitle,
+          customTitle,
           hideCarets = false,
           ignoreGaps,
           height
@@ -111,6 +115,16 @@ function SelectionLayer(props) {
             }
             return [
               <div
+                title={
+                  hideTitle || topLevelHideTitle
+                    ? ""
+                    : `${customTitle ||
+                        topLevelCustomTitle ||
+                        "Selecting"} between ` +
+                      (selectionLayer.start + 1) +
+                      " - " +
+                      (selectionLayer.end + 1)
+                }
                 onContextMenu={function(event) {
                   selectionLayerRightClicked({
                     event,
