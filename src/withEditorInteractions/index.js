@@ -675,6 +675,7 @@ function VectorInteractionHOC(Component /* options */) {
       if (readOnly) {
         return;
       }
+      if (caretPosition < 0) return;
       updateSequenceData(
         rotateSequenceDataToPosition(sequenceData, caretPosition)
       );
