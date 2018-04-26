@@ -33,9 +33,6 @@ function Labels({
     .map(function(key) {
       let label = labels[key];
       let { annotationCenterAngle, annotationCenterRadius } = label;
-      if (!label.text) {
-        console.log("label:", label);
-      }
       return {
         ...label,
         ...getHeightAndWidthOfLabel(
@@ -346,61 +343,64 @@ const DrawGroupInnerLabel = pureNoFunc(
 );
 function noop() {}
 
-const DrawGroupedLabels = connect((state, { editorName }) => {
-  let editorState = state.VectorEditor[editorName] || {};
-  let hoveredId = editorState.hoveredAnnotation;
-  return {
+const DrawGroupedLabels = pureNoFunc(
+  connect((state, { editorName }) => {
+    let editorState = state.VectorEditor[editorName] || {};
+    let hoveredId = editorState.hoveredAnnotation;
+    return {
+      hoveredId
+    };
+  })(function DrawGroupedLabels({
+    groupedLabels,
+    circularViewWidthVsHeightRatio,
+    fontWidth,
+    fontHeight,
+    condenseOverflowingXLabels,
+    outerRadius,
     hoveredId
-  };
-})(function({
-  groupedLabels,
-  circularViewWidthVsHeightRatio,
-  fontWidth,
-  fontHeight,
-  condenseOverflowingXLabels,
-  outerRadius,
-  hoveredId
-}) {
-  const hoveredIndex = groupedLabels.findIndex(
-    l =>
-      l.id === hoveredId || l.labelAndSublabels.some(l2 => l2.id === hoveredId)
-  );
-  if (hoveredIndex !== -1) {
-    const hoveredLabel = groupedLabels[hoveredIndex];
-    groupedLabels.splice(hoveredIndex, 1);
-    groupedLabels.push(hoveredLabel);
-  }
-
-  return groupedLabels.map(function(label, index) {
-    let { labelAndSublabels } = label;
-    let labelIds = {};
-    labelAndSublabels.forEach(label => {
-      labelIds[label.id] = true;
-    });
-    let multipleLabels = labelAndSublabels.length > 1;
-    return (
-      <DrawLabelGroup
-        key={label.id}
-        id={labelIds}
-        {...{
-          label,
-          isLabelGroup: true,
-          passHoveredId: true,
-          // ...rest,
-          className: "DrawLabelGroup",
-          multipleLabels,
-          labelAndSublabels,
-          labelIds,
-          circularViewWidthVsHeightRatio,
-          fontWidth,
-          fontHeight,
-          condenseOverflowingXLabels,
-          outerRadius
-        }}
-      />
+  }) {
+    const hoveredIndex = groupedLabels.findIndex(
+      l =>
+        l.id === hoveredId ||
+        l.labelAndSublabels.some(l2 => l2.id === hoveredId)
     );
-  });
-});
+    if (hoveredIndex !== -1) {
+      const hoveredLabel = groupedLabels[hoveredIndex];
+      groupedLabels.splice(hoveredIndex, 1);
+      groupedLabels.push(hoveredLabel);
+    }
+
+    return groupedLabels.map(function(label, index) {
+      let { labelAndSublabels } = label;
+      let labelIds = {};
+      labelAndSublabels.forEach(label => {
+        labelIds[label.id] = true;
+      });
+      let multipleLabels = labelAndSublabels.length > 1;
+      return (
+        <DrawLabelGroup
+          key={label.id}
+          id={labelIds}
+          {...{
+            label,
+            isLabelGroup: true,
+            passHoveredId: true,
+            // ...rest,
+            className: "DrawLabelGroup",
+            multipleLabels,
+            labelAndSublabels,
+            labelIds,
+            circularViewWidthVsHeightRatio,
+            fontWidth,
+            fontHeight,
+            condenseOverflowingXLabels,
+            outerRadius
+          }}
+        />
+      );
+    });
+  })
+);
 function cancelFn(e) {
   e.stopPropagation();
 }

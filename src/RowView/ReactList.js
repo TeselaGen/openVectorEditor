@@ -144,7 +144,7 @@ export default class ReactList extends Component {
     if (this.state.from === b.from + 1) {
       this.rowToFixScroll = { row: b.from, cache: this.cache[b.from] };
     }
-
+    console.log("settin state");
     this.setState(b, cb);
   }
 
