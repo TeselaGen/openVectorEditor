@@ -761,7 +761,9 @@ export class Editor extends React.Component {
                                       ? "2px solid #106ba3"
                                       : "none",
                                   color:
-                                    id === activePanelId ? "#106ba3" : "black",
+                                    id === activePanelId
+                                      ? "#106ba3"
+                                      : "undefined",
                                   marginLeft: 13,
                                   marginRight: 13
                                 }}

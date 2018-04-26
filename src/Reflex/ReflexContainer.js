@@ -249,7 +249,6 @@ class ReflexContainer extends React.Component {
       this.elements = this.dispatchOffset(idx, availableOffset);
 
       this.adjustFlex(this.elements);
-      console.log("this.state:", JSON.stringify(this.state, null, 4));
       this.setPartialState(this.state).then(() => {
         this.emitElementsEvent(this.elements, "onResize");
       });
