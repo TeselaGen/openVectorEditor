@@ -13,6 +13,7 @@ export const addPanelIfItDoesntAlreadyExist = createAction(
   "addPanelIfItDoesntAlreadyExist"
 );
 export const togglePanelFullScreen = createAction("togglePanelFullScreen");
+export const collapsePanel = createAction("collapsePanel");
 export const closePanel = createAction("closePanel");
 export const _collapseSplitScreen = createAction("_collapseSplitScreen");
 export const setPanelAsActive = createAction("setPanelAsActive");
@@ -180,38 +181,32 @@ export default createReducer(
           };
         });
       });
+    },
+    [collapsePanel]: (state, panelToCloseId) => {
+      return [
+        flatMap(state, panelGroup => {
+          return panelGroup;
+        }).map(panel => {
+          if (panel.id === panelToCloseId) {
+            return {
+              ...panel,
+              active: false
+            };
+          }
+          return panel;
+        })
+      ];
     }
   },
   [
     [
-      // {
-      //   id: "alignmentRun1",
-      //   type: "alignment",
-      //   name: "Test Alignment ",
-      //   active: true
-      //   // fullScreen: true
-      // },
-      // {
-      //   id: "jbeiAlignment1",
-      //   type: "alignment",
-      //   name: "Jbei Alignment p1243124",
-      //   active: true
-      //   // fullScreen: true
-      // },
       {
         id: "sequence",
         name: "Sequence Map",
         active: true
-        // fullScreen: true
       }
     ],
     [
-      // {
-      //   id: "digestTool",
-      //   name: "New Digest",
-      //   active: true,
-      //   canClose: true
-      // },
       {
         id: "circular",
         name: "Plasmid",

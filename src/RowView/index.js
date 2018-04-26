@@ -112,8 +112,7 @@ export class RowView extends React.Component {
   };
 
   // componentDidMount() {
-  //   debugger
-  //   this.updateScrollPosition({},this.props)
+  //   this.mounted=true
   // }
   componentWillReceiveProps(props) {
     //we haven't yet called this function yet, so to make sure it jumps to the selected bps we just set a variable on the class
@@ -194,7 +193,9 @@ export class RowView extends React.Component {
             this.InfiniteScroller.scrollTo(rowToScrollTo);
             return;
           }
-          el.scrollIntoView && el.scrollIntoView();
+          //tnr: we can't use the following because it messes up the scroll of the Reflex panels
+          //causing the tabs to not be shown
+          // el.scrollIntoView && el.scrollIntoView();
         }, 1);
         //   Math.max(rowToScrollTo + (rowToScrollTo < start ? 2 : -2), 0)
         // );
@@ -350,6 +351,7 @@ export class RowView extends React.Component {
           <ReactList
             ref={c => {
               this.InfiniteScroller = c;
+
               !this.calledUpdateScrollOnce && //trigger the scroll here as well because now we actually have the infinite scroller component accessible
                 this.updateScrollPosition({}, this.props);
             }}

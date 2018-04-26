@@ -13,11 +13,7 @@ import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
 
-import {
-  ReflexContainer,
-  ReflexSplitter,
-  ReflexElement
-} from "tg-react-reflex";
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
 import {
@@ -646,7 +642,7 @@ export class Editor extends React.Component {
       if (index > 0) {
         toReturn.push(
           <ReflexSplitter
-            key={index + "splitter"}
+            key={activePanelId + "splitter"}
             style={{
               // height: height + 38,
               zIndex: 1
@@ -657,13 +653,14 @@ export class Editor extends React.Component {
       }
       toReturn.push(
         <ReflexElement
-          key={index}
-          minSize="100"
+          key={activePanelId}
+          activePanelId={activePanelId}
+          minSize="200"
           propagateDimensions={true}
           resizeHeight={previewMode && previewModeFullscreen}
           renderOnResizeRate={50}
           renderOnResize={true}
-          className="left-panel ve-panel"
+          className="ve-panel"
         >
           {isFullScreen ? (
             <div
@@ -709,7 +706,7 @@ export class Editor extends React.Component {
 
           {[
             <Droppable
-              key={"asdfasdf"}
+              key={"droppableKey"}
               direction="horizontal"
               droppableId={index.toString()}
             >
@@ -949,7 +946,12 @@ export class Editor extends React.Component {
               onDragStart={this.onTabDragStart}
               onDragEnd={this.onTabDragEnd}
             >
-              <ReflexContainer /* style={{}} */ orientation="vertical">
+              <ReflexContainer
+                onPanelCollapse={({ activePanelId }) => {
+                  this.props.collapsePanel(activePanelId);
+                }}
+                /* style={{}} */ orientation="vertical"
+              >
                 {panels}
               </ReflexContainer>
             </DragDropContext>
