@@ -9,6 +9,9 @@ export default class ToolbarItem extends React.Component {
     const { index, toggleOpen } = this.props;
     toggleOpen(index);
   };
+  // componentWillUnmount() {
+  //   console.log('unmountin')
+  // }
 
   render() {
     const { overrides = {} } = this.props;
@@ -16,7 +19,7 @@ export default class ToolbarItem extends React.Component {
       isOpen,
       index,
       Icon,
-      dynamicIcon,
+      // dynamicIcon,
       onIconClick = noop,
       tooltip = "",
       tooltipToggled,

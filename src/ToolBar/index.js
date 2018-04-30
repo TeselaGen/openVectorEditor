@@ -1,10 +1,13 @@
 import React from "react";
-import { onlyUpdateForKeys, withProps, withHandlers } from "recompose";
+import { withProps, withHandlers, onlyUpdateForKeys } from "recompose";
+
 import { compose } from "redux";
+import perfHoc from "perf-hoc";
 
 // import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
 import withEditorProps from "../withEditorProps";
+// import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
 import "./style.css";
 
 import downloadTool from "./downloadTool";
@@ -48,12 +51,13 @@ const allTools = {
 
 // import get from 'lodash/get'
 
-export class ToolBar extends React.Component {
+export class ToolBar extends React.PureComponent {
   state = {
     openItem: -1
   };
 
   toggleOpen = index => {
+    console.log("toggleOpen");
     if (this.state.openItem === index) {
       this.setState({
         openItem: -1
@@ -66,6 +70,8 @@ export class ToolBar extends React.Component {
   };
 
   render() {
+    console.log("renderin");
+    console.log("this.state.openItem:", this.state.openItem);
     const {
       modifyTools,
       toolList = [
@@ -152,6 +158,7 @@ export class ToolBar extends React.Component {
 }
 
 export default withEditorProps(
-  onlyUpdateForKeys("modifyTools", "toolList")(ToolBar)
+  //only re-render the toolbar for these keys (important because we don't want to re-initialize all the toolbar items unecessarily):
+  //also Toolbar must be a PureComponent so as not to re-render unecessarily
+  onlyUpdateForKeys(["modifyTools", "toolList"])(ToolBar)
 );
-// export default withEditorProps(ToolBar);

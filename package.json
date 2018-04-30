@@ -103,6 +103,7 @@
     "moment": "2.22.1",
     "nodemon": "^1.12.1",
     "nwb": "^0.21.5",
+    "perf-hoc": "^2.0.1",
     "prettier": "^1.8.2",
     "react": "^16.3.2",
     "react-addons-perf": "^15.4.2",
