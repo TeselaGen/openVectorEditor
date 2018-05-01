@@ -1,8 +1,6 @@
 import React from "react";
 import { withProps, withHandlers, onlyUpdateForKeys } from "recompose";
-
 import { compose } from "redux";
-import perfHoc from "perf-hoc";
 
 // import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
