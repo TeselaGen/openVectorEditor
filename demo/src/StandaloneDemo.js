@@ -63,6 +63,7 @@ export default class StandaloneDemo extends React.Component {
           clipboardData.setData("text/plain", copiedSequenceData.sequence);
           clipboardData.setData(
             "application/json",
+            //for example here you could change teselagen parts into jbei parts
             JSON.stringify(copiedSequenceData)
           );
           event.preventDefault();

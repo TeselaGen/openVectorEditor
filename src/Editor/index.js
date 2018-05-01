@@ -371,17 +371,19 @@ export class Editor extends React.Component {
         />
         {/* TNR: these are here just to be added to the blueprint generated hotkey dialog but their actual handlers live elsewhere */}
         <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
+          //these should be commented out because they'll prevent cut from working!
+          // allowInInput
+          // preventDefault
+          // stopPropagation
           label="Cut"
           global
           combo="mod+x"
         />
         <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
+          //these should be commented out because they'll prevent copy from working!
+          // allowInInput
+          // preventDefault
+          // stopPropagation
           label="Copy"
           global
           combo="mod+c"

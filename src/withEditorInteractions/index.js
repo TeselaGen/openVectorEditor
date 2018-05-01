@@ -254,12 +254,26 @@ function VectorInteractionHOC(Component /* options */) {
 
     handleCopy = e => {
       window.toastr.success("Selection Copied");
-      const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
+      const {
+        onCopy = () => {},
+        sequenceData,
+        selectionLayer,
+        copyOptions
+      } = this.props;
       onCopy(
         e,
         tidyUpSequenceData(
           this.sequenceDataToCopy ||
-            getSequenceDataBetweenRange(sequenceData, selectionLayer),
+            getSequenceDataBetweenRange(sequenceData, selectionLayer, {
+              excludePartial: {
+                features: !copyOptions.partialFeatures,
+                parts: !copyOptions.partialParts
+              },
+              exclude: {
+                features: !copyOptions.features,
+                parts: !copyOptions.parts
+              }
+            }),
           { annotationsAsObjects: true }
         ),
         this.props
@@ -400,7 +414,7 @@ function VectorInteractionHOC(Component /* options */) {
         : [
             {
               text: "View AA Frames",
-              innerJsx: map(frameTranslations, (unused, frame) => {
+              submenu: map(frameTranslations, (unused, frame) => {
                 return (
                   <FrameTranslationMenuItem
                     key={frame}
@@ -593,7 +607,7 @@ function VectorInteractionHOC(Component /* options */) {
             },
             {
               text: "Copy Options",
-              innerJsx: [
+              submenu: [
                 <MenuItem disabled key={"aghah"} text={"Include:"} />
               ].concat(
                 map(copyOptions, (unused, copyOption) => {

@@ -26,7 +26,6 @@ class Clipboard extends React.Component {
 
   handleKeyDown = e => {
     let metaKeyIsDown = e.ctrlKey || e.metaKey;
-
     if (!metaKeyIsDown) {
       return;
     }
@@ -60,6 +59,7 @@ class Clipboard extends React.Component {
         style={style}
         type="text"
         value={value}
+        onChange={noop}
         onPaste={this.props.onPaste}
         onCopy={this.props.onCopy}
       />
@@ -68,3 +68,4 @@ class Clipboard extends React.Component {
 }
 
 export default Clipboard;
+const noop = () => {};
