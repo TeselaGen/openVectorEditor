@@ -17,9 +17,13 @@ export default {
             reader.readAsText(file, "UTF-8");
             reader.onload = function(evt: Object) {
               const content: string = evt.target.result;
-              anyToJson(content, result => {
-                updateSequenceData(result[0].parsedSequence);
-              });
+              anyToJson(
+                content,
+                result => {
+                  updateSequenceData(result[0].parsedSequence);
+                },
+                { acceptParts: true }
+              );
             };
             reader.onerror = function() {
               window.toastr.error("Failure reading file.");

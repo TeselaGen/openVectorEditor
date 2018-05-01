@@ -112,7 +112,12 @@ export class AddOrEditFeatureDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertFeature(convertRangeTo0Based(data));
+              upsertFeature(
+                convertRangeTo0Based({
+                  ...data,
+                  color: featureColors[data.type]
+                })
+              );
               hideModal();
             })}
             intent={Intent.PRIMARY}

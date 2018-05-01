@@ -17,7 +17,7 @@ export default class DropHandler extends React.Component {
         result => {
           updateSequenceData(result[0].parsedSequence);
         },
-        { fileName: file.name }
+        { fileName: file.name, acceptParts: true }
       );
     };
     reader.onerror = function() {

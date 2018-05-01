@@ -1531,9 +1531,9 @@ binary-extensions@^1.0.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
 
-bio-parsers@4.4.7:
-  version "4.4.7"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.4.7.tgz#aa8330e9b3b38d2b6f2eefc7d8cbebbfd738d541"
+bio-parsers@4.4.8:
+  version "4.4.8"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.4.8.tgz#8fa913c2e8dfd7936360c0efd37d68807523f155"
   dependencies:
     flatmap "0.0.3"
     lodash "^4.13.1"

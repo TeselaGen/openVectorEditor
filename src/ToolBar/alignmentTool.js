@@ -172,7 +172,8 @@ class AlignmentTool extends React.Component {
     const { array } = this.props;
     flatMap(files, async file => {
       const results = await anyToJson(file.originalFileObj, {
-        fileName: file.name
+        fileName: file.name,
+        acceptParts: true
       });
       return results.forEach(result => {
         if (result.success) {
