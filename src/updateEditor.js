@@ -5,11 +5,9 @@ export default function updateEditor(store, editorName, initialValues = {}) {
   const { sequenceData = {}, ...rest } = initialValues;
   const initialValuesToUse = {
     ...rest,
-    sequenceDataHistory: {
-      past: [],
-      present: tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-      future: []
-    }
+    sequenceData: tidyUpSequenceData(sequenceData, {
+      annotationsAsObjects: true
+    })
   };
 
   store.dispatch({

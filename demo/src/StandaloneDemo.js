@@ -28,6 +28,7 @@ export default class StandaloneDemo extends React.Component {
     setTimeout(() => {
       editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
+        shouldAutosave: true,
         rightClickOverrides: {
           selectionLayerRightClicked: (items, { annotation }, props) => {
             return [
@@ -144,7 +145,7 @@ export default class StandaloneDemo extends React.Component {
           [
             {
               // fullScreen: true,
-              active: true,
+              // active: true,
               id: "circular",
               name: "Plasmid",
             },
@@ -152,8 +153,8 @@ export default class StandaloneDemo extends React.Component {
               id: "jbeiAlignment1",
               type: "alignment",
               name: "Jbei Alignment p1243124",
-              // active: true
-              // fullScreen: true
+              active: true,
+              fullScreen: true
             },
             {
               id: "pairwiseRun1",

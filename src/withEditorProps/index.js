@@ -244,13 +244,13 @@ function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
   let overrides = {};
   metaActions = {
     undo: () => ({
-      ...UndoActionCreators.undo(),
+      type: "VE_UNDO",
       meta: {
         editorName
       }
     }),
     redo: () => ({
-      ...UndoActionCreators.redo(),
+      type: "VE_REDO",
       meta: {
         editorName
       }

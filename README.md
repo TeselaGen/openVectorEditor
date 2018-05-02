@@ -35,6 +35,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
   - [Alignment Track Data Model](#alignment-track-data-model)
     - [Chromatogram Data](#chromatogram-data)
+  - [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -114,10 +115,10 @@ These props consist of hooks and editor config options that can be passed like s
 ```js
 {
 
-	
-	onSave: function(event, copiedSequenceData, editorState, onSuccessCallback) {
+	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
+	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
 		console.log("event:", event);
-		console.log("sequenceData:", copiedSequenceData);
+		console.log("sequenceData:", sequenceDataToSave);
 		console.log("editorState:", editorState);
 		// To disable the save button after successful saving
 		// either call the onSuccessCallback or return a successful promise :)
@@ -358,6 +359,9 @@ Note: `alignmentData.sequence` is assumed to be the same length for EVERY track 
       "qualNums": [],
     },
 ```
+
+## Implementing Autosave functionality
+
 
 # Development: 
 ## Prerequisites

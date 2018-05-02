@@ -44,26 +44,32 @@ export class AlignmentView extends React.Component {
     const toReturn = (width - nameDivWidth) / charWidthInLinearView;
     return toReturn || 0;
   };
-  // debouncedSetPercentScroll = debounce((scrollPercentage) => {
-  //   console.log('scrollPercentage:',scrollPercentage)
-  //   this.setState({ percentScrolled: scrollPercentage });
-  // }, 1000)
   handleScroll = () => {
-    // console.log('this.alignmentHolder.scrollLeft:',this.alignmentHolder.scrollLeft)
-    // this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
-
+    if (this.blockScroll) {
+      //we have to block the scroll sometimes because when adjusting the minimap
+      return;
+    }
     const scrollPercentage =
       this.alignmentHolder.scrollLeft /
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
-    this.easyStore.percentScrolled = scrollPercentage;
-
-    // this.props.updateMinimapScrollPercentage(scrollPercentage);
-    // this.setState({ percentScrolled: scrollPercentage })
-    // this.debouncedSetPercentScroll(scrollPercentage)
+    this.easyStore.percentScrolled = scrollPercentage || 0;
   };
+  onMinimapSizeAdjust = newSliderSize => {
+    const { dimensions } = this.props;
+    const percentageOfSpace = newSliderSize / (dimensions.width - nameDivWidth);
+    const seqLength = this.getSequenceLength();
+    const numBpsInView = seqLength * percentageOfSpace;
+    const newCharWidth = (dimensions.width - nameDivWidth) / numBpsInView;
+    this.blockScroll = true;
+    setTimeout(() => {
+      this.blockScroll = false;
+    }, 0);
+    this.setState({ charWidthInLinearView: newCharWidth });
+  };
+
   onMinimapScroll = scrollPercentage => {
     this.alignmentHolder.scrollLeft =
-      scrollPercentage *
+      Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
   render() {
@@ -208,7 +214,6 @@ export class AlignmentView extends React.Component {
                       charWidth: charWidthInLinearView,
                       ignoreGapsOnHighlight: true,
                       // editorDragged: (vals) => {
-                      //   console.log('vals:',vals)
                       // },
                       ...(linearViewOptions &&
                         (isFunction(linearViewOptions)
@@ -244,6 +249,13 @@ export class AlignmentView extends React.Component {
       );
     };
     const [firstTrack, ...otherTracks] = alignmentTracks;
+    const totalWidthOfMinimap = dimensions.width - nameDivWidth;
+    const totalWidthInAlignmentView = 14 * this.getSequenceLength();
+    const minSliderSize = Math.min(
+      totalWidthOfMinimap * (totalWidthOfMinimap / totalWidthInAlignmentView),
+      totalWidthOfMinimap
+    );
+
     return (
       <div
         style={{
@@ -318,7 +330,7 @@ export class AlignmentView extends React.Component {
                 className={"alignment-zoom-slider"}
                 labelRenderer={false}
                 stepSize={0.01}
-                initialValue={10}
+                initialValue={charWidthInLinearView}
                 max={14}
                 min={this.getMinCharWidth()}
               />
@@ -332,6 +344,8 @@ export class AlignmentView extends React.Component {
                 dimensions: {
                   width: Math.max(dimensions.width - nameDivWidth, 10) || 10
                 },
+                onSizeAdjust: this.onMinimapSizeAdjust,
+                minSliderSize,
                 laneHeight: minimapLaneHeight,
                 laneSpacing: minimapLaneSpacing,
                 easyStore: this.easyStore,
@@ -421,12 +435,18 @@ export default compose(
 
 class UncontrolledSlider extends React.Component {
   state = { value: 0 };
-  componentWillMount() {
-    const { initialValue } = this.props;
-    this.setState({
-      value: initialValue
-    });
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.oldInitialValue !== nextProps.initialValue) {
+      return {
+        value: nextProps.initialValue, //set the state value if a new initial value comes in!
+        oldInitialValue: nextProps.initialValue
+      };
+    } else {
+      return null;
+    }
   }
+
   render() {
     const { value } = this.state;
     const { initialValue, ...rest } = this.props;

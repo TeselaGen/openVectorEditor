@@ -128,6 +128,17 @@ export class Editor extends React.Component {
     this.setState({ randomRerenderTrigger: Math.random() });
   }, 100);
 
+  componentDidUpdate(prevProps) {
+    //autosave if necessary!
+    if (
+      this.props.shouldAutosave &&
+      prevProps.sequenceData &&
+      this.props.sequenceData.stateTrackingId !==
+        prevProps.sequenceData.stateTrackingId
+    ) {
+      this.props.handleSave();
+    }
+  }
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
   }
