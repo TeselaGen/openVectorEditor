@@ -117,9 +117,9 @@ These props consist of hooks and editor config options that can be passed like s
 
 	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
-		console.log("event:", event);
-		console.log("sequenceData:", sequenceDataToSave);
-		console.log("editorState:", editorState);
+		console.info("event:", event);
+		console.info("sequenceData:", sequenceDataToSave);
+		console.info("editorState:", editorState);
 		// To disable the save button after successful saving
 		// either call the onSuccessCallback or return a successful promise :)
 		onSuccessCallback()
@@ -128,9 +128,9 @@ These props consist of hooks and editor config options that can be passed like s
 	},
 	onCopy: function(event, copiedSequenceData, editorState) {
 		//the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-		console.log("event:", event);
-		console.log("sequenceData:", copiedSequenceData);
-		console.log("editorState:", editorState);
+		console.info("event:", event);
+		console.info("sequenceData:", copiedSequenceData);
+		console.info("editorState:", editorState);
 		const clipboardData = event.clipboardData;
 		clipboardData.setData("text/plain", copiedSequenceData.sequence);
 		clipboardData.setData(
@@ -166,7 +166,7 @@ These props consist of hooks and editor config options that can be passed like s
 			return [...items, { 
 				//props here get passed directly to blueprintjs MenuItems
 				text: "Create Part",
-				onClick: () => console.log('hey!≈')
+				onClick: () => console.info('hey!≈')
 			}]
 		}
 	},

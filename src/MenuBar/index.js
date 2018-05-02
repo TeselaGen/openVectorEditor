@@ -50,19 +50,6 @@ export class MenuBar extends React.Component {
         <Popover
           content={
             <Menu>
-              {/* tnr comment the following back in once the momentjs issue is fixed https://github.com/palantir/blueprint/issues/1847 */}
-              {/* <Suggest
-                autoFocus
-                items={["yo", "my", "dude"]}
-                onItemSelect={(one) => {
-                  console.log('chose this one:', one)
-                }}
-                onChange={yup => {
-                  console.log('hup:')
-                }}
-                leftIcon={"search"}
-              /> */}
-
               <MenuItem />
             </Menu>
           }

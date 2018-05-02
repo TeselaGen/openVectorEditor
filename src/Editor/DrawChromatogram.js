@@ -3,7 +3,7 @@ import RowItem from "../RowItem";
 // import ab1Parsed from '../ToolBar/ab1Parsed.json'
 // import ab1ParsedWithQualScores from '../ToolBar/ab1ParsedWithQualScores.json'
 // import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
-import ab1ParsedGFPuv58 from '../ToolBar/ab1ParsedGFPuv58.json'
+import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
 
 export default class DrawChromatogram extends React.Component {
   render() {
@@ -31,5 +31,3 @@ export default class DrawChromatogram extends React.Component {
     );
   }
 }
-
-// console.log('ab1Parsed:',ab1Parsed)

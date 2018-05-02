@@ -326,6 +326,7 @@ export class AlignmentView extends React.Component {
               <UncontrolledSlider
                 onRelease={val => {
                   this.setState({ charWidthInLinearView: val });
+                  this.onMinimapScroll(this.easyStore.percentScrolled);
                 }}
                 className={"alignment-zoom-slider"}
                 labelRenderer={false}

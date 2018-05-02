@@ -93,7 +93,6 @@ class Chromatogram extends React.Component {
         <div>
           <canvas
             ref={n => {
-              // console.log('n:',n)
               if (n) this.canvasRef = n;
             }}
             height="100"

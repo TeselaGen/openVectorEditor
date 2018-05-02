@@ -63,7 +63,6 @@
 //     // tnr: we should maybe keep this implemented..
 //     if (this.adjustmentScroll) {
 //       // adjustment scrolls are called in componentDidUpdate where we manually set the scrollTop (which inadvertantly triggers a scroll)
-//       // console.log('adjustin')
 //       this.adjustmentScroll = false;
 //       return;
 //     }
@@ -72,11 +71,6 @@
 //     const visibleRowsContainer = this.visibleRowsContainer
 //     // const currentAverageElementHeight = (visibleRowsContainer.getBoundingClientRect().height / this.state.visibleRows.length);
 //     // this.oldRowStart = this.rowStart;
-//     // console.log('infiniteContainer.getBoundingClientRect().top:',infiniteContainer.getBoundingClientRect().top)
-//     // console.log('visibleRowsContainer.getBoundingClientRect().top:',visibleRowsContainer.getBoundingClientRect().top)
-
-//     // console.log('infiniteContainer.getBoundingClientRect().bottom:',infiniteContainer.getBoundingClientRect().bottom)
-//     // console.log('visibleRowsContainer.getBoundingClientRect().bottom:',visibleRowsContainer.getBoundingClientRect().bottom)
 
 //     const distanceFromTopOfVisibleRows =
 //       infiniteContainer.getBoundingClientRect().top -
@@ -143,14 +137,12 @@
 //     //       if (soonToBeRemovedRowElement) {
 //     //         const height = soonToBeRemovedRowElement.getBoundingClientRect()
 //     //           .height;
-//     //         // console.log('height', height);
 //     //         this.soonToBeRemovedRowElementHeights +=
 //     //           this.props.averageElementHeight - height;
 //     //         // this.soonToBeRemovedRowElementHeights.push(soonToBeRemovedRowElement.getBoundingClientRect().height);
 //     //       }
 //     //     }
 //     //   } else if (rowStartDifference > 0) {
-//     //     // console.log('rowStartDifference', rowStartDifference);
 //     //     this.numberOfRowsAddedToTop = rowStartDifference;
 //     //   }
 //     // }
@@ -255,8 +247,6 @@
 //     //   adjustInfiniteContainerByThisAmount =
 //     //     visibleRowsContainer.getBoundingClientRect().top -
 //     //     infiniteContainer.getBoundingClientRect().top;
-//     //   // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountTop: '+adjustInfiniteContainerByThisAmount)
-//     //   console.log('adjustInfiniteContainerByThisAmount1 :',adjustInfiniteContainerByThisAmount)
 //     //   // this.adjustmentScroll = true;
 //     //   // infiniteContainer.scrollTop =
 //     //   //   infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
@@ -268,8 +258,6 @@
 //     //   adjustInfiniteContainerByThisAmount =
 //     //     visibleRowsContainer.getBoundingClientRect().bottom -
 //     //     infiniteContainer.getBoundingClientRect().bottom;
-//     //     console.log('adjustInfiniteContainerByThisAmount2 :',adjustInfiniteContainerByThisAmount)
-//     //   // console.log('!@#!@#!@#!@#!@#!@#!@#adjustInfiniteContainerByThisAmountBottom: '+adjustInfiniteContainerByThisAmount)
 //     //   this.adjustmentScroll = true;
 //     //   infiniteContainer.scrollTop =
 //     //     infiniteContainer.scrollTop + adjustInfiniteContainerByThisAmount;
@@ -305,28 +293,24 @@
 //     this.componentDidUpdate();
 //   }
 //   addRowBelow= () => {
-//     console.log('addRowBelow')
 //     const {visibleRows} = this.state
 //     this.setState({
 //       visibleRows: [...visibleRows, visibleRows[visibleRows.length-1] + 1]
 //     });
 //   }
 //   addRowAbove= () => {
-//     console.log('addRowAbove')
 //     const {visibleRows} = this.state
 //     this.setState({
 //       visibleRows: [visibleRows[0] - 1, ...visibleRows]
 //     });
 //   }
 //   removeRowAbove= () => {
-//     console.log('removeRowAbove')
 //     const {visibleRows} = this.state
 //     this.setState({
 //       visibleRows: visibleRows.slice(1)
 //     });
 //   }
 //   removeRowBelow= () => {
-//     console.log('removeRowBelow')
 //     const {visibleRows} = this.state
 //     this.setState({
 //       visibleRows: visibleRows.slice(0, -1)
@@ -344,7 +328,6 @@
 //     } else {
 //       this.rowEnd = rowStart + newNumberOfRowsToDisplay - 1;
 //     }
-//     // console.log('this.rowEnd: ' + this.rowEnd);
 //     // var visibleRows = this.state.visibleRowsDataData.slice(rowStart, this.rowEnd + 1);
 //     // rowData.slice(rowStart, this.rowEnd + 1);
 //     // setPreloadRowStart(rowStart);
@@ -360,7 +343,6 @@
 //     // if (newVisibleRows.length && deepEqual(newVisibleRows, this.state.visibleRows)) {
 //     //   return
 //     // }
-//     // console.log("newVisibleRows:", newVisibleRows);
 //     // var newVisibleRows = this.rowStart, this.rowEnd + 1);
 //     this.setState({
 //       visibleRows: newVisibleRows
@@ -387,7 +369,6 @@
 //             key={i}
 //             ref={c => {
 //               if (!c) return
-//               console.log('hit')
 //               this.heightCache[i] = c.getBoundingClientRect().height;
 //             }}
 //           >
@@ -430,7 +411,6 @@
 
 //   render() {
 //     // const visibleRows =
-//     // console.log('visibleRows:',visibleRows)
 //     const rowItems = this.getRowItems()
 
 //     const rowHeight = this.currentAverageElementHeight
@@ -439,7 +419,6 @@
 
 //     // this.topSpacerHeight = this.rowStart * rowHeight;
 //     const topSpacerHeight = this.getSpaceBefore(this.state.visibleRows[0])
-//     console.log('topSpacerHeight:',topSpacerHeight)
 //     const bottomSpacerHeight = (this.props.length - 1 - this.rowEnd) * rowHeight;
 
 //     const infiniteContainerStyle = {

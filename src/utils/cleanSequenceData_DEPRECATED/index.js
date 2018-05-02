@@ -76,7 +76,7 @@ function cleanSequenceData(seqData, options = {}) {
     sequenceData[annotationType] = newAnnotations;
   });
   if (options.logMessages) {
-    console.log(response.messages);
+    console.info(response.messages);
   }
 
   return sequenceData;

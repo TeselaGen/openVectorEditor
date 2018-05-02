@@ -102,8 +102,6 @@ export class Editor extends React.Component {
     previewModeFullscreen: false
   };
   // componentWillMount(){
-  //   console.log('this.props:',this.props)
-
   //   // lastSavedId
   //   // window.onbeforeunload = function () {
   //   //     return "You may not want to leave the editor if you have any unsaved work.";
@@ -922,7 +920,6 @@ export class Editor extends React.Component {
           {/* <button
             onClick={() => {
               document.body.addEventListener("keydown", e => {
-                console.log("e:", e);
               });
               let keyboardEvent = document.createEvent("KeyboardEvent");
               let initMethod =

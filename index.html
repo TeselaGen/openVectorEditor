@@ -15,14 +15,14 @@
         
     const editor = window.createVectorEditor(document.querySelector("#root"), {
         onSave: function(event, sequenceData, editorState) {
-          console.log("event:", event);
-          console.log("sequenceData:", sequenceData);
-          console.log("editorState:", editorState);
+          console.info("event:", event);
+          console.info("sequenceData:", sequenceData);
+          console.info("editorState:", editorState);
         },
         onCopy: function(event, sequenceData, editorState) {
-          console.log("event:", event);
-          console.log("sequenceData:", sequenceData);
-          console.log("editorState:", editorState);
+          console.info("event:", event);
+          console.info("sequenceData:", sequenceData);
+          console.info("editorState:", editorState);
           const clipboardData  = event.clipboardData || window.clipboardData || event.originalEvent.clipboardData
           clipboardData.setData('text/plain', JSON.stringify(sequenceData.sequence));
           clipboardData.setData('application/json', JSON.stringify(sequenceData));

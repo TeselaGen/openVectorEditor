@@ -126,7 +126,7 @@ const YellowScrollHandle = view(
         scrollHandleWidth,
         width,
         easyStore,
-
+        onMinimapScroll,
         minSliderSize,
         onSizeAdjust
       } = this.props;
@@ -172,7 +172,10 @@ const YellowScrollHandle = view(
                   1,
                   (xScroll + deltaX) / (width - newSliderSize)
                 );
+                onMinimapScroll(newScrollPercent);
                 easyStore.percentScrolled = newScrollPercent;
+                // setTimeout(() => {
+                // })
               }}
             >
               <div
@@ -205,13 +208,10 @@ const YellowScrollHandle = view(
               }}
             />
             {/* right hand side drag handle */}
-
             <Draggable
               bounds={{
                 right: minSliderSize + width - xScroll,
                 left: minSliderSize
-                // right: width -xScroll,
-                // left: minSliderSize - scrollHandleWidth
               }}
               zIndex={105}
               position={{ x: scrollHandleWidth, y: 0 }}
@@ -223,6 +223,12 @@ const YellowScrollHandle = view(
                 const deltaX = this.x - x;
                 const newSliderSize = scrollHandleWidth - deltaX;
                 onSizeAdjust(newSliderSize);
+                //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
+                const newScrollPercent = xScroll / (width - newSliderSize);
+                onMinimapScroll(newScrollPercent);
+                easyStore.percentScrolled = newScrollPercent;
+                // setTimeout(() => {
+                // })
               }}
             >
               <div

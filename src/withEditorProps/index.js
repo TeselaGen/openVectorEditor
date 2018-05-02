@@ -176,8 +176,6 @@ function mapStateToProps(state, ownProps) {
   //     }
   //   };
   // }
-  // console.log('toReturn:',toReturn)
-  // console.log('annotationToAdd:',annotationToAdd)
   return {
     ...toReturn,
     selectedCutsites,

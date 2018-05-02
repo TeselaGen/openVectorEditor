@@ -18,7 +18,6 @@ export class DigestTool extends React.Component {
       onDigestSave
     } = this.props;
     const { selectedTab } = this.state;
-    // console.log("rest:", rest);
     return (
       <div style={{ height, overflow: "auto", padding: 10 }}>
         {onDigestSave && (
