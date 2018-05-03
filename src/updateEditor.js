@@ -5,7 +5,7 @@ export default function updateEditor(
   store,
   editorName,
   initialValues = {},
-  ...extraMeta
+  extraMeta = {}
 ) {
   const { sequenceData = {}, ...rest } = initialValues;
   const initialValuesToUse = {
