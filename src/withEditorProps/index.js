@@ -55,7 +55,11 @@ export default compose(
 );
 
 function mapStateToProps(state, ownProps) {
-  const { editorName, sequenceData: sequenceDataFromProps } = ownProps;
+  const {
+    editorName,
+    sequenceData: sequenceDataFromProps,
+    allowSeqDataOverride
+  } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
   let editorState = VectorEditor[editorName];
@@ -93,7 +97,7 @@ function mapStateToProps(state, ownProps) {
       }
     })
   };
-  if (sequenceDataFromProps) {
+  if (sequenceDataFromProps && allowSeqDataOverride) {
     //return early here because we don't want to override the sequenceData being passed in
     //this is a little hacky but allows us to track selectionLayer/caretIndex using redux but on a sequence that isn't being stored alongside that info
     return toReturn;
@@ -130,7 +134,6 @@ function mapStateToProps(state, ownProps) {
   this.cutsites = cutsites;
   this.orfs = orfs;
   this.translations = translations;
-
   let sequenceDataToUse = combineSequenceData(
     sequenceData,
     cutsites,
