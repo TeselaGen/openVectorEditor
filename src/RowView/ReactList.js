@@ -93,9 +93,13 @@ export default class ReactList extends Component {
     this.updateCounter = 0;
   }
 
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps(nextProps) {
     let { from, size, itemsPerRow } = this.state;
-    this.maybeSetState(this.constrain(from, size, itemsPerRow, next), NOOP);
+    if (nextProps.clearCache) this.cache = {};
+    this.maybeSetState(
+      this.constrain(from, size, itemsPerRow, nextProps),
+      NOOP
+    );
   }
 
   componentDidMount() {
@@ -170,6 +174,7 @@ export default class ReactList extends Component {
     const { axis, scrollParentGetter } = this.props;
     if (scrollParentGetter) return scrollParentGetter();
     let el = this.getEl();
+    if (!el) return window;
     const overflowKey = OVERFLOW_KEYS[axis];
     while ((el = el.parentElement)) {
       switch (window.getComputedStyle(el)[overflowKey]) {
@@ -469,6 +474,7 @@ export default class ReactList extends Component {
     const { start, end } = this.getStartAndEnd(0);
     const cache = {};
     let first, last;
+
     for (let i = from; i < from + size; ++i) {
       const itemStart = this.getSpaceBefore(i, cache);
       const itemEnd = itemStart + this.getSizeOf(i);
@@ -514,8 +520,18 @@ export default class ReactList extends Component {
     };
     return (
       <div style={style} ref={c => (this.el = c)}>
-        <div style={listStyle}>{items}</div>
+        <div onScroll={onScroll} style={listStyle}>
+          {items}
+        </div>
       </div>
     );
   }
+}
+
+function onScroll() {
+  console.log("yoo");
+  window.__veScrolling = true;
+  setTimeout(() => {
+    window.__veScrolling = false;
+  });
 }
