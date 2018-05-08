@@ -12,38 +12,26 @@ function noop() {}
 
 export class LinearView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
-    const { ignoreYWhenSelecting } = this.props;
-    let rowNotFound = true;
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
     let rowDomNode = this.linearView;
     let boundingRowRect = rowDomNode.getBoundingClientRect();
-    if (
-      ignoreYWhenSelecting ||
-      (event.clientY > boundingRowRect.top &&
-        event.clientY < boundingRowRect.top + boundingRowRect.height)
-    ) {
-      //then the click is falls within this row
-      rowNotFound = false;
-      let row = rowData[0];
-      if (event.clientX - boundingRowRect.left < 0) {
-        nearestCaretPos = row.start;
-      } else {
-        let clickXPositionRelativeToRowContainer =
-          event.clientX - boundingRowRect.left;
-        let numberOfBPsInFromRowStart = Math.floor(
-          (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
-            this.charWidth
-        );
-        nearestCaretPos = numberOfBPsInFromRowStart + row.start;
-        if (nearestCaretPos > row.end + 1) {
-          nearestCaretPos = row.end + 1;
-        }
+    const maxEnd = this.getMaxLength();
+    if (event.clientX - boundingRowRect.left < 0) {
+      nearestCaretPos = 0;
+    } else {
+      let clickXPositionRelativeToRowContainer =
+        event.clientX - boundingRowRect.left;
+      let numberOfBPsInFromRowStart = Math.floor(
+        (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
+          this.charWidth
+      );
+      nearestCaretPos = numberOfBPsInFromRowStart + 0;
+      if (nearestCaretPos > maxEnd + 1) {
+        nearestCaretPos = maxEnd + 1;
       }
     }
-    if (rowNotFound) {
-      nearestCaretPos = 0;
-    }
+
     const callbackVals = {
       event,
       shiftHeld: event.shiftKey,
@@ -58,6 +46,10 @@ export class LinearView extends React.Component {
     };
     callback(callbackVals);
   }
+  getMaxLength = () => {
+    const { sequenceData = {}, alignmentData } = this.props;
+    return (alignmentData || sequenceData).sequence.length;
+  };
 
   render() {
     let {
@@ -80,13 +72,10 @@ export class LinearView extends React.Component {
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
-    this.charWidth = charWidth || innerWidth / sequenceData.sequence.length;
-    let sequenceLength = sequenceData.sequence.length;
-    const bpsPerRow = alignmentData
-      ? alignmentData.sequence.length
-      : sequenceLength;
+    this.charWidth = charWidth || innerWidth / this.getMaxLength();
+    const bpsPerRow = this.getMaxLength();
     let sequenceName = hideName ? "" : sequenceData.name || "";
-    let rowData = prepareRowData(sequenceData, sequenceLength);
+    let rowData = prepareRowData(sequenceData, sequenceData.sequence.length);
 
     return (
       <div
@@ -135,14 +124,19 @@ export class LinearView extends React.Component {
             }}
           >
             {!hideName && (
-              <SequenceName {...{ sequenceName, sequenceLength }} />
+              <SequenceName
+                {...{
+                  sequenceName,
+                  sequenceLength: sequenceData.sequence.length
+                }}
+              />
             )}
             <RowItem
               {...{
                 ...rest,
                 charWidth,
                 alignmentData,
-                sequenceLength: (alignmentData || sequenceData).sequence.length,
+                sequenceLength: this.getMaxLength(),
                 width: innerWidth,
                 bpsPerRow,
                 tickSpacing: tickSpacing || Math.ceil(120 / charWidth),

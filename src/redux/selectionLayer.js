@@ -32,10 +32,9 @@ export default createReducer(
           console.error(
             "we should never be here! selectionLayerUpdate must always be called with a valid selection layer"
           );
-          debugger;
         }
       }
-      return newSelectionLayer;
+      return { ...newSelectionLayer, color: "" };
     }
   },
   {

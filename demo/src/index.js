@@ -26,6 +26,7 @@ import {
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
+import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
@@ -37,6 +38,7 @@ import AlignmentDemo from "./AlignmentDemo";
 const links = [
   { name: "Editor", url: "Editor" },
   { name: "Standalone", url: "Standalone" },
+  { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
   { name: "CircularView", url: "CircularView" },
   { name: "DigestTool", url: "DigestTool" },
@@ -120,6 +122,12 @@ class Demo extends React.Component {
                 return <StandaloneDemo />;
               }}
               path="/Standalone"
+            />
+            <Route
+              render={() => {
+                return <StandaloneAlignmentDemo />;
+              }}
+              path="/StandaloneAlignment"
             />
             <Route
               render={() => {

@@ -1,6 +1,13 @@
 import { FocusStyleManager } from "@blueprintjs/core";
+import { createMenu } from "teselagen-react-components";
 import "./createVectorEditor";
 import "./style.css";
+
+window.tgCreateMenu = createMenu;
+// window.tgCreateMenu = (menu, e, e2) => {
+//   (e||e2).stopPropagation()
+//   (e || e2)
+// } //add this to the window so people can easily override the default context menus
 
 FocusStyleManager.onlyShowFocusOnTabs();
 

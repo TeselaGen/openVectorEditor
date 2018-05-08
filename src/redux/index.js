@@ -128,6 +128,7 @@ export default function reducerFactory(initialState = {}) {
       //just a normal action
       Object.keys(state).forEach(function(editorName) {
         if (editorName === "addYourOwnEnzyme") return; //we deal with add your own enzyme
+        if (editorName === "alignments") return; //we deal with add your own enzyme
         newState[editorName] = combineReducers(reducers)(
           state[editorName],
           action
@@ -138,7 +139,11 @@ export default function reducerFactory(initialState = {}) {
     return {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
-      addYourOwnEnzyme: addYourOwnEnzyme.default(state.addYourOwnEnzyme, action)
+      addYourOwnEnzyme: addYourOwnEnzyme.default(
+        state.addYourOwnEnzyme,
+        action
+      ),
+      alignments: alignments.default(state.alignments, action)
     };
   };
 }

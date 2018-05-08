@@ -10,12 +10,25 @@ export default class Minimap extends React.Component {
       e.stopPropagation();
       return;
     }
-    const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
+    const {
+      onMinimapScroll,
+      dimensions: { width = 200 }
+    } = this.props;
     const scrollHandleWidth = this.getScrollHandleWidth();
 
     const percent =
       (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
       (width - scrollHandleWidth);
+    onMinimapScroll(percent);
+  };
+  handleDrag = e => {
+    const {
+      onMinimapScroll,
+      dimensions: { width = 200 }
+    } = this.props;
+    // const scrollHandleWidth = this.getScrollHandleWidth();
+    const percent = this.getXPositionOfClickInMinimap(e) / width;
+    // console.log('percent:',percent)
     onMinimapScroll(percent);
   };
   getXPositionOfClickInMinimap = e => {
@@ -24,7 +37,10 @@ export default class Minimap extends React.Component {
   };
 
   getCharWidth = () => {
-    const { alignmentTracks = [], dimensions: { width = 200 } } = this.props;
+    const {
+      alignmentTracks = [],
+      dimensions: { width = 200 }
+    } = this.props;
     const [template] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = Math.min(16, width / seqLength);
@@ -66,6 +82,7 @@ export default class Minimap extends React.Component {
       >
         <YellowScrollHandle
           width={width}
+          handleDrag={this.handleDrag}
           onMinimapScroll={onMinimapScroll}
           minSliderSize={minSliderSize}
           onSizeAdjust={onSizeAdjust}
@@ -112,20 +129,44 @@ export default class Minimap extends React.Component {
 
 const YellowScrollHandle = view(
   class YellowScrollHandleInner extends React.Component {
-    onDrag = (e, { deltaX }) => {
-      const { scrollHandleWidth, width, onMinimapScroll } = this.props;
-      const scrollPercentage = this.props.easyStore.percentScrolled;
+    // onStart = () => {
+    //   const { scrollHandleWidth, width } = this.props;
+    //   const scrollPercentage = this.props.easyStore.percentScrolled;
 
-      const minimapX = scrollPercentage * (width - scrollHandleWidth);
-      const percent = (deltaX + minimapX) / (width - scrollHandleWidth);
-      onMinimapScroll(percent);
-    };
+    //   this.minimapX = scrollPercentage * (width - scrollHandleWidth);
+
+    // };
+    // onDrag = e => {
+    //   const {
+    //     onMinimapScroll,
+    //     width,
+    //     scrollHandleWidth
+    //   } = this.props;
+    //   const percent =
+    //     this.getXPositionOfClickInMinimap(e) / (width - scrollHandleWidth);
+    //   onMinimapScroll(percent);
+    // };
+
+    // getXPositionOfClickInMinimap = e => {
+    //   const leftStart = this.minimap.getBoundingClientRect().left;
+    //   return Math.max(e.clientX - leftStart, 0);
+    // };
+
+    // onDrag = (e, { deltaX }) => {
+    //   const { scrollHandleWidth, width, onMinimapScroll } = this.props;
+    //   const scrollPercentage = this.props.easyStore.percentScrolled;
+
+    //   console.log('minimapX:',minimapX)
+    //   const percent = (deltaX + minimapX) / (width - scrollHandleWidth);
+    //   onMinimapScroll(percent);
+    // };
 
     render() {
       const {
         scrollHandleWidth,
         width,
         easyStore,
+        handleDrag,
         onMinimapScroll,
         minSliderSize,
         onSizeAdjust
@@ -139,7 +180,8 @@ const YellowScrollHandle = view(
           handle=".handle"
           position={{ x: xScroll, y: 0 }}
           axis={"x"}
-          onDrag={this.onDrag}
+          // onStart={this.onStart}
+          onDrag={handleDrag}
         >
           <div
             style={{
@@ -196,7 +238,7 @@ const YellowScrollHandle = view(
             {/* the actual handle component */}
             <div
               className={"syncscroll handle"}
-              dataName="scrollGroup"
+              dataname="scrollGroup"
               style={{
                 height: "100%",
                 border: "none",
@@ -254,6 +296,6 @@ const YellowScrollHandle = view(
   }
 );
 
-function stopProp(e) {
-  e.stopPropagation();
-}
+// function stopProp(e) {
+//   e.stopPropagation();
+// }

@@ -114,7 +114,6 @@ editor.updateEditor(editorState);
 These props consist of hooks and editor config options that can be passed like so: `<Editor {...editorProps}/>`  or as seen above like `window.createVectorEditor(yourDomNodeHere, editorProps);`
 ```js
 {
-
 	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
 		console.info("event:", event);
@@ -266,61 +265,54 @@ Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
 
 # Alignments
+
+
 ## Integrating your own alignment data (only necessary if not using the built in alignment creation tool)
+
 Add a panel to the panelsShown prop like so: 
+
 ```js
-panelsShown: [
-          [
-            {
-              id: "jbeiAlignment1",
-              type: "alignment", //panel must be of type alignment
-              name: "Jbei Alignment p1243124",
-              active: true
-						}
-          ],
-```
-After calling `editor.updateEditor(...)` call
-```js
-editor.addAlignment({
-				id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
-				////optional! Use if you want a pairwise alignment:
-				pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
-					[
-						{ //reference sequence must come first!
-							sequenceData: {
-								id: "FWER1231", //every sequenceData and alignmentData should have a unique id
-								name: "GFPuv58",
-								sequence:	"ttgagggg"
-							},
-							alignmentData: {
-								sequence:	"ttgag--ggg--" //this length should be the same as the below alignmentData length!
-							}
-						},{ //aligned sequence must come second!
-							sequenceData: {
-								name: "GFPuv58",
-								sequence:	"gagccgggtt"
-							},
-							alignmentData: {
-								sequence:	"--gagccgggtt" //this length should be the same as the above alignmentData length!
-							}
-						}
-					]
-					[
-          	{Alignment Track Data Here}, //reference sequence track (see Data Model below for specs)
-          	{Alignment Track Data Here}, //aligned sequence track (see Data Model below for specs)
-					],
-					[
-          	{Alignment Track Data Here}, //see Data Model below for specs
-          	{Alignment Track Data Here}, 
-					],
-				]
-				////optional! Use if you want a multi-seq alignment:
-        alignmentTracks: [ 
-          {Alignment Track Data Here}, //see Data Model below for specs
-          {Alignment Track Data Here},
-          {Alignment Track Data Here},
-        ]
-      });
+window.createAlignmentView(this.node, {
+	id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
+	////optional! Use if you want a pairwise alignment:
+	pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
+		[
+			{ //reference sequence must come first!
+				sequenceData: {
+					id: "FWER1231", //every sequenceData and alignmentData should have a unique id
+					name: "GFPuv58",
+					sequence:	"ttgagggg"
+				},
+				alignmentData: {
+					sequence:	"ttgag--ggg--" //this length should be the same as the below alignmentData length!
+				}
+			},{ //aligned sequence must come second!
+				sequenceData: {
+					name: "GFPuv58",
+					sequence:	"gagccgggtt"
+				},
+				alignmentData: {
+					sequence:	"--gagccgggtt" //this length should be the same as the above alignmentData length!
+				}
+			}
+		]
+		[
+			{Alignment Track Data Here}, //reference sequence track (see Data Model below for specs)
+			{Alignment Track Data Here}, //aligned sequence track (see Data Model below for specs)
+		],
+		[
+			{Alignment Track Data Here}, //see Data Model below for specs
+			{Alignment Track Data Here}, 
+		],
+	]
+	////optional! Use if you want a multi-seq alignment:
+	alignmentTracks: [ 
+		{Alignment Track Data Here}, //see Data Model below for specs
+		{Alignment Track Data Here},
+		{Alignment Track Data Here},
+	]
+});
+
 ```
 
 

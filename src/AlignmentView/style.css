@@ -4,6 +4,12 @@
 .alignmentViewTrackContainer:hover .alignmentViewSelectTrackPopover {
   opacity: 0.9 !important;
 }
+.alignmentViewTrackContainer,
+.alignmentViewTrackContainer .veVectorInteractionWrapper,
+.alignmentViewTrackContainer .veVectorInteractionWrapper > div {
+  width: stretch;
+  width: fit-content;
+}
 
 .alignmentTracks .alignmentHolder::-webkit-scrollbar {
   display: none;

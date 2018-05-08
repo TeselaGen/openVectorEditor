@@ -3,8 +3,10 @@ import {
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
 
-import createAction from "./utils/createMetaAction";
-import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import { /* createReducer, */ createAction } from "redux-act";
+
+// import createAction from "./utils/createMetaAction";
+// import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 // import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
 // import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
 // import ab1ParsedGFPvv50 from "../ToolBar/ab1ParsedGFPvv50.json";
@@ -59,74 +61,7 @@ const defaultPairwiseAlignmentAnnotationLabelVisibility = {
 // Actions
 // ------------------------------------
 export const upsertAlignmentRun = createAction("UPSERT_ALIGNMENT_RUN");
-// export const alignmentAnnotationVisibilityToggle = createAction("alignmentAnnotationVisibilityToggle");
-//eg: annotationSupportToggle('features')
-
-// let alignmentTracks = [
-//   {
-//     //JBEI sequence 'GFPvv50'
-//     chromatogramData: ab1ParsedGFPvv50,
-//     sequenceData: {
-//       id: "1",
-//       name: "GFPvv50",
-//       sequence:
-//         "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
-//     },
-//     alignmentData: {
-//       id: "1",
-//       sequence:
-//         "ttgtacact------------------------------------------------------------------------------------------------------------------------------------------tttttgttgatatgtcattcttgttgattacatgg-----------------tgatgttaatgggcacaaattttctgtcagtggagagggtgaa-----ggtgatgcaacatacggaaaacttacccttaaatttatttgcactactg------gaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcaga----------ccattatca--acaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacaca-atctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatcccggcttcagccggg"
-//     }
-//   },
-//   {
-//     //JBEI sequence 'GFPvv60'
-//     chromatogramData: ab1ParsedGFPvv60,
-//     sequenceData: {
-//       id: "2",
-//       name: "GFPvv60",
-//       sequence:
-//         "CTGTCTGCTACGACGCACTGTTCTTGCCGTAGACCTTGCTGCCGCCGCCGCCGAGCTCATCCATGCCATGTGTAATCCCAGCAGCAGTTACAAACTCAAGAAGGACCATGTGGTCACGCTTTTCGTTGGGATCTTTCGAAAGGGCAGATTGTGTCGACAGGTAATGGTTGTCTGGTAAAAGGACAGGGCCATCGCCAATTGGAGTATTTTGTTGATAATGGTCTGCTAGTTGAACAGATCCATCTTCAATGTTGTGGCGAATTTTGAAGTTAGCTTTGATTCCATTCTTTTGTTTGTCTGCCGTGATGTATACATTGTGTGAGTTATAGTTGTATTCGAGTTTGTGTCCGAGAATGTTTCCATCTTCTTTAAAATCAATACCTTTTAACTCGATACGATTAACAAGGGTATCACCTTCAAACTTGACTTCAGCACGCGTCTTGTAGTTCCCGTCATCTTTGAAAGATATAGTGCGTTCCTGTACATAACCTTCGGGCATGGCACTCTTGAAAAAGTCATGCCGTTTCATATGATCCGGATAACGGGAAAAGCATTGAACACCATAAGAGAAAGTAGTGACAAGTGTTGGCCATGGAACAGGTAGTTTTCCAGTAGTGCAAATAAATTTAAGGGTAAGTTTTCCGTATGTTGCATCACCTTCACCCTCTCCACTGACAGAAAATTTGTGCCCATTAACATCACCATCTAATTCAACAAGAATTGGGACAACTCCAGTGAAAAGTTCTTCTCCTTTACTCATATGTATATCTCCTTCTTAAAAATTCCCAAAAAAACGGGTATGGAGAAACAGTAGAGAGTTGCGATAAAAAGCGTCAGGTAGAATCCGCTAATCTTATGGATAAAAATGCTATGGCATAGCAAAGTGTGACGCCGTGCAAATAATCAATGTGGACTTTTTCTGCCGTGATTATAGACACTTTTGTTACGCGTTTTTGTCATGGGCTTGGGTCCCGCTTTGTTACAGAATGCTTTTAATAAG"
-//     },
-//     alignmentData: {
-//       id: "2",
-//       sequence:
-//         "ctgtctgctacgacgcactgttcttgccgtagaccttgctgccgccgccgccgagctcatccatgccatgtgtaatcccagcagcagttacaaactcaagaaggaccatgtggtcacgcttttcgttgggatctttcgaaagggcagattgtgtcgacaggtaatggttgtctggtaaaaggacagggccatcgccaattggagtattttgttgataatggtctgctagttgaacagatccatcttcaatgttgtggcgaattttgaagttagctttgattccattcttttgtttgtctgccgtgatgtatacattgtgtgagttatagttgtattcgagtttgtgtccgagaatgtttccatcttctttaaaatcaataccttttaactcgatacgattaacaagggtatcaccttcaaacttgacttcagcacgcgtcttgtagttcccgtcatctttgaaagatatagtgcgttcctgtacataaccttcgggcatggcactcttgaaaaagtcatgccgtttcatatgatccggataacgggaaaagcattgaacaccataagagaaagtagtgacaagtgttggccatggaacaggtagttttc------cagtagtgcaaataaatttaagggtaagttttccgtatgttgcatcacc-----ttcaccctctccactgacagaaaatttgtgcccattaacatcaccatctaattcaacaagaattgggacaactccagtgaaaagttcttctcctttactcatatgtatatctccttcttaaaaattcccaaaaaaa---------------------cgggtatggagaaacagtagagagttgcgataaaaagcgtca-------ggtagaatccgctaatcttatggataaaaatgctat-----ggcatagcaaagtgtgacgccgtgcaaataatcaatgtggactttttctgccgt----gattatagacacttttgttacgcgtttttgtcatgggcttgggtcccgctttgttacagaatgcttttaataag-----------------------------------------------------------------------------------------------------------------------------------"
-//     }
-//   }
-// ];
-
-// let alignmentTracks = [
-//   {
-//     //JBEI sequence 'GFPuv54'
-//     chromatogramData: ab1ParsedGFPuv54,
-//     sequenceData: {
-//       id: "1",
-//       name: "GFPuv54",
-//       sequence:
-//         "CAGAAAGCGTCACAAAAGATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCGGCTTCAGCCGGTTTGCCGGCTGAAAGCGCTATTTCTTCCAGAATTGCCATGATTTTTTCCCCACGGGAGGCGTCACTGGCTCCCGTGTTGTCGGCAGCTTTGATTCGATAAGCAGCATCGCCTGTTTCAGGCTGTCTATGTGTGACTGTTGAGCTGTAACAAGTTGTCTCAGGTGTTCAATTTCATGTTCTAGTTGCTTTGTTTTACTGGTTTCACCTGTTCTATTAGGTGTTACATGCTGTTCATCTGTTACATTGTCGATCTGTTCATGGTGAACAGCTTTGAATGCACCAAAAACTCGTAAAAGCTCTGATGTATCTATCTTTTTTACACCGTTTTCATCTGTGCATATGGACAGTTTTCCCTTTGATATGTAACGGTGAACAGTTGTTCTACTTTTGTTTGTTAGTCTTGATGCTTCACTGATAGATACAAGAGCCATAAGAACCTCAGATCCTTCCGTATTTAGCCAGTATGTTCTCTAGTGTGGTTCGTTGTTTTGCCGTGGAGCAATGAGAACGAGCCATTGAGATCATACTTACCTTTGCATGTCACTCAAAATTTTGCCTCAAAACTGGGTGAGCTGAATTTTTGCAGTAGGCATCGTGTAAGTTTTTCTAGTCGGAATGATGATAGATCGTAAGTTATGGATGGTTGGCATTTGTCCAGTTCATGTTATCTGGGGTGTTCGTCAGTCGGTCAGCAGATCCACATAGTGGTTCATCTAGATCACAC"
-//     },
-//     alignmentData: {
-//       id: "1",
-//       sequence:
-//         "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------cagaaagcgtcacaaaagatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacag-tttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatccggcttcagccggtttgccggctgaaagcgctatttcttccagaattgccatgattttttccccacgggaggcgtcactggctcccgtgttgtcggcagctttgattcgataagcagcatcgcctgtttcaggctgtctatgtgtgactgttgagctgtaacaagttgtctcaggtgttcaatttcatgttctagttgctttgttttactggtttcacctgttctattaggtgttacatgctgttcatctgttacattgtcgatctgttcatggtgaacagctttgaatgcaccaaaaactcgtaaaagctctgatgtatctatcttttttacaccgttttcatctgtgcatatggacagttttccctttgatatgtaacggtgaacagttgttctacttttgtttgttagtcttgatgcttcactgatagatacaagagccataagaacctcagatccttccgtatttagccagtatgttctctagtgtggttcgttgttttgccgtggagcaatgagaacgagccattgagatcatacttacctttgcatgtcactcaaaattttgcctcaaaactgggtgagctgaatttttgcagtaggcatcgtgtaagtttttctagtcggaatgatgatagatcgtaagttatggatggttggcatttgtccagttcatgttatctggggtgttcgtcagtcggtcagcagatccacatagtggttcatctagatcacac"
-//     }
-//   },
-//   {
-//     //JBEI sequence 'GFPuv58'
-//     chromatogramData: ab1ParsedGFPuv58,
-//     sequenceData: {
-//       id: "2",
-//       name: "GFPuv58",
-//       sequence:
-//         "CGAAAAATGTCAATTCTTGTTGATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGAAGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCACACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGATCTCGGCGGCGGCGTCAGCAAGGTCTACGGCAAGGAACAGTTTTTTGCGGATGCCCCATATCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACCACAGGCTCAGTCTAAAGACTGGCCCTTTCTTTGATCTGTTGTTTGCC"
-//     },
-//     alignmentData: {
-//       id: "2",
-//       sequence:
-//         "cgaaaaatgtcaattcttgttgattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgaagcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccacacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgatctcggcggcggcgtcagcaaggtctacggcaaggaacagttttttgcggatgccccatatcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaaccacaggctcagtctaaagactggccctttc-tttgatctgttgtttgcc--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-//     }
-//   }
-// ];
+export const alignmentRunUpdate = createAction("ALIGNMENT_RUN_UPDATE");
 
 const highlightRangeProps = {
   color: "red",
@@ -162,100 +97,100 @@ function addHighlightedDifferences(alignmentTracks) {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default createMergedDefaultStateReducer(
-  {
-    // [alignmentAnnotationVisibilityToggle]: (state, {id, name})=> {
-    //   return {
-    //     ...state,
-    //     [id]: {...state[id], alignmentAnnotationVisibility: {
-    //       ...state[id].alignmentAnnotationVisibility,
-    //       [name]: !state[id].alignmentAnnotationVisibility.alignmentAnnotationVisibility[name]
-    //     }}
 
-    //   }
-    // },
-    [upsertAlignmentRun]: (state, payload) => {
-      // magicDownload(JSON.stringify(payload), 'myFile.json')
-      let payloadToUse = {
-        alignmentAnnotationVisibility: payload.pairwiseAlignments
-          ? defaultPairwiseAlignmentAnnotationVisibility
-          : defaultAlignmentAnnotationVisibility,
-        alignmentAnnotationLabelVisibility: payload.pairwiseAlignments
-          ? defaultPairwiseAlignmentAnnotationLabelVisibility
-          : defaultAlignmentAnnotationLabelVisibility,
+export default (state = {}, { payload = {}, type }) => {
+  if (type === "ALIGNMENT_RUN_UPDATE") {
+    const { alignmentId } = payload;
+    const newState = {
+      ...state,
+      [alignmentId]: {
+        ...state[alignmentId],
         ...payload
-      };
-      if (payloadToUse.pairwiseAlignments) {
-        const templateSeq = payloadToUse.pairwiseAlignments[0][0];
-        //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
-        const pairwiseOverviewAlignmentTracks = [
-          {
-            //add the template seq as the first track in the Pairwise Alignment Overview
-            ...templateSeq,
-            alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
-          }
-        ]; // start with just the template seq in there!
-
-        payloadToUse.pairwiseAlignments.forEach(([template, alignedSeq]) => {
-          const condensedSeq = condensePairwiseAlignmentDifferences(
-            template.alignmentData.sequence,
-            alignedSeq.alignmentData.sequence
-          );
-          const re = /r+/gi;
-          let match;
-          const additionalSelectionLayers = [];
-          while ((match = re.exec(condensedSeq)) != null) {
-            additionalSelectionLayers.push({
-              start: match.index,
-              end: match.index + match[0].length - 1,
-              ...highlightRangeProps
-            });
-          }
-
-          const alignedSeqMinusInserts = {
-            ...alignedSeq,
-            sequenceData: {
-              ...alignedSeq.sequenceData,
-              sequence: template.sequenceData.sequence
-            },
-            additionalSelectionLayers,
-            alignmentData: {
-              sequence: condensedSeq
-            }
-          };
-          pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
-        });
-        payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
-
-        payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
-          alignmentTracks => {
-            return addHighlightedDifferences(alignmentTracks);
-          }
-        );
       }
-      if (payloadToUse.alignmentTracks) {
-        payloadToUse.alignmentTracks = addHighlightedDifferences(
-          payloadToUse.alignmentTracks
-        );
-      }
-      //check for issues
-      let hasError = checkForIssues(payloadToUse.alignmentTracks);
-      (payloadToUse.pairwiseAlignments || []).map(alignment => {
-        const error = alignment;
-        if (error) {
-          hasError = error;
+    };
+    return newState;
+  }
+  if (type === "UPSERT_ALIGNMENT_RUN") {
+    // magicDownload(JSON.stringify(payload), 'myFile.json')
+    let payloadToUse = {
+      alignmentAnnotationVisibility: payload.pairwiseAlignments
+        ? defaultPairwiseAlignmentAnnotationVisibility
+        : defaultAlignmentAnnotationVisibility,
+      alignmentAnnotationLabelVisibility: payload.pairwiseAlignments
+        ? defaultPairwiseAlignmentAnnotationLabelVisibility
+        : defaultAlignmentAnnotationLabelVisibility,
+      ...payload
+    };
+    if (payloadToUse.pairwiseAlignments) {
+      const templateSeq = payloadToUse.pairwiseAlignments[0][0];
+      //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
+      const pairwiseOverviewAlignmentTracks = [
+        {
+          //add the template seq as the first track in the Pairwise Alignment Overview
+          ...templateSeq,
+          alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
         }
-      });
+      ]; // start with just the template seq in there!
 
-      // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
-      return {
-        ...state,
-        [payload.id]: { ...payloadToUse, hasError }
-      };
+      payloadToUse.pairwiseAlignments.forEach(([template, alignedSeq]) => {
+        const condensedSeq = condensePairwiseAlignmentDifferences(
+          template.alignmentData.sequence,
+          alignedSeq.alignmentData.sequence
+        );
+        const re = /r+/gi;
+        let match;
+        const additionalSelectionLayers = [];
+        while ((match = re.exec(condensedSeq)) != null) {
+          additionalSelectionLayers.push({
+            start: match.index,
+            end: match.index + match[0].length - 1,
+            ...highlightRangeProps
+          });
+        }
+
+        const alignedSeqMinusInserts = {
+          ...alignedSeq,
+          sequenceData: {
+            ...alignedSeq.sequenceData,
+            sequence: template.sequenceData.sequence
+          },
+          additionalSelectionLayers,
+          alignmentData: {
+            sequence: condensedSeq
+          }
+        };
+        pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
+      });
+      payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
+
+      payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
+        alignmentTracks => {
+          return addHighlightedDifferences(alignmentTracks);
+        }
+      );
     }
-  },
-  {}
-);
+    if (payloadToUse.alignmentTracks) {
+      payloadToUse.alignmentTracks = addHighlightedDifferences(
+        payloadToUse.alignmentTracks
+      );
+    }
+    //check for issues
+    let hasError = checkForIssues(payloadToUse.alignmentTracks);
+    (payloadToUse.pairwiseAlignments || []).forEach(alignment => {
+      const error = alignment;
+      if (error) {
+        hasError = error;
+      }
+    });
+
+    // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
+    return {
+      ...state,
+      [payload.id]: { ...payloadToUse, hasError }
+    };
+  }
+  return state;
+};
 
 //returns an array like so: [{start: 0, end: 4, isMatch: false}, {start,end,isMatch} ... etc]
 function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {

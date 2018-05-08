@@ -529,7 +529,6 @@ export default class ReactList extends Component {
 }
 
 function onScroll() {
-  console.log("yoo");
   window.__veScrolling = true;
   setTimeout(() => {
     window.__veScrolling = false;
