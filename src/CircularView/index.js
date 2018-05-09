@@ -526,7 +526,6 @@ export class CircularView extends React.Component {
         ...searchLayers,
         ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
       ];
-      console.log("selectionLayers:", selectionLayers);
       return selectionLayers
         .map(function(selectionLayer, index) {
           if (

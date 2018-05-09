@@ -17,7 +17,6 @@ function SelectionLayer({
   index
 }) {
   let { color, start, end, hideCarets = false } = selectionLayer;
-  console.log("color:", color);
   let { startAngle, endAngle, totalAngle } = getRangeAngles(
     selectionLayer,
     sequenceLength
