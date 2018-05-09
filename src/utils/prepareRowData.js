@@ -1,8 +1,6 @@
-import lruMemoize from "lru-memoize";
-
 import { mapAnnotationsToRows } from "ve-sequence-utils";
 import { annotationTypes } from "ve-sequence-utils";
-function prepareRowData(sequenceData, bpsPerRow) {
+export default function prepareRowData(sequenceData, bpsPerRow) {
   // ac.throw([ac.sequenceData, ac.posInt], arguments);
   let sequenceLength = sequenceData.sequence.length;
   let totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
@@ -36,5 +34,3 @@ function prepareRowData(sequenceData, bpsPerRow) {
   }
   return rows;
 }
-
-export default lruMemoize(1, undefined, true)(prepareRowData);

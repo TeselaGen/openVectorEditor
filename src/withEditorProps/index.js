@@ -134,51 +134,13 @@ function mapStateToProps(state, ownProps) {
   this.cutsites = cutsites;
   this.orfs = orfs;
   this.translations = translations;
-  let sequenceDataToUse = combineSequenceData(
-    sequenceData,
+  let sequenceDataToUse = {
+    ...sequenceData,
     cutsites,
     orfs,
     translations
-  );
+  };
 
-  // const featureToAdd = getFormValues("AddOrEditFeatureDialog")(state);
-  // if (featureToAdd) {
-  //   sequenceDataToUse.features = {
-  //     ...sequenceDataToUse.features,
-  //     [featureToAdd.id || "toAdd"]: {
-  //       ...featureToAdd,
-  //       id: featureToAdd.id || "toAdd",
-  //       name: featureToAdd.name || "Untitled Sequence",
-  //       start: featureToAdd.start || 0,
-  //       end: featureToAdd.end || 0,
-  //     }
-  //   };
-  // }
-  // const primerToAdd = getFormValues("AddOrEditPrimerDialog")(state);
-  // if (primerToAdd) {
-  //   sequenceDataToUse.primers = {
-  //     ...sequenceDataToUse.primers,
-  //     [primerToAdd.id || "toAdd"]: {
-  //       ...primerToAdd,
-  //       id: primerToAdd.id || "toAdd",
-  //       name: primerToAdd.name || "Untitled Sequence",
-  //       start: primerToAdd.start || 0,
-  //       end: primerToAdd.end || 0,
-  //     }
-  //   };
-  // }
-  // const partToAdd = getFormValues("AddOrEditPartDialog")(state);
-  // if (partToAdd) {
-  //   sequenceDataToUse.parts = {
-  //     ...sequenceDataToUse.parts,
-  //     [partToAdd.id || "toAdd"]: { ...partToAdd,
-  //       id: partToAdd.id || "toAdd" ,
-  //       name: partToAdd.name || "Untitled Sequence",
-  //       start: partToAdd.start || 0,
-  //       end: partToAdd.end || 0,
-  //     }
-  //   };
-  // }
   return {
     ...toReturn,
     selectedCutsites,
@@ -201,15 +163,6 @@ function mapStateToProps(state, ownProps) {
     sequenceData: sequenceDataToUse
   };
 }
-
-const combineSequenceData = lruMemoize()(
-  (sequenceData, cutsites, orfs, translations) => ({
-    ...sequenceData,
-    cutsites,
-    orfs,
-    translations
-  })
-);
 
 function mapDispatchToActions(dispatch, ownProps) {
   const { editorName } = ownProps;

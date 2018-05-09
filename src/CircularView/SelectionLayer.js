@@ -1,7 +1,6 @@
 import Caret from "./Caret";
 import sector from "paths-js/sector";
 import getRangeAngles from "./getRangeAnglesSpecial";
-// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
@@ -99,5 +98,4 @@ function SelectionLayer({
   );
 }
 
-// export default lruMemoize(5, undefined, true)(SelectionLayer);
 export default pureNoFunc(SelectionLayer);

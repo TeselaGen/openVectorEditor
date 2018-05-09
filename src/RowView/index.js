@@ -325,6 +325,18 @@ export class RowView extends React.Component {
 
   cache = {};
 
+  getRowData = (sequenceData, bpsPerRow) => {
+    if (
+      !isEqual(bpsPerRow, this.oldBpsPerRow) ||
+      !isEqual(sequenceData, this.oldSeqData)
+    ) {
+      this.rowData = prepareRowData(sequenceData, bpsPerRow);
+      this.oldBpsPerRow = bpsPerRow;
+      this.oldSeqData = sequenceData;
+    }
+    return this.rowData;
+  };
+
   render() {
     let {
       //currently found in props
@@ -355,7 +367,7 @@ export class RowView extends React.Component {
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
     // let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
     //  propsToUse.charWidth * bpsPerRow;
-    let rowData = prepareRowData(sequenceData, bpsPerRow);
+    let rowData = this.getRowData(sequenceData, bpsPerRow);
     this.rowData = rowData;
 
     let showJumpButtons = rowData.length > 15;

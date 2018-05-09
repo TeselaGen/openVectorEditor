@@ -109,7 +109,6 @@ function Labels({
     height: 120
   };
 }
-// export default lruMemoize(5, deepEqual)(Labels);
 export default Labels;
 
 const DrawLabelGroup = withHover(function({

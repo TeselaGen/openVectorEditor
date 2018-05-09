@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
@@ -51,6 +52,15 @@ export class LinearView extends React.Component {
     return (alignmentData || sequenceData).sequence.length;
   };
 
+  getRowData = () => {
+    const { sequenceData = {} } = this.props;
+    if (!isEqual(sequenceData, this.oldSeqData)) {
+      this.rowData = prepareRowData(sequenceData, sequenceData.sequence.length);
+      this.oldSeqData = sequenceData;
+    }
+    return this.rowData;
+  };
+
   render() {
     let {
       //currently found in props
@@ -75,7 +85,7 @@ export class LinearView extends React.Component {
     this.charWidth = charWidth || innerWidth / this.getMaxLength();
     const bpsPerRow = this.getMaxLength();
     let sequenceName = hideName ? "" : sequenceData.name || "";
-    let rowData = prepareRowData(sequenceData, sequenceData.sequence.length);
+    let rowData = this.getRowData();
 
     return (
       <div
