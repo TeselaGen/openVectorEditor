@@ -28,7 +28,6 @@ export default class Minimap extends React.Component {
     } = this.props;
     // const scrollHandleWidth = this.getScrollHandleWidth();
     const percent = this.getXPositionOfClickInMinimap(e) / width;
-    // console.log('percent:',percent)
     onMinimapScroll(percent);
   };
   getXPositionOfClickInMinimap = e => {
@@ -129,38 +128,6 @@ export default class Minimap extends React.Component {
 
 const YellowScrollHandle = view(
   class YellowScrollHandleInner extends React.Component {
-    // onStart = () => {
-    //   const { scrollHandleWidth, width } = this.props;
-    //   const scrollPercentage = this.props.easyStore.percentScrolled;
-
-    //   this.minimapX = scrollPercentage * (width - scrollHandleWidth);
-
-    // };
-    // onDrag = e => {
-    //   const {
-    //     onMinimapScroll,
-    //     width,
-    //     scrollHandleWidth
-    //   } = this.props;
-    //   const percent =
-    //     this.getXPositionOfClickInMinimap(e) / (width - scrollHandleWidth);
-    //   onMinimapScroll(percent);
-    // };
-
-    // getXPositionOfClickInMinimap = e => {
-    //   const leftStart = this.minimap.getBoundingClientRect().left;
-    //   return Math.max(e.clientX - leftStart, 0);
-    // };
-
-    // onDrag = (e, { deltaX }) => {
-    //   const { scrollHandleWidth, width, onMinimapScroll } = this.props;
-    //   const scrollPercentage = this.props.easyStore.percentScrolled;
-
-    //   console.log('minimapX:',minimapX)
-    //   const percent = (deltaX + minimapX) / (width - scrollHandleWidth);
-    //   onMinimapScroll(percent);
-    // };
-
     render() {
       const {
         scrollHandleWidth,
