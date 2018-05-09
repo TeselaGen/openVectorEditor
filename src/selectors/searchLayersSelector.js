@@ -21,7 +21,8 @@ function searchLayersSelector(
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });
-  return matches.map(m => ({ ...m, showCaret: false }));
+  return matches;
+  // return matches.map(m => ({ ...m, hideCarets: true, color: "yellow" }));
 }
 
 export default createSelector(

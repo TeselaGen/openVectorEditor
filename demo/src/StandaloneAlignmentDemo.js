@@ -15,10 +15,14 @@ export default class StandaloneAlignmentDemo extends React.Component {
       window.createAlignmentView(this.node, {
         ...alignmentDataPairwise,
         id: "pairwiseRun1",
-        selectionLayerRightClicked: ({event}) => {
-          window.tgCreateMenu([{
-            text: "Selection Layer Right Clicked!"
-          }], undefined, event)
+        linearViewOptions: () => {
+          return {
+            selectionLayerRightClicked: ({event}) => {
+              window.tgCreateMenu([{
+                text: "Selection Layer Right Clicked!"
+              }], undefined, event)
+            }
+          }
         }
       });
   };

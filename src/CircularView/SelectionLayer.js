@@ -16,7 +16,8 @@ function SelectionLayer({
   selectionLayerRightClicked,
   index
 }) {
-  let { color, start, end, showCaret = false } = selectionLayer;
+  let { color, start, end, hideCarets = false } = selectionLayer;
+  console.log("color:", color);
   let { startAngle, endAngle, totalAngle } = getRangeAngles(
     selectionLayer,
     sequenceLength
@@ -68,7 +69,7 @@ function SelectionLayer({
         d={section.path.print()}
         fill={color || "rgb(0, 153, 255)"}
       />
-      {!showCaret && (
+      {!hideCarets && (
         <Caret
           key="caret1"
           className={
@@ -81,7 +82,7 @@ function SelectionLayer({
           outerRadius={radius}
         />
       )}
-      {!showCaret && (
+      {!hideCarets && (
         <Caret
           key="caret2"
           className={

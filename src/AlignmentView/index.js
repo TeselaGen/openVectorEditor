@@ -49,12 +49,13 @@ class AlignmentView extends React.Component {
     return template.alignmentData.sequence.length || 1;
   };
   componentDidMount() {
+    reset();
+  }
+  componentWillMount() {
     this.editorDragged = editorDragged.bind(this);
     this.editorClicked = editorClicked.bind(this);
     this.editorDragStarted = editorDragStarted.bind(this);
     this.editorDragStopped = editorDragStopped.bind(this);
-
-    reset();
   }
 
   updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
