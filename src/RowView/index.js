@@ -1,7 +1,7 @@
 import { Button } from "@blueprintjs/core";
 import { forEach } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
-import some from "lodash/some";
+import { some, isEqual } from "lodash";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -14,7 +14,6 @@ import ReactList from "./ReactList";
 
 // import ReactList from './ReactVariable';
 import "./style.css";
-import { isEqual } from "apollo-utilities";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
