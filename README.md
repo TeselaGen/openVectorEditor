@@ -273,7 +273,7 @@ Add a panel to the panelsShown prop like so:
 
 ```js
 window.createAlignmentView(this.node, {
-	id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
+	id: "jbeiAlignment1", //give your alignment a unique id
 	////optional! Use if you want a pairwise alignment:
 	pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
 		[

@@ -389,15 +389,15 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     annotationClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
+      event.preventDefault && event.preventDefault();
+      event.stopPropagation && event.stopPropagation();
       const {
         annotationSelect,
         annotationDeselectAll,
         propertiesViewTabUpdate
       } = this.props;
       this.updateSelectionOrCaret(event.shiftKey, annotation);
-      annotationDeselectAll(undefined);
+      !event.shiftKey && annotationDeselectAll(undefined);
       annotation.id && annotationSelect(annotation);
       annotation.annotationTypePlural &&
         propertiesViewTabUpdate(annotation.annotationTypePlural, annotation);
@@ -802,11 +802,12 @@ function VectorInteractionHOC(Component /* options */) {
         }
       ];
     };
-    featureRightClicked = ({ annotation }) => {
+    featureRightClicked = ({ annotation, event }) => {
       const {
         readOnly,
         upsertTranslation,
         deleteFeature,
+        showMergeFeaturesDialog,
         annotationVisibilityToggle,
         showAddOrEditFeatureDialog,
         propertiesViewOpen,
@@ -826,6 +827,17 @@ function VectorInteractionHOC(Component /* options */) {
                 text: "Delete Feature",
                 onClick: function() {
                   deleteFeature(annotation);
+                }
+              },
+              {
+                text: "Merge With Another Feature",
+                onClick: () => {
+                  this.annotationClicked({
+                    annotation,
+                    event: { ...event, shiftHeld: true }
+                  });
+                  // annotationSelect(annotation)
+                  showMergeFeaturesDialog(annotation);
                 }
               }
             ]),

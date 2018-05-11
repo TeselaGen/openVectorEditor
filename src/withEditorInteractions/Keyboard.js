@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 class Clipboard extends React.Component {
   // static propTypes = {
@@ -60,6 +59,7 @@ class Clipboard extends React.Component {
         type="text"
         value={value}
         onChange={noop}
+        readOnly
         onPaste={this.props.onPaste}
         onCopy={this.props.onCopy}
       />

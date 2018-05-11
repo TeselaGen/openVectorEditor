@@ -442,7 +442,6 @@ export class Editor extends React.Component {
           onKeyDown={toggleFindTool}
         />
         <Hotkey
-          allowInInput
           preventDefault
           stopPropagation
           label="Select All"

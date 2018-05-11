@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
+import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
 import AddOrEditPartDialog from "../helperComponents/AddOrEditPartDialog";
 import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
@@ -53,6 +54,11 @@ export default connect(
       <AddOrEditPrimerDialog
         editorName={editorName}
         dialogName="AddOrEditPrimerDialog"
+        noTarget
+      />
+      <MergeFeaturesDialog
+        editorName={editorName}
+        dialogName="MergeFeaturesDialog"
         noTarget
       />
     </div>

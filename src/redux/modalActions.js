@@ -55,6 +55,18 @@ export function showAddOrEditPrimerDialog(annotation, { editorName }) {
     }
   };
 }
+export function showMergeFeaturesDialog(annotation, { editorName }) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "MergeFeaturesDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props: {
+      editorName: editorName,
+      dialogProps: {
+        title: "Merge Features"
+      },
+    }
+  };
+}
 
 export function showCreateAlignmentDialog(props) {
   return {
