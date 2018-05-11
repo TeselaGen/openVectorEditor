@@ -61,7 +61,7 @@
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.3",
     "react-table": "^6.6.0",
-    "teselagen-react-components": "^22.0.0",
+    "teselagen-react-components": "^22.0.35",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.3.0",
     "ve-sequence-utils": "^3.2.11"
