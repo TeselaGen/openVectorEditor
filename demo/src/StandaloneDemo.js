@@ -28,13 +28,14 @@ export default class StandaloneDemo extends React.Component {
     setTimeout(() => {
       editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
+        shouldAutosave: true,
         rightClickOverrides: {
           selectionLayerRightClicked: (items, { annotation }, props) => {
             return [
               ...items,
               {
                 text: "Create Part",
-                onClick: () => console.log("hey!≈")
+                onClick: () => console.info("hey!≈")
               }
             ];
           }
@@ -45,9 +46,9 @@ export default class StandaloneDemo extends React.Component {
           editorState,
           onSuccessCallback
         ) {
-          console.log("event:", event);
-          console.log("sequenceData:", copiedSequenceData);
-          console.log("editorState:", editorState);
+          console.info("event:", event);
+          console.info("sequenceData:", copiedSequenceData);
+          console.info("editorState:", editorState);
           // To disable the save button after successful saving
           // either call the onSuccessCallback or return a successful promise :)
           onSuccessCallback();
@@ -56,13 +57,14 @@ export default class StandaloneDemo extends React.Component {
         },
         onCopy: function(event, copiedSequenceData, editorState) {
           //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-          console.log("event:", event);
-          console.log("sequenceData:", copiedSequenceData);
-          console.log("editorState:", editorState);
+          console.info("event:", event);
+          console.info("sequenceData:", copiedSequenceData);
+          console.info("editorState:", editorState);
           const clipboardData = event.clipboardData;
           clipboardData.setData("text/plain", copiedSequenceData.sequence);
           clipboardData.setData(
             "application/json",
+            //for example here you could change teselagen parts into jbei parts
             JSON.stringify(copiedSequenceData)
           );
           event.preventDefault();
@@ -146,12 +148,13 @@ export default class StandaloneDemo extends React.Component {
               active: true,
               id: "circular",
               name: "Plasmid",
+
             },
             {
               id: "jbeiAlignment1",
               type: "alignment",
               name: "Jbei Alignment p1243124",
-              // active: true
+              // active: true,
               // fullScreen: true
             },
             {

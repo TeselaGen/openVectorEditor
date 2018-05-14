@@ -5,20 +5,29 @@ import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthF
 import { view } from "react-easy-state";
 
 export default class Minimap extends React.Component {
-  onDrag = e => {
-    const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
+  handleMinimapClick = e => {
+    if (e.target && e.target.classList.contains("minimapCaret")) {
+      e.stopPropagation();
+      return;
+    }
+    const {
+      onMinimapScroll,
+      dimensions: { width = 200 }
+    } = this.props;
     const scrollHandleWidth = this.getScrollHandleWidth();
+
     const percent =
-      this.getXPositionOfClickInMinimap(e) / (width - scrollHandleWidth);
+      (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
+      (width - scrollHandleWidth);
     onMinimapScroll(percent);
   };
-
-  handleMinimapClick = e => {
-    const { onMinimapScroll, dimensions: { width = 200 } } = this.props;
-    const scrollHandleWidth = this.getScrollHandleWidth();
-
-    const percent =
-      this.getXPositionOfClickInMinimap(e) / (width - scrollHandleWidth);
+  handleDrag = e => {
+    const {
+      onMinimapScroll,
+      dimensions: { width = 200 }
+    } = this.props;
+    // const scrollHandleWidth = this.getScrollHandleWidth();
+    const percent = this.getXPositionOfClickInMinimap(e) / width;
     onMinimapScroll(percent);
   };
   getXPositionOfClickInMinimap = e => {
@@ -27,7 +36,10 @@ export default class Minimap extends React.Component {
   };
 
   getCharWidth = () => {
-    const { alignmentTracks = [], dimensions: { width = 200 } } = this.props;
+    const {
+      alignmentTracks = [],
+      dimensions: { width = 200 }
+    } = this.props;
     const [template] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = Math.min(16, width / seqLength);
@@ -50,6 +62,9 @@ export default class Minimap extends React.Component {
       style = {},
       laneHeight = 17,
       laneSpacing = 3,
+      onSizeAdjust,
+      minSliderSize,
+      onMinimapScroll,
       easyStore
     } = this.props;
     const [template /* ...nonTemplates */] = alignmentTracks;
@@ -62,13 +77,16 @@ export default class Minimap extends React.Component {
         ref={ref => (this.minimap = ref)}
         className={"alignmentMinimap"}
         style={{ position: "relative", width, ...style }}
-        onClick={this.handleMinimapClick}
+        onMouseDown={this.handleMinimapClick}
       >
         <YellowScrollHandle
           width={width}
+          handleDrag={this.handleDrag}
+          onMinimapScroll={onMinimapScroll}
+          minSliderSize={minSliderSize}
+          onSizeAdjust={onSizeAdjust}
           easyStore={easyStore} //we use react-easy-state here to prevent costly setStates from being called
           scrollHandleWidth={scrollHandleWidth}
-          onDrag={this.onDrag}
         />
         <div style={{ maxHeight: 150, overflowY: "auto" }}>
           <svg height={alignmentTracks.length * laneHeight} width={width}>
@@ -108,36 +126,143 @@ export default class Minimap extends React.Component {
   }
 }
 
-const YellowScrollHandle = view(function YellowScrollHandleInner({
-  scrollHandleWidth,
-  width,
-  easyStore,
-  onDrag
-}) {
-  const xScroll = easyStore.percentScrolled * (width - scrollHandleWidth);
-  return (
-    <Draggable
-      bounds={"parent"}
-      zIndex={105}
-      position={{ x: xScroll, y: 0 }}
-      axis={"x"}
-      onDrag={onDrag}
-    >
-      <div
-        className={"syncscroll"}
-        dataName="scrollGroup"
-        style={{
-          height: "100%",
-          border: "none",
-          cursor: "move",
-          opacity: ".3",
-          top: "0px",
-          position: "absolute",
-          zIndex: "10",
-          width: scrollHandleWidth,
-          background: "yellow"
-        }}
-      />
-    </Draggable>
-  );
-});
+const YellowScrollHandle = view(
+  class YellowScrollHandleInner extends React.Component {
+    render() {
+      const {
+        scrollHandleWidth,
+        width,
+        easyStore,
+        handleDrag,
+        onMinimapScroll,
+        minSliderSize,
+        onSizeAdjust
+      } = this.props;
+      const xScroll = easyStore.percentScrolled * (width - scrollHandleWidth);
+
+      return (
+        <Draggable
+          bounds={"parent"}
+          zIndex={105}
+          handle=".handle"
+          position={{ x: xScroll, y: 0 }}
+          axis={"x"}
+          // onStart={this.onStart}
+          onDrag={handleDrag}
+        >
+          <div
+            style={{
+              height: "100%",
+              border: "none",
+              top: "0px",
+              position: "absolute",
+              zIndex: "10"
+            }}
+          >
+            {/* left hand side drag handle */}
+            <Draggable
+              bounds={{
+                left: -xScroll,
+                right: scrollHandleWidth - minSliderSize
+              }}
+              zIndex={105}
+              position={{ x: 0, y: 0 }}
+              axis={"x"}
+              onStart={(e, { x }) => {
+                this.x = x;
+              }}
+              onStop={(e, { x }) => {
+                const deltaX = x - this.x;
+
+                const newSliderSize = scrollHandleWidth - deltaX;
+                onSizeAdjust(newSliderSize);
+                //user is resizing to the left so we need to update the scroll percentage so the slider does not jump
+                const newScrollPercent = Math.min(
+                  1,
+                  (xScroll + deltaX) / (width - newSliderSize)
+                );
+                onMinimapScroll(newScrollPercent);
+                easyStore.percentScrolled = newScrollPercent;
+                // setTimeout(() => {
+                // })
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  border: "none",
+                  cursor: "ew-resize",
+                  opacity: "1",
+                  top: "0px",
+                  position: "absolute",
+                  zIndex: "10",
+                  width: 2,
+                  background: "black"
+                }}
+                className={"minimapCaret"}
+              />
+            </Draggable>
+            {/* the actual handle component */}
+            <div
+              className={"syncscroll handle"}
+              dataname="scrollGroup"
+              style={{
+                height: "100%",
+                border: "none",
+                cursor: "move",
+                opacity: ".3",
+                zIndex: "10",
+                width: scrollHandleWidth,
+                background: "yellow"
+              }}
+            />
+            {/* right hand side drag handle */}
+            <Draggable
+              bounds={{
+                right: minSliderSize + width - xScroll,
+                left: minSliderSize
+              }}
+              zIndex={105}
+              position={{ x: scrollHandleWidth, y: 0 }}
+              axis={"x"}
+              onStart={(e, { x }) => {
+                this.x = x;
+              }}
+              onStop={(e, { x }) => {
+                const deltaX = this.x - x;
+                const newSliderSize = scrollHandleWidth - deltaX;
+                onSizeAdjust(newSliderSize);
+                //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
+                const newScrollPercent = xScroll / (width - newSliderSize);
+                onMinimapScroll(newScrollPercent);
+                easyStore.percentScrolled = newScrollPercent;
+                // setTimeout(() => {
+                // })
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  border: "none",
+                  cursor: "ew-resize",
+                  opacity: "1",
+                  top: "0px",
+                  // right: 0,
+                  position: "absolute",
+                  zIndex: "10",
+                  width: 2,
+                  background: "black"
+                }}
+                className={"minimapCaret"}
+              />
+            </Draggable>
+          </div>
+        </Draggable>
+      );
+    }
+  }
+);
+
+// function stopProp(e) {
+//   e.stopPropagation();
+// }

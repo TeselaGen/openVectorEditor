@@ -86,7 +86,8 @@ class AlignmentTool extends React.Component {
   };
   sendSelectedDataToBackendForAlignment = async ({
     addedSequences,
-    isPairwiseAlignment
+    isPairwiseAlignment,
+    isAlignToRefSeq
   }) => {
     const {
       hideModal,
@@ -119,7 +120,7 @@ class AlignmentTool extends React.Component {
 
     window.toastr.success("Alignment submitted.");
     const {
-      data: { alignedSequences, pairwiseAlignments } = {}
+      data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
     } = await instance.post(
       // "http://localhost:3000/alignment/run",
       "http://j5server.teselagen.com:10000/alignment/run",
@@ -132,9 +133,17 @@ class AlignmentTool extends React.Component {
             id
           };
         }),
-        isPairwiseAlignment
+        isPairwiseAlignment,
+        isAlignToRefSeq
+        // options
       }
     );
+    // alignmentsToRefSeq set to alignedSequences for now
+    let alignedSequences = _alignedSequences;
+    if (alignmentsToRefSeq) {
+      alignedSequences = alignmentsToRefSeq;
+    }
+    // console.log("aligned sequences", alignedSequences);
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
     //set the alignemnt to loading
@@ -152,15 +161,25 @@ class AlignmentTool extends React.Component {
             };
           });
         }),
-      alignmentTracks:
+        alignmentTracks:
         alignedSequences &&
-        alignedSequences.map((alignmentData, i) => {
+        alignedSequences.map(alignmentData => {
           return {
-            sequenceData: addedSequencesToUse[i],
+            sequenceData: addedSequencesToUse[alignmentData.name.charAt(0)],
             alignmentData,
-            chromatogramData: addedSequencesToUse[i].chromatogramData
+            chromatogramData:
+              addedSequencesToUse[alignmentData.name.charAt(0)].chromatogramData
           };
         })
+      // alignmentTracks:
+      //   alignedSequences &&
+      //   alignedSequences.map((alignmentData, i) => {
+      //     return {
+      //       sequenceData: addedSequencesToUse[i],
+      //       alignmentData,
+      //       chromatogramData: addedSequencesToUse[i].chromatogramData
+      //     };
+      //   })
     });
     // upsertAlignmentRun({
     //   id: alignmentIdMismatches,
@@ -172,12 +191,12 @@ class AlignmentTool extends React.Component {
     const { array } = this.props;
     flatMap(files, async file => {
       const results = await anyToJson(file.originalFileObj, {
-        fileName: file.name
+        fileName: file.name,
+        acceptParts: true
       });
       return results.forEach(result => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
-          // console.log(result.parsedSequence);
         } else {
           return window.toastr.warning("Error parsing file: ", file.name);
         }
@@ -262,6 +281,17 @@ class AlignmentTool extends React.Component {
                   Individually align each uploaded file against the template
                   sequence (instead of creating a single Multiple Sequence
                   Alignment)
+                </span>
+              </div>
+            }
+          />
+          <CheckboxField
+            name="isAlignToRefSeq"
+            label={
+              <div>
+                Align Sequencing Reads to Reference Sequence{" "}
+                <span style={{ fontSize: 10 }}>
+                  Align short sequencing reads to a long reference sequence
                 </span>
               </div>
             }

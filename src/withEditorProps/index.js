@@ -55,7 +55,11 @@ export default compose(
 );
 
 function mapStateToProps(state, ownProps) {
-  const { editorName, sequenceData: sequenceDataFromProps } = ownProps;
+  const {
+    editorName,
+    sequenceData: sequenceDataFromProps,
+    allowSeqDataOverride
+  } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
   let editorState = VectorEditor[editorName];
@@ -93,7 +97,7 @@ function mapStateToProps(state, ownProps) {
       }
     })
   };
-  if (sequenceDataFromProps) {
+  if (sequenceDataFromProps && allowSeqDataOverride) {
     //return early here because we don't want to override the sequenceData being passed in
     //this is a little hacky but allows us to track selectionLayer/caretIndex using redux but on a sequence that isn't being stored alongside that info
     return toReturn;
@@ -130,54 +134,13 @@ function mapStateToProps(state, ownProps) {
   this.cutsites = cutsites;
   this.orfs = orfs;
   this.translations = translations;
-
-  let sequenceDataToUse = combineSequenceData(
-    sequenceData,
+  let sequenceDataToUse = {
+    ...sequenceData,
     cutsites,
     orfs,
     translations
-  );
+  };
 
-  // const featureToAdd = getFormValues("AddOrEditFeatureDialog")(state);
-  // if (featureToAdd) {
-  //   sequenceDataToUse.features = {
-  //     ...sequenceDataToUse.features,
-  //     [featureToAdd.id || "toAdd"]: {
-  //       ...featureToAdd,
-  //       id: featureToAdd.id || "toAdd",
-  //       name: featureToAdd.name || "Untitled Sequence",
-  //       start: featureToAdd.start || 0,
-  //       end: featureToAdd.end || 0,
-  //     }
-  //   };
-  // }
-  // const primerToAdd = getFormValues("AddOrEditPrimerDialog")(state);
-  // if (primerToAdd) {
-  //   sequenceDataToUse.primers = {
-  //     ...sequenceDataToUse.primers,
-  //     [primerToAdd.id || "toAdd"]: {
-  //       ...primerToAdd,
-  //       id: primerToAdd.id || "toAdd",
-  //       name: primerToAdd.name || "Untitled Sequence",
-  //       start: primerToAdd.start || 0,
-  //       end: primerToAdd.end || 0,
-  //     }
-  //   };
-  // }
-  // const partToAdd = getFormValues("AddOrEditPartDialog")(state);
-  // if (partToAdd) {
-  //   sequenceDataToUse.parts = {
-  //     ...sequenceDataToUse.parts,
-  //     [partToAdd.id || "toAdd"]: { ...partToAdd,
-  //       id: partToAdd.id || "toAdd" ,
-  //       name: partToAdd.name || "Untitled Sequence",
-  //       start: partToAdd.start || 0,
-  //       end: partToAdd.end || 0,
-  //     }
-  //   };
-  // }
-  // console.log('toReturn:',toReturn)
-  // console.log('annotationToAdd:',annotationToAdd)
   return {
     ...toReturn,
     selectedCutsites,
@@ -200,15 +163,6 @@ function mapStateToProps(state, ownProps) {
     sequenceData: sequenceDataToUse
   };
 }
-
-const combineSequenceData = lruMemoize()(
-  (sequenceData, cutsites, orfs, translations) => ({
-    ...sequenceData,
-    cutsites,
-    orfs,
-    translations
-  })
-);
 
 function mapDispatchToActions(dispatch, ownProps) {
   const { editorName } = ownProps;
@@ -244,13 +198,13 @@ function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
   let overrides = {};
   metaActions = {
     undo: () => ({
-      ...UndoActionCreators.undo(),
+      type: "VE_UNDO",
       meta: {
         editorName
       }
     }),
     redo: () => ({
-      ...UndoActionCreators.redo(),
+      type: "VE_REDO",
       meta: {
         editorName
       }

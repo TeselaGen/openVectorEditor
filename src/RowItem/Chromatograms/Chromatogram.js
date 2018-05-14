@@ -70,7 +70,6 @@ class Chromatogram extends React.Component {
       >
         <Button
           content={"Scale Chromatogram Up"}
-          isButton
           className="pt-minimal scaleChromatogramButton"
           icon="caret-up"
           onClick={this.scaleChromatogramYPeaksHigher}
@@ -82,7 +81,6 @@ class Chromatogram extends React.Component {
         />
         <Button
           content={"Scale Chromatogram Up"}
-          isButton
           className="pt-minimal scaleChromatogramButton"
           icon="caret-down"
           onClick={this.scaleChromatogramYPeaksLower}
@@ -95,7 +93,6 @@ class Chromatogram extends React.Component {
         <div>
           <canvas
             ref={n => {
-              // console.log('n:',n)
               if (n) this.canvasRef = n;
             }}
             height="100"

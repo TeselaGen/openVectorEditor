@@ -108,7 +108,7 @@ export function FindBar({
             {isInline && (
               <Popover
                 position={Position.BOTTOM}
-                target={<Button className={"pt-minimal"} icon={"edit"} />}
+                target={<Button className={"pt-minimal"} icon={"wrench"} />}
                 content={
                   <div
                     className={"ve-find-options-popover"}

@@ -1,10 +1,8 @@
 import flatmap from "lodash/flatMap";
 import { createSelector } from "reselect";
 import cutsitesSelector from "./cutsitesSelector";
-import filteredRestrictionEnzymesSelector
-  from "./filteredRestrictionEnzymesSelector";
-import specialCutsiteFilterOptions
-  from "../constants/specialCutsiteFilterOptions";
+import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
+import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 
 export default createSelector(
   cutsitesSelector,
@@ -50,9 +48,9 @@ export default createSelector(
         obj[item.id] = item;
       }
       return obj;
-    }, {});
+    },
+    {});
 
     return returnVal;
   }
 );
-// export default lruMemoize(5, undefined, true)(cutsitesSelector)

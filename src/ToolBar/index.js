@@ -1,8 +1,6 @@
 import React from "react";
 import { withProps, withHandlers, onlyUpdateForKeys } from "recompose";
-
 import { compose } from "redux";
-import perfHoc from "perf-hoc";
 
 // import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
@@ -57,7 +55,6 @@ export class ToolBar extends React.PureComponent {
   };
 
   toggleOpen = index => {
-    console.log("toggleOpen");
     if (this.state.openItem === index) {
       this.setState({
         openItem: -1
@@ -70,8 +67,6 @@ export class ToolBar extends React.PureComponent {
   };
 
   render() {
-    console.log("renderin");
-    console.log("this.state.openItem:", this.state.openItem);
     const {
       modifyTools,
       toolList = [

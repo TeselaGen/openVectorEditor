@@ -22,6 +22,7 @@ function searchLayersSelector(
     return start - start2;
   });
   return matches;
+  // return matches.map(m => ({ ...m, hideCarets: true, color: "yellow" }));
 }
 
 export default createSelector(

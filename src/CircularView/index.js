@@ -26,6 +26,7 @@ import Part from "./Part";
 import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
+import { getOrfColor } from "../constants/orfFrameToColorMap";
 function noop() {}
 
 // function toDegrees(radians) {
@@ -83,6 +84,7 @@ export class CircularView extends React.Component {
       editorDragged = noop,
       editorDragStarted = noop,
       editorClicked = noop,
+      searchLayers = [],
       editorDragStopped = noop,
       featureClicked = noop,
       featureRightClicked = noop,
@@ -406,6 +408,7 @@ export class CircularView extends React.Component {
           Annotation: Orf,
           annotationType: "orf",
           radius,
+          getColor: getOrfColor,
           reverseAnnotations: true,
           // showLabels: showOrfLabels,
           onClick: orfClicked,
@@ -520,6 +523,7 @@ export class CircularView extends React.Component {
       //DRAW SELECTION LAYER
       let selectionLayers = [
         ...additionalSelectionLayers,
+        ...searchLayers,
         ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
       ];
       return selectionLayers

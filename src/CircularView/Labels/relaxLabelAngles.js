@@ -1,9 +1,5 @@
 import { cloneDeep } from "lodash";
 
-// import clone from "clone";
-// import lruMemoize from "lru-memoize";
-
-// export default lruMemoize(1, undefined, true)(relaxLabelAngles);
 export default relaxLabelAngles;
 
 function normalizeAngle(angle) {

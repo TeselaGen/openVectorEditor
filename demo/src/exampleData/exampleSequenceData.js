@@ -987,15 +987,15 @@ import {generateSequenceData} from 've-sequence-utils'
 // }
 
 // export default {
-// 	sequence: "atgagagacggtccacaacacacaca",
-// 	features: {
-// 		asdf: {
-// 			start: 4, end: 7, id: "asdf"
-// 		},
-// 		asdfaa: {
-// 			start: 10, end: 10, id: "asdfaa"
-// 		}
-// 	}
+// 	sequence: "atga",
+// 	// features: {
+// 	// 	asdf: {
+// 	// 		start: 4, end: 7, id: "asdf"
+// 	// 	},
+// 	// 	asdfaa: {
+// 	// 		start: 10, end: 10, id: "asdfaa"
+// 	// 	}
+// 	// }
 // }
 
 

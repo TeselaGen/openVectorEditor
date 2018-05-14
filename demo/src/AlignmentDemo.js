@@ -88,39 +88,37 @@ export default connect(
               const toReturn = {
                 tickSpacing: 10,
                 ignoreYWhenSelecting: true,
-                rightClickOverrides: {
-                  selectionLayerRightClicked: () => {
-                    return [
-                      {
-                        text: "Create Diversity Region",
-                        onClick: () => {
-                          store.dispatch(
-                            upsertPart(
-                              {
-                                name: "Diversity Region",
-                                strand: 1,
-                                forward: true,
-                                start: selectionLayer.start,
-                                end: selectionLayer.end
-                              },
-                              { editorName: "alignmentView0" }
-                            )
-                          );
-                        }
-                      }
-                    ];
-                  },
-                  partRightClicked: (items, { annotation }, props) => {
-                    return [
-                      {
-                        text: "Delete Diversity Region",
-                        onClick: () => props.deletePart(annotation)
-                      }
-                    ];
-                  }
-                },
-                selectionLayerUpdate,
-                caretPositionUpdate,
+                // selectionLayerRightClicked: () => {
+                //   return [
+                //     {
+                //       text: "Create Diversity Region",
+                //       onClick: () => {
+                //         store.dispatch(
+                //           upsertPart(
+                //             {
+                //               name: "Diversity Region",
+                //               strand: 1,
+                //               forward: true,
+                //               start: selectionLayer.start,
+                //               end: selectionLayer.end
+                //             },
+                //             { editorName: "alignmentView0" }
+                //           )
+                //         );
+                //       }
+                //     }
+                //   ];
+                // },
+                // partRightClicked: ({ annotation }, props) => {
+                //   return [
+                //     {
+                //       text: "Delete Diversity Region",
+                //       onClick: () => props.deletePart(annotation)
+                //     }
+                //   ];
+                // },
+                // selectionLayerUpdate,
+                // caretPositionUpdate,
                 linearViewAnnotationVisibilityOverrides: {
                   ...alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
                   parts: true

@@ -35,6 +35,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
   - [Alignment Track Data Model](#alignment-track-data-model)
     - [Chromatogram Data](#chromatogram-data)
+  - [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -113,12 +114,11 @@ editor.updateEditor(editorState);
 These props consist of hooks and editor config options that can be passed like so: `<Editor {...editorProps}/>`  or as seen above like `window.createVectorEditor(yourDomNodeHere, editorProps);`
 ```js
 {
-
-	
-	onSave: function(event, copiedSequenceData, editorState, onSuccessCallback) {
-		console.log("event:", event);
-		console.log("sequenceData:", copiedSequenceData);
-		console.log("editorState:", editorState);
+	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
+	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
+		console.info("event:", event);
+		console.info("sequenceData:", sequenceDataToSave);
+		console.info("editorState:", editorState);
 		// To disable the save button after successful saving
 		// either call the onSuccessCallback or return a successful promise :)
 		onSuccessCallback()
@@ -127,9 +127,9 @@ These props consist of hooks and editor config options that can be passed like s
 	},
 	onCopy: function(event, copiedSequenceData, editorState) {
 		//the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-		console.log("event:", event);
-		console.log("sequenceData:", copiedSequenceData);
-		console.log("editorState:", editorState);
+		console.info("event:", event);
+		console.info("sequenceData:", copiedSequenceData);
+		console.info("editorState:", editorState);
 		const clipboardData = event.clipboardData;
 		clipboardData.setData("text/plain", copiedSequenceData.sequence);
 		clipboardData.setData(
@@ -165,7 +165,7 @@ These props consist of hooks and editor config options that can be passed like s
 			return [...items, { 
 				//props here get passed directly to blueprintjs MenuItems
 				text: "Create Part",
-				onClick: () => console.log('hey!≈')
+				onClick: () => console.info('hey!≈')
 			}]
 		}
 	},
@@ -265,61 +265,54 @@ Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
 
 # Alignments
+
+
 ## Integrating your own alignment data (only necessary if not using the built in alignment creation tool)
+
 Add a panel to the panelsShown prop like so: 
+
 ```js
-panelsShown: [
-          [
-            {
-              id: "jbeiAlignment1",
-              type: "alignment", //panel must be of type alignment
-              name: "Jbei Alignment p1243124",
-              active: true
-						}
-          ],
-```
-After calling `editor.updateEditor(...)` call
-```js
-editor.addAlignment({
-				id: "jbeiAlignment1", //this id must match the id of the panel in panelsShown (see above)
-				////optional! Use if you want a pairwise alignment:
-				pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
-					[
-						{ //reference sequence must come first!
-							sequenceData: {
-								id: "FWER1231", //every sequenceData and alignmentData should have a unique id
-								name: "GFPuv58",
-								sequence:	"ttgagggg"
-							},
-							alignmentData: {
-								sequence:	"ttgag--ggg--" //this length should be the same as the below alignmentData length!
-							}
-						},{ //aligned sequence must come second!
-							sequenceData: {
-								name: "GFPuv58",
-								sequence:	"gagccgggtt"
-							},
-							alignmentData: {
-								sequence:	"--gagccgggtt" //this length should be the same as the above alignmentData length!
-							}
-						}
-					]
-					[
-          	{Alignment Track Data Here}, //reference sequence track (see Data Model below for specs)
-          	{Alignment Track Data Here}, //aligned sequence track (see Data Model below for specs)
-					],
-					[
-          	{Alignment Track Data Here}, //see Data Model below for specs
-          	{Alignment Track Data Here}, 
-					],
-				]
-				////optional! Use if you want a multi-seq alignment:
-        alignmentTracks: [ 
-          {Alignment Track Data Here}, //see Data Model below for specs
-          {Alignment Track Data Here},
-          {Alignment Track Data Here},
-        ]
-      });
+window.createAlignmentView(this.node, {
+	id: "jbeiAlignment1", //give your alignment a unique id
+	////optional! Use if you want a pairwise alignment:
+	pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
+		[
+			{ //reference sequence must come first!
+				sequenceData: {
+					id: "FWER1231", //every sequenceData and alignmentData should have a unique id
+					name: "GFPuv58",
+					sequence:	"ttgagggg"
+				},
+				alignmentData: {
+					sequence:	"ttgag--ggg--" //this length should be the same as the below alignmentData length!
+				}
+			},{ //aligned sequence must come second!
+				sequenceData: {
+					name: "GFPuv58",
+					sequence:	"gagccgggtt"
+				},
+				alignmentData: {
+					sequence:	"--gagccgggtt" //this length should be the same as the above alignmentData length!
+				}
+			}
+		]
+		[
+			{Alignment Track Data Here}, //reference sequence track (see Data Model below for specs)
+			{Alignment Track Data Here}, //aligned sequence track (see Data Model below for specs)
+		],
+		[
+			{Alignment Track Data Here}, //see Data Model below for specs
+			{Alignment Track Data Here}, 
+		],
+	]
+	////optional! Use if you want a multi-seq alignment:
+	alignmentTracks: [ 
+		{Alignment Track Data Here}, //see Data Model below for specs
+		{Alignment Track Data Here},
+		{Alignment Track Data Here},
+	]
+});
+
 ```
 
 
@@ -358,6 +351,9 @@ Note: `alignmentData.sequence` is assumed to be the same length for EVERY track 
       "qualNums": [],
     },
 ```
+
+## Implementing Autosave functionality
+
 
 # Development: 
 ## Prerequisites

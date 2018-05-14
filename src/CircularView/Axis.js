@@ -1,4 +1,3 @@
-// import lruMemoize from "lru-memoize";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import shouldFlipText from "./shouldFlipText";
@@ -88,5 +87,4 @@ function Axis({
   };
 }
 
-// export default lruMemoize(5, undefined, true)(Axis);
 export default Axis;

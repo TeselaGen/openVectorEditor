@@ -1,6 +1,7 @@
 import { Button } from "@blueprintjs/core";
+import { forEach } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
-import some from "lodash/some";
+import { some, isEqual } from "lodash";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -9,8 +10,11 @@ import RowItem from "../RowItem";
 
 import withEditorInteractions from "../withEditorInteractions";
 import ReactList from "./ReactList";
+// import TrMmInfScroll from "./TrMmInfScroll";
+
 // import ReactList from './ReactVariable';
 import "./style.css";
+// import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
 let defaultContainerWidth = 400;
@@ -18,6 +22,51 @@ let defaultCharWidth = 12;
 let defaultMarginWidth = 50;
 
 function noop() {}
+
+const annotationsToCompute = {
+  translations: {
+    annotationHeight: 19,
+    hasYOffset: true
+  },
+  parts: {
+    annotationHeight: 19,
+    hasYOffset: true
+  },
+  primers: {
+    annotationHeight: 21,
+    hasYOffset: true
+  },
+  cutsites: {
+    annotationHeight: 15,
+    hasYOffset: false
+  },
+  features: {
+    annotationHeight: 21,
+    margin: 10,
+    hasYOffset: true
+  },
+  orfs: {
+    annotationHeight: 19,
+    hasYOffset: true
+  },
+  sequence: {
+    fixedHeight: 16,
+    isAlwaysShown: true
+  },
+  reverseSequence: {
+    fixedHeight: 16
+  },
+  axis: {
+    fixedHeight: 26.79
+  },
+  cutsiteLabels: {
+    // computeHeight: getCutsiteLabelHeights, //tnr: not actually that necessary
+    type: "cutsites",
+    annotationHeight: 15,
+    hasYOffset: true,
+    isLabel: true
+  }
+};
 
 export class RowView extends React.Component {
   static defaultProps = {
@@ -29,12 +78,83 @@ export class RowView extends React.Component {
     editorClicked: noop,
     backgroundRightClicked: noop,
     editorDragStopped: noop,
-    onScroll: noop,
+    // onScroll: noop,
     width: defaultContainerWidth,
     marginWidth: defaultMarginWidth,
     height: 400,
     charWidth: defaultCharWidth,
     RowItemProps: {}
+  };
+
+  shouldClearCache = () => {
+    const {
+      annotationVisibility,
+      annotationLabelVisibility,
+      sequenceData
+    } = this.props;
+
+    const toCompare = {
+      bpsPerRow: getBpsPerRow(this.props),
+      annotationVisibility,
+      annotationLabelVisibility,
+      stateTrackingId: sequenceData.stateTrackingId
+    };
+    if (!isEqual(toCompare, this.oldToCompare)) {
+      this.oldToCompare = toCompare;
+      return true;
+    }
+  };
+
+  //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
+  estimateRowHeight = (index, cache) => {
+    const { annotationVisibility, annotationLabelVisibility } = this.props;
+
+    if (this.clearCache) {
+      cache = {};
+    }
+
+    if (cache[index]) {
+      return cache[index];
+    }
+    let height = 10; //account for spacer
+    const row = this.rowData[index];
+    if (!row) return 0;
+    forEach(
+      annotationsToCompute,
+      (
+        {
+          fixedHeight,
+          margin = 0,
+          isLabel,
+          isAlwaysShown,
+          annotationHeight,
+          computeHeight,
+          hasYOffset,
+          type
+        },
+        key,
+        i
+      ) => {
+        const isShown =
+          isAlwaysShown ||
+          (isLabel
+            ? annotationLabelVisibility[type] && annotationVisibility[key]
+            : annotationVisibility[key]);
+        if (!isShown) return;
+        if (fixedHeight) return (height += fixedHeight);
+        const annotations = row[type || key];
+        if (hasYOffset) {
+          let maxYOffset = 0;
+          annotations.forEach(a => {
+            if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
+          });
+          height += maxYOffset * annotationHeight;
+          if (maxYOffset > 0) height += margin;
+        }
+      }
+    );
+    cache[index] = height;
+    return height;
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
     let { charWidth = defaultCharWidth } = this.props;
@@ -205,6 +325,18 @@ export class RowView extends React.Component {
 
   cache = {};
 
+  getRowData = (sequenceData, bpsPerRow) => {
+    if (
+      !isEqual(bpsPerRow, this.oldBpsPerRow) ||
+      !isEqual(sequenceData, this.oldSeqData)
+    ) {
+      this.rowData = prepareRowData(sequenceData, bpsPerRow);
+      this.oldBpsPerRow = bpsPerRow;
+      this.oldSeqData = sequenceData;
+    }
+    return this.rowData;
+  };
+
   render() {
     let {
       //currently found in props
@@ -215,7 +347,7 @@ export class RowView extends React.Component {
       editorClicked,
       backgroundRightClicked,
       editorDragStopped,
-      onScroll,
+      // onScroll,
       width,
       marginWidth,
       height,
@@ -235,7 +367,9 @@ export class RowView extends React.Component {
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
     // let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
     //  propsToUse.charWidth * bpsPerRow;
-    let rowData = prepareRowData(sequenceData, bpsPerRow);
+    let rowData = this.getRowData(sequenceData, bpsPerRow);
+    this.rowData = rowData;
+
     let showJumpButtons = rowData.length > 15;
     let renderItem = index => {
       if (this.cache[index]) return this.cache[index];
@@ -295,7 +429,7 @@ export class RowView extends React.Component {
         return null;
       }
     };
-
+    const shouldClear = this.shouldClearCache();
     return (
       <Draggable
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -340,6 +474,7 @@ export class RowView extends React.Component {
               backgroundRightClicked
             );
           }}
+          // onScroll={onScroll}
           onClick={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
@@ -351,13 +486,13 @@ export class RowView extends React.Component {
           <ReactList
             ref={c => {
               this.InfiniteScroller = c;
-
               !this.calledUpdateScrollOnce && //trigger the scroll here as well because now we actually have the infinite scroller component accessible
                 this.updateScrollPosition({}, this.props);
             }}
+            clearCache={shouldClear}
             itemRenderer={renderItem}
             length={rowData.length}
-            itemSizeEstimator={itemSizeEstimator}
+            itemSizeEstimator={this.estimateRowHeight}
             type="variable"
           />
         </div>
@@ -376,12 +511,12 @@ function getBpsPerRow({
   return Math.floor((width - marginWidth) / charWidth);
 }
 
-function itemSizeEstimator(index, cache) {
-  if (cache[index]) {
-    return cache[index];
-  }
-  return 400;
-}
+// function itemSizeEstimator(index, cache) {
+//   if (cache[index]) {
+//     return cache[index];
+//   }
+//   return 400;
+// }
 
 // const disablePointers = () => {
 //   clearTimeout(this.timer);
@@ -393,3 +528,10 @@ function itemSizeEstimator(index, cache) {
 //     document.body.classList.remove('disable-hover')
 //   },0);
 // }
+
+function onScroll() {
+  window.__veScrolling = true;
+  setTimeout(() => {
+    window.__veScrolling = false;
+  });
+}

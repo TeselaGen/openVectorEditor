@@ -1,9 +1,6 @@
-export default function addAlignment(store, editorName, alignment = {}) {
+export default function addAlignment(store, alignment = {}) {
   store.dispatch({
     type: "UPSERT_ALIGNMENT_RUN",
-    payload: alignment,
-    meta: {
-      editorName
-    }
+    payload: alignment
   });
 }

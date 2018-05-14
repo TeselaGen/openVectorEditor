@@ -21,6 +21,7 @@ function drawAnnotations({
   sequenceLength,
   reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
   editorName,
+  getColor,
   useStartAngle, //use the startAngle instead of the centerAngle to position the labels
   onClick = noop,
   positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
@@ -135,7 +136,9 @@ function drawAnnotations({
         };
       }
 
-      let annotationColor = annotation.color || "purple";
+      let annotationColor = getColor
+        ? getColor(annotation)
+        : annotation.color || "purple";
 
       /* eslint-disable */
 

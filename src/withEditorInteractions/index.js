@@ -21,29 +21,30 @@ import { getContext } from "recompose";
 import Keyboard from "./Keyboard";
 
 import withEditorProps from "../withEditorProps";
-import updateSelectionOrCaret from "../utils/selectionAndCaretUtils/updateSelectionOrCaret";
 import {
   normalizePositionByRangeLength
   // convertRangeTo1Based
 } from "ve-range-utils";
-import { getRangeLength } from "ve-range-utils";
 import React from "react";
 import createSequenceInputPopup from "./createSequenceInputPopup";
 
 import moveCaret from "./moveCaret";
-import handleCaretMoved from "./handleCaretMoved";
+// import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
 import { createMenu } from "teselagen-react-components";
+import {
+  handleCaretMoved,
+  editorDragged,
+  editorClicked,
+  editorDragStarted,
+  editorDragStopped,
+  updateSelectionOrCaret
+} from "./clickAndDragUtils";
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
 function noop() {}
-let draggingEnd = false;
-let dragInProgress = false;
-let caretPositionOnDragStart;
-let selectionStartGrabbed;
-let selectionEndGrabbed;
 
 let defaultContainerWidth = 400;
 let defaultCharWidth = 12;
@@ -71,6 +72,10 @@ function VectorInteractionHOC(Component /* options */) {
       } = {
         ...this.props
       };
+      this.editorDragged = editorDragged.bind(this);
+      this.editorClicked = editorClicked.bind(this);
+      this.editorDragStarted = editorDragStarted.bind(this);
+      this.editorDragStopped = editorDragStopped.bind(this);
 
       // combokeys.stop();
       // combokeys.watch(this.node)
@@ -254,12 +259,26 @@ function VectorInteractionHOC(Component /* options */) {
 
     handleCopy = e => {
       window.toastr.success("Selection Copied");
-      const { onCopy = () => {}, sequenceData, selectionLayer } = this.props;
+      const {
+        onCopy = () => {},
+        sequenceData,
+        selectionLayer,
+        copyOptions
+      } = this.props;
       onCopy(
         e,
         tidyUpSequenceData(
           this.sequenceDataToCopy ||
-            getSequenceDataBetweenRange(sequenceData, selectionLayer),
+            getSequenceDataBetweenRange(sequenceData, selectionLayer, {
+              excludePartial: {
+                features: !copyOptions.partialFeatures,
+                parts: !copyOptions.partialParts
+              },
+              exclude: {
+                features: !copyOptions.features,
+                parts: !copyOptions.parts
+              }
+            }),
           { annotationsAsObjects: true }
         ),
         this.props
@@ -370,12 +389,18 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     annotationClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const { annotationSelect, annotationDeselectAll } = this.props;
+      event.preventDefault && event.preventDefault();
+      event.stopPropagation && event.stopPropagation();
+      const {
+        annotationSelect,
+        annotationDeselectAll,
+        propertiesViewTabUpdate
+      } = this.props;
       this.updateSelectionOrCaret(event.shiftKey, annotation);
-      annotationDeselectAll(undefined);
+      !event.shiftKey && annotationDeselectAll(undefined);
       annotation.id && annotationSelect(annotation);
+      annotation.annotationTypePlural &&
+        propertiesViewTabUpdate(annotation.annotationTypePlural, annotation);
     };
 
     cutsiteClicked = ({ event, annotation }) => {
@@ -400,7 +425,7 @@ function VectorInteractionHOC(Component /* options */) {
         : [
             {
               text: "View AA Frames",
-              innerJsx: map(frameTranslations, (unused, frame) => {
+              submenu: map(frameTranslations, (unused, frame) => {
                 return (
                   <FrameTranslationMenuItem
                     key={frame}
@@ -593,7 +618,7 @@ function VectorInteractionHOC(Component /* options */) {
             },
             {
               text: "Copy Options",
-              innerJsx: [
+              submenu: [
                 <MenuItem disabled key={"aghah"} text={"Include:"} />
               ].concat(
                 map(copyOptions, (unused, copyOption) => {
@@ -684,7 +709,10 @@ function VectorInteractionHOC(Component /* options */) {
 
     backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
       this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
-      const { readOnly, sequenceData: { circular } } = this.props;
+      const {
+        readOnly,
+        sequenceData: { circular }
+      } = this.props;
       const menu = [
         ...(readOnly
           ? []
@@ -774,11 +802,12 @@ function VectorInteractionHOC(Component /* options */) {
         }
       ];
     };
-    featureRightClicked = ({ annotation }) => {
+    featureRightClicked = ({ annotation, event }) => {
       const {
         readOnly,
         upsertTranslation,
         deleteFeature,
+        showMergeFeaturesDialog,
         annotationVisibilityToggle,
         showAddOrEditFeatureDialog,
         propertiesViewOpen,
@@ -798,6 +827,17 @@ function VectorInteractionHOC(Component /* options */) {
                 text: "Delete Feature",
                 onClick: function() {
                   deleteFeature(annotation);
+                }
+              },
+              {
+                text: "Merge With Another Feature",
+                onClick: () => {
+                  this.annotationClicked({
+                    annotation,
+                    event: { ...event, shiftHeld: true }
+                  });
+                  // annotationSelect(annotation)
+                  showMergeFeaturesDialog(annotation);
                 }
               }
             ]),
@@ -953,81 +993,6 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
-    editorDragged = ({ nearestCaretPos }) => {
-      let {
-        caretPosition = -1,
-        selectionLayer = { start: -1, end: -1 },
-        sequenceData = { sequence: "" }
-      } = this.props;
-      let sequenceLength = sequenceData.sequence.length;
-
-      if (!dragInProgress) {
-        //we're starting the drag, so update the caret position!
-        if (!selectionStartGrabbed && !selectionEndGrabbed) {
-          //we're not dragging the caret or selection handles
-          this.caretPositionUpdate(nearestCaretPos);
-        }
-        dragInProgress = true;
-        return;
-      }
-      if (selectionStartGrabbed) {
-        handleSelectionStartGrabbed({
-          caretPosition,
-          selectionLayer,
-          selectionLayerUpdate: this.selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        });
-      } else if (selectionEndGrabbed) {
-        handleSelectionEndGrabbed({
-          caretPosition,
-          selectionLayer,
-          selectionLayerUpdate: this.selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        });
-      } else {
-        // else if (caretGrabbed) {
-        //     handleCaretDrag({
-        //         caretPosition,
-        //         selectionLayer,
-        //         selectionLayerUpdate,
-        //         nearestCaretPos,
-        //         sequenceLength
-        //     })
-        // }
-        //dragging somewhere within the sequence
-        //pass the caret position of the drag start
-        handleCaretDrag({
-          caretPosition: caretPositionOnDragStart,
-          selectionLayer,
-          selectionLayerUpdate: this.selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        });
-      }
-    };
-
-    editorClicked = ({ nearestCaretPos, shiftHeld }) => {
-      if (!dragInProgress) {
-        //we're not dragging the caret or selection handles
-        this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
-      }
-    };
-
-    editorDragStarted = opts => {
-      window.__veDragging = true;
-      caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
-      selectionStartGrabbed = opts.selectionStartGrabbed;
-      selectionEndGrabbed = opts.selectionEndGrabbed;
-    };
-    editorDragStopped = () => {
-      window.__veDragging = false;
-      setTimeout(function() {
-        dragInProgress = false;
-      });
-    };
-
     render() {
       const {
         closePanelButton,
@@ -1104,131 +1069,6 @@ function VectorInteractionHOC(Component /* options */) {
       );
     }
   };
-}
-
-function handleSelectionStartGrabbed({
-  caretPosition,
-  selectionLayer,
-  selectionLayerUpdate,
-  nearestCaretPos,
-  sequenceLength
-}) {
-  if (selectionLayer.start < 0) {
-    handleNoSelectionLayerYet({
-      caretPosition,
-      selectionLayer,
-      selectionLayerUpdate,
-      nearestCaretPos,
-      sequenceLength
-    });
-  } else {
-    //there must be a selection layer
-    //we need to move the selection layer
-    selectionLayerUpdate({
-      start: nearestCaretPos,
-      end: selectionLayer.end
-    });
-  }
-}
-
-function handleSelectionEndGrabbed({
-  caretPosition,
-  selectionLayer,
-  selectionLayerUpdate,
-  nearestCaretPos,
-  sequenceLength
-}) {
-  if (selectionLayer.start < 0) {
-    handleNoSelectionLayerYet({
-      caretPosition,
-      selectionLayerUpdate,
-      nearestCaretPos,
-      sequenceLength
-    });
-  } else {
-    //there must be a selection layer
-    //we need to move the selection layer
-    let newEnd = normalizePositionByRangeLength(
-      nearestCaretPos - 1,
-      sequenceLength
-    );
-    selectionLayerUpdate({
-      start: selectionLayer.start,
-      end: newEnd
-    });
-  }
-}
-function handleNoSelectionLayerYet({
-  caretPosition,
-  selectionLayerUpdate,
-  nearestCaretPos,
-  sequenceLength
-}) {
-  //no selection layer yet, so we'll start one if necessary
-  // 0 1 2 3 4 5 6 7 8 9
-  //    c
-  //        n
-  //
-  let dragEnd = {
-    start: caretPosition,
-    end: normalizePositionByRangeLength(
-      nearestCaretPos - 1,
-      sequenceLength,
-      true
-    )
-  };
-  let dragStart = {
-    start: nearestCaretPos,
-    end: normalizePositionByRangeLength(caretPosition - 1, sequenceLength, true)
-  };
-  if (caretPosition === nearestCaretPos) {
-    return; // do nothing because nearestCaretPos === caretPosition
-  } else if (
-    getRangeLength(dragEnd, sequenceLength) <
-    getRangeLength(dragStart, sequenceLength)
-  ) {
-    draggingEnd = true; //the caret becomes the "selection end"
-    selectionLayerUpdate(dragEnd);
-  } else {
-    draggingEnd = false; //the caret becomes the "selection end"
-    selectionLayerUpdate(dragStart);
-  }
-}
-function handleCaretDrag({
-  caretPosition,
-  selectionLayer,
-  selectionLayerUpdate,
-  nearestCaretPos,
-  sequenceLength
-}) {
-  if (selectionLayer.start > -1) {
-    //there is a selection layer
-    draggingEnd
-      ? handleSelectionEndGrabbed({
-          caretPosition,
-          selectionLayer,
-          selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        })
-      : handleSelectionStartGrabbed({
-          caretPosition,
-          selectionLayer,
-          selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        });
-  } else if (caretPosition > -1) {
-    handleNoSelectionLayerYet({
-      caretPosition,
-      selectionLayer,
-      selectionLayerUpdate,
-      nearestCaretPos,
-      sequenceLength
-    });
-  } else {
-    console.warn("we should never be here...");
-  }
 }
 
 export default compose(

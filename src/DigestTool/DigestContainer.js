@@ -71,9 +71,6 @@ export default compose(
       }
       return true;
     });
-    // console.log("fragments:", fragments);
-    // topSnipPosition
-    // bottomSnipPosition
     return {
       lanes: [fragments],
       overlappingEnzymes

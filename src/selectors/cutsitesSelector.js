@@ -2,7 +2,6 @@ import circularSelector from "./circularSelector";
 import sequenceSelector from "./sequenceSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import { createSelector } from "reselect";
-// import lruMemoize from 'lru-memoize';
 import bsonObjectid from "bson-objectid";
 import { flatMap as flatmap } from "lodash";
 import { getCutsitesFromSequence } from "ve-sequence-utils";
@@ -70,4 +69,3 @@ export default createSelector(
 );
 //
 //
-// export default lruMemoize(5, undefined, true)(cutsitesSelector)

@@ -3,7 +3,7 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-import orfFrameToColorMap from "../../constants/orfFrameToColorMap";
+import { getOrfColor } from "../../constants/orfFrameToColorMap";
 
 class OrfProperties extends React.Component {
   onRowSelect = ([record]) => {
@@ -22,7 +22,7 @@ class OrfProperties extends React.Component {
     const orfsToUse = map(orfs, orf => {
       return {
         ...orf,
-        color: orfFrameToColorMap[orf.frame],
+        color: getOrfColor(orf),
         frame: orf.frame + 1,
         ...(orf.strand === undefined && {
           strand: orf.forward ? 1 : -1

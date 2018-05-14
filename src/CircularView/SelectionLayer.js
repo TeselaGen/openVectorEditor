@@ -1,7 +1,6 @@
 import Caret from "./Caret";
 import sector from "paths-js/sector";
 import getRangeAngles from "./getRangeAnglesSpecial";
-// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
@@ -17,7 +16,7 @@ function SelectionLayer({
   selectionLayerRightClicked,
   index
 }) {
-  let { color, start, end, showCaret = false } = selectionLayer;
+  let { color, start, end, hideCarets = false } = selectionLayer;
   let { startAngle, endAngle, totalAngle } = getRangeAngles(
     selectionLayer,
     sequenceLength
@@ -69,7 +68,7 @@ function SelectionLayer({
         d={section.path.print()}
         fill={color || "rgb(0, 153, 255)"}
       />
-      {!showCaret && (
+      {!hideCarets && (
         <Caret
           key="caret1"
           className={
@@ -82,7 +81,7 @@ function SelectionLayer({
           outerRadius={radius}
         />
       )}
-      {!showCaret && (
+      {!hideCarets && (
         <Caret
           key="caret2"
           className={
@@ -99,5 +98,4 @@ function SelectionLayer({
   );
 }
 
-// export default lruMemoize(5, undefined, true)(SelectionLayer);
 export default pureNoFunc(SelectionLayer);

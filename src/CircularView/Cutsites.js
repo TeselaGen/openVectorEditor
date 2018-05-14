@@ -1,6 +1,5 @@
 /* @flow */
 import getRangeAngles from "./getRangeAnglesSpecial";
-// import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import each from "lodash/each";
@@ -82,7 +81,6 @@ function Cutsites({
 }
 
 export default Cutsites;
-// export default lruMemoize(5, undefined, true)(Cutsites);
 
 const DrawCutsite = pureNoFunc(
   withHover(function({

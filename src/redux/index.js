@@ -1,6 +1,4 @@
-import undoable from "redux-undo";
 import { combineReducers } from "redux";
-import deepEqual from "deep-equal";
 import * as addYourOwnEnzyme from "./addYourOwnEnzyme";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
@@ -24,10 +22,12 @@ import * as replacementLayers from "./replacementLayers";
 import * as restrictionEnzymes from "./restrictionEnzymes";
 import * as selectedAnnotations from "./selectedAnnotations";
 import * as selectionLayer from "./selectionLayer";
+import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 
 import createAction from "./utils/createMetaAction";
+export vectorEditorMiddleware from "./middleware";
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_INITIALIZE");
 const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
@@ -70,12 +70,10 @@ let reducers = {
   annotationLabelVisibility: annotationLabelVisibility.default,
   annotationVisibility: annotationVisibility.default,
   annotationsToSupport: annotationsToSupport.default,
-  sequenceDataHistory: undoable(sequenceData.default, {
-    ignoreInitialState: true,
-    filter: distinctState
-  }),
+  sequenceData: sequenceData.default,
   useAdditionalOrfStartCodons: useAdditionalOrfStartCodons.default,
   minimumOrfSize: minimumOrfSize.default,
+  sequenceDataHistory: sequenceDataHistory.default,
   hoveredAnnotation: hoveredAnnotation.default,
   caretPosition: caretPosition.default,
   selectionLayer: selectionLayer.default,
@@ -130,6 +128,7 @@ export default function reducerFactory(initialState = {}) {
       //just a normal action
       Object.keys(state).forEach(function(editorName) {
         if (editorName === "addYourOwnEnzyme") return; //we deal with add your own enzyme
+        if (editorName === "alignments") return; //we deal with add your own enzyme
         newState[editorName] = combineReducers(reducers)(
           state[editorName],
           action
@@ -140,16 +139,14 @@ export default function reducerFactory(initialState = {}) {
     return {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
-      addYourOwnEnzyme: addYourOwnEnzyme.default(state.addYourOwnEnzyme, action)
+      addYourOwnEnzyme: addYourOwnEnzyme.default(
+        state.addYourOwnEnzyme,
+        action
+      ),
+      alignments: alignments.default(state.alignments, action)
     };
   };
 }
 
 // export const getBlankEditor = (state) => (state.blankEditor)
 export const getEditorByName = (state, editorName) => state[editorName];
-
-function distinctState(action, currentState, previousHistory) {
-  let { present } = previousHistory;
-  const equal = deepEqual(currentState, present);
-  return !equal;
-}
