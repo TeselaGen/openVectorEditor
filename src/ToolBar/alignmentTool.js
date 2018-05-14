@@ -104,7 +104,7 @@ class AlignmentTool extends React.Component {
       id: alignmentId,
       name: addedSequencesToUse[0].name + " Alignment"
     });
-    //set the alignemnt to loading
+    //set the alignment to loading
     upsertAlignmentRun({
       id: alignmentId,
       loading: true
@@ -122,8 +122,8 @@ class AlignmentTool extends React.Component {
     const {
       data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
     } = await instance.post(
-      // "http://localhost:3000/alignment/run",
-      "http://j5server.teselagen.com:10000/alignment/run",
+      "http://localhost:3000/alignment/run",
+      // "http://j5server.teselagen.com:10000/alignment/run",
       {
         sequencesToAlign: addedSequencesToUse.map(({ sequence, name, id }) => {
           return {
@@ -143,7 +143,7 @@ class AlignmentTool extends React.Component {
     if (alignmentsToRefSeq) {
       alignedSequences = alignmentsToRefSeq;
     }
-    // console.log("aligned sequences", alignedSequences);
+    console.log("aligned sequences", alignedSequences);
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
     //set the alignemnt to loading
@@ -165,10 +165,10 @@ class AlignmentTool extends React.Component {
         alignedSequences &&
         alignedSequences.map(alignmentData => {
           return {
-            sequenceData: addedSequencesToUse[alignmentData.name.charAt(0)],
+            sequenceData: addedSequencesToUse[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))],
             alignmentData,
             chromatogramData:
-              addedSequencesToUse[alignmentData.name.charAt(0)].chromatogramData
+              addedSequencesToUse[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))].chromatogramData
           };
         })
       // alignmentTracks:
