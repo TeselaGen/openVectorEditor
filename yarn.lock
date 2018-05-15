@@ -3563,9 +3563,9 @@ eslint-plugin-jsx-a11y@6.0.3:
     emoji-regex "^6.1.0"
     jsx-ast-utils "^2.0.0"
 
-eslint-plugin-react@7.7.0:
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.7.0.tgz#f606c719dbd8a1a2b3d25c16299813878cca0160"
+eslint-plugin-react@7.8.2:
+  version "7.8.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.8.2.tgz#e95c9c47fece55d2303d1a67c9d01b930b88a51d"
   dependencies:
     doctrine "^2.0.2"
     has "^1.0.1"
@@ -9949,9 +9949,9 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@^22.1.11:
-  version "22.1.11"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.1.11.tgz#2dafa51551679f17585ec1cc36654579f3aea7af"
+teselagen-react-components@^22.1.16:
+  version "22.1.16"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-22.1.16.tgz#fab4a65b84662405026d4ce0d528b33191b011bd"
   dependencies:
     classnames "^2.2.5"
     cross-env "^5.1.4"
@@ -10537,9 +10537,9 @@ ve-range-utils@^2.5.0:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.2.45:
-  version "3.2.45"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.45.tgz#f820c3c9cee59bfe2a678b11387214c5a522effb"
+ve-sequence-utils@3.2.46:
+  version "3.2.46"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.46.tgz#d10f03059490059a4c8ff029c716efb17493f978"
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
