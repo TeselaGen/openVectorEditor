@@ -228,9 +228,22 @@ function VectorInteractionHOC(Component /* options */) {
         return window.toastr.warning("Sorry the sequence is Read-Only");
       }
 
-      let seqDataToInsert = onPaste
-        ? onPaste(e, this.props)
-        : { sequence: e.target.value };
+      let seqDataToInsert
+      if (onPaste) {
+        seqDataToInsert = onPaste(e, this.props)
+      } else {
+        const clipboardData = e.clipboardData;
+        let jsonData = clipboardData.getData("application/json");
+        if (jsonData) {
+          jsonData = JSON.parse(jsonData);
+        }
+        const sequenceData = jsonData || {
+          sequence: clipboardData.getData("text/plain") || e.target.value
+        };
+        return sequenceData;
+      }
+
+        
 
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
         provideNewIdsForAnnotations: true,
