@@ -228,13 +228,24 @@ function VectorInteractionHOC(Component /* options */) {
         return window.toastr.warning("Sorry the sequence is Read-Only");
       }
 
-      let seqDataToInsert = onPaste
-        ? onPaste(e, this.props)
-        : { sequence: e.target.value };
+      let seqDataToInsert;
+      if (onPaste) {
+        seqDataToInsert = onPaste(e, this.props);
+      } else {
+        const clipboardData = e.clipboardData;
+        let jsonData = clipboardData.getData("application/json");
+        if (jsonData) {
+          jsonData = JSON.parse(jsonData);
+        }
+        seqDataToInsert = jsonData || {
+          sequence: clipboardData.getData("text/plain") || e.target.value
+        };
+      }
 
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
         provideNewIdsForAnnotations: true,
-        annotationsAsObjects: true
+        annotationsAsObjects: true,
+        removeUnwantedChars: true
       });
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");

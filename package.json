@@ -1,6 +1,10 @@
 {
   "name": "open-vector-editor",
+<<<<<<< HEAD
   "version": "4.0.6",
+=======
+  "version": "4.0.9",
+>>>>>>> d3031a1e77632b57a33b4f3024c5bfa5a219e75d
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -90,7 +94,7 @@
     "eslint-plugin-flowtype": "2.46.3",
     "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
-    "eslint-plugin-react": "7.7.0",
+    "eslint-plugin-react": "7.8.2",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "husky": "^0.14.3",
@@ -115,10 +119,10 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "^7.3.0",
     "redux-thunk": "*",
-    "teselagen-react-components": "^22.1.11",
+    "teselagen-react-components": "^22.1.16",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
-    "ve-sequence-utils": "3.2.45"
+    "ve-sequence-utils": "3.2.46"
   },
   "lint-staged": {
     "src/**/*.js ": [
