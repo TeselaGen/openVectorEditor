@@ -667,7 +667,7 @@ export class Editor extends React.Component {
           activePanelId={activePanelId}
           minSize="200"
           propagateDimensions={true}
-          resizeHeight={previewMode && previewModeFullscreen}
+          resizeHeight={!!(previewMode && previewModeFullscreen)} //use the !! to force a boolean
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
