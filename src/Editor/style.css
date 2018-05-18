@@ -49,14 +49,6 @@
   height: inherit !important;
 }
 
-.fullscreen {
-  background: white;
-  z-index: 15000;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-}
-
 .preview-mode-container {
   display: flex;
   align-items: center;
