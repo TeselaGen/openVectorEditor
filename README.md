@@ -217,10 +217,12 @@ These are the options to the `updateEditor()` action (the most generic redux act
 		sequence: "atagatagagaggcccg",
 		features: [
 			{
+				color: "#b3b3b3", //you can override the default color for each individual feature if you want
+				type: "misc_feature",
 				start: 0, //start and end are 0-based inclusive for all annotations
 				end: 10,
 				id: 'yourUniqueID',
-				forward: true //strand
+				forward: true //ie true=positive strand     false=negative strange 
 			}
 		],
 		parts: []
@@ -281,7 +283,8 @@ window.createAlignmentView(this.node, {
 				sequenceData: {
 					id: "FWER1231", //every sequenceData and alignmentData should have a unique id
 					name: "GFPuv58",
-					sequence:	"ttgagggg"
+					sequence:	"ttgagggg",
+					features: [{id: "feat1", start: 2, end:4, name: "GFP CDS"}]
 				},
 				alignmentData: {
 					sequence:	"ttgag--ggg--" //this length should be the same as the below alignmentData length!
@@ -310,7 +313,28 @@ window.createAlignmentView(this.node, {
 		{Alignment Track Data Here}, //see Data Model below for specs
 		{Alignment Track Data Here},
 		{Alignment Track Data Here},
-	]
+	],
+	//additional view options: 
+
+	"alignmentAnnotationVisibility": {
+        "features": true,
+        "yellowAxis": false,
+        "translations": false,
+        "parts": true,
+        "orfs": true,
+        "orfTranslations": false,
+        "axis": true,
+        "cutsites": false,
+        "primers": true,
+        "reverseSequence": false,
+        "lineageLines": true,
+        "axisNumbers": true
+    },
+    "alignmentAnnotationLabelVisibility": {
+        "features": true,
+        "parts": true,
+        "cutsites": false
+    },
 });
 
 ```

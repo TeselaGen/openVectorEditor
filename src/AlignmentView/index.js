@@ -1,6 +1,7 @@
+/* eslint-disable react/no-deprecated */ 
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Slider, Tooltip } from "@blueprintjs/core";
+import { Button, Slider, Tooltip, Intent } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { LinearView } from "../LinearView";
@@ -353,33 +354,7 @@ class AlignmentView extends React.Component {
         }}
         className="alignmentView"
       >
-        {handleBackButtonClicked && (
-          <div
-            style={{
-              position: "absolute",
-              background: "white",
-              opacity: 1,
-              padding: 3,
-              top: 10,
-              left: 10,
-              zIndex: 11
-            }}
-          >
-            <Tooltip content="Back to pairwise alignment overview">
-              <Button
-                icon="arrow-left"
-                onClick={() => {
-                  this.setState({
-                    charWidthInLinearView: charWidthInLinearViewDefault
-                  });
-                  handleBackButtonClicked();
-                  this.caretPositionUpdate(-1);
-                }}
-                className={"alignmentViewBackButton"}
-              />
-            </Tooltip>
-          </div>
-        )}
+        
         {hasTemplate ? (
           <React.Fragment>
             <div className={"alignmentTrackFixedToTop"}>
@@ -422,6 +397,26 @@ class AlignmentView extends React.Component {
                 max={14}
                 min={this.getMinCharWidth()}
               />
+              {handleBackButtonClicked && (
+          
+            <Tooltip content="Back to pairwise alignment overview">
+              <Button
+
+                icon="arrow-left"
+                onClick={() => {
+                  this.setState({
+                    charWidthInLinearView: charWidthInLinearViewDefault
+                  });
+                  handleBackButtonClicked();
+                  this.caretPositionUpdate(-1);
+                }}
+                intent={Intent.PRIMARY}
+                // minimal
+                style={{marginRight: 10}}
+                className={"alignmentViewBackButton"}
+              />
+            </Tooltip>
+        )}
               {!noVisibilityOptions && (
                 <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
               )}
