@@ -9,7 +9,7 @@ import {
 import { reduxForm } from "redux-form";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
-import { SelectField } from "teselagen-react-components";
+import { SelectField, InfoHelper } from "teselagen-react-components";
 
 export function FindBar({
   toggleFindTool,
@@ -32,6 +32,7 @@ export function FindBar({
   } = findTool;
   const findOptionsEls = [
     <SelectField
+      key="dnaoraa"
       options={[
         { label: "DNA", value: "DNA" },
         { label: "Amino Acids", value: "AA" }
@@ -40,19 +41,53 @@ export function FindBar({
       onFieldSubmit={value => {
         updateDnaOrAA(value);
       }}
-      key="dnaoraa"
     />,
-    <SelectField
-      options={[
-        { label: "Literal", value: "LITERAL" },
-        { label: "Ambiguous", value: "AMBIGUOUS" }
-      ]}
-      defaultValue={ambiguousOrLiteral}
-      onFieldSubmit={value => {
-        updateAmbiguousOrLiteral(value);
-      }}
-      key="ambiguousorliteral"
-    />,
+    <div style={{ display: "flex" }} key="ambiguousorliteral">
+      <SelectField
+        options={[
+          { label: "Literal", value: "LITERAL" },
+          { label: "Ambiguous", value: "AMBIGUOUS" }
+        ]}
+        defaultValue={ambiguousOrLiteral}
+        onFieldSubmit={value => {
+          updateAmbiguousOrLiteral(value);
+        }}
+      />
+      <InfoHelper style={{ marginLeft: 10 }}>
+        <div>
+          Ambiguous substitutions:
+          <div style={{ display: "flex", fontSize: 12 }}>
+            <div style={{ marginRight: 20 }}>
+              <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
+                DNA:
+              </div>
+              <div>M: AC</div>
+              <div>R: AG</div>
+              <div>W: AT</div>
+              <div>S: CG</div>
+              <div>Y: CT</div>
+              <div>K: GT</div>
+              <div>V: ACG</div>
+              <div>H: ACT</div>
+              <div>D: AGT</div>
+              <div>B: CGT</div>
+              <div>X: GATC</div>
+              <div>N: GATC</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
+                AA:
+              </div>
+              <div>B: ND</div>
+              <div>J: IL</div>
+              <div>X: ACDEFGHIKLMNPQRSTVWY</div>
+              <div>Z: QE</div>
+              <div>*: any</div>
+            </div>
+          </div>
+        </div>
+      </InfoHelper>
+    </div>,
     <Switch
       key="highlightall"
       value={highlightAll}

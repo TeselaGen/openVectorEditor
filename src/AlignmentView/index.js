@@ -1,7 +1,7 @@
 /* eslint-disable react/no-deprecated */ 
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Slider, Tooltip, Intent } from "@blueprintjs/core";
+import { Button, Slider, Tooltip, Intent, Position } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { LinearView } from "../LinearView";
@@ -399,9 +399,8 @@ class AlignmentView extends React.Component {
               />
               {handleBackButtonClicked && (
           
-            <Tooltip content="Back to pairwise alignment overview">
+            <Tooltip position={Position.TOP} content="Back to pairwise alignment overview">
               <Button
-
                 icon="arrow-left"
                 onClick={() => {
                   this.setState({
