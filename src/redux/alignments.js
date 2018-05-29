@@ -91,6 +91,42 @@ function addHighlightedDifferences(alignmentTracks) {
     };
   });
 }
+function addDashesForMatchStartAndEndForTracks(alignmentTracks) {
+  return alignmentTracks.map((track, i) => {
+    // .filter by the user-specified mismatch overrides (initially [])
+    return {
+      ...track,
+      alignmentData: addDashesForMatchStartAndEnd(
+        track,
+        alignmentTracks[0],
+        i === 0
+      )
+    };
+  });
+}
+
+function addDashesForMatchStartAndEnd({ alignmentData }, template, isTemplate) {
+  const { sequenceData } = template;
+  const { matchStart = 0 } = alignmentData;
+  const matchEnd = matchStart + alignmentData.sequence.length;
+  const newAlignmentData = {
+    ...alignmentData,
+    // matchStart: undefined, //delete this so it won't have the possibility of being run again
+    // matchEnd: undefined, //delete this so it won't have the possibility of being run again
+    sequence:
+      (isTemplate
+        ? sequenceData.sequence.slice(0, matchStart)
+        : "-".repeat(matchStart)) +
+      alignmentData.sequence +
+      (isTemplate
+        ? sequenceData.sequence.slice(matchEnd)
+        : "-".repeat(
+            Math.max(sequenceData.sequence.length - (matchEnd + 1), 0)
+          ))
+  };
+
+  return newAlignmentData;
+}
 
 // alignmentTracks = addHighlightedDifferences(alignmentTracks);
 
@@ -122,6 +158,9 @@ export default (state = {}, { payload = {}, type }) => {
       ...payload
     };
     if (payloadToUse.pairwiseAlignments) {
+      payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
+        addDashesForMatchStartAndEndForTracks
+      );
       const templateSeq = payloadToUse.pairwiseAlignments[0][0];
       //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
       const pairwiseOverviewAlignmentTracks = [
@@ -137,6 +176,15 @@ export default (state = {}, { payload = {}, type }) => {
           template.alignmentData.sequence,
           alignedSeq.alignmentData.sequence
         );
+        console.log(
+          "template.alignmentData.sequence.length:",
+          template.alignmentData.sequence.length
+        );
+        console.log(
+          "alignedSeq.alignmentData.sequence.length:",
+          alignedSeq.alignmentData.sequence.length
+        );
+        console.log("condensedSeq.length:", condensedSeq.length);
         const re = /r+/gi;
         let match;
         const additionalSelectionLayers = [];
@@ -162,14 +210,15 @@ export default (state = {}, { payload = {}, type }) => {
         pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
       });
       payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
-
       payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
-        alignmentTracks => {
-          return addHighlightedDifferences(alignmentTracks);
-        }
+        addHighlightedDifferences
       );
     }
     if (payloadToUse.alignmentTracks) {
+      //tnr: the following is commented out because it is not yet ready
+      // payloadToUse.alignmentTracks = addDashesForMatchStartAndEndForTracks(
+      //   payloadToUse.alignmentTracks
+      // );
       payloadToUse.alignmentTracks = addHighlightedDifferences(
         payloadToUse.alignmentTracks
       );
@@ -199,13 +248,19 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
 
   const seqLength = nonTempSeq.length;
   const ranges = [];
-  for (let index = 0; index < seqLength; index++) {
+  // const startIndex = "".match/[-]/ Math.max(0, .indexOf("-"));
+  const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, "");
+  const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
+
+  const startIndex = seqLength - nonTempSeqWithoutLeadingDashes.length;
+  const endIndex = seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
+  for (let index = startIndex; index < endIndex; index++) {
     const isMatch =
       tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();
-    const lastRange = ranges[ranges.length - 1];
-    if (lastRange) {
-      if (lastRange.isMatch === isMatch) {
-        lastRange.end++;
+    const previousRange = ranges[ranges.length - 1];
+    if (previousRange) {
+      if (previousRange.isMatch === isMatch) {
+        previousRange.end++;
       } else {
         ranges.push({
           start: index,
@@ -215,8 +270,8 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
       }
     } else {
       ranges.push({
-        start: 0,
-        end: 0,
+        start: startIndex,
+        end: startIndex,
         isMatch
       });
     }

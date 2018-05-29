@@ -23,10 +23,6 @@ export default function getXStartAndWidthOfRangeWrtRow(
         )) *
       charWidth
   };
-  /* eslint-disable no-debugger */
-
-  if (xStart > bpsPerRow * charWidth) debugger;
-  /* eslint-enable */
 
   return obj;
 }

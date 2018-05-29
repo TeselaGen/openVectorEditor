@@ -3,7 +3,8 @@ import React from "react";
 import { Dialog, Button } from "@blueprintjs/core";
 // import ab1ParsedGFPuv54 from "../../src/ToolBar/ab1ParsedGFPuv54.json";
 // import ab1ParsedGFPuv58 from "../../src/ToolBar/ab1ParsedGFPuv58.json";
-import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
+// import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
+import alignmentDataPairwise from "./exampleData/jbeiPairwiseAlignmnent_23_2018.json";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 

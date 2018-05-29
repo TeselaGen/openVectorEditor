@@ -155,15 +155,19 @@ export class RowItem extends React.Component {
       getGaps = rangeOrCaretPosition => {
         if (typeof rangeOrCaretPosition !== "object") {
           return {
-            gapsBefore: gapMap[rangeOrCaretPosition]
+            gapsBefore:
+              gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
           };
         }
         //otherwise it is a range!
         const { start, end } = rangeOrCaretPosition;
         const toReturn = {
           gapsBefore: gapMap[start],
-          gapsInside: gapMap[end] - gapMap[start]
+          gapsInside:
+            gapMap[Math.min(end, gapMap.length - 1)] -
+            gapMap[Math.min(start, gapMap.length - 1)]
         };
+
         return toReturn;
       };
     }
