@@ -6,15 +6,14 @@ import uuid from "uniqid";
 // ------------------------------------
 export default function upsertDeleteActionGenerator(
   upsertAction,
-  deleteAction,
-  formatter: i => i
+  deleteAction
 ) {
   return {
     [upsertAction]: (state, payload) => {
       const idToUse = payload.id || uuid();
       return {
         ...state,
-        [idToUse]: formatter({ ...(state[idToUse] || {}), ...payload, id: idToUse })
+        [idToUse]: { ...(state[idToUse] || {}), ...payload, id: idToUse }
       };
     },
     [deleteAction]: (state, payload) => {

@@ -13,7 +13,11 @@ import {
 import { compose } from "redux";
 import { Button, Intent } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
-import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
+import {
+  featureColors,
+  FeatureTypes as featureTypes,
+  tidyUpAnnotation
+} from "ve-sequence-utils";
 import { connect } from "react-redux";
 
 import withEditorProps from "../../withEditorProps";
@@ -112,12 +116,16 @@ export class AddOrEditFeatureDialog extends React.Component {
         >
           <Button
             onClick={handleSubmit(data => {
-              upsertFeature(
+              const newFeat = tidyUpAnnotation(
                 convertRangeTo0Based({
-                  ...data,
-                  color: featureColors[data.type]
-                })
+                  ...data
+                }),
+                {
+                  sequenceData,
+                  annotationType: "features"
+                }
               );
+              upsertFeature(newFeat);
               hideModal();
             })}
             intent={Intent.PRIMARY}

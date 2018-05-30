@@ -102,7 +102,7 @@
     "moment": "2.22.1",
     "nodemon": "^1.17.5",
     "nwb": "^0.21.5",
-    "prettier": "^1.13.2",
+    "prettier": "^1.13.3",
     "react": "^16.4.0",
     "react-addons-perf": "^15.4.2",
     "react-apollo": "^2.1.4",
@@ -118,7 +118,7 @@
     "teselagen-react-components": "^22.1.26",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
-    "ve-sequence-utils": "3.2.53"
+    "ve-sequence-utils": "3.2.56"
   },
   "lint-staged": {
     "src/**/*.js ": [
