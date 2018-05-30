@@ -276,6 +276,7 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer,
         copyOptions
       } = this.props;
+      
       onCopy(
         e,
         tidyUpSequenceData(
@@ -507,7 +508,7 @@ function VectorInteractionHOC(Component /* options */) {
 
     generateSelectionMenuOptions = annotation => {
       const {
-        sequenceData,
+        // sequenceData,
         selectionLayer,
         upsertTranslation,
         toggleCopyOption,
@@ -515,57 +516,55 @@ function VectorInteractionHOC(Component /* options */) {
         store,
         copyOptions
       } = this.props;
-      const selectedSeqData = getSequenceDataBetweenRange(
-        sequenceData,
-        selectionLayer
-      );
-      // const handleDaCopy = e => {
-      //   this.handleCopy(e);
-      //   document.body.removeEventListener("copy", handleDaCopy);
-      // };
-      const makeTextCopyable = (sequenceDataToCopy, className) => {
+      const makeTextCopyable = (transformFunc, className) => {
         return new Clipboard(`.${className}`, {
-          // container: document.querySelector(".openVeContextMenu"),
           text: () => {
+            const {sequenceData, copyOptions} = store.getState().VectorEditor[editorName]
+            const selectedSeqData = getSequenceDataBetweenRange(
+              sequenceData,
+              selectionLayer,
+              {
+                excludePartial: {
+                  features: !copyOptions.partialFeatures,
+                  parts: !copyOptions.partialParts
+                },
+                exclude: {
+                  features: !copyOptions.features,
+                  parts: !copyOptions.parts
+                }
+              }
+            );
+            const sequenceDataToCopy = transformFunc(selectedSeqData)
+            
             this.sequenceDataToCopy = sequenceDataToCopy;
             document.body.addEventListener("copy", this.handleCopy);
             return sequenceDataToCopy.sequence;
           }
         });
-        // clipboard.on("success", (/* e */) => {
-        //   clipboard.destroy();
-        // });
-        // clipboard.on("error", () => {
-        //   clipboard.destroy();
-        //   console.error("Error copying selection.");
-        // });
       };
       let items = [
         {
           text: "Copy",
-          // label: "⌘X",
           className: "openVeCopy1",
           willUnmount: () => {
             this.openVeCopy1 && this.openVeCopy1.destroy();
           },
           didMount: ({ className }) => {
-            this.openVeCopy1 = makeTextCopyable(selectedSeqData, className);
+            this.openVeCopy1 = makeTextCopyable((i) => i, className);
           },
           submenu: [
             {
               text: "Copy",
-              // label: "⌘X",
               className: "openVeCopy2",
               willUnmount: () => {
                 this.openVeCopy2 && this.openVeCopy2.destroy();
               },
               didMount: ({ className }) => {
-                this.openVeCopy2 = makeTextCopyable(selectedSeqData, className);
+                this.openVeCopy2 = makeTextCopyable((i) => i, className);
               }
             },
             {
               text: "Copy Complement",
-              // label: "⌘X",
               className: "openVeCopyComplement",
               willUnmount: () => {
                 this.openVeCopyComplement &&
@@ -573,7 +572,7 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyComplement = makeTextCopyable(
-                  getComplementSequenceAndAnnotations(selectedSeqData),
+                  getComplementSequenceAndAnnotations,
                   className
                 );
               }
@@ -586,7 +585,7 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyReverse = makeTextCopyable(
-                  getReverseComplementSequenceAndAnnotations(selectedSeqData),
+                  getReverseComplementSequenceAndAnnotations,
                   className
                 );
               }
@@ -600,9 +599,11 @@ function VectorInteractionHOC(Component /* options */) {
               didMount: ({ className }) => {
                 this.openVeCopyAA = makeTextCopyable(
                   {
-                    sequence: getAminoAcidStringFromSequenceString(
-                      selectedSeqData.sequence
-                    )
+                    sequence: (selectedSeqData) => {
+                      return getAminoAcidStringFromSequenceString(
+                        selectedSeqData.sequence
+                      )
+                    }
                   },
                   className
                 );
@@ -617,11 +618,13 @@ function VectorInteractionHOC(Component /* options */) {
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
                   {
-                    sequence: getAminoAcidStringFromSequenceString(
-                      getReverseComplementSequenceAndAnnotations(
-                        selectedSeqData
-                      ).sequence
-                    )
+                    sequence: (selectedSeqData) => {
+                      return getAminoAcidStringFromSequenceString(
+                        getReverseComplementSequenceAndAnnotations(
+                          selectedSeqData
+                        ).sequence
+                      )
+                    }
                   },
                   className
                 );
@@ -653,7 +656,6 @@ function VectorInteractionHOC(Component /* options */) {
               )
             }
           ]
-          // menu: [{text: "hahaha", menu: [{text: "yup"}, {text: "nope"}]}]
         },
         ...this.getCreateItems(annotation),
         {

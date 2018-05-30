@@ -176,15 +176,6 @@ export default (state = {}, { payload = {}, type }) => {
           template.alignmentData.sequence,
           alignedSeq.alignmentData.sequence
         );
-        console.log(
-          "template.alignmentData.sequence.length:",
-          template.alignmentData.sequence.length
-        );
-        console.log(
-          "alignedSeq.alignmentData.sequence.length:",
-          alignedSeq.alignmentData.sequence.length
-        );
-        console.log("condensedSeq.length:", condensedSeq.length);
         const re = /r+/gi;
         let match;
         const additionalSelectionLayers = [];
