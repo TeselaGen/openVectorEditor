@@ -28,6 +28,7 @@ const composeEnhancer =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       actionsBlacklist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"],
       // actionSanitizer,
+      latency: 1000,
       name: "openVE"
     })) ||
   compose;

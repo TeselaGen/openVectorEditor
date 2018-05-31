@@ -8,6 +8,13 @@ import { reducer as form } from "redux-form";
 const composeEnhancer =
   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      name: "createVectorEditor",
+      latency: 1000,
+      // serialize: {
+      //   replacer: (key, value) => {
+      //     console.log('key, value:',key, value)
+      //   }
+      // },
       actionsBlacklist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"]
     })) ||
   compose;

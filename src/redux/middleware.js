@@ -51,6 +51,8 @@ export default store => next => action => {
     });
     return next(action);
   } else {
+    //pass batchUndoStart, batchUndoMiddle and batchUndoEnd to group actions together
+    const {batchUndoEnd, batchUndoStart, batchUndoMiddle} = action.meta || {}
     //get editor state(s)
     const OldVectorEditor = store.getState().VectorEditor;
     let result = next(action);
@@ -64,7 +66,7 @@ export default store => next => action => {
         oldEditorState.sequenceData !== newEditorState.sequenceData
       ) {
         const { sequenceData, selectionLayer, caretPosition } = oldEditorState;
-        store.dispatch({
+        !batchUndoEnd && !batchUndoMiddle && store.dispatch({
           type: "ADD_TO_UNDO_STACK",
           payload: {
             selectionLayer,
@@ -73,7 +75,7 @@ export default store => next => action => {
           },
           meta: { editorName, disregardUndo }
         });
-        store.dispatch({
+        !batchUndoStart && !batchUndoMiddle && store.dispatch({
           type: "VE_SEQUENCE_CHANGED", //used for external autosave functionality
           payload: {
             sequenceData: newEditorState.sequenceData,

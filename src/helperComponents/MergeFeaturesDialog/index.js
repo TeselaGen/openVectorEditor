@@ -186,7 +186,7 @@ export class MergeFeaturesDialog extends React.Component {
               
               if (!preserveFeatures) {
                 deleteFeature([id1, id2], {
-                  disregardUndo: true
+                  batchUndoStart: true 
                 });
               }
               upsertFeature({
@@ -195,6 +195,8 @@ export class MergeFeaturesDialog extends React.Component {
                 start: start - 1,
                 end: end - 1,
                 name,
+              }, {
+                batchUndoEnd: true 
               });
               selectionLayerUpdate({
                 start: start - 1,
