@@ -2,6 +2,8 @@ import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
+import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
+
 
 import { /* createReducer, */ createAction } from "redux-act";
 
@@ -91,42 +93,7 @@ function addHighlightedDifferences(alignmentTracks) {
     };
   });
 }
-function addDashesForMatchStartAndEndForTracks(alignmentTracks) {
-  return alignmentTracks.map((track, i) => {
-    // .filter by the user-specified mismatch overrides (initially [])
-    return {
-      ...track,
-      alignmentData: addDashesForMatchStartAndEnd(
-        track,
-        alignmentTracks[0],
-        i === 0
-      )
-    };
-  });
-}
 
-function addDashesForMatchStartAndEnd({ alignmentData }, template, isTemplate) {
-  const { sequenceData } = template;
-  const { matchStart = 0 } = alignmentData;
-  const matchEnd = matchStart + alignmentData.sequence.length;
-  const newAlignmentData = {
-    ...alignmentData,
-    // matchStart: undefined, //delete this so it won't have the possibility of being run again
-    // matchEnd: undefined, //delete this so it won't have the possibility of being run again
-    sequence:
-      (isTemplate
-        ? sequenceData.sequence.slice(0, matchStart)
-        : "-".repeat(matchStart)) +
-      alignmentData.sequence +
-      (isTemplate
-        ? sequenceData.sequence.slice(matchEnd)
-        : "-".repeat(
-            Math.max(sequenceData.sequence.length - (matchEnd + 1), 0)
-          ))
-  };
-
-  return newAlignmentData;
-}
 
 // alignmentTracks = addHighlightedDifferences(alignmentTracks);
 
@@ -158,9 +125,11 @@ export default (state = {}, { payload = {}, type }) => {
       ...payload
     };
     if (payloadToUse.pairwiseAlignments) {
-      payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
-        addDashesForMatchStartAndEndForTracks
-      );
+      if (payloadToUse.pairwiseAlignments[0][0].alignmentData.matchStart !== undefined) {
+        payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
+          addDashesForMatchStartAndEndForTracks
+        );
+      }
       const templateSeq = payloadToUse.pairwiseAlignments[0][0];
       //we need to get all of the sequences in a single alignment (turning inserts into single BP red highlights)
       const pairwiseOverviewAlignmentTracks = [
