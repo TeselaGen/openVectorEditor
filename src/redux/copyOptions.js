@@ -15,6 +15,10 @@ export default createReducer(
     [toggleCopyOption]: (state, type) => {
       return {
         ...state,
+        ...(type === "partialFeatures" && !state[type] && { features: true }),
+        ...(type === "partialParts" && !state[type] && { parts: true }),
+        ...(type === "features" && { partialFeatures: !state[type] }),
+        ...(type === "parts" && { partialParts: !state[type] }),
         [type]: !state[type]
       };
     }
