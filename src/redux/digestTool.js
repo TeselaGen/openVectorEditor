@@ -5,12 +5,21 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 // Actions
 // ------------------------------------
 export const updateSelectedFragment = createAction("updateSelectedFragment");
+export const allowPartialDigestsToggle = createAction(
+  "allowPartialDigestsToggle"
+);
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
+    [allowPartialDigestsToggle]: state => {
+      return {
+        ...state,
+        allowPartialDigests: !state.allowPartialDigests
+      };
+    },
     [updateSelectedFragment]: (state, payload) => {
       return {
         ...state,
@@ -19,6 +28,7 @@ export default createMergedDefaultStateReducer(
     }
   },
   {
-    selectedFragment: undefined
+    selectedFragment: undefined,
+    allowPartialDigests: false
   }
 );

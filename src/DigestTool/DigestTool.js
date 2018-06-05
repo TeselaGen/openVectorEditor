@@ -1,11 +1,11 @@
 import React from "react";
-import { DataTable } from "teselagen-react-components";
+import { DataTable, InfoHelper } from "teselagen-react-components";
 import { getCutsiteType } from "ve-sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
 import DigestContainer from "./DigestContainer";
 // import getCutsiteType from "./getCutsiteType";
-import { Tabs, Tab, Button, InputGroup, Intent } from "@blueprintjs/core";
+import { Tabs, Tab, Button, InputGroup, Intent, Checkbox } from "@blueprintjs/core";
 
 export class DigestTool extends React.Component {
   state = { selectedTab: "virtualDigest" };
@@ -14,7 +14,8 @@ export class DigestTool extends React.Component {
       editorName,
       height = "100%",
       lanes,
-      digestTool: { selectedFragment },
+      digestTool: { selectedFragment, allowPartialDigests },
+      allowPartialDigestsToggle,
       onDigestSave
     } = this.props;
     const { selectedTab } = this.state;
@@ -35,8 +36,24 @@ export class DigestTool extends React.Component {
             </Button>
           </div>
         )}
-        Choose your enzymes:
-        <CutsiteFilter editorName={editorName} />
+        <div style={{ display: "flex" }}>
+          <div style={{flexGrow: 1}}>
+            Choose your enzymes:
+            <CutsiteFilter editorName={editorName} />
+          </div>
+          <div style={{display: "flex", marginLeft: 20, marginTop: 10}}>
+            <Checkbox
+              onChange={function() {
+                allowPartialDigestsToggle();
+              }}
+              checked={allowPartialDigests}
+              label={"Show partial digests?"}
+            />
+            <div style={{width: 10}}></div>
+            <InfoHelper> <div style={{maxWidth: 150}}>
+            Show all possible bands created when the selected enzymes do not fully cut the DNA sequence</div> </InfoHelper>
+          </div>
+        </div>
         <br />
         <Tabs
           selectedTabId={selectedTab}
