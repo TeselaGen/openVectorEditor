@@ -816,6 +816,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     featureRightClicked = ({ annotation, event }) => {
+      event.persist()
       const {
         readOnly,
         upsertTranslation,
