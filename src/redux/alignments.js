@@ -145,7 +145,7 @@ export default (state = {}, { payload = {}, type }) => {
           template.alignmentData.sequence,
           alignedSeq.alignmentData.sequence
         );
-        const re = /r+/gi;
+        let re = /r+/gi;
         let match;
         const additionalSelectionLayers = [];
         while ((match = re.exec(condensedSeq)) != null) {
@@ -153,6 +153,16 @@ export default (state = {}, { payload = {}, type }) => {
             start: match.index,
             end: match.index + match[0].length - 1,
             ...highlightRangeProps
+          });
+        }
+         re = /g+/gi;
+        // let match;
+        while ((match = re.exec(condensedSeq)) != null) {
+          additionalSelectionLayers.push({
+            start: match.index,
+            end: match.index + match[0].length - 1,
+            ...highlightRangeProps,
+            color: "grey"
           });
         }
 
