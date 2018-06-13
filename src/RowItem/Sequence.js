@@ -171,9 +171,6 @@ class ColoredSequence extends React.Component {
       <svg
         width={width}
         height={height}
-        // ref={n => {
-        //   if (n) this.canvasRef = n;
-        // }}
       >
         {this.drawRects()}
       </svg>
