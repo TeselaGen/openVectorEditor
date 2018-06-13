@@ -107,6 +107,7 @@ export class RowItem extends React.Component {
       axisNumbers: showAxisNumbers = true,
       yellowAxis: showYellowAxis = false,
       caret: showCaret = true,
+      dnaColors: showDnaColors = false,
       reverseSequence: showReverseSequence = true,
       sequence: showSequence = true
     } = annotationVisibility;
@@ -134,7 +135,6 @@ export class RowItem extends React.Component {
       ...additionalSelectionLayers,
       ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
     ];
-
     if (!width) {
       width = bpsPerRow * charWidth;
     } else {
@@ -323,9 +323,11 @@ export class RowItem extends React.Component {
             className="veRowItemSequenceContainer"
             style={{ position: "relative" }}
           >
-            {showSequence &&
-              charWidth > 7 && (
+            {showSequence
+               && (
                 <Sequence
+                  showDnaColors={showDnaColors}
+                  hideBps={charWidth < 7}
                   sequence={
                     alignmentData ? alignmentData.sequence : row.sequence
                   } //from alignment data and has "-"" chars in it
@@ -350,9 +352,12 @@ export class RowItem extends React.Component {
                 </Sequence>
               )}
 
-            {showReverseSequence &&
-              charWidth > 7 && (
+            {showReverseSequence
+               && (
                 <Sequence
+                  isReverse
+                  showDnaColors={showDnaColors}
+                  hideBps={charWidth < 7}
                   length={reverseSequence.length}
                   sequence={reverseSequence}
                   height={sequenceHeight}
@@ -497,6 +502,7 @@ export class RowItem extends React.Component {
               let arrowHeight = isStart ? 8 : 0;
               return (
                 <Sequence
+                  showDnaColors={showDnaColors}
                   key={index}
                   sequence={seqInRow}
                   startOffset={startOffset}
