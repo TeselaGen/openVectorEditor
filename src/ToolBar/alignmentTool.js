@@ -42,6 +42,7 @@ class AlignmentToolDropown extends React.Component {
       showCreateAlignmentDialog,
       sequenceData
     } = this.props;
+    console.log('this.props:',this.props)
     return (
       <div>
         <Button
@@ -92,14 +93,35 @@ class AlignmentTool extends React.Component {
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
-      // createNewMismatchesList,
+      createNewMismatchesList,
       upsertAlignmentRun
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
+    console.log('addedSequencesToUse:',addedSequencesToUse)
+
+    // trimming any sequences with chromatogram data
+    let trimBpPos
+    for (let i = 0; i < addedSequencesToUse.length; i++) {
+      if (addedSequencesToUse[i].chromatogramData) {
+        // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
+        trimBpPos = mottTrim(addedSequencesToUse[i].chromatogramData.qualNums)
+      }
+    }
+    console.log('trimBpPos:',trimBpPos)
+    // const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(
+    //   chromatogramData.qualNums
+    // );
+
     hideModal();
     const alignmentId = uniqid();
-    // const alignmentIdMismatches = uniqid();
+    console.log('alignmentId:',alignmentId)
+    const alignmentIdMismatches = uniqid();
+    createNewMismatchesList({
+      id: alignmentIdMismatches,
+      name: addedSequencesToUse[0].name + " Mismatches",
+      alignmentId: alignmentId
+    });
     createNewAlignment({
       id: alignmentId,
       name: addedSequencesToUse[0].name + " Alignment"
@@ -109,10 +131,7 @@ class AlignmentTool extends React.Component {
       id: alignmentId,
       loading: true
     });
-    // createNewMismatchesList({
-    //   id: alignmentIdMismatches,
-    //   name: addedSequencesToUse[0].name + " Mismatches"
-    // });
+
     // upsertAlignmentRun({
     //   id: alignmentIdMismatches,
     //   loading: true
@@ -120,10 +139,10 @@ class AlignmentTool extends React.Component {
 
     window.toastr.success("Alignment submitted.");
     const {
-      data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
+      data: { alignedSequences, pairwiseAlignments } = {}
     } = await instance.post(
-      // "http://localhost:3000/alignment/run",
-      "http://j5server.teselagen.com:10000/alignment/run",
+      "http://localhost:3000/alignment/run",
+      // "http://j5server.teselagen.com:10000/alignment/run",
       {
         sequencesToAlign: addedSequencesToUse.map(({ sequence, name, id }) => {
           return {
@@ -138,15 +157,14 @@ class AlignmentTool extends React.Component {
         // options
       }
     );
-    // alignmentsToRefSeq set to alignedSequences for now
-    let alignedSequences = _alignedSequences;
-    if (alignmentsToRefSeq) {
-      alignedSequences = alignmentsToRefSeq;
-    }
+    // let alignedSequences = _alignedSequences;
+    // if (alignmentsToRefSeq) {
+    //   alignedSequences = alignmentsToRefSeq;
+    // }
     console.log("aligned sequences", alignedSequences);
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
-    //set the alignemnt to loading
+    //set the alignment to loading
     upsertAlignmentRun({
       id: alignmentId,
       pairwiseAlignments:
@@ -389,4 +407,30 @@ function array_move(arr, old_index, new_index) {
   }
   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
   return arr; // for testing
+}
+
+function mottTrim(qualNums) {
+  let startPos = 0;
+  let endPos = 0;
+  let tempStart = 0;
+  // let tempEnd;
+  let score = 0;
+  const cutoff = 0.05;
+  for (let count = 0; count < qualNums.length; count++) {
+    score = score + cutoff - Math.pow(10, qualNums[count] / -10);
+    if (score < 0) {
+      tempStart = count;
+    }
+    if (count - tempStart > endPos - startPos) {
+      startPos = tempStart;
+      endPos = count;
+    }
+  }
+  // const trimmed = baseCalls.slice(startPos, endPos + 1);
+  const suggestedTrimStart = startPos;
+  const suggestedTrimEnd = endPos;
+  return {
+    suggestedTrimStart,
+    suggestedTrimEnd
+  };
 }

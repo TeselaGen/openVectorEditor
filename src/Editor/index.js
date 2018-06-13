@@ -41,6 +41,7 @@ import "./style.css";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
+import Mismatches from "../AlignmentView/Mismatches";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 
 const panelMap = {
@@ -50,7 +51,8 @@ const panelMap = {
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
-  properties: Properties
+  properties: Properties,
+  mismatches: Mismatches
 };
 
 // fake data generator

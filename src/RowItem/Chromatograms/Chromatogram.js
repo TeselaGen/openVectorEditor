@@ -1,6 +1,7 @@
 import React from "react";
-import { Button } from "@blueprintjs/core";
+import { Button, Intent } from "@blueprintjs/core";
 import { InfoHelper } from "teselagen-react-components";
+import Draggable from "react-draggable";
 
 class Chromatogram extends React.Component {
   state = { scalePct: 0.05 };
@@ -10,7 +11,7 @@ class Chromatogram extends React.Component {
     const { scalePct } = this.state;
     this.updatePeakDrawing(scalePct, charWidth);
   }
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (
       newProps.chromatogramData !== this.props.chromatogramData ||
       newProps.charWidth !== this.props.charWidth ||
@@ -61,6 +62,11 @@ class Chromatogram extends React.Component {
   };
 
   render() {
+    const { chromatogramData, charWidth } = this.props;
+    const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(
+      chromatogramData.qualNums
+    );
+
     return (
       <div
         className="chromatogram"
@@ -90,14 +96,42 @@ class Chromatogram extends React.Component {
             left: 35
           }}
         />
+
         <div>
-          <canvas
-            ref={n => {
-              if (n) this.canvasRef = n;
-            }}
-            height="100"
-          />
+          {/* <div
+            className="setTrimUsingChromatogram"
+            style={{ zIndex: 100, position: "relative" }}
+          >
+            <Draggable
+              bounds={"parent"}
+              defaultPosition={{ x: suggestedTrimStart * charWidth, y: 0 }}
+              grid={[charWidth, 0]}
+              axis={"x"}
+              // onDrag={this.handleDrag}
+              // {...dragHandlers}
+              // onStop={this.getPos}
+            >
+              <div
+                className="startBar"
+                style={{
+                  height: "100%",
+                  border: "none",
+                  position: "absolute",
+                  width: 3,
+                  background: "black"
+                }}
+              /> */}
+              {/* <div>x: {this.deltaPosition.x.toFixed(0)}, y: {this.deltaPosition.y.toFixed(0)}</div> */}
+            {/* </Draggable> */}
+            <canvas
+              ref={n => {
+                if (n) this.canvasRef = n;
+              }}
+              height="100"
+            />
+          {/* </div> */}
         </div>
+
       </div>
     );
   }
@@ -263,6 +297,32 @@ function drawTrace({
     this.drawPeaks(formattedPeaks.c, colors.cytosine);
     // this.drawBases();
     ctx.closePath();
+  };
+}
+
+function mottTrim(qualNums) {
+  let startPos = 0;
+  let endPos = 0;
+  let tempStart = 0;
+  // let tempEnd;
+  let score = 0;
+  const cutoff = 0.05;
+  for (let count = 0; count < qualNums.length; count++) {
+    score = score + cutoff - Math.pow(10, qualNums[count] / -10);
+    if (score < 0) {
+      tempStart = count;
+    }
+    if (count - tempStart > endPos - startPos) {
+      startPos = tempStart;
+      endPos = count;
+    }
+  }
+  // const trimmed = baseCalls.slice(startPos, endPos + 1);
+  const suggestedTrimStart = startPos;
+  const suggestedTrimEnd = endPos;
+  return {
+    suggestedTrimStart,
+    suggestedTrimEnd
   };
 }
 

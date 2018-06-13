@@ -39,6 +39,7 @@ export const createNewDigest = (unused, meta) => {
 };
 
 export const createNewAlignment = (payload, meta) => {
+  console.log('alignment payload:',payload)
   return dispatch => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
@@ -57,13 +58,14 @@ export const createNewAlignment = (payload, meta) => {
 };
 
 export const createNewMismatchesList = (payload, meta) => {
+  console.log('mismatches payload:',payload)
   return dispatch => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
-          id: "mismatches",
+          type: "mismatches",
           name: "Mismatches",
-          active: false,
+          active: true,
           canClose: true,
           ...payload
         },

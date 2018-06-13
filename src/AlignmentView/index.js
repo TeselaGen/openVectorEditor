@@ -31,7 +31,7 @@ class AlignmentView extends React.Component {
     charWidthInLinearView: charWidthInLinearViewDefault
   };
   easyStore = store({ percentScrolled: 0 });
-
+  
   getMinCharWidth = () => {
     const {
       dimensions: { width }
@@ -145,6 +145,7 @@ class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
   render() {
+    // console.log('this.props in alignment view:',this.props)
     let { charWidthInLinearView } = this.state;
     const {
       alignmentTracks = [],

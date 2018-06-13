@@ -79,6 +79,7 @@ function addHighlightedDifferences(alignmentTracks) {
     );
     // .filter by the user-specified mismatch overrides (initially [])
     const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
+    // console.log('mismatches:',mismatches)
     return {
       ...track,
       sequenceData,
@@ -87,7 +88,6 @@ function addHighlightedDifferences(alignmentTracks) {
         .filter(({ isMatch }) => !isMatch)
         .map(range => {
           return { ...range, ...highlightRangeProps };
-          // height: 21
         }),
       mismatches
     };
@@ -182,6 +182,7 @@ export default (state = {}, { payload = {}, type }) => {
       payloadToUse.alignmentTracks = addHighlightedDifferences(
         payloadToUse.alignmentTracks
       );
+      console.log('payloadToUse:',payloadToUse)
     }
     //check for issues
     let hasError = checkForIssues(payloadToUse.alignmentTracks);
