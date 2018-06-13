@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "4.0.17",
+  "version": "4.0.22",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -28,7 +28,7 @@
     "test-debug": "node --inspect --debug-brk ./node_modules/.bin/jest src --runInBand "
   },
   "dependencies": {
-    "classnames": "^2.2.5",
+    "classnames": "^2.2.6",
     "clipboard": "^2.0.1",
     "color": "^3.0.0",
     "combokeys": "^3.0.0",
@@ -42,7 +42,7 @@
     "randomcolor": "^0.5.3",
     "react-beautiful-dnd": "^4.0.1",
     "react-draggable": "^3.0.3",
-    "react-dropzone": "^4.2.10",
+    "react-dropzone": "^4.2.11",
     "react-easy-state": "^5.0.1",
     "react-list": "^0.8.8",
     "react-sizeme": "^2.4.4",
@@ -99,10 +99,10 @@
     "install-peerdeps": "^1.6.0",
     "jest": "^22.4.3",
     "lint-staged": "^7.1.2",
-    "moment": "2.22.1",
+    "moment": "2.22.2",
     "nodemon": "^1.17.5",
     "nwb": "^0.21.5",
-    "prettier": "^1.13.3",
+    "prettier": "^1.13.5",
     "react": "^16.4.0",
     "react-addons-perf": "^15.4.2",
     "react-apollo": "^2.1.4",
@@ -115,10 +115,10 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "^7.3.0",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "^22.1.26",
+    "teselagen-react-components": "^22.1.40",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
-    "ve-sequence-utils": "3.2.56"
+    "ve-sequence-utils": "3.2.57"
   },
   "lint-staged": {
     "src/**/*.js ": [

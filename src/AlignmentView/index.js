@@ -646,6 +646,8 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
         cutsites: false,
         primers: false,
         chromatogram: false,
+        sequence: false,
+        dnaColors: false,
         reverseSequence: false,
         lineageLines: false,
         axisNumbers: false

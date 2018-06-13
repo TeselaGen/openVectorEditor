@@ -66,7 +66,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 const tabHeight = 34;
 
-const getListStyle = isDraggingOver => {
+const getListStyle = (isDraggingOver, isDragging) => {
   return {
     display: "flex",
     alignItems: "flex-end",
@@ -77,6 +77,7 @@ const getListStyle = isDraggingOver => {
     borderTop: "1px solid lightgray",
     paddingTop: 3,
     paddingBottom: 3,
+    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
     ...(isDraggingOver && { background: "#e5f3ff" })
   };
 };

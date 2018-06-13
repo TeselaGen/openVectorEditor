@@ -13,6 +13,7 @@ const visibilityInitialValues = {
   axis: true,
   cutsites: true,
   primers: true,
+  dnaColors: false,
   reverseSequence: true,
   lineageLines: true,
   axisNumbers: true
