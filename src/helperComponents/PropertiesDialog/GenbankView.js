@@ -10,7 +10,7 @@ class GenbankView extends React.Component {
     return (
       <textarea
         readOnly
-        style={{ width: 440, height: 350 }}
+        style={{ width: 540, height: 350 }}
         value={genbankString}
       />
     );
