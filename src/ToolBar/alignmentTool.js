@@ -118,12 +118,17 @@ class AlignmentTool extends React.Component {
     //   loading: true
     // });
 
+    // const j5server = process.env.REMOTE_J5 || "http://j5server.teselagen.com"
+    // console.log('j5server:',j5server)
+    // console.log('process.env:',process.env)
+
     window.toastr.success("Alignment submitted.");
     const {
       data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
     } = await instance.post(
-      // "http://localhost:3000/alignment/run",
-      "http://j5server.teselagen.com:10000/alignment/run",
+      "http://localhost:10000/alignment/run",
+      // "http://j5server.teselagen.com:10000/alignment/run",
+      // `${j5server}/alignment/run`,
       {
         sequencesToAlign: addedSequencesToUse.map(({ sequence, name, id }) => {
           return {

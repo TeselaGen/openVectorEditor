@@ -315,6 +315,7 @@ export class RowItem extends React.Component {
             chromatogramData && (
               <Chromatogram
                 chromatogramData={chromatogramData}
+                alignmentData={alignmentData}
                 {...annotationCommonProps}
               />
             )}

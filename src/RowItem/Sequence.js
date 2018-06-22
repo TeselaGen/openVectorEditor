@@ -135,7 +135,7 @@ const dnaToColor = {
   a: "lightgreen",
   c: "#96B1FA",
   g: "yellow",
-  t: "#F78F8F"
+  t: "#EE6262"
 };
 
 function getDnaColor(char, isReverse) {

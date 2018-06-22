@@ -10,7 +10,7 @@ class Chromatogram extends React.Component {
     const { scalePct } = this.state;
     this.updatePeakDrawing(scalePct, charWidth);
   }
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (
       newProps.chromatogramData !== this.props.chromatogramData ||
       newProps.charWidth !== this.props.charWidth ||
@@ -61,6 +61,11 @@ class Chromatogram extends React.Component {
   };
 
   render() {
+    const { getGaps, charWidth } = this.props;
+    // console.log('alignmentData.sequence:',alignmentData.sequence)
+    const gapsBeforeSequence = getGaps(0).gapsBefore;
+    const posOfSeqRead = gapsBeforeSequence * charWidth;
+
     return (
       <div
         className="chromatogram"
@@ -69,28 +74,33 @@ class Chromatogram extends React.Component {
         }}
       >
         <Button
-          content={"Scale Chromatogram Up"}
-          className="pt-minimal scaleChromatogramButton"
+          className="pt-minimal scaleChromatogramButtonUp"
           icon="caret-up"
           onClick={this.scaleChromatogramYPeaksHigher}
           style={{
             zIndex: 10,
             position: "sticky",
-            left: 5
+            left: 145
           }}
         />
         <Button
-          content={"Scale Chromatogram Up"}
-          className="pt-minimal scaleChromatogramButton"
+          className="pt-minimal scaleChromatogramButtonDown"
           icon="caret-down"
           onClick={this.scaleChromatogramYPeaksLower}
           style={{
             zIndex: 10,
             position: "sticky",
-            left: 35
+            left: 175
           }}
         />
-        <div>
+        <div
+          className="chromatogram-trace"
+          style={{
+            zIndex: -1,
+            position: "relative",
+            left: posOfSeqRead
+          }}
+        >
           <canvas
             ref={n => {
               if (n) this.canvasRef = n;
@@ -114,24 +124,27 @@ function drawTrace({
   getGaps,
   scalePct
 }) {
+
   const colors = {
     adenine: "green",
     thymine: "red",
     guanine: "black",
     cytosine: "blue",
-    other: "pink"
+    other: "purple"
   };
   const ctx = peakCanvas.getContext("2d");
 
   const formattedPeaks = { a: [], t: [], g: [], c: [] };
   const bottomBuffer = 0;
   const maxHeight = peakCanvas.height;
-  const endBpIncludingGaps =
-    endBp +
-    1 +
-    getGaps(0).gapsBefore +
-    getGaps({ start: startBp, end: endBp }).gapsInside;
-  const maxWidth = endBpIncludingGaps * charWidth;
+  // const endBpIncludingGaps =
+  //   endBp +
+  //   1 +
+  //   getGaps(0).gapsBefore +
+  //   getGaps({ start: startBp, end: endBp }).gapsInside;
+  const seqLengthWithGaps = endBp - startBp + 1 + getGaps({ start: startBp, end: endBp }).gapsInside;
+  const maxWidth = seqLengthWithGaps * charWidth;
+  // const maxWidth = endBpIncludingGaps * charWidth;
   peakCanvas.width = maxWidth;
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
@@ -178,11 +191,13 @@ function drawTrace({
         innerIndex < endBasePos;
         innerIndex++
       ) {
+        const gapsBeforeSequence = getGaps(0).gapsBefore;
+        const gapsBeforeMinusBeginningGaps = getGaps(baseIndex).gapsBefore - gapsBeforeSequence;
         // innerIndex = 43, 44, 45, ... 52
         // shift x-position of the beginning of the base's peak if there are gaps before the base
         const scalingFactor = charWidth / (endBasePos - startBasePos);
         let startXPosition =
-          (baseIndex + getGaps(baseIndex).gapsBefore) * charWidth;
+        (baseIndex + gapsBeforeMinusBeginningGaps) * charWidth;
 
         if (
           getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore
@@ -199,7 +214,7 @@ function drawTrace({
           );
         } else {
           startXPosition =
-            (baseIndex + getGaps(baseIndex - 1).gapsBefore) * charWidth;
+            (baseIndex + getGaps(baseIndex - 1).gapsBefore - gapsBeforeSequence) * charWidth;
           ctx.lineTo(
             startXPosition + scalingFactor * (innerIndex - startBasePos),
             scaledHeight - trace[innerIndex]
@@ -240,9 +255,11 @@ function drawTrace({
   this.drawQualityScoreHistogram = function() {
     const qualMax = Math.max(...traceData.qualNums);
     const scalePctQual = scaledHeight / qualMax;
+    const gapsBeforeSequence = getGaps(0).gapsBefore;
     for (let count = 0; count < traceData.qualNums.length; count++) {
+      const gapsBeforeMinusBeginningGaps = getGaps(count).gapsBefore - gapsBeforeSequence;
       ctx.rect(
-        (count + getGaps(count).gapsBefore) * charWidth,
+        (count + gapsBeforeMinusBeginningGaps) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,
         charWidth,
         traceData.qualNums[count] * scalePctQual
