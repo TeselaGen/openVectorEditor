@@ -93,12 +93,14 @@ class Chromatogram extends React.Component {
             left: 175
           }}
         />
+        <br/>
         <div
           className="chromatogram-trace"
           style={{
             zIndex: -1,
             position: "relative",
-            left: posOfSeqRead
+            left: posOfSeqRead,
+            display: 'inline-block'
           }}
         >
           <canvas
