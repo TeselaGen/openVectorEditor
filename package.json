@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "4.0.23",
+  "version": "4.0.24",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -16,6 +16,7 @@
     "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
     "clean": "nwb clean-module && npm clean-demo",
     "start": "nwb serve-react-demo --port 3344",
+    "localj5": "AMQP=localhost:5672 REMOTE_J5=http://localhost:10000 nwb serve-react-demo --port 3344",
     "precommit": "lint-staged",
     "prepublish": "in-publish && npm run build || not-in-publish",
     "fontopen": "make fontopen",

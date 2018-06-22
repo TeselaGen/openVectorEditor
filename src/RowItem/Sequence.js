@@ -133,9 +133,9 @@ class Sequence extends React.Component {
 export default Sequence;
 const dnaToColor = {
   a: "lightgreen",
-  c: "lightblue",
+  c: "#96B1FA",
   g: "yellow",
-  t: "red"
+  t: "#EE6262"
 };
 
 function getDnaColor(char, isReverse) {
