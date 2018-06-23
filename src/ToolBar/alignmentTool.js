@@ -123,12 +123,14 @@ class AlignmentTool extends React.Component {
     // console.log('process.env:',process.env)
 
     window.toastr.success("Alignment submitted.");
+    const replaceProtocol = url => {
+      return url.replace('http://', window.location.protocol + "//")
+    }
+
     const {
       data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
     } = await instance.post(
-      "http://localhost:10000/alignment/run",
-      // "http://j5server.teselagen.com:10000/alignment/run",
-      // `${j5server}/alignment/run`,
+        replaceProtocol("http://j5server.teselagen.com/alignment/run"),
       {
         sequencesToAlign: addedSequencesToUse.map(({ sequence, name, id }) => {
           return {
