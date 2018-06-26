@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@blueprintjs/core";
-import { InfoHelper } from "teselagen-react-components";
+// import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
   state = { scalePct: 0.05 };

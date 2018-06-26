@@ -11,6 +11,7 @@ import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import axios from "axios";
 import uniqid from "uniqid";
+import { cloneDeep } from "lodash";
 
 // import { Checkbox } from "material-ui";
 // import {  } from "teselagen-react-components/lib/FormComponents";
@@ -23,7 +24,7 @@ export default {
       // toggled: alignmentTool.isOpen,
       renderIconAbove: alignmentTool.isOpen,
       // onIconClick: toggleFindTool,
-      Dropdown: AlignmentToolDropown,
+      Dropdown: AlignmentToolDropdown,
       onIconClick: toggleDropdown,
       noDropdownIcon: true,
       tooltip: alignmentTool.isOpen
@@ -33,7 +34,7 @@ export default {
   }
 };
 
-class AlignmentToolDropown extends React.Component {
+class AlignmentToolDropdown extends React.Component {
   render() {
     const {
       savedAlignments = [],
@@ -87,7 +88,8 @@ class AlignmentTool extends React.Component {
   sendSelectedDataToBackendForAlignment = async ({
     addedSequences,
     isPairwiseAlignment,
-    isAlignToRefSeq
+    isAlignToRefSeq,
+    isAutotrimmedSeq
   }) => {
     const {
       hideModal,
@@ -97,12 +99,44 @@ class AlignmentTool extends React.Component {
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
+    console.log('addedSequencesToUse:',addedSequencesToUse)
+    
+    let addedSequencesToUseTrimmed;
+    if (isAutotrimmedSeq) {
+      addedSequencesToUseTrimmed = cloneDeep(addedSequencesToUse);
+      // trimming any sequences with chromatogram data
+      for (let i = 0; i < addedSequencesToUseTrimmed.length; i++) {
+        if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
+          // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
+          const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(addedSequencesToUseTrimmed[i].chromatogramData.qualNums)
+          console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
+          addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[i].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1)
+          const elementsToTrim = ["baseCalls", "basePos", "qualNums"]
+          for (let element in addedSequencesToUseTrimmed[i].chromatogramData) {
+            if (elementsToTrim.indexOf(element) !== -1) {
+              // console.log('addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1):',addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1))
+              addedSequencesToUseTrimmed[i].chromatogramData[element] = addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1)
+            }
+          }
+        }
+      }
+    }
+    console.log('addedSequencesToUseTrimmed:',addedSequencesToUseTrimmed)
+    let seqsToAlign;
+    if (addedSequencesToUseTrimmed) {
+      seqsToAlign = addedSequencesToUseTrimmed
+      console.log('seqsToAlign:',seqsToAlign)
+    } else {
+      seqsToAlign = addedSequencesToUse
+      console.log('seqsToAlign:',seqsToAlign)
+    }
+
     hideModal();
     const alignmentId = uniqid();
     // const alignmentIdMismatches = uniqid();
     createNewAlignment({
       id: alignmentId,
-      name: addedSequencesToUse[0].name + " Alignment"
+      name: seqsToAlign[0].name + " Alignment"
     });
     //set the alignment to loading
     upsertAlignmentRun({
@@ -127,33 +161,29 @@ class AlignmentTool extends React.Component {
       return url.replace('http://', window.location.protocol + "//")
     }
 
+    const seqInfoToSend = seqsToAlign.map(({ sequence, name, id }) => {
+      return {
+        sequence,
+        name,
+        id
+      };
+    })
+
     const {
-      data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
+      data: { alignedSequences, pairwiseAlignments } = {}
     } = await instance.post(
         replaceProtocol("http://j5server.teselagen.com/alignment/run"),
       {
-        sequencesToAlign: addedSequencesToUse.map(({ sequence, name, id }) => {
-          return {
-            //only send over the bear necessities :)
-            sequence,
-            name,
-            id
-          };
-        }),
+        //only send over the bear necessities :)
+        sequencesToAlign: seqInfoToSend,
         isPairwiseAlignment,
         isAlignToRefSeq
-        // options
       }
     );
-    // alignmentsToRefSeq set to alignedSequences for now
-    let alignedSequences = _alignedSequences;
-    if (alignmentsToRefSeq) {
-      alignedSequences = alignmentsToRefSeq;
-    }
     console.log("aligned sequences", alignedSequences);
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
-    //set the alignemnt to loading
+    //set the alignment to loading
     upsertAlignmentRun({
       id: alignmentId,
       pairwiseAlignments:
@@ -161,10 +191,9 @@ class AlignmentTool extends React.Component {
         pairwiseAlignments.map((alignedSequences, topIndex) => {
           return alignedSequences.map((alignmentData, innerIndex) => {
             return {
-              sequenceData:
-                addedSequencesToUse[innerIndex > 0 ? topIndex + 1 : 0],
+              sequenceData: seqsToAlign[innerIndex > 0 ? topIndex + 1 : 0],
               alignmentData,
-              chromatogramData: addedSequencesToUse[innerIndex].chromatogramData
+              chromatogramData: seqsToAlign[innerIndex].chromatogramData
             };
           });
         }),
@@ -172,10 +201,9 @@ class AlignmentTool extends React.Component {
         alignedSequences &&
         alignedSequences.map(alignmentData => {
           return {
-            sequenceData: addedSequencesToUse[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))],
+            sequenceData: seqsToAlign[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))],
             alignmentData,
-            chromatogramData:
-              addedSequencesToUse[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))].chromatogramData
+            chromatogramData: seqsToAlign[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))].chromatogramData
           };
         })
       // alignmentTracks:
@@ -303,6 +331,17 @@ class AlignmentTool extends React.Component {
               </div>
             }
           />
+          <CheckboxField
+            name="isAutotrimmedSeq"
+            label={
+              <div>
+                Auto-trim Sequences{" "}
+                <span style={{ fontSize: 10 }}>
+                  Automatically trim low-quality ends of sequences based on quality scores
+                </span>
+              </div>
+            }
+          />
 
           <Button
             style={{ marginTop: 15, float: "right" }}
@@ -396,4 +435,27 @@ function array_move(arr, old_index, new_index) {
   }
   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
   return arr; // for testing
+}
+
+function mottTrim(qualNums) {
+  let startPos = 0;
+  let endPos = 0;
+  let tempStart = 0;
+  // let tempEnd;
+  let score = 0;
+  const cutoff = 0.05;
+  for (let count = 0; count < qualNums.length; count++) {
+    score = score + cutoff - Math.pow(10, qualNums[count] / -10);
+    if (score < 0) {
+      tempStart = count;
+    }
+    if (count - tempStart > endPos - startPos) {
+      startPos = tempStart;
+      endPos = count;
+    }
+  }
+  return {
+    suggestedTrimStart: startPos,
+    suggestedTrimEnd: endPos
+  };
 }
