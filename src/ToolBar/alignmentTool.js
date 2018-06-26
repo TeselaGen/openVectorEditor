@@ -106,7 +106,8 @@ class AlignmentTool extends React.Component {
       addedSequencesToUseTrimmed = cloneDeep(addedSequencesToUse);
       // trimming any sequences with chromatogram data
       for (let i = 0; i < addedSequencesToUseTrimmed.length; i++) {
-        if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
+        if ("chromatogramData" in addedSequencesToUseTrimmed[i]) {
+        // if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
           // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
           const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(addedSequencesToUseTrimmed[i].chromatogramData.qualNums)
           console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
