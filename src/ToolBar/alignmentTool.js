@@ -171,7 +171,7 @@ class AlignmentTool extends React.Component {
     })
 
     const {
-      data: { alignedSequences, pairwiseAlignments } = {}
+      data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
     } = await instance.post(
         replaceProtocol("http://j5server.teselagen.com/alignment/run"),
       {
@@ -181,6 +181,11 @@ class AlignmentTool extends React.Component {
         isAlignToRefSeq
       }
     );
+    // alignmentsToRefSeq set to alignedSequences for now
+    let alignedSequences = _alignedSequences;
+    if (alignmentsToRefSeq) {
+      alignedSequences = alignmentsToRefSeq;
+    }
     console.log("aligned sequences", alignedSequences);
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
