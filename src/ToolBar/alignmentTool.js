@@ -108,15 +108,17 @@ class AlignmentTool extends React.Component {
       for (let i = 0; i < addedSequencesToUseTrimmed.length; i++) {
         if ("chromatogramData" in addedSequencesToUseTrimmed[i]) {
         // if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
-          // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
-          const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(addedSequencesToUseTrimmed[i].chromatogramData.qualNums)
-          // console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
-          addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[i].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1)
-          const elementsToTrim = ["baseCalls", "basePos", "qualNums"]
-          for (let element in addedSequencesToUseTrimmed[i].chromatogramData) {
-            if (elementsToTrim.indexOf(element) !== -1) {
-              // console.log('addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1):',addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1))
-              addedSequencesToUseTrimmed[i].chromatogramData[element] = addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1)
+          if ("qualNums" in addedSequencesToUseTrimmed[i].chromatogramData) {
+            // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
+            const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(addedSequencesToUseTrimmed[i].chromatogramData.qualNums)
+            // console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
+            addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[i].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1)
+            const elementsToTrim = ["baseCalls", "basePos", "qualNums"]
+            for (let element in addedSequencesToUseTrimmed[i].chromatogramData) {
+              if (elementsToTrim.indexOf(element) !== -1) {
+                // console.log('addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1):',addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1))
+                addedSequencesToUseTrimmed[i].chromatogramData[element] = addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1)
+              }
             }
           }
         }
@@ -315,7 +317,7 @@ class AlignmentTool extends React.Component {
             label={
               <div>
                 Create Pairwise Alignment{" "}
-                <span style={{ fontSize: 10 }}>
+                <span style={{ fontSize: 11 }}>
                   Individually align each uploaded file against the template
                   sequence (instead of creating a single Multiple Sequence
                   Alignment)
@@ -328,7 +330,7 @@ class AlignmentTool extends React.Component {
             label={
               <div>
                 Align Sequencing Reads to Reference Sequence{" "}
-                <span style={{ fontSize: 10 }}>
+                <span style={{ fontSize: 11 }}>
                   Align short sequencing reads to a long reference sequence
                 </span>
               </div>
@@ -338,8 +340,8 @@ class AlignmentTool extends React.Component {
             name="isAutotrimmedSeq"
             label={
               <div>
-                Auto-trim Sequences{" "}
-                <span style={{ fontSize: 10 }}>
+                Auto-Trim Sequences{" "}
+                <span style={{ fontSize: 11 }}>
                   Automatically trim low-quality ends of sequences based on quality scores
                 </span>
               </div>
