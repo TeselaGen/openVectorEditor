@@ -99,7 +99,7 @@ class AlignmentTool extends React.Component {
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
-    console.log('addedSequencesToUse:',addedSequencesToUse)
+    // console.log('addedSequencesToUse:',addedSequencesToUse)
     
     let addedSequencesToUseTrimmed;
     if (isAutotrimmedSeq) {
@@ -110,7 +110,7 @@ class AlignmentTool extends React.Component {
         // if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
           // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
           const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(addedSequencesToUseTrimmed[i].chromatogramData.qualNums)
-          console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
+          // console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
           addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[i].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1)
           const elementsToTrim = ["baseCalls", "basePos", "qualNums"]
           for (let element in addedSequencesToUseTrimmed[i].chromatogramData) {
@@ -122,14 +122,12 @@ class AlignmentTool extends React.Component {
         }
       }
     }
-    console.log('addedSequencesToUseTrimmed:',addedSequencesToUseTrimmed)
+    // console.log('addedSequencesToUseTrimmed:',addedSequencesToUseTrimmed)
     let seqsToAlign;
     if (addedSequencesToUseTrimmed) {
       seqsToAlign = addedSequencesToUseTrimmed
-      console.log('seqsToAlign:',seqsToAlign)
     } else {
       seqsToAlign = addedSequencesToUse
-      console.log('seqsToAlign:',seqsToAlign)
     }
 
     hideModal();
@@ -186,7 +184,6 @@ class AlignmentTool extends React.Component {
     if (alignmentsToRefSeq) {
       alignedSequences = alignmentsToRefSeq;
     }
-    console.log("aligned sequences", alignedSequences);
     if (!alignedSequences && !pairwiseAlignments)
       window.toastr.error("Error running sequence alignment!");
     //set the alignment to loading
@@ -446,20 +443,36 @@ function array_move(arr, old_index, new_index) {
 function mottTrim(qualNums) {
   let startPos = 0;
   let endPos = 0;
-  let tempStart = 0;
-  // let tempEnd;
+  let totalScoreInfo = [];
   let score = 0;
+  let totalScore = 0;
   const cutoff = 0.05;
-  for (let count = 0; count < qualNums.length; count++) {
-    score = score + cutoff - Math.pow(10, qualNums[count] / -10);
-    if (score < 0) {
-      tempStart = count;
-    }
-    if (count - tempStart > endPos - startPos) {
-      startPos = tempStart;
-      endPos = count;
+  for (let i = 0; i < qualNums.length; i++) {
+    // low-quality bases have high error probabilities, so may have a negative base score
+    score = cutoff - Math.pow(10, qualNums[i] / -10);
+    totalScore += score;
+    totalScoreInfo.push(totalScore);
+    // score = score + cutoff - Math.pow(10, qualNums[i] / -10);
+    // if (totalScore < 0) {
+    //   tempStart = i;
+    // }
+    // if (i - tempStart > endPos - startPos) {
+    //   startPos = tempStart;
+    //   endPos = i;
+    // }
+    if (totalScore < 0) {
+      totalScore = 0;
     }
   }
+  // console.log('totalScoreInfo:',totalScoreInfo)
+  const firstPositiveValue = totalScoreInfo.find(e => {
+    return e > 0;
+  })
+  startPos = totalScoreInfo.indexOf(firstPositiveValue);
+  const highestValue = Math.max(...totalScoreInfo);
+  endPos = totalScoreInfo.lastIndexOf(highestValue);
+  // console.log('startPos:',startPos)
+  // console.log('endPos:',endPos)
   return {
     suggestedTrimStart: startPos,
     suggestedTrimEnd: endPos
