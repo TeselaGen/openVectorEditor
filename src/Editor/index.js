@@ -7,7 +7,6 @@ import React from "react";
 import AlignmentView from "../AlignmentView";
 // import * as customIcons from "teselagen-react-components";
 // import { Button } from "@blueprintjs/core";
-
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
@@ -21,7 +20,8 @@ import {
   Hotkeys,
   HotkeysTarget,
   Icon,
-  Tooltip
+  Tooltip,
+  ContextMenu
 } from "@blueprintjs/core";
 
 import { flatMap, map, filter } from "lodash";
@@ -109,12 +109,6 @@ export class Editor extends React.Component {
   //   // };
   // }
 
-  togglePreviewFullscreen = () => {
-    this.setState({
-      previewModeFullscreen: !this.state.previewModeFullscreen
-    });
-  };
-
   handlePrint = () => {
     console.warn("handlePrint");
   };
@@ -145,6 +139,16 @@ export class Editor extends React.Component {
     window.removeEventListener("resize", this.updateDimensions);
   }
 
+  togglePreviewFullscreen = () => {
+    const { togglePreviewFullscreen } = this.props;
+    if (togglePreviewFullscreen) togglePreviewFullscreen();
+    else {
+      this.setState({
+        previewModeFullscreen: !this.state.previewModeFullscreen
+      });
+    }
+  };
+
   handleNewPrimer = () => {
     const {
       selectionLayer,
@@ -167,6 +171,7 @@ export class Editor extends React.Component {
       showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
     }
   };
+
   handleNewFeature = () => {
     const {
       selectionLayer,
@@ -211,6 +216,7 @@ export class Editor extends React.Component {
   onTabDragStart = () => {
     this.setState({ tabDragging: true });
   };
+
   onTabDragEnd = result => {
     this.setState({ tabDragging: false });
     const { panelsShownUpdate, panelsShown } = this.props;
@@ -495,13 +501,24 @@ export class Editor extends React.Component {
     return map(panelsShown);
   };
 
+  onPreviewModeButtonContextMenu = e => {
+    const { previewModeButtonMenu } = this.props;
+    e.preventDefault();
+    if (previewModeButtonMenu) {
+      ContextMenu.show(previewModeButtonMenu, {
+        left: e.clientX,
+        top: e.clientY
+      });
+    }
+  };
+
   render() {
-    const { previewModeFullscreen } = this.state;
+    const {
+      previewModeFullscreen: uncontrolledPreviewModeFullscreen
+    } = this.state;
     const {
       doNotUseAbsolutePosition = false,
-
       ToolBarProps = {},
-
       StatusBarProps = {},
       // FindBarProps = {},
       editorName,
@@ -515,14 +532,18 @@ export class Editor extends React.Component {
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel,
-      previewMode,
-      sequenceData = {}
+      sequenceData = {},
+      withPreviewMode,
+      previewModeFullscreen: controlledPreviewModeFullscreen
     } = this.props;
+
+    const previewModeFullscreen =
+      uncontrolledPreviewModeFullscreen || controlledPreviewModeFullscreen;
 
     const sharedProps = {
       editorName,
       tabHeight,
-      fitHeight: previewMode && previewModeFullscreen,
+      fitHeight: withPreviewMode && previewModeFullscreen,
       ...this.props
     };
 
@@ -533,7 +554,7 @@ export class Editor extends React.Component {
       }
     };
 
-    if (previewMode && !previewModeFullscreen) {
+    if (withPreviewMode && !previewModeFullscreen) {
       const Panel = sequenceData.circular
         ? CircularViewUnconnected
         : LinearViewUnconnected;
@@ -553,6 +574,7 @@ export class Editor extends React.Component {
             <div
               className="preview-mode-view-fullscreen"
               onClick={this.togglePreviewFullscreen}
+              onContextMenu={this.onPreviewModeButtonContextMenu}
             >
               Open Editor
             </div>
@@ -668,7 +690,7 @@ export class Editor extends React.Component {
           activePanelId={activePanelId}
           minSize="200"
           propagateDimensions={true}
-          resizeHeight={!!(previewMode && previewModeFullscreen)} //use the !! to force a boolean
+          resizeHeight={!!(withPreviewMode && previewModeFullscreen)} //use the !! to force a boolean
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
@@ -904,7 +926,7 @@ export class Editor extends React.Component {
           style={{
             width: "100%",
             height: "100%",
-            ...(previewMode &&
+            ...(withPreviewMode &&
               previewModeFullscreen && {
                 display: "flex",
                 flexDirection: "column"
@@ -912,7 +934,7 @@ export class Editor extends React.Component {
             // display: "flex",
             // flexDirection: "column",
             ...(doNotUseAbsolutePosition ||
-            (previewMode && previewModeFullscreen)
+            (withPreviewMode && previewModeFullscreen)
               ? {}
               : { position: "absolute" })
           }}
