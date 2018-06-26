@@ -22,7 +22,7 @@ class Chromatogram extends React.Component {
       this.updatePeakDrawing(scalePct, charWidth);
     }
   }
-
+  
   updatePeakDrawing = (scalePct, charWidth) => {
     const { chromatogramData, row, getGaps } = this.props;
     const painter = new drawTrace({
@@ -181,12 +181,19 @@ function drawTrace({
     ctx.beginPath();
     //loop through base positions [ 43, 53, 70, 77, ...]
     // looping through the entire sequence length
-    for (let baseIndex = startBp; baseIndex < endBp; baseIndex++) {
+    for (let baseIndex = startBp; baseIndex <= endBp; baseIndex++) {
       // each base's beginning and end of its peak
-      const startBasePos = traceData.basePos[baseIndex] - 5;
-      const endBasePos = traceData.basePos[baseIndex + 1] - 5;
       // grab the start and end (43, 53) , (53, 70) ...
       // looping through each base's peak
+      const startBasePos = traceData.basePos[baseIndex] - 5;
+      let endBasePos;
+      if (baseIndex === endBp) {
+        // last bp does not have a 'basePos[baseIndex + 1]' to define endBasePos...so use the difference in endBasePos - startBasePos of previous bp
+        const previousBpStartEndDifference = traceData.basePos[baseIndex - 1] - traceData.basePos[baseIndex - 2];
+        endBasePos = startBasePos + previousBpStartEndDifference
+      } else {
+        endBasePos = traceData.basePos[baseIndex + 1] - 5;
+      }
 
       for (
         let innerIndex = startBasePos;
