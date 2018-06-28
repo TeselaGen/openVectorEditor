@@ -61,7 +61,7 @@ export const createNewMismatchesList = (payload, meta) => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
-          id: "mismatches",
+          type: "mismatches",
           name: "Mismatches",
           active: false,
           canClose: true,

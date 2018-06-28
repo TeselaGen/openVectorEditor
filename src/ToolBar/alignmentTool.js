@@ -94,7 +94,7 @@ class AlignmentTool extends React.Component {
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
-      // createNewMismatchesList,
+      createNewMismatchesList,
       upsertAlignmentRun
     } = this.props;
     const { templateSeqIndex } = this.state;
@@ -134,7 +134,12 @@ class AlignmentTool extends React.Component {
 
     hideModal();
     const alignmentId = uniqid();
-    // const alignmentIdMismatches = uniqid();
+    const alignmentIdMismatches = uniqid();
+    createNewMismatchesList({
+      id: alignmentIdMismatches,
+      name: addedSequencesToUse[0].name + " Mismatches",
+      alignmentId: alignmentId
+    });
     createNewAlignment({
       id: alignmentId,
       name: seqsToAlign[0].name + " Alignment"
@@ -144,10 +149,7 @@ class AlignmentTool extends React.Component {
       id: alignmentId,
       loading: true
     });
-    // createNewMismatchesList({
-    //   id: alignmentIdMismatches,
-    //   name: addedSequencesToUse[0].name + " Mismatches"
-    // });
+
     // upsertAlignmentRun({
     //   id: alignmentIdMismatches,
     //   loading: true
