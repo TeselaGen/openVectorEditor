@@ -63,7 +63,7 @@ export const createNewMismatchesList = (payload, meta) => {
         {
           type: "mismatches",
           name: "Mismatches",
-          active: false,
+          active: true,
           canClose: true,
           ...payload
         },

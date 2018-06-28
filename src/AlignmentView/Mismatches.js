@@ -2,7 +2,7 @@ import React from "react";
 import { DataTable } from "teselagen-react-components";
 
 export class Mismatches extends React.Component {
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         const { alignmentId, alignments } = this.props;
         const mismatchListAll = this.getMismatchList(alignmentId, alignments);
         const schema = {
