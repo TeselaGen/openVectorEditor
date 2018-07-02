@@ -49,6 +49,11 @@ class AlignmentView extends React.Component {
     const { alignmentTracks: [template] = [] } = this.props;
     return template.alignmentData.sequence.length || 1;
   };
+  componentDidUpdate(prevProps) {
+    if (prevProps.scrollPercentageToJumpTo !== this.props.scrollPercentageToJumpTo && this.props.scrollPercentageToJumpTo !== undefined) {
+      this.updateToScrollPercentage(this.props.scrollPercentageToJumpTo)
+    }
+  }
   componentDidMount() {
     reset();
   }
@@ -139,7 +144,7 @@ class AlignmentView extends React.Component {
     this.setState({ charWidthInLinearView: newCharWidth });
   };
 
-  onMinimapScroll = scrollPercentage => {
+  updateToScrollPercentage = scrollPercentage => {
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
@@ -388,7 +393,7 @@ class AlignmentView extends React.Component {
               <UncontrolledSlider
                 onRelease={val => {
                   this.setState({ charWidthInLinearView: val });
-                  this.onMinimapScroll(this.easyStore.percentScrolled);
+                  this.updateToScrollPercentage(this.easyStore.percentScrolled);
                 }}
                 className={"alignment-zoom-slider"}
                 labelRenderer={false}
@@ -433,7 +438,7 @@ class AlignmentView extends React.Component {
                 easyStore: this.easyStore,
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView()
               }}
-              onMinimapScroll={this.onMinimapScroll}
+              onMinimapScroll={this.updateToScrollPercentage}
             />
           </div>
         )}
@@ -458,6 +463,7 @@ export default compose(
       const {
         alignmentTracks,
         pairwiseAlignments,
+        scrollPercentageToJumpTo,
         pairwiseOverviewAlignmentTracks,
         loading,
         alignmentAnnotationVisibility,
@@ -492,6 +498,7 @@ export default compose(
         },
         pairwiseAlignments,
         alignmentTracks,
+        scrollPercentageToJumpTo,
         pairwiseOverviewAlignmentTracks,
         //manipulate the props coming in so we can pass a single clean prop to the visibility options tool
         alignmentVisibilityToolOptions: {
