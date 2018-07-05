@@ -4,11 +4,14 @@ import { ActionCreators as UndoActionCreators } from "redux-undo";
 import lruMemoize from "lru-memoize";
 import { compose, withHandlers } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
+import {showConfirmationDialog} from "teselagen-react-components";
+import {some} from "lodash";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 import { tidyUpSequenceData } from "ve-sequence-utils";
+import { Intent } from "@blueprintjs/core";
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
@@ -40,6 +43,22 @@ export default compose(
           return promiseOrVal.then(updateLastSavedIdToCurrent);
         }
         // return updateLastSavedIdToCurrent()
+      };
+    },
+    updateCircular: props => {
+      return async isCircular => {
+        const { _updateCircular, sequenceData } = props;
+        if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
+          const doAction = await showConfirmationDialog({
+            intent: Intent.DANGER, //applied to the right most confirm button
+              confirmButtonText: "Truncate Annotations",
+              canEscapeKeyCancel: true, //this is false by default
+            text:
+              "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+          });
+          if (!doAction) return //stop early
+        }
+        _updateCircular(isCircular)
       };
     },
     //add additional "computed handlers here"
@@ -253,3 +272,16 @@ const getVisibilities = lruMemoize(1, undefined, true)(
     };
   }
 );
+
+
+function hasAnnotationThatSpansOrigin({features=[], parts=[], translations=[], primers=[], }) {
+    return doAnySpanOrigin(features) ||
+     doAnySpanOrigin(parts) ||
+     doAnySpanOrigin(translations) ||
+     doAnySpanOrigin(primers)
+}
+function doAnySpanOrigin(annotations) {
+    return some(annotations, ({start=0, end=0}) => {
+      if (start > end) return true
+    })
+}
