@@ -65,7 +65,7 @@ class AlignmentView extends React.Component {
   }
 
   updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
-    console.log('clicking')
+    // console.log('clicking')
     const {
       selectionLayer,
       caretPosition
@@ -96,7 +96,7 @@ class AlignmentView extends React.Component {
   };
 
   selectionLayerUpdate = newSelection => {
-    console.log('highlighting')
+    // console.log('highlighting')
     let {
       selectionLayer = { start: -1, end: -1 },
       ignoreGapsOnHighlight,
@@ -152,7 +152,7 @@ class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
   render() {
-    console.log('this.props in alignment view:',this.props)
+    // console.log('this.props in alignment view:',this.props)
     let { charWidthInLinearView } = this.state;
     const {
       alignmentTracks = [],
@@ -276,7 +276,7 @@ class AlignmentView extends React.Component {
                   }}
                   key={i}
                 >
-                <div
+                {/* <div
                   className={"alignmentMismatches"}
                   style={{
                     position: "sticky",
@@ -303,12 +303,13 @@ class AlignmentView extends React.Component {
                     charWidth: charWidthInLinearView
                   }}
                   />
-                </div>
+                </div> */}
                   <div
                     className={"alignmentTrackName"}
                     style={{
                       position: "sticky",
-                      left: 130,
+                      // left: 130,
+                      left: 0,
                       zIndex: 10,
                       boxShadow: isTemplate
                         ? "0px 0px 0px 1px red inset"
