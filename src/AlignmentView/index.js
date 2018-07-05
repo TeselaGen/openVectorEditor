@@ -5,11 +5,11 @@ import { Button, Slider, Tooltip, Intent, Position } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { LinearView } from "../LinearView";
-// import LinearView from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
+import Mismatches from "./Mismatches";
 
 // import withEditorProps from "../withEditorProps";
 // import withEditorInteractions from "../withEditorInteractions";
@@ -65,6 +65,7 @@ class AlignmentView extends React.Component {
   }
 
   updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
+    console.log('clicking')
     const {
       selectionLayer,
       caretPosition
@@ -95,6 +96,7 @@ class AlignmentView extends React.Component {
   };
 
   selectionLayerUpdate = newSelection => {
+    console.log('highlighting')
     let {
       selectionLayer = { start: -1, end: -1 },
       ignoreGapsOnHighlight,
@@ -150,6 +152,7 @@ class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
   render() {
+    console.log('this.props in alignment view:',this.props)
     let { charWidthInLinearView } = this.state;
     const {
       alignmentTracks = [],
@@ -187,6 +190,54 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
+
+        // {alignmentTracks.map((track, i) => {
+        //   const {
+        //     // sequenceData,
+        //     alignmentData,
+        //     mismatches
+        //   } = track;
+        //   return (
+        //     <div
+        //       className={"alignmentMismatches"}
+        //       style={{
+        //         position: "absolute",
+        //         right: 0,
+        //         zIndex: 10,
+        //         boxShadow: 
+        //           `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
+        //         width: 230,
+        //         height: 0.723 * height,
+        //         padding: 2,
+        //         // minWidth: nameDivWidth,
+        //         background: "rgb(243, 243, 243)",
+        //         textOverflow: "ellipsis",
+        //         overflowY: "auto",
+        //         whiteSpace: "nowrap"
+        //       }}
+        //       title={"mismatches " + i}
+        //       key={"mismatches key " + i}
+        //     >
+        //       <Mismatches
+        //       {...{
+        //         ...rest,
+        //         // sequenceData,
+        //         // allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
+        //         // editorName: `${
+        //         //   isTemplate ? "template_" : ""
+        //         // }alignmentView${i}`,
+        //         alignmentData,
+        //         mismatches,
+        //         // chromatogramData,
+        //         // height: 0.75 * height,
+        //         // height: "100%",
+        //         charWidth: charWidthInLinearView
+        //       }}
+        //       />
+        //     </div>
+        //   )
+        // })}
+
         <div
           className={"alignmentTracks "}
           style={{ overflowY: "auto", display: "flex" }}
@@ -209,7 +260,8 @@ class AlignmentView extends React.Component {
                 sequenceData,
                 additionalSelectionLayers,
                 alignmentData,
-                chromatogramData
+                chromatogramData,
+                mismatches
               } = track;
               const name = sequenceData.name || sequenceData.id;
               return (
@@ -224,11 +276,39 @@ class AlignmentView extends React.Component {
                   }}
                   key={i}
                 >
+                <div
+                  className={"alignmentMismatches"}
+                  style={{
+                    position: "sticky",
+                    left: 0,
+                    zIndex: 10,
+                    boxShadow: 
+                      `0px -3px 0px -2px inset, 3px -3px 0px -2px inset`,
+                    width: 130,
+                    padding: 2,
+                    background: "rgb(225, 225, 225)",
+                    textOverflow: "ellipsis",
+                    maxHeight: 180.8,
+                    overflowY: "scroll",
+                    whiteSpace: "nowrap"
+                  }}
+                  title={"mismatches" + i}
+                  key={"mismatchesKey" + i}
+                >
+                  <Mismatches
+                  {...{
+                    ...rest,
+                    alignmentData,
+                    mismatches,
+                    charWidth: charWidthInLinearView
+                  }}
+                  />
+                </div>
                   <div
                     className={"alignmentTrackName"}
                     style={{
                       position: "sticky",
-                      left: 0,
+                      left: 130,
                       zIndex: 10,
                       boxShadow: isTemplate
                         ? "0px 0px 0px 1px red inset"

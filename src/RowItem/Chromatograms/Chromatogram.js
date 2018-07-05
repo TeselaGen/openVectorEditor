@@ -3,11 +3,11 @@ import { Button } from "@blueprintjs/core";
 // import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
-  state = { scalePct: 0.05 };
 
   componentDidMount() {
     const { charWidth } = this.props;
-    const { scalePct } = this.state;
+    const scalePct = 0.05;
+    this.setState({ scalePct });
     this.updatePeakDrawing(scalePct, charWidth);
   }
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -80,6 +80,7 @@ class Chromatogram extends React.Component {
           style={{
             zIndex: 10,
             position: "sticky",
+            // left: 275
             left: 145
           }}
         />
@@ -90,6 +91,7 @@ class Chromatogram extends React.Component {
           style={{
             zIndex: 10,
             position: "sticky",
+            // left: 305
             left: 175
           }}
         />

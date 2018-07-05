@@ -135,11 +135,6 @@ class AlignmentTool extends React.Component {
     hideModal();
     const alignmentId = uniqid();
     const alignmentIdMismatches = uniqid();
-    createNewMismatchesList({
-      id: alignmentIdMismatches,
-      name: addedSequencesToUse[0].name + " Mismatches",
-      alignmentId: alignmentId
-    });
     createNewAlignment({
       id: alignmentId,
       name: seqsToAlign[0].name + " Alignment"
@@ -149,15 +144,13 @@ class AlignmentTool extends React.Component {
       id: alignmentId,
       loading: true
     });
-
-    // upsertAlignmentRun({
+    // createNewMismatchesList({
     //   id: alignmentIdMismatches,
-    //   loading: true
+    //   name: addedSequencesToUse[0].name + " Mismatches",
+    //   alignmentId: alignmentId
     // });
 
     // const j5server = process.env.REMOTE_J5 || "http://j5server.teselagen.com"
-    // console.log('j5server:',j5server)
-    // console.log('process.env:',process.env)
 
     window.toastr.success("Alignment submitted.");
     const replaceProtocol = url => {
@@ -223,10 +216,6 @@ class AlignmentTool extends React.Component {
       //     };
       //   })
     });
-    // upsertAlignmentRun({
-    //   id: alignmentIdMismatches,
-
-    // });
   };
 
   handleFileUpload = (files, onChange) => {
