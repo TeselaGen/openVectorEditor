@@ -5,6 +5,11 @@ import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthF
 import { view } from "react-easy-state";
 
 export default class Minimap extends React.Component {
+  shouldComponentUpdate(newProps) {
+    const { props } = this
+    if(["numBpsShownInLinearView"].some(key => props[key] !== newProps[key])) return true;
+    return false;
+  }
   handleMinimapClick = e => {
     if (e.target && e.target.classList.contains("minimapCaret")) {
       e.stopPropagation();

@@ -10,17 +10,15 @@ class Chromatogram extends React.Component {
     this.setState({ scalePct });
     this.updatePeakDrawing(scalePct, charWidth);
   }
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (
-      newProps.chromatogramData !== this.props.chromatogramData ||
-      newProps.charWidth !== this.props.charWidth ||
-      newProps.row.start !== this.props.row.start ||
-      newProps.row.end !== this.props.row.end
-    ) {
+  shouldComponentUpdate(newProps) {
+    const { props } = this
+    if(["chromatogramData", "charWidth", "row.start", "row.end"].some(key => props[key] !== newProps[key])) {
       const charWidth = newProps.charWidth;
       const { scalePct } = this.state;
       this.updatePeakDrawing(scalePct, charWidth);
+      return true;
     }
+    return false;
   }
   
   updatePeakDrawing = (scalePct, charWidth) => {
