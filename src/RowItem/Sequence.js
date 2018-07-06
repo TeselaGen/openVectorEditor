@@ -183,13 +183,13 @@ class ColoredSequence extends React.Component {
       const x = i * charWidth;
       const y = 0;
       colorPaths[getDnaColor(char, isReverse)] =
-        colorPaths[getDnaColor(char, isReverse)] +
+        (colorPaths[getDnaColor(char, isReverse)] || "") +
         `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${y +
           height}`;
     });
     return <g>
       {map(colorPaths, (d, color) => {
-        return <path d={d} fill={color}></path>
+        return <path key={color} d={d} fill={color}></path>
       })}
     </g>;
   };

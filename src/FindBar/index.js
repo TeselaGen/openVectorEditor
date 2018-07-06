@@ -37,6 +37,7 @@ export function FindBar({
         { label: "DNA", value: "DNA" },
         { label: "Amino Acids", value: "AA" }
       ]}
+      name="dnaOrAA"
       defaultValue={dnaOrAA}
       onFieldSubmit={value => {
         updateDnaOrAA(value);
@@ -44,6 +45,7 @@ export function FindBar({
     />,
     <div style={{ display: "flex" }} key="ambiguousorliteral">
       <SelectField
+        name="ambiguousOrLiteral"
         options={[
           { label: "Literal", value: "LITERAL" },
           { label: "Ambiguous", value: "AMBIGUOUS" }
@@ -200,5 +202,5 @@ export function FindBar({
 export default reduxForm({ form: "findbar" })(withEditorProps(FindBar));
 
 function mod(n, m) {
-  return (n % m + m) % m;
+  return ((n % m) + m) % m;
 }

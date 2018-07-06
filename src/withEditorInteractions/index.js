@@ -13,7 +13,7 @@ import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { map, get, startCase } from "lodash";
+import { map, get, startCase, some } from "lodash";
 
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
@@ -32,7 +32,7 @@ import moveCaret from "./moveCaret";
 // import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
-import { createMenu } from "teselagen-react-components";
+import { createMenu, showConfirmationDialog } from "teselagen-react-components";
 import {
   handleCaretMoved,
   editorDragged,
@@ -276,7 +276,7 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer,
         copyOptions
       } = this.props;
-      
+
       onCopy(
         e,
         tidyUpSequenceData(
@@ -519,7 +519,9 @@ function VectorInteractionHOC(Component /* options */) {
       const makeTextCopyable = (transformFunc, className) => {
         return new Clipboard(`.${className}`, {
           text: () => {
-            const {sequenceData, copyOptions} = store.getState().VectorEditor[editorName]
+            const { sequenceData, copyOptions } = store.getState().VectorEditor[
+              editorName
+            ];
             const selectedSeqData = getSequenceDataBetweenRange(
               sequenceData,
               selectionLayer,
@@ -534,8 +536,8 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               }
             );
-            const sequenceDataToCopy = transformFunc(selectedSeqData)
-            
+            const sequenceDataToCopy = transformFunc(selectedSeqData);
+
             this.sequenceDataToCopy = sequenceDataToCopy;
             document.body.addEventListener("copy", this.handleCopy);
             return sequenceDataToCopy.sequence;
@@ -550,7 +552,7 @@ function VectorInteractionHOC(Component /* options */) {
             this.openVeCopy1 && this.openVeCopy1.destroy();
           },
           didMount: ({ className }) => {
-            this.openVeCopy1 = makeTextCopyable((i) => i, className);
+            this.openVeCopy1 = makeTextCopyable(i => i, className);
           },
           submenu: [
             {
@@ -560,7 +562,7 @@ function VectorInteractionHOC(Component /* options */) {
                 this.openVeCopy2 && this.openVeCopy2.destroy();
               },
               didMount: ({ className }) => {
-                this.openVeCopy2 = makeTextCopyable((i) => i, className);
+                this.openVeCopy2 = makeTextCopyable(i => i, className);
               }
             },
             {
@@ -599,10 +601,10 @@ function VectorInteractionHOC(Component /* options */) {
               didMount: ({ className }) => {
                 this.openVeCopyAA = makeTextCopyable(
                   {
-                    sequence: (selectedSeqData) => {
+                    sequence: selectedSeqData => {
                       return getAminoAcidStringFromSequenceString(
                         selectedSeqData.sequence
-                      )
+                      );
                     }
                   },
                   className
@@ -618,12 +620,12 @@ function VectorInteractionHOC(Component /* options */) {
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
                   {
-                    sequence: (selectedSeqData) => {
+                    sequence: selectedSeqData => {
                       return getAminoAcidStringFromSequenceString(
                         getReverseComplementSequenceAndAnnotations(
                           selectedSeqData
                         ).sequence
-                      )
+                      );
                     }
                   },
                   className
@@ -816,7 +818,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     featureRightClicked = ({ annotation, event }) => {
-      event.persist()
+      event.persist();
       const {
         readOnly,
         upsertTranslation,
@@ -825,6 +827,7 @@ function VectorInteractionHOC(Component /* options */) {
         annotationVisibilityToggle,
         showAddOrEditFeatureDialog,
         propertiesViewOpen,
+        annotationsToSupport: {parts}={},
         propertiesViewTabUpdate
       } = this.props;
       return [
@@ -843,6 +846,36 @@ function VectorInteractionHOC(Component /* options */) {
                   deleteFeature(annotation);
                 }
               },
+              ...parts && [{
+                text: "Make a Part from Feature",
+                onClick: async () =>{
+                  const { sequenceData, upsertPart } = this.props;
+                  if (
+                    some(sequenceData.parts, part => {
+                      if (
+                        part.start === annotation.start &&
+                        part.end === annotation.end
+                      ) {
+                        return true;
+                      }
+                    })
+                  ) {
+                    const doAction = await showConfirmationDialog({
+                      text:
+                        "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                      confirmButtonText: "Create Part",
+                      canEscapeKeyCancel: true //this is false by default
+                    });
+                    if (!doAction) return; //early return
+                  }
+                  upsertPart({
+                    start: annotation.start,
+                    end: annotation.end,
+                    forward: annotation.forward,
+                    name: annotation.name
+                  });
+                }
+              }],
               {
                 text: "Merge With Another Feature",
                 onClick: () => {
