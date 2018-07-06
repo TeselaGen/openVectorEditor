@@ -92,21 +92,32 @@ export default class Minimap extends React.Component {
           <svg height={alignmentTracks.length * laneHeight} width={width}>
             {alignmentTracks.map(({ matchHighlightRanges }, i) => {
               //need to get the chunks that can be rendered
-              return matchHighlightRanges.map((range, index) => {
+              let redPath = "" //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
+              let greyPath = ""
+              matchHighlightRanges.forEach((range, index) => {
                 const { xStart, width } = getXStartAndWidthFromNonCircularRange(
                   range,
                   charWidth
                 );
-                return (
-                  <rect
-                    key={i + "-" + index}
-                    y={laneHeight * i}
-                    height={laneHeight - laneSpacing}
-                    fill={range.isMatch ? "grey" : "red"}
-                    {...{ x: xStart, width }}
-                  />
-                );
-              });
+                const height = laneHeight - laneSpacing
+                const y = laneHeight * i
+                const toAdd = ` M${xStart},${y} L${xStart+width},${y} L${xStart+width},${y+height} L${xStart},${y+height} `
+                if (range.isMatch) {
+                  greyPath += toAdd
+                } else { 
+                  redPath += toAdd
+                  
+                }
+              })
+              return <g key={i + "-lane"}>
+                <path d={redPath} fill={"red"}>
+
+                </path>
+                <path d={greyPath} fill={"grey"}>
+
+                </path>
+              </g>
+              ;
             })}
           </svg>
         </div>
