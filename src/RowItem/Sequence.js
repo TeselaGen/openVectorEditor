@@ -19,14 +19,25 @@ class Sequence extends React.Component {
       startOffset = 0,
       chunkSize = 100,
       scrollData,
-      showDnaColors
+      showDnaColors,
+      getGaps,
+      alignmentData
     } = this.props;
-    let width = length * charWidth;
+    let gapsBeforeSequence = 0;
+    let seqReadWidth = 0;
+    if (alignmentData) {
+      gapsBeforeSequence = getGaps(0).gapsBefore;
+      sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
+      seqReadWidth = charWidth * sequence.length
+    }
     let style = {
       position: "relative",
       height,
+      left: gapsBeforeSequence * charWidth,
+      display: 'inline-block',
       ...containerStyle
     };
+    let width = length * charWidth;
     const seqLen = sequence.length;
     let coloredRects = null;
     if (showDnaColors) {
@@ -57,7 +68,6 @@ class Sequence extends React.Component {
             }}
             ref="rowViewTextContainer"
             className="rowViewTextContainer"
-            width={width}
             height={height}
           >
             {times(numChunks, i => {
@@ -77,7 +87,7 @@ class Sequence extends React.Component {
                     // x: i * chunkWidth + i/2 * charWidth ,
                     // textLength: charWidth * seqChunk.length - charWidth,
                     x,
-                    textLength,
+                    textLength: alignmentData ? seqReadWidth : textLength,
                     y: height / 2,
                     lengthAdjust: "spacing"
                   }}
@@ -107,7 +117,6 @@ class Sequence extends React.Component {
               }}
               ref="rowViewTextContainer"
               className="rowViewTextContainer"
-              width={width}
               height={height}
             >
               <text
@@ -115,7 +124,7 @@ class Sequence extends React.Component {
                 {...{
                   x: 0,
                   y: height - height / 4,
-                  textLength: width,
+                  textLength: alignmentData ? seqReadWidth : width,
                   lengthAdjust: "spacing"
                 }}
               >
@@ -147,9 +156,24 @@ function getDnaColor(char, isReverse) {
 }
 
 class ColoredSequence extends React.Component {
+  shouldComponentUpdate(newProps) {
+    const {props }= this
+    if([
+      'charWidth',
+      'sequence',
+      'height',
+      'isReverse',
+      'width',
+    ].some(key => props[key] !== newProps[key])) return true
+    if(!!props.alignmentData !== !!newProps.alignmentData) return true
+    return false
+  }
   drawRects = () => {
-    const { charWidth, sequence, height, isReverse } = this.props;
-    return sequence.split("").map((char, i) => {
+    let { charWidth, sequence, height, isReverse, alignmentData } = this.props;
+    if (alignmentData) {
+      sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
+    }
+    const ret = sequence.split("").map((char, i) => {
       return (
         <rect
           key={i}
@@ -163,13 +187,13 @@ class ColoredSequence extends React.Component {
         />
       );
     });
+    return ret
   };
   render() {
-    const { width, height } = this.props;
+    const { height } = this.props;
     // if (sequence.length > 100000) return null
     return (
       <svg
-        width={width}
         height={height}
       >
         {this.drawRects()}

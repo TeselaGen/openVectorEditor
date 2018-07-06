@@ -339,6 +339,8 @@ export class RowItem extends React.Component {
                       : row.sequence.length
                   }
                   charWidth={charWidth}
+                  alignmentData={alignmentData}
+                  {...annotationCommonProps}
                 >
                   {showCutsites &&
                     Object.keys(cutsites).length > 0 && (
