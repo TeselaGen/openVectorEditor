@@ -66,6 +66,7 @@ export class AddOrEditPrimerDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
+          <Button style={{marginRight: 15}} onClick={hideModal}>Cancel</Button>
           <Button
             onClick={handleSubmit(data => {
               upsertPrimer(convertRangeTo0Based(data));
@@ -74,7 +75,7 @@ export class AddOrEditPrimerDialog extends React.Component {
             })}
             intent={Intent.PRIMARY}
           >
-            Submit
+            Save
           </Button>
         </div>
       </div>

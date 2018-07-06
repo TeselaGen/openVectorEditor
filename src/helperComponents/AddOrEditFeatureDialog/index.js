@@ -114,6 +114,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
+          <Button style={{marginRight: 15}} onClick={hideModal}>Cancel</Button>
           <Button
             onClick={handleSubmit(data => {
               const newFeat = tidyUpAnnotation(
@@ -130,7 +131,7 @@ export class AddOrEditFeatureDialog extends React.Component {
             })}
             intent={Intent.PRIMARY}
           >
-            Submit
+            Save
           </Button>
         </div>
       </div>
