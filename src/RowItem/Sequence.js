@@ -34,7 +34,7 @@ class Sequence extends React.Component {
       position: "relative",
       height,
       left: gapsBeforeSequence * charWidth,
-      display: 'inline-block',
+      display: alignmentData ? "inline-block" : "",
       ...containerStyle
     };
     let width = length * charWidth;
