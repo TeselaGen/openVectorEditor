@@ -4,14 +4,14 @@ import createAction from "../utils/createMetaAction";
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const updateCircular = createAction("UPDATE_CIRCULAR");
+export const _updateCircular = createAction("UPDATE_CIRCULAR");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createReducer(
   {
-    [updateCircular]: (state, payload) => {
+    [_updateCircular]: (state, payload) => {
       return payload;
     }
   },
