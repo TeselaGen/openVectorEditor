@@ -1,5 +1,5 @@
 import React from "react";
-import { times } from "lodash";
+import { times, map } from "lodash";
 import { DNAComplementMap } from "ve-sequence-utils";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
@@ -28,7 +28,7 @@ class Sequence extends React.Component {
     if (alignmentData) {
       gapsBeforeSequence = getGaps(0).gapsBefore;
       sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
-      seqReadWidth = charWidth * sequence.length
+      seqReadWidth = charWidth * sequence.length;
     }
     let style = {
       position: "relative",
@@ -157,47 +157,45 @@ function getDnaColor(char, isReverse) {
 
 class ColoredSequence extends React.Component {
   shouldComponentUpdate(newProps) {
-    const {props }= this
-    if([
-      'charWidth',
-      'sequence',
-      'height',
-      'isReverse',
-      'width',
-    ].some(key => props[key] !== newProps[key])) return true
-    if(!!props.alignmentData !== !!newProps.alignmentData) return true
-    return false
+    const { props } = this;
+    if (
+      ["charWidth", "sequence", "height", "isReverse", "width"].some(
+        key => props[key] !== newProps[key]
+      )
+    )
+      return true;
+    if (!!props.alignmentData !== !!newProps.alignmentData) return true;
+    return false;
   }
   drawRects = () => {
     let { charWidth, sequence, height, isReverse, alignmentData } = this.props;
     if (alignmentData) {
       sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
     }
-    const ret = sequence.split("").map((char, i) => {
-      return (
-        <rect
-          key={i}
-          {...{
-            width: charWidth,
-            x: i * charWidth,
-            y: 0,
-            height,
-            fill: getDnaColor(char, isReverse)
-          }}
-        />
-      );
+    //we use big paths instead of many individual rects to improve performance
+    const colorPaths = Object.values(dnaToColor).reduce((acc, color) => {
+      acc[color] = "";
+      return acc;
+    }, {});
+
+    sequence.split("").map((char, i) => {
+      const width = charWidth;
+      const x = i * charWidth;
+      const y = 0;
+      colorPaths[getDnaColor(char, isReverse)] =
+        colorPaths[getDnaColor(char, isReverse)] +
+        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${y +
+          height}`;
     });
-    return ret
+    return <g>
+      {map(colorPaths, (d, color) => {
+        return <path d={d} fill={color}></path>
+      })}
+    </g>;
   };
   render() {
     const { height } = this.props;
     // if (sequence.length > 100000) return null
-    return (
-      <svg
-        height={height}
-      >
-        {this.drawRects()}
-      </svg>
-    );
+    return <svg height={height}>{this.drawRects()}</svg>;
   }
 }
