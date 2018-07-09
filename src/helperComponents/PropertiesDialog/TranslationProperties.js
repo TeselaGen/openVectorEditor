@@ -50,6 +50,7 @@ class TranslationProperties extends React.Component {
           formName={"translationProperties"}
           noRouter
           compact
+          noFullscreenButton
           isInfinite
           schema={{
             fields: [

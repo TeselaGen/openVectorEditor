@@ -27,8 +27,6 @@ function Axis({
     tickSpacing: circularAndLinearTickSpacing,
     sequenceLength
   });
-  console.log('tickPositions:',tickPositions)
-
   let tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function(tickPosition, index) {
         let tickAngle = getAngleForPositionMidpoint(

@@ -37,6 +37,7 @@ class OrfProperties extends React.Component {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
           noPadding
+          noFullscreenButton
           onRowSelect={this.onRowSelect}
           withSearch={false}
           maxHeight={400}

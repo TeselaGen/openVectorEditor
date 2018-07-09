@@ -39,6 +39,7 @@ class PrimerProperties extends React.Component {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
           noPadding
+          noFullscreenButton
           onRowSelect={this.onRowSelect}
           selectedIds={selectedAnnotationId}
           maxHeight={400}

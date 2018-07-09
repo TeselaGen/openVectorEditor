@@ -123,7 +123,8 @@ function mapStateToProps(state, ownProps) {
   }
 
   let sequenceData = s.sequenceDataSelector(editorState);
-  let cutsites = s.filteredCutsitesSelector(editorState).cutsitesArray;
+  const filteredCutsites = s.filteredCutsitesSelector(editorState)
+  let cutsites = filteredCutsites.cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
   );
@@ -165,7 +166,7 @@ function mapStateToProps(state, ownProps) {
     selectedCutsites,
     sequenceLength,
     allCutsites,
-
+    filteredCutsites,
     filteredRestrictionEnzymes,
     searchLayers,
     matchedSearchLayer,

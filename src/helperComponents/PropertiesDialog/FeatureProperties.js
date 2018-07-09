@@ -42,6 +42,7 @@ class FeatureProperties extends React.Component {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
           noPadding
+          noFullscreenButton
           onRowSelect={this.onRowSelect}
           maxHeight={400}
           selectedIds={selectedAnnotationId}

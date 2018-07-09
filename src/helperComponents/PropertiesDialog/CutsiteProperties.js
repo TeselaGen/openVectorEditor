@@ -3,6 +3,8 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
+import CutsiteFilter from "../../CutsiteFilter";
+import { Button, KeyCombo } from "@blueprintjs/core";
 
 // import { Button } from "@blueprintjs/core";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
@@ -24,6 +26,7 @@ class CutsiteProperties extends React.Component {
     const { name, cutsiteGroup } = row.original;
     const entities = cutsiteGroup.map(
       ({
+        restrictionEnzyme: { forwardRegex, reverseRegex } = {},
         forward,
         topSnipBeforeBottom,
         topSnipPosition,
@@ -34,7 +37,12 @@ class CutsiteProperties extends React.Component {
           position: topSnipBeforeBottom
             ? topSnipPosition + " - " + bottomSnipPosition
             : bottomSnipPosition + " - " + topSnipPosition,
-          strand: forward
+          strand:
+            forwardRegex === reverseRegex
+              ? "Palindromic"
+              : forward
+                ? "1"
+                : "-1forward"
         };
       }
     );
@@ -68,6 +76,7 @@ class CutsiteProperties extends React.Component {
               noRouter
               noHeader
               isSimple
+              noFullscreenButton
               isInfinite
               withSearch={false}
               withFilter={false}
@@ -83,7 +92,7 @@ class CutsiteProperties extends React.Component {
   subComponentSchemna = {
     fields: [
       { path: "position", type: "string" },
-      { path: "strand", type: "number" }
+      { path: "strand", type: "string" }
     ]
   };
 
@@ -97,12 +106,18 @@ class CutsiteProperties extends React.Component {
   render() {
     const {
       // sequenceData = {},
-      allCutsites
+      // allCutsites,
+      editorName,
+      annotationVisibilityShow,
+      withDigestTool,
+      createNewDigest,
+      filteredCutsites: allCutsites
+      // sequenceData: {cutsites: {cutsitesByName}}={}
       // cutsitePropertiesSelectedEntities
     } = this.props;
     /* eslint-disable */
 
-    if (!allCutsites) debugger;
+    // if (!allCutsites) debugger;
     /* eslint-enable */
 
     const { cutsitesByName } = allCutsites;
@@ -117,15 +132,36 @@ class CutsiteProperties extends React.Component {
       };
     });
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{display: 'flex', }}>
+          <CutsiteFilter
+          style={{flexGrow: 1}}
+            editorName={editorName}
+            onChangeHook={function() {
+              annotationVisibilityShow("cutsites");
+            }}
+          />
+
+          <Button
+            style={{marginLeft: 15, flexGrow: -1}}
+            onClick={() => {
+              createNewDigest();
+            }}
+          >
+            {" "}
+            Run Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+          </Button>
+        </div>
         <DataTable
           compact
           noSelect
+          noFullscreenButton
           noPadding
           defaults={{ order: ["numberOfCuts"] }}
           maxHeight={400}
           formName={"cutsiteProperties"}
           noRouter
+          withSearch={false}
           SubComponent={this.SubComponent}
           isInfinite
           schema={this.schema}

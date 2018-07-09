@@ -26,6 +26,7 @@ export class CutsiteFilter extends React.Component {
   render() {
     let {
       onChangeHook,
+      style={},
       filteredRestrictionEnzymes,
       filteredRestrictionEnzymesUpdate,
       allCutsites: { cutsitesByName },
@@ -44,7 +45,8 @@ export class CutsiteFilter extends React.Component {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
+                
               }}
             >
               {" "}
@@ -68,7 +70,7 @@ export class CutsiteFilter extends React.Component {
       });
     }
     return (
-      <div>
+      <div style={style}>
         <Select
           multi
           allowCreate
