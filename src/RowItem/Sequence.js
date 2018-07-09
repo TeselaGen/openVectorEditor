@@ -4,7 +4,7 @@ import { DNAComplementMap } from "ve-sequence-utils";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
-
+const realCharWidth = 8
 class Sequence extends React.Component {
   render() {
     let {
@@ -23,7 +23,9 @@ class Sequence extends React.Component {
       getGaps,
       alignmentData
     } = this.props;
-    const fudge = charWidth * 0.4;
+    // const fudge = 0
+    const fudge = (charWidth - realCharWidth); // the fudge factor is used to position the sequence in the middle of the 
+    // const fudge = charWidth * 0.4; // the fudge factor is used to position the sequence in the middle of the 
     let gapsBeforeSequence = 0;
     let seqReadWidth = 0;
     if (alignmentData) {
