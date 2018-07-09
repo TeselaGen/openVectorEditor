@@ -234,7 +234,7 @@ export class RowView extends React.Component {
   // componentDidMount() {
   //   this.mounted=true
   // }
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     //we haven't yet called this function yet, so to make sure it jumps to the selected bps we just set a variable on the class
     this.updateScrollPosition(
       this.calledUpdateScrollOnce ? this.props : {},
@@ -529,9 +529,9 @@ function getBpsPerRow({
 //   },0);
 // }
 
-function onScroll() {
-  window.__veScrolling = true;
-  setTimeout(() => {
-    window.__veScrolling = false;
-  });
-}
+// function onScroll() {
+//   window.__veScrolling = true;
+//   setTimeout(() => {
+//     window.__veScrolling = false;
+//   });
+// }
