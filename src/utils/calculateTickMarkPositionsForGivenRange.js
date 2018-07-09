@@ -6,6 +6,9 @@ export default function calculateTickMarkPositionsForGivenRange({
   range,
   sequenceLength
 }) {
+  if (sequenceLength === 0) {
+    return []
+  }
   let rangeLength = getRangeLength(range, sequenceLength);
 
   let firstTickOffsetFromRangeStart;

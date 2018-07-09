@@ -23,6 +23,7 @@ class Sequence extends React.Component {
       getGaps,
       alignmentData
     } = this.props;
+    const fudge = charWidth * 0.4;
     let gapsBeforeSequence = 0;
     let seqReadWidth = 0;
     if (alignmentData) {
@@ -51,6 +52,7 @@ class Sequence extends React.Component {
         fractionScrolled: { percentScrolled },
         viewportWidth
       } = scrollData;
+      
 
       const visibleStart = percentScrolled * (width - viewportWidth);
       const visibleEnd = visibleStart + viewportWidth;
@@ -73,7 +75,7 @@ class Sequence extends React.Component {
             {times(numChunks, i => {
               const seqChunk = getChunk(sequence, chunkSize, i);
 
-              const fudge = charWidth * 0.4;
+              
 
               const textLength = charWidth * seqChunk.length - fudge;
               const x = i * chunkWidth;
@@ -122,9 +124,9 @@ class Sequence extends React.Component {
               <text
                 className={"ve-monospace-font"}
                 {...{
-                  x: 0,
+                  x: 0 + fudge/2, 
                   y: height - height / 4,
-                  textLength: alignmentData ? seqReadWidth : width,
+                  textLength: (alignmentData ? seqReadWidth : width) - fudge,
                   lengthAdjust: "spacing"
                 }}
               >

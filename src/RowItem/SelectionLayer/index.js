@@ -126,7 +126,7 @@ function SelectionLayer(props) {
                       (selectionLayer.end + 1)
                 }
                 onContextMenu={function(event) {
-                  selectionLayerRightClicked({
+                  selectionLayerRightClicked && selectionLayerRightClicked({
                     event,
                     annotation: selectionLayer
                   });

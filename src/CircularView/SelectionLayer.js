@@ -41,7 +41,7 @@ function SelectionLayer({
   return (
     <g
       onContextMenu={event => {
-        selectionLayerRightClicked({
+        selectionLayerRightClicked && selectionLayerRightClicked({
           annotation: selectionLayer,
           event
         });
