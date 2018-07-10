@@ -1,6 +1,8 @@
 import { debounce } from "lodash";
-import { createMenu } from "teselagen-react-components";
+import { createMenu, MenuBar } from "teselagen-react-components";
 import Dialogs from "../Dialogs";
+import getMenu from "../MenuBar/getMenu";
+import handlers from "../MenuBar/handlers";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -14,6 +16,7 @@ import { compose } from "redux";
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
+
 
 import {
   Hotkey,
@@ -330,6 +333,9 @@ export class Editor extends React.Component {
       selectAll,
       handleRotateToCaretPosition
     } = this.props;
+    
+    handlers.onSave = handleSave
+
     return (
       <Hotkeys>
         {/* <Hotkey
@@ -342,6 +348,11 @@ export class Editor extends React.Component {
             alert('hee')
           }}
         /> */}
+        {/* {addHotkeys([{
+          cmd: "saveSequence",
+
+        }])} */}
+        
         <Hotkey
           allowInInput
           preventDefault
@@ -970,7 +981,7 @@ export class Editor extends React.Component {
             show key dialog{" "}
           </button> */}
           <Dialogs editorName={editorName} />
-          {showMenuBar && <MenuBar />}
+          {showMenuBar && <MenuBar menu={getMenu(this.props)} />}
           <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
 
           <div
