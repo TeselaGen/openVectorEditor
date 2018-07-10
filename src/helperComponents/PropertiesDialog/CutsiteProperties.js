@@ -155,6 +155,7 @@ class CutsiteProperties extends React.Component {
         <DataTable
           compact
           noSelect
+          withExpandAndCollapseAllButton
           noFullscreenButton
           noPadding
           defaults={{ order: ["numberOfCuts"] }}

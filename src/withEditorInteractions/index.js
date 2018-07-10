@@ -505,12 +505,10 @@ function VectorInteractionHOC(Component /* options */) {
             }
           ];
     };
-
-    generateSelectionMenuOptions = annotation => {
+    getCopyOptions = annotation => {
       const {
         // sequenceData,
         selectionLayer,
-        upsertTranslation,
         toggleCopyOption,
         editorName,
         store,
@@ -544,7 +542,7 @@ function VectorInteractionHOC(Component /* options */) {
           }
         });
       };
-      let items = [
+      return [
         {
           text: "Copy",
           className: "openVeCopy1",
@@ -658,7 +656,18 @@ function VectorInteractionHOC(Component /* options */) {
               )
             }
           ]
-        },
+        }
+      ];
+    };
+
+    generateSelectionMenuOptions = annotation => {
+      const {
+        // sequenceData,
+        upsertTranslation
+      } = this.props;
+
+      let items = [
+        ...this.getCopyOptions(annotation),
         ...this.getCreateItems(annotation),
         {
           text: "View Translation",
@@ -772,6 +781,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     partRightClicked = ({ annotation }) => {
+      this.props.selectionLayerUpdate(annotation)
       const {
         readOnly,
         upsertTranslation,
@@ -797,6 +807,7 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               }
             ]),
+        ...this.getCopyOptions(annotation),
         {
           text: "View Translation",
           // icon: "ion-plus-round",
@@ -818,6 +829,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     featureRightClicked = ({ annotation, event }) => {
+      this.props.selectionLayerUpdate(annotation)
       event.persist();
       const {
         readOnly,
@@ -827,7 +839,7 @@ function VectorInteractionHOC(Component /* options */) {
         annotationVisibilityToggle,
         showAddOrEditFeatureDialog,
         propertiesViewOpen,
-        annotationsToSupport: {parts}={},
+        annotationsToSupport: { parts } = {},
         propertiesViewTabUpdate
       } = this.props;
       return [
@@ -846,36 +858,39 @@ function VectorInteractionHOC(Component /* options */) {
                   deleteFeature(annotation);
                 }
               },
-              ...parts && [{
-                text: "Make a Part from Feature",
-                onClick: async () =>{
-                  const { sequenceData, upsertPart } = this.props;
-                  if (
-                    some(sequenceData.parts, part => {
-                      if (
-                        part.start === annotation.start &&
-                        part.end === annotation.end
-                      ) {
-                        return true;
-                      }
-                    })
-                  ) {
-                    const doAction = await showConfirmationDialog({
-                      text:
-                        "A part already exists that matches this feature's range. Do you want to make one anyways?",
-                      confirmButtonText: "Create Part",
-                      canEscapeKeyCancel: true //this is false by default
+              ...this.getCopyOptions(annotation),
+              ...(parts && [
+                {
+                  text: "Make a Part from Feature",
+                  onClick: async () => {
+                    const { sequenceData, upsertPart } = this.props;
+                    if (
+                      some(sequenceData.parts, part => {
+                        if (
+                          part.start === annotation.start &&
+                          part.end === annotation.end
+                        ) {
+                          return true;
+                        }
+                      })
+                    ) {
+                      const doAction = await showConfirmationDialog({
+                        text:
+                          "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                        confirmButtonText: "Create Part",
+                        canEscapeKeyCancel: true //this is false by default
+                      });
+                      if (!doAction) return; //early return
+                    }
+                    upsertPart({
+                      start: annotation.start,
+                      end: annotation.end,
+                      forward: annotation.forward,
+                      name: annotation.name
                     });
-                    if (!doAction) return; //early return
                   }
-                  upsertPart({
-                    start: annotation.start,
-                    end: annotation.end,
-                    forward: annotation.forward,
-                    name: annotation.name
-                  });
                 }
-              }],
+              ]),
               {
                 text: "Merge With Another Feature",
                 onClick: () => {
@@ -928,6 +943,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     primerRightClicked = ({ annotation }) => {
+      this.props.selectionLayerUpdate(annotation)
       const {
         showAddOrEditPrimerDialog,
         readOnly,
@@ -946,6 +962,7 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               }
             ]),
+        ...this.getCopyOptions(annotation),
         {
           text: "View Translation",
           // icon: "ion-plus-round",
@@ -967,6 +984,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     orfRightClicked = ({ annotation }) => {
+      this.props.selectionLayerUpdate(annotation)
       const {
         // upsertTranslation,
         propertiesViewOpen,
@@ -980,6 +998,7 @@ function VectorInteractionHOC(Component /* options */) {
             annotationVisibilityToggle("orfTranslations");
           }
         },
+        ...this.getCopyOptions(annotation),
         {
           text: "View Orf Properties",
           onClick: function() {
@@ -1000,6 +1019,7 @@ function VectorInteractionHOC(Component /* options */) {
         propertiesViewTabUpdate,
         annotationVisibilityToggle
       } = this.props;
+      this.props.selectionLayerUpdate(annotation)
       if (annotation.isOrf) {
         return [
           {
@@ -1030,6 +1050,7 @@ function VectorInteractionHOC(Component /* options */) {
             selectionLayerUpdate(annotation);
           }
         },
+        ...this.getCopyOptions(annotation),
         {
           text: "View Translation Properties",
           onClick: function() {
