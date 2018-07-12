@@ -6,7 +6,7 @@ import Tether from "tether";
 import { getInsertBetweenVals } from "ve-sequence-utils";
 import React from "react";
 import "./createSequenceInputPopupStyle.css";
-import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget, Classes } from "@blueprintjs/core";
 
 let div;
 
@@ -87,7 +87,7 @@ class SequenceInputNoHotkeys extends React.Component {
               this.handleUnmount();
             }
           }}
-          className={"pt-input"}
+          className={Classes.INPUT}
           value={bpsToInsert}
           ref={input => input && input.focus()}
           style={hasTempError ? { borderColor: "red" } : {}}

@@ -145,7 +145,7 @@ export function FindBar({
             {isInline && (
               <Popover
                 position={Position.BOTTOM}
-                target={<Button className={"pt-minimal"} icon={"wrench"} />}
+                target={<Button minimal icon={"wrench"} />}
                 content={
                   <div
                     className={"ve-find-options-popover"}
@@ -167,7 +167,7 @@ export function FindBar({
               {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
             </span>
             <Button
-              className={"pt-minimal"}
+              minimal
               disabled={matchesTotal <= 0}
               onClick={() => {
                 updateMatchNumber(
@@ -177,7 +177,7 @@ export function FindBar({
               icon="caret-up"
             />
             <Button
-              className={"pt-minimal"}
+              minimal
               disabled={matchesTotal <= 0}
               onClick={() => {
                 updateMatchNumber(
@@ -202,5 +202,5 @@ export function FindBar({
 export default reduxForm({ form: "findbar" })(withEditorProps(FindBar));
 
 function mod(n, m) {
-  return ((n % m) + m) % m;
+  return (n % m + m) % m;
 }

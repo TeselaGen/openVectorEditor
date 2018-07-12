@@ -10,8 +10,9 @@ import {
   withDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, Classes } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
+import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 
 export class AddOrEditPrimerDialog extends React.Component {
@@ -24,7 +25,7 @@ export class AddOrEditPrimerDialog extends React.Component {
       upsertPrimer
     } = this.props;
     return (
-      <div className={"pt-dialog-body tg-upsert-Primer"}>
+      <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-Primer")}>
         <InputField
           autoFocus
           inlineLabel
@@ -66,7 +67,9 @@ export class AddOrEditPrimerDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
-          <Button style={{marginRight: 15}} onClick={hideModal}>Cancel</Button>
+          <Button style={{ marginRight: 15 }} onClick={hideModal}>
+            Cancel
+          </Button>
           <Button
             onClick={handleSubmit(data => {
               upsertPrimer(convertRangeTo0Based(data));

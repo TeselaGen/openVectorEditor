@@ -3,7 +3,6 @@ import { Button } from "@blueprintjs/core";
 // import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
-
   componentDidMount() {
     const { charWidth } = this.props;
     const scalePct = 0.05;
@@ -11,8 +10,12 @@ class Chromatogram extends React.Component {
     this.updatePeakDrawing(scalePct, charWidth);
   }
   shouldComponentUpdate(newProps) {
-    const { props } = this
-    if(["chromatogramData", "charWidth", "row.start", "row.end"].some(key => props[key] !== newProps[key])) {
+    const { props } = this;
+    if (
+      ["chromatogramData", "charWidth", "row.start", "row.end"].some(
+        key => props[key] !== newProps[key]
+      )
+    ) {
       const charWidth = newProps.charWidth;
       const { scalePct } = this.state;
       this.updatePeakDrawing(scalePct, charWidth);
@@ -20,7 +23,7 @@ class Chromatogram extends React.Component {
     }
     return false;
   }
-  
+
   updatePeakDrawing = (scalePct, charWidth) => {
     const { chromatogramData, row, getGaps } = this.props;
     const painter = new drawTrace({
@@ -72,7 +75,8 @@ class Chromatogram extends React.Component {
         }}
       >
         <Button
-          className="pt-minimal scaleChromatogramButtonUp"
+          minimal
+          className="caleChromatogramButtonUp"
           icon="caret-up"
           onClick={this.scaleChromatogramYPeaksHigher}
           style={{
@@ -83,7 +87,7 @@ class Chromatogram extends React.Component {
           }}
         />
         <Button
-          className="pt-minimal scaleChromatogramButtonDown"
+          className="scaleChromatogramButtonDown"
           icon="caret-down"
           onClick={this.scaleChromatogramYPeaksLower}
           style={{
@@ -93,14 +97,14 @@ class Chromatogram extends React.Component {
             left: 175
           }}
         />
-        <br/>
+        <br />
         <div
           className="chromatogram-trace"
           style={{
             zIndex: -1,
             position: "relative",
             left: posOfSeqRead,
-            display: 'inline-block'
+            display: "inline-block"
           }}
         >
           <canvas
@@ -126,7 +130,6 @@ function drawTrace({
   getGaps,
   scalePct
 }) {
-
   const colors = {
     adenine: "green",
     thymine: "red",
@@ -144,7 +147,8 @@ function drawTrace({
   //   1 +
   //   getGaps(0).gapsBefore +
   //   getGaps({ start: startBp, end: endBp }).gapsInside;
-  const seqLengthWithGaps = endBp - startBp + 1 + getGaps({ start: startBp, end: endBp }).gapsInside;
+  const seqLengthWithGaps =
+    endBp - startBp + 1 + getGaps({ start: startBp, end: endBp }).gapsInside;
   const maxWidth = seqLengthWithGaps * charWidth;
   // const maxWidth = endBpIncludingGaps * charWidth;
   peakCanvas.width = maxWidth;
@@ -189,8 +193,9 @@ function drawTrace({
       let endBasePos;
       if (baseIndex === endBp) {
         // last bp does not have a 'basePos[baseIndex + 1]' to define endBasePos...so use the difference in endBasePos - startBasePos of previous bp
-        const previousBpStartEndDifference = traceData.basePos[baseIndex - 1] - traceData.basePos[baseIndex - 2];
-        endBasePos = startBasePos + previousBpStartEndDifference
+        const previousBpStartEndDifference =
+          traceData.basePos[baseIndex - 1] - traceData.basePos[baseIndex - 2];
+        endBasePos = startBasePos + previousBpStartEndDifference;
       } else {
         endBasePos = traceData.basePos[baseIndex + 1] - 5;
       }
@@ -201,12 +206,13 @@ function drawTrace({
         innerIndex++
       ) {
         const gapsBeforeSequence = getGaps(0).gapsBefore;
-        const gapsBeforeMinusBeginningGaps = getGaps(baseIndex).gapsBefore - gapsBeforeSequence;
+        const gapsBeforeMinusBeginningGaps =
+          getGaps(baseIndex).gapsBefore - gapsBeforeSequence;
         // innerIndex = 43, 44, 45, ... 52
         // shift x-position of the beginning of the base's peak if there are gaps before the base
         const scalingFactor = charWidth / (endBasePos - startBasePos);
         let startXPosition =
-        (baseIndex + gapsBeforeMinusBeginningGaps) * charWidth;
+          (baseIndex + gapsBeforeMinusBeginningGaps) * charWidth;
 
         if (
           getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore
@@ -223,7 +229,10 @@ function drawTrace({
           );
         } else {
           startXPosition =
-            (baseIndex + getGaps(baseIndex - 1).gapsBefore - gapsBeforeSequence) * charWidth;
+            (baseIndex +
+              getGaps(baseIndex - 1).gapsBefore -
+              gapsBeforeSequence) *
+            charWidth;
           ctx.lineTo(
             startXPosition + scalingFactor * (innerIndex - startBasePos),
             scaledHeight - trace[innerIndex]
@@ -266,7 +275,8 @@ function drawTrace({
     const scalePctQual = scaledHeight / qualMax;
     const gapsBeforeSequence = getGaps(0).gapsBefore;
     for (let count = 0; count < traceData.qualNums.length; count++) {
-      const gapsBeforeMinusBeginningGaps = getGaps(count).gapsBefore - gapsBeforeSequence;
+      const gapsBeforeMinusBeginningGaps =
+        getGaps(count).gapsBefore - gapsBeforeSequence;
       ctx.rect(
         (count + gapsBeforeMinusBeginningGaps) * charWidth,
         scaledHeight - traceData.qualNums[count] * scalePctQual,

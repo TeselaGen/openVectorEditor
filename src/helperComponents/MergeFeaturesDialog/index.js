@@ -10,8 +10,9 @@ import {
   InfoHelper
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, Classes } from "@blueprintjs/core";
 import { flatMap } from "lodash";
+import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "teselagen-react-components/lib/FormComponents";
 
@@ -44,7 +45,7 @@ export class MergeFeaturesDialog extends React.Component {
       }
     );
     return (
-      <div className={"pt-dialog-body tg-upsert-Primer"}>
+      <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-Primer")}>
         <InfoHelper displayToSide>
           <span style={{ fontStyle: "italic", fontSize: 11, marginTop: -8 }}>
             Choose features in the dropdown or shift click directly on the
@@ -174,7 +175,9 @@ export class MergeFeaturesDialog extends React.Component {
         <CheckboxField
           name={"preserveFeatures"}
           defaultValue={false}
-          label={"Preserve features (by default they will be removed once merged)"}
+          label={
+            "Preserve features (by default they will be removed once merged)"
+          }
         />
 
         <div
@@ -182,28 +185,32 @@ export class MergeFeaturesDialog extends React.Component {
           className={"width100"}
         >
           <Button
-            onClick={handleSubmit(({ id1, id2, name, preserveFeatures, start, end }) => {
-              
-              if (!preserveFeatures) {
-                deleteFeature([id1, id2], {
-                  batchUndoStart: true 
+            onClick={handleSubmit(
+              ({ id1, id2, name, preserveFeatures, start, end }) => {
+                if (!preserveFeatures) {
+                  deleteFeature([id1, id2], {
+                    batchUndoStart: true
+                  });
+                }
+                upsertFeature(
+                  {
+                    ...feat1,
+                    id: uuid(),
+                    start: start - 1,
+                    end: end - 1,
+                    name
+                  },
+                  {
+                    batchUndoEnd: true
+                  }
+                );
+                selectionLayerUpdate({
+                  start: start - 1,
+                  end: end - 1
                 });
+                hideModal();
               }
-              upsertFeature({
-                ...feat1,
-                id: uuid(),
-                start: start - 1,
-                end: end - 1,
-                name,
-              }, {
-                batchUndoEnd: true 
-              });
-              selectionLayerUpdate({
-                start: start - 1,
-                end: end - 1,
-              })
-              hideModal();
-            })}
+            )}
             intent={Intent.PRIMARY}
           >
             Create Merged Feature

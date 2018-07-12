@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button, Intent } from "@blueprintjs/core";
+import { Icon, Button, Intent, Classes } from "@blueprintjs/core";
 import {
   FileUploadField,
   TextareaField,
@@ -12,6 +12,7 @@ import { flatMap } from "lodash";
 import axios from "axios";
 import uniqid from "uniqid";
 import { cloneDeep } from "lodash";
+import classNames from "classnames";
 
 // import { Checkbox } from "material-ui";
 // import {  } from "teselagen-react-components/lib/FormComponents";
@@ -100,24 +101,33 @@ class AlignmentTool extends React.Component {
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
     // console.log('addedSequencesToUse:',addedSequencesToUse)
-    
+
     let addedSequencesToUseTrimmed;
     if (isAutotrimmedSeq) {
       addedSequencesToUseTrimmed = cloneDeep(addedSequencesToUse);
       // trimming any sequences with chromatogram data
       for (let i = 0; i < addedSequencesToUseTrimmed.length; i++) {
         if ("chromatogramData" in addedSequencesToUseTrimmed[i]) {
-        // if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
+          // if (addedSequencesToUseTrimmed[i].chromatogramData.qualNums) {
           if ("qualNums" in addedSequencesToUseTrimmed[i].chromatogramData) {
             // returning bp pos for { suggestedTrimStart, suggestedTrimEnd }
-            const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(addedSequencesToUseTrimmed[i].chromatogramData.qualNums)
+            const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(
+              addedSequencesToUseTrimmed[i].chromatogramData.qualNums
+            );
             // console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
-            addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[i].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1)
-            const elementsToTrim = ["baseCalls", "basePos", "qualNums"]
-            for (let element in addedSequencesToUseTrimmed[i].chromatogramData) {
+            addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[
+              i
+            ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
+            const elementsToTrim = ["baseCalls", "basePos", "qualNums"];
+            for (let element in addedSequencesToUseTrimmed[i]
+              .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
                 // console.log('addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1):',addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1))
-                addedSequencesToUseTrimmed[i].chromatogramData[element] = addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1)
+                addedSequencesToUseTrimmed[i].chromatogramData[
+                  element
+                ] = addedSequencesToUseTrimmed[i].chromatogramData[
+                  element
+                ].slice(suggestedTrimStart, suggestedTrimEnd + 1);
               }
             }
           }
@@ -127,9 +137,9 @@ class AlignmentTool extends React.Component {
     // console.log('addedSequencesToUseTrimmed:',addedSequencesToUseTrimmed)
     let seqsToAlign;
     if (addedSequencesToUseTrimmed) {
-      seqsToAlign = addedSequencesToUseTrimmed
+      seqsToAlign = addedSequencesToUseTrimmed;
     } else {
-      seqsToAlign = addedSequencesToUse
+      seqsToAlign = addedSequencesToUse;
     }
 
     hideModal();
@@ -154,8 +164,8 @@ class AlignmentTool extends React.Component {
 
     window.toastr.success("Alignment submitted.");
     const replaceProtocol = url => {
-      return url.replace('http://', window.location.protocol + "//")
-    }
+      return url.replace("http://", window.location.protocol + "//");
+    };
 
     const seqInfoToSend = seqsToAlign.map(({ sequence, name, id }) => {
       return {
@@ -163,12 +173,16 @@ class AlignmentTool extends React.Component {
         name,
         id
       };
-    })
+    });
 
     const {
-      data: { alignedSequences: _alignedSequences, pairwiseAlignments, alignmentsToRefSeq } = {}
+      data: {
+        alignedSequences: _alignedSequences,
+        pairwiseAlignments,
+        alignmentsToRefSeq
+      } = {}
     } = await instance.post(
-        replaceProtocol("http://j5server.teselagen.com/alignment/run"),
+      replaceProtocol("http://j5server.teselagen.com/alignment/run"),
       {
         //only send over the bear necessities :)
         sequencesToAlign: seqInfoToSend,
@@ -197,13 +211,19 @@ class AlignmentTool extends React.Component {
             };
           });
         }),
-        alignmentTracks:
+      alignmentTracks:
         alignedSequences &&
         alignedSequences.map(alignmentData => {
           return {
-            sequenceData: seqsToAlign[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))],
+            sequenceData:
+              seqsToAlign[
+                alignmentData.name.slice(0, alignmentData.name.indexOf("_"))
+              ],
             alignmentData,
-            chromatogramData: seqsToAlign[alignmentData.name.slice(0, alignmentData.name.indexOf("_"))].chromatogramData
+            chromatogramData:
+              seqsToAlign[
+                alignmentData.name.slice(0, alignmentData.name.indexOf("_"))
+              ].chromatogramData
           };
         })
       // alignmentTracks:
@@ -281,7 +301,13 @@ class AlignmentTool extends React.Component {
                     </span>
                   </div>
                   {index === templateSeqIndex && (
-                    <div className={"pt-tag pt-round pt-intent-primary"}>
+                    <div
+                      className={classNames(
+                        Classes.TAG,
+                        Classes.ROUND,
+                        Classes.INTENT_PRIMARY
+                      )}
+                    >
                       template
                     </div>
                   )}
@@ -333,7 +359,8 @@ class AlignmentTool extends React.Component {
               <div>
                 Auto-Trim Sequences{" "}
                 <span style={{ fontSize: 11 }}>
-                  Automatically trim low-quality ends of sequences based on quality scores
+                  Automatically trim low-quality ends of sequences based on
+                  quality scores
                 </span>
               </div>
             }
@@ -460,7 +487,7 @@ function mottTrim(qualNums) {
   // console.log('totalScoreInfo:',totalScoreInfo)
   const firstPositiveValue = totalScoreInfo.find(e => {
     return e > 0;
-  })
+  });
   startPos = totalScoreInfo.indexOf(firstPositiveValue);
   const highestValue = Math.max(...totalScoreInfo);
   endPos = totalScoreInfo.lastIndexOf(highestValue);
