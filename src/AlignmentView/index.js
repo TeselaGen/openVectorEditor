@@ -1,4 +1,5 @@
-/* eslint-disable react/no-deprecated */ 
+/* eslint-disable react/no-deprecated */
+
 import React from "react";
 import { connect } from "react-redux";
 import { Button, Slider, Tooltip, Intent, Position } from "@blueprintjs/core";
@@ -50,8 +51,12 @@ class AlignmentView extends React.Component {
     return template.alignmentData.sequence.length || 1;
   };
   componentDidUpdate(prevProps) {
-    if (prevProps.scrollPercentageToJumpTo !== this.props.scrollPercentageToJumpTo && this.props.scrollPercentageToJumpTo !== undefined) {
-      this.updateToScrollPercentage(this.props.scrollPercentageToJumpTo)
+    if (
+      prevProps.scrollPercentageToJumpTo !==
+        this.props.scrollPercentageToJumpTo &&
+      this.props.scrollPercentageToJumpTo !== undefined
+    ) {
+      this.updateToScrollPercentage(this.props.scrollPercentageToJumpTo);
     }
   }
   componentDidMount() {
@@ -190,7 +195,6 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
-
         // {alignmentTracks.map((track, i) => {
         //   const {
         //     // sequenceData,
@@ -204,7 +208,7 @@ class AlignmentView extends React.Component {
         //         position: "absolute",
         //         right: 0,
         //         zIndex: 10,
-        //         boxShadow: 
+        //         boxShadow:
         //           `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
         //         width: 230,
         //         height: 0.723 * height,
@@ -276,7 +280,7 @@ class AlignmentView extends React.Component {
                   }}
                   key={i}
                 >
-                {/* <div
+                  {/* <div
                   className={"alignmentMismatches"}
                   style={{
                     position: "sticky",
@@ -317,7 +321,6 @@ class AlignmentView extends React.Component {
                       width: nameDivWidth,
                       padding: 2,
                       minWidth: nameDivWidth,
-                      background: "rgb(243, 243, 243)",
                       textOverflow: "ellipsis",
                       overflowY: "auto",
                       whiteSpace: "nowrap"
@@ -440,7 +443,6 @@ class AlignmentView extends React.Component {
         }}
         className="alignmentView"
       >
-        
         {hasTemplate ? (
           <React.Fragment>
             <div className={"alignmentTrackFixedToTop"}>
@@ -484,24 +486,26 @@ class AlignmentView extends React.Component {
                 min={this.getMinCharWidth()}
               />
               {handleBackButtonClicked && (
-          
-            <Tooltip position={Position.TOP} content="Back to pairwise alignment overview">
-              <Button
-                icon="arrow-left"
-                onClick={() => {
-                  this.setState({
-                    charWidthInLinearView: charWidthInLinearViewDefault
-                  });
-                  handleBackButtonClicked();
-                  this.caretPositionUpdate(-1);
-                }}
-                intent={Intent.PRIMARY}
-                // minimal
-                style={{marginRight: 10}}
-                className={"alignmentViewBackButton"}
-              />
-            </Tooltip>
-        )}
+                <Tooltip
+                  position={Position.TOP}
+                  content="Back to pairwise alignment overview"
+                >
+                  <Button
+                    icon="arrow-left"
+                    onClick={() => {
+                      this.setState({
+                        charWidthInLinearView: charWidthInLinearViewDefault
+                      });
+                      handleBackButtonClicked();
+                      this.caretPositionUpdate(-1);
+                    }}
+                    intent={Intent.PRIMARY}
+                    // minimal
+                    style={{ marginRight: 10 }}
+                    className={"alignmentViewBackButton"}
+                  />
+                </Tooltip>
+              )}
               {!noVisibilityOptions && (
                 <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
               )}

@@ -75,7 +75,6 @@ export default class ToolbarItem extends React.Component {
                 <div>
                   <div className={"veToolbarItem"}>
                     {index !== 0 && <div className={"veToolbarSpacer"} />}
-
                     {Icon}
                   </div>
                 </div>
