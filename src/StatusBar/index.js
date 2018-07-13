@@ -107,7 +107,7 @@ export function StatusBar({
             }
           }
         }}
-        style={{ marginLeft: 5, color: "blue" }}
+        style={{ marginLeft: 5, color: "#48AFF0" }}
         small
       >
         Select Inverse

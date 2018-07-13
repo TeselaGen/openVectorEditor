@@ -31,15 +31,10 @@
   color: black;
 }
 .ve-close-panel-button {
-  display: none;
   z-index: 400;
   color: grey;
   height: 25px;
   width: 35px;
-}
-
-.ve-panel:hover .ve-close-panel-button {
-  display: inherit;
 }
 
 .reflex-layout > .reflex-element {
