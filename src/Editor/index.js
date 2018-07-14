@@ -1,5 +1,6 @@
 import { debounce } from "lodash";
 import { createMenu } from "teselagen-react-components";
+import { Button } from "@blueprintjs/core";
 import Dialogs from "../Dialogs";
 import "tg-react-reflex/styles.css";
 import React from "react";
@@ -698,42 +699,30 @@ export class Editor extends React.Component {
           className="ve-panel"
         >
           {isFullScreen ? (
-            <div
-              className={"ve-clickable ve-close-panel-button"}
-              style={{
-                zIndex: 15002,
-                position: "fixed",
-                display: "inherit",
-                top: 15,
-                right: 15
-              }}
-            >
-              <Tooltip position={"left"} content="Minimize Tab">
-                <Icon
-                  style={{
-                    height: 30,
-                    width: 30
-                  }}
-                  title="Minimize Tab"
-                  onClick={() => {
-                    togglePanelFullScreen(activePanelId);
-                  }}
-                  icon="minimize"
-                />
-              </Tooltip>
-            </div>
+            <Tooltip position={"left"} content="Minimize Tab">
+              <Button
+                style={{
+                  zIndex: 15002,
+                  position: "fixed",
+                  top: 15,
+                  right: 25
+                }}
+                minimal
+                icon="minimize"
+                onClick={() => {
+                  togglePanelFullScreen(activePanelId);
+                }}
+              />
+            </Tooltip>
           ) : (
-            <Icon
-              icon="menu"
-              title="Tab Options"
-              className={"ve-clickable-black ve-close-panel-button"}
+            <Button
+              small
+              minimal
               onClick={showTabRightClickContextMenu}
+              icon="menu"
               style={{
-                background: "white",
-                padding: "4px",
-                top: "5px",
-                paddingRight: "5px",
-                right: "0px",
+                top: 5,
+                right: 10,
                 position: "absolute"
               }}
             />
@@ -858,8 +847,8 @@ export class Editor extends React.Component {
             ]),
             isFullScreen ? (
               <div
+                className="veWhiteBackground"
                 style={{
-                  background: "white",
                   zIndex: 15000,
                   position: "fixed",
                   top: 0,
