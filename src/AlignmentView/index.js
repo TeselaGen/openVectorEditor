@@ -338,7 +338,6 @@ class AlignmentView extends React.Component {
                         }}
                         style={{
                           position: "absolute",
-                          background: "white",
                           opacity: 0,
                           height: "100%",
                           width: "100%",
@@ -350,7 +349,9 @@ class AlignmentView extends React.Component {
                           // left: "50%",
                           // transform: "translateX(-50%)"
                         }}
-                        className={"alignmentViewSelectTrackPopover"}
+                        className={
+                          "alignmentViewSelectTrackPopover veWhiteBackground"
+                        }
                       >
                         Inspect track
                       </div>

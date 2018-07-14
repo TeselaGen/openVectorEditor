@@ -72,3 +72,5 @@
 .preview-mode-view-fullscreen:hover {
   background: #0e5a8a;
 }
+
+@import url(darkmode.css);

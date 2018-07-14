@@ -330,7 +330,6 @@ export default class StandaloneDemo extends React.Component {
         style={{
           width: "100%",
           height: "100%",
-          background: "white",
           zIndex: 1050
         }}
         ref={node => {

@@ -48,3 +48,7 @@
 /* .disable-hover .veRowItem {
   pointer-events: none !important;
 } */
+
+.veWhiteBackground {
+  background: white;
+}

@@ -1,1 +1,5 @@
 @import url(~react-select/dist/react-select.css);
+
+body.pt-dark {
+  background: #293742;
+}
