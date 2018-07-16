@@ -27,12 +27,14 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
     - [via npm:](#via-npm)
     - [Or via CDN:](#or-via-cdn)
   - [Code (Universal)](#code-universal)
+    - [Accessing the editor state:](#accessing-the-editor-state)
   - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
 - [Data Model](#data-model)
 - [Alignments](#alignments)
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
+    - [Accessing the alignment state:](#accessing-the-alignment-state)
   - [Alignment Track Data Model](#alignment-track-data-model)
     - [Chromatogram Data](#chromatogram-data)
   - [Implementing Autosave functionality](#implementing-autosave-functionality)
@@ -106,6 +108,13 @@ then add the links
 const editor = window.createVectorEditor(yourDomNodeHere, editorProps);
 editor.updateEditor(editorState);	
 </script>
+```
+
+### Accessing the editor state: 
+```js
+const currentEditorState = editor.getState()
+//you can view various properties of the alignment such as the selection layer using alignment.getState()
+console.log(currentEditorState.selectionLayer)
 ```
 
 ## Demo (Universal): http://teselagen.github.io/openVectorEditor/
@@ -274,7 +283,7 @@ Here is the top level editor state:
 Add a panel to the panelsShown prop like so: 
 
 ```js
-window.createAlignmentView(this.node, {
+const alignment = window.createAlignmentView(this.node, {
 	id: "jbeiAlignment1", //give your alignment a unique id
 	////optional! Use if you want a pairwise alignment:
 	pairwiseAlignments: [  // this is an array of [referenceSequence, alignedSequence]
@@ -337,6 +346,13 @@ window.createAlignmentView(this.node, {
     },
 });
 
+```
+### Accessing the alignment state: 
+
+```js
+const currentAlignmentState = alignment.getState()
+//you can view various properties of the alignment such as the selection layer using alignment.getState()
+console.log(currentAlignmentState.selectionLayer)
 ```
 
 

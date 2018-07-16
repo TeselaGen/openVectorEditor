@@ -42,6 +42,9 @@ export default function createVectorEditor(
   editor.addAlignment = values => {
     addAlignment(store, values);
   };
+  editor.getState = () => {
+    return store.getState().VectorEditor["StandaloneEditor"]
+  }
 
   return editor;
 }
@@ -55,6 +58,12 @@ export function createAlignmentView(node, props = {}) {
     addAlignment(store, values);
   };
   editor.updateAlignment(props);
+  editor.getState = () => {
+    if (!props.id) {
+      throw new Error('Please pass an id when using createAlignmentView. eg createAlignmentView(myDiv, {id: "someUniqueId"})')
+    }
+    return store.getState().VectorEditor.alignments[props.id]
+  }
   return editor;
 }
 
