@@ -18,6 +18,7 @@ import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
 import * as lastSavedId from "./lastSavedId";
 import * as readOnly from "./readOnly";
+import * as versionHistory from "./versionHistory";
 import * as replacementLayers from "./replacementLayers";
 import * as restrictionEnzymes from "./restrictionEnzymes";
 import * as selectedAnnotations from "./selectedAnnotations";
@@ -53,6 +54,7 @@ export const actions = {
   ...digestTool,
   ...frameTranslations,
   ...lastSavedId,
+  ...versionHistory,
   ...readOnly,
   ...panelsShown,
   ...findTool,
@@ -81,6 +83,7 @@ let reducers = {
   lineageLines: lineageLines.default,
   digestTool: digestTool.default,
   frameTranslations: frameTranslations.default,
+  versionHistory: versionHistory.default,
   readOnly: readOnly.default,
   lastSavedId: lastSavedId.default,
   findTool: findTool.default,
