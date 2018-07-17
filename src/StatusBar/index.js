@@ -83,10 +83,10 @@ export function StatusBar({
             return false;
           }
           if (selectionLayer.start > -1) {
-            if (getRangeLength(selectionLayer) === sequenceLength) {
+            if (getRangeLength(selectionLayer, sequenceLength) === sequenceLength) {
               caretPositionUpdate(selectionLayer.start);
             } else {
-              selectionLayerUpdate(invertRange(selectionLayer));
+              selectionLayerUpdate(invertRange(selectionLayer, sequenceLength));
             }
           } else {
             if (caretPosition > -1) {
