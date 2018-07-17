@@ -51,7 +51,6 @@
     "redux": "^4.0.0",
     "redux-act": "^1.7.4",
     "redux-ignore": "^1.2.5",
-    "redux-undo": "1.0.0-beta9-9-7",
     "reselect": "^3.0.1",
     "tether": "^1.4.1",
     "tg-react-reflex": "^2.0.10",
