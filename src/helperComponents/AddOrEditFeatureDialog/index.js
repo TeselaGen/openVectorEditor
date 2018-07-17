@@ -34,7 +34,6 @@ export class AddOrEditFeatureDialog extends React.Component {
     return (
       <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-feature")}>
         <InputField
-          inlineLabel
           tooltipError
           autoFocus
           placeholder="Untitled Sequence"
@@ -43,7 +42,6 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Name:"}
         />
         <RadioGroupField
-          inlineLabel
           tooltipError
           options={[
             { label: "Positive", value: "true" },
@@ -56,7 +54,6 @@ export class AddOrEditFeatureDialog extends React.Component {
           defaultValue={true}
         />
         <ReactSelectField
-          inlineLabel
           tooltipError
           defaultValue={"misc_feature"}
           options={featureTypes.map(type => {
@@ -87,7 +84,6 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Type:"}
         />
         <NumericInputField
-          inlineLabel
           tooltipError
           defaultValue={1}
           min={1}
@@ -96,7 +92,6 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Start:"}
         />
         <NumericInputField
-          inlineLabel
           tooltipError
           defaultValue={1}
           min={1}
@@ -105,10 +100,9 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"End:"}
         />
         <TextareaField
-          inlineLabel
-          tooltipError
           name={"notes"}
-          label={"Notes:"}
+          label="Notes:"
+          placeholder="Enter notes..."
         />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}

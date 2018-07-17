@@ -893,6 +893,7 @@ export class Editor extends React.Component {
             className={"ve-clickable ve-close-panel-button"}
             style={{
               zIndex: 15001,
+              minWidth: "200px !important",
               position: "fixed",
               display: "inherit",
               top: 15,
