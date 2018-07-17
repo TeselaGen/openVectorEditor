@@ -1,5 +1,23 @@
 //vectorEditorMiddleware
 //used to add undo/redo abilities to OVE
+
+// To Batch actions together use this api:
+// deleteFeature([id1, id2], {
+//   batchUndoStart: true
+// });
+// upsertFeature(
+// {
+//   ...feat1,
+//   id: uuid(),
+//   start: start - 1,
+//   end: end - 1,
+//   name
+// },
+// {
+//   batchUndoEnd: true
+// }
+// );
+
 export default store => next => action => {
   if (action.meta && action.meta.disregardUndo) {
     return next(action);

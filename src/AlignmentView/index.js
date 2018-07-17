@@ -265,8 +265,11 @@ class AlignmentView extends React.Component {
                 additionalSelectionLayers,
                 alignmentData,
                 chromatogramData,
-                mismatches
+                // mismatches
               } = track;
+              const linearViewWidth =
+                (alignmentData || sequenceData).sequence.length *
+                charWidthInLinearView;
               const name = sequenceData.name || sequenceData.id;
               return (
                 <div
@@ -321,14 +324,26 @@ class AlignmentView extends React.Component {
                       width: nameDivWidth,
                       padding: 2,
                       minWidth: nameDivWidth,
-                      textOverflow: "ellipsis",
+                      // textOverflow: "ellipsis",
                       overflowY: "auto",
+                      // overflowX: "visible",
                       whiteSpace: "nowrap"
                     }}
                     title={name}
                     key={i}
                   >
+                    <div
+                      className={"alignmentTrackNameDiv"}
+                      style={{
+                        background: "blue",
+                        display: "inline-block",
+                        color: "white",
+                        borderRadius: 5,
+                        opacity: 0.7
+                      }}
+                    >
                     {name}
+                  </div>
                   </div>
                   {handleSelectTrack &&
                     !isTemplate && (
@@ -340,7 +355,8 @@ class AlignmentView extends React.Component {
                           position: "absolute",
                           opacity: 0,
                           height: "100%",
-                          width: "100%",
+                          left: nameDivWidth,
+                          width: linearViewWidth,
                           fontWeight: "bolder",
                           cursor: "pointer",
                           padding: 5,
@@ -405,13 +421,9 @@ class AlignmentView extends React.Component {
                           : linearViewOptions)),
                       additionalSelectionLayers,
                       dimensions: {
-                        width:
-                          (alignmentData || sequenceData).sequence.length *
-                          charWidthInLinearView
+                        width: linearViewWidth
                       },
-                      width:
-                        (alignmentData || sequenceData).sequence.length *
-                        charWidthInLinearView
+                      width: linearViewWidth
                       // scrollData: {
                       //   viewportWidth: trackWidth,
                       //   fractionScrolled: this.easyStore
