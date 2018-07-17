@@ -74,6 +74,7 @@ export class CutsiteFilter extends React.Component {
         <Select
           multi
           allowCreate
+          wrapperStyle={{zIndex: 11}}
           noResultsText={
             <div className={"noResultsTextPlusButton"}>
               No results found.{" "}
