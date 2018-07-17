@@ -14,7 +14,7 @@ export default class StandaloneAlignmentDemo extends React.Component {
     isDialogOpen: false
   };
   mountEditor = () => {
-    window.createAlignmentView(this.node, {
+    const alignment = window.createAlignmentView(this.node, {
       ...alignmentDataPairwise,
       id: "pairwiseRun1",
       linearViewOptions: () => {
@@ -33,6 +33,9 @@ export default class StandaloneAlignmentDemo extends React.Component {
         };
       }
     });
+    setInterval(()=>{
+      console.log('alignment.getState():',alignment.getState())
+    },5000)
   };
   componentDidMount() {
     this.mountEditor();

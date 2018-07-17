@@ -1,0 +1,40 @@
+{
+  "id": "iceAlignment",
+  "pairwiseAlignments": [
+    [
+      {
+        "sequenceData": {
+          "id": 1,
+          "name": "pNJH00010_copy",
+          "sequence": "gacgtcttattt",
+          "sequence_post": "gacgtcttattt"
+        },
+        "alignmentData": {
+          "id": 1,
+          "sequence": "gt-ct",
+          "sequence_post": "gacgt-cttattt",
+          "matchStart": 3,
+          "matchEnd": 6
+        }
+      },
+      {
+        "sequenceData": {
+          "id": 2,
+          "name": "GFPuv_GFPuv58_2010-03-18_H03_017.ab1",
+          "sequence": "tagCact",
+          "features": [{"start": 1, "end": 4}],
+          "sequence_post": "agtGcta",
+          "features_post": [{"start": 5, "end": 1}]
+        },
+        "alignmentData": {
+          "id": 2,
+          "sequence": "gtGct",
+          "sequence_post": "--agtGcta----",
+          "strand": -1,
+          "matchStart": 5,
+          "matchEnd": 1
+        }
+      }
+    ]
+  ]
+}

@@ -122,6 +122,9 @@ export default class StandaloneDemo extends React.Component {
           ]
         }
       });
+      setInterval(()=>{
+        console.log('editor.getState():',editor.getState())
+      },5000)
     }, 100);
 
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
