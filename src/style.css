@@ -52,3 +52,7 @@
 .veWhiteBackground {
   background: white;
 }
+
+.tg-min-width-dialog {
+  min-width: 300px;
+}

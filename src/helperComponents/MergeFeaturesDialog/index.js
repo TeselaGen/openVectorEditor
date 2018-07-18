@@ -45,7 +45,7 @@ export class MergeFeaturesDialog extends React.Component {
       }
     );
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-Primer")}>
+      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-Primer")}>
         <InfoHelper displayToSide>
           <span style={{ fontStyle: "italic", fontSize: 11, marginTop: -8 }}>
             Choose features in the dropdown or shift click directly on the

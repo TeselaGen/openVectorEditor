@@ -32,7 +32,7 @@ export class AddOrEditFeatureDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-feature")}>
+      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-feature")}>
         <InputField
           inlineLabel
           tooltipError
@@ -109,6 +109,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           tooltipError
           name={"notes"}
           label={"Notes:"}
+          placeholder={"Enter notes here.."}
         />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}

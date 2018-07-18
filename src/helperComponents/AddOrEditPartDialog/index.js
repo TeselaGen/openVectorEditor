@@ -26,7 +26,7 @@ export class AddOrEditPartDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-part")}>
+      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-part")}>
         <InputField
           autoFocus
           inlineLabel

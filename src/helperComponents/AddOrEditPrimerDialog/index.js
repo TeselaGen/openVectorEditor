@@ -25,7 +25,7 @@ export class AddOrEditPrimerDialog extends React.Component {
       upsertPrimer
     } = this.props;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-upsert-Primer")}>
+      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-Primer")}>
         <InputField
           autoFocus
           inlineLabel
