@@ -396,13 +396,24 @@ Note: `alignmentData.sequence` is assumed to be the same length for EVERY track 
 
 
 # Development: 
+
 ## Prerequisites
 
 [Node.js](http://nodejs.org/) >= v4 must be installed.
 
-## Installation
+## Linking to a project and develop with build-watch
 ```
-yarn
-yarn start
-```
+//link everything up:
+cd lims/node_modules/react
+yarn link 
+cd openVectorEditor
+yarn link
+yarn link react
+cd lims
+yarn link openVectorEditor
 
+//start the auto rebuild:
+cd openVectorEditor
+yarn build-watch
+
+```
