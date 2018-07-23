@@ -40,7 +40,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+  - [Linking to a project and develop with build-watch](#linking-to-a-project-and-develop-with-build-watch)
 
 <!-- /TOC -->
 
@@ -236,6 +236,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 		],
 		parts: []
 	},
+	sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
 	annotationVisibility: {
 		features: false
 	},

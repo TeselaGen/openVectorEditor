@@ -131,6 +131,7 @@ export default class StandaloneDemo extends React.Component {
     setTimeout(() => {
       editor.updateEditor({
         sequenceData: exampleSequenceData,
+        sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
         annotationVisibility: {
           // features: false,
           orfTranslations: false
