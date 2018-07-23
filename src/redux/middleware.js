@@ -30,8 +30,8 @@ export default store => next => action => {
     const stack =
       editorState.sequenceDataHistory[
         action.type === "VE_UNDO" ? "past" : "future"
-      ];
-    const stateToUse = stack[stack.length - 1];
+      ] || [];
+    const stateToUse = stack[stack ||.length - 1];
     store.dispatch({
       type: action.type === "VE_UNDO" ? "VE_UNDO_META" : "VE_REDO_META",
       payload: {
