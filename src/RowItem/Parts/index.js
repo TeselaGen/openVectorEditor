@@ -62,6 +62,7 @@ function Parts(props) {
           partRightClicked={partRightClicked}
           annotation={annotation}
           gapsInside={gapsInside}
+          gapsBefore={gapsBefore}
           color={annotationColor}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}

@@ -32,12 +32,13 @@ function Primers(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
+    const gaps = getGaps(annotationRange)
     let annotation = annotationRange.annotation;
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
-      ...getGaps(annotationRange)
+      ...gaps
     );
     annotationsSVG.push(
       <AnnotationPositioner
@@ -53,7 +54,7 @@ function Primers(props) {
           key={index}
           editorName={editorName}
           id={annotation.id}
-          {...getGaps(annotationRange)}
+          {...gaps}
           primerClicked={primerClicked}
           primerRightClicked={primerRightClicked}
           annotation={annotation}

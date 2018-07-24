@@ -69,6 +69,21 @@ class AlignmentView extends React.Component {
     this.editorDragStopped = editorDragStopped.bind(this);
   }
 
+  annotationClicked = ({
+    event,
+    annotation,
+    gapsBefore = 0,
+    gapsInside = 0
+  }) => {
+    event.preventDefault && event.preventDefault();
+    event.stopPropagation && event.stopPropagation();
+    this.updateSelectionOrCaret(event.shiftKey, {
+      ...annotation,
+      start: annotation.start + gapsBefore,
+      end: annotation.end + gapsBefore + gapsInside
+    });
+  };
+
   updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
     // console.log('clicking')
     const {
@@ -264,7 +279,7 @@ class AlignmentView extends React.Component {
                 sequenceData,
                 additionalSelectionLayers,
                 alignmentData,
-                chromatogramData,
+                chromatogramData
                 // mismatches
               } = track;
               const linearViewWidth =
@@ -342,8 +357,8 @@ class AlignmentView extends React.Component {
                         opacity: 0.7
                       }}
                     >
-                    {name}
-                  </div>
+                      {name}
+                    </div>
                   </div>
                   {handleSelectTrack &&
                     !isTemplate && (
@@ -391,6 +406,16 @@ class AlignmentView extends React.Component {
                       linearViewAnnotationLabelVisibilityOverrides:
                         alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
                       marginWith: 0,
+                      orfClicked: this.annotationClicked,
+                      primerClicked: this.annotationClicked,
+                      translationClicked: this.annotationClicked,
+                      cutsiteClicked: this.annotationClicked,
+                      translationDoubleClicked: this.annotationClicked,
+                      deletionLayerClicked: this.annotationClicked,
+                      replacementLayerClicked: this.annotationClicked,
+                      featureClicked: this.annotationClicked,
+                      partClicked: this.annotationClicked,
+                      searchLayerClicked: this.annotationClicked,
                       hideName: true,
                       sequenceData,
                       allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
