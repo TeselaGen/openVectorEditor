@@ -32,7 +32,13 @@ export class AddOrEditFeatureDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-feature")}>
+      <div
+        className={classNames(
+          Classes.DIALOG_BODY,
+          "tg-min-width-dialog",
+          "tg-upsert-feature"
+        )}
+      >
         <InputField
           inlineLabel
           tooltipError
@@ -115,7 +121,15 @@ export class AddOrEditFeatureDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
-          <Button style={{ marginRight: 15 }} onClick={hideModal}>
+          <Button
+            style={{ marginRight: 15 }}
+            onMouseDown={e => {
+              //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
+              e.preventDefault();
+              e.stopPropagation();
+              hideModal();
+            }}
+          >
             Cancel
           </Button>
           <Button

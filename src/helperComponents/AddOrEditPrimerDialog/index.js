@@ -67,7 +67,12 @@ export class AddOrEditPrimerDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
-          <Button style={{ marginRight: 15 }} onClick={hideModal}>
+          <Button style={{ marginRight: 15 }} onMouseDown={e => {
+              //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
+              e.preventDefault(); 
+              e.stopPropagation();
+              hideModal();
+            }}>
             Cancel
           </Button>
           <Button
