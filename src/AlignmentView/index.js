@@ -145,7 +145,7 @@ class AlignmentView extends React.Component {
   };
   handleScroll = () => {
     if (this.blockScroll) {
-      //we have to block the scroll sometimes because when adjusting the minimap
+      //we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
       return;
     }
     const scrollPercentage =
@@ -153,20 +153,22 @@ class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
   };
-  onMinimapSizeAdjust = newSliderSize => {
+  onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const { dimensions } = this.props;
     const percentageOfSpace = newSliderSize / (dimensions.width - nameDivWidth);
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
     const newCharWidth = (dimensions.width - nameDivWidth) / numBpsInView;
     this.blockScroll = true;
-    setTimeout(() => {
-      this.blockScroll = false;
-    }, 0);
     this.setState({ charWidthInLinearView: newCharWidth });
+    setTimeout(() => {
+      this.updateToScrollPercentage(newPercent);
+      this.blockScroll = false;
+    });
   };
 
-  updateToScrollPercentage = scrollPercentage => {
+  updateToScrollPercentage = (scrollPercentage /* optionalLength */) => {
+    this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
@@ -514,7 +516,12 @@ class AlignmentView extends React.Component {
               <UncontrolledSlider
                 onRelease={val => {
                   this.setState({ charWidthInLinearView: val });
-                  this.updateToScrollPercentage(this.easyStore.percentScrolled);
+                  this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                  const percentScrollage = this.easyStore.percentScrolled;
+                  setTimeout(() => {
+                    this.blockScroll = false;
+                    this.updateToScrollPercentage(percentScrollage);
+                  });
                 }}
                 className={"alignment-zoom-slider"}
                 labelRenderer={false}
