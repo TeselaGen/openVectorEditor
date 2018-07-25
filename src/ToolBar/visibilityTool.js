@@ -1,6 +1,7 @@
-import { Icon, Checkbox } from "@blueprintjs/core";
+import { Icon, Checkbox, Classes } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
+import classNames from "classnames";
 
 export default {
   updateKeys: ["isOpen", "toggleDropdown"],
@@ -52,7 +53,7 @@ function VisibilityOptions({
                   {hasCount && (
                     <div
                       style={{ marginLeft: 4 }}
-                      className={"pt-tag pt-round"}
+                      className={classNames(Classes.TAG, Classes.ROUND)}
                     >
                       {" "}
                       {count}

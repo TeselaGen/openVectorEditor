@@ -12,7 +12,6 @@
 .veFindBar > * {
   margin-right: 10px;
   width: fit-content;
-  background: white;
 }
 
 .ve-find-options-popover > * {

@@ -122,12 +122,16 @@ export default class StandaloneDemo extends React.Component {
           ]
         }
       });
+      setInterval(()=>{
+        console.log('editor.getState():',editor.getState())
+      },5000)
     }, 100);
 
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
     setTimeout(() => {
       editor.updateEditor({
         sequenceData: exampleSequenceData,
+        sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
         annotationVisibility: {
           // features: false,
           orfTranslations: false
@@ -330,7 +334,6 @@ export default class StandaloneDemo extends React.Component {
         style={{
           width: "100%",
           height: "100%",
-          background: "white",
           zIndex: 1050
         }}
         ref={node => {

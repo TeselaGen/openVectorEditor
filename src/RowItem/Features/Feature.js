@@ -20,6 +20,7 @@ function Feature(props) {
     featureClicked,
     featureRightClicked,
     gapsInside,
+    gapsBefore,
     annotation
   } = props;
 
@@ -86,10 +87,10 @@ function Feature(props) {
       {...hoverActions}
       className={"veRowViewFeature clickable " + className}
       onClick={function(event) {
-        featureClicked({ annotation, event });
+        featureClicked({ annotation, event, gapsBefore, gapsInside });
       }}
       onContextMenu={function(event) {
-        featureRightClicked({ annotation, event });
+        featureRightClicked({ annotation, event, gapsBefore, gapsInside });
       }}
     >
       <title>{getAnnotationNameAndStartStopString(annotation)}</title>

@@ -60,6 +60,7 @@ class Translation extends React.Component {
       aminoAcidSliver,
       index
     ) {
+      const { gapsInside, gapsBefore } = getGaps(aminoAcidSliver.codonRange);
       // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
       let relativeAAPositionInTranslation = index;
       //get the codonIndices relative to
@@ -69,14 +70,18 @@ class Translation extends React.Component {
             translationClicked({
               annotation: aminoAcidSliver.codonRange,
               codonRange: aminoAcidSliver.codonRange,
-              event
+              event,
+              gapsInside,
+              gapsBefore
             });
           }}
           onContextMenu={function(event) {
             translationRightClicked({
               annotation,
               codonRange: aminoAcidSliver.codonRange,
-              event
+              event,
+              gapsInside,
+              gapsBefore
             });
           }}
           title={`${
@@ -93,7 +98,7 @@ class Translation extends React.Component {
           width={
             charWidth *
             (getGaps && aminoAcidSliver.positionInCodon === 1
-              ? getGaps(aminoAcidSliver.codonRange).gapsInside || 1
+              ? gapsInside || 1
               : 1)
           }
           height={height}

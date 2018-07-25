@@ -1,8 +1,9 @@
 import { Icon } from "@blueprintjs/core";
 import React from "react";
-import { Checkbox } from "@blueprintjs/core";
+import { Checkbox, Classes } from "@blueprintjs/core";
 // import show_orfs from "./veToolbarIcons/show_orfs.png";
 import { orfIcon, InfoHelper } from "teselagen-react-components";
+import classNames from "classnames";
 
 export default {
   updateKeys: [
@@ -62,7 +63,7 @@ function OrfToolDropdown({
         Minimum ORF Size:
         <input
           type="number"
-          className="minOrfSizeInput"
+          className={classNames(Classes.INPUT, "minOrfSizeInput")}
           onChange={function(event) {
             let minimumOrfSize = parseInt(event.target.value, 10);
             if (!(minimumOrfSize > -1)) return;

@@ -18,21 +18,21 @@ export default createReducer(
       return {
         ...state,
         future: [],
-        past: [...state.past, payload]
+        past: [...(state.past||[]), payload]
       };
     },
     [veUndo]: (state, presentState) => {
       return {
         ...state,
-        past: state.past.slice(0, -1),
-        future: state.future.concat(presentState)
+        past: (state.past||[]).slice(0, -1),
+        future: (state.future||[]).concat(presentState)
       };
     },
     [veRedo]: (state, presentState) => {
       return {
         ...state,
-        future: state.future.slice(0, -1),
-        past: state.past.concat(presentState)
+        future: (state.future||[]).slice(0, -1),
+        past: (state.past||[]).concat(presentState)
       };
     }
   },

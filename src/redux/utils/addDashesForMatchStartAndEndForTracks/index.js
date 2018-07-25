@@ -1,3 +1,6 @@
+const {getReverseComplementSequenceAndAnnotations} = require('ve-sequence-utils')
+
+
 module.exports = function addDashesForMatchStartAndEndForTracks(
   alignmentTracks
 ) {
@@ -5,7 +8,7 @@ module.exports = function addDashesForMatchStartAndEndForTracks(
     // .filter by the user-specified mismatch overrides (initially [])
     return {
       ...track,
-      alignmentData: addDashesForMatchStartAndEnd(
+      ...addDashesForMatchStartAndEnd(
         track,
         alignmentTracks[0], //send in the ref/template seq every time
         i === 0
@@ -15,15 +18,22 @@ module.exports = function addDashesForMatchStartAndEndForTracks(
 };
 
 function addDashesForMatchStartAndEnd(
-  { alignmentData, sequenceData },
+  { alignmentData, sequenceData: _sequenceData },
   template,
   isTemplate
 ) {
+  let sequenceData =_sequenceData
   const {
     sequenceData: sequenceDataTemplate,
     alignmentData: alignmentDataTemplate
   } = template;
-  const { matchStart = 0, matchEnd = 0 } = alignmentData;
+  let { matchStart = 0, matchEnd = 0, strand } = alignmentData;
+  if (strand === -1) {
+     sequenceData=  getReverseComplementSequenceAndAnnotations(sequenceData)
+     const oldMatchEnd = matchEnd
+     matchEnd = matchStart
+     matchStart = oldMatchEnd
+  }
   const {
     matchStart: matchStartTemplate = 0,
     matchEnd: matchEndTemplate = 0
@@ -61,5 +71,5 @@ function addDashesForMatchStartAndEnd(
     };
   }
 
-  return newAlignmentData;
+  return {alignmentData: newAlignmentData, sequenceData: sequenceData};
 }

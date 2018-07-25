@@ -34,6 +34,7 @@ import AlignmentDemo from "./AlignmentDemo";
 // import _CutsiteProperties from "../../src/helperComponents/PropertiesDialog/CutsiteProperties";
 // import withEditorProps from "../../src/withEditorProps";
 // import _OrfProperties from "../../src/helperComponents/PropertiesDialog/OrfProperties";
+import "./style.css";
 
 const links = [
   { name: "Editor", url: "Editor" },
@@ -59,17 +60,30 @@ updateEditor(store, "DemoEditor", {
 });
 
 class Demo extends React.Component {
-  state = {
-    previewMode: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      previewMode: false,
+      darkMode: document.body.className.includes("pt-dark")
+    };
+  }
 
   changePreviewMode = e =>
     this.setState({
       previewMode: e.target.checked
     });
 
+  changeDarkMode = () => {
+    this.setState({
+      darkMode: !this.state.darkMode
+    });
+    document.body.classList.toggle("pt-dark");
+  };
+
   render() {
-    const { previewMode } = this.state;
+    const { previewMode, darkMode } = this.state;
+
     return (
       <Provider store={store}>
         <Router>
@@ -87,6 +101,12 @@ class Demo extends React.Component {
                       checked={previewMode}
                       label="Preview Mode"
                       onChange={this.changePreviewMode}
+                      style={{ margin: 30 }}
+                    />
+                    <Switch
+                      label="Dark Mode"
+                      checked={darkMode}
+                      onChange={this.changeDarkMode}
                       style={{ margin: 30 }}
                     />
                     <div
@@ -107,7 +127,7 @@ class Demo extends React.Component {
                       >
                         <Editor
                           editorName="DemoEditor"
-                          previewMode={previewMode}
+                          withPreviewMode={previewMode}
                         />
                       </div>
                       <div style={{ display: "flex", margin: 20 }} />

@@ -1,5 +1,23 @@
 //vectorEditorMiddleware
 //used to add undo/redo abilities to OVE
+
+// To Batch actions together use this api:
+// deleteFeature([id1, id2], {
+//   batchUndoStart: true
+// });
+// upsertFeature(
+// {
+//   ...feat1,
+//   id: uuid(),
+//   start: start - 1,
+//   end: end - 1,
+//   name
+// },
+// {
+//   batchUndoEnd: true
+// }
+// );
+
 export default store => next => action => {
   if (action.meta && action.meta.disregardUndo) {
     return next(action);
@@ -12,7 +30,7 @@ export default store => next => action => {
     const stack =
       editorState.sequenceDataHistory[
         action.type === "VE_UNDO" ? "past" : "future"
-      ];
+      ] || [];
     const stateToUse = stack[stack.length - 1];
     store.dispatch({
       type: action.type === "VE_UNDO" ? "VE_UNDO_META" : "VE_REDO_META",

@@ -1,0 +1,66 @@
+.pt-dark #circularViewAxis:not(.veAxisFill) {
+  fill: #293742 !important;
+  stroke: #f5f8fa !important;
+}
+
+.pt-dark .veEditor {
+  background: #293742 !important;
+}
+
+.pt-dark .veEditor .ve-draggable-tabs {
+  color: #f5f8fa !important;
+}
+
+.pt-dark .veCaretSVG,
+.pt-dark .translationLayer text,
+.pt-dark .veRowViewAxis path,
+.pt-dark .veRowViewFeature path,
+.pt-dark .veRowViewPart path,
+.pt-dark .veLabelLine,
+.pt-dark .veRowViewAxis text,
+.pt-dark .veFeature,
+.pt-dark .vePart {
+  stroke: #f5f8fa !important;
+}
+
+.pt-dark .veEditor .veRowViewCaret {
+  background: #f5f8fa !important;
+}
+
+.pt-dark .veEditor text,
+.pt-dark .veCircularViewLabelText {
+  fill: #f5f8fa !important;
+}
+
+.pt-dark .tag-selection.selected {
+  border-color: #f5f8fa !important;
+}
+
+.pt-dark .veLinearView text {
+  fill: #f5f8fa !important;
+}
+
+.pt-dark .veAxis > g {
+  fill: #f5f8fa !important;
+}
+
+.pt-dark .step-group.active .step-text {
+  color: #2b95d6 !important;
+}
+
+.pt-dark .step-group.active .step-mark {
+  background-color: #2b95d6 !important;
+  border-color: #2b95d6 !important;
+}
+
+.pt-dark .tool-select-item:hover {
+  background: #0e5a8a !important;
+}
+
+.pt-dark .alignmentViewTrackContainer .rowViewTextContainer text {
+  fill: #182026 !important;
+}
+
+.pt-dark .veWhiteBackground {
+  background: #293742;
+}

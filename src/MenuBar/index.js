@@ -5,7 +5,8 @@ import {
   // InputGroup,
   Popover,
   Position,
-  Button
+  Button,
+  Classes
 } from "@blueprintjs/core";
 
 import withEditorProps from "../withEditorProps";
@@ -36,7 +37,7 @@ export class MenuBar extends React.Component {
         <Popover
           key={index}
           content={<Menu text={text}>{getMenu(menu)}</Menu>}
-          popoverClassName="pt-minimal"
+          minimal
           position={Position.BOTTOM}
         >
           <Button text={text} />
@@ -45,15 +46,15 @@ export class MenuBar extends React.Component {
     });
 
     return (
-      <div className={"pt-button-group"}>
+      <div className={Classes.BUTTON_GROUP}>
         {inner}{" "}
         <Popover
+          minimal
           content={
             <Menu>
               <MenuItem />
             </Menu>
           }
-          popoverClassName="pt-minimal"
           position={Position.BOTTOM}
         >
           <Button text={"Help"} />

@@ -14,7 +14,8 @@ function Orf(props) {
     orfClicked,
     orfRightClicked,
     charWidth,
-    gapsInside
+    gapsInside,
+    gapsBefore
   } = props;
   let heightToUse = height / 1.5;
   let color = orfFrameToColorMap[frame];
@@ -57,10 +58,10 @@ function Orf(props) {
   return (
     <g
       onClick={function(event) {
-        orfClicked({ annotation, event });
+        orfClicked({ annotation, event, gapsInside, gapsBefore });
       }}
       onContextMenu={function(event) {
-        orfRightClicked({ annotation, event });
+        orfRightClicked({ annotation, event, gapsInside, gapsBefore, });
       }}
       className={`veRowViewOrf clickable frame${frame}`}
       strokeWidth="1"

@@ -72,6 +72,7 @@ export default class Minimap extends React.Component {
       onMinimapScroll,
       easyStore
     } = this.props;
+    
     const [template /* ...nonTemplates */] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = this.getCharWidth();
@@ -150,12 +151,11 @@ const YellowScrollHandle = view(
         width,
         easyStore,
         handleDrag,
-        onMinimapScroll,
         minSliderSize,
         onSizeAdjust
       } = this.props;
       const xScroll = easyStore.percentScrolled * (width - scrollHandleWidth);
-
+      
       return (
         <Draggable
           bounds={"parent"}
@@ -191,16 +191,12 @@ const YellowScrollHandle = view(
                 const deltaX = x - this.x;
 
                 const newSliderSize = scrollHandleWidth - deltaX;
-                onSizeAdjust(newSliderSize);
                 //user is resizing to the left so we need to update the scroll percentage so the slider does not jump
                 const newScrollPercent = Math.min(
                   1,
                   (xScroll + deltaX) / (width - newSliderSize)
                 );
-                onMinimapScroll(newScrollPercent);
-                easyStore.percentScrolled = newScrollPercent;
-                // setTimeout(() => {
-                // })
+                onSizeAdjust(newSliderSize, newScrollPercent);
               }}
             >
               <div
@@ -248,12 +244,10 @@ const YellowScrollHandle = view(
                 const deltaX = this.x - x;
                 const newSliderSize = scrollHandleWidth - deltaX;
                 onSizeAdjust(newSliderSize);
+
                 //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
                 const newScrollPercent = xScroll / (width - newSliderSize);
-                onMinimapScroll(newScrollPercent);
-                easyStore.percentScrolled = newScrollPercent;
-                // setTimeout(() => {
-                // })
+                onSizeAdjust(newSliderSize, newScrollPercent);
               }}
             >
               <div

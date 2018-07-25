@@ -1,4 +1,5 @@
-/* eslint-disable react/no-deprecated */ 
+/* eslint-disable react/no-deprecated */
+
 import React from "react";
 import { connect } from "react-redux";
 import { Button, Slider, Tooltip, Intent, Position } from "@blueprintjs/core";
@@ -50,8 +51,12 @@ class AlignmentView extends React.Component {
     return template.alignmentData.sequence.length || 1;
   };
   componentDidUpdate(prevProps) {
-    if (prevProps.scrollPercentageToJumpTo !== this.props.scrollPercentageToJumpTo && this.props.scrollPercentageToJumpTo !== undefined) {
-      this.updateToScrollPercentage(this.props.scrollPercentageToJumpTo)
+    if (
+      prevProps.scrollPercentageToJumpTo !==
+        this.props.scrollPercentageToJumpTo &&
+      this.props.scrollPercentageToJumpTo !== undefined
+    ) {
+      this.updateToScrollPercentage(this.props.scrollPercentageToJumpTo);
     }
   }
   componentDidMount() {
@@ -63,6 +68,21 @@ class AlignmentView extends React.Component {
     this.editorDragStarted = editorDragStarted.bind(this);
     this.editorDragStopped = editorDragStopped.bind(this);
   }
+
+  annotationClicked = ({
+    event,
+    annotation,
+    gapsBefore = 0,
+    gapsInside = 0
+  }) => {
+    event.preventDefault && event.preventDefault();
+    event.stopPropagation && event.stopPropagation();
+    this.updateSelectionOrCaret(event.shiftKey, {
+      ...annotation,
+      start: annotation.start + gapsBefore,
+      end: annotation.end + gapsBefore + gapsInside
+    });
+  };
 
   updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
     // console.log('clicking')
@@ -125,7 +145,7 @@ class AlignmentView extends React.Component {
   };
   handleScroll = () => {
     if (this.blockScroll) {
-      //we have to block the scroll sometimes because when adjusting the minimap
+      //we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
       return;
     }
     const scrollPercentage =
@@ -133,20 +153,22 @@ class AlignmentView extends React.Component {
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
   };
-  onMinimapSizeAdjust = newSliderSize => {
+  onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const { dimensions } = this.props;
     const percentageOfSpace = newSliderSize / (dimensions.width - nameDivWidth);
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
     const newCharWidth = (dimensions.width - nameDivWidth) / numBpsInView;
     this.blockScroll = true;
-    setTimeout(() => {
-      this.blockScroll = false;
-    }, 0);
     this.setState({ charWidthInLinearView: newCharWidth });
+    setTimeout(() => {
+      this.updateToScrollPercentage(newPercent);
+      this.blockScroll = false;
+    });
   };
 
-  updateToScrollPercentage = scrollPercentage => {
+  updateToScrollPercentage = (scrollPercentage /* optionalLength */) => {
+    this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
@@ -190,7 +212,6 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
-
         // {alignmentTracks.map((track, i) => {
         //   const {
         //     // sequenceData,
@@ -204,7 +225,7 @@ class AlignmentView extends React.Component {
         //         position: "absolute",
         //         right: 0,
         //         zIndex: 10,
-        //         boxShadow: 
+        //         boxShadow:
         //           `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
         //         width: 230,
         //         height: 0.723 * height,
@@ -260,9 +281,12 @@ class AlignmentView extends React.Component {
                 sequenceData,
                 additionalSelectionLayers,
                 alignmentData,
-                chromatogramData,
-                mismatches
+                chromatogramData
+                // mismatches
               } = track;
+              const linearViewWidth =
+                (alignmentData || sequenceData).sequence.length *
+                charWidthInLinearView;
               const name = sequenceData.name || sequenceData.id;
               return (
                 <div
@@ -276,7 +300,7 @@ class AlignmentView extends React.Component {
                   }}
                   key={i}
                 >
-                {/* <div
+                  {/* <div
                   className={"alignmentMismatches"}
                   style={{
                     position: "sticky",
@@ -317,15 +341,26 @@ class AlignmentView extends React.Component {
                       width: nameDivWidth,
                       padding: 2,
                       minWidth: nameDivWidth,
-                      background: "rgb(243, 243, 243)",
-                      textOverflow: "ellipsis",
+                      // textOverflow: "ellipsis",
                       overflowY: "auto",
+                      // overflowX: "visible",
                       whiteSpace: "nowrap"
                     }}
                     title={name}
                     key={i}
                   >
-                    {name}
+                    <div
+                      className={"alignmentTrackNameDiv"}
+                      style={{
+                        background: "blue",
+                        display: "inline-block",
+                        color: "white",
+                        borderRadius: 5,
+                        opacity: 0.7
+                      }}
+                    >
+                      {name}
+                    </div>
                   </div>
                   {handleSelectTrack &&
                     !isTemplate && (
@@ -335,10 +370,10 @@ class AlignmentView extends React.Component {
                         }}
                         style={{
                           position: "absolute",
-                          background: "white",
                           opacity: 0,
                           height: "100%",
-                          width: "100%",
+                          left: nameDivWidth,
+                          width: linearViewWidth,
                           fontWeight: "bolder",
                           cursor: "pointer",
                           padding: 5,
@@ -347,7 +382,9 @@ class AlignmentView extends React.Component {
                           // left: "50%",
                           // transform: "translateX(-50%)"
                         }}
-                        className={"alignmentViewSelectTrackPopover"}
+                        className={
+                          "alignmentViewSelectTrackPopover veWhiteBackground"
+                        }
                       >
                         Inspect track
                       </div>
@@ -371,6 +408,16 @@ class AlignmentView extends React.Component {
                       linearViewAnnotationLabelVisibilityOverrides:
                         alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
                       marginWith: 0,
+                      orfClicked: this.annotationClicked,
+                      primerClicked: this.annotationClicked,
+                      translationClicked: this.annotationClicked,
+                      cutsiteClicked: this.annotationClicked,
+                      translationDoubleClicked: this.annotationClicked,
+                      deletionLayerClicked: this.annotationClicked,
+                      replacementLayerClicked: this.annotationClicked,
+                      featureClicked: this.annotationClicked,
+                      partClicked: this.annotationClicked,
+                      searchLayerClicked: this.annotationClicked,
                       hideName: true,
                       sequenceData,
                       allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
@@ -401,13 +448,9 @@ class AlignmentView extends React.Component {
                           : linearViewOptions)),
                       additionalSelectionLayers,
                       dimensions: {
-                        width:
-                          (alignmentData || sequenceData).sequence.length *
-                          charWidthInLinearView
+                        width: linearViewWidth
                       },
-                      width:
-                        (alignmentData || sequenceData).sequence.length *
-                        charWidthInLinearView
+                      width: linearViewWidth
                       // scrollData: {
                       //   viewportWidth: trackWidth,
                       //   fractionScrolled: this.easyStore
@@ -440,7 +483,6 @@ class AlignmentView extends React.Component {
         }}
         className="alignmentView"
       >
-        
         {hasTemplate ? (
           <React.Fragment>
             <div className={"alignmentTrackFixedToTop"}>
@@ -474,7 +516,12 @@ class AlignmentView extends React.Component {
               <UncontrolledSlider
                 onRelease={val => {
                   this.setState({ charWidthInLinearView: val });
-                  this.updateToScrollPercentage(this.easyStore.percentScrolled);
+                  this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                  const percentScrollage = this.easyStore.percentScrolled;
+                  setTimeout(() => {
+                    this.blockScroll = false;
+                    this.updateToScrollPercentage(percentScrollage);
+                  });
                 }}
                 className={"alignment-zoom-slider"}
                 labelRenderer={false}
@@ -484,24 +531,26 @@ class AlignmentView extends React.Component {
                 min={this.getMinCharWidth()}
               />
               {handleBackButtonClicked && (
-          
-            <Tooltip position={Position.TOP} content="Back to pairwise alignment overview">
-              <Button
-                icon="arrow-left"
-                onClick={() => {
-                  this.setState({
-                    charWidthInLinearView: charWidthInLinearViewDefault
-                  });
-                  handleBackButtonClicked();
-                  this.caretPositionUpdate(-1);
-                }}
-                intent={Intent.PRIMARY}
-                // minimal
-                style={{marginRight: 10}}
-                className={"alignmentViewBackButton"}
-              />
-            </Tooltip>
-        )}
+                <Tooltip
+                  position={Position.TOP}
+                  content="Back to pairwise alignment overview"
+                >
+                  <Button
+                    icon="arrow-left"
+                    onClick={() => {
+                      this.setState({
+                        charWidthInLinearView: charWidthInLinearViewDefault
+                      });
+                      handleBackButtonClicked();
+                      this.caretPositionUpdate(-1);
+                    }}
+                    intent={Intent.PRIMARY}
+                    // minimal
+                    style={{ marginRight: 10 }}
+                    className={"alignmentViewBackButton"}
+                  />
+                </Tooltip>
+              )}
               {!noVisibilityOptions && (
                 <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
               )}

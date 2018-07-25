@@ -1,7 +1,7 @@
 import { getInsertBetweenVals } from "ve-sequence-utils";
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import React from "react";
-import { Button } from "@blueprintjs/core";
+import { Button, Classes } from "@blueprintjs/core";
 import { BPSelect } from "teselagen-react-components";
 import withEditorProps from "../withEditorProps";
 import "./style.css";
@@ -35,7 +35,7 @@ export function StatusBar({
             { label: "Read Only", value: "readOnly" },
             { label: "Editable", value: "editable" }
           ]}
-          className="pt-minimal"
+          className={Classes.MINIMAL}
           value={readOnly ? "readOnly" : "editable"}
           onChange={value => {
             updateReadOnlyMode(value === "readOnly");
@@ -58,7 +58,7 @@ export function StatusBar({
           onChange={val => {
             updateCircular(val === "circular");
           }}
-          className="pt-minimal"
+          className={Classes.MINIMAL}
           value={circular ? "circular" : "linear"}
           options={[
             { label: "Circular", value: "circular" },
@@ -83,10 +83,10 @@ export function StatusBar({
             return false;
           }
           if (selectionLayer.start > -1) {
-            if (getRangeLength(selectionLayer) === sequenceLength) {
+            if (getRangeLength(selectionLayer, sequenceLength) === sequenceLength) {
               caretPositionUpdate(selectionLayer.start);
             } else {
-              selectionLayerUpdate(invertRange(selectionLayer));
+              selectionLayerUpdate(invertRange(selectionLayer, sequenceLength));
             }
           } else {
             if (caretPosition > -1) {
@@ -107,8 +107,8 @@ export function StatusBar({
             }
           }
         }}
-        style={{ marginLeft: 5, color: "blue" }}
-        className={"pt-small"}
+        style={{ marginLeft: 5, color: "#48AFF0" }}
+        small
       >
         Select Inverse
       </Button>

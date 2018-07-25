@@ -14,19 +14,28 @@ export default class StandaloneAlignmentDemo extends React.Component {
     isDialogOpen: false
   };
   mountEditor = () => {
-      window.createAlignmentView(this.node, {
-        ...alignmentDataPairwise,
-        id: "pairwiseRun1",
-        linearViewOptions: () => {
-          return {
-            selectionLayerRightClicked: ({event}) => {
-              window.tgCreateMenu([{
-                text: "Selection Layer Right Clicked!"
-              }], undefined, event)
-            }
+    const alignment = window.createAlignmentView(this.node, {
+      ...alignmentDataPairwise,
+      id: "pairwiseRun1",
+      linearViewOptions: () => {
+        return {
+          selectionLayerRightClicked: ({ event }) => {
+            window.tgCreateMenu(
+              [
+                {
+                  text: "Selection Layer Right Clicked!"
+                }
+              ],
+              undefined,
+              event
+            );
           }
-        }
-      });
+        };
+      }
+    });
+    setInterval(()=>{
+      console.log('alignment.getState():',alignment.getState())
+    },5000)
   };
   componentDidMount() {
     this.mountEditor();
@@ -38,7 +47,6 @@ export default class StandaloneAlignmentDemo extends React.Component {
         style={{
           width: "100%",
           height: "100%",
-          background: "white",
           zIndex: 1050
         }}
         ref={node => {

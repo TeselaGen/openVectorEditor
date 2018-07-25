@@ -710,7 +710,11 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     selectionLayerRightClicked = ({ annotation }) => {
-      return this.generateSelectionMenuOptions(annotation);
+      return this.generateSelectionMenuOptions({
+        //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
+        start: annotation.start,
+        end: annotation.end 
+      });
     };
 
     handleRotateToCaretPosition = () => {
@@ -781,7 +785,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     partRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation)
+      this.props.selectionLayerUpdate(annotation);
       const {
         readOnly,
         upsertTranslation,
@@ -829,7 +833,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     featureRightClicked = ({ annotation, event }) => {
-      this.props.selectionLayerUpdate(annotation)
+      this.props.selectionLayerUpdate(annotation);
       event.persist();
       const {
         readOnly,
@@ -943,7 +947,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     primerRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation)
+      this.props.selectionLayerUpdate(annotation);
       const {
         showAddOrEditPrimerDialog,
         readOnly,
@@ -984,7 +988,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     orfRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation)
+      this.props.selectionLayerUpdate(annotation);
       const {
         // upsertTranslation,
         propertiesViewOpen,
@@ -1019,7 +1023,7 @@ function VectorInteractionHOC(Component /* options */) {
         propertiesViewTabUpdate,
         annotationVisibilityToggle
       } = this.props;
-      this.props.selectionLayerUpdate(annotation)
+      this.props.selectionLayerUpdate(annotation);
       if (annotation.isOrf) {
         return [
           {

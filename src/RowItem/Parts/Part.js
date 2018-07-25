@@ -18,7 +18,8 @@ function Part(props) {
     partClicked,
     partRightClicked,
     annotation,
-    gapsInside
+    gapsInside,
+    gapsBefore
   } = props;
 
   let width = (widthInBps + gapsInside) * charWidth;
@@ -84,10 +85,20 @@ function Part(props) {
       {...hoverActions}
       className={"veRowViewPart clickable " + className}
       onClick={function(event) {
-        partClicked({ annotation, event });
+        partClicked({
+          annotation,
+          event,
+          gapsInside,
+          gapsBefore
+        });
       }}
       onContextMenu={function(event) {
-        partRightClicked({ annotation, event });
+        partRightClicked({
+          annotation,
+          event,
+          gapsInside,
+          gapsBefore
+        });
       }}
     >
       <title>

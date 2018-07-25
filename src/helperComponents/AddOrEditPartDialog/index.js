@@ -10,8 +10,9 @@ import {
   withDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, Classes } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
+import classNames from "classnames";
 
 import withEditorProps from "../../withEditorProps";
 
@@ -25,7 +26,13 @@ export class AddOrEditPartDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div className={"pt-dialog-body tg-upsert-part"}>
+      <div
+        className={classNames(
+          Classes.DIALOG_BODY,
+          "tg-min-width-dialog",
+          "tg-upsert-part"
+        )}
+      >
         <InputField
           autoFocus
           inlineLabel
@@ -67,7 +74,17 @@ export class AddOrEditPartDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
-          <Button style={{marginRight: 15}} onClick={hideModal}>Cancel</Button>
+          <Button
+            style={{ marginRight: 15 }}
+            onMouseDown={e => {
+              //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
+              e.preventDefault();
+              e.stopPropagation();
+              hideModal();
+            }}
+          >
+            Cancel
+          </Button>
           <Button
             onClick={handleSubmit(data => {
               upsertPart(convertRangeTo0Based(data));

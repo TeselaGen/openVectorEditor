@@ -1,0 +1,37 @@
+{
+  "id": "iceAlignment",
+  "pairwiseAlignments": [
+    [
+      {
+        "sequenceData": {
+          "id": 1,
+          "name": "pNJH00010_copy",
+          "sequence": "gacgtcttattt",
+          "sequence_post": "gacgtcttattt"
+        },
+        "alignmentData": {
+          "id": 1,
+          "sequence": "tt-g-a",
+          "sequence_post": "g-acgtcttattt-",
+          "matchStart": 10,
+          "matchEnd": 1
+        }
+      },
+      {
+        "sequenceData": {
+          "id": 2,
+          "name": "GFPuv_GFPuv58_2010-03-18_H03_017.ab1",
+          "sequence": "attAgCat",
+          "sequence_post": "attAgCat"
+        },
+        "alignmentData": {
+          "id": 2,
+          "sequence": "ttAgCa",
+          "sequence_post": "gCa--------ttA",
+          "matchStart": 1,
+          "matchEnd": 6
+        }
+      }
+    ]
+  ]
+}

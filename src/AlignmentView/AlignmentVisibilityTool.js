@@ -16,7 +16,7 @@ export default function AlignmentVisibilityTool(props) {
       target={
         <Popover
           content={<VisibilityOptions {...props} />}
-          target={<Button className={"pt-minimal"} icon={"eye-open"} />}
+          target={<Button minimal icon={"eye-open"} />}
         />
       }
     />

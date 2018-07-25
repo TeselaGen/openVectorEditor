@@ -19,6 +19,7 @@ function Primer(props) {
     primerClicked,
     primerRightClicked,
     gapsInside = 0,
+    gapsBefore = 0,
     annotation
   } = props;
 
@@ -96,10 +97,20 @@ function Primer(props) {
     <g
       className="veRowViewPrimer clickable"
       onClick={function(event) {
-        primerClicked({ annotation, event });
+        primerClicked({
+          annotation,
+          event,
+          gapsInside,
+          gapsBefore
+        });
       }}
       onContextMenu={function(event) {
-        primerRightClicked({ annotation, event });
+        primerRightClicked({
+          annotation,
+          event,
+          gapsInside,
+          gapsBefore
+        });
       }}
     >
       <title>{getAnnotationNameAndStartStopString(annotation)}</title>

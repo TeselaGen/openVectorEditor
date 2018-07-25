@@ -62,6 +62,7 @@ export class RowItem extends React.Component {
       // sequenceLength = alignmentData.sequence.length || row.sequence.length,
       chromatogramData,
       fullSequence = "",
+      
       deletionLayerClicked = noop,
       deletionLayerRightClicked = noop,
       replacementLayerClicked = noop,
@@ -82,6 +83,7 @@ export class RowItem extends React.Component {
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
+
       // scrollData,
       minHeight = 25,
       bpsPerRow = sequenceLength,
