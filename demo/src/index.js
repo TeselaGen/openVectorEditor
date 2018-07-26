@@ -28,6 +28,7 @@ import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
+import VersionHistoryView from "../../src/VersionHistoryView";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -39,6 +40,7 @@ import "./style.css";
 const links = [
   { name: "Editor", url: "Editor" },
   { name: "Standalone", url: "Standalone" },
+  { name: "VersionHistoryView", url: "VersionHistoryView" },
   { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
   { name: "CircularView", url: "CircularView" },
@@ -136,6 +138,16 @@ class Demo extends React.Component {
                 );
               }}
               path="/Editor"
+            />
+            <Route
+              render={() => {
+                return (
+                  <div>
+                    <VersionHistoryView></VersionHistoryView>
+                  </div>
+                );
+              }}
+              path="/VersionHistoryView"
             />
             <Route
               render={() => {

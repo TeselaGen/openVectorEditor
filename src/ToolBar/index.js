@@ -69,6 +69,7 @@ export class ToolBar extends React.PureComponent {
   render() {
     const {
       modifyTools,
+      contentLeft,
       toolList = [
         "saveTool",
         "downloadTool",
@@ -148,7 +149,12 @@ export class ToolBar extends React.PureComponent {
       return <WrappedItem key={index} />;
     });
 
-    return <div className={"veToolbar"}>{content}</div>;
+    return <div style={{display: 'flex'}}>
+      {contentLeft}
+      <div className={"veToolbar"}>{content}</div>
+
+    </div>
+    
   }
 }
 
