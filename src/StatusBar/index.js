@@ -11,14 +11,16 @@ export function StatusBar({
   caretPosition = -1,
   sequenceLength = 0,
   readOnly,
-  sequenceData: { circular } = {},
+  sequenceData: { circular, materiallyAvailable } = {},
   onSave,
   updateCircular,
+  updateAvailability,
   updateReadOnlyMode,
   selectionLayerUpdate,
   caretPositionUpdate,
   showCircularity = true,
-  showReadOnly = true
+  showReadOnly = true,
+  showAvailability = false
 }) {
   let length = getRangeLength(selectionLayer, sequenceLength);
   let insertBetween = getInsertBetweenVals(
@@ -46,6 +48,7 @@ export function StatusBar({
       ) : (
         "Editable"
       )),
+      
     showCircularity &&
       (readOnly ? (
         circular ? (
@@ -63,6 +66,26 @@ export function StatusBar({
           options={[
             { label: "Circular", value: "circular" },
             { label: "Linear", value: "linear" }
+          ]}
+        />
+      )),
+    showAvailability &&
+    (readOnly ? (
+      materiallyAvailable ? (
+        "available"
+      ) : (
+          "unavailable"
+        )
+    ) : (
+        <BPSelect
+          onChange={val => {
+            updateAvailability(val === 'available');
+          }}
+          className={Classes.MINIMAL}
+          value={materiallyAvailable ? 'available' : 'unavailable'}
+          options={[
+            { label: "Available", value: 'available' },
+            { label: "Unavailable", value: 'unavailable' }
           ]}
         />
       )),

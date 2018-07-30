@@ -10,6 +10,7 @@ import name from "./name";
 import primers from "./primers";
 import sequence from "./sequence";
 import circular from "./circular";
+import materiallyAvailable from "./materiallyAvailable";
 import translations from "./translations";
 import combineReducersDontIgnoreKeys from "../../utils/combineReducersDontIgnoreKeys";
 // import cleanSequenceData from "../../utils/cleanSequenceData";
@@ -22,6 +23,7 @@ export * from "./parts";
 export * from "./name";
 // export * from './sequence';
 export * from "./circular";
+export * from "./materiallyAvailable";
 export * from "./translations";
 
 // ------------------------------------
@@ -48,6 +50,7 @@ const coreReducer = combineReducersDontIgnoreKeys({
   translations,
   size: (state = {}) => state,
   circular,
+  materiallyAvailable,
   name,
   fromFileUpload: createReducer({}, false)
 });
