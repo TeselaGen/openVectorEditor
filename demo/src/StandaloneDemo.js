@@ -29,6 +29,9 @@ export default class StandaloneDemo extends React.Component {
       editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
         shouldAutosave: true,
+        StatusBarProps: {
+          showAvailability: true
+        },
         rightClickOverrides: {
           selectionLayerRightClicked: (items, { annotation }, props) => {
             return [
@@ -103,9 +106,12 @@ export default class StandaloneDemo extends React.Component {
         ToolBarProps: {
           toolList: [
             "saveTool",
-            {name: "downloadTool", Dropdown: () => {
-              return "Hey!"
-            }},
+            {
+              name: "downloadTool",
+              Dropdown: () => {
+                return "Hey!";
+              }
+            },
             "importTool",
             "undoTool",
             "redoTool",
@@ -122,9 +128,9 @@ export default class StandaloneDemo extends React.Component {
           ]
         }
       });
-      setInterval(()=>{
-        console.log('editor.getState():',editor.getState())
-      },5000)
+      setInterval(() => {
+        console.log("editor.getState():", editor.getState());
+      }, 5000);
     }, 100);
 
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
@@ -151,20 +157,19 @@ export default class StandaloneDemo extends React.Component {
               // fullScreen: true,
               active: true,
               id: "circular",
-              name: "Plasmid",
-
+              name: "Plasmid"
             },
             {
               id: "jbeiAlignment1",
               type: "alignment",
-              name: "Jbei Alignment p1243124",
+              name: "Jbei Alignment p1243124"
               // active: true,
               // fullScreen: true
             },
             {
               id: "pairwiseRun1",
               type: "alignment",
-              name: "Pairwise Alignment",
+              name: "Pairwise Alignment"
               // active: true
               // fullScreen: true
             }
@@ -209,8 +214,8 @@ export default class StandaloneDemo extends React.Component {
       });
       editor.addAlignment({
         ...alignmentDataPairwise,
-        id: "pairwiseRun1",
-      })
+        id: "pairwiseRun1"
+      });
       editor.addAlignment({
         id: "jbeiAlignment1",
         alignmentTracks: [

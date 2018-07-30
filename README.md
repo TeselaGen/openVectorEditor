@@ -213,6 +213,12 @@ These props consist of hooks and editor config options that can be passed like s
 				// "propertiesTool"
 			]
 		}
+		StatusBarProps: {
+			//these are the defaults:
+			showCircularity: true,
+  		showReadOnly: true,
+			showAvailability: false
+		},
 		onDigestSave: () => {} //tnr: NOT YET IMPLEMENTED
 }
 ```

@@ -20,7 +20,7 @@ export function StatusBar({
   caretPositionUpdate,
   showCircularity = true,
   showReadOnly = true,
-  showAvailability = true
+  showAvailability = false
 }) {
   let length = getRangeLength(selectionLayer, sequenceLength);
   let insertBetween = getInsertBetweenVals(
