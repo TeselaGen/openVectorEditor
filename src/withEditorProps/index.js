@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import lruMemoize from "lru-memoize";
 import { compose, withHandlers } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
-import {showConfirmationDialog} from "teselagen-react-components";
-import {some, map} from "lodash";
+import { showConfirmationDialog } from "teselagen-react-components";
+import { some, map } from "lodash";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
@@ -20,7 +20,10 @@ import { Intent } from "@blueprintjs/core";
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(mapStateToProps, mapDispatchToActions),
+  connect(
+    mapStateToProps,
+    mapDispatchToActions
+  ),
   withHandlers({
     handleSave: props => {
       return e => {
@@ -50,17 +53,36 @@ export default compose(
         if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
           const doAction = await showConfirmationDialog({
             intent: Intent.DANGER, //applied to the right most confirm button
-              confirmButtonText: "Truncate Annotations",
-              canEscapeKeyCancel: true, //this is false by default
+            confirmButtonText: "Truncate Annotations",
+            canEscapeKeyCancel: true, //this is false by default
             text:
               "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
           });
-          if (!doAction) return //stop early
+          if (!doAction) return; //stop early
           updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
-            batchUndoStart: true,
-          })
+            batchUndoStart: true
+          });
         }
-        _updateCircular(isCircular, {batchUndoEnd: true})
+        _updateCircular(isCircular, { batchUndoEnd: true });
+      };
+    },
+    updateAvailability: props => {
+      return async isAvailable => {
+        const { updateAvailability, updateSequenceData, sequenceData } = props;
+        if (!isAvailable && hasAnnotationThatSpansOrigin(sequenceData)) {
+          const doAction = await showConfirmationDialog({
+            intent: Intent.DANGER, //applied to the right most confirm button
+            confirmButtonText: "Truncate Annotations",
+            canEscapeKeyCancel: true, //this is false by default
+            text:
+              "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+          });
+          if (!doAction) return; //stop early
+          updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
+            batchUndoStart: true
+          });
+        }
+        updateAvailability(isAvailable, { batchUndoEnd: true });
       };
     },
     //add additional "computed handlers here"
@@ -125,7 +147,7 @@ function mapStateToProps(state, ownProps) {
   }
 
   let sequenceData = s.sequenceDataSelector(editorState);
-  const filteredCutsites = s.filteredCutsitesSelector(editorState)
+  const filteredCutsites = s.filteredCutsitesSelector(editorState);
   let cutsites = filteredCutsites.cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
@@ -277,37 +299,51 @@ const getVisibilities = lruMemoize(1, undefined, true)(
 );
 
 function truncateOriginSpanningAnnotations(seqData) {
-  const {features=[], parts=[], translations=[], primers=[], sequence } = seqData
-    return {...seqData, 
-      features: truncateOriginSpanners(features, sequence.length),
-      parts: truncateOriginSpanners(parts, sequence.length),
-      translations: truncateOriginSpanners(translations, sequence.length),
-      primers: truncateOriginSpanners(primers, sequence.length)
-    }
+  const {
+    features = [],
+    parts = [],
+    translations = [],
+    primers = [],
+    sequence
+  } = seqData;
+  return {
+    ...seqData,
+    features: truncateOriginSpanners(features, sequence.length),
+    parts: truncateOriginSpanners(parts, sequence.length),
+    translations: truncateOriginSpanners(translations, sequence.length),
+    primers: truncateOriginSpanners(primers, sequence.length)
+  };
 }
 
 function truncateOriginSpanners(annotations, sequenceLength) {
-    return map(annotations, (annotation) => {
-      const {start=0, end=0} = annotation
-      if (start > end) {
-        return {
-          ...annotation,
-          end: sequenceLength - 1
-        }
-      } else {
-        return annotation
-      }
-    })
+  return map(annotations, annotation => {
+    const { start = 0, end = 0 } = annotation;
+    if (start > end) {
+      return {
+        ...annotation,
+        end: sequenceLength - 1
+      };
+    } else {
+      return annotation;
+    }
+  });
 }
 
-function hasAnnotationThatSpansOrigin({features=[], parts=[], translations=[], primers=[], }) {
-    return doAnySpanOrigin(features) ||
-     doAnySpanOrigin(parts) ||
-     doAnySpanOrigin(translations) ||
-     doAnySpanOrigin(primers)
+function hasAnnotationThatSpansOrigin({
+  features = [],
+  parts = [],
+  translations = [],
+  primers = []
+}) {
+  return (
+    doAnySpanOrigin(features) ||
+    doAnySpanOrigin(parts) ||
+    doAnySpanOrigin(translations) ||
+    doAnySpanOrigin(primers)
+  );
 }
 function doAnySpanOrigin(annotations) {
-    return some(annotations, ({start=0, end=0}) => {
-      if (start > end) return true
-    })
+  return some(annotations, ({ start = 0, end = 0 }) => {
+    if (start > end) return true;
+  });
 }
