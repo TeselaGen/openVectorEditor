@@ -1,7 +1,8 @@
 
 Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor Component 
  - Built With React & Redux
- - Built for easy extensibility + embed-ibility 
+ - Built for easy extensibility + embed-ibility
+ - Customize the views to suit your needs
 
 ## Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor 
 
