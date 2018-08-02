@@ -6,6 +6,17 @@ const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
 const realCharWidth = 8
 class Sequence extends React.Component {
+  shouldComponentUpdate(newProps) {
+    const { props } = this;
+    if (
+      ["hideBps", "charWidth", "length", "height", "width", "isReverse", "scrollData", "showDnaColors"].some(
+        key => props[key] !== newProps[key]
+      )
+    )
+      return true;
+    if (!!props.alignmentData !== !!newProps.alignmentData) return true;
+    return false;
+  }
   render() {
     let {
       sequence,

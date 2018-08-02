@@ -31,7 +31,7 @@ class AlignmentView extends React.Component {
   state = {
     charWidthInLinearView: charWidthInLinearViewDefault
   };
-  easyStore = store({ percentScrolled: 0 });
+  easyStore = store({ percentScrolled: 0, verticalPercentScrolled: 0 });
 
   getMinCharWidth = () => {
     const {
@@ -61,6 +61,8 @@ class AlignmentView extends React.Component {
   }
   componentDidMount() {
     reset();
+    const userAlignmentViewPercentageHeight = this.alignmentHolder.clientHeight / this.alignmentHolder.scrollHeight
+    this.setState({ userAlignmentViewPercentageHeight });
   }
   componentWillMount() {
     this.editorDragged = editorDragged.bind(this);
@@ -152,9 +154,16 @@ class AlignmentView extends React.Component {
       this.alignmentHolder.scrollLeft /
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
+
+    const verticalScrollPercentage =
+      this.alignmentHolder.scrollTop /
+      (this.alignmentHolder.scrollHeight - this.alignmentHolder.clientHeight);
+    this.easyStore.verticalPercentScrolled = verticalScrollPercentage || 0;
+
   };
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const { dimensions } = this.props;
+    const verticalPercent = this.easyStore.verticalPercentScrolled;
     const percentageOfSpace = newSliderSize / (dimensions.width - nameDivWidth);
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
@@ -162,20 +171,26 @@ class AlignmentView extends React.Component {
     this.blockScroll = true;
     this.setState({ charWidthInLinearView: newCharWidth });
     setTimeout(() => {
-      this.updateToScrollPercentage(newPercent);
+      this.updateToScrollPercentage(newPercent, verticalPercent);
       this.blockScroll = false;
     });
   };
 
-  updateToScrollPercentage = (scrollPercentage /* optionalLength */) => {
+  updateToScrollPercentage = (scrollPercentage, verticalScrollPercentage /* optionalLength */) => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
+
+    this.easyStore.verticalPercentScrolled = verticalScrollPercentage;
+    this.alignmentHolder.scrollTop =
+      Math.min(Math.max(verticalScrollPercentage, 0), 1) *
+      (this.alignmentHolder.scrollHeight - this.alignmentHolder.clientHeight);
+
   };
   render() {
     // console.log('this.props in alignment view:',this.props)
-    let { charWidthInLinearView } = this.state;
+    let { charWidthInLinearView, userAlignmentViewPercentageHeight } = this.state;
     const {
       alignmentTracks = [],
       dimensions: { width },
@@ -212,53 +227,6 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
-        // {alignmentTracks.map((track, i) => {
-        //   const {
-        //     // sequenceData,
-        //     alignmentData,
-        //     mismatches
-        //   } = track;
-        //   return (
-        //     <div
-        //       className={"alignmentMismatches"}
-        //       style={{
-        //         position: "absolute",
-        //         right: 0,
-        //         zIndex: 10,
-        //         boxShadow:
-        //           `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
-        //         width: 230,
-        //         height: 0.723 * height,
-        //         padding: 2,
-        //         // minWidth: nameDivWidth,
-        //         background: "rgb(243, 243, 243)",
-        //         textOverflow: "ellipsis",
-        //         overflowY: "auto",
-        //         whiteSpace: "nowrap"
-        //       }}
-        //       title={"mismatches " + i}
-        //       key={"mismatches key " + i}
-        //     >
-        //       <Mismatches
-        //       {...{
-        //         ...rest,
-        //         // sequenceData,
-        //         // allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
-        //         // editorName: `${
-        //         //   isTemplate ? "template_" : ""
-        //         // }alignmentView${i}`,
-        //         alignmentData,
-        //         mismatches,
-        //         // chromatogramData,
-        //         // height: 0.75 * height,
-        //         // height: "100%",
-        //         charWidth: charWidthInLinearView
-        //       }}
-        //       />
-        //     </div>
-        //   )
-        // })}
-
         <div
           className={"alignmentTracks "}
           style={{ overflowY: "auto", display: "flex" }}
@@ -566,7 +534,8 @@ class AlignmentView extends React.Component {
                 laneHeight: minimapLaneHeight,
                 laneSpacing: minimapLaneSpacing,
                 easyStore: this.easyStore,
-                numBpsShownInLinearView: this.getNumBpsShownInLinearView()
+                numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
+                userAlignmentViewPercentageHeight: userAlignmentViewPercentageHeight,
               }}
               onMinimapScroll={this.updateToScrollPercentage}
             />

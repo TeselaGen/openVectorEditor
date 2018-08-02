@@ -76,7 +76,7 @@ class Chromatogram extends React.Component {
       >
         <Button
           minimal
-          className="caleChromatogramButtonUp"
+          className="scaleChromatogramButtonUp"
           icon="caret-up"
           onClick={this.scaleChromatogramYPeaksHigher}
           style={{
@@ -87,6 +87,7 @@ class Chromatogram extends React.Component {
           }}
         />
         <Button
+          minimal
           className="scaleChromatogramButtonDown"
           icon="caret-down"
           onClick={this.scaleChromatogramYPeaksLower}
@@ -152,8 +153,8 @@ function drawTrace({
   const maxWidth = seqLengthWithGaps * charWidth;
   // const maxWidth = endBpIncludingGaps * charWidth;
   peakCanvas.width = maxWidth;
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
+  // ctx.fillStyle = "white";
+  // ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
   const scaledHeight = maxHeight - bottomBuffer;
   // let scalePct = 0;
 
