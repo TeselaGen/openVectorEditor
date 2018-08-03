@@ -29,7 +29,9 @@ const charWidthInLinearViewDefault = 12;
 
 class AlignmentView extends React.Component {
   state = {
-    charWidthInLinearView: charWidthInLinearViewDefault
+    charWidthInLinearView: charWidthInLinearViewDefault,
+    scrollAlignmentView: false,
+    scrollMinimap: false
   };
   easyStore = store({ percentScrolled: 0, verticalPercentScrolled: 0 });
 
@@ -150,17 +152,26 @@ class AlignmentView extends React.Component {
       //we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
       return;
     }
-    const scrollPercentage =
-      this.alignmentHolder.scrollLeft /
-      (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
-    this.easyStore.percentScrolled = scrollPercentage || 0;
-
-    const verticalScrollPercentage =
-      this.alignmentHolder.scrollTop /
-      (this.alignmentHolder.scrollHeight - this.alignmentHolder.clientHeight);
-    this.easyStore.verticalPercentScrolled = verticalScrollPercentage || 0;
-
+    if (!this.state.scrollAlignmentView) {
+      this.setState({ scrollMinimap: true });
+      const scrollPercentage =
+        this.alignmentHolder.scrollLeft /
+        (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
+      this.easyStore.percentScrolled = scrollPercentage || 0;
+      const verticalScrollPercentage =
+        this.alignmentHolder.scrollTop /
+        (this.alignmentHolder.scrollHeight - this.alignmentHolder.clientHeight);
+      this.easyStore.verticalPercentScrolled = verticalScrollPercentage || 0;
+    }
+    this.setState({ scrollAlignmentView: false });
   };
+  syncScrolling = (controlScroll) => {
+    if (controlScroll === "enableAlignmentViewScroll") {
+      this.setState({ scrollAlignmentView: true });
+    } else if (controlScroll === "disableMinimapScroll") {
+      this.setState({ scrollMinimap: false });
+    }
+  }
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const { dimensions } = this.props;
     const verticalPercent = this.easyStore.verticalPercentScrolled;
@@ -536,8 +547,11 @@ class AlignmentView extends React.Component {
                 easyStore: this.easyStore,
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
                 userAlignmentViewPercentageHeight: userAlignmentViewPercentageHeight,
+                scrollAlignmentView: this.state.scrollAlignmentView,
+                scrollMinimap: this.state.scrollMinimap,
               }}
               onMinimapScroll={this.updateToScrollPercentage}
+              syncScrolling={this.syncScrolling}
             />
           </div>
         )}

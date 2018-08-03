@@ -5,11 +5,11 @@ import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthF
 import { view } from "react-easy-state";
 
 export default view(class Minimap extends React.Component {
-  shouldComponentUpdate(newProps) {
-    const { props } = this
-    if(["numBpsShownInLinearView", "easyStore", "userAlignmentViewPercentageHeight"].some(key => props[key] !== newProps[key])) return true;
-    return false;
-  }
+  // shouldComponentUpdate(newProps) {
+  //   const { props } = this
+  //   if(["numBpsShownInLinearView", "easyStore", "scrollAlignmentView", "scrollMinimap", "userAlignmentViewPercentageHeight"].some(key => props[key] !== newProps[key])) return true;
+  //   return false;
+  // }
   handleMinimapClick = e => {
     if (e.target && e.target.classList.contains("minimapCaret")) {
       e.stopPropagation();
@@ -68,12 +68,19 @@ export default view(class Minimap extends React.Component {
     const {
       onMinimapScroll,
       easyStore,
+      // scrollAlignmentView,
+      scrollMinimap,
+      syncScrolling
     } = this.props;
-    const { percentScrolled } = easyStore
-    const verticalScrollPercentage =
-      this.minimapTracks.scrollTop /
-      (this.minimapTracks.scrollHeight - this.minimapTracks.clientHeight);
-    onMinimapScroll(percentScrolled, verticalScrollPercentage);
+    if (!scrollMinimap) {
+      syncScrolling("enableAlignmentViewScroll");
+      const { percentScrolled } = easyStore
+      const verticalScrollPercentage =
+        this.minimapTracks.scrollTop /
+        (this.minimapTracks.scrollHeight - this.minimapTracks.clientHeight);
+      onMinimapScroll(percentScrolled, verticalScrollPercentage);
+    }
+      syncScrolling("disableMinimapScroll");
   };
 
   render() {
