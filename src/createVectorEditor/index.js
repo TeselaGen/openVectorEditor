@@ -8,6 +8,7 @@ import updateEditor from "../updateEditor";
 import addAlignment from "../addAlignment";
 import AlignmentView from "../AlignmentView";
 import sizeMe from "react-sizeme";
+import VersionHistoryView from "../VersionHistoryView";
 
 function StandaloneEditor(props) {
   return (
@@ -22,6 +23,16 @@ function StandaloneAlignment(props) {
     <Provider store={store}>
       <AlignmentView
         {...{ ...props, dimensions: { width: props.size.width } }}
+      />
+    </Provider>
+  );
+}
+
+function StandaloneVersionHistoryView(props) {
+  return (
+    <Provider store={store}>
+      <VersionHistoryView
+        {...{ ...props }}
       />
     </Provider>
   );
@@ -49,6 +60,25 @@ export default function createVectorEditor(
   return editor;
 }
 
+export function createVersionHistoryView(
+  node,
+  { editorName = "StandaloneVersionHistoryView", ...rest } = {}
+) {
+  const editor = {};
+  editor.renderResponse = render(
+    <StandaloneVersionHistoryView {...{ editorName, ...rest }} />,
+    node
+  );
+  editor.updateEditor = values => {
+    updateEditor(store, editorName, values);
+  };
+  editor.getState = () => {
+    return store.getState().VectorEditor["StandaloneVersionHistoryView"]
+  }
+
+  return editor;
+}
+
 const SizedStandaloneAlignment = sizeMe()(StandaloneAlignment);
 export function createAlignmentView(node, props = {}) {
   const editor = {};
@@ -69,3 +99,4 @@ export function createAlignmentView(node, props = {}) {
 
 window.createVectorEditor = createVectorEditor;
 window.createAlignmentView = createAlignmentView;
+window.createVersionHistoryView = createVersionHistoryView;

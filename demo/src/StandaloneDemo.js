@@ -43,14 +43,18 @@ export default class StandaloneDemo extends React.Component {
             ];
           }
         },
+        onRename: () => {}, //this option should be shown by default
+        onNewSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
+        onDeleteSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
+        onDuplicateSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
         onSave: function(
           event,
-          copiedSequenceData,
+          sequenceDataToSave,
           editorState,
           onSuccessCallback
         ) {
           console.info("event:", event);
-          console.info("sequenceData:", copiedSequenceData);
+          console.info("sequenceData:", sequenceDataToSave);
           console.info("editorState:", editorState);
           // To disable the save button after successful saving
           // either call the onSuccessCallback or return a successful promise :)
@@ -89,6 +93,40 @@ export default class StandaloneDemo extends React.Component {
           };
           return sequenceData;
         },
+        getSequenceAtVersion: versionId => {
+          if (versionId === 2) {
+            return {
+              sequence: "thomaswashere"
+            };
+          } else if ((versionId = 3)) {
+            return {
+              features: [{ start: 4, end: 6 }],
+              sequence:
+                "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+            };
+          } else {
+            console.error("we shouldn't be here...");
+            return {
+              sequence: "taa"
+            };
+          }
+        },
+        getVersionList: () => {
+          return [
+            {
+              dateChanged: "12/30/2211",
+              editedBy: "Nara",
+              // revisionType: "Sequence Deletion",
+              versionId: 2
+            },
+            {
+              dateChanged: "8/30/2211",
+              editedBy: "Ralph",
+              // revisionType: "Feature Edit",
+              versionId: 3
+            }
+          ];
+        },
         readOnly: false,
         showMenuBar: true,
         PropertiesProps: {
@@ -109,7 +147,7 @@ export default class StandaloneDemo extends React.Component {
             {
               name: "downloadTool",
               Dropdown: () => {
-                return "Hey!";
+                return "Hey! This is an example of how toolbar items can be overridden";
               }
             },
             "importTool",
@@ -118,6 +156,7 @@ export default class StandaloneDemo extends React.Component {
             "cutsiteTool",
             "featureTool",
             "alignmentTool",
+            "versionHistoryTool",
             // "oligoTool",
             "orfTool",
             // "viewTool",

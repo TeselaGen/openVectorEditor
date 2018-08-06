@@ -1,58 +1,96 @@
 import React from "react";
-import {
-  Button,
-  Intent
-} from "@blueprintjs/core";
+import { Button, Intent } from "@blueprintjs/core";
 import { tidyUpSequenceData } from "ve-sequence-utils";
+import { DataTable } from "teselagen-react-components";
 
-import withEditorProps from "../withEditorProps";
-import { DataTable } from "../../node_modules/teselagen-react-components/lib";
 import Editor from "../Editor";
 import FillWindow from "../Editor/FillWindow";
+import withEditorProps from "../withEditorProps";
 
-const SIDE_PANEL_WIDTH = 350
+const SIDE_PANEL_WIDTH = 350;
 
+// API for 3rd party use:
+// getSequenceAtVersion: (versionId) => teselagenSequenceData
+// getVersionList: () => [{ versionId: "51241", dateChanged: "12/30/1990", editedBy: "Hector Plahar", revisionType: "Feature Add"}]
+// (already provided unless using VersionHistoryView directly) onSave: (event, sequenceDataToSave, editorState, onSuccessCallback) => { //same onSave handler as normal// },
+// (not necessary unless using VersionHistoryView directly) exitVersionHistoryView() => {}
+// (not necessary unless using VersionHistoryView directly) getCurrentSequenceData: () => teselagenSequenceData  //called upon initialization
 
 export class VersionHistoryView extends React.Component {
   state = { selectedVersion: undefined };
-  componentDidMount = () => {
+  updateSeqData = sequenceData => {
+    this.activeSeqData = sequenceData;
     this.props.vectorEditorInitialize(
       {
-        sequenceData: tidyUpSequenceData({
-          sequence: "gTAGAGACAAGA"
-        })
+        sequenceData:
+          (sequenceData && tidyUpSequenceData(sequenceData)) ||
+          tidyUpSequenceData({
+            sequence: "gTAGAGACAAGA"
+          })
       },
       {
         editorName: "veVersionHistoryView"
       }
     );
   };
-  onRowSelect = ([row]) => {
-    // todohistory
-    // console.log("selected a row");
-    // console.log('row:',row)
-
-    this.setState({ selectedVersion: row });
+  componentDidMount = () => {
+    this.updateSeqData(this.getCurrentSeqData());
+  };
+  getCurrentSeqData = async () => {
+    if (this.props.getCurrentSequenceData) {
+      return await this.props.getCurrentSequenceData();
+    } else {
+      return this.props.sequenceData;
+    }
+  };
+  onRowSelect = async ([row]) => {
+    // const close = showLoadingMask();
+    if (row.dateChanged === "Current") {
+      this.updateSeqData(await this.getCurrentSeqData());
+      this.setState({ selectedVersion: null });
+    } else {
+      this.updateSeqData(await this.props.getSequenceAtVersion(row.versionId));
+      this.setState({ selectedVersion: row });
+    }
+    // close();
   };
   getEntities = () => {
-    return [
-      {
-        dateChanged: "Current",
-        editedBy: "n/a",
-        revisionType: "n/a"
-      },
-      {
-        dateChanged: "thomas",
-        editedBy: "thomas",
-        revisionType: "thomas"
-      }
-    ];
+    return (
+      (this.props.getVersionList && [
+        {
+          dateChanged: "Current"
+        },
+        ...this.props.getVersionList()
+      ]) || [
+        {
+          dateChanged: "Current",
+          editedBy: "n/a",
+          revisionType: "n/a",
+          versionId: 1
+        },
+        {
+          dateChanged: "12/30/2211",
+          editedBy: "thomas",
+          revisionType: "thomas",
+          versionId: 2
+        }
+      ]
+    );
   };
-  revertToSelectedVersion = () => {
-    // todohistory
-    // console.log("this.state.selectedVersion:", this.state.selectedVersion);
+  revertToSelectedVersion = e => {
+    if (!this.props.onSave) {
+      return console.error("props.onSave must be passed to VersionHistoryView");
+    }
+    this.props.onSave(
+      e,
+      tidyUpSequenceData(this.activeSeqData, { annotationsAsObjects: true }),
+      {}
+    );
+    this.goBack();
   };
   goBack = () => {
+    this.props.exitVersionHistoryView && this.props.exitVersionHistoryView();
+    this.props.toggleViewVersionHistory();
     // todohistory
     // console.log("go back!");
   };
@@ -72,6 +110,7 @@ export class VersionHistoryView extends React.Component {
                   flex: "1 1 350px",
                   width: width - SIDE_PANEL_WIDTH
                 }}
+                noVersionHistory
                 fitHeight={true}
                 ToolBarProps={{
                   toolList: [
@@ -110,7 +149,10 @@ export class VersionHistoryView extends React.Component {
                 }}
                 className={"veVersionHistoryViewSidePanel"}
               >
-                <h2> Revision History</h2>
+                <h2 style={{ width: "100%", textAlign: "center" }}>
+                  {" "}
+                  Past Versions:{" "}
+                </h2>
                 <DataTable
                   noPadding
                   isSingleSelect
@@ -120,6 +162,8 @@ export class VersionHistoryView extends React.Component {
                   formName={"featureProperties"}
                   noRouter
                   compact
+                  withDisplayOptions
+                  hideDisplayOptionsIcon
                   withSearch={false}
                   name="veVersionHistoryView"
                   isInfinite
@@ -151,4 +195,5 @@ export class VersionHistoryView extends React.Component {
   }
 }
 
+// export default VersionHistoryView;
 export default withEditorProps(VersionHistoryView);

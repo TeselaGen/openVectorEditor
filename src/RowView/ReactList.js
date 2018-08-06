@@ -127,18 +127,19 @@ export default class ReactList extends Component {
     this.updateFrame();
 
     //TNR: extra code to "fix" the scroll height when scrolling upwards
-    if (this.rowToFixScroll) {
-      const { row, cache: previousSize } = this.rowToFixScroll;
-      const actualSize = this.cache[row];
-      if (actualSize && actualSize !== previousSize) {
-        this.getScrollParent().scrollBy({
-          top: -(
-            (previousSize || this.props.itemSizeEstimator(row, {})) - actualSize
-          )
-        });
-        this.rowToFixScroll = null;
-      }
-    }
+    //tnr commenting this out because we are now doing a better job of calculating row heights
+    // if (this.rowToFixScroll) {
+    //   const { row, cache: previousSize } = this.rowToFixScroll;
+    //   const actualSize = this.cache[row];
+    //   if (actualSize && actualSize !== previousSize) {
+    //     this.getScrollParent().scrollBy({
+    //       top: -(
+    //         (previousSize || this.props.itemSizeEstimator(row, {})) - actualSize
+    //       )
+    //     });
+    //     this.rowToFixScroll = null;
+    //   }
+    // }
   }
 
   maybeSetState(b, cb) {

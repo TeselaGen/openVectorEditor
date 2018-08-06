@@ -143,7 +143,48 @@ class Demo extends React.Component {
               render={() => {
                 return (
                   <div>
-                    <VersionHistoryView></VersionHistoryView>
+                    <VersionHistoryView
+                      onSave={(...args) => {
+                        console.log("onSave triggered:", args);
+                      }}
+                      exitVersionHistoryView={() => {
+                        window.alert('exit requested!')
+                      }}
+                      getSequenceAtVersion={versionId => {
+                        if (versionId === 2) {
+                          return {
+                            sequence: "thomaswashere"
+                          };
+                        } else if ((versionId = 3)) {
+                          return {
+                            features: [{ start: 4, end: 6 }],
+                            sequence:
+                              "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                          };
+                        } else {
+                          console.error("we shouldn't be here...");
+                          return {
+                            sequence: "taa"
+                          };
+                        }
+                      }}
+                      getVersionList={() => {
+                        return [
+                          {
+                            dateChanged: "12/30/2211",
+                            editedBy: "Nara",
+                            // revisionType: "Sequence Deletion",
+                            versionId: 2
+                          },
+                          {
+                            dateChanged: "8/30/2211",
+                            editedBy: "Ralph",
+                            // revisionType: "Feature Edit",
+                            versionId: 3
+                          }
+                        ];
+                      }}
+                    />
                   </div>
                 );
               }}

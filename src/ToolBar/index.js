@@ -5,6 +5,8 @@ import { compose } from "redux";
 // import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
 import withEditorProps from "../withEditorProps";
+import versionHistoryTool from "./versionHistoryTool";
+
 // import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
 import "./style.css";
 
@@ -39,6 +41,7 @@ const allTools = {
   editTool,
   findTool,
   inlineFindTool,
+  versionHistoryTool,
   saveTool,
   visibilityTool,
   // propertiesTool,
