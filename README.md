@@ -38,15 +38,15 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
     - [Accessing the alignment state:](#accessing-the-alignment-state)
   - [Alignment Track Data Model](#alignment-track-data-model)
     - [Chromatogram Data](#chromatogram-data)
-  - [VersionHistoryView](#versionhistoryview)
-    - [Flavors of use (aka Embedded in the Editor vs Standalone and UMD vs React):](#flavors-of-use-aka-embedded-in-the-editor-vs-standalone-and-umd-vs-react)
-    - [API:](#api)
+- [VersionHistoryView](#versionhistoryview)
+  - [Flavors of use (aka Embedded in the Editor vs Standalone and UMD vs React):](#flavors-of-use-aka-embedded-in-the-editor-vs-standalone-and-umd-vs-react)
+  - [API:](#api)
       - [getSequenceAtVersion](#getsequenceatversion)
       - [getVersionList](#getversionlist)
       - [onSave [optional] (not necessary unless using the standalone VersionHistoryView)](#onsave-optional-not-necessary-unless-using-the-standalone-versionhistoryview)
       - [exitVersionHistoryView [optional] (not necessary unless using the standalone VersionHistoryView)](#exitversionhistoryview-optional-not-necessary-unless-using-the-standalone-versionhistoryview)
       - [getCurrentSequenceData [optional] (not necessary unless using the standalone VersionHistoryView)](#getcurrentsequencedata-optional-not-necessary-unless-using-the-standalone-versionhistoryview)
-  - [Implementing Autosave functionality](#implementing-autosave-functionality)
+- [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
   - [Linking to a project and develop with build-watch](#linking-to-a-project-and-develop-with-build-watch)
@@ -408,8 +408,8 @@ Note: `alignmentData.sequence` is assumed to be the same length for EVERY track 
     },
 ```
 
-## VersionHistoryView
-### Flavors of use (aka Embedded in the Editor vs Standalone and UMD vs React): 
+# VersionHistoryView
+## Flavors of use (aka Embedded in the Editor vs Standalone and UMD vs React): 
 
 Can be used on its own (must pass additional props): 
 ```js
@@ -426,7 +426,7 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
 ```
 
 
-### API:
+## API:
 #### getSequenceAtVersion 
  `(versionId) => teselagenSequenceData`
 #### getVersionList
@@ -440,7 +440,7 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
 
 
 
-## Implementing Autosave functionality
+# Implementing Autosave functionality
 
 
 # Development: 
