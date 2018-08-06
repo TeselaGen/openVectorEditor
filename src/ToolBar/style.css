@@ -24,6 +24,7 @@
   flex-wrap: wrap;
   /* height: 32px; */
   margin-bottom: 5px;
+  width: 100%;
 }
 .veToolbar .veToolbarItemOuter {
   display: flex;

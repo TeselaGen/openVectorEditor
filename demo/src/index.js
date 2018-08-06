@@ -28,6 +28,7 @@ import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
+import VersionHistoryView from "../../src/VersionHistoryView";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -39,6 +40,7 @@ import "./style.css";
 const links = [
   { name: "Editor", url: "Editor" },
   { name: "Standalone", url: "Standalone" },
+  { name: "VersionHistoryView", url: "VersionHistoryView" },
   { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
   { name: "CircularView", url: "CircularView" },
@@ -136,6 +138,57 @@ class Demo extends React.Component {
                 );
               }}
               path="/Editor"
+            />
+            <Route
+              render={() => {
+                return (
+                  <div>
+                    <VersionHistoryView
+                      onSave={(...args) => {
+                        console.log("onSave triggered:", args);
+                      }}
+                      exitVersionHistoryView={() => {
+                        window.alert('exit requested!')
+                      }}
+                      getSequenceAtVersion={versionId => {
+                        if (versionId === 2) {
+                          return {
+                            sequence: "thomaswashere"
+                          };
+                        } else if ((versionId = 3)) {
+                          return {
+                            features: [{ start: 4, end: 6 }],
+                            sequence:
+                              "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                          };
+                        } else {
+                          console.error("we shouldn't be here...");
+                          return {
+                            sequence: "taa"
+                          };
+                        }
+                      }}
+                      getVersionList={() => {
+                        return [
+                          {
+                            dateChanged: "12/30/2211",
+                            editedBy: "Nara",
+                            // revisionType: "Sequence Deletion",
+                            versionId: 2
+                          },
+                          {
+                            dateChanged: "8/30/2211",
+                            editedBy: "Ralph",
+                            // revisionType: "Feature Edit",
+                            versionId: 3
+                          }
+                        ];
+                      }}
+                    />
+                  </div>
+                );
+              }}
+              path="/VersionHistoryView"
             />
             <Route
               render={() => {

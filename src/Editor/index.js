@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import { createMenu } from "teselagen-react-components";
 import { Button } from "@blueprintjs/core";
 import Dialogs from "../Dialogs";
+import VersionHistoryView from "../VersionHistoryView";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -120,9 +121,9 @@ export class Editor extends React.Component {
     console.warn("handleReverseComplementSelection");
   };
 
-  updateDimensions = debounce(() => {
-    this.setState({ randomRerenderTrigger: Math.random() });
-  }, 100);
+  getExtraPanel = panelOptions => {
+    return [];
+  };
 
   componentDidUpdate(prevProps) {
     //autosave if necessary!
@@ -135,6 +136,11 @@ export class Editor extends React.Component {
       this.props.handleSave();
     }
   }
+  updateDimensions = debounce(() => {
+    this.hasFullscreenPanel &&
+      this.setState({ randomRerenderTrigger: Math.random() });
+  }, 100);
+
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
   }
@@ -523,6 +529,8 @@ export class Editor extends React.Component {
       doNotUseAbsolutePosition = false,
       ToolBarProps = {},
       StatusBarProps = {},
+      // extraLeftSidePanel,
+      extraRightSidePanel,
       // FindBarProps = {},
       editorName,
       // findTool = {},
@@ -531,15 +539,38 @@ export class Editor extends React.Component {
       showMenuBar,
       updateSequenceData,
       setPanelAsActive,
+      style = {},
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel,
+      fitWidth,
+      onSave,
+      getVersionList,
+      getSequenceAtVersion,
+      VersionHistoryViewProps,
+      fitHeight, //use fitHeight: true to tell the editorto expand to fill to as much height as possible
       sequenceData = {},
       withPreviewMode,
       previewModeFullscreen: controlledPreviewModeFullscreen
     } = this.props;
-
+    if (
+      !this.props.noVersionHistory &&
+      this.props.versionHistory &&
+      this.props.versionHistory.viewVersionHistory
+    ) {
+      return (
+        <VersionHistoryView
+          {...{
+            onSave,
+            sequenceData,
+            getVersionList,
+            getSequenceAtVersion,
+            ...VersionHistoryViewProps
+          }}
+        />
+      );
+    }
     const previewModeFullscreen =
       uncontrolledPreviewModeFullscreen || controlledPreviewModeFullscreen;
 
@@ -600,10 +631,10 @@ export class Editor extends React.Component {
     };
 
     const panelsToShow = this.getPanelsToShow();
-    let isOnePanelFullScreen;
+    this.hasFullscreenPanel = false;
     map(panelsToShow, panelGroup => {
       panelGroup.forEach(({ fullScreen }) => {
-        if (fullScreen) isOnePanelFullScreen = true;
+        if (fullScreen) this.hasFullscreenPanel = true;
       });
     });
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
@@ -621,7 +652,7 @@ export class Editor extends React.Component {
           propsToSpread = panelProps;
         }
       });
-      if (isOnePanelFullScreen && !isFullScreen) {
+      if (this.hasFullscreenPanel && !isFullScreen) {
         return;
       }
 
@@ -693,7 +724,10 @@ export class Editor extends React.Component {
           activePanelId={activePanelId}
           minSize="200"
           propagateDimensions={true}
-          resizeHeight={!!(withPreviewMode && previewModeFullscreen)} //use the !! to force a boolean
+          resizeWidth={fitWidth}
+          resizeHeight={
+            fitHeight || !!(withPreviewMode && previewModeFullscreen)
+          } //use the !! to force a boolean
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
@@ -866,12 +900,40 @@ export class Editor extends React.Component {
       );
       return toReturn;
     });
+    if (extraRightSidePanel) {
+      panels.push(
+        <ReflexSplitter
+          key={"extraRightSidePanelSplitter"}
+          style={{
+            zIndex: 1
+          }}
+          propagate
+        />
+      );
+      panels.push(
+        <ReflexElement
+          key={"extraRightSidePanel"}
+          minSize="350"
+          maxSize="350"
+          propagateDimensions={true}
+          resizeHeight={
+            fitHeight || !!(withPreviewMode && previewModeFullscreen)
+          }
+          renderOnResizeRate={50}
+          renderOnResize={true}
+          className="ve-panel"
+        >
+          {extraRightSidePanel}
+        </ReflexElement>
+      );
+    }
 
     return (
       <DropHandler
         updateSequenceData={updateSequenceData}
         style={{
           width: "100%",
+          ...(fitHeight && { height: "100%" }),
           position: "relative",
           ...(previewModeFullscreen && {
             background: "white",
@@ -881,7 +943,8 @@ export class Editor extends React.Component {
             top: 0,
             left: 0,
             ...windowDimensions
-          })
+          }),
+          ...style
         }}
         className="veEditor"
       >
@@ -917,15 +980,14 @@ export class Editor extends React.Component {
           style={{
             width: "100%",
             height: "100%",
-            ...(withPreviewMode &&
-              previewModeFullscreen && {
-                display: "flex",
-                flexDirection: "column"
-              }),
+            ...((fitHeight || (withPreviewMode && previewModeFullscreen)) && {
+              display: "flex",
+              flexDirection: "column"
+            }),
             // display: "flex",
             // flexDirection: "column",
             ...(doNotUseAbsolutePosition ||
-            (withPreviewMode && previewModeFullscreen)
+            (fitHeight || (withPreviewMode && previewModeFullscreen))
               ? {}
               : { position: "absolute" })
           }}
@@ -989,4 +1051,7 @@ export class Editor extends React.Component {
   }
 }
 
-export default compose(withEditorProps, HotkeysTarget)(Editor);
+export default compose(
+  withEditorProps,
+  HotkeysTarget
+)(Editor);

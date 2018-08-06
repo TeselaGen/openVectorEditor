@@ -5,6 +5,8 @@ import { compose } from "redux";
 // import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
 import withEditorProps from "../withEditorProps";
+import versionHistoryTool from "./versionHistoryTool";
+
 // import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
 import "./style.css";
 
@@ -39,6 +41,7 @@ const allTools = {
   editTool,
   findTool,
   inlineFindTool,
+  versionHistoryTool,
   saveTool,
   visibilityTool,
   // propertiesTool,
@@ -69,6 +72,7 @@ export class ToolBar extends React.PureComponent {
   render() {
     const {
       modifyTools,
+      contentLeft,
       toolList = [
         "saveTool",
         "downloadTool",
@@ -148,7 +152,12 @@ export class ToolBar extends React.PureComponent {
       return <WrappedItem key={index} />;
     });
 
-    return <div className={"veToolbar"}>{content}</div>;
+    return <div style={{display: 'flex'}}>
+      {contentLeft}
+      <div className={"veToolbar"}>{content}</div>
+
+    </div>
+    
   }
 }
 

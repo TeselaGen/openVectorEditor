@@ -1,3 +1,4 @@
+//TNRTODO this needs to be fixed and implemented 
 import React from "react";
 import print from "./veToolbarIcons/print.png";
 
@@ -14,7 +15,7 @@ export default () => {
       // myPrintWindow.print();
       // myPrintWindow.close();
       // return false;
-      print();
+      // print();
       // var content = document.getElementById("divcontents");
       // document.appendChild(con)
       // var pri = document.getElementById("ifmcontentstoprint").contentWindow;
