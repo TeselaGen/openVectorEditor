@@ -16,8 +16,33 @@ const SIDE_PANEL_WIDTH = 350;
 // (not necessary unless using VersionHistoryView directly) exitVersionHistoryView() => {}
 // (not necessary unless using VersionHistoryView directly) getCurrentSequenceData: () => teselagenSequenceData  //called upon initialization
 
+const currentVersion = {
+  dateChanged: "Current",
+  id: "__current__"
+};
 export class VersionHistoryView extends React.Component {
-  state = { selectedVersion: undefined };
+  state = {
+    selectedVersion: undefined,
+    versionList: [currentVersion]
+  };
+  static defaultProps = {
+    getVersionList: () => {
+      return [
+        {
+          dateChanged: "Current",
+          editedBy: "n/a",
+          revisionType: "n/a",
+          versionId: 1
+        },
+        {
+          dateChanged: "12/30/2211",
+          editedBy: "thomas",
+          revisionType: "thomas",
+          versionId: 2
+        }
+      ];
+    }
+  };
   updateSeqData = sequenceData => {
     this.activeSeqData = sequenceData;
     this.props.vectorEditorInitialize(
@@ -33,8 +58,9 @@ export class VersionHistoryView extends React.Component {
       }
     );
   };
-  componentDidMount = () => {
-    this.updateSeqData(this.getCurrentSeqData());
+  componentDidMount = async () => {
+    this._getVersionList(); //trigger the initial grabbing of the list of versions
+    await this.updateSeqData(await this.getCurrentSeqData());
   };
   getCurrentSeqData = async () => {
     if (this.props.getCurrentSequenceData) {
@@ -45,7 +71,7 @@ export class VersionHistoryView extends React.Component {
   };
   onRowSelect = async ([row]) => {
     // const close = showLoadingMask();
-    if (row.dateChanged === "Current") {
+    if (row.id === "__current__") {
       this.updateSeqData(await this.getCurrentSeqData());
       this.setState({ selectedVersion: null });
     } else {
@@ -54,37 +80,27 @@ export class VersionHistoryView extends React.Component {
     }
     // close();
   };
-  getEntities = () => {
-    return (
-      (this.props.getVersionList && [
-        {
-          dateChanged: "Current"
-        },
-        ...this.props.getVersionList()
-      ]) || [
-        {
-          dateChanged: "Current",
-          editedBy: "n/a",
-          revisionType: "n/a",
-          versionId: 1
-        },
-        {
-          dateChanged: "12/30/2211",
-          editedBy: "thomas",
-          revisionType: "thomas",
-          versionId: 2
-        }
-      ]
-    );
+  _getVersionList = async () => {
+    const versionList = await this.props.getVersionList();
+    this.setState({
+      versionList: [currentVersion, ...versionList.map((r) => {return {...r, id: r.versionId}})] //currentVersion should always come first
+    });
   };
   revertToSelectedVersion = e => {
     if (!this.props.onSave) {
       return console.error("props.onSave must be passed to VersionHistoryView");
     }
+    const tidiedActiveData = tidyUpSequenceData(this.activeSeqData, {
+      annotationsAsObjects: true
+    });
+    this.props.updateSequenceData &&
+      this.props.updateSequenceData(tidiedActiveData);
+    this.props.caretPositionUpdate && this.props.caretPositionUpdate(0);
     this.props.onSave(
       e,
-      tidyUpSequenceData(this.activeSeqData, { annotationsAsObjects: true }),
-      {}
+      tidiedActiveData,
+      {}, //empty editor props
+      () => {} //empty unSuccessCallback
     );
     this.goBack();
   };
@@ -156,12 +172,14 @@ export class VersionHistoryView extends React.Component {
                 <DataTable
                   noPadding
                   isSingleSelect
+                  noDeselectAll 
                   noFullscreenButton
                   onRowSelect={this.onRowSelect}
                   maxHeight={400}
                   formName={"featureProperties"}
                   noRouter
                   compact
+                  selectedIds={["__current__"]}
                   withDisplayOptions
                   hideDisplayOptionsIcon
                   withSearch={false}
@@ -177,7 +195,7 @@ export class VersionHistoryView extends React.Component {
                       { path: "revisionType", type: "string" }
                     ]
                   }}
-                  entities={this.getEntities()}
+                  entities={this.state.versionList}
                 />
                 <Button
                   style={{ margin: 3 }}

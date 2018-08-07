@@ -546,6 +546,7 @@ export class Editor extends React.Component {
       closePanel,
       fitWidth,
       onSave,
+      caretPositionUpdate,
       getVersionList,
       getSequenceAtVersion,
       VersionHistoryViewProps,
@@ -563,6 +564,8 @@ export class Editor extends React.Component {
         <VersionHistoryView
           {...{
             onSave,
+            updateSequenceData,
+            caretPositionUpdate,
             sequenceData,
             getVersionList,
             getSequenceAtVersion,
