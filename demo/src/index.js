@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Link,
   Redirect
