@@ -7,6 +7,7 @@ import ToolbarItem from "./ToolbarItem";
 import withEditorProps from "../withEditorProps";
 import versionHistoryTool from "./versionHistoryTool";
 
+import withEditorInteractions from "../withEditorInteractions";
 // import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
 import "./style.css";
 
@@ -139,7 +140,7 @@ export class ToolBar extends React.PureComponent {
             this.toggleOpen(index);
           }
         }),
-        withEditorProps,
+        withEditorInteractions,
         onlyUpdateForKeys([
           ...updateKeys,
           "isOpen",
@@ -157,7 +158,7 @@ export class ToolBar extends React.PureComponent {
       <div className={"veToolbar"}>{content}</div>
 
     </div>
-    
+
   }
 }
 

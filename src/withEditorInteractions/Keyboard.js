@@ -25,14 +25,18 @@ class Clipboard extends React.Component {
 
   handleKeyDown = e => {
     let metaKeyIsDown = e.ctrlKey || e.metaKey;
-    if (!metaKeyIsDown) {
+    if (!metaKeyIsDown || !['x', 'c', 'v'].includes(e.key)) {
+      this.origFocusedElement = null;
       return;
     }
+    this.origFocusedElement = document.activeElement;
     this.node.select();
   };
 
   handleKeyUp = () => {
-    this.node.parentNode.focus();
+    if (this.origFocusedElement) {
+      this.origFocusedElement.focus();
+    }
   };
 
   render() {
@@ -60,6 +64,7 @@ class Clipboard extends React.Component {
         value={value}
         onChange={noop}
         readOnly
+        className="clipboard"
         onPaste={this.props.onPaste}
         onCopy={this.props.onCopy}
       />

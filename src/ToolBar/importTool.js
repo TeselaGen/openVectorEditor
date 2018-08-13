@@ -1,39 +1,21 @@
-import { anyToJson } from "bio-parsers";
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
 
 export default {
   updateKeys: ["updateSequenceData"],
-  itemProps: ({ updateSequenceData }) => {
+  itemProps: ({ importSequenceFromFile }) => {
     return {
       Icon: (
         <Dropzone
           multiple={false}
           style={{}}
-          onDrop={files => {
-            const file = files[0];
-            let reader = new FileReader();
-            reader.readAsText(file, "UTF-8");
-            reader.onload = function(evt: Object) {
-              const content: string = evt.target.result;
-              anyToJson(
-                content,
-                result => {
-                  updateSequenceData(result[0].parsedSequence);
-                },
-                { acceptParts: true }
-              );
-            };
-            reader.onerror = function() {
-              window.toastr.error("Failure reading file.");
-            };
-          }}
+          onDrop={files => importSequenceFromFile(files[0])}
         >
-          <Icon icon="export" />
+          <Icon icon="import" />
         </Dropzone>
       ),
-      tooltip: "Click or drag to upload and view .fasta or .gb files"
+      tooltip: "Click or drag to import and view .fasta or .gb files"
     };
   }
 };

@@ -1,55 +1,34 @@
-import { jsonToGenbank, jsonToFasta } from "bio-parsers";
-import FileSaver from "file-saver";
 import React from "react";
-import { Icon, Button } from "@blueprintjs/core";
+import { Icon, Menu, Popover } from "@blueprintjs/core";
+import { createMenu } from "teselagen-react-components";
+import { applyCommandsToMenu } from "../utils/__temp_menuUtils";
+import getCommands from "../commands";
 
 export default {
   updateKeys: ["toggleDropdown"],
-  itemProps: ({ toggleDropdown }) => {
+  itemProps: (props) => {
     return {
-      Icon: <Icon icon="import" />,
-      onIconClick: toggleDropdown,
-      Dropdown,
-      noDropdownIcon: true,
-      tooltip: "Download"
+      tooltip: "Export",
+      Icon: (
+        <Popover
+          minimal
+          inline
+          transitionDuration={0}
+          content={
+            <Menu>
+              {createMenu(
+                applyCommandsToMenu(
+                  [{ cmd: "exportSequenceAsGenbank" }, { cmd: "exportSequenceAsFasta" }],
+                  getCommands({ props })
+                )
+              )}
+            </Menu>
+          }
+        >
+          <Icon icon="export" />
+        </Popover>
+
+      )
     };
   }
 };
-
-function Dropdown({ sequenceData }) {
-  return (
-    <div>
-      <Button
-        style={{ marginRight: 10 }}
-        onClick={() => {
-          let blob = new Blob([jsonToGenbank(sequenceData)], {
-            type: "text/plain"
-          });
-          FileSaver.saveAs(
-            blob,
-            `${sequenceData.name ? sequenceData.name : "Untitled_Sequence"}.gb`
-          );
-        }}
-      >
-        {" "}
-        Download Genbank{" "}
-      </Button>
-      <Button
-        onClick={() => {
-          let blob = new Blob([jsonToFasta(sequenceData)], {
-            type: "text/plain"
-          });
-          FileSaver.saveAs(
-            blob,
-            `${
-              sequenceData.name ? sequenceData.name : "Untitled_Sequence"
-            }.fasta`
-          );
-        }}
-      >
-        {" "}
-        Download Fasta{" "}
-      </Button>
-    </div>
-  );
-}

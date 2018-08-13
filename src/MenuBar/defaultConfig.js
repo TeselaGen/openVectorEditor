@@ -1,279 +1,218 @@
-/* eslint-disable */
+import {
+  applyCommandsToMenu,
+  addMenuTexts,
+  addMenuTicks
+} from "../utils/__temp_menuUtils.js";
 
 const defaultConfig = [
   {
     text: "File",
-    menu: [
+    submenu: [
+      { cmd: "newSequence", icon: "plus" },
+      { cmd: "renameSequence", icon: "edit" },
+      { cmd: "saveSequence", icon: "floppy-disk" },
+      { cmd: "deleteSequence", icon: "trash" },
+      { cmd: "duplicateSequence", icon: "duplicate" },
+
+      { divider: "" },
+
+      { cmd: "toggleReadOnlyMode" },
+
+      { divider: "" },
+
+      { cmd: "importSequence", icon: "import" },
       {
-        text: "New Sequence"
-      },
-      {
-        text: "Rename Sequence"
-      },
-      {
-        text: "Save Sequence",
-        hotKey: "modKey" + "+S"
-      },
-      {
-        text: "Delete Sequence"
-      },
-      {
-        text: "Set Read Only",
-        disabled: true
-      },
-      {
-        text: "Duplicate"
-      },
-      {
-        text: "Import Sequence(s)"
-      },
-      {
-        text: "Export to File"
-      },
-      {
-        text: "Print",
-        hotKey: "modKey" + "+P",
-        menu: [
-          {
-            text: "Circular View"
-          },
-          {
-            text: "Linear View"
-          }
+        text: "Export Sequence",
+        submenu: [
+          { cmd: "exportSequenceAsGenbank" },
+          { cmd: "exportSequenceAsFasta" },
         ]
       },
+
+      { divider: "" },
+
       {
-        text: "View revision history"
+        disabled: true,
+        text: "Print",
+        submenu: [{ cmd: "circularView" }, { cmd: "linearView" }]
       },
-      {
-        text: "Properties"
-      }
+      { cmd: "viewRevisionHistory", disabled: true },
+      { cmd: "viewProperties", icon: "properties" }
     ]
   },
   {
     text: "Edit",
-    menu: [
-      { text: "Cut" },
-      { text: "Copy" },
+    submenu: [
+      { cmd: "cut" },
+      { cmd: "copy" },
       {
-        text: "Copy Options",
-        menu: [
-          {
-            text: "Include Features",
-            checked: true
-          },
-          {
-            text: "Include Partial Features",
-            checked: false
-          },
-          {
-            text: "Include Parts",
-            checked: true
-          },
-          {
-            text: "Include Partial Parts",
-            checked: false
-          }
+        cmd: "copyOptions",
+        submenu: [
+          { cmd: "toggleCopyFeatures" },
+          { cmd: "toggleCopyPartialFeatures" },
+          { cmd: "toggleCopyParts" },
+          { cmd: "toggleCopyPartialParts"  }
         ]
       },
-      {
-        text: "Paste",
-        hotKey: "modKey" + "+V"
-      },
-      {
-        disabled: true,
-        text: "Undo",
-        hotKey: "modKey" + "+Z"
-      },
-      {
-        disabled: true,
-        text: "Redo",
-        hotKey: "modKey" + "+Shift+Z"
-      },
-      {
-        text: "Find...",
-        hotKey: "modKey" + "+F"
-      },
-      {
-        text: "Go to...",
-        hotKey: ""
-      },
-      {
-        text: "Select..."
-      },
-      {
-        text: "Select All",
-        hotKey: "modKey" + "+A"
-      },
-      {
-        text: "Select Inverse",
-        hotKey: "modKey" + "+I"
-      },
-      {
-        text: "Complement Selection"
-      },
-      {
-        text: "Complement Entire Sequence"
-      },
-      {
-        text: "Reverse Complement Selection",
-        hotKey: "modKey" + "+E"
-      },
-      {
-        text: "Reverse Complement Entire Sequence",
-        hotKey: "modKey" + "+Shift+E"
-      },
-      {
-        text: "Rotate to Caret Position",
-        hotKey: "modKey" + "+B"
-      },
-      {
-        text: "New Feature",
-        hotKey: "modKey" + "+K"
-      },
-      {
-        text: "New Part",
-        hotKey: "modKey" + "+L"
-      }
+      { cmd: "paste", icon: "clipboard" },
+      { cmd: "undo" },
+      { cmd: "redo" },
+
+      { divider: "" },
+
+      { cmd: "find", icon: "search" },
+      { cmd: "goTo"  },
+
+      { divider: "" },
+
+      { cmd: "select" },
+      { cmd: "selectAll" },
+      { cmd: "selectInverse" },
+
+      { divider: "" },
+
+      { cmd: "complementSelection" },
+      { cmd: "complementEntireSequence" },
+      { cmd: "reverseComplementSelection" },
+      { cmd: "reverseComplementEntireSequence" },
+      { cmd: "rotateToCaretPosition" },
+
+      { divider: "" },
+
+      { cmd: "newFeature" },
+      { cmd: "newPart" }
     ]
   },
   {
     text: "View",
-    menu: [
-      {
-        text: "Circular",
-        checked: true
-      },
-      {
-        text: "Linear",
-        checked: false
-      },
-      {
-        text: "Map Caret",
-        checked: true
-      },
-      {
-        text: "Features",
-        checked: true
-      },
-      {
-        text: "Feature Types",
-        itemId: "featureTypes"
-        //submenu of checklist of all feature types here
-      },
-      {
-        text: "Parts",
-        checked: true
-      },
-      {
-        text: "Cut Sites"
-      },
-      {
-        text: "ORFs",
-        menu: [
-          {
-            text: "All Frames",
-            frameNumber: "all"
-          },
-          {
-            text: "Frame 1",
-            frameNumber: 1
-          },
-          {
-            text: "Frame 2",
-            frameNumber: 2
-          },
-          {
-            text: "Frame 3",
-            frameNumber: 3
-          }
-        ]
-      },
-      {
-        text: "Complementary",
-        checked: true
-      },
-      {
-        text: "Spaces",
-        checked: true
-      },
-      {
-        text: "Sequence AA",
-        menu: [
-          {
-            text: "All Frames",
-            frameNumber: "all"
-          },
-          {
-            text: "Frame 1",
-            frameNumber: 1
-          },
-          {
-            text: "Frame 2",
-            frameNumber: 2
-          },
-          {
-            text: "Frame 3",
-            frameNumber: 3
-          }
-        ]
-      },
-      {
-        text: "Revcom AA",
-        menu: [
-          {
-            text: "All Frames",
-            frameNumber: "all"
-          },
-          {
-            text: "Frame 1",
-            frameNumber: 1
-          },
-          {
-            text: "Frame 2",
-            frameNumber: 2
-          },
-          {
-            text: "Frame 3",
-            frameNumber: 3
-          }
-        ]
-      },
-      {
-        text: "Feature Labels",
-        checked: true
-      },
-      {
-        text: "Part Labels",
-        checked: true
-      },
-      {
-        text: "Cut Site Labels",
-        checked: true
-      },
-      {
-        hideOnClick: false,
-        text: "Zoom In",
-        hotKey: "+"
-      },
-      {
-        hideOnClick: false,
-        text: "Zoom Out",
-        hotKey: "-"
-      }
+    submenu: [
+      // TODO maybe these two shouldn't be "view" commands, as it seems they can
+      // affect actual data, not just the way it's displayed
+      { cmd: "circular" },
+      { cmd: "linear" },
+
+      { divider: "" },
+      // { cmd: "mapCaret" },
+      { cmd: "toggleFeatures" },
+      // {
+      //   // TODO preprocess this as needed
+      //   cmd: "featureTypes",
+      //   itemId: "featureTypes",
+      //   //submenu of checklist of all feature types here
+      //   submenu: [{ text: "TO DO...", disabled: true }]
+      // },
+      { cmd: "toggleParts" },
+      { cmd: "toggleCutsites" },
+      // TODO translations, cds feature translations?
+      // {
+      //   cmd: "ORFs",
+      //   text: "ORFs",
+      //   submenu: [
+      //     {
+      //       cmd: "ORFs_allFrames",
+      //       text: "All Frames",
+      //       // frameNumber: "all"
+      //     },
+      //     {
+      //       cmd: "ORFs_frame1",
+      //       text: "Frame 1"
+      //       // frameNumber: 1 // TODO ?
+      //     },
+      //     {
+      //       cmd: "ORFs_frame2",
+      //       text: "Frame 2"
+      //       // frameNumber: 2 // TODO ?
+      //     },
+      //     {
+      //       cmd: "ORFs_frame3",
+      //       text: "Frame 3"
+      //       // frameNumber: 3 // TODO ?
+      //     }
+      //   ]
+      // },
+      // { cmd: "complementary" },
+      // { cmd: "spaces" },
+      // {
+      //   cmd: "sequenceAA",
+      //   submenu: [
+      //     {
+      //       cmd: "sequenceAA_allFrames",
+      //       text: "All Frames"
+      //       // frameNumber: "all" // TODO ?
+      //     },
+      //     {
+      //       cmd: "sequenceAA_frame1",
+      //       text: "Frame 1"
+      //       // frameNumber: 1 // TODO ?
+      //     },
+      //     {
+      //       cmd: "sequenceAA_frame2",
+      //       text: "Frame 2"
+      //       // frameNumber: 2 // TODO ?
+      //     },
+      //     {
+      //       cmd: "sequenceAA_frame3",
+      //       text: "Frame 3"
+      //       // frameNumber: 3 // TODO ?
+      //     }
+      //   ]
+      // },
+      // {
+      //   cmd: "revcomAA",
+      //   submenu: [
+      //     {
+      //       cmd: "revcomAA_allFrames",
+      //       text: "All Frames"
+      //       // frameNumber: "all" // TODO ?
+      //     },
+      //     {
+      //       cmd: "revcomAA_frame1",
+      //       text: "Frame 1"
+      //       // frameNumber: 1 // TODO ?
+      //     },
+      //     {
+      //       cmd: "revcomAA_frame2",
+      //       text: "Frame 2"
+      //       // frameNumber: 2 // TODO ?
+      //     },
+      //     {
+      //       cmd: "revcomAA_frame3",
+      //       text: "Frame 3"
+      //       // frameNumber: 3 // TODO ?
+      //     }
+      //   ]
+      // },
+      { divider: "" },
+
+      { cmd: "toggleAxis" },
+      { cmd: "toggleAxisNumbers" },
+      { cmd: "toggleReverseSequence" },
+      { cmd: "toggleDnaColors" },
+      { cmd: "toggleLineageLines" },
+
+      { divider: "" },
+
+      { cmd: "toggleFeatureLabels" },
+      { cmd: "togglePartLabels" },
+      { cmd: "toggleCutsiteLabels" },
     ]
   },
   {
     text: "Tools",
-    menu: [
-      {
-        text: "Restriction Enzymes Manager"
-      },
-      {
-        text: "Simulate Digestion"
-      }
+    submenu: [
+      { cmd: "restrictionEnzymesManager" },
+      { cmd: "simulateDigestion" }
     ]
   }
 ];
 
-export default defaultConfig;
+
+export default commands => {
+  let menu = applyCommandsToMenu(
+    defaultConfig,
+    commands,
+    { useTicks: true, omitIcons: true }
+  );
+  menu = addMenuTexts(menu);
+  return addMenuTicks(menu);
+}

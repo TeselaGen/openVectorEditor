@@ -11,6 +11,9 @@ import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 import { tidyUpSequenceData } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
+
+import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
@@ -93,7 +96,147 @@ export default compose(
           start: 0,
           end: sequenceLength - 1
         });
+    },
+
+    handleNewPart: props => () => {
+      const {
+        selectionLayer,
+        caretPosition,
+        showAddOrEditPartDialog,
+        readOnly
+      } = props;
+      const rangeToUse =
+        selectionLayer.start > -1
+          ? selectionLayer
+          : caretPosition > -1
+            ? { start: caretPosition, end: caretPosition }
+            : undefined;
+      if (readOnly) {
+        window.toastr.warning("Sorry, can't create new parts in read-only mode");
+      } else {
+        showAddOrEditPartDialog({ ...rangeToUse, forward: true });
+      }
+    },
+
+    handleNewFeature: props => () => {
+      const {
+        selectionLayer,
+        caretPosition,
+        showAddOrEditFeatureDialog,
+        readOnly
+      } = props;
+      const rangeToUse =
+        selectionLayer.start > -1
+          ? selectionLayer
+          : caretPosition > -1
+            ? { start: caretPosition, end: caretPosition }
+            : undefined;
+      if (readOnly) {
+        window.toastr.warning(
+          "Sorry, can't create new features in read-only mode"
+        );
+      } else {
+        showAddOrEditFeatureDialog({ ...rangeToUse, forward: true });
+      }
+    },
+
+    /* eslint-disable no-unused-vars */
+    handlePrint: props => () => {
+      // TODO
+      console.warn("TODO: handlePrint");
+    },
+
+    handleReverseComplementSelection: props => () => {
+      // TODO
+      console.warn("TODO: handleReverseComplementSelection");
+    },
+
+    handleComplementSelection: props => () => {
+      // TODO
+      console.warn("TODO: handleComplementSelection");
+    },
+
+    handleReverseComplementSequence: props => () => {
+      // TODO
+      console.warn("TODO: handleReverseComplementSequence");
+    },
+
+    handleComplementSequence: props => () => {
+      // TODO
+      console.warn("TODO: handleComplementSequence");
+    },
+    /* eslint-enable no-unused-vars */
+
+    togglePreviewFullscreen: props => () => {
+      const { togglePreviewFullscreen } = props;
+      if (togglePreviewFullscreen) togglePreviewFullscreen();
+      else {
+        this.setState({
+          previewModeFullscreen: !this.state.previewModeFullscreen
+        });
+      }
+    },
+
+    handleNewPrimer: props => () => {
+      const {
+        selectionLayer,
+        caretPosition,
+        showAddOrEditPrimerDialog,
+        readOnly
+        // sequenceLength
+      } = props;
+      const rangeToUse =
+        selectionLayer.start > -1
+          ? selectionLayer
+          : caretPosition > -1
+            ? { start: caretPosition, end: caretPosition }
+            : undefined;
+      if (readOnly) {
+        window.toastr.warning(
+          "Sorry, can't create new primers in read-only mode"
+        );
+      } else {
+        showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
+      }
+    },
+
+    handleInverse: props => context => {
+      const {
+        sequenceLength,
+        selectionLayer,
+        caretPosition,
+        selectionLayerUpdate,
+        caretPositionUpdate
+      } = context ? context.props : props;
+      if (sequenceLength <= 0) {
+        return false;
+      }
+      if (selectionLayer.start > -1) {
+        if (getRangeLength(selectionLayer) === sequenceLength) {
+          caretPositionUpdate(selectionLayer.start);
+        } else {
+          selectionLayerUpdate(invertRange(selectionLayer));
+        }
+      } else {
+        if (caretPosition > -1) {
+          selectionLayerUpdate(
+            normalizeRange(
+              {
+                start: caretPosition,
+                end: caretPosition - 1
+              },
+              sequenceLength
+            )
+          );
+        } else {
+          selectionLayerUpdate({
+            start: 0,
+            end: sequenceLength - 1
+          });
+        }
+      }
     }
+
   })
 );
 

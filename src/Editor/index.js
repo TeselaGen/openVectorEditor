@@ -9,10 +9,11 @@ import React from "react";
 import AlignmentView from "../AlignmentView";
 // import * as customIcons from "teselagen-react-components";
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
+
+import CommandHotkeyHandler from "./CommandHotkeyHandler"
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
@@ -36,6 +37,7 @@ import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import withEditorProps from "../withEditorProps";
+import withEditorInteractions from "../withEditorInteractions";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
 import MenuBar from "../MenuBar";
@@ -113,13 +115,6 @@ export class Editor extends React.Component {
   //   // };
   // }
 
-  handlePrint = () => {
-    console.warn("handlePrint");
-  };
-  handleReverseComplementSelection = () => {
-    // const {selectionLayerUpdate}
-    console.warn("handleReverseComplementSelection");
-  };
 
   getExtraPanel = panelOptions => {
     return [];
@@ -147,80 +142,6 @@ export class Editor extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
   }
-
-  togglePreviewFullscreen = () => {
-    const { togglePreviewFullscreen } = this.props;
-    if (togglePreviewFullscreen) togglePreviewFullscreen();
-    else {
-      this.setState({
-        previewModeFullscreen: !this.state.previewModeFullscreen
-      });
-    }
-  };
-
-  handleNewPrimer = () => {
-    const {
-      selectionLayer,
-      caretPosition,
-      showAddOrEditPrimerDialog,
-      readOnly
-      // sequenceLength
-    } = this.props;
-    const rangeToUse =
-      selectionLayer.start > -1
-        ? selectionLayer
-        : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
-    if (readOnly) {
-      window.toastr.warning(
-        "Sorry, can't create new primers in read-only mode"
-      );
-    } else {
-      showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
-    }
-  };
-
-  handleNewFeature = () => {
-    const {
-      selectionLayer,
-      caretPosition,
-      showAddOrEditFeatureDialog,
-      readOnly
-    } = this.props;
-    const rangeToUse =
-      selectionLayer.start > -1
-        ? selectionLayer
-        : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
-    if (readOnly) {
-      window.toastr.warning(
-        "Sorry, can't create new features in read-only mode"
-      );
-    } else {
-      showAddOrEditFeatureDialog({ ...rangeToUse, forward: true });
-    }
-  };
-  handleNewPart = () => {
-    const {
-      selectionLayer,
-      caretPosition,
-      showAddOrEditPartDialog,
-      readOnly
-    } = this.props;
-    const rangeToUse =
-      selectionLayer.start > -1
-        ? selectionLayer
-        : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
-    if (readOnly) {
-      window.toastr.warning("Sorry, can't create new parts in read-only mode");
-    } else {
-      showAddOrEditPartDialog({ ...rangeToUse, forward: true });
-    }
-  };
 
   onTabDragStart = () => {
     this.setState({ tabDragging: true });
@@ -288,222 +209,6 @@ export class Editor extends React.Component {
     });
     panelsShownUpdate(newPanelsShown);
   };
-
-  handleInverse(contex) {
-    const {
-      sequenceLength,
-      selectionLayer,
-      caretPosition,
-      selectionLayerUpdate,
-      caretPositionUpdate
-    } = contex.props;
-    if (sequenceLength <= 0) {
-      return false;
-    }
-    if (selectionLayer.start > -1) {
-      if (getRangeLength(selectionLayer) === sequenceLength) {
-        caretPositionUpdate(selectionLayer.start);
-      } else {
-        selectionLayerUpdate(invertRange(selectionLayer));
-      }
-    } else {
-      if (caretPosition > -1) {
-        selectionLayerUpdate(
-          normalizeRange(
-            {
-              start: caretPosition,
-              end: caretPosition - 1
-            },
-            sequenceLength
-          )
-        );
-      } else {
-        selectionLayerUpdate({
-          start: 0,
-          end: sequenceLength - 1
-        });
-      }
-    }
-  }
-
-  renderHotkeys() {
-    const {
-      handleSave,
-      createNewDigest,
-      toggleReadOnlyMode,
-      undo,
-      redo,
-      toggleFindTool,
-      selectAll,
-      handleRotateToCaretPosition
-    } = this.props;
-    return (
-      <Hotkeys>
-        {/* <Hotkey
-          preventDefault  
-          stopPropagation
-          global={true}
-          combo={"esc"}
-          label="ee"
-          onKeyDown={() => {
-            alert('hee')
-          }}
-        /> */}
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          global={true}
-          combo={"mod+s"}
-          label="Save"
-          onKeyDown={handleSave}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          global={true}
-          combo={"mod+shift+d"}
-          label="Create New Virtual Digest"
-          onKeyDown={createNewDigest}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Print"
-          global
-          combo="mod+p"
-          onKeyDown={this.handlePrint}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Invert Selection"
-          global
-          combo="mod+i"
-          onKeyDown={() => this.handleInverse(this)}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Toggle Edit Mode"
-          global
-          combo="mod+e"
-          onKeyDown={toggleReadOnlyMode}
-        />
-        {/* TNR: these are here just to be added to the blueprint generated hotkey dialog but their actual handlers live elsewhere */}
-        <Hotkey
-          //these should be commented out because they'll prevent cut from working!
-          // allowInInput
-          // preventDefault
-          // stopPropagation
-          label="Cut"
-          global
-          combo="mod+x"
-        />
-        <Hotkey
-          //these should be commented out because they'll prevent copy from working!
-          // allowInInput
-          // preventDefault
-          // stopPropagation
-          label="Copy"
-          global
-          combo="mod+c"
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Paste"
-          global
-          combo="mod+p"
-        />
-        <Hotkey
-          label="Delete (edit mode only)"
-          allowInInput
-          preventDefault
-          stopPropagation
-          global
-          combo="backpace"
-        />
-        {/* see above comment */}
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Undo"
-          global
-          combo="mod+z"
-          onKeyDown={undo}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Redo"
-          global
-          combo="mod+shift+z"
-          onKeyDown={redo}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Find"
-          global
-          combo="mod+f"
-          onKeyDown={toggleFindTool}
-        />
-        <Hotkey
-          preventDefault
-          stopPropagation
-          label="Select All"
-          global
-          combo="mod+a"
-          onKeyDown={selectAll}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Reverse Complement Selection"
-          global
-          combo="mod+e"
-          onKeyDown={this.handleReverseComplementSelection}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="Rotate To Caret Position"
-          global
-          combo="mod+b"
-          onKeyDown={handleRotateToCaretPosition}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="New Feature"
-          global
-          combo="mod+k"
-          onKeyDown={this.handleNewFeature}
-        />
-        <Hotkey
-          allowInInput
-          preventDefault
-          stopPropagation
-          label="New Part"
-          global
-          combo="mod+l"
-          onKeyDown={this.handleNewPart}
-        />
-      </Hotkeys>
-    );
-  }
 
   getPanelsToShow = () => {
     const { panelsShown } = this.props;
@@ -1024,8 +729,9 @@ export class Editor extends React.Component {
             show key dialog{" "}
           </button> */}
           <Dialogs editorName={editorName} />
-          {showMenuBar && <MenuBar />}
+          {showMenuBar && <MenuBar editorName={editorName} {...sharedProps} trackFocus={false} />}
           <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
+          <CommandHotkeyHandler {...sharedProps} />
 
           <div
             style={{ position: "relative", flexGrow: "1" }}
@@ -1056,5 +762,4 @@ export class Editor extends React.Component {
 
 export default compose(
   withEditorProps,
-  HotkeysTarget
 )(Editor);

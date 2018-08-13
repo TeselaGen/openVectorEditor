@@ -14,10 +14,11 @@ import {
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
 import { map, get, startCase, some } from "lodash";
-
+import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import { getContext } from "recompose";
+import FileSaver from "file-saver";
 import Keyboard from "./Keyboard";
 
 import withEditorProps from "../withEditorProps";
@@ -44,8 +45,6 @@ import {
 
 // import draggableClassnames from "../constants/draggableClassnames";
 
-function noop() {}
-
 let defaultContainerWidth = 400;
 let defaultCharWidth = 12;
 let defaultMarginWidth = 50;
@@ -58,6 +57,10 @@ function getBpsPerRow({
   return Math.floor((width - marginWidth) / charWidth);
 }
 
+// TODO: maybe assign ids to nodes and store this info in the redux store
+const _lastFocusedWrapper = {};
+
+
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
@@ -65,13 +68,6 @@ function VectorInteractionHOC(Component /* options */) {
       this.combokeys && this.combokeys.detach();
     }
     componentDidMount() {
-      let {
-        // sequenceDataInserted = noop,
-        selectAll = noop,
-        selectInverse = noop
-      } = {
-        ...this.props
-      };
       this.editorDragged = editorDragged.bind(this);
       this.editorClicked = editorClicked.bind(this);
       this.editorDragStarted = editorDragStarted.bind(this);
@@ -120,6 +116,7 @@ function VectorInteractionHOC(Component /* options */) {
         }
       );
 
+      // TODO: move these into commands
       let moveCaretBindings = [
         { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
         { keyCombo: ["right", "shift+right"], type: "moveCaretRightOne" },
@@ -182,16 +179,6 @@ function VectorInteractionHOC(Component /* options */) {
       this.combokeys.bind(["backspace", "del"], event => {
         // Handle shortcut
         this.handleDnaDelete(event);
-      });
-      this.combokeys.bind("command+a", event => {
-        // Handle shortcut
-        selectAll();
-        event.stopPropagation();
-      });
-      this.combokeys.bind("command+ctrl+i", event => {
-        // Handle shortcut
-        selectInverse();
-        event.stopPropagation();
       });
     }
     updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
@@ -505,6 +492,8 @@ function VectorInteractionHOC(Component /* options */) {
             }
           ];
     };
+
+    // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
       const {
         // sequenceData,
@@ -542,8 +531,25 @@ function VectorInteractionHOC(Component /* options */) {
           }
         });
       };
+      // TODO: maybe stop using Clipboard.js and unify clipboard handling with
+      // a more versatile approach
       return [
         {
+          text: "Cut",
+          className: "openVeCut",
+          onClick: () => {
+            this.handleDnaDelete();
+          },
+          willUnmount: () => {
+            this.openVeCut && this.openVeCut.destroy();
+          },
+          didMount: ({ className }) => {
+            // TODO: Maybe use a cut action instead
+            this.openVeCut = makeTextCopyable(i => i, className);
+          }
+        },
+        {
+
           text: "Copy",
           className: "openVeCopy1",
           willUnmount: () => {
@@ -1065,6 +1071,80 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
+    importSequenceFromFile = (file, opts = {}) => {
+      const { updateSequenceData } = this.props;
+      let reader = new FileReader();
+      reader.readAsText(file, "UTF-8");
+      reader.onload = function(evt) {
+        const content = evt.target.result;
+        anyToJson(
+          content,
+          result => {
+            // TODO maybe handle import errors/warnings better
+            const failed = !result[0].success;
+            const messages = result[0].messages;
+            if (messages && messages.length) {
+              messages.forEach(msg => {
+                const type = msg.substr(0, 20).toLowerCase().includes('error')
+                  ? (failed ? 'error' : 'warning') : 'info';
+                window.toastr[type](msg);
+              });
+            }
+            updateSequenceData(result[0].parsedSequence);
+            if (!failed) {
+              window.toastr.success('Sequenced imported');
+            }
+          },
+          { acceptParts: true, ...opts }
+        );
+      };
+      reader.onerror = function() {
+        window.toastr.error("Could not read file.");
+      };
+    }
+
+    exportSequenceToFile = format => {
+      const { sequenceData } = this.props;
+      let convert, fileExt;
+
+      if (format === "genbank") {
+        convert = jsonToGenbank;
+        fileExt = "gb";
+      } else if (format === "fasta") {
+        convert = jsonToFasta;
+        fileExt = "fasta";
+      } else {
+        console.error(`Invalid export format: '${format}'`); // dev error
+        return;
+      }
+      const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
+      const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
+      FileSaver.saveAs(blob, filename);
+    }
+
+    handleWrapperFocus = () => {
+      if (this.props.trackFocus === false) return;
+      _lastFocusedWrapper[this.props.editorName] = this.node;
+    }
+
+    triggerClipboardCommand = type => {
+      const wrapper = _lastFocusedWrapper[this.props.editorName];
+      if (!wrapper) {
+        return;
+      }
+      const hiddenInput = wrapper.querySelector('input.clipboard');
+      hiddenInput.focus();
+      const worked = document.execCommand(type);
+      wrapper.focus();
+      if (!worked) {
+        const keys = { paste: 'Cmd/Ctrl+V' };
+        if (keys[type]) {
+          // TODO maybe improve msg with HTML
+          window.toastr.info(`Press ${keys[type]} to ${type}`);
+        }
+      }
+    }
+
     render() {
       const {
         closePanelButton,
@@ -1121,12 +1201,18 @@ function VectorInteractionHOC(Component /* options */) {
           editorDragStopped: this.editorDragStopped
         };
       }
+
+      propsToPass.importSequenceFromFile = this.importSequenceFromFile;
+      propsToPass.exportSequenceToFile = this.exportSequenceToFile;
+      propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;
+
       return (
         <div
           tabIndex={-1} //this helps with focusing using Keyboard's parentElement.focus()
           ref={c => (this.node = c)}
           className={"veVectorInteractionWrapper"}
           style={{ position: "relative", ...vectorInteractionWrapperStyle }}
+          onFocus={this.handleWrapperFocus}
         >
           {closePanelButton}
           <Keyboard

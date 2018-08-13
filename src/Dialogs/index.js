@@ -4,6 +4,9 @@ import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
 import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
 import AddOrEditPartDialog from "../helperComponents/AddOrEditPartDialog";
+import RenameSequenceDialog from "../helperComponents/RenameSequenceDialog";
+import GoToDialog from "../helperComponents/GoToDialog";
+import SelectDialog from "../helperComponents/SelectDialog";
 import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
 import { withDialog } from "teselagen-react-components";
 import { addYourOwnEnzymeClose } from "../redux/addYourOwnEnzyme";
@@ -59,6 +62,21 @@ export default connect(
       <MergeFeaturesDialog
         editorName={editorName}
         dialogName="MergeFeaturesDialog"
+        noTarget
+      />
+      <RenameSequenceDialog
+        editorName={editorName}
+        dialogName="RenameSeqDialog"
+        noTarget
+      />
+      <GoToDialog
+        editorName={editorName}
+        dialogName="GoToDialog"
+        noTarget
+      />
+      <SelectDialog
+        editorName={editorName}
+        dialogName="SelectDialog"
         noTarget
       />
     </div>

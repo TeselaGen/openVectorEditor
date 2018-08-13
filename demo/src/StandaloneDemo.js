@@ -62,11 +62,11 @@ export default class StandaloneDemo extends React.Component {
           //or
           // return myPromiseBasedApiCall()
         },
+        onDelete: data => {
+          console.warn('would delete', data);
+        },
         onCopy: function(event, copiedSequenceData, editorState) {
           //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-          console.info("event:", event);
-          console.info("copiedSequenceData:", copiedSequenceData);
-          console.info("editorState:", editorState);
           const clipboardData = event.clipboardData;
           clipboardData.setData("text/plain", copiedSequenceData.sequence);
           clipboardData.setData(

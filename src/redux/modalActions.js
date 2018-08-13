@@ -75,3 +75,27 @@ export function showCreateAlignmentDialog(props) {
     props
   };
 }
+
+export function showRenameSequenceDialog(props) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "RenameSeqDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props
+  };
+}
+
+export function showGoToDialog(props) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "GoToDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props
+  };
+}
+
+export function showSelectDialog(props) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "SelectDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props
+  };
+}

@@ -1,0 +1,14 @@
+.dialog-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.dialog-buttons > * {
+  margin-left: 10px;
+}
+
+.react-draggable {
+  /* TODO: maybe fix this in TRC */
+  min-height: 100px !important;
+}
