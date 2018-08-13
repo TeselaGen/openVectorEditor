@@ -130,14 +130,16 @@ export function FindBar({
         autoFocus
         onKeyDown={e => {
           e.persist();
-          if (e.metaKey && e.keyCode === 70) {
+          if (e.metaKey && e.keyCode === 70) { //cmd-f
             toggleFindTool();
             e.preventDefault();
             e.stopPropagation();
-          } else if (e.keyCode === 13) {
+          } else if (e.keyCode === 13) { //enter key!
             updateMatchNumber(
               matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
             );
+          } else if (e.keyCode === 27) { //esc key!
+            toggleFindTool()
           }
         }}
         rightElement={

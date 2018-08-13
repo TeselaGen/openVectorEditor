@@ -460,11 +460,15 @@ export class Editor extends React.Component {
             <Button
               small
               minimal
+              className={'veRightClickTabMenu'}
               onClick={showTabRightClickContextMenu}
-              icon="menu"
+              // icon="menu"
+              icon="more"
               style={{
                 top: 5,
                 right: 10,
+                left: -5,
+                transform:"rotate(90deg)",
                 position: "absolute"
               }}
             />

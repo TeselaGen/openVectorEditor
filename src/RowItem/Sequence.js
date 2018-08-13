@@ -9,7 +9,7 @@ class Sequence extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
-      ["hideBps", "charWidth", "length", "height", "width", "isReverse", "scrollData", "showDnaColors"].some(
+      ["hideBps", "sequence", "charWidth", "length", "height", "width", "isReverse", "scrollData", "showDnaColors"].some(
         key => props[key] !== newProps[key]
       )
     )

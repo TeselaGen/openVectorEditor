@@ -37,6 +37,13 @@
   width: 35px;
 }
 
+.veRightClickTabMenu {
+  opacity: 0.4;
+}
+.veRightClickTabMenu:hover {
+  opacity: 1;
+}
+
 .reflex-layout > .reflex-element {
   overflow-y: hidden !important;
 }
