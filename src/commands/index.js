@@ -79,12 +79,12 @@ const toggleCopyOptionCommandDefs = {};
   toggleCopyOptionCommandDefs[cmdId] = {
     name: `Include ${startCase(type)}`,
     handler: (props) => props.toggleCopyOption(type),
-    isActive: (props) => props.copyOptions[type],
+    isActive: (props) => props.copyOptions &&props.copyOptions[type],
   };
 });
 
-const hasSelection = ({ selectionLayer }) =>
-  selectionLayer.start !== -1 && selectionLayer.end !== -1;
+const hasSelection = ({ selectionLayer={} }) =>
+  selectionLayer.start > -1 && selectionLayer.end > -1;
 
 const editCommandDefs = {
   cut: {
@@ -103,13 +103,13 @@ const editCommandDefs = {
   },
 
   undo : {
-    isDisabled: props => isEmpty(props.sequenceDataHistory.past),
+    isDisabled: props => isEmpty(props.sequenceDataHistory && props.sequenceDataHistory.past),
     handler: props => props.undo(),
     hotkey: "mod+z"
   },
 
   redo : {
-    isDisabled: props => isEmpty(props.sequenceDataHistory.future),
+    isDisabled: props => isEmpty(props.sequenceDataHistory && props.sequenceDataHistory.future),
     handler: props => props.redo(),
     hotkey: "mod+shift+z"
   },
@@ -208,11 +208,11 @@ const editCommandDefs = {
 const cirularityCommandDefs = {
   circular: {
     handler: (props) => props.updateCircular(true),
-    isActive: (props, editorState) => editorState.sequenceData.circular,
+    isActive: (props, editorState) =>editorState &&  editorState.sequenceData.circular,
   },
   linear: {
     handler: (props) => props.updateCircular(false),
-    isActive: (props, editorState) => !editorState.sequenceData.circular,
+    isActive: (props, editorState) => editorState && !editorState.sequenceData.circular,
   },
 };
 
@@ -223,7 +223,7 @@ const labelToggleCommandDefs = {};
   labelToggleCommandDefs[cmdId] = {
     toggle: ['show', 'hide'],
     handler: (props) => props.annotationLabelVisibilityToggle(plural),
-    isActive: (props, editorState) => editorState.annotationLabelVisibility[plural],
+    isActive: (props, editorState) => editorState && editorState.annotationLabelVisibility[plural],
   };
 });
 
@@ -233,7 +233,7 @@ const annotationToggleCommandDefs = {};
   annotationToggleCommandDefs[cmdId] = {
     toggle: ['show', 'hide'],
     handler: (props) => props.annotationVisibilityToggle(type),
-    isActive: (props, editorState) => editorState.annotationVisibility[type],
+    isActive: (props, editorState) => editorState && editorState.annotationVisibility[type],
   };
 });
 
