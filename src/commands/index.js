@@ -1,11 +1,11 @@
-import { oveCommandFactory } from '../utils/commandUtils';
-import { upperFirst, startCase, isEmpty } from 'lodash';
+import { oveCommandFactory } from "../utils/commandUtils";
+import { upperFirst, startCase } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 
 const fileCommandDefs = {
   newSequence: {
     isDisabled: props => !props.onNew,
-    handler: props => props.onNew(),
+    handler: props => props.onNew()
   },
 
   renameSequence: {
@@ -26,7 +26,7 @@ const fileCommandDefs = {
 
   deleteSequence: {
     isDisabled: props => !props.onDelete,
-    handler: props => props.onDelete(props.sequenceData),
+    handler: props => props.onDelete(props.sequenceData)
   },
 
   duplicateSequence: {
@@ -54,12 +54,12 @@ const fileCommandDefs = {
 
   exportSequenceAsGenbank: {
     name: "As Genbank file",
-    handler: props => props.exportSequenceToFile("genbank"),
+    handler: props => props.exportSequenceToFile("genbank")
   },
 
   exportSequenceAsFasta: {
     name: "As FASTA file",
-    handler: props => props.exportSequenceToFile("fasta"),
+    handler: props => props.exportSequenceToFile("fasta")
   },
 
   viewProperties: {
@@ -70,46 +70,55 @@ const fileCommandDefs = {
     handler: props => props.handlePrint(),
     hotkey: "mod+p"
   }
-
 };
 
 const toggleCopyOptionCommandDefs = {};
-['features', 'parts', 'partialParts', 'partialFeatures'].forEach(type => {
+["features", "parts", "partialParts", "partialFeatures"].forEach(type => {
   const cmdId = `toggleCopy${upperFirst(type)}`;
   toggleCopyOptionCommandDefs[cmdId] = {
     name: `Include ${startCase(type)}`,
-    handler: (props) => props.toggleCopyOption(type),
-    isActive: (props) => props.copyOptions &&props.copyOptions[type],
+    handler: props => props.toggleCopyOption(type),
+    isActive: props => props.copyOptions && props.copyOptions[type]
   };
 });
 
-const hasSelection = ({ selectionLayer={} }) =>
+const hasSelection = ({ selectionLayer = {} }) =>
   selectionLayer.start > -1 && selectionLayer.end > -1;
 
 const editCommandDefs = {
   cut: {
-    handler: props => props.triggerClipboardCommand('cut'),
-    hotkey: "mod+x",
+    handler: props => props.triggerClipboardCommand("cut"),
+    hotkey: "mod+x"
   },
 
   copy: {
-    handler: props => props.triggerClipboardCommand('copy'),
+    handler: props => props.triggerClipboardCommand("copy"),
     hotkey: "mod+c"
   },
 
   paste: {
-    handler: props => props.triggerClipboardCommand('paste'),
+    handler: props => props.triggerClipboardCommand("paste"),
     hotkey: "mod+v"
   },
 
-  undo : {
-    isDisabled: props => isEmpty(props.sequenceDataHistory && props.sequenceDataHistory.past),
+  undo: {
+    isDisabled: props =>
+      !(
+        props.sequenceDataHistory &&
+        props.sequenceDataHistory.past &&
+        props.sequenceDataHistory.past.length
+      ),
     handler: props => props.undo(),
     hotkey: "mod+z"
   },
 
-  redo : {
-    isDisabled: props => isEmpty(props.sequenceDataHistory && props.sequenceDataHistory.future),
+  redo: {
+    isDisabled: props =>
+      !(
+        props.sequenceDataHistory &&
+        props.sequenceDataHistory.future &&
+        props.sequenceDataHistory.future.length
+      ),
     handler: props => props.redo(),
     hotkey: "mod+shift+z"
   },
@@ -142,12 +151,13 @@ const editCommandDefs = {
       props.showSelectDialog({
         initialValues: {
           from: start >= 0 ? start : 0,
-          to: end >= 0 ? end : 0,
+          to: end >= 0 ? end : 0
         },
-        onSubmit: values => props.selectionLayerUpdate({
-          start: values.from,
-          end: values.to
-        })
+        onSubmit: values =>
+          props.selectionLayerUpdate({
+            start: values.from,
+            end: values.to
+          })
       });
     }
   },
@@ -207,33 +217,46 @@ const editCommandDefs = {
 
 const cirularityCommandDefs = {
   circular: {
-    handler: (props) => props.updateCircular(true),
-    isActive: (props, editorState) =>editorState &&  editorState.sequenceData.circular,
+    handler: props => props.updateCircular(true),
+    isActive: (props, editorState) =>
+      editorState && editorState.sequenceData.circular
   },
   linear: {
-    handler: (props) => props.updateCircular(false),
-    isActive: (props, editorState) => editorState && !editorState.sequenceData.circular,
-  },
+    handler: props => props.updateCircular(false),
+    isActive: (props, editorState) =>
+      editorState && !editorState.sequenceData.circular
+  }
 };
 
 const labelToggleCommandDefs = {};
-['feature', 'part', 'cutsite'].forEach(type => {
+["feature", "part", "cutsite"].forEach(type => {
   const cmdId = `toggle${upperFirst(type)}Labels`;
-  const plural = type + 's';
+  const plural = type + "s";
   labelToggleCommandDefs[cmdId] = {
-    toggle: ['show', 'hide'],
-    handler: (props) => props.annotationLabelVisibilityToggle(plural),
-    isActive: (props, editorState) => editorState && editorState.annotationLabelVisibility[plural],
+    toggle: ["show", "hide"],
+    handler: props => props.annotationLabelVisibilityToggle(plural),
+    isActive: (props, editorState) =>
+      editorState && editorState.annotationLabelVisibility[plural]
   };
 });
 
 const annotationToggleCommandDefs = {};
-['features', 'parts', 'cutsites', 'axis', 'axisNumbers', 'reverseSequence', 'dnaColors', 'lineageLines'].forEach(type => {
+[
+  "features",
+  "parts",
+  "cutsites",
+  "axis",
+  "axisNumbers",
+  "reverseSequence",
+  "dnaColors",
+  "lineageLines"
+].forEach(type => {
   const cmdId = `toggle${upperFirst(type)}`;
   annotationToggleCommandDefs[cmdId] = {
-    toggle: ['show', 'hide'],
-    handler: (props) => props.annotationVisibilityToggle(type),
-    isActive: (props, editorState) => editorState && editorState.annotationVisibility[type],
+    toggle: ["show", "hide"],
+    handler: props => props.annotationVisibilityToggle(type),
+    isActive: (props, editorState) =>
+      editorState && editorState.annotationVisibility[type]
   };
 });
 

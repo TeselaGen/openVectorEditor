@@ -107,8 +107,6 @@ export class VersionHistoryView extends React.Component {
   goBack = () => {
     this.props.exitVersionHistoryView && this.props.exitVersionHistoryView();
     this.props.toggleViewVersionHistory();
-    // todohistory
-    // console.log("go back!");
   };
   render() {
     return (

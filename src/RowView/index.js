@@ -262,13 +262,17 @@ export class RowView extends React.Component {
     let scrollToBp = -1;
     if (
       matchedSearchLayer.start > -1 &&
-      matchedSearchLayer.start !== matchedSearchLayerOld.start
+      ((matchedSearchLayer.forceUpdate &&
+        matchedSearchLayer.forceUpdate !== matchedSearchLayerOld.forceUpdate) ||
+        matchedSearchLayer.start !== matchedSearchLayerOld.start)
     ) {
       // previousBp = matchedSearchLayerOld.start;
       scrollToBp = matchedSearchLayer.start;
     } else if (
       matchedSearchLayer.end > -1 &&
-      matchedSearchLayer.end !== matchedSearchLayerOld.end
+      ((matchedSearchLayer.forceUpdate &&
+        matchedSearchLayer.forceUpdate !== matchedSearchLayerOld.forceUpdate) ||
+        matchedSearchLayer.end !== matchedSearchLayerOld.end)
     ) {
       // previousBp = selectionLayerOld.end;
       scrollToBp = matchedSearchLayer.end;
@@ -277,13 +281,17 @@ export class RowView extends React.Component {
       scrollToBp = caretPosition;
     } else if (
       selectionLayer.start > -1 &&
-      selectionLayer.start !== selectionLayerOld.start
+      ((selectionLayer.forceUpdate &&
+        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate) ||
+        selectionLayer.start !== selectionLayerOld.start)
     ) {
       // previousBp = selectionLayerOld.start;
       scrollToBp = selectionLayer.start;
     } else if (
       selectionLayer.end > -1 &&
-      selectionLayer.end !== selectionLayerOld.end
+      ((selectionLayer.forceUpdate &&
+        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate) ||
+        selectionLayer.end !== selectionLayerOld.end)
     ) {
       // previousBp = selectionLayerOld.end;
       scrollToBp = selectionLayer.end;

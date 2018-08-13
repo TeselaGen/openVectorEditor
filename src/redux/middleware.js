@@ -55,7 +55,7 @@ export default store => next => action => {
     } else {
       store.dispatch({
         type: "SELECTION_LAYER_UPDATE",
-        payload: stateToUse.selectionLayer,
+        payload: {...stateToUse.selectionLayer, forceUpdate: Math.random()},
         meta: { editorName, disregardUndo }
       });
     }

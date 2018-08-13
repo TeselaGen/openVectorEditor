@@ -39,13 +39,6 @@ function getSnipForRow(
     charWidth,
     sequenceLength
   );
-  //TODO: refactor this get position in row into a helper function!
-  //it is used here and in the caret position calculations!
-  // if (row.start <= snipPosition && row.end + 1 >= snipPosition
-  //     || (row.end === sequenceLength - 1 && row.end < snipPosition) //catch the special case where we're at the very end of the sequence..
-  //     ) {
-
-  // }
 
   let newCursorStyle = assign({}, snipStyle, {
     left: xStart + 2

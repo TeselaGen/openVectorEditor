@@ -86,12 +86,6 @@ const defaultConfig = [
   {
     text: "View",
     submenu: [
-      // TODO maybe these two shouldn't be "view" commands, as it seems they can
-      // affect actual data, not just the way it's displayed
-      { cmd: "circular" },
-      { cmd: "linear" },
-
-      { divider: "" },
       // { cmd: "mapCaret" },
       { cmd: "toggleFeatures" },
       // {

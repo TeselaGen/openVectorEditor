@@ -9,7 +9,12 @@ import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions } from "../redux";
 import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
-import { tidyUpSequenceData } from "ve-sequence-utils";
+import {
+  tidyUpSequenceData,
+  getComplementSequenceAndAnnotations,
+  insertSequenceDataAtPositionOrRange,
+  getReverseComplementSequenceAndAnnotations
+} from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
 
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
@@ -112,7 +117,9 @@ export default compose(
             ? { start: caretPosition, end: caretPosition }
             : undefined;
       if (readOnly) {
-        window.toastr.warning("Sorry, can't create new parts in read-only mode");
+        window.toastr.warning(
+          "Sorry, can't create new parts in read-only mode"
+        );
       } else {
         showAddOrEditPartDialog({ ...rangeToUse, forward: true });
       }
@@ -147,23 +154,68 @@ export default compose(
     },
 
     handleReverseComplementSelection: props => () => {
-      // TODO
-      console.warn("TODO: handleReverseComplementSelection");
+      const {
+        sequenceData,
+        updateSequenceData,
+        caretPositionUpdate,
+        selectionLayerUpdate,
+        selectionLayer
+      } = props;
+      if (!(selectionLayer.start > -1)) {
+        return; //return early
+      }
+      updateSequenceData(
+        insertSequenceDataAtPositionOrRange(
+          getReverseComplementSequenceAndAnnotations(sequenceData, {
+            range: selectionLayer
+          }),
+          sequenceData,
+          selectionLayer
+        )
+      );
+      // caretPositionUpdate(0);
+      // selectionLayerUpdate(selectionLayer);
+      setTimeout(() => {
+        selectionLayerUpdate({...selectionLayer, forceUpdate: Math.random()});
+      });
     },
 
     handleComplementSelection: props => () => {
-      // TODO
-      console.warn("TODO: handleComplementSelection");
+      const {
+        sequenceData,
+        caretPositionUpdate,
+        updateSequenceData,
+        selectionLayerUpdate,
+        selectionLayer
+      } = props;
+      if (!(selectionLayer.start > -1)) {
+        return; //return early
+      }
+      const comp = getComplementSequenceAndAnnotations(sequenceData, {
+        range: selectionLayer
+      });
+      const newSeqData = insertSequenceDataAtPositionOrRange(
+        comp,
+        sequenceData,
+        selectionLayer
+      );
+      updateSequenceData(newSeqData);
+      // caretPositionUpdate(0);
+      setTimeout(() => {
+        selectionLayerUpdate({...selectionLayer, forceUpdate: Math.random()});
+      });
     },
 
     handleReverseComplementSequence: props => () => {
-      // TODO
-      console.warn("TODO: handleReverseComplementSequence");
+      const { sequenceData, updateSequenceData } = props;
+      updateSequenceData(
+        getReverseComplementSequenceAndAnnotations(sequenceData)
+      );
     },
 
     handleComplementSequence: props => () => {
-      // TODO
-      console.warn("TODO: handleComplementSequence");
+      const { sequenceData, updateSequenceData } = props;
+      updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
     },
     /* eslint-enable no-unused-vars */
 
@@ -236,7 +288,6 @@ export default compose(
         }
       }
     }
-
   })
 );
 
