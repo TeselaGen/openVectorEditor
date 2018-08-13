@@ -255,6 +255,42 @@ function VectorInteractionHOC(Component /* options */) {
       e.preventDefault();
     };
 
+    handleCut = e => {
+      window.toastr.success("Selection Cut");
+      const {
+        sequenceData,
+        selectionLayer,
+        copyOptions
+      } = this.props;
+
+      const onCut = this.props.onCut || this.props.onCopy || (() => {});
+
+      const sequenceDataToCopy = this.sequenceDataToCopy ||
+        getSequenceDataBetweenRange(sequenceData, selectionLayer, {
+          excludePartial: {
+            features: !copyOptions.partialFeatures,
+            parts: !copyOptions.partialParts
+          },
+          exclude: {
+            features: !copyOptions.features,
+            parts: !copyOptions.parts
+          }
+        });
+
+      this.handleDnaDelete(false);
+
+      onCut(
+        e,
+        tidyUpSequenceData(
+          sequenceDataToCopy,
+          { annotationsAsObjects: true }
+        ),
+        this.props
+      );
+      this.sequenceDataToCopy = undefined;
+      document.body.removeEventListener("cut", this.handleCut);
+    };
+
     handleCopy = e => {
       window.toastr.success("Selection Copied");
       const {
@@ -318,7 +354,7 @@ function VectorInteractionHOC(Component /* options */) {
         });
       }
     }
-    handleDnaDelete() {
+    handleDnaDelete(showToast = true) {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -357,7 +393,7 @@ function VectorInteractionHOC(Component /* options */) {
             newSeqData.sequence.length
           )
         );
-        window.toastr.success("Sequence Deleted Successfully");
+        if (showToast) window.toastr.success("Sequence Deleted Successfully");
       }
     }
 
@@ -503,8 +539,9 @@ function VectorInteractionHOC(Component /* options */) {
         store,
         copyOptions
       } = this.props;
-      const makeTextCopyable = (transformFunc, className) => {
+      const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
+          action: () => action,
           text: () => {
             const { sequenceData, copyOptions } = store.getState().VectorEditor[
               editorName
@@ -526,7 +563,12 @@ function VectorInteractionHOC(Component /* options */) {
             const sequenceDataToCopy = transformFunc(selectedSeqData);
 
             this.sequenceDataToCopy = sequenceDataToCopy;
-            document.body.addEventListener("copy", this.handleCopy);
+            if (action === "copy") {
+              document.body.addEventListener("copy", this.handleCopy);
+            } else {
+              document.body.addEventListener("cut", this.handleCut);
+            }
+
             return sequenceDataToCopy.sequence;
           }
         });
@@ -537,15 +579,12 @@ function VectorInteractionHOC(Component /* options */) {
         {
           text: "Cut",
           className: "openVeCut",
-          onClick: () => {
-            this.handleDnaDelete();
-          },
           willUnmount: () => {
             this.openVeCut && this.openVeCut.destroy();
           },
           didMount: ({ className }) => {
             // TODO: Maybe use a cut action instead
-            this.openVeCut = makeTextCopyable(i => i, className);
+            this.openVeCut = makeTextCopyable(i => i, className, "cut");
           }
         },
         {
@@ -719,7 +758,7 @@ function VectorInteractionHOC(Component /* options */) {
       return this.generateSelectionMenuOptions({
         //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
         start: annotation.start,
-        end: annotation.end 
+        end: annotation.end
       });
     };
 
@@ -1219,6 +1258,7 @@ function VectorInteractionHOC(Component /* options */) {
             value={selectedBps}
             onCopy={this.handleCopy}
             onPaste={this.handlePaste}
+            onCut={this.handleCut}
           />
 
           {/* we pass this dialog here */}

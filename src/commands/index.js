@@ -87,6 +87,11 @@ const hasSelection = ({ selectionLayer }) =>
   selectionLayer.start !== -1 && selectionLayer.end !== -1;
 
 const editCommandDefs = {
+  cut: {
+    handler: props => props.triggerClipboardCommand('cut'),
+    hotkey: "mod+x",
+  },
+
   copy: {
     handler: props => props.triggerClipboardCommand('copy'),
     hotkey: "mod+c"

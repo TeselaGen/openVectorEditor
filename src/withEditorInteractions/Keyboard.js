@@ -67,6 +67,7 @@ class Clipboard extends React.Component {
         className="clipboard"
         onPaste={this.props.onPaste}
         onCopy={this.props.onCopy}
+        onCut={this.props.onCut}
       />
     );
   }
