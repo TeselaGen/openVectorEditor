@@ -20,7 +20,7 @@
 .bp3-toast-container,
 .bp3-overlay-content,
 .bp3-overlay,
-.bp3-overlay-backdrop,
+/* .bp3-overlay-backdrop, */
 .bp3-dialog {
   z-index: 40000 !important;
 }

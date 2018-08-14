@@ -12,6 +12,9 @@ module.exports = {
     extra: {
       devtool: 'source-map'
     },
+    extractCSS: {
+      filename: '[name].css'
+    }
   }
 }
 
