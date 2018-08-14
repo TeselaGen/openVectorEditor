@@ -27,12 +27,10 @@ export default createReducer(
       };
     },
     [selectionLayerUpdate]: (state, newSelectionLayer) => {
-      if (process.env.NODE_ENV !== "production") {
-        if (!(newSelectionLayer.start >= 0 && newSelectionLayer.end >= 0)) {
-          console.error(
-            "we should never be here! selectionLayerUpdate must always be called with a valid selection layer"
-          );
-        }
+      if (!newSelectionLayer || !(newSelectionLayer.start >= 0 && newSelectionLayer.end >= 0)) {
+        return console.error(
+          "we should never be here! selectionLayerUpdate must always be called with a valid selection layer"
+        );
       }
       return { ...newSelectionLayer, color: "" };
     }

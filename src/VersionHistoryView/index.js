@@ -71,6 +71,7 @@ export class VersionHistoryView extends React.Component {
   };
   onRowSelect = async ([row]) => {
     // const close = showLoadingMask();
+    if (!row) return
     if (row.id === "__current__") {
       this.updateSeqData(await this.getCurrentSeqData());
       this.setState({ selectedVersion: null });
