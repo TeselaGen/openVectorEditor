@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "4.3.2",
+  "version": "4.4.0",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -72,8 +72,8 @@
     "ve-sequence-utils": "^3.2.11"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^2.3.1",
-    "@blueprintjs/datetime": "^2.0.3",
+    "@blueprintjs/core": "^3.3.0",
+    "@blueprintjs/datetime": "^3.1.0",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.3.7",
     "axios": "^0.18.0",
@@ -119,7 +119,7 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "22.6.0",
+    "teselagen-react-components": "23.0.0",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
     "ve-sequence-utils": "3.2.58"

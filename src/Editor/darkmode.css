@@ -1,66 +1,66 @@
-.pt-dark #circularViewAxis:not(.veAxisFill) {
+.bp3-dark #circularViewAxis:not(.veAxisFill) {
   fill: #293742 !important;
   stroke: #f5f8fa !important;
 }
 
-.pt-dark .veEditor {
+.bp3-dark .veEditor {
   background: #293742 !important;
 }
 
-.pt-dark .veEditor .ve-draggable-tabs {
+.bp3-dark .veEditor .ve-draggable-tabs {
   color: #f5f8fa !important;
 }
 
-.pt-dark .veCaretSVG,
-.pt-dark .translationLayer text,
-.pt-dark .veRowViewAxis path,
-.pt-dark .veRowViewFeature path,
-.pt-dark .veRowViewPart path,
-.pt-dark .veLabelLine,
-.pt-dark .veRowViewAxis text,
-.pt-dark .veFeature,
-.pt-dark .vePart {
+.bp3-dark .veCaretSVG,
+.bp3-dark .translationLayer text,
+.bp3-dark .veRowViewAxis path,
+.bp3-dark .veRowViewFeature path,
+.bp3-dark .veRowViewPart path,
+.bp3-dark .veLabelLine,
+.bp3-dark .veRowViewAxis text,
+.bp3-dark .veFeature,
+.bp3-dark .vePart {
   stroke: #f5f8fa !important;
 }
 
-.pt-dark .veEditor .veRowViewCaret {
+.bp3-dark .veEditor .veRowViewCaret {
   background: #f5f8fa !important;
 }
 
-.pt-dark .veEditor text,
-.pt-dark .veCircularViewLabelText {
+.bp3-dark .veEditor text,
+.bp3-dark .veCircularViewLabelText {
   fill: #f5f8fa !important;
 }
 
-.pt-dark .tag-selection.selected {
+.bp3-dark .tag-selection.selected {
   border-color: #f5f8fa !important;
 }
 
-.pt-dark .veLinearView text {
+.bp3-dark .veLinearView text {
   fill: #f5f8fa !important;
 }
 
-.pt-dark .veAxis > g {
+.bp3-dark .veAxis > g {
   fill: #f5f8fa !important;
 }
 
-.pt-dark .step-group.active .step-text {
+.bp3-dark .step-group.active .step-text {
   color: #2b95d6 !important;
 }
 
-.pt-dark .step-group.active .step-mark {
+.bp3-dark .step-group.active .step-mark {
   background-color: #2b95d6 !important;
   border-color: #2b95d6 !important;
 }
 
-.pt-dark .tool-select-item:hover {
+.bp3-dark .tool-select-item:hover {
   background: #0e5a8a !important;
 }
 
-.pt-dark .alignmentViewTrackContainer .rowViewTextContainer text {
+.bp3-dark .alignmentViewTrackContainer .rowViewTextContainer text {
   fill: #182026 !important;
 }
 
-.pt-dark .veWhiteBackground {
+.bp3-dark .veWhiteBackground {
   background: #293742;
 }

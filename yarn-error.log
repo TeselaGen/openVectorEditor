@@ -769,7 +769,7 @@ Lockfile:
   
   attr-accept@^1.0.3:
     version "1.1.2"
-    resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.2.tgz#6836bfe054e4ef1ee3076fdde56cec9bb3ffead6"
+    resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accebp3-1.1.2.tgz#6836bfe054e4ef1ee3076fdde56cec9bb3ffead6"
     dependencies:
       core-js "^2.5.0"
   
@@ -1717,9 +1717,9 @@ Lockfile:
     version "0.6.1"
     resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   
-  bcrypt-pbkdf@^1.0.0:
+  bcrybp3-pbkdf@^1.0.0:
     version "1.0.1"
-    resolved "https://registry.yarnpkg.com/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.1.tgz#63bc5dcb61331b92bc05fd528953c33462a06f8d"
+    resolved "https://registry.yarnpkg.com/bcrybp3-pbkdf/-/bcrybp3-pbkdf-1.0.1.tgz#63bc5dcb61331b92bc05fd528953c33462a06f8d"
     dependencies:
       tweetnacl "^0.14.3"
   
@@ -7136,20 +7136,20 @@ Lockfile:
   
   nopt@3.x:
     version "3.0.6"
-    resolved "https://registry.yarnpkg.com/nopt/-/nopt-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"
+    resolved "https://registry.yarnpkg.com/nopt/-/nobp3-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"
     dependencies:
       abbrev "1"
   
   nopt@^4.0.1:
     version "4.0.1"
-    resolved "https://registry.yarnpkg.com/nopt/-/nopt-4.0.1.tgz#d0d4685afd5415193c8c7505602d0d17cd64474d"
+    resolved "https://registry.yarnpkg.com/nopt/-/nobp3-4.0.1.tgz#d0d4685afd5415193c8c7505602d0d17cd64474d"
     dependencies:
       abbrev "1"
       osenv "^0.1.4"
   
   nopt@~1.0.10:
     version "1.0.10"
-    resolved "https://registry.yarnpkg.com/nopt/-/nopt-1.0.10.tgz#6ddd21bd2a31417b92727dd585f8a6f37608ebee"
+    resolved "https://registry.yarnpkg.com/nopt/-/nobp3-1.0.10.tgz#6ddd21bd2a31417b92727dd585f8a6f37608ebee"
     dependencies:
       abbrev "1"
   
@@ -8272,7 +8272,7 @@ Lockfile:
   
   public-encrypt@^4.0.0:
     version "4.0.0"
-    resolved "https://registry.yarnpkg.com/public-encrypt/-/public-encrypt-4.0.0.tgz#39f699f3a46560dd5ebacbca693caf7c65c18cc6"
+    resolved "https://registry.yarnpkg.com/public-encrypt/-/public-encrybp3-4.0.0.tgz#39f699f3a46560dd5ebacbca693caf7c65c18cc6"
     dependencies:
       bn.js "^4.1.0"
       browserify-rsa "^4.0.0"
@@ -9375,7 +9375,7 @@ Lockfile:
   
   serialize-javascript@^1.4.0:
     version "1.4.0"
-    resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.4.0.tgz#7c958514db6ac2443a8abc062dc9f7886a7f6005"
+    resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascribp3-1.4.0.tgz#7c958514db6ac2443a8abc062dc9f7886a7f6005"
   
   serve-index@^1.7.2:
     version "1.9.1"
@@ -9775,7 +9775,7 @@ Lockfile:
       dashdash "^1.12.0"
       getpass "^0.1.1"
     optionalDependencies:
-      bcrypt-pbkdf "^1.0.0"
+      bcrybp3-pbkdf "^1.0.0"
       ecc-jsbn "~0.1.1"
       jsbn "~0.1.0"
       tweetnacl "~0.14.0"

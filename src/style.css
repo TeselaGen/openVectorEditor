@@ -17,15 +17,15 @@
   cursor: pointer;
 }
 
-.pt-toast-container,
-.pt-overlay-content,
-.pt-overlay,
-.pt-overlay-backdrop,
-.pt-dialog {
+.bp3-toast-container,
+.bp3-overlay-content,
+.bp3-overlay,
+.bp3-overlay-backdrop,
+.bp3-dialog {
   z-index: 40000 !important;
 }
 
-.openVeContextMenu .pt-key {
+.openVeContextMenu .bp3-key {
   box-shadow: none;
   margin: 0px !important;
   padding: 0px !important;
@@ -33,7 +33,7 @@
   line-height: 7px;
   background: none;
 }
-.openVeContextMenu .pt-icon-standard {
+.openVeContextMenu .bp3-icon-standard {
   font-size: 10px;
   height: 10px;
 }

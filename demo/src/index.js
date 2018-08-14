@@ -67,7 +67,7 @@ class Demo extends React.Component {
 
     this.state = {
       previewMode: false,
-      darkMode: document.body.className.includes("pt-dark")
+      darkMode: document.body.className.includes("bp3-dark")
     };
   }
 
@@ -80,7 +80,7 @@ class Demo extends React.Component {
     this.setState({
       darkMode: !this.state.darkMode
     });
-    document.body.classList.toggle("pt-dark");
+    document.body.classList.toggle("bp3-dark");
   };
 
   render() {

@@ -1,18 +1,18 @@
-.ve-propertiesPanel .pt-tabs {
+.ve-propertiesPanel .bp3-tabs {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-.ve-propertiesPanel .pt-tab-list::-webkit-scrollbar {
+.ve-propertiesPanel .bp3-tab-list::-webkit-scrollbar {
   display: none;
 }
 .ve-draggable-tabs::-webkit-scrollbar {
   display: none;
 }
-.ve-propertiesPanel .pt-tab-list {
+.ve-propertiesPanel .bp3-tab-list {
   overflow: scroll;
 }
-.ve-propertiesPanel .pt-tabs .pt-tab-panel {
+.ve-propertiesPanel .bp3-tabs .bp3-tab-panel {
   display: flex;
   flex-direction: column;
 }
