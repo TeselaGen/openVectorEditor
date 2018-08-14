@@ -6,19 +6,6 @@ import { reduxForm } from "redux-form";
 
 class GeneralProperties extends React.Component {
 
-  shouldRender(){
-    const { readOnly, materialAvailability } = this.props;
-    if(readOnly){
-      return true;
-    }else{
-      if(materialAvailability){
-        return false;
-      }else{
-        return true;
-      }
-    }
-  }
-
   render() {
     const {
       readOnly,
@@ -27,6 +14,7 @@ class GeneralProperties extends React.Component {
       sequenceData: { name, sequence, circular, materiallyAvailable },
       updateReadOnlyMode,
       onSave,
+      showAvailability,
       sequenceNameUpdate
     } = this.props;
     return <div style={{ maxWidth: 500, flexGrow: 1, alignSelf: "center", width: "100%", display: "flex", flexDirection: "column" }}>
@@ -45,14 +33,15 @@ class GeneralProperties extends React.Component {
               }} value={circular ? "circular" : "linear"} options={[{ label: "Circular", value: "circular" }, { label: "Linear", value: "linear" }]} />
           </div>
         </div>
+        { showAvailability &&
         <div className="ve-flex-row">
           <div className="ve-column-left">Material Availability:</div> <div className="ve-column-right">
             {" "}
-            <BPSelect disabled={this.shouldRender()} onChange={val => {
+            <BPSelect disabled={readOnly} onChange={val => {
                 updateAvailability(val === "available");
               }} value={materiallyAvailable ? "available" : "unavailable"} options={[{ label: "Available", value: "available" }, { label: "Unavailable", value: "unavailable" }]} />
           </div>
-        </div>
+        </div>}
         <div className="ve-flex-row">
           <div className="ve-column-left">Length:</div> <div className="ve-column-right">
             {" "}

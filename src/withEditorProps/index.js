@@ -74,23 +74,33 @@ export default compose(
         _updateCircular(isCircular, { batchUndoEnd: true });
       };
     },
-    updateAvailability: props => {
-      return async isAvailable => {
-        const { updateAvailability, updateSequenceData, sequenceData } = props;
-        if (!isAvailable && hasAnnotationThatSpansOrigin(sequenceData)) {
+    upsertTranslation: props => {
+      return async translationToUpsert => {
+        if (!translationToUpsert) return;
+        const { _upsertTranslation, sequenceData } = props;
+        if (
+          !translationToUpsert.id &&
+          some(sequenceData.translations || [], existingTranslation => {
+            if ( //check if an identical existingTranslation exists already
+              existingTranslation.translationType === "User Created" &&
+              existingTranslation.start === translationToUpsert.start &&
+              existingTranslation.end === translationToUpsert.end &&
+              !!translationToUpsert.forward === !!existingTranslation.forward
+            ) {
+              return true;
+            }
+          })
+        ) {
           const doAction = await showConfirmationDialog({
-            intent: Intent.DANGER, //applied to the right most confirm button
-            confirmButtonText: "Truncate Annotations",
+            // intent: Intent.DANGER, //applied to the right most confirm button
+            confirmButtonText: "Create Translation",
             canEscapeKeyCancel: true, //this is false by default
             text:
-              "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+              "This region has already been translated. Are you sure you want to make another translation for it?"
           });
           if (!doAction) return; //stop early
-          updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
-            batchUndoStart: true
-          });
         }
-        updateAvailability(isAvailable, { batchUndoEnd: true });
+        _upsertTranslation(translationToUpsert);
       };
     },
     //add additional "computed handlers here"
@@ -176,7 +186,7 @@ export default compose(
       // caretPositionUpdate(0);
       // selectionLayerUpdate(selectionLayer);
       setTimeout(() => {
-        selectionLayerUpdate({...selectionLayer, forceUpdate: Math.random()});
+        selectionLayerUpdate({ ...selectionLayer, forceUpdate: Math.random() });
       });
     },
 
@@ -202,7 +212,7 @@ export default compose(
       updateSequenceData(newSeqData);
       // caretPositionUpdate(0);
       setTimeout(() => {
-        selectionLayerUpdate({...selectionLayer, forceUpdate: Math.random()});
+        selectionLayerUpdate({ ...selectionLayer, forceUpdate: Math.random() });
       });
     },
 

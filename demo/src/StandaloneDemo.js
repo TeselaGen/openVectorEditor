@@ -29,9 +29,7 @@ export default class StandaloneDemo extends React.Component {
       editor = window.createVectorEditor(this.node, {
         doNotUseAbsolutePosition: true,
         shouldAutosave: true,
-        StatusBarProps: {
-          showAvailability: true
-        },
+        showAvailability: true, //set to tru to show the material availabilty status
         rightClickOverrides: {
           selectionLayerRightClicked: (items, { annotation }, props) => {
             return [
@@ -131,7 +129,7 @@ export default class StandaloneDemo extends React.Component {
         showMenuBar: true,
         PropertiesProps: {
           propertiesList: [
-            // "general",
+            "general",
             "features",
             "parts",
             "primers",

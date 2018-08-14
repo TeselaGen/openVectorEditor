@@ -1,6 +1,7 @@
+import { Checkbox } from "@blueprintjs/core";
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
-import { filter } from "lodash";
+import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
@@ -23,12 +24,13 @@ class TranslationProperties extends React.Component {
       translationPropertiesSelectedEntities,
       // showAddOrEditTranslationDialog,
       deleteTranslation,
-      selectedAnnotationId
+      selectedAnnotationId,
+      annotationVisibilityToggle,
+      annotationVisibilityShow,
+      annotationVisibility
     } = this.props;
     const { translations } = sequenceData;
-    const translationsToUse = filter(translations, translation => {
-      return !translation.isOrf;
-    }).map(translation => {
+    const translationsToUse = map(translations, translation => {
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceData.sequence.length),
@@ -50,12 +52,18 @@ class TranslationProperties extends React.Component {
           formName={"translationProperties"}
           noRouter
           compact
+          hideSelectedCount
           noFullscreenButton
           isInfinite
           schema={{
             fields: [
               // { path: "name", type: "string" },
               // { path: "type", type: "string" },
+              {
+                path: "translationType",
+                displayName: "Type",
+                type: "string"
+              },
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
@@ -83,7 +91,7 @@ class TranslationProperties extends React.Component {
           entities={translationsToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             {/* <Button
               style={{ marginRight: 15 }}
               onClick={() => {
@@ -103,12 +111,34 @@ class TranslationProperties extends React.Component {
             >
               Edit
             </Button> */}
+            <div>
+              <Checkbox
+                onChange={function() {
+                  annotationVisibilityToggle("orfTranslations");
+                  !annotationVisibility.orfTranslations &&
+                    annotationVisibilityShow("orfs");
+                }}
+                checked={annotationVisibility.orfTranslations}
+                label={"Show translations for ORFs"}
+              />
+              <Checkbox
+                onChange={function() {
+                  annotationVisibilityToggle("cdsFeatureTranslations");
+                }}
+                checked={annotationVisibility.cdsFeatureTranslations}
+                label={"Show translations for CDS features"}
+              />
+            </div>
             <Button
               onClick={() => {
                 deleteTranslation(translationPropertiesSelectedEntities);
               }}
-              style={{ marginRight: 15 }}
-              disabled={!translationPropertiesSelectedEntities.length}
+              style={{ marginLeft: 10, marginRight: 15, height: 30 }}
+              disabled={
+                !translationPropertiesSelectedEntities.length ||
+                translationPropertiesSelectedEntities[0].translationType !==
+                  "User Created"
+              }
             >
               Delete
             </Button>

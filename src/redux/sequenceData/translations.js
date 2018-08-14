@@ -5,7 +5,7 @@ import upsertDeleteActionGenerator from "./upsertDeleteActionGenerator";
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const upsertTranslation = createAction("UPSERT_TRANSLATION");
+export const _upsertTranslation = createAction("UPSERT_TRANSLATION");
 export const deleteTranslation = createAction("DELETE_TRANSLATION");
 
 const defaultValue = {};
@@ -14,7 +14,7 @@ const defaultValue = {};
 // ------------------------------------
 export default createReducer(
   {
-    ...upsertDeleteActionGenerator(upsertTranslation, deleteTranslation)
+    ...upsertDeleteActionGenerator(_upsertTranslation, deleteTranslation)
   },
   defaultValue
 );

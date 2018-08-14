@@ -30,6 +30,7 @@ function translationsSelector(
       acc[id] = {
         ...match,
         id,
+        translationType: "AA Search Match",
         isOrf: true, //pass isOrf = true here in order to not have it show up in the properties window
         forward: !match.bottomStrand
       };
@@ -39,19 +40,22 @@ function translationsSelector(
       translations,
       (acc, translation) => {
         if (!translation.isOrf) {
-          acc[translation.id] = translation;
+          acc[translation.id] = {...translation, translationType: "User Created"};
         }
         return acc;
       },
       {}
     ),
-    ...(showOrfTranslations && showOrfs ? orfs : {}),
+    ...(showOrfTranslations && showOrfs ? reduce(orfs, (acc,orf)=>{
+      acc[orf.id] = {...orf, translationType: "ORF"};
+      return acc;
+    }, {}) : {}),
     ...(showCdsFeatureTranslations &&
       showFeatures &&
       reduce(
         cdsFeatures,
         (acc, cdsFeature) => {
-          acc[cdsFeature.id] = cdsFeature;
+          acc[cdsFeature.id] = {...cdsFeature, translationType: "CDS Feature"};
           return acc;
         },
         {}
@@ -69,6 +73,7 @@ function translationsSelector(
               sequence.length - 1 + Math.abs(frameOffset) - 1,
               sequence.length
             ),
+            translationType: "Frame",
             forward: frameOffset > 0,
             isOrf: true //pass isOrf = true here in order to not have it show up in the properties window
           };
