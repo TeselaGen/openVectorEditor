@@ -3,6 +3,7 @@ import { createMenu } from "teselagen-react-components";
 import { Button } from "@blueprintjs/core";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
+import GuideTool from "../GuideTool";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -55,6 +56,7 @@ const panelMap = {
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
+  guideTool: GuideTool,
   properties: Properties,
   mismatches: Mismatches
 };

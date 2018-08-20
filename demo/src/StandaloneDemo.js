@@ -213,9 +213,15 @@ export default class StandaloneDemo extends React.Component {
           ],
           [
             {
+              id: "guideTool1",
+              name: "Choose Your Guides",
+              active: true,
+              type: "guideTool"
+            },
+            {
               id: "sequence",
               name: "Sequence Map",
-              active: true
+              // active: true
             },
             {
               id: "alignmentTool",
