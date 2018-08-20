@@ -55,6 +55,23 @@ export function showAddOrEditPrimerDialog(annotation, { editorName }) {
     }
   };
 }
+export function showFindGuideDialog(annotation, { editorName }) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "FindGuideDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props: {
+      editorName: editorName,
+      dialogProps: {
+        title: "Find Guide RNAs"
+      },
+      initialValues: annotation
+        ? {
+            ...convertRangeTo1Based(annotation)
+          }
+        : {}
+    }
+  };
+}
 export function showMergeFeaturesDialog(annotation, { editorName }) {
   return {
     type: "TG_SHOW_MODAL",

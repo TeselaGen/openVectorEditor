@@ -332,7 +332,8 @@ function mapStateToProps(state, ownProps) {
     // addPartSelector(state, "start", "end");
     getFormValues("AddOrEditFeatureDialog")(state) ||
     getFormValues("AddOrEditPrimerDialog")(state) ||
-    getFormValues("AddOrEditPartDialog")(state);
+    getFormValues("AddOrEditPartDialog")(state) ||
+    getFormValues("FindGuideDialog")(state);
 
   let toReturn = {
     ...editorState,
