@@ -165,9 +165,9 @@ export default class StandaloneDemo extends React.Component {
           ]
         }
       });
-      setInterval(() => {
+      setTimeout(() => {
         console.log("editor.getState():", editor.getState());
-      }, 5000);
+      }, 10000);
     }, 100);
 
     //simulate a little bit of lag to make sure the editor can render even when it has no sequence data yet
@@ -216,7 +216,11 @@ export default class StandaloneDemo extends React.Component {
               id: "guideTool1",
               name: "Choose Your Guides",
               active: true,
-              type: "guideTool"
+              canClose: true,
+              type: "guideTool",
+              guideToolProps: {
+                activeRegion: {start: 12, end: 50}
+              }
             },
             {
               id: "sequence",

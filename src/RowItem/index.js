@@ -15,6 +15,7 @@ import Axis from "./Axis";
 import Orfs from "./Orfs";
 import Translations from "./Translations";
 import Features from "./Features";
+import Guides from "./Guides";
 import Primers from "./Primers";
 import CutsiteLabels from "./CutsiteLabels";
 import Cutsites from "./Cutsites";
@@ -39,6 +40,7 @@ export class RowItem extends React.Component {
       cutsiteLabelSelectionLayer = [{ start: -1, end: -1, color: "black" }],
       annotationHeight = 14,
       featureHeight = 16,
+      guideHeight = 16,
       partHeight = 12,
       primerHeight = 16,
       tickSpacing = 10,
@@ -67,8 +69,10 @@ export class RowItem extends React.Component {
       deletionLayerRightClicked = noop,
       replacementLayerClicked = noop,
       replacementLayerRightClicked = noop,
+      guideClicked = noop,
       featureClicked = noop,
       searchLayerClicked = noop,
+      guideRightClicked = noop,
       featureRightClicked = noop,
       partClicked = noop,
       partRightClicked = noop,
@@ -93,9 +97,11 @@ export class RowItem extends React.Component {
     // let bpsPerRow = bpsPerRow || (alignmentData ? alignmentData.sequence.length : sequenceLength)
 
     let {
+      guides: showGuides = true,
       features: showFeatures = true,
       primers: showPrimers = true,
-      // featureLabels: showFeatureLabels=true,
+      // guideLabels: showGuideLabels=true,
+      // guideLabels: showGuideLabels=true,
       translations: showTranslations = true,
       // translationLabels: showTranslationLabels=true,
       parts: showParts = true,
@@ -115,11 +121,13 @@ export class RowItem extends React.Component {
     } = annotationVisibility;
     let {
       features: showFeatureLabels = true,
+      guides: showGuideLabels = true,
       parts: showPartLabels = true,
       cutsites: showCutsiteLabels = true
     } = annotationLabelVisibility;
     let {
       sequence = "",
+      guides = [],
       features = [],
       primers = [],
       translations = [],
@@ -456,6 +464,19 @@ export class RowItem extends React.Component {
                 annotationRanges={features}
                 {...annotationCommonProps}
                 annotationHeight={featureHeight}
+                marginTop={10}
+              />
+            )}
+            {console.log('guides:',guides)}
+          {showGuides &&
+            Object.keys(guides).length > 0 && (
+              <Guides
+                showGuideLabels={showGuideLabels}
+                guideClicked={guideClicked}
+                guideRightClicked={guideRightClicked}
+                annotationRanges={guides}
+                {...annotationCommonProps}
+                annotationHeight={guideHeight}
                 marginTop={10}
               />
             )}

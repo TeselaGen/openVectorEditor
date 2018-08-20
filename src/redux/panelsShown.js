@@ -38,6 +38,25 @@ export const createNewDigest = (unused, meta) => {
   };
 };
 
+export const createGuideToolTab = (guideToolProps, meta) => {
+  return dispatch => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          id: "guideTool",
+          type: "guideTool",
+          name: "Find Guides",
+          active: true,
+          canClose: true,
+          guideToolProps
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive("guideTool", meta));
+  };
+};
+
 export const createNewAlignment = (payload, meta) => {
   return dispatch => {
     dispatch(

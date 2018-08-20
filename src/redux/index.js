@@ -18,6 +18,7 @@ import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
 import * as lastSavedId from "./lastSavedId";
 import * as readOnly from "./readOnly";
+import * as guideTool from "./guideTool";
 import * as versionHistory from "./versionHistory";
 import * as replacementLayers from "./replacementLayers";
 import * as restrictionEnzymes from "./restrictionEnzymes";
@@ -55,6 +56,7 @@ export const actions = {
   ...frameTranslations,
   ...lastSavedId,
   ...versionHistory,
+  ...guideTool,
   ...readOnly,
   ...panelsShown,
   ...findTool,
@@ -85,6 +87,7 @@ let reducers = {
   frameTranslations: frameTranslations.default,
   versionHistory: versionHistory.default,
   readOnly: readOnly.default,
+  guideTool: guideTool.default,
   lastSavedId: lastSavedId.default,
   findTool: findTool.default,
   propertiesTool: propertiesTool.default,

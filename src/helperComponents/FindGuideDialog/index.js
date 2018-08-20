@@ -74,7 +74,9 @@ export class FindGuideDialog extends React.Component {
           </Button>
           <Button
             onClick={handleSubmit(data => {
-              console.log(convertRangeTo0Based(data))
+
+              // this.props.updateGuides({activeRegion: convertRangeTo0Based(data)})
+              this.props.createGuideToolTab({activeRegion: convertRangeTo0Based(data)})
               hideModal();
             })}
             intent={Intent.PRIMARY}

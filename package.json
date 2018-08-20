@@ -119,10 +119,10 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "23.0.0",
+    "teselagen-react-components": "23.0.10",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
-    "ve-sequence-utils": "3.2.58"
+    "ve-sequence-utils": "3.3.2"
   },
   "lint-staged": {
     "src/**/*.js ": [

@@ -1,5 +1,6 @@
 import cutsitesSelector from "./cutsitesSelector";
 import translationsSelector from "./translationsSelector";
+import guidesSelector from "./guidesSelector";
 import sequenceLengthSelector from "./sequenceLengthSelector";
 import sequenceDataSelector from "./sequenceDataSelector";
 import sequenceSelector from "./sequenceSelector";
@@ -12,6 +13,7 @@ import searchLayersSelector from "./searchLayersSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 
 export default {
+  guidesSelector,
   translationsSelector,
   cutsitesSelector,
   sequenceDataSelector,
