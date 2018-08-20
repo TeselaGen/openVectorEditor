@@ -10853,14 +10853,6 @@ Licensed under the terms of the LICENSE file distributed with this project.
   cursor: pointer;
 }
 
-.bp3-toast-container,
-.bp3-overlay-content,
-.bp3-overlay,
-/* .bp3-overlay-backdrop, */
-.bp3-dialog {
-  z-index: 40000 !important;
-}
-
 .openVeContextMenu .bp3-key {
   -webkit-box-shadow: none;
           box-shadow: none;
