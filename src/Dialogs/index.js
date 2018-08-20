@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
+import FindGuideDialog from "../helperComponents/FindGuideDialog";
 import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
 import AddOrEditPartDialog from "../helperComponents/AddOrEditPartDialog";
@@ -57,6 +58,11 @@ export default connect(
       <AddOrEditPrimerDialog
         editorName={editorName}
         dialogName="AddOrEditPrimerDialog"
+        noTarget
+      />
+      <FindGuideDialog
+        editorName={editorName}
+        dialogName="FindGuideDialog"
         noTarget
       />
       <MergeFeaturesDialog

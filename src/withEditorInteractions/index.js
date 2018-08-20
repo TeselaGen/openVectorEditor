@@ -478,7 +478,7 @@ function VectorInteractionHOC(Component /* options */) {
                   />
                 );
               })
-            }
+            } 
           ];
     };
     getCreateItems = range => {
@@ -487,7 +487,8 @@ function VectorInteractionHOC(Component /* options */) {
         showAddOrEditFeatureDialog,
         showAddOrEditPartDialog,
         showAddOrEditPrimerDialog,
-        annotationsToSupport: { parts, primers, features } = {},
+        showFindGuideDialog,
+        annotationsToSupport: { parts, primers, features, guides } = {},
         selectionLayer,
         caretPosition,
         sequenceLength
@@ -522,6 +523,12 @@ function VectorInteractionHOC(Component /* options */) {
                   text: "Primer",
                   onClick: function() {
                     showAddOrEditPrimerDialog(rangeToUse);
+                  }
+                },
+                parts && {
+                  text: "Guide RNAs",
+                  onClick: function() {
+                    showFindGuideDialog(rangeToUse);
                   }
                 }
               ]
