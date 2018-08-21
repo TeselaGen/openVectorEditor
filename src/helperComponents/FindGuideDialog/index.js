@@ -14,6 +14,17 @@ import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 
 export class FindGuideDialog extends React.Component {
+
+  findGuides = (data) => {
+    // const sequence = this.props.sequenceData.sequence
+    // const targetSequence = sequence.slice(data.start-1, data.end)
+    // TODO: magic happens here - call to back-end to find the guides
+    // should return a JSON of all guides
+    data.name = "Example guide"
+    data.id = "Example guide"
+    this.props.updateGuides(convertRangeTo0Based(data))
+  }
+
   render() {
     const {
       // editorName,
@@ -74,9 +85,8 @@ export class FindGuideDialog extends React.Component {
           </Button>
           <Button
             onClick={handleSubmit(data => {
-
-              // this.props.updateGuides({activeRegion: convertRangeTo0Based(data)})
-              this.props.createGuideToolTab({activeRegion: convertRangeTo0Based(data)})
+              this.findGuides(data)
+              // this.props.createGuideToolTab()
               hideModal();
             })}
             intent={Intent.PRIMARY}

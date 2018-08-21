@@ -27,7 +27,7 @@ class FeatureProperties extends React.Component {
       deleteFeature,
       selectedAnnotationId
     } = this.props;
-
+    console.log(selectedAnnotationId)
     const { features } = sequenceData;
     const featuresToUse = map(features, feature => {
       return {

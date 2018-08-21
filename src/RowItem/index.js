@@ -467,7 +467,6 @@ export class RowItem extends React.Component {
                 marginTop={10}
               />
             )}
-            {console.log('guides:',guides)}
           {showGuides &&
             Object.keys(guides).length > 0 && (
               <Guides

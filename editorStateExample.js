@@ -90,6 +90,7 @@ const exampleEditorState = {
     orfs: true,
     cutsites: true,
     primers: true,
+    guides: true
   },
   panelsShown: [
     [

@@ -7,6 +7,7 @@ import Axis from "./Axis";
 import LineageLines from "./LineageLines";
 import Orf from "./Orf";
 import Feature from "./Feature";
+import Guide from "./Guide";
 import Primer from "./Primer";
 // import DeletionLayer from "./DeletionLayer";
 // import ReplacementLayer from "./ReplacementLayer";
@@ -72,6 +73,7 @@ export class CircularView extends React.Component {
       height = 400,
       scale = 1,
       sequenceData = {},
+      guideTool = {},
       hideName = false,
       editorName,
       selectionLayer = { start: -1, end: -1 },
@@ -88,6 +90,8 @@ export class CircularView extends React.Component {
       editorDragStopped = noop,
       featureClicked = noop,
       featureRightClicked = noop,
+      guideClicked = noop,
+      guideRightClicked = noop,
       partClicked = noop,
       partRightClicked = noop,
       orfClicked = noop,
@@ -101,6 +105,7 @@ export class CircularView extends React.Component {
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
       featureOptions = {},
+      guideOptions = {},
       additionalSelectionLayers = [],
       maxAnnotationsToDisplay = {},
       lineageLines = [],
@@ -123,6 +128,7 @@ export class CircularView extends React.Component {
           : Math.ceil(sequenceLength / 100) * 10);
     let {
       features: showFeatures = true,
+      guides: showGuides = true,
       primers: showPrimers = true,
       // translations: showTranslations = true,
       parts: showParts = true,
@@ -137,12 +143,14 @@ export class CircularView extends React.Component {
     } = annotationVisibility;
     let {
       features: showFeatureLabels = true,
+      guides: showGuideLabels = true,
       parts: showPartLabels = true,
       cutsites: showCutsiteLabels = true,
       primers: showPrimerLabels = true
     } = annotationLabelVisibility;
     let {
       features: maxFeaturesToDisplay = 50,
+      guides: maxGuidesToDisplay = 50,
       primers: maxPrimersToDisplay = 50,
       // translations: maxTranslationsToDisplay = 50,
       parts: maxPartsToDisplay = 50,
@@ -152,6 +160,7 @@ export class CircularView extends React.Component {
     let paredDownOrfs;
     let paredDownCutsites;
     let paredDownFeatures;
+    let paredDownGuides;
     let paredDownPrimers;
     let paredDownParts;
 
@@ -173,6 +182,12 @@ export class CircularView extends React.Component {
         layer: drawFeatures,
         zIndex: 20,
         layerName: "Features",
+        spaceBefore: 10
+      },
+      {
+        layer: drawGuides,
+        zIndex: 20,
+        layerName: "Guides",
         spaceBefore: 10
       },
       { layer: drawPrimers, zIndex: 20, layerName: "Primers" },
@@ -280,6 +295,37 @@ export class CircularView extends React.Component {
           sequenceLength,
           editorName,
           ...featureOptions
+        });
+        if (!results) return null;
+        //update the radius, labels, and svg
+        radius += results.height;
+        labels = { ...labels, ...results.labels };
+        return results.component;
+      }
+    }
+
+    function drawGuides() {
+      //DRAW GUIDES
+      if (showGuides && guideTool) {
+        let [annotations, paredDown] = pareDownAnnotations(
+          guideTool,
+          maxGuidesToDisplay
+        );
+        paredDownGuides = paredDown;
+        const results = drawAnnotations({
+          Annotation: Guide,
+          annotationType: "guide",
+          radius,
+          reverseAnnotations: true,
+          showLabels: showGuideLabels,
+          onClick: guideClicked,
+          onRightClicked: guideRightClicked,
+          annotations,
+          annotationHeight,
+          spaceBetweenAnnotations,
+          sequenceLength,
+          editorName,
+          ...guideOptions
         });
         if (!results) return null;
         //update the radius, labels, and svg
@@ -678,7 +724,11 @@ export class CircularView extends React.Component {
                   message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
                 />
               )}
-
+              {paredDownGuides && (
+                <VeWarning
+                  message={`Warning: More than ${maxGuidesToDisplay} Features. Displaying only the largest ${maxGuidesToDisplay}`}
+                />
+              )}
               {paredDownParts && (
                 <VeWarning
                   message={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}

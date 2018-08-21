@@ -1,1 +1,1 @@
-export default state => state.guideTool.guides;
+export default state => state.guideTool;

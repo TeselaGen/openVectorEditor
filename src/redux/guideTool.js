@@ -1,23 +1,22 @@
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import uuid from "uniqid";
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const updateGuides = createAction("updateSearchText");
+export const updateGuides = createAction("updateGuides");
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
     [updateGuides]: (state, payload) => {
+      const idToUse = payload.id || uuid();
       return {
         ...state,
-        guides: payload
+        [idToUse]: { ...(state[idToUse] || {}), ...payload, id: idToUse }
       };
     },
-  },
-  {
-    guides: [{id: "guide1", start: 0, end: 50}],
   }
 );

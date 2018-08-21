@@ -525,7 +525,7 @@ function VectorInteractionHOC(Component /* options */) {
                     showAddOrEditPrimerDialog(rangeToUse);
                   }
                 },
-                parts && {
+                guides && {
                   text: "Guide RNAs",
                   onClick: function() {
                     showFindGuideDialog(rangeToUse);

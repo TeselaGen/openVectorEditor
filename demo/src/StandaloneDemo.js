@@ -214,7 +214,7 @@ export default class StandaloneDemo extends React.Component {
           [
             {
               id: "guideTool1",
-              name: "Choose Your Guides",
+              name: "Find Guides",
               active: true,
               canClose: true,
               type: "guideTool",
@@ -256,7 +256,8 @@ export default class StandaloneDemo extends React.Component {
           parts: true,
           orfs: true,
           cutsites: true,
-          primers: false
+          primers: false,
+          guides: true
         }
       });
       editor.addAlignment({
