@@ -1294,19 +1294,6 @@
   background: #26738cb0;
 }
 
-.tg-inlineLabel.bp3-form-group {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-.tg-inlineLabel .bp3-label {
-  -ms-flex-negative: 6;
-      flex-shrink: 6;
-  padding-right: 10px;
-  min-width: 150px;
-}
-
 .tg-tooltipError .bp3-popover-wrapper {
   width: 100%;
 }
@@ -1329,6 +1316,15 @@
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.bp3-control {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -9653,6 +9649,80 @@ Licensed under the terms of the LICENSE file distributed with this project.
 
 .preserve-newline {
   white-space: pre-line;
+}
+
+/* adding back in blueprint v2 default styling to all <h/> elements */
+h1 {
+  line-height: 40px;
+  font-size: 36px;
+}
+
+h2 {
+  line-height: 32px;
+  font-size: 28px;
+}
+
+h3 {
+  line-height: 25px;
+  font-size: 22px;
+}
+
+h4 {
+  line-height: 21px;
+  font-size: 18px;
+}
+
+h5 {
+  line-height: 19px;
+  font-size: 16px;
+}
+
+h6 {
+  line-height: 16px;
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1.bp3-heading,
+h2.bp3-heading,
+h3.bp3-heading,
+h4.bp3-heading,
+h5.bp3-heading,
+h6.bp3-heading {
+  color: #182026;
+  font-weight: 300;
+  margin: 0 0 10px;
+  padding: 0;
+  line-height: normal;
+}
+
+.bp3-dark h1,
+.bp3-dark h2,
+.bp3-dark h3,
+.bp3-dark h4,
+.bp3-dark h5,
+.bp3-dark h6 {
+  color: #f5f8fa;
+}
+
+/* bp3 fix https://github.com/palantir/blueprint/issues/2807 */
+.bp3-popover-wrapper {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+}
+/* bp3 fix https://github.com/palantir/blueprint/issues/2807 */
+span.bp3-popover-target {
+  display: block;
+}
+
+.bp3-portal {
+  z-index: 100000;
 }
 
 .insertReplaceButton {
