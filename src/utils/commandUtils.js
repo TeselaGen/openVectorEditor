@@ -1,4 +1,4 @@
-import { startCase } from 'lodash';
+import { startCase } from "lodash";
 
 //TODO move to TRC
 
@@ -9,7 +9,7 @@ export function createGenericCommandHandlers(config) {
       config.handleReturn(
         cmd,
         config.handlers[cmd].apply(out, config.getArguments(cmd))
-      )
+      );
     };
   }
   return out;
@@ -41,29 +41,42 @@ export function genericCommandFactory(config) {
       );
     };
 
-    const properties = ['icon', 'name', 'description', 'hotkey', 'hotkeyProps',
-      'isDisabled', 'isActive', 'inactiveIcon', 'inactiveName'];
+    const properties = [
+      "icon",
+      "name",
+      "shortName",
+      "description",
+      "hotkey",
+      "hotkeyProps",
+      "isDisabled",
+      "isActive",
+      "inactiveIcon",
+      "inactiveName"
+    ];
 
     properties.forEach(prop => {
       if (def[prop] !== undefined) {
-        if (typeof def[prop] === 'function') {
-          Object.defineProperty(command, prop, { get: () => {
-            return def[prop].apply(command, config.getArguments(cmdId));
-          }});
+        if (typeof def[prop] === "function") {
+          Object.defineProperty(command, prop, {
+            get: () => {
+              return def[prop].apply(command, config.getArguments(cmdId));
+            }
+          });
         } else {
           command[prop] = def[prop];
         }
       }
     });
-
-    if (!def.name) {
+    
+    if (!def.name) { //if no name was specified in the definition, let's try to give some auto-generated names
       command.name = startCase(cmdId);
-    }
-
-    if (def.toggle && cmdId.startsWith('toggle')) {
-      command.name = startCase(cmdId.replace('toggle', def.toggle[0] || ''));
-      command.inactiveName = startCase(cmdId.replace('toggle', def.toggle[1] || ''));
-      command.shortName = startCase(cmdId.replace('toggle', ''));
+      if (def.toggle && cmdId.startsWith("toggle")) {
+        command.name = startCase(cmdId.replace("toggle", def.toggle[0] || ""));
+        command.inactiveName = startCase(
+          cmdId.replace("toggle", def.toggle[1] || "")
+        );
+        command.shortName = startCase(cmdId.replace("toggle", ""));
+      }
     }
 
     out[cmdId] = command;
@@ -84,7 +97,7 @@ export function oveCommandFactory(instance, commandDefs) {
     },
     handleReturn: () => {},
     commandDefs
-  })
+  });
 }
 
 export function getCommandHotkeys(commandsOrDefs) {
@@ -112,7 +125,6 @@ export function getCommandHandlers(commands) {
 
   return handlers;
 }
-
 
 // export function createOveCommandHandlers(instance, handlers) {
 //   return createGenericCommandHandlers({

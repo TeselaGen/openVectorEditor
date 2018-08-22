@@ -165,7 +165,7 @@ export default class StandaloneDemo extends React.Component {
           ]
         }
       });
-      setInterval(() => {
+      setTimeout(() => {
         console.log("editor.getState():", editor.getState());
       }, 5000);
     }, 100);

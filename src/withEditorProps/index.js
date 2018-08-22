@@ -103,6 +103,7 @@ export default compose(
         _upsertTranslation(translationToUpsert);
       };
     },
+    
     //add additional "computed handlers here"
     selectAll: props => () => {
       const { sequenceLength, selectionLayerUpdate } = props;
@@ -228,16 +229,6 @@ export default compose(
       updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
     },
     /* eslint-enable no-unused-vars */
-
-    togglePreviewFullscreen: props => () => {
-      const { togglePreviewFullscreen } = props;
-      if (togglePreviewFullscreen) togglePreviewFullscreen();
-      else {
-        this.setState({
-          previewModeFullscreen: !this.state.previewModeFullscreen
-        });
-      }
-    },
 
     handleNewPrimer: props => () => {
       const {

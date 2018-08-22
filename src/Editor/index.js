@@ -226,6 +226,16 @@ export class Editor extends React.Component {
     }
   };
 
+  togglePreviewFullscreen = () => {
+    const { togglePreviewFullscreen } = this.props;
+    if (togglePreviewFullscreen) togglePreviewFullscreen();
+    else {
+      this.setState({
+        previewModeFullscreen: !this.state.previewModeFullscreen
+      });
+    }
+  };
+
   render() {
     const {
       previewModeFullscreen: uncontrolledPreviewModeFullscreen
