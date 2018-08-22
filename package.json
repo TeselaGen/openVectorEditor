@@ -125,7 +125,7 @@
     "ve-sequence-utils": "3.3.2"
   },
   "lint-staged": {
-    "src/**/*.js ": [
+    "src/**/*.js": [
       "eslint --fix",
       "prettier --write",
       "yarn test:staged",
