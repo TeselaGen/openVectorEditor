@@ -11,7 +11,8 @@ export const updateGuides = createAction("updateGuides");
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    [updateGuides]: (state, payload) => { //guides should be 0-based inclusive! aka start: 0, end: 0 is a single basepair feature starting at the first bp
+    [updateGuides]: (state, payload) => {
+      //guides should be 0-based inclusive! aka start: 0, end: 0 is a single basepair feature starting at the first bp
       const idToUse = payload.id || uuid();
       return {
         ...state,
@@ -22,5 +23,10 @@ export default createMergedDefaultStateReducer(
       };
     }
   },
-  { options: {}, guides: {} }
+  {
+    options: {},
+    guides: {
+      happy: { start: 0, end: 0, id: "happy" }
+    }
+  }
 );

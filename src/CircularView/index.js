@@ -73,7 +73,6 @@ export class CircularView extends React.Component {
       height = 400,
       scale = 1,
       sequenceData = {},
-      guideTool = {},
       hideName = false,
       editorName,
       selectionLayer = { start: -1, end: -1 },
@@ -306,9 +305,9 @@ export class CircularView extends React.Component {
 
     function drawGuides() {
       //DRAW GUIDES
-      if (showGuides && guideTool) {
+      if (showGuides && sequenceData.guides) {
         let [annotations, paredDown] = pareDownAnnotations(
-          guideTool,
+          sequenceData.guides,
           maxGuidesToDisplay
         );
         paredDownGuides = paredDown;

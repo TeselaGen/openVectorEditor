@@ -1,6 +1,7 @@
 import React from "react";
 import { DataTable } from "teselagen-react-components";
 import { Button } from "@blueprintjs/core";
+import { convertRangeTo1Based } from "ve-range-utils";
 
 export default class GuideTool extends React.Component {
 
@@ -54,7 +55,14 @@ export default class GuideTool extends React.Component {
 
 const schema = {
   fields: [
-    { path: "start", displayName: "Position", type: "string" },
+    { path: "start", displayName: "Position", type: "string", render: (val, record) => {
+      const base1Range = convertRangeTo1Based(record);
+      return (
+        <span>
+            ({base1Range.start}-{base1Range.end})
+        </span>
+      );
+    } },
     { path: "forward", displayName: "Strand", type: "boolean", render: (val) => val ? "+" : "-" },
     { width: 200, path: "sequence", displayName: "Sequence", type: "string" },
     { path: "pamSite", displayName: "PAM", type: "string" },
