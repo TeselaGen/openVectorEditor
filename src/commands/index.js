@@ -1,6 +1,5 @@
 import React from "react";
-import classnames from "classnames";
-import { Classes, Tag } from "@blueprintjs/core";
+import { Tag } from "@blueprintjs/core";
 import { oveCommandFactory } from "../utils/commandUtils";
 import { upperFirst, startCase } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
@@ -260,7 +259,7 @@ const annotationToggleCommandDefs = {};
   const cmdId = `toggle${upperFirst(type)}`;
   annotationToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
-    name: (props) => {
+    name: props => {
       const { sequenceData } = props;
       let count;
       let hasCount = false;
@@ -268,16 +267,12 @@ const annotationToggleCommandDefs = {};
         hasCount = true;
         count = Object.keys(sequenceData[type]).length;
       }
-      console.log('sequenceData:',sequenceData)
       return (
         <span>
           {startCase(type)}
           &nbsp;
           {hasCount && (
-            <Tag
-            round
-              style={{ marginLeft: 4 }}
-            >
+            <Tag round style={{ marginLeft: 4 }}>
               {count}
             </Tag>
           )}
@@ -285,9 +280,10 @@ const annotationToggleCommandDefs = {};
       );
     },
     handler: props => props.annotationVisibilityToggle(type),
-    isActive: (props) =>
-    {
-      return props && props.annotationVisibility &&  props.annotationVisibility[type]
+    isActive: props => {
+      return (
+        props && props.annotationVisibility && props.annotationVisibility[type]
+      );
     }
   };
 });

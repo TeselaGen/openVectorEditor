@@ -9554,9 +9554,9 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@23.0.12:
-  version "23.0.12"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.0.12.tgz#5c47ee6fa58b774fb18887dad765f199a2c9d1f5"
+teselagen-react-components@23.1.2:
+  version "23.1.2"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.1.2.tgz#cf4dd1175cbb07ae5536309137c3de65dd4a5007"
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"

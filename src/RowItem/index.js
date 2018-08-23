@@ -62,7 +62,7 @@ export class RowItem extends React.Component {
       // sequenceLength = alignmentData.sequence.length || row.sequence.length,
       chromatogramData,
       fullSequence = "",
-      
+
       deletionLayerClicked = noop,
       deletionLayerRightClicked = noop,
       replacementLayerClicked = noop,
@@ -326,59 +326,57 @@ export class RowItem extends React.Component {
             className="veRowItemSequenceContainer"
             style={{ position: "relative" }}
           >
-            {showSequence
-               && (
-                <Sequence
-                  showDnaColors={showDnaColors}
-                  hideBps={charWidth < 7}
-                  sequence={
-                    alignmentData ? alignmentData.sequence : row.sequence
-                  } //from alignment data and has "-"" chars in it
-                  height={sequenceHeight}
-                  length={
-                    alignmentData
-                      ? alignmentData.sequence.length
-                      : row.sequence.length
-                  }
-                  charWidth={charWidth}
-                  alignmentData={alignmentData}
-                  {...annotationCommonProps}
-                >
-                  {showCutsites &&
-                    Object.keys(cutsites).length > 0 && (
-                      <Cutsites
-                        sequenceLength={sequenceLength}
-                        annotationRanges={cutsites}
-                        topStrand
-                        {...annotationCommonProps}
-                      />
-                    )}
-                  {deletionLayerStrikeThrough}
-                </Sequence>
-              )}
+            {showSequence && (
+              <Sequence
+                cutsites={cutsites} //pass this in order to get children cutsites to re-render
+                showDnaColors={showDnaColors}
+                hideBps={charWidth < 7}
+                sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
+                height={sequenceHeight}
+                length={
+                  alignmentData
+                    ? alignmentData.sequence.length
+                    : row.sequence.length
+                }
+                charWidth={charWidth}
+                alignmentData={alignmentData}
+                {...annotationCommonProps}
+              >
+                {showCutsites &&
+                  Object.keys(cutsites).length > 0 && (
+                    <Cutsites
+                      sequenceLength={sequenceLength}
+                      annotationRanges={cutsites}
+                      topStrand
+                      {...annotationCommonProps}
+                    />
+                  )}
+                {deletionLayerStrikeThrough}
+              </Sequence>
+            )}
 
-            {showReverseSequence
-               && (
-                <Sequence
-                  isReverse
-                  showDnaColors={showDnaColors}
-                  hideBps={charWidth < 7}
-                  length={reverseSequence.length}
-                  sequence={reverseSequence}
-                  height={sequenceHeight}
-                  charWidth={charWidth}
-                >
-                  {showCutsites &&
-                    Object.keys(cutsites).length > 0 && (
-                      <Cutsites
-                        topStrand={false}
-                        annotationRanges={cutsites}
-                        {...annotationCommonProps}
-                      />
-                    )}
-                  {deletionLayerStrikeThrough}
-                </Sequence>
-              )}
+            {showReverseSequence && (
+              <Sequence
+                isReverse
+                cutsites={cutsites} //pass this in order to get children cutsites to re-render
+                showDnaColors={showDnaColors}
+                hideBps={charWidth < 7}
+                length={reverseSequence.length}
+                sequence={reverseSequence}
+                height={sequenceHeight}
+                charWidth={charWidth}
+              >
+                {showCutsites &&
+                  Object.keys(cutsites).length > 0 && (
+                    <Cutsites
+                      topStrand={false}
+                      annotationRanges={cutsites}
+                      {...annotationCommonProps}
+                    />
+                  )}
+                {deletionLayerStrikeThrough}
+              </Sequence>
+            )}
             {cutsiteLabelSelectionLayer.map(function(/* layer */) {
               return "";
               // let { color = "black" } = layer;

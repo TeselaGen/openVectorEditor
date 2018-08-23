@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import { createMenu } from "teselagen-react-components";
-import { Button, ButtonGroup, Popover, Intent } from "@blueprintjs/core";
+import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import "tg-react-reflex/styles.css";
@@ -466,7 +466,7 @@ export class Editor extends React.Component {
               />
             </Tooltip>
           ) : (
-            <Button
+            <Icon
               small
               minimal
               className={"veRightClickTabMenu"}
@@ -476,9 +476,15 @@ export class Editor extends React.Component {
               style={{
                 top: 5,
                 right: 10,
-                left: -5,
+                left: 0,
                 transform: "rotate(90deg)",
-                position: "absolute"
+                position: "absolute",
+                cursor: "pointer",
+                marginTop: 5
+                // paddingLeft: '2px',
+                // paddingRight: '2px',
+                // width: '10px',
+                // maxWidth: '10px',
               }}
             />
           )}
@@ -495,6 +501,7 @@ export class Editor extends React.Component {
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
+                    paddingLeft: 3,
                     ...getListStyle(snapshot.isDraggingOver, tabDragging)
                   }}
                 >
