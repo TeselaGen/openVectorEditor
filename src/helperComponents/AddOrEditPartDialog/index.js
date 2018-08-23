@@ -88,7 +88,7 @@ export class AddOrEditPartDialog extends React.Component {
           <Button
             onClick={handleSubmit(data => {
               upsertPart(convertRangeTo0Based(data));
-
+              console.log(data)
               hideModal();
             })}
             intent={Intent.PRIMARY}

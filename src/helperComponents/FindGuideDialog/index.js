@@ -16,13 +16,29 @@ import withEditorProps from "../../withEditorProps";
 export class FindGuideDialog extends React.Component {
 
   findGuides = (data) => {
-    // const sequence = this.props.sequenceData.sequence
-    // const targetSequence = sequence.slice(data.start-1, data.end)
-    // TODO: magic happens here - call to back-end to find the guides
-    // should return a JSON of all guides
-    data.name = "Example guide"
-    data.id = "Example guide"
-    this.props.updateGuides(convertRangeTo0Based(data))
+    const { updateGuides, sequenceData } = this.props;
+    data.sequence = sequenceData.sequence
+    fetch('http://localhost:5000', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(
+      function(response){
+      return response.json();
+    })
+    .then(function(guides){
+      console.log(guides);
+      guides ? 
+      guides.map(guide => updateGuides(guide)) :
+      window.toastr.error("No guides found")
+    })
+    .catch(function(e) {
+      console.error(e)
+    });
   }
 
   render() {
@@ -87,7 +103,7 @@ export class FindGuideDialog extends React.Component {
             onClick={handleSubmit(data => {
               this.findGuides(data)
               // this.props.createGuideToolTab()
-              hideModal();
+              // hideModal();
             })}
             intent={Intent.PRIMARY}
           >

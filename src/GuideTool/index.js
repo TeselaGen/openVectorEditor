@@ -22,30 +22,30 @@ export default class GuideTool extends React.Component {
     const entitiesToUse = Object.values(guides)
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
-        <DataTable
-          noRouter
-          noFullscreenButton
-          onRowSelect={this.onRowSelect}
-          maxHeight={400}
-          compact
-          isInfinite
-          formName={"guideTable"}
-          schema={schema}
-          entities={entitiesToUse}
-        />
+          <DataTable
+            noRouter
+            noFullscreenButton
+            onRowSelect={this.onRowSelect}
+            maxHeight={400}
+            compact
+            isInfinite
+            formName={"guideTable"}
+            schema={schema}
+            entities={entitiesToUse}
+          />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          style={{ marginRight: 15 }}
-          // onClick={() => {exportGuidesToCsv}}
-        >
-          Export
-        </Button>
-        <Button
-          style={{ marginRight: 15 }}
-          // onClick={() => {exportGuidesToCsv}}
-        >
-          Save as Guide Set
-        </Button>
+          <Button
+            style={{ marginRight: 15 }}
+            // onClick={() => {this.exportGuidesToCsv}}
+          >
+            Export
+          </Button>
+          <Button
+            style={{ marginRight: 15 }}
+            // onClick={() => {this.saveGuideSet}}
+          >
+            Save as Guide Set
+          </Button>
         </div>
       </div>
     );
@@ -55,10 +55,10 @@ export default class GuideTool extends React.Component {
 const schema = {
   fields: [
     { path: "start", displayName: "Position", type: "string" },
-    { path: "strand", displayName: "Strand", type: "string" },
-    { path: "sequence", displayName: "Sequence", type: "string" },
+    { path: "forward", displayName: "Strand", type: "boolean", render: (val) => val ? "+" : "-" },
+    { width: 200, path: "sequence", displayName: "Sequence", type: "string" },
     { path: "pamSite", displayName: "PAM", type: "string" },
-    { path: "onTargetScore", displayName: "On-Target Score", type: "string" },
-    { path: "offTargetScore", displayName: "Off-Target Score", type: "string" }
+    { path: "onTargetScore", displayName: "On-Target Score", type: "number" },
+    { path: "offTargetScore", displayName: "Off-Target Score", type: "number" }
   ]
 };

@@ -13,7 +13,7 @@ function Guide(props) {
     height,
     rangeType,
     forward,
-    name="Untitled Guide",
+    name="Guide",
     pointiness = 8,
     fontWidth = 12,
     color = "orange",
