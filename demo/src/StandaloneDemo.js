@@ -91,6 +91,11 @@ export default class StandaloneDemo extends React.Component {
           };
           return sequenceData;
         },
+        findGuides: () => { 
+          //todo this prop should be used to enable disable the guide tool 
+          //and is where any server connection should be made
+
+        },
         getSequenceAtVersion: versionId => {
           if (versionId === 2) {
             return {

@@ -18,7 +18,7 @@ export default class GuideTool extends React.Component {
 
   render() {
     // const { activeRegion = {} } = this.props.guideToolProps || {};
-    const guides = this.props.guideTool
+    const {guides} = this.props.guideTool || {}
     const entitiesToUse = Object.values(guides)
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>

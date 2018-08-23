@@ -16,6 +16,8 @@ import withEditorProps from "../../withEditorProps";
 export class FindGuideDialog extends React.Component {
 
   findGuides = (data) => {
+    //todo - we don't want to connect to a server directly from OVE, 
+    //instead a prop should be passed to <Editor/> that does that
     const { updateGuides, sequenceData } = this.props;
     data.sequence = sequenceData.sequence
     fetch('http://localhost:5000', {
