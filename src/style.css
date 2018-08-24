@@ -1,5 +1,3 @@
-@import url(~teselagen-react-components/lib/style.css);
-
 .ve-monospace-font {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 12px;
@@ -15,14 +13,6 @@
 
 .clickable {
   cursor: pointer;
-}
-
-.bp3-toast-container,
-.bp3-overlay-content,
-.bp3-overlay,
-/* .bp3-overlay-backdrop, */
-.bp3-dialog {
-  z-index: 40000 !important;
 }
 
 .openVeContextMenu .bp3-key {

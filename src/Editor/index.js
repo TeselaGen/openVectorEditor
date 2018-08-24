@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import { createMenu } from "teselagen-react-components";
-import { Button } from "@blueprintjs/core";
+import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import GuideTool from "../GuideTool";
@@ -14,19 +14,12 @@ import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
 
-import CommandHotkeyHandler from "./CommandHotkeyHandler"
+import CommandHotkeyHandler from "./CommandHotkeyHandler";
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-import {
-  Hotkey,
-  Hotkeys,
-  HotkeysTarget,
-  Icon,
-  Tooltip,
-  ContextMenu
-} from "@blueprintjs/core";
+import { Icon, Tooltip, ContextMenu } from "@blueprintjs/core";
 
 import { flatMap, map, filter } from "lodash";
 
@@ -38,7 +31,6 @@ import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import withEditorProps from "../withEditorProps";
-import withEditorInteractions from "../withEditorInteractions";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
 import MenuBar from "../MenuBar";
@@ -117,8 +109,7 @@ export class Editor extends React.Component {
   //   // };
   // }
 
-
-  getExtraPanel = panelOptions => {
+  getExtraPanel = (/*panelOptions */) => {
     return [];
   };
 
@@ -228,6 +219,16 @@ export class Editor extends React.Component {
     }
   };
 
+  togglePreviewFullscreen = () => {
+    const { togglePreviewFullscreen } = this.props;
+    if (togglePreviewFullscreen) togglePreviewFullscreen();
+    else {
+      this.setState({
+        previewModeFullscreen: !this.state.previewModeFullscreen
+      });
+    }
+  };
+
   render() {
     const {
       previewModeFullscreen: uncontrolledPreviewModeFullscreen
@@ -260,7 +261,8 @@ export class Editor extends React.Component {
       fitHeight, //use fitHeight: true to tell the editorto expand to fill to as much height as possible
       sequenceData = {},
       withPreviewMode,
-      previewModeFullscreen: controlledPreviewModeFullscreen
+      previewModeFullscreen: controlledPreviewModeFullscreen,
+      previewModeButtonMenu
     } = this.props;
     if (
       !this.props.noVersionHistory &&
@@ -315,13 +317,20 @@ export class Editor extends React.Component {
                 primers: false
               }}
             />
-            <div
-              className="preview-mode-view-fullscreen"
-              onClick={this.togglePreviewFullscreen}
-              onContextMenu={this.onPreviewModeButtonContextMenu}
-            >
-              Open Editor
-            </div>
+            <ButtonGroup className="preview-mode-view-fullscreen">
+              <Button
+                text="Open Editor"
+                intent={Intent.PRIMARY}
+                onClick={this.togglePreviewFullscreen}
+              />
+              {previewModeButtonMenu && (
+                <Button
+                  icon="caret-down"
+                  intent={Intent.PRIMARY}
+                  onClick={this.onPreviewModeButtonContextMenu}
+                />
+              )}
+            </ButtonGroup>
           </div>
         </div>
       );
@@ -459,19 +468,25 @@ export class Editor extends React.Component {
               />
             </Tooltip>
           ) : (
-            <Button
+            <Icon
               small
               minimal
-              className={'veRightClickTabMenu'}
+              className={"veRightClickTabMenu"}
               onClick={showTabRightClickContextMenu}
               // icon="menu"
               icon="more"
               style={{
                 top: 5,
                 right: 10,
-                left: -5,
-                transform:"rotate(90deg)",
-                position: "absolute"
+                left: 0,
+                transform: "rotate(90deg)",
+                position: "absolute",
+                cursor: "pointer",
+                marginTop: 5
+                // paddingLeft: '2px',
+                // paddingRight: '2px',
+                // width: '10px',
+                // maxWidth: '10px',
               }}
             />
           )}
@@ -488,6 +503,7 @@ export class Editor extends React.Component {
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
+                    paddingLeft: 3,
                     ...getListStyle(snapshot.isDraggingOver, tabDragging)
                   }}
                 >
@@ -735,7 +751,13 @@ export class Editor extends React.Component {
             show key dialog{" "}
           </button> */}
           <Dialogs editorName={editorName} />
-          {showMenuBar && <MenuBar editorName={editorName} {...sharedProps} trackFocus={false} />}
+          {showMenuBar && (
+            <MenuBar
+              editorName={editorName}
+              {...sharedProps}
+              trackFocus={false}
+            />
+          )}
           <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
           <CommandHotkeyHandler {...sharedProps} />
 
@@ -766,6 +788,4 @@ export class Editor extends React.Component {
   }
 }
 
-export default compose(
-  withEditorProps,
-)(Editor);
+export default compose(withEditorProps)(Editor);

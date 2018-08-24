@@ -29,14 +29,15 @@ let AddYourOwnEnzyme = function(props) {
     seqName = "Destination Vector",
     addYourOwnEnzyme,
     dispatch,
-    invalid,
     editorName,
     stopAddingYourOwnEnzyme
   } = props;
+
   addYourOwnEnzyme.chop_top_index = Number(addYourOwnEnzyme.chop_top_index);
   addYourOwnEnzyme.chop_bottom_index = Number(
     addYourOwnEnzyme.chop_bottom_index
   );
+
   const {
     sequence = "",
     chop_top_index = 0,
@@ -55,6 +56,18 @@ let AddYourOwnEnzyme = function(props) {
     usReverse: 0,
     color: "black"
   };
+  let invalid;
+  if (
+    !enzyme.name ||
+    !enzyme.site ||
+    !enzyme.forwardRegex ||
+    !enzyme.reverseRegex ||
+    (!enzyme.topSnipOffset && enzyme.topSnipOffset !== 0) ||
+    (!enzyme.bottomSnipOffset && enzyme.bottomSnipOffset !== 0)
+  ) {
+    invalid = true;
+  }
+
   let matches;
   if (regexString.length === 0) {
     matches = [];
@@ -67,7 +80,9 @@ let AddYourOwnEnzyme = function(props) {
   }
 
   const errors = validate(addYourOwnEnzyme);
-
+  if (Object.keys(errors || {}).length) {
+    invalid = true;
+  }
   function onChange(updatedVal) {
     dispatch({
       type: "ADD_YOUR_OWN_ENZYME_UPDATE",
@@ -77,7 +92,6 @@ let AddYourOwnEnzyme = function(props) {
       }
     });
   }
-  const invalidOrNoMatches = invalid || matches.length < 1;
 
   return (
     <div className={"createYourOwnEnzyme"}>
@@ -200,11 +214,10 @@ let AddYourOwnEnzyme = function(props) {
         </Button>
         <Button
           className={
-            " ta_useCutsite addYourOwnEnzymeBtn " +
-            (invalidOrNoMatches && "disabled")
+            " ta_useCutsite addYourOwnEnzymeBtn " + (invalid && "disabled")
           }
           onClick={function() {
-            if (invalidOrNoMatches) {
+            if (invalid) {
               return;
             }
             dispatch({
@@ -239,19 +252,6 @@ let AddYourOwnEnzyme = function(props) {
     </div>
   );
 };
-
-//   const selector = formValueSelector('customEnzymes')
-// AddYourOwnEnzyme = reduxForm({
-//   form: 'customEnzymes',
-//   destroyOnUnmount: false,
-//   initialValues: {
-//     name: 'Example Enzyme',
-//     sequence: 'ggatcc',
-//     chop_top_index: 1,
-//     chop_bottom_index: 5,
-//   },
-//   validate
-// })(AddYourOwnEnzyme)
 
 AddYourOwnEnzyme = connect(
   function(state) {

@@ -1,7 +1,13 @@
-import { Icon, Checkbox, Classes } from "@blueprintjs/core";
+import { Icon, Menu } from "@blueprintjs/core";
 import React from "react";
-import { map, startCase } from "lodash";
-import classNames from "classnames";
+import { createMenu } from "teselagen-react-components";
+import viewSubmenu from "../MenuBar/viewSubmenu";
+import {
+  applyCommandsToMenu,
+  addMenuTexts,
+  addMenuTicks
+} from "../utils/__temp_menuUtils";
+import getCommands from "../commands";
 
 export default {
   updateKeys: ["isOpen", "toggleDropdown"],
@@ -17,73 +23,19 @@ export default {
   }
 };
 
-function VisibilityOptions({
-  annotationVisibility = {},
-  typesToOmit = {},
-  sequenceData,
-  annotationVisibilityToggle,
-  annotationLabelVisibility = {},
-  annotationLabelVisibilityToggle
-}) {
+function VisibilityOptions(props) {
   return (
-    <div>
-      <h6>View:</h6>
-      {map(annotationVisibility, (visible, annotationName) => {
-        if (
-          typesToOmit[annotationName] !== undefined &&
-          !typesToOmit[annotationName]
+    <Menu>
+      {createMenu(
+        addMenuTicks(
+          addMenuTexts(
+            applyCommandsToMenu(viewSubmenu, getCommands({ props }), {
+              useTicks: true,
+              omitIcons: true
+            })
+          )
         )
-          return null;
-        let count;
-        let hasCount = false;
-        if (sequenceData[annotationName]) {
-          hasCount = true;
-          count = Object.keys(sequenceData[annotationName]).length;
-        }
-        return (
-          <div key={annotationName}>
-            <Checkbox
-              onChange={() => {
-                annotationVisibilityToggle(annotationName);
-              }}
-              checked={visible}
-              label={
-                <div>
-                  {startCase(annotationName)}{" "}
-                  {hasCount && (
-                    <div
-                      style={{ marginLeft: 4 }}
-                      className={classNames(Classes.TAG, Classes.ROUND)}
-                    >
-                      {" "}
-                      {count}
-                    </div>
-                  )}
-                </div>
-              }
-            />
-          </div>
-        );
-      })}
-      <h6>View Labels:</h6>
-      {map(annotationLabelVisibility, (visible, annotationName) => {
-        if (
-          typesToOmit[annotationName] !== undefined &&
-          !typesToOmit[annotationName]
-        )
-          return null;
-        return (
-          <div key={annotationName}>
-            <Checkbox
-              onChange={() => {
-                annotationLabelVisibilityToggle(annotationName);
-              }}
-              checked={visible}
-              label={startCase(annotationName)}
-            />
-          </div>
-        );
-      })}
-    </div>
+      )}
+    </Menu>
   );
 }

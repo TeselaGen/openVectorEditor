@@ -1,8 +1,13 @@
+
+//only things specific to this menu should be included here
+//things that are shared between multiple menus, or that are command specific should be 
+//defined in the commands/index.js file
 import {
   applyCommandsToMenu,
   addMenuTexts,
   addMenuTicks
 } from "../utils/__temp_menuUtils.js";
+import viewSubmenu from './viewSubmenu'
 
 const defaultConfig = [
   {
@@ -48,10 +53,10 @@ const defaultConfig = [
       {
         cmd: "copyOptions",
         submenu: [
-          { cmd: "toggleCopyFeatures" },
-          { cmd: "toggleCopyPartialFeatures" },
-          { cmd: "toggleCopyParts" },
-          { cmd: "toggleCopyPartialParts"  }
+          { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
+          { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },
+          { cmd: "toggleCopyParts", shouldDismissPopover: false },
+          { cmd: "toggleCopyPartialParts", shouldDismissPopover: false  }
         ]
       },
       { cmd: "paste", icon: "clipboard" },
@@ -85,111 +90,7 @@ const defaultConfig = [
   },
   {
     text: "View",
-    submenu: [
-      // { cmd: "mapCaret" },
-      { cmd: "toggleFeatures" },
-      // {
-      //   // TODO preprocess this as needed
-      //   cmd: "featureTypes",
-      //   itemId: "featureTypes",
-      //   //submenu of checklist of all feature types here
-      //   submenu: [{ text: "TO DO...", disabled: true }]
-      // },
-      { cmd: "toggleParts" },
-      { cmd: "toggleCutsites" },
-      // TODO translations, cds feature translations?
-      // {
-      //   cmd: "ORFs",
-      //   text: "ORFs",
-      //   submenu: [
-      //     {
-      //       cmd: "ORFs_allFrames",
-      //       text: "All Frames",
-      //       // frameNumber: "all"
-      //     },
-      //     {
-      //       cmd: "ORFs_frame1",
-      //       text: "Frame 1"
-      //       // frameNumber: 1 // TODO ?
-      //     },
-      //     {
-      //       cmd: "ORFs_frame2",
-      //       text: "Frame 2"
-      //       // frameNumber: 2 // TODO ?
-      //     },
-      //     {
-      //       cmd: "ORFs_frame3",
-      //       text: "Frame 3"
-      //       // frameNumber: 3 // TODO ?
-      //     }
-      //   ]
-      // },
-      // { cmd: "complementary" },
-      // { cmd: "spaces" },
-      // {
-      //   cmd: "sequenceAA",
-      //   submenu: [
-      //     {
-      //       cmd: "sequenceAA_allFrames",
-      //       text: "All Frames"
-      //       // frameNumber: "all" // TODO ?
-      //     },
-      //     {
-      //       cmd: "sequenceAA_frame1",
-      //       text: "Frame 1"
-      //       // frameNumber: 1 // TODO ?
-      //     },
-      //     {
-      //       cmd: "sequenceAA_frame2",
-      //       text: "Frame 2"
-      //       // frameNumber: 2 // TODO ?
-      //     },
-      //     {
-      //       cmd: "sequenceAA_frame3",
-      //       text: "Frame 3"
-      //       // frameNumber: 3 // TODO ?
-      //     }
-      //   ]
-      // },
-      // {
-      //   cmd: "revcomAA",
-      //   submenu: [
-      //     {
-      //       cmd: "revcomAA_allFrames",
-      //       text: "All Frames"
-      //       // frameNumber: "all" // TODO ?
-      //     },
-      //     {
-      //       cmd: "revcomAA_frame1",
-      //       text: "Frame 1"
-      //       // frameNumber: 1 // TODO ?
-      //     },
-      //     {
-      //       cmd: "revcomAA_frame2",
-      //       text: "Frame 2"
-      //       // frameNumber: 2 // TODO ?
-      //     },
-      //     {
-      //       cmd: "revcomAA_frame3",
-      //       text: "Frame 3"
-      //       // frameNumber: 3 // TODO ?
-      //     }
-      //   ]
-      // },
-      { divider: "" },
-
-      { cmd: "toggleAxis" },
-      { cmd: "toggleAxisNumbers" },
-      { cmd: "toggleReverseSequence" },
-      { cmd: "toggleDnaColors" },
-      { cmd: "toggleLineageLines" },
-
-      { divider: "" },
-
-      { cmd: "toggleFeatureLabels" },
-      { cmd: "togglePartLabels" },
-      { cmd: "toggleCutsiteLabels" },
-    ]
+    submenu: viewSubmenu
   },
   {
     text: "Tools",

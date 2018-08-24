@@ -1,6 +1,7 @@
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
+import { Icon } from "@blueprintjs/core";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
@@ -133,9 +134,10 @@ class CutsiteProperties extends React.Component {
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{display: 'flex', }}>
+        <div style={{ display: "flex" }}>
+          <Button style={{ cursor: "auto" }} disabled minimal icon="filter" />
           <CutsiteFilter
-          style={{flexGrow: 1}}
+            style={{ flexGrow: 1 }}
             editorName={editorName}
             onChangeHook={function() {
               annotationVisibilityShow("cutsites");
@@ -143,7 +145,7 @@ class CutsiteProperties extends React.Component {
           />
 
           <Button
-            style={{marginLeft: 15, flexGrow: -1}}
+            style={{ marginLeft: 15, flexGrow: -1 }}
             onClick={() => {
               createNewDigest();
             }}
