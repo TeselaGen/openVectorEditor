@@ -714,6 +714,12 @@ attr-accept@^1.0.3:
   dependencies:
     core-js "^2.5.0"
 
+attr-accept@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.3.tgz#48230c79f93790ef2775fcec4f0db0f5db41ca52"
+  dependencies:
+    core-js "^2.5.0"
+
 autoprefixer@9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.0.2.tgz#c41947aa155038b3614414dbc58b4e70908af6e0"
@@ -2592,10 +2598,10 @@ create-react-context@^0.2.1:
     gud "^1.0.0"
 
 cross-env@^5.1.4:
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.1.5.tgz#31daf7f3a52ef337c8ddda585f08175cce5d1fa5"
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
   dependencies:
-    cross-spawn "^5.1.0"
+    cross-spawn "^6.0.5"
     is-windows "^1.0.0"
 
 cross-env@^5.1.6:
@@ -2605,7 +2611,7 @@ cross-env@^5.1.6:
     cross-spawn "^5.1.0"
     is-windows "^1.0.0"
 
-cross-spawn@6.0.5:
+cross-spawn@6.0.5, cross-spawn@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
   dependencies:
@@ -6851,24 +6857,9 @@ nodemailer@^2.5.0:
     nodemailer-smtp-transport "2.7.2"
     socks "1.1.9"
 
-nodemon@1.18.3:
+nodemon@1.18.3, nodemon@^1.17.2:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.3.tgz#46e681ee0dd1b590562e03019b4c5df234f906f9"
-  dependencies:
-    chokidar "^2.0.2"
-    debug "^3.1.0"
-    ignore-by-default "^1.0.1"
-    minimatch "^3.0.4"
-    pstree.remy "^1.1.0"
-    semver "^5.5.0"
-    supports-color "^5.2.0"
-    touch "^3.1.0"
-    undefsafe "^2.0.2"
-    update-notifier "^2.3.0"
-
-nodemon@^1.17.2:
-  version "1.17.4"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.17.4.tgz#243ff9c69ffbf1175f2460f9b023f35a072c15e9"
   dependencies:
     chokidar "^2.0.2"
     debug "^3.1.0"
@@ -7359,8 +7350,8 @@ pako@~1.0.5:
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
 papaparse@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.5.0.tgz#fb625d390b6e5d544db20658ce3665002c3d8e80"
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.6.0.tgz#4e3b8d6bf9f7900da437912794ec292207526867"
 
 parallel-transform@^1.1.0:
   version "1.1.0"
@@ -8093,10 +8084,10 @@ react-dropzone@^4.2.11:
     prop-types "^15.5.7"
 
 react-dropzone@^4.2.12:
-  version "4.2.13"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-4.2.13.tgz#31393c079b4e5ddcc176c095cebc3545d1248b9d"
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-4.3.0.tgz#facdd7db16509772633c9f5200621ac01aa6706f"
   dependencies:
-    attr-accept "^1.0.3"
+    attr-accept "^1.1.3"
     prop-types "^15.5.7"
 
 react-easy-state@^5.0.1:
@@ -10136,19 +10127,9 @@ ve-range-utils@^2.5.0:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.3.2:
+ve-sequence-utils@3.3.2, ve-sequence-utils@^3.2.57:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.2.tgz#6b78d3191f157f89833ebc630d35c5e7f16f1d99"
-  dependencies:
-    bson-objectid "^1.1.1"
-    escape-string-regexp "^1.0.5"
-    randomcolor "^0.4.3"
-    string-splice "^1.3.0"
-    validate.io-nonnegative-integer-array "^1.0.1"
-
-ve-sequence-utils@^3.2.57:
-  version "3.2.57"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.57.tgz#1c3e60154e6fe4823e61710035b944ca580dccb3"
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

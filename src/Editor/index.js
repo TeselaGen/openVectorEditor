@@ -467,8 +467,6 @@ export class Editor extends React.Component {
             </Tooltip>
           ) : (
             <Icon
-              small
-              minimal
               className={"veRightClickTabMenu"}
               onClick={showTabRightClickContextMenu}
               // icon="menu"
