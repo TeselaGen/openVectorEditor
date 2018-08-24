@@ -1,23 +1,18 @@
-
 //only things specific to this menu should be included here
-//things that are shared between multiple menus, or that are command specific should be 
+//things that are shared between multiple menus, or that are command specific should be
 //defined in the commands/index.js file
-import {
-  applyCommandsToMenu,
-  addMenuTexts,
-  addMenuTicks
-} from "../utils/__temp_menuUtils.js";
-import viewSubmenu from './viewSubmenu'
+import { createCommandBarMenu } from "../utils/__temp_menuUtils.js";
+import viewSubmenu from "./viewSubmenu";
 
 const defaultConfig = [
   {
     text: "File",
     submenu: [
-      { cmd: "newSequence", icon: "plus" },
-      { cmd: "renameSequence", icon: "edit" },
-      { cmd: "saveSequence", icon: "floppy-disk" },
-      { cmd: "deleteSequence", icon: "trash" },
-      { cmd: "duplicateSequence", icon: "duplicate" },
+      "newSequence",
+      "renameSequence",
+      "saveSequence",
+      "deleteSequence",
+      "duplicateSequence",
 
       { divider: "" },
 
@@ -30,7 +25,7 @@ const defaultConfig = [
         text: "Export Sequence",
         submenu: [
           { cmd: "exportSequenceAsGenbank" },
-          { cmd: "exportSequenceAsFasta" },
+          { cmd: "exportSequenceAsFasta" }
         ]
       },
 
@@ -56,7 +51,7 @@ const defaultConfig = [
           { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
           { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },
           { cmd: "toggleCopyParts", shouldDismissPopover: false },
-          { cmd: "toggleCopyPartialParts", shouldDismissPopover: false  }
+          { cmd: "toggleCopyPartialParts", shouldDismissPopover: false }
         ]
       },
       { cmd: "paste", icon: "clipboard" },
@@ -66,7 +61,7 @@ const defaultConfig = [
       { divider: "" },
 
       { cmd: "find", icon: "search" },
-      { cmd: "goTo"  },
+      { cmd: "goTo" },
 
       { divider: "" },
 
@@ -101,13 +96,9 @@ const defaultConfig = [
   }
 ];
 
-
 export default commands => {
-  let menu = applyCommandsToMenu(
-    defaultConfig,
-    commands,
-    { useTicks: true, omitIcons: true }
-  );
-  menu = addMenuTexts(menu);
-  return addMenuTicks(menu);
-}
+  return createCommandBarMenu(defaultConfig, commands, {
+    useTicks: true,
+    omitIcons: true
+  });
+};
