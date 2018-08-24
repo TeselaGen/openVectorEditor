@@ -25,8 +25,6 @@ export default createMergedDefaultStateReducer(
   },
   {
     options: {},
-    guides: {
-      happy: { start: 0, end: 0, id: "happy" }
-    }
+    guides: {}
   }
 );

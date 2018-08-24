@@ -16,10 +16,9 @@ import withEditorProps from "../../withEditorProps";
 export class FindGuideDialog extends React.Component {
 
   findGuides = (data) => {
-    //todo - we don't want to connect to a server directly from OVE, 
-    //instead a prop should be passed to <Editor/> that does that
     const { updateGuides, sequenceData } = this.props;
     data.sequence = sequenceData.sequence
+    data.circular = sequenceData.circular
     fetch('http://localhost:5000', {
       method: 'POST',
       headers: {
@@ -29,16 +28,19 @@ export class FindGuideDialog extends React.Component {
       body: JSON.stringify(data)
     })
     .then(
-      function(response){
+      (response) => {
+      if (response.status !== 200) {
+        // TODO: display error
+      }
       return response.json();
     })
-    .then(function(guides){
-      console.log(guides);
+    .then((guides) => {
+      console.log(guides)
       guides ? 
-      guides.map(guide => updateGuides(guide)) :
+      guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
       window.toastr.error("No guides found")
     })
-    .catch(function(e) {
+    .catch((e) => {
       console.error(e)
     });
   }

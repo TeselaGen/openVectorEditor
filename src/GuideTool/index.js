@@ -20,7 +20,7 @@ export default class GuideTool extends React.Component {
   render() {
     // const { activeRegion = {} } = this.props.guideToolProps || {};
     const {guides} = this.props.guideTool || {}
-    const entitiesToUse = Object.values(guides)
+    const entities = Object.values(guides)
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <DataTable
@@ -32,7 +32,7 @@ export default class GuideTool extends React.Component {
             isInfinite
             formName={"guideTable"}
             schema={schema}
-            entities={entitiesToUse}
+            entities={entities}
           />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
