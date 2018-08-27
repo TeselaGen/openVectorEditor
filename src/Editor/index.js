@@ -113,6 +113,7 @@ export class Editor extends React.Component {
   };
 
   getChildContext() {
+    //tnrtodo this will need to be updated once blueprint uses the react 16 api
     return { blueprintPortalClassName: "ove-portal" };
   }
   componentDidUpdate(prevProps) {

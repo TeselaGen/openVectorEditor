@@ -46,3 +46,8 @@
 .tg-min-width-dialog {
   min-width: 300px;
 }
+
+/* this is necessary to allow the editor and its portals to sit at the top of the z-index stack for jbei */
+.ove-portal {
+  z-index: 100000;
+}

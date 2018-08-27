@@ -92,9 +92,24 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/core@^3.1.0", "@blueprintjs/core@^3.3.0":
+"@blueprintjs/core@^3.1.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.3.0.tgz#6fc5c7d811d1c0693c0c3d7a472549e171c455db"
+  dependencies:
+    "@blueprintjs/icons" "^3.0.0"
+    "@types/dom4" "^2.0.0"
+    classnames "^2.2"
+    dom4 "^2.0.1"
+    normalize.css "^8.0.0"
+    popper.js "^1.14.1"
+    react-popper "^1.0.0"
+    react-transition-group "^2.2.1"
+    resize-observer-polyfill "^1.5.0"
+    tslib "^1.9.0"
+
+"@blueprintjs/core@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.4.0.tgz#cf5a61fb8288d8a58b892c7005d999c944d30521"
   dependencies:
     "@blueprintjs/icons" "^3.0.0"
     "@types/dom4" "^2.0.0"
@@ -9545,9 +9560,9 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@23.1.2:
-  version "23.1.2"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.1.2.tgz#cf4dd1175cbb07ae5536309137c3de65dd4a5007"
+teselagen-react-components@23.1.9:
+  version "23.1.9"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.1.9.tgz#7aeeaaa13f993eb25ea07d26b6fd586933b8faf1"
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -9567,6 +9582,7 @@ teselagen-react-components@23.1.2:
     pascal-case "^2.0.1"
     paths-js "^0.4.7"
     pluralize "^7.0.0"
+    prop-types "^15.6.2"
     query-string "^5.1.0"
     react-addons-pure-render-mixin "^15.6.0"
     react-dropzone "^4.2.12"
