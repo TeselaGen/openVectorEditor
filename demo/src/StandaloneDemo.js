@@ -41,6 +41,9 @@ export default class StandaloneDemo extends React.Component {
             ];
           }
         },
+        // handleFullscreenClose: () => { //comment this function in to make the editor fullscreen by default
+        //   alert("close requested")
+        // },
         onRename: () => {}, //this option should be shown by default
         onNewSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
         onDeleteSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq

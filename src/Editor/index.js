@@ -1,6 +1,7 @@
 import { debounce } from "lodash";
 import { createMenu } from "teselagen-react-components";
 import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
+import PropTypes from "prop-types";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import "tg-react-reflex/styles.css";
@@ -111,6 +112,9 @@ export class Editor extends React.Component {
     return [];
   };
 
+  getChildContext() {
+    return { blueprintPortalClassName: "ove-portal" };
+  }
   componentDidUpdate(prevProps) {
     //autosave if necessary!
     if (
@@ -783,5 +787,9 @@ export class Editor extends React.Component {
     );
   }
 }
+
+Editor.childContextTypes = {
+  blueprintPortalClassName: PropTypes.string
+};
 
 export default compose(withEditorProps)(Editor);

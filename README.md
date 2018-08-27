@@ -133,6 +133,9 @@ These props consist of hooks and editor config options that can be passed like s
 ```js
 {
 	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
+	handleFullscreenClose: () => { //pass this callback only if you want the editor to show up in a fullscreen mode by default
+		alert("Fullscreen close requested)
+	},
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
 		console.info("event:", event);
 		console.info("sequenceData:", sequenceDataToSave);
@@ -251,6 +254,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 		],
 		parts: []
 	},
+	sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
 	sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
 	annotationVisibility: {
 		features: false
