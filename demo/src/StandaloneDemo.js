@@ -1,6 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
+import { convertRangeTo0Based } from "ve-range-utils";
 
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import { Dialog, Button } from "@blueprintjs/core";
@@ -91,10 +92,40 @@ export default class StandaloneDemo extends React.Component {
           };
           return sequenceData;
         },
-        findGuides: () => { 
-          //todo this prop should be used to enable disable the guide tool 
-          //and is where any server connection should be made
-
+        
+        //todo this prop should be used to enable disable the guide tool 
+        //and is where any server connection should be made
+        findGuides: (data) => {
+          const { updateGuides, sequenceData } = this.props;
+          data.sequence = sequenceData.sequence
+          data.circular = sequenceData.circular
+          fetch('http://localhost:5000', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+          .then(
+            (response) => {
+            if (response.status !== 200) {
+              // TODO: display error
+            }
+            return response.json();
+          })
+          .then((guides) => {
+            console.log(guides)
+            guides ? 
+            guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
+            window.toastr.error("No guides found")
+          })
+          .catch((e) => {
+            console.error(e)
+          });
+        },
+        upsertGuides: (guidesToUpsert) => {
+          alert(guidesToUpsert)
         },
         getSequenceAtVersion: versionId => {
           if (versionId === 2) {

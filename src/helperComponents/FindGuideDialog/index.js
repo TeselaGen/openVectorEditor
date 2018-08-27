@@ -9,42 +9,10 @@ import {
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
-import { convertRangeTo0Based } from "ve-range-utils";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 
 export class FindGuideDialog extends React.Component {
-
-  findGuides = (data) => {
-    const { updateGuides, sequenceData } = this.props;
-    data.sequence = sequenceData.sequence
-    data.circular = sequenceData.circular
-    fetch('http://localhost:5000', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-    .then(
-      (response) => {
-      if (response.status !== 200) {
-        // TODO: display error
-      }
-      return response.json();
-    })
-    .then((guides) => {
-      console.log(guides)
-      guides ? 
-      guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
-      window.toastr.error("No guides found")
-    })
-    .catch((e) => {
-      console.error(e)
-    });
-  }
-
   render() {
     const {
       // editorName,
@@ -54,7 +22,13 @@ export class FindGuideDialog extends React.Component {
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-Primer")}>
+      <div
+        className={classNames(
+          Classes.DIALOG_BODY,
+          "tg-min-width-dialog",
+          "tg-upsert-Primer"
+        )}
+      >
         <NumericInputField
           inlineLabel
           defaultValue={20}
@@ -69,12 +43,7 @@ export class FindGuideDialog extends React.Component {
           name={"pamSite"}
           label={"PAM site:"}
         />
-        <InputField
-          autoFocus
-          inlineLabel
-          name={"genome"}
-          label={"Genome:"}
-        />
+        <InputField autoFocus inlineLabel name={"genome"} label={"Genome:"} />
         <NumericInputField
           inlineLabel
           defaultValue={1}
@@ -95,19 +64,24 @@ export class FindGuideDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
-          <Button style={{ marginRight: 15 }} onMouseDown={e => {
+          <Button
+            style={{ marginRight: 15 }}
+            onMouseDown={e => {
               //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
-              e.preventDefault(); 
+              e.preventDefault();
               e.stopPropagation();
               hideModal();
-            }}>
+            }}
+          >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit(data => {
-              this.findGuides(data)
-              // this.props.createGuideToolTab()
-              // hideModal();
+              if (!this.props.findGuides)
+                return window.toastr.warning(
+                  "No handler found for this action"
+                );
+              this.props.findGuides(data);
             })}
             intent={Intent.PRIMARY}
           >
