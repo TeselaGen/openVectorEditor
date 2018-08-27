@@ -1321,6 +1321,11 @@
           align-items: center;
 }
 
+/* .bp3-control {
+  display: flex;
+  align-items: center;
+} */
+
 .tg-tree-minimap-viewport {
   cursor: -webkit-grab;
   cursor: grab;
@@ -2026,11 +2031,7 @@ a{
       visibility:hidden; }
     .bp3-button.bp3-loading .bp3-button-spinner{
       position:absolute;
-      top:50%;
-      left:50%;
-      -webkit-transform:translate(-50%, -50%);
-              -ms-transform:translate(-50%, -50%);
-          transform:translate(-50%, -50%); }
+      margin:0; }
     .bp3-button.bp3-loading > :not(.bp3-button-spinner){
       visibility:hidden; }
   .bp3-button[class*="bp3-icon-"]::before{
@@ -2740,6 +2741,13 @@ a.bp3-button{
 
 .bp3-context-menu-popover-target{
   position:fixed; }
+
+.bp3-divider{
+  margin:5px;
+  border-right:1px solid rgba(16, 22, 26, 0.15);
+  border-bottom:1px solid rgba(16, 22, 26, 0.15); }
+  .bp3-dark .bp3-divider{
+    border-color:rgba(16, 22, 26, 0.4); }
 .bp3-dialog-container{
   opacity:1;
   -webkit-transform:scale(1);
@@ -4762,6 +4770,18 @@ form{
   .bp3-html-select select::-ms-expand,
   .bp3-select select::-ms-expand{
     display:none; }
+  .bp3-html-select .bp3-icon,
+  .bp3-select .bp3-icon{
+    color:#5c7080; }
+    .bp3-html-select .bp3-icon:hover,
+    .bp3-select .bp3-icon:hover{
+      color:#182026; }
+    .bp3-dark .bp3-html-select .bp3-icon, .bp3-dark
+    .bp3-select .bp3-icon{
+      color:#bfccd6; }
+      .bp3-dark .bp3-html-select .bp3-icon:hover, .bp3-dark
+      .bp3-select .bp3-icon:hover{
+        color:#f5f8fa; }
   .bp3-html-select.bp3-large::after,
   .bp3-html-select.bp3-large .bp3-icon,
   .bp3-select.bp3-large::after,
@@ -7639,7 +7659,11 @@ span.bp3-popover-target{
 
 .bp3-spinner{
   overflow:visible;
-  vertical-align:middle; }
+  vertical-align:middle;
+  -webkit-animation:pt-spinner-animation 500ms linear infinite;
+          animation:pt-spinner-animation 500ms linear infinite; }
+  .bp3-spinner svg{
+    display:block; }
   .bp3-spinner path{
     fill-opacity:0; }
   .bp3-spinner .bp3-spinner-head{
@@ -7649,13 +7673,11 @@ span.bp3-popover-target{
     -webkit-transition:stroke-dashoffset 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
     -o-transition:stroke-dashoffset 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
     transition:stroke-dashoffset 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
-    -webkit-animation:pt-spinner-animation 500ms linear infinite;
-            animation:pt-spinner-animation 500ms linear infinite;
     stroke:rgba(92, 112, 128, 0.8);
     stroke-linecap:round; }
   .bp3-spinner .bp3-spinner-track{
     stroke:rgba(92, 112, 128, 0.2); }
-  .bp3-spinner.bp3-no-spin .bp3-spinner-head{
+  .bp3-spinner.bp3-no-spin{
     -webkit-animation:none;
             animation:none; }
 
@@ -10921,6 +10943,11 @@ span.bp3-popover-target {
 
 .tg-min-width-dialog {
   min-width: 300px;
+}
+
+/* this is necessary to allow the editor and its portals to sit at the top of the z-index stack for jbei */
+.ove-portal {
+  z-index: 100000;
 }
 
 body.bp3-dark {
