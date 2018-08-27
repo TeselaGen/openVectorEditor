@@ -30,7 +30,7 @@ export default connect(
   {
     addYourOwnEnzymeClose
   }
-)(({ editorName, addYourOwnEnzymeIsOpen, addYourOwnEnzymeClose }) => {
+)(({ editorName, addYourOwnEnzymeIsOpen, addYourOwnEnzymeClose, ...rest }) => {
   return (
     <div>
       <AddAdditionalEnzymes
@@ -61,6 +61,7 @@ export default connect(
         noTarget
       />
       <FindGuideDialog
+        {...rest}
         editorName={editorName}
         dialogName="FindGuideDialog"
         noTarget
@@ -75,11 +76,7 @@ export default connect(
         dialogName="RenameSeqDialog"
         noTarget
       />
-      <GoToDialog
-        editorName={editorName}
-        dialogName="GoToDialog"
-        noTarget
-      />
+      <GoToDialog editorName={editorName} dialogName="GoToDialog" noTarget />
       <SelectDialog
         editorName={editorName}
         dialogName="SelectDialog"

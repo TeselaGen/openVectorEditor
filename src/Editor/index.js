@@ -750,7 +750,7 @@ export class Editor extends React.Component {
             {" "}
             show key dialog{" "}
           </button> */}
-          <Dialogs editorName={editorName} />
+          <Dialogs {...sharedProps} editorName={editorName} />
           {showMenuBar && (
             <MenuBar
               editorName={editorName}
