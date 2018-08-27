@@ -9734,6 +9734,10 @@ span.bp3-popover-target {
   display: block;
 }
 
+.bp3-portal {
+  z-index: 100000;
+}
+
 .insertReplaceButton {
   width: 140px;
 }
