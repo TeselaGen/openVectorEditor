@@ -1321,11 +1321,6 @@
           align-items: center;
 }
 
-/* .bp3-control {
-  display: flex;
-  align-items: center;
-} */
-
 .tg-tree-minimap-viewport {
   cursor: -webkit-grab;
   cursor: grab;
@@ -9715,10 +9710,6 @@ h6.bp3-heading {
 /* bp3 fix https://github.com/palantir/blueprint/issues/2807 */
 span.bp3-popover-target {
   display: block;
-}
-
-.bp3-portal {
-  z-index: 100000;
 }
 
 .insertReplaceButton {
