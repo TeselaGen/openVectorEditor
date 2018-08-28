@@ -30,7 +30,7 @@ export default {
       noDropdownIcon: true,
       tooltip: alignmentTool.isOpen
         ? "Hide Alignment Tool"
-        : "Show Alignment Tool"
+        : "Align to This Sequence"
     };
   }
 };
