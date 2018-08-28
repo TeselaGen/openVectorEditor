@@ -133,11 +133,14 @@ These props consist of hooks and editor config options that can be passed like s
 ```js
 {
 	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
-	handleFullscreenClose: () => { //comment this function in to make the editor fullscreen by default
+	//supplying this function WILL make the editor FULLSCREEN BY DEFAULT
+	handleFullscreenClose: () => { 
 		//do whatever you want here
 		//UMD only:
 		editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
 	},
+	showReadOnly: false, //default true
+  disableSetReadOnly: true, //default false
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
 		console.info("event:", event);
 		console.info("sequenceData:", sequenceDataToSave);

@@ -28,6 +28,8 @@ export default class StandaloneDemo extends React.Component {
     setTimeout(() => {
       editor = window.createVectorEditor("createDomNodeForMe", { //you can also pass a DOM node as the first arg here
         doNotUseAbsolutePosition: true,
+        // showReadOnly: false,
+        // disableSetReadOnly: true,
         shouldAutosave: true,
         showAvailability: true, //set to tru to show the material availabilty status
         rightClickOverrides: {
