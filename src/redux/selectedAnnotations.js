@@ -1,4 +1,4 @@
-import { createMenu } from "teselagen-react-components";
+import { showContextMenu } from "teselagen-react-components";
 import without from "lodash/without";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
@@ -30,7 +30,7 @@ export function replacementLayerRightClicked({ event, annotation }, meta) {
       }
     ];
 
-    createMenu(items, undefined, event);
+    showContextMenu(items, undefined, event);
   };
 }
 

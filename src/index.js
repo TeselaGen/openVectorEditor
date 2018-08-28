@@ -1,9 +1,9 @@
 import { FocusStyleManager } from "@blueprintjs/core";
-import { createMenu } from "teselagen-react-components";
+import { showContextMenu } from "teselagen-react-components";
 import "./createVectorEditor";
 import "./style.css";
 
-window.tgCreateMenu = createMenu;
+window.tgCreateMenu = showContextMenu;
 // window.tgCreateMenu = (menu, e, e2) => {
 //   (e||e2).stopPropagation()
 //   (e || e2)

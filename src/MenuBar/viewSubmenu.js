@@ -16,19 +16,19 @@ export default [
     text: "ORFs",
     submenu: [
       {
-        cmd: "toggleOrfs",
+        cmd: "toggleOrfs"
       },
       {
-        cmd: "toggleOrfTranslations",
+        cmd: "toggleOrfTranslations"
       },
       {
-        cmd: "toggleCdsFeatureTranslations",
-      },
+        cmd: "toggleCdsFeatureTranslations"
+      }
     ]
   },
   // { cmd: "complementary" },
   // { cmd: "spaces" },
-  {divider: ""},
+  { divider: "" },
   {
     text: "Full Sequence Translation",
     submenu: [
@@ -86,5 +86,5 @@ export default [
 
   { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
   { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
-]
+  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false }
+];

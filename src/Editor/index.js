@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { createMenu } from "teselagen-react-components";
+import { showContextMenu } from "teselagen-react-components";
 import { Button } from "@blueprintjs/core";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
@@ -13,7 +13,7 @@ import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
 
-import CommandHotkeyHandler from "./CommandHotkeyHandler"
+import CommandHotkeyHandler from "./CommandHotkeyHandler";
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
@@ -114,7 +114,6 @@ export class Editor extends React.Component {
   //   //     return "You may not want to leave the editor if you have any unsaved work.";
   //   // };
   // }
-
 
   getExtraPanel = panelOptions => {
     return [];
@@ -396,7 +395,7 @@ export class Editor extends React.Component {
 
       const showTabRightClickContextMenu = (e, id) => {
         const tabIdToUse = id || activePanelId;
-        createMenu(
+        showContextMenu(
           [
             {
               onClick: () => {
@@ -470,7 +469,7 @@ export class Editor extends React.Component {
             <Button
               small
               minimal
-              className={'veRightClickTabMenu'}
+              className={"veRightClickTabMenu"}
               onClick={showTabRightClickContextMenu}
               // icon="menu"
               icon="more"
@@ -478,7 +477,7 @@ export class Editor extends React.Component {
                 top: 5,
                 right: 10,
                 left: -5,
-                transform:"rotate(90deg)",
+                transform: "rotate(90deg)",
                 position: "absolute"
               }}
             />
@@ -743,7 +742,13 @@ export class Editor extends React.Component {
             show key dialog{" "}
           </button> */}
           <Dialogs editorName={editorName} />
-          {showMenuBar && <MenuBar editorName={editorName} {...sharedProps} trackFocus={false} />}
+          {showMenuBar && (
+            <MenuBar
+              editorName={editorName}
+              {...sharedProps}
+              trackFocus={false}
+            />
+          )}
           <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
           <CommandHotkeyHandler {...sharedProps} />
 
@@ -774,6 +779,4 @@ export class Editor extends React.Component {
   }
 }
 
-export default compose(
-  withEditorProps,
-)(Editor);
+export default compose(withEditorProps)(Editor);

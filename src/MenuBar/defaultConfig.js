@@ -1,10 +1,10 @@
 //only things specific to this menu should be included here
 //things that are shared between multiple menus, or that are command specific should be
 //defined in the commands/index.js file
-import { createCommandBarMenu } from "../utils/__temp_menuUtils.js";
+
 import viewSubmenu from "./viewSubmenu";
 
-const defaultConfig = [
+export default [
   {
     text: "File",
     submenu: [
@@ -13,14 +13,10 @@ const defaultConfig = [
       "saveSequence",
       "deleteSequence",
       "duplicateSequence",
-
-      { divider: "" },
-
-      { cmd: "toggleReadOnlyMode" },
-
-      { divider: "" },
-
-      { cmd: "importSequence", icon: "import" },
+      "--",
+      "toggleReadOnlyMode",
+      "--",
+      "importSequence",
       {
         text: "Export Sequence",
         submenu: [
@@ -28,9 +24,7 @@ const defaultConfig = [
           { cmd: "exportSequenceAsFasta" }
         ]
       },
-
-      { divider: "" },
-
+      "--",
       {
         disabled: true,
         text: "Print",
@@ -43,8 +37,8 @@ const defaultConfig = [
   {
     text: "Edit",
     submenu: [
-      { cmd: "cut" },
-      { cmd: "copy" },
+      "cut",
+      "copy",
       {
         cmd: "copyOptions",
         submenu: [
@@ -54,33 +48,25 @@ const defaultConfig = [
           { cmd: "toggleCopyPartialParts", shouldDismissPopover: false }
         ]
       },
-      { cmd: "paste", icon: "clipboard" },
-      { cmd: "undo" },
-      { cmd: "redo" },
-
-      { divider: "" },
-
-      { cmd: "find", icon: "search" },
-      { cmd: "goTo" },
-
-      { divider: "" },
-
-      { cmd: "select" },
-      { cmd: "selectAll" },
-      { cmd: "selectInverse" },
-
-      { divider: "" },
-
-      { cmd: "complementSelection" },
-      { cmd: "complementEntireSequence" },
-      { cmd: "reverseComplementSelection" },
-      { cmd: "reverseComplementEntireSequence" },
-      { cmd: "rotateToCaretPosition" },
-
-      { divider: "" },
-
-      { cmd: "newFeature" },
-      { cmd: "newPart" }
+      "paste",
+      "undo",
+      "redo",
+      "--",
+      "find",
+      "goTo",
+      "--",
+      "select",
+      "selectAll",
+      "selectInverse",
+      "--",
+      "complementSelection",
+      "complementEntireSequence",
+      "reverseComplementSelection",
+      "reverseComplementEntireSequence",
+      "rotateToCaretPosition",
+      "--",
+      "newFeature",
+      "newPart"
     ]
   },
   {
@@ -89,16 +75,6 @@ const defaultConfig = [
   },
   {
     text: "Tools",
-    submenu: [
-      { cmd: "restrictionEnzymesManager" },
-      { cmd: "simulateDigestion" }
-    ]
+    submenu: ["restrictionEnzymesManager", "simulateDigestion"]
   }
 ];
-
-export default commands => {
-  return createCommandBarMenu(defaultConfig, commands, {
-    useTicks: true,
-    omitIcons: true
-  });
-};

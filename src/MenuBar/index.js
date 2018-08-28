@@ -1,20 +1,25 @@
 import React from "react";
-import { MenuBar } from "teselagen-react-components";
+import { MenuBar, commandMenuEnhancer } from "teselagen-react-components";
 import { compose } from "redux";
 import withEditorInteractions from "../withEditorInteractions";
-import getMenuDef from "./defaultConfig";
+import menuDef from "./defaultConfig";
 import getCommands from "../commands";
-
 
 class OveMenuBar extends React.Component {
   constructor(props) {
     super(props);
-    this.commands = getCommands(this);
+    const commands = getCommands(this);
+    this.enhancers = [
+      commandMenuEnhancer(commands, {
+        useTicks: true,
+        omitIcons: true
+      })
+    ];
   }
 
   render() {
-    return <MenuBar menu={getMenuDef(this.commands)} />;
+    return <MenuBar menu={menuDef} enhancers={this.enhancers} />;
   }
 }
 
-export default compose(withEditorInteractions)(OveMenuBar)
+export default compose(withEditorInteractions)(OveMenuBar);

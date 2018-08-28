@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, Menu, Popover } from "@blueprintjs/core";
-import { createCommandMenu } from "../utils/__temp_menuUtils";
+import { createCommandMenu } from "teselagen-react-components";
 import getCommands from "../commands";
 
 export default {
@@ -16,10 +16,7 @@ export default {
           content={
             <Menu>
               {createCommandMenu(
-                [
-                  { cmd: "exportSequenceAsGenbank" },
-                  { cmd: "exportSequenceAsFasta" }
-                ],
+                ["exportSequenceAsGenbank", "exportSequenceAsFasta"],
                 getCommands({ props })
               )}
             </Menu>
