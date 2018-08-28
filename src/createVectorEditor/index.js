@@ -42,7 +42,7 @@ export default function createVectorEditor(
 ) {
   let node;
 
-  if (_node === "createElForMe") {
+  if (_node === "createDomNodeForMe") {
     node = document.createElement("div");
     node.className = "ove-created-div";
     document.body.appendChild(node);

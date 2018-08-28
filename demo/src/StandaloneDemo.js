@@ -26,7 +26,7 @@ export default class StandaloneDemo extends React.Component {
   mountEditor = () => {
     let editor;
     setTimeout(() => {
-      editor = window.createVectorEditor("createElForMe", { //you can also pass a DOM node as the first arg here
+      editor = window.createVectorEditor("createDomNodeForMe", { //you can also pass a DOM node as the first arg here
         doNotUseAbsolutePosition: true,
         shouldAutosave: true,
         showAvailability: true, //set to tru to show the material availabilty status
