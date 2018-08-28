@@ -26,7 +26,7 @@ export default class StandaloneDemo extends React.Component {
   mountEditor = () => {
     let editor;
     setTimeout(() => {
-      editor = window.createVectorEditor(this.node, {
+      editor = window.createVectorEditor("createElForMe", { //you can also pass a DOM node as the first arg here
         doNotUseAbsolutePosition: true,
         shouldAutosave: true,
         showAvailability: true, //set to tru to show the material availabilty status
@@ -42,7 +42,7 @@ export default class StandaloneDemo extends React.Component {
           }
         },
         // handleFullscreenClose: () => { //comment this function in to make the editor fullscreen by default
-        //   alert("close requested")
+        //   editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
         // },
         onRename: () => {}, //this option should be shown by default
         onNewSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq

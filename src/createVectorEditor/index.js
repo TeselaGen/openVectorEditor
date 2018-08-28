@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import store from "./store";
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 
 import Editor from "../Editor";
 import updateEditor from "../updateEditor";
@@ -31,22 +31,33 @@ function StandaloneAlignment(props) {
 function StandaloneVersionHistoryView(props) {
   return (
     <Provider store={store}>
-      <VersionHistoryView
-        {...{ ...props }}
-      />
+      <VersionHistoryView {...{ ...props }} />
     </Provider>
   );
 }
 
 export default function createVectorEditor(
-  node,
+  _node,
   { editorName = "StandaloneEditor", ...rest } = {}
 ) {
+  let node;
+
+  if (_node === "createElForMe") {
+    node = document.createElement("div");
+    node.className = "ove-created-div";
+    document.body.appendChild(node);
+  } else {
+    node = _node;
+  }
   const editor = {};
   editor.renderResponse = render(
     <StandaloneEditor {...{ editorName, ...rest }} />,
     node
   );
+  editor.close = () => {
+    unmountComponentAtNode(node);
+    node.remove();
+  };
   editor.updateEditor = values => {
     updateEditor(store, editorName, values);
   };
@@ -54,8 +65,8 @@ export default function createVectorEditor(
     addAlignment(store, values);
   };
   editor.getState = () => {
-    return store.getState().VectorEditor["StandaloneEditor"]
-  }
+    return store.getState().VectorEditor["StandaloneEditor"];
+  };
 
   return editor;
 }
@@ -69,12 +80,13 @@ export function createVersionHistoryView(
     <StandaloneVersionHistoryView {...{ editorName, ...rest }} />,
     node
   );
+
   editor.updateEditor = values => {
     updateEditor(store, editorName, values);
   };
   editor.getState = () => {
-    return store.getState().VectorEditor["StandaloneVersionHistoryView"]
-  }
+    return store.getState().VectorEditor["StandaloneVersionHistoryView"];
+  };
 
   return editor;
 }
@@ -90,10 +102,12 @@ export function createAlignmentView(node, props = {}) {
   editor.updateAlignment(props);
   editor.getState = () => {
     if (!props.id) {
-      throw new Error('Please pass an id when using createAlignmentView. eg createAlignmentView(myDiv, {id: "someUniqueId"})')
+      throw new Error(
+        'Please pass an id when using createAlignmentView. eg createAlignmentView(myDiv, {id: "someUniqueId"})'
+      );
     }
-    return store.getState().VectorEditor.alignments[props.id]
-  }
+    return store.getState().VectorEditor.alignments[props.id];
+  };
   return editor;
 }
 

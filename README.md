@@ -114,7 +114,7 @@ then add the links
 
 ```html
 <script>
-const editor = window.createVectorEditor(yourDomNodeHere, editorProps);
+const editor = window.createVectorEditor(yourDomNodeHere || "createDomNodeForMe", editorProps); /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
 editor.updateEditor(editorState);	
 </script>
 ```
@@ -133,8 +133,10 @@ These props consist of hooks and editor config options that can be passed like s
 ```js
 {
 	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
-	handleFullscreenClose: () => { //pass this callback only if you want the editor to show up in a fullscreen mode by default
-		alert("Fullscreen close requested)
+	handleFullscreenClose: () => { //comment this function in to make the editor fullscreen by default
+		//do whatever you want here
+		//UMD only:
+		editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
 	},
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
 		console.info("event:", event);
