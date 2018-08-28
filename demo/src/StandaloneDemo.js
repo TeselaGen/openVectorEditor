@@ -92,13 +92,9 @@ export default class StandaloneDemo extends React.Component {
           };
           return sequenceData;
         },
-        
         //todo this prop should be used to enable disable the guide tool 
         //and is where any server connection should be made
-        findGuides: (data) => {
-          const { updateGuides, sequenceData } = this.props;
-          data.sequence = sequenceData.sequence
-          data.circular = sequenceData.circular
+        findGuides: (data, updateGuides) => {
           fetch('http://localhost:5000', {
             method: 'POST',
             headers: {
@@ -106,26 +102,19 @@ export default class StandaloneDemo extends React.Component {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
-          })
-          .then(
+          }).then(
             (response) => {
             if (response.status !== 200) {
               // TODO: display error
             }
             return response.json();
-          })
-          .then((guides) => {
-            console.log(guides)
-            guides ? 
+          }).then((guides) => {
+            guides ?
             guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
             window.toastr.error("No guides found")
-          })
-          .catch((e) => {
+          }).catch((e) => {
             console.error(e)
           });
-        },
-        upsertGuides: (guidesToUpsert) => {
-          alert(guidesToUpsert)
         },
         getSequenceAtVersion: versionId => {
           if (versionId === 2) {
@@ -249,19 +238,15 @@ export default class StandaloneDemo extends React.Component {
           ],
           [
             {
-              id: "guideTool1",
-              name: "Find Guides",
-              active: true,
-              canClose: true,
-              type: "guideTool",
-              guideToolProps: {
-                activeRegion: {start: 12, end: 50}
-              }
-            },
-            {
               id: "sequence",
               name: "Sequence Map",
-              // active: true
+              active: true
+            },
+            {
+              id: "guideTool1",
+              name: "Find Guides",
+              canClose: true,
+              type: "guideTool"
             },
             {
               id: "alignmentTool",

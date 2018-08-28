@@ -60,7 +60,6 @@ function getBpsPerRow({
 // TODO: maybe assign ids to nodes and store this info in the redux store
 const _lastFocusedWrapper = {};
 
-
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
@@ -257,15 +256,12 @@ function VectorInteractionHOC(Component /* options */) {
 
     handleCut = e => {
       window.toastr.success("Selection Cut");
-      const {
-        sequenceData,
-        selectionLayer,
-        copyOptions
-      } = this.props;
+      const { sequenceData, selectionLayer, copyOptions } = this.props;
 
       const onCut = this.props.onCut || this.props.onCopy || (() => {});
 
-      const sequenceDataToCopy = this.sequenceDataToCopy ||
+      const sequenceDataToCopy =
+        this.sequenceDataToCopy ||
         getSequenceDataBetweenRange(sequenceData, selectionLayer, {
           excludePartial: {
             features: !copyOptions.partialFeatures,
@@ -281,10 +277,7 @@ function VectorInteractionHOC(Component /* options */) {
 
       onCut(
         e,
-        tidyUpSequenceData(
-          sequenceDataToCopy,
-          { annotationsAsObjects: true }
-        ),
+        tidyUpSequenceData(sequenceDataToCopy, { annotationsAsObjects: true }),
         this.props
       );
       this.sequenceDataToCopy = undefined;
@@ -478,7 +471,7 @@ function VectorInteractionHOC(Component /* options */) {
                   />
                 );
               })
-            } 
+            }
           ];
     };
     getCreateItems = range => {
@@ -488,10 +481,11 @@ function VectorInteractionHOC(Component /* options */) {
         showAddOrEditPartDialog,
         showAddOrEditPrimerDialog,
         showFindGuideDialog,
-        annotationsToSupport: { parts, primers, features, guides } = {},
+        annotationsToSupport: { parts, primers, features } = {},
         selectionLayer,
         caretPosition,
-        sequenceLength
+        sequenceLength,
+        guideTool
       } = this.props;
       let rangeToUse =
         range ||
@@ -525,7 +519,7 @@ function VectorInteractionHOC(Component /* options */) {
                     showAddOrEditPrimerDialog(rangeToUse);
                   }
                 },
-                guides && {
+                guideTool.guides && {
                   text: "Guide RNAs",
                   onClick: function() {
                     showFindGuideDialog(rangeToUse);
@@ -595,7 +589,6 @@ function VectorInteractionHOC(Component /* options */) {
           }
         },
         {
-
           text: "Copy",
           className: "openVeCopy1",
           willUnmount: () => {
@@ -884,6 +877,28 @@ function VectorInteractionHOC(Component /* options */) {
         }
       ];
     };
+    guideRightClicked = ({ annotation }) => {
+      this.props.selectionLayerUpdate(annotation);
+      const { readOnly, deleteGuides, createGuideToolTab } = this.props;
+      return [
+        ...(readOnly
+          ? []
+          : [
+              {
+                text: "Delete Guide",
+                onClick: function() {
+                  deleteGuides(annotation);
+                }
+              },
+              {
+                text: "View Guide Properties",
+                onClick: function() {
+                  createGuideToolTab();
+                }
+              }
+            ])
+      ];
+    };
     featureRightClicked = ({ annotation, event }) => {
       this.props.selectionLayerUpdate(annotation);
       event.persist();
@@ -1131,14 +1146,20 @@ function VectorInteractionHOC(Component /* options */) {
             const messages = result[0].messages;
             if (messages && messages.length) {
               messages.forEach(msg => {
-                const type = msg.substr(0, 20).toLowerCase().includes('error')
-                  ? (failed ? 'error' : 'warning') : 'info';
+                const type = msg
+                  .substr(0, 20)
+                  .toLowerCase()
+                  .includes("error")
+                  ? failed
+                    ? "error"
+                    : "warning"
+                  : "info";
                 window.toastr[type](msg);
               });
             }
             updateSequenceData(result[0].parsedSequence);
             if (!failed) {
-              window.toastr.success('Sequenced imported');
+              window.toastr.success("Sequenced imported");
             }
           },
           { acceptParts: true, ...opts }
@@ -1147,7 +1168,7 @@ function VectorInteractionHOC(Component /* options */) {
       reader.onerror = function() {
         window.toastr.error("Could not read file.");
       };
-    }
+    };
 
     exportSequenceToFile = format => {
       const { sequenceData } = this.props;
@@ -1166,30 +1187,30 @@ function VectorInteractionHOC(Component /* options */) {
       const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
       const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
       FileSaver.saveAs(blob, filename);
-    }
+    };
 
     handleWrapperFocus = () => {
       if (this.props.trackFocus === false) return;
       _lastFocusedWrapper[this.props.editorName] = this.node;
-    }
+    };
 
     triggerClipboardCommand = type => {
       const wrapper = _lastFocusedWrapper[this.props.editorName];
       if (!wrapper) {
         return;
       }
-      const hiddenInput = wrapper.querySelector('input.clipboard');
+      const hiddenInput = wrapper.querySelector("input.clipboard");
       hiddenInput.focus();
       const worked = document.execCommand(type);
       wrapper.focus();
       if (!worked) {
-        const keys = { paste: 'Cmd/Ctrl+V' };
+        const keys = { paste: "Cmd/Ctrl+V" };
         if (keys[type]) {
           // TODO maybe improve msg with HTML
           window.toastr.info(`Press ${keys[type]} to ${type}`);
         }
       }
-    }
+    };
 
     render() {
       const {
@@ -1222,6 +1243,7 @@ function VectorInteractionHOC(Component /* options */) {
             selectionLayerRightClicked: this.selectionLayerRightClicked,
             backgroundRightClicked: this.backgroundRightClicked,
             featureRightClicked: this.featureRightClicked,
+            guideRightClicked: this.guideRightClicked,
             partRightClicked: this.partRightClicked,
             orfRightClicked: this.orfRightClicked,
             deletionLayerRightClicked: this.deletionLayerRightClicked,
@@ -1239,6 +1261,7 @@ function VectorInteractionHOC(Component /* options */) {
           replacementLayerClicked: this.annotationClicked,
           featureClicked: this.annotationClicked,
           partClicked: this.annotationClicked,
+          guideClicked: this.guideClicked,
           searchLayerClicked: this.annotationClicked,
 
           editorDragged: this.editorDragged,

@@ -1,4 +1,3 @@
-import { guideColors } from "ve-sequence-utils";
 import pureNoFunc from "../../utils/pureNoFunc";
 import forEach from "lodash/forEach";
 import React from "react";
@@ -36,10 +35,7 @@ function Guides(props) {
     }
     const { gapsBefore, gapsInside } = getGaps(annotationRange);
     let annotation = annotationRange.annotation;
-    let annotationColor =
-      (annotation.type && guideColors[annotation.type]) ||
-      annotation.color ||
-      "#BBBBBB";
+    let annotationColor = "#BBBBBB";
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,

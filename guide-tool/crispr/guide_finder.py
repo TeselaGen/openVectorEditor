@@ -37,12 +37,11 @@ def guides_from_pam(pam_pos, tsequence, tstart, tend, guide_length, pam, sequenc
             )
 
         guides.append({
+            'id': num,
             'sequence': gseq,
-            'name': 'name%s' %num,
-            'id': 'id%s' %num,
             'start': start,
             'end': end,
-            'pamSite': pam_seq,
+            'pam': pam_seq,
             'forward': forward,
             'thirtymer': thirtymer  # required for scoring
         })

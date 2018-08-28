@@ -1,14 +1,18 @@
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 import uuid from "uniqid";
+import omit from "lodash/omit";
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const updateGuides = createAction("updateGuides");
+export const deleteGuides = createAction("deleteGuides");
+export const clearGuides = createAction("updateGuides");
 // ------------------------------------
 // Reducer
 // ------------------------------------
+
 export default createMergedDefaultStateReducer(
   {
     [updateGuides]: (state, payload) => {
@@ -21,6 +25,20 @@ export default createMergedDefaultStateReducer(
           [idToUse]: { ...(state[idToUse] || {}), ...payload, id: idToUse }
         }
       };
+    },
+    [deleteGuides]: (state, payload) => {
+      let ids;
+      if (Array.isArray(payload)) {
+        ids = payload.map(val => {
+          return val.id || val;
+        });
+      } else {
+        ids = [payload.id || payload];
+      }
+      return { guides: omit(state.guides, ids) };
+    },
+    [clearGuides]: () => {
+      return { guides: {} };
     }
   },
   {

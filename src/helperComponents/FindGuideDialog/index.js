@@ -11,6 +11,7 @@ import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
+import { convertRangeTo0Based } from "ve-range-utils";
 
 export class FindGuideDialog extends React.Component {
   render() {
@@ -18,7 +19,10 @@ export class FindGuideDialog extends React.Component {
       // editorName,
       hideModal,
       sequenceData = { sequence: "" },
-      handleSubmit
+      handleSubmit,
+      updateGuides,
+      findGuides,
+      createGuideToolTab
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
@@ -77,13 +81,16 @@ export class FindGuideDialog extends React.Component {
           </Button>
           <Button
             onClick={handleSubmit(data => {
-              if (!this.props.findGuides)
-                return window.toastr.warning(
-                  "No handler found for this action"
-                );
-              this.props.findGuides(data);
+              //add sequence data
+              data.sequence = sequenceData.sequence;
+              data.circular = sequenceData.circular;
+
+              findGuides(data, updateGuides);
+              createGuideToolTab();
+              hideModal();
             })}
             intent={Intent.PRIMARY}
+            disabled={!findGuides}
           >
             Search
           </Button>
