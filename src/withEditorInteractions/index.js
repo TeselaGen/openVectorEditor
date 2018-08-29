@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { getContext } from "recompose";
 import FileSaver from "file-saver";
 import Keyboard from "./Keyboard";
+import getCommands from "../commands";
 
 import withEditorProps from "../withEditorProps";
 import {
@@ -35,7 +36,8 @@ import Combokeys from "combokeys";
 import PropTypes from "prop-types";
 import {
   showContextMenu,
-  showConfirmationDialog
+  showConfirmationDialog,
+  commandMenuEnhancer
 } from "teselagen-react-components";
 import {
   handleCaretMoved,
@@ -182,6 +184,8 @@ function VectorInteractionHOC(Component /* options */) {
         // Handle shortcut
         this.handleDnaDelete(event);
       });
+
+      this.commandEnhancer = commandMenuEnhancer(getCommands(this));
     }
     updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
       const {
@@ -480,8 +484,8 @@ function VectorInteractionHOC(Component /* options */) {
     getCreateItems = range => {
       const {
         readOnly,
-        showAddOrEditFeatureDialog,
-        showAddOrEditPartDialog,
+        // showAddOrEditFeatureDialog,
+        // showAddOrEditPartDialog,
         showAddOrEditPrimerDialog,
         annotationsToSupport: { parts, primers, features } = {},
         selectionLayer,
@@ -502,18 +506,8 @@ function VectorInteractionHOC(Component /* options */) {
             {
               text: "Create",
               submenu: [
-                features && {
-                  text: "Feature",
-                  onClick: function() {
-                    showAddOrEditFeatureDialog(rangeToUse);
-                  }
-                },
-                parts && {
-                  text: "Part",
-                  onClick: function() {
-                    showAddOrEditPartDialog(rangeToUse);
-                  }
-                },
+                features && "newFeature",
+                parts && "newPart",
                 primers && {
                   text: "Primer",
                   onClick: function() {
@@ -741,7 +735,7 @@ function VectorInteractionHOC(Component /* options */) {
           const override = rightClickOverrides[key];
           showContextMenu(
             override ? override(items, opts, this.props) : items,
-            undefined,
+            undefined, //[this.commandEnhancer],
             e
           );
         };

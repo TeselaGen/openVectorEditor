@@ -199,7 +199,10 @@ const editCommandDefs = {
   },
 
   newFeature: {
-    handler: props => props.handleNewFeature(),
+    handler: (props, state, ctxInfo) => {
+      console.warn("newFeature ctxInfo", ctxInfo);
+      props.handleNewFeature();
+    },
     hotkey: "mod+k"
   },
 
@@ -260,7 +263,7 @@ const annotationToggleCommandDefs = {};
   const cmdId = `toggle${upperFirst(type)}`;
   annotationToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
-    name: (props) => {
+    name: props => {
       const { sequenceData } = props;
       let count;
       let hasCount = false;
@@ -268,26 +271,20 @@ const annotationToggleCommandDefs = {};
         hasCount = true;
         count = Object.keys(sequenceData[type]).length;
       }
-      console.log('sequenceData:',sequenceData)
+      console.log("sequenceData:", sequenceData);
       return (
         <span>
           {startCase(type)}
           &nbsp;
-          {hasCount && (
-            <Tag
-            round
-              style={{ marginLeft: 4 }}
-            >
-              {count}
-            </Tag>
-          )}
+          {hasCount && <Tag round>{count}</Tag>}
         </span>
       );
     },
     handler: props => props.annotationVisibilityToggle(type),
-    isActive: (props) =>
-    {
-      return props && props.annotationVisibility &&  props.annotationVisibility[type]
+    isActive: props => {
+      return (
+        props && props.annotationVisibility && props.annotationVisibility[type]
+      );
     }
   };
 });
