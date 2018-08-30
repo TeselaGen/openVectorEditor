@@ -9554,9 +9554,9 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@23.0.12:
-  version "23.0.12"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.0.12.tgz#5c47ee6fa58b774fb18887dad765f199a2c9d1f5"
+teselagen-react-components@24.0.1:
+  version "24.0.1"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.0.1.tgz#5f03bdf942b58301fc98edd918a560035d11df8f"
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -9576,6 +9576,7 @@ teselagen-react-components@23.0.12:
     pascal-case "^2.0.1"
     paths-js "^0.4.7"
     pluralize "^7.0.0"
+    prop-types "^15.6.2"
     query-string "^5.1.0"
     react-addons-pure-render-mixin "^15.6.0"
     react-dropzone "^4.2.12"
