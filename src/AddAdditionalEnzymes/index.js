@@ -328,28 +328,16 @@ class AddAdditionalEnzymes extends React.Component {
               enzymesToAdd.forEach(function(enzyme) {
                 dispatch({
                   type: "ADD_RESTRICTION_ENZYME",
-                  payload: enzyme.value,
-                  meta: {
-                    EditorNamespace: [
-                      "MutagenesisEditor",
-                      "SelectInsertEditor",
-                      "ResultsEditor"
-                    ]
-                  }
+                  payload: enzyme.value
+                  // meta: {}
                 });
                 dispatch({
                   type: "FILTERED_RESTRICTION_ENZYMES_ADD",
                   payload: {
                     label: enzyme.label,
                     value: enzyme.value.name
-                  },
-                  meta: {
-                    EditorNamespace: [
-                      "MutagenesisEditor",
-                      "SelectInsertEditor",
-                      "ResultsEditor"
-                    ]
                   }
+                  // meta: {}
                 });
               });
               hideModal && hideModal();
@@ -358,7 +346,7 @@ class AddAdditionalEnzymes extends React.Component {
               this.state.enzymesToAdd && this.state.enzymesToAdd.length < 1
             }
           >
-            Add Enzymes
+            Add Enzyme(s)
           </Button>
         </div>
         <div className={"createYourOwnButton"}>
