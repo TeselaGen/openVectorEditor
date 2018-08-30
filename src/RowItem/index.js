@@ -45,6 +45,7 @@ export class RowItem extends React.Component {
       sequenceHeight = 16,
       spaceBetweenAnnotations = 2,
       width,
+      uppercaseSequenceMapFont = "noPreference",
       annotationVisibility = {},
       annotationLabelVisibility = {},
       additionalSelectionLayers = [],
@@ -326,8 +327,10 @@ export class RowItem extends React.Component {
             className="veRowItemSequenceContainer"
             style={{ position: "relative" }}
           >
+            {console.log("uppercaseSequenceMapFont:", uppercaseSequenceMapFont)}
             {showSequence && (
               <Sequence
+                uppercaseSequenceMapFont={uppercaseSequenceMapFont}
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
                 showDnaColors={showDnaColors}
                 hideBps={charWidth < 7}
@@ -357,6 +360,7 @@ export class RowItem extends React.Component {
 
             {showReverseSequence && (
               <Sequence
+                uppercaseSequenceMapFont={uppercaseSequenceMapFont}
                 isReverse
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
                 showDnaColors={showDnaColors}

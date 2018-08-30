@@ -16,19 +16,40 @@ export default [
     text: "ORFs",
     submenu: [
       {
-        cmd: "toggleOrfs",
+        cmd: "toggleOrfs"
       },
       {
-        cmd: "toggleOrfTranslations",
+        cmd: "toggleOrfTranslations"
       },
       {
-        cmd: "toggleCdsFeatureTranslations",
-      },
+        cmd: "toggleCdsFeatureTranslations"
+      }
     ]
   },
   // { cmd: "complementary" },
   // { cmd: "spaces" },
-  {divider: ""},
+  { divider: "" },
+  {
+    text: "Sequence Case (Upper/Lower)",
+    submenu: [
+      {
+        cmd: "toggleSequenceMapFontUpper",
+        text: "Upper Case",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleSequenceMapFontLower",
+        text: "Lower Case",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleSequenceMapFontNoPreference",
+        text: "No Preference",
+        shouldDismissPopover: false
+      }
+    ]
+  },
+  { divider: "" },
   {
     text: "Full Sequence Translation",
     submenu: [
@@ -86,5 +107,5 @@ export default [
 
   { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
   { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
-]
+  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false }
+];

@@ -301,6 +301,7 @@ function mapStateToProps(state, ownProps) {
   } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
+  const { uppercaseSequenceMapFont } = VectorEditor;
   let editorState = VectorEditor[editorName];
 
   if (!editorState) {
@@ -405,7 +406,8 @@ function mapStateToProps(state, ownProps) {
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
-    sequenceData: sequenceDataToUse
+    sequenceData: sequenceDataToUse,
+    uppercaseSequenceMapFont
   };
 }
 
