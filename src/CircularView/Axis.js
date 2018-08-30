@@ -9,10 +9,10 @@ function Axis({
   sequenceLength,
   showAxisNumbers,
   circularAndLinearTickSpacing,
-  tickMarkHeight = 10,
+  tickMarkHeight = 5,
   tickMarkWidth = 1,
-  textOffset = 20,
-  ringThickness = 6
+  textOffset = 15,
+  ringThickness = 4
 }) {
   let height =
     ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
