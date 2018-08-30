@@ -1,8 +1,7 @@
 import React from "react";
-import classnames from "classnames";
-import { Classes, Tag } from "@blueprintjs/core";
+import { Tag } from "@blueprintjs/core";
 import { oveCommandFactory } from "../utils/commandUtils";
-import { upperFirst, startCase } from "lodash";
+import { upperFirst, startCase, get } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 
 const fileCommandDefs = {
@@ -218,6 +217,14 @@ const editCommandDefs = {
     hotkey: "mod+b"
   },
 
+  editFeature: {
+    handler: (props, state, ctxInfo) => {
+      console.warn("editFeature", ctxInfo);
+      const annotation = get(ctxInfo, "context.annotation");
+      props.showAddOrEditFeatureDialog(annotation);
+    }
+  },
+
   ...toggleCopyOptionCommandDefs
 };
 
@@ -271,7 +278,6 @@ const annotationToggleCommandDefs = {};
         hasCount = true;
         count = Object.keys(sequenceData[type]).length;
       }
-      console.log("sequenceData:", sequenceData);
       return (
         <span>
           {startCase(type)}

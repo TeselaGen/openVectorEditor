@@ -484,8 +484,6 @@ function VectorInteractionHOC(Component /* options */) {
     getCreateItems = range => {
       const {
         readOnly,
-        // showAddOrEditFeatureDialog,
-        // showAddOrEditPartDialog,
         showAddOrEditPrimerDialog,
         annotationsToSupport: { parts, primers, features } = {},
         selectionLayer,
@@ -509,6 +507,7 @@ function VectorInteractionHOC(Component /* options */) {
                 features && "newFeature",
                 parts && "newPart",
                 primers && {
+                  // TODO migrate this one to a command too
                   text: "Primer",
                   onClick: function() {
                     showAddOrEditPrimerDialog(rangeToUse);
@@ -735,8 +734,10 @@ function VectorInteractionHOC(Component /* options */) {
           const override = rightClickOverrides[key];
           showContextMenu(
             override ? override(items, opts, this.props) : items,
-            undefined, //[this.commandEnhancer],
-            e
+            [this.commandEnhancer],
+            e,
+            undefined,
+            opts // context here
           );
         };
       });
@@ -875,7 +876,7 @@ function VectorInteractionHOC(Component /* options */) {
         deleteFeature,
         showMergeFeaturesDialog,
         annotationVisibilityToggle,
-        showAddOrEditFeatureDialog,
+        // showAddOrEditFeatureDialog,
         propertiesViewOpen,
         annotationsToSupport: { parts } = {},
         propertiesViewTabUpdate
@@ -884,12 +885,14 @@ function VectorInteractionHOC(Component /* options */) {
         ...(readOnly
           ? []
           : [
-              {
-                text: "Edit Feature",
-                onClick: function() {
-                  showAddOrEditFeatureDialog(annotation);
-                }
-              },
+              "editFeature",
+              // {
+              //   text: "Edit Feature",
+              //   onClick: function() {
+              //     showAddOrEditFeatureDialog(annotation);
+              //   }
+              // },
+              // TODO: migrate others as commands too
               {
                 text: "Delete Feature",
                 onClick: function() {
