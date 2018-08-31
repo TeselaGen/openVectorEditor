@@ -157,7 +157,9 @@ export default createReducer(
             active:
               panelId === panel.id
                 ? true
-                : isPanelInGroup ? false : panel.active
+                : isPanelInGroup
+                  ? false
+                  : panel.active
           };
         });
       });
@@ -173,11 +175,15 @@ export default createReducer(
             active:
               panelId === panel.id
                 ? true
-                : isPanelInGroup ? false : panel.active,
+                : isPanelInGroup
+                  ? false
+                  : panel.active,
             fullScreen:
               panelId === panel.id
                 ? !panel.fullScreen
-                : isPanelInGroup ? false : panel.fullScreen
+                : isPanelInGroup
+                  ? false
+                  : panel.fullScreen
           };
         });
       });
@@ -201,13 +207,6 @@ export default createReducer(
   [
     [
       {
-        id: "sequence",
-        name: "Sequence Map",
-        active: true
-      }
-    ],
-    [
-      {
         id: "circular",
         name: "Plasmid",
         active: true
@@ -216,6 +215,13 @@ export default createReducer(
         id: "rail",
         name: "Linear Map",
         active: false
+      }
+    ],
+    [
+      {
+        id: "sequence",
+        name: "Sequence Map",
+        active: true
       },
       {
         id: "properties",

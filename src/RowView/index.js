@@ -18,7 +18,7 @@ import "./style.css";
 // import Combokeys from "combokeys";
 
 let defaultContainerWidth = 400;
-let defaultCharWidth = 12;
+let defaultCharWidth = 10;
 let defaultMarginWidth = 50;
 
 function noop() {}

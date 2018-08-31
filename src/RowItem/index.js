@@ -328,7 +328,6 @@ export class RowItem extends React.Component {
             className="veRowItemSequenceContainer"
             style={{ position: "relative" }}
           >
-            {console.log("uppercaseSequenceMapFont:", uppercaseSequenceMapFont)}
             {showSequence && (
               <Sequence
                 uppercaseSequenceMapFont={uppercaseSequenceMapFont}
