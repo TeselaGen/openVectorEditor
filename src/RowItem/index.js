@@ -106,6 +106,7 @@ export class RowItem extends React.Component {
       lineageLines: showLineageLines = true,
       // orfLabels: showOrfLabels=true,
       cutsites: showCutsites = true,
+      cutsitesInSequence: showCutsitesInSequence = true,
       axis: showAxis = true,
       axisNumbers: showAxisNumbers = true,
       // yellowAxis: showYellowAxis = false,
@@ -381,7 +382,8 @@ export class RowItem extends React.Component {
                 {deletionLayerStrikeThrough}
               </Sequence>
             )}
-            {cutsiteLabelSelectionLayer.map(function(/* layer */) {
+            {/* 
+              cutsiteLabelSelectionLayer.map(function() {
               return "";
               // let { color = "black" } = layer;
               // return (
@@ -403,8 +405,10 @@ export class RowItem extends React.Component {
               //     />
               //   )
               // );
-            })}
+            })
+             */}
             {showCutsites &&
+              showCutsitesInSequence &&
               Object.keys(cutsites).map(function(id, index) {
                 let cutsite = cutsites[id];
                 let layer = cutsite.annotation.recognitionSiteRange;

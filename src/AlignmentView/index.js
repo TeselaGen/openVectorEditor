@@ -405,6 +405,7 @@ class AlignmentView extends React.Component {
                       searchLayerClicked: this.annotationClicked,
                       hideName: true,
                       sequenceData,
+                      tickSpacing: Math.ceil(120 / charWidthInLinearView),
                       allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
                       editorName: `${
                         isTemplate ? "template_" : ""
