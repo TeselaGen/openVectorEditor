@@ -2,7 +2,7 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import { createMenu } from "teselagen-react-components";
 import "./createVectorEditor";
 import "./style.css";
-
+require("typeface-ubuntu-mono");
 window.tgCreateMenu = createMenu;
 // window.tgCreateMenu = (menu, e, e2) => {
 //   (e||e2).stopPropagation()

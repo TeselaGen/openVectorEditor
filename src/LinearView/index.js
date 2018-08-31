@@ -152,7 +152,7 @@ export class LinearView extends React.Component {
                 tickSpacing: tickSpacing || Math.ceil(120 / charWidth),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
-                  yellowAxis: true,
+                  // yellowAxis: true,
                   translations: false,
                   ...linearViewAnnotationVisibilityOverrides
                 },

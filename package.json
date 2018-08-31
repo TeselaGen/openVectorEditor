@@ -58,6 +58,7 @@
     "reselect": "^3.0.1",
     "tether": "^1.4.1",
     "tg-react-reflex": "^2.0.10",
+    "typeface-ubuntu-mono": "^0.0.54",
     "uniqid": "^4.1.1"
   },
   "peerDependencies": {

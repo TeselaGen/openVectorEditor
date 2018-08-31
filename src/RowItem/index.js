@@ -108,7 +108,7 @@ export class RowItem extends React.Component {
       cutsites: showCutsites = true,
       axis: showAxis = true,
       axisNumbers: showAxisNumbers = true,
-      yellowAxis: showYellowAxis = false,
+      // yellowAxis: showYellowAxis = false,
       caret: showCaret = true,
       dnaColors: showDnaColors = false,
       reverseSequence: showReverseSequence = true,
@@ -435,19 +435,19 @@ export class RowItem extends React.Component {
               })}
           </div>
 
-          {showYellowAxis && (
+          {/* {showYellowAxis && (
             <svg width="100%" height="6px">
               <rect
                 x="0"
                 y="0"
                 width="100%"
-                height="6px"
-                fill="#FFFFB3"
-                stroke="grey"
+                height="4px"
+                fill="white"
+                stroke="black"
                 strokeWidth="1"
               />
             </svg>
-          )}
+          )} */}
 
           {showFeatures &&
             Object.keys(features).length > 0 && (

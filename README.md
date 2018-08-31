@@ -352,7 +352,6 @@ const alignment = window.createAlignmentView(this.node, {
 
 	"alignmentAnnotationVisibility": {
         "features": true,
-        "yellowAxis": false,
         "translations": false,
         "parts": true,
         "orfs": true,

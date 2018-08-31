@@ -34,6 +34,7 @@ class Sequence extends React.Component {
       charWidth,
       containerStyle = {},
       children,
+      isReverse,
       length,
       height,
       className,
@@ -105,7 +106,10 @@ class Sequence extends React.Component {
               return (
                 <text
                   key={i}
-                  className={"ve-monospace-font"}
+                  className={
+                    "ve-monospace-font " +
+                    (isReverse ? " ve-sequence-reverse" : "")
+                  }
                   {...{
                     // x: i * chunkWidth + i/2 * charWidth ,
                     // textLength: charWidth * seqChunk.length - charWidth,
@@ -147,7 +151,10 @@ class Sequence extends React.Component {
               height={height}
             >
               <text
-                className={"ve-monospace-font"}
+                className={
+                  "ve-monospace-font " +
+                  (isReverse ? " ve-sequence-reverse" : "")
+                }
                 {...{
                   x: 0 + fudge / 2,
                   y: height - height / 4,
