@@ -10900,11 +10900,16 @@ span.bp3-popover-target {
 }
 
 .ve-monospace-font {
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: "Ubuntu Mono", "Lucida Console", Monaco, monospace;
   font-size: 12px;
 }
 
+.ve-sequence-reverse {
+  fill: #b0b0b0;
+}
+
 .veCircularView .ve-monospace-font {
+  font-family: "Lucida Console", Monaco, monospace;
   font-size: 14px;
 }
 
@@ -10925,6 +10930,7 @@ span.bp3-popover-target {
   line-height: 7px;
   background: none;
 }
+
 .openVeContextMenu .bp3-icon-standard {
   font-size: 10px;
   height: 10px;
@@ -10933,6 +10939,7 @@ span.bp3-popover-target {
 .veCutsiteLabel {
   font-style: italic;
 }
+
 .veCutsiteLabel:hover {
   font-weight: bold;
 }
@@ -10950,9 +10957,63 @@ span.bp3-popover-target {
 }
 
 /* this is necessary to allow the editor and its portals to sit at the top of the z-index stack for jbei */
+
 .ove-portal {
   z-index: 100000;
 }
+
+/* ubuntu-mono-400normal - latin */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src:
+    local('Ubuntu Mono Regular '),
+    local('Ubuntu Mono-Regular'),
+    url(ubuntu-mono-latin-400.9937c52e.woff2) format('woff2'), 
+    url(ubuntu-mono-latin-400.fda3eddd.woff) format('woff'); /* Modern Browsers */
+}
+
+/* ubuntu-mono-400italic - latin */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src:
+    local('Ubuntu Mono Regular italic'),
+    local('Ubuntu Mono-Regularitalic'),
+    url(ubuntu-mono-latin-400italic.4cbe65be.woff2) format('woff2'), 
+    url(ubuntu-mono-latin-400italic.c2cb57e6.woff) format('woff'); /* Modern Browsers */
+}
+
+/* ubuntu-mono-700normal - latin */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src:
+    local('Ubuntu Mono Bold '),
+    local('Ubuntu Mono-Bold'),
+    url(ubuntu-mono-latin-700.35243340.woff2) format('woff2'), 
+    url(ubuntu-mono-latin-700.15a5b8c8.woff) format('woff'); /* Modern Browsers */
+}
+
+/* ubuntu-mono-700italic - latin */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src:
+    local('Ubuntu Mono Bold italic'),
+    local('Ubuntu Mono-Bolditalic'),
+    url(ubuntu-mono-latin-700italic.b58ee8b3.woff2) format('woff2'), 
+    url(ubuntu-mono-latin-700italic.123009e4.woff) format('woff'); /* Modern Browsers */
+}
+
 
 body.bp3-dark {
   background: #293742;
