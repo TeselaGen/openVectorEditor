@@ -476,13 +476,11 @@ export class Editor extends React.Component {
               onClick={showTabRightClickContextMenu}
               icon="more"
               style={{
-                top: 5,
-                right: 10,
-                left: 0,
+                top: "5px",
                 transform: "rotate(90deg)",
                 position: "absolute",
                 cursor: "pointer",
-                marginTop: 5
+                marginTop: "5px"
               }}
             />
           )}
