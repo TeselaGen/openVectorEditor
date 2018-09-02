@@ -4897,8 +4897,35 @@ table.bp3-html-table.bp3-interactive tbody tr:active td{
 .bp3-dark table.bp3-html-table.bp3-interactive tbody tr:active td{
   background-color:rgba(92, 112, 128, 0.4); }
 
-.bp3-key-combo .bp3-key:not(:last-child){
-  margin-right:5px; }
+.bp3-key-combo{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-orient:horizontal;
+  -webkit-box-direction:normal;
+      -ms-flex-direction:row;
+          flex-direction:row;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center; }
+  .bp3-key-combo > *{
+    -webkit-box-flex:0;
+        -ms-flex-positive:0;
+            flex-grow:0;
+    -ms-flex-negative:0;
+        flex-shrink:0; }
+  .bp3-key-combo > .bp3-fill{
+    -webkit-box-flex:1;
+        -ms-flex-positive:1;
+            flex-grow:1;
+    -ms-flex-negative:1;
+        flex-shrink:1; }
+  .bp3-key-combo::before,
+  .bp3-key-combo > *{
+    margin-right:5px; }
+  .bp3-key-combo:empty::before,
+  .bp3-key-combo > :last-child{
+    margin-right:0; }
 
 .bp3-hotkey-dialog{
   top:40px;
@@ -4935,24 +4962,37 @@ table.bp3-html-table.bp3-interactive tbody tr:active td{
   margin-left:0; }
   .bp3-hotkey:not(:last-child){
     margin-bottom:10px; }
-.bp3-icon, .bp3-icon-standard, .bp3-icon-large{
-  display:inline-block; }
-  .bp3-icon.bp3-intent-primary, .bp3-icon-standard.bp3-intent-primary, .bp3-icon-large.bp3-intent-primary{
-    color:#106ba3; }
-    .bp3-dark .bp3-icon.bp3-intent-primary, .bp3-dark .bp3-icon-standard.bp3-intent-primary, .bp3-dark .bp3-icon-large.bp3-intent-primary{
-      color:#48aff0; }
-  .bp3-icon.bp3-intent-success, .bp3-icon-standard.bp3-intent-success, .bp3-icon-large.bp3-intent-success{
-    color:#0d8050; }
-    .bp3-dark .bp3-icon.bp3-intent-success, .bp3-dark .bp3-icon-standard.bp3-intent-success, .bp3-dark .bp3-icon-large.bp3-intent-success{
-      color:#3dcc91; }
-  .bp3-icon.bp3-intent-warning, .bp3-icon-standard.bp3-intent-warning, .bp3-icon-large.bp3-intent-warning{
-    color:#bf7326; }
-    .bp3-dark .bp3-icon.bp3-intent-warning, .bp3-dark .bp3-icon-standard.bp3-intent-warning, .bp3-dark .bp3-icon-large.bp3-intent-warning{
-      color:#ffb366; }
-  .bp3-icon.bp3-intent-danger, .bp3-icon-standard.bp3-intent-danger, .bp3-icon-large.bp3-intent-danger{
-    color:#c23030; }
-    .bp3-dark .bp3-icon.bp3-intent-danger, .bp3-dark .bp3-icon-standard.bp3-intent-danger, .bp3-dark .bp3-icon-large.bp3-intent-danger{
-      color:#ff7373; }
+.bp3-icon{
+  display:inline-block;
+  -webkit-box-flex:0;
+      -ms-flex:0 0 auto;
+          flex:0 0 auto; }
+  .bp3-icon:not(:empty)::before{
+    content:unset !important; }
+  .bp3-icon > svg{
+    display:block; }
+    .bp3-icon > svg:not([fill]){
+      fill:currentColor; }
+
+.bp3-icon.bp3-intent-primary, .bp3-icon-standard.bp3-intent-primary, .bp3-icon-large.bp3-intent-primary{
+  color:#106ba3; }
+  .bp3-dark .bp3-icon.bp3-intent-primary, .bp3-dark .bp3-icon-standard.bp3-intent-primary, .bp3-dark .bp3-icon-large.bp3-intent-primary{
+    color:#48aff0; }
+
+.bp3-icon.bp3-intent-success, .bp3-icon-standard.bp3-intent-success, .bp3-icon-large.bp3-intent-success{
+  color:#0d8050; }
+  .bp3-dark .bp3-icon.bp3-intent-success, .bp3-dark .bp3-icon-standard.bp3-intent-success, .bp3-dark .bp3-icon-large.bp3-intent-success{
+    color:#3dcc91; }
+
+.bp3-icon.bp3-intent-warning, .bp3-icon-standard.bp3-intent-warning, .bp3-icon-large.bp3-intent-warning{
+  color:#bf7326; }
+  .bp3-dark .bp3-icon.bp3-intent-warning, .bp3-dark .bp3-icon-standard.bp3-intent-warning, .bp3-dark .bp3-icon-large.bp3-intent-warning{
+    color:#ffb366; }
+
+.bp3-icon.bp3-intent-danger, .bp3-icon-standard.bp3-intent-danger, .bp3-icon-large.bp3-intent-danger{
+  color:#c23030; }
+  .bp3-dark .bp3-icon.bp3-intent-danger, .bp3-dark .bp3-icon-standard.bp3-intent-danger, .bp3-dark .bp3-icon-large.bp3-intent-danger{
+    color:#ff7373; }
 
 span.bp3-icon-standard{
   line-height:1;
@@ -4961,7 +5001,8 @@ span.bp3-icon-standard{
   font-weight:400;
   font-style:normal;
   -moz-osx-font-smoothing:grayscale;
-  -webkit-font-smoothing:antialiased; }
+  -webkit-font-smoothing:antialiased;
+  display:inline-block; }
 
 span.bp3-icon-large{
   line-height:1;
@@ -4970,15 +5011,16 @@ span.bp3-icon-large{
   font-weight:400;
   font-style:normal;
   -moz-osx-font-smoothing:grayscale;
-  -webkit-font-smoothing:antialiased; }
+  -webkit-font-smoothing:antialiased;
+  display:inline-block; }
 
-span.bp3-icon{
+span.bp3-icon:empty{
   line-height:1;
   font-family:"Icons20";
   font-size:inherit;
   font-weight:400;
   font-style:normal; }
-  span.bp3-icon::before{
+  span.bp3-icon:empty::before{
     -moz-osx-font-smoothing:grayscale;
     -webkit-font-smoothing:antialiased; }
 
@@ -6319,13 +6361,6 @@ span.bp3-icon{
 
 .bp3-icon-zoom-to-fit::before{
   content:"\E67B"; }
-
-svg.bp3-icon{
-  -webkit-box-flex:0;
-      -ms-flex:0 0 auto;
-          flex:0 0 auto;
-  vertical-align:top;
-  fill:currentColor; }
 .bp3-submenu > .bp3-popover-wrapper{
   display:block; }
 
@@ -7378,33 +7413,31 @@ span.bp3-popover-target{
 
 .bp3-progress-bar.bp3-intent-danger .bp3-progress-meter{
   background-color:#db3737; }
-@-webkit-keyframes glow{
-  0%,
-  100%{
-    border-color:rgba(167, 182, 194, 0.2);
-    background-color:rgba(167, 182, 194, 0.2); }
-  50%{
+@-webkit-keyframes skeleton-glow{
+  from{
+    border-color:rgba(206, 217, 224, 0.2);
+    background:rgba(206, 217, 224, 0.2); }
+  to{
     border-color:rgba(92, 112, 128, 0.2);
-    background-color:rgba(92, 112, 128, 0.2); } }
-@keyframes glow{
-  0%,
-  100%{
-    border-color:rgba(167, 182, 194, 0.2);
-    background-color:rgba(167, 182, 194, 0.2); }
-  50%{
+    background:rgba(92, 112, 128, 0.2); } }
+@keyframes skeleton-glow{
+  from{
+    border-color:rgba(206, 217, 224, 0.2);
+    background:rgba(206, 217, 224, 0.2); }
+  to{
     border-color:rgba(92, 112, 128, 0.2);
-    background-color:rgba(92, 112, 128, 0.2); } }
+    background:rgba(92, 112, 128, 0.2); } }
 .bp3-skeleton{
-  border-color:rgba(167, 182, 194, 0.2) !important;
+  border-color:rgba(206, 217, 224, 0.2) !important;
   border-radius:2px;
   -webkit-box-shadow:none !important;
           box-shadow:none !important;
-  background:rgba(167, 182, 194, 0.2) !important;
+  background:rgba(206, 217, 224, 0.2);
   background-clip:padding-box !important;
   cursor:default;
   color:transparent !important;
-  -webkit-animation:2000ms linear infinite glow;
-          animation:2000ms linear infinite glow;
+  -webkit-animation:1000ms linear infinite alternate skeleton-glow;
+          animation:1000ms linear infinite alternate skeleton-glow;
   pointer-events:none;
   -webkit-user-select:none;
      -moz-user-select:none;
@@ -7658,10 +7691,17 @@ span.bp3-popover-target{
             transform:rotate(360deg); } }
 
 .bp3-spinner{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center;
+  -webkit-box-pack:center;
+      -ms-flex-pack:center;
+          justify-content:center;
   overflow:visible;
-  vertical-align:middle;
-  -webkit-animation:pt-spinner-animation 500ms linear infinite;
-          animation:pt-spinner-animation 500ms linear infinite; }
+  vertical-align:middle; }
   .bp3-spinner svg{
     display:block; }
   .bp3-spinner path{
@@ -7677,7 +7717,11 @@ span.bp3-popover-target{
     stroke-linecap:round; }
   .bp3-spinner .bp3-spinner-track{
     stroke:rgba(92, 112, 128, 0.2); }
-  .bp3-spinner.bp3-no-spin{
+
+.bp3-spinner-animation{
+  -webkit-animation:pt-spinner-animation 500ms linear infinite;
+          animation:pt-spinner-animation 500ms linear infinite; }
+  .bp3-no-spin > .bp3-spinner-animation{
     -webkit-animation:none;
             animation:none; }
 
@@ -7907,9 +7951,6 @@ span.bp3-popover-target{
     .bp3-dark .bp3-tag > .bp3-icon, .bp3-dark .bp3-tag .bp3-icon-standard, .bp3-dark .bp3-tag .bp3-icon-large{
       fill:currentColor; }
   .bp3-tag > .bp3-icon, .bp3-tag .bp3-icon-standard, .bp3-tag .bp3-icon-large{
-    -webkit-box-flex:0;
-        -ms-flex:0 0 auto;
-            flex:0 0 auto;
     fill:#ffffff; }
   .bp3-tag.bp3-large,
   .bp3-large .bp3-tag{
@@ -9720,6 +9761,10 @@ h6.bp3-heading {
 .bp3-dark h4,
 .bp3-dark h5,
 .bp3-dark h6 {
+  color: #f5f8fa;
+}
+.bp3-dark textarea {
+  background: #293742;
   color: #f5f8fa;
 }
 
