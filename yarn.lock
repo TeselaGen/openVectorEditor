@@ -107,9 +107,9 @@
     resize-observer-polyfill "^1.5.0"
     tslib "^1.9.0"
 
-"@blueprintjs/core@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.4.0.tgz#cf5a61fb8288d8a58b892c7005d999c944d30521"
+"@blueprintjs/core@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.5.1.tgz#f8ad2d5c880a871dfd11575ed771e1d2c430e996"
   dependencies:
     "@blueprintjs/icons" "^3.0.0"
     "@types/dom4" "^2.0.0"
@@ -9560,9 +9560,9 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@23.1.11:
-  version "23.1.11"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.1.11.tgz#424b62850a58dca0628c33853b570db5b32b6175"
+teselagen-react-components@24.0.2:
+  version "24.0.2"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.0.2.tgz#76cd10459ebed28898b0525da9f38b6523110c2a"
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -9827,10 +9827,6 @@ typed-styles@^0.0.5:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
-
-typeface-open-sans@^0.0.54:
-  version "0.0.54"
-  resolved "https://registry.yarnpkg.com/typeface-open-sans/-/typeface-open-sans-0.0.54.tgz#20f5b5ea5c7f95d89dc1f8b2d2b1457680129cee"
 
 typeface-ubuntu-mono@^0.0.54:
   version "0.0.54"

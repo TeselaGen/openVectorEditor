@@ -474,7 +474,6 @@ export class Editor extends React.Component {
             <Icon
               className={"veRightClickTabMenu"}
               onClick={showTabRightClickContextMenu}
-              // icon="menu"
               icon="more"
               style={{
                 top: 5,
@@ -484,10 +483,6 @@ export class Editor extends React.Component {
                 position: "absolute",
                 cursor: "pointer",
                 marginTop: 5
-                // paddingLeft: '2px',
-                // paddingRight: '2px',
-                // width: '10px',
-                // maxWidth: '10px',
               }}
             />
           )}

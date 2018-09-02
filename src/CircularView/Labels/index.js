@@ -49,6 +49,14 @@ function Labels({
           radius: annotationCenterRadius,
           angle: annotationCenterAngle
         },
+        truncatedInnerPoint: {
+          ...polarToSpecialCartesian(
+            outerPointRadius - 15,
+            annotationCenterAngle
+          ),
+          radius: outerPointRadius - 15,
+          angle: annotationCenterAngle
+        },
         outerPoint: {
           ...polarToSpecialCartesian(outerPointRadius, annotationCenterAngle),
           radius: outerPointRadius,
@@ -269,7 +277,11 @@ const DrawLabelGroup = withHover(function({
         {text}
       </text>,
       LabelLine(
-        [label.innerPoint, label.outerPoint, label],
+        [
+          hovered ? label.innerPoint : label.truncatedInnerPoint,
+          label.outerPoint,
+          label
+        ],
         hovered ? { style: { opacity: 1 } } : {}
       )
     ];
@@ -294,20 +306,36 @@ function LabelLine(pointArray, options) {
     points += `${x},${y} `;
   });
   return (
-    <polyline
-      {...{
-        key: "polyline",
-        points,
-        stroke: "black",
-        fill: "none",
-        strokeWidth: 1,
-        style: {
-          opacity: 0.2
-        },
-        className: "veLabelLine",
-        ...options
-      }}
-    />
+    <React.Fragment>
+      <polyline
+        {...{
+          key: "polyline",
+          points,
+          stroke: "black",
+          fill: "none",
+          strokeWidth: 1,
+          style: {
+            opacity: 0.2
+          },
+          className: "veLabelLine",
+          ...options
+        }}
+      />
+      <polyline
+        {...{
+          key: "polyline",
+          points,
+          stroke: "black",
+          fill: "none",
+          strokeWidth: 1,
+          style: {
+            opacity: 0.2
+          },
+          className: "veLabelLine",
+          ...options
+        }}
+      />
+    </React.Fragment>
   );
 }
 

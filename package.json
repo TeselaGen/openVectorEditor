@@ -74,7 +74,7 @@
     "ve-sequence-utils": "^3.2.11"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^3.4.0",
+    "@blueprintjs/core": "^3.5.1",
     "@blueprintjs/datetime": "^3.1.0",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.3.7",
@@ -121,7 +121,7 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "23.1.11",
+    "teselagen-react-components": "24.0.2",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
     "ve-sequence-utils": "3.3.2"
