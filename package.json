@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "4.4.27",
+  "version": "4.4.28",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -122,7 +122,6 @@
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
     "teselagen-react-components": "24.0.2",
-
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
     "ve-sequence-utils": "3.3.2"
