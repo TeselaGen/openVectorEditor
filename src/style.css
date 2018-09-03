@@ -1,9 +1,14 @@
 .ve-monospace-font {
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: "Ubuntu Mono", "Lucida Console", Monaco, monospace;
   font-size: 12px;
 }
 
+.ve-sequence-reverse {
+  fill: #b0b0b0;
+}
+
 .veCircularView .ve-monospace-font {
+  font-family: "Lucida Console", Monaco, monospace;
   font-size: 14px;
 }
 
@@ -23,6 +28,7 @@
   line-height: 7px;
   background: none;
 }
+
 .openVeContextMenu .bp3-icon-standard {
   font-size: 10px;
   height: 10px;
@@ -31,6 +37,7 @@
 .veCutsiteLabel {
   font-style: italic;
 }
+
 .veCutsiteLabel:hover {
   font-weight: bold;
 }
@@ -45,4 +52,10 @@
 
 .tg-min-width-dialog {
   min-width: 300px;
+}
+
+/* this is necessary to allow the editor and its portals to sit at the top of the z-index stack for jbei */
+
+.ove-portal {
+  z-index: 100000;
 }

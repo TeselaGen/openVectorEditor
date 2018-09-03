@@ -81,7 +81,8 @@ export default compose(
         if (
           !translationToUpsert.id &&
           some(sequenceData.translations || [], existingTranslation => {
-            if ( //check if an identical existingTranslation exists already
+            if (
+              //check if an identical existingTranslation exists already
               existingTranslation.translationType === "User Created" &&
               existingTranslation.start === translationToUpsert.start &&
               existingTranslation.end === translationToUpsert.end &&
@@ -103,7 +104,7 @@ export default compose(
         _upsertTranslation(translationToUpsert);
       };
     },
-    
+
     //add additional "computed handlers here"
     selectAll: props => () => {
       const { sequenceLength, selectionLayerUpdate } = props;
@@ -300,6 +301,7 @@ function mapStateToProps(state, ownProps) {
   } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
+  const { uppercaseSequenceMapFont } = VectorEditor;
   let editorState = VectorEditor[editorName];
 
   if (!editorState) {
@@ -382,6 +384,11 @@ function mapStateToProps(state, ownProps) {
 
   return {
     ...toReturn,
+    ...(ownProps.handleFullscreenClose && {
+      withPreviewMode: true,
+      previewModeFullscreen: true,
+      togglePreviewFullscreen: ownProps.handleFullscreenClose
+    }),
     selectedCutsites,
     sequenceLength,
     allCutsites,
@@ -399,7 +406,8 @@ function mapStateToProps(state, ownProps) {
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
-    sequenceData: sequenceDataToUse
+    sequenceData: sequenceDataToUse,
+    uppercaseSequenceMapFont
   };
 }
 

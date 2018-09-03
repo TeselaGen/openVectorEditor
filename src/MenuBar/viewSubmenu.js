@@ -30,6 +30,27 @@ export default [
   // { cmd: "spaces" },
   { divider: "" },
   {
+    text: "Sequence Case (Upper/Lower)",
+    submenu: [
+      {
+        cmd: "toggleSequenceMapFontUpper",
+        text: "Upper Case",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleSequenceMapFontLower",
+        text: "Lower Case",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleSequenceMapFontNoPreference",
+        text: "No Preference",
+        shouldDismissPopover: false
+      }
+    ]
+  },
+  { divider: "" },
+  {
     text: "Full Sequence Translation",
     submenu: [
       {

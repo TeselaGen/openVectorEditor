@@ -4,14 +4,24 @@ import { DNAComplementMap } from "ve-sequence-utils";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
-const realCharWidth = 8
+const realCharWidth = 8;
 class Sequence extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
-      ["hideBps", "sequence", "charWidth", "length", "height", "width", "isReverse", "scrollData", "showDnaColors"].some(
-        key => props[key] !== newProps[key]
-      )
+      [
+        "hideBps",
+        "cutsites",
+        "sequence",
+        "charWidth",
+        "length",
+        "height",
+        "width",
+        "isReverse",
+        "uppercaseSequenceMapFont",
+        "scrollData",
+        "showDnaColors"
+      ].some(key => props[key] !== newProps[key])
     )
       return true;
     if (!!props.alignmentData !== !!newProps.alignmentData) return true;
@@ -24,9 +34,11 @@ class Sequence extends React.Component {
       charWidth,
       containerStyle = {},
       children,
+      isReverse,
       length,
       height,
       className,
+      uppercaseSequenceMapFont,
       startOffset = 0,
       chunkSize = 100,
       scrollData,
@@ -35,8 +47,8 @@ class Sequence extends React.Component {
       alignmentData
     } = this.props;
     // const fudge = 0
-    const fudge = (charWidth - realCharWidth); // the fudge factor is used to position the sequence in the middle of the 
-    // const fudge = charWidth * 0.4; // the fudge factor is used to position the sequence in the middle of the 
+    const fudge = charWidth - realCharWidth; // the fudge factor is used to position the sequence in the middle of the
+    // const fudge = charWidth * 0.4; // the fudge factor is used to position the sequence in the middle of the
     let gapsBeforeSequence = 0;
     let seqReadWidth = 0;
     if (alignmentData) {
@@ -65,7 +77,6 @@ class Sequence extends React.Component {
         fractionScrolled: { percentScrolled },
         viewportWidth
       } = scrollData;
-      
 
       const visibleStart = percentScrolled * (width - viewportWidth);
       const visibleEnd = visibleStart + viewportWidth;
@@ -88,8 +99,6 @@ class Sequence extends React.Component {
             {times(numChunks, i => {
               const seqChunk = getChunk(sequence, chunkSize, i);
 
-              
-
               const textLength = charWidth * seqChunk.length - fudge;
               const x = i * chunkWidth;
 
@@ -97,7 +106,10 @@ class Sequence extends React.Component {
               return (
                 <text
                   key={i}
-                  className={"ve-monospace-font"}
+                  className={
+                    "ve-monospace-font " +
+                    (isReverse ? " ve-sequence-reverse" : "")
+                  }
                   {...{
                     // x: i * chunkWidth + i/2 * charWidth ,
                     // textLength: charWidth * seqChunk.length - charWidth,
@@ -107,7 +119,11 @@ class Sequence extends React.Component {
                     lengthAdjust: "spacing"
                   }}
                 >
-                  {seqChunk}
+                  {uppercaseSequenceMapFont === "uppercase"
+                    ? seqChunk.toUpperCase()
+                    : uppercaseSequenceMapFont === "lowercase"
+                      ? seqChunk.toLowerCase()
+                      : seqChunk}
                 </text>
               );
             })}
@@ -135,15 +151,22 @@ class Sequence extends React.Component {
               height={height}
             >
               <text
-                className={"ve-monospace-font"}
+                className={
+                  "ve-monospace-font " +
+                  (isReverse ? " ve-sequence-reverse" : "")
+                }
                 {...{
-                  x: 0 + fudge/2, 
+                  x: 0 + fudge / 2,
                   y: height - height / 4,
                   textLength: (alignmentData ? seqReadWidth : width) - fudge,
                   lengthAdjust: "spacing"
                 }}
               >
-                {sequence}
+                {uppercaseSequenceMapFont === "uppercase"
+                  ? sequence.toUpperCase()
+                  : uppercaseSequenceMapFont === "lowercase"
+                    ? sequence.toLowerCase()
+                    : sequence}
               </text>
             </svg>
           )}
@@ -193,7 +216,7 @@ class ColoredSequence extends React.Component {
       return acc;
     }, {});
 
-    sequence.split("").map((char, i) => {
+    sequence.split("").forEach((char, i) => {
       const width = charWidth;
       const x = i * charWidth;
       const y = 0;
@@ -202,11 +225,13 @@ class ColoredSequence extends React.Component {
         `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${y +
           height}`;
     });
-    return <g>
-      {map(colorPaths, (d, color) => {
-        return <path key={color} d={d} fill={color}></path>
-      })}
-    </g>;
+    return (
+      <g>
+        {map(colorPaths, (d, color) => {
+          return <path key={color} d={d} fill={color} />;
+        })}
+      </g>
+    );
   };
   render() {
     const { height } = this.props;

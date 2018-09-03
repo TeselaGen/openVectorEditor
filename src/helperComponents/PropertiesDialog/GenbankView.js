@@ -10,7 +10,16 @@ class GenbankView extends React.Component {
     return (
       <textarea
         readOnly
-        style={{ fontFamily: "monospace", width: 540, height: 350 }}
+        // wrap="soft"
+        style={{
+          whiteSpace: "pre",
+          overflowWrap: "normal",
+          overflowX: "scroll",
+          fontSize: 11,
+          fontFamily: "monospace",
+          width: 540,
+          height: 350
+        }}
         value={genbankString}
       />
     );

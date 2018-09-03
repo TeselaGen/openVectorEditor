@@ -9,10 +9,10 @@ function Axis({
   sequenceLength,
   showAxisNumbers,
   circularAndLinearTickSpacing,
-  tickMarkHeight = 10,
+  tickMarkHeight = 5,
   tickMarkWidth = 1,
-  textOffset = 20,
-  ringThickness = 6
+  textOffset = 15,
+  ringThickness = 4
 }) {
   let height =
     ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
@@ -69,7 +69,7 @@ function Axis({
         id="circularViewAxis"
         key="circleOuter"
         r={radiusToUse + ringThickness}
-        style={{ fill: "#FFFFB3", stroke: "black", strokeWidth: 0.5 }}
+        style={{ fill: "white", stroke: "black", strokeWidth: 0.5 }}
       />
       <circle
         id="circularViewAxis"

@@ -114,7 +114,7 @@ then add the links
 
 ```html
 <script>
-const editor = window.createVectorEditor(yourDomNodeHere, editorProps);
+const editor = window.createVectorEditor(yourDomNodeHere || "createDomNodeForMe", editorProps); /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
 editor.updateEditor(editorState);	
 </script>
 ```
@@ -133,6 +133,14 @@ These props consist of hooks and editor config options that can be passed like s
 ```js
 {
 	shouldAutosave: true, //by default the editor does not autosave, setting this to true will trigger the onSave callback after any change to the sequenceData
+	//supplying this function WILL make the editor FULLSCREEN BY DEFAULT
+	handleFullscreenClose: () => { 
+		//do whatever you want here
+		//UMD only:
+		editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
+	},
+	showReadOnly: false, //default true
+  disableSetReadOnly: true, //default false
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
 		console.info("event:", event);
 		console.info("sequenceData:", sequenceDataToSave);
@@ -252,6 +260,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 		parts: []
 	},
 	sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
+	sequenceDataHistory: {}, //clear the sequenceDataHistory if there is any left over from a previous sequence
 	annotationVisibility: {
 		features: false
 	},
@@ -343,7 +352,6 @@ const alignment = window.createAlignmentView(this.node, {
 
 	"alignmentAnnotationVisibility": {
         "features": true,
-        "yellowAxis": false,
         "translations": false,
         "parts": true,
         "orfs": true,

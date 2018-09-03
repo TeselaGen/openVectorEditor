@@ -3,10 +3,14 @@ import { Button } from "@blueprintjs/core";
 // import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
+  constructor(props) {
+    super(props);
+    const scalePct = 0.05;
+    this.state = { scalePct };
+  }
   componentDidMount() {
     const { charWidth } = this.props;
-    const scalePct = 0.05;
-    this.setState({ scalePct });
+    const { scalePct } = this.state;
     this.updatePeakDrawing(scalePct, charWidth);
   }
   shouldComponentUpdate(newProps) {

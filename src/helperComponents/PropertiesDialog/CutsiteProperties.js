@@ -109,7 +109,6 @@ class CutsiteProperties extends React.Component {
       // allCutsites,
       editorName,
       annotationVisibilityShow,
-      withDigestTool,
       createNewDigest,
       filteredCutsites: allCutsites
       // sequenceData: {cutsites: {cutsitesByName}}={}
@@ -133,9 +132,10 @@ class CutsiteProperties extends React.Component {
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{display: 'flex', }}>
+        <div style={{ display: "flex" }}>
+          <Button style={{ cursor: "auto" }} disabled minimal icon="filter" />
           <CutsiteFilter
-          style={{flexGrow: 1}}
+            style={{ flexGrow: 1 }}
             editorName={editorName}
             onChangeHook={function() {
               annotationVisibilityShow("cutsites");
@@ -143,7 +143,7 @@ class CutsiteProperties extends React.Component {
           />
 
           <Button
-            style={{marginLeft: 15, flexGrow: -1}}
+            style={{ marginLeft: 15, flexGrow: -1 }}
             onClick={() => {
               createNewDigest();
             }}

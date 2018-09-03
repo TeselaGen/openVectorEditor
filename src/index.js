@@ -4,6 +4,7 @@ import "./createVectorEditor";
 import "./style.css";
 
 window.tgCreateMenu = showContextMenu;
+require("typeface-ubuntu-mono");
 // window.tgCreateMenu = (menu, e, e2) => {
 //   (e||e2).stopPropagation()
 //   (e || e2)

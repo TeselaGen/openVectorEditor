@@ -7,8 +7,3 @@
 .dialog-buttons > * {
   margin-left: 10px;
 }
-
-.react-draggable {
-  /* TODO: maybe fix this in TRC */
-  min-height: 100px !important;
-}

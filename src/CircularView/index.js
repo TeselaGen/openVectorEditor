@@ -173,7 +173,8 @@ export class CircularView extends React.Component {
         layer: drawFeatures,
         zIndex: 20,
         layerName: "Features",
-        spaceBefore: 10
+        // spaceBefore: 10,
+        spaceAfter: 5
       },
       { layer: drawPrimers, zIndex: 20, layerName: "Primers" },
       {
@@ -662,7 +663,7 @@ export class CircularView extends React.Component {
             >
               {annotationsSvgs}
             </svg>
-            <div className={"veCircularViewWarningContainer1"}>
+            <div className={"veCircularViewWarningContainer"}>
               {paredDownOrfs && (
                 <VeWarning
                   message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}

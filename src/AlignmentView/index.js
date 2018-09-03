@@ -10,7 +10,7 @@ import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
-import Mismatches from "./Mismatches";
+// import Mismatches from "./Mismatches";
 
 // import withEditorProps from "../withEditorProps";
 // import withEditorInteractions from "../withEditorInteractions";
@@ -63,7 +63,8 @@ class AlignmentView extends React.Component {
   }
   componentDidMount() {
     reset();
-    const userAlignmentViewPercentageHeight = this.alignmentHolder.clientHeight / this.alignmentHolder.scrollHeight
+    const userAlignmentViewPercentageHeight =
+      this.alignmentHolder.clientHeight / this.alignmentHolder.scrollHeight;
     this.setState({ userAlignmentViewPercentageHeight });
   }
   componentWillMount() {
@@ -123,7 +124,7 @@ class AlignmentView extends React.Component {
     // console.log('highlighting')
     let {
       selectionLayer = { start: -1, end: -1 },
-      ignoreGapsOnHighlight,
+      // ignoreGapsOnHighlight,
       alignmentId,
       alignmentRunUpdate
     } = this.props;
@@ -165,13 +166,13 @@ class AlignmentView extends React.Component {
     }
     this.setState({ scrollAlignmentView: false });
   };
-  syncScrolling = (controlScroll) => {
+  syncScrolling = controlScroll => {
     if (controlScroll === "enableAlignmentViewScroll") {
       this.setState({ scrollAlignmentView: true });
     } else if (controlScroll === "disableMinimapScroll") {
       this.setState({ scrollMinimap: false });
     }
-  }
+  };
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const { dimensions } = this.props;
     const verticalPercent = this.easyStore.verticalPercentScrolled;
@@ -187,7 +188,10 @@ class AlignmentView extends React.Component {
     });
   };
 
-  updateToScrollPercentage = (scrollPercentage, verticalScrollPercentage /* optionalLength */) => {
+  updateToScrollPercentage = (
+    scrollPercentage,
+    verticalScrollPercentage /* optionalLength */
+  ) => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
@@ -197,14 +201,16 @@ class AlignmentView extends React.Component {
     this.alignmentHolder.scrollTop =
       Math.min(Math.max(verticalScrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollHeight - this.alignmentHolder.clientHeight);
-
   };
   render() {
     // console.log('this.props in alignment view:',this.props)
-    let { charWidthInLinearView, userAlignmentViewPercentageHeight } = this.state;
+    let {
+      charWidthInLinearView,
+      userAlignmentViewPercentageHeight
+    } = this.state;
     const {
       alignmentTracks = [],
-      dimensions: { width },
+      // dimensions: { width },
       dimensions,
       noClickDragHandlers,
       height,
@@ -234,7 +240,7 @@ class AlignmentView extends React.Component {
       return "corrupted data!";
     }
 
-    const trackWidth = width - nameDivWidth || 400;
+    // const trackWidth = width - nameDivWidth || 400;
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
@@ -399,6 +405,7 @@ class AlignmentView extends React.Component {
                       searchLayerClicked: this.annotationClicked,
                       hideName: true,
                       sequenceData,
+                      tickSpacing: Math.ceil(120 / charWidthInLinearView),
                       allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
                       editorName: `${
                         isTemplate ? "template_" : ""
@@ -548,7 +555,7 @@ class AlignmentView extends React.Component {
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
                 userAlignmentViewPercentageHeight: userAlignmentViewPercentageHeight,
                 scrollAlignmentView: this.state.scrollAlignmentView,
-                scrollMinimap: this.state.scrollMinimap,
+                scrollMinimap: this.state.scrollMinimap
               }}
               onMinimapScroll={this.updateToScrollPercentage}
               syncScrolling={this.syncScrolling}
@@ -583,8 +590,7 @@ export default compose(
         alignmentAnnotationLabelVisibility,
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 }
-      } =
-        alignment || {};
+      } = alignment || {};
       if (loading) {
         return {
           loading: true
@@ -755,7 +761,6 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
     return {
       linearViewAnnotationVisibilityOverrides: {
         features: false,
-        yellowAxis: false,
         translations: false,
         parts: false,
         orfs: false,
