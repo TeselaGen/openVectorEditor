@@ -485,12 +485,10 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         readOnly,
         showAddOrEditPrimerDialog,
-        showFindGuideDialog,
         annotationsToSupport: { parts, primers, features } = {},
         selectionLayer,
         caretPosition,
-        sequenceLength,
-        guideTool
+        sequenceLength
       } = this.props;
       let rangeToUse =
         range ||
@@ -513,12 +511,6 @@ function VectorInteractionHOC(Component /* options */) {
                   text: "Primer",
                   onClick: function() {
                     showAddOrEditPrimerDialog(rangeToUse);
-                  }
-                },
-                guideTool.guides && {
-                  text: "Guide RNAs",
-                  onClick: function() {
-                    showFindGuideDialog(rangeToUse);
                   }
                 }
               ]
@@ -835,7 +827,8 @@ function VectorInteractionHOC(Component /* options */) {
         deletePart,
         showAddOrEditPartDialog,
         propertiesViewOpen,
-        propertiesViewTabUpdate
+        propertiesViewTabUpdate,
+        showFindGuideDialog
       } = this.props;
       return [
         ...(readOnly
@@ -871,6 +864,16 @@ function VectorInteractionHOC(Component /* options */) {
           onClick: function() {
             propertiesViewOpen();
             propertiesViewTabUpdate("parts", annotation);
+          }
+        },
+        {
+          text: "Find Guides",
+          onClick: function() {
+            showFindGuideDialog({
+              start: annotation.start,
+              end: annotation.end,
+              partId: annotation.id
+            });
           }
         }
       ];

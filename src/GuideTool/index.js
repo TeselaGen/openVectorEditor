@@ -48,12 +48,6 @@ class GuideTool extends React.Component {
           </Button>
           <Button
             style={{ marginRight: 15 }}
-            //onClick={onExport}
-          >
-            Export
-          </Button>
-          <Button
-            style={{ marginRight: 15 }}
             disabled={!guideTableSelectedEntities.length || !upsertGuides}
             onClick={() => {
               upsertGuides(guideTableSelectedEntities);

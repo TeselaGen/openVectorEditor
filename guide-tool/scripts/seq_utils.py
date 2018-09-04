@@ -36,3 +36,10 @@ def reverse_complement_str(seq):
     seq = bp_seq.reverse_complement()
     seq = str(seq)
     return seq
+
+
+def slice_circ_str(seq, start, stop):
+    if (start <= stop):
+        return seq[start:stop]
+    else:
+        return seq[start:] + seq[:stop]

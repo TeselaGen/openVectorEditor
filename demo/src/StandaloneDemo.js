@@ -1,7 +1,6 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { convertRangeTo0Based } from "ve-range-utils";
 
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import { Dialog, Button } from "@blueprintjs/core";
@@ -102,8 +101,8 @@ export default class StandaloneDemo extends React.Component {
           },
           //todo this prop should be used to enable disable the guide tool 
           //and is where any server connection should be made
-          findGuides: (data, updateGuides) => {
-            fetch('http://localhost:5000', {
+          findGuides: (data) => {
+            return fetch('http://localhost:5000', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -117,14 +116,12 @@ export default class StandaloneDemo extends React.Component {
               }
               return response.json();
             }).then((guides) => {
-              guides ?
-              guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
-              window.toastr.error("No guides found")
+              return guides
             }).catch((e) => {
               console.error(e)
             });
           },
-          getSequenceAtVersion: versionId => {
+            getSequenceAtVersion: versionId => {
             if (versionId === 2) {
               return {
                 sequence: "thomaswashere"

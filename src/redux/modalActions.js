@@ -68,7 +68,8 @@ export function showFindGuideDialog(annotation, { editorName }) {
         ? {
             ...convertRangeTo1Based(annotation)
           }
-        : {}
+        : {},
+      partId: annotation.partId
     }
   };
 }
@@ -80,7 +81,7 @@ export function showMergeFeaturesDialog(annotation, { editorName }) {
       editorName: editorName,
       dialogProps: {
         title: "Merge Features"
-      },
+      }
     }
   };
 }

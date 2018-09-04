@@ -8,7 +8,7 @@ import omit from "lodash/omit";
 // ------------------------------------
 export const updateGuides = createAction("updateGuides");
 export const deleteGuides = createAction("deleteGuides");
-export const clearGuides = createAction("updateGuides");
+export const clearGuides = createAction("clearGuides");
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -17,12 +17,20 @@ export default createMergedDefaultStateReducer(
   {
     [updateGuides]: (state, payload) => {
       //guides should be 0-based inclusive! aka start: 0, end: 0 is a single basepair feature starting at the first bp
-      const idToUse = payload.id || uuid();
+      const newGuides = payload.reduce((acc, guide) => {
+        const idToUse = guide.id || uuid();
+        acc[idToUse] = {
+          ...(state.guides[idToUse] || {}),
+          ...guide,
+          id: idToUse
+        };
+        return acc;
+      }, {});
       return {
         ...state,
         guides: {
           ...state.guides,
-          [idToUse]: { ...(state[idToUse] || {}), ...payload, id: idToUse }
+          ...newGuides
         }
       };
     },

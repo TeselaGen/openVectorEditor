@@ -11,7 +11,6 @@ import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
-import { convertRangeTo0Based } from "ve-range-utils";
 
 export class FindGuideDialog extends React.Component {
   render() {
@@ -22,7 +21,9 @@ export class FindGuideDialog extends React.Component {
       handleSubmit,
       updateGuides,
       findGuides,
-      createGuideToolTab
+      createGuideToolTab,
+      partId,
+      partName
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
@@ -80,13 +81,25 @@ export class FindGuideDialog extends React.Component {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit(data => {
-              //add sequence data
-              data.sequence = sequenceData.sequence;
-              data.circular = sequenceData.circular;
-
-              findGuides(data, updateGuides);
-              createGuideToolTab();
+            onClick={handleSubmit(async data => {
+              const guides = await findGuides({
+                data: [
+                  {
+                    sequence: sequenceData.sequence,
+                    start: data.start - 1,
+                    end: data.end - 1,
+                    partId: partId
+                  }
+                ],
+                options: {
+                  guideLength: data.guideLength,
+                  pamSite: data.pamSite
+                }
+              });
+              if (guides && guides.length) {
+                createGuideToolTab();
+                updateGuides(guides);
+              } else window.toastr.error("No guides found");
               hideModal();
             })}
             intent={Intent.PRIMARY}
