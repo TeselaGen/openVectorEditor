@@ -50,7 +50,6 @@ class PartProperties extends React.Component {
           schema={{
             fields: [
               { path: "name", type: "string" },
-              { path: "type", type: "string" },
               {
                 path: "size",
                 type: "string",

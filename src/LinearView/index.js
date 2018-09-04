@@ -149,11 +149,15 @@ export class LinearView extends React.Component {
                 sequenceLength: this.getMaxLength(),
                 width: innerWidth,
                 bpsPerRow,
-                tickSpacing: tickSpacing || Math.ceil(120 / charWidth),
+                tickSpacing:
+                  tickSpacing || Math.floor(this.getMaxLength() / 10),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
-                  yellowAxis: true,
+                  // yellowAxis: true,
                   translations: false,
+                  reverseSequence: false,
+                  sequence: false,
+                  cutsitesInSequence: false,
                   ...linearViewAnnotationVisibilityOverrides
                 },
                 ...RowItemProps

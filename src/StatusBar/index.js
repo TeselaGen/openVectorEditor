@@ -13,6 +13,7 @@ export function StatusBar({
   readOnly,
   sequenceData: { circular, materiallyAvailable } = {},
   onSave,
+  disableSetReadOnly,
   updateCircular,
   updateAvailability,
   updateReadOnlyMode,
@@ -37,6 +38,7 @@ export function StatusBar({
             { label: "Read Only", value: "readOnly" },
             { label: "Editable", value: "editable" }
           ]}
+          disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
           className={Classes.MINIMAL}
           value={readOnly ? "readOnly" : "editable"}
           onChange={value => {
@@ -48,7 +50,7 @@ export function StatusBar({
       ) : (
         "Editable"
       )),
-      
+
     showCircularity &&
       (readOnly ? (
         circular ? (
@@ -70,22 +72,22 @@ export function StatusBar({
         />
       )),
     showAvailability &&
-    (readOnly ? (
-      materiallyAvailable ? (
-        "available"
-      ) : (
+      (readOnly ? (
+        materiallyAvailable ? (
+          "available"
+        ) : (
           "unavailable"
         )
-    ) : (
+      ) : (
         <BPSelect
           onChange={val => {
-            updateAvailability(val === 'available');
+            updateAvailability(val === "available");
           }}
           className={Classes.MINIMAL}
-          value={materiallyAvailable ? 'available' : 'unavailable'}
+          value={materiallyAvailable ? "available" : "unavailable"}
           options={[
-            { label: "Available", value: 'available' },
-            { label: "Unavailable", value: 'unavailable' }
+            { label: "Available", value: "available" },
+            { label: "Unavailable", value: "unavailable" }
           ]}
         />
       )),
@@ -106,7 +108,9 @@ export function StatusBar({
             return false;
           }
           if (selectionLayer.start > -1) {
-            if (getRangeLength(selectionLayer, sequenceLength) === sequenceLength) {
+            if (
+              getRangeLength(selectionLayer, sequenceLength) === sequenceLength
+            ) {
               caretPositionUpdate(selectionLayer.start);
             } else {
               selectionLayerUpdate(invertRange(selectionLayer, sequenceLength));

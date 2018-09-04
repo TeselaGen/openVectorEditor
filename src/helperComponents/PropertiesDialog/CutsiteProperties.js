@@ -1,7 +1,6 @@
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
-import { Icon } from "@blueprintjs/core";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
@@ -110,7 +109,6 @@ class CutsiteProperties extends React.Component {
       // allCutsites,
       editorName,
       annotationVisibilityShow,
-      withDigestTool,
       createNewDigest,
       filteredCutsites: allCutsites
       // sequenceData: {cutsites: {cutsitesByName}}={}

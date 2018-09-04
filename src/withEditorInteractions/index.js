@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { getContext } from "recompose";
 import FileSaver from "file-saver";
 import Keyboard from "./Keyboard";
+import getCommands from "../commands";
 
 import withEditorProps from "../withEditorProps";
 import {
@@ -33,7 +34,11 @@ import moveCaret from "./moveCaret";
 // import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
-import { createMenu, showConfirmationDialog } from "teselagen-react-components";
+import {
+  showContextMenu,
+  showConfirmationDialog,
+  commandMenuEnhancer
+} from "teselagen-react-components";
 import {
   handleCaretMoved,
   editorDragged,
@@ -179,6 +184,8 @@ function VectorInteractionHOC(Component /* options */) {
         // Handle shortcut
         this.handleDnaDelete(event);
       });
+
+      this.commandEnhancer = commandMenuEnhancer(getCommands(this));
     }
     updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
       const {
@@ -477,8 +484,6 @@ function VectorInteractionHOC(Component /* options */) {
     getCreateItems = range => {
       const {
         readOnly,
-        showAddOrEditFeatureDialog,
-        showAddOrEditPartDialog,
         showAddOrEditPrimerDialog,
         showFindGuideDialog,
         annotationsToSupport: { parts, primers, features } = {},
@@ -501,19 +506,10 @@ function VectorInteractionHOC(Component /* options */) {
             {
               text: "Create",
               submenu: [
-                features && {
-                  text: "Feature",
-                  onClick: function() {
-                    showAddOrEditFeatureDialog(rangeToUse);
-                  }
-                },
-                parts && {
-                  text: "Part",
-                  onClick: function() {
-                    showAddOrEditPartDialog(rangeToUse);
-                  }
-                },
+                features && "newFeature",
+                parts && "newPart",
                 primers && {
+                  // TODO migrate this one to a command too
                   text: "Primer",
                   onClick: function() {
                     showAddOrEditPrimerDialog(rangeToUse);
@@ -744,10 +740,12 @@ function VectorInteractionHOC(Component /* options */) {
           e.stopPropagation && e.stopPropagation();
           //override hook here
           const override = rightClickOverrides[key];
-          createMenu(
+          showContextMenu(
             override ? override(items, opts, this.props) : items,
+            [this.commandEnhancer],
+            e,
             undefined,
-            e
+            opts // context here
           );
         };
       });
@@ -908,7 +906,7 @@ function VectorInteractionHOC(Component /* options */) {
         deleteFeature,
         showMergeFeaturesDialog,
         annotationVisibilityToggle,
-        showAddOrEditFeatureDialog,
+        // showAddOrEditFeatureDialog,
         propertiesViewOpen,
         annotationsToSupport: { parts } = {},
         propertiesViewTabUpdate
@@ -917,12 +915,14 @@ function VectorInteractionHOC(Component /* options */) {
         ...(readOnly
           ? []
           : [
-              {
-                text: "Edit Feature",
-                onClick: function() {
-                  showAddOrEditFeatureDialog(annotation);
-                }
-              },
+              "editFeature",
+              // {
+              //   text: "Edit Feature",
+              //   onClick: function() {
+              //     showAddOrEditFeatureDialog(annotation);
+              //   }
+              // },
+              // TODO: migrate others as commands too
               {
                 text: "Delete Feature",
                 onClick: function() {

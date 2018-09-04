@@ -1,12 +1,11 @@
 import React from "react";
 import { Icon, Menu, Popover } from "@blueprintjs/core";
-import { createMenu } from "teselagen-react-components";
-import { applyCommandsToMenu } from "../utils/__temp_menuUtils";
+import { createCommandMenu } from "teselagen-react-components";
 import getCommands from "../commands";
 
 export default {
   updateKeys: ["toggleDropdown"],
-  itemProps: (props) => {
+  itemProps: props => {
     return {
       tooltip: "Export",
       Icon: (
@@ -16,18 +15,15 @@ export default {
           transitionDuration={0}
           content={
             <Menu>
-              {createMenu(
-                applyCommandsToMenu(
-                  [{ cmd: "exportSequenceAsGenbank" }, { cmd: "exportSequenceAsFasta" }],
-                  getCommands({ props })
-                )
+              {createCommandMenu(
+                ["exportSequenceAsGenbank", "exportSequenceAsFasta"],
+                getCommands({ props })
               )}
             </Menu>
           }
         >
           <Icon icon="export" />
         </Popover>
-
       )
     };
   }

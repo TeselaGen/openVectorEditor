@@ -4,7 +4,6 @@ import {
 } from "ve-sequence-utils";
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
-
 import { /* createReducer, */ createAction } from "redux-act";
 
 // import createAction from "./utils/createMetaAction";
@@ -28,13 +27,11 @@ const defaultAlignmentAnnotationVisibility = {
   reverseSequence: false,
   lineageLines: false,
   dnaColors: true,
-  axisNumbers: true,
-  yellowAxis: false
+  axisNumbers: true
 };
 
 const defaultPairwiseAlignmentAnnotationVisibility = {
   features: true,
-  yellowAxis: false,
   translations: false,
   parts: true,
   orfs: true,
@@ -96,7 +93,6 @@ function addHighlightedDifferences(alignmentTracks) {
   });
 }
 
-
 // alignmentTracks = addHighlightedDifferences(alignmentTracks);
 
 // ------------------------------------
@@ -127,7 +123,10 @@ export default (state = {}, { payload = {}, type }) => {
       ...payload
     };
     if (payloadToUse.pairwiseAlignments) {
-      if (payloadToUse.pairwiseAlignments[0][0].alignmentData.matchStart !== undefined) {
+      if (
+        payloadToUse.pairwiseAlignments[0][0].alignmentData.matchStart !==
+        undefined
+      ) {
         payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
           addDashesForMatchStartAndEndForTracks
         );
@@ -157,7 +156,7 @@ export default (state = {}, { payload = {}, type }) => {
             ...highlightRangeProps
           });
         }
-         re = /g+/gi;
+        re = /g+/gi;
         // let match;
         while ((match = re.exec(condensedSeq)) != null) {
           additionalSelectionLayers.push({
@@ -226,7 +225,8 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
 
   const startIndex = seqLength - nonTempSeqWithoutLeadingDashes.length;
-  const endIndex = seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
+  const endIndex =
+    seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
   for (let index = startIndex; index < endIndex; index++) {
     const isMatch =
       tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();

@@ -1,7 +1,7 @@
 import React from "react";
 import { Tag } from "@blueprintjs/core";
 import { oveCommandFactory } from "../utils/commandUtils";
-import { upperFirst, startCase } from "lodash";
+import { upperFirst, startCase, get } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 
 const fileCommandDefs = {
@@ -185,7 +185,26 @@ const editCommandDefs = {
     isDisabled: props => !hasSelection(props),
     handler: props => props.handleComplementSequence()
   },
-
+  toggleSequenceMapFontUpper: {
+    isActive: props => props.uppercaseSequenceMapFont === "uppercase",
+    handler: props => {
+      props.updateSequenceCase("uppercase");
+    }
+  },
+  toggleSequenceMapFontLower: {
+    isActive: props => props.uppercaseSequenceMapFont === "lowercase",
+    handler: props => {
+      props.updateSequenceCase("lowercase");
+    }
+  },
+  toggleSequenceMapFontNoPreference: {
+    isActive: props =>
+      !props.uppercaseSequenceMapFont ||
+      props.uppercaseSequenceMapFont === "noPreference",
+    handler: props => {
+      props.updateSequenceCase("noPreference");
+    }
+  },
   reverseComplementSelection: {
     isDisabled: props => !hasSelection(props),
     handler: props => props.handleReverseComplementSelection(),
@@ -198,7 +217,10 @@ const editCommandDefs = {
   },
 
   newFeature: {
-    handler: props => props.handleNewFeature(),
+    handler: (props, state, ctxInfo) => {
+      console.warn("newFeature ctxInfo", ctxInfo);
+      props.handleNewFeature();
+    },
     hotkey: "mod+k"
   },
 
@@ -212,6 +234,14 @@ const editCommandDefs = {
     isDisabled: props => props.caretPosition === -1,
     handler: props => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
+  },
+
+  editFeature: {
+    handler: (props, state, ctxInfo) => {
+      console.warn("editFeature", ctxInfo);
+      const annotation = get(ctxInfo, "context.annotation");
+      props.showAddOrEditFeatureDialog(annotation);
+    }
   },
 
   ...toggleCopyOptionCommandDefs

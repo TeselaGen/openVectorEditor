@@ -27,169 +27,178 @@ export default class StandaloneDemo extends React.Component {
   mountEditor = () => {
     let editor;
     setTimeout(() => {
-      editor = window.createVectorEditor(this.node, {
-        doNotUseAbsolutePosition: true,
-        shouldAutosave: true,
-        showAvailability: true, //set to tru to show the material availabilty status
-        rightClickOverrides: {
-          selectionLayerRightClicked: (items, { annotation }, props) => {
+      editor = window.createVectorEditor(
+        this.node, // or you can pass "createDomNodeForMe" but make sure to use editor.close() to clean up the dom node!
+        {
+          //you can also pass a DOM node as the first arg here
+          doNotUseAbsolutePosition: true,
+          // showReadOnly: false,
+          // disableSetReadOnly: true,
+          shouldAutosave: true,
+          showAvailability: true, //set to tru to show the material availabilty status
+          rightClickOverrides: {
+            selectionLayerRightClicked: (items, { annotation }, props) => {
+              return [
+                ...items,
+                {
+                  text: "Create Part",
+                  onClick: () => console.info("hey!≈")
+                }
+              ];
+            }
+          },
+          // handleFullscreenClose: () => { //comment this function in to make the editor fullscreen by default
+          //   editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
+          // },
+          onRename: () => {}, //this option should be shown by default
+          onNewSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
+          onDeleteSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
+          onDuplicateSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
+          onSave: function(
+            event,
+            sequenceDataToSave,
+            editorState,
+            onSuccessCallback
+          ) {
+            console.info("event:", event);
+            console.info("sequenceData:", sequenceDataToSave);
+            console.info("editorState:", editorState);
+            // To disable the save button after successful saving
+            // either call the onSuccessCallback or return a successful promise :)
+            onSuccessCallback();
+            //or
+            // return myPromiseBasedApiCall()
+          },
+          onDelete: data => {
+            console.warn("would delete", data);
+          },
+          onCopy: function(event, copiedSequenceData, editorState) {
+            //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
+            const clipboardData = event.clipboardData;
+            clipboardData.setData("text/plain", copiedSequenceData.sequence);
+            clipboardData.setData(
+              "application/json",
+              //for example here you could change teselagen parts into jbei parts
+              JSON.stringify(copiedSequenceData)
+            );
+            event.preventDefault();
+            //in onPaste in your app you can do:
+            // e.clipboardData.getData('application/json')
+          },
+          onPaste: function(event, editorState) {
+            //the onPaste here must return sequenceData in the teselagen data format
+            const clipboardData = event.clipboardData;
+            let jsonData = clipboardData.getData("application/json");
+            if (jsonData) {
+              jsonData = JSON.parse(jsonData);
+              if (jsonData.isJbeiSeq) {
+                jsonData = convertJbeiToTeselagen(jsonData);
+              }
+            }
+            const sequenceData = jsonData || {
+              sequence: clipboardData.getData("text/plain")
+            };
+            return sequenceData;
+          },
+          //todo this prop should be used to enable disable the guide tool 
+          //and is where any server connection should be made
+          findGuides: (data, updateGuides) => {
+            fetch('http://localhost:5000', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
+            }).then(
+              (response) => {
+              if (response.status !== 200) {
+                // TODO: display error
+              }
+              return response.json();
+            }).then((guides) => {
+              guides ?
+              guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
+              window.toastr.error("No guides found")
+            }).catch((e) => {
+              console.error(e)
+            });
+          },
+          getSequenceAtVersion: versionId => {
+            if (versionId === 2) {
+              return {
+                sequence: "thomaswashere"
+              };
+            } else if ((versionId = 3)) {
+              return {
+                features: [{ start: 4, end: 6 }],
+                sequence:
+                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+              };
+            } else {
+              console.error("we shouldn't be here...");
+              return {
+                sequence: "taa"
+              };
+            }
+          },
+          getVersionList: () => {
             return [
-              ...items,
               {
-                text: "Create Part",
-                onClick: () => console.info("hey!≈")
+                dateChanged: "12/30/2211",
+                editedBy: "Nara",
+                // revisionType: "Sequence Deletion",
+                versionId: 2
+              },
+              {
+                dateChanged: "8/30/2211",
+                editedBy: "Ralph",
+                // revisionType: "Feature Edit",
+                versionId: 3
               }
             ];
+          },
+          readOnly: false,
+          showMenuBar: true,
+          PropertiesProps: {
+            propertiesList: [
+              "general",
+              "features",
+              "parts",
+              "primers",
+              "translations",
+              "cutsites",
+              "orfs",
+              "genbank"
+            ]
+          },
+          ToolBarProps: {
+            toolList: [
+              "saveTool",
+              {
+                name: "downloadTool",
+                Dropdown: () => {
+                  return "Hey! This is an example of how toolbar items can be overridden";
+                }
+              },
+              "importTool",
+              "undoTool",
+              "redoTool",
+              "cutsiteTool",
+              "featureTool",
+              "alignmentTool",
+              "versionHistoryTool",
+              // "oligoTool",
+              "orfTool",
+              // "viewTool",
+              "editTool",
+              "findTool",
+              "visibilityTool"
+              // "propertiesTool"
+            ]
           }
-        },
-        onRename: () => {}, //this option should be shown by default
-        onNewSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
-        onDeleteSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
-        onDuplicateSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
-        onSave: function(
-          event,
-          sequenceDataToSave,
-          editorState,
-          onSuccessCallback
-        ) {
-          console.info("event:", event);
-          console.info("sequenceData:", sequenceDataToSave);
-          console.info("editorState:", editorState);
-          // To disable the save button after successful saving
-          // either call the onSuccessCallback or return a successful promise :)
-          onSuccessCallback();
-          //or
-          // return myPromiseBasedApiCall()
-        },
-        onDelete: data => {
-          console.warn('would delete', data);
-        },
-        onCopy: function(event, copiedSequenceData, editorState) {
-          //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-          const clipboardData = event.clipboardData;
-          clipboardData.setData("text/plain", copiedSequenceData.sequence);
-          clipboardData.setData(
-            "application/json",
-            //for example here you could change teselagen parts into jbei parts
-            JSON.stringify(copiedSequenceData)
-          );
-          event.preventDefault();
-          //in onPaste in your app you can do:
-          // e.clipboardData.getData('application/json')
-        },
-        onPaste: function(event, editorState) {
-          //the onPaste here must return sequenceData in the teselagen data format
-          const clipboardData = event.clipboardData;
-          let jsonData = clipboardData.getData("application/json");
-          if (jsonData) {
-            jsonData = JSON.parse(jsonData);
-            if (jsonData.isJbeiSeq) {
-              jsonData = convertJbeiToTeselagen(jsonData);
-            }
-          }
-          const sequenceData = jsonData || {
-            sequence: clipboardData.getData("text/plain")
-          };
-          return sequenceData;
-        },
-        //todo this prop should be used to enable disable the guide tool 
-        //and is where any server connection should be made
-        findGuides: (data, updateGuides) => {
-          fetch('http://localhost:5000', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-          }).then(
-            (response) => {
-            if (response.status !== 200) {
-              // TODO: display error
-            }
-            return response.json();
-          }).then((guides) => {
-            guides ?
-            guides.map(guide => updateGuides(convertRangeTo0Based(guide))) :
-            window.toastr.error("No guides found")
-          }).catch((e) => {
-            console.error(e)
-          });
-        },
-        getSequenceAtVersion: versionId => {
-          if (versionId === 2) {
-            return {
-              sequence: "thomaswashere"
-            };
-          } else if ((versionId = 3)) {
-            return {
-              features: [{ start: 4, end: 6 }],
-              sequence:
-                "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
-            };
-          } else {
-            console.error("we shouldn't be here...");
-            return {
-              sequence: "taa"
-            };
-          }
-        },
-        getVersionList: () => {
-          return [
-            {
-              dateChanged: "12/30/2211",
-              editedBy: "Nara",
-              // revisionType: "Sequence Deletion",
-              versionId: 2
-            },
-            {
-              dateChanged: "8/30/2211",
-              editedBy: "Ralph",
-              // revisionType: "Feature Edit",
-              versionId: 3
-            }
-          ];
-        },
-        readOnly: false,
-        showMenuBar: true,
-        PropertiesProps: {
-          propertiesList: [
-            "general",
-            "features",
-            "parts",
-            "primers",
-            "translations",
-            "cutsites",
-            "orfs",
-            "genbank"
-          ]
-        },
-        ToolBarProps: {
-          toolList: [
-            "saveTool",
-            {
-              name: "downloadTool",
-              Dropdown: () => {
-                return "Hey! This is an example of how toolbar items can be overridden";
-              }
-            },
-            "importTool",
-            "undoTool",
-            "redoTool",
-            "cutsiteTool",
-            "featureTool",
-            "alignmentTool",
-            "versionHistoryTool",
-            // "oligoTool",
-            "orfTool",
-            // "viewTool",
-            "editTool",
-            "findTool",
-            "visibilityTool"
-            // "propertiesTool"
-          ]
         }
-      });
+      );
       setTimeout(() => {
         console.log("editor.getState():", editor.getState());
       }, 10000);

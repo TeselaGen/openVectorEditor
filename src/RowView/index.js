@@ -18,7 +18,7 @@ import "./style.css";
 // import Combokeys from "combokeys";
 
 let defaultContainerWidth = 400;
-let defaultCharWidth = 12;
+let defaultCharWidth = 10;
 let defaultMarginWidth = 50;
 
 function noop() {}
@@ -119,40 +119,37 @@ export class RowView extends React.Component {
     let height = 10; //account for spacer
     const row = this.rowData[index];
     if (!row) return 0;
-    forEach(
-      annotationsToCompute,
-      (
-        {
-          fixedHeight,
-          margin = 0,
-          isLabel,
-          isAlwaysShown,
-          annotationHeight,
-          computeHeight,
-          hasYOffset,
-          type
-        },
-        key,
-        i
-      ) => {
-        const isShown =
-          isAlwaysShown ||
-          (isLabel
-            ? annotationLabelVisibility[type] && annotationVisibility[key]
-            : annotationVisibility[key]);
-        if (!isShown) return;
-        if (fixedHeight) return (height += fixedHeight);
-        const annotations = row[type || key];
-        if (hasYOffset) {
-          let maxYOffset = 0;
-          annotations.forEach(a => {
-            if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
-          });
-          height += maxYOffset * annotationHeight;
-          if (maxYOffset > 0) height += margin;
-        }
+    forEach(annotationsToCompute, (
+      {
+        fixedHeight,
+        margin = 0,
+        isLabel,
+        isAlwaysShown,
+        annotationHeight,
+        // computeHeight,
+        hasYOffset,
+        type
+      },
+      key
+      // i
+    ) => {
+      const isShown =
+        isAlwaysShown ||
+        (isLabel
+          ? annotationLabelVisibility[type] && annotationVisibility[key]
+          : annotationVisibility[key]);
+      if (!isShown) return;
+      if (fixedHeight) return (height += fixedHeight);
+      const annotations = row[type || key];
+      if (hasYOffset) {
+        let maxYOffset = 0;
+        annotations.forEach(a => {
+          if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
+        });
+        height += maxYOffset * annotationHeight;
+        if (maxYOffset > 0) height += margin;
       }
-    );
+    });
     cache[index] = height;
     return height;
   };

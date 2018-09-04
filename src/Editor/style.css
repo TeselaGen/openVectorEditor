@@ -69,4 +69,12 @@
   display: flex;
 }
 
+.preview-mode-view-fullscreen:hover {
+  background: #0e5a8a;
+}
+
+.bp3-menu-item span.bp3-tag {
+  transform: scale(0.8);
+}
+
 @import url(darkmode.css);

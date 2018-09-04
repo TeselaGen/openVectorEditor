@@ -1,12 +1,7 @@
 import { Icon, Menu } from "@blueprintjs/core";
 import React from "react";
-import { createMenu } from "teselagen-react-components";
+import { createCommandMenu } from "teselagen-react-components";
 import viewSubmenu from "../MenuBar/viewSubmenu";
-import {
-  applyCommandsToMenu,
-  addMenuTexts,
-  addMenuTicks
-} from "../utils/__temp_menuUtils";
 import getCommands from "../commands";
 
 export default {
@@ -26,16 +21,10 @@ export default {
 function VisibilityOptions(props) {
   return (
     <Menu>
-      {createMenu(
-        addMenuTicks(
-          addMenuTexts(
-            applyCommandsToMenu(viewSubmenu, getCommands({ props }), {
-              useTicks: true,
-              omitIcons: true
-            })
-          )
-        )
-      )}
+      {createCommandMenu(viewSubmenu, getCommands({ props }), {
+        useTicks: true,
+        omitIcons: true
+      })}
     </Menu>
   );
 }

@@ -30,7 +30,7 @@ export default {
       noDropdownIcon: true,
       tooltip: alignmentTool.isOpen
         ? "Hide Alignment Tool"
-        : "Show Alignment Tool"
+        : "Align to This Sequence"
     };
   }
 };
@@ -51,7 +51,8 @@ class AlignmentToolDropdown extends React.Component {
           onClick={() => {
             toggleDropdown();
             showCreateAlignmentDialog({
-              ...this.props,
+              createNewAlignment: this.props.createNewAlignment,
+              upsertAlignmentRun: this.props.upsertAlignmentRun,
               initialValues: {
                 addedSequences: [{ ...sequenceData, isTemplate: true }]
               }
@@ -86,21 +87,22 @@ class AlignmentTool extends React.Component {
   state = {
     templateSeqIndex: 0
   };
-  sendSelectedDataToBackendForAlignment = async ({
-    addedSequences,
-    isPairwiseAlignment,
-    isAlignToRefSeq,
-    isAutotrimmedSeq
-  }) => {
+  sendSelectedDataToBackendForAlignment = async values => {
+    const {
+      addedSequences,
+      isPairwiseAlignment,
+      isAlignToRefSeq,
+      isAutotrimmedSeq
+    } = values;
+    // console.log('values:',values)
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
-      createNewMismatchesList,
+      // createNewMismatchesList,
       upsertAlignmentRun
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
-    // console.log('addedSequencesToUse:',addedSequencesToUse)
 
     let addedSequencesToUseTrimmed;
     if (isAutotrimmedSeq) {
@@ -144,7 +146,7 @@ class AlignmentTool extends React.Component {
 
     hideModal();
     const alignmentId = uniqid();
-    const alignmentIdMismatches = uniqid();
+    // const alignmentIdMismatches = uniqid();
     createNewAlignment({
       id: alignmentId,
       name: seqsToAlign[0].name + " Alignment"
@@ -328,9 +330,10 @@ class AlignmentTool extends React.Component {
               );
             })}
           </div>
-
+          <br />
           <CheckboxField
             name="isPairwiseAlignment"
+            style={{ display: "flex", alignItems: "center" }}
             label={
               <div>
                 Create Pairwise Alignment{" "}
@@ -344,6 +347,7 @@ class AlignmentTool extends React.Component {
           />
           <CheckboxField
             name="isAlignToRefSeq"
+            style={{ display: "flex", alignItems: "center" }}
             label={
               <div>
                 Align Sequencing Reads to Reference Sequence{" "}
@@ -355,6 +359,7 @@ class AlignmentTool extends React.Component {
           />
           <CheckboxField
             name="isAutotrimmedSeq"
+            style={{ display: "flex", alignItems: "center" }}
             label={
               <div>
                 Auto-Trim Sequences{" "}
@@ -395,7 +400,7 @@ class AlignmentTool extends React.Component {
         )}
 
         <FieldArray
-          name={`addedSequences`}
+          name="addedSequences"
           templateSeqIndex={templateSeqIndex}
           component={this.renderAddSequence}
         />
@@ -408,7 +413,7 @@ export const AlignmentToolInner = reduxForm({
   form: "veAlignmentTool"
   // initialValues: {
   //   addedSequences: []
-  // },
+  // }
 })(AlignmentTool);
 
 const AddYourOwnSeqForm = reduxForm({

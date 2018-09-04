@@ -18,6 +18,7 @@ class Sequence extends React.Component {
         "height",
         "width",
         "isReverse",
+        "uppercaseSequenceMapFont",
         "scrollData",
         "showDnaColors"
       ].some(key => props[key] !== newProps[key])
@@ -33,9 +34,11 @@ class Sequence extends React.Component {
       charWidth,
       containerStyle = {},
       children,
+      isReverse,
       length,
       height,
       className,
+      uppercaseSequenceMapFont,
       startOffset = 0,
       chunkSize = 100,
       scrollData,
@@ -103,7 +106,10 @@ class Sequence extends React.Component {
               return (
                 <text
                   key={i}
-                  className={"ve-monospace-font"}
+                  className={
+                    "ve-monospace-font " +
+                    (isReverse ? " ve-sequence-reverse" : "")
+                  }
                   {...{
                     // x: i * chunkWidth + i/2 * charWidth ,
                     // textLength: charWidth * seqChunk.length - charWidth,
@@ -113,7 +119,11 @@ class Sequence extends React.Component {
                     lengthAdjust: "spacing"
                   }}
                 >
-                  {seqChunk}
+                  {uppercaseSequenceMapFont === "uppercase"
+                    ? seqChunk.toUpperCase()
+                    : uppercaseSequenceMapFont === "lowercase"
+                      ? seqChunk.toLowerCase()
+                      : seqChunk}
                 </text>
               );
             })}
@@ -141,7 +151,10 @@ class Sequence extends React.Component {
               height={height}
             >
               <text
-                className={"ve-monospace-font"}
+                className={
+                  "ve-monospace-font " +
+                  (isReverse ? " ve-sequence-reverse" : "")
+                }
                 {...{
                   x: 0 + fudge / 2,
                   y: height - height / 4,
@@ -149,7 +162,11 @@ class Sequence extends React.Component {
                   lengthAdjust: "spacing"
                 }}
               >
-                {sequence}
+                {uppercaseSequenceMapFont === "uppercase"
+                  ? sequence.toUpperCase()
+                  : uppercaseSequenceMapFont === "lowercase"
+                    ? sequence.toLowerCase()
+                    : sequence}
               </text>
             </svg>
           )}
@@ -199,7 +216,7 @@ class ColoredSequence extends React.Component {
       return acc;
     }, {});
 
-    sequence.split("").map((char, i) => {
+    sequence.split("").forEach((char, i) => {
       const width = charWidth;
       const x = i * charWidth;
       const y = 0;

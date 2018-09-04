@@ -1,6 +1,8 @@
 import { debounce } from "lodash";
-import { createMenu } from "teselagen-react-components";
+
+import { showContextMenu } from "teselagen-react-components";
 import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
+import PropTypes from "prop-types";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import GuideTool from "../GuideTool";
@@ -113,6 +115,10 @@ export class Editor extends React.Component {
     return [];
   };
 
+  getChildContext() {
+    //tnrtodo this will need to be updated once blueprint uses the react 16 api
+    return { blueprintPortalClassName: "ove-portal" };
+  }
   componentDidUpdate(prevProps) {
     //autosave if necessary!
     if (
@@ -397,7 +403,7 @@ export class Editor extends React.Component {
 
       const showTabRightClickContextMenu = (e, id) => {
         const tabIdToUse = id || activePanelId;
-        createMenu(
+        showContextMenu(
           [
             {
               onClick: () => {
@@ -469,24 +475,15 @@ export class Editor extends React.Component {
             </Tooltip>
           ) : (
             <Icon
-              small
-              minimal
               className={"veRightClickTabMenu"}
               onClick={showTabRightClickContextMenu}
-              // icon="menu"
               icon="more"
               style={{
-                top: 5,
-                right: 10,
-                left: 0,
+                top: "5px",
                 transform: "rotate(90deg)",
                 position: "absolute",
                 cursor: "pointer",
-                marginTop: 5
-                // paddingLeft: '2px',
-                // paddingRight: '2px',
-                // width: '10px',
-                // maxWidth: '10px',
+                marginTop: "5px"
               }}
             />
           )}
@@ -787,5 +784,9 @@ export class Editor extends React.Component {
     );
   }
 }
+
+Editor.childContextTypes = {
+  blueprintPortalClassName: PropTypes.string
+};
 
 export default compose(withEditorProps)(Editor);

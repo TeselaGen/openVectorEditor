@@ -27,8 +27,10 @@ import * as selectionLayer from "./selectionLayer";
 import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
+import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 
 import createAction from "./utils/createMetaAction";
+
 export vectorEditorMiddleware from "./middleware";
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_INITIALIZE");
@@ -52,6 +54,7 @@ export const actions = {
   ...copyOptions,
   ...lineageLines,
   ...alignments,
+  ...uppercaseSequenceMapFont,
   ...digestTool,
   ...frameTranslations,
   ...lastSavedId,
@@ -147,6 +150,10 @@ export default function reducerFactory(initialState = {}) {
       //these are reducers that are not editor specific (aka shared across editor instances)
       addYourOwnEnzyme: addYourOwnEnzyme.default(
         state.addYourOwnEnzyme,
+        action
+      ),
+      uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
+        state.uppercaseSequenceMapFont,
         action
       ),
       alignments: alignments.default(state.alignments, action)
