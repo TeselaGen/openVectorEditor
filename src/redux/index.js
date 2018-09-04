@@ -33,7 +33,7 @@ import createAction from "./utils/createMetaAction";
 
 export vectorEditorMiddleware from "./middleware";
 
-const vectorEditorInitialize = createAction("VECTOR_EDITOR_INITIALIZE");
+const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
 const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
 
 //export the actions for use elsewhere
@@ -120,7 +120,7 @@ export default function reducerFactory(initialState = {}) {
       //we're dealing with an action specific to a given editor
       editorNames.forEach(function(editorName) {
         let currentState = state[editorName];
-        if (action.type === "VECTOR_EDITOR_INITIALIZE") {
+        if (action.type === "VECTOR_EDITOR_UPDATE") {
           //merge the exisiting state with the new payload of props (if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
           currentState = { ...state[editorName], ...(action.payload || {}) };
         }
