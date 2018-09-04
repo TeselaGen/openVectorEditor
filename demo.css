@@ -10907,6 +10907,16 @@ span.bp3-popover-target {
   display: flex;
 }
 
+.preview-mode-view-fullscreen:hover {
+  background: #0e5a8a;
+}
+
+.bp3-menu-item span.bp3-tag {
+  -webkit-transform: scale(0.8);
+      -ms-transform: scale(0.8);
+          transform: scale(0.8);
+}
+
 .ve-digest-markings {
 }
 .ve-digest-ladder {
