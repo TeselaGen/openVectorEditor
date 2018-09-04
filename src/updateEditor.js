@@ -7,7 +7,7 @@ export default function updateEditor(
   initialValues = {},
   extraMeta = {}
 ) {
-  const { sequenceData = {}, ...rest } = initialValues;
+  const { sequenceData, ...rest } = initialValues;
   const initialValuesToUse = {
     ...rest,
     ...(sequenceData && {
