@@ -10,13 +10,16 @@ export default function updateEditor(
   const { sequenceData = {}, ...rest } = initialValues;
   const initialValuesToUse = {
     ...rest,
-    sequenceData: tidyUpSequenceData(sequenceData, {
-      annotationsAsObjects: true
+    ...(sequenceData && {
+      sequenceData: tidyUpSequenceData(sequenceData, {
+        //if we have sequence data coming in make sure to tidy it up for the user :)
+        annotationsAsObjects: true
+      })
     })
   };
 
   store.dispatch({
-    type: "VECTOR_EDITOR_INITIALIZE",
+    type: "VECTOR_EDITOR_UPDATE",
     payload: initialValuesToUse,
     meta: {
       editorName,
