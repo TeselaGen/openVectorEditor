@@ -1,7 +1,7 @@
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 import uuid from "uniqid";
-import omit from "lodash/omit";
+import { omit, difference } from "lodash";
 
 // ------------------------------------
 // Actions
@@ -17,7 +17,21 @@ export default createMergedDefaultStateReducer(
   {
     [updateGuides]: (state, payload) => {
       //guides should be 0-based inclusive! aka start: 0, end: 0 is a single basepair feature starting at the first bp
-      const newGuides = payload.reduce((acc, guide) => {
+
+      // check for duplicates
+      const duplicatedGuides = payload.filter(e =>
+        Object.values(state.guides).some(
+          g =>
+            e.target === g.target &&
+            e.start === g.start &&
+            e.end === g.end &&
+            Boolean(e.forward) === Boolean(g.forward)
+        )
+      );
+
+      const nonDuplicatedGuides = difference(payload, duplicatedGuides);
+
+      const newGuides = nonDuplicatedGuides.reduce((acc, guide) => {
         const idToUse = guide.id || uuid();
         acc[idToUse] = {
           ...(state.guides[idToUse] || {}),
@@ -26,6 +40,7 @@ export default createMergedDefaultStateReducer(
         };
         return acc;
       }, {});
+
       return {
         ...state,
         guides: {

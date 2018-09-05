@@ -880,17 +880,11 @@ function VectorInteractionHOC(Component /* options */) {
     };
     guideRightClicked = ({ annotation }) => {
       this.props.selectionLayerUpdate(annotation);
-      const { readOnly, deleteGuides, createGuideToolTab } = this.props;
+      const { readOnly, createGuideToolTab } = this.props;
       return [
         ...(readOnly
           ? []
           : [
-              {
-                text: "Delete Guide",
-                onClick: function() {
-                  deleteGuides(annotation);
-                }
-              },
               {
                 text: "View Guide Properties",
                 onClick: function() {

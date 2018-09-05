@@ -2,14 +2,14 @@ import azimuth.model_comparison
 import numpy as np
 
 
-def calc_ontarget(guides, key, min_score=0, cut_off=None):
+def calc_ontarget(guides, key, min_score=40, cut_off=None):
     """
     Takes as input a list of dictionaries with thirtymer key
     Calculates on-target score with Azimuth scoring algorithm
     (https://github.com/MicrosoftResearch/Azimuth)
     Returns list of dictionaries without thirtymer key and 'onTargetScore'
     """
-
+    print('Min:', min_score)
     # collect thirtymers from guides
     thirtymers = []
     for g in guides:

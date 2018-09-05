@@ -35,7 +35,7 @@ function Guides(props) {
     }
     const { gapsBefore, gapsInside } = getGaps(annotationRange);
     let annotation = annotationRange.annotation;
-    let annotationColor = "#D6D6D6";
+    let annotationColor = "purple";
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
@@ -72,7 +72,7 @@ function Guides(props) {
             annotation.forward
           )}
           height={annotationHeight}
-          name={Math.ceil(annotation.onTargetScore)}
+          name={Math.round(annotation.onTargetScore)}
         />
       </AnnotationPositioner>
     );

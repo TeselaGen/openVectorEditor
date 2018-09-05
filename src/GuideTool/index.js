@@ -23,7 +23,8 @@ class GuideTool extends React.Component {
       upsertGuides
     } = this.props;
     const { guides } = this.props.guideTool || {};
-    const entities = guides ? Object.values(guides) : null;
+    let entities = guides ? Object.values(guides) : null;
+
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
@@ -63,6 +64,7 @@ class GuideTool extends React.Component {
 
 const schema = {
   fields: [
+    { path: "target", displayName: "Target", type: "string" },
     {
       path: "start",
       displayName: "Position",

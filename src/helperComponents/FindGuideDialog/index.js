@@ -22,10 +22,10 @@ export class FindGuideDialog extends React.Component {
       updateGuides,
       findGuides,
       createGuideToolTab,
-      partId,
-      partName
+      partId
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
+    const partName = sequenceData.parts[partId].name;
     return (
       <div
         className={classNames(
@@ -98,6 +98,9 @@ export class FindGuideDialog extends React.Component {
               });
               if (guides && guides.length) {
                 createGuideToolTab();
+                guides.forEach(function(g) {
+                  g.target = partName;
+                });
                 updateGuides(guides);
               } else window.toastr.error("No guides found");
               hideModal();

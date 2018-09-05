@@ -34,7 +34,6 @@ def guides_from_pam(pam_pos, tsequence, tstart, tend, guide_length, pam, sequenc
                 slice_circ_str(sequence,(start-6) % len(sequence), (end+5) % len(sequence))  # (-PAM-3,+4)
             )
         guides.append({
-            'id': "%s%s" % (("F" if forward else "R"), start),
             'sequence': gseq,
             'start': start,
             'end': end,

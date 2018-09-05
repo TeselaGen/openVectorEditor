@@ -17,12 +17,12 @@ def get_guides(data, options):
         sequence = str(seq.get('sequence'))
         start = int(seq.get('start'))
         end = int(seq.get('end'))
-        partId = str(seq.get('partId'))
+        part = str(seq.get('partId'))
 
         # find all possible guides
         guides = find_guides(sequence, start, end, guide_length, pam)
         for g in guides:
-            g['partId'] = partId
+            g['partId'] = part
 
         # make prediction
         if guides:
