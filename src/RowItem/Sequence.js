@@ -236,6 +236,10 @@ class ColoredSequence extends React.Component {
   render() {
     const { height } = this.props;
     // if (sequence.length > 100000) return null
-    return <svg height={height}>{this.drawRects()}</svg>;
+    return (
+      <svg style={{ display: "block" }} height={height}>
+        {this.drawRects()}
+      </svg>
+    );
   }
 }

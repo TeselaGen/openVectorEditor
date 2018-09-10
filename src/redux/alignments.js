@@ -26,7 +26,8 @@ const defaultAlignmentAnnotationVisibility = {
   primers: false,
   reverseSequence: false,
   lineageLines: false,
-  dnaColors: true,
+  dnaColors: false,
+  sequence: true,
   axisNumbers: true
 };
 
@@ -39,7 +40,8 @@ const defaultPairwiseAlignmentAnnotationVisibility = {
   cdsFeatureTranslations: false,
   axis: true,
   cutsites: false,
-  dnaColors: true,
+  dnaColors: false,
+  sequence: true,
   primers: true,
   reverseSequence: false,
   lineageLines: true,

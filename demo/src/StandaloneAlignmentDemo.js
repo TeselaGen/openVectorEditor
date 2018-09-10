@@ -1,13 +1,27 @@
 import React from "react";
 
 import { Dialog, Button } from "@blueprintjs/core";
+import {times} from "lodash";
+import {generateSequenceData} from "ve-sequence-utils";
+
 // import ab1ParsedGFPuv54 from "../../src/ToolBar/ab1ParsedGFPuv54.json";
-// import ab1ParsedGFPuv58 from "../../src/ToolBar/ab1ParsedGFPuv58.json";
-// import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
-import alignmentDataPairwise from "./exampleData/jbeiPairwiseAlignmnent_23_2018.json";
-// import alignmentDataPairwise from "./exampleData/jbeiPairwiseAlignmnent_29_2018.json";
+// import exampleAlignmentData from "../../src/ToolBar/ab1ParsedGFPuv58.json";
+// import exampleAlignmentData from "./exampleData/alignmentDataPairwise.json";
+// import exampleAlignmentData from "./exampleData/jbeiPairwiseAlignmnent_23_2018.json";
+// import exampleAlignmentData from "./exampleData/jbeiPairwiseAlignmnent_29_2018.json";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
+
+const exampleAlignmentData = {alignmentTracks: times(100).map(() => {
+  return {
+    sequenceData: {
+      ...generateSequenceData(100)
+    },
+    alignmentData: {
+      ...generateSequenceData(100)
+    }
+  }
+})}
 
 export default class StandaloneAlignmentDemo extends React.Component {
   state = {
@@ -15,7 +29,7 @@ export default class StandaloneAlignmentDemo extends React.Component {
   };
   mountEditor = () => {
     const alignment = window.createAlignmentView(this.node, {
-      ...alignmentDataPairwise,
+      ...exampleAlignmentData,
       id: "pairwiseRun1",
       linearViewOptions: () => {
         return {
@@ -33,9 +47,9 @@ export default class StandaloneAlignmentDemo extends React.Component {
         };
       }
     });
-    setInterval(()=>{
+    setTimeout(()=>{
       console.log('alignment.getState():',alignment.getState())
-    },5000)
+    },10000)
   };
   componentDidMount() {
     this.mountEditor();
