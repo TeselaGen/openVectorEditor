@@ -11069,5 +11069,10 @@ body.bp3-dark {
   background: #293742;
 }
 
+html,
+body {
+  height: 100% !important;
+}
+
 
 /*# sourceMappingURL=demo.css.map*/
