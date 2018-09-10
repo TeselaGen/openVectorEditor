@@ -394,6 +394,7 @@ export class Editor extends React.Component {
           {...propsToSpread}
           {...sharedProps}
           {...editorDimensions}
+          isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
         />
       ) : (
         <div> No Panel Found!</div>

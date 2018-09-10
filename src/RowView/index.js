@@ -1,5 +1,4 @@
 import { Button } from "@blueprintjs/core";
-import { forEach } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
 import { some, isEqual } from "lodash";
 import prepareRowData from "../utils/prepareRowData";
@@ -10,6 +9,8 @@ import RowItem from "../RowItem";
 
 import withEditorInteractions from "../withEditorInteractions";
 import ReactList from "./ReactList";
+import estimateRowHeight from "./estimateRowHeight";
+
 // import TrMmInfScroll from "./TrMmInfScroll";
 
 // import ReactList from './ReactVariable';
@@ -22,51 +23,6 @@ let defaultCharWidth = 10;
 let defaultMarginWidth = 50;
 
 function noop() {}
-
-const annotationsToCompute = {
-  translations: {
-    annotationHeight: 19,
-    hasYOffset: true
-  },
-  parts: {
-    annotationHeight: 19,
-    hasYOffset: true
-  },
-  primers: {
-    annotationHeight: 21,
-    hasYOffset: true
-  },
-  cutsites: {
-    annotationHeight: 15,
-    hasYOffset: false
-  },
-  features: {
-    annotationHeight: 21,
-    margin: 10,
-    hasYOffset: true
-  },
-  orfs: {
-    annotationHeight: 19,
-    hasYOffset: true
-  },
-  sequence: {
-    fixedHeight: 16,
-    isAlwaysShown: true
-  },
-  reverseSequence: {
-    fixedHeight: 16
-  },
-  axis: {
-    fixedHeight: 26.79
-  },
-  cutsiteLabels: {
-    // computeHeight: getCutsiteLabelHeights, //tnr: not actually that necessary
-    type: "cutsites",
-    annotationHeight: 15,
-    hasYOffset: true,
-    isLabel: true
-  }
-};
 
 export class RowView extends React.Component {
   static defaultProps = {
@@ -108,50 +64,14 @@ export class RowView extends React.Component {
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
     const { annotationVisibility, annotationLabelVisibility } = this.props;
-
-    if (this.clearCache) {
-      cache = {};
-    }
-
-    if (cache[index]) {
-      return cache[index];
-    }
-    let height = 10; //account for spacer
-    const row = this.rowData[index];
-    if (!row) return 0;
-    forEach(annotationsToCompute, (
-      {
-        fixedHeight,
-        margin = 0,
-        isLabel,
-        isAlwaysShown,
-        annotationHeight,
-        // computeHeight,
-        hasYOffset,
-        type
-      },
-      key
-      // i
-    ) => {
-      const isShown =
-        isAlwaysShown ||
-        (isLabel
-          ? annotationLabelVisibility[type] && annotationVisibility[key]
-          : annotationVisibility[key]);
-      if (!isShown) return;
-      if (fixedHeight) return (height += fixedHeight);
-      const annotations = row[type || key];
-      if (hasYOffset) {
-        let maxYOffset = 0;
-        annotations.forEach(a => {
-          if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
-        });
-        height += maxYOffset * annotationHeight;
-        if (maxYOffset > 0) height += margin;
-      }
+    return estimateRowHeight({
+      index,
+      cache,
+      clearCache: this.clearCache,
+      row: this.rowData[index],
+      annotationVisibility,
+      annotationLabelVisibility
     });
-    cache[index] = height;
-    return height;
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
     let { charWidth = defaultCharWidth } = this.props;

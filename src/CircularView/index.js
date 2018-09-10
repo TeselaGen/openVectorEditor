@@ -652,7 +652,7 @@ export class CircularView extends React.Component {
                   backgroundRightClicked
                 );
               }}
-              style={{ overflow: "visible" }}
+              style={{ overflow: "visible", display: "block" }}
               width={width}
               height={height}
               ref="circularView"

@@ -309,7 +309,7 @@ function LabelLine(pointArray, options) {
     <React.Fragment>
       <polyline
         {...{
-          key: "polyline",
+          key: "polyline-short",
           points,
           stroke: "black",
           fill: "none",
@@ -323,7 +323,7 @@ function LabelLine(pointArray, options) {
       />
       <polyline
         {...{
-          key: "polyline",
+          key: "polyline-long",
           points,
           stroke: "black",
           fill: "none",

@@ -16,7 +16,7 @@ const OFFSET_START_KEYS = { x: "offsetLeft", y: "offsetTop" };
 const OVERFLOW_KEYS = { x: "overflowX", y: "overflowY" };
 const SCROLL_SIZE_KEYS = { x: "scrollWidth", y: "scrollHeight" };
 const SCROLL_START_KEYS = { x: "scrollLeft", y: "scrollTop" };
-const SIZE_KEYS = { x: "width", y: "height" };
+const SIZE_KEYS = { x: "minWidth", y: "minHeight" };
 
 const NOOP = () => {};
 
@@ -93,7 +93,7 @@ export default class ReactList extends Component {
     this.updateCounter = 0;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let { from, size, itemsPerRow } = this.state;
     if (nextProps.clearCache) this.cache = {};
     this.maybeSetState(
@@ -297,6 +297,9 @@ export default class ReactList extends Component {
 
   updateScrollParent() {
     const prev = this.scrollParent;
+    if (prev) {
+      return; //https://github.com/coderiety/react-list/pull/196
+    }
     this.scrollParent = this.getScrollParent();
     if (prev === this.scrollParent) return;
     if (prev) {
@@ -481,6 +484,22 @@ export default class ReactList extends Component {
       const itemEnd = itemStart + this.getSizeOf(i);
       if (first == null && itemEnd > start) first = i;
       if (first != null && itemStart < end) last = i;
+    }
+    return [first, last];
+  }
+  getFractionalVisibleRange() {
+    const { from, size } = this.state;
+    const { start, end } = this.getStartAndEnd(0);
+    const cache = {};
+    let first, last;
+
+    for (let i = from; i < from + size; ++i) {
+      const itemStart = this.getSpaceBefore(i, cache);
+      const itemEnd = itemStart + this.getSizeOf(i);
+      if (first == null && itemEnd > start)
+        first = i + 1 - (itemEnd - start) / (itemEnd - itemStart);
+      if (first != null && itemStart < end)
+        last = i - (itemEnd - end) / (itemEnd - itemStart);
     }
     return [first, last];
   }

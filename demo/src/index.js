@@ -89,7 +89,7 @@ class Demo extends React.Component {
     return (
       <Provider store={store}>
         <Router>
-          <div>
+          <div style={{height: "100%"}}>
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
             {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
@@ -113,7 +113,7 @@ class Demo extends React.Component {
                     />
                     <div
                       style={{
-                        height: 600,
+                        height: "100%",
                         display: "flex",
                         flexDirection: "column",
                         padding: 40
@@ -121,6 +121,8 @@ class Demo extends React.Component {
                     >
                       <div
                         style={{
+                        height: "100%",
+
                           display: "flex",
                           flexDirection: "column",
                           flexWrap: "wrap",

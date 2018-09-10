@@ -63,7 +63,7 @@ export default class ReflexElement extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  async componentWillReceiveProps(props) {
+  async UNSAFE_componentWillReceiveProps(props) {
     if (props.size !== this.props.size) {
       const directions = this.toArray(props.direction);
 
