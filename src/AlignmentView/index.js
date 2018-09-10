@@ -241,8 +241,8 @@ class AlignmentView extends React.Component {
       handleSelectTrack,
       linearViewOptions,
       alignmentVisibilityToolOptions,
-      rest,
-      hasTemplate
+      hasTemplate,
+      ...rest
     } = this.props;
     let i;
     if (isTemplate) {

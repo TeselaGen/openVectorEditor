@@ -4,6 +4,7 @@ import { compose } from "redux";
 import withEditorInteractions from "../withEditorInteractions";
 import menuDef from "./defaultConfig";
 import getCommands from "../commands";
+import pureNoFunc from "../utils/pureNoFunc";
 
 class OveMenuBar extends React.Component {
   constructor(props) {
@@ -22,4 +23,4 @@ class OveMenuBar extends React.Component {
   }
 }
 
-export default compose(withEditorInteractions)(OveMenuBar);
+export default compose(withEditorInteractions)(pureNoFunc(OveMenuBar));
