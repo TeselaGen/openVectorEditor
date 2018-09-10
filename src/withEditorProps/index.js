@@ -301,7 +301,8 @@ function mapStateToProps(state, ownProps) {
   } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
-  const { uppercaseSequenceMapFont } = VectorEditor;
+  const { __allEditorsOptions } = VectorEditor;
+  const { uppercaseSequenceMapFont } = __allEditorsOptions;
   let editorState = VectorEditor[editorName];
 
   if (!editorState) {

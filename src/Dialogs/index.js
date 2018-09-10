@@ -23,7 +23,8 @@ const CreateAlignmentDialog = withDialog({
 export default connect(
   state => {
     return {
-      addYourOwnEnzymeIsOpen: state.VectorEditor.addYourOwnEnzyme.isOpen
+      addYourOwnEnzymeIsOpen:
+        state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme.isOpen
     };
   },
   {
@@ -69,11 +70,7 @@ export default connect(
         dialogName="RenameSeqDialog"
         noTarget
       />
-      <GoToDialog
-        editorName={editorName}
-        dialogName="GoToDialog"
-        noTarget
-      />
+      <GoToDialog editorName={editorName} dialogName="GoToDialog" noTarget />
       <SelectDialog
         editorName={editorName}
         dialogName="SelectDialog"

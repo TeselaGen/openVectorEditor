@@ -607,6 +607,7 @@ export class Editor extends React.Component {
             ]),
             isFullScreen ? (
               <div
+                key={"veWhiteBackground"}
                 className="veWhiteBackground"
                 style={{
                   zIndex: 15000,

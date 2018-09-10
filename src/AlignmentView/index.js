@@ -606,7 +606,9 @@ export default compose(
     (state, ownProps) => {
       // const {id}
       const {
-        VectorEditor: { alignments }
+        VectorEditor: {
+          __allEditorsOptions: { alignments }
+        }
       } = state;
       const { id: alignmentId, upsertAlignmentRun } = ownProps;
       const alignment = { ...alignments[alignmentId], id: alignmentId };

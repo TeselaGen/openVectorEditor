@@ -255,7 +255,9 @@ let AddYourOwnEnzyme = function(props) {
 
 AddYourOwnEnzyme = connect(
   function(state) {
-    return { addYourOwnEnzyme: state.VectorEditor.addYourOwnEnzyme };
+    return {
+      addYourOwnEnzyme: state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme
+    };
   },
   { addYourOwnEnzymeClose }
 )(AddYourOwnEnzyme);
@@ -401,7 +403,8 @@ AddAdditionalEnzymes = connect(
   function(state) {
     return {
       inputSequenceToTestAgainst:
-        state.VectorEditor.addYourOwnEnzyme.inputSequenceToTestAgainst
+        state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme
+          .inputSequenceToTestAgainst
     };
   },
   { addYourOwnEnzymeClose }

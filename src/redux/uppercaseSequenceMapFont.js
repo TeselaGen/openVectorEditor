@@ -2,7 +2,7 @@ import { createReducer } from "redux-act";
 
 //./caretPosition.js
 import createAction from "./utils/createMetaAction";
-// import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+// import createReducer from "./utils/createMergedDefaultStateReducer";
 
 // ------------------------------------
 // Actions

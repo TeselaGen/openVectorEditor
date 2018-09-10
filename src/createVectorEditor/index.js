@@ -106,7 +106,9 @@ export function createAlignmentView(node, props = {}) {
         'Please pass an id when using createAlignmentView. eg createAlignmentView(myDiv, {id: "someUniqueId"})'
       );
     }
-    return store.getState().VectorEditor.alignments[props.id];
+    return store.getState().VectorEditor.__allEditorsOptions.alignments[
+      props.id
+    ];
   };
   return editor;
 }

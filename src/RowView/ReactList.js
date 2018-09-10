@@ -513,7 +513,7 @@ export default class ReactList extends Component {
   }
 
   render() {
-    const { axis, length, type, useTranslate3d } = this.props;
+    const { axis, length, type /* useTranslate3d */ } = this.props;
     const { from, itemsPerRow } = this.state;
     const items = this.renderItems();
     if (type === "simple") return items;
@@ -530,13 +530,19 @@ export default class ReactList extends Component {
     const offset = this.getSpaceBefore(from, cache);
     const x = axis === "x" ? offset : 0;
     const y = axis === "y" ? offset : 0;
-    const transform = useTranslate3d
-      ? `translate3d(${x}px, ${y}px, 0)`
-      : `translate(${x}px, ${y}px)`;
+    // const transform = useTranslate3d
+    //   ? `translate3d(${x}px, ${y}px, 0)`
+    //   : `translate(${x}px, ${y}px)`;
+    // const listStyle = {
+    //   msTransform: transform,
+    //   WebkitTransform: transform,
+    //   transform
+    // };
     const listStyle = {
-      msTransform: transform,
-      WebkitTransform: transform,
-      transform
+      //tnr trying out: https://github.com/coderiety/react-list/pull/154
+      position: "relative",
+      top: y,
+      left: x
     };
     return (
       <div style={style} ref={c => (this.el = c)}>
