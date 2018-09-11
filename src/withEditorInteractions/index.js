@@ -47,20 +47,7 @@ import {
   editorDragStopped,
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
-
-// import draggableClassnames from "../constants/draggableClassnames";
-
-let defaultContainerWidth = 400;
-let defaultCharWidth = 12;
-let defaultMarginWidth = 50;
-
-function getBpsPerRow({
-  charWidth = defaultCharWidth,
-  width = defaultContainerWidth,
-  marginWidth = defaultMarginWidth
-}) {
-  return Math.floor((width - marginWidth) / charWidth);
-}
+import getBpsPerRow from "./getBpsPerRow";
 
 // TODO: maybe assign ids to nodes and store this info in the redux store
 const _lastFocusedWrapper = {};
@@ -152,7 +139,8 @@ function VectorInteractionHOC(Component /* options */) {
             selectionLayer,
             caretPosition,
             sequenceLength,
-            circular,
+            sequenceData: { circular } = {},
+            circular: circular2,
             caretPositionUpdate,
             selectionLayerUpdate
           } = this.props;
@@ -166,7 +154,7 @@ function VectorInteractionHOC(Component /* options */) {
           });
           handleCaretMoved({
             moveBy,
-            circular,
+            circular: circular || circular2,
             sequenceLength,
             bpsPerRow,
             caretPosition,
@@ -417,6 +405,7 @@ function VectorInteractionHOC(Component /* options */) {
       }
       //we only call selectionLayerUpdate if we're actually changing something
       this.props.selectionLayerUpdate({
+        ...newSelection,
         start,
         end,
         ignoreGaps: ignoreGapsOnHighlight

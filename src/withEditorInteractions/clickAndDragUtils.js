@@ -118,6 +118,7 @@ export function handleCaretMoved({
       // newCaretPosition = normalizeNewCaretPos(Number(caretPosition + moveBy), sequenceLength, circular);
       let anchorPos;
       if (selectionLayer.start <= selectionLayer.end) {
+        //non-circular selection
         //define an anchor pos
         if (selectionLayer.cursorAtEnd) {
           if (newCaretPosition === selectionLayer.start && moveBy < 0) {
@@ -131,17 +132,44 @@ export function handleCaretMoved({
           anchorPos = selectionLayer.end + 1;
         }
         if (newCaretPosition > anchorPos) {
-          selectionLayerUpdate({
-            start: anchorPos,
-            end: newCaretPosition - 1,
-            cursorAtEnd: true
-          });
+          if (circular && selectionLayer.start + moveBy < 0) {
+            //we've gone around the origin in this case
+            selectionLayerUpdate({
+              start: newCaretPosition,
+              end: anchorPos - 1,
+              cursorAtEnd: false
+            });
+          } else {
+            selectionLayerUpdate({
+              start: anchorPos,
+              end: normalizePositionByRangeLength(
+                newCaretPosition - 1,
+                sequenceLength
+              ),
+              cursorAtEnd: true
+            });
+          }
         } else {
-          selectionLayerUpdate({
-            start: newCaretPosition,
-            end: anchorPos - 1,
-            cursorAtEnd: false
-          });
+          if (circular && selectionLayer.end + moveBy >= sequenceLength) {
+            //we've gone around the origin in this case
+            selectionLayerUpdate({
+              start: anchorPos,
+              end: normalizePositionByRangeLength(
+                newCaretPosition - 1,
+                sequenceLength
+              ),
+              cursorAtEnd: true
+            });
+          } else {
+            selectionLayerUpdate({
+              start: newCaretPosition,
+              end: normalizePositionByRangeLength(
+                anchorPos - 1,
+                sequenceLength
+              ),
+              cursorAtEnd: false
+            });
+          }
         }
       } else {
         //circular selection
@@ -150,16 +178,27 @@ export function handleCaretMoved({
         } else {
           anchorPos = selectionLayer.end + 1;
         }
-        if (newCaretPosition <= anchorPos) {
+
+        if (
+          (newCaretPosition <= anchorPos &&
+            !(!selectionLayer.cursorAtEnd && newCaretPosition - moveBy < 0)) || // if the move by is crossing the origin then we should make the new selection non circular
+          (selectionLayer.cursorAtEnd && selectionLayer.end + moveBy < 0)
+        ) {
           selectionLayerUpdate({
             start: anchorPos,
-            end: newCaretPosition - 1,
+            end: normalizePositionByRangeLength(
+              newCaretPosition - 1,
+              sequenceLength
+            ),
             cursorAtEnd: true
           });
         } else {
           selectionLayerUpdate({
-            start: newCaretPosition,
-            end: anchorPos - 1,
+            start: normalizePositionByRangeLength(
+              newCaretPosition,
+              sequenceLength
+            ),
+            end: normalizePositionByRangeLength(anchorPos - 1, sequenceLength),
             cursorAtEnd: false
           });
         }
@@ -205,7 +244,10 @@ export function handleCaretMoved({
         } else {
           selectionLayerUpdate({
             start: caretPosition,
-            end: newCaretPosition - 1,
+            end: normalizePositionByRangeLength(
+              newCaretPosition - 1,
+              sequenceLength
+            ),
             cursorAtEnd: true
           });
         }
@@ -216,7 +258,10 @@ export function handleCaretMoved({
         } else {
           selectionLayerUpdate({
             start: newCaretPosition,
-            end: caretPosition - 1,
+            end: normalizePositionByRangeLength(
+              caretPosition - 1,
+              sequenceLength
+            ),
             cursorAtEnd: false
           });
         }
@@ -284,7 +329,8 @@ function handleSelectionEndGrabbed({
     );
     selectionLayerUpdate({
       start: selectionLayer.start,
-      end: newEnd
+      end: newEnd,
+      cursorAtEnd: true
     });
   }
 }

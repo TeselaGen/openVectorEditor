@@ -10,6 +10,12 @@ import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
 import ReactList from "./ReactList";
 import estimateRowHeight from "./estimateRowHeight";
+import {
+  defaultContainerWidth,
+  defaultMarginWidth,
+  defaultCharWidth
+} from "../constants/rowviewContants";
+import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 
 // import TrMmInfScroll from "./TrMmInfScroll";
 
@@ -17,10 +23,6 @@ import estimateRowHeight from "./estimateRowHeight";
 import "./style.css";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
-
-let defaultContainerWidth = 400;
-let defaultCharWidth = 10;
-let defaultMarginWidth = 50;
 
 function noop() {}
 
@@ -427,14 +429,6 @@ export class RowView extends React.Component {
 }
 
 export default withEditorInteractions(RowView);
-
-function getBpsPerRow({
-  charWidth = defaultCharWidth,
-  width = defaultContainerWidth,
-  marginWidth = defaultMarginWidth
-}) {
-  return Math.floor((width - marginWidth) / charWidth);
-}
 
 // function itemSizeEstimator(index, cache) {
 //   if (cache[index]) {
