@@ -1,27 +1,24 @@
-import {
-  Button,
-  Checkbox,
-  Popover,
-  Tooltip,
-  Position
-} from "@blueprintjs/core";
+import { Button, Checkbox, Popover } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
+import pureNoFunc from "../utils/pureNoFunc";
 
-export default function AlignmentVisibilityTool(props) {
+export default pureNoFunc(function AlignmentVisibilityTool(props) {
   return (
-    <Tooltip
-      position={Position.TOP}
-      content={"Visibility Options"}
+    <Popover
+      minimal
+      content={<VisibilityOptions {...props} />}
       target={
-        <Popover
-          content={<VisibilityOptions {...props} />}
-          target={<Button minimal icon={"eye-open"} />}
+        <Button
+          small
+          text={"Visibility"}
+          rightIcon="caret-down"
+          icon={"eye-open"}
         />
       }
     />
   );
-}
+});
 
 function VisibilityOptions({
   alignmentAnnotationVisibility = {},

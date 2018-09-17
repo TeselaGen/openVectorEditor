@@ -147,7 +147,7 @@ class Demo extends React.Component {
                   <div>
                     <VersionHistoryView
                       onSave={(...args) => {
-                        console.log("onSave triggered:", args);
+                        console.info("onSave triggered:", args);
                       }}
                       exitVersionHistoryView={() => {
                         window.alert('exit requested!')

@@ -9,7 +9,6 @@ describe("addDashesForMatchStartAndEndForTracks", function() {
       jbeiSimple.pairwiseAlignments[0]
     );
     const [template, read] = tracksWithDashes;
-    console.log("tracksWithDashes:", tracksWithDashes);
     expect(template.alignmentData.sequence).toEqual(
       template.alignmentData.sequence_post
     );
@@ -26,7 +25,6 @@ describe("addDashesForMatchStartAndEndForTracks", function() {
       jbeiReverseStrand.pairwiseAlignments[0]
     );
     const [template, read] = tracksWithDashes;
-    console.log("tracksWithDashes:", tracksWithDashes);
     expect(template.alignmentData.sequence).toEqual(
       template.alignmentData.sequence_post
     );
@@ -38,13 +36,12 @@ describe("addDashesForMatchStartAndEndForTracks", function() {
     );
     expect(read.sequenceData.sequence).toEqual(read.sequenceData.sequence_post);
   });
-  //commenting out until 
+  //commenting out until
   // it("should return the correct matches for an alignment that spans the origin", function() {
   //   const tracksWithDashes = addDashesForMatchStartAndEndForTracks(
   //     jbeiSpansOrigin.pairwiseAlignments[0]
   //   );
   //   const [template, read] = tracksWithDashes;
-  //   console.log("tracksWithDashes:", tracksWithDashes);
   //   expect(template.alignmentData.sequence).toEqual(
   //     template.alignmentData.sequence_post
   //   );

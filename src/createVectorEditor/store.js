@@ -12,7 +12,6 @@ const composeEnhancer =
       latency: 1000,
       // serialize: {
       //   replacer: (key, value) => {
-      //     console.log('key, value:',key, value)
       //   }
       // },
       actionsBlacklist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"]

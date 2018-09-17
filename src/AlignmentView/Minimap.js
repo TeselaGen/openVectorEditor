@@ -17,7 +17,10 @@ export default class Minimap extends React.Component {
     return false;
   }
   handleMinimapClick = e => {
-    if (e.target && e.target.classList.contains("minimapCaret")) {
+    if (
+      this.isDragging ||
+      (e.target && e.target.classList.contains("minimapCaret"))
+    ) {
       e.stopPropagation();
       return;
     }
@@ -33,6 +36,7 @@ export default class Minimap extends React.Component {
       (width - scrollHandleWidth);
     onMinimapScroll(percent);
 
+    //scroll vertically
     const y = this.getYPositionOfClickInMinimap(e);
     const trackIndex = Math.floor(y / laneHeight);
     handleScrollToTrack(trackIndex);
@@ -65,12 +69,17 @@ export default class Minimap extends React.Component {
     const topStart = this.minimap.getBoundingClientRect().top;
     return Math.max(e.clientY + this.minimapTracks.scrollTop - topStart, 0);
   };
-
+  handleDragStop = () => {
+    setTimeout(() => {
+      this.isDragging = false;
+    }, 150);
+  };
   handleDrag = e => {
     const {
       onMinimapScroll,
       dimensions: { width = 200 }
     } = this.props;
+    this.isDragging = true; //needed to block erroneous click events from being triggered!
     const percent = this.getXPositionOfClickInMinimap(e) / width;
     onMinimapScroll(percent);
   };
@@ -122,7 +131,6 @@ export default class Minimap extends React.Component {
     const {
       alignmentTracks = [],
       dimensions: { width = 200 },
-      style = {},
       laneHeight,
       onSizeAdjust,
       minSliderSize,
@@ -139,7 +147,12 @@ export default class Minimap extends React.Component {
       <div
         ref={ref => (this.minimap = ref)}
         className={"alignmentMinimap"}
-        style={{ position: "relative", width, overflowY: "hidden", ...style }}
+        style={{
+          position: "relative",
+          width,
+          overflowX: "visible",
+          overflowY: "hidden"
+        }}
         onClick={this.handleMinimapClick}
       >
         <div
@@ -158,6 +171,7 @@ export default class Minimap extends React.Component {
           <YellowScrollHandle
             width={width}
             handleDrag={this.handleDrag}
+            handleDragStop={this.handleDragStop}
             onMinimapScroll={onMinimapScroll}
             minSliderSize={minSliderSize}
             onSizeAdjust={onSizeAdjust}
@@ -197,6 +211,7 @@ const YellowScrollHandle = view(
         width,
         easyStore,
         handleDrag,
+        handleDragStop,
         minSliderSize,
         laneHeight,
         onSizeAdjust,
@@ -214,6 +229,7 @@ const YellowScrollHandle = view(
           position={{ x: xScroll, y: 0 }}
           axis={"x"}
           // onStart={this.onStart}
+          onStop={handleDragStop}
           onDrag={handleDrag}
         >
           <div

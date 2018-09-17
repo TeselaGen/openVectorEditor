@@ -60,21 +60,33 @@ let Axis = function(props) {
         stroke={"black"}
       />
     );
-    showAxisNumbers &&
+    if (showAxisNumbers) {
+      const position =
+        normalizePositionByRangeLength(
+          row.start + tickMarkPosition,
+          sequenceLength
+        ) + 1;
+
+      const positionLength = position.toString().length * 4;
+
       tickMarkSVG.push(
         <text
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
           stroke={"black"}
-          x={xCenter}
+          x={
+            i === 0 //if first label in row, or last label in row, we add checks to make sure the axis number labels don't go outside of the width of the row
+              ? Math.max(positionLength, xCenter)
+              : i === tickMarkPositions.length - 1
+                ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
+                : xCenter
+          }
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
         >
-          {normalizePositionByRangeLength(
-            row.start + tickMarkPosition,
-            sequenceLength
-          ) + 1}
+          {position}
         </text>
       );
+    }
   });
 
   return (

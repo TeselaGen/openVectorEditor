@@ -31,6 +31,9 @@ export default class StandaloneAlignmentDemo extends React.Component {
     const alignment = window.createAlignmentView(this.node, {
       ...exampleAlignmentData,
       id: "pairwiseRun1",
+      handleAlignmentRename: () => {
+        console.info("alignment being renamed!")
+      }, //this does nothing right now
       linearViewOptions: () => {
         return {
           selectionLayerRightClicked: ({ event }) => {
@@ -47,8 +50,9 @@ export default class StandaloneAlignmentDemo extends React.Component {
         };
       }
     });
+    
     setTimeout(()=>{
-      console.log('alignment.getState():',alignment.getState())
+      console.info('alignment.getState():',alignment.getState())
     },10000)
   };
   componentDidMount() {

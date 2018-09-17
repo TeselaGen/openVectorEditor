@@ -94,7 +94,6 @@ class AlignmentTool extends React.Component {
       isAlignToRefSeq,
       isAutotrimmedSeq
     } = values;
-    // console.log('values:',values)
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
@@ -116,7 +115,6 @@ class AlignmentTool extends React.Component {
             const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(
               addedSequencesToUseTrimmed[i].chromatogramData.qualNums
             );
-            // console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
             addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[
               i
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
@@ -124,7 +122,6 @@ class AlignmentTool extends React.Component {
             for (let element in addedSequencesToUseTrimmed[i]
               .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
-                // console.log('addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1):',addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1))
                 addedSequencesToUseTrimmed[i].chromatogramData[
                   element
                 ] = addedSequencesToUseTrimmed[i].chromatogramData[
@@ -136,7 +133,6 @@ class AlignmentTool extends React.Component {
         }
       }
     }
-    // console.log('addedSequencesToUseTrimmed:',addedSequencesToUseTrimmed)
     let seqsToAlign;
     if (addedSequencesToUseTrimmed) {
       seqsToAlign = addedSequencesToUseTrimmed;
@@ -489,15 +485,12 @@ function mottTrim(qualNums) {
       totalScore = 0;
     }
   }
-  // console.log('totalScoreInfo:',totalScoreInfo)
   const firstPositiveValue = totalScoreInfo.find(e => {
     return e > 0;
   });
   startPos = totalScoreInfo.indexOf(firstPositiveValue);
   const highestValue = Math.max(...totalScoreInfo);
   endPos = totalScoreInfo.lastIndexOf(highestValue);
-  // console.log('startPos:',startPos)
-  // console.log('endPos:',endPos)
   return {
     suggestedTrimStart: startPos,
     suggestedTrimEnd: endPos

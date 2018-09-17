@@ -67,7 +67,6 @@ class Chromatogram extends React.Component {
 
   render() {
     const { getGaps, charWidth } = this.props;
-    // console.log('alignmentData.sequence:',alignmentData.sequence)
     const gapsBeforeSequence = getGaps(0).gapsBefore;
     const posOfSeqRead = gapsBeforeSequence * charWidth;
 

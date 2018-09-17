@@ -1,5 +1,6 @@
 .alignment-zoom-slider {
   min-width: 10px !important;
+  margin-bottom: 4px;
 }
 .alignmentViewTrackContainer:hover .alignmentViewSelectTrackPopover {
   opacity: 0.9 !important;
@@ -16,4 +17,11 @@
 }
 .alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
   opacity: 1 !important;
+}
+.ve-alignment-top-bar > * {
+  overflow-wrap: normal;
+  flex: 0 0 auto;
+  max-width: 100%;
+  margin-left: 4px;
+  margin-right: 4px;
 }

@@ -123,7 +123,7 @@ export default class ReactList extends Component {
         delete this.updateCounterTimeoutId;
       }, 0);
     }
-
+    // this.dontUpdate = true;
     this.updateFrame();
 
     //TNR: extra code to "fix" the scroll height when scrolling upwards
@@ -141,7 +141,13 @@ export default class ReactList extends Component {
     //   }
     // }
   }
-
+  // shouldComponentUpdate() {
+  //   if (this.dontUpdate) {
+  //     this.dontUpdate = false;
+  //     return false;
+  //   }
+  //   return true;
+  // }
   maybeSetState(b, cb) {
     if (isEqualSubset(this.state, b)) return cb();
 
@@ -360,7 +366,6 @@ export default class ReactList extends Component {
       space += itemSize;
       ++size;
     }
-
     this.maybeSetState({ from, size }, cb);
   }
 
