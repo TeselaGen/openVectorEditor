@@ -7,6 +7,7 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
   return (
     <Popover
       minimal
+      position="bottom"
       content={<VisibilityOptions {...props} />}
       target={
         <Button
