@@ -99,28 +99,6 @@ export default class StandaloneDemo extends React.Component {
             };
             return sequenceData;
           },
-          //todo this prop should be used to enable disable the guide tool 
-          //and is where any server connection should be made
-          findGuides: (data) => {
-            return fetch('http://localhost:5000', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data)
-            }).then(
-              (response) => {
-              if (response.status !== 200) {
-                // TODO: display error
-              }
-              return response.json();
-            }).then((guides) => {
-              return guides
-            }).catch((e) => {
-              console.error(e)
-            });
-          },
             getSequenceAtVersion: versionId => {
             if (versionId === 2) {
               return {
@@ -247,12 +225,6 @@ export default class StandaloneDemo extends React.Component {
               id: "sequence",
               name: "Sequence Map",
               active: true
-            },
-            {
-              id: "guideTool1",
-              name: "Find Guides",
-              canClose: true,
-              type: "guideTool"
             },
             {
               id: "alignmentTool",

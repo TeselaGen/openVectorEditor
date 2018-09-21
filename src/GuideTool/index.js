@@ -86,8 +86,8 @@ const schema = {
     },
     { width: 200, path: "sequence", displayName: "Sequence", type: "string" },
     { path: "pam", displayName: "PAM", type: "string" },
-    { path: "onTargetScore", displayName: "On-Target Score", type: "number" },
-    { path: "offTargetScore", displayName: "Off-Target Score", type: "number" }
+    { path: "onTargetScore", displayName: "On-Target", type: "number" },
+    { path: "offTargetScore", displayName: "Off-Target", type: "number" }
   ]
 };
 

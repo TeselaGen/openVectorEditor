@@ -828,7 +828,8 @@ function VectorInteractionHOC(Component /* options */) {
         showAddOrEditPartDialog,
         propertiesViewOpen,
         propertiesViewTabUpdate,
-        showFindGuideDialog
+        showFindGuideDialog,
+        findGuides
       } = this.props;
       return [
         ...(readOnly
@@ -866,7 +867,7 @@ function VectorInteractionHOC(Component /* options */) {
             propertiesViewTabUpdate("parts", annotation);
           }
         },
-        {
+        findGuides && {
           text: "Find Guides",
           onClick: function() {
             showFindGuideDialog({

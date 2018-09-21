@@ -3,7 +3,7 @@ import React from "react";
 import { reduxForm } from "redux-form";
 
 import {
-  InputField,
+  SelectField,
   NumericInputField,
   withDialog
 } from "teselagen-react-components";
@@ -11,6 +11,7 @@ import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
+import pamSites from "../../constants/pamSites";
 
 export class FindGuideDialog extends React.Component {
   render() {
@@ -42,13 +43,13 @@ export class FindGuideDialog extends React.Component {
           name={"guideLength"}
           label={"Guide Length:"}
         />
-        <InputField
+        <SelectField
           inlineLabel
           defaultValue={"NGG"}
           name={"pamSite"}
-          label={"PAM site:"}
+          label={"PAM site"}
+          options={pamSites}
         />
-        <InputField autoFocus inlineLabel name={"genome"} label={"Genome:"} />
         <NumericInputField
           inlineLabel
           defaultValue={1}
@@ -93,7 +94,10 @@ export class FindGuideDialog extends React.Component {
                 ],
                 options: {
                   guideLength: data.guideLength,
-                  pamSite: data.pamSite
+                  pamSite: data.pamSite,
+                  // we set this so that off target score is not calculated for all gRNAs
+                  // TODO: user should select gRNAs that they want the off-target score to be calculated for
+                  mode: "single-gene"
                 }
               });
               if (guides && guides.length) {
@@ -102,7 +106,7 @@ export class FindGuideDialog extends React.Component {
                   g.target = partName;
                 });
                 updateGuides(guides);
-              } else window.toastr.error("No guides found");
+              }
               hideModal();
             })}
             intent={Intent.PRIMARY}
@@ -116,17 +120,26 @@ export class FindGuideDialog extends React.Component {
   }
 }
 
-function required(val) {
-  if (!val) return "Required";
-}
+const validate = values => {
+  const errors = {};
+  if (!values.guideLength) {
+    errors.guideLength = "Required";
+  }
+  if (!values.pamSite) {
+    errors.pamSite = "Required";
+  }
+  return errors;
+};
+
 export default compose(
   withDialog({
     isDraggable: true,
-    height: 380,
+    height: 360,
     width: 400
   }),
   withEditorProps,
   reduxForm({
-    form: "FindGuideDialog"
+    form: "FindGuideDialog",
+    validate
   })
 )(FindGuideDialog);
