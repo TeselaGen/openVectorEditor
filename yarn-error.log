@@ -1,31 +1,25 @@
 Arguments: 
-  /Users/tnrich/.nvm/versions/node/v8.4.0/bin/node /Users/tnrich/.nvm/versions/node/v8.4.0/bin/yarn
+  /Users/tnrich/.nvm/versions/node/v10.8.0/bin/node /usr/local/Cellar/yarn/1.10.1/libexec/bin/yarn.js
 
 PATH: 
-  /Users/tnrich/.nvm/versions/node/v8.4.0/bin:/Users/tnrich/bin/Sencha/Cmd/4.0.4.84:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/tnrich/bin/Sencha/Cmd/4.0.4.84:/usr/local/sbin:/usr/local/bin:/usr/local/sbin
+  /Users/tnrich/.nvm/versions/node/v10.8.0/bin:/Users/tnrich/bin/Sencha/Cmd/4.0.4.84:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/tnrich/bin/Sencha/Cmd/4.0.4.84:/usr/local/sbin:/usr/local/bin:/usr/local/sbin
 
 Yarn version: 
-  1.7.0
+  1.10.1
 
 Node version: 
-  8.4.0
+  10.8.0
 
 Platform: 
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/tnrich/Sites/openVectorEditorTgen/package.json: Unexpected token < in JSON at position 3955
-      at JSON.parse (<anonymous>)
-      at /Users/tnrich/.nvm/versions/node/v8.4.0/lib/node_modules/yarn/lib/cli.js:1130:59
-      at Generator.next (<anonymous>)
-      at step (/Users/tnrich/.nvm/versions/node/v8.4.0/lib/node_modules/yarn/lib/cli.js:98:30)
-      at /Users/tnrich/.nvm/versions/node/v8.4.0/lib/node_modules/yarn/lib/cli.js:109:13
-      at <anonymous>
+  Error: EISDIR: illegal operation on a directory, read
 
 npm manifest: 
   {
     "name": "open-vector-editor",
-    "version": "4.4.3",
+    "version": "5.0.3",
     "description": "Teselagen's Open Source Vector Editor",
     "main": "lib/index.js",
     "module": "es/index.js",
@@ -68,13 +62,14 @@ npm manifest:
       "lru-memoize": "^1.0.2",
       "node-interval-tree": "^1.3.3",
       "paths-js": "^0.4.5",
+      "prop-types": "^15.6.2",
       "randomcolor": "^0.5.3",
       "react-beautiful-dnd": "^4.0.1",
       "react-draggable": "^3.0.3",
       "react-dropzone": "^4.2.11",
       "react-easy-state": "^5.0.1",
       "react-list": "^0.8.8",
-      "react-sizeme": "^2.4.4",
+      "react-sizeme": "^2.5.2",
       "recompose": "^0.27.1",
       "redux": "^4.0.0",
       "redux-act": "^1.7.4",
@@ -82,6 +77,7 @@ npm manifest:
       "reselect": "^3.0.1",
       "tether": "^1.4.1",
       "tg-react-reflex": "^2.0.10",
+      "typeface-ubuntu-mono": "^0.0.54",
       "uniqid": "^4.1.1"
     },
     "peerDependencies": {
@@ -91,13 +87,13 @@ npm manifest:
       "react-router-dom": "^4.1.1",
       "react-select": "^1.0.0-rc.3",
       "react-table": "^6.6.0",
-      "teselagen-react-components": "^22.0.35",
+      "teselagen-react-components": "^24.0.1",
       "tg-client-query-builder": "^2.12.1",
       "ve-range-utils": "^2.3.0",
       "ve-sequence-utils": "^3.2.11"
     },
     "devDependencies": {
-      "@blueprintjs/core": "^3.3.0",
+      "@blueprintjs/core": "^3.5.1",
       "@blueprintjs/datetime": "^3.1.0",
       "apollo-cache-invalidation": "^0.0.3",
       "apollo-client": "2.3.7",
@@ -132,11 +128,11 @@ npm manifest:
       "nodemon": "1.18.3",
       "nwb": "0.23.0",
       "prettier": "1.14.2",
-      "react": "16.4.2",
+      "react": "16.5.0",
       "react-addons-perf": "^15.4.2",
       "react-apollo": "^2.1.9",
       "react-collapsible": "^2.2.0",
-      "react-dom": "16.4.2",
+      "react-dom": "16.5.0",
       "react-redux": "^5.0.6",
       "react-router-dom": "4.3.1",
       "react-select": "^1.0.0-rc.10",
@@ -144,17 +140,13 @@ npm manifest:
       "react-transition-group": "^2.3.1",
       "redux-form": "7.4.2",
       "redux-thunk": "2.3.0",
-  <<<<<<< Updated upstream
-      "teselagen-react-components": "23.0.10",
-  =======
-      "teselagen-react-components": "23.0.7",
-  >>>>>>> Stashed changes
+      "teselagen-react-components": "24.0.9",
       "tg-client-query-builder": "^2.12.1",
       "ve-range-utils": "^2.5.0",
-      "ve-sequence-utils": "3.3.1"
+      "ve-sequence-utils": "3.3.2"
     },
     "lint-staged": {
-      "src/**/*.js ": [
+      "src/**/*.js": [
         "eslint --fix",
         "prettier --write",
         "yarn test:staged",
@@ -294,9 +286,24 @@ Lockfile:
       lodash "^4.2.0"
       to-fast-properties "^2.0.0"
   
-  "@blueprintjs/core@^3.1.0", "@blueprintjs/core@^3.3.0":
+  "@blueprintjs/core@^3.1.0":
     version "3.3.0"
     resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.3.0.tgz#6fc5c7d811d1c0693c0c3d7a472549e171c455db"
+    dependencies:
+      "@blueprintjs/icons" "^3.0.0"
+      "@types/dom4" "^2.0.0"
+      classnames "^2.2"
+      dom4 "^2.0.1"
+      normalize.css "^8.0.0"
+      popper.js "^1.14.1"
+      react-popper "^1.0.0"
+      react-transition-group "^2.2.1"
+      resize-observer-polyfill "^1.5.0"
+      tslib "^1.9.0"
+  
+  "@blueprintjs/core@^3.5.1":
+    version "3.5.1"
+    resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.5.1.tgz#f8ad2d5c880a871dfd11575ed771e1d2c430e996"
     dependencies:
       "@blueprintjs/icons" "^3.0.0"
       "@types/dom4" "^2.0.0"
@@ -913,6 +920,12 @@ Lockfile:
   attr-accept@^1.0.3:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.2.tgz#6836bfe054e4ef1ee3076fdde56cec9bb3ffead6"
+    dependencies:
+      core-js "^2.5.0"
+  
+  attr-accept@^1.1.3:
+    version "1.1.3"
+    resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.3.tgz#48230c79f93790ef2775fcec4f0db0f5db41ca52"
     dependencies:
       core-js "^2.5.0"
   
@@ -2794,10 +2807,10 @@ Lockfile:
       gud "^1.0.0"
   
   cross-env@^5.1.4:
-    version "5.1.5"
-    resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.1.5.tgz#31daf7f3a52ef337c8ddda585f08175cce5d1fa5"
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
     dependencies:
-      cross-spawn "^5.1.0"
+      cross-spawn "^6.0.5"
       is-windows "^1.0.0"
   
   cross-env@^5.1.6:
@@ -2807,7 +2820,7 @@ Lockfile:
       cross-spawn "^5.1.0"
       is-windows "^1.0.0"
   
-  cross-spawn@6.0.5:
+  cross-spawn@6.0.5, cross-spawn@^6.0.5:
     version "6.0.5"
     resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
     dependencies:
@@ -7053,24 +7066,9 @@ Lockfile:
       nodemailer-smtp-transport "2.7.2"
       socks "1.1.9"
   
-  nodemon@1.18.3:
+  nodemon@1.18.3, nodemon@^1.17.2:
     version "1.18.3"
     resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.3.tgz#46e681ee0dd1b590562e03019b4c5df234f906f9"
-    dependencies:
-      chokidar "^2.0.2"
-      debug "^3.1.0"
-      ignore-by-default "^1.0.1"
-      minimatch "^3.0.4"
-      pstree.remy "^1.1.0"
-      semver "^5.5.0"
-      supports-color "^5.2.0"
-      touch "^3.1.0"
-      undefsafe "^2.0.2"
-      update-notifier "^2.3.0"
-  
-  nodemon@^1.17.2:
-    version "1.17.4"
-    resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.17.4.tgz#243ff9c69ffbf1175f2460f9b023f35a072c15e9"
     dependencies:
       chokidar "^2.0.2"
       debug "^3.1.0"
@@ -7561,8 +7559,8 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
   
   papaparse@^4.5.0:
-    version "4.5.0"
-    resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.5.0.tgz#fb625d390b6e5d544db20658ce3665002c3d8e80"
+    version "4.6.0"
+    resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.6.0.tgz#4e3b8d6bf9f7900da437912794ec292207526867"
   
   parallel-transform@^1.1.0:
     version "1.1.0"
@@ -8271,14 +8269,14 @@ Lockfile:
     version "1.1.1"
     resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz#bcd31478027b64b3339f108921ab520b4313dc2c"
   
-  react-dom@16.4.2:
-    version "16.4.2"
-    resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.2.tgz#4afed569689f2c561d2b8da0b819669c38a0bda4"
+  react-dom@16.5.0:
+    version "16.5.0"
+    resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.5.0.tgz#57704e5718669374b182a17ea79a6d24922cb27d"
     dependencies:
-      fbjs "^0.8.16"
       loose-envify "^1.1.0"
       object-assign "^4.1.1"
-      prop-types "^15.6.0"
+      prop-types "^15.6.2"
+      schedule "^0.3.0"
   
   react-draggable@3.0.5, react-draggable@^3.0.3:
     version "3.0.5"
@@ -8295,10 +8293,10 @@ Lockfile:
       prop-types "^15.5.7"
   
   react-dropzone@^4.2.12:
-    version "4.2.13"
-    resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-4.2.13.tgz#31393c079b4e5ddcc176c095cebc3545d1248b9d"
+    version "4.3.0"
+    resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-4.3.0.tgz#facdd7db16509772633c9f5200621ac01aa6706f"
     dependencies:
-      attr-accept "^1.0.3"
+      attr-accept "^1.1.3"
       prop-types "^15.5.7"
   
   react-easy-state@^5.0.1:
@@ -8416,14 +8414,15 @@ Lockfile:
       prop-types "^15.5.8"
       react-input-autosize "^2.1.2"
   
-  react-sizeme@^2.4.4:
-    version "2.4.4"
-    resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-2.4.4.tgz#437c2ae82da744dbe40dc589f595e6f70039961d"
+  react-sizeme@^2.5.2:
+    version "2.5.2"
+    resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-2.5.2.tgz#e7041390cfb895ed15d896aa91d76e147e3b70b5"
     dependencies:
       element-resize-detector "^1.1.12"
       invariant "^2.2.2"
       lodash.debounce "^4.0.8"
       lodash.throttle "^4.1.1"
+      shallowequal "^1.0.2"
   
   react-sortable-hoc@^0.6.8:
     version "0.6.8"
@@ -8472,14 +8471,14 @@ Lockfile:
     version "0.2.4"
     resolved "https://registry.yarnpkg.com/react-values/-/react-values-0.2.4.tgz#be5760589b6a2092690bffc28f633fb5ef4223f8"
   
-  react@16.4.2:
-    version "16.4.2"
-    resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
+  react@16.5.0:
+    version "16.5.0"
+    resolved "https://registry.yarnpkg.com/react/-/react-16.5.0.tgz#f2c1e754bf9751a549d9c6d9aca41905beb56575"
     dependencies:
-      fbjs "^0.8.16"
       loose-envify "^1.1.0"
       object-assign "^4.1.1"
-      prop-types "^15.6.0"
+      prop-types "^15.6.2"
+      schedule "^0.3.0"
   
   read-pkg-up@^1.0.1:
     version "1.0.1"
@@ -9055,6 +9054,12 @@ Lockfile:
   sax@>=0.6.0, sax@^1.2.4:
     version "1.2.4"
     resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
+  
+  schedule@^0.3.0:
+    version "0.3.0"
+    resolved "https://registry.yarnpkg.com/schedule/-/schedule-0.3.0.tgz#1be2ab2fc2e768536269ce7326efb478d6c045e8"
+    dependencies:
+      object-assign "^4.1.1"
   
   schema-utils@^0.4.0, schema-utils@^0.4.4, schema-utils@^0.4.5:
     version "0.4.7"
@@ -9756,15 +9761,9 @@ Lockfile:
     dependencies:
       execa "^0.7.0"
   
-  <<<<<<< Updated upstream
-  teselagen-react-components@23.0.10:
-    version "23.0.10"
-    resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.0.10.tgz#d56ff8223401b14ced92f3a4873517db5fa473c3"
-  =======
-  teselagen-react-components@23.0.7:
-    version "23.0.7"
-    resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-23.0.7.tgz#b6c370ebb2cd5847e4ed57faee8b0e8de7dccef5"
-  >>>>>>> Stashed changes
+  teselagen-react-components@24.0.9:
+    version "24.0.9"
+    resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.0.9.tgz#53bf9b8a4fe76bb958e90a8597f5a4b2f04c441a"
     dependencies:
       classnames "^2.2.6"
       copy-to-clipboard "^3.0.8"
@@ -9784,6 +9783,7 @@ Lockfile:
       pascal-case "^2.0.1"
       paths-js "^0.4.7"
       pluralize "^7.0.0"
+      prop-types "^15.6.2"
       query-string "^5.1.0"
       react-addons-pure-render-mixin "^15.6.0"
       react-dropzone "^4.2.12"
@@ -10028,6 +10028,10 @@ Lockfile:
   typedarray@^0.0.6:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+  
+  typeface-ubuntu-mono@^0.0.54:
+    version "0.0.54"
+    resolved "https://registry.yarnpkg.com/typeface-ubuntu-mono/-/typeface-ubuntu-mono-0.0.54.tgz#773582617ff60dc252acbaaeb22880ba7f559fe6"
   
   ua-parser-js@^0.7.18, ua-parser-js@^0.7.9:
     version "0.7.18"
@@ -10344,19 +10348,9 @@ Lockfile:
       lodash "^4.17.4"
       validate.io-nonnegative-integer-array "^1.0.1"
   
-  ve-sequence-utils@3.3.1:
-    version "3.3.1"
-    resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.1.tgz#9fbc59b32d5d87b01d3d967b94e6dee0d658027c"
-    dependencies:
-      bson-objectid "^1.1.1"
-      escape-string-regexp "^1.0.5"
-      randomcolor "^0.4.3"
-      string-splice "^1.3.0"
-      validate.io-nonnegative-integer-array "^1.0.1"
-  
-  ve-sequence-utils@^3.2.57:
-    version "3.2.57"
-    resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.2.57.tgz#1c3e60154e6fe4823e61710035b944ca580dccb3"
+  ve-sequence-utils@3.3.2, ve-sequence-utils@^3.2.57:
+    version "3.3.2"
+    resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.2.tgz#6b78d3191f157f89833ebc630d35c5e7f16f1d99"
     dependencies:
       bson-objectid "^1.1.1"
       escape-string-regexp "^1.0.5"

@@ -2,8 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   Button,
-  Icon,
-  Slider,
   Intent,
   Popover,
   InputGroup,
@@ -22,6 +20,7 @@ import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
 import withEditorProps from "../withEditorProps";
 import ReactList from "../RowView/ReactList";
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import "./style.css";
 import { isFunction } from "util";
 import {
@@ -184,7 +183,9 @@ class AlignmentView extends React.Component {
       this.InfiniteScroller.getFractionalVisibleRange &&
       this.easyStore
     ) {
-      const [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
+      const [_start, _end] = this.InfiniteScroller.getFractionalVisibleRange();
+      const start = this.props.pairwiseAlignments ? _start + 1 : _start;
+      const end = this.props.pairwiseAlignments ? _end + 1 : _end;
       if (
         this.easyStore.verticalVisibleRange.start !== start ||
         this.easyStore.verticalVisibleRange.end !== end
@@ -363,6 +364,7 @@ class AlignmentView extends React.Component {
               Inspect track
             </div>
           )}
+        {console.log("linearViewWidth:", linearViewWidth)}
         <LinearView
           {...{
             ...rest,
@@ -398,6 +400,7 @@ class AlignmentView extends React.Component {
             allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
             alignmentData,
+            showZoomSlider: false,
             chromatogramData,
             height: "100%",
             vectorInteractionWrapperStyle: {
@@ -591,6 +594,7 @@ class AlignmentView extends React.Component {
             {!isInPairwiseOverviewView && (
               <UncontrolledSliderWithPlusMinusBtns
                 onRelease={val => {
+                  console.log("val:", val);
                   this.setCharWidthInLinearView({
                     charWidthInLinearView: val
                   });
@@ -798,65 +802,6 @@ export default compose(
     })
   )
 )(AlignmentView);
-
-class UncontrolledSliderWithPlusMinusBtns extends React.Component {
-  state = { value: 0 };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.oldInitialValue !== nextProps.initialValue) {
-      return {
-        value: nextProps.initialValue, //set the state value if a new initial value comes in!
-        oldInitialValue: nextProps.initialValue
-      };
-    } else {
-      return null;
-    }
-  }
-
-  render() {
-    const { value } = this.state;
-    const { title, initialValue, style, ...rest } = this.props;
-
-    return (
-      <div title={title} style={{ ...style, display: "flex" }}>
-        <Icon
-          onClick={() => {
-            const newVal = Math.max(
-              this.state.value - (this.props.max - this.props.min) / 10,
-              this.props.min
-            );
-            this.setState({
-              value: newVal
-            });
-            this.props.onRelease(newVal);
-          }}
-          style={{ cursor: "pointer", marginRight: 5 }}
-          icon="minus"
-        />
-        <Slider
-          {...{ ...rest, value }}
-          onChange={value => {
-            this.setState({ value });
-          }}
-        />
-        <Icon
-          onClick={() => {
-            const newVal = Math.min(
-              this.state.value + (this.props.max - this.props.min) / 10,
-              this.props.max
-            );
-            this.setState({
-              value: newVal
-            });
-            this.props.onRelease(newVal);
-          }}
-          style={{ cursor: "pointer", marginLeft: 5 }}
-          icon="plus"
-        />
-      </div>
-    );
-  }
-}
 
 //this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {

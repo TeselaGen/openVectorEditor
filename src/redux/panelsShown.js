@@ -206,15 +206,15 @@ export default createReducer(
   },
   [
     [
-      {
-        id: "circular",
-        name: "Plasmid",
-        active: true
-      },
+      // {
+      //   id: "circular",
+      //   name: "Plasmid",
+      //   active: true
+      // },
       {
         id: "rail",
         name: "Linear Map",
-        active: false
+        active: true
       }
     ],
     [

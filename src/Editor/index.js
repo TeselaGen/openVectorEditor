@@ -293,6 +293,7 @@ export class Editor extends React.Component {
     const sharedProps = {
       editorName,
       tabHeight,
+      showZoomSlider: true,
       fitHeight: withPreviewMode && previewModeFullscreen,
       ...this.props
     };

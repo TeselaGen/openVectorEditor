@@ -1,5 +1,9 @@
 .veLinearView {
-  overflow: visible !important;
+  height: 100%;
+  overflow-y: hidden !important;
 }
 
+.veLinearView.react-draggable {
+  transform: none !important;
+}
 /*# sourceMappingURL=style.css.map */

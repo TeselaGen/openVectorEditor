@@ -5,6 +5,7 @@ import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import "./style.css";
 
 let defaultMarginWidth = 10;
@@ -12,6 +13,9 @@ let defaultMarginWidth = 10;
 function noop() {}
 
 export class LinearView extends React.Component {
+  state = {
+    charWidth: false
+  };
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
@@ -72,6 +76,7 @@ export class LinearView extends React.Component {
       editorClicked = noop,
       editorDragStopped = noop,
       width = 400,
+      showZoomSlider,
       tickSpacing,
       backgroundRightClicked = noop,
       RowItemProps = {},
@@ -81,9 +86,14 @@ export class LinearView extends React.Component {
       linearViewAnnotationVisibilityOverrides,
       ...rest
     } = this.props;
-    let innerWidth = Math.max(width - marginWidth, 0);
-    this.charWidth = charWidth || innerWidth / this.getMaxLength();
+
     const bpsPerRow = this.getMaxLength();
+    let innerWidth = Math.max(
+      this.state.charWidth ? charWidth * bpsPerRow : width - marginWidth,
+      0
+    );
+    this.charWidth =
+      charWidth || this.state.charWidth || innerWidth / this.getMaxLength();
     let sequenceName = hideName ? "" : sequenceData.name || "";
     let rowData = this.getRowData();
 
@@ -115,6 +125,7 @@ export class LinearView extends React.Component {
             ref={ref => (this.linearView = ref)}
             className="veLinearView"
             style={{
+              overflowX: "scroll",
               width,
               marginLeft: marginWidth / 2
             }}
@@ -141,10 +152,47 @@ export class LinearView extends React.Component {
                 }}
               />
             )}
+            {showZoomSlider && (
+              <div
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                // onMouseDown={e => {
+                //   e.stopPropagation();
+                // }}
+                style={{
+                  position: "absolute",
+                  top: 5,
+                  right: 5,
+                  minWidth: 100
+                }}
+              >
+                {console.log("charWidth:", charWidth)}
+                <UncontrolledSliderWithPlusMinusBtns
+                  onRelease={val => {
+                    console.log("val:", val);
+                    this.setState({ charWidth: val });
+                  }}
+                  title="Adjust Zoom Level"
+                  style={{ paddingTop: "3px", width: 100 }}
+                  className={"alignment-zoom-slider"}
+                  labelRenderer={false}
+                  stepSize={0.01}
+                  initialValue={this.charWidth}
+                  max={14}
+                  min={(width - marginWidth) / this.getMaxLength()}
+                />
+              </div>
+            )}
             <RowItem
               {...{
                 ...rest,
-                charWidth,
+                charWidth: this.charWidth,
                 alignmentData,
                 sequenceLength: this.getMaxLength(),
                 width: innerWidth,
@@ -173,7 +221,15 @@ export class LinearView extends React.Component {
 
 function SequenceName({ sequenceName, sequenceLength }) {
   return (
-    <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
+    <div
+      className="veCircViewSvgCenterText"
+      key="circViewSvgCenterText"
+      style={{
+        position: "sticky",
+        left: "0",
+        textAlign: "center"
+      }}
+    >
       <span>{sequenceName} </span>
       <br />
       <span>{sequenceLength + " bps"}</span>
