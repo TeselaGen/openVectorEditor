@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import store from "./store";
+import makeStore from "./makeStore";
 import { render, unmountComponentAtNode } from "react-dom";
 
 import Editor from "../Editor";
@@ -10,7 +10,12 @@ import AlignmentView from "../AlignmentView";
 import sizeMe from "react-sizeme";
 import VersionHistoryView from "../VersionHistoryView";
 
+let store;
+
 function StandaloneEditor(props) {
+  if (!store) {
+    store = makeStore();
+  }
   return (
     <Provider store={store}>
       <Editor {...props} />
@@ -19,6 +24,9 @@ function StandaloneEditor(props) {
 }
 
 function StandaloneAlignment(props) {
+  if (!store) {
+    store = makeStore();
+  }
   return (
     <Provider store={store}>
       <AlignmentView
@@ -29,6 +37,9 @@ function StandaloneAlignment(props) {
 }
 
 function StandaloneVersionHistoryView(props) {
+  if (!store) {
+    store = makeStore();
+  }
   return (
     <Provider store={store}>
       <VersionHistoryView {...{ ...props }} />
