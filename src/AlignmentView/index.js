@@ -285,12 +285,22 @@ class AlignmentView extends React.Component {
     const track = alignmentTracks[i];
 
     const {
-      sequenceData,
+      // sequenceData,
+      // alignmentData,
       additionalSelectionLayers,
-      alignmentData,
       chromatogramData
       // mismatches
     } = track;
+    const rawSequenceData = track.sequenceData;
+    const sequenceData = {
+      ...rawSequenceData,
+      sequence: rawSequenceData.sequence.toUpperCase()
+    };
+    const rawAlignmentData = track.alignmentData;
+    const alignmentData = {
+      ...rawAlignmentData,
+      sequence: rawAlignmentData.sequence.toUpperCase()
+    };
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
