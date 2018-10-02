@@ -139,7 +139,6 @@ class Sequence extends React.Component {
           style={style}
           className={(className ? className : "") + " Sequence"}
         >
-          {coloredRects}
           {!hideBps && (
             <svg
               style={{
@@ -172,6 +171,7 @@ class Sequence extends React.Component {
               </text>
             </svg>
           )}
+          {coloredRects}
           {children}
         </div>
       );
