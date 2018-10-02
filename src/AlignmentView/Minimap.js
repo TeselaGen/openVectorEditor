@@ -99,18 +99,28 @@ export default class Minimap extends React.Component {
     //need to get the chunks that can be rendered
     let redPath = ""; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
     let greyPath = "";
+    // draw one grey rectangle then draw red/mismatching regions on top of it
+    const height = laneHeight - laneSpacing;
+    const y = 0;
+    const firstRange = getXStartAndWidthFromNonCircularRange(
+      matchHighlightRanges[0],
+      charWidth
+    );
+    const lastRange = getXStartAndWidthFromNonCircularRange(
+      matchHighlightRanges[matchHighlightRanges.length - 1],
+      charWidth
+    );
+    greyPath += `M${firstRange.xStart},${y} L${lastRange.xStart +
+      lastRange.width},${y} L${lastRange.xStart + lastRange.width},${y +
+      height} L${firstRange.xStart},${y + height}`;
     matchHighlightRanges.forEach(range => {
       const { xStart, width } = getXStartAndWidthFromNonCircularRange(
         range,
         charWidth
       );
-      const height = laneHeight - laneSpacing;
-      const y = 0;
-      const toAdd = ` M${xStart},${y} L${xStart + width},${y} L${xStart +
-        width},${y + height} L${xStart},${y + height} `;
-      if (range.isMatch) {
-        greyPath += toAdd;
-      } else {
+      const toAdd = `M${xStart},${y} L${xStart + width},${y} L${xStart +
+        width},${y + height} L${xStart},${y + height}`;
+      if (!range.isMatch) {
         redPath += toAdd;
       }
     });
@@ -119,9 +129,13 @@ export default class Minimap extends React.Component {
         key={i + "-lane"}
         style={{ height: laneHeight, maxHeight: laneHeight }}
       >
-        <svg style={{ display: "block" }} height={laneHeight} width={width}>
-          <path d={redPath} fill={"red"} />
+        <svg
+          height={laneHeight}
+          width={width}
+          shapeRendering={"geometricPrecision"}
+        >
           <path d={greyPath} fill={"grey"} />
+          <path d={redPath} fill={"red"} />
         </svg>
       </div>
     );
