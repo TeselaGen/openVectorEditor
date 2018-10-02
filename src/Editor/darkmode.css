@@ -44,6 +44,11 @@
   fill: #f5f8fa !important;
 }
 
+.bp3-dark .alignmentViewTrackContainer text {
+  stroke: #f5f8fa !important;
+  -webkit-font-smoothing: antialiased;
+}
+
 .bp3-dark .step-group.active .step-text {
   color: #2b95d6 !important;
 }
