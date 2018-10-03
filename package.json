@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -74,8 +74,8 @@
     "ve-sequence-utils": "^3.2.11"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^3.5.1",
-    "@blueprintjs/datetime": "^3.1.0",
+    "@blueprintjs/core": "^3.6.1",
+    "@blueprintjs/datetime": "^3.2.0",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.3.7",
     "axios": "^0.18.0",
@@ -109,11 +109,11 @@
     "nodemon": "1.18.3",
     "nwb": "0.23.0",
     "prettier": "1.14.2",
-    "react": "16.5.0",
+    "react": "16.5.2",
     "react-addons-perf": "^15.4.2",
     "react-apollo": "^2.1.9",
     "react-collapsible": "^2.2.0",
-    "react-dom": "16.5.0",
+    "react-dom": "16.5.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "4.3.1",
     "react-select": "^1.0.0-rc.10",
@@ -121,7 +121,7 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "24.0.9",
+    "teselagen-react-components": "24.2.21",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.0",
     "ve-sequence-utils": "3.3.2"

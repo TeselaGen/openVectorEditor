@@ -60,8 +60,9 @@ function CutsiteToolDropDown({
             toggleDropdown();
           }}
         >
-          {" "}
-          Run Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+          <span style={{ display: "flex" }}>
+            Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+          </span>
         </Button>
       )}
 

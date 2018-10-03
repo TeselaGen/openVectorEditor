@@ -1,4 +1,4 @@
-import { Checkbox } from "@blueprintjs/core";
+import { Checkbox, Switch } from "@blueprintjs/core";
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
@@ -52,6 +52,16 @@ class TranslationProperties extends React.Component {
           formName={"translationProperties"}
           noRouter
           compact
+          topLeftItems={
+            <Switch
+              checked={annotationVisibility.translations}
+              onChange={() => {
+                annotationVisibilityToggle("translations");
+              }}
+            >
+              Hide/Show
+            </Switch>
+          }
           hideSelectedCount
           noFullscreenButton
           isInfinite

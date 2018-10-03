@@ -1,6 +1,7 @@
 export default [
   // { cmd: "mapCaret" },
   { cmd: "toggleFeatures", shouldDismissPopover: false },
+  { cmd: "toggleTranslations", shouldDismissPopover: false },
   // {
   //   // TODO preprocess this as needed
   //   cmd: "featureTypes",

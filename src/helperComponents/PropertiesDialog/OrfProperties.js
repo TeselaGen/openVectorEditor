@@ -4,10 +4,11 @@ import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
+import { Switch } from "@blueprintjs/core";
 
 class OrfProperties extends React.Component {
   onRowSelect = ([record]) => {
-    if (!record) return
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
@@ -37,6 +38,16 @@ class OrfProperties extends React.Component {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
+          topLeftItems={
+            <Switch
+              checked={this.props.annotationVisibility.orfs}
+              onChange={() => {
+                this.props.annotationVisibilityToggle("orfs");
+              }}
+            >
+              Hide/Show
+            </Switch>
+          }
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
