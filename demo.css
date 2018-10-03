@@ -413,7 +413,7 @@
 }
 
 .bp3-dark .ReactTable .rt-thead.-header {
-  background: #202b33 !important;
+  background: #182026 !important;
   color: #f5f8fa !important;
 }
 
@@ -1097,6 +1097,36 @@
   font-weight: bold;
 }
 
+/* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
+.tg-timeline {
+  position: relative;
+  white-space: nowrap;
+}
+
+.tg-timeline-line {
+  position: absolute;
+  height: 90%;
+  border-left: 2px solid #bfccd6;
+  top: 3px;
+  left: 5px;
+}
+
+.tg-timeline-event {
+  margin-bottom: 15px;
+}
+
+.tg-timeline-circle {
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  min-height: 12px;
+  z-index: 1;
+  margin-right: 10px;
+  border-radius: 100px;
+  background: #e1e8ed;
+  border: 2px solid #137cbd;
+}
+
 .error-popover {
   margin: 5px;
   color: red;
@@ -1744,7 +1774,7 @@ a{
     .bp3-breadcrumbs > li::after{
       display:block;
       margin:0 5px;
-      background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.71 7.29l-4-4a1.003 1.003 0 0 0-1.42 1.42L8.59 8 5.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 0 0 1.71.71l4-4c.18-.18.29-.43.29-.71 0-.28-.11-.53-.29-.71z' fill='rgba(92%2c112%2c128%2c1)'/%3e%3c/svg%3e");
+      background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.71 7.29l-4-4a1.003 1.003 0 0 0-1.42 1.42L8.59 8 5.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 0 0 1.71.71l4-4c.18-.18.29-.43.29-.71 0-.28-.11-.53-.29-.71z' fill='%235C7080'/%3e%3c/svg%3e");
       width:16px;
       height:16px;
       content:""; }
@@ -1785,7 +1815,7 @@ a{
   padding:1px 5px; }
   .bp3-breadcrumbs-collapsed::before{
     display:block;
-    background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='rgba(92%2c112%2c128%2c1)'%3e%3ccircle cx='2' cy='8.03' r='2'/%3e%3ccircle cx='14' cy='8.03' r='2'/%3e%3ccircle cx='8' cy='8.03' r='2'/%3e%3c/g%3e%3c/svg%3e") center no-repeat;
+    background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%235C7080'%3e%3ccircle cx='2' cy='8.03' r='2'/%3e%3ccircle cx='14' cy='8.03' r='2'/%3e%3ccircle cx='8' cy='8.03' r='2'/%3e%3c/g%3e%3c/svg%3e") center no-repeat;
     width:16px;
     height:16px;
     content:""; }
@@ -3410,9 +3440,9 @@ a.bp3-button{
   .bp3-control.bp3-checkbox .bp3-control-indicator{
     border-radius:3px; }
   .bp3-control.bp3-checkbox input:checked ~ .bp3-control-indicator::before{
-    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 5c-.28 0-.53.11-.71.29L7 9.59l-2.29-2.3a1.003 1.003 0 0 0-1.42 1.42l3 3c.18.18.43.29.71.29s.53-.11.71-.29l5-5A1.003 1.003 0 0 0 12 5z' fill='rgba(255%2c255%2c255%2c1)'/%3e%3c/svg%3e"); }
+    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 5c-.28 0-.53.11-.71.29L7 9.59l-2.29-2.3a1.003 1.003 0 0 0-1.42 1.42l3 3c.18.18.43.29.71.29s.53-.11.71-.29l5-5A1.003 1.003 0 0 0 12 5z' fill='white'/%3e%3c/svg%3e"); }
   .bp3-control.bp3-checkbox input:indeterminate ~ .bp3-control-indicator::before{
-    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M11 7H5c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1z' fill='rgba(255%2c255%2c255%2c1)'/%3e%3c/svg%3e"); }
+    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M11 7H5c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1z' fill='white'/%3e%3c/svg%3e"); }
   .bp3-control.bp3-radio .bp3-control-indicator{
     border-radius:50%; }
   .bp3-control.bp3-radio input:checked ~ .bp3-control-indicator::before{
@@ -3457,7 +3487,7 @@ a.bp3-button{
     -o-transition:background-color 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
     transition:background-color 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
     .bp3-control.bp3-switch .bp3-control-indicator::before{
-      position:relative;
+      position:absolute;
       left:0;
       margin:2px;
       border-radius:50%;
@@ -3480,21 +3510,21 @@ a.bp3-button{
     .bp3-control.bp3-switch.bp3-large.bp3-align-right .bp3-control-indicator{
       margin-right:-45px; }
   .bp3-dark .bp3-control.bp3-switch input ~ .bp3-control-indicator{
-    background:rgba(167, 182, 194, 0.5); }
+    background:rgba(16, 22, 26, 0.5); }
   .bp3-dark .bp3-control.bp3-switch:hover input ~ .bp3-control-indicator{
-    background:rgba(115, 134, 148, 0.5); }
+    background:rgba(16, 22, 26, 0.7); }
   .bp3-dark .bp3-control.bp3-switch input:not(:disabled):active ~ .bp3-control-indicator{
-    background:rgba(92, 112, 128, 0.5); }
+    background:rgba(16, 22, 26, 0.9); }
   .bp3-dark .bp3-control.bp3-switch input:disabled ~ .bp3-control-indicator{
-    background:rgba(206, 217, 224, 0.5); }
+    background:rgba(57, 75, 89, 0.5); }
   .bp3-dark .bp3-control.bp3-switch input:checked ~ .bp3-control-indicator{
     background:#137cbd; }
   .bp3-dark .bp3-control.bp3-switch:hover input:checked ~ .bp3-control-indicator{
-    background:#106ba3; }
+    background:#2b95d6; }
   .bp3-dark .bp3-control.bp3-switch input:checked:not(:disabled):active ~ .bp3-control-indicator{
-    background:#0e5a8a; }
+    background:#48aff0; }
   .bp3-dark .bp3-control.bp3-switch input:checked:disabled ~ .bp3-control-indicator{
-    background:rgba(19, 124, 189, 0.5); }
+    background:rgba(14, 90, 138, 0.5); }
   .bp3-dark .bp3-control.bp3-switch .bp3-control-indicator::before{
     -webkit-box-shadow:0 0 0 1px rgba(16, 22, 26, 0.4);
             box-shadow:0 0 0 1px rgba(16, 22, 26, 0.4);
@@ -4836,7 +4866,8 @@ form{
     -webkit-box-shadow:inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
             box-shadow:inset 0 1px 0 0 rgba(255, 255, 255, 0.15); }
 
-table.bp3-html-table.bp3-small th,
+table.bp3-html-table.bp3-condensed th,
+table.bp3-html-table.bp3-condensed td, table.bp3-html-table.bp3-small th,
 table.bp3-html-table.bp3-small td{
   padding-top:6px;
   padding-bottom:6px; }
@@ -4968,6 +4999,7 @@ table.bp3-html-table.bp3-interactive tbody tr:active td{
       -ms-flex:0 0 auto;
           flex:0 0 auto; }
   .bp3-icon:not(:empty)::before{
+    content:"" !important;
     content:unset !important; }
   .bp3-icon > svg{
     display:block; }
@@ -8111,6 +8143,9 @@ span.bp3-popover-target{
           background-color:rgba(219, 55, 55, 0.45); }
 
 .bp3-tag-remove{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
   opacity:0.5;
   margin-top:-2px;
   margin-right:-6px !important;
@@ -8215,6 +8250,8 @@ span.bp3-popover-target{
     .bp3-tag-input .bp3-tag-input-values:empty::before,
     .bp3-tag-input .bp3-tag-input-values > :last-child{
       margin-right:0; }
+    .bp3-tag-input .bp3-tag-input-values:first-child .bp3-input-ghost:first-child{
+      padding-left:5px; }
     .bp3-tag-input .bp3-tag-input-values > *{
       margin-bottom:5px; }
   .bp3-tag-input .bp3-tag{
@@ -8876,7 +8913,6 @@ span.bp3-popover-target{
 
 .bp3-dark .bp3-tree-node.bp3-tree-node-selected > .bp3-tree-node-content{
   background-color:#137cbd; }
-@charset "UTF-8";
 /*!
 
 Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
@@ -8887,7 +8923,7 @@ Licensed under the terms of the LICENSE file distributed with this project.
   position:relative;
   border-radius:3px;
   background:#ffffff;
-  padding:10px;
+  padding:5px;
   -webkit-user-select:none;
      -moz-user-select:none;
       -ms-user-select:none;
@@ -8901,8 +8937,7 @@ Licensed under the terms of the LICENSE file distributed with this project.
       outline:none; }
   .bp3-datepicker .DayPicker-Month{
     display:inline-table;
-    margin:0 auto;
-    padding:0 5px;
+    margin:0 5px 5px;
     border-collapse:collapse;
     border-spacing:0;
     -webkit-user-select:none;
@@ -8911,42 +8946,8 @@ Licensed under the terms of the LICENSE file distributed with this project.
             user-select:none; }
     .bp3-datepicker .DayPicker-Month + .bp3-datepicker .DayPicker-Month{
       margin-left:10px; }
-  .bp3-datepicker .DayPicker-NavBar{
-    position:relative; }
-  .bp3-datepicker .DayPicker-NavButton{
-    color:#5c7080;
-    position:absolute;
-    top:-5px;
-    cursor:pointer;
-    padding:6px; }
-    .bp3-datepicker .DayPicker-NavButton:hover{
-      color:#182026; }
-    .bp3-dark .bp3-datepicker .DayPicker-NavButton{
-      color:#bfccd6; }
-      .bp3-dark .bp3-datepicker .DayPicker-NavButton:hover{
-        color:#f5f8fa; }
-    .bp3-datepicker .DayPicker-NavButton--prev{
-      left:-5px; }
-      .bp3-datepicker .DayPicker-NavButton--prev::before{
-        line-height:1;
-        font-family:"Icons16", sans-serif;
-        font-size:16px;
-        font-weight:400;
-        font-style:normal;
-        -moz-osx-font-smoothing:grayscale;
-        -webkit-font-smoothing:antialiased;
-        content:"\E694"; }
-    .bp3-datepicker .DayPicker-NavButton--next{
-      right:-5px; }
-      .bp3-datepicker .DayPicker-NavButton--next::before{
-        line-height:1;
-        font-family:"Icons16", sans-serif;
-        font-size:16px;
-        font-weight:400;
-        font-style:normal;
-        -moz-osx-font-smoothing:grayscale;
-        -webkit-font-smoothing:antialiased;
-        content:"\E695"; }
+  .bp3-datepicker .DayPicker-Caption{
+    display:table-caption; }
   .bp3-datepicker .DayPicker-Weekdays{
     display:table-header-group; }
   .bp3-datepicker .DayPicker-WeekdaysRow{
@@ -9001,56 +9002,75 @@ Licensed under the terms of the LICENSE file distributed with this project.
       background:none;
       cursor:not-allowed;
       color:rgba(92, 112, 128, 0.5); }
-  .bp3-datepicker .bp3-datepicker-caption{
-    display:table-caption;
-    border-bottom:1px solid rgba(16, 22, 26, 0.15);
-    padding:0 10px;
-    text-align:center; }
-    .bp3-datepicker .bp3-datepicker-caption select{
-      margin:-5px 0 5px;
-      border:0;
-      background:none;
-      cursor:pointer;
-      height:30px;
-      padding-right:16px;
-      padding-left:5px;
-      line-height:30px;
-      color:#182026;
-      font-weight:600;
-      -moz-appearance:none;
-      -webkit-appearance:none; }
-      .bp3-datepicker .bp3-datepicker-caption select:focus + .bp3-datepicker-caption-caret{
-        display:inline; }
-      .bp3-datepicker .bp3-datepicker-caption select::-ms-expand{
-        display:none; }
-  .bp3-datepicker .bp3-datepicker-caption-select{
-    display:inline-block;
-    position:relative; }
-    .bp3-datepicker .bp3-datepicker-caption-select:first-child{
-      margin-right:10px; }
-    .bp3-datepicker .bp3-datepicker-caption-select:hover .bp3-datepicker-caption-caret{
-      fill:#182026; }
-  .bp3-datepicker .bp3-datepicker-caption-caret{
-    position:absolute;
-    top:2px;
-    right:0;
-    fill:#5c7080;
-    pointer-events:none; }
-  .bp3-datepicker .bp3-datepicker-footer{
-    display:-webkit-box;
-    display:-ms-flexbox;
-    display:flex;
-    -webkit-box-pack:justify;
-        -ms-flex-pack:justify;
-            justify-content:space-between;
-    margin-top:10px;
-    margin-bottom:-5px;
-    border-top:1px solid rgba(16, 22, 26, 0.15);
-    padding-top:5px; }
+
+.bp3-datepicker-navbar{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center;
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  height:30px; }
+  .bp3-datepicker-navbar > :first-child{
+    margin-right:auto; }
+
+.bp3-datepicker-caption{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-orient:horizontal;
+  -webkit-box-direction:normal;
+      -ms-flex-direction:row;
+          flex-direction:row;
+  -webkit-box-pack:justify;
+      -ms-flex-pack:justify;
+          justify-content:space-between;
+  margin:0 25px 5px; }
+  .bp3-datepicker-caption > *{
+    -webkit-box-flex:0;
+        -ms-flex-positive:0;
+            flex-grow:0;
+    -ms-flex-negative:0;
+        flex-shrink:0; }
+  .bp3-datepicker-caption > :first-child{
+    -webkit-box-flex:1;
+        -ms-flex-positive:1;
+            flex-grow:1;
+    -ms-flex-negative:1;
+        flex-shrink:1; }
+  .bp3-datepicker-caption select{
+    padding-right:16px;
+    padding-left:5px;
+    font-weight:600; }
+    .bp3-datepicker-caption select + .bp3-icon{
+      right:2px; }
+  .bp3-datepicker-caption + .bp3-divider{
+    margin:0; }
+
+.bp3-datepicker-month-select{
+  -ms-flex-negative:1;
+      flex-shrink:1; }
+
+.bp3-datepicker-year-select{
+  -ms-flex-negative:1;
+      flex-shrink:1;
+  min-width:60px; }
 
 .bp3-datepicker-caption-measure{
   padding-left:5px;
   font-weight:600; }
+
+.bp3-datepicker-footer{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:justify;
+      -ms-flex-pack:justify;
+          justify-content:space-between; }
 
 .bp3-dark .bp3-datepicker{
   background:#30404d; }
@@ -9070,16 +9090,6 @@ Licensed under the terms of the LICENSE file distributed with this project.
   .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--disabled{
     background:none;
     color:rgba(191, 204, 214, 0.5); }
-  .bp3-dark .bp3-datepicker .bp3-datepicker-caption{
-    border-bottom-color:rgba(16, 22, 26, 0.4); }
-    .bp3-dark .bp3-datepicker .bp3-datepicker-caption select{
-      color:#f5f8fa; }
-    .bp3-dark .bp3-datepicker .bp3-datepicker-caption option{
-      background-color:#30404d; }
-    .bp3-dark .bp3-datepicker .bp3-datepicker-caption .bp3-datepicker-caption-select:hover .bp3-datepicker-caption-caret{
-      fill:#f5f8fa; }
-    .bp3-dark .bp3-datepicker .bp3-datepicker-caption .bp3-datepicker-caption-caret{
-      fill:#bfccd6; }
   .bp3-dark .bp3-datepicker .bp3-datepicker-footer{
     border-top-color:rgba(16, 22, 26, 0.4); }
 .bp3-daterangepicker{
@@ -9087,20 +9097,24 @@ Licensed under the terms of the LICENSE file distributed with this project.
   display:-ms-flexbox;
   display:flex;
   white-space:nowrap; }
-  .bp3-daterangepicker .DayPicker:not(:last-child){
-    margin-right:10px; }
+  .bp3-daterangepicker .DayPicker:first-of-type .bp3-datepicker-navbar{
+    left:5px; }
   .bp3-daterangepicker .DayPicker-NavButton--interactionDisabled{
     display:none; }
+  .bp3-daterangepicker .bp3-daterangepicker-timepickers{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-pack:distribute;
+        justify-content:space-around; }
   .bp3-daterangepicker .bp3-daterangepicker-shortcuts + .DayPicker{
     border-left:1px solid rgba(16, 22, 26, 0.15);
     min-width:220px;
-    padding-left:10px; }
+    padding-left:5px; }
   .bp3-daterangepicker.bp3-daterangepicker-contiguous .DayPicker{
     min-width:430px; }
   .bp3-daterangepicker.bp3-daterangepicker-contiguous .bp3-daterangepicker-shortcuts + .DayPicker{
     min-width:440px; }
-  .bp3-daterangepicker.bp3-daterangepicker-contiguous .DayPicker-Month:not(:last-child){
-    margin-right:10px; }
   .bp3-daterangepicker.bp3-daterangepicker-single-month .DayPicker{
     min-width:210px; }
   .bp3-daterangepicker.bp3-daterangepicker-single-month .bp3-daterangepicker-shortcuts + .DayPicker{
@@ -9136,13 +9150,8 @@ Licensed under the terms of the LICENSE file distributed with this project.
       background-color:#5c7080; }
 
 .bp3-menu.bp3-daterangepicker-shortcuts{
-  display:inline-block;
-  margin-top:-5px;
-  margin-left:-5px;
-  min-width:150px;
-  padding-top:0;
-  padding-right:5px;
-  padding-left:0; }
+  min-width:120px;
+  padding:0; }
 .bp3-timepicker{
   white-space:nowrap; }
   .bp3-timepicker .bp3-timepicker-arrow-row{
@@ -9227,6 +9236,13 @@ Licensed under the terms of the LICENSE file distributed with this project.
 
 .bp3-dark .bp3-timepicker .bp3-timepicker-input{
   color:#f5f8fa; }
+
+.bp3-datepicker .bp3-timepicker{
+  margin-top:5px;
+  margin-bottom:10px;
+  text-align:center; }
+  .bp3-datepicker .bp3-timepicker:last-child{
+    margin-bottom:5px; }
 .bp3-datetimepicker{
   border-radius:3px;
   background-color:#ffffff;
@@ -10807,6 +10823,11 @@ span.bp3-popover-target {
 
 .bp3-dark .veAxis > g {
   fill: #f5f8fa !important;
+}
+
+.bp3-dark .alignmentViewTrackContainer text {
+  stroke: #f5f8fa !important;
+  -webkit-font-smoothing: antialiased;
 }
 
 .bp3-dark .step-group.active .step-text {
