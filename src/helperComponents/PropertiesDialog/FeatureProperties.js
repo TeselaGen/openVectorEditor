@@ -3,7 +3,7 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-import { Popover } from "@blueprintjs/core";
+import { Popover, Switch } from "@blueprintjs/core";
 import ColorPicker from "./ColorPicker";
 
 class FeatureProperties extends React.Component {
@@ -41,6 +41,16 @@ class FeatureProperties extends React.Component {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
+          topLeftItems={
+            <Switch
+              checked={this.props.annotationVisibility.features}
+              onChange={() => {
+                this.props.annotationVisibilityToggle("features");
+              }}
+            >
+              Hide/Show
+            </Switch>
+          }
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}

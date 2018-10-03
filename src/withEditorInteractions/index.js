@@ -685,7 +685,8 @@ function VectorInteractionHOC(Component /* options */) {
     generateSelectionMenuOptions = annotation => {
       const {
         // sequenceData,
-        upsertTranslation
+        upsertTranslation,
+        annotationVisibilityToggle
       } = this.props;
 
       let items = [
@@ -699,6 +700,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: true
             });
+            annotationVisibilityToggle("translations");
           }
         }
       ];
@@ -814,6 +816,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         deletePart,
+        annotationVisibilityToggle,
         showAddOrEditPartDialog,
         propertiesViewOpen,
         propertiesViewTabUpdate
@@ -845,6 +848,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
+            annotationVisibilityToggle("translations");
           }
         },
         {
@@ -948,6 +952,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
+            annotationVisibilityToggle("translations");
           }
         },
         {
@@ -979,6 +984,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         propertiesViewOpen,
+        annotationVisibilityToggle,
         propertiesViewTabUpdate
       } = this.props;
       return [
@@ -1002,6 +1008,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
+            annotationVisibilityToggle("translations");
           }
         },
         {

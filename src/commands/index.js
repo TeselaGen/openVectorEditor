@@ -279,6 +279,7 @@ const annotationToggleCommandDefs = {};
   "cutsites",
   "axis",
   "orfs",
+  "translations",
   "orfTranslations",
   "cdsFeatureTranslations",
   "axisNumbers",

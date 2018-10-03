@@ -4,7 +4,7 @@ import { map } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button, KeyCombo } from "@blueprintjs/core";
+import { Button, KeyCombo, Switch } from "@blueprintjs/core";
 
 // import { Button } from "@blueprintjs/core";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
@@ -132,10 +132,25 @@ class CutsiteProperties extends React.Component {
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex" }}>
-          <Button style={{ cursor: "auto" }} disabled minimal icon="filter" />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Switch
+            style={{ marginBottom: 0 }}
+            checked={this.props.annotationVisibility.cutsites}
+            onChange={() => {
+              this.props.annotationVisibilityToggle("cutsites");
+            }}
+          >
+            Hide/Show
+          </Switch>
+
+          <Button
+            style={{ marginLeft: 10, cursor: "auto" }}
+            disabled
+            minimal
+            icon="filter"
+          />
           <CutsiteFilter
-            style={{ flexGrow: 1 }}
+            style={{ flexGrow: 2 }}
             editorName={editorName}
             onChangeHook={function() {
               annotationVisibilityShow("cutsites");
@@ -148,8 +163,7 @@ class CutsiteProperties extends React.Component {
               createNewDigest();
             }}
           >
-            {" "}
-            Run Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+            Virtual Digest
           </Button>
         </div>
         <DataTable

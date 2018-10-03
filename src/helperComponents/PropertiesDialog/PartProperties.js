@@ -1,7 +1,7 @@
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
-import { Button } from "@blueprintjs/core";
+import { Button, Switch } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class PartProperties extends React.Component {
@@ -38,6 +38,16 @@ class PartProperties extends React.Component {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
+          topLeftItems={
+            <Switch
+              checked={this.props.annotationVisibility.parts}
+              onChange={() => {
+                this.props.annotationVisibilityToggle("parts");
+              }}
+            >
+              Hide/Show
+            </Switch>
+          }
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}

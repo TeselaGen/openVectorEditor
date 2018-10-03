@@ -103,10 +103,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/core@^3.1.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.3.0.tgz#6fc5c7d811d1c0693c0c3d7a472549e171c455db"
-  integrity sha512-Xfd9YqeJ3ajuJfHImkbw5UdYL7j9ylGHRQJqKiuzJ9Mtp7xnmq/TJLmTci6HBKWzwy6Ljv3IbWKOA5V/kYhvVA==
+"@blueprintjs/core@^3.6.0", "@blueprintjs/core@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.6.1.tgz#d168423b1c38964e50c2cc8aef4cba8076bfe01a"
+  integrity sha512-4RpJ1mNklCgi841D3cYbTWGJ7oVEISSmTXCD4FEWonzPtacWRWGsV7IgzynBtU6oZWUPC7j45SRtYuxacVs2mA==
   dependencies:
     "@blueprintjs/icons" "^3.0.0"
     "@types/dom4" "^2.0.0"
@@ -119,30 +119,14 @@
     resize-observer-polyfill "^1.5.0"
     tslib "^1.9.0"
 
-"@blueprintjs/core@^3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.5.1.tgz#f8ad2d5c880a871dfd11575ed771e1d2c430e996"
-  integrity sha512-bRRLhy6IZAZI741q8pgtaxzuqyUfH9mTAuAbz2iQlXQT3cd5RyyFVI6LuWIaPtfl7FyUuup3TLxrYqEzeNb4kw==
+"@blueprintjs/datetime@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.2.0.tgz#8d0c8d5e3ed43b2c1d8415d6b76c44fea9c3b288"
+  integrity sha512-lkyDksHkJUZvgGcvs4Jzk62NdkbLFYYCZvowZwjarQ3DaTpIrKPk1eBt2LINBVZXBBkxKDomJPY+FnaqtuBxMg==
   dependencies:
-    "@blueprintjs/icons" "^3.0.0"
-    "@types/dom4" "^2.0.0"
+    "@blueprintjs/core" "^3.6.0"
     classnames "^2.2"
-    dom4 "^2.0.1"
-    normalize.css "^8.0.0"
-    popper.js "^1.14.1"
-    react-popper "^1.0.0"
-    react-transition-group "^2.2.1"
-    resize-observer-polyfill "^1.5.0"
-    tslib "^1.9.0"
-
-"@blueprintjs/datetime@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.1.0.tgz#579c05e25475e2aa86491036c4faeba6c5444838"
-  integrity sha512-3riYuu0hpFHH9RzcKvZmR/X1GEqndwtg6R6N+Fx/S7XcXU5yXY2tf+nhMKrZtTyyW7dYeu9EKz45UsRg+PPVcg==
-  dependencies:
-    "@blueprintjs/core" "^3.1.0"
-    classnames "^2.2"
-    react-day-picker "^7.0.7"
+    react-day-picker "^7.1.10"
     tslib "^1.9.0"
 
 "@blueprintjs/icons@^3.0.0":
@@ -3000,20 +2984,20 @@ create-react-context@^0.2.1:
     fbjs "^0.8.0"
     gud "^1.0.0"
 
-cross-env@^5.1.4:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
-  integrity sha512-jtdNFfFW1hB7sMhr/H6rW1Z45LFqyI431m3qU6bFXcQ3Eh7LtBuG3h74o7ohHZ3crrRkkqHlo4jYHFPcjroANg==
-  dependencies:
-    cross-spawn "^6.0.5"
-    is-windows "^1.0.0"
-
 cross-env@^5.1.6:
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.1.6.tgz#0dc05caf945b24e4b9e3b12871fe0e858d08b38d"
   integrity sha512-VWTDq+G4v383SzgRS7jsAVWqEWF0aKZpDz1GVjhONvPRgHB1LnxP2sXUVFKbykHkPSnfRKS8YdiDevWFwZmQ9g==
   dependencies:
     cross-spawn "^5.1.0"
+    is-windows "^1.0.0"
+
+cross-env@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
+  integrity sha512-jtdNFfFW1hB7sMhr/H6rW1Z45LFqyI431m3qU6bFXcQ3Eh7LtBuG3h74o7ohHZ3crrRkkqHlo4jYHFPcjroANg==
+  dependencies:
+    cross-spawn "^6.0.5"
     is-windows "^1.0.0"
 
 cross-spawn@6.0.5, cross-spawn@^6.0.5:
@@ -7314,6 +7298,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+material-colors@^1.2.1:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
+
 math-expression-evaluator@^1.2.17:
   version "1.2.17"
   resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
@@ -7475,10 +7464,10 @@ miller-rabin@^4.0.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.33.0.tgz#a3492050a5cb9b63450541e39d9788d2272783db"
   integrity sha512-BHJ/EKruNIqJf/QahvxwQZXKygOQ256myeN/Ew+THcAa5q+PjyTTMMeNQC4DZw5AwfvelsUrA6B67NKMqXDbzQ==
 
-mime-db@~1.35.0:
-  version "1.35.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.35.0.tgz#0569d657466491283709663ad379a99b90d9ab47"
-  integrity sha512-JWT/IcCTsB0Io3AhWUMjRqucrHSPsSf2xKLaRldJVULioggvkJvggZ3VXNNSRkCddE6D+BUI4HEIZIA2OjwIvg==
+mime-db@~1.36.0:
+  version "1.36.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.36.0.tgz#5020478db3c7fe93aad7bbcc4dcf869c43363397"
+  integrity sha512-L+xvyD9MkoYMXb1jAmzI/lWYAxAMCPvIBSWur0PZ5nOf5euahRLVqH//FKW9mWp2lkqUgYiXPgkzfMUFi4zVDw==
 
 mime-types@^2.1.11, mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.18, mime-types@~2.1.7:
   version "2.1.18"
@@ -7487,12 +7476,12 @@ mime-types@^2.1.11, mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.18, 
   dependencies:
     mime-db "~1.33.0"
 
-mime-types@^2.1.19:
-  version "2.1.19"
-  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.19.tgz#71e464537a7ef81c15f2db9d97e913fc0ff606f0"
-  integrity sha512-P1tKYHVSZ6uFo26mtnve4HQFE3koh1UWVkp8YUC+ESBHe945xWSoXuHHiGarDqcEZ+whpCDnlNw5LON0kLo+sw==
+mime-types@^2.1.20:
+  version "2.1.20"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.20.tgz#930cb719d571e903738520f8470911548ca2cc19"
+  integrity sha512-HrkrPaP9vGuWbLK1B1FfgAkbqNjIuy4eHlIYnFi7kamZyLLrGlo2mpcx0bBmNpKqBtYtAfGbodDddIgddSJC2A==
   dependencies:
-    mime-db "~1.35.0"
+    mime-db "~1.36.0"
 
 mime@1.4.1:
   version "1.4.1"
@@ -7899,10 +7888,26 @@ nodemailer@^2.5.0:
     nodemailer-smtp-transport "2.7.2"
     socks "1.1.9"
 
-nodemon@1.18.3, nodemon@^1.17.2:
+nodemon@1.18.3:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.3.tgz#46e681ee0dd1b590562e03019b4c5df234f906f9"
   integrity sha512-XdVfAjGlDKU2nqoGgycxTndkJ5fdwvWJ/tlMGk2vHxMZBrSPVh86OM6z7viAv8BBJWjMgeuYQBofzr6LUoi+7g==
+  dependencies:
+    chokidar "^2.0.2"
+    debug "^3.1.0"
+    ignore-by-default "^1.0.1"
+    minimatch "^3.0.4"
+    pstree.remy "^1.1.0"
+    semver "^5.5.0"
+    supports-color "^5.2.0"
+    touch "^3.1.0"
+    undefsafe "^2.0.2"
+    update-notifier "^2.3.0"
+
+nodemon@^1.18.4:
+  version "1.18.4"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.4.tgz#873f65fdb53220eb166180cf106b1354ac5d714d"
+  integrity sha512-hyK6vl65IPnky/ee+D3IWvVGgJa/m3No2/Xc/3wanS6Ce1MWjCzH6NnhPJ/vZM+6JFym16jtHx51lmCMB9HDtg==
   dependencies:
     chokidar "^2.0.2"
     debug "^3.1.0"
@@ -8458,7 +8463,7 @@ pako@~1.0.5:
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
   integrity sha512-lQe48YPsMJAig+yngZ87Lus+NF+3mtu7DVOBu6b/gHO1YpKwIj5AWjZ/TOS7i46HD/UixzWb1zeWDZfGZ3iYcg==
 
-papaparse@^4.5.0:
+papaparse@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.6.0.tgz#4e3b8d6bf9f7900da437912794ec292207526867"
   integrity sha512-ylm8pmgyz9rkS3Ng/ru5tHUF3JxWwKYP0aZZWZ8eCGdSxoqgYiDUXLNQei73mUJOjHw8QNu5ZNCsLoDpkMA6sg==
@@ -9279,27 +9284,38 @@ react-collapsible@^2.2.0:
   resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.2.0.tgz#257abef5b96a330d9249810761cac29a3d82f268"
   integrity sha512-xnkMUj4p6fh2yOeTuZDNK4p+dNK/0iSqOQTujvmLgHKtNNd+aIGhfE5HTKGcareekyhi3Q2OXUFogkimzrgSjQ==
 
-react-day-picker@^7.0.7:
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.1.9.tgz#04b0d956faf1bf85bb6ec6f9ca7966433be13f36"
-  integrity sha512-gQPlIykZ9y6AjkJ0kDp6k5q7bCXciIuHG40LExr2iTK6xa0pZTCadqwENwbq2jtmniPrk+cU4WYz74AJAgNlxw==
+react-color@^2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/react-color/-/react-color-2.14.1.tgz#db8ad4f45d81e74896fc2e1c99508927c6d084e0"
+  integrity sha512-ssv2ArSZdhTbIs29hyfw8JW+s3G4BCx/ILkwCajWZzrcx/2ZQfRpsaLVt38LAPbxe50LLszlmGtRerA14JzzRw==
   dependencies:
-    prop-types "^15.6.1"
+    lodash "^4.0.1"
+    material-colors "^1.2.1"
+    prop-types "^15.5.10"
+    reactcss "^1.2.0"
+    tinycolor2 "^1.4.1"
+
+react-day-picker@^7.1.10:
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.2.4.tgz#3c3bea7aa1910bef7bad17f25ff15cd26a7d1848"
+  integrity sha512-LaePKijvAdXTrQhTyU7XfxxD5NQIFb4FH4vr1T862xNtmncoS8jZLliyHieMHNhZZ8RJU1pruqoQzkZQ05646w==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-deep-force-update@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz#bcd31478027b64b3339f108921ab520b4313dc2c"
   integrity sha1-vNMUeAJ7ZLMznxCJIatSC0MT3Cw=
 
-react-dom@16.5.0:
-  version "16.5.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.5.0.tgz#57704e5718669374b182a17ea79a6d24922cb27d"
-  integrity sha512-qgsQdjFH54pQ1AGLCBKsqjPxib4Pnp+cOsNxGPlkHn5YnsSt43sBvHSif6FheY7NMMS6HPeSJOxXf6ECanjacA==
+react-dom@16.5.2:
+  version "16.5.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.5.2.tgz#b69ee47aa20bab5327b2b9d7c1fe2a30f2cfa9d7"
+  integrity sha512-RC8LDw8feuZOHVgzEf7f+cxBr/DnKdqp56VU0lAs1f4UfKc4cU8wU4fTq/mgnvynLQo8OtlPC19NUFh/zjZPuA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    schedule "^0.3.0"
+    schedule "^0.5.0"
 
 react-draggable@3.0.5, react-draggable@^3.0.3:
   version "3.0.5"
@@ -9519,15 +9535,22 @@ react-values@^0.2.4:
   resolved "https://registry.yarnpkg.com/react-values/-/react-values-0.2.4.tgz#be5760589b6a2092690bffc28f633fb5ef4223f8"
   integrity sha1-vldgWJtqIJJpC//Cj2M/te9CI/g=
 
-react@16.5.0:
-  version "16.5.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.5.0.tgz#f2c1e754bf9751a549d9c6d9aca41905beb56575"
-  integrity sha512-nw/yB/L51kA9PsAy17T1JrzzGRk+BlFCJwFF7p+pwVxgqwPjYNeZEkkH7LXn9dmflolrYMXLWMTkQ77suKPTNQ==
+react@16.5.2:
+  version "16.5.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.5.2.tgz#19f6b444ed139baa45609eee6dc3d318b3895d42"
+  integrity sha512-FDCSVd3DjVTmbEAjUNX6FgfAmQ+ypJfHUsqUJOYNCBUp1h8lqmtC+0mXJ+JjsWx4KAVTkk1vKd1hLQPvEviSuw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    schedule "^0.3.0"
+    schedule "^0.5.0"
+
+reactcss@^1.2.0:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/reactcss/-/reactcss-1.2.3.tgz#c00013875e557b1cf0dfd9a368a1c3dab3b548dd"
+  integrity sha512-KiwVUcFu1RErkI97ywr8nvx8dNOpT03rbnma0SSalTYjkrPYaEajR4a/MRt6DZ46K6arDRbWMNHF+xH7G7n/8A==
+  dependencies:
+    lodash "^4.0.1"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -10192,10 +10215,10 @@ sax@>=0.6.0, sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-schedule@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/schedule/-/schedule-0.3.0.tgz#1be2ab2fc2e768536269ce7326efb478d6c045e8"
-  integrity sha512-20+1KVo517sR7Nt+bYBN8a+bEJDKLPEx7Ohtts1kX05E4/HY53YUNuhfkVNItmWAnBYHcpG9vsd2/CJxG+aPCQ==
+schedule@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/schedule/-/schedule-0.5.0.tgz#c128fffa0b402488b08b55ae74bb9df55cc29cc8"
+  integrity sha512-HUcJicG5Ou8xfR//c2rPT0lPIRR09vVvN81T9fqfVgBmhERUbDEQoYKjpBxbueJnCPpSu2ujXzOnRQt6x9o/jw==
   dependencies:
     object-assign "^4.1.1"
 
@@ -11011,14 +11034,14 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@24.0.9:
-  version "24.0.9"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.0.9.tgz#53bf9b8a4fe76bb958e90a8597f5a4b2f04c441a"
-  integrity sha512-q8DFhlSnB2h7ZzKRHphZYE8MLXdhjSj7UEqc0DR7CB0lMwJGDLomBi+VENGxWX4Dq7WWrBmtAE9wPdOBzjjNhA==
+teselagen-react-components@24.2.21:
+  version "24.2.21"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.21.tgz#f7520e928402a9baf34cbfd3352937cda2c3fff5"
+  integrity sha512-ZOb5UKN6SfLkHCqRuEbxpAwsKyDOj5NJva95bp5NM6iDRWSG6staq2Tn00lYrTnQ1XBqX/JoznLhHVf6ijVCYQ==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
-    cross-env "^5.1.4"
+    cross-env "^5.2.0"
     deep-equal "^1.0.1"
     dom-scroll-into-view "^1.2.1"
     file-saver "^1.3.8"
@@ -11027,16 +11050,17 @@ teselagen-react-components@24.0.9:
     lodash.flatmap "^4.5.0"
     lru-memoize "^1.0.2"
     math-expression-evaluator "^1.2.17"
-    mime-types "^2.1.19"
+    mime-types "^2.1.20"
     moment "^2.22.2"
-    nodemon "^1.17.2"
-    papaparse "^4.5.0"
+    nodemon "^1.18.4"
+    papaparse "^4.6.0"
     pascal-case "^2.0.1"
     paths-js "^0.4.7"
     pluralize "^7.0.0"
     prop-types "^15.6.2"
     query-string "^5.1.0"
     react-addons-pure-render-mixin "^15.6.0"
+    react-color "^2.14.1"
     react-dropzone "^4.2.12"
     react-resize-detector "^2.3.0"
     react-rnd "^8.0.2"
@@ -11046,7 +11070,7 @@ teselagen-react-components@24.0.9:
     redux "^3.7.2"
     uniqid "^4.1.1"
     ve-range-utils "^2.5.0"
-    ve-sequence-utils "^3.2.57"
+    ve-sequence-utils "^3.3.2"
 
 test-exclude@^4.2.1:
   version "4.2.1"
@@ -11148,6 +11172,11 @@ tiny-emitter@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.0.2.tgz#82d27468aca5ade8e5fd1e6d22b57dd43ebdfb7c"
   integrity sha512-2NM0auVBGft5tee/OxP4PI3d8WItkDM+fPnaRAVo6xTDI2knbz9eC5ArWGqtGlYqiH3RU5yMpdyTTO7MguC4ow==
+
+tinycolor2@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
+  integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
 
 tmatch@^2.0.1:
   version "2.0.1"
@@ -11700,7 +11729,7 @@ ve-range-utils@^2.5.0:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.3.2, ve-sequence-utils@^3.2.57:
+ve-sequence-utils@3.3.2, ve-sequence-utils@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.2.tgz#6b78d3191f157f89833ebc630d35c5e7f16f1d99"
   integrity sha512-a0bKbL3N5IClKdNF8zd6qaHIztkFvBR0c0dRXclJEmMpr3IljZSX2J5KUD5l0hbNL2vuCXdN08SGVEsu7/u2Yg==
