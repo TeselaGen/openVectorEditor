@@ -1,7 +1,8 @@
 import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
 
 import { getRangeLength } from "ve-range-utils";
-import Tether from "tether";
+// import Tether from "tether";
+import Popper from "popper.js";
 
 import { getInsertBetweenVals } from "ve-sequence-utils";
 import React from "react";
@@ -155,18 +156,20 @@ export default function createSequenceInputPopup(props) {
     );
   }
 
-  new Tether({
-    element: div,
-    target: caretEl,
-    attachment: "top left",
-    targetAttachment: "bottom left",
-    offset: "-15px 22px",
-    constraints: [
-      {
-        to: "scrollParent",
-        // pin: true,
-        attachment: "together"
-      }
-    ]
-  });
+  new Popper(caretEl, div);
+
+  // new Tether({
+  //   element: div,
+  //   target: caretEl,
+  //   attachment: "top left",
+  //   targetAttachment: "bottom left",
+  //   offset: "-15px 22px",
+  //   constraints: [
+  //     {
+  //       to: "scrollParent",
+  //       // pin: true,
+  //       attachment: "together"
+  //     }
+  //   ]
+  // });
 }
