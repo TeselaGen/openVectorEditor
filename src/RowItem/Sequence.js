@@ -29,7 +29,7 @@ class Sequence extends React.Component {
   }
   render() {
     let {
-      // sequence,
+      sequence,
       hideBps,
       charWidth,
       containerStyle = {},
@@ -46,8 +46,6 @@ class Sequence extends React.Component {
       getGaps,
       alignmentData
     } = this.props;
-    const rawSequence = this.props.sequence;
-    let sequence = rawSequence.toUpperCase();
     // const fudge = 0
     const fudge = charWidth - realCharWidth; // the fudge factor is used to position the sequence in the middle of the
     // const fudge = charWidth * 0.4; // the fudge factor is used to position the sequence in the middle of the

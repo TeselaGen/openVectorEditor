@@ -179,6 +179,7 @@ export default (state = {}, { payload = {}, type }) => {
         {
           //add the template seq as the first track in the Pairwise Alignment Overview
           ...templateSeq,
+          sequenceData: tidyUpSequenceData(templateSeq.sequenceData),
           alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
         }
       ]; // start with just the template seq in there!
@@ -212,7 +213,7 @@ export default (state = {}, { payload = {}, type }) => {
         const alignedSeqMinusInserts = {
           ...alignedSeq,
           sequenceData: {
-            ...alignedSeq.sequenceData,
+            ...tidyUpSequenceData(alignedSeq.sequenceData),
             sequence: template.sequenceData.sequence
           },
           additionalSelectionLayers,
@@ -228,10 +229,6 @@ export default (state = {}, { payload = {}, type }) => {
       );
     }
     if (payloadToUse.alignmentTracks) {
-      //tnr: the following is commented out because it is not yet ready
-      // payloadToUse.alignmentTracks = addDashesForMatchStartAndEndForTracks(
-      //   payloadToUse.alignmentTracks
-      // );
       payloadToUse.alignmentTracks = addHighlightedDifferences(
         payloadToUse.alignmentTracks
       );
