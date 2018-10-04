@@ -156,7 +156,12 @@ export default function createSequenceInputPopup(props) {
     );
   }
 
-  new Popper(caretEl, div);
+  new Popper(caretEl, div, {
+    placement: "bottom",
+    modifiers: {
+      offset: { offset: "94" }
+    }
+  });
 
   // new Tether({
   //   element: div,
