@@ -315,6 +315,9 @@ const annotationToggleCommandDefs = {};
       return (
         props && props.annotationVisibility && props.annotationVisibility[type]
       );
+    },
+    isHidden: props => {
+      return props && props.typesToOmit && props.typesToOmit[type];
     }
   };
 });
