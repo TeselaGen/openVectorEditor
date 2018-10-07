@@ -188,23 +188,27 @@ const editCommandDefs = {
   toggleSequenceMapFontUpper: {
     isActive: props => props.uppercaseSequenceMapFont === "uppercase",
     handler: props => {
-      props.updateSequenceCase("uppercase");
+      props.uppercaseSequenceMapFont === "uppercase"
+        ? props.updateSequenceCase("noPreference")
+        : props.updateSequenceCase("uppercase");
     }
   },
   toggleSequenceMapFontLower: {
     isActive: props => props.uppercaseSequenceMapFont === "lowercase",
     handler: props => {
-      props.updateSequenceCase("lowercase");
+      props.uppercaseSequenceMapFont === "lowercase"
+        ? props.updateSequenceCase("noPreference")
+        : props.updateSequenceCase("lowercase");
     }
   },
-  toggleSequenceMapFontNoPreference: {
-    isActive: props =>
-      !props.uppercaseSequenceMapFont ||
-      props.uppercaseSequenceMapFont === "noPreference",
-    handler: props => {
-      props.updateSequenceCase("noPreference");
-    }
-  },
+  // toggleSequenceMapFontNoPreference: {
+  //   isActive: props =>
+  //     !props.uppercaseSequenceMapFont ||
+  //     props.uppercaseSequenceMapFont === "noPreference",
+  //   handler: props => {
+  //     props.updateSequenceCase("noPreference");
+  //   }
+  // },
   reverseComplementSelection: {
     isDisabled: props => !hasSelection(props),
     handler: props => props.handleReverseComplementSelection(),

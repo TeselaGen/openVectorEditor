@@ -19,7 +19,19 @@ class OveMenuBar extends React.Component {
   }
 
   render() {
-    return <MenuBar menu={menuDef} enhancers={this.enhancers} />;
+    return (
+      <div style={{ display: "flex", height: "100%" }}>
+        <MenuBar menu={menuDef} enhancers={this.enhancers} />
+        <div
+          style={{
+            height: "100%",
+            width: 2,
+            margin: 2,
+            background: "lightgrey"
+          }}
+        />
+      </div>
+    );
   }
 }
 

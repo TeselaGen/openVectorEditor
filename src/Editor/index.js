@@ -748,14 +748,22 @@ export class Editor extends React.Component {
             show key dialog{" "}
           </button> */}
           <Dialogs editorName={editorName} />
-          {showMenuBar && (
-            <MenuBar
-              editorName={editorName}
-              {...sharedProps}
-              trackFocus={false}
-            />
-          )}
-          <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
+
+          <ToolBar
+            contentLeft={
+              showMenuBar && (
+                <MenuBar
+                  style={{ marginLeft: 0 }}
+                  editorName={editorName}
+                  {...sharedProps}
+                  trackFocus={false}
+                />
+              )
+            }
+            {...sharedProps}
+            withDigestTool
+            {...ToolBarProps}
+          />
           <CommandHotkeyHandler {...sharedProps} />
 
           <div

@@ -16,15 +16,19 @@ export default [
   {
     cmd: "toggleOrfs",
     text: "ORFs",
+    shouldDismissPopover: false,
     submenu: [
       {
-        cmd: "toggleOrfs"
+        cmd: "toggleOrfs",
+        shouldDismissPopover: false
       },
       {
-        cmd: "toggleOrfTranslations"
+        cmd: "toggleOrfTranslations",
+        shouldDismissPopover: false
       },
       {
-        cmd: "toggleCdsFeatureTranslations"
+        cmd: "toggleCdsFeatureTranslations",
+        shouldDismissPopover: false
       }
     ]
   },
@@ -32,7 +36,7 @@ export default [
   // { cmd: "spaces" },
   { divider: "" },
   {
-    text: "Sequence Case (Upper/Lower)",
+    text: "Sequence Case",
     submenu: [
       {
         cmd: "toggleSequenceMapFontUpper",
@@ -42,11 +46,6 @@ export default [
       {
         cmd: "toggleSequenceMapFontLower",
         text: "Lower Case",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontNoPreference",
-        text: "No Preference",
         shouldDismissPopover: false
       }
     ]

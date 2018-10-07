@@ -180,7 +180,7 @@ class Sequence extends React.Component {
 export default Sequence;
 const dnaToColor = {
   a: "lightgreen",
-  c: "#96B1FA",
+  c: "#658fff",
   g: "yellow",
   t: "#EE6262"
 };

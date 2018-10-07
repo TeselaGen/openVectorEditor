@@ -153,12 +153,11 @@ export class ToolBar extends React.PureComponent {
       return <WrappedItem key={index} />;
     });
 
-    return <div style={{display: 'flex'}}>
-      {contentLeft}
-      <div className={"veToolbar"}>{content}</div>
-
-    </div>
-
+    return (
+      <div className={"veToolbar"}>
+        {contentLeft} {content}
+      </div>
+    );
   }
 }
 
