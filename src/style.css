@@ -59,3 +59,13 @@
 .ove-portal {
   z-index: 100000;
 }
+
+/* needed to prevent the input bubble from losing focus post user drag */
+body.dragging {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

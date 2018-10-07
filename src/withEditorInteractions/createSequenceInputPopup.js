@@ -16,9 +16,36 @@ class SequenceInputNoHotkeys extends React.Component {
     bpsToInsert: "",
     hasTempError: false
   };
+  componentDidMount() {
+    document.addEventListener(
+      "mousedown",
+      this.handleUnmountIfClickOustidePopup
+    );
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener(
+      "mousedown",
+      this.handleUnmountIfClickOustidePopup
+    );
+  }
+  handleUnmountIfClickOustidePopup = e => {
+    const n = findDOMNode(this);
+    if (!n) return;
+    const node = n.parentNode;
+    if (!node) return;
+    if (node.contains(e.target)) {
+      return;
+    }
+    this.handleUnmount();
+  };
   handleUnmount = () => {
     setTimeout(() => {
-      unmountComponentAtNode(findDOMNode(this).parentNode);
+      const n = findDOMNode(this);
+      if (!n) return;
+      const node = n.parentNode;
+      if (!node) return;
+      unmountComponentAtNode(node);
       document.getElementById("sequenceInputBubble").outerHTML = "";
     });
   };
@@ -76,7 +103,7 @@ class SequenceInputNoHotkeys extends React.Component {
       );
     }
     return (
-      <div onBlur={this.handleUnmount} className={"sequenceInputBubble"}>
+      <div className={"sequenceInputBubble"}>
         <input
           autoCorrect={"off"}
           onKeyDown={e => {
@@ -90,7 +117,7 @@ class SequenceInputNoHotkeys extends React.Component {
           }}
           className={Classes.INPUT}
           value={bpsToInsert}
-          ref={input => input && input.focus()}
+          autoFocus
           style={hasTempError ? { borderColor: "red" } : {}}
           onChange={e => {
             let sanitizedVal = "";
@@ -122,7 +149,8 @@ class SequenceInputNoHotkeys extends React.Component {
         />
         <div style={{ marginTop: 10 }}>{message}</div>
         <div style={{ marginTop: 10 }}>
-          Press <span style={{ fontWeight: "bolder" }}>ESC</span> to cancel
+          Press <span style={{ fontWeight: "bolder" }}>ESC</span> to{" "}
+          <a onClick={this.handleUnmount}>cancel</a>
         </div>
       </div>
     );
@@ -132,6 +160,35 @@ class SequenceInputNoHotkeys extends React.Component {
 const SequenceInput = HotkeysTarget(SequenceInputNoHotkeys);
 
 export default function createSequenceInputPopup(props) {
+  const { useEventPositioning } = props;
+  const innerEl = <SequenceInput {...props} />;
+
+  let caretEl;
+
+  if (useEventPositioning) {
+    //we have to make a fake event here so that popper.js will position on the page correctly
+    const event = useEventPositioning;
+
+    const top = event.clientY;
+    const right = event.clientX;
+    const bottom = event.clientY;
+    const left = event.clientX;
+    caretEl = {
+      getBoundingClientRect: () => ({
+        top,
+        right,
+        bottom,
+        left
+      }),
+      clientWidth: 0,
+      clientHeight: 0
+    };
+  }
+
+  if (!caretEl) {
+    caretEl = document.querySelector(".veRowViewCaret");
+  }
+
   // function closeInput() {
   //   sequenceInputBubble.remove();
   // }
@@ -140,15 +197,14 @@ export default function createSequenceInputPopup(props) {
   div.id = "sequenceInputBubble";
   document.body.appendChild(div);
 
-  render(<SequenceInput {...props} />, div);
-  let caretEl = document.querySelector(".veRowViewCaret");
+  render(innerEl, div);
 
   // let body = $(document.body);
   // let caretEl = body.find(".veRowViewCaret");
-  if (!caretEl === 0) {
+  if (!caretEl || !caretEl === 0) {
     //todo: eventually we should probably jump to the row view caret if it isn't visible
     // caretEl = body.find(".veCaretSVG");
-    caretEl = document.querySelector(".veCaretSVG");
+    caretEl = document.querySelector(".veCircularView .veCaretSVG");
   }
   if (!caretEl) {
     return console.error(

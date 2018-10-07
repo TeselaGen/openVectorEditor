@@ -27,6 +27,7 @@ import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
+
 function noop() {}
 
 // function toDegrees(radians) {
@@ -595,6 +596,7 @@ export class CircularView extends React.Component {
     return (
       <div tabIndex="0" className={"veCircularView"}>
         <Draggable
+          enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
           onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(

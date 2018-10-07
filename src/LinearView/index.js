@@ -94,6 +94,7 @@ export class LinearView extends React.Component {
         }}
       >
         <Draggable
+          enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
           onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(

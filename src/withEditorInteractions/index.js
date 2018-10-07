@@ -310,7 +310,7 @@ function VectorInteractionHOC(Component /* options */) {
       document.body.removeEventListener("copy", this.handleCopy);
     };
 
-    handleDnaInsert() {
+    handleDnaInsert = ({ useEventPositioning }) => {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -325,6 +325,7 @@ function VectorInteractionHOC(Component /* options */) {
         window.toastr.warning("Sorry the sequence is Read-Only");
       } else {
         createSequenceInputPopup({
+          useEventPositioning,
           isReplace,
           selectionLayer,
           sequenceLength,
@@ -341,8 +342,8 @@ function VectorInteractionHOC(Component /* options */) {
           }
         });
       }
-    }
-    handleDnaDelete(showToast = true) {
+    };
+    handleDnaDelete = (showToast = true) => {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -383,7 +384,7 @@ function VectorInteractionHOC(Component /* options */) {
         );
         if (showToast) window.toastr.success("Sequence Deleted Successfully");
       }
-    }
+    };
 
     caretPositionUpdate = position => {
       let { caretPosition = -1 } = this.props;
@@ -515,6 +516,7 @@ function VectorInteractionHOC(Component /* options */) {
         toggleCopyOption,
         editorName,
         store,
+        readOnly,
         copyOptions
       } = this.props;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
@@ -554,17 +556,27 @@ function VectorInteractionHOC(Component /* options */) {
       // TODO: maybe stop using Clipboard.js and unify clipboard handling with
       // a more versatile approach
       return [
-        {
-          text: "Cut",
-          className: "openVeCut",
-          willUnmount: () => {
-            this.openVeCut && this.openVeCut.destroy();
-          },
-          didMount: ({ className }) => {
-            // TODO: Maybe use a cut action instead
-            this.openVeCut = makeTextCopyable(i => i, className, "cut");
-          }
-        },
+        ...(readOnly
+          ? []
+          : [
+              {
+                text: "Replace",
+                onClick: e => {
+                  this.handleDnaInsert({ useEventPositioning: e });
+                }
+              },
+              {
+                text: "Cut",
+                className: "openVeCut",
+                willUnmount: () => {
+                  this.openVeCut && this.openVeCut.destroy();
+                },
+                didMount: ({ className }) => {
+                  // TODO: Maybe use a cut action instead
+                  this.openVeCut = makeTextCopyable(i => i, className, "cut");
+                }
+              }
+            ]),
         {
           text: "Copy",
           className: "openVeCopy1",
@@ -771,6 +783,12 @@ function VectorInteractionHOC(Component /* options */) {
         ...(readOnly
           ? []
           : [
+              {
+                text: "Insert",
+                onClick: e => {
+                  this.handleDnaInsert({ useEventPositioning: e });
+                }
+              },
               {
                 disabled: !circular,
                 text: "Rotate To Here",

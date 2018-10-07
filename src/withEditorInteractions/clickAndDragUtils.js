@@ -79,12 +79,14 @@ export const editorClicked = function({ nearestCaretPos, shiftHeld }) {
 };
 
 export const editorDragStarted = function(opts) {
+  document.body.classList.add("dragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
   caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
   selectionStartGrabbed = opts.selectionStartGrabbed;
   selectionEndGrabbed = opts.selectionEndGrabbed;
 };
 export const editorDragStopped = function() {
+  document.body.classList.remove("dragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = false;
   setTimeout(function() {
     dragInProgress = false;
