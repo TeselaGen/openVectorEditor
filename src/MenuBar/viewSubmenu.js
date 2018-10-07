@@ -56,41 +56,49 @@ export default [
     text: "Full Sequence Translation",
     submenu: [
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_allFrames",
         text: "All Frames"
         // frameNumber: "all" // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_frame1",
         text: "Frame 1"
         // frameNumber: 1 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_frame2",
         text: "Frame 2"
         // frameNumber: 2 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_frame3",
         text: "Frame 3"
         // frameNumber: 3 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_allFrames",
         text: "All Reverse Frames"
         // frameNumber: "all" // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_frame1",
         text: "Frame -1"
         // frameNumber: 1 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_frame2",
         text: "Frame -2"
         // frameNumber: 2 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_frame3",
         text: "Frame -3"
         // frameNumber: 3 // TODO ?

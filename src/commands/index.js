@@ -216,6 +216,92 @@ const editCommandDefs = {
     handler: props => props.handleReverseComplementSequence()
   },
 
+  sequenceAA_allFrames: {
+    isActive: props =>
+      props.frameTranslations["1"] &&
+      props.frameTranslations["2"] &&
+      props.frameTranslations["3"],
+    handler: props => {
+      if (
+        props.frameTranslations["1"] &&
+        props.frameTranslations["2"] &&
+        props.frameTranslations["3"]
+      ) {
+        props.frameTranslationToggleOff("1");
+        props.frameTranslationToggleOff("2");
+        props.frameTranslationToggleOff("3");
+      } else {
+        props.frameTranslationToggleOn("1");
+        props.frameTranslationToggleOn("2");
+        props.frameTranslationToggleOn("3");
+      }
+    }
+  },
+  sequenceAAReverse_allFrames: {
+    isActive: props =>
+      props.frameTranslations["-1"] &&
+      props.frameTranslations["-2"] &&
+      props.frameTranslations["-3"],
+    handler: props => {
+      if (
+        props.frameTranslations["-1"] &&
+        props.frameTranslations["-2"] &&
+        props.frameTranslations["-3"]
+      ) {
+        props.frameTranslationToggleOff("-1");
+        props.frameTranslationToggleOff("-2");
+        props.frameTranslationToggleOff("-3");
+      } else {
+        props.frameTranslationToggleOn("-1");
+        props.frameTranslationToggleOn("-2");
+        props.frameTranslationToggleOn("-3");
+      }
+    }
+  },
+  sequenceAA_frame1: {
+    isActive: props => props.frameTranslations["1"],
+    handler: props => props.frameTranslationToggle("1")
+  },
+  sequenceAA_frame2: {
+    isActive: props => props.frameTranslations["2"],
+    handler: props => props.frameTranslationToggle("2")
+  },
+  sequenceAA_frame3: {
+    isActive: props => props.frameTranslations["3"],
+    handler: props => props.frameTranslationToggle("3")
+  },
+  sequenceAAReverse_frame1: {
+    isActive: props => props.frameTranslations["-1"],
+    handler: props => props.frameTranslationToggle("-1")
+  },
+  sequenceAAReverse_frame2: {
+    isActive: props => props.frameTranslations["-2"],
+    handler: props => props.frameTranslationToggle("-2")
+  },
+  sequenceAAReverse_frame3: {
+    isActive: props => props.frameTranslations["-3"],
+    handler: props => props.frameTranslationToggle("-3")
+  },
+
+  //   sequenceAA_allFrames
+  // sequenceAA_frame1
+  // sequenceAA_frame2
+  // sequenceAA_frame3
+  // sequenceAAReverse_allFrames
+  // sequenceAAReverse_frame1
+  // sequenceAAReverse_frame2
+  //         sequenceAAReverse_frame3
+
+  // const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
+  //   return {
+  //     isActive: get(state, `VectorEditor[${editorName}].frameTranslations`, {})[
+  //       frame
+  //     ]
+  //   };
+  // })(({ isActive, ...rest }) => {
+  //   return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
+  // });
+
   newFeature: {
     handler: (props, state, ctxInfo) => {
       console.warn("newFeature ctxInfo", ctxInfo);
