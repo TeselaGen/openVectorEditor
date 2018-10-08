@@ -100,6 +100,24 @@ class TranslationProperties extends React.Component {
           }}
           entities={translationsToUse}
         />
+        <div>
+          <Checkbox
+            onChange={function() {
+              annotationVisibilityToggle("orfTranslations");
+              !annotationVisibility.orfTranslations &&
+                annotationVisibilityShow("orfs");
+            }}
+            checked={annotationVisibility.orfTranslations}
+            label={"Show translations for ORFs"}
+          />
+          <Checkbox
+            onChange={function() {
+              annotationVisibilityToggle("cdsFeatureTranslations");
+            }}
+            checked={annotationVisibility.cdsFeatureTranslations}
+            label={"Show translations for CDS features"}
+          />
+        </div>
         {!readOnly && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             {/* <Button
@@ -121,24 +139,7 @@ class TranslationProperties extends React.Component {
             >
               Edit
             </Button> */}
-            <div>
-              <Checkbox
-                onChange={function() {
-                  annotationVisibilityToggle("orfTranslations");
-                  !annotationVisibility.orfTranslations &&
-                    annotationVisibilityShow("orfs");
-                }}
-                checked={annotationVisibility.orfTranslations}
-                label={"Show translations for ORFs"}
-              />
-              <Checkbox
-                onChange={function() {
-                  annotationVisibilityToggle("cdsFeatureTranslations");
-                }}
-                checked={annotationVisibility.cdsFeatureTranslations}
-                label={"Show translations for CDS features"}
-              />
-            </div>
+
             <Button
               onClick={() => {
                 deleteTranslation(translationPropertiesSelectedEntities);

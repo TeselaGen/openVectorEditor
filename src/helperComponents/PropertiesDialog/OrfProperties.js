@@ -4,7 +4,7 @@ import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
-import { Switch } from "@blueprintjs/core";
+import { Switch, Checkbox } from "@blueprintjs/core";
 
 class OrfProperties extends React.Component {
   onRowSelect = ([record]) => {
@@ -19,7 +19,12 @@ class OrfProperties extends React.Component {
     });
   };
   render() {
-    const { sequenceData = {} } = this.props;
+    const {
+      sequenceData = {},
+      annotationVisibilityToggle,
+      annotationVisibility,
+      annotationVisibilityShow
+    } = this.props;
     const { orfs } = sequenceData;
     const orfsToUse = map(orfs, orf => {
       return {
@@ -93,6 +98,17 @@ class OrfProperties extends React.Component {
             ]
           }}
           entities={orfsToUse}
+        />
+
+        <Checkbox
+          style={{ marginTop: 10 }}
+          onChange={function() {
+            annotationVisibilityToggle("orfTranslations");
+            !annotationVisibility.orfTranslations &&
+              annotationVisibilityShow("orfs");
+          }}
+          checked={annotationVisibility.orfTranslations}
+          label={"Show translations for ORFs"}
         />
       </div>
     );
