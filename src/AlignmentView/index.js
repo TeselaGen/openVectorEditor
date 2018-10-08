@@ -197,11 +197,11 @@ class AlignmentView extends React.Component {
   }, 100);
   handleScroll = () => {
     // console.log("scroll");
-    console.log(
-      "this.alignmentHolder.scrollTop, this.oldAlignmentHolderScrollTop:",
-      this.alignmentHolder.scrollTop,
-      this.oldAlignmentHolderScrollTop
-    );
+    // console.log(
+    //   "this.alignmentHolder.scrollTop, this.oldAlignmentHolderScrollTop:",
+    //   this.alignmentHolder.scrollTop,
+    //   this.oldAlignmentHolderScrollTop
+    // );
     if (this.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop) {
       setTimeout(() => {
         this.setVerticalScrollRange();
