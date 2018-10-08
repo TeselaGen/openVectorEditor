@@ -52,7 +52,7 @@ function Cutsites({
       };
     }
     /* eslint-disable */
-    if (!annotation.id) debugger;
+    if (process.env.NODE_ENV !== "production" && !annotation.id) debugger;
     /* eslint-enable */
 
     svgGroup.push(
