@@ -48,14 +48,17 @@ export class LinearView extends React.Component {
     callback(callbackVals);
   }
   getMaxLength = () => {
-    const { sequenceData = {}, alignmentData } = this.props;
+    const { sequenceData = { sequence: "" }, alignmentData } = this.props;
     return (alignmentData || sequenceData).sequence.length;
   };
 
   getRowData = () => {
-    const { sequenceData = {} } = this.props;
+    const { sequenceData = { sequence: "" } } = this.props;
     if (!isEqual(sequenceData, this.oldSeqData)) {
-      this.rowData = prepareRowData(sequenceData, sequenceData.sequence.length);
+      this.rowData = prepareRowData(
+        sequenceData,
+        sequenceData.sequence ? sequenceData.sequence.length : 0
+      );
       this.oldSeqData = sequenceData;
     }
     return this.rowData;
@@ -64,7 +67,7 @@ export class LinearView extends React.Component {
   render() {
     let {
       //currently found in props
-      sequenceData = {},
+      sequenceData = { sequence: "" },
       alignmentData,
       hideName = false,
       editorDragged = noop,
@@ -138,7 +141,9 @@ export class LinearView extends React.Component {
               <SequenceName
                 {...{
                   sequenceName,
-                  sequenceLength: sequenceData.sequence.length
+                  sequenceLength: sequenceData.sequence
+                    ? sequenceData.sequence.length
+                    : 0
                 }}
               />
             )}
