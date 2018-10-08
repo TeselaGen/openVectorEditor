@@ -15,6 +15,7 @@ import { flatMap } from "lodash";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "teselagen-react-components/lib/FormComponents";
+import "./style.css";
 
 export class MergeFeaturesDialog extends React.Component {
   render() {
@@ -45,7 +46,13 @@ export class MergeFeaturesDialog extends React.Component {
       }
     );
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-Primer")}>
+      <div
+        className={classNames(
+          Classes.DIALOG_BODY,
+          "tg-min-width-dialog",
+          "veMergeFeaturesDialog"
+        )}
+      >
         <InfoHelper displayToSide>
           <span style={{ fontStyle: "italic", fontSize: 11, marginTop: -8 }}>
             Choose features in the dropdown or shift click directly on the
@@ -60,7 +67,7 @@ export class MergeFeaturesDialog extends React.Component {
           enableReinitialize
           name="id1"
           label={
-            <div style={{ display: "flex", alignItems: "top" }}>
+            <div style={{ display: "flex", width: "100%", alignItems: "top" }}>
               <InfoHelper
                 {...{
                   popoverProps: {
@@ -118,7 +125,7 @@ export class MergeFeaturesDialog extends React.Component {
           enableReinitialize
           name="id2"
           label={
-            <div style={{ display: "flex", alignItems: "top" }}>
+            <div style={{ display: "flex", width: "100%", alignItems: "top" }}>
               <InfoHelper
                 onClick={() => {
                   feat2 && change("name", feat2.name);

@@ -86,7 +86,7 @@ export class RowItem extends React.Component {
       cutsiteRightClicked = noop,
 
       // scrollData,
-      minHeight = 25,
+      minHeight = 22,
       bpsPerRow = sequenceLength,
       editorName
     } = this.props;

@@ -24,7 +24,7 @@ function Caret(props) {
     let cursorEl = (
       <div
         title={"Caret before BP " + (caretPosition + 1)}
-        className={" veRowViewCaret " + className}
+        className={"veCaret veRowViewCaret " + className}
         style={{
           left: (caretPosition - row.start) * charWidth - 2
         }}

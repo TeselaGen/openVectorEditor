@@ -51,6 +51,9 @@ export default function createVectorEditor(
   _node,
   { editorName = "StandaloneEditor", ...rest } = {}
 ) {
+  if (!store) {
+    store = makeStore();
+  }
   let node;
 
   if (_node === "createDomNodeForMe") {
@@ -86,6 +89,9 @@ export function createVersionHistoryView(
   node,
   { editorName = "StandaloneVersionHistoryView", ...rest } = {}
 ) {
+  if (!store) {
+    store = makeStore();
+  }
   const editor = {};
   editor.renderResponse = render(
     <StandaloneVersionHistoryView {...{ editorName, ...rest }} />,
@@ -104,6 +110,9 @@ export function createVersionHistoryView(
 
 const SizedStandaloneAlignment = sizeMe()(StandaloneAlignment);
 export function createAlignmentView(node, props = {}) {
+  if (!store) {
+    store = makeStore();
+  }
   const editor = {};
   editor.renderResponse = render(<SizedStandaloneAlignment {...props} />, node);
 

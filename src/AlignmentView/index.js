@@ -79,7 +79,7 @@ class AlignmentView extends React.Component {
         this.props.scrollPercentageToJumpTo &&
       this.props.scrollPercentageToJumpTo !== undefined
     ) {
-      this.updateToScrollPercentage(this.props.scrollPercentageToJumpTo);
+      this.updateXScrollPercentage(this.props.scrollPercentageToJumpTo);
     }
   }
   componentDidMount() {
@@ -178,28 +178,39 @@ class AlignmentView extends React.Component {
     return toReturn || 0;
   };
   setVerticalScrollRange = throttle(() => {
+    console.log("outside");
     if (
       this &&
       this.InfiniteScroller &&
       this.InfiniteScroller.getFractionalVisibleRange &&
       this.easyStore
     ) {
+      console.log("inside");
       const [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
       if (
         this.easyStore.verticalVisibleRange.start !== start ||
         this.easyStore.verticalVisibleRange.end !== end
       )
-        this.easyStore.verticalVisibleRange = { start, end };
+        console.log("start, end:", start, end);
+      this.easyStore.verticalVisibleRange = { start, end };
     }
   }, 100);
   handleScroll = () => {
+    console.log("scroll");
+    console.log(
+      "this.alignmentHolder.scrollTop, this.oldAlignmentHolderScrollTop:",
+      this.alignmentHolder.scrollTop,
+      this.oldAlignmentHolderScrollTop
+    );
+    if (this.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop) {
+      setTimeout(() => {
+        this.setVerticalScrollRange();
+        this.oldAlignmentHolderScrollTop = this.alignmentHolder.scrollTop;
+      }, 100);
+    }
     if (this.blockScroll) {
       //we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
       return;
-    }
-    if (this.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop) {
-      this.setVerticalScrollRange();
-      this.oldAlignmentHolderScrollTop = this.alignmentHolder.scrollTop;
     }
 
     const scrollPercentage =
@@ -216,7 +227,7 @@ class AlignmentView extends React.Component {
     this.blockScroll = true;
     this.setCharWidthInLinearView({ charWidthInLinearView: newCharWidth });
     setTimeout(() => {
-      this.updateToScrollPercentage(newPercent);
+      this.updateXScrollPercentage(newPercent);
       this.blockScroll = false;
     });
   };
@@ -228,13 +239,13 @@ class AlignmentView extends React.Component {
     );
     this.setState({ charWidthInLinearView });
   };
-  updateToScrollPercentage = scrollPercentage => {
+  updateXScrollPercentage = scrollPercentage => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
   };
-  handleScrollToTrack = trackIndex => {
+  scrollYToTrack = trackIndex => {
     this.InfiniteScroller.scrollTo(trackIndex);
   };
 
@@ -328,6 +339,7 @@ class AlignmentView extends React.Component {
               : `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
             width: nameDivWidth,
             padding: 2,
+            paddingBottom: 0,
             minWidth: nameDivWidth,
             // textOverflow: "ellipsis",
             overflowY: "auto",
@@ -578,6 +590,7 @@ class AlignmentView extends React.Component {
             {this.props.handleAlignmentRename ? (
               <InputGroup
                 minimal
+                small
                 value={this.props.alignmentName}
                 placeholder={"Untitled Alignment"}
               />
@@ -608,7 +621,7 @@ class AlignmentView extends React.Component {
                   const percentScrollage = this.easyStore.percentScrolled;
                   setTimeout(() => {
                     this.blockScroll = false;
-                    this.updateToScrollPercentage(percentScrollage);
+                    this.updateXScrollPercentage(percentScrollage);
                   });
                 }}
                 title="Adjust Zoom Level"
@@ -687,7 +700,7 @@ class AlignmentView extends React.Component {
                 dimensions: {
                   width: Math.max(dimensions.width, 10) || 10
                 },
-                handleScrollToTrack: this.handleScrollToTrack,
+                scrollYToTrack: this.scrollYToTrack,
                 onSizeAdjust: this.onMinimapSizeAdjust,
                 minSliderSize,
                 laneHeight:
@@ -697,7 +710,7 @@ class AlignmentView extends React.Component {
                 numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
                 scrollAlignmentView: this.state.scrollAlignmentView
               }}
-              onMinimapScroll={this.updateToScrollPercentage}
+              onMinimapScrollX={this.updateXScrollPercentage}
             />
           </div>
         )}

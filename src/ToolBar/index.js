@@ -74,6 +74,7 @@ export class ToolBar extends React.PureComponent {
     const {
       modifyTools,
       contentLeft,
+      menuBar = null,
       toolList = [
         "saveTool",
         "downloadTool",
@@ -154,8 +155,11 @@ export class ToolBar extends React.PureComponent {
     });
 
     return (
-      <div className={"veToolbar"}>
-        {contentLeft} {content}
+      <div style={{ display: "flex" }}>
+        {contentLeft}
+        <div className={"veToolbar"}>
+          {menuBar} {content}
+        </div>
       </div>
     );
   }

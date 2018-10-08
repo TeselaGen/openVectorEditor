@@ -71,7 +71,7 @@ export class VersionHistoryView extends React.Component {
   };
   onRowSelect = async ([row]) => {
     // const close = showLoadingMask();
-    if (!row) return
+    if (!row) return;
     if (row.id === "__current__") {
       this.updateSeqData(await this.getCurrentSeqData());
       this.setState({ selectedVersion: null });
@@ -84,7 +84,12 @@ export class VersionHistoryView extends React.Component {
   _getVersionList = async () => {
     const versionList = await this.props.getVersionList();
     this.setState({
-      versionList: [currentVersion, ...versionList.map((r) => {return {...r, id: r.versionId}})] //currentVersion should always come first
+      versionList: [
+        currentVersion,
+        ...versionList.map(r => {
+          return { ...r, id: r.versionId };
+        })
+      ] //currentVersion should always come first
     });
   };
   revertToSelectedVersion = e => {
@@ -140,7 +145,7 @@ export class VersionHistoryView extends React.Component {
                     <Button
                       onClick={this.goBack}
                       icon="arrow-left"
-                      style={{ marginLeft: 5 }}
+                      style={{ marginLeft: 5, marginRight: 5 }}
                     >
                       Back
                     </Button>
@@ -171,7 +176,7 @@ export class VersionHistoryView extends React.Component {
                 <DataTable
                   noPadding
                   isSingleSelect
-                  noDeselectAll 
+                  noDeselectAll
                   noFullscreenButton
                   onRowSelect={this.onRowSelect}
                   maxHeight={400}

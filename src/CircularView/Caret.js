@@ -28,7 +28,7 @@ function Caret({
           eAngle: endAngle,
           height: 0
         })}
-        className={className + " " + draggableClassnames.caret}
+        className={className + " veCaret " + draggableClassnames.caret}
         strokeWidth="2px"
         style={{ opacity: 9, zIndex: 100, cursor: "ew-resize" }} //tnr: the classname needs to be cursor here!
         x1={0}

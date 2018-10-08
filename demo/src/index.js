@@ -131,6 +131,7 @@ class Demo extends React.Component {
                       >
                         <Editor
                           editorName="DemoEditor"
+                          showMenuBar
                           withPreviewMode={previewMode}
                         />
                       </div>

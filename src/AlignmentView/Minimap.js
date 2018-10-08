@@ -1,9 +1,10 @@
 import React from "react";
 import Draggable from "react-draggable";
-import ReactList from "react-list";
+// import ReactList from "react-list";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "react-easy-state";
+import ReactList from "../RowView/ReactList";
 
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
@@ -25,21 +26,21 @@ export default class Minimap extends React.Component {
       return;
     }
     const {
-      onMinimapScroll,
+      onMinimapScrollX,
       laneHeight,
-      handleScrollToTrack,
+      scrollYToTrack,
       dimensions: { width = 200 }
     } = this.props;
     const scrollHandleWidth = this.getScrollHandleWidth();
     const percent =
       (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
       (width - scrollHandleWidth);
-    onMinimapScroll(percent);
+    onMinimapScrollX(percent);
 
     //scroll vertically
     const y = this.getYPositionOfClickInMinimap(e);
     const trackIndex = Math.floor(y / laneHeight);
-    handleScrollToTrack(trackIndex);
+    scrollYToTrack(trackIndex);
   };
 
   getCharWidth = () => {
@@ -76,12 +77,12 @@ export default class Minimap extends React.Component {
   };
   handleDrag = e => {
     const {
-      onMinimapScroll,
+      onMinimapScrollX,
       dimensions: { width = 200 }
     } = this.props;
     this.isDragging = true; //needed to block erroneous click events from being triggered!
     const percent = this.getXPositionOfClickInMinimap(e) / width;
-    onMinimapScroll(percent);
+    onMinimapScrollX(percent);
   };
   itemSizeGetter = () => {
     return this.props.laneHeight;
@@ -148,7 +149,7 @@ export default class Minimap extends React.Component {
       laneHeight,
       onSizeAdjust,
       minSliderSize,
-      onMinimapScroll,
+      onMinimapScrollX,
       easyStore
     } = this.props;
 
@@ -186,7 +187,7 @@ export default class Minimap extends React.Component {
             width={width}
             handleDrag={this.handleDrag}
             handleDragStop={this.handleDragStop}
-            onMinimapScroll={onMinimapScroll}
+            onMinimapScrollX={onMinimapScrollX}
             minSliderSize={minSliderSize}
             onSizeAdjust={onSizeAdjust}
             easyStore={easyStore} //we use react-easy-state here to prevent costly setStates from being called
@@ -196,6 +197,11 @@ export default class Minimap extends React.Component {
             minimapTracksPartialHeight={laneHeight * alignmentTracks.length}
           />
           <ReactList
+            itemsRenderer={(items, ref) => (
+              <div style={{ marginTop: -3 }} ref={ref}>
+                {items}
+              </div>
+            )}
             type={"uniform"}
             itemSizeGetter={this.itemSizeGetter}
             itemRenderer={this.renderItem}
