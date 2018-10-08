@@ -185,8 +185,17 @@ export default function createSequenceInputPopup(props) {
     };
   }
 
-  if (!caretEl) {
-    caretEl = document.querySelector(".veRowViewCaret");
+  if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
+    const activeEl = getActiveElement();
+    if (activeEl) {
+      caretEl = activeEl.querySelector(".veCaret");
+    }
+  }
+  if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
+    caretEl = getActiveElement();
+  }
+  if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
+    caretEl = document.querySelector(".veCaret");
   }
 
   // function closeInput() {
@@ -199,13 +208,13 @@ export default function createSequenceInputPopup(props) {
 
   render(innerEl, div);
 
-  // let body = $(document.body);
-  // let caretEl = body.find(".veRowViewCaret");
-  if (!caretEl || !caretEl === 0) {
-    //todo: eventually we should probably jump to the row view caret if it isn't visible
-    // caretEl = body.find(".veCaretSVG");
-    caretEl = document.querySelector(".veCircularView .veCaretSVG");
-  }
+  // // let body = $(document.body);
+  // // let caretEl = body.find(".veRowViewCaret");
+  // if (!caretEl || !caretEl === 0) {
+  //   //todo: eventually we should probably jump to the row view caret if it isn't visible
+  //   // caretEl = body.find(".veCaretSVG");
+  //   caretEl = document.querySelector(".veCircularView .veCaretSVG");
+  // }
   if (!caretEl) {
     return console.error(
       "there must be a caret element present in order to display the insertSequence popup"
@@ -233,4 +242,41 @@ export default function createSequenceInputPopup(props) {
   //     }
   //   ]
   // });
+}
+
+const getActiveElement = function(document) {
+  document = document || window.document;
+
+  // Check if the active element is in the main web or iframe
+  if (
+    document.body === document.activeElement ||
+    document.activeElement.tagName == "IFRAME"
+  ) {
+    // Get iframes
+    let iframes = document.getElementsByTagName("iframe");
+    for (let i = 0; i < iframes.length; i++) {
+      // Recall
+      let focused = getActiveElement(iframes[i].contentWindow.document);
+      if (focused !== false) {
+        return focused; // The focused
+      }
+    }
+  } else return document.activeElement;
+
+  return false;
+};
+
+function isElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight ||
+        document.documentElement.clientHeight) /*or $(window).height() */ &&
+    rect.right <=
+      (window.innerWidth ||
+        document.documentElement.clientWidth) /*or $(window).width() */
+  );
 }
