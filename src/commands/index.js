@@ -27,7 +27,7 @@ const fileCommandDefs = {
   },
 
   deleteSequence: {
-    isDisabled: props => !props.onDelete,
+    isDisabled: props => props.readOnly || !props.onDelete,
     handler: props => props.onDelete(props.sequenceData)
   },
 
@@ -44,6 +44,7 @@ const fileCommandDefs = {
   },
 
   importSequence: {
+    isDisabled: props => props.readOnly,
     handler: props => {
       showFileDialog({
         multiple: false,
@@ -89,6 +90,7 @@ const hasSelection = ({ selectionLayer = {} }) =>
 
 const editCommandDefs = {
   cut: {
+    isDisabled: props => props.readOnly,
     handler: props => props.triggerClipboardCommand("cut"),
     hotkey: "mod+x"
   },
@@ -99,12 +101,14 @@ const editCommandDefs = {
   },
 
   paste: {
+    isDisabled: props => props.readOnly,
     handler: props => props.triggerClipboardCommand("paste"),
     hotkey: "mod+v"
   },
 
   undo: {
     isDisabled: props =>
+      props.readOnly ||
       !(
         props.sequenceDataHistory &&
         props.sequenceDataHistory.past &&
@@ -116,6 +120,7 @@ const editCommandDefs = {
 
   redo: {
     isDisabled: props =>
+      props.readOnly ||
       !(
         props.sequenceDataHistory &&
         props.sequenceDataHistory.future &&
@@ -177,12 +182,12 @@ const editCommandDefs = {
   },
 
   complementSelection: {
-    isDisabled: props => !hasSelection(props),
+    isDisabled: props => props.readOnly || !hasSelection(props),
     handler: props => props.handleComplementSelection()
   },
 
   complementEntireSequence: {
-    isDisabled: props => !hasSelection(props),
+    isDisabled: props => props.readOnly,
     handler: props => props.handleComplementSequence()
   },
   toggleSequenceMapFontUpper: {
@@ -210,13 +215,13 @@ const editCommandDefs = {
   //   }
   // },
   reverseComplementSelection: {
-    isDisabled: props => !hasSelection(props),
+    isDisabled: props => props.readOnly || !hasSelection(props),
     handler: props => props.handleReverseComplementSelection(),
     hotkey: "mod+e"
   },
 
   reverseComplementEntireSequence: {
-    isDisabled: props => !hasSelection(props),
+    isDisabled: props => props.readOnly,
     handler: props => props.handleReverseComplementSequence()
   },
 
@@ -311,22 +316,25 @@ const editCommandDefs = {
       console.warn("newFeature ctxInfo", ctxInfo);
       props.handleNewFeature();
     },
+    isDisabled: props => props.readOnly,
     hotkey: "mod+k"
   },
 
   newPart: {
     handler: props => props.handleNewPart(),
+    isDisabled: props => props.readOnly,
     hotkey: "mod+l",
     hotkeyProps: { preventDefault: true }
   },
 
   rotateToCaretPosition: {
-    isDisabled: props => props.caretPosition === -1,
+    isDisabled: props => props.readOnly || props.caretPosition === -1,
     handler: props => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
 
   editFeature: {
+    isDisabled: props => props.readOnly,
     handler: (props, state, ctxInfo) => {
       console.warn("editFeature", ctxInfo);
       const annotation = get(ctxInfo, "context.annotation");
@@ -339,11 +347,13 @@ const editCommandDefs = {
 
 const cirularityCommandDefs = {
   circular: {
+    isDisabled: props => props.readOnly,
     handler: props => props.updateCircular(true),
     isActive: (props, editorState) =>
       editorState && editorState.sequenceData.circular
   },
   linear: {
+    isDisabled: props => props.readOnly,
     handler: props => props.updateCircular(false),
     isActive: (props, editorState) =>
       editorState && !editorState.sequenceData.circular
@@ -369,6 +379,7 @@ const annotationToggleCommandDefs = {};
   "cutsites",
   "axis",
   "orfs",
+  "primers",
   "translations",
   "orfTranslations",
   "cdsFeatureTranslations",
@@ -407,7 +418,7 @@ const annotationToggleCommandDefs = {};
       );
     },
     isHidden: props => {
-      return props && props.typesToOmit && props.typesToOmit[type];
+      return props && props.typesToOmit && props.typesToOmit[type] === false;
     }
   };
 });

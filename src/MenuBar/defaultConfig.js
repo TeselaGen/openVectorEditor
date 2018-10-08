@@ -14,7 +14,7 @@ export default [
       "deleteSequence",
       "duplicateSequence",
       "--",
-      "toggleReadOnlyMode",
+      { cmd: "toggleReadOnlyMode", shouldDismissPopover: false },
       "--",
       "importSequence",
       {

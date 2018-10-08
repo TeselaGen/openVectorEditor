@@ -750,7 +750,7 @@ export class Editor extends React.Component {
           <Dialogs editorName={editorName} />
 
           <ToolBar
-            contentLeft={
+            menuBar={
               showMenuBar && (
                 <MenuBar
                   style={{ marginLeft: 0 }}
