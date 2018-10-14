@@ -79,7 +79,7 @@ function FeatureToolDropDown({
               props: {
                 editorName,
                 dialogProps: {
-                  title: "Add Feature"
+                  title: "New Feature"
                 },
                 initialValues
               }

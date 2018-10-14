@@ -25,7 +25,13 @@ export class AddOrEditPrimerDialog extends React.Component {
       upsertPrimer
     } = this.props;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-Primer")}>
+      <div
+        className={classNames(
+          Classes.DIALOG_BODY,
+          "tg-min-width-dialog",
+          "tg-upsert-Primer"
+        )}
+      >
         <InputField
           autoFocus
           inlineLabel
@@ -67,12 +73,15 @@ export class AddOrEditPrimerDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className={"width100"}
         >
-          <Button style={{ marginRight: 15 }} onMouseDown={e => {
+          <Button
+            style={{ marginRight: 15 }}
+            onMouseDown={e => {
               //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
-              e.preventDefault(); 
+              e.preventDefault();
               e.stopPropagation();
               hideModal();
-            }}>
+            }}
+          >
             Cancel
           </Button>
           <Button
@@ -98,7 +107,7 @@ export default compose(
   withDialog({
     isDraggable: true,
     height: 430,
-    width: 400
+    width: 350
   }),
   withEditorProps,
   reduxForm({

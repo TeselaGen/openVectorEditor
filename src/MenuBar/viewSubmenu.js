@@ -15,18 +15,23 @@ export default [
   // TODO translations, cds feature translations?
   {
     cmd: "toggleOrfs",
+    onClick: () => {},
     text: "ORFs",
     shouldDismissPopover: false,
     submenu: [
       {
+        text: "ORFs",
         cmd: "toggleOrfs",
         shouldDismissPopover: false
       },
       {
+        text: "ORF Translations",
         cmd: "toggleOrfTranslations",
+        // isDisabled: (p) => {console.log('p:',p)},
         shouldDismissPopover: false
       },
       {
+        text: "CDS Feature Translations",
         cmd: "toggleCdsFeatureTranslations",
         shouldDismissPopover: false
       }

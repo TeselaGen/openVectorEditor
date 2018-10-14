@@ -109,7 +109,7 @@ export default compose(
   withDialog({
     isDraggable: true,
     height: 430,
-    width: 400
+    width: 350
   }),
   withEditorProps,
   reduxForm({

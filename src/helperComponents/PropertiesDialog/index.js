@@ -54,7 +54,7 @@ export class PropertiesInner extends React.Component {
       return (
         <Tab
           key={name}
-          title={startCase(name)}
+          title={name === "orfs" ? "ORFs" : startCase(name)}
           id={name}
           panel={<Comp {...{ ...this.props, selectedAnnotationId }} />}
         />
