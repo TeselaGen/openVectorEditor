@@ -40,7 +40,7 @@ export default [
       "cut",
       "copy",
       {
-        cmd: "copyOptions",
+        text: "Copy Options",
         submenu: [
           { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
           { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },

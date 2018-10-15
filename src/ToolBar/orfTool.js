@@ -78,8 +78,9 @@ function OrfToolDropdown({
         onChange={function() {
           annotationVisibilityToggle("orfTranslations");
         }}
+        disabled={!annotationVisibility.orfs}
         checked={annotationVisibility.orfTranslations}
-        label={"Show ORF translations"}
+        label={"Show translations for ORFs"}
       />
       <Checkbox
         onChange={function() {

@@ -107,6 +107,7 @@ class TranslationProperties extends React.Component {
               !annotationVisibility.orfTranslations &&
                 annotationVisibilityShow("orfs");
             }}
+            disabled={!annotationVisibility.orfs}
             checked={annotationVisibility.orfTranslations}
             label={"Show translations for ORFs"}
           />

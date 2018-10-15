@@ -1,17 +1,19 @@
 import React from "react";
 import { Tag } from "@blueprintjs/core";
 import { oveCommandFactory } from "../utils/commandUtils";
-import { upperFirst, startCase, get } from "lodash";
+import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
+import { defaultCopyOptions } from "../redux/copyOptions";
 
 const fileCommandDefs = {
   newSequence: {
-    isDisabled: props => !props.onNew,
+    isHidden: props => !props.onNew,
     handler: props => props.onNew()
   },
 
   renameSequence: {
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => {
       props.showRenameSequenceDialog({
         initialValues: { newName: props.sequenceData.name },
@@ -21,24 +23,30 @@ const fileCommandDefs = {
   },
 
   saveSequence: {
-    isDisabled: props => props.readOnly || props.hasBeenSaved,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.hasBeenSaved,
+    isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"
   },
 
   deleteSequence: {
-    isDisabled: props => props.readOnly || !props.onDelete,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || !props.onDelete,
+    isHidden: props => !props.onDelete,
     handler: props => props.onDelete(props.sequenceData)
   },
 
   duplicateSequence: {
     isDisabled: props => !props.onDuplicate,
+    isHidden: props => !props.onDuplicate,
     handler: props => props.onDuplicate(props.sequenceData),
     hotkey: "alt+shift+d"
   },
 
   toggleReadOnlyMode: {
     toggle: [],
+    isHidden: props => !props.toggleReadOnlyMode,
     isActive: props => props.readOnly,
     handler: props => props.toggleReadOnlyMode()
   },
@@ -74,9 +82,9 @@ const fileCommandDefs = {
     hotkey: "mod+p"
   }
 };
-
+//copy options
 const toggleCopyOptionCommandDefs = {};
-["features", "parts", "partialParts", "partialFeatures"].forEach(type => {
+Object.keys(defaultCopyOptions).forEach(type => {
   const cmdId = `toggleCopy${upperFirst(type)}`;
   toggleCopyOptionCommandDefs[cmdId] = {
     name: `Include ${startCase(type)}`,
@@ -85,12 +93,15 @@ const toggleCopyOptionCommandDefs = {};
   };
 });
 
+const readOnlyDisabledTooltip =
+  "Sorry this function is not allowed in Read-Only Mode";
 const hasSelection = ({ selectionLayer = {} }) =>
   selectionLayer.start > -1 && selectionLayer.end > -1;
 
 const editCommandDefs = {
   cut: {
-    isDisabled: props => props.readOnly,
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isHidden: props => props.readOnly,
     handler: props => props.triggerClipboardCommand("cut"),
     hotkey: "mod+x"
   },
@@ -101,12 +112,16 @@ const editCommandDefs = {
   },
 
   paste: {
-    isDisabled: props => props.readOnly,
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isHidden: props => props.readOnly,
+
     handler: props => props.triggerClipboardCommand("paste"),
     hotkey: "mod+v"
   },
 
   undo: {
+    isHidden: props => props.readOnly,
+
     isDisabled: props =>
       props.readOnly ||
       !(
@@ -119,6 +134,8 @@ const editCommandDefs = {
   },
 
   redo: {
+    isHidden: props => props.readOnly,
+
     isDisabled: props =>
       props.readOnly ||
       !(
@@ -168,7 +185,6 @@ const editCommandDefs = {
       });
     }
   },
-
   selectAll: {
     handler: props => props.selectAll(),
     hotkey: "mod+a",
@@ -182,12 +198,18 @@ const editCommandDefs = {
   },
 
   complementSelection: {
-    isDisabled: props => props.readOnly || !hasSelection(props),
+    isHidden: props => props.readOnly,
+
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      (!hasSelection(props) && "Requires Selection"),
     handler: props => props.handleComplementSelection()
   },
 
   complementEntireSequence: {
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.handleComplementSequence()
   },
   toggleSequenceMapFontUpper: {
@@ -215,13 +237,19 @@ const editCommandDefs = {
   //   }
   // },
   reverseComplementSelection: {
-    isDisabled: props => props.readOnly || !hasSelection(props),
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      (!hasSelection(props) && "Requires Selection"),
+    isHidden: props => props.readOnly,
+
     handler: props => props.handleReverseComplementSelection(),
     hotkey: "mod+e"
   },
 
   reverseComplementEntireSequence: {
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.handleReverseComplementSequence()
   },
 
@@ -240,6 +268,7 @@ const editCommandDefs = {
         props.frameTranslationToggleOff("2");
         props.frameTranslationToggleOff("3");
       } else {
+        props.annotationVisibilityShow("translations");
         props.frameTranslationToggleOn("1");
         props.frameTranslationToggleOn("2");
         props.frameTranslationToggleOn("3");
@@ -261,6 +290,7 @@ const editCommandDefs = {
         props.frameTranslationToggleOff("-2");
         props.frameTranslationToggleOff("-3");
       } else {
+        props.annotationVisibilityShow("translations");
         props.frameTranslationToggleOn("-1");
         props.frameTranslationToggleOn("-2");
         props.frameTranslationToggleOn("-3");
@@ -269,72 +299,92 @@ const editCommandDefs = {
   },
   sequenceAA_frame1: {
     isActive: props => props.frameTranslations["1"],
-    handler: props => props.frameTranslationToggle("1")
+    handler: props => {
+      if (!props.frameTranslations["1"]) {
+        props.annotationVisibilityShow("translations");
+      }
+      props.frameTranslationToggle("1");
+    }
   },
   sequenceAA_frame2: {
     isActive: props => props.frameTranslations["2"],
-    handler: props => props.frameTranslationToggle("2")
+    handler: props => {
+      if (!props.frameTranslations["2"]) {
+        props.annotationVisibilityShow("translations");
+      }
+      props.frameTranslationToggle("2");
+    }
   },
   sequenceAA_frame3: {
     isActive: props => props.frameTranslations["3"],
-    handler: props => props.frameTranslationToggle("3")
+    handler: props => {
+      if (!props.frameTranslations["3"]) {
+        props.annotationVisibilityShow("translations");
+      }
+      props.frameTranslationToggle("3");
+    }
   },
   sequenceAAReverse_frame1: {
     isActive: props => props.frameTranslations["-1"],
-    handler: props => props.frameTranslationToggle("-1")
+    handler: props => {
+      if (!props.frameTranslations["-1"]) {
+        props.annotationVisibilityShow("translations");
+      }
+      props.frameTranslationToggle("-1");
+    }
   },
   sequenceAAReverse_frame2: {
     isActive: props => props.frameTranslations["-2"],
-    handler: props => props.frameTranslationToggle("-2")
+    handler: props => {
+      if (!props.frameTranslations["-2"]) {
+        props.annotationVisibilityShow("translations");
+      }
+      props.frameTranslationToggle("-2");
+    }
   },
   sequenceAAReverse_frame3: {
     isActive: props => props.frameTranslations["-3"],
-    handler: props => props.frameTranslationToggle("-3")
+    handler: props => {
+      if (!props.frameTranslations["-3"]) {
+        props.annotationVisibilityShow("translations");
+      }
+      props.frameTranslationToggle("-3");
+    }
   },
-
-  //   sequenceAA_allFrames
-  // sequenceAA_frame1
-  // sequenceAA_frame2
-  // sequenceAA_frame3
-  // sequenceAAReverse_allFrames
-  // sequenceAAReverse_frame1
-  // sequenceAAReverse_frame2
-  //         sequenceAAReverse_frame3
-
-  // const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
-  //   return {
-  //     isActive: get(state, `VectorEditor[${editorName}].frameTranslations`, {})[
-  //       frame
-  //     ]
-  //   };
-  // })(({ isActive, ...rest }) => {
-  //   return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
-  // });
 
   newFeature: {
     handler: (props, state, ctxInfo) => {
       console.warn("newFeature ctxInfo", ctxInfo);
       props.handleNewFeature();
     },
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     hotkey: "mod+k"
   },
 
   newPart: {
     handler: props => props.handleNewPart(),
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     hotkey: "mod+l",
     hotkeyProps: { preventDefault: true }
   },
 
   rotateToCaretPosition: {
-    isDisabled: props => props.readOnly || props.caretPosition === -1,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.caretPosition === -1,
     handler: props => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
 
   editFeature: {
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: (props, state, ctxInfo) => {
       console.warn("editFeature", ctxInfo);
       const annotation = get(ctxInfo, "context.annotation");
@@ -347,13 +397,17 @@ const editCommandDefs = {
 
 const cirularityCommandDefs = {
   circular: {
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
     isActive: (props, editorState) =>
       editorState && editorState.sequenceData.circular
   },
   linear: {
-    isDisabled: props => props.readOnly,
+    isHidden: props => props.readOnly,
+
+    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(false),
     isActive: (props, editorState) =>
       editorState && !editorState.sequenceData.circular
@@ -378,16 +432,18 @@ const annotationToggleCommandDefs = {};
   "parts",
   "cutsites",
   "axis",
-  "orfs",
+  { type: "orfs", text: "ORFs" },
   "primers",
   "translations",
-  "orfTranslations",
-  "cdsFeatureTranslations",
+  { type: "orfTranslations", text: "ORF Translations" },
+  { type: "cdsFeatureTranslations", text: "CDS Feature Translations" },
   "axisNumbers",
   "reverseSequence",
   "dnaColors",
   "lineageLines"
-].forEach(type => {
+].forEach(typeOrObj => {
+  const type = typeOrObj.type || typeOrObj;
+
   const cmdId = `toggle${upperFirst(type)}`;
   annotationToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
@@ -397,11 +453,23 @@ const annotationToggleCommandDefs = {};
       let hasCount = false;
       if (sequenceData && sequenceData[type]) {
         hasCount = true;
-        count = Object.keys(sequenceData[type]).length;
+        count =
+          sequenceData[type].length || Object.keys(sequenceData[type]).length;
+      }
+      if (type === "cdsFeatureTranslations") {
+        hasCount = true;
+        count = filter(
+          sequenceData.features || [],
+          ({ type }) => type === "CDS"
+        ).length;
+      }
+      if (type === "orfTranslations") {
+        hasCount = true;
+        count = filter(sequenceData.orfs || [], ({ isOrf }) => isOrf).length;
       }
       return (
         <span>
-          {startCase(type)}
+          {typeOrObj.text || startCase(type)}
           &nbsp;
           {hasCount && (
             <Tag round style={{ marginLeft: 4 }}>
@@ -416,6 +484,14 @@ const annotationToggleCommandDefs = {};
       return (
         props && props.annotationVisibility && props.annotationVisibility[type]
       );
+    },
+    isDisabled: props => {
+      if (type === "orfTranslations") {
+        return (
+          !props.annotationVisibility.orfs &&
+          "ORFs must be visible to view their translations"
+        );
+      }
     },
     isHidden: props => {
       return props && props.typesToOmit && props.typesToOmit[type] === false;

@@ -23,7 +23,8 @@ class OrfProperties extends React.Component {
       sequenceData = {},
       annotationVisibilityToggle,
       annotationVisibility,
-      annotationVisibilityShow
+      useAdditionalOrfStartCodonsToggle,
+      useAdditionalOrfStartCodons
     } = this.props;
     const { orfs } = sequenceData;
     const orfsToUse = map(orfs, orf => {
@@ -101,14 +102,18 @@ class OrfProperties extends React.Component {
         />
 
         <Checkbox
+          disabled={!annotationVisibility.orfs}
           style={{ marginTop: 10 }}
           onChange={function() {
             annotationVisibilityToggle("orfTranslations");
-            !annotationVisibility.orfTranslations &&
-              annotationVisibilityShow("orfs");
           }}
           checked={annotationVisibility.orfTranslations}
           label={"Show translations for ORFs"}
+        />
+        <Checkbox
+          onChange={useAdditionalOrfStartCodonsToggle}
+          checked={useAdditionalOrfStartCodons}
+          label={"Use GTG and CTG as start codons"}
         />
       </div>
     );

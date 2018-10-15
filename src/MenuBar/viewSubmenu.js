@@ -1,7 +1,26 @@
 export default [
   // { cmd: "mapCaret" },
   { cmd: "toggleFeatures", shouldDismissPopover: false },
-  { cmd: "toggleTranslations", shouldDismissPopover: false },
+  {
+    cmd: "toggleTranslations",
+    onClick: () => {}, //override this click so that they have to hit the submenu
+    shouldDismissPopover: false,
+    submenu: [
+      {
+        cmd: "toggleTranslations",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleCdsFeatureTranslations",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleOrfTranslations",
+        // isDisabled: (p) => {console.log('p:',p)},
+        shouldDismissPopover: false
+      }
+    ]
+  },
   { cmd: "togglePrimers", shouldDismissPopover: false },
   // {
   //   // TODO preprocess this as needed
@@ -15,24 +34,16 @@ export default [
   // TODO translations, cds feature translations?
   {
     cmd: "toggleOrfs",
-    onClick: () => {},
-    text: "ORFs",
+    onClick: () => {}, //override this click so that they have to hit the submenu
     shouldDismissPopover: false,
     submenu: [
       {
-        text: "ORFs",
         cmd: "toggleOrfs",
         shouldDismissPopover: false
       },
       {
-        text: "ORF Translations",
         cmd: "toggleOrfTranslations",
         // isDisabled: (p) => {console.log('p:',p)},
-        shouldDismissPopover: false
-      },
-      {
-        text: "CDS Feature Translations",
-        cmd: "toggleCdsFeatureTranslations",
         shouldDismissPopover: false
       }
     ]
@@ -115,7 +126,7 @@ export default [
   { cmd: "toggleAxisNumbers", shouldDismissPopover: false },
   { cmd: "toggleReverseSequence", shouldDismissPopover: false },
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
-  { cmd: "toggleLineageLines", shouldDismissPopover: false },
+  // { cmd: "toggleLineageLines", shouldDismissPopover: false },
 
   { divider: "" },
 

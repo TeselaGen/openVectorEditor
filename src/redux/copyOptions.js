@@ -7,6 +7,13 @@ import createAction from "./utils/createMetaAction";
 // ------------------------------------
 export const toggleCopyOption = createAction("TOGGLE_COPY_OPTION"); //NOTE!!:: second argument sanitizes actions so no payload is passed
 
+export const defaultCopyOptions = {
+  features: true,
+  partialFeatures: true,
+  parts: true,
+  partialParts: true
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -23,10 +30,5 @@ export default createReducer(
       };
     }
   },
-  {
-    features: true,
-    partialFeatures: true,
-    parts: true,
-    partialParts: true
-  }
+  defaultCopyOptions
 );

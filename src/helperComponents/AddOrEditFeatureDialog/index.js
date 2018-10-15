@@ -163,7 +163,7 @@ function required(val) {
 export default compose(
   withDialog({
     isDraggable: true,
-    height: 440,
+    height: 470,
     width: 350
   }),
   withEditorProps,
