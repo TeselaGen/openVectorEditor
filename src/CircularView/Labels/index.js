@@ -95,19 +95,17 @@ function Labels({
   return {
     component: (
       <g key={"veLabels"} className="veLabels ve-monospace-font">
-        {
-          <DrawGroupedLabels
-            {...{
-              editorName,
-              groupedLabels,
-              circularViewWidthVsHeightRatio,
-              fontWidth,
-              fontHeight,
-              condenseOverflowingXLabels,
-              outerRadius
-            }}
-          />
-        }
+        <DrawGroupedLabels
+          {...{
+            editorName,
+            groupedLabels,
+            circularViewWidthVsHeightRatio,
+            fontWidth,
+            fontHeight,
+            condenseOverflowingXLabels,
+            outerRadius
+          }}
+        />
       </g>
     ),
     //we use the <use> tag to position the hovered label group at the top of the stack
@@ -306,7 +304,7 @@ function LabelLine(pointArray, options) {
     points += `${x},${y} `;
   });
   return (
-    <React.Fragment>
+    <React.Fragment key="labelLine">
       <polyline
         {...{
           key: "polyline-short",
