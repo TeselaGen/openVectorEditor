@@ -75,7 +75,7 @@ class SequenceInputNoHotkeys extends React.Component {
       selectionLayer,
       sequenceLength,
       caretPosition,
-      acceptedChars = "atgc",
+      acceptedChars = "atgcnk",
       maxInsertSize
     } = this.props;
     const { bpsToInsert, hasTempError } = this.state;
