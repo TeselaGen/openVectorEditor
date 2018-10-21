@@ -1,12 +1,8 @@
 import React from "react";
 import { Provider } from "react-redux";
-import {
-  HashRouter as Router,
-  Route,
-  Link,
-  Redirect
-} from "react-router-dom";
-import { Switch } from "@blueprintjs/core";
+import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { Switch, Button } from "@blueprintjs/core";
+import { generateSequenceData } from "ve-sequence-utils";
 
 import store from "./store";
 import { render } from "react-dom";
@@ -89,7 +85,7 @@ class Demo extends React.Component {
     return (
       <Provider store={store}>
         <Router>
-          <div style={{height: "100%"}}>
+          <div style={{ height: "100%" }}>
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
             {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
@@ -99,18 +95,31 @@ class Demo extends React.Component {
               render={() => {
                 return (
                   <div>
-                    <Switch
-                      checked={previewMode}
-                      label="Preview Mode"
-                      onChange={this.changePreviewMode}
-                      style={{ margin: 30 }}
-                    />
-                    <Switch
-                      label="Dark Mode"
-                      checked={darkMode}
-                      onChange={this.changeDarkMode}
-                      style={{ margin: 30 }}
-                    />
+                    <div style={{ display: "flex" }}>
+                      <Button
+                        onClick={() => {
+                          updateEditor(store, "DemoEditor", {
+                            sequenceDataHistory: {},
+                            sequenceData: generateSequenceData()
+                          });
+                        }}
+                      >
+                        {" "}
+                        Change Sequence
+                      </Button>
+                      <Switch
+                        checked={previewMode}
+                        label="Preview Mode"
+                        onChange={this.changePreviewMode}
+                        style={{ margin: 30 }}
+                      />
+                      <Switch
+                        label="Dark Mode"
+                        checked={darkMode}
+                        onChange={this.changeDarkMode}
+                        style={{ margin: 30 }}
+                      />
+                    </div>
                     <div
                       style={{
                         height: "100%",
@@ -121,7 +130,7 @@ class Demo extends React.Component {
                     >
                       <div
                         style={{
-                        height: "100%",
+                          height: "100%",
 
                           display: "flex",
                           flexDirection: "column",
@@ -151,7 +160,7 @@ class Demo extends React.Component {
                         console.info("onSave triggered:", args);
                       }}
                       exitVersionHistoryView={() => {
-                        window.alert('exit requested!')
+                        window.alert("exit requested!");
                       }}
                       getSequenceAtVersion={versionId => {
                         if (versionId === 2) {

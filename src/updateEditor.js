@@ -23,6 +23,7 @@ export default function updateEditor(
     payload: initialValuesToUse,
     meta: {
       editorName,
+      disregardUndo: true,
       ...extraMeta
     }
   });
