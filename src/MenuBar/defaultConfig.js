@@ -26,12 +26,11 @@ export default [
       },
       "--",
       {
-        disabled: true,
         text: "Print",
-        submenu: [{ cmd: "circularView" }, { cmd: "linearView" }]
+        submenu: [{ cmd: "printCircularView" }, { cmd: "printLinearView" }]
       },
-      { cmd: "viewRevisionHistory", disabled: true },
-      { cmd: "viewProperties", icon: "properties" }
+      { cmd: "viewRevisionHistory", text: "Revision History" },
+      { cmd: "viewProperties", text: "Properties", icon: "properties" }
     ]
   },
   {
@@ -49,6 +48,7 @@ export default [
         ]
       },
       "paste",
+      "--",
       "undo",
       "redo",
       "--",
