@@ -99,7 +99,7 @@ class Demo extends React.Component {
                       <Button
                         onClick={() => {
                           updateEditor(store, "DemoEditor", {
-                            sequenceDataHistory: { past: [], future: [] },
+                            sequenceDataHistory: {},
                             sequenceData: generateSequenceData()
                           });
                         }}
