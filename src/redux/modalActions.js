@@ -38,6 +38,12 @@ export function showAddOrEditPartDialog(annotation, { editorName }) {
     }
   };
 }
+export function showPrintDialog() {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "PrintDialog" //you'll need to pass a unique dialogName prop to the compoennt
+  };
+}
 export function showAddOrEditPrimerDialog(annotation, { editorName }) {
   return {
     type: "TG_SHOW_MODAL",

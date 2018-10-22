@@ -82,7 +82,8 @@ const fileCommandDefs = {
   },
 
   print: {
-    handler: props => props.handlePrint(),
+    hotkeyProps: { preventDefault: true },
+    handler: props => props.showPrintDialog(),
     hotkey: "mod+p"
   }
 };

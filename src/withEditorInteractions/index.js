@@ -17,7 +17,7 @@ import { map, get, startCase, some } from "lodash";
 import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
-import { getContext } from "recompose";
+import { getContext, branch } from "recompose";
 import FileSaver from "file-saver";
 import Keyboard from "./Keyboard";
 import getCommands from "../commands";
@@ -1290,7 +1290,7 @@ export default compose(
     store: PropTypes.object
   }),
   withEditorProps,
-  VectorInteractionHOC
+  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
 
 const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {

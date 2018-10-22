@@ -27,7 +27,8 @@ export default [
       "--",
       {
         text: "Print",
-        submenu: [{ cmd: "printCircularView" }, { cmd: "printLinearView" }]
+        cmd: "print"
+        // submenu: [{ cmd: "printCircularView" }, { cmd: "printLinearView" }]
       },
       { cmd: "viewRevisionHistory", text: "Revision History" },
       { cmd: "viewProperties", text: "Properties", icon: "properties" }
