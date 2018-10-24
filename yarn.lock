@@ -11111,10 +11111,10 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@24.2.36:
-  version "24.2.36"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.36.tgz#00dbe7df88601715905b848aa822941361d79dfb"
-  integrity sha512-uBzzYWpkmft6CSlfTyINIUfdV7PJdL4MSI+pBsLkQyIr+HjjROaMAANfOyDR+vVZsf2Xv3Vk4qUmI0xVnPk5Yw==
+teselagen-react-components@^24.2.52:
+  version "24.2.52"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.52.tgz#2909e00caa6d933edd16d2be94bb860bbf648c03"
+  integrity sha512-vQxDXixrD6IBI7pbFOia688DCw+gnCJM9UXNDVsUf/GommDSk70CLXqyJz7dMW1x0+I+wn//OQy5OAgRq9h17g==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
