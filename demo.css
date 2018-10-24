@@ -11038,12 +11038,10 @@ span.bp3-popover-target {
 }
 
 .bp3-dark .veCaretSVG,
-.bp3-dark .translationLayer text,
 .bp3-dark .veRowViewAxis path,
 .bp3-dark .veRowViewFeature path,
 .bp3-dark .veRowViewPart path,
 .bp3-dark .veLabelLine,
-.bp3-dark .veRowViewAxis text,
 .bp3-dark .veFeature,
 .bp3-dark .vePart {
   stroke: #f5f8fa !important;
@@ -11070,7 +11068,9 @@ span.bp3-popover-target {
   fill: #f5f8fa !important;
 }
 
-.bp3-dark .alignmentViewTrackContainer text {
+.bp3-dark .alignmentViewTrackContainer text,
+.bp3-dark .veRowViewAxis text,
+.bp3-dark .translationLayer text {
   stroke: #f5f8fa !important;
   -webkit-font-smoothing: antialiased;
 }
