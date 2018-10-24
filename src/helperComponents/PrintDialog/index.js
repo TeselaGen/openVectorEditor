@@ -52,6 +52,7 @@ export class PrintDialog extends React.Component {
         </div>
         <br />
         <ComponentToPrint
+          fullscreen={this.state && this.state.fullscreen}
           circular={isCirc}
           editorName={editorName || "StandaloneEditor"}
           ref={el => (this.componentRef = el)}
@@ -61,10 +62,22 @@ export class PrintDialog extends React.Component {
           <ReactToPrint
             trigger={() => <Button intent="primary">Print</Button>}
             content={() => this.componentRef}
-            onBeforePrint={() => {}}
-            // printPreview
+            onBeforePrint={() => {
+              this.setState({ fullscreen: true });
+            }}
+            printPreview
+            pageStyle={`@page { size: auto;  margin: 0mm; } @media print { 
+              
+              body { 
+                 -webkit-print-color-adjust: exact; page-break-after: always; 
+              } }`}
+            iframeStyle={{
+              transform:
+                "scaleX(2.675) scaleY(2.675) translateX(39%) translateY(32%)"
+            }}
             ignoreLinks //needed because some css is linked to but is not loading..
             onAfterPrint={() => {
+              this.setState({ fullscreen: false });
               hideModal();
             }}
           />
@@ -113,20 +126,17 @@ class ReactToPrint extends React.Component {
     bodyClass: ""
   };
 
-  triggerPrint(target) {
-    const { onBeforePrint, onAfterPrint, printPreview } = this.props;
+  triggerPrint(target, noRemove) {
+    const { onBeforePrint, onAfterPrint } = this.props;
 
     if (onBeforePrint) {
       onBeforePrint();
-    }
-    if (printPreview) {
-      return;
     }
 
     setTimeout(() => {
       target.contentWindow.focus();
       target.contentWindow.print();
-      this.removeWindow(target);
+      !noRemove && this.removeWindow(target);
 
       if (onAfterPrint) {
         onAfterPrint();
@@ -134,10 +144,13 @@ class ReactToPrint extends React.Component {
     }, 500);
   }
 
-  removeWindow(target) {
-    setTimeout(() => {
-      target.parentNode.removeChild(target);
-    }, 500);
+  removeWindow(targets) {
+    targets &&
+      setTimeout(() => {
+        (Array.isArray(targets) ? targets : [targets]).forEach(target => {
+          target.parentNode.removeChild(target);
+        });
+      }, 500);
   }
 
   startPrint = () => {
@@ -147,6 +160,7 @@ class ReactToPrint extends React.Component {
       copyStyles,
       ignoreLinks,
       pageStyle,
+      iframeStyle = {},
       printPreview
     } = this.props;
 
@@ -158,25 +172,58 @@ class ReactToPrint extends React.Component {
       );
       return false;
     }
-
     let printWindow = document.createElement("iframe");
-    printWindow.style.position = "absolute";
 
-    // let w = window,
-    //   d = document,
-    //   e = d.documentElement,
-    //   g = d.getElementsByTagName("body")[0],
-    //   width = w.innerWidth || e.clientWidth || g.clientWidth,
-    //   height = w.innerHeight || e.clientHeight || g.clientHeight;
+    if (printPreview) {
+      let printOutline = document.createElement("div");
+      let closeButton = document.createElement("button");
+      let printButton = document.createElement("button");
+      const elsToRemoveFromDomEventually = [
+        printWindow,
+        printOutline,
+        closeButton,
+        printButton
+      ];
+
+      printOutline.style.position = "absolute";
+      printOutline.style.top = "0px";
+      printOutline.style.left = "0px";
+      printOutline.style.width = "816px";
+      printOutline.style.height = "1056px";
+      printOutline.style.background = "grey";
+      printOutline.style.zIndex = 100000300;
+      document.body.appendChild(printOutline);
+      printButton.style.position = "absolute";
+      printButton.style.top = "0px";
+      printButton.style.left = "0px";
+      printButton.style.width = "100px";
+      printButton.style.background = "lightblue";
+      printButton.innerText = "print";
+      printButton.onclick = () => {
+        this.triggerPrint(printWindow, true);
+      };
+      printButton.style.zIndex = 100000500;
+      document.body.appendChild(printButton);
+
+      closeButton.style.position = "absolute";
+      closeButton.style.top = "0px";
+      closeButton.style.left = "250px";
+      closeButton.style.width = "100px";
+      closeButton.style.background = "lightblue";
+      closeButton.innerText = "close";
+      closeButton.onclick = () => {
+        this.removeWindow(elsToRemoveFromDomEventually);
+      };
+      closeButton.style.zIndex = 100000500;
+      document.body.appendChild(closeButton);
+    }
 
     // printWindow.style.height = height
     // printWindow.style.width = width
 
     // todo: find the max height/width of the print window and fit it to that!
-    if (!printPreview) {
-      printWindow.style.top = "-1000px";
-      printWindow.style.left = "-1000px";
-    }
+
+    // if (printPreview)  defaultPageStyle += " "
 
     const contentNodes = findDOMNode(contentEl);
     const linkNodes = document.querySelectorAll('link[rel="stylesheet"]');
@@ -187,6 +234,9 @@ class ReactToPrint extends React.Component {
     const markLoaded = () => {
       this.linkLoaded++;
       if (this.linkLoaded === this.linkTotal) {
+        if (printPreview) {
+          return;
+        }
         this.triggerPrint(printWindow);
       }
     };
@@ -207,16 +257,38 @@ class ReactToPrint extends React.Component {
       domDoc.write(contentNodes.outerHTML);
       domDoc.close();
 
+      printWindow.style.position = "absolute";
+      // printWindow.style.width = "100%";
+      // printWindow.style.height = "100%";
+      printWindow.style.top = "-1000px";
+      printWindow.style.left = "-1000px";
+      printWindow.style.width = domDoc.body.scrollWidth + "px";
+
+      printWindow.style.height = domDoc.body.scrollHeight + "px";
+      Object.keys(iframeStyle).forEach(key => {
+        printWindow.style[key] = iframeStyle[key];
+      });
+
+      if (printPreview) {
+        printWindow.style.top = "0px";
+        printWindow.style.left = "0px";
+
+        printWindow.style.background = "white";
+
+        printWindow.style.zIndex = 100000400;
+      }
+
       /* remove date/time from top */
       const defaultPageStyle =
         pageStyle === undefined
-          ? "@page { size: auto;  margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; } }"
+          ? `@page { size: auto;  margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact;} }`
           : pageStyle;
 
       let styleEl = domDoc.createElement("style");
       styleEl.appendChild(domDoc.createTextNode(defaultPageStyle));
       domDoc.head.appendChild(styleEl);
 
+      // domDoc.body.style.transform = ""
       if (bodyClass.length) {
         domDoc.body.classList.add(bodyClass);
       }
@@ -250,6 +322,7 @@ class ReactToPrint extends React.Component {
               newHeadEl.setAttribute(attr.nodeName, attr.nodeValue);
             });
 
+            newHeadEl.readystatechange = markLoaded.bind(null, "link");
             newHeadEl.onload = markLoaded.bind(null, "link");
             newHeadEl.onerror = markLoaded.bind(null, "link");
           }
@@ -258,6 +331,9 @@ class ReactToPrint extends React.Component {
         });
       }
       if (this.linkTotal === 0 || copyStyles === false || ignoreLinks) {
+        if (printPreview) {
+          return;
+        }
         this.triggerPrint(printWindow);
       }
     };
@@ -283,6 +359,16 @@ class ComponentToPrint extends React.Component {
 
   render() {
     const { editorName, circular } = this.props;
+
+    // let w = window,
+    //     d = document,
+    //     e = d.documentElement,
+    //     g = d.getElementsByTagName("body")[0],
+    //     width = w.innerWidth || e.clientWidth || g.clientWidth,
+    //     height = w.innerHeight || e.clientHeight || g.clientHeight;
+
+    // const width =  670;
+    // const height = 900;
     return circular ? (
       <CircularView noInteractions editorName={editorName} />
     ) : (
