@@ -698,7 +698,7 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         // sequenceData,
         upsertTranslation,
-        annotationVisibilityToggle
+        annotationVisibilityShow
       } = this.props;
 
       let items = [
@@ -712,7 +712,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: true
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         }
       ];
@@ -834,7 +834,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         deletePart,
-        annotationVisibilityToggle,
+        annotationVisibilityShow,
         showAddOrEditPartDialog,
         propertiesViewOpen,
         propertiesViewTabUpdate
@@ -866,7 +866,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         },
         {
@@ -887,6 +887,7 @@ function VectorInteractionHOC(Component /* options */) {
         deleteFeature,
         showMergeFeaturesDialog,
         annotationVisibilityToggle,
+        annotationVisibilityShow,
         // showAddOrEditFeatureDialog,
         propertiesViewOpen,
         annotationsToSupport: { parts } = {},
@@ -970,7 +971,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         },
         {
@@ -1002,7 +1003,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         propertiesViewOpen,
-        annotationVisibilityToggle,
+        annotationVisibilityShow,
         propertiesViewTabUpdate
       } = this.props;
       return [
@@ -1026,7 +1027,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         },
         {
