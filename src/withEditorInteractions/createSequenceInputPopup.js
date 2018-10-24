@@ -197,6 +197,10 @@ export default function createSequenceInputPopup(props) {
   if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
     caretEl = document.querySelector(".veCaret");
   }
+  if (document.body.classList.contains("sequenceDragging")) {
+    window.toastr.warning("Can't insert new sequence while dragging");
+    return;
+  } //don't allow
 
   // function closeInput() {
   //   sequenceInputBubble.remove();
