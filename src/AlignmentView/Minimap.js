@@ -177,7 +177,7 @@ export default class Minimap extends React.Component {
             }
           }}
           style={{
-            maxHeight: 250,
+            maxHeight: 150,
             overflowY: "auto",
             position: "relative"
           }}
