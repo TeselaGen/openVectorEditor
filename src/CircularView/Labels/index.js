@@ -375,13 +375,14 @@ const DrawGroupedLabels = pureNoFunc(
     return {
       hoveredId
     };
-  })(function DrawGroupedLabels({
+  })(function DrawGroupedLabelsInner({
     groupedLabels,
     circularViewWidthVsHeightRatio,
     fontWidth,
     fontHeight,
     condenseOverflowingXLabels,
     outerRadius,
+    editorName,
     hoveredId
   }) {
     const hoveredIndex = groupedLabels.findIndex(
@@ -417,6 +418,7 @@ const DrawGroupedLabels = pureNoFunc(
             labelIds,
             circularViewWidthVsHeightRatio,
             fontWidth,
+            editorName,
             fontHeight,
             condenseOverflowingXLabels,
             outerRadius
