@@ -10730,8 +10730,6 @@ span.bp3-popover-target {
           justify-content: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  /* height: 32px; */
-  margin-bottom: 5px;
   width: 100%;
 }
 .veToolbar .veToolbarItemOuter {
@@ -10936,6 +10934,12 @@ span.bp3-popover-target {
       flex-shrink: 0;
   margin-left: auto;
   margin-right: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 .veStatusBarSpacer {
   height: 100%;
@@ -11132,12 +11136,6 @@ span.bp3-popover-target {
 }
 .ve-clickable-black:hover {
   color: black;
-}
-.ve-close-panel-button {
-  z-index: 400;
-  color: grey;
-  height: 25px;
-  width: 35px;
 }
 
 .veRightClickTabMenu {
