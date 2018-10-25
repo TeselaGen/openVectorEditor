@@ -18,6 +18,8 @@
   flex-shrink: 0;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  align-items: center;
 }
 .veStatusBarSpacer {
   height: 100%;

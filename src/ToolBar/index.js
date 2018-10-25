@@ -75,6 +75,7 @@ export class ToolBar extends React.PureComponent {
       modifyTools,
       contentLeft,
       menuBar = null,
+      closeFullscreen,
       toolList = [
         "saveTool",
         "downloadTool",
@@ -160,6 +161,7 @@ export class ToolBar extends React.PureComponent {
         <div className={"veToolbar"}>
           {menuBar} {content}
         </div>
+        {closeFullscreen}
       </div>
     );
   }

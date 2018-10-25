@@ -71,6 +71,10 @@ class Demo extends React.Component {
     this.setState({
       previewMode: e.target.checked
     });
+  changeFullscreenMode = e =>
+    this.setState({
+      fullscreenMode: e.target.checked
+    });
 
   changeDarkMode = () => {
     this.setState({
@@ -80,8 +84,7 @@ class Demo extends React.Component {
   };
 
   render() {
-    const { previewMode, darkMode } = this.state;
-
+    const { fullscreenMode, previewMode, darkMode } = this.state;
     return (
       <Provider store={store}>
         <Router>
@@ -114,6 +117,12 @@ class Demo extends React.Component {
                         style={{ margin: 30 }}
                       />
                       <Switch
+                        checked={fullscreenMode}
+                        label="Fullscreen Mode"
+                        onChange={this.changeFullscreenMode}
+                        style={{ margin: 30 }}
+                      />
+                      <Switch
                         label="Dark Mode"
                         checked={darkMode}
                         onChange={this.changeDarkMode}
@@ -141,6 +150,8 @@ class Demo extends React.Component {
                         <Editor
                           editorName="DemoEditor"
                           showMenuBar
+                          handleFullscreenClose={this.changeFullscreenMode}
+                          isFullscreen={fullscreenMode}
                           withPreviewMode={previewMode}
                         />
                       </div>

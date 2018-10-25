@@ -30,12 +30,6 @@
 .ve-clickable-black:hover {
   color: black;
 }
-.ve-close-panel-button {
-  z-index: 400;
-  color: grey;
-  height: 25px;
-  width: 35px;
-}
 
 .veRightClickTabMenu {
   opacity: 0.4;

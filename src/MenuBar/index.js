@@ -23,8 +23,9 @@ class OveMenuBar extends React.Component {
       <div style={{ display: "flex", height: "100%" }}>
         <MenuBar menu={menuDef} enhancers={this.enhancers} />
         <div
+          className={"menuBarDivider"}
           style={{
-            height: "100%",
+            height: "87%",
             width: 2,
             margin: 2,
             background: "lightgrey"

@@ -385,11 +385,6 @@ function mapStateToProps(state, ownProps) {
 
   return {
     ...toReturn,
-    ...(ownProps.handleFullscreenClose && {
-      withPreviewMode: true,
-      previewModeFullscreen: true,
-      togglePreviewFullscreen: ownProps.handleFullscreenClose
-    }),
     selectedCutsites,
     sequenceLength,
     allCutsites,
