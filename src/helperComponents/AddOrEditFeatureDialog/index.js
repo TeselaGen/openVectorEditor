@@ -134,9 +134,15 @@ export class AddOrEditFeatureDialog extends React.Component {
           </Button>
           <Button
             onClick={handleSubmit(data => {
+              let updatedData;
+              if (data.forward === true && data.strand !== 1) {
+                updatedData = { ...data, strand: 1 };
+              } else if (data.forward === false && data.strand !== -1) {
+                updatedData = { ...data, strand: -1 };
+              }
               const newFeat = tidyUpAnnotation(
                 convertRangeTo0Based({
-                  ...data
+                  ...updatedData
                 }),
                 {
                   sequenceData,
