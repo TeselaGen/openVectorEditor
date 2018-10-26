@@ -25,6 +25,7 @@ import StandaloneDemo from "./StandaloneDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
+import pjson from "../../package.json";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -63,6 +64,7 @@ class Demo extends React.Component {
 
     this.state = {
       previewMode: false,
+      // forceHeightMode: false,
       darkMode: document.body.className.includes("bp3-dark")
     };
   }
@@ -70,6 +72,14 @@ class Demo extends React.Component {
   changePreviewMode = e =>
     this.setState({
       previewMode: e.target.checked
+    });
+  changeFullscreenMode = e =>
+    this.setState({
+      fullscreenMode: e.target.checked
+    });
+  changeForceHeightMode = e =>
+    this.setState({
+      forceHeightMode: e.target.checked
     });
 
   changeDarkMode = () => {
@@ -80,22 +90,29 @@ class Demo extends React.Component {
   };
 
   render() {
-    const { previewMode, darkMode } = this.state;
-
+    const { forceHeightMode, fullscreenMode, previewMode, darkMode } = this.state;
     return (
       <Provider store={store}>
         <Router>
-          <div style={{ height: "100%" }}>
+          <div
+            style={{ height: "100%", display: "flex", flexDirection: "column" }}
+          >
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
             {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
-            {links}
+            <div style={{ display: "flex" }}>{links} <span style={{marginLeft: 10}}>Version: {pjson.version}</span></div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
               render={() => {
                 return (
-                  <div>
-                    <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flexGrow: "1"
+                    }}
+                  >
+                    <div style={{ paddingTop: 10, display: "flex" }}>
                       <Button
                         onClick={() => {
                           updateEditor(store, "DemoEditor", {
@@ -111,40 +128,42 @@ class Demo extends React.Component {
                         checked={previewMode}
                         label="Preview Mode"
                         onChange={this.changePreviewMode}
-                        style={{ margin: 30 }}
+                        style={{ margin: "0px 30px", marginTop: 4 }}
+                      />
+                      <Switch
+                        checked={fullscreenMode}
+                        label="Fullscreen Mode"
+                        onChange={this.changeFullscreenMode}
+                        style={{ margin: "0px 30px", marginTop: 4 }}
+                      />
+                      <Switch
+                        checked={forceHeightMode}
+                        label="Force Height 500px"
+                        onChange={this.changeForceHeightMode}
+                        style={{ margin: "0px 30px", marginTop: 4 }}
                       />
                       <Switch
                         label="Dark Mode"
                         checked={darkMode}
                         onChange={this.changeDarkMode}
-                        style={{ margin: 30 }}
+                        style={{ margin: "0px 30px", marginTop: 4 }}
                       />
                     </div>
                     <div
                       style={{
-                        height: "100%",
                         display: "flex",
                         flexDirection: "column",
-                        padding: 40
+                        flexGrow: 1
                       }}
                     >
-                      <div
-                        style={{
-                          height: "100%",
-
-                          display: "flex",
-                          flexDirection: "column",
-                          flexWrap: "wrap",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <Editor
-                          editorName="DemoEditor"
-                          showMenuBar
-                          withPreviewMode={previewMode}
-                        />
-                      </div>
-                      <div style={{ display: "flex", margin: 20 }} />
+                      <Editor
+                        editorName="DemoEditor"
+                        showMenuBar
+                        handleFullscreenClose={this.changeFullscreenMode}
+                        isFullscreen={fullscreenMode}
+                        {...forceHeightMode && {height: 500}}
+                        withPreviewMode={previewMode}
+                      />
                     </div>
                   </div>
                 );
@@ -156,8 +175,9 @@ class Demo extends React.Component {
                 return (
                   <div>
                     <VersionHistoryView
-                      onSave={(...args) => {
-                        console.info("onSave triggered:", args);
+                      onSave={() => {
+                        window.alert("onSave triggered!");
+                        // console.info("onSave triggered:", args);
                       }}
                       exitVersionHistoryView={() => {
                         window.alert("exit requested!");

@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-
+// import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 import PropTypes from "prop-types";
@@ -102,12 +102,6 @@ export class Editor extends React.Component {
     tabDragging: false,
     previewModeFullscreen: false
   };
-  // componentWillMount(){
-  //   // lastSavedId
-  //   // window.onbeforeunload = function () {
-  //   //     return "You may not want to leave the editor if you have any unsaved work.";
-  //   // };
-  // }
 
   getExtraPanel = (/*panelOptions */) => {
     return [];
@@ -129,8 +123,8 @@ export class Editor extends React.Component {
     }
   }
   updateDimensions = debounce(() => {
-    this.hasFullscreenPanel &&
-      this.setState({ randomRerenderTrigger: Math.random() });
+    // (this.hasFullscreenPanel || this.fitHeight) &&
+    this.setState({ randomRerenderTrigger: Math.random() });
   }, 100);
 
   componentDidMount() {
@@ -238,18 +232,15 @@ export class Editor extends React.Component {
       previewModeFullscreen: uncontrolledPreviewModeFullscreen
     } = this.state;
     const {
-      doNotUseAbsolutePosition = false,
       ToolBarProps = {},
       StatusBarProps = {},
-      // extraLeftSidePanel,
       extraRightSidePanel,
-      // FindBarProps = {},
       editorName,
-      // findTool = {},
-      // containerWidth,
-      height = 500,
+      height: _height,
+      minHeight = 400,
       showMenuBar,
       updateSequenceData,
+      readOnly,
       setPanelAsActive,
       style = {},
       togglePanelFullScreen,
@@ -262,12 +253,14 @@ export class Editor extends React.Component {
       getVersionList,
       getSequenceAtVersion,
       VersionHistoryViewProps,
-      fitHeight, //use fitHeight: true to tell the editorto expand to fill to as much height as possible
       sequenceData = {},
       withPreviewMode,
+      isFullscreen,
+      handleFullscreenClose,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu
     } = this.props;
+
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&
@@ -288,14 +281,25 @@ export class Editor extends React.Component {
       );
     }
     const previewModeFullscreen =
-      uncontrolledPreviewModeFullscreen || controlledPreviewModeFullscreen;
+      uncontrolledPreviewModeFullscreen ||
+      controlledPreviewModeFullscreen ||
+      isFullscreen;
 
     const sharedProps = {
       editorName,
       tabHeight,
-      fitHeight: withPreviewMode && previewModeFullscreen,
       ...this.props
     };
+    let height = Math.max(
+      minHeight,
+      (this.veEditorNode &&
+        this.veEditorNode.node &&
+        this.veEditorNode.node.parentNode &&
+        this.veEditorNode.node.parentNode.clientHeight) ||
+        0
+    );
+
+    if (_height) height = Math.max(minHeight, _height);
 
     let editorDimensions = {
       height,
@@ -449,9 +453,9 @@ export class Editor extends React.Component {
           minSize="200"
           propagateDimensions={true}
           resizeWidth={fitWidth}
-          resizeHeight={
-            fitHeight || !!(withPreviewMode && previewModeFullscreen)
-          } //use the !! to force a boolean
+          resizeHeight
+          //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
+          // } //use the !! to force a boolean
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
@@ -643,9 +647,9 @@ export class Editor extends React.Component {
           minSize="350"
           maxSize="350"
           propagateDimensions={true}
-          resizeHeight={
-            fitHeight || !!(withPreviewMode && previewModeFullscreen)
-          }
+          resizeHeight
+          //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
+          // }
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
@@ -657,137 +661,98 @@ export class Editor extends React.Component {
 
     return (
       <DropHandler
+        disabled={readOnly}
         updateSequenceData={updateSequenceData}
         style={{
           width: "100%",
-          ...(fitHeight && { height: "100%" }),
+          // ...(fitHeight && {
+          // height: "100%",
+          //  }),
           position: "relative",
+          // height: "100%",
+          // ...(fitHeight && {
+          height,
+          display: "flex",
+          flexDirection: "column",
           ...(previewModeFullscreen && {
             background: "white",
             zIndex: 15000,
             position: "fixed",
-            paddingTop: 20,
+            // paddingTop: 20,
             top: 0,
             left: 0,
             ...windowDimensions
           }),
           ...style
         }}
+        forwardedRef={n => {
+          if (n) this.veEditorNode = n;
+        }}
         className="veEditor"
       >
-        {/* <AlignmentToolInner /> */}
-        {/* <Button icon={customIcons.flaskIcon} text="flask" /> */}
-        {/* <DrawChromatogram /> */}
-        {previewModeFullscreen && (
-          <div
-            className={"ve-clickable ve-close-panel-button"}
-            style={{
-              zIndex: 15001,
-              position: "fixed",
-              display: "inherit",
-              top: 15,
-              right: 15
-            }}
-          >
-            <Tooltip content="Close Fullscreen Mode">
-              <Icon
-                style={{
-                  height: 30,
-                  width: 30
-                }}
-                title="Close Fullscreen Mode"
-                onClick={this.togglePreviewFullscreen}
-                icon="minimize"
+        <Dialogs editorName={editorName} />
+
+        <ToolBar
+          menuBar={
+            showMenuBar && (
+              <MenuBar
+                style={{ marginLeft: 0 }}
+                editorName={editorName}
+                {...sharedProps}
+                trackFocus={false}
               />
-            </Tooltip>
-          </div>
-        )}
-        <div
-          className={"veEditorInner"}
-          style={{
-            width: "100%",
-            height: "100%",
-            ...((fitHeight || (withPreviewMode && previewModeFullscreen)) && {
-              display: "flex",
-              flexDirection: "column"
-            }),
-            // display: "flex",
-            // flexDirection: "column",
-            ...(doNotUseAbsolutePosition ||
-            (fitHeight || (withPreviewMode && previewModeFullscreen))
-              ? {}
-              : { position: "absolute" })
-          }}
-        >
-          {/* <button
-            onClick={() => {
-              document.body.addEventListener("keydown", e => {
-              });
-              let keyboardEvent = document.createEvent("KeyboardEvent");
-              let initMethod =
-                typeof keyboardEvent.initKeyboardEvent !== "undefined"
-                  ? "initKeyboardEvent"
-                  : "initKeyEvent";
-
-              keyboardEvent[initMethod](
-                "keydown", // event type : keydown, keyup, keypress
-                true, // bubbles
-                true, // cancelable
-                window, // viewArg: should be window
-                false, // ctrlKeyArg
-                false, // altKeyArg
-                true, // shiftKeyArg
-                false, // metaKeyArg
-                191, // keyCodeArg : unsigned long the virtual key code, else 0
-                0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-              );
-              document.body.dispatchEvent(keyboardEvent);
-            }}
-          >
-            {" "}
-            show key dialog{" "}
-          </button> */}
-          <Dialogs editorName={editorName} />
-
-          <ToolBar
-            menuBar={
-              showMenuBar && (
-                <MenuBar
-                  style={{ marginLeft: 0 }}
-                  editorName={editorName}
-                  {...sharedProps}
-                  trackFocus={false}
+            )
+          }
+          closeFullscreen={
+            (isFullscreen
+              ? !!handleFullscreenClose
+              : previewModeFullscreen) && ( //make sure we have a fullscreen close handler if we're going to show this option
+              <Tooltip content="Close Fullscreen Mode">
+                <Button
+                  minimal
+                  style={{
+                    marginTop: 2,
+                    marginRight: 2
+                    // height: 30,
+                    // width: 30
+                  }}
+                  // title="Close Fullscreen Mode"
+                  onClick={
+                    handleFullscreenClose || this.togglePreviewFullscreen
+                  }
+                  className={"ve-close-fullscreen-button"}
+                  icon="minimize"
                 />
-              )
-            }
-            {...sharedProps}
-            withDigestTool
-            {...ToolBarProps}
-          />
-          <CommandHotkeyHandler {...sharedProps} />
+              </Tooltip>
+            )
+          }
+          {...sharedProps}
+          withDigestTool
+          {...ToolBarProps}
+        />
+        <CommandHotkeyHandler {...sharedProps} />
 
-          <div
-            style={{ position: "relative", flexGrow: "1" }}
-            className="tg-editor-container"
-            id="section-to-print"
+        <div
+          style={{ position: "relative", flexGrow: "1" }}
+          className="tg-editor-container"
+          id="section-to-print"
+        >
+          <DragDropContext
+            onDragStart={this.onTabDragStart}
+            onDragEnd={this.onTabDragEnd}
           >
-            <DragDropContext
-              onDragStart={this.onTabDragStart}
-              onDragEnd={this.onTabDragEnd}
+            <ReflexContainer
+              onPanelCollapse={({ activePanelId }) => {
+                this.props.collapsePanel(activePanelId);
+              }}
+              /* style={{}} */ orientation="vertical"
             >
-              <ReflexContainer
-                onPanelCollapse={({ activePanelId }) => {
-                  this.props.collapsePanel(activePanelId);
-                }}
-                /* style={{}} */ orientation="vertical"
-              >
-                {panels}
-              </ReflexContainer>
-            </DragDropContext>
-          </div>
-
-          <StatusBar {...sharedProps} {...StatusBarProps} />
+              {panels}
+            </ReflexContainer>
+          </DragDropContext>
         </div>
+
+        <StatusBar {...sharedProps} {...StatusBarProps} />
       </DropHandler>
     );
   }
@@ -797,4 +762,7 @@ Editor.childContextTypes = {
   blueprintPortalClassName: PropTypes.string
 };
 
-export default compose(withEditorProps)(Editor);
+export default compose(
+  withEditorProps
+  // sizeMe({monitorHeight: true})
+)(Editor);

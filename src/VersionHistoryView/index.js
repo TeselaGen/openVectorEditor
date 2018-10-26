@@ -131,7 +131,7 @@ export class VersionHistoryView extends React.Component {
                   width: width - SIDE_PANEL_WIDTH
                 }}
                 noVersionHistory
-                fitHeight={true}
+                // fitHeight={true}
                 ToolBarProps={{
                   toolList: [
                     "cutsiteTool",

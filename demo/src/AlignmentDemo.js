@@ -42,7 +42,7 @@ export default connect(
 )(
   class StandaloneDemo extends React.Component {
     componentDidMount() {
-      addAlignment(store, "MppViewer", { ...alignmentRunData });
+      addAlignment(store, { ...alignmentRunData });
 
       alignmentRunData.alignmentTracks.forEach((at, i) => {
         // We need to do this or else the sequence data will be

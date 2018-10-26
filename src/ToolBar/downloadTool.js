@@ -22,7 +22,7 @@ export default {
             </Menu>
           }
         >
-          <Icon icon="export" />
+          <Icon icon="import" />
         </Popover>
       )
     };

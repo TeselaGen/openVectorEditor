@@ -87,8 +87,13 @@ export class AddOrEditPartDialog extends React.Component {
           </Button>
           <Button
             onClick={handleSubmit(data => {
-              upsertPart(convertRangeTo0Based(data));
-
+              let updatedData;
+              if (data.forward === true && data.strand !== 1) {
+                updatedData = { ...data, strand: 1 };
+              } else if (data.forward === false && data.strand !== -1) {
+                updatedData = { ...data, strand: -1 };
+              }
+              upsertPart(convertRangeTo0Based(updatedData));
               hideModal();
             })}
             intent={Intent.PRIMARY}

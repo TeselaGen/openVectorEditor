@@ -12,7 +12,7 @@ export default {
           style={{}}
           onDrop={files => importSequenceFromFile(files[0])}
         >
-          <Icon icon="import" />
+          <Icon icon="export" />
         </Dropzone>
       ),
       tooltip: "Click or drag to import and view .fasta or .gb files"

@@ -119,10 +119,10 @@
     resize-observer-polyfill "^1.5.0"
     tslib "^1.9.0"
 
-"@blueprintjs/datetime@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.3.0.tgz#5c9a65fca87323c7bf8241cfdc11a132db73b63f"
-  integrity sha512-2tdSEkiQDowXEWuzx9swCn9o04OeZK18hMsvu5lKOmy61RKCTb9oT4VhFHdakEap3hTPEwJ2LW4xymujmeZHtg==
+"@blueprintjs/datetime@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.3.1.tgz#0bf81099c9d5529f466eb8be3551bf2fae78ca46"
+  integrity sha512-svh+H5VB61N1toeW4AgpvH+SascTTy+IT71q4Y7MzMWeVkLIkrs58pDqGAFQZqxw5H487h0KU7onv2/YcLxtKw==
   dependencies:
     "@blueprintjs/core" "^3.7.0"
     classnames "^2.2"
@@ -11111,10 +11111,10 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@24.2.36:
-  version "24.2.36"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.36.tgz#00dbe7df88601715905b848aa822941361d79dfb"
-  integrity sha512-uBzzYWpkmft6CSlfTyINIUfdV7PJdL4MSI+pBsLkQyIr+HjjROaMAANfOyDR+vVZsf2Xv3Vk4qUmI0xVnPk5Yw==
+teselagen-react-components@^24.2.52:
+  version "24.2.52"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.52.tgz#2909e00caa6d933edd16d2be94bb860bbf648c03"
+  integrity sha512-vQxDXixrD6IBI7pbFOia688DCw+gnCJM9UXNDVsUf/GommDSk70CLXqyJz7dMW1x0+I+wn//OQy5OAgRq9h17g==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
