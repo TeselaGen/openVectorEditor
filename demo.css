@@ -11354,7 +11354,10 @@ body.bp3-dark {
 }
 
 html,
-body {
+body,
+body > #demo {
+  margin: 0px;
+  padding: 0px;
   height: 100% !important;
 }
 
