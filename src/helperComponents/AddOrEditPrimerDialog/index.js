@@ -86,8 +86,13 @@ export class AddOrEditPrimerDialog extends React.Component {
           </Button>
           <Button
             onClick={handleSubmit(data => {
-              upsertPrimer(convertRangeTo0Based(data));
-
+              let updatedData;
+              if (data.forward === true && data.strand !== 1) {
+                updatedData = { ...data, strand: 1 };
+              } else if (data.forward === false && data.strand !== -1) {
+                updatedData = { ...data, strand: -1 };
+              }
+              upsertPrimer(convertRangeTo0Based(updatedData));
               hideModal();
             })}
             intent={Intent.PRIMARY}
