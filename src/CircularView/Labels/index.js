@@ -227,10 +227,13 @@ const DrawLabelGroup = withHover(function({
     );
     content = [
       line,
-      <g zIndex={10} className={className + " topLevelLabelGroup"} key="gGroup">
+      <g
+        /* zIndex={10} */ className={className + " topLevelLabelGroup"}
+        key="gGroup"
+      >
         <rect
           onMouseOver={cancelFn}
-          zIndex={10}
+          // zIndex={10}
           x={labelXStart - 4}
           y={labelYStart - dy / 2}
           width={maxLabelWidth + 24}
@@ -238,7 +241,7 @@ const DrawLabelGroup = withHover(function({
           fill="white"
           stroke="black"
         />
-        <text zIndex={11} x={labelXStart} y={labelYStart} style={{}}>
+        <text /* zIndex={11} */ x={labelXStart} y={labelYStart} style={{}}>
           {labelAndSublabels.map(function(label, index) {
             return (
               <DrawGroupInnerLabel

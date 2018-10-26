@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@blueprintjs/core": "^3.7.0",
-    "@blueprintjs/datetime": "^3.3.0",
+    "@blueprintjs/datetime": "^3.3.1",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.4.2",
     "axios": "^0.18.0",

@@ -1202,8 +1202,8 @@ function VectorInteractionHOC(Component /* options */) {
         closePanelButton,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        tabHeight, //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
-        fitHeight //used to allow the editor to expand to fill the height of its containing component
+        tabHeight //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
+        // fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
       //do this in two steps to determine propsToPass
       let {
@@ -1214,9 +1214,9 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const { width, height } = this.props.dimensions || {};
       propsToPass.width = width;
-      if (fitHeight) {
-        propsToPass.height = height - tabHeight;
-      }
+      propsToPass.height = height - tabHeight;
+      // if (fitHeight) {
+      // }
       let selectedBps = getSequenceWithinRange(
         selectionLayer,
         sequenceData.sequence

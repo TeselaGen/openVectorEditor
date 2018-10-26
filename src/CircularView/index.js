@@ -655,8 +655,8 @@ export class CircularView extends React.Component {
                 );
               }}
               style={{ overflow: "visible", display: "block" }}
-              width={width}
-              height={height}
+              width={width || 300}
+              height={height || 300}
               ref="circularView"
               className={"circularViewSvg"}
               viewBox={`-${radius * scale} -${radius * scale} ${radius *

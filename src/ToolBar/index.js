@@ -170,5 +170,6 @@ export class ToolBar extends React.PureComponent {
 export default withEditorProps(
   //only re-render the toolbar for these keys (important because we don't want to re-initialize all the toolbar items unecessarily):
   //also Toolbar must be a PureComponent so as not to re-render unecessarily
-  onlyUpdateForKeys(["modifyTools", "toolList"])(ToolBar)
+  // onlyUpdateForKeys(["modifyTools", "toolList"])
+  ToolBar
 );

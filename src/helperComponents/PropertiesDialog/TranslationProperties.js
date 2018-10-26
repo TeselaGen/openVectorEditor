@@ -56,7 +56,7 @@ class TranslationProperties extends React.Component {
             <Switch
               checked={annotationVisibility.translations}
               onChange={() => {
-                annotationVisibilityShow("translations");
+                annotationVisibilityToggle("translations");
               }}
             >
               Hide/Show
