@@ -25,6 +25,7 @@ import StandaloneDemo from "./StandaloneDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
+import pjson from "../../package.json";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -99,7 +100,7 @@ class Demo extends React.Component {
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
             {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
-            <div style={{ display: "flex" }}>{links}</div>
+            <div style={{ display: "flex" }}>{links} <span style={{marginLeft: 10}}>Version: {pjson.version}</span></div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
               render={() => {
