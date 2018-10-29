@@ -72,6 +72,10 @@ const fileCommandDefs = {
     name: "As FASTA file",
     handler: props => props.exportSequenceToFile("fasta")
   },
+  exportSequenceAsTeselagenJson: {
+    name: "As Teselagen JSON file",
+    handler: props => props.exportSequenceToFile("teselagenJson")
+  },
 
   viewProperties: {
     handler: props => props.propertiesViewOpen()

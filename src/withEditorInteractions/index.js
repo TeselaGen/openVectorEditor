@@ -1161,6 +1161,9 @@ function VectorInteractionHOC(Component /* options */) {
       if (format === "genbank") {
         convert = jsonToGenbank;
         fileExt = "gb";
+      } else if (format === "teselagenJson") {
+        convert = JSON.stringify;
+        fileExt = "json";
       } else if (format === "fasta") {
         convert = jsonToFasta;
         fileExt = "fasta";

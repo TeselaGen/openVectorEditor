@@ -40,7 +40,13 @@ function drawAnnotations({
     return -getRangeLength(a, sequenceLength);
   })
     .map(annotation => {
-      let { startAngle, endAngle, totalAngle, centerAngle } = getRangeAngles(
+      let {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles
+      } = getRangeAngles(
         positionBy ? positionBy(annotation) : annotation,
         sequenceLength
       );
@@ -50,6 +56,7 @@ function drawAnnotations({
         ...annotation,
         startAngle,
         endAngle,
+        locationAngles,
         totalAngle,
         centerAngle,
         yOffset: 0
@@ -110,7 +117,13 @@ function drawAnnotations({
         onRightClicked({ event, annotation });
       }
 
-      const { startAngle, endAngle, totalAngle, centerAngle } = annotation;
+      const {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles
+      } = annotation;
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
@@ -155,6 +168,7 @@ function drawAnnotations({
             labelCenter: centerAngle,
             startAngle,
             endAngle,
+            locationAngles,
             reverseAnnotations,
             onClick: _onClick,
             onContextMenu,
@@ -193,6 +207,7 @@ const DrawAnnotation = pureNoFunc(
     endAngle,
     onClick,
     onContextMenu,
+    locationAngles,
     annotation,
     reverseAnnotations,
     Annotation = Feature,
@@ -203,29 +218,67 @@ const DrawAnnotation = pureNoFunc(
     annotationHeight
   }) {
     return (
-      <g
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          forward: reverseAnnotations ? !annotation.forward : annotation.forward
-        })}
-        {...hoverActions}
-        className={className}
-        onContextMenu={onContextMenu}
-        onClick={onClick}
-      >
-        <title>
-          {getAnnotationNameAndStartStopString(annotation, {
-            isPart: annotationType === "part"
+      <React.Fragment>
+        <g
+          {...PositionAnnotationOnCircle({
+            sAngle: startAngle,
+            eAngle: endAngle,
+            forward: reverseAnnotations
+              ? !annotation.forward
+              : annotation.forward
           })}
-        </title>
-        <Annotation
-          totalAngle={totalAngle}
-          color={annotationColor}
-          radius={annotationRadius}
-          annotationHeight={annotationHeight}
-        />
-      </g>
+          {...hoverActions}
+          className={className}
+          onContextMenu={onContextMenu}
+          onClick={onClick}
+        >
+          <title>
+            {getAnnotationNameAndStartStopString(annotation, {
+              isPart: annotationType === "part"
+            })}
+          </title>
+          <Annotation
+            isBetweenLocations={locationAngles && locationAngles.length}
+            totalAngle={totalAngle}
+            color={annotationColor}
+            radius={annotationRadius}
+            annotationHeight={annotationHeight}
+          />
+        </g>
+        );
+        {console.log("locationAngles:", locationAngles)}
+        {locationAngles &&
+          locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
+            return (
+              <g
+                key={"location--" + annotation.id + "--" + i}
+                {...PositionAnnotationOnCircle({
+                  sAngle: startAngle,
+                  eAngle: endAngle,
+                  forward: reverseAnnotations
+                    ? !annotation.forward
+                    : annotation.forward
+                })}
+                {...hoverActions}
+                className={className}
+                onContextMenu={onContextMenu}
+                onClick={onClick}
+              >
+                <title>
+                  {getAnnotationNameAndStartStopString(annotation, {
+                    isPart: annotationType === "part"
+                  })}
+                </title>
+                <Annotation
+                  totalAngle={totalAngle}
+                  color={annotationColor}
+                  radius={annotationRadius}
+                  annotationHeight={annotationHeight}
+                />
+              </g>
+            );
+          })}
+      </React.Fragment>
     );
   })
 );

@@ -75,9 +75,9 @@
   },
   "devDependencies": {
     "@blueprintjs/core": "^3.7.0",
-    "@blueprintjs/datetime": "^3.3.0",
+    "@blueprintjs/datetime": "^3.3.1",
     "apollo-cache-invalidation": "^0.0.3",
-    "apollo-client": "2.4.2",
+    "apollo-client": "2.4.4",
     "axios": "^0.18.0",
     "babel-eslint": "8.2.6",
     "babel-jest": "^22.4.3",
@@ -121,9 +121,9 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "24.2.36",
+    "teselagen-react-components": "24.2.66",
     "tg-client-query-builder": "^2.12.1",
-    "ve-range-utils": "^2.5.0",
+    "ve-range-utils": "^2.5.1",
     "ve-sequence-utils": "3.3.2"
   },
   "lint-staged": {
