@@ -80,9 +80,14 @@ const fileCommandDefs = {
   viewProperties: {
     handler: props => props.propertiesViewOpen()
   },
+  viewRevisionHistory: {
+    handler: props => props.toggleViewVersionHistory(),
+    isHidden: props => !props.getVersionList || !props.getSequenceAtVersion
+  },
 
   print: {
-    handler: props => props.handlePrint(),
+    hotkeyProps: { preventDefault: true },
+    handler: props => props.showPrintDialog(),
     hotkey: "mod+p"
   }
 };
@@ -380,7 +385,7 @@ const editCommandDefs = {
     isHidden: props => props.readOnly,
 
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) || props.caretPosition === -1,
+      props.caretPosition === -1 && "You must first place cursor",
     handler: props => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },

@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "5.0.14",
+  "version": "7.0.3",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -52,6 +52,7 @@
     "react-easy-state": "^5.0.1",
     "react-list": "^0.8.10",
     "react-sizeme": "^2.5.2",
+    "react-to-print": "^2.0.0-alpha-4",
     "recompose": "^0.27.1",
     "redux": "^4.0.1",
     "redux-act": "^1.7.4",

@@ -17,7 +17,7 @@ import { map, get, startCase, some } from "lodash";
 import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
-import { getContext } from "recompose";
+import { getContext, branch } from "recompose";
 import FileSaver from "file-saver";
 import Keyboard from "./Keyboard";
 import getCommands from "../commands";
@@ -698,7 +698,7 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         // sequenceData,
         upsertTranslation,
-        annotationVisibilityToggle
+        annotationVisibilityShow
       } = this.props;
 
       let items = [
@@ -712,7 +712,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: true
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         }
       ];
@@ -834,7 +834,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         deletePart,
-        annotationVisibilityToggle,
+        annotationVisibilityShow,
         showAddOrEditPartDialog,
         propertiesViewOpen,
         propertiesViewTabUpdate
@@ -866,7 +866,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         },
         {
@@ -887,6 +887,7 @@ function VectorInteractionHOC(Component /* options */) {
         deleteFeature,
         showMergeFeaturesDialog,
         annotationVisibilityToggle,
+        annotationVisibilityShow,
         // showAddOrEditFeatureDialog,
         propertiesViewOpen,
         annotationsToSupport: { parts } = {},
@@ -970,7 +971,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         },
         {
@@ -1002,7 +1003,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         upsertTranslation,
         propertiesViewOpen,
-        annotationVisibilityToggle,
+        annotationVisibilityShow,
         propertiesViewTabUpdate
       } = this.props;
       return [
@@ -1026,7 +1027,7 @@ function VectorInteractionHOC(Component /* options */) {
               end: annotation.end,
               forward: annotation.forward
             });
-            annotationVisibilityToggle("translations");
+            annotationVisibilityShow("translations");
           }
         },
         {
@@ -1204,8 +1205,8 @@ function VectorInteractionHOC(Component /* options */) {
         closePanelButton,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        tabHeight, //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
-        fitHeight //used to allow the editor to expand to fill the height of its containing component
+        tabHeight //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
+        // fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
       //do this in two steps to determine propsToPass
       let {
@@ -1216,9 +1217,9 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const { width, height } = this.props.dimensions || {};
       propsToPass.width = width;
-      if (fitHeight) {
-        propsToPass.height = height - tabHeight;
-      }
+      propsToPass.height = height - tabHeight;
+      // if (fitHeight) {
+      // }
       let selectedBps = getSequenceWithinRange(
         selectionLayer,
         sequenceData.sequence
@@ -1293,7 +1294,7 @@ export default compose(
     store: PropTypes.object
   }),
   withEditorProps,
-  VectorInteractionHOC
+  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
 
 const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {

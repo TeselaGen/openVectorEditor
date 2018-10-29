@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Menu, Popover } from "@blueprintjs/core";
+import { Icon, Menu } from "@blueprintjs/core";
 import { createCommandMenu } from "teselagen-react-components";
 import getCommands from "../commands";
 
@@ -8,27 +8,25 @@ export default {
   itemProps: props => {
     return {
       tooltip: "Export",
-      Icon: (
-        <Popover
-          minimal
-          inline
-          transitionDuration={0}
-          content={
-            <Menu>
-              {createCommandMenu(
-                [
-                  "exportSequenceAsGenbank",
-                  "exportSequenceAsFasta",
-                  "exportSequenceAsTeselagenJson"
-                ],
-                getCommands({ props })
-              )}
-            </Menu>
-          }
-        >
-          <Icon icon="export" />
-        </Popover>
-      )
+      Dropdown,
+      noDropdownIcon: true,
+      onIconClick: props.toggleDropdown,
+      Icon: <Icon icon="import" />
     };
   }
+};
+
+const Dropdown = props => {
+  return (
+    <Menu>
+      {createCommandMenu(
+        [
+          "exportSequenceAsGenbank",
+          "exportSequenceAsFasta",
+          "exportSequenceAsTeselagenJson"
+        ],
+        getCommands({ props })
+      )}
+    </Menu>
+  );
 };

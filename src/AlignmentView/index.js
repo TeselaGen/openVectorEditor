@@ -559,10 +559,10 @@ class AlignmentView extends React.Component {
               borderBottom: "1px solid",
               display: "flex",
               minHeight: "32px",
-              maxHeight: "32px",
-              height: "32px",
+              // maxHeight: "32px",
+              // height: "32px",
               width: "100%",
-              overflowX: "scroll",
+              // overflowX: "scroll",
               flexWrap: "nowrap",
               flexDirection: "row",
               flex: "0 0 auto"
@@ -625,7 +625,7 @@ class AlignmentView extends React.Component {
                   });
                 }}
                 title="Adjust Zoom Level"
-                style={{ paddingTop: "3px", width: 100 }}
+                style={{ paddingTop: "4px", width: 100 }}
                 className={"alignment-zoom-slider"}
                 labelRenderer={false}
                 stepSize={0.01}

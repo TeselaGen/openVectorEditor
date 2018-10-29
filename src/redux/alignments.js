@@ -137,6 +137,11 @@ export default (state = {}, { payload = {}, type }) => {
         (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
         (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
       ) {
+        defaultVisibilities[type] = {
+          ...defaultVisibilities[type],
+          ...payload[type.replace("pairwise_", "")]
+        };
+
         localStorage.setItem(
           type,
           JSON.stringify({

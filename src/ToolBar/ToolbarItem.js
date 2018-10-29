@@ -32,6 +32,8 @@ export default class ToolbarItem extends React.Component {
       disabled,
       renderIconAbove,
       noDropdownIcon,
+      IconWrapper,
+      IconWrapperProps,
       dropdownicon,
       tooltipDisabled,
       toggled = false
@@ -129,9 +131,16 @@ export default class ToolbarItem extends React.Component {
             }
             this.toggleDropdown();
           }}
+          canEscapeKeyClose
           minimal
           position={Position.BOTTOM}
-          target={buttonTarget}
+          target={
+            IconWrapper ? (
+              <IconWrapper {...IconWrapperProps}> {buttonTarget}</IconWrapper>
+            ) : (
+              buttonTarget
+            )
+          }
           content={
             <div
               ref={n => {

@@ -596,7 +596,7 @@ export class CircularView extends React.Component {
     return (
       <div tabIndex="0" className={"veCircularView"}>
         <Draggable
-          enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
+          // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
           onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(
@@ -619,8 +619,8 @@ export class CircularView extends React.Component {
               <div
                 style={{
                   position: "absolute",
-                  width,
-                  height,
+                  width: "100%",
+                  height: "100%",
                   pointerEvents: "none"
                 }}
               >
@@ -655,8 +655,8 @@ export class CircularView extends React.Component {
                 );
               }}
               style={{ overflow: "visible", display: "block" }}
-              width={width}
-              height={height}
+              width={width || 300}
+              height={height || 300}
               ref="circularView"
               className={"circularViewSvg"}
               viewBox={`-${radius * scale} -${radius * scale} ${radius *

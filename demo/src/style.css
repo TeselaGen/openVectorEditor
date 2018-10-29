@@ -5,6 +5,9 @@ body.bp3-dark {
 }
 
 html,
-body {
-  height: 100% !important;
+body,
+#demo {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
 }

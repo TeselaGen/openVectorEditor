@@ -283,7 +283,7 @@ export class RowView extends React.Component {
     } = this.props;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
-      return <div style={{ width, height }} />;
+      return <div style={{ width, height: height || 300 }} />;
     }
     if (marginWidth < defaultMarginWidth) {
       marginWidth = defaultMarginWidth;
@@ -359,7 +359,7 @@ export class RowView extends React.Component {
     const shouldClear = this.shouldClearCache();
     return (
       <Draggable
-        enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
+        // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
         onDrag={event => {
           this.dragging = true;
@@ -389,7 +389,7 @@ export class RowView extends React.Component {
           style={{
             overflowY: "auto",
             overflowX: "visible",
-            height,
+            height: height || 300,
             width: containerWidthMinusMargin + marginWidth,
             paddingLeft: marginWidth / 2,
             paddingRight: marginWidth / 2
