@@ -246,7 +246,6 @@ const DrawAnnotation = pureNoFunc(
           />
         </g>
         );
-        {console.log("locationAngles:", locationAngles)}
         {locationAngles &&
           locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
             return (
