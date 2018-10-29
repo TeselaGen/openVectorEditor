@@ -12,6 +12,7 @@ import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import CircularView from "../../CircularView";
 import LinearView from "../../LinearView";
+import "./style.css";
 
 export class PrintDialog extends React.Component {
   state = {
@@ -65,16 +66,12 @@ export class PrintDialog extends React.Component {
             onBeforePrint={() => {
               this.setState({ fullscreen: true });
             }}
-            printPreview
+            bodyClass="ve-print"
+            // printPreview
             pageStyle={`@page { size: auto;  margin: 0mm; } @media print { 
-              
               body { 
                  -webkit-print-color-adjust: exact; page-break-after: always; 
               } }`}
-            iframeStyle={{
-              transform:
-                "scaleX(2.675) scaleY(2.675) translateX(39%) translateY(32%)"
-            }}
             ignoreLinks //needed because some css is linked to but is not loading..
             onAfterPrint={() => {
               this.setState({ fullscreen: false });
@@ -160,7 +157,7 @@ class ReactToPrint extends React.Component {
       copyStyles,
       ignoreLinks,
       pageStyle,
-      iframeStyle = {},
+      // bodyStyle = {},
       printPreview
     } = this.props;
 
@@ -188,7 +185,7 @@ class ReactToPrint extends React.Component {
       printOutline.style.position = "absolute";
       printOutline.style.top = "0px";
       printOutline.style.left = "0px";
-      printOutline.style.width = "816px";
+      printOutline.style.width = "1210px";
       printOutline.style.height = "1056px";
       printOutline.style.background = "grey";
       printOutline.style.zIndex = 100000300;
@@ -257,6 +254,11 @@ class ReactToPrint extends React.Component {
       domDoc.write(contentNodes.outerHTML);
       domDoc.close();
 
+      // Object.keys(bodyStyle).forEach(key => {
+      //   console.log('key:',key)
+      //   domDoc.body.style[key] = bodyStyle[key];
+      // });
+
       printWindow.style.position = "absolute";
       // printWindow.style.width = "100%";
       // printWindow.style.height = "100%";
@@ -265,13 +267,12 @@ class ReactToPrint extends React.Component {
       printWindow.style.width = domDoc.body.scrollWidth + "px";
 
       printWindow.style.height = domDoc.body.scrollHeight + "px";
-      Object.keys(iframeStyle).forEach(key => {
-        printWindow.style[key] = iframeStyle[key];
-      });
 
       if (printPreview) {
         printWindow.style.top = "0px";
         printWindow.style.left = "0px";
+        printWindow.style.width = "1210px";
+        printWindow.style.height = "1056px";
 
         printWindow.style.background = "white";
 
