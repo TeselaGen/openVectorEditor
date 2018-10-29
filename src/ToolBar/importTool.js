@@ -6,15 +6,20 @@ export default {
   updateKeys: ["updateSequenceData"],
   itemProps: ({ importSequenceFromFile }) => {
     return {
-      Icon: (
-        <Dropzone
-          multiple={false}
-          style={{}}
-          onDrop={files => importSequenceFromFile(files[0])}
-        >
-          <Icon icon="export" />
-        </Dropzone>
-      ),
+      Icon: <Icon icon="export" />,
+      IconWrapper: Dropzone,
+      IconWrapperProps: {
+        multiple: false,
+        style: {},
+        onDrop: files => importSequenceFromFile(files[0])
+      },
+      // Icon: (
+      //   <Dropzone
+
+      //   >
+      //     <Icon icon="" />
+      //   </Dropzone>
+      // ),
       tooltip: "Click or drag to import and view .fasta or .gb files"
     };
   }
