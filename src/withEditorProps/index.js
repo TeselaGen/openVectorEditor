@@ -159,17 +159,11 @@ export default compose(
       }
     },
 
-    /* eslint-disable no-unused-vars */
-    handlePrint: props => () => {
-      // TODO
-      console.warn("TODO: handlePrint");
-    },
-
     handleReverseComplementSelection: props => () => {
       const {
         sequenceData,
         updateSequenceData,
-        caretPositionUpdate,
+        // caretPositionUpdate,
         selectionLayerUpdate,
         selectionLayer
       } = props;
@@ -195,7 +189,7 @@ export default compose(
     handleComplementSelection: props => () => {
       const {
         sequenceData,
-        caretPositionUpdate,
+        // caretPositionUpdate,
         updateSequenceData,
         selectionLayerUpdate,
         selectionLayer

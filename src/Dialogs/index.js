@@ -11,6 +11,7 @@ import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
 import { withDialog } from "teselagen-react-components";
 import { addYourOwnEnzymeClose } from "../redux/addYourOwnEnzyme";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
+import PrintDialog from "../helperComponents/PrintDialog";
 
 const AddAdditionalEnzymes = withDialog({
   title: "Add Additional Enzymes"
@@ -50,6 +51,7 @@ export default connect(
         dialogName="AddOrEditFeatureDialog"
         noTarget
       />
+      <PrintDialog editorName={editorName} dialogName="PrintDialog" noTarget />
       <AddOrEditPartDialog
         editorName={editorName}
         dialogName="AddOrEditPartDialog"
