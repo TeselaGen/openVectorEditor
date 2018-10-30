@@ -93,7 +93,7 @@ export class LinearView extends React.Component {
     return (
       <div
         style={{
-          height
+          height: height || 0
         }}
       >
         <Draggable
