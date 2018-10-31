@@ -14,6 +14,7 @@ function Feature(props) {
     rangeType,
     forward,
     name,
+    hideName,
     pointiness = 8,
     fontWidth = 12,
     color = "orange",
@@ -101,15 +102,18 @@ function Feature(props) {
         transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
         d={path}
       />
-      <text
-        style={{
-          fontSize: ".75em",
-          fill: Color(color).isDark() ? "white" : "black"
-        }}
-        transform={`translate(${textOffset},${height - 2})`}
-      >
-        {nameToDisplay}
-      </text>
+      {!hideName &&
+        nameToDisplay && (
+          <text
+            style={{
+              fontSize: ".75em",
+              fill: Color(color).isDark() ? "white" : "black"
+            }}
+            transform={`translate(${textOffset},${height - 2})`}
+          >
+            {nameToDisplay}
+          </text>
+        )}
     </g>
   );
 }

@@ -4,16 +4,16 @@ import drawDirectedPiePiece from "./drawDirectedPiePiece";
 export default function Feature({
   color = "orange",
   radius,
-  isBetweenLocations,
+  containsLocations,
   arrowheadLength = 0.5,
   annotationHeight,
   totalAngle,
   ...rest
 }) {
-  if (isBetweenLocations) {
+  if (containsLocations) {
     let path = drawDirectedPiePiece({
       radius: radius,
-      annotationHeight: annotationHeight / 4,
+      annotationHeight: annotationHeight / 8,
       totalAngle,
       arrowheadLength,
       tailThickness: 1 //feature specific

@@ -395,7 +395,6 @@ const editCommandDefs = {
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: (props, state, ctxInfo) => {
-      console.warn("editFeature", ctxInfo);
       const annotation = get(ctxInfo, "context.annotation");
       props.showAddOrEditFeatureDialog(annotation);
     }

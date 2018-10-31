@@ -54,7 +54,11 @@ function Features(props) {
         width={result.width}
         key={index}
         top={
-          annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)
+          annotationRange.yOffset *
+            (annotationHeight + spaceBetweenAnnotations) +
+          (annotationRange.containsLocations
+            ? annotationHeight / 2 - annotationHeight / 16
+            : 0)
         }
         left={result.xStart}
       >
@@ -76,7 +80,12 @@ function Features(props) {
             annotation,
             annotation.forward
           )}
-          height={annotationHeight}
+          height={
+            annotationRange.containsLocations
+              ? annotationHeight / 8
+              : annotationHeight
+          }
+          hideName={annotationRange.containsLocations}
           name={annotation.name}
         />
       </AnnotationPositioner>

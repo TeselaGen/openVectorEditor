@@ -238,7 +238,8 @@ const DrawAnnotation = pureNoFunc(
             })}
           </title>
           <Annotation
-            isBetweenLocations={locationAngles && locationAngles.length}
+            {...locationAngles &&
+              locationAngles.length && { containsLocations: true }}
             totalAngle={totalAngle}
             color={annotationColor}
             radius={annotationRadius}

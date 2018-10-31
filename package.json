@@ -78,7 +78,7 @@
     "@blueprintjs/core": "^3.7.0",
     "@blueprintjs/datetime": "^3.3.1",
     "apollo-cache-invalidation": "^0.0.3",
-    "apollo-client": "2.4.4",
+    "apollo-client": "2.4.5",
     "axios": "^0.18.0",
     "babel-eslint": "8.2.6",
     "babel-jest": "^22.4.3",
@@ -110,11 +110,11 @@
     "nodemon": "1.18.4",
     "nwb": "0.23.0",
     "prettier": "1.14.3",
-    "react": "16.5.2",
+    "react": "16.6.0",
     "react-addons-perf": "^15.4.2",
     "react-apollo": "^2.2.4",
     "react-collapsible": "^2.2.0",
-    "react-dom": "16.5.2",
+    "react-dom": "16.6.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "4.3.1",
     "react-select": "^1.0.0-rc.10",
@@ -122,10 +122,10 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "24.2.66",
+    "teselagen-react-components": "24.2.69",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.1",
-    "ve-sequence-utils": "3.3.2"
+    "ve-sequence-utils": "3.3.3"
   },
   "lint-staged": {
     "src/**/*.js": [
