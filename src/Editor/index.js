@@ -1,5 +1,7 @@
 import { debounce } from "lodash";
 // import sizeMe from "react-sizeme";
+import ScrollArea from "react-scrollbar";
+
 import { showContextMenu } from "teselagen-react-components";
 import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 import PropTypes from "prop-types";
@@ -70,7 +72,8 @@ const getListStyle = (isDraggingOver, isDragging) => {
     alignItems: "flex-end",
     flex: "0 0 auto",
     flexDirection: "row",
-    overflowX: "scroll",
+    overflowX: "visible",
+    width: "fit-content",
     borderBottom: "1px solid lightgray",
     borderTop: "1px solid lightgray",
     paddingTop: 3,
@@ -498,6 +501,8 @@ export class Editor extends React.Component {
               droppableId={index.toString()}
             >
               {(provided, snapshot) => (
+                <ScrollArea vertical={false}>
+                
                 <div
                   className={"ve-draggable-tabs"}
                   ref={provided.innerRef}
@@ -577,6 +582,7 @@ export class Editor extends React.Component {
                   })}
                   {provided.placeholder}
                 </div>
+                </ScrollArea>
               )}
             </Droppable>,
             ...(panelsToShow.length === 1 && [

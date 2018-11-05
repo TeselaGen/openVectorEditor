@@ -1,3 +1,4 @@
+import ScrollArea from "react-scrollbar";
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
 import { some, isEqual } from "lodash";
@@ -382,12 +383,13 @@ export class RowView extends React.Component {
           editorDragStopped(e);
         }}
       >
-        <div
+        <ScrollArea
+        horizontal={false}
           tabIndex="0"
           ref={ref => (this.node = ref)}
           className="veRowView"
           style={{
-            overflowY: "auto",
+            // overflowY: "auto",
             overflowX: "visible",
             height: height || 300,
             width: containerWidthMinusMargin + marginWidth,
@@ -423,7 +425,7 @@ export class RowView extends React.Component {
             itemSizeEstimator={this.estimateRowHeight}
             type="variable"
           />
-        </div>
+        </ScrollArea>
       </Draggable>
     );
   }
