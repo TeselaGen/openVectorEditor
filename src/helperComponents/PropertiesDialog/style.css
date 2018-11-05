@@ -6,9 +6,9 @@
 .ve-propertiesPanel .bp3-tab-list::-webkit-scrollbar {
   display: none;
 }
-.ve-draggable-tabs::-webkit-scrollbar {
+/* .ve-draggable-tabs::-webkit-scrollbar {
   display: none;
-}
+} */
 .ve-propertiesPanel .bp3-tab-list {
   overflow: scroll;
 }
