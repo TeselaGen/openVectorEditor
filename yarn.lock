@@ -126,6 +126,22 @@
     resize-observer-polyfill "^1.5.0"
     tslib "^1.9.0"
 
+"@blueprintjs/core@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.8.0.tgz#1b296451478bb6a0d035811c9161104024bdcb20"
+  integrity sha512-maw63uME+spdyDUOJH47r+YRc8kDeux8kQz4poiAQKk4eJavc160/aU7w5k4sV29mVputp7P22qNY1oBNXjtDQ==
+  dependencies:
+    "@blueprintjs/icons" "^3.3.0"
+    "@types/dom4" "^2.0.0"
+    classnames "^2.2"
+    dom4 "^2.0.1"
+    normalize.css "^8.0.0"
+    popper.js "^1.14.1"
+    react-popper "^1.0.0"
+    react-transition-group "^2.2.1"
+    resize-observer-polyfill "^1.5.0"
+    tslib "^1.9.0"
+
 "@blueprintjs/datetime@^3.3.1":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.3.1.tgz#0bf81099c9d5529f466eb8be3551bf2fae78ca46"
@@ -140,6 +156,14 @@
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.2.0.tgz#d21cceebfac9c1bceded047e493ee1e180b86f11"
   integrity sha512-MoI4TdZ2QMM9DEd+/vJOMSlhuvPID3Zip0TB/MB1J7p7GnUThIRq2FlETMUg6ig1GZweAWNl7cUtYFNHZ3EiUQ==
+  dependencies:
+    classnames "^2.2"
+    tslib "^1.9.0"
+
+"@blueprintjs/icons@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.3.0.tgz#d7f203ea97df79cb8f085b7468c516ff15332bea"
+  integrity sha512-a4i0p5ETlljZp7Od/S6IlC98LE25BOeiInHnOQtP0Mn6dVkOFn70ZKVNkeuOCsmnu0y6uIylU3PWGYRcTlHn1g==
   dependencies:
     classnames "^2.2"
     tslib "^1.9.0"
@@ -1901,10 +1925,10 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
 
-bio-parsers@4.5.7:
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-4.5.7.tgz#d375b34050078afe86b9fa7eca280560f9607104"
-  integrity sha512-mGoKae6NJc6qwhPvjnMFf2ZIAbk6zL1QwTBpdADJk8TRxSSflZbTorNMjlWkjhxoFbyWNex3FeezyVeTrn+YMg==
+bio-parsers@5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.0.1.tgz#c855d65a5b1f1b075f6ca5a14b76c0eb4fb01d55"
+  integrity sha512-kDhpNeIIf1g6ZzneJF4AAKqC5XntMO6ztxGjiw+YkV6do8R5uNYmvOV+AdBEcm+GMQMLn1yVuWGGiwuOIQEQQg==
   dependencies:
     bufferpack "^0.0.6"
     flatmap "0.0.3"
@@ -7831,10 +7855,10 @@ nodemon@1.18.4:
     undefsafe "^2.0.2"
     update-notifier "^2.3.0"
 
-nodemon@^1.18.4:
-  version "1.18.5"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.5.tgz#3d3924df23d06806952e8b6d3de052f2a3351807"
-  integrity sha512-8806dC8dfBlbxQmqNOSEeay/qlbddKvFzxIGNxnPtxUlTtH77xsrC66RnA3M47HCSgMgE5bj+U586o50RowXBg==
+nodemon@^1.18.6:
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.6.tgz#89b1136634d6c0afc7de24cc932a760e999e2c76"
+  integrity sha512-4pHQNYEZun+IkIC2jCaXEhkZnfA7rQe73i8RkdRyDJls/K+WxR7IpI5uNUsAvQ0zWvYcCDNGD+XVtw2ZG86/uQ==
   dependencies:
     chokidar "^2.0.4"
     debug "^3.1.0"
@@ -10935,10 +10959,10 @@ term-size@^1.2.0:
   dependencies:
     execa "^0.7.0"
 
-teselagen-react-components@24.2.69:
-  version "24.2.69"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.69.tgz#ef8da49df30cf53e8e629e6debf91345b2a47fdb"
-  integrity sha512-8rBntm4VvyMjzgIpwuhZyDRV35kt02aXZZ894xFdbTdN6Js9BXBZk96Hwyy37je+jxLqpBbQOW0Q84H6gKCbnA==
+teselagen-react-components@24.2.77:
+  version "24.2.77"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.2.77.tgz#6c22b21c5f654ec96b0cb9449432bccb908491b9"
+  integrity sha512-KRnCGXEhh6ZnRGOjUZ7NZAp/aJETGG2BJ7iy4f88vGOlOgt0pfvsN5xMIydZQ/FMWRre+CmsKQQKo2gG6Mibww==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -10953,7 +10977,7 @@ teselagen-react-components@24.2.69:
     math-expression-evaluator "^1.2.17"
     mime-types "^2.1.20"
     moment "^2.22.2"
-    nodemon "^1.18.4"
+    nodemon "^1.18.6"
     papaparse "^4.6.1"
     pascal-case "^2.0.1"
     paths-js "^0.4.7"
@@ -10972,8 +10996,6 @@ teselagen-react-components@24.2.69:
     recompose "^0.26.0"
     redux "^3.7.2"
     uniqid "^4.1.1"
-    ve-range-utils "^2.5.0"
-    ve-sequence-utils "^3.3.2"
 
 test-exclude@^4.2.1:
   version "4.2.3"
@@ -11602,7 +11624,7 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-ve-range-utils@^2.5.0, ve-range-utils@^2.5.1:
+ve-range-utils@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.1.tgz#a42d753c68903290fbc703411cdf540d36133734"
   integrity sha512-lsteLSyaWoLUX55KwRQAokZqzgOteTLuhCBKy40kAsLNGsilmRwEfOvfOACuZdtWotutIacYwAa53GqE8GBsUA==
@@ -11610,21 +11632,10 @@ ve-range-utils@^2.5.0, ve-range-utils@^2.5.1:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.3.tgz#015f52e915372b003fe3f0c70a317b4d959f6d44"
-  integrity sha512-8vJKhuueC3E/jcBOzzrTzKwAhOJanHTI3YhxUnKY5jxacqm22S8H+68i1LYRD/5kl3ar1+1suCjIhT8SR8vQdw==
-  dependencies:
-    bson-objectid "^1.1.1"
-    escape-string-regexp "^1.0.5"
-    randomcolor "^0.4.3"
-    string-splice "^1.3.0"
-    validate.io-nonnegative-integer-array "^1.0.1"
-
-ve-sequence-utils@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.2.tgz#6b78d3191f157f89833ebc630d35c5e7f16f1d99"
-  integrity sha512-a0bKbL3N5IClKdNF8zd6qaHIztkFvBR0c0dRXclJEmMpr3IljZSX2J5KUD5l0hbNL2vuCXdN08SGVEsu7/u2Yg==
+ve-sequence-utils@3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.4.tgz#75dbe71133b7e287aec1680757dc1c31ac369474"
+  integrity sha512-r5/YQ/7sZ/hM/YVRccDmOyggiY+fTSqCAvpO7Rwh3lG34AGQQRN4sWgNjS5bs0DuadVMoE4y0laMIdR1yNY4Jw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

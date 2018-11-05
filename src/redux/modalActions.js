@@ -13,11 +13,16 @@ export function showAddOrEditFeatureDialog(annotation, { editorName }) {
       dialogProps: {
         title: annotation && annotation.id ? "Edit Feature" : "New Feature"
       },
-      initialValues: annotation
-        ? {
-            ...convertRangeTo1Based(annotation)
-          }
-        : {}
+      initialValues: {
+        ...(annotation
+          ? {
+              ...convertRangeTo1Based(annotation),
+              ...(annotation.locations && {
+                locations: annotation.locations.map(convertRangeTo1Based)
+              })
+            }
+          : {})
+      }
     }
   };
 }

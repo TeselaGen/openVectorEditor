@@ -55,6 +55,7 @@ const links = [
 });
 
 updateEditor(store, "DemoEditor", {
+  readOnly: false,
   sequenceData: exampleSequenceData
 });
 

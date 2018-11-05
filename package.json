@@ -75,7 +75,7 @@
     "ve-sequence-utils": "^3.2.11"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^3.7.0",
+    "@blueprintjs/core": "^3.8.0",
     "@blueprintjs/datetime": "^3.3.1",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.4.5",
@@ -84,7 +84,7 @@
     "babel-jest": "^22.4.3",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "bio-parsers": "4.5.7",
+    "bio-parsers": "5.0.1",
     "chance": "^1.0.16",
     "cross-env": "^5.1.6",
     "enzyme": "^3.1.1",
@@ -122,10 +122,10 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "24.2.69",
+    "teselagen-react-components": "24.2.77",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.1",
-    "ve-sequence-utils": "3.3.3"
+    "ve-sequence-utils": "3.3.4"
   },
   "lint-staged": {
     "src/**/*.js": [
