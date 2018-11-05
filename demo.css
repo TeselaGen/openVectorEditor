@@ -165,10 +165,13 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .data-table-clear-filters {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .tg-react-table-column-header {
@@ -341,9 +344,9 @@
   padding-left: 18px;
 }
 
-.tg-compact-table .rt-tr-group {
+/* .tg-compact-table .rt-tr-group {
   min-height: 25px !important;
-}
+} */
 
 .tg-compact-table .tg-react-table-name {
   padding: 4px;
@@ -1025,6 +1028,10 @@
   background-color: #f3f3f3;
 }
 
+.bp3-dark .mss-item:hover {
+  background-color: #40566b;
+}
+
 .mss-disabled {
   color: #b4b4b4;
   cursor: default;
@@ -1032,6 +1039,9 @@
 
 .mss-selected {
   background-color: #f7f7f7;
+}
+.bp3-dark .mss-selected {
+  background-color: #4f6c88;
 }
 
 .mss-with_border {
@@ -1118,6 +1128,11 @@
 .mss-selected_item:hover {
   background-color: #f3f3f3;
 }
+
+.bp3-dark .mss-selected_item:hover {
+  background-color: #40566b;
+}
+
 /* */
 
 .mss-selection_status {
@@ -1135,15 +1150,10 @@
   justify-content: space-between;
 }
 
-.mss-status {
-  color: #000000;
-}
-
 .mss-clear_all {
   cursor: pointer;
   color: #008bbf;
 }
-/* */
 
 .mss-wrapper {
   display: -webkit-box;
@@ -1154,10 +1164,13 @@
   -ms-flex-direction: row;
   flex-direction: row;
   position: relative;
-  background: #ffffff;
+  /* background: #ffffff; */
   border: 1px solid #dddddd;
   color: #666666;
   overflow: hidden;
+}
+.bp3-dark .mss-wrapper {
+  color: white;
 }
 /* */
 
@@ -1208,6 +1221,10 @@
   display: none;
 }
 
+.bp3-dark .tg-fillWindow {
+  background: #293742 !important;
+}
+
 /* Use in the place of .bp3-card */
 .tg-card {
   padding: 20px;
@@ -1247,8 +1264,8 @@
           align-items: center;
 }
 
-.menu-bar {
-  background: white;
+.tg-menu-bar {
+  /* background: white; */
   color: inherit;
   text-decoration: none;
   z-index: 19;
@@ -1266,19 +1283,19 @@
   padding-left: 15px;
 }
 
-.menu-bar-item {
+.tg-menu-bar-item {
   margin: 2px;
 }
 
-.menu-bar .bp3-popover {
+.tg-menu-bar .bp3-popover {
   margin-top: -1px !important;
 }
 
-.menu-bar-popover .bp3-popover .bp3-popover-arrow {
+.tg-menu-bar-popover .bp3-popover .bp3-popover-arrow {
   display: none;
 }
 
-.menu-bar-popover .bp3-popover-wrapper {
+.tg-menu-bar-popover .bp3-popover-wrapper {
   width: 100%;
 }
 
@@ -1296,7 +1313,6 @@
 
 .tg-hotkeys-dialog table {
   table-layout: fixed;
-  background-color: white;
   margin: 0 5px 5px;
   width: calc(100% - 10px);
   border-spacing: 0;
@@ -1321,6 +1337,9 @@
 
 .tg-hotkeys-dialog tr:nth-child(2n) td {
   background-color: #f8f8f8;
+}
+.bp3-dark .tg-hotkeys-dialog tr:nth-child(2n) td {
+  background-color: #3e4b6d;
 }
 
 .tg-hotkeys-dialog td,
@@ -1653,10 +1672,10 @@ body{
   text-transform:none;
   line-height:1.28581;
   letter-spacing:0;
-  font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
   font-size:14px;
   font-weight:400;
-  color:#182026; }
+  color:#182026;
+  font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif; }
 
 p{
   margin-top:0;
@@ -1708,7 +1727,6 @@ h6.bp3-heading, .bp3-running-text h6{
   text-transform:none;
   line-height:1.28581;
   letter-spacing:0;
-  font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
   font-size:14px;
   font-weight:400; }
 
@@ -2015,7 +2033,8 @@ a{
   border-radius:3px;
   background:#ced9e0;
   cursor:pointer;
-  padding:1px 5px; }
+  padding:1px 5px;
+  vertical-align:text-bottom; }
   .bp3-breadcrumbs-collapsed::before{
     display:block;
     background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%235C7080'%3e%3ccircle cx='2' cy='8.03' r='2'/%3e%3ccircle cx='14' cy='8.03' r='2'/%3e%3ccircle cx='8' cy='8.03' r='2'/%3e%3c/g%3e%3c/svg%3e") center no-repeat;
@@ -3542,7 +3561,7 @@ a.bp3-button{
         -ms-user-select:none;
             user-select:none; }
     .bp3-control .bp3-control-indicator::before{
-      display:inline-block;
+      display:block;
       width:1em;
       height:1em;
       content:""; }
@@ -5207,7 +5226,8 @@ table.bp3-html-table.bp3-interactive tbody tr:active td{
   display:inline-block;
   -webkit-box-flex:0;
       -ms-flex:0 0 auto;
-          flex:0 0 auto; }
+          flex:0 0 auto;
+  vertical-align:text-bottom; }
   .bp3-icon:not(:empty)::before{
     content:"" !important;
     content:unset !important; }
@@ -5469,6 +5489,9 @@ span.bp3-icon:empty{
 
 .bp3-icon-citation::before{
   content:"\E61B"; }
+
+.bp3-icon-clean::before{
+  content:"\E7C5"; }
 
 .bp3-icon-clipboard::before{
   content:"\E61D"; }
@@ -6988,9 +7011,6 @@ button.bp3-menu-item{
     top:0;
     right:0;
     left:0; }
-  .bp3-navbar .bp3-logo{
-    margin-right:15px;
-    width:20px; }
 
 .bp3-navbar-heading{
   margin-right:15px;
@@ -8165,6 +8185,7 @@ span.bp3-popover-target{
   max-width:100%;
   min-height:20px;
   padding:2px 6px;
+  line-height:16px;
   color:#f5f8fa;
   font-size:12px; }
   .bp3-tag.bp3-interactive{
@@ -8217,6 +8238,7 @@ span.bp3-popover-target{
     min-width:30px;
     min-height:30px;
     padding:0 10px;
+    line-height:20px;
     font-size:14px; }
     .bp3-tag.bp3-large::before,
     .bp3-tag.bp3-large > *,
@@ -9503,13 +9525,13 @@ Licensed under the terms of the LICENSE file distributed with this project.
   font-family:"Icons16";
   font-weight:normal;
   font-style:normal;
-  src:url(icons-16.9f52e401.eot?#iefix) format("embedded-opentype"), url(icons-16.b49a90ee.woff) format("woff"), url(icons-16.d75e6370.ttf) format("truetype"); }
+  src:url(icons-16.6826f355.eot?#iefix) format("embedded-opentype"), url(icons-16.f22a4ccb.woff) format("woff"), url(icons-16.989d9c9a.ttf) format("truetype"); }
 
 @font-face{
   font-family:"Icons20";
   font-weight:normal;
   font-style:normal;
-  src:url(icons-20.c6e7874e.eot?#iefix) format("embedded-opentype"), url(icons-20.9baec0ab.woff) format("woff"), url(icons-20.0f714976.ttf) format("truetype"); }
+  src:url(icons-20.99a9521d.eot?#iefix) format("embedded-opentype"), url(icons-20.96d07614.woff) format("woff"), url(icons-20.b2eb8441.ttf) format("truetype"); }
 /**
  * React Select
  * ============
