@@ -11103,7 +11103,11 @@ span.bp3-popover-target {
   fill: #f5f8fa !important;
 }
 
+.bp3-dark .menu-bar {
+  background: none !important;
+}
 .bp3-dark .alignmentViewTrackContainer text,
+.bp3-dark .ve-monospace-font text,
 .bp3-dark .veRowViewAxis text,
 .bp3-dark .translationLayer text {
   stroke: #f5f8fa !important;
