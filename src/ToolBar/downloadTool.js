@@ -20,7 +20,11 @@ const Dropdown = props => {
   return (
     <Menu>
       {createCommandMenu(
-        ["exportSequenceAsGenbank", "exportSequenceAsFasta"],
+        [
+          "exportSequenceAsGenbank",
+          "exportSequenceAsFasta",
+          "exportSequenceAsTeselagenJson"
+        ],
         getCommands({ props })
       )}
     </Menu>

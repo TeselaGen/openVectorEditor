@@ -21,7 +21,8 @@ export default [
         text: "Export Sequence",
         submenu: [
           { cmd: "exportSequenceAsGenbank" },
-          { cmd: "exportSequenceAsFasta" }
+          { cmd: "exportSequenceAsFasta" },
+          { cmd: "exportSequenceAsTeselagenJson" }
         ]
       },
       "--",

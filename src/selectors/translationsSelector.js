@@ -40,22 +40,34 @@ function translationsSelector(
       translations,
       (acc, translation) => {
         if (!translation.isOrf) {
-          acc[translation.id] = {...translation, translationType: "User Created"};
+          acc[translation.id] = {
+            ...translation,
+            translationType: "User Created"
+          };
         }
         return acc;
       },
       {}
     ),
-    ...(showOrfTranslations && showOrfs ? reduce(orfs, (acc,orf)=>{
-      acc[orf.id] = {...orf, translationType: "ORF"};
-      return acc;
-    }, {}) : {}),
+    ...(showOrfTranslations && showOrfs
+      ? reduce(
+          orfs,
+          (acc, orf) => {
+            acc[orf.id] = { ...orf, translationType: "ORF" };
+            return acc;
+          },
+          {}
+        )
+      : {}),
     ...(showCdsFeatureTranslations &&
       showFeatures &&
       reduce(
         cdsFeatures,
         (acc, cdsFeature) => {
-          acc[cdsFeature.id] = {...cdsFeature, translationType: "CDS Feature"};
+          acc[cdsFeature.id] = {
+            ...cdsFeature,
+            translationType: "CDS Feature"
+          };
           return acc;
         },
         {}

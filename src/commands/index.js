@@ -72,6 +72,10 @@ const fileCommandDefs = {
     name: "As FASTA file",
     handler: props => props.exportSequenceToFile("fasta")
   },
+  exportSequenceAsTeselagenJson: {
+    name: "As Teselagen JSON file",
+    handler: props => props.exportSequenceToFile("teselagenJson")
+  },
 
   viewProperties: {
     handler: props => props.propertiesViewOpen()
@@ -391,7 +395,6 @@ const editCommandDefs = {
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: (props, state, ctxInfo) => {
-      console.warn("editFeature", ctxInfo);
       const annotation = get(ctxInfo, "context.annotation");
       props.showAddOrEditFeatureDialog(annotation);
     }

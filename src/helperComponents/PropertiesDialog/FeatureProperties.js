@@ -82,11 +82,27 @@ class FeatureProperties extends React.Component {
                 type: "string",
                 render: (val, record) => {
                   const base1Range = convertRangeTo1Based(record);
+                  const hasJoinedLocations =
+                    record.locations && record.locations.length > 1;
+
                   return (
                     <span>
                       {val}{" "}
                       <span style={{ fontSize: 10 }}>
-                        ({base1Range.start}-{base1Range.end})
+                        {hasJoinedLocations ? (
+                          record.locations.map((loc, i) => {
+                            const base1Range = convertRangeTo1Based(loc);
+                            return (
+                              <span key={i}>
+                                ({base1Range.start}-{base1Range.end})
+                              </span>
+                            );
+                          })
+                        ) : (
+                          <span>
+                            ({base1Range.start}-{base1Range.end})
+                          </span>
+                        )}
                       </span>
                     </span>
                   );
