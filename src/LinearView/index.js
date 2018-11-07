@@ -120,7 +120,7 @@ export class LinearView extends React.Component {
             className="veLinearView"
             style={{
               width,
-              marginLeft: marginWidth / 2
+              paddingLeft: marginWidth / 2
             }}
             onContextMenu={event => {
               this.getNearestCursorPositionToMouseEvent(

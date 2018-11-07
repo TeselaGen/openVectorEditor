@@ -13,6 +13,7 @@ import {
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { throttle } from "lodash";
+import Scrollbar from "react-scrollbars-custom";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
@@ -83,13 +84,13 @@ class AlignmentView extends React.Component {
     }
   }
   componentDidMount() {
-    reset();
+    // reset();
     setTimeout(() => {
       this.setVerticalScrollRange();
     }, 500);
 
     // const userAlignmentViewPercentageHeight =
-    //   this.alignmentHolder.clientHeight / this.alignmentHolder.scrollHeight;
+    //   this.refs.alignmentHolder.clientHeight / this.refs.alignmentHolder.scrollHeight;
     // this.setState({ userAlignmentViewPercentageHeight });
   }
   UNSAFE_componentWillMount() {
@@ -198,14 +199,16 @@ class AlignmentView extends React.Component {
   handleScroll = () => {
     // console.log("scroll");
     // console.log(
-    //   "this.alignmentHolder.scrollTop, this.oldAlignmentHolderScrollTop:",
-    //   this.alignmentHolder.scrollTop,
+    //   "this.refs.alignmentHolder.scrollTop, this.oldAlignmentHolderScrollTop:",
+    //   this.refs.alignmentHolder.scrollTop,
     //   this.oldAlignmentHolderScrollTop
     // );
-    if (this.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop) {
+    if (
+      this.refs.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop
+    ) {
       setTimeout(() => {
         this.setVerticalScrollRange();
-        this.oldAlignmentHolderScrollTop = this.alignmentHolder.scrollTop;
+        this.oldAlignmentHolderScrollTop = this.refs.alignmentHolder.scrollTop;
       }, 100);
     }
     if (this.blockScroll) {
@@ -214,8 +217,9 @@ class AlignmentView extends React.Component {
     }
 
     const scrollPercentage =
-      this.alignmentHolder.scrollLeft /
-      (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
+      this.refs.alignmentHolder.scrollLeft /
+      (this.refs.alignmentHolder.scrollWidth -
+        this.refs.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
   };
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
@@ -241,9 +245,10 @@ class AlignmentView extends React.Component {
   };
   updateXScrollPercentage = scrollPercentage => {
     this.easyStore.percentScrolled = scrollPercentage;
-    this.alignmentHolder.scrollLeft =
+    this.refs.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
-      (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
+      (this.refs.alignmentHolder.scrollWidth -
+        this.refs.alignmentHolder.clientWidth);
   };
   scrollYToTrack = trackIndex => {
     this.InfiniteScroller.scrollTo(trackIndex);
@@ -488,40 +493,39 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
-        <div
-          className={"alignmentTracks "}
-          style={{ overflowY: "auto", display: "flex", zIndex: 10 }}
+        <Scrollbar
+          contentStyle={{
+            maxHeight: 500,
+            position: "static",
+            display: "flex",
+            flexDirection: "column"
+          }}
+          onScroll={isTemplate ? noop : this.handleScroll}
+          className="alignmentHolder syncscroll"
+          dataname="scrollGroup"
+          ref={"alignmentHolder"}
+          style={{
+            width: dimensions.width,
+            overflowY: "auto",
+            display: "flex",
+            zIndex: 10
+          }}
         >
-          <div
-            style={{
-              overflowX: "auto",
-              maxHeight: 500,
-              // width: trackWidth
-              width: dimensions.width
-            }}
-            ref={ref => {
-              this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] = ref;
-            }}
-            dataname="scrollGroup"
-            className="alignmentHolder syncscroll"
-            onScroll={isTemplate ? noop : this.handleScroll}
-          >
-            {isTemplate ? (
-              this.renderItem(0, 0, isTemplate)
-            ) : (
-              <ReactList
-                ref={c => {
-                  this.InfiniteScroller = c;
-                }}
-                type={"variable"}
-                itemSizeEstimator={this.estimateRowHeight}
-                // itemSizeGetter={itemSizeGetter}
-                itemRenderer={this.renderItem}
-                length={alignmentTracks.length}
-              />
-            )}
-          </div>
-        </div>
+          {isTemplate ? (
+            this.renderItem(0, 0, isTemplate)
+          ) : (
+            <ReactList
+              ref={c => {
+                this.InfiniteScroller = c;
+              }}
+              type={"variable"}
+              itemSizeEstimator={this.estimateRowHeight}
+              // itemSizeGetter={itemSizeGetter}
+              itemRenderer={this.renderItem}
+              length={alignmentTracks.length}
+            />
+          )}
+        </Scrollbar>
       );
     };
     const [firstTrack, ...otherTracks] = alignmentTracks;
@@ -994,97 +998,97 @@ var Math_round = Math.round;
 
 var names = {};
 
-var reset = function() {
-  var elems = document.getElementsByClassName("sync" + scroll);
+// var reset = function() {
+//   var elems = document.getElementsByClassName("sync" + scroll);
 
-  // clearing existing listeners
-  var i, j, el, found, name;
-  for (name in names) {
-    if (names.hasOwnProperty(name)) {
-      for (i = 0; i < names[name][length]; i++) {
-        names[name][i]["remove" + EventListener](scroll, names[name][i].syn, 0);
-      }
-    }
-  }
+//   // clearing existing listeners
+//   var i, j, el, found, name;
+//   for (name in names) {
+//     if (names.hasOwnProperty(name)) {
+//       for (i = 0; i < names[name][length]; i++) {
+//         names[name][i]["remove" + EventListener](scroll, names[name][i].syn, 0);
+//       }
+//     }
+//   }
 
-  // setting-up the new listeners
-  for (i = 0; i < elems[length]; ) {
-    found = j = 0;
-    el = elems[i++];
-    if (!(name = el.getAttribute("dataname"))) {
-      // name attribute is not set
-      continue;
-    }
+//   // setting-up the new listeners
+//   for (i = 0; i < elems[length]; ) {
+//     found = j = 0;
+//     el = elems[i++];
+//     if (!(name = el.getAttribute("dataname"))) {
+//       // name attribute is not set
+//       continue;
+//     }
 
-    el = el[scroll + "er"] || el; // needed for intence
+//     el = el[scroll + "er"] || el; // needed for intence
 
-    // searching for existing entry in array of names;
-    // searching for the element in that entry
-    for (; j < (names[name] = names[name] || [])[length]; ) {
-      found |= names[name][j++] == el;
-    }
+//     // searching for existing entry in array of names;
+//     // searching for the element in that entry
+//     for (; j < (names[name] = names[name] || [])[length]; ) {
+//       found |= names[name][j++] == el;
+//     }
 
-    if (!found) {
-      names[name].push(el);
-    }
+//     if (!found) {
+//       names[name].push(el);
+//     }
 
-    el.eX = el.eY = 0;
+//     el.eX = el.eY = 0;
 
-    (function(el, name) {
-      el[addEventListener](
-        scroll,
-        (el.syn = function() {
-          var elems = names[name];
+//     (function(el, name) {
+//       el[addEventListener](
+//         scroll,
+//         (el.syn = function() {
+//           var elems = names[name];
 
-          var scrollX = el[scroll + Left];
-          var scrollY = el[scroll + Top];
+//           var scrollX = el[scroll + Left];
+//           var scrollY = el[scroll + Top];
 
-          var xRate = scrollX / (el[scroll + Width] - el[client + Width]);
-          var yRate = scrollY / (el[scroll + Height] - el[client + Height]);
+//           var xRate = scrollX / (el[scroll + Width] - el[client + Width]);
+//           var yRate = scrollY / (el[scroll + Height] - el[client + Height]);
 
-          var updateX = scrollX != el.eX;
-          var updateY = scrollY != el.eY;
+//           var updateX = scrollX != el.eX;
+//           var updateY = scrollY != el.eY;
 
-          var otherEl,
-            i = 0;
+//           var otherEl,
+//             i = 0;
 
-          el.eX = scrollX;
-          el.eY = scrollY;
+//           el.eX = scrollX;
+//           el.eY = scrollY;
 
-          for (; i < elems[length]; ) {
-            otherEl = elems[i++];
-            if (otherEl != el) {
-              if (
-                updateX &&
-                Math_round(
-                  otherEl[scroll + Left] -
-                    (scrollX = otherEl.eX = Math_round(
-                      xRate *
-                        (otherEl[scroll + Width] - otherEl[client + Width])
-                    ))
-                )
-              ) {
-                otherEl[scroll + Left] = scrollX;
-              }
+//           for (; i < elems[length]; ) {
+//             otherEl = elems[i++];
+//             if (otherEl != el) {
+//               if (
+//                 updateX &&
+//                 Math_round(
+//                   otherEl[scroll + Left] -
+//                     (scrollX = otherEl.eX = Math_round(
+//                       xRate *
+//                         (otherEl[scroll + Width] - otherEl[client + Width])
+//                     ))
+//                 )
+//               ) {
+//                 otherEl[scroll + Left] = scrollX;
+//               }
 
-              if (
-                updateY &&
-                Math_round(
-                  otherEl[scroll + Top] -
-                    (scrollY = otherEl.eY = Math_round(
-                      yRate *
-                        (otherEl[scroll + Height] - otherEl[client + Height])
-                    ))
-                )
-              ) {
-                otherEl[scroll + Top] = scrollY;
-              }
-            }
-          }
-        }),
-        0
-      );
-    })(el, name);
-  }
-};
+//               if (
+//                 updateY &&
+//                 Math_round(
+//                   otherEl[scroll + Top] -
+//                     (scrollY = otherEl.eY = Math_round(
+//                       yRate *
+//                         (otherEl[scroll + Height] - otherEl[client + Height])
+//                     ))
+//                 )
+//               ) {
+//                 otherEl[scroll + Top] = scrollY;
+//               }
+//             }
+//           }
+//         }),
+//         0
+//       );
+//     })(el, name);
+//   }
+// };
 function noop() {}

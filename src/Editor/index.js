@@ -7,6 +7,8 @@ import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import "tg-react-reflex/styles.css";
 import React from "react";
+import Scrollbar from "react-scrollbars-custom";
+
 // import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
 // import * as customIcons from "teselagen-react-components";
@@ -67,10 +69,10 @@ const tabHeight = 34;
 const getListStyle = (isDraggingOver, isDragging) => {
   return {
     display: "flex",
-    alignItems: "flex-end",
+    // alignItems: "flex-end",
     flex: "0 0 auto",
     flexDirection: "row",
-    overflowX: "scroll",
+    // overflowX: "scroll",
     borderBottom: "1px solid lightgray",
     borderTop: "1px solid lightgray",
     paddingTop: 3,
@@ -482,6 +484,7 @@ export class Editor extends React.Component {
               onClick={showTabRightClickContextMenu}
               icon="more"
               style={{
+                zIndex: "100",
                 top: "5px",
                 transform: "rotate(90deg)",
                 position: "absolute",
@@ -498,85 +501,94 @@ export class Editor extends React.Component {
               droppableId={index.toString()}
             >
               {(provided, snapshot) => (
-                <div
+                <Scrollbar
+                  noScrollY
                   className={"ve-draggable-tabs"}
-                  ref={provided.innerRef}
                   style={{
                     height: tabHeight,
                     paddingLeft: 3,
                     ...getListStyle(snapshot.isDraggingOver, tabDragging)
                   }}
                 >
-                  {panelGroup.map(({ id, name, canClose }, index) => {
-                    return (
-                      <Draggable key={id} index={index} draggableId={id}>
-                        {(provided, snapshot) => (
-                          <div
-                            style={{
-                              wordWrap: "normal",
-                              flex: "0 0 auto",
-                              maxWidth: "100%",
-                              fontSize: "14px"
-                            }}
-                            onClick={() => {
-                              setPanelAsActive(id);
-                            }}
-                          >
+                  <div
+                    ref={provided.innerRef}
+                    style={{
+                      display: "flex",
+                      flex: "0 0 auto",
+                      flexDirection: "row"
+                    }}
+                  >
+                    {panelGroup.map(({ id, name, canClose }, index) => {
+                      return (
+                        <Draggable key={id} index={index} draggableId={id}>
+                          {(provided, snapshot) => (
                             <div
-                              onContextMenu={e => {
-                                showTabRightClickContextMenu(e, id);
-                              }}
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
                               style={{
-                                // some basic styles to make the items look a bit nicer
-                                userSelect: "none",
-                                // change background colour if dragging
-                                background: snapshot.isDragging
-                                  ? "lightgreen"
-                                  : "none",
-                                cursor: "move",
+                                wordWrap: "normal",
                                 flex: "0 0 auto",
-                                ...provided.draggableProps.style
+                                maxWidth: "100%",
+                                fontSize: "14px"
+                              }}
+                              onClick={() => {
+                                setPanelAsActive(id);
                               }}
                             >
                               <div
+                                onContextMenu={e => {
+                                  showTabRightClickContextMenu(e, id);
+                                }}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
                                 style={{
-                                  padding: 3,
-                                  borderBottom:
-                                    id === activePanelId
-                                      ? "2px solid #106ba3"
-                                      : "none",
-                                  color:
-                                    id === activePanelId
-                                      ? "#106ba3"
-                                      : "undefined",
-                                  marginLeft: 13,
-                                  marginRight: 13
+                                  // some basic styles to make the items look a bit nicer
+                                  userSelect: "none",
+                                  // change background colour if dragging
+                                  background: snapshot.isDragging
+                                    ? "lightgreen"
+                                    : "none",
+                                  cursor: "move",
+                                  flex: "0 0 auto",
+                                  ...provided.draggableProps.style
                                 }}
                               >
-                                {name || id}
-                                {canClose && (
-                                  <Icon
-                                    icon="small-cross"
-                                    onClick={() => {
-                                      closePanel(id);
-                                    }}
-                                    style={{ paddingLeft: 5 }}
-                                    className="ve-clickable"
-                                  />
-                                )}
+                                <div
+                                  style={{
+                                    padding: 3,
+                                    borderBottom:
+                                      id === activePanelId
+                                        ? "2px solid #106ba3"
+                                        : "none",
+                                    color:
+                                      id === activePanelId
+                                        ? "#106ba3"
+                                        : "undefined",
+                                    marginLeft: 13,
+                                    marginRight: 13
+                                  }}
+                                >
+                                  {name || id}
+                                  {canClose && (
+                                    <Icon
+                                      icon="small-cross"
+                                      onClick={() => {
+                                        closePanel(id);
+                                      }}
+                                      style={{ paddingLeft: 5 }}
+                                      className="ve-clickable"
+                                    />
+                                  )}
+                                </div>
                               </div>
+                              {provided.placeholder}
                             </div>
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </div>
+                </Scrollbar>
               )}
             </Droppable>,
             ...(panelsToShow.length === 1 && [

@@ -30,7 +30,6 @@ export default class StandaloneDemo extends React.Component {
         this.node, // or you can pass "createDomNodeForMe" but make sure to use editor.close() to clean up the dom node!
         {
           //you can also pass a DOM node as the first arg here
-          doNotUseAbsolutePosition: true,
           // showReadOnly: false,
           // disableSetReadOnly: true,
           shouldAutosave: true,
