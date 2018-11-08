@@ -1,9 +1,10 @@
-import { pick, isEqual } from "lodash";
+import { pick } from "lodash";
 import { shouldUpdate, setDisplayName, wrapDisplayName } from "recompose";
+import deepEqual from "deep-equal";
 
 const onlyUpdateForKeys = propKeys => {
   const hoc = shouldUpdate((props, nextProps) => {
-    const a = !isEqual(pick(nextProps, propKeys), pick(props, propKeys));
+    const a = !deepEqual(pick(nextProps, propKeys), pick(props, propKeys));
     console.log('a:',a)
     return a;
   });

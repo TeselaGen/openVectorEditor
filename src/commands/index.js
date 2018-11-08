@@ -46,6 +46,7 @@ const fileCommandDefs = {
 
   toggleReadOnlyMode: {
     toggle: [],
+    isDisabled: props => !props.onSave,
     isHidden: props => !props.toggleReadOnlyMode,
     isActive: props => props.readOnly,
     handler: props => props.toggleReadOnlyMode()
@@ -108,25 +109,25 @@ const hasSelection = ({ selectionLayer = {} }) =>
   selectionLayer.start > -1 && selectionLayer.end > -1;
 
 const editCommandDefs = {
-  cut: {
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
-    isHidden: props => props.readOnly,
-    handler: props => props.triggerClipboardCommand("cut"),
-    hotkey: "mod+x"
-  },
+  // cut: {
+  //   isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+  //   isHidden: props => props.readOnly,
+  //   handler: props => props.triggerClipboardCommand("cut"),
+  //   hotkey: "mod+x"
+  // },
 
-  copy: {
-    handler: props => props.triggerClipboardCommand("copy"),
-    hotkey: "mod+c"
-  },
+  // copy: {
+  //   handler: props => props.triggerClipboardCommand("copy"),
+  //   hotkey: "mod+c"
+  // },
 
-  paste: {
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
-    isHidden: props => props.readOnly,
+  // paste: {
+  //   isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+  //   isHidden: props => props.readOnly,
 
-    handler: props => props.triggerClipboardCommand("paste"),
-    hotkey: "mod+v"
-  },
+  //   handler: props => props.triggerClipboardCommand("paste"),
+  //   hotkey: "mod+v"
+  // },
 
   undo: {
     isHidden: props => props.readOnly,

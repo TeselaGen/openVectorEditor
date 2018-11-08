@@ -14,6 +14,9 @@ export default {
       // toggled: findTool.isOpen,
       renderIconAbove: findTool.isOpen,
       onIconClick: toggleFindTool,
+      popoverDisabled: true,
+      tooltipDisabled: true,
+      // tooltipDisabled: findTool.isOpen,
       tooltip: findTool.isOpen ? (
         <span>
           Hide Find Tool <span style={{ fontSize: 10 }}>(Cmd/Ctrl+F)</span>

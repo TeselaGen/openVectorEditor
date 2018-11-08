@@ -1,5 +1,5 @@
 import React from "react";
-import { withProps, withHandlers, onlyUpdateForKeys } from "recompose";
+import { withProps, withHandlers } from "recompose";
 import { compose } from "redux";
 
 // import withEditorProps from "../withEditorProps";
@@ -8,7 +8,8 @@ import withEditorProps from "../withEditorProps";
 import versionHistoryTool from "./versionHistoryTool";
 
 import withEditorInteractions from "../withEditorInteractions";
-// import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
+import onlyUpdateForKeys from "../utils/onlyUpdateForKeysDeep";
+
 import "./style.css";
 
 import downloadTool from "./downloadTool";
@@ -77,21 +78,21 @@ export class ToolBar extends React.PureComponent {
       menuBar = null,
       closeFullscreen,
       toolList = [
-        "saveTool",
-        "downloadTool",
-        "importTool",
-        "undoTool",
-        "redoTool",
-        "cutsiteTool",
-        "featureTool",
-        // "oligoTool",
-        "orfTool",
-        "alignmentTool",
+        // "saveTool",
+        // "downloadTool",
+        // "importTool",
+        // "undoTool",
+        // "redoTool",
+        // "cutsiteTool",
+        // "featureTool",
+        // // "oligoTool",
+        // "orfTool",
+        // "alignmentTool",
         // "viewTool",
-        "editTool",
+        // "editTool",
         // "findTool",
         "inlineFindTool",
-        "visibilityTool"
+        // "visibilityTool"
         // "fullScreenTool"
         // "propertiesTool"
       ],
