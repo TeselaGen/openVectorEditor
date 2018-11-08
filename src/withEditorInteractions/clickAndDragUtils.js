@@ -481,7 +481,7 @@ export function updateSelectionOrCaret({
   if (typeof newRangeOrCaret !== "object") {
     newCaret = newRangeOrCaret;
   } else {
-    newRange = newRangeOrCaret;
+    newRange = { start: newRangeOrCaret.start, end: newRangeOrCaret.end };
   }
   if (shiftHeld) {
     if (caretPosition > 0) {

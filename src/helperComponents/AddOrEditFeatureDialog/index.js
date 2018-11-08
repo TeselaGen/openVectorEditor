@@ -226,7 +226,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           label={"Notes:"}
           format={v => {
             let toReturn = v;
-            if (typeof v !== "string") {
+            if (typeof v !== "string" && v) {
               toReturn = "";
               Object.keys(v).forEach(key => {
                 let stringVal;

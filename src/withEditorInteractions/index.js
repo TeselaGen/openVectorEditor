@@ -829,7 +829,10 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     partRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation);
+      this.props.selectionLayerUpdate({
+        start: annotation.end,
+        end: annotation.end
+      });
       const {
         readOnly,
         upsertTranslation,
@@ -879,7 +882,10 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     featureRightClicked = ({ annotation, event }) => {
-      this.props.selectionLayerUpdate(annotation);
+      this.props.selectionLayerUpdate({
+        start: annotation.end,
+        end: annotation.end
+      });
       event.persist();
       const {
         readOnly,
@@ -997,7 +1003,10 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     primerRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation);
+      this.props.selectionLayerUpdate({
+        start: annotation.end,
+        end: annotation.end
+      });
       const {
         showAddOrEditPrimerDialog,
         readOnly,
@@ -1040,7 +1049,10 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
     orfRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation);
+      this.props.selectionLayerUpdate({
+        start: annotation.end,
+        end: annotation.end
+      });
       const {
         // upsertTranslation,
         propertiesViewOpen,
@@ -1075,7 +1087,10 @@ function VectorInteractionHOC(Component /* options */) {
         propertiesViewTabUpdate,
         annotationVisibilityToggle
       } = this.props;
-      this.props.selectionLayerUpdate(annotation);
+      this.props.selectionLayerUpdate({
+        start: annotation.end,
+        end: annotation.end
+      });
       if (annotation.isOrf) {
         return [
           {
@@ -1103,7 +1118,10 @@ function VectorInteractionHOC(Component /* options */) {
         {
           text: "Select Translation",
           onClick: function() {
-            selectionLayerUpdate(annotation);
+            selectionLayerUpdate({
+              start: annotation.end,
+              end: annotation.end
+            });
           }
         },
         ...this.getCopyOptions(annotation),

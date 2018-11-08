@@ -300,6 +300,7 @@ export class Editor extends React.Component {
     );
 
     if (_height) height = Math.max(minHeight, _height);
+    console.log("height:", height);
 
     let editorDimensions = {
       height,
@@ -353,7 +354,7 @@ export class Editor extends React.Component {
       y = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
       width: x,
-      height: y
+      height: Math.max(y, minHeight)
       //  document.body.getBoundingClientRect().height
     };
 
@@ -672,6 +673,7 @@ export class Editor extends React.Component {
           // height: "100%",
           // ...(fitHeight && {
           height,
+          minHeight,
           display: "flex",
           flexDirection: "column",
           ...(previewModeFullscreen && {
