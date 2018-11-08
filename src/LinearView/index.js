@@ -91,88 +91,82 @@ export class LinearView extends React.Component {
     let rowData = this.getRowData();
 
     return (
-      <div
-        style={{
-          height: height || 0
+      <Draggable
+        // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
+        bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        onDrag={event => {
+          this.getNearestCursorPositionToMouseEvent(
+            rowData,
+            event,
+            editorDragged
+          );
         }}
+        onStart={event => {
+          this.getNearestCursorPositionToMouseEvent(
+            rowData,
+            event,
+            editorDragStarted
+          );
+        }}
+        onStop={editorDragStopped}
       >
-        <Draggable
-          // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
-          bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          onDrag={event => {
+        <div
+          ref={ref => (this.linearView = ref)}
+          className="veLinearView"
+          style={{
+            width,
+            ...(height && { height }),
+            paddingLeft: marginWidth / 2
+          }}
+          onContextMenu={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
-              editorDragged
+              backgroundRightClicked
             );
           }}
-          onStart={event => {
+          onClick={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
-              editorDragStarted
+              editorClicked
             );
           }}
-          onStop={editorDragStopped}
         >
-          <div
-            ref={ref => (this.linearView = ref)}
-            className="veLinearView"
-            style={{
-              width,
-              paddingLeft: marginWidth / 2
-            }}
-            onContextMenu={event => {
-              this.getNearestCursorPositionToMouseEvent(
-                rowData,
-                event,
-                backgroundRightClicked
-              );
-            }}
-            onClick={event => {
-              this.getNearestCursorPositionToMouseEvent(
-                rowData,
-                event,
-                editorClicked
-              );
-            }}
-          >
-            {!hideName && (
-              <SequenceName
-                {...{
-                  sequenceName,
-                  sequenceLength: sequenceData.sequence
-                    ? sequenceData.sequence.length
-                    : 0
-                }}
-              />
-            )}
-            <RowItem
+          {!hideName && (
+            <SequenceName
               {...{
-                ...rest,
-                charWidth,
-                alignmentData,
-                sequenceLength: this.getMaxLength(),
-                width: innerWidth,
-                bpsPerRow,
-                tickSpacing:
-                  tickSpacing || Math.floor(this.getMaxLength() / 10),
-                annotationVisibility: {
-                  ...rest.annotationVisibility,
-                  // yellowAxis: true,
-                  translations: false,
-                  reverseSequence: false,
-                  sequence: false,
-                  cutsitesInSequence: false,
-                  ...linearViewAnnotationVisibilityOverrides
-                },
-                ...RowItemProps
+                sequenceName,
+                sequenceLength: sequenceData.sequence
+                  ? sequenceData.sequence.length
+                  : 0
               }}
-              row={rowData[0]}
             />
-          </div>
-        </Draggable>
-      </div>
+          )}
+          <RowItem
+            {...{
+              ...rest,
+              charWidth,
+              alignmentData,
+              sequenceLength: this.getMaxLength(),
+              width: innerWidth,
+              bpsPerRow,
+              tickSpacing: tickSpacing || Math.floor(this.getMaxLength() / 10),
+              annotationVisibility: {
+                ...rest.annotationVisibility,
+                // yellowAxis: true,
+                translations: false,
+                reverseSequence: false,
+                sequence: false,
+                cutsitesInSequence: false,
+                ...linearViewAnnotationVisibilityOverrides
+              },
+              ...RowItemProps
+            }}
+            row={rowData[0]}
+          />
+        </div>
+      </Draggable>
     );
   }
 }
