@@ -300,7 +300,6 @@ export class Editor extends React.Component {
     );
 
     if (_height) height = Math.max(minHeight, _height);
-    console.log("height:", height);
 
     let editorDimensions = {
       height,
