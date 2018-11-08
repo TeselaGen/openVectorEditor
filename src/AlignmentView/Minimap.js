@@ -305,7 +305,7 @@ const YellowScrollHandle = view(
             </Draggable>
             {/* the actual handle component */}
             <div
-              className={"syncscroll handle"}
+              className={"handle"}
               dataname="scrollGroup"
               style={{
                 height: minimapTracksPartialHeight || 0,

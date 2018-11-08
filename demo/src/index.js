@@ -1,8 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import { Switch, Button } from "@blueprintjs/core";
-import { generateSequenceData } from "ve-sequence-utils";
+import { Switch } from "@blueprintjs/core";
 
 import store from "./store";
 import { render } from "react-dom";
@@ -15,7 +14,6 @@ import {
   // CutsiteFilter,
   LinearView,
   DigestTool,
-  Editor,
   updateEditor
 } from "../../src";
 
@@ -26,6 +24,7 @@ import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
 import pjson from "../../package.json";
+import EditorDemo from "./EditorDemo";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -64,24 +63,9 @@ class Demo extends React.Component {
     super(props);
 
     this.state = {
-      previewMode: false,
-      // forceHeightMode: false,
       darkMode: document.body.className.includes("bp3-dark")
     };
   }
-
-  changePreviewMode = e =>
-    this.setState({
-      previewMode: e.target.checked
-    });
-  changeFullscreenMode = e =>
-    this.setState({
-      fullscreenMode: e.target.checked
-    });
-  changeForceHeightMode = e =>
-    this.setState({
-      forceHeightMode: e.target.checked
-    });
 
   changeDarkMode = () => {
     this.setState({
@@ -91,7 +75,8 @@ class Demo extends React.Component {
   };
 
   render() {
-    const { forceHeightMode, fullscreenMode, previewMode, darkMode } = this.state;
+    const { darkMode } = this.state;
+
     return (
       <Provider store={store}>
         <Router>
@@ -101,73 +86,25 @@ class Demo extends React.Component {
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
             {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
-            <div style={{ display: "flex" }}>{links} <span style={{marginLeft: 10}}>Version: {pjson.version}</span></div>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap"
+              }}
+            >
+              {links}{" "}
+              <span style={{ marginLeft: 10 }}>Version: {pjson.version}</span>{" "}
+              <Switch
+                label="Dark Mode"
+                checked={darkMode}
+                onChange={this.changeDarkMode}
+                style={{ margin: "0px 30px", marginTop: 4 }}
+              />
+            </div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
               render={() => {
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      flexGrow: "1"
-                    }}
-                  >
-                    <div style={{ paddingTop: 10, display: "flex" }}>
-                      <Button
-                        onClick={() => {
-                          updateEditor(store, "DemoEditor", {
-                            sequenceDataHistory: {},
-                            sequenceData: generateSequenceData()
-                          });
-                        }}
-                      >
-                        {" "}
-                        Change Sequence
-                      </Button>
-                      <Switch
-                        checked={previewMode}
-                        label="Preview Mode"
-                        onChange={this.changePreviewMode}
-                        style={{ margin: "0px 30px", marginTop: 4 }}
-                      />
-                      <Switch
-                        checked={fullscreenMode}
-                        label="Fullscreen Mode"
-                        onChange={this.changeFullscreenMode}
-                        style={{ margin: "0px 30px", marginTop: 4 }}
-                      />
-                      <Switch
-                        checked={forceHeightMode}
-                        label="Force Height 500px"
-                        onChange={this.changeForceHeightMode}
-                        style={{ margin: "0px 30px", marginTop: 4 }}
-                      />
-                      <Switch
-                        label="Dark Mode"
-                        checked={darkMode}
-                        onChange={this.changeDarkMode}
-                        style={{ margin: "0px 30px", marginTop: 4 }}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        flexGrow: 1
-                      }}
-                    >
-                      <Editor
-                        editorName="DemoEditor"
-                        showMenuBar
-                        handleFullscreenClose={this.changeFullscreenMode}
-                        isFullscreen={fullscreenMode}
-                        {...forceHeightMode && {height: 500}}
-                        withPreviewMode={previewMode}
-                      />
-                    </div>
-                  </div>
-                );
+                return <EditorDemo />;
               }}
               path="/Editor"
             />
