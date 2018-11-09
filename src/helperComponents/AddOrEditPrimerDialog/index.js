@@ -91,6 +91,8 @@ export class AddOrEditPrimerDialog extends React.Component {
                 updatedData = { ...data, strand: 1 };
               } else if (data.forward === false && data.strand !== -1) {
                 updatedData = { ...data, strand: -1 };
+              } else {
+                updatedData = data;
               }
               upsertPrimer(convertRangeTo0Based(updatedData));
               hideModal();

@@ -92,6 +92,8 @@ export class AddOrEditPartDialog extends React.Component {
                 updatedData = { ...data, strand: 1 };
               } else if (data.forward === false && data.strand !== -1) {
                 updatedData = { ...data, strand: -1 };
+              } else {
+                updatedData = data;
               }
               upsertPart(convertRangeTo0Based(updatedData));
               hideModal();
