@@ -25,6 +25,7 @@ import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
 import pjson from "../../package.json";
 import EditorDemo from "./EditorDemo";
+import MobxEditorDemo from "./MobxEditorDemo";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -34,6 +35,7 @@ import EditorDemo from "./EditorDemo";
 import "./style.css";
 
 const links = [
+  { name: "MobxEditor", url: "MobxEditor" },
   { name: "Editor", url: "Editor" },
   { name: "Standalone", url: "Standalone" },
   { name: "VersionHistoryView", url: "VersionHistoryView" },
@@ -107,6 +109,12 @@ class Demo extends React.Component {
                 return <EditorDemo />;
               }}
               path="/Editor"
+            />
+            <Route
+              render={() => {
+                return <MobxEditorDemo />;
+              }}
+              path="/MobxEditor"
             />
             <Route
               render={() => {

@@ -1,3 +1,4 @@
+import {observer} from "mobx-react";
 import VeWarning from "../helperComponents/VeWarning";
 // import PassThrough from "../utils/PassThrough";
 import Labels from "./Labels";
@@ -34,6 +35,7 @@ function noop() {}
 //     return radians / 2 / Math.PI * 360
 // }
 
+@observer
 export class CircularView extends React.Component {
   getNearestCursorPositionToMouseEvent(event, sequenceLength, callback) {
     if (!event.clientX) {
@@ -112,6 +114,7 @@ export class CircularView extends React.Component {
       //   return layers
       // },
     } = this.props;
+    console.log('selectionLayer:',selectionLayer)
     let { sequence = "atgc" } = sequenceData;
     let sequenceLength = sequence.length;
     let sequenceName = hideName ? "" : sequenceData.name || "";
@@ -724,7 +727,7 @@ function pareDownAnnotations(annotations, max) {
 //   })
 // }
 
-export default withEditorInteractions(CircularView);
+export default CircularView
 
 function positionCutsites(annotation) {
   return {

@@ -3,6 +3,7 @@ import IntervalTree from "node-interval-tree";
 import { sortBy, noop } from "lodash";
 import { getRangeLength } from "ve-range-utils";
 import { startCase } from "lodash";
+import {keyBy} from "lodash";
 import getRangeAngles from "./getRangeAnglesSpecial";
 import getYOffset from "./getYOffset";
 import withHover from "../helperComponents/withHover";
@@ -15,7 +16,7 @@ function drawAnnotations({
   Annotation,
   annotationType,
   radius,
-  annotations,
+  annotations: _annotations,
   annotationHeight,
   spaceBetweenAnnotations,
   sequenceLength,
@@ -29,6 +30,7 @@ function drawAnnotations({
   onRightClicked = noop,
   showLabels
 }) {
+  const annotations = Array.isArray(_annotations) ? keyBy("id", _annotations) : _annotations
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
   let maxYOffset = 0;

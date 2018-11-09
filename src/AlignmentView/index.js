@@ -20,7 +20,7 @@ import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
-import withEditorProps from "../withEditorProps";
+// import withEditorProps from "../withEditorProps";
 import ReactList from "../RowView/ReactList";
 import "./style.css";
 import { isFunction } from "util";
@@ -722,7 +722,7 @@ class AlignmentView extends React.Component {
 
 export default compose(
   // export const AlignmentView = withEditorInteractions(_AlignmentView);
-  withEditorProps,
+  // withEditorProps,
   connect(
     (state, ownProps) => {
       // const {id}
