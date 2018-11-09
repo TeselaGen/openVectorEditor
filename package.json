@@ -124,7 +124,7 @@
     "teselagen-react-components": "24.2.84",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.1",
-    "ve-sequence-utils": "3.3.4"
+    "ve-sequence-utils": "3.3.5"
   },
   "husky": {
     "hooks": {
