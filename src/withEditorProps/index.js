@@ -5,10 +5,6 @@ import { compose, withHandlers } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
 import { some, map } from "lodash";
-import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
-import { actions } from "../redux";
-import s from "../selectors";
-import { allTypes } from "../utils/annotationTypes";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
@@ -16,8 +12,13 @@ import {
   getReverseComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
-
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
+import { actions } from "../redux";
+import s from "../selectors";
+import { allTypes } from "../utils/annotationTypes";
+
+import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
@@ -128,8 +129,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new parts in read-only mode"
@@ -150,8 +151,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new features in read-only mode"
@@ -239,8 +240,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new primers in read-only mode"
@@ -365,7 +366,10 @@ function mapStateToProps(state, ownProps) {
     return itemToReturn;
   });
   const matchesTotal = searchLayers.length;
-  if (!findTool.highlightAll && searchLayers[findTool.matchNumber]) {
+  if (
+    (!findTool.highlightAll && searchLayers[findTool.matchNumber]) ||
+    searchLayers.length > MAX_MATCHES_DISPLAYED
+  ) {
     searchLayers = [searchLayers[findTool.matchNumber]];
   }
   this.sequenceData = sequenceData;

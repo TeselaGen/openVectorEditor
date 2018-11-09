@@ -124,7 +124,7 @@
     "teselagen-react-components": "24.2.84",
     "tg-client-query-builder": "^2.12.1",
     "ve-range-utils": "^2.5.1",
-    "ve-sequence-utils": "3.3.5"
+    "ve-sequence-utils": "3.3.6"
   },
   "husky": {
     "hooks": {
@@ -133,7 +133,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "eslint --rule 'import/order: 1' --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
+      "eslint --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
       "prettier --write",
       "yarn test:staged",
       "git add"

@@ -9,6 +9,7 @@ import {
 } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
 import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
+import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
 
@@ -99,8 +100,14 @@ export class FindBar extends React.Component {
         key="highlightall"
         value={highlightAll}
         onChange={toggleHighlightAll}
+        disabled={matchesTotal > MAX_MATCHES_DISPLAYED}
       >
-        Highlight All
+        Highlight All{" "}
+        {matchesTotal > MAX_MATCHES_DISPLAYED && (
+          <div>
+            (Disabled because there are >{MAX_MATCHES_DISPLAYED} matches)
+          </div>
+        )}
       </Switch>
     ];
 
@@ -128,7 +135,7 @@ export class FindBar extends React.Component {
                 borderBottomRightRadius: "5px"
               }
         }
-        className={"veFindBar"}
+        className="veFindBar"
       >
         <Button onClick={toggleFindTool} icon="cross" />
         <InputGroup
@@ -155,10 +162,10 @@ export class FindBar extends React.Component {
               {isInline && (
                 <Popover
                   position={Position.BOTTOM}
-                  target={<Button minimal icon={"wrench"} />}
+                  target={<Button minimal icon="wrench" />}
                   content={
                     <div
-                      className={"ve-find-options-popover"}
+                      className="ve-find-options-popover"
                       style={{
                         display: "flex",
                         flexDirection: "column",
