@@ -19,18 +19,13 @@ import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import { getContext, branch } from "recompose";
 import FileSaver from "file-saver";
-import Keyboard from "./Keyboard";
-import getCommands from "../commands";
 
-import withEditorProps from "../withEditorProps";
 import {
   normalizePositionByRangeLength
   // convertRangeTo1Based
 } from "ve-range-utils";
 import React from "react";
-import createSequenceInputPopup from "./createSequenceInputPopup";
 
-import moveCaret from "./moveCaret";
 // import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
@@ -39,6 +34,11 @@ import {
   showConfirmationDialog,
   commandMenuEnhancer
 } from "teselagen-react-components";
+import withEditorProps from "../withEditorProps";
+import getCommands from "../commands";
+import moveCaret from "./moveCaret";
+import createSequenceInputPopup from "./createSequenceInputPopup";
+import Keyboard from "./Keyboard";
 import {
   handleCaretMoved,
   editorDragged,
@@ -488,8 +488,8 @@ function VectorInteractionHOC(Component /* options */) {
         (selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : { start: 0, end: 0 });
+          ? { start: caretPosition, end: caretPosition }
+          : { start: 0, end: 0 });
       rangeToUse = { ...rangeToUse, forward: true };
       return sequenceLength && readOnly
         ? []
@@ -670,7 +670,7 @@ function VectorInteractionHOC(Component /* options */) {
             {
               text: "Copy Options",
               submenu: [
-                <MenuItem disabled key={"aghah"} text={"Include:"} />
+                <MenuItem disabled key="aghah" text="Include:" />
               ].concat(
                 map(copyOptions, (unused, copyOption) => {
                   return (
@@ -833,7 +833,7 @@ function VectorInteractionHOC(Component /* options */) {
 
     partRightClicked = ({ annotation }) => {
       this.props.selectionLayerUpdate({
-        start: annotation.end,
+        start: annotation.start,
         end: annotation.end
       });
       const {
@@ -886,7 +886,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
     featureRightClicked = ({ annotation, event }) => {
       this.props.selectionLayerUpdate({
-        start: annotation.end,
+        start: annotation.start,
         end: annotation.end
       });
       event.persist();
@@ -1007,7 +1007,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
     primerRightClicked = ({ annotation }) => {
       this.props.selectionLayerUpdate({
-        start: annotation.end,
+        start: annotation.start,
         end: annotation.end
       });
       const {
@@ -1053,7 +1053,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
     orfRightClicked = ({ annotation }) => {
       this.props.selectionLayerUpdate({
-        start: annotation.end,
+        start: annotation.start,
         end: annotation.end
       });
       const {
@@ -1091,7 +1091,7 @@ function VectorInteractionHOC(Component /* options */) {
         annotationVisibilityToggle
       } = this.props;
       this.props.selectionLayerUpdate({
-        start: annotation.end,
+        start: annotation.start,
         end: annotation.end
       });
       if (annotation.isOrf) {
@@ -1122,7 +1122,7 @@ function VectorInteractionHOC(Component /* options */) {
           text: "Select Translation",
           onClick: function() {
             selectionLayerUpdate({
-              start: annotation.end,
+              start: annotation.start,
               end: annotation.end
             });
           }
@@ -1286,7 +1286,7 @@ function VectorInteractionHOC(Component /* options */) {
         <div
           tabIndex={-1} //this helps with focusing using Keyboard's parentElement.focus()
           ref={c => (this.node = c)}
-          className={"veVectorInteractionWrapper"}
+          className="veVectorInteractionWrapper"
           style={{ position: "relative", ...vectorInteractionWrapperStyle }}
           onFocus={this.handleWrapperFocus}
         >
