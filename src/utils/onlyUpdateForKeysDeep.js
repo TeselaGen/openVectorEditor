@@ -7,7 +7,6 @@ import _ from "lodash";
 const onlyUpdateForKeys = propKeys => {
   const hoc = shouldUpdate((props, nextProps) => {
     const a = !isEq(pick(nextProps, propKeys), pick(props, propKeys));
-    a && console.log("a:", a);
     return a;
   });
 

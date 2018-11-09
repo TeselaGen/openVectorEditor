@@ -36,8 +36,8 @@ export class AddOrEditPrimerDialog extends React.Component {
           autoFocus
           inlineLabel
           validate={required}
-          name={"name"}
-          label={"Name:"}
+          name="name"
+          label="Name:"
         />
         <RadioGroupField
           defaultValue
@@ -48,8 +48,8 @@ export class AddOrEditPrimerDialog extends React.Component {
           ]}
           normalize={value => value === "true" || false}
           format={value => (value ? "true" : "false")}
-          name={"forward"}
-          label={"Strand:"}
+          name="forward"
+          label="Strand:"
         />
 
         <NumericInputField
@@ -57,21 +57,43 @@ export class AddOrEditPrimerDialog extends React.Component {
           defaultValue={1}
           min={1}
           max={sequenceLength}
-          name={"start"}
-          label={"Start:"}
+          name="start"
+          label="Start:"
         />
         <NumericInputField
           inlineLabel
           defaultValue={1}
           min={1}
           max={sequenceLength}
-          name={"end"}
-          label={"End:"}
+          name="end"
+          label="End:"
         />
-        <TextareaField inlineLabel name={"notes"} label={"Notes:"} />
+        <TextareaField
+          inlineLabel
+          tooltipError
+          name="notes"
+          label="Notes:"
+          format={v => {
+            let toReturn = v;
+            if (typeof v !== "string" && v) {
+              toReturn = "";
+              Object.keys(v).forEach(key => {
+                let stringVal;
+                try {
+                  stringVal = JSON.stringify(v[key]);
+                } catch (e) {
+                  stringVal = v[key];
+                }
+                toReturn += `- ${key}: ${stringVal} \n`;
+              });
+            }
+            return toReturn;
+          }}
+          placeholder="Enter notes here.."
+        />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
-          className={"width100"}
+          className="width100"
         >
           <Button
             style={{ marginRight: 15 }}
