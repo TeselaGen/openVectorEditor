@@ -132,7 +132,6 @@ export default class StandaloneDemo extends React.Component {
               }
             ];
           },
-          readOnly: false,
           showMenuBar: true,
           PropertiesProps: {
             propertiesList: [

@@ -208,6 +208,9 @@ function VectorInteractionHOC(Component /* options */) {
       if (readOnly) {
         return window.toastr.warning("Sorry the sequence is Read-Only");
       }
+      if (!(caretPosition > -1 || selectionLayer.start > -1)) {
+        return window.toastr.warning("Please place the cursor before pasting");
+      }
 
       let seqDataToInsert;
       if (onPaste) {

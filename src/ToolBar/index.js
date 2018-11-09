@@ -1,14 +1,16 @@
 import React from "react";
-import { withProps, withHandlers, onlyUpdateForKeys } from "recompose";
+import { withProps, withHandlers } from "recompose";
+
 import { compose } from "redux";
 
-// import withEditorProps from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
 import withEditorProps from "../withEditorProps";
 import versionHistoryTool from "./versionHistoryTool";
 
 import withEditorInteractions from "../withEditorInteractions";
-// import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
+import onlyUpdateForKeys from "../utils/onlyUpdateForKeysDeep";
+import shouldRerender from "../utils/shouldRerender";
+
 import "./style.css";
 
 import downloadTool from "./downloadTool";
@@ -53,10 +55,14 @@ const allTools = {
 
 // import get from 'lodash/get'
 
-export class ToolBar extends React.PureComponent {
+export class ToolBar extends React.Component {
   state = {
     openItem: -1
   };
+
+  componentWillUnmount() {
+    console.log("ToolBar unmountin");
+  }
 
   toggleOpen = index => {
     if (this.state.openItem === index) {
@@ -71,6 +77,10 @@ export class ToolBar extends React.PureComponent {
   };
 
   render() {
+    if (!shouldRerender(["modifyTools", "toolList"], ["openItem"], this)) {
+      return this.cachedRender;
+    }
+
     const {
       modifyTools,
       contentLeft,
@@ -143,19 +153,13 @@ export class ToolBar extends React.PureComponent {
           }
         }),
         withEditorInteractions,
-        onlyUpdateForKeys([
-          ...updateKeys,
-          "isOpen",
-          "toggleOpen",
-          "editorName"
-        ]),
-        withProps(itemProps)
+        withProps(itemProps),
+        onlyUpdateForKeys([...updateKeys, "isOpen", "toggleOpen", "editorName"])
       )(ToolbarItem);
-      WrappedItem.displayName = toolList[index];
+      // WrappedItem.displayName = toolList[index];
       return <WrappedItem key={index} />;
     });
-
-    return (
+    this.cachedRender = ( //we're caching this so that we don't force all the toolbarItems to get recreated and unmount
       <div style={{ display: "flex" }}>
         {contentLeft}
         <div className={"veToolbar"}>
@@ -164,12 +168,13 @@ export class ToolBar extends React.PureComponent {
         {closeFullscreen}
       </div>
     );
+
+    return this.cachedRender;
   }
 }
 
 export default withEditorProps(
   //only re-render the toolbar for these keys (important because we don't want to re-initialize all the toolbar items unecessarily):
   //also Toolbar must be a PureComponent so as not to re-render unecessarily
-  // onlyUpdateForKeys(["modifyTools", "toolList"])
   ToolBar
 );

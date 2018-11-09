@@ -5,6 +5,7 @@ import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
+import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -661,6 +662,7 @@ export class Editor extends React.Component {
 
     return (
       <DropHandler
+        key="dropHandler"
         disabled={readOnly}
         updateSequenceData={updateSequenceData}
         style={{
@@ -694,6 +696,7 @@ export class Editor extends React.Component {
         <Dialogs editorName={editorName} />
 
         <ToolBar
+          key="toolbar"
           menuBar={
             showMenuBar && (
               <MenuBar

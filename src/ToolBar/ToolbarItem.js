@@ -33,6 +33,7 @@ export default class ToolbarItem extends React.Component {
       renderIconAbove,
       noDropdownIcon,
       IconWrapper,
+      popoverDisabled,
       IconWrapperProps,
       dropdownicon,
       tooltipDisabled,
@@ -92,7 +93,7 @@ export default class ToolbarItem extends React.Component {
             </Tooltip>
           )}
         {Dropdown && !noDropdownIcon ? (
-          <Tooltip content={dropdowntooltip}>
+          <Tooltip disabled={tooltipDisabled} content={dropdowntooltip}>
             <div
               className={
                 (isOpen ? " isOpen " : "") +
@@ -114,12 +115,32 @@ export default class ToolbarItem extends React.Component {
         ) : null}
       </div>
     );
+    const content = (
+      <div
+        ref={n => {
+          if (n) this.dropdownNode = n;
+        }}
+        style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
+        className={"ve-toolbar-dropdown content"}
+      >
+        {Dropdown && (
+          <Dropdown {...this.props} toggleDropdown={this.toggleDropdown} />
+        )}
+      </div>
+    );
+    const target = IconWrapper ? (
+      <IconWrapper {...IconWrapperProps}> {buttonTarget}</IconWrapper>
+    ) : (
+      buttonTarget
+    );
 
     return (
       <div style={{ display: "flex", alignItems: "center" }}>
         {index !== 0 && <div className="veToolbarSpacer" />}
+
         <Popover
-          isOpen={!!Dropdown && isOpen}
+          disabled={popoverDisabled}
+          isOpen={!popoverDisabled && !!Dropdown && isOpen}
           onClose={e => {
             if (
               e.srcElement &&
@@ -134,29 +155,8 @@ export default class ToolbarItem extends React.Component {
           canEscapeKeyClose
           minimal
           position={Position.BOTTOM}
-          target={
-            IconWrapper ? (
-              <IconWrapper {...IconWrapperProps}> {buttonTarget}</IconWrapper>
-            ) : (
-              buttonTarget
-            )
-          }
-          content={
-            <div
-              ref={n => {
-                if (n) this.dropdownNode = n;
-              }}
-              style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
-              className={"ve-toolbar-dropdown content"}
-            >
-              {Dropdown && (
-                <Dropdown
-                  {...this.props}
-                  toggleDropdown={this.toggleDropdown}
-                />
-              )}
-            </div>
-          }
+          target={target}
+          content={content}
         />
       </div>
     );

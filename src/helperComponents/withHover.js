@@ -88,7 +88,9 @@ export default compose(
         idToPass
       };
     },
-    hoveredAnnotationActions
+    hoveredAnnotationActions,
+    null,
+    { pure: false }
   ),
   withHover
 );

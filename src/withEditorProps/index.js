@@ -30,7 +30,9 @@ import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 export default compose(
   connect(
     mapStateToProps,
-    mapDispatchToActions
+    mapDispatchToActions,
+    null,
+    { pure: false }
   ),
   withHandlers({
     handleSave: props => {
