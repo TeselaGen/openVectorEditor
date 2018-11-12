@@ -116,7 +116,7 @@ function renderOptions({ label, value }) {
 function AddAdditionalEnzymeLink({ onClick }) {
   return (
     <span onClick={onClick} className={"ta_link"}>
-      Add additional enzymes <Icon small icon="plus" />
+      Add additional enzymes <Icon iconSize={14} icon="plus" />
     </span>
   );
 }

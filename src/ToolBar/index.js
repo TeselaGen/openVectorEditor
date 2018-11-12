@@ -1,17 +1,9 @@
 import React from "react";
-import { withProps, withHandlers } from "recompose";
-
-import { compose } from "redux";
-
-import ToolbarItem from "./ToolbarItem";
-import withEditorProps from "../withEditorProps";
 import versionHistoryTool from "./versionHistoryTool";
-
-import withEditorInteractions from "../withEditorInteractions";
-import onlyUpdateForKeys from "../utils/onlyUpdateForKeysDeep";
-import shouldRerender from "../utils/shouldRerender";
-
+// import {connectToEditor} from "../withEditorProps";
+import MenuBar from "../MenuBar";
 import "./style.css";
+import { Button, Tooltip  } from "@blueprintjs/core";
 
 import downloadTool from "./downloadTool";
 import importTool from "./importTool";
@@ -19,18 +11,15 @@ import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
 import oligoTool from "./oligoTool";
 import orfTool from "./orfTool";
-// import viewTool from "./viewTool";
 import editTool from "./editTool";
 import findTool from "./findTool";
 import inlineFindTool from "./inlineFindTool";
 import alignmentTool from "./alignmentTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
-// import propertiesTool from "./propertiesTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 import { isString } from "util";
-// import fullScreenTool from "./fullScreenTool";
 
 const allTools = {
   downloadTool,
@@ -40,51 +29,25 @@ const allTools = {
   featureTool,
   oligoTool,
   orfTool,
-  // viewTool,
   editTool,
   findTool,
   inlineFindTool,
   versionHistoryTool,
   saveTool,
   visibilityTool,
-  // propertiesTool,
   undoTool,
   redoTool
-  // fullScreenTool
 };
 
-// import get from 'lodash/get'
 
-export class ToolBar extends React.Component {
-  state = {
-    openItem: -1
-  };
-
-  componentWillUnmount() {
-    console.log("ToolBar unmountin");
-  }
-
-  toggleOpen = index => {
-    if (this.state.openItem === index) {
-      this.setState({
-        openItem: -1
-      });
-    } else {
-      this.setState({
-        openItem: index
-      });
-    }
-  };
-
+export class ToolBar extends React.PureComponent {
   render() {
-    if (!shouldRerender(["modifyTools", "toolList"], ["openItem"], this)) {
-      return this.cachedRender;
-    }
-
     const {
       modifyTools,
       contentLeft,
-      menuBar = null,
+      showMenuBar,
+      editorName,
+      handleFullscreenClose,
       closeFullscreen,
       toolList = [
         "saveTool",
@@ -94,22 +57,18 @@ export class ToolBar extends React.Component {
         "redoTool",
         "cutsiteTool",
         "featureTool",
-        // "oligoTool",
+        "oligoTool",
         "orfTool",
         "alignmentTool",
-        // "viewTool",
         "editTool",
-        // "findTool",
-        "inlineFindTool",
-        "visibilityTool"
-        // "fullScreenTool"
-        // "propertiesTool"
+        "findTool",
+        "visibilityTool",
       ],
       ...rest
     } = this.props;
 
     let items = toolList
-      .map(toolNameOrOverrides => {
+      .map((toolNameOrOverrides, index) => {
         let toolName;
         let toolOverride;
         if (isString(toolNameOrOverrides)) {
@@ -118,63 +77,59 @@ export class ToolBar extends React.Component {
           toolOverride = toolNameOrOverrides;
         }
 
-        const tool = toolOverride
+        const Tool = toolOverride
           ? { ...allTools[toolOverride.name], overrides: toolOverride } //add any overrides here
           : allTools[toolName];
-        if (!tool) {
+        if (!Tool) {
           console.error(
             "You're trying to load a tool that doesn't appear to exist: " +
               toolName
           );
           return false;
         }
-        return tool;
+        return <Tool {...rest} toolbarItemProps={{index, toolName, editorName}} editorName={editorName} key={toolName}></Tool>;
       })
-      .filter(tool => tool);
+      .filter(tool => !!tool);
 
     if (modifyTools) {
       items = modifyTools(items);
     }
 
-    let content = items.map((item, index) => {
-      const updateKeys = item.updateKeys || [];
-      const itemProps = item.itemProps || item;
-      const WrappedItem = compose(
-        withProps({
-          ...rest,
-          isOpen: index === this.state.openItem,
-          toggleOpen: this.toggleOpen,
-          index,
-          overrides: item.overrides //spread any overrides here
-        }),
-        withHandlers({
-          toggleDropdown: () => () => {
-            this.toggleOpen(index);
-          }
-        }),
-        withEditorInteractions,
-        withProps(itemProps),
-        onlyUpdateForKeys([...updateKeys, "isOpen", "toggleOpen", "editorName"])
-      )(ToolbarItem);
-      // WrappedItem.displayName = toolList[index];
-      return <WrappedItem key={index} />;
-    });
-    this.cachedRender = ( //we're caching this so that we don't force all the toolbarItems to get recreated and unmount
-      <div style={{ display: "flex" }}>
-        {contentLeft}
-        <div className={"veToolbar"}>
-          {menuBar} {content}
-        </div>
-        {closeFullscreen}
-      </div>
-    );
+     return <div style={{ display: "flex" }}>
+     {contentLeft}
+     <div className={"veToolbar"}>
+       {showMenuBar && (
+              <MenuBar
+                style={{ marginLeft: 0 }}
+                editorName={editorName}
+                
+                trackFocus={false}
+              />
+            )} 
+       
+       {items}
+     </div>
+     {closeFullscreen && <CloseFullscreenButton onClick={handleFullscreenClose}></CloseFullscreenButton>}
+   </div>
+ 
 
-    return this.cachedRender;
   }
 }
 
-export default withEditorProps(
-  //only re-render the toolbar for these keys (important because we don't want to re-initialize all the toolbar items unecessarily):
-  //also Toolbar must be a PureComponent so as not to re-render unecessarily
-  ToolBar
-);
+export default ToolBar
+// export default connectToEditor()  ToolBar
+
+const CloseFullscreenButton  =  (props) => {
+  return <Tooltip content="Close Fullscreen Mode">
+        <Button
+          minimal
+          style={{
+            marginTop: 2,
+            marginRight: 2
+          }}
+          onClick={props.onClick}
+          className={"ve-close-fullscreen-button"}
+          icon="minimize"
+        />
+      </Tooltip>
+}

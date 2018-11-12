@@ -4,51 +4,37 @@ import { Checkbox, Classes } from "@blueprintjs/core";
 // import show_orfs from "./veToolbarIcons/show_orfs.png";
 import { orfIcon, InfoHelper } from "teselagen-react-components";
 import classNames from "classnames";
+import ToolbarItem from "./ToolbarItem";
+import { connectToEditor } from "../withEditorProps";
+import withEditorProps from "../withEditorProps";
 
-export default {
-  updateKeys: [
-    "annotationVisibility",
-    "annotationVisibilityToggle",
-    "useAdditionalOrfStartCodonsToggle",
-    "useAdditionalStartCodons",
-    "useAdditionalOrfStartCodons",
-    "isOpen"
-  ],
-  itemProps: ({
-    annotationVisibilityToggle,
-    annotationVisibility = {},
-    isOpen
-  }) => {
-    return {
-      Icon: <Icon icon={orfIcon} />,
-      onIconClick: function() {
-        annotationVisibilityToggle("orfs");
-        annotationVisibilityToggle("orfTranslations");
-      },
-      toggled: annotationVisibility.orfs,
-      tooltip: "Show Open Reading Frames",
-      tooltipToggled: "Hide Open Reading Frames",
-      Dropdown: OrfToolDropdown,
-      dropdowntooltip:
-        (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options"
-    };
-  }
-};
+export default connectToEditor(editorState => {
+  return {
+    toggled: editorState.annotationVisibility.orfs,
+    isOpen: editorState.toolBar.openItem === "orfTool"
+  };
+})(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
+  return (
+    <ToolbarItem
+      {...{
+        ...toolbarItemProps,
+        Icon: <Icon icon={orfIcon} />,
+        onIconClick: function() {
+          annotationVisibilityToggle("orfs");
+          annotationVisibilityToggle("orfTranslations");
+        },
+        toggled,
+        tooltip: "Show Open Reading Frames",
+        tooltipToggled: "Hide Open Reading Frames",
+        Dropdown: OrfToolDropdown,
+        dropdowntooltip:
+          (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options"
+      }}
+    />
+  );
+});
 
-// function OrfTool({ annotationVisibilityToggle }) {
-//   return (
-//     <div
-//       onClick={function() {
-//         annotationVisibilityToggle("orfs");
-//         annotationVisibilityToggle("orfTranslations");
-//       }}
-//     >
-//       <img src={show_orfs} alt="Show Open Reading Frames" />
-//     </div>
-//   );
-// }
-
-function OrfToolDropdown({
+const OrfToolDropdown = withEditorProps(function ({
   sequenceLength,
   minimumOrfSizeUpdate,
   minimumOrfSize,
@@ -102,4 +88,4 @@ function OrfToolDropdown({
       />
     </div>
   );
-}
+})

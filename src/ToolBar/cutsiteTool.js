@@ -1,29 +1,34 @@
 import { Icon, Button, KeyCombo } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
+import ToolbarItem from "./ToolbarItem";
+import { connectToEditor } from "../withEditorProps";
 
+export default connectToEditor(editorState => {
+  return {
+    readOnly: editorState.readOnly,
+    toggled: editorState.annotationVisibility.cutsites,
+    isOpen: editorState.toolBar.openItem === "cutsiteTool"
+  };
+})(({ toolbarItemProps, toggled, isOpen, annotationVisibilityToggle }) => {
+  return (
+    <ToolbarItem
+      {...{
+        ...toolbarItemProps,
+        Icon: <Icon icon="cut" />,
+        onIconClick: function() {
+          annotationVisibilityToggle("cutsites");
+        },
+        toggled,
+        tooltip: "Show cut sites",
+        tooltipToggled: "Hide cut sites",
+        Dropdown: CutsiteToolDropDown,
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
+      }}
+    />
+  );
+});
 // import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
-
-export default {
-  updateKeys: ["annotationVisibilityToggle", "annotationVisibility", "isOpen"],
-  itemProps: function CutsiteTool({
-    annotationVisibilityToggle,
-    annotationVisibility = {},
-    isOpen
-  }) {
-    return {
-      Icon: <Icon icon="cut" />,
-      onIconClick: function() {
-        annotationVisibilityToggle("cutsites");
-      },
-      toggled: annotationVisibility.cutsites,
-      tooltip: "Show cut sites",
-      tooltipToggled: "Hide cut sites",
-      Dropdown: CutsiteToolDropDown,
-      dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
-    };
-  }
-};
 
 // function CutsiteToolIcon({ annotationVisibilityToggle }) {
 //   return (

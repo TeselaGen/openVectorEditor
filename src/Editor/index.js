@@ -1,11 +1,10 @@
 import { debounce } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
-import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
+import { Button, ButtonGroup, Intent,  Icon, Tooltip, ContextMenu  } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
-import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -21,7 +20,6 @@ import CommandHotkeyHandler from "./CommandHotkeyHandler";
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-import { Icon, Tooltip, ContextMenu } from "@blueprintjs/core";
 
 import { flatMap, map, filter } from "lodash";
 
@@ -35,7 +33,6 @@ import StatusBar from "../StatusBar";
 import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
-import MenuBar from "../MenuBar";
 import "./style.css";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -238,6 +235,10 @@ export class Editor extends React.Component {
       extraRightSidePanel,
       editorName,
       height: _height,
+      showReadOnly,
+      disableSetReadOnly,
+      showCircularity,
+      showAvailability,
       minHeight = 400,
       showMenuBar,
       updateSequenceData,
@@ -282,15 +283,19 @@ export class Editor extends React.Component {
       );
     }
     const previewModeFullscreen =
-      uncontrolledPreviewModeFullscreen ||
+      !!(uncontrolledPreviewModeFullscreen ||
       controlledPreviewModeFullscreen ||
-      isFullscreen;
+      isFullscreen);
 
-    const sharedProps = {
+    const sharedPropsMinimal = {
       editorName,
       tabHeight,
-      ...this.props
     };
+    const sharedProps = {
+      ...sharedPropsMinimal,
+      ...this.props
+
+    }
     let height = Math.max(
       minHeight,
       (this.veEditorNode &&
@@ -659,6 +664,7 @@ export class Editor extends React.Component {
         </ReflexElement>
       );
     }
+  
 
     return (
       <DropHandler
@@ -697,40 +703,15 @@ export class Editor extends React.Component {
 
         <ToolBar
           key="toolbar"
-          menuBar={
-            showMenuBar && (
-              <MenuBar
-                style={{ marginLeft: 0 }}
-                editorName={editorName}
-                {...sharedProps}
-                trackFocus={false}
-              />
-            )
-          }
-          closeFullscreen={
-            (isFullscreen
-              ? !!handleFullscreenClose
-              : previewModeFullscreen) && ( //make sure we have a fullscreen close handler if we're going to show this option
-              <Tooltip content="Close Fullscreen Mode">
-                <Button
-                  minimal
-                  style={{
-                    marginTop: 2,
-                    marginRight: 2
-                    // height: 30,
-                    // width: 30
-                  }}
-                  // title="Close Fullscreen Mode"
-                  onClick={
-                    handleFullscreenClose || this.togglePreviewFullscreen
-                  }
-                  className={"ve-close-fullscreen-button"}
-                  icon="minimize"
-                />
-              </Tooltip>
-            )
-          }
-          {...sharedProps}
+          showMenuBar={showMenuBar}
+          handleFullscreenClose={handleFullscreenClose || this.togglePreviewFullscreen}
+          closeFullscreen={!!(isFullscreen
+            ? handleFullscreenClose
+            : previewModeFullscreen)}
+          {...{modifyTools: this.props.modifyTools,
+          contentLeft: this.props.contentLeft,
+          editorName,
+          toolList: this.props.toolList,}}
           withDigestTool
           {...ToolBarProps}
         />
@@ -756,7 +737,7 @@ export class Editor extends React.Component {
           </DragDropContext>
         </div>
 
-        <StatusBar {...sharedProps} {...StatusBarProps} />
+        <StatusBar showAvailability={showAvailability} onSave={onSave} showCircularity={showCircularity} disableSetReadOnly={disableSetReadOnly} showReadOnly={showReadOnly} editorName={editorName} {...StatusBarProps} />
       </DropHandler>
     );
   }
@@ -770,3 +751,4 @@ export default compose(
   withEditorProps
   // sizeMe({monitorHeight: true})
 )(Editor);
+

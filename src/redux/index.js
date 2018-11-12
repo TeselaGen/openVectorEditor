@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import {connect} from "redux";
 import * as addYourOwnEnzyme from "./addYourOwnEnzyme";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
@@ -8,12 +8,12 @@ import * as copyOptions from "./copyOptions";
 import * as deletionLayers from "./deletionLayers";
 import * as digestTool from "./digestTool";
 import * as findTool from "./findTool";
+import * as toolBar from "./toolBar";
 import * as frameTranslations from "./frameTranslations";
 import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as lineageLines from "./lineageLines";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as alignments from "./alignments";
-import * as modalActions from "./modalActions";
 import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
 import * as lastSavedId from "./lastSavedId";
@@ -28,73 +28,63 @@ import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 
-import createAction from "./utils/createMetaAction";
 
+import * as modalActions from "./modalActions";
+import { combineReducers } from "redux";
+import createAction from "./utils/createMetaAction";
 export vectorEditorMiddleware from "./middleware";
+
+const subReducers = {
+  addYourOwnEnzyme,
+  annotationLabelVisibility,
+  annotationsToSupport,
+  annotationVisibility,
+  caretPosition,
+  copyOptions,
+  deletionLayers,
+  digestTool,
+  toolBar,
+  findTool,
+  frameTranslations,
+  hoveredAnnotation,
+  lineageLines,
+  minimumOrfSize,
+  alignments,  
+  panelsShown,
+  propertiesTool,
+  lastSavedId,
+  readOnly,
+  versionHistory,
+  replacementLayers,
+  restrictionEnzymes,
+  selectedAnnotations,
+  selectionLayer,
+  sequenceDataHistory,
+  sequenceData,
+  useAdditionalOrfStartCodons,
+  uppercaseSequenceMapFont,
+}
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
 const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
 
 //export the actions for use elsewhere
 export const actions = {
-  ...selectionLayer,
-  ...caretPosition,
-  ...restrictionEnzymes,
-  ...selectedAnnotations,
-  ...annotationLabelVisibility,
-  ...annotationVisibility,
-  ...annotationsToSupport,
-  ...sequenceData,
-  ...useAdditionalOrfStartCodons,
-  ...minimumOrfSize,
-  ...hoveredAnnotation,
-  ...deletionLayers,
-  ...replacementLayers,
-  ...copyOptions,
-  ...lineageLines,
-  ...alignments,
-  ...uppercaseSequenceMapFont,
-  ...digestTool,
-  ...frameTranslations,
-  ...lastSavedId,
-  ...versionHistory,
-  ...readOnly,
-  ...panelsShown,
-  ...findTool,
+  ...Object.keys(subReducers).reduce((acc, k) => ({
+    ...acc,
+    ...subReducers[k]
+  }), {}),
   ...modalActions,
-  ...propertiesTool,
-  ...addYourOwnEnzyme,
   vectorEditorInitialize,
   vectorEditorClear
 };
 
 //define the reducer
 let reducers = {
-  restrictionEnzymes: restrictionEnzymes.default,
-  selectedAnnotations: selectedAnnotations.default,
-  annotationLabelVisibility: annotationLabelVisibility.default,
-  annotationVisibility: annotationVisibility.default,
-  annotationsToSupport: annotationsToSupport.default,
-  sequenceData: sequenceData.default,
-  useAdditionalOrfStartCodons: useAdditionalOrfStartCodons.default,
-  minimumOrfSize: minimumOrfSize.default,
-  sequenceDataHistory: sequenceDataHistory.default,
-  hoveredAnnotation: hoveredAnnotation.default,
-  caretPosition: caretPosition.default,
-  selectionLayer: selectionLayer.default,
-  copyOptions: copyOptions.default,
-  lineageLines: lineageLines.default,
-  digestTool: digestTool.default,
-  frameTranslations: frameTranslations.default,
-  versionHistory: versionHistory.default,
-  readOnly: readOnly.default,
-  lastSavedId: lastSavedId.default,
-  findTool: findTool.default,
-  propertiesTool: propertiesTool.default,
-  panelsShown: panelsShown.default,
-  alignments: alignments.default,
-  deletionLayers: deletionLayers.default,
-  replacementLayers: replacementLayers.default,
+  ...Object.keys(subReducers).reduce((acc, k) => ({
+    ...acc,
+    [k]: subReducers[k].default
+  }), {}),
   instantiated: () => true
 };
 
@@ -170,3 +160,11 @@ export default function reducerFactory(initialState = {}) {
 
 // export const getBlankEditor = (state) => (state.blankEditor)
 export const getEditorByName = (state, editorName) => state[editorName];
+
+
+
+// export default connect((state, ownProps) => {
+//   return {
+//     toggled: state.VectorEditor[ownProps.editorName].annotationVisibility.features
+//   }
+// })()

@@ -1,3 +1,4 @@
+import { connectToEditor } from "../withEditorProps";
 // import download from 'in-browser-download'
 import {
   Popover,
@@ -8,13 +9,13 @@ import {
   Intent
 } from "@blueprintjs/core";
 import React from "react";
-import withEditorProps from "../withEditorProps";
 import "./style.css";
 
-export default class ToolbarItem extends React.Component {
-  toggleDropdown = () => {
-    const { index, toggleOpen } = this.props;
-    toggleOpen(index);
+class ToolbarItem extends React.Component {
+  toggleDropdown = ({ forceClose }) => {
+    const { toolName, isOpen } = this.props;
+
+    this.props.openToolbarItemUpdate(isOpen || forceClose ? "" : toolName);
   };
 
   render() {
@@ -28,35 +29,26 @@ export default class ToolbarItem extends React.Component {
       tooltip = "",
       tooltipToggled,
       dropdowntooltip = "",
-      Dropdown: _DropDown,
+      Dropdown,
       disabled,
       renderIconAbove,
       noDropdownIcon,
       IconWrapper,
+      editorName,
       popoverDisabled,
       IconWrapperProps,
+      toolName,
       dropdownicon,
       tooltipDisabled,
-      toggled = false
+      toggled = false,
+      ...rest
     } = { ...this.props, ...overrides };
-
-    // const {
-    //   Icon,
-    //   onIconClick = noop,
-    //   tooltip = "",
-    //   tooltipToggled,
-    //   dropdowntooltip = "",
-    //   Dropdown,
-    //   disabled,
-    //   noDropdownIcon,
-    //   dropdownicon,
-    //   toggled = false
-    // } = item({ isOpen, toggleDropdown: this.toggleDropdown });
+    if (!toolName) console.warn("toolName is required!");
     let tooltipToDisplay = tooltip;
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;
     }
-    const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
+    // const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
 
     const buttonTarget = (
       <div className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}>
@@ -78,7 +70,11 @@ export default class ToolbarItem extends React.Component {
             >
               <AnchorButton
                 intent={Intent.PRIMARY}
-                onClick={onIconClick}
+                onClick={
+                  onIconClick === "toggleDropdown"
+                    ? this.toggleDropdown
+                    : onIconClick
+                }
                 active={toggled}
                 disabled={disabled}
                 minimal
@@ -124,7 +120,7 @@ export default class ToolbarItem extends React.Component {
         className={"ve-toolbar-dropdown content"}
       >
         {Dropdown && (
-          <Dropdown {...this.props} toggleDropdown={this.toggleDropdown} />
+          <Dropdown {...rest} editorName={editorName} toggleDropdown={this.toggleDropdown} />
         )}
       </div>
     );
@@ -140,9 +136,10 @@ export default class ToolbarItem extends React.Component {
 
         <Popover
           disabled={popoverDisabled}
-          isOpen={!popoverDisabled && !!Dropdown && isOpen}
+          isOpen={!!Dropdown && isOpen}
           onClose={e => {
             if (
+              e &&
               e.srcElement &&
               this.dropdownNode &&
               (this.dropdownNode.contains(e.srcElement) ||
@@ -150,7 +147,7 @@ export default class ToolbarItem extends React.Component {
             ) {
               return;
             }
-            this.toggleDropdown();
+            this.toggleDropdown({ forceClose: true });
           }}
           canEscapeKeyClose
           minimal
@@ -164,3 +161,7 @@ export default class ToolbarItem extends React.Component {
 }
 
 function noop() {}
+
+export default connectToEditor(({ toolBar = {} }, { toolName }) => ({
+  isOpen: toolBar.openItem === toolName
+}))(ToolbarItem);

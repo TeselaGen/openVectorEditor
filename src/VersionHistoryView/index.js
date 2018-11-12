@@ -138,7 +138,7 @@ export class VersionHistoryView extends React.Component {
                     "featureTool",
                     "orfTool",
                     "alignmentTool",
-                    "inlineFindTool",
+                    "findTool",
                     "visibilityTool"
                   ],
                   contentLeft: (

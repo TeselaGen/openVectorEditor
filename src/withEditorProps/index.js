@@ -1,3 +1,6 @@
+import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
+import FileSaver from "file-saver";
+
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import lruMemoize from "lru-memoize";
@@ -24,6 +27,86 @@ import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
+export const handleSave = props => e => {
+  const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
+  const updateLastSavedIdToCurrent = () => {
+    lastSavedIdUpdate(sequenceData.stateTrackingId);
+  };
+  const promiseOrVal =
+    !readOnly &&
+    onSave &&
+    onSave(
+      e,
+      tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+      props,
+      updateLastSavedIdToCurrent
+    );
+
+  if (promiseOrVal && promiseOrVal.then) {
+    return promiseOrVal.then(updateLastSavedIdToCurrent);
+  }
+};
+
+export const importSequenceFromFile = props => (file, opts = {}) => {
+  const { updateSequenceData } = props;
+  let reader = new FileReader();
+  reader.readAsText(file, "UTF-8");
+  reader.onload = function(evt) {
+    const content = evt.target.result;
+    anyToJson(
+      content,
+      result => {
+        // TODO maybe handle import errors/warnings better
+        const failed = !result[0].success;
+        const messages = result[0].messages;
+        if (messages && messages.length) {
+          messages.forEach(msg => {
+            const type = msg
+              .substr(0, 20)
+              .toLowerCase()
+              .includes("error")
+              ? failed
+                ? "error"
+                : "warning"
+              : "info";
+            window.toastr[type](msg);
+          });
+        }
+        updateSequenceData(result[0].parsedSequence);
+        if (!failed) {
+          window.toastr.success("Sequenced imported");
+        }
+      },
+      { acceptParts: true, ...opts }
+    );
+  };
+  reader.onerror = function() {
+    window.toastr.error("Could not read file.");
+  };
+};
+
+export const exportSequenceToFile = props => format => {
+  const { sequenceData } = props;
+  let convert, fileExt;
+
+  if (format === "genbank") {
+    convert = jsonToGenbank;
+    fileExt = "gb";
+  } else if (format === "teselagenJson") {
+    convert = JSON.stringify;
+    fileExt = "json";
+  } else if (format === "fasta") {
+    convert = jsonToFasta;
+    fileExt = "fasta";
+  } else {
+    console.error(`Invalid export format: '${format}'`); // dev error
+    return;
+  }
+  const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
+  const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
+  FileSaver.saveAs(blob, filename);
+};
+
 /**
  * This function basically connects the wrapped component with all of the state stored in a given editor instance
  * and then some extra goodies like computed properties and namespace bound action handlers
@@ -36,28 +119,9 @@ export default compose(
     { pure: false }
   ),
   withHandlers({
-    handleSave: props => {
-      return e => {
-        const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
-        const updateLastSavedIdToCurrent = () => {
-          lastSavedIdUpdate(sequenceData.stateTrackingId);
-        };
-        const promiseOrVal =
-          !readOnly &&
-          onSave &&
-          onSave(
-            e,
-            tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-            props,
-            updateLastSavedIdToCurrent
-          );
-
-        if (promiseOrVal && promiseOrVal.then) {
-          return promiseOrVal.then(updateLastSavedIdToCurrent);
-        }
-        // return updateLastSavedIdToCurrent()
-      };
-    },
+    handleSave,
+    importSequenceFromFile,
+    exportSequenceToFile,
     updateCircular: props => {
       return async isCircular => {
         const { _updateCircular, updateSequenceData, sequenceData } = props;
@@ -129,8 +193,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
+            ? { start: caretPosition, end: caretPosition }
+            : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new parts in read-only mode"
@@ -151,8 +215,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
+            ? { start: caretPosition, end: caretPosition }
+            : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new features in read-only mode"
@@ -240,8 +304,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
+            ? { start: caretPosition, end: caretPosition }
+            : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new primers in read-only mode"
@@ -396,9 +460,6 @@ function mapStateToProps(state, ownProps) {
       ...findTool,
       matchesTotal
     },
-    hasBeenSaved:
-      sequenceData.stateTrackingId === "initialLoadId" ||
-      sequenceData.stateTrackingId === editorState.lastSavedId,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
@@ -407,7 +468,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToActions(dispatch, ownProps) {
+export function mapDispatchToActions(dispatch, ownProps) {
   const { editorName } = ownProps;
 
   let { actionOverrides = fakeActionOverrides } = ownProps;
@@ -426,6 +487,7 @@ function mapDispatchToActions(dispatch, ownProps) {
     dispatch
   };
 }
+
 const defaultOverrides = {};
 export function fakeActionOverrides() {
   return defaultOverrides;
@@ -546,3 +608,19 @@ function doAnySpanOrigin(annotations) {
     if (start > end) return true;
   });
 }
+
+export const connectToEditor = fn => {
+  return connect(
+    (state, ownProps, ...rest) => {
+      return fn
+        ? fn(
+            state.VectorEditor[ownProps.editorName] || {},
+            ownProps,
+            ...rest,
+            state
+          )
+        : {};
+    },
+    mapDispatchToActions
+  );
+};
