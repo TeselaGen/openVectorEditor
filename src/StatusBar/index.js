@@ -1,10 +1,15 @@
 import { getInsertBetweenVals } from "ve-sequence-utils";
-import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import React from "react";
 import { Button, Classes } from "@blueprintjs/core";
 import { BPSelect } from "teselagen-react-components";
-import { connectToEditor } from "../withEditorProps";
+import {
+  connectToEditor,
+  updateCircular,
+  handleInverse
+} from "../withEditorProps";
 import "./style.css";
+import { withHandlers, compose } from "recompose";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -41,19 +46,22 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   }
 );
 
-const ShowSelectionItem = connectToEditor(
-  ({ selectionLayer, caretPosition, sequenceData = { sequence: "" } }) => ({
-    selectionLayer,
-    caretPosition,
-    sequenceLength: sequenceData.sequence.length
-  })
+const ShowSelectionItem = compose(
+  connectToEditor(
+    ({ selectionLayer, caretPosition, sequenceData = { sequence: "" } }) => ({
+      selectionLayer,
+      caretPosition,
+      sequenceLength: sequenceData.sequence.length
+    })
+  ),
+  withHandlers({ handleInverse })
 )(
   ({
     selectionLayer = { start: -1, end: -1 },
     caretPosition = -1,
     sequenceLength = 0,
-    selectionLayerUpdate,
-    caretPositionUpdate
+
+    handleInverse
   }) => {
     let length = getRangeLength(selectionLayer, sequenceLength);
     let insertBetween = getInsertBetweenVals(
@@ -69,47 +77,12 @@ const ShowSelectionItem = connectToEditor(
             ? `Selecting ${length} bps from ${selectionLayer.start +
                 1} to ${selectionLayer.end + 1}`
             : caretPosition > -1
-              ? `Caret Between Bases ${insertBetween[0]} and ${
-                  insertBetween[1]
-                }`
-              : "No Selection"}
+            ? `Caret Between Bases ${insertBetween[0]} and ${insertBetween[1]}`
+            : "No Selection"}
           <Button
             minimal
             disabled={sequenceLength <= 0}
-            onClick={() => {
-              if (sequenceLength <= 0) {
-                return false;
-              }
-              if (selectionLayer.start > -1) {
-                if (
-                  getRangeLength(selectionLayer, sequenceLength) ===
-                  sequenceLength
-                ) {
-                  caretPositionUpdate(selectionLayer.start);
-                } else {
-                  selectionLayerUpdate(
-                    invertRange(selectionLayer, sequenceLength)
-                  );
-                }
-              } else {
-                if (caretPosition > -1) {
-                  selectionLayerUpdate(
-                    normalizeRange(
-                      {
-                        start: caretPosition,
-                        end: caretPosition - 1
-                      },
-                      sequenceLength
-                    )
-                  );
-                } else {
-                  selectionLayerUpdate({
-                    start: 0,
-                    end: sequenceLength - 1
-                  });
-                }
-              }
-            }}
+            onClick={handleInverse}
             style={{ marginLeft: 5, color: "#48AFF0" }}
             small
           >
@@ -129,14 +102,17 @@ const ShowLengthItem = connectToEditor(
   <StatusBarItem>{`Length: ${sequenceLength}`}</StatusBarItem>
 ));
 
-const EditCircularityItem = connectToEditor(
-  ({
-    readOnly,
-    sequenceData: { circular /* materiallyAvailable */ } = {}
-  }) => ({
-    readOnly,
-    circular
-  })
+const EditCircularityItem = compose(
+  connectToEditor(
+    ({
+      readOnly,
+      sequenceData: { circular /* materiallyAvailable */ } = {}
+    }) => ({
+      readOnly,
+      circular
+    })
+  ),
+  withHandlers({ updateCircular })
 )(({ readOnly, showCircularity, circular, updateCircular }) => {
   return showCircularity ? (
     <StatusBarItem>
@@ -202,7 +178,7 @@ export function StatusBar({
   showAvailability = false
 }) {
   return (
-    <div className={"veStatusBar"}>
+    <div className="veStatusBar">
       <EditReadOnlyItem
         editorName={editorName}
         {...{
@@ -228,8 +204,8 @@ export function StatusBar({
 function StatusBarItem({ children }) {
   return (
     <React.Fragment>
-      <div className={"veStatusBarItem"}>{children}</div>
-      <div className={"veStatusBarSpacer"} />
+      <div className="veStatusBarItem">{children}</div>
+      <div className="veStatusBarSpacer" />
     </React.Fragment>
   );
 }

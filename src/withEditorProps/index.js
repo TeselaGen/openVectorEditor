@@ -47,6 +47,62 @@ export const handleSave = props => e => {
   }
 };
 
+export const handleInverse = props => () => {
+  const {
+    sequenceLength,
+    selectionLayer,
+    caretPosition,
+    selectionLayerUpdate,
+    caretPositionUpdate
+  } = props;
+
+  if (sequenceLength <= 0) {
+    return false;
+  }
+  if (selectionLayer.start > -1) {
+    if (getRangeLength(selectionLayer, sequenceLength) === sequenceLength) {
+      caretPositionUpdate(selectionLayer.start);
+    } else {
+      selectionLayerUpdate(invertRange(selectionLayer, sequenceLength));
+    }
+  } else {
+    if (caretPosition > -1) {
+      selectionLayerUpdate(
+        normalizeRange(
+          {
+            start: caretPosition,
+            end: caretPosition - 1
+          },
+          sequenceLength
+        )
+      );
+    } else {
+      selectionLayerUpdate({
+        start: 0,
+        end: sequenceLength - 1
+      });
+    }
+  }
+};
+
+export const updateCircular = props => async isCircular => {
+  const { _updateCircular, updateSequenceData, sequenceData } = props;
+  if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
+    const doAction = await showConfirmationDialog({
+      intent: Intent.DANGER, //applied to the right most confirm button
+      confirmButtonText: "Truncate Annotations",
+      canEscapeKeyCancel: true, //this is false by default
+      text:
+        "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+    });
+    if (!doAction) return; //stop early
+    updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
+      batchUndoStart: true
+    });
+  }
+  _updateCircular(isCircular, { batchUndoEnd: true });
+};
+
 export const importSequenceFromFile = props => (file, opts = {}) => {
   const { updateSequenceData } = props;
   let reader = new FileReader();
@@ -122,25 +178,7 @@ export default compose(
     handleSave,
     importSequenceFromFile,
     exportSequenceToFile,
-    updateCircular: props => {
-      return async isCircular => {
-        const { _updateCircular, updateSequenceData, sequenceData } = props;
-        if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
-          const doAction = await showConfirmationDialog({
-            intent: Intent.DANGER, //applied to the right most confirm button
-            confirmButtonText: "Truncate Annotations",
-            canEscapeKeyCancel: true, //this is false by default
-            text:
-              "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
-          });
-          if (!doAction) return; //stop early
-          updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
-            batchUndoStart: true
-          });
-        }
-        _updateCircular(isCircular, { batchUndoEnd: true });
-      };
-    },
+    updateCircular,
     upsertTranslation: props => {
       return async translationToUpsert => {
         if (!translationToUpsert) return;
@@ -193,8 +231,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new parts in read-only mode"
@@ -215,8 +253,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new features in read-only mode"
@@ -304,8 +342,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new primers in read-only mode"
@@ -314,43 +352,7 @@ export default compose(
         showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
       }
     },
-
-    handleInverse: props => context => {
-      const {
-        sequenceLength,
-        selectionLayer,
-        caretPosition,
-        selectionLayerUpdate,
-        caretPositionUpdate
-      } = context ? context.props : props;
-      if (sequenceLength <= 0) {
-        return false;
-      }
-      if (selectionLayer.start > -1) {
-        if (getRangeLength(selectionLayer) === sequenceLength) {
-          caretPositionUpdate(selectionLayer.start);
-        } else {
-          selectionLayerUpdate(invertRange(selectionLayer));
-        }
-      } else {
-        if (caretPosition > -1) {
-          selectionLayerUpdate(
-            normalizeRange(
-              {
-                start: caretPosition,
-                end: caretPosition - 1
-              },
-              sequenceLength
-            )
-          );
-        } else {
-          selectionLayerUpdate({
-            start: 0,
-            end: sequenceLength - 1
-          });
-        }
-      }
-    }
+    handleInverse
   })
 );
 
