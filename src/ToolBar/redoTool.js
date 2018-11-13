@@ -5,7 +5,11 @@ import { connectToEditor } from "../withEditorProps";
 
 export default connectToEditor(editorState => {
   return {
-    disabled: !editorState.sequenceDataHistory.future.length
+    disabled: !(
+      editorState.sequenceDataHistory &&
+      editorState.sequenceDataHistory.future &&
+      editorState.sequenceDataHistory.future.length
+    )
   };
 })(({ toolbarItemProps, redo, disabled }) => {
   return (

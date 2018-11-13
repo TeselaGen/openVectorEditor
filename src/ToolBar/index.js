@@ -3,7 +3,7 @@ import versionHistoryTool from "./versionHistoryTool";
 // import {connectToEditor} from "../withEditorProps";
 import MenuBar from "../MenuBar";
 import "./style.css";
-import { Button, Tooltip  } from "@blueprintjs/core";
+import { Button, Tooltip } from "@blueprintjs/core";
 
 import downloadTool from "./downloadTool";
 import importTool from "./importTool";
@@ -39,7 +39,6 @@ const allTools = {
   redoTool
 };
 
-
 export class ToolBar extends React.PureComponent {
   render() {
     const {
@@ -62,11 +61,10 @@ export class ToolBar extends React.PureComponent {
         "alignmentTool",
         "editTool",
         "findTool",
-        "visibilityTool",
+        "visibilityTool"
       ],
       ...rest
     } = this.props;
-
     let items = toolList
       .map((toolNameOrOverrides, index) => {
         let toolName;
@@ -87,7 +85,14 @@ export class ToolBar extends React.PureComponent {
           );
           return false;
         }
-        return <Tool {...rest} toolbarItemProps={{index, toolName, editorName}} editorName={editorName} key={toolName}></Tool>;
+        return (
+          <Tool
+            {...rest}
+            toolbarItemProps={{ index, toolName, editorName }}
+            editorName={editorName}
+            key={toolName}
+          />
+        );
       })
       .filter(tool => !!tool);
 
@@ -95,41 +100,44 @@ export class ToolBar extends React.PureComponent {
       items = modifyTools(items);
     }
 
-     return <div style={{ display: "flex" }}>
-     {contentLeft}
-     <div className={"veToolbar"}>
-       {showMenuBar && (
-              <MenuBar
-                style={{ marginLeft: 0 }}
-                editorName={editorName}
-                
-                trackFocus={false}
-              />
-            )} 
-       
-       {items}
-     </div>
-     {closeFullscreen && <CloseFullscreenButton onClick={handleFullscreenClose}></CloseFullscreenButton>}
-   </div>
- 
+    return (
+      <div style={{ display: "flex" }}>
+        {contentLeft}
+        <div className="veToolbar">
+          {showMenuBar && (
+            <MenuBar
+              style={{ marginLeft: 0 }}
+              editorName={editorName}
+              trackFocus={false}
+            />
+          )}
 
+          {items}
+        </div>
+        {closeFullscreen && (
+          <CloseFullscreenButton onClick={handleFullscreenClose} />
+        )}
+      </div>
+    );
   }
 }
 
-export default ToolBar
+export default ToolBar;
 // export default connectToEditor()  ToolBar
 
-const CloseFullscreenButton  =  (props) => {
-  return <Tooltip content="Close Fullscreen Mode">
-        <Button
-          minimal
-          style={{
-            marginTop: 2,
-            marginRight: 2
-          }}
-          onClick={props.onClick}
-          className={"ve-close-fullscreen-button"}
-          icon="minimize"
-        />
-      </Tooltip>
-}
+const CloseFullscreenButton = props => {
+  return (
+    <Tooltip content="Close Fullscreen Mode">
+      <Button
+        minimal
+        style={{
+          marginTop: 2,
+          marginRight: 2
+        }}
+        onClick={props.onClick}
+        className="ve-close-fullscreen-button"
+        icon="minimize"
+      />
+    </Tooltip>
+  );
+};

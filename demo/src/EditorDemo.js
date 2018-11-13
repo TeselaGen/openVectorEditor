@@ -107,7 +107,7 @@ export default class StandaloneDemo extends React.Component {
                 console.log("saving");
               }
             }}
-            handleFullscreenClose={this.changeFullscreenMode}
+            handleFullscreenClose={!withPreviewMode && this.changeFullscreenMode} //don't pass this handler if you're also using previewMode
             isFullscreen={fullscreenMode}
             {...forceHeightMode && { height: 500 }}
             withPreviewMode={withPreviewMode}

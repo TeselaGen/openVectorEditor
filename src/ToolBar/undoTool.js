@@ -5,7 +5,11 @@ import { connectToEditor } from "../withEditorProps";
 
 export default connectToEditor(editorState => {
   return {
-    disabled: !editorState.sequenceDataHistory.past.length
+    disabled: !(
+      editorState.sequenceDataHistory &&
+      editorState.sequenceDataHistory.past &&
+      editorState.sequenceDataHistory.past.length
+    )
   };
 })(({ toolbarItemProps, undo, disabled }) => {
   return (
@@ -21,7 +25,7 @@ export default connectToEditor(editorState => {
             Undo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Z)</span>
           </span>
         )
-         }}
+      }}
     />
   );
 });

@@ -1,7 +1,14 @@
 import { debounce } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
-import { Button, ButtonGroup, Intent,  Icon, Tooltip, ContextMenu  } from "@blueprintjs/core";
+import {
+  Button,
+  ButtonGroup,
+  Intent,
+  Icon,
+  Tooltip,
+  ContextMenu
+} from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import Dialogs from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
@@ -20,7 +27,6 @@ import CommandHotkeyHandler from "./CommandHotkeyHandler";
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-
 import { flatMap, map, filter } from "lodash";
 
 import ToolBar from "../ToolBar";
@@ -30,7 +36,7 @@ import CircularView, {
 import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
-import withEditorProps from "../withEditorProps";
+import { connectToEditor } from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
 import "./style.css";
@@ -127,6 +133,7 @@ export class Editor extends React.Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
+    this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
@@ -271,7 +278,7 @@ export class Editor extends React.Component {
       return (
         <VersionHistoryView
           {...{
-            onSave,
+            onSave, //we need to pass this user defined handler
             updateSequenceData,
             caretPositionUpdate,
             sequenceData,
@@ -282,20 +289,12 @@ export class Editor extends React.Component {
         />
       );
     }
-    const previewModeFullscreen =
-      !!(uncontrolledPreviewModeFullscreen ||
+    const previewModeFullscreen = !!(
+      uncontrolledPreviewModeFullscreen ||
       controlledPreviewModeFullscreen ||
-      isFullscreen);
+      isFullscreen
+    );
 
-    const sharedPropsMinimal = {
-      editorName,
-      tabHeight,
-    };
-    const sharedProps = {
-      ...sharedPropsMinimal,
-      ...this.props
-
-    }
     let height = Math.max(
       minHeight,
       (this.veEditorNode &&
@@ -322,7 +321,9 @@ export class Editor extends React.Component {
         <div className="preview-mode-container">
           <div style={{ position: "relative" }}>
             <Panel
-              {...sharedProps}
+              sequenceData={sequenceData}
+              tabHeight={tabHeight}
+              editorName={editorName}
               {...editorDimensions}
               annotationLabelVisibility={{
                 features: false,
@@ -400,9 +401,11 @@ export class Editor extends React.Component {
       const Panel = panelMap[activePanelType];
       let panel = Panel ? (
         <Panel
+          onSave={onSave}
           key={activePanelId}
           {...propsToSpread}
-          {...sharedProps}
+          editorName={editorName}
+          tabHeight={tabHeight}
           {...editorDimensions}
           isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
         />
@@ -467,7 +470,7 @@ export class Editor extends React.Component {
           className="ve-panel"
         >
           {isFullScreen ? (
-            <Tooltip position={"left"} content="Minimize Tab">
+            <Tooltip position="left" content="Minimize Tab">
               <Button
                 style={{
                   zIndex: 15002,
@@ -484,7 +487,7 @@ export class Editor extends React.Component {
             </Tooltip>
           ) : (
             <Icon
-              className={"veRightClickTabMenu"}
+              className="veRightClickTabMenu"
               onClick={showTabRightClickContextMenu}
               icon="more"
               style={{
@@ -499,13 +502,13 @@ export class Editor extends React.Component {
 
           {[
             <Droppable
-              key={"droppableKey"}
+              key="droppableKey"
               direction="horizontal"
               droppableId={index.toString()}
             >
               {(provided, snapshot) => (
                 <div
-                  className={"ve-draggable-tabs"}
+                  className="ve-draggable-tabs"
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
@@ -587,7 +590,7 @@ export class Editor extends React.Component {
             </Droppable>,
             ...(panelsToShow.length === 1 && [
               <Droppable
-                key={"extra-drop-box"}
+                key="extra-drop-box"
                 direction="horizontal"
                 droppableId={(index + 1).toString()}
               >
@@ -617,7 +620,7 @@ export class Editor extends React.Component {
             ]),
             isFullScreen ? (
               <div
-                key={"veWhiteBackground"}
+                key="veWhiteBackground"
                 className="veWhiteBackground"
                 style={{
                   zIndex: 15000,
@@ -640,7 +643,7 @@ export class Editor extends React.Component {
     if (extraRightSidePanel) {
       panels.push(
         <ReflexSplitter
-          key={"extraRightSidePanelSplitter"}
+          key="extraRightSidePanelSplitter"
           style={{
             zIndex: 1
           }}
@@ -649,7 +652,7 @@ export class Editor extends React.Component {
       );
       panels.push(
         <ReflexElement
-          key={"extraRightSidePanel"}
+          key="extraRightSidePanel"
           minSize="350"
           maxSize="350"
           propagateDimensions={true}
@@ -664,7 +667,6 @@ export class Editor extends React.Component {
         </ReflexElement>
       );
     }
-  
 
     return (
       <DropHandler
@@ -700,22 +702,26 @@ export class Editor extends React.Component {
         className="veEditor"
       >
         <Dialogs editorName={editorName} />
-
         <ToolBar
           key="toolbar"
           showMenuBar={showMenuBar}
-          handleFullscreenClose={handleFullscreenClose || this.togglePreviewFullscreen}
-          closeFullscreen={!!(isFullscreen
-            ? handleFullscreenClose
-            : previewModeFullscreen)}
-          {...{modifyTools: this.props.modifyTools,
-          contentLeft: this.props.contentLeft,
-          editorName,
-          toolList: this.props.toolList,}}
+          handleFullscreenClose={
+            handleFullscreenClose || this.togglePreviewFullscreen
+          }
+          onSave={onSave}
+          closeFullscreen={
+            !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
+          }
+          {...{
+            modifyTools: this.props.modifyTools,
+            contentLeft: this.props.contentLeft,
+            editorName,
+            toolList: this.props.toolList
+          }}
           withDigestTool
           {...ToolBarProps}
         />
-        <CommandHotkeyHandler {...sharedProps} />
+        <CommandHotkeyHandler editorName={editorName} />
 
         <div
           style={{ position: "relative", flexGrow: "1" }}
@@ -737,7 +743,15 @@ export class Editor extends React.Component {
           </DragDropContext>
         </div>
 
-        <StatusBar showAvailability={showAvailability} onSave={onSave} showCircularity={showCircularity} disableSetReadOnly={disableSetReadOnly} showReadOnly={showReadOnly} editorName={editorName} {...StatusBarProps} />
+        <StatusBar
+          showAvailability={showAvailability}
+          onSave={onSave}
+          showCircularity={showCircularity}
+          disableSetReadOnly={disableSetReadOnly}
+          showReadOnly={showReadOnly}
+          editorName={editorName}
+          {...StatusBarProps}
+        />
       </DropHandler>
     );
   }
@@ -748,7 +762,12 @@ Editor.childContextTypes = {
 };
 
 export default compose(
-  withEditorProps
+  connectToEditor(({ panelsShown, versionHistory, sequenceData = {} }) => {
+    return {
+      panelsShown,
+      versionHistory,
+      sequenceData
+    };
+  })
   // sizeMe({monitorHeight: true})
 )(Editor);
-
