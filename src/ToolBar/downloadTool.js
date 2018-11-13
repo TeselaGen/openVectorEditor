@@ -3,20 +3,27 @@ import { Icon, Menu } from "@blueprintjs/core";
 import { createCommandMenu } from "teselagen-react-components";
 import getCommands from "../commands";
 
-export default {
-  updateKeys: ["toggleDropdown"],
-  itemProps: props => {
-    return {
-      tooltip: "Export",
-      Dropdown,
-      noDropdownIcon: true,
-      onIconClick: props.toggleDropdown,
-      Icon: <Icon icon="import" />
-    };
-  }
-};
+import {connectToEditor} from "../withEditorProps";
+import ToolbarItem from "./ToolbarItem";
+import withEditorProps from "../withEditorProps";
 
-const Dropdown = props => {
+
+export default connectToEditor()(({ toolbarItemProps }) => {
+  return (
+    <ToolbarItem
+      {...{
+        ...toolbarItemProps,
+        tooltip: "Export",
+        Dropdown,
+        noDropdownIcon: true,
+        onIconClick: "toggleDropdown",
+        Icon: <Icon icon="import" />
+      }}
+    />
+  );
+});
+
+const Dropdown = withEditorProps(props => {
   return (
     <Menu>
       {createCommandMenu(
@@ -29,4 +36,5 @@ const Dropdown = props => {
       )}
     </Menu>
   );
-};
+});
+

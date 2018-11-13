@@ -4,46 +4,32 @@ import React from "react";
 import { connect } from "react-redux";
 import { convertRangeTo1Based } from "ve-range-utils";
 import { featureIcon } from "teselagen-react-components";
+import ToolbarItem from "./ToolbarItem";
+import {connectToEditor} from "../withEditorProps";
 
-// import show_features from "./veToolbarIcons/show_features.png";
-
-export default {
-  updateKeys: [
-    "itemProps",
-    "annotationLabelVisibility",
-    "annotationLabelVisibilityToggle",
-    "isOpen"
-  ],
-  itemProps: ({
-    annotationVisibilityToggle,
-    annotationVisibility = {},
-    isOpen
-  }) => {
-    return {
-      Icon: <Icon icon={featureIcon} />,
-      onIconClick: function() {
-        annotationVisibilityToggle("features");
-      },
-      toggled: annotationVisibility.features,
-      tooltip: "Show features",
-      tooltipToggled: "Hide features",
-      // Dropdown: ConnectedFeatureToolDropdown,
-      dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options"
-    };
-  }
-};
-
-// function FeatureTool({ annotationVisibilityToggle }) {
-//   return (
-//     <div
-//       onClick={function() {
-//         annotationVisibilityToggle("features");
-//       }}
-//     >
-//       <img src={show_features} alt="Show features" />
-//     </div>
-//   );
-// }
+export default connectToEditor(editorState => {
+  return {
+    toggled: editorState.annotationVisibility.features,
+    isOpen: editorState.toolBar.openItem === "featureTool"
+  };
+})(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
+  return (
+    <ToolbarItem
+      {...{
+        ...toolbarItemProps,
+        Icon: <Icon icon={featureIcon} />,
+        onIconClick: function() {
+          annotationVisibilityToggle("features");
+        },
+        toggled,
+        tooltip: "Show features",
+        tooltipToggled: "Hide features",
+        // Dropdown: ConnectedFeatureToolDropdown,
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options"
+      }}
+    />
+  );
+});
 
 function FeatureToolDropDown({
   dispatch,

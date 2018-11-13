@@ -57,13 +57,13 @@ class CutsiteProperties extends React.Component {
             justifyContent: "space-around"
           }}
         >
-          <EnzymeViewer
+          {enzyme && <EnzymeViewer
             {...{
               sequence: enzyme.site,
               reverseSnipPosition: enzyme.bottomSnipOffset,
               forwardSnipPosition: enzyme.topSnipOffset
             }}
-          />
+          />}
           <div style={{ width: 300 }}>
             <h3>Cuts At: </h3>
             <DataTable

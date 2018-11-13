@@ -14,11 +14,9 @@ import {
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
 import { map, get, startCase, some } from "lodash";
-import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import { getContext, branch } from "recompose";
-import FileSaver from "file-saver";
 
 import {
   normalizePositionByRangeLength
@@ -1134,65 +1132,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
-    importSequenceFromFile = (file, opts = {}) => {
-      const { updateSequenceData } = this.props;
-      let reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
-      reader.onload = function(evt) {
-        const content = evt.target.result;
-        anyToJson(
-          content,
-          result => {
-            // TODO maybe handle import errors/warnings better
-            const failed = !result[0].success;
-            const messages = result[0].messages;
-            if (messages && messages.length) {
-              messages.forEach(msg => {
-                const type = msg
-                  .substr(0, 20)
-                  .toLowerCase()
-                  .includes("error")
-                  ? failed
-                    ? "error"
-                    : "warning"
-                  : "info";
-                window.toastr[type](msg);
-              });
-            }
-            updateSequenceData(result[0].parsedSequence);
-            if (!failed) {
-              window.toastr.success("Sequenced imported");
-            }
-          },
-          { acceptParts: true, ...opts }
-        );
-      };
-      reader.onerror = function() {
-        window.toastr.error("Could not read file.");
-      };
-    };
-
-    exportSequenceToFile = format => {
-      const { sequenceData } = this.props;
-      let convert, fileExt;
-
-      if (format === "genbank") {
-        convert = jsonToGenbank;
-        fileExt = "gb";
-      } else if (format === "teselagenJson") {
-        convert = JSON.stringify;
-        fileExt = "json";
-      } else if (format === "fasta") {
-        convert = jsonToFasta;
-        fileExt = "fasta";
-      } else {
-        console.error(`Invalid export format: '${format}'`); // dev error
-        return;
-      }
-      const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
-      const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
-      FileSaver.saveAs(blob, filename);
-    };
+    
 
     handleWrapperFocus = () => {
       if (this.props.trackFocus === false) return;
@@ -1273,9 +1213,6 @@ function VectorInteractionHOC(Component /* options */) {
           editorDragStopped: this.editorDragStopped
         };
       }
-
-      propsToPass.importSequenceFromFile = this.importSequenceFromFile;
-      propsToPass.exportSequenceToFile = this.exportSequenceToFile;
       propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;
 
       return (

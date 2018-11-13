@@ -121,7 +121,7 @@ export class VersionHistoryView extends React.Component {
           return (
             <div
               style={{ width, height, display: "flex" }}
-              className={"veVersionHistoryView"}
+              className="veVersionHistoryView"
             >
               <Editor
                 style={{
@@ -138,7 +138,7 @@ export class VersionHistoryView extends React.Component {
                     "featureTool",
                     "orfTool",
                     "alignmentTool",
-                    "inlineFindTool",
+                    "findTool",
                     "visibilityTool"
                   ],
                   contentLeft: (
@@ -167,7 +167,7 @@ export class VersionHistoryView extends React.Component {
                   display: "flex",
                   flexDirection: "column"
                 }}
-                className={"veVersionHistoryViewSidePanel"}
+                className="veVersionHistoryViewSidePanel"
               >
                 <h2 style={{ width: "100%", textAlign: "center" }}>
                   {" "}
@@ -180,7 +180,7 @@ export class VersionHistoryView extends React.Component {
                   noFullscreenButton
                   onRowSelect={this.onRowSelect}
                   maxHeight={400}
-                  formName={"featureProperties"}
+                  formName="featureProperties"
                   noRouter
                   compact
                   selectedIds={["__current__"]}
@@ -217,5 +217,4 @@ export class VersionHistoryView extends React.Component {
   }
 }
 
-// export default VersionHistoryView;
 export default withEditorProps(VersionHistoryView);

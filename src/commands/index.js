@@ -65,16 +65,16 @@ const fileCommandDefs = {
   },
 
   exportSequenceAsGenbank: {
-    name: "As Genbank file",
+    name: "Download Genbank file",
     handler: props => props.exportSequenceToFile("genbank")
   },
 
   exportSequenceAsFasta: {
-    name: "As FASTA file",
+    name: "Download FASTA file",
     handler: props => props.exportSequenceToFile("fasta")
   },
   exportSequenceAsTeselagenJson: {
-    name: "As Teselagen JSON file",
+    name: "Download Teselagen JSON file",
     handler: props => props.exportSequenceToFile("teselagenJson")
   },
 

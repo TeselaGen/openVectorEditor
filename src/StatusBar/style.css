@@ -9,6 +9,7 @@
   border-top: lightgrey 0.1px solid;
   border-bottom: lightgrey 0.1px solid;
 }
+
 .veStatusBar::-webkit-scrollbar {
   display: none;
 }
@@ -29,6 +30,9 @@
   background: lightgrey;
   margin-left: 3px;
   margin-right: 3px;
+}
+.veStatusBarSpacer:last-child{
+  display: none;
 }
 
 /*# sourceMappingURL= style.css.map */

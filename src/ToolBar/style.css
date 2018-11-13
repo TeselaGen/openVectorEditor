@@ -40,7 +40,7 @@
   width: 1px;
   margin-left: 10px;
   margin-right: 10px;
-  background: lightgrey;
+  /* background: lightgrey; */
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon {
   padding: 3px;

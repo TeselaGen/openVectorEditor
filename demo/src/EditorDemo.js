@@ -17,6 +17,10 @@ export default class StandaloneDemo extends React.Component {
 
     this.state = {
       withPreviewMode: false,
+      disableSetReadOnly: true,
+      showReadOnly: true,
+      showCircularity: true,
+      showAvailability: true,
       ...JSON.parse(localStorage.editorDemoState || "{}")
     };
     updateEditor(store, "DemoEditor", {
@@ -44,11 +48,12 @@ export default class StandaloneDemo extends React.Component {
       <div
         style={{
           display: "flex",
+          
           flexDirection: "column",
           flexGrow: "1"
         }}
       >
-        <div style={{ paddingTop: 10, display: "flex" }}>
+        <div style={{ paddingTop: 10, display: "flex", flexWrap: "wrap" }}>
           <Button
             onClick={() => {
               updateEditor(store, "DemoEditor", {
@@ -70,6 +75,10 @@ export default class StandaloneDemo extends React.Component {
             }
           })}
           {renderToggle({ that: this, type: "withPreviewMode" })}
+          {renderToggle({ that: this, type: "disableSetReadOnly" })}
+          {renderToggle({ that: this, type: "showReadOnly" })}
+          {renderToggle({ that: this, type: "showCircularity" })}
+          {renderToggle({ that: this, type: "showAvailability" })}
           {renderToggle({ that: this, type: "fullscreenMode" })}
           {renderToggle({
             that: this,
@@ -98,10 +107,14 @@ export default class StandaloneDemo extends React.Component {
                 console.log("saving");
               }
             }}
-            handleFullscreenClose={this.changeFullscreenMode}
+            handleFullscreenClose={!withPreviewMode && this.changeFullscreenMode} //don't pass this handler if you're also using previewMode
             isFullscreen={fullscreenMode}
             {...forceHeightMode && { height: 500 }}
             withPreviewMode={withPreviewMode}
+            disableSetReadOnly={this.state.disableSetReadOnly}
+            showReadOnly={this.state.showReadOnly}
+            showCircularity={this.state.showCircularity}
+            showAvailability={this.state.showAvailability}
           />
         </div>
       </div>

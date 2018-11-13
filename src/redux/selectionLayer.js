@@ -31,9 +31,10 @@ export default createReducer(
         !newSelectionLayer ||
         !(newSelectionLayer.start >= 0 && newSelectionLayer.end >= 0)
       ) {
-        return console.error(
+        console.error(
           "we should never be here! selectionLayerUpdate must always be called with a valid selection layer"
         );
+        return state
       }
       return newSelectionLayer;
     }

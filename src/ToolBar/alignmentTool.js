@@ -14,26 +14,33 @@ import uniqid from "uniqid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
 
-// import { Checkbox } from "material-ui";
-// import {  } from "teselagen-react-components/lib/FormComponents";
+import ToolbarItem from "./ToolbarItem";
+import { connectToEditor } from "../withEditorProps";
+import withEditorProps from "../withEditorProps";
 
-export default {
-  updateKeys: ["alignmentTool", "toggleFindTool"],
-  itemProps: ({ alignmentTool = {}, toggleDropdown }) => {
-    return {
-      Icon: <Icon icon={"align-left"} />,
-      // toggled: alignmentTool.isOpen,
-      renderIconAbove: alignmentTool.isOpen,
-      // onIconClick: toggleFindTool,
-      Dropdown: AlignmentToolDropdown,
-      onIconClick: toggleDropdown,
-      noDropdownIcon: true,
-      tooltip: alignmentTool.isOpen
-        ? "Hide Alignment Tool"
-        : "Align to This Sequence"
-    };
-  }
-};
+export default connectToEditor(editorState => {
+  return {
+    readOnly: editorState.readOnly,
+    isOpen: editorState.toolBar.openItem === "alignmentTool"
+  };
+})(({ toolbarItemProps, isOpen }) => {
+  return (
+    <ToolbarItem
+      {...{
+        ...toolbarItemProps,
+
+        Icon: <Icon icon={"align-left"} />,
+        // toggled: alignmentTool.isOpen,
+        renderIconAbove: isOpen,
+        // onIconClick: toggleFindTool,
+        Dropdown: ConnectedAlignmentToolDropdown,
+        onIconClick: "toggleDropdown",
+        noDropdownIcon: true,
+        tooltip: isOpen ? "Hide Alignment Tool" : "Align to This Sequence"
+      }}
+    />
+  );
+});
 
 class AlignmentToolDropdown extends React.Component {
   render() {
@@ -77,6 +84,7 @@ class AlignmentToolDropdown extends React.Component {
     );
   }
 }
+const ConnectedAlignmentToolDropdown = withEditorProps(AlignmentToolDropdown);
 
 const instance = axios.create({
   // timeout: 1000,
