@@ -31,6 +31,7 @@ import {
   updateSelectionOrCaret,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
+import { ResizeSensor } from "@blueprintjs/core";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -49,7 +50,8 @@ try {
 class AlignmentView extends React.Component {
   state = {
     charWidthInLinearView: charWidthInLinearViewDefault,
-    scrollAlignmentView: false
+    scrollAlignmentView: false,
+    width: 0
   };
   easyStore = store({
     percentScrolled: 0,
@@ -57,12 +59,9 @@ class AlignmentView extends React.Component {
   });
 
   getMinCharWidth = () => {
-    const {
-      dimensions: { width }
-    } = this.props;
-
     const toReturn = Math.min(
-      Math.max(width - nameDivWidth - 5, 1) / this.getSequenceLength(),
+      Math.max(this.state.width - nameDivWidth - 5, 1) /
+        this.getSequenceLength(),
       10
     );
     if (isNaN(toReturn)) return 10;
@@ -170,10 +169,8 @@ class AlignmentView extends React.Component {
     }
   };
   getNumBpsShownInLinearView = () => {
-    const {
-      dimensions: { width }
-    } = this.props;
-    const toReturn = (width - nameDivWidth) / this.getCharWidthInLinearView();
+    const toReturn =
+      (this.state.width - nameDivWidth) / this.getCharWidthInLinearView();
     return toReturn || 0;
   };
   setVerticalScrollRange = throttle(() => {
@@ -218,11 +215,10 @@ class AlignmentView extends React.Component {
     this.easyStore.percentScrolled = scrollPercentage || 0;
   };
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
-    const { dimensions } = this.props;
-    const percentageOfSpace = newSliderSize / (dimensions.width - nameDivWidth);
+    const percentageOfSpace = newSliderSize / (this.state.width - nameDivWidth);
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
-    const newCharWidth = (dimensions.width - nameDivWidth) / numBpsInView;
+    const newCharWidth = (this.state.width - nameDivWidth) / numBpsInView;
     this.blockScroll = true;
     this.setCharWidthInLinearView({ charWidthInLinearView: newCharWidth });
     setTimeout(() => {
@@ -275,7 +271,6 @@ class AlignmentView extends React.Component {
 
     const {
       alignmentTracks = [],
-      // dimensions: { width },
       noClickDragHandlers,
       handleSelectTrack,
       linearViewOptions,
@@ -316,7 +311,7 @@ class AlignmentView extends React.Component {
     const name = sequenceData.name || sequenceData.id;
     return (
       <div
-        className={"alignmentViewTrackContainer"}
+        className="alignmentViewTrackContainer"
         style={{
           boxShadow: isTemplate
             ? "red 0px -1px 0px 0px inset, red 0px 1px 0px 0px inset"
@@ -327,7 +322,7 @@ class AlignmentView extends React.Component {
         key={i}
       >
         <div
-          className={"alignmentTrackName"}
+          className="alignmentTrackName"
           style={{
             position: "sticky",
             // left: 130,
@@ -349,7 +344,7 @@ class AlignmentView extends React.Component {
           key={i}
         >
           <div
-            className={"alignmentTrackNameDiv"}
+            className="alignmentTrackNameDiv"
             style={{
               background: "blue",
               display: "inline-block",
@@ -361,29 +356,28 @@ class AlignmentView extends React.Component {
             {name}
           </div>
         </div>
-        {handleSelectTrack &&
-          !isTemplate && (
-            <div
-              onClick={() => {
-                handleSelectTrack(i);
-              }}
-              style={{
-                position: "absolute",
-                opacity: 0,
-                height: "100%",
-                left: nameDivWidth,
-                width: linearViewWidth,
-                fontWeight: "bolder",
-                cursor: "pointer",
-                padding: 5,
-                textAlign: "center",
-                zIndex: 400
-              }}
-              className={"alignmentViewSelectTrackPopover veWhiteBackground"}
-            >
-              Inspect track
-            </div>
-          )}
+        {handleSelectTrack && !isTemplate && (
+          <div
+            onClick={() => {
+              handleSelectTrack(i);
+            }}
+            style={{
+              position: "absolute",
+              opacity: 0,
+              height: "100%",
+              left: nameDivWidth,
+              width: linearViewWidth,
+              fontWeight: "bolder",
+              cursor: "pointer",
+              padding: 5,
+              textAlign: "center",
+              zIndex: 400
+            }}
+            className="alignmentViewSelectTrackPopover veWhiteBackground"
+          >
+            Inspect track
+          </div>
+        )}
         <LinearView
           {...{
             ...rest,
@@ -454,14 +448,14 @@ class AlignmentView extends React.Component {
       </div>
     );
   };
+  handleResize = throttle(([e]) => {
+    this.setState({ width: e.contentRect.width, height: e.contentRect.height });
+  }, 200);
 
   render() {
     let charWidthInLinearView = this.getCharWidthInLinearView();
-
     const {
       alignmentTracks = [],
-      // dimensions: { width },
-      dimensions = {},
       height,
       minimapLaneHeight,
       minimapLaneSpacing,
@@ -488,7 +482,7 @@ class AlignmentView extends React.Component {
     const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
         <div
-          className={"alignmentTracks "}
+          className="alignmentTracks "
           style={{ overflowY: "auto", display: "flex", zIndex: 10 }}
         >
           <div
@@ -496,7 +490,7 @@ class AlignmentView extends React.Component {
               overflowX: "auto",
               maxHeight: 500,
               // width: trackWidth
-              width: dimensions.width
+              width: this.state.width
             }}
             ref={ref => {
               this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] = ref;
@@ -512,7 +506,7 @@ class AlignmentView extends React.Component {
                 ref={c => {
                   this.InfiniteScroller = c;
                 }}
-                type={"variable"}
+                type="variable"
                 itemSizeEstimator={this.estimateRowHeight}
                 // itemSizeGetter={itemSizeGetter}
                 itemRenderer={this.renderItem}
@@ -524,7 +518,7 @@ class AlignmentView extends React.Component {
       );
     };
     const [firstTrack, ...otherTracks] = alignmentTracks;
-    const totalWidthOfMinimap = dimensions.width - nameDivWidth;
+    const totalWidthOfMinimap = this.state.width - nameDivWidth;
     const totalWidthInAlignmentView = 14 * this.getSequenceLength();
     const minSliderSize = Math.min(
       totalWidthOfMinimap * (totalWidthOfMinimap / totalWidthInAlignmentView),
@@ -532,113 +526,114 @@ class AlignmentView extends React.Component {
     );
 
     return (
-      <div
-        style={{
-          height: height || dimensions.height,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          position: "relative"
-          // borderTop: "1px solid black"
-        }}
-        className="alignmentView"
-      >
+      <ResizeSensor onResize={this.handleResize}>
         <div
           style={{
+            height: height || this.state.height,
             display: "flex",
             flexDirection: "column",
+            justifyContent: "space-between",
             position: "relative"
+            // borderTop: "1px solid black"
           }}
-          className="alignmentView-top-container"
+          className="alignmentView"
         >
           <div
             style={{
-              paddingTop: "3px",
-              paddingBottom: "5px",
-              borderBottom: "1px solid",
               display: "flex",
-              minHeight: "32px",
-              // maxHeight: "32px",
-              // height: "32px",
-              width: "100%",
-              // overflowX: "scroll",
-              flexWrap: "nowrap",
-              flexDirection: "row",
-              flex: "0 0 auto"
+              flexDirection: "column",
+              position: "relative"
             }}
-            className={"ve-alignment-top-bar"}
+            className="alignmentView-top-container"
           >
-            {handleBackButtonClicked && (
-              <Button
-                icon="arrow-left"
-                onClick={() => {
-                  // this.setState({
-                  //   charWidthInLinearView: charWidthInLinearViewDefault
-                  // });
-                  handleBackButtonClicked();
-                  this.caretPositionUpdate(-1);
-                }}
-                text="Go Back"
-                small
-                intent={Intent.PRIMARY}
-                // minimal
-                style={{ marginRight: 10 }}
-                className={"alignmentViewBackButton"}
-              />
-            )}
-            {this.props.handleAlignmentRename ? (
-              <InputGroup
-                minimal
-                small
-                value={this.props.alignmentName}
-                placeholder={"Untitled Alignment"}
-              />
-            ) : (
-              <span
-                style={{
-                  paddingTop: "3px",
-                  fontWeight: "bold",
-                  fontSize: "15px",
-                  maxWidth: "150px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap"
-                }}
-                title={this.props.alignmentName || "Untitled Alignment"}
-              >
-                {this.props.alignmentName || "Untitled Alignment"}
-              </span>
-            )}
-            {this.props.handleAlignmentRename && <Button small>Rename</Button>}
-            {!isInPairwiseOverviewView && (
-              <UncontrolledSliderWithPlusMinusBtns
-                onRelease={val => {
-                  this.setCharWidthInLinearView({
-                    charWidthInLinearView: val
-                  });
-                  this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
-                  const percentScrollage = this.easyStore.percentScrolled;
-                  setTimeout(() => {
-                    this.blockScroll = false;
-                    this.updateXScrollPercentage(percentScrollage);
-                  });
-                }}
-                title="Adjust Zoom Level"
-                style={{ paddingTop: "4px", width: 100 }}
-                className={"alignment-zoom-slider"}
-                labelRenderer={false}
-                stepSize={0.01}
-                initialValue={charWidthInLinearView}
-                max={14}
-                min={this.getMinCharWidth()}
-              />
-            )}
-            {!noVisibilityOptions &&
-              !isInPairwiseOverviewView && (
+            <div
+              style={{
+                paddingTop: "3px",
+                paddingBottom: "5px",
+                borderBottom: "1px solid",
+                display: "flex",
+                minHeight: "32px",
+                // maxHeight: "32px",
+                // height: "32px",
+                width: "100%",
+                // overflowX: "scroll",
+                flexWrap: "nowrap",
+                flexDirection: "row",
+                flex: "0 0 auto"
+              }}
+              className="ve-alignment-top-bar"
+            >
+              {handleBackButtonClicked && (
+                <Button
+                  icon="arrow-left"
+                  onClick={() => {
+                    // this.setState({
+                    //   charWidthInLinearView: charWidthInLinearViewDefault
+                    // });
+                    handleBackButtonClicked();
+                    this.caretPositionUpdate(-1);
+                  }}
+                  text="Go Back"
+                  small
+                  intent={Intent.PRIMARY}
+                  // minimal
+                  style={{ marginRight: 10 }}
+                  className="alignmentViewBackButton"
+                />
+              )}
+              {this.props.handleAlignmentRename ? (
+                <InputGroup
+                  minimal
+                  small
+                  value={this.props.alignmentName}
+                  placeholder="Untitled Alignment"
+                />
+              ) : (
+                <span
+                  style={{
+                    paddingTop: "3px",
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                    maxWidth: "150px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap"
+                  }}
+                  title={this.props.alignmentName || "Untitled Alignment"}
+                >
+                  {this.props.alignmentName || "Untitled Alignment"}
+                </span>
+              )}
+              {this.props.handleAlignmentRename && (
+                <Button small>Rename</Button>
+              )}
+              {!isInPairwiseOverviewView && (
+                <UncontrolledSliderWithPlusMinusBtns
+                  onRelease={val => {
+                    this.setCharWidthInLinearView({
+                      charWidthInLinearView: val
+                    });
+                    this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                    const percentScrollage = this.easyStore.percentScrolled;
+                    setTimeout(() => {
+                      this.blockScroll = false;
+                      this.updateXScrollPercentage(percentScrollage);
+                    });
+                  }}
+                  title="Adjust Zoom Level"
+                  style={{ paddingTop: "4px", width: 100 }}
+                  className="alignment-zoom-slider"
+                  labelRenderer={false}
+                  stepSize={0.01}
+                  initialValue={charWidthInLinearView}
+                  max={14}
+                  min={this.getMinCharWidth()}
+                />
+              )}
+              {!noVisibilityOptions && !isInPairwiseOverviewView && (
                 <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
               )}
-            {updateAlignmentSortOrder &&
-              !isInPairwiseOverviewView && (
+              {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
                 <Popover
                   minimal
                   content={
@@ -648,72 +643,73 @@ class AlignmentView extends React.Component {
                         onClick={() => {
                           updateAlignmentSortOrder("Position");
                         }}
-                        text={"Position"}
+                        text="Position"
                       />
                       <MenuItem
                         active={false || alignmentSortOrder}
                         onClick={() => {
                           updateAlignmentSortOrder("Alphabetical");
                         }}
-                        text={"Alphabetical"}
+                        text="Alphabetical"
                       />
                     </Menu>
                   }
                   target={
                     <Button
                       small
-                      text={"Sort Order"}
+                      text="Sort Order"
                       rightIcon="caret-down"
-                      icon={"sort"}
+                      icon="sort"
                     />
                   }
                 />
               )}
+            </div>
+            {hasTemplate ? (
+              <React.Fragment>
+                <div className="alignmentTrackFixedToTop">
+                  {getTrackVis([firstTrack], true)}
+                </div>
+                {getTrackVis(otherTracks)}
+              </React.Fragment>
+            ) : (
+              getTrackVis(alignmentTracks)
+            )}
           </div>
-          {hasTemplate ? (
-            <React.Fragment>
-              <div className={"alignmentTrackFixedToTop"}>
-                {getTrackVis([firstTrack], true)}
-              </div>
-              {getTrackVis(otherTracks)}
-            </React.Fragment>
-          ) : (
-            getTrackVis(alignmentTracks)
+          {!isInPairwiseOverviewView && (
+            <div
+              className="alignmentViewBottomBar"
+              style={{
+                // flexGrow: 1,
+                minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
+                marginTop: 4,
+                paddingTop: 4,
+                borderTop: "1px solid lightgrey",
+                display: "flex"
+              }}
+            >
+              <Minimap
+                {...{
+                  alignmentTracks,
+                  dimensions: {
+                    width: Math.max(this.state.width, 10) || 10
+                  },
+                  scrollYToTrack: this.scrollYToTrack,
+                  onSizeAdjust: this.onMinimapSizeAdjust,
+                  minSliderSize,
+                  laneHeight:
+                    minimapLaneHeight || alignmentTracks.length > 20 ? 10 : 17,
+                  laneSpacing: minimapLaneSpacing,
+                  easyStore: this.easyStore,
+                  numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
+                  scrollAlignmentView: this.state.scrollAlignmentView
+                }}
+                onMinimapScrollX={this.updateXScrollPercentage}
+              />
+            </div>
           )}
         </div>
-        {!isInPairwiseOverviewView && (
-          <div
-            className={"alignmentViewBottomBar"}
-            style={{
-              // flexGrow: 1,
-              minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
-              marginTop: 4,
-              paddingTop: 4,
-              borderTop: "1px solid lightgrey",
-              display: "flex"
-            }}
-          >
-            <Minimap
-              {...{
-                alignmentTracks,
-                dimensions: {
-                  width: Math.max(dimensions.width, 10) || 10
-                },
-                scrollYToTrack: this.scrollYToTrack,
-                onSizeAdjust: this.onMinimapSizeAdjust,
-                minSliderSize,
-                laneHeight:
-                  minimapLaneHeight || alignmentTracks.length > 20 ? 10 : 17,
-                laneSpacing: minimapLaneSpacing,
-                easyStore: this.easyStore,
-                numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
-                scrollAlignmentView: this.state.scrollAlignmentView
-              }}
-              onMinimapScrollX={this.updateXScrollPercentage}
-            />
-          </div>
-        )}
-      </div>
+      </ResizeSensor>
     );
   }
 }

@@ -69,17 +69,11 @@ export default connect(
       });
     }
     render() {
-      const {
-        selectionLayerUpdate,
-        caretPositionUpdate,
-        selectionLayer
-      } = this.props;
       return (
         <AlignmentView
           {...{
             editorName: "MppViewer",
-            id: alignmentRunData.id,
-            dimensions: {
+            id: alignmentRunData.id,dimensions: {
               width: 1500
             },
             minimapLaneHeight: 10,
@@ -88,37 +82,6 @@ export default connect(
               const toReturn = {
                 tickSpacing: 10,
                 ignoreYWhenSelecting: true,
-                // selectionLayerRightClicked: () => {
-                //   return [
-                //     {
-                //       text: "Create Diversity Region",
-                //       onClick: () => {
-                //         store.dispatch(
-                //           upsertPart(
-                //             {
-                //               name: "Diversity Region",
-                //               strand: 1,
-                //               forward: true,
-                //               start: selectionLayer.start,
-                //               end: selectionLayer.end
-                //             },
-                //             { editorName: "alignmentView0" }
-                //           )
-                //         );
-                //       }
-                //     }
-                //   ];
-                // },
-                // partRightClicked: ({ annotation }, props) => {
-                //   return [
-                //     {
-                //       text: "Delete Diversity Region",
-                //       onClick: () => props.deletePart(annotation)
-                //     }
-                //   ];
-                // },
-                // selectionLayerUpdate,
-                // caretPositionUpdate,
                 linearViewAnnotationVisibilityOverrides: {
                   ...alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
                   parts: true
