@@ -635,13 +635,11 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAA = makeTextCopyable(
-                  {
-                    sequence: selectedSeqData => {
-                      return getAminoAcidStringFromSequenceString(
-                        selectedSeqData.sequence
-                      );
-                    }
-                  },
+                  selectedSeqData => ({
+                    sequence: getAminoAcidStringFromSequenceString(
+                      selectedSeqData.sequence
+                    )
+                  }),
                   className
                 );
               }
@@ -654,15 +652,13 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
-                  {
-                    sequence: selectedSeqData => {
-                      return getAminoAcidStringFromSequenceString(
-                        getReverseComplementSequenceAndAnnotations(
-                          selectedSeqData
-                        ).sequence
-                      );
-                    }
-                  },
+                  selectedSeqData => ({
+                    sequence: getAminoAcidStringFromSequenceString(
+                      getReverseComplementSequenceAndAnnotations(
+                        selectedSeqData
+                      ).sequence
+                    )
+                  }),
                   className
                 );
               }
