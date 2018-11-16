@@ -10178,10 +10178,19 @@ span.bp3-popover-target {
   text-decoration: underline;
   fill: black !important;
 }
+
 .veAnnotationHovered.veCutsiteLabel {
   font-weight: bold;
   text-decoration: underline;
   fill: black !important;
+}
+
+.bp3-dark .veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
+  fill: white !important;
+  font-weight: normal;
+}
+.bp3-dark .veLabels .veAnnotationHovered rect {
+  fill: rgb(64, 64, 92) !important;
 }
 
 .veCircularViewMiddleOfVectorText {
@@ -10318,6 +10327,10 @@ span.bp3-popover-target {
   stroke-dasharray: 3px;
 }
 
+.veAnnotationHovered text,
+.veAnnotationHovered tspan {
+  stroke-dasharray: none;
+}
 .veRowViewPartContainer > svg {
   z-index: 20;
 }
@@ -10563,6 +10576,188 @@ span.bp3-popover-target {
   width: 100%;
 }
 
+/* Popover */
+.Popover-body {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 10px;
+  background: white;
+  color: black;
+  -webkit-box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  margin-top: 10px;
+}
+
+.Popover-tipShape {
+  fill: white;
+}
+
+.Popover-tip {
+  display: none;
+}
+
+.veToolbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 100%;
+}
+.veToolbar .veToolbarItemOuter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 32px;
+  margin-bottom: -2px;
+  margin-top: 2px;
+}
+.veToolbar .veToolbarItemOuter .veToolbarItem {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 32px;
+}
+.veToolbarSpacer {
+  height: 80%;
+  width: 1px;
+  margin-left: 10px;
+  margin-right: 10px;
+  /* background: lightgrey; */
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon {
+  padding: 3px;
+  padding-bottom: 2px;
+  border-radius: 3px;
+  height: 32px;
+  width: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #006cab;
+}
+.veToolbarItemOuter.disabled .veToolbarIcon {
+  color: #c0c0c0;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon.veToolbarItemToggled {
+  background: lightgrey;
+  border-color: #006cab;
+}
+
+.veToolbar :not(.disabled).veToolbarItemOuter .veToolbarIcon:hover {
+  border-color: #006cab;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon:active {
+  opacity: 0.7;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon img,
+.veToolbar .veToolbarItemOuter .veToolbarIcon svg,
+.veToolbar .veToolbarItemOuter .veToolbarIcon object {
+  /* height: 24px;
+  width: 24px; */
+  cursor: pointer;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon img svg,
+.veToolbar .veToolbarItemOuter .veToolbarIcon svg svg,
+.veToolbar .veToolbarItemOuter .veToolbarIcon object svg {
+  color: #006baa;
+}
+
+.minOrfSizeInput::-webkit-inner-spin-button,
+.minOrfSizeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.minOrfSizeInput {
+  padding-bottom: 0.25em;
+  width: 5em;
+  margin-left: 10px;
+  text-align: center;
+  padding-top: 0.25em;
+  border: 1px solid lightgrey;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.veToolbarDropdown {
+  cursor: pointer;
+  padding: 0px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-radius: 3px;
+}
+.veToolbarDropdown:hover {
+  background: lightgrey;
+}
+.veToolbarDropdown.isOpen {
+  background: lightgrey;
+}
+
+.veToolbarCutsiteFilterHolder {
+  min-width: 300px;
+}
+.veToolbarCutsiteFilterHolder > div {
+  margin: 10px;
+}
+.veToolbarCutsiteFilterHolder .title {
+  margin: 10px;
+  background: blue;
+  width: 100%;
+}
+
+.translateInfoSpan {
+  font-size: 0.8em;
+  padding: 4px;
+}
+
+.showOrfTranslateSpan {
+  padding: 8px;
+}
+
+.veToolbarOrfOptionsHolder {
+  min-width: 300px;
+  margin-bottom: 10px;
+}
+
+.veToolbarViewOptionsHolder div {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.veToolbarViewOptionsHolder label {
+  margin: 40px 10px;
+}
+.ve-toolbar-item-popover {
+  /* the z-index has to be high for it to work with ice */
+  z-index: 4000;
+}
+
 .veLinearView {
   overflow: visible !important;
 }
@@ -10726,188 +10921,6 @@ span.bp3-popover-target {
   margin-right: 4px;
 }
 
-/* Popover */
-.Popover-body {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  padding: 10px;
-  background: white;
-  color: black;
-  -webkit-box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.5);
-          box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  margin-top: 10px;
-}
-
-.Popover-tipShape {
-  fill: white;
-}
-
-.Popover-tip {
-  display: none;
-}
-
-.veToolbar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  width: 100%;
-}
-.veToolbar .veToolbarItemOuter {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: 32px;
-  margin-bottom: -2px;
-  margin-top: 2px;
-}
-.veToolbar .veToolbarItemOuter .veToolbarItem {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 32px;
-}
-.veToolbarSpacer {
-  height: 80%;
-  width: 1px;
-  margin-left: 10px;
-  margin-right: 10px;
-  background: lightgrey;
-}
-.veToolbar .veToolbarItemOuter .veToolbarIcon {
-  padding: 3px;
-  padding-bottom: 2px;
-  border-radius: 3px;
-  height: 32px;
-  width: 30px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  color: #006cab;
-}
-.veToolbarItemOuter.disabled .veToolbarIcon {
-  color: #c0c0c0;
-}
-.veToolbar .veToolbarItemOuter .veToolbarIcon.veToolbarItemToggled {
-  background: lightgrey;
-  border-color: #006cab;
-}
-
-.veToolbar :not(.disabled).veToolbarItemOuter .veToolbarIcon:hover {
-  border-color: #006cab;
-}
-.veToolbar .veToolbarItemOuter .veToolbarIcon:active {
-  opacity: 0.7;
-}
-.veToolbar .veToolbarItemOuter .veToolbarIcon img,
-.veToolbar .veToolbarItemOuter .veToolbarIcon svg,
-.veToolbar .veToolbarItemOuter .veToolbarIcon object {
-  /* height: 24px;
-  width: 24px; */
-  cursor: pointer;
-}
-.veToolbar .veToolbarItemOuter .veToolbarIcon img svg,
-.veToolbar .veToolbarItemOuter .veToolbarIcon svg svg,
-.veToolbar .veToolbarItemOuter .veToolbarIcon object svg {
-  color: #006baa;
-}
-
-.minOrfSizeInput::-webkit-inner-spin-button,
-.minOrfSizeInput::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.minOrfSizeInput {
-  padding-bottom: 0.25em;
-  width: 5em;
-  margin-left: 10px;
-  text-align: center;
-  padding-top: 0.25em;
-  border: 1px solid lightgrey;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.veToolbarDropdown {
-  cursor: pointer;
-  padding: 0px;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  border-radius: 3px;
-}
-.veToolbarDropdown:hover {
-  background: lightgrey;
-}
-.veToolbarDropdown.isOpen {
-  background: lightgrey;
-}
-
-.veToolbarCutsiteFilterHolder {
-  min-width: 300px;
-}
-.veToolbarCutsiteFilterHolder > div {
-  margin: 10px;
-}
-.veToolbarCutsiteFilterHolder .title {
-  margin: 10px;
-  background: blue;
-  width: 100%;
-}
-
-.translateInfoSpan {
-  font-size: 0.8em;
-  padding: 4px;
-}
-
-.showOrfTranslateSpan {
-  padding: 8px;
-}
-
-.veToolbarOrfOptionsHolder {
-  min-width: 300px;
-  margin-bottom: 10px;
-}
-
-.veToolbarViewOptionsHolder div {
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-.veToolbarViewOptionsHolder label {
-  margin: 40px 10px;
-}
-.ve-toolbar-item-popover {
-  /* the z-index has to be high for it to work with ice */
-  z-index: 4000;
-}
-
 .ta_link {
   cursor: pointer;
   color: blue;
@@ -10953,6 +10966,7 @@ span.bp3-popover-target {
   border-top: lightgrey 0.1px solid;
   border-bottom: lightgrey 0.1px solid;
 }
+
 .veStatusBar::-webkit-scrollbar {
   display: none;
 }
@@ -10982,6 +10996,9 @@ span.bp3-popover-target {
   background: lightgrey;
   margin-left: 3px;
   margin-right: 3px;
+}
+.veStatusBarSpacer:last-child{
+  display: none;
 }
 
 .dropzone-dragging-message {
@@ -11137,6 +11154,9 @@ span.bp3-popover-target {
 
 .veEditor {
   position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 .veVectorInteractionWrapper:focus {
   -webkit-box-shadow: 0 4px 2px -2px #9ecaed;
@@ -11198,6 +11218,9 @@ span.bp3-popover-target {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 .preview-mode-view-fullscreen {
