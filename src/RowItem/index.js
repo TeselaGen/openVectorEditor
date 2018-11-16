@@ -25,7 +25,7 @@ import Chromatogram from "./Chromatograms/Chromatogram";
 
 function noop() {}
 
-export class RowItem extends React.Component {
+export class RowItem extends React.PureComponent {
   render() {
     let {
       charWidth = 12,
@@ -211,7 +211,7 @@ export class RowItem extends React.Component {
           return (
             <div
               key={"deletionLayer" + index}
-              className={"ve_sequence_strikethrough"}
+              className="ve_sequence_strikethrough"
               style={{
                 left,
                 width,
@@ -237,8 +237,8 @@ export class RowItem extends React.Component {
           {/* <div className="vespacer" /> */}
 
           <SelectionLayer
-            customTitleStart={"Search match"}
-            color={"yellow"}
+            customTitleStart="Search match"
+            color="yellow"
             regions={searchLayers}
             {...annotationCommonProps}
             row={
@@ -260,50 +260,46 @@ export class RowItem extends React.Component {
             regions={selectionLayers}
           />
 
-          {showParts &&
-            Object.keys(parts).length > 0 && (
-              <Parts
-                showPartLabels={showPartLabels}
-                partClicked={partClicked}
-                partRightClicked={partRightClicked}
-                annotationRanges={parts}
-                {...annotationCommonProps}
-                annotationHeight={partHeight}
-              />
-            )}
+          {showParts && Object.keys(parts).length > 0 && (
+            <Parts
+              showPartLabels={showPartLabels}
+              partClicked={partClicked}
+              partRightClicked={partRightClicked}
+              annotationRanges={parts}
+              {...annotationCommonProps}
+              annotationHeight={partHeight}
+            />
+          )}
 
-          {showPrimers &&
-            Object.keys(primers).length > 0 && (
-              <Primers
-                sequence={fullSequence}
-                primerClicked={primerClicked}
-                primerRightClicked={primerRightClicked}
-                annotationRanges={primers}
-                {...annotationCommonProps}
-                annotationHeight={primerHeight}
-              />
-            )}
+          {showPrimers && Object.keys(primers).length > 0 && (
+            <Primers
+              sequence={fullSequence}
+              primerClicked={primerClicked}
+              primerRightClicked={primerRightClicked}
+              annotationRanges={primers}
+              {...annotationCommonProps}
+              annotationHeight={primerHeight}
+            />
+          )}
 
-          {showOrfs &&
-            Object.keys(orfs).length > 0 && (
-              <Orfs
-                orfClicked={orfClicked}
-                orfRightClicked={orfRightClicked}
-                annotationRanges={orfs}
-                {...annotationCommonProps}
-              />
-            )}
+          {showOrfs && Object.keys(orfs).length > 0 && (
+            <Orfs
+              orfClicked={orfClicked}
+              orfRightClicked={orfRightClicked}
+              annotationRanges={orfs}
+              {...annotationCommonProps}
+            />
+          )}
 
-          {showTranslations &&
-            Object.keys(translations).length > 0 && (
-              <Translations
-                translationClicked={translationClicked}
-                translationRightClicked={translationRightClicked}
-                translationDoubleClicked={translationDoubleClicked}
-                annotationRanges={translations}
-                {...annotationCommonProps}
-              />
-            )}
+          {showTranslations && Object.keys(translations).length > 0 && (
+            <Translations
+              translationClicked={translationClicked}
+              translationRightClicked={translationRightClicked}
+              translationDoubleClicked={translationDoubleClicked}
+              annotationRanges={translations}
+              {...annotationCommonProps}
+            />
+          )}
           {showCutsiteLabels &&
             showCutsites &&
             Object.keys(cutsites).length > 0 && (
@@ -315,14 +311,13 @@ export class RowItem extends React.Component {
               />
             )}
 
-          {showChromatogram &&
-            chromatogramData && (
-              <Chromatogram
-                chromatogramData={chromatogramData}
-                alignmentData={alignmentData}
-                {...annotationCommonProps}
-              />
-            )}
+          {showChromatogram && chromatogramData && (
+            <Chromatogram
+              chromatogramData={chromatogramData}
+              alignmentData={alignmentData}
+              {...annotationCommonProps}
+            />
+          )}
 
           <div
             className="veRowItemSequenceContainer"
@@ -345,15 +340,14 @@ export class RowItem extends React.Component {
                 alignmentData={alignmentData}
                 {...annotationCommonProps}
               >
-                {showCutsites &&
-                  Object.keys(cutsites).length > 0 && (
-                    <Cutsites
-                      sequenceLength={sequenceLength}
-                      annotationRanges={cutsites}
-                      topStrand
-                      {...annotationCommonProps}
-                    />
-                  )}
+                {showCutsites && Object.keys(cutsites).length > 0 && (
+                  <Cutsites
+                    sequenceLength={sequenceLength}
+                    annotationRanges={cutsites}
+                    topStrand
+                    {...annotationCommonProps}
+                  />
+                )}
                 {deletionLayerStrikeThrough}
               </Sequence>
             )}
@@ -370,14 +364,13 @@ export class RowItem extends React.Component {
                 height={sequenceHeight}
                 charWidth={charWidth}
               >
-                {showCutsites &&
-                  Object.keys(cutsites).length > 0 && (
-                    <Cutsites
-                      topStrand={false}
-                      annotationRanges={cutsites}
-                      {...annotationCommonProps}
-                    />
-                  )}
+                {showCutsites && Object.keys(cutsites).length > 0 && (
+                  <Cutsites
+                    topStrand={false}
+                    annotationRanges={cutsites}
+                    {...annotationCommonProps}
+                  />
+                )}
                 {deletionLayerStrikeThrough}
               </Sequence>
             )}
@@ -452,18 +445,17 @@ export class RowItem extends React.Component {
             </svg>
           )} */}
 
-          {showFeatures &&
-            Object.keys(features).length > 0 && (
-              <Features
-                showFeatureLabels={showFeatureLabels}
-                featureClicked={featureClicked}
-                featureRightClicked={featureRightClicked}
-                annotationRanges={features}
-                {...annotationCommonProps}
-                annotationHeight={featureHeight}
-                marginTop={10}
-              />
-            )}
+          {showFeatures && Object.keys(features).length > 0 && (
+            <Features
+              showFeatureLabels={showFeatureLabels}
+              featureClicked={featureClicked}
+              featureRightClicked={featureRightClicked}
+              annotationRanges={features}
+              {...annotationCommonProps}
+              annotationHeight={featureHeight}
+              marginTop={10}
+            />
+          )}
 
           {showLineageLines && lineageLines.length ? (
             <LineageLines
@@ -575,14 +567,13 @@ export class RowItem extends React.Component {
               {...annotationCommonProps}
             />
           )}
-          {caretPosition > -1 &&
-            showCaret && (
-              <Caret
-                caretPosition={caretPosition}
-                shouldBlink
-                {...annotationCommonProps}
-              />
-            )}
+          {caretPosition > -1 && showCaret && (
+            <Caret
+              caretPosition={caretPosition}
+              shouldBlink
+              {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
+            />
+          )}
         </div>
         {rowBottomComp && rowBottomComp}
       </div>

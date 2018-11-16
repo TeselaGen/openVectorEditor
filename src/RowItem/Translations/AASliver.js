@@ -1,5 +1,6 @@
 // import PropTypes from "prop-types";
 import React from "react";
+import pureNoFunc from "../../utils/pureNoFunc";
 
 function AASliver(props) {
   let fatness = 24;
@@ -27,11 +28,11 @@ function AASliver(props) {
       // onDoubleClick={this.props.onDoubleClick}
       transform={
         "scale(" +
-        props.width / 100 * 1.25 +
+        (props.width / 100) * 1.25 +
         ", " +
         props.height / 100 +
         ") translate(" +
-        (props.relativeAAPositionInTranslation * 100 / 1.25 + offset) +
+        ((props.relativeAAPositionInTranslation * 100) / 1.25 + offset) +
         ",0)"
       }
     >
@@ -50,7 +51,7 @@ function AASliver(props) {
       {props.positionInCodon === 1 && (
         <text
           fontSize={25}
-          stroke={"black"}
+          stroke="black"
           strokeWidth={2}
           transform="scale(3,3) translate(17,21)"
           x="0"
@@ -96,4 +97,4 @@ function AASliver(props) {
 //   relativeAAPositionInTranslation: PropTypes.number.isRequired
 // };
 
-export default AASliver;
+export default pureNoFunc(AASliver);

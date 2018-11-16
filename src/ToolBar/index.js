@@ -1,4 +1,5 @@
 import React from "react";
+import { pick } from "lodash";
 import versionHistoryTool from "./versionHistoryTool";
 // import {connectToEditor} from "../withEditorProps";
 import MenuBar from "../MenuBar";
@@ -45,6 +46,8 @@ export class ToolBar extends React.PureComponent {
       modifyTools,
       contentLeft,
       showMenuBar,
+      onSave,
+      userDefinedHandlersAndOpts,
       editorName,
       handleFullscreenClose,
       closeFullscreen,
@@ -85,6 +88,9 @@ export class ToolBar extends React.PureComponent {
           );
           return false;
         }
+        if (toolName === "saveTool" && !onSave) {
+          return false;
+        } //don't show the option to save if no onSave handler is passed
         return (
           <Tool
             {...rest}
@@ -106,6 +112,8 @@ export class ToolBar extends React.PureComponent {
         <div className="veToolbar">
           {showMenuBar && (
             <MenuBar
+              {...pick(this.props, userDefinedHandlersAndOpts)}
+              onSave={onSave} //needs to be passed so that editor commands will have it
               style={{ marginLeft: 0 }}
               editorName={editorName}
               trackFocus={false}

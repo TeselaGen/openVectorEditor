@@ -1,98 +1,47 @@
 import classnames from "classnames";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import React from "react";
 import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
-
-function withHover(Component) {
-  return class HoverHelper extends React.Component {
-    render() {
-      let {
-        hovered,
-        idToPass,
-        hoveredId,
-        mouseAware,
-        isOver,
-        children,
-        hoveredAnnotationUpdate,
-        hoveredAnnotationClear,
-        onHover,
-        className,
-        editorName,
-        isLabelGroup,
-        isSubLabel,
-        doNotTriggerOnMouseOut,
-        passJustOnMouseOverAndClassname,
-        ...rest
-      } = this.props;
-      /* eslint-disable */
-      if (!idToPass) debugger;
-      /* eslint-enable */
-
-      let mouseAway = doNotTriggerOnMouseOut
-        ? noop
-        : e => {
-            e.stopPropagation();
-            if (window.__veDragging || window.__veScrolling) return;
-            hoveredAnnotationClear(true, { editorName });
-          };
-      let hoverActions = {
-        onMouseOver: e => {
-          //because the calling onHover can slow things down, we disable it if dragging or scrolling
-          if (window.__veDragging || window.__veScrolling) return;
-          e.stopPropagation();
-          hoveredAnnotationUpdate(idToPass, { editorName });
-          onHover && onHover({ e, idToPass, meta: { editorName } });
-        },
-        onMouseLeave: mouseAway
-      };
-      let hoverProps = {
-        hovered,
-        hoveredId,
-        className: classnames(className, "hoverHelper", {
-          veAnnotationHovered: hovered,
-          doNotTriggerOnMouseOut
-        })
-      };
-
-      return <Component {...{ ...rest, hoverActions, hoverProps }} />;
-    }
-  };
-}
+import { withHandlers } from "recompose";
 
 export default compose(
   connect(
-    function(
-      state,
-      {
-        id,
-        editorName = "StandaloneEditor",
-        annotation,
-        isHovered,
-        passHoveredId
+    function(state, { id, editorName = "StandaloneEditor", className }) {
+      if (!editorName) {
+        console.warn(
+          "please pass an editorName to the withHover() wrapped component"
+        );
       }
-    ) {
       let editorState = state.VectorEditor[editorName] || {};
-      let isIdHashmap = typeof id === "object";
       let hoveredId = editorState.hoveredAnnotation;
-      let hovered =
-        (annotation && annotation.isHovered) || isHovered || isIdHashmap
-          ? id[hoveredId]
-          : hoveredId === id;
-      let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
+      let isIdHashmap = typeof id === "object";
+
+      let hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);
+      const newClassName = classnames(className, "hoverHelper", {
+        veAnnotationHovered: hovered
+      });
       return {
         hovered,
-        id,
-        ...(passHoveredId && { hoveredId: hovered ? hoveredId : "" }), //only pass the hoveredId in if the component is actually interested in it to prevent unecessary renders
-        isIdHashmap,
-        idToPass
+        className: newClassName
       };
     },
-    hoveredAnnotationActions,
-    null,
-    { pure: false }
+    hoveredAnnotationActions
   ),
-  withHover
+  withHandlers({
+    onMouseOver: props => e => {
+      const { editorName, id, hoveredAnnotationUpdate } = props;
+      let isIdHashmap = typeof id === "object";
+      let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
+      //because the calling onHover can slow things down, we disable it if dragging or scrolling
+      if (window.__veDragging || window.__veScrolling) return;
+      e.stopPropagation();
+      hoveredAnnotationUpdate(idToPass, { editorName });
+    },
+    onMouseLeave: props => e => {
+      const { editorName, hoveredAnnotationClear } = props;
+      e.stopPropagation();
+      if (window.__veDragging || window.__veScrolling) return;
+      hoveredAnnotationClear(true, { editorName });
+    }
+  })
 );
-
-function noop() {}

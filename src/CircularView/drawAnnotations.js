@@ -201,8 +201,7 @@ export default drawAnnotations;
 
 const DrawAnnotation = pureNoFunc(
   withHover(function({
-    hoverActions,
-    hoverProps: { className },
+    className,
     startAngle,
     endAngle,
     onClick,
@@ -215,7 +214,9 @@ const DrawAnnotation = pureNoFunc(
     totalAngle,
     annotationColor,
     annotationRadius,
-    annotationHeight
+    annotationHeight,
+    onMouseLeave,
+    onMouseOver
   }) {
     return (
       <React.Fragment>
@@ -227,7 +228,7 @@ const DrawAnnotation = pureNoFunc(
               ? !annotation.forward
               : annotation.forward
           })}
-          {...hoverActions}
+          {...{ onMouseLeave, onMouseOver }}
           className={className}
           onContextMenu={onContextMenu}
           onClick={onClick}
@@ -259,7 +260,7 @@ const DrawAnnotation = pureNoFunc(
                     ? !annotation.forward
                     : annotation.forward
                 })}
-                {...hoverActions}
+                {...{ onMouseLeave, onMouseOver }}
                 className={className}
                 onContextMenu={onContextMenu}
                 onClick={onClick}

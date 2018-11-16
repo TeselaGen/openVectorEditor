@@ -6,15 +6,17 @@ import { withHandlers } from "recompose";
 import { compose } from "redux";
 
 export default compose(
-  connectToEditor(({ readOnly, sequenceData, lastSavedId }) => {
-    return {
-      readOnly: readOnly,
-      sequenceData: sequenceData,
-      hasBeenSaved:
-        sequenceData.stateTrackingId === "initialLoadId" ||
-        sequenceData.stateTrackingId === lastSavedId
-    };
-  }),
+  connectToEditor(
+    ({ readOnly, sequenceData = {}, lastSavedId = "134%!@#%!@#%!@%" }) => {
+      return {
+        readOnly: readOnly,
+        sequenceData: sequenceData,
+        hasBeenSaved:
+          sequenceData.stateTrackingId === "initialLoadId" ||
+          sequenceData.stateTrackingId === lastSavedId
+      };
+    }
+  ),
   withHandlers({ handleSave })
 )(({ toolbarItemProps, handleSave, readOnly, hasBeenSaved, onSave }) => {
   return (

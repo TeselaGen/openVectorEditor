@@ -5,6 +5,9 @@ import { map } from "lodash";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
 import { Switch, Checkbox } from "@blueprintjs/core";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import selectors from "../../selectors";
 
 class OrfProperties extends React.Component {
   onRowSelect = ([record]) => {
@@ -20,13 +23,13 @@ class OrfProperties extends React.Component {
   };
   render() {
     const {
-      sequenceData = {},
+      orfs,
+      sequenceLength,
       annotationVisibilityToggle,
       annotationVisibility,
       useAdditionalOrfStartCodonsToggle,
       useAdditionalOrfStartCodons
     } = this.props;
-    const { orfs } = sequenceData;
     const orfsToUse = map(orfs, orf => {
       return {
         ...orf,
@@ -35,10 +38,8 @@ class OrfProperties extends React.Component {
         ...(orf.strand === undefined && {
           strand: orf.forward ? 1 : -1
         }),
-        size: getRangeLength(orf, sequenceData.sequence.length),
-        sizeAa: Math.floor(
-          getRangeLength(orf, sequenceData.sequence.length) / 3
-        )
+        size: getRangeLength(orf, sequenceLength),
+        sizeAa: Math.floor(getRangeLength(orf, sequenceLength) / 3)
       };
     });
     return (
@@ -46,7 +47,7 @@ class OrfProperties extends React.Component {
         <DataTable
           topLeftItems={
             <Switch
-              checked={this.props.annotationVisibility.orfs}
+              checked={annotationVisibility.orfs}
               onChange={() => {
                 this.props.annotationVisibilityToggle("orfs");
               }}
@@ -59,7 +60,7 @@ class OrfProperties extends React.Component {
           onRowSelect={this.onRowSelect}
           withSearch={false}
           maxHeight={400}
-          formName={"orfProperties"}
+          formName="orfProperties"
           noRouter
           compact
           isInfinite
@@ -108,16 +109,31 @@ class OrfProperties extends React.Component {
             annotationVisibilityToggle("orfTranslations");
           }}
           checked={annotationVisibility.orfTranslations}
-          label={"Show translations for ORFs"}
+          label="Show translations for ORFs"
         />
         <Checkbox
           onChange={useAdditionalOrfStartCodonsToggle}
           checked={useAdditionalOrfStartCodons}
-          label={"Use GTG and CTG as start codons"}
+          label="Use GTG and CTG as start codons"
         />
       </div>
     );
   }
 }
 
-export default withSelectedEntities("orfProperties")(OrfProperties);
+export default compose(
+  connectToEditor(editorState => {
+    const {
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "" } = {}
+    } = editorState;
+    return {
+      readOnly,
+      annotationVisibility,
+      orfs: selectors.orfsSelector(editorState),
+      sequenceLength: sequence.length
+    };
+  }),
+  withSelectedEntities("orfProperties")
+)(OrfProperties);

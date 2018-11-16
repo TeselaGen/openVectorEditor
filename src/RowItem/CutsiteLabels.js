@@ -117,19 +117,21 @@ export default onlyUpdateForKeys([
 
 const DrawCutsiteLabel = withHover(
   ({
-    hoverActions,
-    hoverProps: { hovered, className },
+    hovered,
+    className,
     annotation,
     cutsiteClicked,
     cutsiteRightClicked,
     height,
     xStartOriginal,
+    onMouseLeave,
+    onMouseOver,
     xStart
   }) => {
     return (
       <div>
         <div
-          {...hoverActions}
+          {...{ onMouseLeave, onMouseOver }}
           className={className + " veCutsiteLabel ve-monospace-font"}
           onClick={function(event) {
             cutsiteClicked({ event, annotation });

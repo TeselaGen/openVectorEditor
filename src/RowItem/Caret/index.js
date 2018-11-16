@@ -1,7 +1,7 @@
 import React from "react";
+import pure from "../../utils/pureNoFunc";
 import "./style.css";
-import pure from "recompose/pure";
-import draggableClassnames from "../../constants/draggableClassnames";
+// import draggableClassnames from "../../constants/draggableClassnames";
 
 function Caret(props) {
   let {
@@ -9,9 +9,9 @@ function Caret(props) {
     row,
     sequenceLength,
     caretPosition,
-    className = "",
-    getGaps,
-    ignoreGaps
+    className = ""
+    // getGaps,
+    // ignoreGaps
   } = props;
 
   if (

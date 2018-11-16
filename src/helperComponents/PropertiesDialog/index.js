@@ -10,9 +10,9 @@ import GenbankView from "./GenbankView";
 import TranslationProperties from "./TranslationProperties";
 import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
-
+import { connectToEditor } from "../../withEditorProps";
 import "./style.css";
-import { withProps } from "recompose";
+
 const allTabs = {
   general: GeneralProperties,
   features: FeatureProperties,
@@ -30,6 +30,11 @@ export class PropertiesInner extends React.Component {
       propertiesViewTabUpdate,
       dimensions = {},
       height,
+      editorName,
+      onSave,
+      showReadOnly,
+      showAvailability,
+      disableSetReadOnly,
       propertiesList = [
         "general",
         "features",
@@ -56,7 +61,18 @@ export class PropertiesInner extends React.Component {
           key={name}
           title={name === "orfs" ? "ORFs" : startCase(name)}
           id={name}
-          panel={<Comp {...{ ...this.props, selectedAnnotationId }} />}
+          panel={
+            <Comp
+              {...{
+                editorName,
+                onSave,
+                showReadOnly,
+                showAvailability,
+                disableSetReadOnly,
+                selectedAnnotationId
+              }}
+            />
+          }
         />
       );
     });
@@ -69,7 +85,7 @@ export class PropertiesInner extends React.Component {
       >
         {closePanelButton}
         <div
-          className={"ve-propertiesPanel"}
+          className="ve-propertiesPanel"
           style={{
             display: "flex",
             width,
@@ -101,7 +117,7 @@ export class PropertiesInner extends React.Component {
 }
 
 export default compose(
-  withProps(({ PropertiesProps }) => {
-    return { ...PropertiesProps };
+  connectToEditor(({ propertiesTool }) => {
+    return { propertiesTool };
   })
 )(PropertiesInner);

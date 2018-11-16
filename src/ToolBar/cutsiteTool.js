@@ -4,13 +4,15 @@ import React from "react";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor(editorState => {
-  return {
-    readOnly: editorState.readOnly,
-    toggled: editorState.annotationVisibility.cutsites,
-    isOpen: editorState.toolBar.openItem === "cutsiteTool"
-  };
-})(({ toolbarItemProps, toggled, isOpen, annotationVisibilityToggle }) => {
+export default connectToEditor(
+  ({ readOnly, annotationVisibility = {}, toolBar = {} }) => {
+    return {
+      readOnly,
+      toggled: annotationVisibility.cutsites,
+      isOpen: toolBar.openItem === "cutsiteTool"
+    };
+  }
+)(({ toolbarItemProps, toggled, isOpen, annotationVisibilityToggle }) => {
   return (
     <ToolbarItem
       {...{
@@ -50,7 +52,7 @@ function CutsiteToolDropDown({
   createNewDigest
 }) {
   return (
-    <div className={"veToolbarCutsiteFilterHolder"}>
+    <div className="veToolbarCutsiteFilterHolder">
       <h6>Filter Cut Sites:</h6>
       <CutsiteFilter
         editorName={editorName}
@@ -66,7 +68,7 @@ function CutsiteToolDropDown({
           }}
         >
           <span style={{ display: "flex" }}>
-            Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+            Virtual Digest &nbsp; <KeyCombo minimal combo="mod+shift+d" />
           </span>
         </Button>
       )}

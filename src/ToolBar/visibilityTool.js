@@ -7,9 +7,9 @@ import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
 
-export default connectToEditor(editorState => {
+export default connectToEditor(({ toolBar = {} }) => {
   return {
-    isOpen: editorState.toolBar.openItem === "visibilityTool"
+    isOpen: toolBar.openItem === "visibilityTool"
   };
 })(({ toolbarItemProps, isOpen }) => {
   return (

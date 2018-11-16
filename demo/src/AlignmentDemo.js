@@ -10,7 +10,7 @@ import {
   fakeActionOverrides
 } from "../../src/withEditorProps/index";
 import { caretPositionUpdate } from "../../src/redux/caretPosition";
-import { upsertPart } from "../../src/redux/sequenceData";
+// import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
 
 // Use the line below because using the full 30 sequences murders Redux dev tools.
@@ -73,14 +73,12 @@ export default connect(
         <AlignmentView
           {...{
             editorName: "MppViewer",
-            id: alignmentRunData.id,dimensions: {
-              width: 1500
-            },
+            id: alignmentRunData.id,
             minimapLaneHeight: 10,
             minimapLaneSpacing: 2,
             linearViewOptions: ({ index, alignmentVisibilityToolOptions }) => {
               const toReturn = {
-                tickSpacing: 10,
+                // tickSpacing: 10,
                 ignoreYWhenSelecting: true,
                 linearViewAnnotationVisibilityOverrides: {
                   ...alignmentVisibilityToolOptions.alignmentAnnotationVisibility,

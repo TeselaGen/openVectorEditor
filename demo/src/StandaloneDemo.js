@@ -49,9 +49,8 @@ export default class StandaloneDemo extends React.Component {
           //   editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
           // },
           onRename: () => {}, //this option should be shown by default
-          onNewSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
-          onDeleteSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
-          onDuplicateSequence: () => {}, //unless this callback is defined, don't show the option to create a new seq
+          onNew: () => {}, //unless this callback is defined, don't show the option to create a new seq
+          onDuplicate: () => {}, //unless this callback is defined, don't show the option to create a new seq
           onSave: function(
             event,
             sequenceDataToSave,
@@ -148,12 +147,7 @@ export default class StandaloneDemo extends React.Component {
           ToolBarProps: {
             toolList: [
               "saveTool",
-              {
-                name: "downloadTool",
-                Dropdown: () => {
-                  return "Hey! This is an example of how toolbar items can be overridden";
-                }
-              },
+              "downloadTool",
               "importTool",
               "undoTool",
               "redoTool",
@@ -501,7 +495,8 @@ export default class StandaloneDemo extends React.Component {
         style={{
           width: "100%",
           height: "100%",
-          zIndex: 1050
+          zIndex: 1050,
+          flexGrow: 1
         }}
         ref={node => {
           this.node = node;
@@ -510,7 +505,9 @@ export default class StandaloneDemo extends React.Component {
     );
     const { isDialogOpen } = this.state;
     return (
-      <div>
+      <div style={{flexGrow: '1',
+        display: 'flex',
+        flexDirection: 'column',}}>
         <Button
           onClick={() => {
             this.setState({ isDialogOpen: !isDialogOpen });

@@ -8,12 +8,14 @@ import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
 
-export default connectToEditor(editorState => {
-  return {
-    toggled: editorState.annotationVisibility.orfs,
-    isOpen: editorState.toolBar.openItem === "orfTool"
-  };
-})(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
+export default connectToEditor(
+  ({ annotationVisibility = {}, toolBar = {} }) => {
+    return {
+      toggled: annotationVisibility.orfs,
+      isOpen: toolBar.openItem === "orfTool"
+    };
+  }
+)(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
   return (
     <ToolbarItem
       {...{
@@ -34,7 +36,7 @@ export default connectToEditor(editorState => {
   );
 });
 
-const OrfToolDropdown = withEditorProps(function ({
+const OrfToolDropdown = withEditorProps(function({
   sequenceLength,
   minimumOrfSizeUpdate,
   minimumOrfSize,
@@ -44,7 +46,7 @@ const OrfToolDropdown = withEditorProps(function ({
   annotationVisibilityToggle
 }) {
   return (
-    <div className={"veToolbarOrfOptionsHolder"}>
+    <div className="veToolbarOrfOptionsHolder">
       <div style={{ display: "flex" }}>
         Minimum ORF Size:
         <input
@@ -66,19 +68,19 @@ const OrfToolDropdown = withEditorProps(function ({
         }}
         disabled={!annotationVisibility.orfs}
         checked={annotationVisibility.orfTranslations}
-        label={"Show translations for ORFs"}
+        label="Show translations for ORFs"
       />
       <Checkbox
         onChange={function() {
           annotationVisibilityToggle("cdsFeatureTranslations");
         }}
         checked={annotationVisibility.cdsFeatureTranslations}
-        label={"Show translations for CDS features"}
+        label="Show translations for CDS features"
       />
       <Checkbox
         onChange={useAdditionalOrfStartCodonsToggle}
         checked={useAdditionalOrfStartCodons}
-        label={"Use GTG and CTG as start codons"}
+        label="Use GTG and CTG as start codons"
       />
       <div className="vespacer" />
 
@@ -88,4 +90,4 @@ const OrfToolDropdown = withEditorProps(function ({
       />
     </div>
   );
-})
+});

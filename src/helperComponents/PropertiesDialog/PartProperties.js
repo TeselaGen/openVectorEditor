@@ -3,7 +3,8 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button, Switch } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
 class PartProperties extends React.Component {
   onRowSelect = ([record]) => {
     if (!record) return;
@@ -19,20 +20,21 @@ class PartProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      parts,
+      sequenceLength,
       partPropertiesSelectedEntities,
       showAddOrEditPartDialog,
       deletePart,
+      annotationVisibility,
       selectedAnnotationId
     } = this.props;
-    const { parts } = sequenceData;
     const partsToUse = map(parts, part => {
       return {
         ...part,
         ...(part.strand === undefined && {
           strand: part.forward ? 1 : -1
         }),
-        size: getRangeLength(part, sequenceData.sequence.length)
+        size: getRangeLength(part, sequenceLength)
       };
     });
     return (
@@ -40,7 +42,7 @@ class PartProperties extends React.Component {
         <DataTable
           topLeftItems={
             <Switch
-              checked={this.props.annotationVisibility.parts}
+              checked={annotationVisibility.parts}
               onChange={() => {
                 this.props.annotationVisibilityToggle("parts");
               }}
@@ -53,7 +55,7 @@ class PartProperties extends React.Component {
           onRowSelect={this.onRowSelect}
           selectedIds={selectedAnnotationId}
           maxHeight={400}
-          formName={"partProperties"}
+          formName="partProperties"
           noRouter
           compact
           isInfinite
@@ -115,4 +117,20 @@ class PartProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("partProperties")(PartProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "", parts = {} } = {}
+    }) => {
+      return {
+        readOnly,
+        parts,
+        annotationVisibility,
+        sequenceLength: sequence.length
+      };
+    }
+  ),
+  withSelectedEntities("partProperties")
+)(PartProperties);

@@ -5,6 +5,8 @@ import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { Popover, Switch } from "@blueprintjs/core";
 import ColorPicker from "./ColorPicker";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
 
 class FeatureProperties extends React.Component {
   onRowSelect = ([record]) => {
@@ -21,21 +23,22 @@ class FeatureProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      features = {},
+      annotationVisibility,
+      sequenceLength,
       featurePropertiesSelectedEntities,
       showAddOrEditFeatureDialog,
       deleteFeature,
       selectedAnnotationId
     } = this.props;
 
-    const { features } = sequenceData;
     const featuresToUse = map(features, feature => {
       return {
         ...feature,
         ...(feature.strand === undefined && {
           strand: feature.forward ? 1 : -1
         }),
-        size: getRangeLength(feature, sequenceData.sequence.length)
+        size: getRangeLength(feature, sequenceLength)
       };
     });
     return (
@@ -43,7 +46,7 @@ class FeatureProperties extends React.Component {
         <DataTable
           topLeftItems={
             <Switch
-              checked={this.props.annotationVisibility.features}
+              checked={annotationVisibility.features}
               onChange={() => {
                 this.props.annotationVisibilityToggle("features");
               }}
@@ -56,7 +59,7 @@ class FeatureProperties extends React.Component {
           onRowSelect={this.onRowSelect}
           maxHeight={400}
           selectedIds={selectedAnnotationId}
-          formName={"featureProperties"}
+          formName="featureProperties"
           noRouter
           compact
           isInfinite
@@ -150,7 +153,23 @@ class FeatureProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("featureProperties")(FeatureProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "", features = {} } = {}
+    }) => {
+      return {
+        annotationVisibility,
+        readOnly,
+        features,
+        sequenceLength: sequence.length
+      };
+    }
+  ),
+  withSelectedEntities("featureProperties")
+)(FeatureProperties);
 
 const ColorPickerPopover = ({ readOnly, onColorSelect, children }) => {
   return (

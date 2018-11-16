@@ -18,10 +18,10 @@ import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
 
-export default connectToEditor(editorState => {
+export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return {
-    readOnly: editorState.readOnly,
-    isOpen: editorState.toolBar.openItem === "alignmentTool"
+    readOnly: readOnly,
+    isOpen: toolBar.openItem === "alignmentTool"
   };
 })(({ toolbarItemProps, isOpen }) => {
   return (
@@ -29,7 +29,7 @@ export default connectToEditor(editorState => {
       {...{
         ...toolbarItemProps,
 
-        Icon: <Icon icon={"align-left"} />,
+        Icon: <Icon icon="align-left" />,
         // toggled: alignmentTool.isOpen,
         renderIconAbove: isOpen,
         // onIconClick: toggleFindTool,

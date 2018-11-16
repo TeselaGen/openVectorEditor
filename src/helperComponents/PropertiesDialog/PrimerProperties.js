@@ -3,7 +3,8 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button, Switch } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
 class PrimerProperties extends React.Component {
   onRowSelect = ([record]) => {
     if (!record) return;
@@ -19,20 +20,21 @@ class PrimerProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      sequenceLength,
+      primers,
+      annotationVisibility,
       primerPropertiesSelectedEntities,
       showAddOrEditPrimerDialog,
       deletePrimer,
       selectedAnnotationId
     } = this.props;
-    const { primers } = sequenceData;
     const primersToUse = map(primers, primer => {
       return {
         ...primer,
         ...(primer.strand === undefined && {
           strand: primer.forward ? 1 : -1
         }),
-        size: getRangeLength(primer, sequenceData.sequence.length)
+        size: getRangeLength(primer, sequenceLength)
       };
     });
     return (
@@ -40,7 +42,7 @@ class PrimerProperties extends React.Component {
         <DataTable
           topLeftItems={
             <Switch
-              checked={this.props.annotationVisibility.primers}
+              checked={annotationVisibility.primers}
               onChange={() => {
                 this.props.annotationVisibilityToggle("primers");
               }}
@@ -53,7 +55,7 @@ class PrimerProperties extends React.Component {
           onRowSelect={this.onRowSelect}
           selectedIds={selectedAnnotationId}
           maxHeight={400}
-          formName={"primerProperties"}
+          formName="primerProperties"
           noRouter
           compact
           isInfinite
@@ -116,4 +118,20 @@ class PrimerProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("primerProperties")(PrimerProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "", primers = {} } = {}
+    }) => {
+      return {
+        readOnly,
+        annotationVisibility,
+        primers,
+        sequenceLength: sequence.length
+      };
+    }
+  ),
+  withSelectedEntities("primerProperties")
+)(PrimerProperties);

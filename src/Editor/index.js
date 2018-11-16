@@ -21,13 +21,15 @@ import AlignmentView from "../AlignmentView";
 import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
+import { connectToEditor, handleSave } from "../withEditorProps";
+import { withHandlers } from "recompose";
 
 import CommandHotkeyHandler from "./CommandHotkeyHandler";
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-import { flatMap, map, filter } from "lodash";
+import { flatMap, map, filter, pick } from "lodash";
 
 import ToolBar from "../ToolBar";
 import CircularView, {
@@ -36,7 +38,6 @@ import CircularView, {
 import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
-import { connectToEditor } from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
 import "./style.css";
@@ -46,6 +47,28 @@ import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 
+// if (process.env.NODE_ENV !== 'production') {
+//   const {whyDidYouUpdate} = require('why-did-you-update');
+//   whyDidYouUpdate(React);
+// }
+
+const userDefinedHandlersAndOpts = [
+  "readOnly",
+  "shouldAutosave",
+  "disableSetReadOnly",
+  "showReadOnly",
+  "showCircularity",
+  "showAvailability",
+  "fullscreenMode",
+  "onNew",
+  "onSave",
+  "onRename",
+  "onDuplicate",
+  "onDelete",
+  "onCopy",
+  "onPaste"
+];
+
 const panelMap = {
   circular: CircularView,
   sequence: RowView,
@@ -53,7 +76,10 @@ const panelMap = {
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
-  properties: Properties,
+  properties: {
+    comp: Properties,
+    panelSpecificProps: ["PropertiesProps"]
+  },
   mismatches: Mismatches
 };
 
@@ -256,7 +282,6 @@ export class Editor extends React.Component {
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel,
-      fitWidth,
       onSave,
       caretPositionUpdate,
       getVersionList,
@@ -294,13 +319,15 @@ export class Editor extends React.Component {
       controlledPreviewModeFullscreen ||
       isFullscreen
     );
+    const editorNode =
+      document.querySelector(".veEditor") ||
+      document.querySelector(".preview-mode-container");
 
     let height = Math.max(
       minHeight,
-      (this.veEditorNode &&
-        this.veEditorNode.node &&
-        this.veEditorNode.node.parentNode &&
-        this.veEditorNode.node.parentNode.clientHeight) ||
+      (editorNode &&
+        editorNode.parentNode &&
+        editorNode.parentNode.clientHeight) ||
         0
     );
 
@@ -318,7 +345,7 @@ export class Editor extends React.Component {
         ? CircularViewUnconnected
         : LinearViewUnconnected;
       return (
-        <div className="preview-mode-container">
+        <div style={{ ...style }} className="preview-mode-container">
           <div style={{ position: "relative" }}>
             <Panel
               sequenceData={sequenceData}
@@ -376,14 +403,14 @@ export class Editor extends React.Component {
       let activePanelId;
       let activePanelType;
       let isFullScreen;
-      let propsToSpread = {};
+      let panelPropsToSpread = {};
       panelGroup.forEach(panelProps => {
         const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
           activePanelType = type || id;
           activePanelId = id;
-          propsToSpread = panelProps;
+          panelPropsToSpread = panelProps;
         }
       });
       if (this.hasFullscreenPanel && !isFullScreen) {
@@ -398,12 +425,18 @@ export class Editor extends React.Component {
         };
       }
 
-      const Panel = panelMap[activePanelType];
+      const Panel =
+        (panelMap[activePanelType] && panelMap[activePanelType].comp) ||
+        panelMap[activePanelType];
+      const panelSpecificProps =
+        panelMap[activePanelType] &&
+        panelMap[activePanelType].panelSpecificProps;
       let panel = Panel ? (
         <Panel
-          onSave={onSave}
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          {...panelSpecificProps && pick(this.props, panelSpecificProps)}
           key={activePanelId}
-          {...propsToSpread}
+          {...panelPropsToSpread}
           editorName={editorName}
           tabHeight={tabHeight}
           {...editorDimensions}
@@ -461,7 +494,9 @@ export class Editor extends React.Component {
           activePanelId={activePanelId}
           minSize="200"
           propagateDimensions={true}
-          resizeWidth={fitWidth}
+          // resizeWidth={false}
+          // resizeWidth={fitWidth}
+          // resizeWidth
           resizeHeight
           //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
           // } //use the !! to force a boolean
@@ -675,6 +710,7 @@ export class Editor extends React.Component {
         updateSequenceData={updateSequenceData}
         style={{
           width: "100%",
+          maxWidth: "100%",
           // ...(fitHeight && {
           // height: "100%",
           //  }),
@@ -696,9 +732,6 @@ export class Editor extends React.Component {
           }),
           ...style
         }}
-        forwardedRef={n => {
-          if (n) this.veEditorNode = n;
-        }}
         className="veEditor"
       >
         <Dialogs editorName={editorName} />
@@ -708,6 +741,8 @@ export class Editor extends React.Component {
           handleFullscreenClose={
             handleFullscreenClose || this.togglePreviewFullscreen
           }
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
           onSave={onSave}
           closeFullscreen={
             !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
@@ -721,7 +756,10 @@ export class Editor extends React.Component {
           withDigestTool
           {...ToolBarProps}
         />
-        <CommandHotkeyHandler editorName={editorName} />
+        <CommandHotkeyHandler
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          editorName={editorName}
+        />
 
         <div
           style={{ position: "relative", flexGrow: "1" }}
@@ -768,6 +806,6 @@ export default compose(
       versionHistory,
       sequenceData
     };
-  })
-  // sizeMe({monitorHeight: true})
+  }),
+  withHandlers({ handleSave })
 )(Editor);

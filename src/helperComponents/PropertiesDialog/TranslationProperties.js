@@ -4,6 +4,9 @@ import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import selectors from "../../selectors";
 
 class TranslationProperties extends React.Component {
   onRowSelect = ([record]) => {
@@ -20,23 +23,21 @@ class TranslationProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      translations,
       translationPropertiesSelectedEntities,
       // showAddOrEditTranslationDialog,
       deleteTranslation,
+      sequenceLength,
       selectedAnnotationId,
       annotationVisibilityToggle,
       annotationVisibilityShow,
       annotationVisibility
     } = this.props;
-    const { translations } = sequenceData;
     const translationsToUse = map(translations, translation => {
       return {
         ...translation,
-        sizeBps: getRangeLength(translation, sequenceData.sequence.length),
-        sizeAa: Math.floor(
-          getRangeLength(translation, sequenceData.sequence.length) / 3
-        ),
+        sizeBps: getRangeLength(translation, sequenceLength),
+        sizeAa: Math.floor(getRangeLength(translation, sequenceLength) / 3),
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
         })
@@ -49,7 +50,7 @@ class TranslationProperties extends React.Component {
           onRowSelect={this.onRowSelect}
           maxHeight={400}
           selectedIds={selectedAnnotationId}
-          formName={"translationProperties"}
+          formName="translationProperties"
           noRouter
           compact
           topLeftItems={
@@ -109,14 +110,14 @@ class TranslationProperties extends React.Component {
             }}
             disabled={!annotationVisibility.orfs}
             checked={annotationVisibility.orfTranslations}
-            label={"Show translations for ORFs"}
+            label="Show translations for ORFs"
           />
           <Checkbox
             onChange={function() {
               annotationVisibilityToggle("cdsFeatureTranslations");
             }}
             checked={annotationVisibility.cdsFeatureTranslations}
-            label={"Show translations for CDS features"}
+            label="Show translations for CDS features"
           />
         </div>
         {!readOnly && (
@@ -161,6 +162,19 @@ class TranslationProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("translationProperties")(
-  TranslationProperties
-);
+export default compose(
+  connectToEditor(editorState => {
+    const {
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "" } = {}
+    } = editorState;
+    return {
+      readOnly,
+      translations: selectors.translationsSelector(editorState),
+      annotationVisibility,
+      sequenceLength: sequence.length
+    };
+  }),
+  withSelectedEntities("translationProperties")
+)(TranslationProperties);

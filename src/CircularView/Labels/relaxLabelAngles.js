@@ -46,7 +46,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
       rightBottomLabels.push(label);
     } else if (
       labelCenter >= totalLength / 2 &&
-      labelCenter < 3 * totalLength / 4
+      labelCenter < (3 * totalLength) / 4
     ) {
       leftBottomLabels.push(label);
     } else {
@@ -62,6 +62,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
       .map(function(label /* index */) {
         if (Math.abs(lastLabelYPosition) > maxradius + 80) {
           lastlabel.labelAndSublabels.push(label);
+          lastlabel.labelIds[label.id] = true;
           return false;
         }
         lastlabel = label;
@@ -144,12 +145,13 @@ function combineLabels(labels, numberOfBuckets) {
       return;
     }
     let bucket = Math.floor(
-      label.annotationCenterAngle / 6.29 * numberOfBuckets
+      (label.annotationCenterAngle / 6.29) * numberOfBuckets
     );
     if (!buckets[bucket]) {
       buckets[bucket] = label;
     } else {
       buckets[bucket].labelAndSublabels.push(label);
+      buckets[bucket].labelIds[label.id] = true;
     }
   });
   let combinedLabels = Object.keys(buckets)

@@ -5,14 +5,15 @@ import React from "react";
 
 function Part(props) {
   let {
-    hoverActions,
-    hoverProps: { className },
+    className,
     widthInBps,
     charWidth,
     height,
     rangeType,
     forward,
     name,
+    onMouseLeave,
+    onMouseOver,
     pointiness = 8,
     fontWidth = 12,
     partClicked,
@@ -82,7 +83,7 @@ function Part(props) {
   // path=path.replace(/\n/g,'')
   return (
     <g
-      {...hoverActions}
+      {...{ onMouseLeave, onMouseOver }}
       className={"veRowViewPart clickable " + className}
       onClick={function(event) {
         partClicked({

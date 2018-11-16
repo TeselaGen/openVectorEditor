@@ -1,6 +1,9 @@
 import React from "react";
 import { InputField, BPSelect } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
+import { connectToEditor, updateCircular } from "../../withEditorProps";
+import { compose, withHandlers } from "recompose";
+
 // import { map } from "lodash";
 // import { Button, Intent } from "@blueprintjs/core";
 
@@ -12,7 +15,10 @@ class GeneralProperties extends React.Component {
       updateCircular,
       disableSetReadOnly,
       updateAvailability,
-      sequenceData: { name, sequence, circular, materiallyAvailable },
+      name,
+      sequence,
+      circular,
+      materiallyAvailable,
       updateReadOnlyMode,
       onSave,
       showAvailability,
@@ -107,6 +113,23 @@ class GeneralProperties extends React.Component {
   }
 }
 
-export default reduxForm({
-  form: "GeneralProperties"
-})(GeneralProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      sequenceData: { name, sequence, circular, materiallyAvailable } = {}
+    }) => {
+      return {
+        readOnly,
+        name,
+        sequence,
+        circular,
+        materiallyAvailable
+      };
+    }
+  ),
+  withHandlers({ updateCircular }),
+  reduxForm({
+    form: "GeneralProperties"
+  })
+)(GeneralProperties);

@@ -4,9 +4,9 @@ import FindBar from "../FindBar";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor(editorState => {
+export default connectToEditor(({ findTool = {} }) => {
   return {
-    isOpen: editorState.findTool.isOpen
+    isOpen: findTool.isOpen
   };
 })(({ toolbarItemProps, editorName, toggleFindTool, isOpen }) => {
   return (

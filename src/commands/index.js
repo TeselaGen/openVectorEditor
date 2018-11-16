@@ -46,7 +46,7 @@ const fileCommandDefs = {
 
   toggleReadOnlyMode: {
     toggle: [],
-    isDisabled: props => !props.onSave,
+    isDisabled: props => props.disableSetReadOnly || !props.onSave,
     isHidden: props => !props.toggleReadOnlyMode,
     isActive: props => props.readOnly,
     handler: props => props.toggleReadOnlyMode()

@@ -4,7 +4,10 @@ import { map } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button, KeyCombo, Switch } from "@blueprintjs/core";
+import { Button, Switch } from "@blueprintjs/core";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import selectors from "../../selectors";
 
 // import { Button } from "@blueprintjs/core";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
@@ -41,8 +44,8 @@ class CutsiteProperties extends React.Component {
             forwardRegex === reverseRegex
               ? "Palindromic"
               : forward
-                ? "1"
-                : "-1forward"
+              ? "1"
+              : "-1forward"
         };
       }
     );
@@ -57,20 +60,22 @@ class CutsiteProperties extends React.Component {
             justifyContent: "space-around"
           }}
         >
-          {enzyme && <EnzymeViewer
-            {...{
-              sequence: enzyme.site,
-              reverseSnipPosition: enzyme.bottomSnipOffset,
-              forwardSnipPosition: enzyme.topSnipOffset
-            }}
-          />}
+          {enzyme && (
+            <EnzymeViewer
+              {...{
+                sequence: enzyme.site,
+                reverseSnipPosition: enzyme.bottomSnipOffset,
+                forwardSnipPosition: enzyme.topSnipOffset
+              }}
+            />
+          )}
           <div style={{ width: 300 }}>
             <h3>Cuts At: </h3>
             <DataTable
               //defaults={{order: ["numberOfCuts"]}}
               maxHeight={300}
               onRowSelect={this.onRowSelect}
-              formName={"cutLocations"}
+              formName="cutLocations"
               isSingleSelect
               compact
               noRouter
@@ -103,21 +108,16 @@ class CutsiteProperties extends React.Component {
     ]
   };
 
+  onChangeHook = () => {
+    this.props.annotationVisibilityShow("cutsites");
+  };
   render() {
     const {
-      // sequenceData = {},
-      // allCutsites,
       editorName,
-      annotationVisibilityShow,
+      annotationVisibility,
       createNewDigest,
       filteredCutsites: allCutsites
-      // sequenceData: {cutsites: {cutsitesByName}}={}
-      // cutsitePropertiesSelectedEntities
     } = this.props;
-    /* eslint-disable */
-
-    // if (!allCutsites) debugger;
-    /* eslint-enable */
 
     const { cutsitesByName } = allCutsites;
 
@@ -135,7 +135,7 @@ class CutsiteProperties extends React.Component {
         <div style={{ display: "flex", alignItems: "center" }}>
           <Switch
             style={{ marginBottom: 0 }}
-            checked={this.props.annotationVisibility.cutsites}
+            checked={annotationVisibility.cutsites}
             onChange={() => {
               this.props.annotationVisibilityToggle("cutsites");
             }}
@@ -152,9 +152,7 @@ class CutsiteProperties extends React.Component {
           <CutsiteFilter
             style={{ flexGrow: 2 }}
             editorName={editorName}
-            onChangeHook={function() {
-              annotationVisibilityShow("cutsites");
-            }}
+            onChangeHook={this.onChangeHook}
           />
 
           <Button
@@ -174,7 +172,7 @@ class CutsiteProperties extends React.Component {
           noPadding
           defaults={{ order: ["numberOfCuts"] }}
           maxHeight={400}
-          formName={"cutsiteProperties"}
+          formName="cutsiteProperties"
           noRouter
           withSearch={false}
           SubComponent={this.SubComponent}
@@ -187,4 +185,12 @@ class CutsiteProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("cutsiteProperties")(CutsiteProperties);
+export default compose(
+  connectToEditor(editorState => {
+    return {
+      annotationVisibility: editorState.annotationVisibility || {},
+      filteredCutsites: selectors.filteredCutsitesSelector(editorState)
+    };
+  }),
+  withSelectedEntities("cutsiteProperties")
+)(CutsiteProperties);

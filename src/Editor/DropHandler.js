@@ -25,15 +25,15 @@ export default class DropHandler extends React.Component {
     };
   };
   render() {
-    const { children, style, className, forwardedRef, disabled } = this.props;
+    const { children, style, className, disabled } = this.props;
     return (
       <Dropzone
         disabled={disabled}
         disableClick
         multiple={false}
-        activeClassName={"isActive"}
+        activeClassName="isActive"
         onDrop={this.handleDrop}
-        {...{ style, className, ref: forwardedRef }}
+        {...{ style, className }}
       >
         <DraggingMessage />
         {/* <div></div> */}
@@ -44,7 +44,7 @@ export default class DropHandler extends React.Component {
 }
 function DraggingMessage() {
   return (
-    <div className={"dropzone-dragging-message"}>
+    <div className="dropzone-dragging-message">
       Drop Fasta or Genbank files to view them in the editor
     </div>
   );

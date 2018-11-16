@@ -5,6 +5,10 @@
   stroke-dasharray: 3px;
 }
 
+.veAnnotationHovered text,
+.veAnnotationHovered tspan {
+  stroke-dasharray: none;
+}
 .veRowViewPartContainer > svg {
   z-index: 20;
 }

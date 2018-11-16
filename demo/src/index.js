@@ -81,7 +81,7 @@ class Demo extends React.Component {
       <Provider store={store}>
         <Router>
           <div
-            style={{ height: "100%", display: "flex", flexDirection: "column" }}
+            style={{ height: "100%", display: "flex", flexGrow: 1, flexDirection: "column" }}
           >
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
