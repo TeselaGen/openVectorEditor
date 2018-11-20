@@ -23,7 +23,7 @@
     "deploy": "gh-pages -d demo/dist",
     "fontopen": "make fontopen",
     "fontsave": "make fontsave",
-    "testE2E": "yarn cypress run --record --key 5d118c91-6b05-4e6f-899b-17783d834bf5",
+    "": "yarn cypress run --record --key 5d118c91-6b05-4e6f-899b-17783d834bf5",
     "test": "jest --env=jsdom --maxWorkers 2",
     "test-coverage": "yarn test -- --coverage",
     "test:staged": "cross-env CI=true yarn test -- --findRelatedTests",
