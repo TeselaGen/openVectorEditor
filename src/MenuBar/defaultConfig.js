@@ -7,8 +7,12 @@ import viewSubmenu from "./viewSubmenu";
 export default [
   {
     text: "File",
+    "data-test": "file",
     submenu: [
-      "newSequence",
+      {
+        cmd: "newSequence",
+        "data-test": "newSequence"
+      },
       "renameSequence",
       "saveSequence",
       "deleteSequence",

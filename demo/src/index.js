@@ -121,6 +121,9 @@ class Demo extends React.Component {
                         window.alert("exit requested!");
                       }}
                       getSequenceAtVersion={versionId => {
+                        // in a real version we'd go to server and get a real sequence based on the version id
+                        // const seq = await api.getSeqAtVersion()
+                        // return seq
                         if (versionId === 2) {
                           return {
                             sequence: "thomaswashere"

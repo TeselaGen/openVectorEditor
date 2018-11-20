@@ -295,6 +295,7 @@ export class RowView extends React.Component {
         rowTopComp = (
           <div>
             <Button
+              data-test="jumpToEndButton"
               onClick={e => {
                 e.stopPropagation();
                 this.InfiniteScroller &&
@@ -309,6 +310,7 @@ export class RowView extends React.Component {
         rowBottomComp = (
           <div>
             <Button
+              data-test="jumpToStartButton"
               onClick={e => {
                 e.stopPropagation();
                 this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);

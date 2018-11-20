@@ -521,18 +521,7 @@ export class Editor extends React.Component {
               />
             </Tooltip>
           ) : (
-            <Icon
-              className="veRightClickTabMenu"
-              onClick={showTabRightClickContextMenu}
-              icon="more"
-              style={{
-                top: "5px",
-                transform: "rotate(90deg)",
-                position: "absolute",
-                cursor: "pointer",
-                marginTop: "5px"
-              }}
-            />
+            <div />
           )}
 
           {[

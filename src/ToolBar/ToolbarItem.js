@@ -54,40 +54,39 @@ class ToolbarItem extends React.Component {
       <div className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}>
         {renderIconAbove && (
           <div>
-            <div className={"veToolbarItem"}>
-              {index !== 0 && <div className={"veToolbarSpacer"} />}
+            <div className="veToolbarItem">
+              {index !== 0 && <div className="veToolbarSpacer" />}
               {Icon}
             </div>
           </div>
         )}
 
-        {Icon &&
-          !renderIconAbove && (
-            <Tooltip
-              disabled={tooltipDisabled}
-              portalClassName="ve-toolbar-item-popover"
-              content={tooltipToDisplay}
-            >
-              <AnchorButton
-                intent={Intent.PRIMARY}
-                onClick={
-                  onIconClick === "toggleDropdown"
-                    ? this.toggleDropdown
-                    : onIconClick
-                }
-                active={toggled}
-                disabled={disabled}
-                minimal
-                icon={
-                  React.isValidElement(Icon) ? (
-                    Icon
-                  ) : (
-                    <Icon toggleDropdown={this.toggleDropdown} />
-                  )
-                }
-              />
-            </Tooltip>
-          )}
+        {Icon && !renderIconAbove && (
+          <Tooltip
+            disabled={tooltipDisabled}
+            portalClassName="ve-toolbar-item-popover"
+            content={tooltipToDisplay}
+          >
+            <AnchorButton
+              intent={Intent.PRIMARY}
+              onClick={
+                onIconClick === "toggleDropdown"
+                  ? this.toggleDropdown
+                  : onIconClick
+              }
+              active={toggled}
+              disabled={disabled}
+              minimal
+              icon={
+                React.isValidElement(Icon) ? (
+                  Icon
+                ) : (
+                  <Icon toggleDropdown={this.toggleDropdown} />
+                )
+              }
+            />
+          </Tooltip>
+        )}
         {Dropdown && !noDropdownIcon ? (
           <Tooltip disabled={tooltipDisabled} content={dropdowntooltip}>
             <div
@@ -98,13 +97,21 @@ class ToolbarItem extends React.Component {
               onClick={this.toggleDropdown}
             >
               {dropdownicon ? (
-                <div className={"veToolbarIcon"}>
+                <div className="veToolbarIcon">
                   <div>{dropdownicon}</div>
                 </div>
               ) : isOpen ? (
-                <BpIcon iconSize={13} icon={"caret-up"} />
+                <BpIcon
+                  data-test={toolName + "Dropdown"}
+                  iconSize={13}
+                  icon="caret-up"
+                />
               ) : (
-                <BpIcon iconSize={13} icon={"caret-down"} />
+                <BpIcon
+                  data-test={toolName + "Dropdown"}
+                  iconSize={13}
+                  icon="caret-down"
+                />
               )}
             </div>
           </Tooltip>
@@ -117,10 +124,14 @@ class ToolbarItem extends React.Component {
           if (n) this.dropdownNode = n;
         }}
         style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
-        className={"ve-toolbar-dropdown content"}
+        className="ve-toolbar-dropdown content"
       >
         {Dropdown && (
-          <Dropdown {...rest} editorName={editorName} toggleDropdown={this.toggleDropdown} />
+          <Dropdown
+            {...rest}
+            editorName={editorName}
+            toggleDropdown={this.toggleDropdown}
+          />
         )}
       </div>
     );
