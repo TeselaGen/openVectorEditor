@@ -40,7 +40,7 @@
 }
 
 .reflex-layout > .reflex-element {
-  overflow-y: hidden !important;
+  overflow: hidden !important;
 }
 .reflex-layout.reflex-container {
   height: inherit !important;

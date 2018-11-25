@@ -5,9 +5,9 @@ class AnnotationPositioner extends React.PureComponent {
     return (
       <svg
         transform={this.props.transform || null}
-        height={this.props.height + 5}
+        height={Math.max(0, this.props.height + 5)}
         className={this.props.className + " veRowViewAnnotationPosition"}
-        width={this.props.width + 5}
+        width={Math.max(0, this.props.width + 5)}
         style={{
           position: "absolute",
           top: this.props.top,

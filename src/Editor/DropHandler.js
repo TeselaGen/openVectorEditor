@@ -6,23 +6,26 @@ import "./DropHandler.css";
 export default class DropHandler extends React.Component {
   handleDrop = files => {
     const { updateSequenceData } = this.props;
-
-    const file = files[0];
-    let reader = new FileReader();
-    reader.readAsText(file, "UTF-8");
-    reader.onload = function(evt: Object) {
-      const content: string = evt.target.result;
-      anyToJson(
-        content,
-        result => {
-          updateSequenceData(result[0].parsedSequence);
-        },
-        { fileName: file.name, acceptParts: true }
-      );
-    };
-    reader.onerror = function() {
-      window.toastr.error("Failure reading file.");
-    };
+    try {
+      const file = files[0];
+      let reader = new FileReader();
+      reader.readAsText(file, "UTF-8");
+      reader.onload = function(evt: Object) {
+        const content: string = evt.target.result;
+        anyToJson(
+          content,
+          result => {
+            updateSequenceData(result[0].parsedSequence);
+          },
+          { fileName: file.name, acceptParts: true }
+        );
+      };
+      reader.onerror = function() {
+        window.toastr.error("Failure reading file.");
+      };
+    } catch (e) {
+      console.warn(e);
+    }
   };
   render() {
     const { children, style, className, disabled } = this.props;

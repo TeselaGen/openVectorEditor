@@ -42,7 +42,7 @@ class FeatureProperties extends React.Component {
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <React.Fragment>
         <DataTable
           topLeftItems={
             <Switch
@@ -148,7 +148,7 @@ class FeatureProperties extends React.Component {
             </Button>
           </div>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

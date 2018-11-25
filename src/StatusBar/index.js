@@ -1,8 +1,7 @@
 import { getInsertBetweenVals } from "ve-sequence-utils";
 import { getRangeLength } from "ve-range-utils";
 import React from "react";
-import { Button, Classes } from "@blueprintjs/core";
-import { BPSelect } from "teselagen-react-components";
+import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
 import {
   connectToEditor,
   updateCircular,
@@ -24,7 +23,7 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
     return showReadOnly ? (
       <StatusBarItem>
         {onSave ? (
-          <BPSelect
+          <HTMLSelect
             options={[
               { label: "Read Only", value: "readOnly" },
               { label: "Editable", value: "editable" }
@@ -32,7 +31,7 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
             disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
             className={Classes.MINIMAL}
             value={readOnly ? "readOnly" : "editable"}
-            onChange={value => {
+            onChange={({ target: { value } }) => {
               updateReadOnlyMode(value === "readOnly");
             }}
           />
@@ -123,9 +122,9 @@ const EditCircularityItem = compose(
           "Linear"
         )
       ) : (
-        <BPSelect
-          onChange={val => {
-            updateCircular(val === "circular");
+        <HTMLSelect
+          onChange={({ target: { value } }) => {
+            updateCircular(value === "circular");
           }}
           className={Classes.MINIMAL}
           value={circular ? "circular" : "linear"}
@@ -153,9 +152,9 @@ const EditAvailabilityItem = connectToEditor(
           "unavailable"
         )
       ) : (
-        <BPSelect
-          onChange={val => {
-            updateAvailability(val === "available");
+        <HTMLSelect
+          onChange={({ target: { value } }) => {
+            updateAvailability(value === "available");
           }}
           className={Classes.MINIMAL}
           value={materiallyAvailable ? "available" : "unavailable"}

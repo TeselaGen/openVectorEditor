@@ -57,7 +57,7 @@ let Axis = function(props) {
       <path
         key={"axisTickMarkPath " + i + " " + tickMarkPosition}
         d={"M" + xCenter + "," + yStart + " L" + xCenter + "," + yEnd}
-        stroke={"black"}
+        stroke="black"
       />
     );
     if (showAxisNumbers) {
@@ -72,13 +72,13 @@ let Axis = function(props) {
       tickMarkSVG.push(
         <text
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
-          stroke={"black"}
+          stroke="black"
           x={
             i === 0 //if first label in row, or last label in row, we add checks to make sure the axis number labels don't go outside of the width of the row
               ? Math.max(positionLength, xCenter)
               : i === tickMarkPositions.length - 1
-                ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
-                : xCenter
+              ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
+              : xCenter
           }
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
@@ -93,13 +93,13 @@ let Axis = function(props) {
     <svg
       className="veRowViewAxis veAxis"
       width="100%"
-      height={annotationHeight * 1.2}
+      height={Math.max(0, annotationHeight * 1.2)}
       style={{ marginTop: 3, overflow: "visible", display: "block" }}
     >
       {tickMarkSVG}
       <path
         d={"M" + xStart + "," + yStart + " L" + xEnd + "," + yStart}
-        stroke={"black"}
+        stroke="black"
       />
     </svg>
   );

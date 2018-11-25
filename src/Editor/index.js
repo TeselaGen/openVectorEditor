@@ -29,7 +29,7 @@ import CommandHotkeyHandler from "./CommandHotkeyHandler";
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-import { flatMap, map, filter, pick } from "lodash";
+import { flatMap, map, filter, pick, camelCase } from "lodash";
 
 import ToolBar from "../ToolBar";
 import CircularView, {
@@ -94,7 +94,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 const tabHeight = 34;
 
-const getListStyle = (isDraggingOver, isDragging) => {
+const getListStyle = (isDraggingOver /* isDragging */) => {
   return {
     display: "flex",
     alignItems: "flex-end",
@@ -105,7 +105,7 @@ const getListStyle = (isDraggingOver, isDragging) => {
     borderTop: "1px solid lightgray",
     paddingTop: 3,
     paddingBottom: 3,
-    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
+    // ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
     ...(isDraggingOver && { background: "#e5f3ff" })
   };
 };
@@ -141,6 +141,10 @@ export class Editor extends React.Component {
     //tnrtodo this will need to be updated once blueprint uses the react 16 api
     return { blueprintPortalClassName: "ove-portal" };
   }
+  // componentDidCatch(error,info) {
+  //   debugger
+  //   console.error("OVE caught this error:", error, info);
+  // }
   componentDidUpdate(prevProps) {
     //autosave if necessary!
     if (
@@ -184,15 +188,23 @@ export class Editor extends React.Component {
         [...panelsShown, ...(panelsShown.length === 1 && [[]])],
         (panelGroup, groupIndex) => {
           const panelToMove =
-            panelsShown[Number(result.source.droppableId)][result.source.index];
-          if (Number(groupIndex) === Number(result.destination.droppableId)) {
+            panelsShown[
+              Number(result.source.droppableId.replace("droppable-id-", ""))
+            ][result.source.index];
+          if (
+            Number(groupIndex) ===
+            Number(result.destination.droppableId.replace("droppable-id-", ""))
+          ) {
             //we're adding to this group
             return insertItem(
               panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
               { ...panelToMove, active: true },
               result.destination.index
             );
-          } else if (Number(groupIndex) === Number(result.source.droppableId)) {
+          } else if (
+            Number(groupIndex) ===
+            Number(result.source.droppableId.replace("droppable-id-", ""))
+          ) {
             // we're removing from this group
             return removeItem(panelGroup, result.source.index).map(
               (tabPanel, index) => {
@@ -210,7 +222,10 @@ export class Editor extends React.Component {
     } else {
       //we're moving tabs within the same group
       newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
-        if (Number(groupIndex) === Number(result.destination.droppableId)) {
+        if (
+          Number(groupIndex) ===
+          Number(result.destination.droppableId.replace("droppable-id-", ""))
+        ) {
           //we'removing a tab around in this group
           return reorder(
             panelGroup.map((tabPanel, i) => {
@@ -504,40 +519,21 @@ export class Editor extends React.Component {
           renderOnResize={true}
           className="ve-panel"
         >
-          {isFullScreen ? (
-            <Tooltip position="left" content="Minimize Tab">
-              <Button
-                style={{
-                  zIndex: 15002,
-                  position: "fixed",
-                  top: 15,
-                  right: 25
-                }}
-                minimal
-                icon="minimize"
-                onClick={() => {
-                  togglePanelFullScreen(activePanelId);
-                }}
-              />
-            </Tooltip>
-          ) : (
-            <div />
-          )}
-
           {[
-            <Droppable
-              key="droppableKey"
+            <Droppable //the tab holder
+              key={"droppable-id-" + index.toString()}
               direction="horizontal"
-              droppableId={index.toString()}
+              droppableId={"droppable-id-" + index.toString()}
             >
               {(provided, snapshot) => (
                 <div
                   className="ve-draggable-tabs"
+                  data-test={"ve-draggable-tabs" + index}
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
                     paddingLeft: 3,
-                    ...getListStyle(snapshot.isDraggingOver, tabDragging)
+                    ...getListStyle(snapshot.isDraggingOver /* , tabDragging */)
                   }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
@@ -588,7 +584,28 @@ export class Editor extends React.Component {
                                   marginLeft: 13,
                                   marginRight: 13
                                 }}
+                                className={camelCase("veTab-" + (name || id))}
                               >
+                                {isFullScreen && (
+                                  <Tooltip
+                                    position="left"
+                                    content="Minimize Tab"
+                                  >
+                                    <Button
+                                      style={{
+                                        zIndex: 15002,
+                                        position: "fixed",
+                                        top: 15,
+                                        right: 25
+                                      }}
+                                      minimal
+                                      icon="minimize"
+                                      onClick={() => {
+                                        togglePanelFullScreen(activePanelId);
+                                      }}
+                                    />
+                                  </Tooltip>
+                                )}
                                 {name || id}
                                 {canClose && (
                                   <Icon
@@ -613,10 +630,10 @@ export class Editor extends React.Component {
               )}
             </Droppable>,
             ...(panelsToShow.length === 1 && [
-              <Droppable
+              <Droppable //extra add tab box (only shown when there is 1 tab being shown)!
                 key="extra-drop-box"
                 direction="horizontal"
-                droppableId={(index + 1).toString()}
+                droppableId={"droppable-id-" + (index + 1).toString()}
               >
                 {(provided, snapshot) => (
                   <div

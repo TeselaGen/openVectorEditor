@@ -1,31 +1,64 @@
 import { Switch, Button } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
+import {
+  // getCurrentParamsFromUrl,
+  setCurrentParamsOnUrl, getCurrentParamsFromUrl
+} from "teselagen-react-components";
+import _ from "lodash";
 import store from "./store";
 import { updateEditor } from "../../src/";
 
 import Editor from "../../src/Editor";
+import cloneDeep from "lodash/cloneDeep";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
 
 // Use the line below because using the full 30 sequences murders Redux dev tools.
 
-export default class StandaloneDemo extends React.Component {
+const defaultState = {
+  readOnly: false,
+  showMenuBar: true,
+  withPreviewMode: false,
+  disableSetReadOnly: false,
+  showReadOnly: true,
+  showCircularity: true,
+  showAvailability: true,
+  showOptions: true,
+  shouldAutosave: false,
+  fullscreenMode: false,  
+  forceHeightMode: false,
+  onNew: true,
+  onSave: true,
+  onRename: true,
+  onDuplicate: true,
+  onDelete: true,
+  onCopy: true,
+  onPaste: true,
+};
+
+export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
-    const defaultState = {
-      showMenuBar: true,
-      withPreviewMode: false,
-      disableSetReadOnly: true,
-      showReadOnly: true,
-      showCircularity: true,
-      showAvailability: true
-    };
-    this.state = {
-      ...defaultState,
-      ...JSON.parse(localStorage.editorDemoState || "{}")
-    };
+    // console.log("getJsonFromUrl():", getJsonFromUrl());
+    // console.log(
+    //   "getCurrentParamsFromUrl():",
+    //   getCurrentParamsFromUrl(props.history.location)
+    // );
+    const editorDemoState = getCurrentParamsFromUrl(props.history.location)
+    // localStorage.editorDemoState = props.history.location.search;
+    
+    try {
+      this.state = {
+        ...defaultState,
+        ...JSON.parse(editorDemoState || "{}")
+      };
+    } catch (e) {
+      this.state = {
+        ...defaultState
+      };
+    }
     this.resetDefaultState = () => {
       this.setState({
         ...Object.keys(this.state).reduce((acc, key) => {
@@ -34,7 +67,8 @@ export default class StandaloneDemo extends React.Component {
         }, {}),
         ...defaultState
       });
-      localStorage.editorDemoState = JSON.stringify(defaultState);
+      setCurrentParamsOnUrl({},this.props.history.replace)
+      // localStorage.editorDemoState = JSON.stringify(defaultState);
     };
     updateEditor(store, "DemoEditor", {
       readOnly: this.state.readOnly
@@ -42,7 +76,12 @@ export default class StandaloneDemo extends React.Component {
   }
 
   componentDidUpdate() {
-    localStorage.editorDemoState = JSON.stringify(this.state);
+    if (!_.isEqual(this.state, this.oldState)) {
+
+      setCurrentParamsOnUrl(difference(this.state, defaultState), this.props.history.replace);
+      this.oldState= cloneDeep(this.state)
+    }
+    
   }
 
   changeFullscreenMode = e =>
@@ -59,6 +98,11 @@ export default class StandaloneDemo extends React.Component {
 
     return (
       <React.Fragment>
+        {/* <button onClick={() => {
+          const dragSource = document.querySelector(".veTabLinearMap")
+    const dropTarget = document.querySelector(".veTabProperties")
+          dragMock.dragStart(dragSource).dragEnter(dropTarget).dragOver(dropTarget).delay(500).dragEnd()
+        }}>click me!</button> */}
         <div style={{ width: 250 }}>
           {renderToggle({ that: this, type: "showOptions" })}
         </div>
@@ -161,93 +205,93 @@ export default class StandaloneDemo extends React.Component {
               ...(this.state.showOptions && { paddingLeft: 250 })
             }}
           > */}
-            <Editor
+          <Editor
             style={{
               // display: "flex",
               // flexDirection: "column",
               // flexGrow: 1,
               ...(this.state.showOptions && { paddingLeft: 250 })
             }}
-              {...this.state.readOnly && { readOnly: true }}
-              editorName="DemoEditor"
-              showMenuBar={this.state.showMenuBar}
-              {...this.state.onNew && { onNew: () => console.info("onNew") }}
-              {...this.state.onSave && {
-                onSave: function(
-                  event,
-                  sequenceDataToSave,
-                  editorState,
-                  onSuccessCallback
-                ) {
-                  console.info("onSave");
-                  console.info("event:", event);
-                  console.info("sequenceData:", sequenceDataToSave);
-                  console.info("editorState:", editorState);
-                  // To disable the save button after successful saving
-                  // either call the onSuccessCallback or return a successful promise :)
-                  onSuccessCallback();
-                  //or
-                  // return myPromiseBasedApiCall()
-                }
-              }}
-              {...this.state.onRename && {
-                onRename: () => console.info("onRename")
-              }}
-              {...this.state.onDuplicate && {
-                onDuplicate: () => console.info("onDuplicate")
-              }}
-              {...this.state.onDelete && {
-                onDelete: () => console.info("onDelete")
-              }}
-              {...this.state.onCopy && {
-                onCopy: function(event, copiedSequenceData, editorState) {
-                  console.info("onCopy");
-                  console.info(editorState);
-                  //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-                  const clipboardData = event.clipboardData;
-                  clipboardData.setData(
-                    "text/plain",
-                    copiedSequenceData.sequence
-                  );
-                  clipboardData.setData(
-                    "application/json",
-                    //for example here you could change teselagen parts into jbei parts
-                    JSON.stringify(copiedSequenceData)
-                  );
-                  event.preventDefault();
-                  //in onPaste in your app you can do:
-                  // e.clipboardData.getData('application/json')
-                }
-              }}
-              {...this.state.onPaste && {
-                onPaste: function(event /* editorState */) {
-                  //the onPaste here must return sequenceData in the teselagen data format
-                  console.info("onPaste");
-                  const clipboardData = event.clipboardData;
-                  let jsonData = clipboardData.getData("application/json");
-                  if (jsonData) {
-                    jsonData = JSON.parse(jsonData);
-                    if (jsonData.isJbeiSeq) {
-                      jsonData = exampleConversion(jsonData);
-                    }
+            {...this.state.readOnly && { readOnly: true }}
+            editorName="DemoEditor"
+            showMenuBar={this.state.showMenuBar}
+            {...this.state.onNew && { onNew: () => console.info("onNew") }}
+            {...this.state.onSave && {
+              onSave: function(
+                event,
+                sequenceDataToSave,
+                editorState,
+                onSuccessCallback
+              ) {
+                console.info("onSave");
+                console.info("event:", event);
+                console.info("sequenceData:", sequenceDataToSave);
+                console.info("editorState:", editorState);
+                // To disable the save button after successful saving
+                // either call the onSuccessCallback or return a successful promise :)
+                onSuccessCallback();
+                //or
+                // return myPromiseBasedApiCall()
+              }
+            }}
+            {...this.state.onRename && {
+              onRename: () => console.info("onRename")
+            }}
+            {...this.state.onDuplicate && {
+              onDuplicate: () => console.info("onDuplicate")
+            }}
+            {...this.state.onDelete && {
+              onDelete: () => console.info("onDelete")
+            }}
+            {...this.state.onCopy && {
+              onCopy: function(event, copiedSequenceData, editorState) {
+                console.info("onCopy");
+                console.info(editorState);
+                //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
+                const clipboardData = event.clipboardData;
+                clipboardData.setData(
+                  "text/plain",
+                  copiedSequenceData.sequence
+                );
+                clipboardData.setData(
+                  "application/json",
+                  //for example here you could change teselagen parts into jbei parts
+                  JSON.stringify(copiedSequenceData)
+                );
+                event.preventDefault();
+                //in onPaste in your app you can do:
+                // e.clipboardData.getData('application/json')
+              }
+            }}
+            {...this.state.onPaste && {
+              onPaste: function(event /* editorState */) {
+                //the onPaste here must return sequenceData in the teselagen data format
+                console.info("onPaste");
+                const clipboardData = event.clipboardData;
+                let jsonData = clipboardData.getData("application/json");
+                if (jsonData) {
+                  jsonData = JSON.parse(jsonData);
+                  if (jsonData.isJbeiSeq) {
+                    jsonData = exampleConversion(jsonData);
                   }
-                  const sequenceData = jsonData || {
-                    sequence: clipboardData.getData("text/plain")
-                  };
-                  return sequenceData;
                 }
-              }}
-              handleFullscreenClose={
-                !withPreviewMode && this.changeFullscreenMode
-              } //don't pass this handler if you're also using previewMode
-              isFullscreen={fullscreenMode}
-              {...forceHeightMode && { height: 500 }}
-              withPreviewMode={withPreviewMode}
-              disableSetReadOnly={this.state.disableSetReadOnly}
-              showReadOnly={this.state.showReadOnly}
-              showCircularity={this.state.showCircularity}
-              showAvailability={this.state.showAvailability}
-            />
+                const sequenceData = jsonData || {
+                  sequence: clipboardData.getData("text/plain")
+                };
+                return sequenceData;
+              }
+            }}
+            handleFullscreenClose={
+              !withPreviewMode && this.changeFullscreenMode
+            } //don't pass this handler if you're also using previewMode
+            isFullscreen={fullscreenMode}
+            {...forceHeightMode && { height: 500 }}
+            withPreviewMode={withPreviewMode}
+            disableSetReadOnly={this.state.disableSetReadOnly}
+            showReadOnly={this.state.showReadOnly}
+            showCircularity={this.state.showCircularity}
+            showAvailability={this.state.showAvailability}
+          />
           {/* </div> */}
         </div>
       </React.Fragment>
@@ -275,4 +319,21 @@ function renderToggle({ that, type, description, hook }) {
 
 function exampleConversion(seq) {
   return seq;
+}
+
+/**
+ * Deep diff between two object, using lodash
+ * @param  {Object} object Object compared
+ * @param  {Object} base   Object to compare with
+ * @return {Object}        Return a new object who represent the diff
+ */
+function difference(object, base) {
+	function changes(object, base) {
+		return _.transform(object, function(result, value, key) {
+			if (!_.isEqual(value, base[key])) {
+				result[key] = (_.isObject(value) && _.isObject(base[key])) ? changes(value, base[key]) : value;
+			}
+		});
+	}
+	return changes(object, base);
 }

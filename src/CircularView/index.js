@@ -120,8 +120,8 @@ export class CircularView extends React.Component {
       (sequenceLength < 10
         ? 1
         : sequenceLength < 50
-          ? Math.ceil(sequenceLength / 5)
-          : Math.ceil(sequenceLength / 100) * 10);
+        ? Math.ceil(sequenceLength / 5)
+        : Math.ceil(sequenceLength / 100) * 10);
     let {
       features: showFeatures = true,
       primers: showPrimers = true,
@@ -444,7 +444,7 @@ export class CircularView extends React.Component {
                 height: radius
               })}
               key={index}
-              transform={`rotate(180)`}
+              transform="rotate(180)"
               style={{
                 textAnchor: "middle",
                 dominantBaseline: "central",
@@ -594,7 +594,7 @@ export class CircularView extends React.Component {
     //tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
     if (radius < 150) radius = 150;
     return (
-      <div tabIndex="0" className={"veCircularView"}>
+      <div tabIndex="0" className="veCircularView">
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -626,7 +626,7 @@ export class CircularView extends React.Component {
               >
                 <div
                   key="circViewSvgCenterText"
-                  className={"veCircularViewMiddleOfVectorText"}
+                  className="veCircularViewMiddleOfVectorText"
                   style={{ width: innerRadius, textAlign: "center" }}
                 >
                   <span>{sequenceName} </span>
@@ -655,17 +655,17 @@ export class CircularView extends React.Component {
                 );
               }}
               style={{ overflow: "visible", display: "block" }}
-              width={width || 300}
-              height={height || 300}
+              width={Math.max(Number(width) || 300)}
+              height={Math.max(Number(height) || 300)}
               ref="circularView"
-              className={"circularViewSvg"}
+              className="circularViewSvg"
               viewBox={`-${radius * scale} -${radius * scale} ${radius *
                 2 *
                 scale} ${radius * 2 * scale}`}
             >
               {annotationsSvgs}
             </svg>
-            <div className={"veCircularViewWarningContainer"}>
+            <div className="veCircularViewWarningContainer">
               {paredDownOrfs && (
                 <VeWarning
                   message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}

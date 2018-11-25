@@ -108,6 +108,7 @@ export class AddOrEditPartDialog extends React.Component {
             Cancel
           </Button>
           <Button
+            data-test="savePart"
             onClick={handleSubmit(data => {
               let updatedData;
               if (data.forward === true && data.strand !== 1) {

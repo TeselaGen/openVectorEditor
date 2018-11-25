@@ -7,6 +7,7 @@ import classNames from "classnames";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
+import selectors from "../selectors";
 
 export default connectToEditor(
   ({ annotationVisibility = {}, toolBar = {} }) => {
@@ -37,31 +38,16 @@ export default connectToEditor(
 });
 
 const OrfToolDropdown = withEditorProps(function({
-  sequenceLength,
-  minimumOrfSizeUpdate,
-  minimumOrfSize,
   useAdditionalOrfStartCodons,
   useAdditionalOrfStartCodonsToggle,
   annotationVisibility,
-  annotationVisibilityToggle
+  annotationVisibilityToggle,
+  editorName
 }) {
   return (
     <div className="veToolbarOrfOptionsHolder">
-      <div style={{ display: "flex" }}>
-        Minimum ORF Size:
-        <input
-          type="number"
-          className={classNames(Classes.INPUT, "minOrfSizeInput")}
-          onChange={function(event) {
-            let minimumOrfSize = parseInt(event.target.value, 10);
-            if (!(minimumOrfSize > -1)) return;
-            if (minimumOrfSize > sequenceLength) return;
-            minimumOrfSizeUpdate(minimumOrfSize);
-          }}
-          value={minimumOrfSize}
-        />
-      </div>
       <div className="vespacer" />
+      <MinOrfSize editorName={editorName} />
       <Checkbox
         onChange={function() {
           annotationVisibilityToggle("orfTranslations");
@@ -91,3 +77,35 @@ const OrfToolDropdown = withEditorProps(function({
     </div>
   );
 });
+
+export const MinOrfSize = connectToEditor(editorState => {
+  return {
+    sequenceLength: selectors.sequenceLengthSelector(editorState),
+    minimumOrfSize: editorState.minimumOrfSize
+  };
+})(
+  ({
+    minimumOrfSizeUpdate,
+    sequenceLength,
+    annotationVisibilityShow,
+    minimumOrfSize
+  }) => {
+    return (
+      <div data-test="min-orf-size" style={{ display: "flex" }}>
+        Minimum ORF Size:
+        <input
+          type="number"
+          className={classNames(Classes.INPUT, "minOrfSizeInput")}
+          onChange={function(event) {
+            let minimumOrfSize = parseInt(event.target.value, 10);
+            if (!(minimumOrfSize > -1)) return;
+            if (minimumOrfSize > sequenceLength) return;
+            annotationVisibilityShow("orfs");
+            minimumOrfSizeUpdate(minimumOrfSize);
+          }}
+          value={minimumOrfSize}
+        />
+      </div>
+    );
+  }
+);

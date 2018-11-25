@@ -401,8 +401,12 @@ function VectorInteractionHOC(Component /* options */) {
         ignoreGapsOnHighlight
       } = this.props;
       if (!newSelection) return;
-      const { start, end } = newSelection;
-      if (selectionLayer.start === start && selectionLayer.end === end) {
+      const { start, end, forceUpdate } = newSelection;
+      if (
+        selectionLayer.start === start &&
+        selectionLayer.end === end &&
+        selectionLayer.forceUpdate === forceUpdate
+      ) {
         return;
       }
       //we only call selectionLayerUpdate if we're actually changing something
@@ -419,10 +423,22 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation && event.stopPropagation();
       const {
         annotationSelect,
+        selectionLayer,
         annotationDeselectAll,
         propertiesViewTabUpdate
       } = this.props;
-      this.updateSelectionOrCaret(event.shiftKey, annotation);
+      let forceUpdate;
+      if (
+        annotation.start > -1 &&
+        selectionLayer.start === annotation.start &&
+        selectionLayer.end === annotation.end
+      ) {
+        forceUpdate = selectionLayer.forceUpdate === "end" ? "start" : "end";
+      }
+      this.updateSelectionOrCaret(event.shiftKey, {
+        ...annotation,
+        ...(forceUpdate && { forceUpdate })
+      });
       !event.shiftKey && annotationDeselectAll(undefined);
       annotation.id && annotationSelect(annotation);
       annotation.annotationTypePlural &&
@@ -1131,8 +1147,6 @@ function VectorInteractionHOC(Component /* options */) {
         }
       ];
     };
-
-    
 
     handleWrapperFocus = () => {
       if (this.props.trackFocus === false) return;

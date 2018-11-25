@@ -481,7 +481,11 @@ export function updateSelectionOrCaret({
   if (typeof newRangeOrCaret !== "object") {
     newCaret = newRangeOrCaret;
   } else {
-    newRange = { start: newRangeOrCaret.start, end: newRangeOrCaret.end };
+    newRange = {
+      start: newRangeOrCaret.start,
+      end: newRangeOrCaret.end,
+      forceUpdate: newRangeOrCaret.forceUpdate
+    };
   }
   if (shiftHeld) {
     if (caretPosition > 0) {
@@ -505,7 +509,7 @@ export function updateSelectionOrCaret({
       } else {
         simpleUpdate();
       }
-    } else if (selectionLayer.start > 0) {
+    } else if (selectionLayer.start > -1) {
       //there is already a selection layer
       if (newCaret > -1) {
         //new caret passed

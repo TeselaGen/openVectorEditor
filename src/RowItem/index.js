@@ -536,8 +536,8 @@ export class RowItem extends React.PureComponent {
                       });
                     }}
                     className="rowViewTextContainer clickable"
-                    width={width}
-                    height={height}
+                    width={Math.max(0, Number(width))}
+                    height={Math.max(0, Number(height))}
                   >
                     <polyline
                       points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${charWidth /

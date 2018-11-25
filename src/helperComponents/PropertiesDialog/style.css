@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100%;
 }
+
 .ve-propertiesPanel .bp3-tab-list::-webkit-scrollbar {
   display: none;
 }

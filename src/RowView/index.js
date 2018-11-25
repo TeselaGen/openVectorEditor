@@ -202,7 +202,8 @@ export class RowView extends React.Component {
     } else if (
       selectionLayer.start > -1 &&
       ((selectionLayer.forceUpdate &&
-        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate) ||
+        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate &&
+        selectionLayer.forceUpdate !== "end") ||
         selectionLayer.start !== selectionLayerOld.start)
     ) {
       // previousBp = selectionLayerOld.start;
@@ -210,7 +211,8 @@ export class RowView extends React.Component {
     } else if (
       selectionLayer.end > -1 &&
       ((selectionLayer.forceUpdate &&
-        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate) ||
+        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate &&
+        selectionLayer.forceUpdate !== "start") ||
         selectionLayer.end !== selectionLayerOld.end)
     ) {
       // previousBp = selectionLayerOld.end;

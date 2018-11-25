@@ -8,6 +8,7 @@ import { Switch, Checkbox } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
+import { MinOrfSize } from "../../ToolBar/orfTool";
 
 class OrfProperties extends React.Component {
   onRowSelect = ([record]) => {
@@ -24,6 +25,7 @@ class OrfProperties extends React.Component {
   render() {
     const {
       orfs,
+      editorName,
       sequenceLength,
       annotationVisibilityToggle,
       annotationVisibility,
@@ -43,7 +45,7 @@ class OrfProperties extends React.Component {
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <React.Fragment>
         <DataTable
           topLeftItems={
             <Switch
@@ -101,6 +103,7 @@ class OrfProperties extends React.Component {
           }}
           entities={orfsToUse}
         />
+        <MinOrfSize editorName={editorName} />
 
         <Checkbox
           disabled={!annotationVisibility.orfs}
@@ -116,7 +119,7 @@ class OrfProperties extends React.Component {
           checked={useAdditionalOrfStartCodons}
           label="Use GTG and CTG as start codons"
         />
-      </div>
+      </React.Fragment>
     );
   }
 }

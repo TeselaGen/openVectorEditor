@@ -48,7 +48,7 @@ export class PropertiesInner extends React.Component {
       closePanelButton
     } = this.props;
 
-    const { width } = dimensions;
+    const { width, height: heightFromDim } = dimensions;
 
     let { tabId, selectedAnnotationId } = propertiesTool;
     if (propertiesList.indexOf(tabId) === -1) {
@@ -89,9 +89,10 @@ export class PropertiesInner extends React.Component {
           style={{
             display: "flex",
             width,
-            height,
+            height: Math.max(0, Number((heightFromDim || height) - 30)),
             zIndex: 10,
             padding: 10
+            // paddingBottom: '31px',
           }}
         >
           {propertiesTabs.length ? (
