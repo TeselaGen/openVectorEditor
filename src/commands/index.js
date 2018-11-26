@@ -1,5 +1,6 @@
 import React from "react";
 import { Tag } from "@blueprintjs/core";
+import { convertRangeTo0Based } from "ve-range-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
@@ -188,10 +189,12 @@ const editCommandDefs = {
           to: end >= 0 ? end : 0
         },
         onSubmit: values =>
-          props.selectionLayerUpdate({
-            start: values.from,
-            end: values.to
-          })
+          props.selectionLayerUpdate(
+            convertRangeTo0Based({
+              start: values.from,
+              end: values.to
+            })
+          )
       });
     }
   },

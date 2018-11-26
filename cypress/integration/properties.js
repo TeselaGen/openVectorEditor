@@ -2,7 +2,7 @@ describe("properties", function() {
   beforeEach(() => {
     cy.visit("");
   });
-  it.only("can click into the orf properties tab and change the minimum orf size and trigger a warning in the editor", function() {
+  it("can click into the orf properties tab and change the minimum orf size and trigger a warning in the editor", function() {
     cy.get(".veTabProperties").click()
     cy.get(`[data-tab-id="orfs"]`).click()
     cy.get(`[data-test="min-orf-size"]`).find("input").type("{selectall}30")

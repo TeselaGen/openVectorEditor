@@ -14,7 +14,7 @@ describe("tabs", function() {
     cy.get(`[label="End:"]`).clear().type("20")
     cy.get(`[data-test="savePart"]`).click()
     cy.get(".veLabelText").contains("newPart1").click()
-    cy.contains(`10 to 20`)
+    cy.get(".veStatusBar").contains(`10 to 20`)
   })
   
 
