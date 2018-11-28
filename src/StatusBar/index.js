@@ -21,7 +21,7 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
     updateReadOnlyMode
   }) => {
     return showReadOnly ? (
-      <StatusBarItem>
+      <StatusBarItem dataTest="veStatusBar-readOnly">
         {onSave ? (
           <HTMLSelect
             options={[
@@ -71,7 +71,7 @@ const ShowSelectionItem = compose(
     let isSelecting = selectionLayer.start > -1;
     return (
       <React.Fragment>
-        <StatusBarItem>
+        <StatusBarItem dataTest="veStatusBar-selection">
           {isSelecting
             ? `Selecting ${length} bps from ${selectionLayer.start +
                 1} to ${selectionLayer.end + 1}`
@@ -98,23 +98,25 @@ const ShowLengthItem = connectToEditor(
     sequenceLength: sequenceData.sequence.length
   })
 )(({ sequenceLength = 0 }) => (
-  <StatusBarItem>{`Length: ${sequenceLength}`}</StatusBarItem>
+  <StatusBarItem dataTest="veStatusBar-length">{`Length: ${sequenceLength}`}</StatusBarItem>
 ));
 
 const EditCircularityItem = compose(
   connectToEditor(
     ({
       readOnly,
+      sequenceData,
       sequenceData: { circular /* materiallyAvailable */ } = {}
     }) => ({
       readOnly,
+      sequenceData,
       circular
     })
   ),
   withHandlers({ updateCircular })
 )(({ readOnly, showCircularity, circular, updateCircular }) => {
   return showCircularity ? (
-    <StatusBarItem>
+    <StatusBarItem dataTest="veStatusBar-circularity">
       {readOnly ? (
         circular ? (
           "Circular"
@@ -200,10 +202,12 @@ export function StatusBar({
   );
 }
 
-function StatusBarItem({ children }) {
+function StatusBarItem({ children, dataTest }) {
   return (
     <React.Fragment>
-      <div className="veStatusBarItem">{children}</div>
+      <div data-test={dataTest} className="veStatusBarItem">
+        {children}
+      </div>
       <div className="veStatusBarSpacer" />
     </React.Fragment>
   );

@@ -109,16 +109,38 @@ const readOnlyDisabledTooltip =
 const hasSelection = ({ selectionLayer = {} }) =>
   selectionLayer.start > -1 && selectionLayer.end > -1;
 
+const triggerClipboardCommand = type => {
+  const wrapper = document.querySelector(".veVectorInteractionWrapper");
+  if (!wrapper) {
+    return window.toastr.info(`Cannot trigger a ${type} in the current view`);
+  }
+  const hiddenInput = wrapper.querySelector("input.clipboard");
+  hiddenInput.focus();
+  const worked = document.execCommand(type);
+  wrapper.focus();
+  if (!worked) {
+    const keys = { paste: "Cmd/Ctrl+V", cut: "Cmd/Ctrl+X", copy: "Cmd/Ctrl+C" };
+    if (keys[type]) {
+      // TODO maybe improve msg with HTML
+      window.toastr.info(`Press ${keys[type]} to ${type}`);
+    } else {
+      console.warn(
+        `The ${type} command did not work. document.execCommand(${type}) didn't work`
+      );
+    }
+  }
+};
+
 const editCommandDefs = {
   cut: {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     isHidden: props => props.readOnly,
-    handler: props => props.triggerClipboardCommand("cut"),
+    handler: () => triggerClipboardCommand("cut"),
     hotkey: "mod+x"
   },
 
   copy: {
-    handler: props => props.triggerClipboardCommand("copy"),
+    handler: () => triggerClipboardCommand("copy"),
     hotkey: "mod+c"
   },
 
@@ -126,7 +148,7 @@ const editCommandDefs = {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     isHidden: props => props.readOnly,
 
-    handler: props => props.triggerClipboardCommand("paste"),
+    handler: () => triggerClipboardCommand("paste"),
     hotkey: "mod+v"
   },
 

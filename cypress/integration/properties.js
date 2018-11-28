@@ -14,13 +14,20 @@ describe("properties", function() {
     cy.get(`[data-tab-id="orfs"]`).click()
     cy.contains("Use GTG and CTG").should('be.visible')
   });
+  // it.only('should click try to login and fail', function() {
+  //     cy.get(`input[name="email"]`).type("test@teselagen.com")
+  //     cy.get(`input[name="password"]`).type("somepassword")
+  //     cy.contains("Sign In").click()
+  //     cy.contains("Login Unsuccessful: Incorrect email address or password.").should("exist")
+  // })
+
   
 });
 
-Cypress.on('uncaught:exception', (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  return false
-})
+// Cypress.on('uncaught:exception', (err, runnable) => {
+//   // returning false here prevents Cypress from
+//   // failing the test
+//   return false
+// })
 
 

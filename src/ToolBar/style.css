@@ -18,12 +18,6 @@
   display: none;
 }
 
-.veToolbar {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-}
 .veToolbar .veToolbarItemOuter {
   display: flex;
   height: 32px;

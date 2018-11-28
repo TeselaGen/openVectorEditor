@@ -27,6 +27,7 @@
     "l": "testcafe-live --dev chrome testcafe/",
     "c": "yarn cypress open",
     "test-e2e": "yarn cypress run --record --key 5d118c91-6b05-4e6f-899b-17783d834bf5",
+    "rt": "yarn cypress run --spec cypress/integration/tabs.js",
     "test": "jest --env=jsdom --maxWorkers 2",
     "test-coverage": "yarn test -- --coverage",
     "test:staged": "cross-env CI=true yarn test -- --findRelatedTests",

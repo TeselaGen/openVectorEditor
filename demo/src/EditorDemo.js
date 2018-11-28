@@ -20,6 +20,7 @@ import cloneDeep from "lodash/cloneDeep";
 const defaultState = {
   readOnly: false,
   showMenuBar: true,
+  displayMenuBarAboveTools: true,
   withPreviewMode: false,
   disableSetReadOnly: false,
   showReadOnly: true,
@@ -117,6 +118,7 @@ export default class EditorDemo extends React.Component {
         >
           {this.state.showOptions && (
             <div
+            data-test="optionContainer"
               style={{
                 // background: "white",
                 zIndex: 1000,
@@ -156,6 +158,7 @@ export default class EditorDemo extends React.Component {
               {renderToggle({ that: this, type: "withPreviewMode" })}
               {renderToggle({ that: this, type: "shouldAutosave" })}
               {renderToggle({ that: this, type: "showMenuBar" })}
+              {renderToggle({ that: this, type: "displayMenuBarAboveTools" })}
               {renderToggle({ that: this, type: "disableSetReadOnly" })}
               {renderToggle({ that: this, type: "showReadOnly" })}
               {renderToggle({ that: this, type: "showCircularity" })}
@@ -215,6 +218,7 @@ export default class EditorDemo extends React.Component {
             {...this.state.readOnly && { readOnly: true }}
             editorName="DemoEditor"
             showMenuBar={this.state.showMenuBar}
+            displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             {...this.state.onNew && { onNew: () => console.info("onNew") }}
             {...this.state.onSave && {
               onSave: function(

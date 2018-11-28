@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "redux";
-import withEditorInteractions from "../withEditorInteractions";
+import withEditorProps from "../withEditorProps";
 import { withHotkeys } from "teselagen-react-components";
 import getCommands from "../commands";
 import {
@@ -25,4 +25,4 @@ class CommandHotkeyHandler extends React.Component {
   }
 }
 
-export default compose(withEditorInteractions)(CommandHotkeyHandler);
+export default compose(withEditorProps)(CommandHotkeyHandler);

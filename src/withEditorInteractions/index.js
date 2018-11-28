@@ -47,9 +47,6 @@ import {
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
 
-// TODO: maybe assign ids to nodes and store this info in the redux store
-const _lastFocusedWrapper = {};
-
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
@@ -281,34 +278,33 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handleCopy = e => {
-      window.toastr.success("Selection Copied");
       const {
         onCopy = () => {},
         sequenceData,
         selectionLayer,
         copyOptions
       } = this.props;
-
-      onCopy(
-        e,
-        tidyUpSequenceData(
-          this.sequenceDataToCopy ||
-            getSequenceDataBetweenRange(sequenceData, selectionLayer, {
-              excludePartial: {
-                features: !copyOptions.partialFeatures,
-                parts: !copyOptions.partialParts
-              },
-              exclude: {
-                features: !copyOptions.features,
-                parts: !copyOptions.parts
-              }
-            }),
-          { annotationsAsObjects: true }
-        ),
-        this.props
+      const seqData = tidyUpSequenceData(
+        this.sequenceDataToCopy ||
+          getSequenceDataBetweenRange(sequenceData, selectionLayer, {
+            excludePartial: {
+              features: !copyOptions.partialFeatures,
+              parts: !copyOptions.partialParts
+            },
+            exclude: {
+              features: !copyOptions.features,
+              parts: !copyOptions.parts
+            }
+          }),
+        { annotationsAsObjects: true }
       );
+      if (!seqData.sequence.length)
+        return window.toastr.warning("No Sequence Selected To Copy");
+      onCopy(e, seqData, this.props);
+
       this.sequenceDataToCopy = undefined;
       document.body.removeEventListener("copy", this.handleCopy);
+      window.toastr.success("Selection Copied");
     };
 
     handleDnaInsert = ({ useEventPositioning }) => {
@@ -1148,29 +1144,6 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
-    handleWrapperFocus = () => {
-      if (this.props.trackFocus === false) return;
-      _lastFocusedWrapper[this.props.editorName] = this.node;
-    };
-
-    triggerClipboardCommand = type => {
-      const wrapper = _lastFocusedWrapper[this.props.editorName];
-      if (!wrapper) {
-        return;
-      }
-      const hiddenInput = wrapper.querySelector("input.clipboard");
-      hiddenInput.focus();
-      const worked = document.execCommand(type);
-      wrapper.focus();
-      if (!worked) {
-        const keys = { paste: "Cmd/Ctrl+V" };
-        if (keys[type]) {
-          // TODO maybe improve msg with HTML
-          window.toastr.info(`Press ${keys[type]} to ${type}`);
-        }
-      }
-    };
-
     render() {
       const {
         closePanelButton,
@@ -1227,7 +1200,7 @@ function VectorInteractionHOC(Component /* options */) {
           editorDragStopped: this.editorDragStopped
         };
       }
-      propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;
+      // propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;
 
       return (
         <div

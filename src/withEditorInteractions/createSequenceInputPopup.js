@@ -103,9 +103,9 @@ class SequenceInputNoHotkeys extends React.Component {
       );
     }
     return (
-      <div className={"sequenceInputBubble"}>
+      <div className="sequenceInputBubble">
         <input
-          autoCorrect={"off"}
+          autoCorrect="off"
           onKeyDown={e => {
             if (e.keyCode === 27) {
               this.handleUnmount();
@@ -206,7 +206,7 @@ export default function createSequenceInputPopup(props) {
   //   sequenceInputBubble.remove();
   // }
   div = document.createElement("div");
-  div.style.zIndex = "4000";
+  div.style.zIndex = "400000";
   div.id = "sequenceInputBubble";
   document.body.appendChild(div);
 
@@ -254,7 +254,10 @@ const getActiveElement = function(document) {
   // Check if the active element is in the main web or iframe
   if (
     document.body === document.activeElement ||
+    /* eslint-disable eqeqeq*/
+
     document.activeElement.tagName == "IFRAME"
+    /* eslint-enable eqeqeq*/
   ) {
     // Get iframes
     let iframes = document.getElementsByTagName("iframe");

@@ -289,6 +289,7 @@ export class Editor extends React.Component {
       showAvailability,
       minHeight = 400,
       showMenuBar,
+      displayMenuBarAboveTools = true,
       updateSequenceData,
       readOnly,
       setPanelAsActive,
@@ -473,14 +474,14 @@ export class Editor extends React.Component {
               },
               text:
                 panelsToShow.length > 1
-                  ? "Make Tab Primary"
-                  : "View Side By Side"
+                  ? "Collapse Split Screen"
+                  : "View in Split Screen"
             },
             {
               onClick: () => {
                 togglePanelFullScreen(tabIdToUse);
               },
-              text: "Make Tab Fullscreen"
+              text: "View in Fullscreen"
             }
           ],
           undefined,
@@ -744,6 +745,7 @@ export class Editor extends React.Component {
         <ToolBar
           key="toolbar"
           showMenuBar={showMenuBar}
+          displayMenuBarAboveTools={displayMenuBarAboveTools}
           handleFullscreenClose={
             handleFullscreenClose || this.togglePreviewFullscreen
           }

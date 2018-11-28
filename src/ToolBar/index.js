@@ -46,6 +46,8 @@ export class ToolBar extends React.PureComponent {
       modifyTools,
       contentLeft,
       showMenuBar,
+      displayMenuBarAboveTools,
+
       onSave,
       userDefinedHandlersAndOpts,
       editorName,
@@ -109,18 +111,43 @@ export class ToolBar extends React.PureComponent {
     return (
       <div style={{ display: "flex" }}>
         {contentLeft}
-        <div className="veToolbar">
+        <div
+          style={{
+            ...(displayMenuBarAboveTools && showMenuBar
+              ? {}
+              : {
+                  display: "flex",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                  width: "100%"
+                })
+          }}
+          className="veToolbar"
+        >
           {showMenuBar && (
             <MenuBar
               {...pick(this.props, userDefinedHandlersAndOpts)}
               onSave={onSave} //needs to be passed so that editor commands will have it
               style={{ marginLeft: 0 }}
               editorName={editorName}
-              trackFocus={false}
             />
           )}
-
-          {items}
+          {displayMenuBarAboveTools && showMenuBar ? (
+            <div
+              className="veTools-displayMenuBarAboveTools"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginLeft: 15,
+                flexWrap: "wrap",
+                width: "100%"
+              }}
+            >
+              {items}
+            </div>
+          ) : (
+            items
+          )}
         </div>
         {closeFullscreen && (
           <CloseFullscreenButton onClick={handleFullscreenClose} />

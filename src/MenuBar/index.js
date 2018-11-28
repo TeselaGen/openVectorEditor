@@ -1,7 +1,7 @@
 import React from "react";
 import { MenuBar, commandMenuEnhancer } from "teselagen-react-components";
 import { compose } from "redux";
-import withEditorInteractions from "../withEditorInteractions";
+import withEditorProps from "../withEditorProps";
 import menuDef from "./defaultConfig";
 import getCommands from "../commands";
 import pureNoFunc from "../utils/pureNoFunc";
@@ -20,10 +20,13 @@ class OveMenuBar extends React.Component {
 
   render() {
     return (
-      <div style={{ display: "flex", height: "100%" }}>
+      <div
+        className="veMenuBarContainer"
+        style={{ display: "flex" /* height: "100%" */ }}
+      >
         <MenuBar menu={menuDef} enhancers={this.enhancers} />
         <div
-          className={"menuBarDivider"}
+          className="menuBarDivider"
           style={{
             height: "87%",
             width: 2,
@@ -36,4 +39,4 @@ class OveMenuBar extends React.Component {
   }
 }
 
-export default compose(withEditorInteractions)(pureNoFunc(OveMenuBar));
+export default compose(withEditorProps)(pureNoFunc(OveMenuBar));
