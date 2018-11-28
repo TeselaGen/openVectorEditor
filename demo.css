@@ -10613,17 +10613,6 @@ span.bp3-popover-target {
   display: none;
 }
 
-.veToolbar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  width: 100%;
-}
 .veToolbar .veToolbarItemOuter {
   display: -webkit-box;
   display: -ms-flexbox;
