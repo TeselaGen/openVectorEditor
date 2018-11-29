@@ -182,7 +182,8 @@ const DrawLabelGroup = withHover(function({
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
 
   let content;
-  const labelClass = " veLabelText veCircularViewLabelText clickable ";
+  const labelClass =
+    " veLabelText veCircularViewLabelText clickable " + label.color;
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
