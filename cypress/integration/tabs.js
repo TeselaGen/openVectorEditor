@@ -31,7 +31,7 @@ describe("tabs", function() {
     cy.contains("Plasmid").click();
     cy.get(".veCircularView");
   });
-  it.only("can drag tabs", function() {
+  it("can drag tabs", function() {
     dragBetween(".veTabLinearMap", ".veTabProperties");
     cy.get(`[data-test="ve-draggable-tabs1"] .veTabLinearMap`);
     dragBetween(".veTabPlasmid", ".veTabProperties");
