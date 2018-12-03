@@ -460,6 +460,241 @@
   right: -5px;
 }
 
+.error-popover {
+  margin: 5px;
+  color: red;
+}
+
+.te-file-upload-input {
+  min-width: 140px;
+}
+
+.ant-upload.ant-upload-drag {
+  border-width: 2px;
+}
+
+.tg-upload-inner {
+  margin: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 16px;
+}
+
+.tg-hide-drop-target .ant-upload.ant-upload-drag {
+  display: none;
+}
+
+.tg-dropzone {
+  width: 100% !important;
+  height: 100% !important;
+  border-width: 1px;
+  border-color: #d9d9d9;
+  border-style: dashed;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+}
+.tg-dropzone:hover {
+  border-color: rgb(91, 157, 211);
+}
+.tg-dropzone-active {
+  border-color: rgb(91, 157, 211);
+}
+.tg-dropzone-accept {
+  border-color: rgb(123, 214, 150);
+}
+.tg-dropzone-reject {
+  border-color: rgb(221, 106, 98);
+}
+.tg-dropzone-disabled {
+  border-color: rgb(136, 133, 132);
+}
+.tg-upload-file-list-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 2px;
+  border-radius: 3px;
+  padding: 2px;
+}
+.tg-upload-file-list-item:hover {
+  background: rgb(215, 238, 255);
+}
+.tg-upload-file-list-item-close {
+  cursor: pointer;
+}
+.tg-upload-file-list-item-close:hover {
+  opacity: 0.7;
+}
+
+.tg-upload-file-list-item a {
+  width: 100%;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+}
+
+.tg-upload-file-list-item-overflow {
+  overflow: auto;
+  height: 150px;
+}
+
+.tg-upload-file-list-counter {
+  position: absolute;
+  padding: 5px;
+}
+
+.tg-spin {
+  -webkit-animation-name: spin;
+          animation-name: spin;
+  -webkit-animation-duration: 1500ms;
+          animation-duration: 1500ms;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+/* .Select-multi-value-wrapper {
+  max-height: 100px;
+  overflow: scroll;
+} */
+
+/* dark styles */
+.bp3-dark .Select.is-open > .Select-control,
+.bp3-dark .Select-control,
+.bp3-dark .Select.is-disabled > .Select-control {
+  background: rgba(16, 22, 26, 0.3);
+  -webkit-box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0),
+    0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px rgba(16, 22, 26, 0.3),
+    inset 0 1px 1px rgba(16, 22, 26, 0.4);
+          box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0),
+    0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px rgba(16, 22, 26, 0.3),
+    inset 0 1px 1px rgba(16, 22, 26, 0.4);
+  background: rgba(16, 22, 26, 0.3);
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select.is-focused:not(.is-open) > .Select-control {
+  background: rgba(16, 22, 26, 0.3);
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select-placeholder,
+.bp3-dark .Select--single > .Select-control .Select-value {
+  color: rgb(191, 204, 214, 0.5); /*#bfccd6*/
+}
+
+.bp3-dark .Select-control {
+  border: none !important;
+}
+
+.bp3-dark
+  .Select.has-value.Select--single
+  > .Select-control
+  .Select-value
+  .Select-value-label,
+.bp3-dark
+  .Select.has-value.is-pseudo-focused.Select--single
+  > .Select-control
+  .Select-value
+  .Select-value-label,
+.bp3-dark .Select-option.is-selected {
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select-option {
+  background: #30404d;
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select-menu-outer {
+  border: 1px solid #26738cb0;
+  background: #202b33;
+}
+
+.bp3-dark .Select-option.is-focused {
+  background: rgba(0, 126, 255, 0.08);
+  color: #f5f8fa;
+}
+
+.bp3-dark .tg-upload-file-list-item:hover {
+  background: #26738cb0;
+}
+
+.tg-tooltipError .bp3-popover-wrapper {
+  width: 100%;
+}
+
+.tg-no-fill-field {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.item-upload-container {
+  padding: 5px;
+  width: 290px;
+}
+
+.item-upload {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+/* .bp3-control {
+  display: flex;
+  align-items: center;
+} */
+
+.bp3-form-group.bp3-inline .bp3-form-content {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
 .dna-loader {
   display: inline-block;
   position: relative;
@@ -1405,241 +1640,6 @@ li.bp3-menu-divider:last-child {
   border-radius: 100px;
   background: #e1e8ed;
   border: 2px solid #137cbd;
-}
-
-.error-popover {
-  margin: 5px;
-  color: red;
-}
-
-.te-file-upload-input {
-  min-width: 140px;
-}
-
-.ant-upload.ant-upload-drag {
-  border-width: 2px;
-}
-
-.tg-upload-inner {
-  margin: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  font-size: 16px;
-}
-
-.tg-hide-drop-target .ant-upload.ant-upload-drag {
-  display: none;
-}
-
-.tg-dropzone {
-  width: 100% !important;
-  height: 100% !important;
-  border-width: 1px;
-  border-color: #d9d9d9;
-  border-style: dashed;
-  border-radius: 5px;
-  cursor: pointer;
-  -webkit-transition: all 1s;
-  -o-transition: all 1s;
-  transition: all 1s;
-}
-.tg-dropzone:hover {
-  border-color: rgb(91, 157, 211);
-}
-.tg-dropzone-active {
-  border-color: rgb(91, 157, 211);
-}
-.tg-dropzone-accept {
-  border-color: rgb(123, 214, 150);
-}
-.tg-dropzone-reject {
-  border-color: rgb(221, 106, 98);
-}
-.tg-dropzone-disabled {
-  border-color: rgb(136, 133, 132);
-}
-.tg-upload-file-list-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  margin: 2px;
-  border-radius: 3px;
-  padding: 2px;
-}
-.tg-upload-file-list-item:hover {
-  background: rgb(215, 238, 255);
-}
-.tg-upload-file-list-item-close {
-  cursor: pointer;
-}
-.tg-upload-file-list-item-close:hover {
-  opacity: 0.7;
-}
-
-.tg-upload-file-list-item a {
-  width: 100%;
-  max-width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis;
-}
-
-.tg-upload-file-list-item-overflow {
-  overflow: auto;
-  height: 150px;
-}
-
-.tg-upload-file-list-counter {
-  position: absolute;
-  padding: 5px;
-}
-
-.tg-spin {
-  -webkit-animation-name: spin;
-          animation-name: spin;
-  -webkit-animation-duration: 1500ms;
-          animation-duration: 1500ms;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-}
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-@keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-/* .Select-multi-value-wrapper {
-  max-height: 100px;
-  overflow: scroll;
-} */
-
-/* dark styles */
-.bp3-dark .Select.is-open > .Select-control,
-.bp3-dark .Select-control,
-.bp3-dark .Select.is-disabled > .Select-control {
-  background: rgba(16, 22, 26, 0.3);
-  -webkit-box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0),
-    0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px rgba(16, 22, 26, 0.3),
-    inset 0 1px 1px rgba(16, 22, 26, 0.4);
-          box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0),
-    0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px rgba(16, 22, 26, 0.3),
-    inset 0 1px 1px rgba(16, 22, 26, 0.4);
-  background: rgba(16, 22, 26, 0.3);
-  color: #f5f8fa;
-}
-
-.bp3-dark .Select.is-focused:not(.is-open) > .Select-control {
-  background: rgba(16, 22, 26, 0.3);
-  color: #f5f8fa;
-}
-
-.bp3-dark .Select-placeholder,
-.bp3-dark .Select--single > .Select-control .Select-value {
-  color: rgb(191, 204, 214, 0.5); /*#bfccd6*/
-}
-
-.bp3-dark .Select-control {
-  border: none !important;
-}
-
-.bp3-dark
-  .Select.has-value.Select--single
-  > .Select-control
-  .Select-value
-  .Select-value-label,
-.bp3-dark
-  .Select.has-value.is-pseudo-focused.Select--single
-  > .Select-control
-  .Select-value
-  .Select-value-label,
-.bp3-dark .Select-option.is-selected {
-  color: #f5f8fa;
-}
-
-.bp3-dark .Select-option {
-  background: #30404d;
-  color: #f5f8fa;
-}
-
-.bp3-dark .Select-menu-outer {
-  border: 1px solid #26738cb0;
-  background: #202b33;
-}
-
-.bp3-dark .Select-option.is-focused {
-  background: rgba(0, 126, 255, 0.08);
-  color: #f5f8fa;
-}
-
-.bp3-dark .tg-upload-file-list-item:hover {
-  background: #26738cb0;
-}
-
-.tg-tooltipError .bp3-popover-wrapper {
-  width: 100%;
-}
-
-.tg-no-fill-field {
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
-  display: flex !important;
-}
-
-.item-upload-container {
-  padding: 5px;
-  width: 290px;
-}
-
-.item-upload {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-/* .bp3-control {
-  display: flex;
-  align-items: center;
-} */
-
-.bp3-form-group.bp3-inline .bp3-form-content {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
 }
 
 .tg-tree-minimap-viewport {
