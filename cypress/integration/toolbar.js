@@ -1,22 +1,59 @@
-
 describe("toolbar", function() {
   beforeEach(() => {
     cy.visit("");
   });
-  
+  it("import tool should be able to import a genbank file", function() {
+    cy.uploadFile(`[data-test="veImportTool"]`, "pj5_00002.gb");
+    cy.contains("Sequence Imported").should("exist");
+    cy.contains("Parsed using Genbank Parser").should("exist");
+  });
+  it("export tool should be able to export a genbank, fasta, or tg file", function() {
+    cy.clock();
+    cy.get(`[data-test="veExportTool"]`).click();
+    cy.contains("Download Genbank File").click();
+    cy.contains("File Downloaded Successfully");
+    cy.tick(30000); //pass some time so that the toastr isn't shown
+    cy.contains("File Downloaded Successfully").should("not.exist");
+    cy.get(`[data-test="veExportTool"]`).click();
+    cy.contains("Download FASTA File").click();
+    cy.contains("File Downloaded Successfully");
+    cy.tick(30000); //pass some time so that the toastr isn't shown
+    cy.contains("File Downloaded Successfully").should("not.exist");
+    cy.get(`[data-test="veExportTool"]`).click();
+    cy.contains("Download Teselagen JSON File").click();
+    cy.contains("File Downloaded Successfully");
+    cy.tick(30000); //pass some time so that the toastr isn't shown
+    cy.contains("File Downloaded Successfully").should("not.exist");
+
+    // cy.contains("Sequence Imported").should("exist")
+    // cy.contains("Parsed using Genbank Parser").should("exist")
+  });
 
   it("can open the cutsite dropdown and add an additional enzyme", function() {
     cy.get("[data-test=cutsiteToolDropdown]").click();
-    // debugger
-    // cy.get(".ve-toolbar-dropdown");
-    cy.contains("Single cutters")
+    cy.contains("Single cutters");
     cy.get(".Select-control").click();
-    cy.contains("Add additional enzymes").click()
-    cy.contains("Select cut sites").click()
-    cy.contains("AanI").click()
-    cy.contains("Cuts 2 times").click()
-    cy.contains("Add Enzyme").click()
-    cy.get(".ve-toolbar-dropdown").contains("Cuts 2 times")
+    cy.get(".Select-control").click();
+    cy.contains("Add additional enzymes").click();
+    cy.contains("Select cut sites").click(); //click twice because of react dropdown weirdness
+    cy.contains("Select cut sites").click();
+    cy.contains("AanI").click();
+    cy.contains("Cuts 2 times").click();
+    cy.contains("Add Enzyme").click();
+    cy.get(".ve-toolbar-dropdown").contains("Cuts 2 times");
+  });
+
+  it("you should be able to undo and redo the deletion of several features", function() {
+    cy.get(`[data-test="veUndoTool"]`).click()
+    cy.contains("Undo Successful").should("not.exist")
+    cy.get(".veCircularViewLabelText")
+      .contains("CAP site")
+      .click();
+    cy.contains("Selecting 14 bps from 1115 to 1128");
+    cy.get(".veVectorInteractionWrapper").first().type("{backspace}");
+    cy.contains("Sequence Deleted Successfully")
+    cy.get(`[data-test="veUndoTool"]`).click()
+    cy.contains("Undo Successful")
   });
 
   // it("can switch between tabs", function() {
@@ -26,7 +63,6 @@ describe("toolbar", function() {
   //   cy.get(".veCircularView");
   // });
 
-  
   // it can save
   // it('File > New Sequence', function() {
   //   cy.get("[data-test=jumpToEndButton]").click()
@@ -100,4 +136,11 @@ describe("toolbar", function() {
   // Vector Editor: (click drag over features)
   // Vector Editor: (click drag over sequences)
   // Vector Editor: (insert, delete, right arrow, left arrow, click drag delete, copy paste insert)
+});
+
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from
+  // failing the test
+  console.warn("err, runnable:", err, runnable);
+  return false;
 });

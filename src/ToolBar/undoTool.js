@@ -17,7 +17,7 @@ export default connectToEditor(editorState => {
       {...{
         ...toolbarItemProps,
 
-        Icon: <Icon icon="undo" />,
+        Icon: <Icon data-test="veUndoTool" icon="undo" />,
         disabled,
         onIconClick: undo,
         tooltip: (

@@ -130,7 +130,7 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
         }
         updateSequenceData(result[0].parsedSequence);
         if (!failed) {
-          window.toastr.success("Sequenced imported");
+          window.toastr.success("Sequence Imported");
         }
       },
       { acceptParts: true, ...opts }
@@ -161,6 +161,7 @@ export const exportSequenceToFile = props => format => {
   const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
   const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
   FileSaver.saveAs(blob, filename);
+  window.toastr.success("File Downloaded Successfully");
 };
 
 /**
@@ -504,18 +505,24 @@ function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
   // let overrides = addMetaToActionCreators(actionOverrides(metaActions), meta);
   let overrides = {};
   metaActions = {
-    undo: () => ({
-      type: "VE_UNDO",
-      meta: {
-        editorName
-      }
-    }),
-    redo: () => ({
-      type: "VE_REDO",
-      meta: {
-        editorName
-      }
-    }),
+    undo: () => {
+      window.toastr.success("Undo Successful");
+      return {
+        type: "VE_UNDO",
+        meta: {
+          editorName
+        }
+      };
+    },
+    redo: () => {
+      window.toastr.success("Redo Successful");
+      return {
+        type: "VE_REDO",
+        meta: {
+          editorName
+        }
+      };
+    },
     ...metaActions,
     ...overrides
   };

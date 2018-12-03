@@ -23,3 +23,26 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+
+ /**
+ * Uploads a file to an input
+ * @memberOf Cypress.Chainable#
+ * @name upload_file
+ * @function
+ * @param {String} selector - element to target
+ * @param {String} fileUrl - The file url to upload
+ * @param {String} type - content type of the uploaded file
+ */
+
+Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
+  return cy
+    .fixture(fileUrl, "base64")
+    .then(Cypress.Blob.base64StringToBlob)
+    .then(blob => {
+      const name = fileUrl.split("/").pop();
+      const testFile = new File([blob], name, { type });
+      const event = { dataTransfer: { files: [testFile] } };
+      return cy.get(selector).trigger("drop", event);
+    });
+});

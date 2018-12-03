@@ -16,7 +16,7 @@ export default connectToEditor(editorState => {
     <ToolbarItem
       {...{
         ...toolbarItemProps,
-        Icon: <Icon icon="redo" />,
+        Icon: <Icon data-test="veRedoTool" icon="redo" />,
         disabled,
         onIconClick: redo,
         tooltip: (

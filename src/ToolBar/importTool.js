@@ -3,16 +3,17 @@ import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
 import ToolbarItem from "./ToolbarItem";
 import { compose, withHandlers } from "recompose";
-import { importSequenceFromFile } from "../withEditorProps";
+import { importSequenceFromFile, connectToEditor } from "../withEditorProps";
 
 export default compose(
+  connectToEditor(),
   withHandlers({ importSequenceFromFile })
 )(({ toolbarItemProps, importSequenceFromFile }) => {
   return (
     <ToolbarItem
       {...{
         ...toolbarItemProps,
-        Icon: <Icon icon="export" />,
+        Icon: <Icon data-test="veImportTool" icon="export" />,
         IconWrapper: Dropzone,
         IconWrapperProps: {
           multiple: false,

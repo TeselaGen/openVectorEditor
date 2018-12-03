@@ -3,10 +3,9 @@ import { Icon, Menu } from "@blueprintjs/core";
 import { createCommandMenu } from "teselagen-react-components";
 import getCommands from "../commands";
 
-import {connectToEditor} from "../withEditorProps";
+import { connectToEditor } from "../withEditorProps";
 import ToolbarItem from "./ToolbarItem";
 import withEditorProps from "../withEditorProps";
-
 
 export default connectToEditor()(({ toolbarItemProps }) => {
   return (
@@ -17,7 +16,7 @@ export default connectToEditor()(({ toolbarItemProps }) => {
         Dropdown,
         noDropdownIcon: true,
         onIconClick: "toggleDropdown",
-        Icon: <Icon icon="import" />
+        Icon: <Icon data-test="veExportTool" icon="import" />
       }}
     />
   );
@@ -37,4 +36,3 @@ const Dropdown = withEditorProps(props => {
     </Menu>
   );
 });
-
