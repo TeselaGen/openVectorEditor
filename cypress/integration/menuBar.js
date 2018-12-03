@@ -37,8 +37,6 @@ describe("menuBar", function() {
     cy.get('.tg-menu-bar-popover').contains("Cut").click()
     cy.contains("Selection Cut")
     cy.get(".veStatusBar").contains(`5288`)
-    
-
   });
   // it("can use the select range tool", function() {
   //   // cy.
