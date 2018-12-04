@@ -15,7 +15,6 @@ export default connectToEditor(editorState => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon data-test="veRedoTool" icon="redo" />,
         disabled,
         onIconClick: redo,
@@ -23,7 +22,8 @@ export default connectToEditor(editorState => {
           <span>
             Redo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Shift+Z)</span>
           </span>
-        )
+        ),
+        ...toolbarItemProps
       }}
     />
   );

@@ -15,8 +15,6 @@ export default connectToEditor(editorState => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
-
         Icon: <Icon data-test="veUndoTool" icon="undo" />,
         disabled,
         onIconClick: undo,
@@ -24,7 +22,8 @@ export default connectToEditor(editorState => {
           <span>
             Undo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Z)</span>
           </span>
-        )
+        ),
+        ...toolbarItemProps
       }}
     />
   );

@@ -12,7 +12,6 @@ export default connectToEditor(({ findTool = {} }) => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: !isOpen ? (
           <Icon icon="search" />
         ) : (
@@ -28,7 +27,8 @@ export default connectToEditor(({ findTool = {} }) => {
           <span>
             Show Find Tool <span style={{ fontSize: 10 }}>(Cmd/Ctrl+F)</span>
           </span>
-        )
+        ),
+        ...toolbarItemProps
       }}
     />
   );

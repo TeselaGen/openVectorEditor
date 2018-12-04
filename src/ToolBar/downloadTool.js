@@ -11,12 +11,12 @@ export default connectToEditor()(({ toolbarItemProps }) => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         tooltip: "Export",
         Dropdown,
         noDropdownIcon: true,
         onIconClick: "toggleDropdown",
-        Icon: <Icon data-test="veExportTool" icon="import" />
+        Icon: <Icon data-test="veDownloadTool" icon="import" />,
+        ...toolbarItemProps
       }}
     />
   );

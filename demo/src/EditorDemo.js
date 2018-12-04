@@ -1,4 +1,4 @@
-import { Switch, Button } from "@blueprintjs/core";
+import { Switch, Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
 import {
@@ -25,6 +25,7 @@ const defaultState = {
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
+  overrideToolbarOptions: false,
   showAvailability: true,
   showOptions: true,
   shouldAutosave: false,
@@ -163,6 +164,7 @@ export default class EditorDemo extends React.Component {
               {renderToggle({ that: this, type: "showReadOnly" })}
               {renderToggle({ that: this, type: "showCircularity" })}
               {renderToggle({ that: this, type: "showAvailability" })}
+              {renderToggle({ that: this, type: "overrideToolbarOptions" })}
               {renderToggle({ that: this, type: "fullscreenMode" })}
               {renderToggle({
                 that: this,
@@ -294,7 +296,48 @@ export default class EditorDemo extends React.Component {
             disableSetReadOnly={this.state.disableSetReadOnly}
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
+
             showAvailability={this.state.showAvailability}
+            {...this.state.overrideToolbarOptions && {
+              ToolBarProps: {
+                //name the tools you want to see in the toolbar in the order you want to see them
+                toolList: [
+                  // 'saveTool',
+                  {
+                    name: 'downloadTool',
+                    onIconClick: () => {
+                      window.toastr.success("Download tool hit!")
+                    }
+                     
+                  },
+                  {
+                    name: 'undoTool',
+                    Icon: <Icon icon="credit-card" data-test="my-overridden-tool-123"></Icon>,
+                    onIconClick: () => {
+                      window.toastr.success("cha-ching")
+                    },
+                    disabled: false
+                  },
+                  'redoTool',
+                  'cutsiteTool',
+                  'featureTool',
+                  'oligoTool',
+                  'orfTool',
+                  {
+                    name: 'alignmentTool',
+                    onIconClick: () => {
+                      const { item } = this.props
+                      const url = '/alignments/new?seqId=' + item.id
+                      window.open(window.location.origin + url)
+                    }
+                  },
+                  'editTool',
+                  'findTool',
+                  'visibilityTool'
+                ]
+              },
+            }}
+            
           />
           {/* </div> */}
         </div>

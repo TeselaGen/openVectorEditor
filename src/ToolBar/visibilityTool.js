@@ -15,13 +15,13 @@ export default connectToEditor(({ toolBar = {} }) => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon icon="eye-open" />,
         onIconClick: "toggleDropdown",
         Dropdown: VisibilityOptions,
         noDropdownIcon: true,
         toggled: isOpen,
-        tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options"
+        tooltip: isOpen ? "Hide Visibility Options" : "Show Visibility Options",
+        ...toolbarItemProps
       }}
     />
   );

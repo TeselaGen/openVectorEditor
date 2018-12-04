@@ -20,7 +20,6 @@ export default connectToEditor(
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon icon={orfIcon} />,
         onIconClick: function() {
           annotationVisibilityToggle("orfs");
@@ -31,7 +30,8 @@ export default connectToEditor(
         tooltipToggled: "Hide Open Reading Frames",
         Dropdown: OrfToolDropdown,
         dropdowntooltip:
-          (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options"
+          (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
+        ...toolbarItemProps
       }}
     />
   );

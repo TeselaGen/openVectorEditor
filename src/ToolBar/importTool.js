@@ -12,7 +12,6 @@ export default compose(
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon data-test="veImportTool" icon="export" />,
         IconWrapper: Dropzone,
         IconWrapperProps: {
@@ -20,7 +19,8 @@ export default compose(
           style: {},
           onDrop: files => importSequenceFromFile(files[0])
         },
-        tooltip: "Click or drag to import and view .fasta or .gb files"
+        tooltip: "Click or drag to import and view .fasta or .gb files",
+        ...toolbarItemProps
       }}
     />
   );

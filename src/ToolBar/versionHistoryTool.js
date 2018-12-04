@@ -8,12 +8,11 @@ export default connectToEditor()(
     return (
       <ToolbarItem
         {...{
-          ...toolbarItemProps,
-
           Icon: <Icon icon="history" />,
           onIconClick: toggleViewVersionHistory,
           // disabled: hasBeenSaved || lastEdit,
-          tooltip: <span>View Version History</span>
+          tooltip: <span>View Version History</span>,
+          ...toolbarItemProps
         }}
       />
     );

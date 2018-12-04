@@ -22,7 +22,6 @@ export default compose(
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon icon="floppy-disk" />,
         onIconClick: handleSave,
         disabled: !onSave || hasBeenSaved || readOnly,
@@ -30,7 +29,8 @@ export default compose(
           <span>
             Save <span style={{ fontSize: 10 }}>(Cmd/Ctrl+S)</span>
           </span>
-        )
+        ),
+        ...toolbarItemProps
       }}
     />
   );

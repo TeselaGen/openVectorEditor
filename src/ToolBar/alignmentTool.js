@@ -27,8 +27,6 @@ export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
-
         Icon: <Icon icon="align-left" />,
         // toggled: alignmentTool.isOpen,
         renderIconAbove: isOpen,
@@ -36,7 +34,8 @@ export default connectToEditor(({ readOnly, toolBar = {} }) => {
         Dropdown: ConnectedAlignmentToolDropdown,
         onIconClick: "toggleDropdown",
         noDropdownIcon: true,
-        tooltip: isOpen ? "Hide Alignment Tool" : "Align to This Sequence"
+        tooltip: isOpen ? "Hide Alignment Tool" : "Align to This Sequence",
+        ...toolbarItemProps
       }}
     />
   );

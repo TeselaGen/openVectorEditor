@@ -81,7 +81,7 @@ export class ToolBar extends React.PureComponent {
         }
 
         const Tool = toolOverride
-          ? { ...allTools[toolOverride.name], overrides: toolOverride } //add any overrides here
+          ? allTools[toolOverride.name]
           : allTools[toolName];
         if (!Tool) {
           console.error(
@@ -96,7 +96,7 @@ export class ToolBar extends React.PureComponent {
         return (
           <Tool
             {...rest}
-            toolbarItemProps={{ index, toolName, editorName }}
+            toolbarItemProps={{ index, toolName, editorName, ...toolOverride }}
             editorName={editorName}
             key={toolName}
           />

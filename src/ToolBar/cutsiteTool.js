@@ -16,7 +16,6 @@ export default connectToEditor(
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon data-test="cutsiteDropdownToggle" icon="cut" />,
         onIconClick: function() {
           annotationVisibilityToggle("cutsites");
@@ -25,7 +24,8 @@ export default connectToEditor(
         tooltip: "Show cut sites",
         tooltipToggled: "Hide cut sites",
         Dropdown: CutsiteToolDropDown,
-        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options",
+        ...toolbarItemProps
       }}
     />
   );

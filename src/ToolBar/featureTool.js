@@ -18,7 +18,6 @@ export default connectToEditor(
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon icon={featureIcon} />,
         onIconClick: function() {
           annotationVisibilityToggle("features");
@@ -27,7 +26,8 @@ export default connectToEditor(
         tooltip: "Show features",
         tooltipToggled: "Hide features",
         // Dropdown: ConnectedFeatureToolDropdown,
-        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options"
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Feature Options",
+        ...toolbarItemProps
       }}
     />
   );

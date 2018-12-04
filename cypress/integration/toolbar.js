@@ -2,6 +2,15 @@ describe("toolbar", function() {
   beforeEach(() => {
     cy.visit("");
   });
+
+  it('should be able to have individual tool functionality overridden', function() {
+    cy.contains("overrideToolbarOptions").find("input").check({force: true})
+    cy.get(`[data-test="veDownloadTool"]`).click()
+    cy.contains("Download tool hit!")
+    cy.get(`[data-test="my-overridden-tool-123"]`).click()
+    cy.contains("cha-ching")
+    
+  })
   it("import tool should be able to import a genbank file", function() {
     cy.uploadFile(`[data-test="veImportTool"]`, "pj5_00002.gb");
     cy.contains("Sequence Imported").should("exist");
@@ -10,17 +19,17 @@ describe("toolbar", function() {
   it("export tool should be able to export a genbank, fasta, or tg file", function() {
     if (Cypress.browser.isHeadless) return true //stop early because this test fails currently in headless mode
     cy.clock();
-    cy.get(`[data-test="veExportTool"]`).click();
+    cy.get(`[data-test="veDownloadTool"]`).click();
     cy.contains("Download Genbank File").click();
     cy.contains("File Downloaded Successfully");
     cy.tick(30000); //pass some time so that the toastr isn't shown
     cy.contains("File Downloaded Successfully").should("not.exist");
-    cy.get(`[data-test="veExportTool"]`).click();
+    cy.get(`[data-test="veDownloadTool"]`).click();
     cy.contains("Download FASTA File").click();
     cy.contains("File Downloaded Successfully");
     cy.tick(30000); //pass some time so that the toastr isn't shown
     cy.contains("File Downloaded Successfully").should("not.exist");
-    cy.get(`[data-test="veExportTool"]`).click();
+    cy.get(`[data-test="veDownloadTool"]`).click();
     cy.contains("Download Teselagen JSON File").click();
     cy.contains("File Downloaded Successfully");
     cy.tick(30000); //pass some time so that the toastr isn't shown

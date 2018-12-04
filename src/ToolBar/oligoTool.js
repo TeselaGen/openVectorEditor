@@ -5,20 +5,20 @@ import { connectToEditor } from "../withEditorProps";
 
 export default connectToEditor(editorState => {
   return {
-    toggled: editorState.annotationVisibility.primers,
+    toggled: editorState.annotationVisibility.primers
   };
 })(({ toolbarItemProps, toggled, annotationVisibilityToggle }) => {
   return (
     <ToolbarItem
       {...{
-        ...toolbarItemProps,
         Icon: <Icon icon="swap-horizontal" />,
         onIconClick: function() {
           annotationVisibilityToggle("primers");
         },
         toggled,
         tooltip: "Show Primers",
-        tooltipToggled: "Hide Primers"
+        tooltipToggled: "Hide Primers",
+        ...toolbarItemProps
       }}
     />
   );
