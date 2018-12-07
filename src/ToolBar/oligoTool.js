@@ -5,7 +5,9 @@ import { connectToEditor } from "../withEditorProps";
 
 export default connectToEditor(editorState => {
   return {
-    toggled: editorState.annotationVisibility.primers
+    toggled:
+      editorState.annotationVisibility &&
+      editorState.annotationVisibility.primers
   };
 })(({ toolbarItemProps, toggled, annotationVisibilityToggle }) => {
   return (
