@@ -35,6 +35,10 @@
   display: flex;
 }
 
+.datatable-search-input.bp3-form-group {
+  margin-bottom: 0;
+}
+
 .data-table-header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -342,6 +346,11 @@
   margin-bottom: 0;
   /* there is a weird padding on the blueprint checkbox, so this centers it some */
   padding-left: 18px;
+}
+
+.tg-react-table-checkbox-header-container .bp3-control-indicator,
+.tg-react-table-checkbox-cell-container .bp3-control-indicator {
+  margin-left: -10px !important;
 }
 
 /* .tg-compact-table .rt-tr-group {
@@ -5564,6 +5573,15 @@ span.bp3-icon:empty{
 .bp3-icon-crown::before{
   content:"\E7B4"; }
 
+.bp3-icon-cube::before{
+  content:"\E7C8"; }
+
+.bp3-icon-cube-add::before{
+  content:"\E7C9"; }
+
+.bp3-icon-cube-remove::before{
+  content:"\E7D0"; }
+
 .bp3-icon-curved-range-chart::before{
   content:"\E71B"; }
 
@@ -6038,6 +6056,9 @@ span.bp3-icon:empty{
 .bp3-icon-left-join::before{
   content:"\E7A4"; }
 
+.bp3-icon-lifesaver::before{
+  content:"\E7C7"; }
+
 .bp3-icon-lightbulb::before{
   content:"\E6B0"; }
 
@@ -6511,6 +6532,9 @@ span.bp3-icon:empty{
 
 .bp3-icon-th-derived::before{
   content:"\E669"; }
+
+.bp3-icon-th-filtered::before{
+  content:"\E7C6"; }
 
 .bp3-icon-th-list::before{
   content:"\E668"; }
@@ -9281,8 +9305,10 @@ Licensed under the terms of the LICENSE file distributed with this project.
   right:0;
   left:0;
   height:30px; }
-  .bp3-datepicker-navbar > :first-child{
+  .bp3-datepicker-navbar > .DayPicker-NavButton--prev{
     margin-right:auto; }
+  .bp3-datepicker-navbar > .DayPicker-NavButton--next{
+    margin-left:auto; }
 
 .bp3-datepicker-caption{
   display:-webkit-box;
@@ -9373,18 +9399,10 @@ Licensed under the terms of the LICENSE file distributed with this project.
     display:flex;
     -ms-flex-pack:distribute;
         justify-content:space-around; }
-  .bp3-daterangepicker .bp3-daterangepicker-shortcuts + .DayPicker{
-    border-left:1px solid rgba(16, 22, 26, 0.15);
-    min-width:220px;
-    padding-left:5px; }
   .bp3-daterangepicker.bp3-daterangepicker-contiguous .DayPicker{
-    min-width:430px; }
-  .bp3-daterangepicker.bp3-daterangepicker-contiguous .bp3-daterangepicker-shortcuts + .DayPicker{
-    min-width:440px; }
+    min-width:220px; }
   .bp3-daterangepicker.bp3-daterangepicker-single-month .DayPicker{
     min-width:210px; }
-  .bp3-daterangepicker.bp3-daterangepicker-single-month .bp3-daterangepicker-shortcuts + .DayPicker{
-    min-width:220px; }
   .bp3-daterangepicker .DayPicker-Day--outside{
     visibility:hidden; }
   .bp3-daterangepicker .DayPicker-Day--hovered-range{
@@ -9536,13 +9554,13 @@ Licensed under the terms of the LICENSE file distributed with this project.
   font-family:"Icons16";
   font-weight:normal;
   font-style:normal;
-  src:url(icons-16.6826f355.eot?#iefix) format("embedded-opentype"), url(icons-16.f22a4ccb.woff) format("woff"), url(icons-16.989d9c9a.ttf) format("truetype"); }
+  src:url(icons-16.5dbae370.eot?#iefix) format("embedded-opentype"), url(icons-16.d0bcd5b9.woff) format("woff"), url(icons-16.26e98f29.ttf) format("truetype"); }
 
 @font-face{
   font-family:"Icons20";
   font-weight:normal;
   font-style:normal;
-  src:url(icons-20.99a9521d.eot?#iefix) format("embedded-opentype"), url(icons-20.96d07614.woff) format("woff"), url(icons-20.b2eb8441.ttf) format("truetype"); }
+  src:url(icons-20.f4d910a0.eot?#iefix) format("embedded-opentype"), url(icons-20.9d0578e5.woff) format("woff"), url(icons-20.0ec8ac2b.ttf) format("truetype"); }
 /**
  * React Select
  * ============
