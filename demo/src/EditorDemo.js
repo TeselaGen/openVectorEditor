@@ -1,4 +1,4 @@
-import { Switch, Button, Icon } from "@blueprintjs/core";
+import { Switch, Button, Icon, Tooltip } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
 import {
@@ -29,7 +29,7 @@ const defaultState = {
   showAvailability: true,
   showOptions: true,
   shouldAutosave: false,
-  fullscreenMode: false,  
+  isFullscreen: false,  
   forceHeightMode: false,
   onNew: true,
   onSave: true,
@@ -88,7 +88,7 @@ export default class EditorDemo extends React.Component {
 
   changeFullscreenMode = e =>
     this.setState({
-      fullscreenMode: e.target.checked
+      isFullscreen: e.target.checked
     });
   changeReadOnly = e =>
     this.setState({
@@ -96,7 +96,7 @@ export default class EditorDemo extends React.Component {
     });
 
   render() {
-    const { forceHeightMode, fullscreenMode, withPreviewMode } = this.state;
+    const { forceHeightMode, isFullscreen, withPreviewMode } = this.state;
 
     return (
       <React.Fragment>
@@ -147,6 +147,29 @@ export default class EditorDemo extends React.Component {
                 Change Sequence
               </Button>
               <Button onClick={this.resetDefaultState}>Reset Defaults</Button>
+              Demo Specific options: 
+              {renderToggle({ that: this, label: "Override tool example", type: "overrideToolbarOptions", description: <div>
+              {`
+              //This is an example of how to pass tool overrides:
+ToolBarProps: {
+  toolList: [
+    {
+      \t\tname: 'downloadTool',
+      \t\tonIconClick: () => {
+        \t\twindow.toastr.success("Download tool hit!")
+        \t}
+    },
+    ...etc
+                  `.split("\n").map((l,i) => <div key={i}>{l}</div>)}
+              </div> })}
+              {renderToggle({
+                that: this,
+                type: "forceHeightMode",
+                label: "Force Height 500px",
+                description: "Set this up "
+              })}
+
+              Editor Options: 
               {renderToggle({
                 that: this,
                 type: "readOnly",
@@ -164,14 +187,9 @@ export default class EditorDemo extends React.Component {
               {renderToggle({ that: this, type: "showReadOnly" })}
               {renderToggle({ that: this, type: "showCircularity" })}
               {renderToggle({ that: this, type: "showAvailability" })}
-              {renderToggle({ that: this, type: "overrideToolbarOptions" })}
-              {renderToggle({ that: this, type: "fullscreenMode" })}
-              {renderToggle({
-                that: this,
-                type: "forceHeightMode",
-                description: "Force Height 500px"
-              })}
-              <div>Optional Handlers: </div>
+              {renderToggle({ that: this, type: "isFullscreen" })}
+              
+              <div>Editor Handlers: </div>
               {renderToggle({
                 that: this,
                 type: "onNew"
@@ -290,7 +308,7 @@ export default class EditorDemo extends React.Component {
             handleFullscreenClose={
               !withPreviewMode && this.changeFullscreenMode
             } //don't pass this handler if you're also using previewMode
-            isFullscreen={fullscreenMode}
+            isFullscreen={isFullscreen}
             {...forceHeightMode && { height: 500 }}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
@@ -305,6 +323,7 @@ export default class EditorDemo extends React.Component {
                   // 'saveTool',
                   {
                     name: 'downloadTool',
+                    Icon: <Icon icon="bank-account"></Icon>,
                     onIconClick: () => {
                       window.toastr.success("Download tool hit!")
                     }
@@ -346,20 +365,23 @@ export default class EditorDemo extends React.Component {
   }
 }
 
-function renderToggle({ that, type, description, hook }) {
+function renderToggle({ that, type, label, description, hook }) {
+  const toggleEl = <Switch
+  checked={that.state[type]}
+  label={label ? <span>{label}</span> : type}
+  style={{ margin: "0px 30px", marginTop: 4 }}
+  onChange={() => {
+    hook && hook(!that.state[type]);
+    that.setState({
+      [type]: !that.state[type]
+    });
+  }}
+/>
   return (
     <div className={"toggle-button-holder"}>
-      <Switch
-        checked={that.state[type]}
-        label={description ? <span>{description}</span> : type}
-        style={{ margin: "0px 30px", marginTop: 4 }}
-        onChange={() => {
-          hook && hook(!that.state[type]);
-          that.setState({
-            [type]: !that.state[type]
-          });
-        }}
-      />
+      <Tooltip content={description} target={toggleEl}>
+
+      </Tooltip>
     </div>
   );
 }

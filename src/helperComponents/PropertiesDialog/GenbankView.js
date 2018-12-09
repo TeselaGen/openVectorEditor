@@ -9,6 +9,7 @@ class GenbankView extends React.Component {
     const genbankString = jsonToGenbank(sequenceData);
     return (
       <textarea
+        data-test="ve-genbank-text"
         readOnly
         // wrap="soft"
         style={{

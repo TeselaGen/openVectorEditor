@@ -68,7 +68,7 @@ function dragBetween(dragSelector, dropSelector) {
           clientX: x + 10,
           clientY: y + 10
         }) // We perform a small move event of > 5 pixels this means we don't get dismissed by the sloppy click detection
-        .tick(1000); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
+        .tick(5000); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
 
       cy.get("html") // now we perform drags on the whole screen, not just the draggable
         .trigger("mousemove", {
@@ -76,7 +76,7 @@ function dragBetween(dragSelector, dropSelector) {
           clientX: xCenterDrop,
           clientY: yCenterDrop
         })
-        .tick(1000);
+        .tick(5000);
       cy.get("html")
         .trigger("mouseup", { // Causes the drop to be run
           button: 0,

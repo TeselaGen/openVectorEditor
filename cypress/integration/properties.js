@@ -14,6 +14,31 @@ describe("properties", function() {
     cy.get(`[data-tab-id="orfs"]`).click()
     cy.contains("Use GTG and CTG").should('be.visible')
   });
+  it(`
+  -can select all in the genbank properties window //todo
+  -has a Part 0 in the genbank
+  `
+  , function() {
+    cy.get(".veTabProperties").click()
+    cy.get(`[data-tab-id="genbank"]`).click()
+    //todo comment this in once select all is working with cypress 
+    //cy.get(`[data-test="ve-genbank-text"]`).click().type("{meta}a")
+    //Part 0 should be in there
+    cy.get(`[data-test="ve-genbank-text"]`).contains("Part 0") 
+    
+  });
+  // it.only('should ', function() {
+  //   cy.visit("https://docs.cypress.io")
+  //   cy.contains("What you’ll learn")
+  //   cy.get("body").type("{meta}a")
+  //   cy.contains("Our mission")
+  // })
+  // it.only('should ', function() {
+  //   cy.visit("https://bulma.io/documentation/form/textarea/")
+  //   // cy.contains("What you’ll learn")
+  //   cy.get("textarea").first().type("thomas")
+  //   cy.get("textarea").first().type("{meta}a")
+  // })
   // it.only('should click try to login and fail', function() {
   //     cy.get(`input[name="email"]`).type("test@teselagen.com")
   //     cy.get(`input[name="password"]`).type("somepassword")

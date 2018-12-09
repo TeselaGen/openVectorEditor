@@ -221,9 +221,21 @@ const editCommandDefs = {
     }
   },
   selectAll: {
-    handler: props => props.selectAll(),
-    hotkey: "mod+a",
-    hotkeyProps: { preventDefault: true, stopPropagation: true }
+    handler: (props, obj) => {
+      const { event } = obj || {};
+      if (
+        event &&
+        event.target &&
+        (event.target.type === "textarea" || event.target.type === "input")
+      ) {
+        return true; //stop early to allow select all to work in inputs and text areas
+      }
+      props.selectAll();
+      event.stopPropagation();
+      event.preventDefault();
+    },
+    hotkey: "mod+a"
+    // hotkeyProps: { preventDefault: true, stopPropagation: true }
   },
 
   selectInverse: {
