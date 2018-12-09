@@ -2,9 +2,41 @@ describe("toolbar", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`find tool should be working as expected
+  -it starts with nothing selected
+  -it can find dna letters
+  -it can toggle the find options and highlight all
+  -and toggle finding Amino acids
+  `, function() {
+    cy.clock()
+      cy.get(`[data-test="ve-find-tool-toggle"]`).click()
+      cy.tick(500)
+      cy.get(".veFindBar").contains("0/0")
+      cy.get(".veFindBar").contains("1/1").should("not.exist")
+      cy.focused().type("gattac")
+      cy.get(".veFindBar").contains("1/1")
+      cy.focused().type("c")
+      cy.get(".veFindBar").contains("0/0")
+      cy.get(`[data-test="veFindBarOptionsToggle"]`).click()
+      cy.get(".ve-find-options-popover").contains("Highlight All").click()
+      
+      cy.get(".veFindBar input").clear().type("gat")
+      cy.get(".selectionLayerCaret").should("have.length.greaterThan", 100)
+      cy.get(`[data-test="veFindBarOptionsToggle"]`).click()
+      cy.get(`.ve-find-options-popover [type="checkbox"]`).should("be.checked")
+      cy.get(`[name="dnaOrAA"]`).select("Amino Acids")
+      cy.get(".veFindBar").contains("1/2")
+      cy.get(".veRowViewSelectionLayer").first().click({force: true})
+      cy.contains("372 to 380")
+
+      cy.get(`[data-test="veFindNextMatchButton"]`).click()
+      cy.get(".veRowViewSelectionLayer").first().click({force: true})
+      cy.contains("3999 to 4007")
+
+  })
 
   it('should be able to have individual tool functionality overridden', function() {
-    cy.contains("overrideToolbarOptions").find("input").check({force: true})
+    cy.get(`[data-test="overrideToolbarOptions"]`).check({force: true})
     cy.get(`[data-test="veDownloadTool"]`).click()
     cy.contains("Download tool hit!")
     cy.get(`[data-test="my-overridden-tool-123"]`).click()

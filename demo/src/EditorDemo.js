@@ -148,7 +148,7 @@ export default class EditorDemo extends React.Component {
               </Button>
               <Button onClick={this.resetDefaultState}>Reset Defaults</Button>
               Demo Specific options: 
-              {renderToggle({ that: this, label: "Override tool example", type: "overrideToolbarOptions", description: <div>
+              {renderToggle({ that: this, label: "Show custom tool overrides example", type: "overrideToolbarOptions", description: <div>
               {`
               //This is an example of how to pass tool overrides:
 ToolBarProps: {
@@ -323,7 +323,7 @@ ToolBarProps: {
                   // 'saveTool',
                   {
                     name: 'downloadTool',
-                    Icon: <Icon icon="bank-account"></Icon>,
+                    Icon: <Icon data-test="veDownloadTool" icon="bank-account"></Icon>,
                     onIconClick: () => {
                       window.toastr.success("Download tool hit!")
                     }
@@ -367,6 +367,7 @@ ToolBarProps: {
 
 function renderToggle({ that, type, label, description, hook }) {
   const toggleEl = <Switch
+  data-test={type}
   checked={that.state[type]}
   label={label ? <span>{label}</span> : type}
   style={{ margin: "0px 30px", marginTop: 4 }}

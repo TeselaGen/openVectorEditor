@@ -98,7 +98,7 @@ export class FindBar extends React.Component {
       </div>,
       <Switch
         key="highlightall"
-        value={highlightAll}
+        checked={highlightAll}
         onChange={toggleHighlightAll}
         disabled={matchesTotal > MAX_MATCHES_DISPLAYED}
       >
@@ -161,8 +161,15 @@ export class FindBar extends React.Component {
             <span>
               {isInline && (
                 <Popover
+                  autoFocus={false}
                   position={Position.BOTTOM}
-                  target={<Button minimal icon="wrench" />}
+                  target={
+                    <Button
+                      data-test="veFindBarOptionsToggle"
+                      minimal
+                      icon="wrench"
+                    />
+                  }
                   content={
                     <div
                       className="ve-find-options-popover"
@@ -184,6 +191,7 @@ export class FindBar extends React.Component {
                 {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
               </span>
               <Button
+                data-test="veFindPreviousMatchButton"
                 minimal
                 disabled={matchesTotal <= 0}
                 onClick={() => {
@@ -194,6 +202,7 @@ export class FindBar extends React.Component {
                 icon="caret-up"
               />
               <Button
+                data-test="veFindNextMatchButton"
                 minimal
                 disabled={matchesTotal <= 0}
                 onClick={() => {

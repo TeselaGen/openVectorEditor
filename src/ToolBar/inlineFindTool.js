@@ -13,7 +13,7 @@ export default connectToEditor(({ findTool = {} }) => {
     <ToolbarItem
       {...{
         Icon: !isOpen ? (
-          <Icon icon="search" />
+          <Icon data-test="ve-find-tool-toggle" icon="search" />
         ) : (
           <FindBar editorName={editorName} isInline />
         ),
