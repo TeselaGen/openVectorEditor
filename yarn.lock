@@ -2048,10 +2048,10 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
 
-bio-parsers@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.1.1.tgz#c96186978d068e34c99e56177b5fc784f55de3b0"
-  integrity sha512-hdDrUdLW/++U98bhMkphft+tB3fj/EXeyq/BlmlJit2lP6ad3ETfkRvhghjr7XyhqmcmDYePHFlSjG6K0cgi+A==
+bio-parsers@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.2.0.tgz#1998b84bfd6c63e2e8d0694a7c99dc0fd65fae5a"
+  integrity sha512-yTs91P5zzVX4y7VVVXUGOng1RkUMswkfwVG9QomHtD2TEizD89KOHbf07Dp9LCjSP/5MPD+Zuf0X6eK/6yEqfQ==
   dependencies:
     bufferpack "^0.0.6"
     flatmap "0.0.3"
@@ -11345,10 +11345,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@24.3.9:
-  version "24.3.9"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.3.9.tgz#6de54a40357a4889d66f16f4f3b399403c2166e3"
-  integrity sha512-fh74bPpu6JP3oeV32njAOvZK8ZoSu+YPRri28dn6SxsfKpIqZ25abAeIYfnZadUm7FJX5XhjNxtMWJlaYN5HZA==
+teselagen-react-components@24.3.10:
+  version "24.3.10"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.3.10.tgz#670ebabcbbadb4e6d512498f5ade9d822843f1d4"
+  integrity sha512-5tbLSm/4AaQjbTjK17SUBWAcyrBwixG2x/WtBWbOH25HCOl5rcs07ZDeOJTuDxGtUIrpJXaJaSkzZqxycNPdVg==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"

@@ -1,5 +1,9 @@
 import React from "react";
-import { InputField, BPSelect } from "teselagen-react-components";
+import {
+  InputField,
+  BPSelect,
+  TextareaField
+} from "teselagen-react-components";
 import { reduxForm } from "redux-form";
 import { connectToEditor, updateCircular } from "../../withEditorProps";
 import { compose, withHandlers } from "recompose";
@@ -8,6 +12,9 @@ import { compose, withHandlers } from "recompose";
 // import { Button, Intent } from "@blueprintjs/core";
 
 class GeneralProperties extends React.Component {
+  updateSeqDesc = val => {
+    return this.props.sequenceDescriptionUpdate(val);
+  };
   render() {
     const {
       readOnly,
@@ -21,6 +28,7 @@ class GeneralProperties extends React.Component {
       materiallyAvailable,
       updateReadOnlyMode,
       onSave,
+      description,
       showAvailability,
       sequenceNameUpdate
     } = this.props;
@@ -108,6 +116,13 @@ class GeneralProperties extends React.Component {
             </div>
           </div>
         )}
+        <div>Description:</div>
+        <TextareaField
+          clickToEdit
+          name="description"
+          onFieldSubmit={this.updateSeqDesc}
+          defaultValue={description}
+        />
       </div>
     );
   }
@@ -117,11 +132,18 @@ export default compose(
   connectToEditor(
     ({
       readOnly,
-      sequenceData: { name, sequence, circular, materiallyAvailable } = {}
+      sequenceData: {
+        description,
+        name,
+        sequence,
+        circular,
+        materiallyAvailable
+      } = {}
     }) => {
       return {
         readOnly,
         name,
+        description,
         sequence,
         circular,
         materiallyAvailable

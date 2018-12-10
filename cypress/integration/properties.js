@@ -2,6 +2,20 @@ describe("properties", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`we should be able to view and edit a description in general properties 
+  and have that visible within the genbank view as well`, ()=> {
+    cy.get(".veTabProperties").click()
+    cy.get(`.tg-test-description`).contains("Edit").click()
+    cy.get(`.tg-test-description textarea`).type("Test description{cmd}{enter}")
+    cy.get(`[data-tab-id="genbank"]`).click()
+    cy.contains("DEFINITION  Test description")
+    cy.get(`[data-tab-id="general"]`).click()
+    cy.get(`.tg-test-description`).contains("Edit").click()
+    cy.get(`.tg-test-description textarea`).clear()
+    cy.get(`.tg-test-description`).contains("Ok").click()
+    cy.get(`[data-tab-id="genbank"]`).click()
+    cy.contains("DEFINITION").should("not.exist")
+  })
   it("can click into the orf properties tab and change the minimum orf size and trigger a warning in the editor", function() {
     cy.get(".veTabProperties").click()
     cy.get(`[data-tab-id="orfs"]`).click()
