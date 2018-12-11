@@ -1,4 +1,4 @@
-import { Checkbox, Switch } from "@blueprintjs/core";
+import { Checkbox, Switch, Tooltip } from "@blueprintjs/core";
 import React from "react";
 import { DataTable, withSelectedEntities } from "teselagen-react-components";
 import { map } from "lodash";
@@ -43,6 +43,7 @@ class TranslationProperties extends React.Component {
         })
       };
     });
+
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
@@ -142,19 +143,29 @@ class TranslationProperties extends React.Component {
               Edit
             </Button> */}
 
-            <Button
-              onClick={() => {
-                deleteTranslation(translationPropertiesSelectedEntities);
-              }}
-              style={{ marginLeft: 10, marginRight: 15, height: 30 }}
-              disabled={
-                !translationPropertiesSelectedEntities.length ||
+            <Tooltip
+              content={
+                translationPropertiesSelectedEntities.length &&
                 translationPropertiesSelectedEntities[0].translationType !==
                   "User Created"
+                  ? `Only "User Created" translations can be deleted`
+                  : undefined
               }
             >
-              Delete
-            </Button>
+              <Button
+                onClick={() => {
+                  deleteTranslation(translationPropertiesSelectedEntities);
+                }}
+                style={{ marginLeft: 10, marginRight: 15, height: 30 }}
+                disabled={
+                  !translationPropertiesSelectedEntities.length ||
+                  translationPropertiesSelectedEntities[0].translationType !==
+                    "User Created"
+                }
+              >
+                Delete
+              </Button>
+            </Tooltip>
           </div>
         )}
       </div>
