@@ -10,13 +10,20 @@
 .ve-draggable-tabs::-webkit-scrollbar {
   display: none;
 }
+.ve-propertiesPanel .data-table-header {
+  margin-top: 3px;
+  margin-right: 3px;
+}
 .ve-propertiesPanel .bp3-tab-list {
   overflow: scroll;
 }
 .ve-propertiesPanel .bp3-tabs .bp3-tab-panel {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: visible;
 }
+
 .ve-flex-row {
   display: flex;
   flex-direction: row;
@@ -29,4 +36,8 @@
   display: flex;
   
   align-items: center;
+} */
+
+/* .data-table-container > * {
+  flex-shrink: 0;
 } */

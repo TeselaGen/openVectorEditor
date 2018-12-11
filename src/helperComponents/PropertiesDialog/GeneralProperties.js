@@ -33,16 +33,7 @@ class GeneralProperties extends React.Component {
       sequenceNameUpdate
     } = this.props;
     return (
-      <div
-        style={{
-          maxWidth: 500,
-          flexGrow: 1,
-          alignSelf: "center",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
+      <React.Fragment>
         <div className="ve-flex-row">
           <div className="ve-column-left">Name:</div>{" "}
           <div className="ve-column-right">
@@ -123,7 +114,7 @@ class GeneralProperties extends React.Component {
           onFieldSubmit={this.updateSeqDesc}
           defaultValue={description}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }
