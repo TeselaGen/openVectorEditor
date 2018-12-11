@@ -10172,7 +10172,7 @@ span.bp3-popover-target {
 }
 
 .veWarningMessage {
-  color: red;
+  /* color: red; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -10237,7 +10237,14 @@ span.bp3-popover-target {
 
 .veCircularViewWarningContainer {
   position: absolute;
-  bottom: 0;
+  top: 5px;
+  left: 5px;
+
+  display: -webkit-box;
+
+  display: -ms-flexbox;
+
+  display: flex;
 }
 
 .selectionLayerInverseWrapper {
@@ -11060,6 +11067,10 @@ span.bp3-popover-target {
 .ve-draggable-tabs::-webkit-scrollbar {
   display: none;
 }
+.ve-propertiesPanel .data-table-header {
+  margin-top: 3px;
+  margin-right: 3px;
+}
 .ve-propertiesPanel .bp3-tab-list {
   overflow: scroll;
 }
@@ -11071,7 +11082,10 @@ span.bp3-popover-target {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  overflow-y: auto;
+  overflow-x: visible;
 }
+
 .ve-flex-row {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -11093,6 +11107,10 @@ span.bp3-popover-target {
   display: flex;
   
   align-items: center;
+} */
+
+/* .data-table-container > * {
+  flex-shrink: 0;
 } */
 
 .bp3-dark #circularViewAxis:not(.veAxisFill) {
