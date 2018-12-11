@@ -78,6 +78,7 @@ export class ToolBar extends React.PureComponent {
           toolName = toolNameOrOverrides;
         } else {
           toolOverride = toolNameOrOverrides;
+          toolName = toolNameOrOverrides.name;
         }
 
         const Tool = toolOverride
