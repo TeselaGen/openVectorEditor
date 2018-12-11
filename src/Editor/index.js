@@ -588,24 +588,27 @@ export class Editor extends React.Component {
                                 className={camelCase("veTab-" + (name || id))}
                               >
                                 {isFullScreen && (
-                                  <Tooltip
-                                    position="left"
-                                    content="Minimize Tab"
+                                  <div //we need this div to wrap the tooltip to help the tooltip stay in the correct position https://github.com/TeselaGen/openVectorEditor/issues/436
+                                    style={{
+                                      zIndex: 15002,
+                                      position: "fixed",
+                                      top: 15,
+                                      right: 25
+                                    }}
                                   >
-                                    <Button
-                                      style={{
-                                        zIndex: 15002,
-                                        position: "fixed",
-                                        top: 15,
-                                        right: 25
-                                      }}
-                                      minimal
-                                      icon="minimize"
-                                      onClick={() => {
-                                        togglePanelFullScreen(activePanelId);
-                                      }}
-                                    />
-                                  </Tooltip>
+                                    <Tooltip
+                                      position="left"
+                                      content="Minimize Tab"
+                                    >
+                                      <Button
+                                        minimal
+                                        icon="minimize"
+                                        onClick={() => {
+                                          togglePanelFullScreen(activePanelId);
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  </div>
                                 )}
                                 {name || id}
                                 {canClose && (

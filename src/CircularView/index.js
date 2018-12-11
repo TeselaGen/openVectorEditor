@@ -112,7 +112,7 @@ export class CircularView extends React.Component {
       //   return layers
       // },
     } = this.props;
-    let { sequence = "atgc" } = sequenceData;
+    let { sequence = "atgc", circular } = sequenceData;
     let sequenceLength = sequence.length;
     let sequenceName = hideName ? "" : sequenceData.name || "";
     circularAndLinearTickSpacing =
@@ -666,30 +666,44 @@ export class CircularView extends React.Component {
               {annotationsSvgs}
             </svg>
             <div className="veCircularViewWarningContainer">
+              {!circular && (
+                <VeWarning
+                  data-test="ve-warning-circular-to-linear"
+                  intent="warning"
+                  tooltip={
+                    "Warning! You're viewing a linear sequence in the Plasmid View. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
+                  }
+                />
+              )}
               {paredDownOrfs && (
                 <VeWarning
-                  message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
+                  data-test="ve-warning-maxOrfsToDisplay"
+                  tooltip={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
                 />
               )}
               {paredDownCutsites && (
                 <VeWarning
-                  message={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
+                  data-test="ve-warning-maxCutsitesToDisplay"
+                  tooltip={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
                 />
               )}
               {paredDownFeatures && (
                 <VeWarning
-                  message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
+                  data-test="ve-warning-maxFeaturesToDisplay"
+                  tooltip={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
                 />
               )}
 
               {paredDownParts && (
                 <VeWarning
-                  message={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}
+                  data-test="ve-warning-maxPartsToDisplay"
+                  tooltip={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}
                 />
               )}
               {paredDownPrimers && (
                 <VeWarning
-                  message={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
+                  data-test="ve-warning-maxPrimersToDisplay"
+                  tooltip={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
                 />
               )}
             </div>
