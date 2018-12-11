@@ -20,7 +20,7 @@ describe("properties", function() {
     cy.get(".veTabProperties").click()
     cy.get(`[data-tab-id="orfs"]`).click()
     cy.get(`[data-test="min-orf-size"]`).find("input").type("{selectall}30")
-    cy.contains("Warning: More than")
+    cy.get(`[data-test="ve-warning-maxOrfsToDisplay"]`)
   });
   it("can view the orf properties checkboxes even when the window height is small ", function() {
     cy.viewport(1000, 500)
