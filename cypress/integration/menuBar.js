@@ -20,11 +20,40 @@ describe("menuBar", function() {
     cy.contains("displayMenuBarAboveTools").find("input").uncheck({force: true})
     cy.get(".veTools-displayMenuBarAboveTools").should("not.exist")
   });
-  it("select range, copy, cut works", function() {
+  it(` goTo, rotateTo work
+  -can't go to a position outside of the sequence //TODO
+  -can go to a position inside the sequence 
+  -can rotate the sequence to that position
+  `, ()=> {
+    cy.get('.tg-menu-bar').contains("Edit").click()
+    cy.get('.tg-menu-bar-popover').contains("Go To").click()
+    cy.focused().type("20")
+    cy.get(".bp3-dialog").contains("OK").click()
+    cy.contains("Caret Between Bases 20 and 21")
+    
+    
+    cy.get('.tg-menu-bar').contains("Edit").click()
+    cy.get('.tg-menu-bar-popover').contains("Rotate To Caret Position").click()
+    cy.contains("Caret Between Bases 5299 and 1")
+  })
+  it(`
+  select range, copy, cut works
+    -cannot select range outside of sequence //TODO
+    -can select a valid range 
+    -can copy the select bps
+    -can cut the selected bps
+  `, function() {
     cy.clock()
     cy.get('.tg-menu-bar').contains("Edit").click()
     cy.get('.tg-menu-bar-popover').contains("Select").click()
     cy.get(`[label="From:"]`).clear().type("10")
+    
+    //TODO
+    // cy.get(`[label="To:"]`).clear().type("20000000").then(() => {
+    //   debugger
+    // })
+    //Assert that this doesn't work
+
     cy.get(`[label="To:"]`).clear().type("20")
     cy.get(`.dialog-buttons`).contains("OK").click()
     cy.get(".veStatusBar").contains(`10 to 20`)

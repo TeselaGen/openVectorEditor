@@ -1,4 +1,3 @@
-import { rotateSequenceDataToPosition } from "ve-sequence-utils";
 import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
@@ -764,24 +763,6 @@ function VectorInteractionHOC(Component /* options */) {
       });
     };
 
-    handleRotateToCaretPosition = () => {
-      const {
-        caretPosition,
-        readOnly,
-        sequenceData,
-        updateSequenceData,
-        caretPositionUpdate
-      } = this.props;
-      if (readOnly) {
-        return;
-      }
-      if (caretPosition < 0) return;
-      updateSequenceData(
-        rotateSequenceDataToPosition(sequenceData, caretPosition)
-      );
-      caretPositionUpdate(0);
-    };
-
     backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
       this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
       const {
@@ -804,7 +785,7 @@ function VectorInteractionHOC(Component /* options */) {
                 tooltip: !circular
                   ? "Disabled because the sequence is linear"
                   : undefined,
-                onClick: this.handleRotateToCaretPosition
+                onClick: this.props.handleRotateToCaretPosition
               }
             ]),
         ...this.getCreateItems(),
@@ -1182,7 +1163,7 @@ function VectorInteractionHOC(Component /* options */) {
             translationRightClicked: this.translationRightClicked,
             primerRightClicked: this.primerRightClicked
           }),
-          handleRotateToCaretPosition: this.handleRotateToCaretPosition,
+          handleRotateToCaretPosition: this.props.handleRotateToCaretPosition,
           orfClicked: this.annotationClicked,
           primerClicked: this.annotationClicked,
           translationClicked: this.annotationClicked,
