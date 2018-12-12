@@ -12,7 +12,8 @@ import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
   insertSequenceDataAtPositionOrRange,
-  getReverseComplementSequenceAndAnnotations
+  getReverseComplementSequenceAndAnnotations,
+  rotateSequenceDataToPosition
 } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
@@ -263,6 +264,24 @@ export default compose(
       } else {
         showAddOrEditFeatureDialog({ ...rangeToUse, forward: true });
       }
+    },
+
+    handleRotateToCaretPosition: props => () => {
+      const {
+        caretPosition,
+        readOnly,
+        sequenceData,
+        updateSequenceData,
+        caretPositionUpdate
+      } = props;
+      if (readOnly) {
+        return;
+      }
+      if (caretPosition < 0) return;
+      updateSequenceData(
+        rotateSequenceDataToPosition(sequenceData, caretPosition)
+      );
+      caretPositionUpdate(0);
     },
 
     handleReverseComplementSelection: props => () => {
