@@ -21,17 +21,21 @@ describe("menuBar", function() {
     cy.get(".veTools-displayMenuBarAboveTools").should("not.exist")
   });
   it(` goTo, rotateTo work
-  -can't go to a position outside of the sequence //TODO
+  -can't go to a position outside of the sequence
   -can go to a position inside the sequence 
   -can rotate the sequence to that position
   `, ()=> {
     cy.get('.tg-menu-bar').contains("Edit").click()
     cy.get('.tg-menu-bar-popover').contains("Go To").click()
-    cy.focused().type("20")
+    cy.focused().clear().type("0")
+    cy.get(".bp3-dialog").contains("OK").should("be.enabled")
+    cy.focused().clear().type("5299")
+    cy.get(".bp3-dialog").contains("OK").should("be.enabled")
+    cy.focused().clear().type("2000000")
+    cy.get(".bp3-dialog").contains("OK").should("be.disabled")
+    cy.focused().clear().type("20")
     cy.get(".bp3-dialog").contains("OK").click()
     cy.contains("Caret Between Bases 20 and 21")
-    
-    
     cy.get('.tg-menu-bar').contains("Edit").click()
     cy.get('.tg-menu-bar-popover').contains("Rotate To Caret Position").click()
     cy.contains("Caret Between Bases 5299 and 1")
@@ -48,11 +52,10 @@ describe("menuBar", function() {
     cy.get('.tg-menu-bar-popover').contains("Select").click()
     cy.get(`[label="From:"]`).clear().type("10")
     
-    //TODO
-    // cy.get(`[label="To:"]`).clear().type("20000000").then(() => {
-    //   debugger
-    // })
-    //Assert that this doesn't work
+    cy.get(`[label="To:"]`).clear()
+    cy.get(`.dialog-buttons`).contains("OK").should("be.disabled")
+    cy.get(`[label="To:"]`).clear().type("20000000")
+    cy.get(`.dialog-buttons`).contains("OK").should("be.disabled")
 
     cy.get(`[label="To:"]`).clear().type("20")
     cy.get(`.dialog-buttons`).contains("OK").click()

@@ -192,7 +192,7 @@ const editCommandDefs = {
     handler: props => {
       props.showGoToDialog({
         extraProps: {
-          sequencePosition: { min: 1, max: props.sequenceLength }
+          sequencePosition: { min: 0, max: props.sequenceLength }
         },
         initialValues: {
           sequencePosition: props.caretPosition >= 0 ? props.caretPosition : 0
