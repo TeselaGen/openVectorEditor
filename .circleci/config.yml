@@ -9,7 +9,7 @@ jobs:
         environment:
           ## this enables colors in the output
           TERM: xterm
-          CYPRESS_baseUrl: http://teselagen.github.io/openVectorEditor/#/Editor
+          # CYPRESS_baseUrl: http://teselagen.github.io/openVectorEditor/#/Editor
     working_directory: ~/app
     steps:
       - checkout
@@ -21,6 +21,10 @@ jobs:
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
+      - run:
+        name: Start server
+        command: yarn start
+        background: true
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
