@@ -191,6 +191,9 @@ const editCommandDefs = {
     name: "Go To...",
     handler: props => {
       props.showGoToDialog({
+        extraProps: {
+          sequencePosition: { min: 1, max: props.sequenceLength }
+        },
         initialValues: {
           sequencePosition: props.caretPosition >= 0 ? props.caretPosition : 0
         },
@@ -206,6 +209,10 @@ const editCommandDefs = {
     handler: props => {
       const { start, end } = props.selectionLayer;
       props.showSelectDialog({
+        extraProps: {
+          from: { min: 1, max: props.sequenceLength },
+          to: { min: 1, max: props.sequenceLength }
+        },
         initialValues: {
           from: start >= 0 ? start : 0,
           to: end >= 0 ? end : 0
