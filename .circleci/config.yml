@@ -9,7 +9,6 @@ jobs:
         environment:
           ## this enables colors in the output
           TERM: xterm
-          # CYPRESS_baseUrl: http://teselagen.github.io/openVectorEditor/#/Editor
     working_directory: ~/app
     steps:
       - checkout
