@@ -3,7 +3,8 @@ import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
 import {
   // getCurrentParamsFromUrl,
-  setCurrentParamsOnUrl, getCurrentParamsFromUrl
+  setCurrentParamsOnUrl,
+  getCurrentParamsFromUrl
 } from "teselagen-react-components";
 import _ from "lodash";
 import store from "./store";
@@ -29,7 +30,7 @@ const defaultState = {
   showAvailability: true,
   showOptions: true,
   shouldAutosave: false,
-  isFullscreen: false,  
+  isFullscreen: false,
   forceHeightMode: false,
   onNew: true,
   onSave: true,
@@ -37,7 +38,7 @@ const defaultState = {
   onDuplicate: true,
   onDelete: true,
   onCopy: true,
-  onPaste: true,
+  onPaste: true
 };
 
 export default class EditorDemo extends React.Component {
@@ -48,9 +49,9 @@ export default class EditorDemo extends React.Component {
     //   "getCurrentParamsFromUrl():",
     //   getCurrentParamsFromUrl(props.history.location)
     // );
-    const editorDemoState = getCurrentParamsFromUrl(props.history.location)
+    const editorDemoState = getCurrentParamsFromUrl(props.history.location);
     // localStorage.editorDemoState = props.history.location.search;
-    
+
     try {
       this.state = {
         ...defaultState,
@@ -69,7 +70,7 @@ export default class EditorDemo extends React.Component {
         }, {}),
         ...defaultState
       });
-      setCurrentParamsOnUrl({},this.props.history.replace)
+      setCurrentParamsOnUrl({}, this.props.history.replace);
       // localStorage.editorDemoState = JSON.stringify(defaultState);
     };
     updateEditor(store, "DemoEditor", {
@@ -79,11 +80,12 @@ export default class EditorDemo extends React.Component {
 
   componentDidUpdate() {
     if (!_.isEqual(this.state, this.oldState)) {
-
-      setCurrentParamsOnUrl(difference(this.state, defaultState), this.props.history.replace);
-      this.oldState= cloneDeep(this.state)
+      setCurrentParamsOnUrl(
+        difference(this.state, defaultState),
+        this.props.history.replace
+      );
+      this.oldState = cloneDeep(this.state);
     }
-    
   }
 
   changeFullscreenMode = e =>
@@ -96,7 +98,12 @@ export default class EditorDemo extends React.Component {
     });
 
   render() {
-    const { forceHeightMode, isFullscreen, withPreviewMode } = this.state;
+    const {
+      forceHeightMode,
+      shouldAutosave,
+      isFullscreen,
+      withPreviewMode
+    } = this.state;
 
     return (
       <React.Fragment>
@@ -119,7 +126,7 @@ export default class EditorDemo extends React.Component {
         >
           {this.state.showOptions && (
             <div
-            data-test="optionContainer"
+              data-test="optionContainer"
               style={{
                 // background: "white",
                 zIndex: 1000,
@@ -147,9 +154,14 @@ export default class EditorDemo extends React.Component {
                 Change Sequence
               </Button>
               <Button onClick={this.resetDefaultState}>Reset Defaults</Button>
-              Demo Specific options: 
-              {renderToggle({ that: this, label: "Show custom tool overrides example", type: "overrideToolbarOptions", description: <div>
-              {`
+              Demo Specific options:
+              {renderToggle({
+                that: this,
+                label: "Show custom tool overrides example",
+                type: "overrideToolbarOptions",
+                description: (
+                  <div>
+                    {`
               //This is an example of how to pass tool overrides:
 ToolBarProps: {
   toolList: [
@@ -160,16 +172,21 @@ ToolBarProps: {
         \t}
     },
     ...etc
-                  `.split("\n").map((l,i) => <div key={i}>{l}</div>)}
-              </div> })}
+                  `
+                      .split("\n")
+                      .map((l, i) => (
+                        <div key={i}>{l}</div>
+                      ))}
+                  </div>
+                )
+              })}
               {renderToggle({
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
                 description: "Set this up "
               })}
-
-              Editor Options: 
+              Editor Options:
               {renderToggle({
                 that: this,
                 type: "readOnly",
@@ -188,7 +205,6 @@ ToolBarProps: {
               {renderToggle({ that: this, type: "showCircularity" })}
               {renderToggle({ that: this, type: "showAvailability" })}
               {renderToggle({ that: this, type: "isFullscreen" })}
-              
               <div>Editor Handlers: </div>
               {renderToggle({
                 that: this,
@@ -239,7 +255,9 @@ ToolBarProps: {
             editorName="DemoEditor"
             showMenuBar={this.state.showMenuBar}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
-            {...this.state.onNew && { onNew: () => console.info("onNew") }}
+            {...this.state.onNew && {
+              onNew: () => window.toastr.success("onNew callback triggered")
+            }}
             {...this.state.onSave && {
               onSave: function(
                 event,
@@ -247,7 +265,7 @@ ToolBarProps: {
                 editorState,
                 onSuccessCallback
               ) {
-                console.info("onSave");
+                window.toastr.success("onSave callback triggered");
                 console.info("event:", event);
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
@@ -259,17 +277,20 @@ ToolBarProps: {
               }
             }}
             {...this.state.onRename && {
-              onRename: () => console.info("onRename")
+              onRename: () =>
+                window.toastr.success("onRename callback triggered")
             }}
             {...this.state.onDuplicate && {
-              onDuplicate: () => console.info("onDuplicate")
+              onDuplicate: () =>
+                window.toastr.success("onDuplicate callback triggered")
             }}
             {...this.state.onDelete && {
-              onDelete: () => console.info("onDelete")
+              onDelete: () =>
+                window.toastr.success("onDelete callback triggered")
             }}
             {...this.state.onCopy && {
               onCopy: function(event, copiedSequenceData, editorState) {
-                console.info("onCopy");
+                window.toastr.success("onCopy callback triggered");
                 console.info(editorState);
                 //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
                 const clipboardData = event.clipboardData;
@@ -290,7 +311,7 @@ ToolBarProps: {
             {...this.state.onPaste && {
               onPaste: function(event /* editorState */) {
                 //the onPaste here must return sequenceData in the teselagen data format
-                console.info("onPaste");
+                window.toastr.success("onPaste callback triggered");
                 const clipboardData = event.clipboardData;
                 let jsonData = clipboardData.getData("application/json");
                 if (jsonData) {
@@ -309,12 +330,12 @@ ToolBarProps: {
               !withPreviewMode && this.changeFullscreenMode
             } //don't pass this handler if you're also using previewMode
             isFullscreen={isFullscreen}
+            shouldAutosave={shouldAutosave}
             {...forceHeightMode && { height: 500 }}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
-
             showAvailability={this.state.showAvailability}
             {...this.state.overrideToolbarOptions && {
               ToolBarProps: {
@@ -322,41 +343,46 @@ ToolBarProps: {
                 toolList: [
                   // 'saveTool',
                   {
-                    name: 'downloadTool',
-                    Icon: <Icon data-test="veDownloadTool" icon="bank-account"></Icon>,
+                    name: "downloadTool",
+                    Icon: (
+                      <Icon data-test="veDownloadTool" icon="bank-account" />
+                    ),
                     onIconClick: () => {
-                      window.toastr.success("Download tool hit!")
+                      window.toastr.success("Download tool hit!");
                     }
-                     
                   },
                   {
-                    name: 'undoTool',
-                    Icon: <Icon icon="credit-card" data-test="my-overridden-tool-123"></Icon>,
+                    name: "undoTool",
+                    Icon: (
+                      <Icon
+                        icon="credit-card"
+                        data-test="my-overridden-tool-123"
+                      />
+                    ),
                     onIconClick: () => {
-                      window.toastr.success("cha-ching")
+                      window.toastr.success("cha-ching");
                     },
                     disabled: false
                   },
-                  'redoTool',
-                  'cutsiteTool',
-                  'featureTool',
-                  'oligoTool',
-                  'orfTool',
+                  "redoTool",
+                  "cutsiteTool",
+                  "featureTool",
+                  "oligoTool",
+                  "orfTool",
                   {
-                    name: 'alignmentTool',
+                    name: "alignmentTool",
                     onIconClick: () => {
-                      const { item } = this.props
-                      const url = '/alignments/new?seqId=' + item.id
-                      window.open(window.location.origin + url)
+                      const { item } = this.props;
+                      const url = "/alignments/new?seqId=" + item.id;
+                      window.open(window.location.origin + url);
                     }
                   },
-                  'editTool',
-                  'findTool',
-                  'visibilityTool'
+                  "editTool",
+                  "findTool",
+                  "visibilityTool"
                 ]
-              },
+              }
             }}
-            
           />
           {/* </div> */}
         </div>
@@ -366,23 +392,23 @@ ToolBarProps: {
 }
 
 function renderToggle({ that, type, label, description, hook }) {
-  const toggleEl = <Switch
-  data-test={type}
-  checked={that.state[type]}
-  label={label ? <span>{label}</span> : type}
-  style={{ margin: "0px 30px", marginTop: 4 }}
-  onChange={() => {
-    hook && hook(!that.state[type]);
-    that.setState({
-      [type]: !that.state[type]
-    });
-  }}
-/>
+  const toggleEl = (
+    <Switch
+      data-test={type}
+      checked={that.state[type]}
+      label={label ? <span>{label}</span> : type}
+      style={{ margin: "0px 30px", marginTop: 4 }}
+      onChange={() => {
+        hook && hook(!that.state[type]);
+        that.setState({
+          [type]: !that.state[type]
+        });
+      }}
+    />
+  );
   return (
     <div className={"toggle-button-holder"}>
-      <Tooltip content={description} target={toggleEl}>
-
-      </Tooltip>
+      <Tooltip content={description} target={toggleEl} />
     </div>
   );
 }
@@ -398,12 +424,15 @@ function exampleConversion(seq) {
  * @return {Object}        Return a new object who represent the diff
  */
 function difference(object, base) {
-	function changes(object, base) {
-		return _.transform(object, function(result, value, key) {
-			if (!_.isEqual(value, base[key])) {
-				result[key] = (_.isObject(value) && _.isObject(base[key])) ? changes(value, base[key]) : value;
-			}
-		});
-	}
-	return changes(object, base);
+  function changes(object, base) {
+    return _.transform(object, function(result, value, key) {
+      if (!_.isEqual(value, base[key])) {
+        result[key] =
+          _.isObject(value) && _.isObject(base[key])
+            ? changes(value, base[key])
+            : value;
+      }
+    });
+  }
+  return changes(object, base);
 }

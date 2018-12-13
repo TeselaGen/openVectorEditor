@@ -334,7 +334,7 @@ function VectorInteractionHOC(Component /* options */) {
                 caretPosition > -1 ? caretPosition : selectionLayer
               )
             );
-            window.toastr.success("Sequence Updated Successfully");
+            window.toastr.success("Sequence Inserted Successfully");
           }
         });
       }
