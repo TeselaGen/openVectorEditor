@@ -13,6 +13,7 @@ class Sequence extends React.Component {
         "hideBps",
         "cutsites",
         "sequence",
+        "showCutsites",
         "charWidth",
         "length",
         "height",

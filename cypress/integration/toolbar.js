@@ -48,6 +48,22 @@ describe("toolbar", function() {
     cy.contains("Sequence Imported").should("exist");
     cy.contains("Parsed using Genbank Parser").should("exist");
   });
+  it("cutsite tool should toggle on and off cutsites", function() {
+    cy.get(`.cutsiteLabelSelectionLayer`).should("exist")
+    cy.get(`.veCutsite`).should("exist")
+    cy.get(`.veRowViewCutsite.snip`).should("exist")
+    cy.get(`.veRowViewCutsite.snipConnector`).should("exist")
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click()
+    cy.get(`.cutsiteLabelSelectionLayer`).should("not.exist")
+    cy.get(`.veCutsite`).should("not.exist")
+    cy.get(`.veRowViewCutsite.snip`).should("not.exist")
+    cy.get(`.veRowViewCutsite.snipConnector`).should("not.exist")
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click()
+    cy.get(`.cutsiteLabelSelectionLayer`).should("exist")
+    cy.get(`.veCutsite`).should("exist")
+    cy.get(`.veRowViewCutsite.snip`).should("exist")
+    cy.get(`.veRowViewCutsite.snipConnector`).should("exist")
+  });
   it("export tool should be able to export a genbank, fasta, or tg file", function() {
     if (Cypress.browser.isHeadless) return true //stop early because this test fails currently in headless mode
     cy.clock();

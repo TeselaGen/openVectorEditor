@@ -331,6 +331,7 @@ export class RowItem extends React.PureComponent {
                 hideBps={charWidth < 7}
                 sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
                 height={sequenceHeight}
+                showCutsites={showCutsites}
                 length={
                   alignmentData
                     ? alignmentData.sequence.length
@@ -360,6 +361,7 @@ export class RowItem extends React.PureComponent {
                 showDnaColors={showDnaColors}
                 hideBps={charWidth < 7}
                 length={reverseSequence.length}
+                showCutsites={showCutsites}
                 sequence={reverseSequence}
                 height={sequenceHeight}
                 charWidth={charWidth}
