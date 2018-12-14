@@ -20,7 +20,7 @@
     "prepublish": "in-publish && npm run build || not-in-publish",
     "postpublish": "yarn deploy",
     "predeploy": "yarn buildWithDemo",
-    "deploy": "gh-pages -d demo/dist",
+    "deploy": "gh-pages -m ‘auto commit [ci skip]’ -d demo/dist",
     "fontopen": "make fontopen",
     "fontsave": "make fontsave",
     "c": "yarn cypress open",
