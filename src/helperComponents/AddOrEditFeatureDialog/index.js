@@ -68,7 +68,7 @@ export class AddOrEditFeatureDialog extends React.Component {
                         min={1}
                         max={sequenceLength}
                         name={`${member}.start`}
-                        label={"Start:"}
+                        label="Start:"
                       />
                       <NumericInputField
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
@@ -77,7 +77,7 @@ export class AddOrEditFeatureDialog extends React.Component {
                         min={1}
                         max={sequenceLength}
                         name={`${member}.end`}
-                        label={"End:"}
+                        label="End:"
                       />
                       <Button
                         onClick={() => {
@@ -149,8 +149,8 @@ export class AddOrEditFeatureDialog extends React.Component {
           autoFocus
           placeholder="Untitled Sequence"
           validate={required}
-          name={"name"}
-          label={"Name:"}
+          name="name"
+          label="Name:"
         />
         <RadioGroupField
           inlineLabel
@@ -161,14 +161,14 @@ export class AddOrEditFeatureDialog extends React.Component {
           ]}
           normalize={value => value === "true" || false}
           format={value => (value ? "true" : "false")}
-          name={"forward"}
-          label={"Strand:"}
+          name="forward"
+          label="Strand:"
           defaultValue={true}
         />
         <ReactSelectField
           inlineLabel
           tooltipError
-          defaultValue={"misc_feature"}
+          defaultValue="misc_feature"
           options={featureTypes.map(type => {
             return {
               label: (
@@ -193,8 +193,8 @@ export class AddOrEditFeatureDialog extends React.Component {
               value: type
             };
           })}
-          name={"type"}
-          label={"Type:"}
+          name="type"
+          label="Type:"
         />
         {(!locations || locations.length < 2) && (
           <React.Fragment>
@@ -204,8 +204,8 @@ export class AddOrEditFeatureDialog extends React.Component {
               defaultValue={1}
               min={1}
               max={sequenceLength}
-              name={"start"}
-              label={"Start:"}
+              name="start"
+              label="Start:"
             />
             <NumericInputField
               inlineLabel
@@ -213,17 +213,17 @@ export class AddOrEditFeatureDialog extends React.Component {
               defaultValue={1}
               min={1}
               max={sequenceLength}
-              name={"end"}
-              label={"End:"}
+              name="end"
+              label="End:"
             />
           </React.Fragment>
         )}
-        <FieldArray component={this.renderLocations} name={"locations"} />
+        <FieldArray component={this.renderLocations} name="locations" />
         <TextareaField
           inlineLabel
           tooltipError
-          name={"notes"}
-          label={"Notes:"}
+          name="notes"
+          label="Notes:"
           format={v => {
             let toReturn = v;
             if (typeof v !== "string" && v) {
@@ -240,11 +240,11 @@ export class AddOrEditFeatureDialog extends React.Component {
             }
             return toReturn;
           }}
-          placeholder={"Enter notes here.."}
+          placeholder="Enter notes here.."
         />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
-          className={"width100"}
+          className="width100"
         >
           <Button
             style={{ marginRight: 15 }}
@@ -318,8 +318,8 @@ export default compose(
       let errors = {};
       if (
         !isRangeWithinRange(
-          values,
-          { start: 1, end: sequenceLength },
+          convertRangeTo0Based(values, sequenceLength),
+          { start: 0, end: sequenceLength - 1 },
           sequenceLength
         )
       ) {
