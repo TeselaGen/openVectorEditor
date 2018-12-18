@@ -16,7 +16,6 @@ export default [
       },
       {
         cmd: "toggleOrfTranslations",
-        // isDisabled: (p) => {console.log('p:',p)},
         shouldDismissPopover: false
       }
     ]
@@ -43,7 +42,6 @@ export default [
       },
       {
         cmd: "toggleOrfTranslations",
-        // isDisabled: (p) => {console.log('p:',p)},
         shouldDismissPopover: false
       }
     ]

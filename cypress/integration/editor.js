@@ -12,4 +12,11 @@ describe("editor", function() {
     cy.contains("onSave callback triggered")
     cy.contains("Selection Cut")
   })
+  it(`should handle rightClickOverrides correctly if they are passed`, function() {
+    cy.contains("Show custom right click").find("input").check({force: true})
+    cy.get(".veLabelText").contains("Part 0").trigger('contextmenu', {force: true})
+    cy.get(".bp3-menu").contains("My Part Override").click()
+    cy.contains("Part Override hit!").should("be.visible")
+  })
+
 });

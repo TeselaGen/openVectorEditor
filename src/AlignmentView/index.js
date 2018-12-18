@@ -174,30 +174,21 @@ class AlignmentView extends React.Component {
     return toReturn || 0;
   };
   setVerticalScrollRange = throttle(() => {
-    // console.log("outside");
     if (
       this &&
       this.InfiniteScroller &&
       this.InfiniteScroller.getFractionalVisibleRange &&
       this.easyStore
     ) {
-      // console.log("inside");
       const [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
       if (
         this.easyStore.verticalVisibleRange.start !== start ||
         this.easyStore.verticalVisibleRange.end !== end
       )
-        // console.log("start, end:", start, end);
         this.easyStore.verticalVisibleRange = { start, end };
     }
   }, 100);
   handleScroll = () => {
-    // console.log("scroll");
-    // console.log(
-    //   "this.alignmentHolder.scrollTop, this.oldAlignmentHolderScrollTop:",
-    //   this.alignmentHolder.scrollTop,
-    //   this.oldAlignmentHolderScrollTop
-    // );
     if (this.alignmentHolder.scrollTop !== this.oldAlignmentHolderScrollTop) {
       setTimeout(() => {
         this.setVerticalScrollRange();

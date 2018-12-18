@@ -254,11 +254,6 @@ class ReactToPrint extends React.Component {
       domDoc.write(contentNodes.outerHTML);
       domDoc.close();
 
-      // Object.keys(bodyStyle).forEach(key => {
-      //   console.log('key:',key)
-      //   domDoc.body.style[key] = bodyStyle[key];
-      // });
-
       printWindow.style.position = "absolute";
       // printWindow.style.width = "100%";
       // printWindow.style.height = "100%";

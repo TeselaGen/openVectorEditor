@@ -41,26 +41,6 @@ describe("properties", function() {
     cy.get(`[data-test="ve-genbank-text"]`).contains("Part 0") 
     
   });
-  // it.only('should ', function() {
-  //   cy.visit("https://docs.cypress.io")
-  //   cy.contains("What you’ll learn")
-  //   cy.get("body").type("{meta}a")
-  //   cy.contains("Our mission")
-  // })
-  // it.only('should ', function() {
-  //   cy.visit("https://bulma.io/documentation/form/textarea/")
-  //   // cy.contains("What you’ll learn")
-  //   cy.get("textarea").first().type("thomas")
-  //   cy.get("textarea").first().type("{meta}a")
-  // })
-  // it.only('should click try to login and fail', function() {
-  //     cy.get(`input[name="email"]`).type("test@teselagen.com")
-  //     cy.get(`input[name="password"]`).type("somepassword")
-  //     cy.contains("Sign In").click()
-  //     cy.contains("Login Unsuccessful: Incorrect email address or password.").should("exist")
-  // })
-
-  
 });
 
 // Cypress.on('uncaught:exception', (err, runnable) => {

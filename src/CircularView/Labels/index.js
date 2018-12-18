@@ -1,7 +1,6 @@
 import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
 import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
-import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import React from "react";
 
@@ -347,30 +346,29 @@ function LabelLine(pointArray, options) {
   );
 }
 
-const DrawGroupInnerLabel = pureNoFunc(
-  withHover(
-    ({ className, labelXStart, label, fontWidth, onMouseOver, index, dy }) => {
-      return (
-        <tspan
-          x={labelXStart}
-          textLength={label.text.length * fontWidth}
-          lengthAdjust="spacing"
-          onClick={label.onClick}
-          onContextMenu={label.onContextMenu}
-          dy={index === 0 ? dy / 2 : dy}
-          style={{ fill: label.color ? label.color : "black" }}
-          {...{ onMouseOver }}
-          className={className}
-        >
-          {label.text}
-        </tspan>
-      );
-    }
-  )
+const DrawGroupInnerLabel = withHover(
+  ({ className, labelXStart, label, fontWidth, onMouseOver, index, dy }) => {
+    return (
+      <tspan
+        x={labelXStart}
+        textLength={label.text.length * fontWidth}
+        lengthAdjust="spacing"
+        onClick={label.onClick}
+        onContextMenu={label.onContextMenu}
+        dy={index === 0 ? dy / 2 : dy}
+        style={{ fill: label.color ? label.color : "black" }}
+        {...{ onMouseOver }}
+        className={className}
+      >
+        {label.text}
+      </tspan>
+    );
+  }
 );
+
 function noop() {}
 
-const DrawGroupedLabels = pureNoFunc(function DrawGroupedLabelsInner({
+const DrawGroupedLabels = function DrawGroupedLabelsInner({
   groupedLabels,
   circularViewWidthVsHeightRatio,
   fontWidth,
@@ -403,7 +401,7 @@ const DrawGroupedLabels = pureNoFunc(function DrawGroupedLabelsInner({
       />
     );
   });
-});
+};
 function cancelFn(e) {
   e.stopPropagation();
 }

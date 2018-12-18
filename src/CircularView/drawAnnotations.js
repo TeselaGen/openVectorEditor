@@ -8,7 +8,6 @@ import getYOffset from "./getYOffset";
 import withHover from "../helperComponents/withHover";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
-import pureNoFunc from "../utils/pureNoFunc";
 import Feature from "./Feature";
 
 function drawAnnotations({
@@ -199,87 +198,83 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = pureNoFunc(
-  withHover(function({
-    className,
-    startAngle,
-    endAngle,
-    onClick,
-    onContextMenu,
-    locationAngles,
-    annotation,
-    reverseAnnotations,
-    Annotation = Feature,
-    annotationType,
-    totalAngle,
-    annotationColor,
-    annotationRadius,
-    annotationHeight,
-    onMouseLeave,
-    onMouseOver
-  }) {
-    return (
-      <React.Fragment>
-        <g
-          {...PositionAnnotationOnCircle({
-            sAngle: startAngle,
-            eAngle: endAngle,
-            forward: reverseAnnotations
-              ? !annotation.forward
-              : annotation.forward
+const DrawAnnotation = withHover(function({
+  className,
+  startAngle,
+  endAngle,
+  onClick,
+  onContextMenu,
+  locationAngles,
+  annotation,
+  reverseAnnotations,
+  Annotation = Feature,
+  annotationType,
+  totalAngle,
+  annotationColor,
+  annotationRadius,
+  annotationHeight,
+  onMouseLeave,
+  onMouseOver
+}) {
+  return (
+    <React.Fragment>
+      <g
+        {...PositionAnnotationOnCircle({
+          sAngle: startAngle,
+          eAngle: endAngle,
+          forward: reverseAnnotations ? !annotation.forward : annotation.forward
+        })}
+        {...{ onMouseLeave, onMouseOver }}
+        className={className}
+        onContextMenu={onContextMenu}
+        onClick={onClick}
+      >
+        <title>
+          {getAnnotationNameAndStartStopString(annotation, {
+            isPart: annotationType === "part"
           })}
-          {...{ onMouseLeave, onMouseOver }}
-          className={className}
-          onContextMenu={onContextMenu}
-          onClick={onClick}
-        >
-          <title>
-            {getAnnotationNameAndStartStopString(annotation, {
-              isPart: annotationType === "part"
-            })}
-          </title>
-          <Annotation
-            {...locationAngles &&
-              locationAngles.length && { containsLocations: true }}
-            totalAngle={totalAngle}
-            color={annotationColor}
-            radius={annotationRadius}
-            annotationHeight={annotationHeight}
-          />
-        </g>
-        );
-        {locationAngles &&
-          locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
-            return (
-              <g
-                key={"location--" + annotation.id + "--" + i}
-                {...PositionAnnotationOnCircle({
-                  sAngle: startAngle,
-                  eAngle: endAngle,
-                  forward: reverseAnnotations
-                    ? !annotation.forward
-                    : annotation.forward
+        </title>
+        <Annotation
+          {...locationAngles &&
+            locationAngles.length && { containsLocations: true }}
+          totalAngle={totalAngle}
+          color={annotationColor}
+          radius={annotationRadius}
+          annotationHeight={annotationHeight}
+        />
+      </g>
+      );
+      {locationAngles &&
+        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
+          return (
+            <g
+              key={"location--" + annotation.id + "--" + i}
+              {...PositionAnnotationOnCircle({
+                sAngle: startAngle,
+                eAngle: endAngle,
+                forward: reverseAnnotations
+                  ? !annotation.forward
+                  : annotation.forward
+              })}
+              {...{ onMouseLeave, onMouseOver }}
+              className={className}
+              onContextMenu={onContextMenu}
+              onClick={onClick}
+            >
+              <title>
+                {getAnnotationNameAndStartStopString(annotation, {
+                  isPart: annotationType === "part"
                 })}
-                {...{ onMouseLeave, onMouseOver }}
-                className={className}
-                onContextMenu={onContextMenu}
-                onClick={onClick}
-              >
-                <title>
-                  {getAnnotationNameAndStartStopString(annotation, {
-                    isPart: annotationType === "part"
-                  })}
-                </title>
-                <Annotation
-                  totalAngle={totalAngle}
-                  color={annotationColor}
-                  radius={annotationRadius}
-                  annotationHeight={annotationHeight}
-                />
-              </g>
-            );
-          })}
-      </React.Fragment>
-    );
-  })
-);
+              </title>
+              <Annotation
+                totalAngle={totalAngle}
+                color={annotationColor}
+                radius={annotationRadius}
+                annotationHeight={annotationHeight}
+              />
+            </g>
+          );
+        })}
+    </React.Fragment>
+  );
+});

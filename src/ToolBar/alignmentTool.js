@@ -27,7 +27,7 @@ export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return (
     <ToolbarItem
       {...{
-        Icon: <Icon icon="align-left" />,
+        Icon: <Icon data-test="alignmentTool" icon="align-left" />,
         // toggled: alignmentTool.isOpen,
         renderIconAbove: isOpen,
         // onIconClick: toggleFindTool,

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { reduxForm } from "redux-form";
-
+import { convertRangeTo0Based, isRangeWithinRange } from "ve-range-utils";
 import {
   InputField,
   RadioGroupField,
@@ -11,7 +11,6 @@ import {
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
-import { convertRangeTo0Based } from "ve-range-utils";
 import classNames from "classnames";
 
 import withEditorProps from "../../withEditorProps";
@@ -143,6 +142,20 @@ export default compose(
   }),
   withEditorProps,
   reduxForm({
-    form: "AddOrEditPartDialog"
+    form: "AddOrEditPartDialog",
+    validate: (values, { sequenceLength }) => {
+      let errors = {};
+      if (
+        !isRangeWithinRange(
+          convertRangeTo0Based(values, sequenceLength),
+          { start: 0, end: sequenceLength - 1 },
+          sequenceLength
+        )
+      ) {
+        errors.start = "Range must fit within sequence";
+        errors.end = "Range must fit within sequence";
+        return errors;
+      }
+    }
   })
 )(AddOrEditPartDialog);

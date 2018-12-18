@@ -27,6 +27,7 @@ const defaultState = {
   showReadOnly: true,
   showCircularity: true,
   overrideToolbarOptions: false,
+  overrideRightClickExample: false,
   showAvailability: true,
   showOptions: true,
   shouldAutosave: false,
@@ -44,11 +45,6 @@ const defaultState = {
 export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("getJsonFromUrl():", getJsonFromUrl());
-    // console.log(
-    //   "getCurrentParamsFromUrl():",
-    //   getCurrentParamsFromUrl(props.history.location)
-    // );
     const editorDemoState = getCurrentParamsFromUrl(props.history.location);
     // localStorage.editorDemoState = props.history.location.search;
 
@@ -96,6 +92,59 @@ export default class EditorDemo extends React.Component {
     this.setState({
       readOnly: e.target.checked
     });
+
+  rightClickOverridesExample = {
+    rightClickOverrides: {
+      partRightClicked: (items, { annotation }, props) => {
+        return [
+          ...items,
+          {
+            text: "My Part Override",
+            onClick: () => window.toastr.success("Part Override hit!")
+          }
+        ];
+      }
+    }
+  };
+  toolbarOverridesExample = {
+    ToolBarProps: {
+      //name the tools you want to see in the toolbar in the order you want to see them
+      toolList: [
+        // 'saveTool',
+        {
+          name: "downloadTool",
+          Icon: <Icon data-test="veDownloadTool" icon="bank-account" />,
+          onIconClick: () => {
+            window.toastr.success("Download tool hit!");
+          }
+        },
+        {
+          name: "undoTool",
+          Icon: <Icon icon="credit-card" data-test="my-overridden-tool-123" />,
+          onIconClick: () => {
+            window.toastr.success("cha-ching");
+          },
+          disabled: false
+        },
+        "redoTool",
+        "cutsiteTool",
+        "featureTool",
+        "oligoTool",
+        "orfTool",
+        {
+          name: "alignmentTool",
+          onIconClick: () => {
+            const { item } = this.props;
+            const url = "/alignments/new?seqId=" + item.id;
+            window.open(window.location.origin + url);
+          }
+        },
+        "editTool",
+        "findTool",
+        "visibilityTool"
+      ]
+    }
+  };
 
   render() {
     const {
@@ -160,16 +209,16 @@ export default class EditorDemo extends React.Component {
                 label: "Show custom tool overrides example",
                 type: "overrideToolbarOptions",
                 description: (
-                  <div>
+                  <pre>
                     {`
-              //This is an example of how to pass tool overrides:
+//This is an example of how to pass tool overrides:
 ToolBarProps: {
   toolList: [
     {
-      \t\tname: 'downloadTool',
-      \t\tonIconClick: () => {
-        \t\twindow.toastr.success("Download tool hit!")
-        \t}
+      name: 'downloadTool',
+      onIconClick: () => {
+        window.toastr.success("Download tool hit!")
+        }
     },
     ...etc
                   `
@@ -177,7 +226,34 @@ ToolBarProps: {
                       .map((l, i) => (
                         <div key={i}>{l}</div>
                       ))}
-                  </div>
+                  </pre>
+                )
+              })}
+              {renderToggle({
+                that: this,
+                label: "Show custom right click override example",
+                type: "overrideRightClickExample",
+                description: (
+                  <pre>
+                    {`
+//This is an example of how to pass rightClick overrides:
+rightClickOverrides: {
+  partRightClicked: (items, { annotation }, props) => {
+    return [
+      ...items,
+      {
+        text: "My Part Override",
+        onClick: () => window.toastr.success("Part Override hit!")
+      }
+    ];
+  }
+},
+                  `
+                      .split("\n")
+                      .map((l, i) => (
+                        <div key={i}>{l}</div>
+                      ))}
+                  </pre>
                 )
               })}
               {renderToggle({
@@ -337,52 +413,10 @@ ToolBarProps: {
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showAvailability={this.state.showAvailability}
-            {...this.state.overrideToolbarOptions && {
-              ToolBarProps: {
-                //name the tools you want to see in the toolbar in the order you want to see them
-                toolList: [
-                  // 'saveTool',
-                  {
-                    name: "downloadTool",
-                    Icon: (
-                      <Icon data-test="veDownloadTool" icon="bank-account" />
-                    ),
-                    onIconClick: () => {
-                      window.toastr.success("Download tool hit!");
-                    }
-                  },
-                  {
-                    name: "undoTool",
-                    Icon: (
-                      <Icon
-                        icon="credit-card"
-                        data-test="my-overridden-tool-123"
-                      />
-                    ),
-                    onIconClick: () => {
-                      window.toastr.success("cha-ching");
-                    },
-                    disabled: false
-                  },
-                  "redoTool",
-                  "cutsiteTool",
-                  "featureTool",
-                  "oligoTool",
-                  "orfTool",
-                  {
-                    name: "alignmentTool",
-                    onIconClick: () => {
-                      const { item } = this.props;
-                      const url = "/alignments/new?seqId=" + item.id;
-                      window.open(window.location.origin + url);
-                    }
-                  },
-                  "editTool",
-                  "findTool",
-                  "visibilityTool"
-                ]
-              }
-            }}
+            {...this.state.overrideRightClickExample &&
+              this.rightClickOverridesExample}
+            {...this.state.overrideToolbarOptions &&
+              this.toolbarOverridesExample}
           />
           {/* </div> */}
         </div>
@@ -408,7 +442,12 @@ function renderToggle({ that, type, label, description, hook }) {
   );
   return (
     <div className={"toggle-button-holder"}>
-      <Tooltip content={description} target={toggleEl} />
+      <Tooltip
+        /* popoverClassName="bp3-popover-content-sizing" */ content={
+          description
+        }
+        target={toggleEl}
+      />
     </div>
   );
 }

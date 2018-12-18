@@ -731,94 +731,98 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation();
       return handler({ event, ...rest }, this.props);
     };
-    enhanceRightClickActions = actions => {
-      const normalizedActions = {};
-      const { rightClickOverrides = {} } = this.props;
-      Object.keys(actions).forEach(key => {
-        const action = actions[key];
-        normalizedActions[key] = opts => {
-          const items = action(opts);
-          const e = (items && items._event) || opts.event || opts;
-          e.preventDefault && e.preventDefault();
-          e.stopPropagation && e.stopPropagation();
-          //override hook here
-          const override = rightClickOverrides[key];
-          showContextMenu(
-            override ? override(items, opts, this.props) : items,
-            [this.commandEnhancer],
-            e,
-            undefined,
-            opts // context here
-          );
-        };
-      });
-      return normalizedActions;
+    enhanceRightClickAction = (action, key) => {
+      return opts => {
+        const { rightClickOverrides = {} } = this.props;
+        const items = action(opts);
+        const e = (items && items._event) || opts.event || opts;
+        e.preventDefault && e.preventDefault();
+        e.stopPropagation && e.stopPropagation();
+        //override hook here
+        const override = rightClickOverrides[key];
+        showContextMenu(
+          override ? override(items, opts, this.props) : items,
+          [this.commandEnhancer],
+          e,
+          undefined,
+          opts // context here
+        );
+      };
     };
 
-    selectionLayerRightClicked = ({ annotation }) => {
-      return this.generateSelectionMenuOptions({
-        //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
-        start: annotation.start,
-        end: annotation.end
-      });
-    };
+    selectionLayerRightClicked = this.enhanceRightClickAction(
+      ({ annotation }) => {
+        return this.generateSelectionMenuOptions({
+          //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
+          start: annotation.start,
+          end: annotation.end
+        });
+      },
+      "selectionLayerRightClicked"
+    );
 
-    backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
-      this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
-      const {
-        readOnly,
-        sequenceData: { circular }
-      } = this.props;
-      const menu = [
-        ...(readOnly
-          ? []
-          : [
-              {
-                text: "Insert",
-                onClick: e => {
-                  this.handleDnaInsert({ useEventPositioning: e });
+    backgroundRightClicked = this.enhanceRightClickAction(
+      ({ nearestCaretPos, shiftHeld, event }) => {
+        this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
+        const {
+          readOnly,
+          sequenceData: { circular }
+        } = this.props;
+        const menu = [
+          ...(readOnly
+            ? []
+            : [
+                {
+                  text: "Insert",
+                  onClick: e => {
+                    this.handleDnaInsert({ useEventPositioning: e });
+                  }
+                },
+                {
+                  disabled: !circular,
+                  text: "Rotate To Here",
+                  tooltip: !circular
+                    ? "Disabled because the sequence is linear"
+                    : undefined,
+                  onClick: this.props.handleRotateToCaretPosition
                 }
-              },
-              {
-                disabled: !circular,
-                text: "Rotate To Here",
-                tooltip: !circular
-                  ? "Disabled because the sequence is linear"
-                  : undefined,
-                onClick: this.props.handleRotateToCaretPosition
-              }
-            ]),
-        ...this.getCreateItems(),
-        ...this.getViewFrameTranslationsItems()
-        // {
-        //   text: "Toggle Properties Panel",
-        //   onClick: function() {
-        //     propertiesViewToggle();
-        //   }
-        // }
-      ];
-      menu._event = event;
-      return menu;
-    };
+              ]),
+          ...this.getCreateItems(),
+          ...this.getViewFrameTranslationsItems()
+          // {
+          //   text: "Toggle Properties Panel",
+          //   onClick: function() {
+          //     propertiesViewToggle();
+          //   }
+          // }
+        ];
+        menu._event = event;
+        return menu;
+      },
+      "backgroundRightClicked"
+    );
 
-    deletionLayerRightClicked = ({ annotation }) => {
-      const { editorName, dispatch } = this.props;
-      return [
-        {
-          text: "Remove Deletion",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            dispatch({
-              type: "DELETION_LAYER_DELETE",
-              meta: { editorName },
-              payload: { ...annotation }
-            });
+    deletionLayerRightClicked = this.enhanceRightClickAction(
+      ({ annotation }) => {
+        const { editorName, dispatch } = this.props;
+        return [
+          {
+            text: "Remove Deletion",
+            // icon: "ion-plus-round",
+            onClick: function() {
+              dispatch({
+                type: "DELETION_LAYER_DELETE",
+                meta: { editorName },
+                payload: { ...annotation }
+              });
+            }
           }
-        }
-      ];
-    };
+        ];
+      },
+      "deletionLayerRightClicked"
+    );
 
-    partRightClicked = ({ annotation }) => {
+    partRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
         end: annotation.end
@@ -870,117 +874,120 @@ function VectorInteractionHOC(Component /* options */) {
           }
         }
       ];
-    };
-    featureRightClicked = ({ annotation, event }) => {
-      this.props.selectionLayerUpdate({
-        start: annotation.start,
-        end: annotation.end
-      });
-      event.persist();
-      const {
-        readOnly,
-        upsertTranslation,
-        deleteFeature,
-        showMergeFeaturesDialog,
-        annotationVisibilityToggle,
-        annotationVisibilityShow,
-        // showAddOrEditFeatureDialog,
-        propertiesViewOpen,
-        annotationsToSupport: { parts } = {},
-        propertiesViewTabUpdate
-      } = this.props;
-      return [
-        ...(readOnly
-          ? []
-          : [
-              "editFeature",
-              // {
-              //   text: "Edit Feature",
-              //   onClick: function() {
-              //     showAddOrEditFeatureDialog(annotation);
-              //   }
-              // },
-              // TODO: migrate others as commands too
-              {
-                text: "Delete Feature",
-                onClick: function() {
-                  deleteFeature(annotation);
-                }
-              },
-              ...this.getCopyOptions(annotation),
-              ...(parts && [
+    }, "partRightClicked");
+    featureRightClicked = this.enhanceRightClickAction(
+      ({ annotation, event }) => {
+        this.props.selectionLayerUpdate({
+          start: annotation.start,
+          end: annotation.end
+        });
+        event.persist();
+        const {
+          readOnly,
+          upsertTranslation,
+          deleteFeature,
+          showMergeFeaturesDialog,
+          annotationVisibilityToggle,
+          annotationVisibilityShow,
+          // showAddOrEditFeatureDialog,
+          propertiesViewOpen,
+          annotationsToSupport: { parts } = {},
+          propertiesViewTabUpdate
+        } = this.props;
+        return [
+          ...(readOnly
+            ? []
+            : [
+                "editFeature",
+                // {
+                //   text: "Edit Feature",
+                //   onClick: function() {
+                //     showAddOrEditFeatureDialog(annotation);
+                //   }
+                // },
+                // TODO: migrate others as commands too
                 {
-                  text: "Make a Part from Feature",
-                  onClick: async () => {
-                    const { sequenceData, upsertPart } = this.props;
-                    if (
-                      some(sequenceData.parts, part => {
-                        if (
-                          part.start === annotation.start &&
-                          part.end === annotation.end
-                        ) {
-                          return true;
-                        }
-                      })
-                    ) {
-                      const doAction = await showConfirmationDialog({
-                        text:
-                          "A part already exists that matches this feature's range. Do you want to make one anyways?",
-                        confirmButtonText: "Create Part",
-                        canEscapeKeyCancel: true //this is false by default
+                  text: "Delete Feature",
+                  onClick: function() {
+                    deleteFeature(annotation);
+                  }
+                },
+                ...this.getCopyOptions(annotation),
+                ...(parts && [
+                  {
+                    text: "Make a Part from Feature",
+                    onClick: async () => {
+                      const { sequenceData, upsertPart } = this.props;
+                      if (
+                        some(sequenceData.parts, part => {
+                          if (
+                            part.start === annotation.start &&
+                            part.end === annotation.end
+                          ) {
+                            return true;
+                          }
+                        })
+                      ) {
+                        const doAction = await showConfirmationDialog({
+                          text:
+                            "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                          confirmButtonText: "Create Part",
+                          canEscapeKeyCancel: true //this is false by default
+                        });
+                        if (!doAction) return; //early return
+                      }
+                      upsertPart({
+                        start: annotation.start,
+                        end: annotation.end,
+                        forward: annotation.forward,
+                        name: annotation.name
                       });
-                      if (!doAction) return; //early return
                     }
-                    upsertPart({
-                      start: annotation.start,
-                      end: annotation.end,
-                      forward: annotation.forward,
-                      name: annotation.name
+                  }
+                ]),
+                {
+                  text: "Merge With Another Feature",
+                  onClick: () => {
+                    this.annotationClicked({
+                      annotation,
+                      event: { ...event, shiftHeld: true }
                     });
+                    // annotationSelect(annotation)
+                    showMergeFeaturesDialog(annotation);
                   }
                 }
               ]),
-              {
-                text: "Merge With Another Feature",
-                onClick: () => {
-                  this.annotationClicked({
-                    annotation,
-                    event: { ...event, shiftHeld: true }
-                  });
-                  // annotationSelect(annotation)
-                  showMergeFeaturesDialog(annotation);
-                }
-              }
-            ]),
-        {
-          text: "Toggle CDS Feature Translations",
-          onClick: () => {
-            annotationVisibilityToggle("cdsFeatureTranslations");
+          {
+            text: "Toggle CDS Feature Translations",
+            onClick: () => {
+              annotationVisibilityToggle("cdsFeatureTranslations");
+            }
+          },
+          {
+            text: "View Translation",
+            // icon: "ion-plus-round",
+            onClick: function() {
+              upsertTranslation({
+                start: annotation.start,
+                end: annotation.end,
+                forward: annotation.forward
+              });
+              annotationVisibilityShow("translations");
+            }
+          },
+          {
+            text: "View Feature Properties",
+            onClick: function() {
+              propertiesViewOpen();
+              propertiesViewTabUpdate("features", annotation);
+            }
           }
-        },
-        {
-          text: "View Translation",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
-            annotationVisibilityShow("translations");
-          }
-        },
-        {
-          text: "View Feature Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("features", annotation);
-          }
-        }
-      ];
-    };
+        ];
+      },
+      "featureRightClicked"
+    );
 
-    cutsiteRightClicked = ({ annotation }) => {
+    cutsiteRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       const { propertiesViewOpen, propertiesViewTabUpdate } = this.props;
       return [
         {
@@ -991,8 +998,8 @@ function VectorInteractionHOC(Component /* options */) {
           }
         }
       ];
-    };
-    primerRightClicked = ({ annotation }) => {
+    }, "cutsiteRightClicked");
+    primerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
         end: annotation.end
@@ -1037,8 +1044,8 @@ function VectorInteractionHOC(Component /* options */) {
           }
         }
       ];
-    };
-    orfRightClicked = ({ annotation }) => {
+    }, "primerRightClicked");
+    orfRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
         end: annotation.end
@@ -1065,65 +1072,68 @@ function VectorInteractionHOC(Component /* options */) {
           }
         }
       ];
-    };
-    translationRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const {
-        // readOnly,
-        deleteTranslation,
-        propertiesViewOpen,
-        selectionLayerUpdate,
-        propertiesViewTabUpdate,
-        annotationVisibilityToggle
-      } = this.props;
-      this.props.selectionLayerUpdate({
-        start: annotation.start,
-        end: annotation.end
-      });
-      if (annotation.isOrf) {
+    }, "orfRightClicked");
+    translationRightClicked = this.enhanceRightClickAction(
+      ({ event, annotation }) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const {
+          // readOnly,
+          deleteTranslation,
+          propertiesViewOpen,
+          selectionLayerUpdate,
+          propertiesViewTabUpdate,
+          annotationVisibilityToggle
+        } = this.props;
+        this.props.selectionLayerUpdate({
+          start: annotation.start,
+          end: annotation.end
+        });
+        if (annotation.isOrf) {
+          return [
+            {
+              text: "Hide Orf Translations",
+              onClick: () => {
+                annotationVisibilityToggle("orfTranslations");
+              }
+            },
+            {
+              text: "View Orf Properties",
+              onClick: function() {
+                propertiesViewOpen();
+                propertiesViewTabUpdate("orfs", annotation);
+              }
+            }
+          ];
+        }
         return [
           {
-            text: "Hide Orf Translations",
-            onClick: () => {
-              annotationVisibilityToggle("orfTranslations");
+            text: "Delete Translation",
+            onClick: function() {
+              deleteTranslation(annotation);
             }
           },
           {
-            text: "View Orf Properties",
+            text: "Select Translation",
+            onClick: function() {
+              selectionLayerUpdate({
+                start: annotation.start,
+                end: annotation.end
+              });
+            }
+          },
+          ...this.getCopyOptions(annotation),
+          {
+            text: "View Translation Properties",
             onClick: function() {
               propertiesViewOpen();
-              propertiesViewTabUpdate("orfs", annotation);
+              propertiesViewTabUpdate("translations", annotation);
             }
           }
         ];
-      }
-      return [
-        {
-          text: "Delete Translation",
-          onClick: function() {
-            deleteTranslation(annotation);
-          }
-        },
-        {
-          text: "Select Translation",
-          onClick: function() {
-            selectionLayerUpdate({
-              start: annotation.start,
-              end: annotation.end
-            });
-          }
-        },
-        ...this.getCopyOptions(annotation),
-        {
-          text: "View Translation Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("translations", annotation);
-          }
-        }
-      ];
-    };
+      },
+      "translationRightClicked"
+    );
 
     render() {
       const {
@@ -1152,18 +1162,15 @@ function VectorInteractionHOC(Component /* options */) {
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          ...this.enhanceRightClickActions({
-            selectionLayerRightClicked: this.selectionLayerRightClicked,
-            backgroundRightClicked: this.backgroundRightClicked,
-            featureRightClicked: this.featureRightClicked,
-            partRightClicked: this.partRightClicked,
-            orfRightClicked: this.orfRightClicked,
-            deletionLayerRightClicked: this.deletionLayerRightClicked,
-            cutsiteRightClicked: this.cutsiteRightClicked,
-            translationRightClicked: this.translationRightClicked,
-            primerRightClicked: this.primerRightClicked
-          }),
-          handleRotateToCaretPosition: this.props.handleRotateToCaretPosition,
+          selectionLayerRightClicked: this.selectionLayerRightClicked,
+          backgroundRightClicked: this.backgroundRightClicked,
+          featureRightClicked: this.featureRightClicked,
+          partRightClicked: this.partRightClicked,
+          orfRightClicked: this.orfRightClicked,
+          deletionLayerRightClicked: this.deletionLayerRightClicked,
+          cutsiteRightClicked: this.cutsiteRightClicked,
+          translationRightClicked: this.translationRightClicked,
+          primerRightClicked: this.primerRightClicked,
           orfClicked: this.annotationClicked,
           primerClicked: this.annotationClicked,
           translationClicked: this.annotationClicked,

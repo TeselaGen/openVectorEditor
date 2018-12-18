@@ -127,7 +127,7 @@ editor.updateEditor(editorState);
 ```js
 const currentEditorState = editor.getState()
 //you can view various properties of the alignment such as the selection layer using alignment.getState()
-console.log(currentEditorState.selectionLayer)
+console.info(currentEditorState.selectionLayer)
 ```
 
 ## Demo (Universal): http://teselagen.github.io/openVectorEditor/
@@ -380,7 +380,7 @@ const alignment = window.createAlignmentView(this.node, {
 ```js
 const currentAlignmentState = alignment.getState()
 //you can view various properties of the alignment such as the selection layer using alignment.getState()
-console.log(currentAlignmentState.selectionLayer)
+console.info(currentAlignmentState.selectionLayer)
 ```
 
 
