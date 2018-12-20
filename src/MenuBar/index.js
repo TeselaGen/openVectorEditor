@@ -6,6 +6,8 @@ import menuDef from "./defaultConfig";
 import getCommands from "../commands";
 import pureNoFunc from "../utils/pureNoFunc";
 
+const ident = x => x;
+
 class OveMenuBar extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +18,10 @@ class OveMenuBar extends React.Component {
         omitIcons: true
       })
     ];
+
+    const { menuFilter = ident } = props;
+    // Clone original menu def to protect it from accidental mutation
+    this.filteredMenuDef = menuFilter(JSON.parse(JSON.stringify(menuDef)));
   }
 
   render() {
@@ -24,7 +30,7 @@ class OveMenuBar extends React.Component {
         className="veMenuBarContainer"
         style={{ display: "flex" /* height: "100%" */ }}
       >
-        <MenuBar menu={menuDef} enhancers={this.enhancers} />
+        <MenuBar menu={this.filteredMenuDef} enhancers={this.enhancers} />
         <div
           className="menuBarDivider"
           style={{

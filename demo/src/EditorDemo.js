@@ -417,6 +417,21 @@ rightClickOverrides: {
               this.rightClickOverridesExample}
             {...this.state.overrideToolbarOptions &&
               this.toolbarOverridesExample}
+            menuFilter={(
+              // Menu customization example
+              menuDef => {
+                menuDef.push({ text: "Custom", submenu: ["copy"] });
+                menuDef[0].submenu.find(i => i.text && i.text.includes("Export")).submenu.push({
+                  text: "Custom export option!",
+                  onClick: () => alert("Custom export")
+                });
+                menuDef[3].submenu.push({
+                  text: "My Custom Tool",
+                  onClick: () => alert("Some custom tool")
+                });
+                return menuDef;
+              }
+            )}
           />
           {/* </div> */}
         </div>

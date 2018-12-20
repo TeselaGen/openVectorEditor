@@ -66,7 +66,8 @@ const userDefinedHandlersAndOpts = [
   "onDuplicate",
   "onDelete",
   "onCopy",
-  "onPaste"
+  "onPaste",
+  "menuFilter"
 ];
 
 const panelMap = {
