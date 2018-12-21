@@ -36,7 +36,6 @@ const defaultState = {
   forceHeightMode: false,
   onNew: true,
   onSave: true,
-  handleCreatePartsFromType2SEnzymes: true,
   onRename: true,
   onDuplicate: true,
   onDelete: true,
@@ -362,10 +361,6 @@ rightClickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                type: "handleCreatePartsFromType2SEnzymes"
-              })}
-              {renderToggle({
-                that: this,
                 type: "onRename"
               })}
               {renderToggle({
@@ -407,12 +402,6 @@ rightClickOverrides: {
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             {...this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
-            }}
-            {...this.state.handleCreatePartsFromType2SEnzymes && {
-              handleCreatePartsFromType2SEnzymes: () =>
-                window.toastr.success(
-                  "handleCreatePartsFromType2SEnzymes callback triggered"
-                )
             }}
             {...this.state.onSave && {
               onSave: function(

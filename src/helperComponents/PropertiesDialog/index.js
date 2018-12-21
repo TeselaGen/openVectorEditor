@@ -42,7 +42,6 @@ export class PropertiesDialog extends React.Component {
       height,
       editorName,
       onSave,
-      handleCreatePartsFromType2SEnzymes,
       showReadOnly,
       showAvailability,
       disableSetReadOnly,
@@ -78,7 +77,6 @@ export class PropertiesDialog extends React.Component {
               {...{
                 editorName,
                 onSave,
-                handleCreatePartsFromType2SEnzymes,
                 showReadOnly,
                 showAvailability,
                 disableSetReadOnly,

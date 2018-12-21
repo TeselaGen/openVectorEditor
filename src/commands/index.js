@@ -179,11 +179,6 @@ const editCommandDefs = {
     handler: props => props.redo(),
     hotkey: "mod+shift+z"
   },
-  createPartsFromType2SEnzymes: {
-    isHidden: props => !props.handleCreatePartsFromType2SEnzymes,
-    handler: props => props.handleCreatePartsFromType2SEnzymes()
-  },
-
   find: {
     name: "Find...",
     handler: props => props.toggleFindTool(),
