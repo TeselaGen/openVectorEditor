@@ -41,3 +41,9 @@
 /* .data-table-container > * {
   flex-shrink: 0;
 } */
+
+.vePropertiesFooter {
+  display: flex;
+  justify-content: right;
+  flex-wrap: wrap;
+}

@@ -18,5 +18,12 @@ describe("editor", function() {
     cy.get(".bp3-menu").contains("My Part Override").click()
     cy.contains("Part Override hit!").should("be.visible")
   })
+  it(`should handle propertiesListOverrides correctly if they are passed`, function() {
+    cy.contains("Show custom properties overrides").find("input").check({force: true})
+    cy.get(".veTabProperties").click()
+    cy.get(`[data-tab-id="parts"]`).click()
+
+    cy.contains("properties overrides successfull").should("be.visible")
+  })
 
 });

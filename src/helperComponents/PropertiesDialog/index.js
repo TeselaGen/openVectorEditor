@@ -13,17 +13,27 @@ import PartProperties from "./PartProperties";
 import { connectToEditor } from "../../withEditorProps";
 import "./style.css";
 
-const allTabs = {
-  general: GeneralProperties,
-  features: FeatureProperties,
-  parts: PartProperties,
-  primers: PrimerProperties,
-  translations: TranslationProperties,
-  cutsites: CutsiteProperties,
-  orfs: OrfProperties,
-  genbank: GenbankView
+const PropertiesContainer = Comp => props => {
+  const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
+  return (
+    <React.Fragment>
+      {additionalHeaderEls}
+      <Comp {...rest} />
+      {additionalFooterEls}
+    </React.Fragment>
+  );
 };
-export class PropertiesInner extends React.Component {
+const allTabs = {
+  general: PropertiesContainer(GeneralProperties),
+  features: PropertiesContainer(FeatureProperties),
+  parts: PropertiesContainer(PartProperties),
+  primers: PropertiesContainer(PrimerProperties),
+  translations: PropertiesContainer(TranslationProperties),
+  cutsites: PropertiesContainer(CutsiteProperties),
+  orfs: PropertiesContainer(OrfProperties),
+  genbank: PropertiesContainer(GenbankView)
+};
+export class PropertiesDialog extends React.Component {
   render() {
     const {
       propertiesTool = {},
@@ -32,6 +42,7 @@ export class PropertiesInner extends React.Component {
       height,
       editorName,
       onSave,
+      handleCreatePartsFromType2SEnzymes,
       showReadOnly,
       showAvailability,
       disableSetReadOnly,
@@ -52,9 +63,10 @@ export class PropertiesInner extends React.Component {
 
     let { tabId, selectedAnnotationId } = propertiesTool;
     if (propertiesList.indexOf(tabId) === -1) {
-      tabId = propertiesList[0];
+      tabId = propertiesList[0].name || propertiesList[0];
     }
-    const propertiesTabs = propertiesList.map(name => {
+    const propertiesTabs = propertiesList.map(nameOrOverride => {
+      const name = nameOrOverride.name || nameOrOverride;
       const Comp = allTabs[name];
       return (
         <Tab
@@ -66,10 +78,12 @@ export class PropertiesInner extends React.Component {
               {...{
                 editorName,
                 onSave,
+                handleCreatePartsFromType2SEnzymes,
                 showReadOnly,
                 showAvailability,
                 disableSetReadOnly,
-                selectedAnnotationId
+                selectedAnnotationId,
+                ...(nameOrOverride.name && nameOrOverride)
               }}
             />
           }
@@ -121,4 +135,4 @@ export default compose(
   connectToEditor(({ propertiesTool }) => {
     return { propertiesTool };
   })
-)(PropertiesInner);
+)(PropertiesDialog);

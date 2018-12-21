@@ -84,7 +84,7 @@ class PrimerProperties extends React.Component {
           entities={primersToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="vePropertiesFooter">
             <Button
               style={{ marginRight: 15 }}
               onClick={() => {

@@ -27,6 +27,7 @@ const defaultState = {
   showReadOnly: true,
   showCircularity: true,
   overrideToolbarOptions: false,
+  propertiesOverridesExample: false,
   overrideRightClickExample: false,
   showAvailability: true,
   showOptions: true,
@@ -35,6 +36,7 @@ const defaultState = {
   forceHeightMode: false,
   onNew: true,
   onSave: true,
+  handleCreatePartsFromType2SEnzymes: true,
   onRename: true,
   onDuplicate: true,
   onDelete: true,
@@ -93,6 +95,33 @@ export default class EditorDemo extends React.Component {
       readOnly: e.target.checked
     });
 
+  propertiesOverridesExample = {
+    PropertiesProps: {
+      propertiesList: [
+        "general",
+        "features",
+        {
+          name: "parts",
+          additionalFooterEls: (
+            <Button
+              onClick={() => {
+                window.toastr.success(
+                  "properties overrides successfull"
+                )
+              }}
+            >
+              propertiesProps parts footer button
+            </Button>
+          )
+        },
+        "primers",
+        "translations",
+        "cutsites",
+        "orfs",
+        "genbank"
+      ]
+    }
+  };
   rightClickOverridesExample = {
     rightClickOverrides: {
       partRightClicked: (items, { annotation }, props) => {
@@ -231,6 +260,47 @@ ToolBarProps: {
               })}
               {renderToggle({
                 that: this,
+                label: "Show custom properties overrides example",
+                type: "propertiesOverridesExample",
+                description: (
+                  <pre>
+                    {`
+//This is an example of how to pass property overrides
+PropertiesProps: {
+  propertiesList: [
+    "general",
+    "features",
+    {
+      name: "parts",
+      additionalFooterEls: (
+        <Button
+          onClick={() => {
+            window.toastr.success(
+              "properties overrides successfull"
+            )
+          }}
+        >
+          propertiesProps parts footer button
+        </Button>
+      )
+    },
+    "primers",
+    "translations",
+    "cutsites",
+    "orfs",
+    "genbank"
+  ]
+}
+                  `
+                      .split("\n")
+                      .map((l, i) => (
+                        <div key={i}>{l}</div>
+                      ))}
+                  </pre>
+                )
+              })}
+              {renderToggle({
+                that: this,
                 label: "Show custom right click override example",
                 type: "overrideRightClickExample",
                 description: (
@@ -292,6 +362,10 @@ rightClickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "handleCreatePartsFromType2SEnzymes"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onRename"
               })}
               {renderToggle({
@@ -333,6 +407,12 @@ rightClickOverrides: {
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             {...this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
+            }}
+            {...this.state.handleCreatePartsFromType2SEnzymes && {
+              handleCreatePartsFromType2SEnzymes: () =>
+                window.toastr.success(
+                  "handleCreatePartsFromType2SEnzymes callback triggered"
+                )
             }}
             {...this.state.onSave && {
               onSave: function(
@@ -415,6 +495,8 @@ rightClickOverrides: {
             showAvailability={this.state.showAvailability}
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}
+            {...this.state.propertiesOverridesExample &&
+              this.propertiesOverridesExample}
             {...this.state.overrideToolbarOptions &&
               this.toolbarOverridesExample}
             menuFilter={(

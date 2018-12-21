@@ -122,7 +122,7 @@ class TranslationProperties extends React.Component {
           />
         </div>
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="vePropertiesFooter">
             {/* <Button
               style={{ marginRight: 15 }}
               onClick={() => {

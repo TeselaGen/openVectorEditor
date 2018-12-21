@@ -83,7 +83,7 @@ class PartProperties extends React.Component {
           entities={partsToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="vePropertiesFooter">
             <Button
               style={{ marginRight: 15 }}
               onClick={() => {

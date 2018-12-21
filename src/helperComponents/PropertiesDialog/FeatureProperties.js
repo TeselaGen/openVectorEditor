@@ -117,7 +117,7 @@ class FeatureProperties extends React.Component {
           entities={featuresToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="vePropertiesFooter">
             <Button
               style={{ marginRight: 15 }}
               onClick={() => {
