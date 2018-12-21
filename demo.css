@@ -11117,6 +11117,17 @@ span.bp3-popover-target {
   flex-shrink: 0;
 } */
 
+.vePropertiesFooter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: right;
+      -ms-flex-pack: right;
+          justify-content: right;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
 .bp3-dark #circularViewAxis:not(.veAxisFill) {
   fill: #293742 !important;
   stroke: #f5f8fa !important;
