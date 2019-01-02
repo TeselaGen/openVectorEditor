@@ -56,12 +56,16 @@ export class PropertiesDialog extends React.Component {
         "genbank"
       ],
       closePanelButton
-    } = this.props;
+    } = { ...this.props, ...this.props.PropertiesProps };
 
     const { width, height: heightFromDim } = dimensions;
 
     let { tabId, selectedAnnotationId } = propertiesTool;
-    if (propertiesList.indexOf(tabId) === -1) {
+    if (
+      propertiesList
+        .map(nameOrOverride => nameOrOverride.name || nameOrOverride)
+        .indexOf(tabId) === -1
+    ) {
       tabId = propertiesList[0].name || propertiesList[0];
     }
     const propertiesTabs = propertiesList.map(nameOrOverride => {

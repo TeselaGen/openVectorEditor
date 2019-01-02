@@ -79,7 +79,7 @@ const panelMap = {
   digestTool: DigestTool,
   properties: {
     comp: Properties,
-    panelSpecificProps: ["PropertiesProps"]
+    panelSpecificPropsToSpread: ["PropertiesProps"]
   },
   mismatches: Mismatches
 };
@@ -449,10 +449,18 @@ export class Editor extends React.Component {
       const panelSpecificProps =
         panelMap[activePanelType] &&
         panelMap[activePanelType].panelSpecificProps;
+      const panelSpecificPropsToSpread =
+        panelMap[activePanelType] &&
+        panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
           {...pick(this.props, userDefinedHandlersAndOpts)}
           {...panelSpecificProps && pick(this.props, panelSpecificProps)}
+          {...panelSpecificPropsToSpread &&
+            panelSpecificPropsToSpread.reduce((acc, key) => {
+              acc = { ...acc, ...this.props[key] };
+              return acc;
+            }, {})}
           key={activePanelId}
           rightClickOverrides={this.props.rightClickOverrides}
           {...panelPropsToSpread}

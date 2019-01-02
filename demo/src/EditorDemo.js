@@ -1,10 +1,10 @@
-import { Switch, Button, Icon, Tooltip } from "@blueprintjs/core";
+import {  Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
 import {
   // getCurrentParamsFromUrl,
   setCurrentParamsOnUrl,
-  getCurrentParamsFromUrl
+  getCurrentParamsFromUrl,
 } from "teselagen-react-components";
 import _ from "lodash";
 import store from "./store";
@@ -12,6 +12,7 @@ import { updateEditor } from "../../src/";
 
 import Editor from "../../src/Editor";
 import cloneDeep from "lodash/cloneDeep";
+import renderToggle from "./utils/renderToggle";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
@@ -27,6 +28,7 @@ const defaultState = {
   showReadOnly: true,
   showCircularity: true,
   overrideToolbarOptions: false,
+  menuOverrideExample: false,
   propertiesOverridesExample: false,
   overrideRightClickExample: false,
   showAvailability: true,
@@ -104,9 +106,7 @@ export default class EditorDemo extends React.Component {
           additionalFooterEls: (
             <Button
               onClick={() => {
-                window.toastr.success(
-                  "properties overrides successfull"
-                )
+                window.toastr.success("properties overrides successfull");
               }}
             >
               propertiesProps parts footer button
@@ -133,6 +133,24 @@ export default class EditorDemo extends React.Component {
         ];
       }
     }
+  };
+  menuOverrideExample = {
+    menuFilter:
+      // Menu customization example
+      menuDef => {
+        menuDef.push({ text: "Custom", submenu: ["copy"] });
+        menuDef[0].submenu
+          .find(i => i.text && i.text.includes("Export"))
+          .submenu.push({
+            text: "Custom export option!",
+            onClick: () => window.toastr.success("Custom export hit!")
+          });
+        menuDef[3].submenu.push({
+          text: "My Custom Tool",
+          onClick: () => window.toastr.success("Some custom tool")
+        });
+        return menuDef;
+      }
   };
   toolbarOverridesExample = {
     ToolBarProps: {
@@ -238,8 +256,7 @@ export default class EditorDemo extends React.Component {
                 type: "overrideToolbarOptions",
                 description: (
                   <pre>
-                    {`
-//This is an example of how to pass tool overrides:
+                    {`//This is an example of how to pass tool overrides:
 ToolBarProps: {
   toolList: [
     {
@@ -248,8 +265,7 @@ ToolBarProps: {
         window.toastr.success("Download tool hit!")
         }
     },
-    ...etc
-                  `
+    ...etc`
                       .split("\n")
                       .map((l, i) => (
                         <div key={i}>{l}</div>
@@ -263,8 +279,7 @@ ToolBarProps: {
                 type: "propertiesOverridesExample",
                 description: (
                   <pre>
-                    {`
-//This is an example of how to pass property overrides
+                    {`//This is an example of how to pass Properties overrides
 PropertiesProps: {
   propertiesList: [
     "general",
@@ -289,8 +304,36 @@ PropertiesProps: {
     "orfs",
     "genbank"
   ]
-}
-                  `
+}`
+                      .split("\n")
+                      .map((l, i) => (
+                        <div key={i}>{l}</div>
+                      ))}
+                  </pre>
+                )
+              })}
+              {renderToggle({
+                that: this,
+                label: "Show custom menu overrides example",
+                type: "menuOverrideExample",
+                description: (
+                  <pre>
+                    {`// Menu customization example
+menuFilter:
+menuDef => {
+  menuDef.push({ text: "Custom", submenu: ["copy"] });
+  menuDef[0].submenu
+    .find(i => i.text && i.text.includes("Export"))
+    .submenu.push({
+      text: "Custom export option!",
+      onClick: () => alert("Custom export")
+    });
+  menuDef[3].submenu.push({
+    text: "My Custom Tool",
+    onClick: () => alert("Some custom tool")
+  });
+  return menuDef;
+}`
                       .split("\n")
                       .map((l, i) => (
                         <div key={i}>{l}</div>
@@ -304,8 +347,7 @@ PropertiesProps: {
                 type: "overrideRightClickExample",
                 description: (
                   <pre>
-                    {`
-//This is an example of how to pass rightClick overrides:
+                    {`//This is an example of how to pass rightClick overrides:
 rightClickOverrides: {
   partRightClicked: (items, { annotation }, props) => {
     return [
@@ -316,8 +358,7 @@ rightClickOverrides: {
       }
     ];
   }
-},
-                  `
+}`
                       .split("\n")
                       .map((l, i) => (
                         <div key={i}>{l}</div>
@@ -329,7 +370,7 @@ rightClickOverrides: {
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
-                description: "Set this up "
+                description: "You can force a height for the editor by passing height:500 (same for width) "
               })}
               Editor Options:
               {renderToggle({
@@ -488,54 +529,13 @@ rightClickOverrides: {
               this.propertiesOverridesExample}
             {...this.state.overrideToolbarOptions &&
               this.toolbarOverridesExample}
-            menuFilter={(
-              // Menu customization example
-              menuDef => {
-                menuDef.push({ text: "Custom", submenu: ["copy"] });
-                menuDef[0].submenu.find(i => i.text && i.text.includes("Export")).submenu.push({
-                  text: "Custom export option!",
-                  onClick: () => alert("Custom export")
-                });
-                menuDef[3].submenu.push({
-                  text: "My Custom Tool",
-                  onClick: () => alert("Some custom tool")
-                });
-                return menuDef;
-              }
-            )}
+            {...this.state.menuOverrideExample && this.menuOverrideExample}
           />
           {/* </div> */}
         </div>
       </React.Fragment>
     );
   }
-}
-
-function renderToggle({ that, type, label, description, hook }) {
-  const toggleEl = (
-    <Switch
-      data-test={type}
-      checked={that.state[type]}
-      label={label ? <span>{label}</span> : type}
-      style={{ margin: "0px 30px", marginTop: 4 }}
-      onChange={() => {
-        hook && hook(!that.state[type]);
-        that.setState({
-          [type]: !that.state[type]
-        });
-      }}
-    />
-  );
-  return (
-    <div className={"toggle-button-holder"}>
-      <Tooltip
-        /* popoverClassName="bp3-popover-content-sizing" */ content={
-          description
-        }
-        target={toggleEl}
-      />
-    </div>
-  );
 }
 
 function exampleConversion(seq) {
