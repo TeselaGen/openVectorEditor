@@ -54,10 +54,12 @@ function VisibilityOptions({
               checked={visible}
               label={startCase(annotationName)}
             >
-              {annotationsWithCounts[annotationName] && (
+              {annotationName in annotationsWithCounts ? (
                 <Tag round style={{ marginLeft: 7 }}>
                   {annotationsWithCounts[annotationName]}
                 </Tag>
+              ) : (
+                ""
               )}
             </Checkbox>
           </div>
