@@ -1,18 +1,14 @@
-import {  Button, Icon } from "@blueprintjs/core";
+import { Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
-import {
-  // getCurrentParamsFromUrl,
-  setCurrentParamsOnUrl,
-  getCurrentParamsFromUrl,
-} from "teselagen-react-components";
+
 import _ from "lodash";
 import store from "./store";
 import { updateEditor } from "../../src/";
 
 import Editor from "../../src/Editor";
-import cloneDeep from "lodash/cloneDeep";
 import renderToggle from "./utils/renderToggle";
+import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
@@ -48,43 +44,14 @@ const defaultState = {
 export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
-    const editorDemoState = getCurrentParamsFromUrl(props.history.location);
-    // localStorage.editorDemoState = props.history.location.search;
-
-    try {
-      this.state = {
-        ...defaultState,
-        ...JSON.parse(editorDemoState || "{}")
-      };
-    } catch (e) {
-      this.state = {
-        ...defaultState
-      };
-    }
-    this.resetDefaultState = () => {
-      this.setState({
-        ...Object.keys(this.state).reduce((acc, key) => {
-          acc[key] = false;
-          return acc;
-        }, {}),
-        ...defaultState
-      });
-      setCurrentParamsOnUrl({}, this.props.history.replace);
-      // localStorage.editorDemoState = JSON.stringify(defaultState);
-    };
+    setupOptions({ that: this, defaultState, props });
     updateEditor(store, "DemoEditor", {
       readOnly: this.state.readOnly
     });
   }
 
   componentDidUpdate() {
-    if (!_.isEqual(this.state, this.oldState)) {
-      setCurrentParamsOnUrl(
-        difference(this.state, defaultState),
-        this.props.history.replace
-      );
-      this.oldState = cloneDeep(this.state);
-    }
+    setParamsIfNecessary({ that: this, defaultState });
   }
 
   changeFullscreenMode = e =>
@@ -370,7 +337,8 @@ rightClickOverrides: {
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
-                description: "You can force a height for the editor by passing height:500 (same for width) "
+                description:
+                  "You can force a height for the editor by passing height:500 (same for width) "
               })}
               Editor Options:
               {renderToggle({
@@ -540,24 +508,4 @@ rightClickOverrides: {
 
 function exampleConversion(seq) {
   return seq;
-}
-
-/**
- * Deep diff between two object, using lodash
- * @param  {Object} object Object compared
- * @param  {Object} base   Object to compare with
- * @return {Object}        Return a new object who represent the diff
- */
-function difference(object, base) {
-  function changes(object, base) {
-    return _.transform(object, function(result, value, key) {
-      if (!_.isEqual(value, base[key])) {
-        result[key] =
-          _.isObject(value) && _.isObject(base[key])
-            ? changes(value, base[key])
-            : value;
-      }
-    });
-  }
-  return changes(object, base);
 }

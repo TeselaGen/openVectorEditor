@@ -177,8 +177,8 @@ class Demo extends React.Component {
               path="/StandaloneAlignment"
             />
             <Route
-              render={() => {
-                return <AlignmentDemo />;
+              render={({history}) => {
+                return <AlignmentDemo history={history} />;
               }}
               path="/Alignment"
             />

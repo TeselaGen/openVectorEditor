@@ -530,16 +530,16 @@ class AlignmentView extends React.Component {
       totalWidthOfMinimap * (totalWidthOfMinimap / totalWidthInAlignmentView),
       totalWidthOfMinimap
     );
-
     return (
       <ResizeSensor onResize={this.handleResize}>
         <div
           style={{
-            height: height || isPairwise ? null : this.state.height,
+            height: height || (isPairwise ? null : this.state.height),
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            position: "relative"
+            position: "relative",
+            ...this.props.style
             // borderTop: "1px solid black"
           }}
           className="alignmentView"
