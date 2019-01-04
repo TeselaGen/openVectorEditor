@@ -24,8 +24,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-
- /**
+/**
  * Uploads a file to an input
  * @memberOf Cypress.Chainable#
  * @name upload_file
@@ -45,4 +44,22 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
       const event = { dataTransfer: { files: [testFile] } };
       return cy.get(selector).trigger("drop", event);
     });
+});
+
+Cypress.Commands.add("selectRange", (start, end) => {
+  cy.get(".tg-menu-bar")
+    .contains("Edit")
+    .click();
+  cy.get(".tg-menu-bar-popover")
+    .contains("Select")
+    .click();
+  cy.get(`[label="From:"]`)
+    .clear()
+    .type(start);
+  cy.get(`[label="To:"]`)
+    .clear()
+    .type(end);
+  cy.get(".tg-min-width-dialog")
+    .contains("OK")
+    .click();
 });

@@ -25,7 +25,9 @@ const fileCommandDefs = {
 
   saveSequence: {
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) || props.hasBeenSaved,
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      (props.sequenceData.stateTrackingId === "initialLoadId" ||
+        props.sequenceData.stateTrackingId === props.lastSavedId),
     isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"

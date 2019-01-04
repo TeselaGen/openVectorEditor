@@ -97,6 +97,7 @@ export class ToolBar extends React.PureComponent {
         return (
           <Tool
             {...rest}
+            onSave={onSave}
             toolbarItemProps={{ index, toolName, editorName, ...toolOverride }}
             editorName={editorName}
             key={toolName}

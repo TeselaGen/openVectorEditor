@@ -144,6 +144,11 @@
       "yarn test:staged",
       "git add"
     ],
+    "cypress/**/*.js": [
+      "eslint --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
+      "prettier --write",
+      "git add"
+    ],
     "*.css": [
       "prettier --write",
       "git add"
