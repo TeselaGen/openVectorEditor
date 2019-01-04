@@ -8,11 +8,12 @@ import {
   Popover,
   InputGroup,
   Menu,
-  MenuItem
+  MenuItem,
+  Tooltip
 } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
-import { throttle } from "lodash";
+import { throttle, map, cloneDeep } from "lodash";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
@@ -251,7 +252,7 @@ class AlignmentView extends React.Component {
     });
   };
 
-  renderItem = (_i, key, isTemplate) => {
+  renderItem = _i => {
     if (this.timeoutId) clearInterval(this.timeoutId);
     this.timeoutId = setTimeout(() => {
       this.timeoutId = undefined;
@@ -269,22 +270,29 @@ class AlignmentView extends React.Component {
       hasTemplate,
       ...rest
     } = this.props;
+
+    let pairwiseAlignmentTracks;
+    if (hasTemplate) {
+      pairwiseAlignmentTracks = cloneDeep(alignmentTracks);
+      pairwiseAlignmentTracks[0].isTemplate = true;
+      pairwiseAlignmentTracks[0].additionalSelectionLayers = [];
+    }
+
     let i;
-    if (isTemplate) {
+    if (hasTemplate) {
       i = _i;
-    } else if (hasTemplate) {
-      i = _i + 1;
     } else {
       i = _i;
     }
 
-    const track = alignmentTracks[i];
+    const track = hasTemplate ? pairwiseAlignmentTracks[i] : alignmentTracks[i];
 
     const {
       // sequenceData,
       // alignmentData,
       additionalSelectionLayers,
-      chromatogramData
+      chromatogramData,
+      isTemplate
       // mismatches
     } = track;
     const rawSequenceData = track.sequenceData;
@@ -451,6 +459,7 @@ class AlignmentView extends React.Component {
       minimapLaneHeight,
       minimapLaneSpacing,
       isInPairwiseOverviewView,
+      isPairwise,
       hasTemplate,
       noVisibilityOptions,
       updateAlignmentSortOrder,
@@ -470,7 +479,8 @@ class AlignmentView extends React.Component {
 
     // const trackWidth = width - nameDivWidth || 400;
 
-    const getTrackVis = (alignmentTracks, isTemplate) => {
+    const getTrackVis = alignmentTracks => {
+      const { isTemplate } = alignmentTracks;
       return (
         <div
           className="alignmentTracks "
@@ -508,7 +518,12 @@ class AlignmentView extends React.Component {
         </div>
       );
     };
-    const [firstTrack, ...otherTracks] = alignmentTracks;
+    let pairwiseAlignmentTracks;
+    if (hasTemplate) {
+      pairwiseAlignmentTracks = cloneDeep(alignmentTracks);
+      pairwiseAlignmentTracks[0].isTemplate = true;
+      pairwiseAlignmentTracks[0].additionalSelectionLayers = [];
+    }
     const totalWidthOfMinimap = this.state.width - nameDivWidth;
     const totalWidthInAlignmentView = 14 * this.getSequenceLength();
     const minSliderSize = Math.min(
@@ -520,7 +535,7 @@ class AlignmentView extends React.Component {
       <ResizeSensor onResize={this.handleResize}>
         <div
           style={{
-            height: height || this.state.height,
+            height: height || isPairwise ? null : this.state.height,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
@@ -555,22 +570,23 @@ class AlignmentView extends React.Component {
               className="ve-alignment-top-bar"
             >
               {handleBackButtonClicked && (
-                <Button
-                  icon="arrow-left"
-                  onClick={() => {
-                    // this.setState({
-                    //   charWidthInLinearView: charWidthInLinearViewDefault
-                    // });
-                    handleBackButtonClicked();
-                    this.caretPositionUpdate(-1);
-                  }}
-                  text="Go Back"
-                  small
-                  intent={Intent.PRIMARY}
-                  // minimal
-                  style={{ marginRight: 10 }}
-                  className="alignmentViewBackButton"
-                />
+                <Tooltip content="Back to Pairwise Alignment Overview">
+                  <Button
+                    icon="arrow-left"
+                    onClick={() => {
+                      // this.setState({
+                      //   charWidthInLinearView: charWidthInLinearViewDefault
+                      // });
+                      handleBackButtonClicked();
+                      this.caretPositionUpdate(-1);
+                    }}
+                    small
+                    intent={Intent.PRIMARY}
+                    minimal
+                    style={{ marginRight: 10 }}
+                    className="alignmentViewBackButton"
+                  />
+                </Tooltip>
               )}
               {this.props.handleAlignmentRename ? (
                 <InputGroup
@@ -584,7 +600,7 @@ class AlignmentView extends React.Component {
                   style={{
                     paddingTop: "3px",
                     fontWeight: "bold",
-                    fontSize: "15px",
+                    fontSize: "14px",
                     maxWidth: "150px",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -656,16 +672,9 @@ class AlignmentView extends React.Component {
                 />
               )}
             </div>
-            {hasTemplate ? (
-              <React.Fragment>
-                <div className="alignmentTrackFixedToTop">
-                  {getTrackVis([firstTrack], true)}
-                </div>
-                {getTrackVis(otherTracks)}
-              </React.Fragment>
-            ) : (
-              getTrackVis(alignmentTracks)
-            )}
+            {hasTemplate
+              ? getTrackVis(pairwiseAlignmentTracks)
+              : getTrackVis(alignmentTracks)}
           </div>
           {!isInPairwiseOverviewView && (
             <div
@@ -744,6 +753,36 @@ export default compose(
         ? pairwiseAlignments[0][0]
         : alignmentTracks[0]
       ).alignmentData.sequence.length;
+
+      const alignmentAnnotationsToToggle = [
+        "features",
+        "parts",
+        "sequence",
+        "reverseSequence",
+        "axis",
+        "axisNumbers",
+        "chromatogram",
+        "dnaColors"
+      ];
+      let togglableAlignmentAnnotationSettings = {};
+      map(alignmentAnnotationsToToggle, annotation => {
+        if (annotation in alignmentAnnotationVisibility) {
+          togglableAlignmentAnnotationSettings[annotation] =
+            alignmentAnnotationVisibility[annotation];
+        }
+      });
+
+      let totalNumOfFeatures = 0;
+      let totalNumOfParts = 0;
+      alignmentTracks.forEach(seq => {
+        if (seq.sequenceData.features) {
+          totalNumOfFeatures += seq.sequenceData.features.length;
+        }
+        if (seq.sequenceData.parts) {
+          totalNumOfParts += seq.sequenceData.parts.length;
+        }
+      });
+
       return {
         isAlignment: true,
         selectionLayer,
@@ -780,6 +819,11 @@ export default compose(
                 [name]: !alignment.alignmentAnnotationLabelVisibility[name]
               }
             });
+          },
+          togglableAlignmentAnnotationSettings,
+          annotationsWithCounts: {
+            features: totalNumOfFeatures,
+            parts: totalNumOfParts
           }
         }
       };
@@ -827,7 +871,10 @@ class UncontrolledSliderWithPlusMinusBtns extends React.Component {
     const { title, initialValue, style, ...rest } = this.props;
 
     return (
-      <div title={title} style={{ ...style, display: "flex" }}>
+      <div
+        title={title}
+        style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
+      >
         <Icon
           onClick={() => {
             const newVal = Math.max(
@@ -840,6 +887,7 @@ class UncontrolledSliderWithPlusMinusBtns extends React.Component {
             this.props.onRelease(newVal);
           }}
           style={{ cursor: "pointer", marginRight: 5 }}
+          intent={Intent.PRIMARY}
           icon="minus"
         />
         <Slider
@@ -860,6 +908,7 @@ class UncontrolledSliderWithPlusMinusBtns extends React.Component {
             this.props.onRelease(newVal);
           }}
           style={{ cursor: "pointer", marginLeft: 5 }}
+          intent={Intent.PRIMARY}
           icon="plus"
         />
       </div>
@@ -893,6 +942,7 @@ class PairwiseAlignmentView extends React.Component {
             },
             hasTemplate: true,
             alignmentTracks,
+            isPairwise: true,
             handleBackButtonClicked: () => {
               this.setState({
                 currentPairwiseAlignmentIndex: undefined

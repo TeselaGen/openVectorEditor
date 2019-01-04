@@ -14,49 +14,35 @@ import { /* createReducer, */ createAction } from "redux-act";
 // import ab1ParsedGFPvv60 from "../ToolBar/ab1ParsedGFPvv60.json";
 // import { magicDownload } from "teselagen-react-components";
 
+const alignmentAnnotationSettings = {
+  axis: true,
+  axisNumbers: true,
+  chromatogram: false,
+  dnaColors: false,
+  features: false,
+  parts: false,
+  reverseSequence: false,
+  sequence: true,
+  translations: false,
+  orfs: false,
+  orfTranslations: false,
+  cdsFeatureTranslations: false,
+  cutsites: false,
+  primers: false,
+  lineageLines: false
+};
+
 let defaultVisibilities = {
-  alignmentAnnotationVisibility: {
-    features: false,
-    translations: false,
-    parts: false,
-    orfs: false,
-    orfTranslations: false,
-    cdsFeatureTranslations: false,
-    axis: true,
-    cutsites: false,
-    chromatogram: false,
-    primers: false,
-    reverseSequence: false,
-    lineageLines: false,
-    dnaColors: false,
-    sequence: true,
-    axisNumbers: true
-  },
-  pairwise_alignmentAnnotationVisibility: {
-    features: true,
-    translations: false,
-    parts: true,
-    orfs: true,
-    orfTranslations: false,
-    cdsFeatureTranslations: false,
-    axis: true,
-    cutsites: false,
-    chromatogram: false,
-    dnaColors: false,
-    sequence: true,
-    primers: true,
-    reverseSequence: false,
-    lineageLines: true,
-    axisNumbers: true
-  },
+  alignmentAnnotationVisibility: alignmentAnnotationSettings,
+  pairwise_alignmentAnnotationVisibility: alignmentAnnotationSettings,
   alignmentAnnotationLabelVisibility: {
     features: false,
     parts: false,
     cutsites: false
   },
   pairwise_alignmentAnnotationLabelVisibility: {
-    features: true,
-    parts: true,
+    features: false,
+    parts: false,
     cutsites: false
   }
 };
