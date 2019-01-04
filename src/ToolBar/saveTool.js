@@ -22,7 +22,7 @@ export default compose(
   return (
     <ToolbarItem
       {...{
-        Icon: <Icon icon="floppy-disk" />,
+        Icon: <Icon data-test="saveTool" icon="floppy-disk" />,
         onIconClick: handleSave,
         disabled: !onSave || hasBeenSaved || readOnly,
         tooltip: (
