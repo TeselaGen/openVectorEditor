@@ -460,6 +460,7 @@ class AlignmentView extends React.Component {
       minimapLaneSpacing,
       isInPairwiseOverviewView,
       isPairwise,
+      currentPairwiseAlignmentIndex,
       hasTemplate,
       noVisibilityOptions,
       updateAlignmentSortOrder,
@@ -489,7 +490,7 @@ class AlignmentView extends React.Component {
           <div
             style={{
               overflowX: "auto",
-              maxHeight: 500,
+              // maxHeight: 500,
               // width: trackWidth
               width: this.state.width
             }}
@@ -638,7 +639,10 @@ class AlignmentView extends React.Component {
                 />
               )}
               {!noVisibilityOptions && !isInPairwiseOverviewView && (
-                <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
+                <AlignmentVisibilityTool
+                  currentPairwiseAlignmentIndex={currentPairwiseAlignmentIndex}
+                  {...alignmentVisibilityToolOptions}
+                />
               )}
               {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
                 <Popover
@@ -772,16 +776,40 @@ export default compose(
         }
       });
 
-      let totalNumOfFeatures = 0;
-      let totalNumOfParts = 0;
-      alignmentTracks.forEach(seq => {
-        if (seq.sequenceData.features) {
-          totalNumOfFeatures += seq.sequenceData.features.length;
-        }
-        if (seq.sequenceData.parts) {
-          totalNumOfParts += seq.sequenceData.parts.length;
-        }
-      });
+      let annotationsWithCounts = [];
+      if (alignmentTracks) {
+        let totalNumOfFeatures = 0;
+        let totalNumOfParts = 0;
+        alignmentTracks.forEach(seq => {
+          if (seq.sequenceData.features) {
+            totalNumOfFeatures += seq.sequenceData.features.length;
+          }
+          if (seq.sequenceData.parts) {
+            totalNumOfParts += seq.sequenceData.parts.length;
+          }
+        });
+        annotationsWithCounts.push({
+          features: totalNumOfFeatures,
+          parts: totalNumOfParts
+        });
+      } else if (pairwiseAlignments) {
+        pairwiseAlignments.forEach(pairwise => {
+          let totalNumOfFeatures = 0;
+          let totalNumOfParts = 0;
+          pairwise.forEach(seq => {
+            if (seq.sequenceData.features) {
+              totalNumOfFeatures += seq.sequenceData.features.length;
+            }
+            if (seq.sequenceData.parts) {
+              totalNumOfParts += seq.sequenceData.parts.length;
+            }
+          });
+          annotationsWithCounts.push({
+            features: totalNumOfFeatures,
+            parts: totalNumOfParts
+          });
+        });
+      }
 
       return {
         isAlignment: true,
@@ -821,10 +849,7 @@ export default compose(
             });
           },
           togglableAlignmentAnnotationSettings,
-          annotationsWithCounts: {
-            features: totalNumOfFeatures,
-            parts: totalNumOfParts
-          }
+          annotationsWithCounts
         }
       };
     },
@@ -943,6 +968,7 @@ class PairwiseAlignmentView extends React.Component {
             hasTemplate: true,
             alignmentTracks,
             isPairwise: true,
+            currentPairwiseAlignmentIndex,
             handleBackButtonClicked: () => {
               this.setState({
                 currentPairwiseAlignmentIndex: undefined

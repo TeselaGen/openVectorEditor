@@ -111,7 +111,7 @@ export default connect(
                   left: 0,
                   paddingTop: 10,
                   width: 250,
-                  height: "100%",
+                  // height: "100%",
                   minWidth: 250,
                   maxWidth: 250,
                   display: "flex",
@@ -125,41 +125,84 @@ export default connect(
                   type: "forceHeightMode",
                   label: "Force Height 500px",
                   description:
-                    "You can force a height for the editor by passing height:500 (same for width) "
+                    "You can force a height for the editor by passing height:500 (same for width)"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "setAlignmentName",
+                  label: "Set Alignment Name",
+                  description:
+                    "You can give the alignment a name by setting alignmentName:'Ref Seq Name'"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "isFullyZoomedOut",
+                  label: "View Zoomed-Out Alignment",
+                  description:
+                    "You can view the alignment zoomed-out by setting isFullyZoomedOut:true"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "setMinimapLaneHeight",
+                  label: "Set Minimap Lane Height 10px",
+                  description:
+                    "You can set a height for the minimap lanes by passing minimapLaneHeight:10"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "setMinimapLaneSpacing",
+                  label: "Set Minimap Lane Spacing 2px",
+                  description:
+                    "You can set a height for the minimap lanes by passing minimapLaneHeight:2"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "noClickDragHandlers",
+                  label: "Disable Click-Drag Highlighting",
+                  description:
+                    "You can disable click-drag highlighting by setting noClickDragHandlers:true"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "hasTemplate",
+                  label: "Specify Alignment with Template",
+                  description:
+                    "You can specify that the first sequence in an alignment is a template sequence by setting hasTemplate:true"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "setTickSpacing",
+                  label: "Set Tick Spacing 10 bps",
+                  description:
+                    "You can set spacing of tick marks on the axis by setting linearViewOptions:{tickSpacing:10}"
+                })}
+                {renderToggle({
+                  that: this,
+                  type: "noVisibilityOptions",
+                  label: "Disable Visibility Options",
+                  description:
+                    "You can disable the visibility options menu by setting noVisibilityOptions:true"
                 })}
               </div>
             )}
           </div>
           <AlignmentView
             style={{
-              // display: "flex",
-              // flexDirection: "column",
-              // flexGrow: 1,
               ...(this.state.showOptions && { paddingLeft: 250 })
             }}
             {...{
               editorName: "MppViewer",
               id: alignmentRunData.id,
-              minimapLaneHeight: 10,
               height: this.state.forceHeightMode ? 500 : undefined,
-              minimapLaneSpacing: 2,
-              linearViewOptions: ({
-                index,
-                alignmentVisibilityToolOptions
-              }) => {
-                const toReturn = {
-                  // tickSpacing: 10,
-                  ignoreYWhenSelecting: true,
-                  linearViewAnnotationVisibilityOverrides: {
-                    ...alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
-                    parts: true
-                  }
-                };
-                if (index === alignmentRunData.alignmentTracks.length - 1) {
-                  toReturn.linearViewAnnotationVisibilityOverrides.axis = true;
-                }
-
-                return toReturn;
+              isFullyZoomedOut: this.state.isFullyZoomedOut,
+              minimapLaneHeight: this.state.setMinimapLaneHeight ? 10 : undefined,
+              minimapLaneSpacing: this.state.setMinimapLaneSpacing ? 2 : undefined,
+              alignmentName: this.state.setAlignmentName ? 'Ref Seq Name' : undefined,
+              noClickDragHandlers: this.state.noClickDragHandlers,
+              hasTemplate: this.state.hasTemplate,
+              noVisibilityOptions: this.state.noVisibilityOptions,
+              linearViewOptions: {
+                tickSpacing: this.state.setTickSpacing ? 10 : undefined,
               }
             }}
           />
