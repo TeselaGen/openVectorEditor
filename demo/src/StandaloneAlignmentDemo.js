@@ -31,7 +31,6 @@ export default class StandaloneAlignmentDemo extends React.Component {
     const alignment = window.createAlignmentView(this.node, {
       ...exampleAlignmentData,
       id: "pairwiseRun1",
-      height: 600,
       handleAlignmentRename: () => {
         console.info("alignment being renamed!")
       }, //this does nothing right now
