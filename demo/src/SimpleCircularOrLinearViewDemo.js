@@ -71,10 +71,11 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
           }}
         />
 
-        <br /><code>
-
-        <pre>
-          {`<SimpleCircularOrLinearView
+        <br />
+        <code>
+          <h3> Usage: </h3>
+          <pre>
+            {`<SimpleCircularOrLinearView
   {...{
     ...(this.state.hideNameAndInfo && { hideName: true }),
     ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
@@ -102,11 +103,11 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
     }
   }}
 />`
-            .split("\n")
-            .map((l, i) => (
-              <div key={i}>{l}</div>
-            ))}
-        </pre>
+              .split("\n")
+              .map((l, i) => (
+                <div key={i}>{l}</div>
+              ))}
+          </pre>
         </code>
       </div>
     );
