@@ -1,19 +1,43 @@
 import classnames from "classnames";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import React from "react";
 import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
 import { withHandlers } from "recompose";
 
+export const HoveredIdContext = React.createContext({
+  hoveredId: "" // default value
+});
+
+function withHoveredIdFromContext(Component) {
+  return function HoveredIdComponent(props) {
+    return (
+      <HoveredIdContext.Consumer>
+        {contexts => <Component {...props} {...contexts} />}
+      </HoveredIdContext.Consumer>
+    );
+  };
+}
+
 export default compose(
+  withHoveredIdFromContext,
   connect(
-    function(state, { id, editorName = "StandaloneEditor", className }) {
+    function(
+      state,
+      {
+        id,
+        editorName = "StandaloneEditor",
+        className,
+        hoveredId: hoveredIdFromContext
+      }
+    ) {
       if (!editorName) {
         console.warn(
           "please pass an editorName to the withHover() wrapped component"
         );
       }
       let editorState = state.VectorEditor[editorName] || {};
-      let hoveredId = editorState.hoveredAnnotation;
+      let hoveredId = editorState.hoveredAnnotation || hoveredIdFromContext; //we can pass a hoveredId from context in order to still use the hover functionality without being connected to redux! see http://localhost:3344/#/SimpleCircularOrLinearView for an example
       let isIdHashmap = typeof id === "object";
 
       let hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);

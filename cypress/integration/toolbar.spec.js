@@ -61,7 +61,7 @@ describe("toolbar", function() {
   });
 
   it("should be able to have individual tool functionality overridden", function() {
-    cy.get(`[data-test="overrideToolbarOptions"]`).check({ force: true });
+    cy.tgToggle("overrideToolbarOptions");
     cy.get(`[data-test="veDownloadTool"]`).click();
     cy.contains("Download tool hit!");
     cy.get(`[data-test="my-overridden-tool-123"]`).click();

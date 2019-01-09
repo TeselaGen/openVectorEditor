@@ -9,9 +9,8 @@ import { render } from "react-dom";
 import {
   CircularView,
   RowView,
-  // RowItem,
+  
   ToolBar,
-  // CutsiteFilter,
   LinearView,
   DigestTool,
   updateEditor
@@ -20,6 +19,7 @@ import {
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
+import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
@@ -39,8 +39,9 @@ const links = [
   { name: "VersionHistoryView", url: "VersionHistoryView" },
   { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
-  { name: "CircularView", url: "CircularView" },
+  { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
   { name: "DigestTool", url: "DigestTool" },
+  { name: "CircularView", url: "CircularView" },
   { name: "RowView", url: "RowView" },
   { name: "LinearView", url: "LinearView" },
   { name: "ToolBar", url: "ToolBar" }
@@ -81,7 +82,12 @@ class Demo extends React.Component {
       <Provider store={store}>
         <Router>
           <div
-            style={{ height: "100%", display: "flex", flexGrow: 1, flexDirection: "column" }}
+            style={{
+              height: "100%",
+              display: "flex",
+              flexGrow: 1,
+              flexDirection: "column"
+            }}
           >
             {/* <GenbankView editorName={"DemoEditor"} /> */}
             {/* <OrfProperties editorName={"DemoEditor"} /> */}
@@ -103,9 +109,8 @@ class Demo extends React.Component {
             </div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
-
-              render={({history}) => {
-                return <EditorDemo history={history}/>;
+              render={({ history }) => {
+                return <EditorDemo history={history} />;
               }}
               path="/Editor"
             />
@@ -177,7 +182,7 @@ class Demo extends React.Component {
               path="/StandaloneAlignment"
             />
             <Route
-              render={({history}) => {
+              render={({ history }) => {
                 return <AlignmentDemo history={history} />;
               }}
               path="/Alignment"
@@ -187,6 +192,10 @@ class Demo extends React.Component {
                 return <CircularView editorName="DemoEditor" />;
               }}
               path="/CircularView"
+            />
+            <Route
+              render={() => <SimpleCircularOrLinearViewDemo></SimpleCircularOrLinearViewDemo>}
+              path="/SimpleCircularOrLinearView"
             />
             <Route
               render={() => {

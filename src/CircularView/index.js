@@ -593,8 +593,17 @@ export class CircularView extends React.Component {
     }
     //tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
     if (radius < 150) radius = 150;
+    const widthToUse = Math.max(Number(width) || 300);
+    const heightToUse = Math.max(Number(height) || 300);
     return (
-      <div tabIndex="0" className="veCircularView">
+      <div
+        style={{
+          width: widthToUse,
+          height: heightToUse
+        }}
+        tabIndex="0"
+        className="veCircularView"
+      >
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -655,8 +664,8 @@ export class CircularView extends React.Component {
                 );
               }}
               style={{ overflow: "visible", display: "block" }}
-              width={Math.max(Number(width) || 300)}
-              height={Math.max(Number(height) || 300)}
+              width={widthToUse}
+              height={heightToUse}
               ref="circularView"
               className="circularViewSvg"
               viewBox={`-${radius * scale} -${radius * scale} ${radius *

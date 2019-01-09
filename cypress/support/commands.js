@@ -34,6 +34,14 @@
  * @param {String} type - content type of the uploaded file
  */
 
+Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
+  /* eslint-disable no-unexpected-multiline*/
+
+  return cy
+    .get(`[data-test="${type}"]`)
+    [onOrOff ? "check" : "uncheck"]({ force: true });
+  /* eslint-enable no-unexpected-multiline*/
+});
 Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
   return cy
     .fixture(fileUrl, "base64")

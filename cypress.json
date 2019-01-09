@@ -1,6 +1,4 @@
 {
   "projectId": "1zj5vc",
-  "//baseUrl": "https://limsdev-qa.herokuapp.com",
-  "baseUrl": "http://localhost:3344/#/Editor",
-  "///baseUrl": "http://teselagen.github.io/openVectorEditor/#/Editor"
+  "baseUrl": "http://localhost:3344"
 }
