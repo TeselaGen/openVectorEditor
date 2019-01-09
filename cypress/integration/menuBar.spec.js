@@ -45,16 +45,12 @@ describe("menuBar", function() {
   });
 
   it("menubar can be optionally displayed above or on the same line as the shortcuts", function() {
-    cy.contains("showOptions")
-      .find("input")
-      .check({ force: true });
-    cy.contains("displayMenuBarAboveTools")
-      .find("input")
-      .check({ force: true });
+    cy.tgToggle("showOptions");
+    cy.tgToggle("displayMenuBarAboveTools");
+
     cy.get(".veTools-displayMenuBarAboveTools").should("exist");
-    cy.contains("displayMenuBarAboveTools")
-      .find("input")
-      .uncheck({ force: true });
+    cy.tgToggle("displayMenuBarAboveTools", false);
+
     cy.get(".veTools-displayMenuBarAboveTools").should("not.exist");
   });
   it(` goTo, rotateTo work

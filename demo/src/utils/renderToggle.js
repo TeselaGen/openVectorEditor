@@ -6,13 +6,13 @@ export default function renderToggle({ that, type, label, description, hook }) {
   const toggleEl = (
     <Switch
       data-test={type}
-      checked={that.state[type]}
+      checked={(that.state || {})[type]}
       label={label ? <span>{label}</span> : type}
       style={{ margin: "0px 30px", marginTop: 4 }}
       onChange={() => {
-        hook && hook(!that.state[type]);
+        hook && hook(!(that.state || {})[type]);
         that.setState({
-          [type]: !that.state[type]
+          [type]: !(that.state || {})[type]
         });
       }}
     />
