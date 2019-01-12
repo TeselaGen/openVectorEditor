@@ -37,8 +37,15 @@ function VisibilityOptions({
   alignmentAnnotationVisibilityToggle,
   // alignmentAnnotationLabelVisibility = {},
   // alignmentAnnotationLabelVisibilityToggle
-  annotationsWithCounts
+  annotationsWithCounts,
+  currentPairwiseAlignmentIndex
 }) {
+  let annotationCountToUse = {};
+  if (currentPairwiseAlignmentIndex) {
+    annotationCountToUse = annotationsWithCounts[currentPairwiseAlignmentIndex];
+  } else {
+    annotationCountToUse = annotationsWithCounts[0];
+  }
   return (
     <div
       style={{ padding: 10 }}
@@ -54,9 +61,9 @@ function VisibilityOptions({
               checked={visible}
               label={startCase(annotationName)}
             >
-              {annotationName in annotationsWithCounts ? (
+              {annotationName in annotationCountToUse ? (
                 <Tag round style={{ marginLeft: 7 }}>
-                  {annotationsWithCounts[annotationName]}
+                  {annotationCountToUse[annotationName]}
                 </Tag>
               ) : (
                 ""

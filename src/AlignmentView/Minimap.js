@@ -10,9 +10,12 @@ export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
-      ["numBpsShownInLinearView", "scrollAlignmentView"].some(
-        key => props[key] !== newProps[key]
-      )
+      [
+        "numBpsShownInLinearView",
+        "scrollAlignmentView",
+        "laneHeight",
+        "laneSpacing"
+      ].some(key => props[key] !== newProps[key])
     )
       return true;
     return false;
@@ -133,10 +136,10 @@ export default class Minimap extends React.Component {
         <svg
           height={laneHeight}
           width={width}
-          shapeRendering={"geometricPrecision"}
+          shapeRendering="geometricPrecision"
         >
-          <path d={greyPath} fill={"grey"} />
-          <path d={redPath} fill={"red"} />
+          <path d={greyPath} fill="grey" />
+          <path d={redPath} fill="red" />
         </svg>
       </div>
     );
@@ -161,7 +164,7 @@ export default class Minimap extends React.Component {
     return (
       <div
         ref={ref => (this.minimap = ref)}
-        className={"alignmentMinimap"}
+        className="alignmentMinimap"
         style={{
           position: "relative",
           width,
@@ -181,7 +184,7 @@ export default class Minimap extends React.Component {
             overflowY: "auto",
             position: "relative"
           }}
-          className={"alignmentMinimapTracks"}
+          className="alignmentMinimapTracks"
         >
           <YellowScrollHandle
             width={width}
@@ -202,7 +205,7 @@ export default class Minimap extends React.Component {
                 {items}
               </div>
             )}
-            type={"uniform"}
+            type="uniform"
             itemSizeGetter={this.itemSizeGetter}
             itemRenderer={this.renderItem}
             length={alignmentTracks.length}
@@ -243,11 +246,11 @@ const YellowScrollHandle = view(
 
       return (
         <Draggable
-          bounds={"parent"}
+          bounds="parent"
           zIndex={105}
           handle=".handle"
           position={{ x: xScroll, y: 0 }}
-          axis={"x"}
+          axis="x"
           // onStart={this.onStart}
           onStop={handleDragStop}
           onDrag={handleDrag}
@@ -270,7 +273,7 @@ const YellowScrollHandle = view(
               }}
               zIndex={105}
               position={{ x: 0, y: 0 }}
-              axis={"x"}
+              axis="x"
               onStart={(e, { x }) => {
                 this.x = x;
               }}
@@ -300,12 +303,12 @@ const YellowScrollHandle = view(
                   width: 2,
                   background: "black"
                 }}
-                className={"minimapCaret"}
+                className="minimapCaret"
               />
             </Draggable>
             {/* the actual handle component */}
             <div
-              className={"handle"}
+              className="handle"
               dataname="scrollGroup"
               style={{
                 height: minimapTracksPartialHeight || 0,
@@ -319,7 +322,7 @@ const YellowScrollHandle = view(
             >
               {/* this is the blue vertical scroll position display element */}
               <div
-                className={"verticalScrollDisplay"}
+                className="verticalScrollDisplay"
                 style={{
                   height:
                     (verticalVisibleRange.end -
@@ -342,7 +345,7 @@ const YellowScrollHandle = view(
               }}
               zIndex={105}
               position={{ x: scrollHandleWidth, y: 0 }}
-              axis={"x"}
+              axis="x"
               onStart={(e, { x }) => {
                 this.x = x;
               }}
@@ -370,7 +373,7 @@ const YellowScrollHandle = view(
                   width: 2,
                   background: "black"
                 }}
-                className={"minimapCaret"}
+                className="minimapCaret"
               />
             </Draggable>
           </div>
