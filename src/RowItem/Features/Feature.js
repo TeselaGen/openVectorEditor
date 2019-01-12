@@ -13,7 +13,7 @@ class Feature extends React.PureComponent {
       height,
       rangeType,
       forward,
-      name,
+      name = "",
       onMouseLeave,
       onMouseOver,
       hideName,

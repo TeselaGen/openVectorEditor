@@ -4,6 +4,11 @@ describe("tabs", function() {
   beforeEach(() => {
     cy.visit("/#/SimpleCircularOrLinearView");
   });
+  it("can toggle part colors", function() {
+    cy.get(`path[stroke="red"]`).should("not.exist");
+    cy.tgToggle("togglePartColor");
+    cy.get(`path[stroke="red"]`).should("exist");
+  });
   it("can toggle a part hover", function() {
     cy.tgToggle("circular");
     cy.get(".veCircularViewLabelText.veAnnotationHovered").should("not.exist");

@@ -285,7 +285,9 @@ const DrawLabelGroup = withHover(function({
       </text>,
       LabelLine(
         [
-          hovered ? label.innerPoint : label.truncatedInnerPoint,
+          hovered || label.annotationType === "part" //because parts live on the outside of the sequence, we don't need to show the truncated point, we can just point to them directly
+            ? label.innerPoint
+            : label.truncatedInnerPoint,
           label.outerPoint,
           label
         ],

@@ -11,17 +11,18 @@ function Part(props) {
     height,
     rangeType,
     forward,
-    name,
+    name = "",
     onMouseLeave,
     onMouseOver,
     pointiness = 8,
     fontWidth = 12,
     partClicked,
     partRightClicked,
-    annotation,
+    annotation = {},
     gapsInside,
     gapsBefore
   } = props;
+  const { color = "purple" } = annotation;
 
   let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
@@ -107,8 +108,8 @@ function Part(props) {
       </title>
       <path
         strokeWidth="1"
-        stroke="purple"
-        fill="purple"
+        stroke={color}
+        fill={color}
         fillOpacity={0}
         transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
         d={path}

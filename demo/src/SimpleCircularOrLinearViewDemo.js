@@ -24,9 +24,11 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             type: "hoverPart",
             label: "Toggle Part 1 Hover"
           })}
+          {renderToggle({ that: this, type: "toggleSelection" })}
           {renderToggle({ that: this, type: "hideNameAndInfo" })}
           {renderToggle({ that: this, type: "circular" })}
           {renderToggle({ that: this, type: "changeSize" })}
+          {renderToggle({ that: this, type: "togglePartColor" })}
         </div>
         <br />
         <br />
@@ -38,6 +40,9 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             ...(this.state.hideNameAndInfo && { hideName: true }),
             ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
             ...(this.state.changeSize && { height: 500, width: 500 }),
+            ...(this.state.toggleSelection && {
+              selectionLayer: { start: 2, end: 30 }
+            }),
 
             sequenceData: {
               // annotationLabelVisibility: {
@@ -56,13 +61,15 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                   name: "Part 1",
                   id: "fakeId1",
                   start: 10,
-                  end: 20
+                  end: 20,
+                  ...this.state.togglePartColor && {color: "red"}
                 },
                 {
                   name: "Part 2",
                   id: "fakeId2",
                   start: 25,
-                  end: 30
+                  end: 30,
+                  ...this.state.togglePartColor && {color: "blue"}
                 }
               ],
               sequence:

@@ -6,6 +6,7 @@ export default function CircularPart({
   arrowheadLength = 0.5,
   annotationHeight,
   totalAngle,
+  color,
   ...rest
 }) {
   let path = drawDirectedPiePiece({
@@ -20,8 +21,8 @@ export default function CircularPart({
       {...rest}
       className="vePart veCircularViewPart"
       strokeWidth="0.5"
-      stroke="purple"
-      fill="purple"
+      stroke={color || "purple"}
+      fill={color || "purple"}
       fillOpacity={0}
       d={path.print()}
     />
