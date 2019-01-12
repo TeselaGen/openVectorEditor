@@ -62,14 +62,14 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                   id: "fakeId1",
                   start: 10,
                   end: 20,
-                  ...this.state.togglePartColor && {color: "red"}
+                  ...this.state.togglePartColor && {color: "override_red"}
                 },
                 {
                   name: "Part 2",
                   id: "fakeId2",
                   start: 25,
                   end: 30,
-                  ...this.state.togglePartColor && {color: "blue"}
+                  ...this.state.togglePartColor && {color: "override_blue"}
                 }
               ],
               sequence:

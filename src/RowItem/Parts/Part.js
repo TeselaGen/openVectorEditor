@@ -1,3 +1,4 @@
+import { startsWith } from "lodash";
 import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
@@ -22,8 +23,10 @@ function Part(props) {
     gapsInside,
     gapsBefore
   } = props;
-  const { color = "purple" } = annotation;
-
+  const { color } = annotation;
+  const colorToUse = startsWith(color, "override_")
+    ? color.replace("override_", "")
+    : "purple";
   let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
   if (charWidth < 15) {
@@ -108,8 +111,8 @@ function Part(props) {
       </title>
       <path
         strokeWidth="1"
-        stroke={color}
-        fill={color}
+        stroke={colorToUse}
+        fill={colorToUse}
         fillOpacity={0}
         transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
         d={path}
