@@ -335,7 +335,7 @@ rightClickOverrides: {
       ...items,
       {
         text: "My Part Override",
-        onClick: () => window.toastr.success("Part Override hit!")
+        onClick: () => window.toastr.success("Part Override Hit!")
       }
     ];
   }

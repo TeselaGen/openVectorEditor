@@ -29,7 +29,7 @@ describe("editor", function() {
     cy.get(".bp3-menu")
       .contains("My Part Override")
       .click();
-    cy.contains("Part Override hit!").should("be.visible");
+    cy.contains("Part Override Hit!").should("be.visible");
   });
   it(`should handle clickOverrides correctly if they are passed`, function() {
     cy.tgToggle("clickOverridesExample");
