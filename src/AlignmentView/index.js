@@ -13,7 +13,7 @@ import {
 } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
-import { throttle, map, cloneDeep } from "lodash";
+import { throttle, map } from "lodash";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
@@ -205,6 +205,12 @@ class AlignmentView extends React.Component {
       this.alignmentHolder.scrollLeft /
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
+    if (this.alignmentHolderTop) {
+      this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
+    }
+  };
+  handleTopScroll = () => {
+    this.alignmentHolder.scrollLeft = this.alignmentHolderTop.scrollLeft;
   };
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const percentageOfSpace = newSliderSize / (this.state.width - nameDivWidth);
@@ -231,6 +237,12 @@ class AlignmentView extends React.Component {
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
+    if (this.alignmentHolderTop) {
+      this.alignmentHolderTop.scrollLeft =
+        Math.min(Math.max(scrollPercentage, 0), 1) *
+        (this.alignmentHolderTop.scrollWidth -
+          this.alignmentHolderTop.clientWidth);
+    }
   };
   scrollYToTrack = trackIndex => {
     this.InfiniteScroller.scrollTo(trackIndex);
@@ -252,7 +264,7 @@ class AlignmentView extends React.Component {
     });
   };
 
-  renderItem = _i => {
+  renderItem = (_i, key, isTemplate) => {
     if (this.timeoutId) clearInterval(this.timeoutId);
     this.timeoutId = setTimeout(() => {
       this.timeoutId = undefined;
@@ -271,28 +283,22 @@ class AlignmentView extends React.Component {
       ...rest
     } = this.props;
 
-    let pairwiseAlignmentTracks;
-    if (hasTemplate) {
-      pairwiseAlignmentTracks = cloneDeep(alignmentTracks);
-      pairwiseAlignmentTracks[0].isTemplate = true;
-      pairwiseAlignmentTracks[0].additionalSelectionLayers = [];
-    }
-
     let i;
-    if (hasTemplate) {
+    if (isTemplate) {
       i = _i;
+    } else if (hasTemplate) {
+      i = _i + 1;
     } else {
       i = _i;
     }
 
-    const track = hasTemplate ? pairwiseAlignmentTracks[i] : alignmentTracks[i];
+    const track = alignmentTracks[i];
 
     const {
       // sequenceData,
       // alignmentData,
       additionalSelectionLayers,
-      chromatogramData,
-      isTemplate
+      chromatogramData
       // mismatches
     } = track;
     const rawSequenceData = track.sequenceData;
@@ -448,7 +454,7 @@ class AlignmentView extends React.Component {
     );
   };
   handleResize = throttle(([e]) => {
-    this.setState({ width: e.contentRect.width, height: e.contentRect.height });
+    this.setState({ width: e.contentRect.width });
   }, 200);
 
   render() {
@@ -460,6 +466,7 @@ class AlignmentView extends React.Component {
       minimapLaneSpacing,
       isInPairwiseOverviewView,
       isPairwise,
+      currentPairwiseAlignmentIndex,
       hasTemplate,
       noVisibilityOptions,
       updateAlignmentSortOrder,
@@ -479,8 +486,7 @@ class AlignmentView extends React.Component {
 
     // const trackWidth = width - nameDivWidth || 400;
 
-    const getTrackVis = alignmentTracks => {
-      const { isTemplate } = alignmentTracks;
+    const getTrackVis = (alignmentTracks, isTemplate) => {
       return (
         <div
           className="alignmentTracks "
@@ -489,7 +495,7 @@ class AlignmentView extends React.Component {
           <div
             style={{
               overflowX: "auto",
-              maxHeight: 500,
+              // maxHeight: 500,
               // width: trackWidth
               width: this.state.width
             }}
@@ -498,7 +504,7 @@ class AlignmentView extends React.Component {
             }}
             dataname="scrollGroup"
             className="alignmentHolder"
-            onScroll={isTemplate ? noop : this.handleScroll}
+            onScroll={isTemplate ? this.handleTopScroll : this.handleScroll}
           >
             {isTemplate ? (
               this.renderItem(0, 0, isTemplate)
@@ -518,23 +524,23 @@ class AlignmentView extends React.Component {
         </div>
       );
     };
-    let pairwiseAlignmentTracks;
-    if (hasTemplate) {
-      pairwiseAlignmentTracks = cloneDeep(alignmentTracks);
-      pairwiseAlignmentTracks[0].isTemplate = true;
-      pairwiseAlignmentTracks[0].additionalSelectionLayers = [];
-    }
+
+    const [firstTrack, ...otherTracks] = alignmentTracks;
     const totalWidthOfMinimap = this.state.width - nameDivWidth;
     const totalWidthInAlignmentView = 14 * this.getSequenceLength();
     const minSliderSize = Math.min(
       totalWidthOfMinimap * (totalWidthOfMinimap / totalWidthInAlignmentView),
       totalWidthOfMinimap
     );
+    const viewportHeight = Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight || 0
+    );
     return (
       <ResizeSensor onResize={this.handleResize}>
         <div
           style={{
-            height: height || (isPairwise ? null : this.state.height),
+            height: height || (isPairwise ? "auto" : viewportHeight * 0.85),
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
@@ -596,20 +602,37 @@ class AlignmentView extends React.Component {
                   placeholder="Untitled Alignment"
                 />
               ) : (
-                <span
-                  style={{
-                    paddingTop: "3px",
-                    fontWeight: "bold",
-                    fontSize: "14px",
-                    maxWidth: "150px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap"
-                  }}
-                  title={this.props.alignmentName || "Untitled Alignment"}
-                >
-                  {this.props.alignmentName || "Untitled Alignment"}
-                </span>
+                <div>
+                  <span
+                    style={{
+                      paddingTop: "3px",
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap"
+                    }}
+                    title={this.props.alignmentName || "Untitled Alignment"}
+                  >
+                    {this.props.alignmentName || "Untitled Alignment"}
+                  </span>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    style={{
+                      paddingTop: "3px",
+                      fontSize: "14px",
+                      color: "grey",
+                      maxWidth: "300px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap"
+                    }}
+                    title={this.props.alignmentType || "Unknown Alignment Type"}
+                  >
+                    {this.props.alignmentType || "Unknown Alignment Type"}
+                  </span>
+                </div>
               )}
               {this.props.handleAlignmentRename && (
                 <Button small>Rename</Button>
@@ -638,7 +661,10 @@ class AlignmentView extends React.Component {
                 />
               )}
               {!noVisibilityOptions && !isInPairwiseOverviewView && (
-                <AlignmentVisibilityTool {...alignmentVisibilityToolOptions} />
+                <AlignmentVisibilityTool
+                  currentPairwiseAlignmentIndex={currentPairwiseAlignmentIndex}
+                  {...alignmentVisibilityToolOptions}
+                />
               )}
               {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
                 <Popover
@@ -672,9 +698,16 @@ class AlignmentView extends React.Component {
                 />
               )}
             </div>
-            {hasTemplate
-              ? getTrackVis(pairwiseAlignmentTracks)
-              : getTrackVis(alignmentTracks)}
+            {hasTemplate ? (
+              <React.Fragment>
+                <div className="alignmentTrackFixedToTop">
+                  {getTrackVis([firstTrack], true)}
+                </div>
+                {getTrackVis(otherTracks)}
+              </React.Fragment>
+            ) : (
+              getTrackVis(alignmentTracks)
+            )}
           </div>
           {!isInPairwiseOverviewView && (
             <div
@@ -698,8 +731,9 @@ class AlignmentView extends React.Component {
                   onSizeAdjust: this.onMinimapSizeAdjust,
                   minSliderSize,
                   laneHeight:
-                    minimapLaneHeight || alignmentTracks.length > 20 ? 10 : 17,
-                  laneSpacing: minimapLaneSpacing,
+                    minimapLaneHeight || (alignmentTracks.length > 5 ? 10 : 17),
+                  laneSpacing:
+                    minimapLaneSpacing || (alignmentTracks.length > 5 ? 2 : 1),
                   easyStore: this.easyStore,
                   numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
                   scrollAlignmentView: this.state.scrollAlignmentView
@@ -772,16 +806,40 @@ export default compose(
         }
       });
 
-      let totalNumOfFeatures = 0;
-      let totalNumOfParts = 0;
-      alignmentTracks.forEach(seq => {
-        if (seq.sequenceData.features) {
-          totalNumOfFeatures += seq.sequenceData.features.length;
-        }
-        if (seq.sequenceData.parts) {
-          totalNumOfParts += seq.sequenceData.parts.length;
-        }
-      });
+      let annotationsWithCounts = [];
+      if (alignmentTracks) {
+        let totalNumOfFeatures = 0;
+        let totalNumOfParts = 0;
+        alignmentTracks.forEach(seq => {
+          if (seq.sequenceData.features) {
+            totalNumOfFeatures += seq.sequenceData.features.length;
+          }
+          if (seq.sequenceData.parts) {
+            totalNumOfParts += seq.sequenceData.parts.length;
+          }
+        });
+        annotationsWithCounts.push({
+          features: totalNumOfFeatures,
+          parts: totalNumOfParts
+        });
+      } else if (pairwiseAlignments) {
+        pairwiseAlignments.forEach(pairwise => {
+          let totalNumOfFeatures = 0;
+          let totalNumOfParts = 0;
+          pairwise.forEach(seq => {
+            if (seq.sequenceData.features) {
+              totalNumOfFeatures += seq.sequenceData.features.length;
+            }
+            if (seq.sequenceData.parts) {
+              totalNumOfParts += seq.sequenceData.parts.length;
+            }
+          });
+          annotationsWithCounts.push({
+            features: totalNumOfFeatures,
+            parts: totalNumOfParts
+          });
+        });
+      }
 
       return {
         isAlignment: true,
@@ -821,10 +879,7 @@ export default compose(
             });
           },
           togglableAlignmentAnnotationSettings,
-          annotationsWithCounts: {
-            features: totalNumOfFeatures,
-            parts: totalNumOfParts
-          }
+          annotationsWithCounts
         }
       };
     },
@@ -940,9 +995,10 @@ class PairwiseAlignmentView extends React.Component {
                 .map(() => "a")
                 .join("")
             },
-            hasTemplate: true,
             alignmentTracks,
+            hasTemplate: true,
             isPairwise: true,
+            currentPairwiseAlignmentIndex,
             handleBackButtonClicked: () => {
               this.setState({
                 currentPairwiseAlignmentIndex: undefined
@@ -959,12 +1015,13 @@ class PairwiseAlignmentView extends React.Component {
         <AlignmentView
           {...{
             ...this.props,
-            hasTemplate: true,
             alignmentTracks: pairwiseOverviewAlignmentTracks,
-            linearViewOptions: getPairwiseOverviewLinearViewOptions,
-            noClickDragHandlers: true,
-            isFullyZoomedOut: true,
+            hasTemplate: true,
+            isPairwise: true,
             isInPairwiseOverviewView: true,
+            isFullyZoomedOut: true,
+            noClickDragHandlers: true,
+            linearViewOptions: getPairwiseOverviewLinearViewOptions,
             handleSelectTrack: trackIndex => {
               //set currentPairwiseAlignmentIndex
               this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
@@ -1016,5 +1073,3 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
     };
   }
 }
-
-function noop() {}
