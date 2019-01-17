@@ -19,8 +19,11 @@ import { BPSelect } from "teselagen-react-components";
 // import { MenuItem } from "@blueprintjs/core";
 
 // Use the line below because using the full 30 sequences murders Redux dev tools.
-alignmentRunData.alignmentTracks = alignmentRunData.alignmentTracks.slice(0, 20);
-let alignmentDataToUse = alignmentRunData
+alignmentRunData.alignmentTracks = alignmentRunData.alignmentTracks.slice(
+  0,
+  20
+);
+let alignmentDataToUse = alignmentRunData;
 // let alignmentDataToUse = jbeiPairwiseAlignmnent232018
 const defaultState = {
   showOptions: true,
@@ -50,7 +53,9 @@ export default connect(
     return {
       ...getCombinedActions(
         times(
-          alignmentDataToUse.alignmentTracks ? alignmentDataToUse.alignmentTracks.length : alignmentDataToUse.pairwiseAlignments.length,
+          alignmentDataToUse.alignmentTracks
+            ? alignmentDataToUse.alignmentTracks.length
+            : alignmentDataToUse.pairwiseAlignments.length,
           i => "alignmentView" + i
         ),
         basicActions,
@@ -86,14 +91,14 @@ export default connect(
           // stuff.
           updateEditor(store, "alignmentView" + i, {
             readOnly: true,
-            sequenceData: at.alignmentData,
+            sequenceData: at.alignmentData
           });
         });
       } else {
         this.state.alignmentDataToUse.pairwiseAlignments.forEach((at, i) => {
           updateEditor(store, "alignmentView" + i, {
             readOnly: true,
-            sequenceData: at.alignmentData,
+            sequenceData: at.alignmentData
           });
         });
       }
@@ -120,6 +125,7 @@ export default connect(
                   // background: "white",
                   zIndex: 1000,
                   position: "absolute",
+                  overflowY: "auto",
                   left: 0,
                   paddingTop: 10,
                   width: 250,
@@ -132,16 +138,20 @@ export default connect(
                   borderRight: "1px solid lightgrey"
                 }}
               >
-            <BPSelect
-              onChange={val => {
-                val === "msa" ? this.setState({alignmentDataToUse: alignmentRunData}) : this.setState({alignmentDataToUse: jbeiPairwiseAlignmnent232018})
-              }}
-              options={[
-                { label: "Multiple Sequence Alignment", value: "msa" },
-                { label: "Pairwise Alignment", value: "pairwise" }
-              ]}
-            />
-            <br/>
+                <BPSelect
+                  onChange={val => {
+                    val === "msa"
+                      ? this.setState({ alignmentDataToUse: alignmentRunData })
+                      : this.setState({
+                          alignmentDataToUse: jbeiPairwiseAlignmnent232018
+                        });
+                  }}
+                  options={[
+                    { label: "Multiple Sequence Alignment", value: "msa" },
+                    { label: "Pairwise Alignment", value: "pairwise" }
+                  ]}
+                />
+                <br />
                 {renderToggle({
                   that: this,
                   type: "forceHeightMode",
@@ -218,9 +228,15 @@ export default connect(
               alignmentType: this.state.alignmentDataToUse.alignmentType,
               height: this.state.forceHeightMode ? 500 : undefined,
               isFullyZoomedOut: this.state.isFullyZoomedOut,
-              minimapLaneHeight: this.state.setMinimapLaneHeight ? 13 : undefined,
-              minimapLaneSpacing: this.state.setMinimapLaneSpacing ? 3 : undefined,
-              alignmentName: this.state.setAlignmentName ? 'Ref Seq Name' : undefined,
+              minimapLaneHeight: this.state.setMinimapLaneHeight
+                ? 13
+                : undefined,
+              minimapLaneSpacing: this.state.setMinimapLaneSpacing
+                ? 3
+                : undefined,
+              alignmentName: this.state.setAlignmentName
+                ? "Ref Seq Name"
+                : undefined,
               noClickDragHandlers: this.state.noClickDragHandlers,
               hasTemplate: this.state.hasTemplate,
               noVisibilityOptions: this.state.noVisibilityOptions,

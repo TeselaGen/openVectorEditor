@@ -90,7 +90,7 @@ export default class EditorDemo extends React.Component {
   };
   rightClickOverridesExample = {
     rightClickOverrides: {
-      partRightClicked: (items, ) => {
+      partRightClicked: items => {
         return [
           ...items,
           {
@@ -103,15 +103,15 @@ export default class EditorDemo extends React.Component {
   };
   clickOverridesExample = {
     clickOverrides: {
-      featureClicked: ({event}) => {
-        window.toastr.success("Feature Click Override Hit!")
-        event.stopPropagation()
-        return true //returning truthy stops the regular click action from occurring
+      featureClicked: ({ event }) => {
+        window.toastr.success("Feature Click Override Hit!");
+        event.stopPropagation();
+        return true; //returning truthy stops the regular click action from occurring
       },
       partClicked: () => {
-        window.toastr.success("Part Click Override Hit!")
-        //by default (aka returning falsy) the usual click action occurs 
-      },
+        window.toastr.success("Part Click Override Hit!");
+        //by default (aka returning falsy) the usual click action occurs
+      }
     }
   };
   menuOverrideExample = {
@@ -206,6 +206,7 @@ export default class EditorDemo extends React.Component {
                 // background: "white",
                 zIndex: 1000,
                 position: "absolute",
+                overflowY: "auto",
                 left: 0,
                 paddingTop: 10,
                 width: 250,
@@ -507,8 +508,7 @@ rightClickOverrides: {
             showAvailability={this.state.showAvailability}
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}
-            {...this.state.clickOverridesExample &&
-              this.clickOverridesExample}
+            {...this.state.clickOverridesExample && this.clickOverridesExample}
             {...this.state.propertiesOverridesExample &&
               this.propertiesOverridesExample}
             {...this.state.overrideToolbarOptions &&
