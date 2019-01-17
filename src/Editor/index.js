@@ -463,6 +463,7 @@ export class Editor extends React.Component {
             }, {})}
           key={activePanelId}
           rightClickOverrides={this.props.rightClickOverrides}
+          clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}
           editorName={editorName}
           tabHeight={tabHeight}

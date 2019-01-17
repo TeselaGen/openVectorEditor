@@ -46,9 +46,37 @@ import {
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
 
+const annotationClickHandlers = [
+  "orfClicked",
+  "primerClicked",
+  "translationClicked",
+  "cutsiteClicked",
+  "translationDoubleClicked",
+  "deletionLayerClicked",
+  "replacementLayerClicked",
+  "featureClicked",
+  "partClicked",
+  "searchLayerClicked"
+];
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
+    constructor(props) {
+      super(props);
+      annotationClickHandlers.forEach(handler => {
+        this[handler] = (...args) => {
+          const { clickOverrides = {} } = this.props;
+          let preventDefault;
+          const defaultHandler = this[handler + "_localOverride"]
+            ? this[handler + "_localOverride"]
+            : this.annotationClicked;
+          if (clickOverrides[handler]) {
+            preventDefault = clickOverrides[handler](...args);
+          }
+          !preventDefault && defaultHandler(...args);
+        };
+      });
+    }
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
@@ -440,7 +468,7 @@ function VectorInteractionHOC(Component /* options */) {
         propertiesViewTabUpdate(annotation.annotationTypePlural, annotation);
     };
 
-    cutsiteClicked = ({ event, annotation }) => {
+    cutsiteClicked_localOverride = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
@@ -1171,17 +1199,10 @@ function VectorInteractionHOC(Component /* options */) {
           cutsiteRightClicked: this.cutsiteRightClicked,
           translationRightClicked: this.translationRightClicked,
           primerRightClicked: this.primerRightClicked,
-          orfClicked: this.annotationClicked,
-          primerClicked: this.annotationClicked,
-          translationClicked: this.annotationClicked,
-          cutsiteClicked: this.cutsiteClicked,
-          translationDoubleClicked: this.annotationClicked,
-          deletionLayerClicked: this.annotationClicked,
-          replacementLayerClicked: this.annotationClicked,
-          featureClicked: this.annotationClicked,
-          partClicked: this.annotationClicked,
-          searchLayerClicked: this.annotationClicked,
-
+          ...annotationClickHandlers.reduce((acc, handler) => {
+            acc[handler] = this[handler];
+            return acc;
+          }, {}),
           editorDragged: this.editorDragged,
           editorDragStarted: this.editorDragStarted,
           editorClicked: this.editorClicked,

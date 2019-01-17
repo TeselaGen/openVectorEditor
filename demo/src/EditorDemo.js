@@ -2,7 +2,6 @@ import { Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
 
-import _ from "lodash";
 import store from "./store";
 import { updateEditor } from "../../src/";
 
@@ -27,6 +26,7 @@ const defaultState = {
   menuOverrideExample: false,
   propertiesOverridesExample: false,
   overrideRightClickExample: false,
+  clickOverridesExample: false,
   showAvailability: true,
   showOptions: true,
   shouldAutosave: false,
@@ -90,15 +90,28 @@ export default class EditorDemo extends React.Component {
   };
   rightClickOverridesExample = {
     rightClickOverrides: {
-      partRightClicked: (items, { annotation }, props) => {
+      partRightClicked: (items, ) => {
         return [
           ...items,
           {
             text: "My Part Override",
-            onClick: () => window.toastr.success("Part Override hit!")
+            onClick: () => window.toastr.success("Part Override Hit!")
           }
         ];
       }
+    }
+  };
+  clickOverridesExample = {
+    clickOverrides: {
+      featureClicked: ({event}) => {
+        window.toastr.success("Feature Click Override Hit!")
+        event.stopPropagation()
+        return true //returning truthy stops the regular click action from occurring
+      },
+      partClicked: () => {
+        window.toastr.success("Part Click Override Hit!")
+        //by default (aka returning falsy) the usual click action occurs 
+      },
     }
   };
   menuOverrideExample = {
@@ -356,6 +369,7 @@ rightClickOverrides: {
               {renderToggle({ that: this, type: "displayMenuBarAboveTools" })}
               {renderToggle({ that: this, type: "disableSetReadOnly" })}
               {renderToggle({ that: this, type: "showReadOnly" })}
+              {renderToggle({ that: this, type: "clickOverridesExample" })}
               {renderToggle({ that: this, type: "showCircularity" })}
               {renderToggle({ that: this, type: "showAvailability" })}
               {renderToggle({ that: this, type: "isFullscreen" })}
@@ -493,6 +507,8 @@ rightClickOverrides: {
             showAvailability={this.state.showAvailability}
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}
+            {...this.state.clickOverridesExample &&
+              this.clickOverridesExample}
             {...this.state.propertiesOverridesExample &&
               this.propertiesOverridesExample}
             {...this.state.overrideToolbarOptions &&

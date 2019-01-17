@@ -43,6 +43,12 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             ...(this.state.toggleSelection && {
               selectionLayer: { start: 2, end: 30 }
             }),
+            partClicked: () => {
+              window.toastr.success("Part Clicked!");
+            },
+            partRightClicked: () => {
+              window.toastr.success("Part Right Clicked!");
+            },
 
             sequenceData: {
               // annotationLabelVisibility: {
@@ -54,6 +60,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
               // annotationVisibility: {
               //   axis: sequenceData.circular
               // }
+              
               name: "Test Seq",
               circular: this.state.circular, //toggle to true to change this!
               parts: [
@@ -62,14 +69,14 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                   id: "fakeId1",
                   start: 10,
                   end: 20,
-                  ...this.state.togglePartColor && {color: "override_red"}
+                  ...(this.state.togglePartColor && { color: "override_red" })
                 },
                 {
                   name: "Part 2",
                   id: "fakeId2",
                   start: 25,
                   end: 30,
-                  ...this.state.togglePartColor && {color: "override_blue"}
+                  ...(this.state.togglePartColor && { color: "override_blue" })
                 }
               ],
               sequence:

@@ -31,6 +31,25 @@ describe("editor", function() {
       .click();
     cy.contains("Part Override hit!").should("be.visible");
   });
+  it(`should handle clickOverrides correctly if they are passed`, function() {
+    cy.tgToggle("clickOverridesExample");
+
+    cy.get(".veLabelText")
+      .contains("Part 0")
+      .click({ force: true });
+
+    cy.contains("Part Click Override Hit!").should("be.visible");
+    //clicking the part SHOULD change the selection because in this demo the default part click is not
+    cy.contains("Selecting 21 bps from 11 to 31").should("be.visible");
+
+    cy.get(".veLabelText")
+      .contains("araC")
+      .click({ force: true });
+
+    cy.contains("Feature Click Override Hit!").should("be.visible");
+    //clicking the feature SHOULD NOT change the selection because in this demo the default feature click is overridden
+    cy.contains("Selecting 21 bps from 11 to 31").should("be.visible");
+  });
   it(`should handle propertiesListOverrides correctly if they are passed`, function() {
     cy.tgToggle("propertiesOverridesExample");
 

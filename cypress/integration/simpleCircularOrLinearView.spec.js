@@ -4,6 +4,14 @@ describe("tabs", function() {
   beforeEach(() => {
     cy.visit("/#/SimpleCircularOrLinearView");
   });
+  it("can click and right click a part and have the handlers passed on the part be hit!", function() {
+    cy.get(`.veRowViewPart path`)
+      .first()
+      .click({ force: true })
+      .trigger("contextmenu", { force: true });
+    cy.contains("Part Clicked!");
+    cy.contains("Part Right Clicked!");
+  });
   it("can toggle part colors", function() {
     cy.get(`path[stroke="red"]`).should("not.exist");
     cy.tgToggle("togglePartColor");

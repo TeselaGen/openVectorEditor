@@ -111,9 +111,15 @@ function drawAnnotations({
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
         onClick({ event, annotation });
+        if (annotation.onClick) {
+          annotation.onClick({ event, annotation });
+        }
       }
       function onContextMenu(event) {
         onRightClicked({ event, annotation });
+        if (annotation.onRightClick) {
+          annotation.onRightClick({ event, annotation });
+        }
       }
 
       const {
@@ -217,6 +223,21 @@ const DrawAnnotation = withHover(function({
   onMouseLeave,
   onMouseOver
 }) {
+  const sharedProps = {
+    style: { cursor: "pointer" },
+    className: className,
+    onContextMenu: onContextMenu,
+    onClick: onClick,
+    onMouseLeave,
+    onMouseOver
+  };
+  const title = (
+    <title>
+      {getAnnotationNameAndStartStopString(annotation, {
+        isPart: annotationType === "part"
+      })}
+    </title>
+  );
   return (
     <React.Fragment>
       <g
@@ -225,16 +246,9 @@ const DrawAnnotation = withHover(function({
           eAngle: endAngle,
           forward: reverseAnnotations ? !annotation.forward : annotation.forward
         })}
-        {...{ onMouseLeave, onMouseOver }}
-        className={className}
-        onContextMenu={onContextMenu}
-        onClick={onClick}
+        {...sharedProps}
       >
-        <title>
-          {getAnnotationNameAndStartStopString(annotation, {
-            isPart: annotationType === "part"
-          })}
-        </title>
+        {title}
         <Annotation
           {...locationAngles &&
             locationAngles.length && { containsLocations: true }}
@@ -257,16 +271,9 @@ const DrawAnnotation = withHover(function({
                   ? !annotation.forward
                   : annotation.forward
               })}
-              {...{ onMouseLeave, onMouseOver }}
-              className={className}
-              onContextMenu={onContextMenu}
-              onClick={onClick}
+              {...sharedProps}
             >
-              <title>
-                {getAnnotationNameAndStartStopString(annotation, {
-                  isPart: annotationType === "part"
-                })}
-              </title>
+              {title}
               <Annotation
                 totalAngle={totalAngle}
                 color={annotationColor}
