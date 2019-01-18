@@ -75,6 +75,7 @@ export const actions = {
     {}
   ),
   ...modalActions,
+  ...alignments,
   vectorEditorInitialize,
   vectorEditorClear
 };
