@@ -14,7 +14,20 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import "./commands";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+//filter out socketIO requests here
+beforeEach(function() {
+  cy.server({
+    whitelist: xhr => {
+      //filter out socketIO requests here
+      if (xhr.url.indexOf("socket.io/") > -1) return true;
+      if (xhr.url.indexOf("sockjs-node/") > -1) return true;
+      //return the default cypress whitelist filer
+      return xhr.method === "GET" && /\.(jsx?|html|css)(\?.*)?$/.test(xhr.url);
+    }
+  });
+});

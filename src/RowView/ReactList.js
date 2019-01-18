@@ -414,6 +414,7 @@ export default class ReactList extends React.Component {
   cacheSizes() {
     const { cache } = this;
     const { from } = this.state;
+    if (!this.items) return;
     const itemEls = this.items.children;
     const sizeKey = OFFSET_SIZE_KEYS[this.props.axis];
     for (let i = 0, l = itemEls.length; i < l; ++i) {
@@ -550,7 +551,12 @@ export default class ReactList extends React.Component {
       left: x
     };
     return (
-      <div style={style} ref={c => (this.el = c)}>
+      <div
+        style={style}
+        ref={c => {
+          if (c) this.el = c;
+        }}
+      >
         <div style={listStyle}>{items}</div>
       </div>
     );

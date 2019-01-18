@@ -3,6 +3,12 @@ describe("editor", function() {
     cy.visit("");
   });
 
+  it("can drag the editor", function() {
+    cy.contains("No Selection");
+    cy.dragBetween(`[data-row-number="0"]`, `[data-row-number="1"]`);
+    cy.contains("No Selection").should("not.exist");
+  });
+
   it(`should autosave if autosave=true`, function() {
     cy.tgToggle("shouldAutosave");
 

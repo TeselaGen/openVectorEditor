@@ -265,12 +265,6 @@ class AlignmentView extends React.Component {
   };
 
   renderItem = (_i, key, isTemplate) => {
-    if (this.timeoutId) clearInterval(this.timeoutId);
-    this.timeoutId = setTimeout(() => {
-      this.timeoutId = undefined;
-      // this.setVerticalScrollRange();
-    }, 100);
-
     let charWidthInLinearView = this.getCharWidthInLinearView();
 
     const {
