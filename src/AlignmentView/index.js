@@ -871,7 +871,9 @@ export default compose(
   branch(
     ({ noTracks }) => noTracks,
     renderComponent(() => {
-      return "No Tracks Found";
+      return (
+        <div style={{ minHeight: 30, minWidth: 150 }}>"No Tracks Found"</div>
+      );
     })
   ),
   branch(

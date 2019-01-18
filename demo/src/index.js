@@ -9,8 +9,6 @@ import { render } from "react-dom";
 import {
   CircularView,
   RowView,
-  
-  ToolBar,
   LinearView,
   DigestTool,
   updateEditor
@@ -54,11 +52,6 @@ const links = [
   );
 });
 
-updateEditor(store, "DemoEditor", {
-  readOnly: false,
-  sequenceData: exampleSequenceData
-});
-
 class Demo extends React.Component {
   constructor(props) {
     super(props);
@@ -89,9 +82,6 @@ class Demo extends React.Component {
               flexDirection: "column"
             }}
           >
-            {/* <GenbankView editorName={"DemoEditor"} /> */}
-            {/* <OrfProperties editorName={"DemoEditor"} /> */}
-            {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
             <div
               style={{
                 display: "flex",
@@ -189,42 +179,65 @@ class Demo extends React.Component {
             />
             <Route
               render={() => {
-                return <CircularView editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <CircularView editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/CircularView"
             />
             <Route
-              render={() => <SimpleCircularOrLinearViewDemo></SimpleCircularOrLinearViewDemo>}
+              render={() => <SimpleCircularOrLinearViewDemo />}
               path="/SimpleCircularOrLinearView"
             />
             <Route
               render={() => {
-                return <DigestTool editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <DigestTool editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/DigestTool"
             />
             <Route
               render={() => {
-                return <RowView editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <RowView editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/RowView"
             />
             <Route
               render={() => {
-                return <LinearView editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <LinearView editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/LinearView"
-            />
-            <Route
-              render={() => {
-                return <ToolBar editorName="DemoEditor" />;
-              }}
-              path="/ToolBar"
             />
           </div>
         </Router>
       </Provider>
     );
+  }
+}
+
+class WrapSimpleDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    updateEditor(store, "DemoEditor", {
+      readOnly: false,
+      sequenceData: exampleSequenceData
+    });
+  }
+  render() {
+    return this.props.children;
   }
 }
 
