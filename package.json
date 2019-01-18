@@ -24,13 +24,7 @@
     "fontopen": "make fontopen",
     "fontsave": "make fontsave",
     "c": "yarn cypress open",
-    "test-e2e": "yarn cypress run --record --key 5d118c91-6b05-4e6f-899b-17783d834bf5",
-    "test": "jest --env=jsdom --maxWorkers 2",
-    "test-coverage": "yarn test -- --coverage",
-    "test:staged": "cross-env CI=true yarn test -- --findRelatedTests",
-    "test-fix": "git reset . && cross-env CI=true yarn test --onlyChanged --updateSnapshot",
-    "test-watch": "yarn test --watch",
-    "test-debug": "node --inspect --debug-brk ./node_modules/.bin/jest src --runInBand "
+    "test-e2e": "yarn cypress run --record --key 5d118c91-6b05-4e6f-899b-17783d834bf5"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -141,7 +135,6 @@
     "src/**/*.js": [
       "eslint --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
       "prettier --write",
-      "yarn test:staged",
       "git add"
     ],
     "cypress/**/*.js": [
