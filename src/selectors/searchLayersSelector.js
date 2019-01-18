@@ -28,8 +28,8 @@ function searchLayersSelector(
 export default createSelector(
   sequenceSelector,
   circularSelector,
-  state => state.findTool.searchText,
-  state => state.findTool.ambiguousOrLiteral,
-  state => state.findTool.dnaOrAA,
+  state => state.findTool && state.findTool.searchText,
+  state => state.findTool && state.findTool.ambiguousOrLiteral,
+  state => state.findTool && state.findTool.dnaOrAA,
   searchLayersSelector
 );

@@ -542,8 +542,17 @@ const annotationToggleCommandDefs = {};
     isDisabled: props => {
       if (type === "orfTranslations") {
         return (
-          !props.annotationVisibility.orfs &&
-          "ORFs must be visible to view their translations"
+          (!props.annotationVisibility.orfs &&
+            "ORFs must be visible to view their translations") ||
+          (!props.annotationVisibility.translations &&
+            "Translations must be visible to view ORF translations")
+        );
+      } else if (type === "cdsFeatureTranslations") {
+        return (
+          (!props.annotationVisibility.features &&
+            "Features must be visible to view their translations") ||
+          (!props.annotationVisibility.translations &&
+            "Translations must be visible to view CDS feature translations")
         );
       }
     },

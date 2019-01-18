@@ -4,7 +4,7 @@ import FileSaver from "file-saver";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import lruMemoize from "lru-memoize";
-import { compose, withHandlers } from "recompose";
+import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
 import { some, map } from "lodash";
@@ -652,3 +652,27 @@ export const connectToEditor = fn => {
     mapDispatchToActions
   );
 };
+
+//this is to enhance non-redux connected views like LinearView, or CircularView or RowView
+//so they can still render things like translations, ..etc
+
+//Currently only supporting translations
+export const withEditorPropsNoRedux = withProps(props => {
+  const {
+    sequenceData,
+    annotationVisibility,
+    annotationVisibilityOverrides
+  } = props;
+  return {
+    sequenceData: {
+      ...sequenceData,
+      translations: s.translationsSelector({
+        sequenceData,
+        annotationVisibility: {
+          ...annotationVisibility,
+          ...annotationVisibilityOverrides
+        }
+      })
+    }
+  };
+});

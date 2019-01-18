@@ -14,7 +14,7 @@ import {
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { throttle } from "lodash";
-import { LinearView } from "../LinearView";
+import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
@@ -377,7 +377,7 @@ class AlignmentView extends React.Component {
             Inspect track
           </div>
         )}
-        <LinearView
+        <NonReduxEnhancedLinearView
           {...{
             ...rest,
             ...(noClickDragHandlers
@@ -391,7 +391,7 @@ class AlignmentView extends React.Component {
                   editorDragStarted: this.editorDragStarted,
                   editorDragStopped: this.editorDragStopped
                 }),
-            linearViewAnnotationVisibilityOverrides:
+            annotationVisibilityOverrides:
               alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
             linearViewAnnotationLabelVisibilityOverrides:
               alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
@@ -1013,7 +1013,7 @@ class PairwiseAlignmentView extends React.Component {
 function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
   if (!isTemplate) {
     return {
-      linearViewAnnotationVisibilityOverrides: {
+      annotationVisibilityOverrides: {
         features: false,
         translations: false,
         parts: false,
@@ -1033,7 +1033,7 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
     };
   } else {
     return {
-      // linearViewAnnotationVisibilityOverrides: {
+      // annotationVisibilityOverrides: {
       //   features: false,
       //   yellowAxis: false,
       //   translations: false,

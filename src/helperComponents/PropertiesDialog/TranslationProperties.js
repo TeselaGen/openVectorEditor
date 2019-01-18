@@ -106,8 +106,10 @@ class TranslationProperties extends React.Component {
           <Checkbox
             onChange={function() {
               annotationVisibilityToggle("orfTranslations");
-              !annotationVisibility.orfTranslations &&
+              if (!annotationVisibility.orfTranslations) {
                 annotationVisibilityShow("orfs");
+                annotationVisibilityShow("translations");
+              }
             }}
             disabled={!annotationVisibility.orfs}
             checked={annotationVisibility.orfTranslations}
@@ -116,6 +118,10 @@ class TranslationProperties extends React.Component {
           <Checkbox
             onChange={function() {
               annotationVisibilityToggle("cdsFeatureTranslations");
+              if (!annotationVisibility.cdsFeatureTranslations) {
+                annotationVisibilityShow("features");
+                annotationVisibilityShow("translations");
+              }
             }}
             checked={annotationVisibility.cdsFeatureTranslations}
             label="Show translations for CDS features"
