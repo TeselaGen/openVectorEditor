@@ -1,6 +1,11 @@
-import { Checkbox, Switch, Tooltip } from "@blueprintjs/core";
+import { Switch, Tooltip } from "@blueprintjs/core";
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox
+} from "teselagen-react-components";
+import getCommands from "../../commands";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
@@ -9,6 +14,10 @@ import { compose } from "recompose";
 import selectors from "../../selectors";
 
 class TranslationProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = getCommands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -30,7 +39,6 @@ class TranslationProperties extends React.Component {
       sequenceLength,
       selectedAnnotationId,
       annotationVisibilityToggle,
-      annotationVisibilityShow,
       annotationVisibility
     } = this.props;
     const translationsToUse = map(translations, translation => {
@@ -103,22 +111,13 @@ class TranslationProperties extends React.Component {
           entities={translationsToUse}
         />
         <div>
-          <Checkbox
-            onChange={function() {
-              annotationVisibilityToggle("orfTranslations");
-              !annotationVisibility.orfTranslations &&
-                annotationVisibilityShow("orfs");
-            }}
-            disabled={!annotationVisibility.orfs}
-            checked={annotationVisibility.orfTranslations}
-            label="Show translations for ORFs"
+          <CmdCheckbox
+            prefix="Show "
+            cmd={this.commands.toggleOrfTranslations}
           />
-          <Checkbox
-            onChange={function() {
-              annotationVisibilityToggle("cdsFeatureTranslations");
-            }}
-            checked={annotationVisibility.cdsFeatureTranslations}
-            label="Show translations for CDS features"
+          <CmdCheckbox
+            prefix="Show "
+            cmd={this.commands.toggleCdsFeatureTranslations}
           />
         </div>
         {!readOnly && (
@@ -175,16 +174,13 @@ class TranslationProperties extends React.Component {
 
 export default compose(
   connectToEditor(editorState => {
-    const {
-      readOnly,
-      annotationVisibility = {},
-      sequenceData: { sequence = "" } = {}
-    } = editorState;
+    const { readOnly, annotationVisibility = {}, sequenceData } = editorState;
     return {
       readOnly,
       translations: selectors.translationsSelector(editorState),
       annotationVisibility,
-      sequenceLength: sequence.length
+      sequenceLength: (sequenceData.sequence || "").length,
+      sequenceData
     };
   }),
   withSelectedEntities("translationProperties")
