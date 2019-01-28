@@ -39,7 +39,7 @@ class Translation extends React.Component {
 
     let { annotation } = annotationRange;
     if (!hasMounted) {
-      return <g height={height} className={"translationLayer"} />;
+      return <g height={height} className="translationLayer" />;
     }
     //we have an amino acid representation of our entire annotation, but it is an array
     //starting at 0, even if the annotation starts at some arbitrary point in the sequence
@@ -114,7 +114,7 @@ class Translation extends React.Component {
 
     return (
       <g
-        className={"translationLayer"}
+        className="translationLayer"
         // onClick={this.props.translationClicked}
       >
         {translationSVG}

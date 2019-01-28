@@ -43,7 +43,7 @@ function Translations(props) {
       <AnnotationPositioner
         height={annotationHeight}
         width={result.width}
-        className={"veRowViewTranslations"}
+        className="veRowViewTranslations"
         key={
           "ve-translation-" + annotation.id + "start:" + annotationRange.start
         }
