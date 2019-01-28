@@ -93,11 +93,13 @@ class Translation extends React.Component {
             translationDoubleClicked({ annotation, event });
           }}
           getGaps={getGaps}
+          gapsBefore={gapsBefore}
+          gapsInside={gapsInside}
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
           width={
             charWidth *
-            (getGaps && aminoAcidSliver.positionInCodon === 1
+            (getGaps
               ? gapsInside || 1
               : 1)
           }

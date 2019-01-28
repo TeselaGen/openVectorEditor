@@ -2,6 +2,8 @@ import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
 import React from "react";
 import store from "./store";
 import msaAlignment from "./exampleData/msaAlignment.json";
+import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
+import sangerAlignment from "./exampleData/sangerAlignment.json";
 import { addAlignment, AlignmentView, /* updateEditor */ } from "../../src/";
 // import { selectionLayerUpdate } from "../../src/redux/selectionLayer";
 // import { caretPositionUpdate } from "../../src/redux/caretPosition";
@@ -18,7 +20,7 @@ msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(
   20
 );
 const defaultState = {
-  alignmentDataId: msaAlignment.id,
+  alignmentDataId: sangerAlignment.id,
   showOptions: true,
   forceHeightMode: false,
   isFullyZoomedOut: false,
@@ -48,6 +50,7 @@ export default class AlignmentDemo extends React.Component {
   componentDidMount() {
     addAlignment(store, msaAlignment);
     addAlignment(store, pairwiseAlignment);
+    addAlignment(store, sangerAlignment);
   }
   render() {
     return (
@@ -86,7 +89,7 @@ export default class AlignmentDemo extends React.Component {
             >
               <BPSelect
                 onChange={val => {
-                  this.setState({ alignmentDataId: val === "msa" ? msaAlignment.id : pairwiseAlignment.id })
+                  this.setState({ alignmentDataId: val === "msa" ? sangerAlignment.id : pairwiseAlignment.id })
                 }}
                 options={[
                   { label: "Multiple Sequence Alignment", value: "msa" },

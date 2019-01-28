@@ -297,6 +297,7 @@ export class RowItem extends React.PureComponent {
               translationRightClicked={translationRightClicked}
               translationDoubleClicked={translationDoubleClicked}
               annotationRanges={translations}
+              alignmentData={alignmentData}
               {...annotationCommonProps}
             />
           )}

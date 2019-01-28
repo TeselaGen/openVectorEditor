@@ -32,8 +32,9 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
 });
 
 function VisibilityOptions({
-  alignmentAnnotationVisibility = {},
+  // alignmentAnnotationVisibility = {},
   alignmentAnnotationVisibilityToggle,
+  togglableAlignmentAnnotationSettings = {},
   // alignmentAnnotationLabelVisibility = {},
   // alignmentAnnotationLabelVisibilityToggle
   annotationsWithCounts,
@@ -50,7 +51,7 @@ function VisibilityOptions({
       style={{ padding: 10 }}
       className="alignmentAnnotationVisibilityToolInner"
     >
-      {map(alignmentAnnotationVisibility, (visible, annotationName) => {
+      {map(togglableAlignmentAnnotationSettings, (visible, annotationName) => {
         return (
           <div key={annotationName}>
             <Checkbox

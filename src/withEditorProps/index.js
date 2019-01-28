@@ -660,19 +660,22 @@ export const connectToEditor = fn => {
 export const withEditorPropsNoRedux = withProps(props => {
   const {
     sequenceData,
+    sequenceDataWithRefSeqCdsFeatures,
     annotationVisibility,
     annotationVisibilityOverrides
   } = props;
+  const translations = s.translationsSelector({
+    sequenceData: (sequenceDataWithRefSeqCdsFeatures || sequenceData),
+    annotationVisibility: {
+      ...annotationVisibility,
+      ...annotationVisibilityOverrides
+    }
+  })
+  // console.log('translations:',translations)
   return {
     sequenceData: {
       ...sequenceData,
-      translations: s.translationsSelector({
-        sequenceData,
-        annotationVisibility: {
-          ...annotationVisibility,
-          ...annotationVisibilityOverrides
-        }
-      })
+      translations
     }
   };
 });

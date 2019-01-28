@@ -30,11 +30,13 @@ function Translations(props) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
     const annotation = annotationRange.annotation;
+    const { gapsBefore, gapsInside } = getGaps(annotationRange)
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
-      ...getGaps(annotationRange)
+      // gapsBefore,
+      // gapsInside
     );
 
     annotationsSVG.push(
