@@ -760,6 +760,7 @@ export default compose(
       const {
         alignmentTracks,
         pairwiseAlignments,
+        alignmentType,
         scrollPercentageToJumpTo,
         pairwiseOverviewAlignmentTracks,
         loading,
@@ -829,6 +830,7 @@ export default compose(
             .join("")
         },
         pairwiseAlignments,
+        alignmentType,
         alignmentTracks,
         scrollPercentageToJumpTo,
         pairwiseOverviewAlignmentTracks,
