@@ -16,6 +16,8 @@ function Translations(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     getGaps,
+    gapsBeforeSeqRead,
+    gapsBeforeFeatureInSeqRead,
     ...rest
   } = props;
   if (annotationRanges.length === 0) {
@@ -35,9 +37,12 @@ function Translations(props) {
       annotationRange,
       bpsPerRow,
       charWidth,
-      // gapsBefore,
-      // gapsInside
+      gapsBefore,
+      gapsInside, 
+      gapsBeforeSeqRead,
+      gapsBeforeFeatureInSeqRead
     );
+    console.log('result.xStart:',result.xStart)
 
     annotationsSVG.push(
       <AnnotationPositioner

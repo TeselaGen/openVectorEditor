@@ -19,6 +19,18 @@ msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(
   0,
   20
 );
+sangerAlignment.alignmentTracks = sangerAlignment.alignmentTracks.slice(
+  0,
+  2
+);
+sangerAlignment.alignmentTracks[0].sequenceData.features = [{
+  "notes": {},
+  "type": "CDS",
+  "strand": 1,
+  "name": "LOA1002.so.v1.1.6",
+  "start": 1088,
+  "end": 1092
+}]
 const defaultState = {
   alignmentDataId: sangerAlignment.id,
   showOptions: true,

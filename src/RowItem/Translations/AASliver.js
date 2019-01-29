@@ -20,7 +20,6 @@ function AASliver(props) {
   if (props.letter === "-") {
     return null;
   }
-  console.log('props.gapsBefore:',props.gapsBefore)
   return (
     <g
       onClick={props.onClick}
@@ -33,7 +32,7 @@ function AASliver(props) {
         ", " +
         props.height / 100 +
         ") translate(" +
-        (((props.relativeAAPositionInTranslation + props.gapsBefore) * 100) / 1.25 + offset) +
+        ((props.relativeAAPositionInTranslation * 100) / 1.25 + offset) +
         ",0)"
       }
     >

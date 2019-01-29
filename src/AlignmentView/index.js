@@ -355,31 +355,44 @@ class AlignmentView extends React.Component {
 
     console.log('sequenceData.name:',sequenceData.name)
     // for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
-    let sequenceDataWithRefSeqCdsFeatures
+    let alignmentDataWithRefSeqCdsFeatures
+    let gapsBeforeSeqRead
+    let gapsBeforeFeatureInSeqRead
     // if (this.props.alignmentType === 'SANGER SEQUENCING') {
+    if (i === 0) {
+      alignmentDataWithRefSeqCdsFeatures = cloneDeep(sequenceData)
+      alignmentDataWithRefSeqCdsFeatures.features.forEach((feature, index) => {
+        // alignmentDataWithRefSeqCdsFeatures.features[index].start += getGaps(alignmentData.sequence).gapsBefore
+      })
+      alignmentDataWithRefSeqCdsFeatures.sequence = alignmentData.sequence.replace(/^-+/g, "").replace(/-+$/g, "")
+    }
     if (i !== 0) {
-      sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData)
+      alignmentDataWithRefSeqCdsFeatures = cloneDeep(alignmentData)
+      alignmentDataWithRefSeqCdsFeatures.features = []
       let refSeqCdsFeaturesBpPos = []
       alignmentTracks[0].sequenceData.features.forEach(feature => {
         if (feature.type === 'CDS') {
-          console.log('feature.name:',feature.name)
+          // console.log('feature.name:',feature.name)
+          // console.log('feature:',feature)
           let editedFeature = cloneDeep(feature)
           // CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
           // actual position in the track
           const absoluteFeatureStart = getGaps(feature.start, alignmentTracks[0].alignmentData.sequence).gapsBefore + feature.start
           const absoluteFeatureEnd = getGaps(feature.end, alignmentTracks[0].alignmentData.sequence).gapsBefore + feature.end
-          console.log('absoluteFeatureStart:',absoluteFeatureStart)
-          console.log('absoluteFeatureEnd:',absoluteFeatureEnd)
-          const gapsBeforeSeqRead = getGaps(0, alignmentData.sequence).gapsBefore
-          const gapsBeforeFeatureInSeqRead = getGaps(feature.start - gapsBeforeSeqRead, alignmentData.sequence).gapsBefore
+          // console.log('absoluteFeatureStart:',absoluteFeatureStart)
+          // console.log('absoluteFeatureEnd:',absoluteFeatureEnd)
+          gapsBeforeSeqRead = getGaps(0, alignmentData.sequence).gapsBefore
+          // console.log('gapsBeforeSeqRead:',gapsBeforeSeqRead)
+          gapsBeforeFeatureInSeqRead = getGaps(feature.start - gapsBeforeSeqRead, alignmentData.sequence).gapsBefore
+          // console.log('gapsBeforeFeatureInSeqRead:',gapsBeforeFeatureInSeqRead)
           const gapsAfterSeqRead = alignmentData.sequence.length - cloneDeep(alignmentData.sequence).replace(/-+$/g, "").length
           // const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, "");
           // const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
           const seqReadLengthWithoutGapsBeforeAfter = alignmentData.sequence.length - gapsBeforeSeqRead - gapsAfterSeqRead
           const absoluteSeqReadStart = gapsBeforeSeqRead
           const absoluteSeqReadEnd = absoluteSeqReadStart + seqReadLengthWithoutGapsBeforeAfter
-          console.log('absoluteSeqReadStart:',absoluteSeqReadStart)
-          console.log('absoluteSeqReadEnd:',absoluteSeqReadEnd)
+          // console.log('absoluteSeqReadStart:',absoluteSeqReadStart)
+          // console.log('absoluteSeqReadEnd:',absoluteSeqReadEnd)
           // console.log('gapsBeforeFeatureInSeqRead:',gapsBeforeFeatureInSeqRead)
           let featureStartInSeqRead
           // if (absoluteFeatureStart > gapsBeforeFeatureInSeqRead) {
@@ -391,24 +404,27 @@ class AlignmentView extends React.Component {
             // if the feature starts before the seq read starts but doesn't end before the seq read starts
 
             let arrayOfCodonStartPos = []
-            for (let i = absoluteFeatureStart; i < (absoluteSeqReadStart + 6); i+=3) {
+            for (let i = absoluteFeatureStart; i < (absoluteSeqReadStart + 6); i += 3) {
               arrayOfCodonStartPos.push(i)
             }
-            console.log('arrayOfCodonStartPos:',arrayOfCodonStartPos)
+            // console.log('arrayOfCodonStartPos:',arrayOfCodonStartPos)
 
             // want to start translation at the codon start pos closest to seq read start
             // editedFeature.start = arrayOfCodonStartPos.reduce((prev, curr) => Math.abs(curr - absoluteSeqReadStart) < Math.abs(prev - absoluteSeqReadStart) ? curr : prev)
-            editedFeature.start = featureStartInSeqRead
-            console.log('editedFeature.start:',editedFeature.start)
-            const shortenedFeatureLength = Math.abs(feature.end - feature.start) - (absoluteSeqReadStart - absoluteFeatureStart)
-            console.log('shortenedFeatureLength:',shortenedFeatureLength)
+            const absoluteTranslationStartInFrame = arrayOfCodonStartPos.reduce((prev, curr) => (Math.abs(curr - absoluteSeqReadStart) < Math.abs(prev - absoluteSeqReadStart)) && (curr >= absoluteSeqReadStart) ? curr : prev)
+            const seqReadTranslationStartInFrame = absoluteTranslationStartInFrame - gapsBeforeSeqRead
+            editedFeature.start = seqReadTranslationStartInFrame
+            // editedFeature.start = featureStartInSeqRead
+            // console.log('editedFeature.start:',editedFeature.start)
+            const shortenedFeatureLength = Math.abs(feature.end - feature.start) - (absoluteTranslationStartInFrame - absoluteFeatureStart)
+            // console.log('shortenedFeatureLength:',shortenedFeatureLength)
 
-            const featureLength = Math.abs(feature.end - feature.start)
-            if (feature.end > feature.start) {
-              editedFeature.end = editedFeature.start + featureLength
-            } else {
-              editedFeature.end = editedFeature.start - featureLength
-            }
+            // const featureLength = Math.abs(feature.end - feature.start)
+            // if (feature.end > feature.start) {
+              editedFeature.end = editedFeature.start + shortenedFeatureLength
+            // } else {
+            //   editedFeature.end = editedFeature.start - shortenedFeatureLength
+            // }
             // if (feature.end > feature.start) {
             //   editedFeature.end = editedFeature.start + shortenedFeatureLength
             // } else {
@@ -428,18 +444,16 @@ class AlignmentView extends React.Component {
           // const goal = 5;
           // counts.reduce((prev, curr) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
 
+            // alignmentDataWithRefSeqCdsFeatures.sequence = cloneDeep(alignmentData.sequence).replace(/^-+/g, "")
             refSeqCdsFeaturesBpPos.push(editedFeature)
             console.log('editedFeature here:',editedFeature)
           } else {
-            // reverse features?? 
-            featureStartInSeqRead = absoluteFeatureStart - gapsBeforeFeatureInSeqRead
+            featureStartInSeqRead = absoluteFeatureStart - gapsBeforeSeqRead
+            // featureStartInSeqRead = absoluteFeatureStart - gapsBeforeFeatureInSeqRead
+            // editedFeature.start = absoluteFeatureStart
             editedFeature.start = featureStartInSeqRead
             const featureLength = Math.abs(feature.end - feature.start)
-            if (feature.end > feature.start) {
-              editedFeature.end = editedFeature.start + featureLength
-            } else {
-              editedFeature.end = editedFeature.start - featureLength
-            }
+            editedFeature.end = editedFeature.start + featureLength
             refSeqCdsFeaturesBpPos.push(editedFeature)
             console.log('editedFeature there:',editedFeature)
           }
@@ -447,7 +461,8 @@ class AlignmentView extends React.Component {
       })
       // add ref seq's CDS features to seq reads (not the actual sequenceData) to generate translations at those bp pos
       if (refSeqCdsFeaturesBpPos.length !== 0) {
-          sequenceDataWithRefSeqCdsFeatures.features.push(...refSeqCdsFeaturesBpPos)
+          alignmentDataWithRefSeqCdsFeatures.features.push(...refSeqCdsFeaturesBpPos)
+          alignmentDataWithRefSeqCdsFeatures.sequence = alignmentData.sequence.replace(/^-+/g, "").replace(/-+$/g, "")
       }
     }
     // }
@@ -552,7 +567,9 @@ class AlignmentView extends React.Component {
             searchLayerClicked: this.annotationClicked,
             hideName: true,
             sequenceData,
-            sequenceDataWithRefSeqCdsFeatures,
+            alignmentDataWithRefSeqCdsFeatures,
+            gapsBeforeSeqRead,
+            gapsBeforeFeatureInSeqRead,
             tickSpacing: Math.ceil(120 / charWidthInLinearView),
             allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,

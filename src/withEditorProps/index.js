@@ -660,22 +660,32 @@ export const connectToEditor = fn => {
 export const withEditorPropsNoRedux = withProps(props => {
   const {
     sequenceData,
-    sequenceDataWithRefSeqCdsFeatures,
+    alignmentDataWithRefSeqCdsFeatures,
     annotationVisibility,
     annotationVisibilityOverrides
   } = props;
   const translations = s.translationsSelector({
-    sequenceData: (sequenceDataWithRefSeqCdsFeatures || sequenceData),
+    sequenceData: (alignmentDataWithRefSeqCdsFeatures || sequenceData),
     annotationVisibility: {
       ...annotationVisibility,
       ...annotationVisibilityOverrides
     }
   })
+  // console.log('alignmentDataWithRefSeqCdsFeatures:',alignmentDataWithRefSeqCdsFeatures)
   // console.log('translations:',translations)
-  return {
+  const toReturn = {
     sequenceData: {
       ...sequenceData,
+      // sequence: alignmentDataWithRefSeqCdsFeatures ? cloneDeep(alignmentDataWithRefSeqCdsFeatures.sequence).replace(/^-+/g, "").replace(/-+$/g, "") : sequenceData.sequence,
       translations
     }
-  };
+  }
+  // console.log('toReturn:',toReturn)
+  return toReturn
+  // return {
+  //   sequenceData: {
+  //     ...sequenceData,
+  //     translations
+  //   }
+  // };
 });
