@@ -231,6 +231,9 @@ class AlignmentView extends React.Component {
       charWidthInLinearView
     );
     this.setState({ charWidthInLinearView });
+    charWidthInLinearViewDefault = JSON.parse(
+      window.localStorage.getItem("charWidthInLinearViewDefault")
+    );
   };
   updateXScrollPercentage = scrollPercentage => {
     this.easyStore.percentScrolled = scrollPercentage;
