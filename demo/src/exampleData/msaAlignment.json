@@ -1,15 +1,15 @@
 {
-  "id": "d598e5bd-81fb-42f6-bffe-637bce154680",
+  "id": "msaAlignment_1",
   "alignmentType": "Multiple Sequence Alignment",
   "alignmentTracks": [
     {
       "sequenceData": {
         "id": "0bd61b29-d822-474f-86e1-877c476fb5dc",
         "features": [{
-          "start": 5,
-          "end": 10,
-          "name": "misc_feature",
-          "type": "misc_feature",
+          "start": 10,
+          "end": 50,
+          "name": "cds feature",
+          "type": "CDS",
           "id": "5ac3f0a199aae6653c0e7d41",
           "forward": true,
           "notes": {},
@@ -17,11 +17,22 @@
           "color": "#006FEF"
       },
       {
+        "start": 920,
+        "end": 960,
+        "name": "cds feature",
+        "type": "CDS",
+        "id": "5ac3f0a199aae6653c0e7d42",
+        "forward": true,
+        "notes": {},
+        "strand": 1,
+        "color": "#006FEF"
+      },
+      {
           "start": 20,
           "end": 35,
           "name": "misc_feature",
           "type": "misc_feature",
-          "id": "5ac3f0a199aae6653c0e7d42",
+          "id": "5ac3f0a199aae6653c0e7d43",
           "forward": false,
           "notes": {},
           "strand": -1,
@@ -54,7 +65,7 @@
           "end": 25,
           "name": "misc_feature",
           "type": "misc_feature",
-          "id": "5ac3f0a199aae6653c0e7d41",
+          "id": "5ac3f0a199aae6653c0e7d44",
           "forward": true,
           "notes": {},
           "strand": 1,
@@ -86,7 +97,7 @@
           "end": 12,
           "name": "misc_feature",
           "type": "misc_feature",
-          "id": "5ac3f0a199aae6653c0e7d41",
+          "id": "5ac3f0a199aae6653c0e7d45",
           "forward": true,
           "notes": {},
           "strand": 1,
