@@ -13,7 +13,7 @@ import {
 } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
-import { throttle } from "lodash";
+import { throttle, map } from "lodash";
 import { LinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
@@ -786,6 +786,24 @@ export default compose(
         : alignmentTracks[0]
       ).alignmentData.sequence.length;
 
+      const alignmentAnnotationsToToggle = [
+        "features",
+        "parts",
+        "sequence",
+        "reverseSequence",
+        "axis",
+        "axisNumbers",
+        "chromatogram",
+        "dnaColors"
+      ];
+      let togglableAlignmentAnnotationSettings = {};
+      map(alignmentAnnotationsToToggle, annotation => {
+        if (annotation in alignmentAnnotationVisibility) {
+          togglableAlignmentAnnotationSettings[annotation] =
+            alignmentAnnotationVisibility[annotation];
+        }
+      });
+
       let annotationsWithCounts = [];
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;
@@ -859,6 +877,7 @@ export default compose(
               }
             });
           },
+          togglableAlignmentAnnotationSettings,
           annotationsWithCounts
         }
       };
