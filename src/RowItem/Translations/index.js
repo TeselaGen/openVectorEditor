@@ -16,8 +16,6 @@ function Translations(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     getGaps,
-    gapsBeforeSeqRead,
-    gapsBeforeFeatureInSeqRead,
     ...rest
   } = props;
   if (annotationRanges.length === 0) {
@@ -32,18 +30,14 @@ function Translations(props) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
     const annotation = annotationRange.annotation;
-    const { gapsBefore, gapsInside } = getGaps(annotationRange)
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
       gapsBefore,
-      gapsInside, 
-      gapsBeforeSeqRead,
-      gapsBeforeFeatureInSeqRead
+      gapsInside
     );
-    console.log('result.xStart:',result.xStart)
-
     annotationsSVG.push(
       <AnnotationPositioner
         height={annotationHeight}

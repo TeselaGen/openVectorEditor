@@ -660,17 +660,17 @@ export const connectToEditor = fn => {
 export const withEditorPropsNoRedux = withProps(props => {
   const {
     sequenceData,
-    alignmentDataWithRefSeqCdsFeatures,
+    sequenceDataWithRefSeqCdsFeatures,
     annotationVisibility,
     annotationVisibilityOverrides
   } = props;
   const translations = s.translationsSelector({
-    sequenceData: (alignmentDataWithRefSeqCdsFeatures || sequenceData),
+    sequenceData: sequenceDataWithRefSeqCdsFeatures || sequenceData,
     annotationVisibility: {
       ...annotationVisibility,
       ...annotationVisibilityOverrides
     }
-  })
+  });
   // console.log('alignmentDataWithRefSeqCdsFeatures:',alignmentDataWithRefSeqCdsFeatures)
   // console.log('translations:',translations)
   const toReturn = {
@@ -679,9 +679,9 @@ export const withEditorPropsNoRedux = withProps(props => {
       // sequence: alignmentDataWithRefSeqCdsFeatures ? cloneDeep(alignmentDataWithRefSeqCdsFeatures.sequence).replace(/^-+/g, "").replace(/-+$/g, "") : sequenceData.sequence,
       translations
     }
-  }
+  };
   // console.log('toReturn:',toReturn)
-  return toReturn
+  return toReturn;
   // return {
   //   sequenceData: {
   //     ...sequenceData,

@@ -3,19 +3,13 @@ export default function getXStartAndWidthOfRowAnnotation(
   bpsPerRow,
   charWidth,
   gapsBefore = 0,
-  gapsInside = 0,
-  gapsBeforeSeqRead,
-  gapsBeforeFeatureInSeqRead
+  gapsInside = 0
 ) {
-  console.log('gapsBeforeSeqRead:',gapsBeforeSeqRead)
-  console.log('gapsBeforeFeatureInSeqRead:',gapsBeforeFeatureInSeqRead)
-  // const gapsToUse = gapsBeforeFeatureInSeqRead || gapsBefore
-  const gapsToUse = gapsBeforeSeqRead || gapsBefore
   let startOffset = range.start % bpsPerRow;
   const toReturn = {
     startOffset,
     // xStart: startOffset * charWidth,
-    xStart: (startOffset + gapsToUse) * charWidth,
+    xStart: (startOffset + gapsBefore) * charWidth,
     width: (range.end + 1 - range.start + gapsInside) * charWidth
   };
   return toReturn;

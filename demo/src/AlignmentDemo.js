@@ -21,16 +21,24 @@ msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(
 );
 sangerAlignment.alignmentTracks = sangerAlignment.alignmentTracks.slice(
   0,
-  2
+  10
 );
-sangerAlignment.alignmentTracks[0].sequenceData.features = [{
-  "notes": {},
-  "type": "CDS",
-  "strand": 1,
-  "name": "LOA1002.so.v1.1.6",
-  "start": 1088,
-  "end": 1092
-}]
+// sangerAlignment.alignmentTracks[0].sequenceData.features = [{
+//   "notes": {},
+//   "type": "CDS",
+//   "strand": 1,
+//   "name": "LOA1002.so.v1.1.6",
+//   "start": 1085,
+//   "end": 1095
+// }]
+// sangerAlignment.alignmentTracks[0].sequenceData.features = [{
+//   "notes": {},
+//   "type": "CDS",
+//   "strand": 1,
+//   "name": "LOA1002.so.v1.1.6",
+//   "start": 1049,
+//   "end": 1060
+// }]
 const defaultState = {
   alignmentDataId: sangerAlignment.id,
   showOptions: true,
