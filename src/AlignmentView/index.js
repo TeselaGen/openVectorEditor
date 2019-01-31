@@ -231,6 +231,9 @@ class AlignmentView extends React.Component {
       charWidthInLinearView
     );
     this.setState({ charWidthInLinearView });
+    charWidthInLinearViewDefault = JSON.parse(
+      window.localStorage.getItem("charWidthInLinearViewDefault")
+    );
   };
   updateXScrollPercentage = scrollPercentage => {
     this.easyStore.percentScrolled = scrollPercentage;
@@ -936,6 +939,7 @@ export default compose(
             alignmentAnnotationVisibility[annotation];
         }
       });
+
       let annotationsWithCounts = [];
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;

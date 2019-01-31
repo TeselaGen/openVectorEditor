@@ -2,13 +2,12 @@ import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
 import React from "react";
 import store from "./store";
 import msaAlignment from "./exampleData/msaAlignment.json";
-import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
+import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import sangerAlignment from "./exampleData/sangerAlignment.json";
 import { addAlignment, AlignmentView, /* updateEditor */ } from "../../src/";
 // import { selectionLayerUpdate } from "../../src/redux/selectionLayer";
 // import { caretPositionUpdate } from "../../src/redux/caretPosition";
 import renderToggle from "./utils/renderToggle";
-import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import { BPSelect } from "teselagen-react-components";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
@@ -19,28 +18,8 @@ msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(
   0,
   20
 );
-sangerAlignment.alignmentTracks = sangerAlignment.alignmentTracks.slice(
-  0,
-  10
-);
-// sangerAlignment.alignmentTracks[0].sequenceData.features = [{
-//   "notes": {},
-//   "type": "CDS",
-//   "strand": 1,
-//   "name": "LOA1002.so.v1.1.6",
-//   "start": 1085,
-//   "end": 1095
-// }]
-// sangerAlignment.alignmentTracks[0].sequenceData.features = [{
-//   "notes": {},
-//   "type": "CDS",
-//   "strand": 1,
-//   "name": "LOA1002.so.v1.1.6",
-//   "start": 1049,
-//   "end": 1060
-// }]
 const defaultState = {
-  alignmentDataId: sangerAlignment.id,
+  alignmentDataId: msaAlignment.id,
   showOptions: true,
   forceHeightMode: false,
   isFullyZoomedOut: false,
@@ -50,7 +29,7 @@ const defaultState = {
   noClickDragHandlers: false,
   hasTemplate: false,
   noVisibilityOptions: false,
-  setTickSpacing: false
+  setTickSpacing: false,
 };
 
 // const basicActions = { selectionLayerUpdate, caretPositionUpdate };
@@ -109,11 +88,12 @@ export default class AlignmentDemo extends React.Component {
             >
               <BPSelect
                 onChange={val => {
-                  this.setState({ alignmentDataId: val === "msa" ? sangerAlignment.id : pairwiseAlignment.id })
+                  this.setState({ alignmentDataId: val })
                 }}
                 options={[
-                  { label: "Multiple Sequence Alignment", value: "msa" },
-                  { label: "Pairwise Alignment", value: "pairwise" }
+                  { label: "Multiple Sequence Alignment", value: msaAlignment.id },
+                  { label: "Pairwise Alignment", value: pairwiseAlignment.id },
+                  { label: "Sanger Alignment", value: sangerAlignment.id }
                 ]}
               />
               <br />
