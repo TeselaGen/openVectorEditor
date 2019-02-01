@@ -59,8 +59,6 @@ export class RowItem extends React.PureComponent {
       },
       // alignmentData={sequence: row.sequence.shuffle(50, "-")},
       alignmentData,
-      gapsBeforeSeqRead,
-      gapsBeforeFeatureInSeqRead,
       sequenceLength = row.sequence.length,
       // sequenceLength = alignmentData.sequence.length || row.sequence.length,
       chromatogramData,
@@ -299,9 +297,6 @@ export class RowItem extends React.PureComponent {
               translationRightClicked={translationRightClicked}
               translationDoubleClicked={translationDoubleClicked}
               annotationRanges={translations}
-              alignmentData={alignmentData}
-              gapsBeforeSeqRead={gapsBeforeSeqRead}
-              gapsBeforeFeatureInSeqRead={gapsBeforeFeatureInSeqRead}
               {...annotationCommonProps}
             />
           )}

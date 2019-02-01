@@ -671,16 +671,12 @@ export const withEditorPropsNoRedux = withProps(props => {
       ...annotationVisibilityOverrides
     }
   });
-  // console.log('alignmentDataWithRefSeqCdsFeatures:',alignmentDataWithRefSeqCdsFeatures)
-  // console.log('translations:',translations)
   const toReturn = {
     sequenceData: {
       ...sequenceData,
-      // sequence: alignmentDataWithRefSeqCdsFeatures ? cloneDeep(alignmentDataWithRefSeqCdsFeatures.sequence).replace(/^-+/g, "").replace(/-+$/g, "") : sequenceData.sequence,
       translations
     }
   };
-  // console.log('toReturn:',toReturn)
   return toReturn;
   // return {
   //   sequenceData: {

@@ -70,8 +70,6 @@ export class LinearView extends React.Component {
       //currently found in props
       sequenceData = { sequence: "" },
       alignmentData,
-      gapsBeforeSeqRead,
-      gapsBeforeFeatureInSeqRead,
       hideName = false,
       editorDragged = noop,
       editorDragStarted = noop,
@@ -151,8 +149,6 @@ export class LinearView extends React.Component {
               ...rest,
               charWidth,
               alignmentData,
-              gapsBeforeSeqRead,
-              gapsBeforeFeatureInSeqRead,
               sequenceLength: this.getMaxLength(),
               width: innerWidth,
               bpsPerRow,

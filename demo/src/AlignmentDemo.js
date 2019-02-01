@@ -4,6 +4,7 @@ import store from "./store";
 import msaAlignment from "./exampleData/msaAlignment.json";
 import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import sangerAlignment from "./exampleData/sangerAlignment.json";
+import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
 import { addAlignment, AlignmentView, /* updateEditor */ } from "../../src/";
 // import { selectionLayerUpdate } from "../../src/redux/selectionLayer";
 // import { caretPositionUpdate } from "../../src/redux/caretPosition";
@@ -29,12 +30,10 @@ const defaultState = {
   noClickDragHandlers: false,
   hasTemplate: false,
   noVisibilityOptions: false,
-  setTickSpacing: false,
+  setTickSpacing: true,
 };
 
 // const basicActions = { selectionLayerUpdate, caretPositionUpdate };
-
-
 
 export default class AlignmentDemo extends React.Component {
   constructor(props) {
@@ -50,6 +49,7 @@ export default class AlignmentDemo extends React.Component {
     addAlignment(store, msaAlignment);
     addAlignment(store, pairwiseAlignment);
     addAlignment(store, sangerAlignment);
+    addAlignment(store, msaAlignmentWithGaps);
   }
   render() {
     return (
@@ -93,7 +93,8 @@ export default class AlignmentDemo extends React.Component {
                 options={[
                   { label: "Multiple Sequence Alignment", value: msaAlignment.id },
                   { label: "Pairwise Alignment", value: pairwiseAlignment.id },
-                  { label: "Sanger Alignment", value: sangerAlignment.id }
+                  { label: "Sanger Alignment", value: sangerAlignment.id },
+                  { label: "MSA with gaps", value: msaAlignmentWithGaps.id }
                 ]}
               />
               <br />
