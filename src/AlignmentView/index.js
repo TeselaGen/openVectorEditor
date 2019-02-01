@@ -412,7 +412,7 @@ class AlignmentView extends React.Component {
                 absoluteTranslationStartInFrame - gapsBeforeSeqRead;
               editedFeature.start = seqReadTranslationStartInFrame;
               const shortenedFeatureLength =
-                Math.abs(feature.end - feature.start) -
+                Math.abs(absoluteFeatureEnd - absoluteFeatureStart) -
                 (absoluteTranslationStartInFrame - absoluteFeatureStart);
               editedFeature.end = editedFeature.start + shortenedFeatureLength;
               refSeqCdsFeaturesBpPos.push(editedFeature);
