@@ -34,9 +34,9 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
 function VisibilityOptions({
   // alignmentAnnotationVisibility = {},
   alignmentAnnotationVisibilityToggle,
+  togglableAlignmentAnnotationSettings = {},
   // alignmentAnnotationLabelVisibility = {},
   // alignmentAnnotationLabelVisibilityToggle
-  togglableAlignmentAnnotationSettings = {},
   annotationsWithCounts,
   currentPairwiseAlignmentIndex
 }) {

@@ -23,7 +23,7 @@ const alignmentAnnotationSettings = {
   parts: false,
   reverseSequence: false,
   sequence: true,
-  translations: false,
+  translations: true,
   orfs: false,
   orfTranslations: false,
   cdsFeatureTranslations: false,

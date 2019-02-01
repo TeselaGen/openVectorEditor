@@ -13,8 +13,8 @@ import {
 } from "@blueprintjs/core";
 import { Loading } from "teselagen-react-components";
 import { store } from "react-easy-state";
-import { throttle, map } from "lodash";
-import { LinearView } from "../LinearView";
+import { throttle, cloneDeep, map } from "lodash";
+import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
@@ -311,6 +311,148 @@ class AlignmentView extends React.Component {
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
+
+    function getGapMap(sequence) {
+      const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
+      sequence.split("").forEach(char => {
+        if (char === "-") {
+          gapMap[Math.max(0, gapMap.length - 1)] =
+            (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
+        } else {
+          gapMap.push(gapMap[gapMap.length - 1] || 0);
+        }
+      });
+      return gapMap;
+    }
+
+    let getGaps = () => ({
+      gapsBefore: 0,
+      gapsInside: 0
+    });
+    //this function is used to calculate the number of spaces that come before or inside a range
+    getGaps = (rangeOrCaretPosition, sequence) => {
+      const gapMap = getGapMap(sequence);
+      if (typeof rangeOrCaretPosition !== "object") {
+        return {
+          gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
+        };
+      }
+      //otherwise it is a range!
+      const { start, end } = rangeOrCaretPosition;
+      const toReturn = {
+        gapsBefore: gapMap[start],
+        gapsInside:
+          gapMap[Math.min(end, gapMap.length - 1)] -
+          gapMap[Math.min(start, gapMap.length - 1)]
+      };
+
+      return toReturn;
+    };
+
+    // for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
+    let sequenceDataWithRefSeqCdsFeatures;
+    if (this.props.alignmentType === "SANGER SEQUENCING") {
+      if (i !== 0) {
+        sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData);
+        let refSeqCdsFeaturesBpPos = [];
+        alignmentTracks[0].sequenceData.features.forEach(feature => {
+          if (feature.type === "CDS") {
+            let editedFeature = cloneDeep(feature);
+            // in seq reads, ref seq's CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
+            // actual position in the track
+            const absoluteFeatureStart =
+              getGaps(feature.start, alignmentTracks[0].alignmentData.sequence)
+                .gapsBefore + feature.start;
+            const gapsBeforeSeqRead = getGaps(0, alignmentData.sequence)
+              .gapsBefore;
+            const bpsFromSeqReadStartToFeatureStartIncludingGaps =
+              absoluteFeatureStart - gapsBeforeSeqRead;
+            const absoluteFeatureEnd =
+              getGaps(feature.end, alignmentTracks[0].alignmentData.sequence)
+                .gapsBefore + feature.end;
+            // const gapsBeforeFeatureInSeqRead = getGaps(feature.start - gapsBeforeSeqRead, alignmentData.sequence).gapsBefore
+            const gapsAfterSeqRead =
+              alignmentData.sequence.length -
+              cloneDeep(alignmentData.sequence).replace(/-+$/g, "").length;
+            const seqReadLengthWithoutGapsBeforeAfter =
+              alignmentData.sequence.length -
+              gapsBeforeSeqRead -
+              gapsAfterSeqRead;
+            const absoluteSeqReadStart = gapsBeforeSeqRead;
+            const absoluteSeqReadEnd =
+              absoluteSeqReadStart + seqReadLengthWithoutGapsBeforeAfter;
+            let featureStartInSeqRead;
+            if (absoluteFeatureEnd < absoluteSeqReadStart) {
+              // if the feature ends before the seq read starts, do nothing
+            } else if (absoluteFeatureStart > absoluteSeqReadEnd) {
+              // if the feature starts after the seq read ends, do nothing
+            } else if (
+              absoluteFeatureStart < absoluteSeqReadStart &&
+              absoluteFeatureEnd > absoluteSeqReadStart
+            ) {
+              // if the feature starts before the seq read starts but doesn't end before the seq read starts
+              let arrayOfCodonStartPos = [];
+              for (
+                let i = absoluteFeatureStart;
+                i < absoluteSeqReadStart + 6;
+                i += 3
+              ) {
+                arrayOfCodonStartPos.push(i);
+              }
+              // want to start translation at the codon start pos closest to seq read start
+              const absoluteTranslationStartInFrame = arrayOfCodonStartPos.reduce(
+                (prev, curr) =>
+                  Math.abs(curr - absoluteSeqReadStart) <
+                    Math.abs(prev - absoluteSeqReadStart) &&
+                  curr >= absoluteSeqReadStart
+                    ? curr
+                    : prev
+              );
+              const seqReadTranslationStartInFrame =
+                absoluteTranslationStartInFrame - gapsBeforeSeqRead;
+              editedFeature.start = seqReadTranslationStartInFrame;
+              const shortenedFeatureLength =
+                Math.abs(absoluteFeatureEnd - absoluteFeatureStart) -
+                (absoluteTranslationStartInFrame - absoluteFeatureStart);
+              editedFeature.end = editedFeature.start + shortenedFeatureLength;
+              refSeqCdsFeaturesBpPos.push(editedFeature);
+            } else {
+              // if the feature is fully contained within the seq read start/end
+              const seqReadStartToFeatureStartIncludingGaps = alignmentData.sequence
+                .replace(/^-+/g, "")
+                .replace(/-+$/g, "")
+                .slice(0, bpsFromSeqReadStartToFeatureStartIncludingGaps);
+              const arrayOfGaps = seqReadStartToFeatureStartIncludingGaps.match(
+                new RegExp("-", "g")
+              );
+              let numOfGapsFromSeqReadStartToFeatureStart = 0;
+              if (arrayOfGaps !== null) {
+                numOfGapsFromSeqReadStartToFeatureStart = arrayOfGaps.length;
+              }
+              featureStartInSeqRead =
+                bpsFromSeqReadStartToFeatureStartIncludingGaps -
+                numOfGapsFromSeqReadStartToFeatureStart;
+              editedFeature.start = featureStartInSeqRead;
+              const featureLength = Math.abs(feature.end - feature.start);
+              editedFeature.end = editedFeature.start + featureLength;
+              refSeqCdsFeaturesBpPos.push(editedFeature);
+            }
+          }
+        });
+        // add ref seq's CDS features to seq reads (not the actual sequenceData) to generate translations at those bp pos
+        if (refSeqCdsFeaturesBpPos.length !== 0) {
+          sequenceDataWithRefSeqCdsFeatures.features.push(
+            ...refSeqCdsFeaturesBpPos
+          );
+          // use returned aligned sequence rather than original sequence because after bowtie2, may be reverse complement or have soft-clipped ends
+          sequenceDataWithRefSeqCdsFeatures.sequence = alignmentData.sequence.replace(
+            /-/g,
+            ""
+          );
+        }
+      }
+    }
+
     return (
       <div
         className="alignmentViewTrackContainer"
@@ -380,7 +522,7 @@ class AlignmentView extends React.Component {
             Inspect track
           </div>
         )}
-        <LinearView
+        <NonReduxEnhancedLinearView
           {...{
             ...rest,
             ...(noClickDragHandlers
@@ -394,7 +536,7 @@ class AlignmentView extends React.Component {
                   editorDragStarted: this.editorDragStarted,
                   editorDragStopped: this.editorDragStopped
                 }),
-            linearViewAnnotationVisibilityOverrides:
+            annotationVisibilityOverrides:
               alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
             linearViewAnnotationLabelVisibilityOverrides:
               alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility,
@@ -411,6 +553,7 @@ class AlignmentView extends React.Component {
             searchLayerClicked: this.annotationClicked,
             hideName: true,
             sequenceData,
+            sequenceDataWithRefSeqCdsFeatures,
             tickSpacing: Math.ceil(120 / charWidthInLinearView),
             allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
@@ -793,6 +936,8 @@ export default compose(
         "reverseSequence",
         "axis",
         "axisNumbers",
+        "translations",
+        "cdsFeatureTranslations",
         "chromatogram",
         "dnaColors"
       ];
@@ -895,7 +1040,9 @@ export default compose(
   branch(
     ({ noTracks }) => noTracks,
     renderComponent(() => {
-      return "No Tracks Found";
+      return (
+        <div style={{ minHeight: 30, minWidth: 150 }}>"No Tracks Found"</div>
+      );
     })
   ),
   branch(
@@ -1035,7 +1182,7 @@ class PairwiseAlignmentView extends React.Component {
 function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
   if (!isTemplate) {
     return {
-      linearViewAnnotationVisibilityOverrides: {
+      annotationVisibilityOverrides: {
         features: false,
         translations: false,
         parts: false,
@@ -1055,7 +1202,7 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
     };
   } else {
     return {
-      // linearViewAnnotationVisibilityOverrides: {
+      // annotationVisibilityOverrides: {
       //   features: false,
       //   yellowAxis: false,
       //   translations: false,

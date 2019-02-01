@@ -1,4 +1,3 @@
-import {connect} from "redux";
 import * as addYourOwnEnzyme from "./addYourOwnEnzyme";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
@@ -28,7 +27,6 @@ import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 
-
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
@@ -49,7 +47,6 @@ const subReducers = {
   hoveredAnnotation,
   lineageLines,
   minimumOrfSize,
-  alignments,  
   panelsShown,
   propertiesTool,
   lastSavedId,
@@ -62,29 +59,36 @@ const subReducers = {
   sequenceDataHistory,
   sequenceData,
   useAdditionalOrfStartCodons,
-  uppercaseSequenceMapFont,
-}
+  uppercaseSequenceMapFont
+};
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
 const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
 
 //export the actions for use elsewhere
 export const actions = {
-  ...Object.keys(subReducers).reduce((acc, k) => ({
-    ...acc,
-    ...subReducers[k]
-  }), {}),
+  ...Object.keys(subReducers).reduce(
+    (acc, k) => ({
+      ...acc,
+      ...subReducers[k]
+    }),
+    {}
+  ),
   ...modalActions,
+  ...alignments,
   vectorEditorInitialize,
   vectorEditorClear
 };
 
 //define the reducer
 let reducers = {
-  ...Object.keys(subReducers).reduce((acc, k) => ({
-    ...acc,
-    [k]: subReducers[k].default
-  }), {}),
+  ...Object.keys(subReducers).reduce(
+    (acc, k) => ({
+      ...acc,
+      [k]: subReducers[k].default
+    }),
+    {}
+  ),
   instantiated: () => true
 };
 
@@ -160,8 +164,6 @@ export default function reducerFactory(initialState = {}) {
 
 // export const getBlankEditor = (state) => (state.blankEditor)
 export const getEditorByName = (state, editorName) => state[editorName];
-
-
 
 // export default connect((state, ownProps) => {
 //   return {
