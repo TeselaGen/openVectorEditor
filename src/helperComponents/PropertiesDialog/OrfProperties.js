@@ -114,6 +114,7 @@ class OrfProperties extends React.Component {
           checked={annotationVisibility.orfTranslations}
           label="Show translations for ORFs"
         />
+
         <Checkbox
           onChange={useAdditionalOrfStartCodonsToggle}
           checked={useAdditionalOrfStartCodons}

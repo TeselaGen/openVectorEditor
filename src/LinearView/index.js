@@ -5,6 +5,7 @@ import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
+import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
 
 let defaultMarginWidth = 10;
@@ -81,7 +82,7 @@ export class LinearView extends React.Component {
       marginWidth = defaultMarginWidth,
       height,
       charWidth,
-      linearViewAnnotationVisibilityOverrides,
+      annotationVisibilityOverrides,
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
@@ -159,7 +160,7 @@ export class LinearView extends React.Component {
                 reverseSequence: false,
                 sequence: false,
                 cutsitesInSequence: false,
-                ...linearViewAnnotationVisibilityOverrides
+                ...annotationVisibilityOverrides
               },
               ...RowItemProps
             }}
@@ -180,5 +181,7 @@ function SequenceName({ sequenceName, sequenceLength }) {
     </div>
   );
 }
+
+export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(LinearView);
 
 export default withEditorInteractions(LinearView);

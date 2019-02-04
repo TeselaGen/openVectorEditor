@@ -5,10 +5,11 @@ export default function getXStartAndWidthOfRowAnnotation(
   gapsBefore = 0,
   gapsInside = 0
 ) {
-  let startOffset = (range.start + gapsBefore) % bpsPerRow;
+  let startOffset = range.start % bpsPerRow;
   const toReturn = {
     startOffset,
-    xStart: startOffset * charWidth,
+    // xStart: startOffset * charWidth,
+    xStart: (startOffset + gapsBefore) * charWidth,
     width: (range.end + 1 - range.start + gapsInside) * charWidth
   };
   return toReturn;

@@ -8,6 +8,7 @@ import { updateEditor } from "../../src/";
 import Editor from "../../src/Editor";
 import renderToggle from "./utils/renderToggle";
 import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
+import exampleSequenceData from "./exampleData/exampleSequenceData";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
@@ -46,9 +47,11 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    updateEditor(store, "DemoEditor", {
-      readOnly: this.state.readOnly
-    });
+    
+updateEditor(store, "DemoEditor", {
+  readOnly: false,
+  sequenceData: exampleSequenceData
+});
   }
 
   componentDidUpdate() {

@@ -30,18 +30,19 @@ function Translations(props) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
     const annotation = annotationRange.annotation;
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
-      ...getGaps(annotationRange)
+      gapsBefore,
+      gapsInside
     );
-
     annotationsSVG.push(
       <AnnotationPositioner
         height={annotationHeight}
         width={result.width}
-        className={"veRowViewTranslations"}
+        className="veRowViewTranslations"
         key={
           "ve-translation-" + annotation.id + "start:" + annotationRange.start
         }
