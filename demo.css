@@ -11756,5 +11756,10 @@ body,
   height: 100%;
 }
 
+.toggle-button-holder {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
 
 /*# sourceMappingURL=demo.css.map*/
