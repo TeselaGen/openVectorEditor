@@ -997,7 +997,19 @@
 // }
 
 export default {
-  parts: [{ start: 10, end: 30, name: "Part 0", id: "0" }],
+  parts: [
+    {
+      name: "pj5_00001",
+      start: 0,
+      end: 5298
+    },
+    {
+      start: 10,
+      end: 30,
+      name: "Part 0",
+      id: "0"
+    }
+  ],
   features: [
     {
       notes: {},

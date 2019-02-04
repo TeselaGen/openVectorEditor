@@ -32,6 +32,7 @@ const defaultState = {
   shouldAutosave: false,
   isFullscreen: false,
   forceHeightMode: false,
+  setDefaultVisibilities: false,
   onNew: true,
   onSave: true,
   onRename: true,
@@ -175,6 +176,7 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      setDefaultVisibilities,
       shouldAutosave,
       isFullscreen,
       withPreviewMode
@@ -353,6 +355,21 @@ rightClickOverrides: {
                 label: "Force Height 500px",
                 description:
                   "You can force a height for the editor by passing height:500 (same for width) "
+              })}
+              {renderToggle({
+                that: this,
+                type: "setDefaultVisibilities",
+                label: "Set Default Visibilities",
+                hook: (shouldUpdate) => {
+                  shouldUpdate && updateEditor(store, "DemoEditor", {
+                    annotationVisibility: {
+                      features: false,
+                      // parts: false,
+                      cutsites: false
+                      // orfTranslations: false
+                    },
+                  });
+                }
               })}
               Editor Options:
               {renderToggle({

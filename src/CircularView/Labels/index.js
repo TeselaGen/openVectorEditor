@@ -25,7 +25,6 @@ function Labels({
 
   let fontWidth = 8;
   let fontHeight = fontWidth * 1.5;
-
   let labelPoints = Object.keys(labels)
     .map(function(key) {
       let label = labels[key];
@@ -157,7 +156,7 @@ const DrawLabelGroup = withHover(function({
   0);
 
   let maxLabelWidth = maxLabelLength * fontWidth;
-  let labelOnLeft = label.x < 0;
+  let labelOnLeft = label.angle > Math.PI;
   let labelXStart = label.x - (labelOnLeft ? labelLength : 0);
   if (condenseOverflowingXLabels) {
     let distancePastBoundary =
@@ -311,7 +310,7 @@ const DrawLabelGroup = withHover(function({
 function LabelLine(pointArray, options) {
   let points = "";
   pointArray.forEach(function({ x, y }) {
-    if (!x) return;
+    if (!x && x !== 0) return;
     points += `${x},${y} `;
   });
   return (

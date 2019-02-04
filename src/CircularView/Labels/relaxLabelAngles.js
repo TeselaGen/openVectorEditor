@@ -37,16 +37,16 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     label = labels[i];
     label.angle = normalizeAngle(label.angle);
     let labelCenter = label.angle;
-    if (labelCenter < totalLength / 4) {
+    if (labelCenter <= totalLength / 4) {
       rightTopLabels.push(label);
     } else if (
-      labelCenter >= totalLength / 4 &&
-      labelCenter < totalLength / 2
+      labelCenter > totalLength / 4 &&
+      labelCenter <= totalLength / 2
     ) {
       rightBottomLabels.push(label);
     } else if (
-      labelCenter >= totalLength / 2 &&
-      labelCenter < (3 * totalLength) / 4
+      labelCenter > totalLength / 2 &&
+      labelCenter <= (3 * totalLength) / 4
     ) {
       leftBottomLabels.push(label);
     } else {
@@ -70,8 +70,6 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
           let naturalSlot = Math.floor(Math.abs(label.y / spacing));
           if (naturalSlot > extraSpaces) {
             label.y = lastLabelYPosition;
-          } else {
-            label.y = label.y;
           }
           let x = Math.sqrt(Math.pow(maxradius, 2) - Math.pow(label.y, 2));
           if (!x) x = 0;

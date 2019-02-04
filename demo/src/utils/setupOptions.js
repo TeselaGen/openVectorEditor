@@ -2,38 +2,40 @@ import cloneDeep from "lodash/cloneDeep";
 import {
   // getCurrentParamsFromUrl,
   setCurrentParamsOnUrl,
-  getCurrentParamsFromUrl,
+  getCurrentParamsFromUrl
 } from "teselagen-react-components";
-import _ from 'lodash'
+import _ from "lodash";
 
 export function setupOptions({ that, defaultState, props }) {
   const editorDemoState = getCurrentParamsFromUrl(props.history.location);
-    // localStorage.editorDemoState = props.history.location.search;
-
-    try {
-      that.state = {
-        ...defaultState,
-        ...JSON.parse(editorDemoState || "{}")
-      };
-    } catch (e) {
-      that.state = {
-        ...defaultState
-      };
-    }
-    that.resetDefaultState = () => {
-      that.setState({
-        ...Object.keys(that.state).reduce((acc, key) => {
-          acc[key] = false;
-          return acc;
-        }, {}),
-        ...defaultState
-      });
-      setCurrentParamsOnUrl({}, that.props.history.replace);
-      // localStorage.editorDemoState = JSON.stringify(defaultState);
+  // localStorage.editorDemoState = props.history.location.search;
+  try {
+    that.state = {
+      ...defaultState,
+      ...editorDemoState
     };
+  } catch (e) {
+    console.warn(
+      `oops setting up options went wrong.. maybe your url is messed up?`
+    );
+    that.state = {
+      ...defaultState
+    };
+  }
+  that.resetDefaultState = () => {
+    that.setState({
+      ...Object.keys(that.state).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {}),
+      ...defaultState
+    });
+    setCurrentParamsOnUrl({}, that.props.history.replace);
+    // localStorage.editorDemoState = JSON.stringify(defaultState);
+  };
 }
 
-export function setParamsIfNecessary({that, defaultState, }) {
+export function setParamsIfNecessary({ that, defaultState }) {
   if (!_.isEqual(that.state, that.oldState)) {
     setCurrentParamsOnUrl(
       difference(that.state, defaultState),
@@ -42,8 +44,6 @@ export function setParamsIfNecessary({that, defaultState, }) {
     that.oldState = cloneDeep(that.state);
   }
 }
-
-
 
 /**
  * Deep diff between two object, using lodash

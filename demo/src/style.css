@@ -11,3 +11,7 @@ body,
   padding: 0px;
   height: 100%;
 }
+
+.toggle-button-holder {
+  flex-shrink: 0;
+}
