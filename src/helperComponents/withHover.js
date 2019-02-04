@@ -28,7 +28,8 @@ export default compose(
         id,
         editorName = "StandaloneEditor",
         className,
-        hoveredId: hoveredIdFromContext
+        hoveredId: hoveredIdFromContext,
+        passHoveredId
       }
     ) {
       if (!editorName) {
@@ -44,10 +45,15 @@ export default compose(
       const newClassName = classnames(className, "hoverHelper", {
         veAnnotationHovered: hovered
       });
-      return {
+      const toReturn = {
         hovered,
         className: newClassName
       };
+      if (hovered && passHoveredId) {
+        //only pass hoveredId if it is hovered
+        toReturn.hoveredId = hoveredId;
+      }
+      return toReturn;
     },
     hoveredAnnotationActions
   ),

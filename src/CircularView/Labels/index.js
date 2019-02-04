@@ -387,6 +387,7 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
         id={labelIds}
         {...{
           label,
+          passHoveredId: true, //needed to get the hoveredId
           isLabelGroup: true,
           className: "DrawLabelGroup",
           multipleLabels,
