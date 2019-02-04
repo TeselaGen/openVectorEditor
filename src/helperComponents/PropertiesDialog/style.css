@@ -47,3 +47,7 @@
   justify-content: right;
   flex-wrap: wrap;
 }
+
+.ve-propertiesPanel .bp3-popover-wrapper {
+  width: fit-content;
+}

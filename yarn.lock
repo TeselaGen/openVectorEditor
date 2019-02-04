@@ -9450,11 +9450,6 @@ randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   dependencies:
     safe-buffer "^5.1.0"
 
-randomcolor@^0.4.3:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/randomcolor/-/randomcolor-0.4.4.tgz#5ff56862e97ba03beb0419ff0536ec7aff59eeeb"
-  integrity sha1-X/VoYul7oDvrBBn/BTbsev9Z7us=
-
 randomcolor@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/randomcolor/-/randomcolor-0.5.3.tgz#7f90f2f2a7f6d5a52232161eeaeeaea9ac3b5815"
@@ -11345,10 +11340,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@24.4.1:
-  version "24.4.1"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.4.1.tgz#29444308a10a1971c8b80b3effed476260cb9b51"
-  integrity sha512-OqICxp6qPWyS/V5Wzg/tX6x7gWgyxYKvqz3ZtdEwNzcnQnWpR3K9Pa4UQCJi5TQs7MOv3r/WTr1BLrhGfH97dQ==
+teselagen-react-components@24.4.5:
+  version "24.4.5"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-24.4.5.tgz#5fd52a163461e6ee8a0ddae9b6a85e5e433635cb"
+  integrity sha512-Oa7+4hCt3EqC2L0RUh0Lxb4CmXq2BGwUD57B9QoKJ4ITSCaFzrpZKyuoZW0PDcAmcF9uG6YwdsCYyhkW2B9cMA==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -11972,22 +11967,21 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-ve-range-utils@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.1.tgz#a42d753c68903290fbc703411cdf540d36133734"
-  integrity sha512-lsteLSyaWoLUX55KwRQAokZqzgOteTLuhCBKy40kAsLNGsilmRwEfOvfOACuZdtWotutIacYwAa53GqE8GBsUA==
+ve-range-utils@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.2.tgz#b09d27da8f71a6378a300d6af3e4a6e64babe37a"
+  integrity sha512-I6xQTrRVFW8WjbvRVF8qZpRO7I47HnTAMavn6csvTuT1j0yqTaHTC0bfqy5E85SQ4ev2YeX94RhhCbd2d/jUbw==
   dependencies:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@3.3.7:
-  version "3.3.7"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.7.tgz#feb0ccf067a5aacfda9a386a23e21a58d358d34c"
-  integrity sha512-MwddN/FO3ZIeeS8S/INez7FSFG7SZe0ygJGTy8S5jr2qroRNPjeQ1Bp9C6Xp49+DRubcE/6WGKk1230Y9NCyvQ==
+ve-sequence-utils@3.3.10:
+  version "3.3.10"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.10.tgz#d6d6cb557a2b0aa02bf464f9f54ee4f34d536ee5"
+  integrity sha512-EQs9+cehn+L8btaeiKayBWH8BBrRH7WDa1XbdrvJIuxXNRbGdB0yLocxv/db2xIpkgAjOTmtH+u9PclP0y53sw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
-    randomcolor "^0.4.3"
     string-splice "^1.3.0"
     validate.io-nonnegative-integer-array "^1.0.1"
 

@@ -1,16 +1,25 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox,
+  CmdDiv
+} from "teselagen-react-components";
 import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
-import { Switch, Checkbox } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
-import { MinOrfSize } from "../../ToolBar/orfTool";
+
+import getCommands from "../../commands";
 
 class OrfProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = getCommands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -23,15 +32,7 @@ class OrfProperties extends React.Component {
     });
   };
   render() {
-    const {
-      orfs,
-      editorName,
-      sequenceLength,
-      annotationVisibilityToggle,
-      annotationVisibility,
-      useAdditionalOrfStartCodonsToggle,
-      useAdditionalOrfStartCodons
-    } = this.props;
+    const { orfs, sequenceLength } = this.props;
     const orfsToUse = map(orfs, orf => {
       return {
         ...orf,
@@ -48,14 +49,7 @@ class OrfProperties extends React.Component {
       <React.Fragment>
         <DataTable
           topLeftItems={
-            <Switch
-              checked={annotationVisibility.orfs}
-              onChange={() => {
-                this.props.annotationVisibilityToggle("orfs");
-              }}
-            >
-              Hide/Show
-            </Switch>
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfs} />
           }
           noPadding
           noFullscreenButton
@@ -103,23 +97,11 @@ class OrfProperties extends React.Component {
           }}
           entities={orfsToUse}
         />
-        <MinOrfSize editorName={editorName} />
 
-        <Checkbox
-          disabled={!annotationVisibility.orfs}
-          style={{ marginTop: 10 }}
-          onChange={function() {
-            annotationVisibilityToggle("orfTranslations");
-          }}
-          checked={annotationVisibility.orfTranslations}
-          label="Show translations for ORFs"
-        />
-
-        <Checkbox
-          onChange={useAdditionalOrfStartCodonsToggle}
-          checked={useAdditionalOrfStartCodons}
-          label="Use GTG and CTG as start codons"
-        />
+        <br />
+        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
+        <CmdCheckbox cmd={this.commands.useGtgAndCtgAsStartCodons} />
+        <CmdDiv cmd={this.commands.minOrfSizeCmd} />
       </React.Fragment>
     );
   }
@@ -130,13 +112,17 @@ export default compose(
     const {
       readOnly,
       annotationVisibility = {},
-      sequenceData: { sequence = "" } = {}
+      sequenceData: { sequence = "" } = {},
+      sequenceData,
+      minimumOrfSize
     } = editorState;
     return {
       readOnly,
       annotationVisibility,
       orfs: selectors.orfsSelector(editorState),
-      sequenceLength: sequence.length
+      sequenceLength: sequence.length,
+      sequenceData,
+      minimumOrfSize
     };
   }),
   withSelectedEntities("orfProperties")

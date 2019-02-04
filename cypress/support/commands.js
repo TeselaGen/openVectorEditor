@@ -44,40 +44,65 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
       const [x, y] = getCenter(dragSelectDomEl);
       const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
       getOrWrap(dragSelector)
-        .trigger("mousedown", {
-          button: 0,
-          clientX: x,
-          clientY: y
-        })
+        .trigger(
+          "mousedown",
+          {
+            button: 0,
+            clientX: x,
+            clientY: y,
+            force: true
+          },
+          { force: true }
+        )
         .tick(1000);
       // drag events test for button: 0 and also use the clientX and clientY values - the clientX and clientY values will be specific to your system
       getOrWrap(dragSelector)
-        .trigger("mousemove", {
-          button: 0,
-          clientX: x + 10,
-          clientY: y + 10
-        }) // We perform a small move event of > 5 pixels this means we don't get dismissed by the sloppy click detection
+        .trigger(
+          "mousemove",
+          {
+            button: 0,
+            clientX: x + 10,
+            clientY: y + 10,
+            force: true
+          },
+          { force: true }
+        ) // We perform a small move event of > 5 pixels this means we don't get dismissed by the sloppy click detection
         .tick(5000); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
 
       cy.get("html") // now we perform drags on the whole screen, not just the draggable
-        .trigger("mousemove", {
+        .trigger(
+          "mousemove",
+          {
+            button: 0,
+            clientX: xCenterDrop,
+            clientY: yCenterDrop,
+            force: true
+          },
+          { force: true }
+        )
+        .tick(5000);
+      cy.get("html").trigger(
+        "mouseup",
+        {
+          // Causes the drop to be run
           button: 0,
           clientX: xCenterDrop,
-          clientY: yCenterDrop
-        })
-        .tick(5000);
-      cy.get("html").trigger("mouseup", {
-        // Causes the drop to be run
-        button: 0,
-        clientX: xCenterDrop,
-        clientY: yCenterDrop
-      });
-      getOrWrap(dragSelector).trigger("mouseup", {
-        // Causes the drop to be run
-        button: 0,
-        clientX: xCenterDrop,
-        clientY: yCenterDrop
-      });
+          clientY: yCenterDrop,
+          force: true
+        },
+        { force: true }
+      );
+      getOrWrap(dragSelector).trigger(
+        "mouseup",
+        {
+          // Causes the drop to be run
+          button: 0,
+          clientX: xCenterDrop,
+          clientY: yCenterDrop,
+          force: true
+        },
+        { force: true }
+      );
 
       // Can now test the application's post DROP state
     });

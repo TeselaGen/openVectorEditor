@@ -120,10 +120,10 @@
     "react-transition-group": "^2.3.1",
     "redux-form": "7.4.2",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "24.4.1",
+    "teselagen-react-components": "24.4.5",
     "tg-client-query-builder": "^2.12.2",
-    "ve-range-utils": "^2.5.1",
-    "ve-sequence-utils": "3.3.7",
+    "ve-range-utils": "^2.5.2",
+    "ve-sequence-utils": "3.3.10",
     "why-did-you-update": "^1.0.6"
   },
   "husky": {

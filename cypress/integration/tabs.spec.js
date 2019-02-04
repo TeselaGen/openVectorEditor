@@ -34,9 +34,13 @@ describe("tabs", function() {
   });
   it("can drag tabs", function() {
     cy.dragBetween(".veTabLinearMap", ".veTabProperties");
-    cy.get(`[data-test="ve-draggable-tabs1"] .veTabLinearMap`);
+    cy.get(`[data-test="ve-draggable-tabs1"] .veTabLinearMap`, {
+      force: true
+    }).should("exist");
     cy.dragBetween(".veTabPlasmid", ".veTabProperties");
-    cy.get("[data-test=ve-draggable-tabs0] .veTabLinearMap");
+    cy.get("[data-test=ve-draggable-tabs0] .veTabLinearMap", {
+      force: true
+    }).should("exist");
     cy.get("[data-test=ve-draggable-tabs1]").should("not.exist");
   });
 });

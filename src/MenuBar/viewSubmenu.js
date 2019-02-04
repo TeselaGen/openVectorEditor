@@ -43,6 +43,14 @@ export default [
       {
         cmd: "toggleOrfTranslations",
         shouldDismissPopover: false
+      },
+      {
+        cmd: "useGtgAndCtgAsStartCodons",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "minOrfSizeCmd",
+        shouldDismissPopover: false
       }
     ]
   },

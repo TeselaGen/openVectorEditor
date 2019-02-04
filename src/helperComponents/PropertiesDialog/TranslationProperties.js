@@ -110,16 +110,11 @@ class TranslationProperties extends React.Component {
           }}
           entities={translationsToUse}
         />
-        <div>
-          <CmdCheckbox
-            prefix="Show "
-            cmd={this.commands.toggleOrfTranslations}
-          />
-          <CmdCheckbox
-            prefix="Show "
-            cmd={this.commands.toggleCdsFeatureTranslations}
-          />
-        </div>
+        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
+        <CmdCheckbox
+          prefix="Show "
+          cmd={this.commands.toggleCdsFeatureTranslations}
+        />
         {!readOnly && (
           <div className="vePropertiesFooter">
             {/* <Button

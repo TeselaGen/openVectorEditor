@@ -30,7 +30,7 @@ const defaultState = {
   noClickDragHandlers: false,
   hasTemplate: false,
   noVisibilityOptions: false,
-  setTickSpacing: true,
+  setTickSpacing: false,
 };
 
 // const basicActions = { selectionLayerUpdate, caretPositionUpdate };

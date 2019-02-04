@@ -1,6 +1,7 @@
 import React from "react";
-import { Tag } from "@blueprintjs/core";
+import { Tag, Classes } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
+import classnames from "classnames";
 import { oveCommandFactory } from "../utils/commandUtils";
 import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
@@ -417,6 +418,34 @@ const editCommandDefs = {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     hotkey: "mod+k"
   },
+  useGtgAndCtgAsStartCodons: {
+    name: "Use GTG And CTG As Start Codons",
+    isActive: props => props.useAdditionalOrfStartCodons,
+    handler: props => props.useAdditionalOrfStartCodonsToggle()
+  },
+  minOrfSizeCmd: {
+    name: props => {
+      return (
+        <div data-test="min-orf-size" style={{ display: "flex" }}>
+          Minimum ORF Size:
+          <input
+            type="number"
+            className={classnames(Classes.INPUT, "minOrfSizeInput")}
+            onChange={function(event) {
+              let minimumOrfSize = parseInt(event.target.value, 10);
+              if (!(minimumOrfSize > -1)) return;
+              if (minimumOrfSize > props.sequenceLength) return;
+              props.annotationVisibilityShow("orfs");
+              props.minimumOrfSizeUpdate(minimumOrfSize);
+            }}
+            value={props.minimumOrfSize}
+          />
+        </div>
+      );
+    },
+    // isActive: (props) => props.useAdditionalOrfStartCodons,
+    handler: () => {}
+  },
 
   newPart: {
     handler: props => props.handleNewPart(),
@@ -508,7 +537,10 @@ const annotationToggleCommandDefs = {};
       if (sequenceData && sequenceData[type]) {
         hasCount = true;
         count =
-          sequenceData[type].length || Object.keys(sequenceData[type]).length;
+          sequenceData[type].length ||
+          Object.keys(sequenceData[type]).length ||
+          (props[type] || {}).length ||
+          0;
       }
       if (type === "cdsFeatureTranslations") {
         hasCount = true;
