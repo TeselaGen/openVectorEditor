@@ -32,7 +32,7 @@ class OrfProperties extends React.Component {
     });
   };
   render() {
-    const { orfs, sequenceLength } = this.props;
+    const { orfs, sequenceLength, annotationVisibility } = this.props;
     const orfsToUse = map(orfs, orf => {
       return {
         ...orf,
@@ -51,6 +51,7 @@ class OrfProperties extends React.Component {
           topLeftItems={
             <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfs} />
           }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
@@ -97,7 +98,6 @@ class OrfProperties extends React.Component {
           }}
           entities={orfsToUse}
         />
-
         <br />
         <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
         <CmdCheckbox cmd={this.commands.useGtgAndCtgAsStartCodons} />

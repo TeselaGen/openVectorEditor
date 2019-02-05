@@ -1,11 +1,20 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  CmdCheckbox,
+  DataTable,
+  withSelectedEntities
+} from "teselagen-react-components";
 import { map } from "lodash";
-import { Button, Switch } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
+import commands from "../../commands";
 class PartProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -41,15 +50,9 @@ class PartProperties extends React.Component {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
           topLeftItems={
-            <Switch
-              checked={annotationVisibility.parts}
-              onChange={() => {
-                this.props.annotationVisibilityToggle("parts");
-              }}
-            >
-              Hide/Show
-            </Switch>
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleParts} />
           }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}

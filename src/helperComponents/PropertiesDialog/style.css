@@ -51,3 +51,11 @@
 .ve-propertiesPanel .bp3-popover-wrapper {
   width: fit-content;
 }
+
+.ve-propertiesPanel .data-table-container {
+  min-height: 250px;
+}
+.ve-propertiesPanel .data-table-footer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

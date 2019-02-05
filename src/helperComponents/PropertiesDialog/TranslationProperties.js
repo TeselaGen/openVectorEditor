@@ -1,4 +1,4 @@
-import { Switch, Tooltip } from "@blueprintjs/core";
+import { Tooltip } from "@blueprintjs/core";
 import React from "react";
 import {
   DataTable,
@@ -38,7 +38,6 @@ class TranslationProperties extends React.Component {
       deleteTranslation,
       sequenceLength,
       selectedAnnotationId,
-      annotationVisibilityToggle,
       annotationVisibility
     } = this.props;
     const translationsToUse = map(translations, translation => {
@@ -63,16 +62,14 @@ class TranslationProperties extends React.Component {
           noRouter
           compact
           topLeftItems={
-            <Switch
-              checked={annotationVisibility.translations}
-              onChange={() => {
-                annotationVisibilityToggle("translations");
-              }}
-            >
-              Hide/Show
-            </Switch>
+            <CmdCheckbox
+              prefix="Show "
+              cmd={this.commands.toggleTranslations}
+            />
           }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           hideSelectedCount
+          noFooter
           noFullscreenButton
           isInfinite
           schema={{
@@ -173,6 +170,7 @@ export default compose(
     return {
       readOnly,
       translations: selectors.translationsSelector(editorState),
+      orfs: selectors.orfsSelector(editorState),
       annotationVisibility,
       sequenceLength: (sequenceData.sequence || "").length,
       sequenceData

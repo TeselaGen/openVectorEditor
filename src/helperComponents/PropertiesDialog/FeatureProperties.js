@@ -1,14 +1,23 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox
+} from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-import { Popover, Switch } from "@blueprintjs/core";
+import { Popover } from "@blueprintjs/core";
 import ColorPicker from "./ColorPicker";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
+import commands from "../../commands";
 
 class FeatureProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -45,15 +54,9 @@ class FeatureProperties extends React.Component {
       <React.Fragment>
         <DataTable
           topLeftItems={
-            <Switch
-              checked={annotationVisibility.features}
-              onChange={() => {
-                this.props.annotationVisibilityToggle("features");
-              }}
-            >
-              Hide/Show
-            </Switch>
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleFeatures} />
           }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}

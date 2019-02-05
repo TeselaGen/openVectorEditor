@@ -116,7 +116,10 @@ export class VersionHistoryView extends React.Component {
   };
   render() {
     return (
-      <FillWindow>
+      <FillWindow
+        style={{ zIndex: 15000 }}
+        className="tgFillWindow veVersionHistoryViewContainer"
+      >
         {({ width, height }) => {
           return (
             <div

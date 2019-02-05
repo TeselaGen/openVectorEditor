@@ -531,27 +531,27 @@ const annotationToggleCommandDefs = {};
   annotationToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
     name: props => {
-      const { sequenceData } = props;
+      const sequenceData = props.sequenceData || {};
       let count;
       let hasCount = false;
-      if (sequenceData && sequenceData[type]) {
+      const annotations = props[type] || sequenceData[type];
+      if (annotations) {
         hasCount = true;
-        count =
-          sequenceData[type].length ||
-          Object.keys(sequenceData[type]).length ||
-          (props[type] || {}).length ||
-          0;
+        count = annotations.length || Object.keys(annotations).length || 0;
       }
       if (type === "cdsFeatureTranslations") {
         hasCount = true;
         count = filter(
-          sequenceData.features || [],
+          props.features || sequenceData.features || [],
           ({ type }) => type === "CDS"
         ).length;
       }
       if (type === "orfTranslations") {
         hasCount = true;
-        count = filter(sequenceData.orfs || [], ({ isOrf }) => isOrf).length;
+        count = filter(
+          props.orfs || sequenceData.orfs || [],
+          ({ isOrf }) => isOrf
+        ).length;
       }
       return (
         <span>

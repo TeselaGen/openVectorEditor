@@ -1,18 +1,27 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  CmdCheckbox,
+  DataTable,
+  withSelectedEntities
+} from "teselagen-react-components";
 import { map } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button, Switch } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
+import commands from "../../commands";
 
 // import { Button } from "@blueprintjs/core";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class CutsiteProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -73,6 +82,7 @@ class CutsiteProperties extends React.Component {
             <h3>Cuts At: </h3>
             <DataTable
               //defaults={{order: ["numberOfCuts"]}}
+
               maxHeight={300}
               onRowSelect={this.onRowSelect}
               formName="cutLocations"
@@ -114,7 +124,6 @@ class CutsiteProperties extends React.Component {
   render() {
     const {
       editorName,
-      annotationVisibility,
       createNewDigest,
       filteredCutsites: allCutsites
     } = this.props;
@@ -132,17 +141,15 @@ class CutsiteProperties extends React.Component {
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Switch
-            style={{ marginBottom: 0 }}
-            checked={annotationVisibility.cutsites}
-            onChange={() => {
-              this.props.annotationVisibilityToggle("cutsites");
-            }}
-          >
-            Hide/Show
-          </Switch>
-
+        <div
+          style={{
+            marginBottom: 10,
+            paddingTop: 10,
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
+          <CmdCheckbox prefix="Show " cmd={this.commands.toggleCutsites} />
           <Button
             style={{ marginLeft: 10, cursor: "auto" }}
             disabled
@@ -167,6 +174,8 @@ class CutsiteProperties extends React.Component {
         <DataTable
           compact
           noSelect
+          noHeader
+          noFooter
           withExpandAndCollapseAllButton
           noFullscreenButton
           noPadding
@@ -187,9 +196,11 @@ class CutsiteProperties extends React.Component {
 
 export default compose(
   connectToEditor(editorState => {
+    const cutsites = selectors.filteredCutsitesSelector(editorState);
     return {
       annotationVisibility: editorState.annotationVisibility || {},
-      filteredCutsites: selectors.filteredCutsitesSelector(editorState)
+      filteredCutsites: cutsites,
+      cutsites: cutsites.cutsitesArray
     };
   }),
   withSelectedEntities("cutsiteProperties")
