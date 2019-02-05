@@ -149,9 +149,9 @@ const EditAvailabilityItem = connectToEditor(
     <StatusBarItem>
       {readOnly ? (
         materiallyAvailable ? (
-          "available"
+          "Available"
         ) : (
-          "unavailable"
+          "Unavailable"
         )
       ) : (
         <HTMLSelect
