@@ -334,8 +334,10 @@ menuDef => {
                 that: this,
                 label: "Override Add/Edit Feature Dialog",
                 type: "overrideAddEditFeatureDialog",
-                description:
-                  "You'll need to pass an entire component override to the <Editor/> as an AddOrEditFeatureDialogOverride prop. You can override the parts and primers dialog in the same way."
+                description: `You'll need to pass an entire component override to the editor like so:
+                  <Editor AddOrEditFeatureDialogOverride={MyCustomComponent}/>
+                  You can override the parts and primers dialog in the same way.
+                  This API is not accessible unless using the React version of the code (UMD does not work)`
               })}
               {renderToggle({
                 that: this,
