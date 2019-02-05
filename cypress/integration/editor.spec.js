@@ -87,4 +87,12 @@ describe("editor", function() {
     cy.contains("Custom export option!").click();
     cy.get(".bp3-toast").contains("Custom export hit!");
   });
+  it(`should handle custom dialog overrides correctly`, () => {
+    cy.tgToggle("overrideAddEditFeatureDialog");
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.contains("New Feature").click();
+    cy.contains("I Am Overridden. Any custom React can go here");
+  });
 });

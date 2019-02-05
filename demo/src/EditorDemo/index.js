@@ -2,15 +2,15 @@ import { Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData } from "ve-sequence-utils";
 import React from "react";
 
-import store from "./store";
-import { updateEditor } from "../../src/";
+import store from "./../store";
+import { updateEditor } from "../../../src/";
 
-import Editor from "../../src/Editor";
-import renderToggle from "./utils/renderToggle";
-import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
-import exampleSequenceData from "./exampleData/exampleSequenceData";
-
-// import { upsertPart } from "../../src/redux/sequenceData";
+import Editor from "../../../src/Editor";
+import renderToggle from "./../utils/renderToggle";
+import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
+import exampleSequenceData from "./../exampleData/exampleSequenceData";
+import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
+// import { upsertPart } from "../../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
 
 // Use the line below because using the full 30 sequences murders Redux dev tools.
@@ -27,6 +27,7 @@ const defaultState = {
   menuOverrideExample: false,
   propertiesOverridesExample: false,
   overrideRightClickExample: false,
+  overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
   showAvailability: true,
   showOptions: true,
@@ -47,11 +48,11 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    
-updateEditor(store, "DemoEditor", {
-  readOnly: false,
-  sequenceData: exampleSequenceData
-});
+
+    updateEditor(store, "DemoEditor", {
+      readOnly: false,
+      sequenceData: exampleSequenceData
+    });
   }
 
   componentDidUpdate() {
@@ -118,6 +119,9 @@ updateEditor(store, "DemoEditor", {
       }
     }
   };
+  overrideAddEditFeatureDialogExample = {
+    AddOrEditFeatureDialogOverride: AddEditFeatureOverrideExample
+  };
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
@@ -179,7 +183,6 @@ updateEditor(store, "DemoEditor", {
   render() {
     const {
       forceHeightMode,
-      setDefaultVisibilities,
       shouldAutosave,
       isFullscreen,
       withPreviewMode
@@ -329,6 +332,13 @@ menuDef => {
               })}
               {renderToggle({
                 that: this,
+                label: "Override Add/Edit Feature Dialog",
+                type: "overrideAddEditFeatureDialog",
+                description:
+                  "You'll need to pass an entire component override to the <Editor/> as an AddOrEditFeatureDialogOverride prop. You can override the parts and primers dialog in the same way."
+              })}
+              {renderToggle({
+                that: this,
                 label: "Show custom right click override example",
                 type: "overrideRightClickExample",
                 description: (
@@ -363,15 +373,16 @@ rightClickOverrides: {
                 that: this,
                 type: "setDefaultVisibilities",
                 label: "Set Default Visibilities",
-                hook: (shouldUpdate) => {
-                  shouldUpdate && updateEditor(store, "DemoEditor", {
-                    annotationVisibility: {
-                      features: false,
-                      // parts: false,
-                      cutsites: false
-                      // orfTranslations: false
-                    },
-                  });
+                hook: shouldUpdate => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        features: false,
+                        // parts: false,
+                        cutsites: false
+                        // orfTranslations: false
+                      }
+                    });
                 }
               })}
               Editor Options:
@@ -528,6 +539,8 @@ rightClickOverrides: {
             showAvailability={this.state.showAvailability}
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}
+            {...this.state.overrideAddEditFeatureDialog &&
+              this.overrideAddEditFeatureDialogExample}
             {...this.state.clickOverridesExample && this.clickOverridesExample}
             {...this.state.propertiesOverridesExample &&
               this.propertiesOverridesExample}

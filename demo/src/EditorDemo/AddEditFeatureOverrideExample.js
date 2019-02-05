@@ -24,7 +24,7 @@ import {
 } from "ve-sequence-utils";
 import classNames from "classnames";
 
-import withEditorProps from "../../withEditorProps";
+import { withEditorProps } from "../../../src";
 
 export class AddOrEditFeatureDialog extends React.Component {
   renderLocations = props => {
@@ -143,6 +143,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           "tg-upsert-feature"
         )}
       >
+        <h5> I Am Overridden. Any custom React can go here</h5>
         <InputField
           inlineLabel
           tooltipError

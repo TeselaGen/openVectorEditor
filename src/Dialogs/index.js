@@ -1,9 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import AddOrEditPrimerDialog from "../helperComponents/AddOrEditPrimerDialog";
+
+import AddOrEditPrimerDialogDefault from "../helperComponents/AddOrEditPrimerDialog";
+import AddOrEditFeatureDialogDefault from "../helperComponents/AddOrEditFeatureDialog";
+import AddOrEditPartDialogDefault from "../helperComponents/AddOrEditPartDialog";
+
 import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
-import AddOrEditFeatureDialog from "../helperComponents/AddOrEditFeatureDialog";
-import AddOrEditPartDialog from "../helperComponents/AddOrEditPartDialog";
 import RenameSequenceDialog from "../helperComponents/RenameSequenceDialog";
 import GoToDialog from "../helperComponents/GoToDialog";
 import SelectDialog from "../helperComponents/SelectDialog";
@@ -21,6 +23,12 @@ const CreateAlignmentDialog = withDialog({
   title: "Create New Alignment"
 })(AlignmentToolInner);
 
+export const dialogOverrides = [
+  "AddOrEditFeatureDialogOverride",
+  "AddOrEditPartDialogOverride",
+  "AddOrEditPrimerDialogOverride"
+];
+
 export default connect(
   state => {
     return {
@@ -31,53 +39,73 @@ export default connect(
   {
     addYourOwnEnzymeClose
   }
-)(({ editorName, addYourOwnEnzymeIsOpen, addYourOwnEnzymeClose }) => {
-  return (
-    <div>
-      <AddAdditionalEnzymes
-        noTarget
-        dialogProps={{
-          isOpen: addYourOwnEnzymeIsOpen,
-          onClose: addYourOwnEnzymeClose
-        }}
-      />
-      <CreateAlignmentDialog
-        editorName={editorName}
-        dialogName="CreateAlignmentDialog"
-        noTarget
-      />
-      <AddOrEditFeatureDialog
-        editorName={editorName}
-        dialogName="AddOrEditFeatureDialog"
-        noTarget
-      />
-      <PrintDialog editorName={editorName} dialogName="PrintDialog" noTarget />
-      <AddOrEditPartDialog
-        editorName={editorName}
-        dialogName="AddOrEditPartDialog"
-        noTarget
-      />
-      <AddOrEditPrimerDialog
-        editorName={editorName}
-        dialogName="AddOrEditPrimerDialog"
-        noTarget
-      />
-      <MergeFeaturesDialog
-        editorName={editorName}
-        dialogName="MergeFeaturesDialog"
-        noTarget
-      />
-      <RenameSequenceDialog
-        editorName={editorName}
-        dialogName="RenameSeqDialog"
-        noTarget
-      />
-      <GoToDialog editorName={editorName} dialogName="GoToDialog" noTarget />
-      <SelectDialog
-        editorName={editorName}
-        dialogName="SelectDialog"
-        noTarget
-      />
-    </div>
-  );
-});
+)(
+  ({
+    editorName,
+    addYourOwnEnzymeIsOpen,
+    addYourOwnEnzymeClose,
+    AddOrEditFeatureDialogOverride,
+    AddOrEditPartDialogOverride,
+    AddOrEditPrimerDialogOverride
+  }) => {
+    const AddOrEditFeatureDialog =
+      AddOrEditFeatureDialogOverride || AddOrEditFeatureDialogDefault;
+    const AddOrEditPartDialog =
+      AddOrEditPartDialogOverride || AddOrEditPartDialogDefault;
+    const AddOrEditPrimerDialog =
+      AddOrEditPrimerDialogOverride || AddOrEditPrimerDialogDefault;
+    return (
+      <div>
+        <AddAdditionalEnzymes
+          noTarget
+          dialogProps={{
+            isOpen: addYourOwnEnzymeIsOpen,
+            onClose: addYourOwnEnzymeClose
+          }}
+        />
+        <CreateAlignmentDialog
+          editorName={editorName}
+          dialogName="CreateAlignmentDialog"
+          noTarget
+        />
+        <PrintDialog
+          editorName={editorName}
+          dialogName="PrintDialog"
+          noTarget
+        />
+
+        <AddOrEditFeatureDialog
+          editorName={editorName}
+          dialogName="AddOrEditFeatureDialog"
+          noTarget
+        />
+        <AddOrEditPartDialog
+          editorName={editorName}
+          dialogName="AddOrEditPartDialog"
+          noTarget
+        />
+        <AddOrEditPrimerDialog
+          editorName={editorName}
+          dialogName="AddOrEditPrimerDialog"
+          noTarget
+        />
+        <MergeFeaturesDialog
+          editorName={editorName}
+          dialogName="MergeFeaturesDialog"
+          noTarget
+        />
+        <RenameSequenceDialog
+          editorName={editorName}
+          dialogName="RenameSeqDialog"
+          noTarget
+        />
+        <GoToDialog editorName={editorName} dialogName="GoToDialog" noTarget />
+        <SelectDialog
+          editorName={editorName}
+          dialogName="SelectDialog"
+          noTarget
+        />
+      </div>
+    );
+  }
+);

@@ -10,7 +10,7 @@ import {
   ContextMenu
 } from "@blueprintjs/core";
 import PropTypes from "prop-types";
-import Dialogs from "../Dialogs";
+import Dialogs, { dialogOverrides } from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import "tg-react-reflex/styles.css";
 import React from "react";
@@ -756,7 +756,10 @@ export class Editor extends React.Component {
         }}
         className="veEditor"
       >
-        <Dialogs editorName={editorName} />
+        <Dialogs
+          editorName={editorName}
+          {...pick(this.props, dialogOverrides)}
+        />
         <ToolBar
           key="toolbar"
           showMenuBar={showMenuBar}
