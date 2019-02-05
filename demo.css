@@ -11384,6 +11384,20 @@ li.bp3-menu-divider:last-child {
       flex-wrap: wrap;
 }
 
+.ve-propertiesPanel .bp3-popover-wrapper {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.ve-propertiesPanel .data-table-container {
+  min-height: 250px;
+}
+.ve-propertiesPanel .data-table-footer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .bp3-dark #circularViewAxis:not(.veAxisFill) {
   fill: #293742 !important;
   stroke: #f5f8fa !important;
