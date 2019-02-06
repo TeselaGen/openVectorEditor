@@ -4,19 +4,33 @@ import {
   setCurrentParamsOnUrl,
   getCurrentParamsFromUrl
 } from "teselagen-react-components";
-import _ from "lodash";
+import { transform, isEqual, isObject } from "lodash";
 
 export function setupOptions({ that, defaultState, props }) {
   const editorDemoState = getCurrentParamsFromUrl(props.history.location);
   // localStorage.editorDemoState = props.history.location.search;
+  const massagedEditorDemoState = Object.keys(editorDemoState).reduce(
+    (acc, key) => {
+      if (editorDemoState[key] === "false") {
+        acc[key] = false;
+      } else if (editorDemoState[key] === "true") {
+        acc[key] = true;
+      } else {
+        acc[key] = editorDemoState[key];
+      }
+      return acc;
+    },
+    {}
+  );
   try {
     that.state = {
       ...defaultState,
-      ...editorDemoState
+      ...massagedEditorDemoState
     };
   } catch (e) {
     console.warn(
-      `oops setting up options went wrong.. maybe your url is messed up?`
+      `oops setting up options went wrong.. maybe your url is messed up?`,
+      e
     );
     that.state = {
       ...defaultState
@@ -36,7 +50,7 @@ export function setupOptions({ that, defaultState, props }) {
 }
 
 export function setParamsIfNecessary({ that, defaultState }) {
-  if (!_.isEqual(that.state, that.oldState)) {
+  if (!isEqual(that.state, that.oldState)) {
     setCurrentParamsOnUrl(
       difference(that.state, defaultState),
       that.props.history.replace
@@ -53,10 +67,10 @@ export function setParamsIfNecessary({ that, defaultState }) {
  */
 function difference(object, base) {
   function changes(object, base) {
-    return _.transform(object, function(result, value, key) {
-      if (!_.isEqual(value, base[key])) {
+    return transform(object, function(result, value, key) {
+      if (!isEqual(value, base[key])) {
         result[key] =
-          _.isObject(value) && _.isObject(base[key])
+          isObject(value) && isObject(base[key])
             ? changes(value, base[key])
             : value;
       }
