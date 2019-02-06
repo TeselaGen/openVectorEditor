@@ -16,9 +16,13 @@ class Chromatogram extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
     if (
-      ["chromatogramData", "charWidth", "row.start", "row.end"].some(
-        key => props[key] !== newProps[key]
-      )
+      [
+        "alignmentData",
+        "chromatogramData",
+        "charWidth",
+        "row.start",
+        "row.end"
+      ].some(key => props[key] !== newProps[key])
     ) {
       const charWidth = newProps.charWidth;
       const { scalePct } = this.state;

@@ -67,7 +67,28 @@
     },
     {
       "sequenceData": {
-        "features": [],
+        "features": [{
+          "start": 22,
+          "end": 44,
+          "name": "cds feature",
+          "type": "CDS",
+          "id": "5ac3f0a199aae6653c0e7d43",
+          "forward": true,
+          "notes": {},
+          "strand": 1,
+          "color": "#006FEF"
+      },
+      {
+        "start": 49,
+        "end": 55,
+        "name": "misc_feature",
+        "type": "misc_feature",
+        "id": "5ac3f0a199aae6653c0e7d44",
+        "forward": true,
+        "notes": {},
+        "strand": 1,
+        "color": "#006FEF"
+    }],
         "name": "F08888",
         "sequence": "GAGCCCTTCCACCTAGCGGCGTAAATCGTAGAGTCCCTCAATAAGTTCGTCCGTTCCCAGCACTTCAGCCAAGGAAGCTACCAATTTTTA",
         "extraLines": [],
