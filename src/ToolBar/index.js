@@ -116,12 +116,17 @@ export class ToolBar extends React.PureComponent {
         <div
           style={{
             ...(displayMenuBarAboveTools && showMenuBar
-              ? {}
+              ? {
+                  display: "flex",
+                  width: "100%",
+                  flexDirection: "column",
+                  alignItems: "flex-start"
+                }
               : {
                   display: "flex",
+                  width: "100%",
                   justifyContent: "center",
-                  flexWrap: "wrap",
-                  width: "100%"
+                  flexWrap: "wrap"
                 })
           }}
           className="veToolbar"
@@ -141,8 +146,8 @@ export class ToolBar extends React.PureComponent {
                 display: "flex",
                 justifyContent: "center",
                 marginLeft: 15,
-                flexWrap: "wrap",
-                width: "100%"
+                flexWrap: "wrap"
+                // width: "100%"
               }}
             >
               {items}
