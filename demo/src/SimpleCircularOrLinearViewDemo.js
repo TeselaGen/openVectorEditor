@@ -37,7 +37,9 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             type: "hoverPart",
             label: "Toggle Part 1 Hover"
           })}
+
           {renderToggle({ that: this, type: "toggleSelection" })}
+          {renderToggle({ that: this, type: "limitLengthTo50Bps" })}
           {renderToggle({
             that: this,
             type: "noSequence",
@@ -86,10 +88,14 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
               //   axis: sequenceData.circular
               // }
               ...(this.state.noSequence
-                ? { noSequence: true, size: 164 }
+                ? {
+                    noSequence: true,
+                    size: this.state.limitLengthTo50Bps ? 50 : 164
+                  }
                 : {
-                    sequence:
-                      "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                    sequence: this.state.limitLengthTo50Bps
+                      ? "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAaga"
+                      : "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
                   }),
               name: "Test Seq",
               circular: this.state.circular, //toggle to true to change this!

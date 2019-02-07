@@ -432,7 +432,11 @@ export class CircularView extends React.Component {
 
     function drawSequenceChars() {
       //DRAW CHARS (only if there are fewer than 85 of them)
-      if (sequenceLength < 85 && sequenceData.sequence) {
+      if (
+        sequenceLength < 85 &&
+        sequenceData.sequence &&
+        !sequenceData.noSequence
+      ) {
         radius += 25;
         sequenceData.sequence.split("").forEach(function(bp, index) {
           let tickAngle = getAngleForPositionMidpoint(index, sequenceLength);

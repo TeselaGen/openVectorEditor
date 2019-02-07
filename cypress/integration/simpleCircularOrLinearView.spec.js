@@ -16,6 +16,12 @@ describe("tabs", function() {
     //this just tests that this toggle doesn't throw an error
     cy.tgToggle("noSequence");
     cy.get(`.veLinearView`);
+    //this just tests that this toggle doesn't throw an error
+    cy.tgToggle("limitLengthTo50Bps");
+    cy.get(`.veLinearView`);
+    //this just tests that this toggle doesn't throw an error
+    cy.tgToggle("circular");
+    cy.get(`.veLinearView`);
   });
   it("can toggle part colors", function() {
     cy.get(`path[stroke="red"]`).should("not.exist");
