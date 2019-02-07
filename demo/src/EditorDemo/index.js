@@ -54,7 +54,6 @@ export default class EditorDemo extends React.Component {
       sequenceData: exampleSequenceData
     });
   }
-
   componentDidUpdate() {
     setParamsIfNecessary({ that: this, defaultState });
   }

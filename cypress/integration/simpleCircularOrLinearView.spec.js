@@ -12,6 +12,11 @@ describe("tabs", function() {
     cy.contains("Part Clicked!");
     cy.contains("Part Right Clicked!");
   });
+  it("can toggle not passing in sequence data without any issue", function() {
+    //this just tests that this toggle doesn't throw an error
+    cy.tgToggle("noSequence");
+    cy.get(`.veLinearView`);
+  });
   it("can toggle part colors", function() {
     cy.get(`path[stroke="red"]`).should("not.exist");
     cy.tgToggle("togglePartColor");

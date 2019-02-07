@@ -1,7 +1,9 @@
 import { mapAnnotationsToRows } from "ve-sequence-utils";
 import { annotationTypes } from "ve-sequence-utils";
 export default function prepareRowData(sequenceData, bpsPerRow) {
-  let sequenceLength = sequenceData.sequence.length;
+  let sequenceLength = sequenceData.noSequence
+    ? sequenceData.size
+    : sequenceData.sequence.length;
   let totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
   let rows = [];
   let rowMap = {};
@@ -27,7 +29,11 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     annotationTypes.forEach(function(type) {
       row[type] = rowMap[type][rowNumber] || [];
     });
-    row.sequence = sequenceData.sequence.slice(row.start, row.end + 1);
+    row.sequence = sequenceData.noSequence
+      ? {
+          length: row.end + 1 - row.start
+        }
+      : sequenceData.sequence.slice(row.start, row.end + 1);
 
     rows[rowNumber] = row;
   }
