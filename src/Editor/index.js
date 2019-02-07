@@ -68,6 +68,7 @@ const userDefinedHandlersAndOpts = [
   "onDelete",
   "onCopy",
   "onPaste",
+  "findGuides",
   "menuFilter"
 ];
 
@@ -760,7 +761,7 @@ export class Editor extends React.Component {
       >
         <Dialogs
           editorName={editorName}
-          {...pick(this.props, dialogOverrides)}
+          {...pick(this.props, dialogOverrides, userDefinedHandlersAndOpts)}
         />
         <ToolBar
           key="toolbar"
