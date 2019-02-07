@@ -14,26 +14,32 @@ import uniqid from "uniqid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
 
-// import { Checkbox } from "material-ui";
-// import {  } from "teselagen-react-components/lib/FormComponents";
+import ToolbarItem from "./ToolbarItem";
+import { connectToEditor } from "../withEditorProps";
+import withEditorProps from "../withEditorProps";
 
-export default {
-  updateKeys: ["alignmentTool", "toggleFindTool"],
-  itemProps: ({ alignmentTool = {}, toggleDropdown }) => {
-    return {
-      Icon: <Icon icon={"align-left"} />,
-      // toggled: alignmentTool.isOpen,
-      renderIconAbove: alignmentTool.isOpen,
-      // onIconClick: toggleFindTool,
-      Dropdown: AlignmentToolDropdown,
-      onIconClick: toggleDropdown,
-      noDropdownIcon: true,
-      tooltip: alignmentTool.isOpen
-        ? "Hide Alignment Tool"
-        : "Align to This Sequence"
-    };
-  }
-};
+export default connectToEditor(({ readOnly, toolBar = {} }) => {
+  return {
+    readOnly: readOnly,
+    isOpen: toolBar.openItem === "alignmentTool"
+  };
+})(({ toolbarItemProps, isOpen }) => {
+  return (
+    <ToolbarItem
+      {...{
+        Icon: <Icon data-test="alignmentTool" icon="align-left" />,
+        // toggled: alignmentTool.isOpen,
+        renderIconAbove: isOpen,
+        // onIconClick: toggleFindTool,
+        Dropdown: ConnectedAlignmentToolDropdown,
+        onIconClick: "toggleDropdown",
+        noDropdownIcon: true,
+        tooltip: isOpen ? "Hide Alignment Tool" : "Align to This Sequence",
+        ...toolbarItemProps
+      }}
+    />
+  );
+});
 
 class AlignmentToolDropdown extends React.Component {
   render() {
@@ -77,6 +83,7 @@ class AlignmentToolDropdown extends React.Component {
     );
   }
 }
+const ConnectedAlignmentToolDropdown = withEditorProps(AlignmentToolDropdown);
 
 const instance = axios.create({
   // timeout: 1000,
@@ -94,7 +101,6 @@ class AlignmentTool extends React.Component {
       isAlignToRefSeq,
       isAutotrimmedSeq
     } = values;
-    // console.log('values:',values)
     const {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
@@ -116,7 +122,6 @@ class AlignmentTool extends React.Component {
             const { suggestedTrimStart, suggestedTrimEnd } = mottTrim(
               addedSequencesToUseTrimmed[i].chromatogramData.qualNums
             );
-            // console.log('i, suggestedTrimStart, suggestedTrimEnd:',i, suggestedTrimStart, suggestedTrimEnd)
             addedSequencesToUseTrimmed[i].sequence = addedSequencesToUseTrimmed[
               i
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
@@ -124,7 +129,6 @@ class AlignmentTool extends React.Component {
             for (let element in addedSequencesToUseTrimmed[i]
               .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
-                // console.log('addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1):',addedSequencesToUseTrimmed[i].chromatogramData[element].slice(suggestedTrimStart, suggestedTrimEnd + 1))
                 addedSequencesToUseTrimmed[i].chromatogramData[
                   element
                 ] = addedSequencesToUseTrimmed[i].chromatogramData[
@@ -136,7 +140,6 @@ class AlignmentTool extends React.Component {
         }
       }
     }
-    // console.log('addedSequencesToUseTrimmed:',addedSequencesToUseTrimmed)
     let seqsToAlign;
     if (addedSequencesToUseTrimmed) {
       seqsToAlign = addedSequencesToUseTrimmed;
@@ -489,15 +492,12 @@ function mottTrim(qualNums) {
       totalScore = 0;
     }
   }
-  // console.log('totalScoreInfo:',totalScoreInfo)
   const firstPositiveValue = totalScoreInfo.find(e => {
     return e > 0;
   });
   startPos = totalScoreInfo.indexOf(firstPositiveValue);
   const highestValue = Math.max(...totalScoreInfo);
   endPos = totalScoreInfo.lastIndexOf(highestValue);
-  // console.log('startPos:',startPos)
-  // console.log('endPos:',endPos)
   return {
     suggestedTrimStart: startPos,
     suggestedTrimEnd: endPos

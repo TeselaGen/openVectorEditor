@@ -6,3 +6,4 @@
 /demo/dist/
 npm-debug.log*
 /.cache
+/cypress/videos

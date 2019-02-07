@@ -1,9 +1,13 @@
 import React from "react";
 import { MenuBar, commandMenuEnhancer } from "teselagen-react-components";
 import { compose } from "redux";
-import withEditorInteractions from "../withEditorInteractions";
+import { memoize } from "lodash";
+import withEditorProps from "../withEditorProps";
 import menuDef from "./defaultConfig";
 import getCommands from "../commands";
+import pureNoFunc from "../utils/pureNoFunc";
+
+const ident = x => x;
 
 class OveMenuBar extends React.Component {
   constructor(props) {
@@ -15,11 +19,42 @@ class OveMenuBar extends React.Component {
         omitIcons: true
       })
     ];
+    this.counter = 0;
   }
 
+  getFilteredMenu = memoize((menuFilter, menuDef) => {
+    this.counter++;
+    if (this.counter === 50)
+      console.warn(
+        `It's likely you're passing a new "menuFilter" function every time. This will cause unecessary re-renders. Try not to recreate a new function each time!`
+      );
+    return menuFilter(JSON.parse(JSON.stringify(menuDef)));
+  });
+
   render() {
-    return <MenuBar menu={menuDef} enhancers={this.enhancers} />;
+    const { menuFilter = ident } = this.props;
+    // Clone original menu def to protect it from accidental mutation
+    return (
+      <div
+        className="veMenuBarContainer"
+        style={{ display: "flex" /* height: "100%" */ }}
+      >
+        <MenuBar
+          menu={this.getFilteredMenu(menuFilter, menuDef)}
+          enhancers={this.enhancers}
+        />
+        <div
+          className="menuBarDivider"
+          style={{
+            height: "87%",
+            width: 2,
+            margin: 2,
+            background: "lightgrey"
+          }}
+        />
+      </div>
+    );
   }
 }
 
-export default compose(withEditorInteractions)(OveMenuBar);
+export default compose(withEditorProps)(pureNoFunc(OveMenuBar));

@@ -1,10 +1,20 @@
 import React from "react";
-import { InputField, BPSelect } from "teselagen-react-components";
+import {
+  InputField,
+  BPSelect,
+  TextareaField
+} from "teselagen-react-components";
 import { reduxForm } from "redux-form";
+import { connectToEditor, updateCircular } from "../../withEditorProps";
+import { compose, withHandlers } from "recompose";
+
 // import { map } from "lodash";
 // import { Button, Intent } from "@blueprintjs/core";
 
 class GeneralProperties extends React.Component {
+  updateSeqDesc = val => {
+    return this.props.sequenceDescriptionUpdate(val);
+  };
   render() {
     const {
       readOnly,
@@ -12,23 +22,18 @@ class GeneralProperties extends React.Component {
       updateCircular,
       disableSetReadOnly,
       updateAvailability,
-      sequenceData: { name, sequence, circular, materiallyAvailable },
+      name,
+      sequence,
+      circular,
+      materiallyAvailable,
       updateReadOnlyMode,
       onSave,
+      description,
       showAvailability,
       sequenceNameUpdate
     } = this.props;
     return (
-      <div
-        style={{
-          maxWidth: 500,
-          flexGrow: 1,
-          alignSelf: "center",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
+      <React.Fragment>
         <div className="ve-flex-row">
           <div className="ve-column-left">Name:</div>{" "}
           <div className="ve-column-right">
@@ -102,11 +107,42 @@ class GeneralProperties extends React.Component {
             </div>
           </div>
         )}
-      </div>
+        <div>Description:</div>
+        <TextareaField
+          clickToEdit
+          name="description"
+          onFieldSubmit={this.updateSeqDesc}
+          defaultValue={description}
+        />
+      </React.Fragment>
     );
   }
 }
 
-export default reduxForm({
-  form: "GeneralProperties"
-})(GeneralProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      sequenceData: {
+        description,
+        name,
+        sequence,
+        circular,
+        materiallyAvailable
+      } = {}
+    }) => {
+      return {
+        readOnly,
+        name,
+        description,
+        sequence,
+        circular,
+        materiallyAvailable
+      };
+    }
+  ),
+  withHandlers({ updateCircular }),
+  reduxForm({
+    form: "GeneralProperties"
+  })
+)(GeneralProperties);

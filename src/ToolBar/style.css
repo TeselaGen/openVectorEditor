@@ -18,17 +18,11 @@
   display: none;
 }
 
-.veToolbar {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  /* height: 32px; */
-  margin-bottom: 5px;
-  width: 100%;
-}
 .veToolbar .veToolbarItemOuter {
   display: flex;
   height: 32px;
+  margin-bottom: -2px;
+  margin-top: 2px;
 }
 .veToolbar .veToolbarItemOuter .veToolbarItem {
   display: flex;
@@ -40,7 +34,7 @@
   width: 1px;
   margin-left: 10px;
   margin-right: 10px;
-  background: lightgrey;
+  /* background: lightgrey; */
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon {
   padding: 3px;

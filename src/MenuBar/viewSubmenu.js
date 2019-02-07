@@ -1,6 +1,26 @@
 export default [
   // { cmd: "mapCaret" },
   { cmd: "toggleFeatures", shouldDismissPopover: false },
+  {
+    cmd: "toggleTranslations",
+    onClick: () => {}, //override this click so that they have to hit the submenu
+    shouldDismissPopover: false,
+    submenu: [
+      {
+        cmd: "toggleTranslations",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleCdsFeatureTranslations",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleOrfTranslations",
+        shouldDismissPopover: false
+      }
+    ]
+  },
+  { cmd: "togglePrimers", shouldDismissPopover: false },
   // {
   //   // TODO preprocess this as needed
   //   cmd: "featureTypes",
@@ -13,16 +33,24 @@ export default [
   // TODO translations, cds feature translations?
   {
     cmd: "toggleOrfs",
-    text: "ORFs",
+    onClick: () => {}, //override this click so that they have to hit the submenu
+    shouldDismissPopover: false,
     submenu: [
       {
-        cmd: "toggleOrfs"
+        cmd: "toggleOrfs",
+        shouldDismissPopover: false
       },
       {
-        cmd: "toggleOrfTranslations"
+        cmd: "toggleOrfTranslations",
+        shouldDismissPopover: false
       },
       {
-        cmd: "toggleCdsFeatureTranslations"
+        cmd: "useGtgAndCtgAsStartCodons",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "minOrfSizeCmd",
+        shouldDismissPopover: false
       }
     ]
   },
@@ -30,7 +58,7 @@ export default [
   // { cmd: "spaces" },
   { divider: "" },
   {
-    text: "Sequence Case (Upper/Lower)",
+    text: "Sequence Case",
     submenu: [
       {
         cmd: "toggleSequenceMapFontUpper",
@@ -41,11 +69,6 @@ export default [
         cmd: "toggleSequenceMapFontLower",
         text: "Lower Case",
         shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontNoPreference",
-        text: "No Preference",
-        shouldDismissPopover: false
       }
     ]
   },
@@ -54,41 +77,49 @@ export default [
     text: "Full Sequence Translation",
     submenu: [
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_allFrames",
         text: "All Frames"
         // frameNumber: "all" // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_frame1",
         text: "Frame 1"
         // frameNumber: 1 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_frame2",
         text: "Frame 2"
         // frameNumber: 2 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAA_frame3",
         text: "Frame 3"
         // frameNumber: 3 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_allFrames",
         text: "All Reverse Frames"
         // frameNumber: "all" // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_frame1",
         text: "Frame -1"
         // frameNumber: 1 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_frame2",
         text: "Frame -2"
         // frameNumber: 2 // TODO ?
       },
       {
+        shouldDismissPopover: false,
         cmd: "sequenceAAReverse_frame3",
         text: "Frame -3"
         // frameNumber: 3 // TODO ?
@@ -101,7 +132,7 @@ export default [
   { cmd: "toggleAxisNumbers", shouldDismissPopover: false },
   { cmd: "toggleReverseSequence", shouldDismissPopover: false },
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
-  { cmd: "toggleLineageLines", shouldDismissPopover: false },
+  // { cmd: "toggleLineageLines", shouldDismissPopover: false },
 
   { divider: "" },
 

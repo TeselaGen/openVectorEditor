@@ -1,67 +1,132 @@
 import { getInsertBetweenVals } from "ve-sequence-utils";
-import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import React from "react";
-import { Button, Classes } from "@blueprintjs/core";
-import { BPSelect } from "teselagen-react-components";
-import withEditorProps from "../withEditorProps";
-import "./style.css";
-
-export function StatusBar({
-  selectionLayer = { start: -1, end: -1 },
-  caretPosition = -1,
-  sequenceLength = 0,
-  readOnly,
-  sequenceData: { circular, materiallyAvailable } = {},
-  onSave,
-  disableSetReadOnly,
+import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
+import {
+  connectToEditor,
   updateCircular,
-  updateAvailability,
-  updateReadOnlyMode,
-  selectionLayerUpdate,
-  caretPositionUpdate,
-  showCircularity = true,
-  showReadOnly = true,
-  showAvailability = false
-}) {
-  let length = getRangeLength(selectionLayer, sequenceLength);
-  let insertBetween = getInsertBetweenVals(
-    caretPosition,
-    selectionLayer,
-    sequenceLength
-  );
-  let isSelecting = selectionLayer.start > -1;
-  const statusBarItems = [
-    showReadOnly &&
-      (onSave ? (
-        <BPSelect
-          options={[
-            { label: "Read Only", value: "readOnly" },
-            { label: "Editable", value: "editable" }
-          ]}
-          disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
-          className={Classes.MINIMAL}
-          value={readOnly ? "readOnly" : "editable"}
-          onChange={value => {
-            updateReadOnlyMode(value === "readOnly");
-          }}
-        />
-      ) : readOnly ? (
-        "Read Only"
-      ) : (
-        "Editable"
-      )),
+  handleInverse
+} from "../withEditorProps";
+import "./style.css";
+import { withHandlers, compose } from "recompose";
 
-    showCircularity &&
-      (readOnly ? (
+const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
+  readOnly
+}))(
+  ({
+    onSave,
+    readOnly,
+    showReadOnly,
+    disableSetReadOnly,
+    updateReadOnlyMode
+  }) => {
+    return showReadOnly ? (
+      <StatusBarItem dataTest="veStatusBar-readOnly">
+        {onSave ? (
+          <HTMLSelect
+            options={[
+              { label: "Read Only", value: "readOnly" },
+              { label: "Editable", value: "editable" }
+            ]}
+            disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
+            className={Classes.MINIMAL}
+            value={readOnly ? "readOnly" : "editable"}
+            onChange={({ target: { value } }) => {
+              updateReadOnlyMode(value === "readOnly");
+            }}
+          />
+        ) : readOnly ? (
+          "Read Only"
+        ) : (
+          "Editable"
+        )}
+      </StatusBarItem>
+    ) : null;
+  }
+);
+
+const ShowSelectionItem = compose(
+  connectToEditor(
+    ({ selectionLayer, caretPosition, sequenceData = { sequence: "" } }) => ({
+      selectionLayer,
+      caretPosition,
+      sequenceLength: sequenceData.sequence.length
+    })
+  ),
+  withHandlers({ handleInverse })
+)(
+  ({
+    selectionLayer = { start: -1, end: -1 },
+    caretPosition = -1,
+    sequenceLength = 0,
+
+    handleInverse
+  }) => {
+    let length = getRangeLength(selectionLayer, sequenceLength);
+    let insertBetween = getInsertBetweenVals(
+      caretPosition,
+      selectionLayer,
+      sequenceLength
+    );
+    let isSelecting = selectionLayer.start > -1;
+    return (
+      <React.Fragment>
+        <StatusBarItem dataTest="veStatusBar-selection">
+          {isSelecting
+            ? `Selecting ${length} bps from ${selectionLayer.start +
+                1} to ${selectionLayer.end + 1}`
+            : caretPosition > -1
+            ? `Caret Between Bases ${insertBetween[0]} and ${insertBetween[1]}`
+            : "No Selection"}
+          <Button
+            minimal
+            disabled={sequenceLength <= 0}
+            onClick={handleInverse}
+            style={{ marginLeft: 5, color: "#48AFF0" }}
+            small
+          >
+            Select Inverse
+          </Button>
+        </StatusBarItem>
+      </React.Fragment>
+    );
+  }
+);
+
+const ShowLengthItem = connectToEditor(
+  ({ sequenceData = { sequence: "" } }) => ({
+    sequenceLength: sequenceData.sequence.length
+  })
+)(({ sequenceLength = 0 }) => (
+  <StatusBarItem dataTest="veStatusBar-length">{`Length: ${sequenceLength}`}</StatusBarItem>
+));
+
+const EditCircularityItem = compose(
+  connectToEditor(
+    ({
+      readOnly,
+      sequenceData,
+      sequenceData: { circular /* materiallyAvailable */ } = {}
+    }) => ({
+      readOnly,
+      sequenceData,
+      circular
+    })
+  ),
+  withHandlers({ updateCircular })
+)(({ readOnly, showCircularity, circular, updateCircular }) => {
+  return showCircularity ? (
+    <StatusBarItem dataTest="veStatusBar-circularity">
+      {readOnly ? (
         circular ? (
           "Circular"
         ) : (
           "Linear"
         )
       ) : (
-        <BPSelect
-          onChange={val => {
-            updateCircular(val === "circular");
+        <HTMLSelect
+          onChange={({ target: { value } }) => {
+            updateCircular(value === "circular");
           }}
           className={Classes.MINIMAL}
           value={circular ? "circular" : "linear"}
@@ -70,18 +135,28 @@ export function StatusBar({
             { label: "Linear", value: "linear" }
           ]}
         />
-      )),
-    showAvailability &&
-      (readOnly ? (
+      )}
+    </StatusBarItem>
+  ) : null;
+});
+const EditAvailabilityItem = connectToEditor(
+  ({ readOnly, sequenceData: { materiallyAvailable } = {} }) => ({
+    readOnly,
+    materiallyAvailable
+  })
+)(({ readOnly, showAvailability, materiallyAvailable, updateAvailability }) => {
+  return showAvailability ? (
+    <StatusBarItem>
+      {readOnly ? (
         materiallyAvailable ? (
-          "available"
+          "Available"
         ) : (
-          "unavailable"
+          "Unavailable"
         )
       ) : (
-        <BPSelect
-          onChange={val => {
-            updateAvailability(val === "available");
+        <HTMLSelect
+          onChange={({ target: { value } }) => {
+            updateAvailability(value === "available");
           }}
           className={Classes.MINIMAL}
           value={materiallyAvailable ? "available" : "unavailable"}
@@ -90,76 +165,53 @@ export function StatusBar({
             { label: "Unavailable", value: "unavailable" }
           ]}
         />
-      )),
-    // !readOnly &&
-    //   `Insert between bases ${insertBetween[0]} and ${insertBetween[1]}`,
-    <React.Fragment key="selectionstatus">
-      {isSelecting
-        ? `Selecting ${length} bps from ${selectionLayer.start +
-            1} to ${selectionLayer.end + 1}`
-        : caretPosition > -1
-          ? `Caret Between Bases ${insertBetween[0]} and ${insertBetween[1]}`
-          : "No Selection"}
-      <Button
-        minimal
-        disabled={sequenceLength <= 0}
-        onClick={() => {
-          if (sequenceLength <= 0) {
-            return false;
-          }
-          if (selectionLayer.start > -1) {
-            if (
-              getRangeLength(selectionLayer, sequenceLength) === sequenceLength
-            ) {
-              caretPositionUpdate(selectionLayer.start);
-            } else {
-              selectionLayerUpdate(invertRange(selectionLayer, sequenceLength));
-            }
-          } else {
-            if (caretPosition > -1) {
-              selectionLayerUpdate(
-                normalizeRange(
-                  {
-                    start: caretPosition,
-                    end: caretPosition - 1
-                  },
-                  sequenceLength
-                )
-              );
-            } else {
-              selectionLayerUpdate({
-                start: 0,
-                end: sequenceLength - 1
-              });
-            }
-          }
-        }}
-        style={{ marginLeft: 5, color: "#48AFF0" }}
-        small
-      >
-        Select Inverse
-      </Button>
-    </React.Fragment>,
-    `Length: ${sequenceLength}`
-  ].filter(i => !!i);
+      )}
+    </StatusBarItem>
+  ) : null;
+});
+
+export function StatusBar({
+  disableSetReadOnly,
+  onSave,
+  editorName,
+  showCircularity = true,
+  showReadOnly = true,
+  showAvailability = false
+}) {
   return (
-    <div className={"veStatusBar"}>
-      {statusBarItems.map((item, i) => {
-        return (
-          <React.Fragment key={i}>
-            <StatusBarItem>{item}</StatusBarItem>
-            {i !== statusBarItems.length - 1 && (
-              <div className={"veStatusBarSpacer"} />
-            )}
-          </React.Fragment>
-        );
-      })}
+    <div className="veStatusBar">
+      <EditReadOnlyItem
+        editorName={editorName}
+        {...{
+          onSave,
+          disableSetReadOnly,
+          showReadOnly
+        }}
+      />
+      <EditCircularityItem
+        editorName={editorName}
+        showCircularity={showCircularity}
+      />
+      <EditAvailabilityItem
+        editorName={editorName}
+        showAvailability={showAvailability}
+      />
+      <ShowSelectionItem editorName={editorName} />
+      <ShowLengthItem editorName={editorName} />
     </div>
   );
 }
 
-function StatusBarItem({ children }) {
-  return <div className={"veStatusBarItem"}>{children}</div>;
+function StatusBarItem({ children, dataTest }) {
+  return (
+    <React.Fragment>
+      <div data-test={dataTest} className="veStatusBarItem">
+        {children}
+      </div>
+      <div className="veStatusBarSpacer" />
+    </React.Fragment>
+  );
 }
 
-export default withEditorProps(StatusBar);
+export default StatusBar;
+// veStatusBarSpacer

@@ -3,11 +3,16 @@
   flex-direction: column;
   width: 100%;
 }
+
 .ve-propertiesPanel .bp3-tab-list::-webkit-scrollbar {
   display: none;
 }
 .ve-draggable-tabs::-webkit-scrollbar {
   display: none;
+}
+.ve-propertiesPanel .data-table-header {
+  margin-top: 3px;
+  margin-right: 3px;
 }
 .ve-propertiesPanel .bp3-tab-list {
   overflow: scroll;
@@ -15,7 +20,10 @@
 .ve-propertiesPanel .bp3-tabs .bp3-tab-panel {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: visible;
 }
+
 .ve-flex-row {
   display: flex;
   flex-direction: row;
@@ -29,3 +37,25 @@
   
   align-items: center;
 } */
+
+/* .data-table-container > * {
+  flex-shrink: 0;
+} */
+
+.vePropertiesFooter {
+  display: flex;
+  justify-content: right;
+  flex-wrap: wrap;
+}
+
+.ve-propertiesPanel .bp3-popover-wrapper {
+  width: fit-content;
+}
+
+.ve-propertiesPanel .data-table-container {
+  min-height: 250px;
+}
+.ve-propertiesPanel .data-table-footer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

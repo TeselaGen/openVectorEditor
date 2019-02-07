@@ -7,7 +7,7 @@
 import throttle from "lodash.throttle";
 import Measure from "react-measure";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import Browser from "./Browser";
 import React from "react";
 
@@ -63,7 +63,7 @@ export default class ReflexElement extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  async componentWillReceiveProps(props) {
+  async UNSAFE_componentWillReceiveProps(props) {
     if (props.size !== this.props.size) {
       const directions = this.toArray(props.direction);
 

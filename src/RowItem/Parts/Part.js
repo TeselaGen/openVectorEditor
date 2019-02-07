@@ -1,3 +1,4 @@
+import { startsWith } from "lodash";
 import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
@@ -5,23 +6,27 @@ import React from "react";
 
 function Part(props) {
   let {
-    hoverActions,
-    hoverProps: { className },
+    className,
     widthInBps,
     charWidth,
     height,
     rangeType,
     forward,
-    name,
+    name = "",
+    onMouseLeave,
+    onMouseOver,
     pointiness = 8,
     fontWidth = 12,
     partClicked,
     partRightClicked,
-    annotation,
+    annotation = {},
     gapsInside,
     gapsBefore
   } = props;
-
+  const { color } = annotation;
+  const colorToUse = startsWith(color, "override_")
+    ? color.replace("override_", "")
+    : "purple";
   let width = (widthInBps + gapsInside) * charWidth;
   let charWN = charWidth; //charWN is normalized
   if (charWidth < 15) {
@@ -82,7 +87,7 @@ function Part(props) {
   // path=path.replace(/\n/g,'')
   return (
     <g
-      {...hoverActions}
+      {...{ onMouseLeave, onMouseOver }}
       className={"veRowViewPart clickable " + className}
       onClick={function(event) {
         partClicked({
@@ -106,8 +111,8 @@ function Part(props) {
       </title>
       <path
         strokeWidth="1"
-        stroke="purple"
-        fill="purple"
+        stroke={colorToUse}
+        fill={colorToUse}
         fillOpacity={0}
         transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
         d={path}

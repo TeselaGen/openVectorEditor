@@ -7,31 +7,36 @@ import viewSubmenu from "./viewSubmenu";
 export default [
   {
     text: "File",
+    "data-test": "file",
     submenu: [
-      "newSequence",
+      {
+        cmd: "newSequence",
+        "data-test": "newSequence"
+      },
       "renameSequence",
       "saveSequence",
       "deleteSequence",
       "duplicateSequence",
       "--",
-      "toggleReadOnlyMode",
+      { cmd: "toggleReadOnlyMode", shouldDismissPopover: false },
       "--",
       "importSequence",
       {
         text: "Export Sequence",
         submenu: [
           { cmd: "exportSequenceAsGenbank" },
-          { cmd: "exportSequenceAsFasta" }
+          { cmd: "exportSequenceAsFasta" },
+          { cmd: "exportSequenceAsTeselagenJson" }
         ]
       },
       "--",
       {
-        disabled: true,
         text: "Print",
-        submenu: [{ cmd: "circularView" }, { cmd: "linearView" }]
+        cmd: "print"
+        // submenu: [{ cmd: "printCircularView" }, { cmd: "printLinearView" }]
       },
-      { cmd: "viewRevisionHistory", disabled: true },
-      { cmd: "viewProperties", icon: "properties" }
+      { cmd: "viewRevisionHistory", text: "Revision History" },
+      { cmd: "viewProperties", text: "Properties", icon: "properties" }
     ]
   },
   {
@@ -40,7 +45,7 @@ export default [
       "cut",
       "copy",
       {
-        cmd: "copyOptions",
+        text: "Copy Options",
         submenu: [
           { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
           { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },
@@ -49,6 +54,7 @@ export default [
         ]
       },
       "paste",
+      "--",
       "undo",
       "redo",
       "--",

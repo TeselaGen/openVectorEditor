@@ -14,7 +14,7 @@ export const hoveredAnnotationClear = createAction("HOVEREDANNOTATIONCLEAR");
 export default createReducer(
   {
     [hoveredAnnotationUpdate]: (state, payload) => {
-      return payload;
+      return payload || null;
     },
     [hoveredAnnotationClear]: () => {
       return "";

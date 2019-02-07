@@ -1,10 +1,20 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox
+} from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import commands from "../../commands";
 class PrimerProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -19,31 +29,36 @@ class PrimerProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      sequenceLength,
+      primers,
+      annotationVisibility,
       primerPropertiesSelectedEntities,
       showAddOrEditPrimerDialog,
       deletePrimer,
       selectedAnnotationId
     } = this.props;
-    const { primers } = sequenceData;
     const primersToUse = map(primers, primer => {
       return {
         ...primer,
         ...(primer.strand === undefined && {
           strand: primer.forward ? 1 : -1
         }),
-        size: getRangeLength(primer, sequenceData.sequence.length)
+        size: getRangeLength(primer, sequenceLength)
       };
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
+          topLeftItems={
+            <CmdCheckbox prefix="Show " cmd={this.commands.togglePrimers} />
+          }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
           selectedIds={selectedAnnotationId}
           maxHeight={400}
-          formName={"primerProperties"}
+          formName="primerProperties"
           noRouter
           compact
           isInfinite
@@ -72,7 +87,7 @@ class PrimerProperties extends React.Component {
           entities={primersToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="vePropertiesFooter">
             <Button
               style={{ marginRight: 15 }}
               onClick={() => {
@@ -106,4 +121,20 @@ class PrimerProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("primerProperties")(PrimerProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "", primers = {} } = {}
+    }) => {
+      return {
+        readOnly,
+        annotationVisibility,
+        primers,
+        sequenceLength: sequence.length
+      };
+    }
+  ),
+  withSelectedEntities("primerProperties")
+)(PrimerProperties);

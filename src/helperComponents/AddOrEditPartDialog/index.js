@@ -1,7 +1,7 @@
 import React from "react";
 
 import { reduxForm } from "redux-form";
-
+import { convertRangeTo0Based, isRangeWithinRange } from "ve-range-utils";
 import {
   InputField,
   RadioGroupField,
@@ -11,7 +11,6 @@ import {
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
-import { convertRangeTo0Based } from "ve-range-utils";
 import classNames from "classnames";
 
 import withEditorProps from "../../withEditorProps";
@@ -37,8 +36,8 @@ export class AddOrEditPartDialog extends React.Component {
           autoFocus
           inlineLabel
           validate={required}
-          name={"name"}
-          label={"Name:"}
+          name="name"
+          label="Name:"
         />
         <RadioGroupField
           inlineLabel
@@ -48,9 +47,9 @@ export class AddOrEditPartDialog extends React.Component {
           ]}
           normalize={value => value === "true" || false}
           format={value => (value ? "true" : "false")}
-          name={"forward"}
-          label={"Strand:"}
-          defaultValue={"true"}
+          name="forward"
+          label="Strand:"
+          defaultValue="true"
         />
 
         <NumericInputField
@@ -58,21 +57,43 @@ export class AddOrEditPartDialog extends React.Component {
           defaultValue={1}
           min={1}
           max={sequenceLength}
-          name={"start"}
-          label={"Start:"}
+          name="start"
+          label="Start:"
         />
         <NumericInputField
           inlineLabel
           defaultValue={1}
           min={1}
           max={sequenceLength}
-          name={"end"}
-          label={"End:"}
+          name="end"
+          label="End:"
         />
-        <TextareaField inlineLabel name={"notes"} label={"Notes:"} />
+        <TextareaField
+          inlineLabel
+          tooltipError
+          name="notes"
+          label="Notes:"
+          format={v => {
+            let toReturn = v;
+            if (typeof v !== "string" && v) {
+              toReturn = "";
+              Object.keys(v).forEach(key => {
+                let stringVal;
+                try {
+                  stringVal = JSON.stringify(v[key]);
+                } catch (e) {
+                  stringVal = v[key];
+                }
+                toReturn += `- ${key}: ${stringVal} \n`;
+              });
+            }
+            return toReturn;
+          }}
+          placeholder="Enter notes here.."
+        />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
-          className={"width100"}
+          className="width100"
         >
           <Button
             style={{ marginRight: 15 }}
@@ -86,8 +107,17 @@ export class AddOrEditPartDialog extends React.Component {
             Cancel
           </Button>
           <Button
+            data-test="savePart"
             onClick={handleSubmit(data => {
-              upsertPart(convertRangeTo0Based(data));
+              let updatedData;
+              if (data.forward === true && data.strand !== 1) {
+                updatedData = { ...data, strand: 1 };
+              } else if (data.forward === false && data.strand !== -1) {
+                updatedData = { ...data, strand: -1 };
+              } else {
+                updatedData = data;
+              }
+              upsertPart(convertRangeTo0Based(updatedData));
               hideModal();
             })}
             intent={Intent.PRIMARY}
@@ -108,10 +138,24 @@ export default compose(
   withDialog({
     isDraggable: true,
     height: 430,
-    width: 400
+    width: 350
   }),
   withEditorProps,
   reduxForm({
-    form: "AddOrEditPartDialog"
+    form: "AddOrEditPartDialog",
+    validate: (values, { sequenceLength }) => {
+      let errors = {};
+      if (
+        !isRangeWithinRange(
+          convertRangeTo0Based(values, sequenceLength),
+          { start: 0, end: sequenceLength - 1 },
+          sequenceLength
+        )
+      ) {
+        errors.start = "Range must fit within sequence";
+        errors.end = "Range must fit within sequence";
+        return errors;
+      }
+    }
   })
 )(AddOrEditPartDialog);

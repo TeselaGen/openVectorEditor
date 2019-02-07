@@ -11,13 +11,18 @@ export function showAddOrEditFeatureDialog(annotation, { editorName }) {
     props: {
       editorName: editorName,
       dialogProps: {
-        title: annotation && annotation.id ? "Edit Feature" : "Add Feature"
+        title: annotation && annotation.id ? "Edit Feature" : "New Feature"
       },
-      initialValues: annotation
-        ? {
-            ...convertRangeTo1Based(annotation)
-          }
-        : {}
+      initialValues: {
+        ...(annotation
+          ? {
+              ...convertRangeTo1Based(annotation),
+              ...(annotation.locations && {
+                locations: annotation.locations.map(convertRangeTo1Based)
+              })
+            }
+          : {})
+      }
     }
   };
 }
@@ -28,7 +33,7 @@ export function showAddOrEditPartDialog(annotation, { editorName }) {
     props: {
       editorName: editorName,
       dialogProps: {
-        title: annotation && annotation.id ? "Edit Part" : "Add Part"
+        title: annotation && annotation.id ? "Edit Part" : "New Part"
       },
       initialValues: annotation
         ? {
@@ -38,6 +43,12 @@ export function showAddOrEditPartDialog(annotation, { editorName }) {
     }
   };
 }
+export function showPrintDialog() {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "PrintDialog" //you'll need to pass a unique dialogName prop to the compoennt
+  };
+}
 export function showAddOrEditPrimerDialog(annotation, { editorName }) {
   return {
     type: "TG_SHOW_MODAL",
@@ -45,7 +56,7 @@ export function showAddOrEditPrimerDialog(annotation, { editorName }) {
     props: {
       editorName: editorName,
       dialogProps: {
-        title: annotation && annotation.id ? "Edit Primer" : "Add Primer"
+        title: annotation && annotation.id ? "Edit Primer" : "New Primer"
       },
       initialValues: annotation
         ? {

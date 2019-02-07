@@ -1,5 +1,6 @@
 .veEditor {
   position: relative;
+  flex-grow: 1;
 }
 .veVectorInteractionWrapper:focus {
   box-shadow: 0 4px 2px -2px #9ecaed;
@@ -30,12 +31,6 @@
 .ve-clickable-black:hover {
   color: black;
 }
-.ve-close-panel-button {
-  z-index: 400;
-  color: grey;
-  height: 25px;
-  width: 35px;
-}
 
 .veRightClickTabMenu {
   opacity: 0.4;
@@ -45,7 +40,7 @@
 }
 
 .reflex-layout > .reflex-element {
-  overflow-y: hidden !important;
+  overflow: hidden !important;
 }
 .reflex-layout.reflex-container {
   height: inherit !important;
@@ -55,6 +50,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .preview-mode-view-fullscreen {

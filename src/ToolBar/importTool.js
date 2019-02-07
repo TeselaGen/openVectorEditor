@@ -1,21 +1,27 @@
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
+import ToolbarItem from "./ToolbarItem";
+import { compose, withHandlers } from "recompose";
+import { importSequenceFromFile, connectToEditor } from "../withEditorProps";
 
-export default {
-  updateKeys: ["updateSequenceData"],
-  itemProps: ({ importSequenceFromFile }) => {
-    return {
-      Icon: (
-        <Dropzone
-          multiple={false}
-          style={{}}
-          onDrop={files => importSequenceFromFile(files[0])}
-        >
-          <Icon icon="import" />
-        </Dropzone>
-      ),
-      tooltip: "Click or drag to import and view .fasta or .gb files"
-    };
-  }
-};
+export default compose(
+  connectToEditor(),
+  withHandlers({ importSequenceFromFile })
+)(({ toolbarItemProps, importSequenceFromFile }) => {
+  return (
+    <ToolbarItem
+      {...{
+        Icon: <Icon data-test="veImportTool" icon="export" />,
+        IconWrapper: Dropzone,
+        IconWrapperProps: {
+          multiple: false,
+          style: {},
+          onDrop: files => importSequenceFromFile(files[0])
+        },
+        tooltip: "Click or drag to import and view .fasta or .gb files",
+        ...toolbarItemProps
+      }}
+    />
+  );
+});

@@ -26,7 +26,7 @@ export class CutsiteFilter extends React.Component {
   render() {
     let {
       onChangeHook,
-      style={},
+      style = {},
       filteredRestrictionEnzymes,
       filteredRestrictionEnzymesUpdate,
       allCutsites: { cutsitesByName },
@@ -45,8 +45,7 @@ export class CutsiteFilter extends React.Component {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
-                
+                justifyContent: "space-between"
               }}
             >
               {" "}
@@ -74,9 +73,9 @@ export class CutsiteFilter extends React.Component {
         <Select
           multi
           allowCreate
-          wrapperStyle={{zIndex: 11}}
+          wrapperStyle={{ zIndex: 11 }}
           noResultsText={
-            <div className={"noResultsTextPlusButton"}>
+            <div className="noResultsTextPlusButton">
               No results found.{" "}
               <AddAdditionalEnzymeLink onClick={openAddYourOwn} />{" "}
             </div>
@@ -104,7 +103,10 @@ export class CutsiteFilter extends React.Component {
   }
 }
 
-export default compose(withEditorProps, connect())(CutsiteFilter);
+export default compose(
+  withEditorProps,
+  connect()
+)(CutsiteFilter);
 function renderOptions({ label, value }) {
   if (value === "addYourOwn") {
     return <AddAdditionalEnzymeLink />;
@@ -115,8 +117,8 @@ function renderOptions({ label, value }) {
 
 function AddAdditionalEnzymeLink({ onClick }) {
   return (
-    <span onClick={onClick} className={"ta_link"}>
-      Add additional enzymes <Icon small icon="plus" />
+    <span onClick={onClick} className="ta_link">
+      Add additional enzymes <Icon iconSize={14} icon="plus" />
     </span>
   );
 }

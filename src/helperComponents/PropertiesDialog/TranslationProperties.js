@@ -1,11 +1,23 @@
-import { Checkbox } from "@blueprintjs/core";
+import { Tooltip } from "@blueprintjs/core";
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox
+} from "teselagen-react-components";
+import getCommands from "../../commands";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import selectors from "../../selectors";
 
 class TranslationProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = getCommands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -20,28 +32,25 @@ class TranslationProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      translations,
       translationPropertiesSelectedEntities,
       // showAddOrEditTranslationDialog,
       deleteTranslation,
+      sequenceLength,
       selectedAnnotationId,
-      annotationVisibilityToggle,
-      annotationVisibilityShow,
       annotationVisibility
     } = this.props;
-    const { translations } = sequenceData;
     const translationsToUse = map(translations, translation => {
       return {
         ...translation,
-        sizeBps: getRangeLength(translation, sequenceData.sequence.length),
-        sizeAa: Math.floor(
-          getRangeLength(translation, sequenceData.sequence.length) / 3
-        ),
+        sizeBps: getRangeLength(translation, sequenceLength),
+        sizeAa: Math.floor(getRangeLength(translation, sequenceLength) / 3),
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
         })
       };
     });
+
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
@@ -49,10 +58,18 @@ class TranslationProperties extends React.Component {
           onRowSelect={this.onRowSelect}
           maxHeight={400}
           selectedIds={selectedAnnotationId}
-          formName={"translationProperties"}
+          formName="translationProperties"
           noRouter
           compact
+          topLeftItems={
+            <CmdCheckbox
+              prefix="Show "
+              cmd={this.commands.toggleTranslations}
+            />
+          }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           hideSelectedCount
+          noFooter
           noFullscreenButton
           isInfinite
           schema={{
@@ -90,8 +107,13 @@ class TranslationProperties extends React.Component {
           }}
           entities={translationsToUse}
         />
+        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
+        <CmdCheckbox
+          prefix="Show "
+          cmd={this.commands.toggleCdsFeatureTranslations}
+        />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="vePropertiesFooter">
             {/* <Button
               style={{ marginRight: 15 }}
               onClick={() => {
@@ -111,37 +133,30 @@ class TranslationProperties extends React.Component {
             >
               Edit
             </Button> */}
-            <div>
-              <Checkbox
-                onChange={function() {
-                  annotationVisibilityToggle("orfTranslations");
-                  !annotationVisibility.orfTranslations &&
-                    annotationVisibilityShow("orfs");
-                }}
-                checked={annotationVisibility.orfTranslations}
-                label={"Show translations for ORFs"}
-              />
-              <Checkbox
-                onChange={function() {
-                  annotationVisibilityToggle("cdsFeatureTranslations");
-                }}
-                checked={annotationVisibility.cdsFeatureTranslations}
-                label={"Show translations for CDS features"}
-              />
-            </div>
-            <Button
-              onClick={() => {
-                deleteTranslation(translationPropertiesSelectedEntities);
-              }}
-              style={{ marginLeft: 10, marginRight: 15, height: 30 }}
-              disabled={
-                !translationPropertiesSelectedEntities.length ||
+
+            <Tooltip
+              content={
+                translationPropertiesSelectedEntities.length &&
                 translationPropertiesSelectedEntities[0].translationType !==
                   "User Created"
+                  ? `Only "User Created" translations can be deleted`
+                  : undefined
               }
             >
-              Delete
-            </Button>
+              <Button
+                onClick={() => {
+                  deleteTranslation(translationPropertiesSelectedEntities);
+                }}
+                style={{ marginLeft: 10, marginRight: 15, height: 30 }}
+                disabled={
+                  !translationPropertiesSelectedEntities.length ||
+                  translationPropertiesSelectedEntities[0].translationType !==
+                    "User Created"
+                }
+              >
+                Delete
+              </Button>
+            </Tooltip>
           </div>
         )}
       </div>
@@ -149,6 +164,17 @@ class TranslationProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("translationProperties")(
-  TranslationProperties
-);
+export default compose(
+  connectToEditor(editorState => {
+    const { readOnly, annotationVisibility = {}, sequenceData } = editorState;
+    return {
+      readOnly,
+      translations: selectors.translationsSelector(editorState),
+      orfs: selectors.orfsSelector(editorState),
+      annotationVisibility,
+      sequenceLength: (sequenceData.sequence || "").length,
+      sequenceData
+    };
+  }),
+  withSelectedEntities("translationProperties")
+)(TranslationProperties);

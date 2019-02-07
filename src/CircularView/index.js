@@ -1,5 +1,5 @@
 import VeWarning from "../helperComponents/VeWarning";
-import uniqid from "uniqid";
+// import uniqid from "uniqid";
 // import PassThrough from "../utils/PassThrough";
 import Labels from "./Labels";
 import SelectionLayer from "./SelectionLayer";
@@ -13,7 +13,7 @@ import Primer from "./Primer";
 // import ReplacementLayer from "./ReplacementLayer";
 import Cutsite from "./Cutsite";
 import sortBy from "lodash/sortBy";
-import { groupBy, maxBy, minBy } from "lodash";
+// import { groupBy, maxBy, minBy } from "lodash";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import {
@@ -29,6 +29,7 @@ import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
+
 function noop() {}
 
 // function toDegrees(radians) {
@@ -113,7 +114,7 @@ export class CircularView extends React.Component {
       //   return layers
       // },
     } = this.props;
-    let { sequence = "atgc" } = sequenceData;
+    let { sequence = "atgc", circular } = sequenceData;
     let sequenceLength = sequence.length;
     let sequenceName = hideName ? "" : sequenceData.name || "";
     circularAndLinearTickSpacing =
@@ -121,8 +122,8 @@ export class CircularView extends React.Component {
       (sequenceLength < 10
         ? 1
         : sequenceLength < 50
-          ? Math.ceil(sequenceLength / 5)
-          : Math.ceil(sequenceLength / 100) * 10);
+        ? Math.ceil(sequenceLength / 5)
+        : Math.ceil(sequenceLength / 100) * 10);
     let {
       features: showFeatures = true,
       primers: showPrimers = true,
@@ -445,7 +446,7 @@ export class CircularView extends React.Component {
                 height: radius
               })}
               key={index}
-              transform={`rotate(180)`}
+              transform="rotate(180)"
               style={{
                 textAnchor: "middle",
                 dominantBaseline: "central",
@@ -594,9 +595,19 @@ export class CircularView extends React.Component {
     }
     //tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
     if (radius < 150) radius = 150;
+    const widthToUse = Math.max(Number(width) || 300);
+    const heightToUse = Math.max(Number(height) || 300);
     return (
-      <div tabIndex="0" className={"veCircularView"}>
+      <div
+        style={{
+          width: widthToUse,
+          height: heightToUse
+        }}
+        tabIndex="0"
+        className="veCircularView"
+      >
         <Draggable
+          // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
           onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(
@@ -619,14 +630,14 @@ export class CircularView extends React.Component {
               <div
                 style={{
                   position: "absolute",
-                  width,
-                  height,
+                  width: "100%",
+                  height: "100%",
                   pointerEvents: "none"
                 }}
               >
                 <div
                   key="circViewSvgCenterText"
-                  className={"veCircularViewMiddleOfVectorText"}
+                  className="veCircularViewMiddleOfVectorText"
                   style={{ width: innerRadius, textAlign: "center" }}
                 >
                   <span>{sequenceName} </span>
@@ -654,41 +665,55 @@ export class CircularView extends React.Component {
                   backgroundRightClicked
                 );
               }}
-              style={{ overflow: "visible" }}
-              width={width}
-              height={height}
+              style={{ overflow: "visible", display: "block" }}
+              width={widthToUse}
+              height={heightToUse}
               ref="circularView"
-              className={"circularViewSvg"}
+              className="circularViewSvg"
               viewBox={`-${radius * scale} -${radius * scale} ${radius *
                 2 *
                 scale} ${radius * 2 * scale}`}
             >
               {annotationsSvgs}
             </svg>
-            <div className={"veCircularViewWarningContainer"}>
+            <div className="veCircularViewWarningContainer">
+              {!circular && (
+                <VeWarning
+                  data-test="ve-warning-circular-to-linear"
+                  intent="warning"
+                  tooltip={
+                    "Warning! You're viewing a linear sequence in the Plasmid View. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
+                  }
+                />
+              )}
               {paredDownOrfs && (
                 <VeWarning
-                  message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
+                  data-test="ve-warning-maxOrfsToDisplay"
+                  tooltip={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
                 />
               )}
               {paredDownCutsites && (
                 <VeWarning
-                  message={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
+                  data-test="ve-warning-maxCutsitesToDisplay"
+                  tooltip={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
                 />
               )}
               {paredDownFeatures && (
                 <VeWarning
-                  message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
+                  data-test="ve-warning-maxFeaturesToDisplay"
+                  tooltip={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
                 />
               )}
               {paredDownParts && (
                 <VeWarning
-                  message={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}
+                  data-test="ve-warning-maxPartsToDisplay"
+                  tooltip={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}
                 />
               )}
               {paredDownPrimers && (
                 <VeWarning
-                  message={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
+                  data-test="ve-warning-maxPrimersToDisplay"
+                  tooltip={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
                 />
               )}
             </div>

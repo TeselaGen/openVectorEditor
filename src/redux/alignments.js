@@ -14,54 +14,60 @@ import { /* createReducer, */ createAction } from "redux-act";
 // import ab1ParsedGFPvv60 from "../ToolBar/ab1ParsedGFPvv60.json";
 // import { magicDownload } from "teselagen-react-components";
 
-const defaultAlignmentAnnotationVisibility = {
+const alignmentAnnotationSettings = {
+  axis: true,
+  axisNumbers: true,
+  chromatogram: false,
+  dnaColors: false,
   features: false,
-  translations: false,
   parts: false,
+  reverseSequence: false,
+  sequence: true,
+  translations: true,
   orfs: false,
   orfTranslations: false,
   cdsFeatureTranslations: false,
-  axis: true,
   cutsites: false,
   primers: false,
-  reverseSequence: false,
-  lineageLines: false,
-  dnaColors: true,
-  axisNumbers: true
+  lineageLines: false
 };
 
-const defaultPairwiseAlignmentAnnotationVisibility = {
-  features: true,
-  translations: false,
-  parts: true,
-  orfs: true,
-  orfTranslations: false,
-  cdsFeatureTranslations: false,
-  axis: true,
-  cutsites: false,
-  dnaColors: true,
-  primers: true,
-  reverseSequence: false,
-  lineageLines: true,
-  axisNumbers: true
+let defaultVisibilities = {
+  alignmentAnnotationVisibility: alignmentAnnotationSettings,
+  pairwise_alignmentAnnotationVisibility: alignmentAnnotationSettings,
+  alignmentAnnotationLabelVisibility: {
+    features: false,
+    parts: false,
+    cutsites: false
+  },
+  pairwise_alignmentAnnotationLabelVisibility: {
+    features: false,
+    parts: false,
+    cutsites: false
+  }
 };
+const defaultVisibilityTypes = Object.keys(defaultVisibilities);
 
-const defaultAlignmentAnnotationLabelVisibility = {
-  features: false,
-  parts: false,
-  cutsites: false
-};
-
-const defaultPairwiseAlignmentAnnotationLabelVisibility = {
-  features: true,
-  parts: true,
-  cutsites: false
-};
+try {
+  defaultVisibilityTypes.forEach(type => {
+    const newVal = JSON.parse(window.localStorage.getItem(type));
+    if (newVal)
+      defaultVisibilities[type] = {
+        ...defaultVisibilities[type],
+        ...newVal
+      };
+  });
+} catch (e) {
+  console.error("error setting localstorage visibility config", e);
+}
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const upsertAlignmentRun = createAction("UPSERT_ALIGNMENT_RUN");
+export const updateAlignmentViewVisibility = createAction(
+  "UPDATE_ALIGNMENT_VIEW_VISIBILITY"
+);
 export const alignmentRunUpdate = createAction("ALIGNMENT_RUN_UPDATE");
 
 const highlightRangeProps = {
@@ -78,7 +84,6 @@ function addHighlightedDifferences(alignmentTracks) {
     );
     // .filter by the user-specified mismatch overrides (initially [])
     const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
-    // console.log('mismatches:',mismatches)
     return {
       ...track,
       sequenceData,
@@ -111,15 +116,45 @@ export default (state = {}, { payload = {}, type }) => {
     };
     return newState;
   }
+
+  if (type === "UPDATE_ALIGNMENT_VIEW_VISIBILITY") {
+    defaultVisibilityTypes.forEach(type => {
+      if (
+        (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
+        (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
+      ) {
+        defaultVisibilities[type] = {
+          ...defaultVisibilities[type],
+          ...payload[type.replace("pairwise_", "")]
+        };
+
+        localStorage.setItem(
+          type,
+          JSON.stringify({
+            ...defaultVisibilities[type],
+            ...payload[type.replace("pairwise_", "")]
+          })
+        );
+      }
+    });
+    return {
+      ...state,
+      [payload.id]: { ...payload }
+    };
+  }
+
   if (type === "UPSERT_ALIGNMENT_RUN") {
-    // magicDownload(JSON.stringify(payload), 'myFile.json')
     let payloadToUse = {
-      alignmentAnnotationVisibility: payload.pairwiseAlignments
-        ? defaultPairwiseAlignmentAnnotationVisibility
-        : defaultAlignmentAnnotationVisibility,
-      alignmentAnnotationLabelVisibility: payload.pairwiseAlignments
-        ? defaultPairwiseAlignmentAnnotationLabelVisibility
-        : defaultAlignmentAnnotationLabelVisibility,
+      //assign default visibilities
+      ...defaultVisibilityTypes.reduce((acc, type) => {
+        if (
+          (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
+          (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
+        ) {
+          acc[type.replace("pairwise_", "")] = defaultVisibilities[type];
+        }
+        return acc;
+      }, {}),
       ...payload
     };
     if (payloadToUse.pairwiseAlignments) {
@@ -137,6 +172,7 @@ export default (state = {}, { payload = {}, type }) => {
         {
           //add the template seq as the first track in the Pairwise Alignment Overview
           ...templateSeq,
+          sequenceData: tidyUpSequenceData(templateSeq.sequenceData),
           alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
         }
       ]; // start with just the template seq in there!
@@ -170,7 +206,7 @@ export default (state = {}, { payload = {}, type }) => {
         const alignedSeqMinusInserts = {
           ...alignedSeq,
           sequenceData: {
-            ...alignedSeq.sequenceData,
+            ...tidyUpSequenceData(alignedSeq.sequenceData),
             sequence: template.sequenceData.sequence
           },
           additionalSelectionLayers,
@@ -186,14 +222,9 @@ export default (state = {}, { payload = {}, type }) => {
       );
     }
     if (payloadToUse.alignmentTracks) {
-      //tnr: the following is commented out because it is not yet ready
-      // payloadToUse.alignmentTracks = addDashesForMatchStartAndEndForTracks(
-      //   payloadToUse.alignmentTracks
-      // );
       payloadToUse.alignmentTracks = addHighlightedDifferences(
         payloadToUse.alignmentTracks
       );
-      // console.log('payloadToUse:',payloadToUse)
     }
     //check for issues
     let hasError = checkForIssues(payloadToUse.alignmentTracks);

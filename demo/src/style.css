@@ -3,3 +3,15 @@
 body.bp3-dark {
   background: #293742;
 }
+
+html,
+body,
+#demo {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+}
+
+.toggle-button-holder {
+  flex-shrink: 0;
+}

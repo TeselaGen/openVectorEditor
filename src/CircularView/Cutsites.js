@@ -52,7 +52,7 @@ function Cutsites({
       };
     }
     /* eslint-disable */
-    if (!annotation.id) debugger;
+    if (process.env.NODE_ENV !== "production" && !annotation.id) debugger;
     /* eslint-enable */
 
     svgGroup.push(
@@ -73,7 +73,7 @@ function Cutsites({
     height: annotationHeight,
     labels,
     component: (
-      <g key={"cutsites"} className={"cutsites"}>
+      <g key="cutsites" className="cutsites">
         {svgGroup}
       </g>
     )
@@ -84,12 +84,13 @@ export default Cutsites;
 
 const DrawCutsite = pureNoFunc(
   withHover(function({
-    hoverActions,
-    hoverProps: { className },
+    className,
     startAngle,
     radius,
     cutsiteWidth,
-    annotationHeight
+    annotationHeight,
+    onMouseLeave,
+    onMouseOver
   }) {
     return (
       <rect
@@ -98,7 +99,7 @@ const DrawCutsite = pureNoFunc(
           eAngle: startAngle,
           height: radius
         })}
-        {...hoverActions}
+        {...{ onMouseLeave, onMouseOver }}
         className={className}
         width={cutsiteWidth}
         height={annotationHeight}

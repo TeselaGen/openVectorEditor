@@ -1,7 +1,6 @@
 import { Button } from "@blueprintjs/core";
-import { forEach } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
-import { some, isEqual } from "lodash";
+import { some, isEqual, debounce } from "lodash";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -10,6 +9,14 @@ import RowItem from "../RowItem";
 
 import withEditorInteractions from "../withEditorInteractions";
 import ReactList from "./ReactList";
+import estimateRowHeight from "./estimateRowHeight";
+import {
+  defaultContainerWidth,
+  defaultMarginWidth,
+  defaultCharWidth
+} from "../constants/rowviewContants";
+import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
+
 // import TrMmInfScroll from "./TrMmInfScroll";
 
 // import ReactList from './ReactVariable';
@@ -17,57 +24,9 @@ import "./style.css";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
-let defaultContainerWidth = 400;
-let defaultCharWidth = 10;
-let defaultMarginWidth = 50;
-
 function noop() {}
 
-const annotationsToCompute = {
-  translations: {
-    annotationHeight: 19,
-    hasYOffset: true
-  },
-  parts: {
-    annotationHeight: 19,
-    hasYOffset: true
-  },
-  primers: {
-    annotationHeight: 21,
-    hasYOffset: true
-  },
-  cutsites: {
-    annotationHeight: 15,
-    hasYOffset: false
-  },
-  features: {
-    annotationHeight: 21,
-    margin: 10,
-    hasYOffset: true
-  },
-  orfs: {
-    annotationHeight: 19,
-    hasYOffset: true
-  },
-  sequence: {
-    fixedHeight: 16,
-    isAlwaysShown: true
-  },
-  reverseSequence: {
-    fixedHeight: 16
-  },
-  axis: {
-    fixedHeight: 26.79
-  },
-  cutsiteLabels: {
-    // computeHeight: getCutsiteLabelHeights, //tnr: not actually that necessary
-    type: "cutsites",
-    annotationHeight: 15,
-    hasYOffset: true,
-    isLabel: true
-  }
-};
-
+const bounds = { top: 0, left: 0, right: 0, bottom: 0 };
 export class RowView extends React.Component {
   static defaultProps = {
     sequenceData: { sequence: "" },
@@ -108,50 +67,14 @@ export class RowView extends React.Component {
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
     const { annotationVisibility, annotationLabelVisibility } = this.props;
-
-    if (this.clearCache) {
-      cache = {};
-    }
-
-    if (cache[index]) {
-      return cache[index];
-    }
-    let height = 10; //account for spacer
-    const row = this.rowData[index];
-    if (!row) return 0;
-    forEach(annotationsToCompute, (
-      {
-        fixedHeight,
-        margin = 0,
-        isLabel,
-        isAlwaysShown,
-        annotationHeight,
-        // computeHeight,
-        hasYOffset,
-        type
-      },
-      key
-      // i
-    ) => {
-      const isShown =
-        isAlwaysShown ||
-        (isLabel
-          ? annotationLabelVisibility[type] && annotationVisibility[key]
-          : annotationVisibility[key]);
-      if (!isShown) return;
-      if (fixedHeight) return (height += fixedHeight);
-      const annotations = row[type || key];
-      if (hasYOffset) {
-        let maxYOffset = 0;
-        annotations.forEach(a => {
-          if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
-        });
-        height += maxYOffset * annotationHeight;
-        if (maxYOffset > 0) height += margin;
-      }
+    return estimateRowHeight({
+      index,
+      cache,
+      clearCache: this.clearCache,
+      row: this.rowData[index],
+      annotationVisibility,
+      annotationLabelVisibility
     });
-    cache[index] = height;
-    return height;
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
     let { charWidth = defaultCharWidth } = this.props;
@@ -279,7 +202,8 @@ export class RowView extends React.Component {
     } else if (
       selectionLayer.start > -1 &&
       ((selectionLayer.forceUpdate &&
-        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate) ||
+        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate &&
+        selectionLayer.forceUpdate !== "end") ||
         selectionLayer.start !== selectionLayerOld.start)
     ) {
       // previousBp = selectionLayerOld.start;
@@ -287,7 +211,8 @@ export class RowView extends React.Component {
     } else if (
       selectionLayer.end > -1 &&
       ((selectionLayer.forceUpdate &&
-        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate) ||
+        selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate &&
+        selectionLayer.forceUpdate !== "start") ||
         selectionLayer.end !== selectionLayerOld.end)
     ) {
       // previousBp = selectionLayerOld.end;
@@ -342,7 +267,8 @@ export class RowView extends React.Component {
     return this.rowData;
   };
 
-  render() {
+  renderItem = index => {
+    if (this.cache[index]) return this.cache[index];
     let {
       //currently found in props
       sequenceData,
@@ -359,15 +285,141 @@ export class RowView extends React.Component {
       RowItemProps,
       ...rest
     } = this.props;
+
+    let rowTopComp;
+    let rowBottomComp;
+    const rowData = this.rowData;
+    const bpsPerRow = this.bpsPerRow;
+    let showJumpButtons = rowData.length > 15;
+
+    if (showJumpButtons) {
+      if (index === 0) {
+        rowTopComp = (
+          <div>
+            <Button
+              data-test="jumpToEndButton"
+              onClick={e => {
+                e.stopPropagation();
+                this.InfiniteScroller &&
+                  this.InfiniteScroller.scrollTo(rowData.length);
+              }}
+            >
+              Jump to end
+            </Button>
+          </div>
+        );
+      } else if (index === rowData.length - 1) {
+        rowBottomComp = (
+          <div>
+            <Button
+              data-test="jumpToStartButton"
+              onClick={e => {
+                e.stopPropagation();
+                this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);
+              }}
+            >
+              Jump to start
+            </Button>
+          </div>
+        );
+      }
+    }
+    if (rowData[index]) {
+      let rowItem = (
+        <div data-row-number={index} key={index}>
+          <div className="veRowItemSpacer" />
+          <RowItem
+            {...{
+              ...rest,
+              rowTopComp,
+              rowBottomComp,
+              sequenceLength: sequenceData.sequence.length,
+              bpsPerRow,
+              fullSequence: sequenceData.sequence,
+              ...RowItemProps
+            }}
+            row={rowData[index]}
+          />
+        </div>
+      );
+      this.cache[index] = rowItem;
+      return rowItem;
+    } else {
+      return null;
+    }
+  };
+  onDrag = event => {
+    this.dragging = true;
+    const rowData = this.rowData;
+    this.getNearestCursorPositionToMouseEvent(
+      rowData,
+      event,
+      this.props.editorDragged
+    );
+  };
+  onStart = event => {
+    this.dragging = true;
+    const rowData = this.rowData;
+    this.getNearestCursorPositionToMouseEvent(
+      rowData,
+      event,
+      this.props.editorDragStarted
+    );
+  };
+
+  onStop = e => {
+    this.dragging = false;
+    this.props.editorDragStopped(e);
+  };
+
+  getRef = ref => (this.node = ref);
+
+  onContextMenu = event => {
+    this.getNearestCursorPositionToMouseEvent(
+      this.rowData,
+      event,
+      this.props.backgroundRightClicked
+    );
+  };
+  onClick = event => {
+    this.getNearestCursorPositionToMouseEvent(
+      this.rowData,
+      event,
+      this.props.editorClicked
+    );
+  };
+
+  getReactListRef = c => {
+    this.InfiniteScroller = c;
+    !this.calledUpdateScrollOnce && this.updateScrollPosition({}, this.props); //trigger the scroll here as well because now we actually have the infinite scroller component accessible
+  };
+
+  render() {
+    let {
+      //currently found in props
+      sequenceData,
+      // bpToJumpTo,
+      // editorDragged,
+      // editorDragStarted,
+      // editorClicked,
+      // backgroundRightClicked,
+      // editorDragStopped,
+      // onScroll,
+      width,
+      marginWidth,
+      height
+      // RowItemProps,
+    } = this.props;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
-      return <div style={{ width, height }} />;
+      return <div style={{ width, height: height || 300 }} />;
     }
     if (marginWidth < defaultMarginWidth) {
       marginWidth = defaultMarginWidth;
     }
     let containerWidthMinusMargin = width - marginWidth;
     let bpsPerRow = getBpsPerRow(this.props);
+    this.bpsPerRow = bpsPerRow;
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
     // let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
@@ -375,127 +427,36 @@ export class RowView extends React.Component {
     let rowData = this.getRowData(sequenceData, bpsPerRow);
     this.rowData = rowData;
 
-    let showJumpButtons = rowData.length > 15;
-    let renderItem = index => {
-      if (this.cache[index]) return this.cache[index];
-      let rowTopComp;
-      let rowBottomComp;
-      if (showJumpButtons) {
-        if (index === 0) {
-          rowTopComp = (
-            <div>
-              <Button
-                onClick={e => {
-                  e.stopPropagation();
-                  this.InfiniteScroller &&
-                    this.InfiniteScroller.scrollTo(rowData.length);
-                }}
-              >
-                Jump to end
-              </Button>
-            </div>
-          );
-        } else if (index === rowData.length - 1) {
-          rowBottomComp = (
-            <div>
-              <Button
-                onClick={e => {
-                  e.stopPropagation();
-                  this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);
-                }}
-              >
-                Jump to start
-              </Button>
-            </div>
-          );
-        }
-      }
-      if (rowData[index]) {
-        let rowItem = (
-          <div data-row-number={index} key={index}>
-            <div className={"veRowItemSpacer"} />
-            <RowItem
-              {...{
-                ...rest,
-                rowTopComp,
-                rowBottomComp,
-                sequenceLength: sequenceData.sequence.length,
-                bpsPerRow,
-                fullSequence: sequenceData.sequence,
-                ...RowItemProps
-              }}
-              row={rowData[index]}
-            />
-          </div>
-        );
-        this.cache[index] = rowItem;
-        return rowItem;
-      } else {
-        return null;
-      }
-    };
     const shouldClear = this.shouldClearCache();
     return (
       <Draggable
-        bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={event => {
-          this.dragging = true;
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragged
-          );
-        }}
-        onStart={event => {
-          this.dragging = true;
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragStarted
-          );
-        }}
-        onStop={e => {
-          this.dragging = false;
-          editorDragStopped(e);
-        }}
+        // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
+        bounds={bounds}
+        onDrag={this.onDrag}
+        onStart={this.onStart}
+        onStop={this.onStop}
       >
         <div
           tabIndex="0"
-          ref={ref => (this.node = ref)}
+          ref={this.getRef}
           className="veRowView"
           style={{
             overflowY: "auto",
             overflowX: "visible",
-            height,
+            height: height || 300,
             width: containerWidthMinusMargin + marginWidth,
             paddingLeft: marginWidth / 2,
             paddingRight: marginWidth / 2
           }}
           // onScroll={disablePointers} //tnr: this doesn't actually help much with scrolling performance
-          onContextMenu={event => {
-            this.getNearestCursorPositionToMouseEvent(
-              rowData,
-              event,
-              backgroundRightClicked
-            );
-          }}
-          // onScroll={onScroll}
-          onClick={event => {
-            this.getNearestCursorPositionToMouseEvent(
-              rowData,
-              event,
-              editorClicked
-            );
-          }}
+          onContextMenu={this.onContextMenu}
+          onScroll={onScroll}
+          onClick={this.onClick}
         >
           <ReactList
-            ref={c => {
-              this.InfiniteScroller = c;
-              !this.calledUpdateScrollOnce && //trigger the scroll here as well because now we actually have the infinite scroller component accessible
-                this.updateScrollPosition({}, this.props);
-            }}
+            ref={this.getReactListRef}
             clearCache={shouldClear}
-            itemRenderer={renderItem}
+            itemRenderer={this.renderItem}
             length={rowData.length}
             itemSizeEstimator={this.estimateRowHeight}
             type="variable"
@@ -507,14 +468,6 @@ export class RowView extends React.Component {
 }
 
 export default withEditorInteractions(RowView);
-
-function getBpsPerRow({
-  charWidth = defaultCharWidth,
-  width = defaultContainerWidth,
-  marginWidth = defaultMarginWidth
-}) {
-  return Math.floor((width - marginWidth) / charWidth);
-}
 
 // function itemSizeEstimator(index, cache) {
 //   if (cache[index]) {
@@ -540,3 +493,11 @@ function getBpsPerRow({
 //     window.__veScrolling = false;
 //   });
 // }
+function onScroll() {
+  window.__veScrolling = true;
+  setTimeout(endScroll);
+}
+
+const endScroll = debounce(() => {
+  window.__veScrolling = false;
+}, 100);

@@ -11,7 +11,10 @@
 
 .veCircularViewWarningContainer {
   position: absolute;
-  bottom: 0;
+  top: 5px;
+  left: 5px;
+
+  display: flex;
 }
 
 .selectionLayerInverseWrapper {

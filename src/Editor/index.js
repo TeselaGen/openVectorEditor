@@ -1,9 +1,16 @@
 import { debounce } from "lodash";
-
+// import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
-import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
+import {
+  Button,
+  ButtonGroup,
+  Intent,
+  Icon,
+  Tooltip,
+  ContextMenu
+} from "@blueprintjs/core";
 import PropTypes from "prop-types";
-import Dialogs from "../Dialogs";
+import Dialogs, { dialogOverrides } from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import GuideTool from "../GuideTool";
 import "tg-react-reflex/styles.css";
@@ -15,15 +22,15 @@ import AlignmentView from "../AlignmentView";
 import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
+import { connectToEditor, handleSave } from "../withEditorProps";
+import { withHandlers } from "recompose";
 
 import CommandHotkeyHandler from "./CommandHotkeyHandler";
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-import { Icon, Tooltip, ContextMenu } from "@blueprintjs/core";
-
-import { flatMap, map, filter } from "lodash";
+import { flatMap, map, filter, pick, camelCase } from "lodash";
 
 import ToolBar from "../ToolBar";
 import CircularView, {
@@ -32,16 +39,37 @@ import CircularView, {
 import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
-import withEditorProps from "../withEditorProps";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
-import MenuBar from "../MenuBar";
 import "./style.css";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
+
+// if (process.env.NODE_ENV !== 'production') {
+//   const {whyDidYouUpdate} = require('why-did-you-update');
+//   whyDidYouUpdate(React);
+// }
+
+const userDefinedHandlersAndOpts = [
+  "readOnly",
+  "shouldAutosave",
+  "disableSetReadOnly",
+  "showReadOnly",
+  "showCircularity",
+  "showAvailability",
+  "fullscreenMode",
+  "onNew",
+  "onSave",
+  "onRename",
+  "onDuplicate",
+  "onDelete",
+  "onCopy",
+  "onPaste",
+  "menuFilter"
+];
 
 const panelMap = {
   circular: CircularView,
@@ -51,7 +79,10 @@ const panelMap = {
   alignment: AlignmentView,
   digestTool: DigestTool,
   guideTool: GuideTool,
-  properties: Properties,
+  properties: {
+    comp: Properties,
+    panelSpecificPropsToSpread: ["PropertiesProps"]
+  },
   mismatches: Mismatches
 };
 
@@ -66,7 +97,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 const tabHeight = 34;
 
-const getListStyle = (isDraggingOver, isDragging) => {
+const getListStyle = (isDraggingOver /* isDragging */) => {
   return {
     display: "flex",
     alignItems: "flex-end",
@@ -77,7 +108,7 @@ const getListStyle = (isDraggingOver, isDragging) => {
     borderTop: "1px solid lightgray",
     paddingTop: 3,
     paddingBottom: 3,
-    ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
+    // ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
     ...(isDraggingOver && { background: "#e5f3ff" })
   };
 };
@@ -104,12 +135,6 @@ export class Editor extends React.Component {
     tabDragging: false,
     previewModeFullscreen: false
   };
-  // componentWillMount(){
-  //   // lastSavedId
-  //   // window.onbeforeunload = function () {
-  //   //     return "You may not want to leave the editor if you have any unsaved work.";
-  //   // };
-  // }
 
   getExtraPanel = (/*panelOptions */) => {
     return [];
@@ -119,11 +144,16 @@ export class Editor extends React.Component {
     //tnrtodo this will need to be updated once blueprint uses the react 16 api
     return { blueprintPortalClassName: "ove-portal" };
   }
+  // componentDidCatch(error,info) {
+  //   debugger
+  //   console.error("OVE caught this error:", error, info);
+  // }
   componentDidUpdate(prevProps) {
     //autosave if necessary!
     if (
       this.props.shouldAutosave &&
       prevProps.sequenceData &&
+      prevProps.sequenceData.stateTrackingId &&
       this.props.sequenceData.stateTrackingId !==
         prevProps.sequenceData.stateTrackingId
     ) {
@@ -131,12 +161,13 @@ export class Editor extends React.Component {
     }
   }
   updateDimensions = debounce(() => {
-    this.hasFullscreenPanel &&
-      this.setState({ randomRerenderTrigger: Math.random() });
+    // (this.hasFullscreenPanel || this.fitHeight) &&
+    this.setState({ randomRerenderTrigger: Math.random() });
   }, 100);
 
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
+    this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
@@ -161,15 +192,23 @@ export class Editor extends React.Component {
         [...panelsShown, ...(panelsShown.length === 1 && [[]])],
         (panelGroup, groupIndex) => {
           const panelToMove =
-            panelsShown[Number(result.source.droppableId)][result.source.index];
-          if (Number(groupIndex) === Number(result.destination.droppableId)) {
+            panelsShown[
+              Number(result.source.droppableId.replace("droppable-id-", ""))
+            ][result.source.index];
+          if (
+            Number(groupIndex) ===
+            Number(result.destination.droppableId.replace("droppable-id-", ""))
+          ) {
             //we're adding to this group
             return insertItem(
               panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
               { ...panelToMove, active: true },
               result.destination.index
             );
-          } else if (Number(groupIndex) === Number(result.source.droppableId)) {
+          } else if (
+            Number(groupIndex) ===
+            Number(result.source.droppableId.replace("droppable-id-", ""))
+          ) {
             // we're removing from this group
             return removeItem(panelGroup, result.source.index).map(
               (tabPanel, index) => {
@@ -187,7 +226,10 @@ export class Editor extends React.Component {
     } else {
       //we're moving tabs within the same group
       newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
-        if (Number(groupIndex) === Number(result.destination.droppableId)) {
+        if (
+          Number(groupIndex) ===
+          Number(result.destination.droppableId.replace("droppable-id-", ""))
+        ) {
           //we'removing a tab around in this group
           return reorder(
             panelGroup.map((tabPanel, i) => {
@@ -240,36 +282,39 @@ export class Editor extends React.Component {
       previewModeFullscreen: uncontrolledPreviewModeFullscreen
     } = this.state;
     const {
-      doNotUseAbsolutePosition = false,
       ToolBarProps = {},
       StatusBarProps = {},
-      // extraLeftSidePanel,
       extraRightSidePanel,
-      // FindBarProps = {},
       editorName,
-      // findTool = {},
-      // containerWidth,
-      height = 500,
+      height: _height,
+      showReadOnly,
+      disableSetReadOnly,
+      showCircularity,
+      showAvailability,
+      minHeight = 400,
       showMenuBar,
+      displayMenuBarAboveTools = true,
       updateSequenceData,
+      readOnly,
       setPanelAsActive,
       style = {},
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel,
-      fitWidth,
       onSave,
       caretPositionUpdate,
       getVersionList,
       getSequenceAtVersion,
       VersionHistoryViewProps,
-      fitHeight, //use fitHeight: true to tell the editorto expand to fill to as much height as possible
       sequenceData = {},
       withPreviewMode,
+      isFullscreen,
+      handleFullscreenClose,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu
     } = this.props;
+
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&
@@ -278,7 +323,7 @@ export class Editor extends React.Component {
       return (
         <VersionHistoryView
           {...{
-            onSave,
+            onSave, //we need to pass this user defined handler
             updateSequenceData,
             caretPositionUpdate,
             sequenceData,
@@ -289,15 +334,24 @@ export class Editor extends React.Component {
         />
       );
     }
-    const previewModeFullscreen =
-      uncontrolledPreviewModeFullscreen || controlledPreviewModeFullscreen;
+    const previewModeFullscreen = !!(
+      uncontrolledPreviewModeFullscreen ||
+      controlledPreviewModeFullscreen ||
+      isFullscreen
+    );
+    const editorNode =
+      document.querySelector(".veEditor") ||
+      document.querySelector(".preview-mode-container");
 
-    const sharedProps = {
-      editorName,
-      tabHeight,
-      fitHeight: withPreviewMode && previewModeFullscreen,
-      ...this.props
-    };
+    let height = Math.max(
+      minHeight,
+      (editorNode &&
+        editorNode.parentNode &&
+        editorNode.parentNode.clientHeight) ||
+        0
+    );
+
+    if (_height) height = Math.max(minHeight, _height);
 
     let editorDimensions = {
       height,
@@ -311,10 +365,12 @@ export class Editor extends React.Component {
         ? CircularViewUnconnected
         : LinearViewUnconnected;
       return (
-        <div className="preview-mode-container">
+        <div style={{ ...style }} className="preview-mode-container">
           <div style={{ position: "relative" }}>
             <Panel
-              {...sharedProps}
+              sequenceData={sequenceData}
+              tabHeight={tabHeight}
+              editorName={editorName}
               {...editorDimensions}
               annotationLabelVisibility={{
                 features: false,
@@ -351,7 +407,7 @@ export class Editor extends React.Component {
       y = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
       width: x,
-      height: y
+      height: Math.max(y, minHeight)
       //  document.body.getBoundingClientRect().height
     };
 
@@ -367,14 +423,14 @@ export class Editor extends React.Component {
       let activePanelId;
       let activePanelType;
       let isFullScreen;
-      let propsToSpread = {};
+      let panelPropsToSpread = {};
       panelGroup.forEach(panelProps => {
         const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
           activePanelType = type || id;
           activePanelId = id;
-          propsToSpread = panelProps;
+          panelPropsToSpread = panelProps;
         }
       });
       if (this.hasFullscreenPanel && !isFullScreen) {
@@ -389,13 +445,32 @@ export class Editor extends React.Component {
         };
       }
 
-      const Panel = panelMap[activePanelType];
+      const Panel =
+        (panelMap[activePanelType] && panelMap[activePanelType].comp) ||
+        panelMap[activePanelType];
+      const panelSpecificProps =
+        panelMap[activePanelType] &&
+        panelMap[activePanelType].panelSpecificProps;
+      const panelSpecificPropsToSpread =
+        panelMap[activePanelType] &&
+        panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          {...panelSpecificProps && pick(this.props, panelSpecificProps)}
+          {...panelSpecificPropsToSpread &&
+            panelSpecificPropsToSpread.reduce((acc, key) => {
+              acc = { ...acc, ...this.props[key] };
+              return acc;
+            }, {})}
           key={activePanelId}
-          {...propsToSpread}
-          {...sharedProps}
+          rightClickOverrides={this.props.rightClickOverrides}
+          clickOverrides={this.props.clickOverrides}
+          {...panelPropsToSpread}
+          editorName={editorName}
+          tabHeight={tabHeight}
           {...editorDimensions}
+          isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
         />
       ) : (
         <div> No Panel Found!</div>
@@ -413,14 +488,14 @@ export class Editor extends React.Component {
               },
               text:
                 panelsToShow.length > 1
-                  ? "Make Tab Primary"
-                  : "View Side By Side"
+                  ? "Collapse Split Screen"
+                  : "View in Split Screen"
             },
             {
               onClick: () => {
                 togglePanelFullScreen(tabIdToUse);
               },
-              text: "Make Tab Fullscreen"
+              text: "View in Fullscreen"
             }
           ],
           undefined,
@@ -449,59 +524,31 @@ export class Editor extends React.Component {
           activePanelId={activePanelId}
           minSize="200"
           propagateDimensions={true}
-          resizeWidth={fitWidth}
-          resizeHeight={
-            fitHeight || !!(withPreviewMode && previewModeFullscreen)
-          } //use the !! to force a boolean
+          // resizeWidth={false}
+          // resizeWidth={fitWidth}
+          // resizeWidth
+          resizeHeight
+          //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
+          // } //use the !! to force a boolean
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
         >
-          {isFullScreen ? (
-            <Tooltip position={"left"} content="Minimize Tab">
-              <Button
-                style={{
-                  zIndex: 15002,
-                  position: "fixed",
-                  top: 15,
-                  right: 25
-                }}
-                minimal
-                icon="minimize"
-                onClick={() => {
-                  togglePanelFullScreen(activePanelId);
-                }}
-              />
-            </Tooltip>
-          ) : (
-            <Icon
-              className={"veRightClickTabMenu"}
-              onClick={showTabRightClickContextMenu}
-              icon="more"
-              style={{
-                top: "5px",
-                transform: "rotate(90deg)",
-                position: "absolute",
-                cursor: "pointer",
-                marginTop: "5px"
-              }}
-            />
-          )}
-
           {[
-            <Droppable
-              key={"droppableKey"}
+            <Droppable //the tab holder
+              key={"droppable-id-" + index.toString()}
               direction="horizontal"
-              droppableId={index.toString()}
+              droppableId={"droppable-id-" + index.toString()}
             >
               {(provided, snapshot) => (
                 <div
-                  className={"ve-draggable-tabs"}
+                  className="ve-draggable-tabs"
+                  data-test={"ve-draggable-tabs" + index}
                   ref={provided.innerRef}
                   style={{
                     height: tabHeight,
                     paddingLeft: 3,
-                    ...getListStyle(snapshot.isDraggingOver, tabDragging)
+                    ...getListStyle(snapshot.isDraggingOver /* , tabDragging */)
                   }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
@@ -552,7 +599,31 @@ export class Editor extends React.Component {
                                   marginLeft: 13,
                                   marginRight: 13
                                 }}
+                                className={camelCase("veTab-" + (name || id))}
                               >
+                                {isFullScreen && (
+                                  <div //we need this div to wrap the tooltip to help the tooltip stay in the correct position https://github.com/TeselaGen/openVectorEditor/issues/436
+                                    style={{
+                                      zIndex: 15002,
+                                      position: "fixed",
+                                      top: 15,
+                                      right: 25
+                                    }}
+                                  >
+                                    <Tooltip
+                                      position="left"
+                                      content="Minimize Tab"
+                                    >
+                                      <Button
+                                        minimal
+                                        icon="minimize"
+                                        onClick={() => {
+                                          togglePanelFullScreen(activePanelId);
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  </div>
+                                )}
                                 {name || id}
                                 {canClose && (
                                   <Icon
@@ -577,10 +648,10 @@ export class Editor extends React.Component {
               )}
             </Droppable>,
             ...(panelsToShow.length === 1 && [
-              <Droppable
-                key={"extra-drop-box"}
+              <Droppable //extra add tab box (only shown when there is 1 tab being shown)!
+                key="extra-drop-box"
                 direction="horizontal"
-                droppableId={(index + 1).toString()}
+                droppableId={"droppable-id-" + (index + 1).toString()}
               >
                 {(provided, snapshot) => (
                   <div
@@ -608,6 +679,7 @@ export class Editor extends React.Component {
             ]),
             isFullScreen ? (
               <div
+                key="veWhiteBackground"
                 className="veWhiteBackground"
                 style={{
                   zIndex: 15000,
@@ -630,7 +702,7 @@ export class Editor extends React.Component {
     if (extraRightSidePanel) {
       panels.push(
         <ReflexSplitter
-          key={"extraRightSidePanelSplitter"}
+          key="extraRightSidePanelSplitter"
           style={{
             zIndex: 1
           }}
@@ -639,13 +711,13 @@ export class Editor extends React.Component {
       );
       panels.push(
         <ReflexElement
-          key={"extraRightSidePanel"}
+          key="extraRightSidePanel"
           minSize="350"
           maxSize="350"
           propagateDimensions={true}
-          resizeHeight={
-            fitHeight || !!(withPreviewMode && previewModeFullscreen)
-          }
+          resizeHeight
+          //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
+          // }
           renderOnResizeRate={50}
           renderOnResize={true}
           className="ve-panel"
@@ -657,16 +729,27 @@ export class Editor extends React.Component {
 
     return (
       <DropHandler
+        key="dropHandler"
+        disabled={readOnly}
         updateSequenceData={updateSequenceData}
         style={{
           width: "100%",
-          ...(fitHeight && { height: "100%" }),
+          maxWidth: "100%",
+          // ...(fitHeight && {
+          // height: "100%",
+          //  }),
           position: "relative",
+          // height: "100%",
+          // ...(fitHeight && {
+          height,
+          minHeight,
+          display: "flex",
+          flexDirection: "column",
           ...(previewModeFullscreen && {
             background: "white",
             zIndex: 15000,
             position: "fixed",
-            paddingTop: 20,
+            // paddingTop: 20,
             top: 0,
             left: 0,
             ...windowDimensions
@@ -675,111 +758,66 @@ export class Editor extends React.Component {
         }}
         className="veEditor"
       >
-        {/* <AlignmentToolInner /> */}
-        {/* <Button icon={customIcons.flaskIcon} text="flask" /> */}
-        {/* <DrawChromatogram /> */}
-        {previewModeFullscreen && (
-          <div
-            className={"ve-clickable ve-close-panel-button"}
-            style={{
-              zIndex: 15001,
-              position: "fixed",
-              display: "inherit",
-              top: 15,
-              right: 15
-            }}
-          >
-            <Tooltip content="Close Fullscreen Mode">
-              <Icon
-                style={{
-                  height: 30,
-                  width: 30
-                }}
-                title="Close Fullscreen Mode"
-                onClick={this.togglePreviewFullscreen}
-                icon="minimize"
-              />
-            </Tooltip>
-          </div>
-        )}
-        <div
-          className={"veEditorInner"}
-          style={{
-            width: "100%",
-            height: "100%",
-            ...((fitHeight || (withPreviewMode && previewModeFullscreen)) && {
-              display: "flex",
-              flexDirection: "column"
-            }),
-            // display: "flex",
-            // flexDirection: "column",
-            ...(doNotUseAbsolutePosition ||
-            (fitHeight || (withPreviewMode && previewModeFullscreen))
-              ? {}
-              : { position: "absolute" })
+        <Dialogs
+          editorName={editorName}
+          {...pick(this.props, dialogOverrides)}
+        />
+        <ToolBar
+          key="toolbar"
+          showMenuBar={showMenuBar}
+          displayMenuBarAboveTools={displayMenuBarAboveTools}
+          handleFullscreenClose={
+            handleFullscreenClose || this.togglePreviewFullscreen
+          }
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
+          onSave={onSave}
+          closeFullscreen={
+            !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
+          }
+          {...{
+            modifyTools: this.props.modifyTools,
+            contentLeft: this.props.contentLeft,
+            editorName,
+            toolList: this.props.toolList
           }}
+          withDigestTool
+          {...ToolBarProps}
+        />
+        <CommandHotkeyHandler
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          editorName={editorName}
+        />
+
+        <div
+          style={{ position: "relative", flexGrow: "1" }}
+          className="tg-editor-container"
+          id="section-to-print"
         >
-          {/* <button
-            onClick={() => {
-              document.body.addEventListener("keydown", e => {
-              });
-              let keyboardEvent = document.createEvent("KeyboardEvent");
-              let initMethod =
-                typeof keyboardEvent.initKeyboardEvent !== "undefined"
-                  ? "initKeyboardEvent"
-                  : "initKeyEvent";
-
-              keyboardEvent[initMethod](
-                "keydown", // event type : keydown, keyup, keypress
-                true, // bubbles
-                true, // cancelable
-                window, // viewArg: should be window
-                false, // ctrlKeyArg
-                false, // altKeyArg
-                true, // shiftKeyArg
-                false, // metaKeyArg
-                191, // keyCodeArg : unsigned long the virtual key code, else 0
-                0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-              );
-              document.body.dispatchEvent(keyboardEvent);
-            }}
+          <DragDropContext
+            onDragStart={this.onTabDragStart}
+            onDragEnd={this.onTabDragEnd}
           >
-            {" "}
-            show key dialog{" "}
-          </button> */}
-          <Dialogs {...sharedProps} editorName={editorName} />
-          {showMenuBar && (
-            <MenuBar
-              editorName={editorName}
-              {...sharedProps}
-              trackFocus={false}
-            />
-          )}
-          <ToolBar {...sharedProps} withDigestTool {...ToolBarProps} />
-          <CommandHotkeyHandler {...sharedProps} />
-
-          <div
-            style={{ position: "relative", flexGrow: "1" }}
-            className="tg-editor-container"
-            id="section-to-print"
-          >
-            <DragDropContext
-              onDragStart={this.onTabDragStart}
-              onDragEnd={this.onTabDragEnd}
+            <ReflexContainer
+              onPanelCollapse={({ activePanelId }) => {
+                this.props.collapsePanel(activePanelId);
+              }}
+              /* style={{}} */ orientation="vertical"
             >
-              <ReflexContainer
-                onPanelCollapse={({ activePanelId }) => {
-                  this.props.collapsePanel(activePanelId);
-                }}
-                /* style={{}} */ orientation="vertical"
-              >
-                {panels}
-              </ReflexContainer>
-            </DragDropContext>
-          </div>
-
-          <StatusBar {...sharedProps} {...StatusBarProps} />
+              {panels}
+            </ReflexContainer>
+          </DragDropContext>
         </div>
+
+        <StatusBar
+          showAvailability={showAvailability}
+          onSave={onSave}
+          showCircularity={showCircularity}
+          disableSetReadOnly={disableSetReadOnly}
+          showReadOnly={showReadOnly}
+          editorName={editorName}
+          {...StatusBarProps}
+        />
       </DropHandler>
     );
   }
@@ -789,4 +827,13 @@ Editor.childContextTypes = {
   blueprintPortalClassName: PropTypes.string
 };
 
-export default compose(withEditorProps)(Editor);
+export default compose(
+  connectToEditor(({ panelsShown, versionHistory, sequenceData = {} }) => {
+    return {
+      panelsShown,
+      versionHistory,
+      sequenceData
+    };
+  }),
+  withHandlers({ handleSave })
+)(Editor);

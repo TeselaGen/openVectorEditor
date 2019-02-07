@@ -2,12 +2,14 @@ import { createReducer } from "redux-act";
 
 //./caretPosition.js
 import createAction from "./utils/createMetaAction";
-// import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+// import createReducer from "./utils/createMergedDefaultStateReducer";
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const updateSequenceCase = createAction("updateSequenceCase");
+
+const newVal = window.localStorage.getItem("uppercaseSequenceMapFont");
 
 // ------------------------------------
 // Reducer
@@ -15,8 +17,9 @@ export const updateSequenceCase = createAction("updateSequenceCase");
 export default createReducer(
   {
     [updateSequenceCase]: (state, payload) => {
+      localStorage.setItem("uppercaseSequenceMapFont", payload);
       return payload;
     }
   },
-  "noPreference" //  noPreference || uppercase || lowercase
+  newVal || "noPreference" //  noPreference || uppercase || lowercase
 );

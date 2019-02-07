@@ -1,10 +1,20 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  CmdCheckbox,
+  DataTable,
+  withSelectedEntities
+} from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
-
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import commands from "../../commands";
 class PartProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -19,31 +29,36 @@ class PartProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      parts,
+      sequenceLength,
       partPropertiesSelectedEntities,
       showAddOrEditPartDialog,
       deletePart,
+      annotationVisibility,
       selectedAnnotationId
     } = this.props;
-    const { parts } = sequenceData;
     const partsToUse = map(parts, part => {
       return {
         ...part,
         ...(part.strand === undefined && {
           strand: part.forward ? 1 : -1
         }),
-        size: getRangeLength(part, sequenceData.sequence.length)
+        size: getRangeLength(part, sequenceLength)
       };
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
+          topLeftItems={
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleParts} />
+          }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
           selectedIds={selectedAnnotationId}
           maxHeight={400}
-          formName={"partProperties"}
+          formName="partProperties"
           noRouter
           compact
           isInfinite
@@ -71,7 +86,7 @@ class PartProperties extends React.Component {
           entities={partsToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="vePropertiesFooter">
             <Button
               style={{ marginRight: 15 }}
               onClick={() => {
@@ -105,4 +120,20 @@ class PartProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("partProperties")(PartProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "", parts = {} } = {}
+    }) => {
+      return {
+        readOnly,
+        parts,
+        annotationVisibility,
+        sequenceLength: sequence.length
+      };
+    }
+  ),
+  withSelectedEntities("partProperties")
+)(PartProperties);

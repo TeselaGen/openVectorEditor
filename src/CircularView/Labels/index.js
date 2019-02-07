@@ -1,8 +1,6 @@
-import { connect } from "react-redux";
 import polarToSpecialCartesian from "../utils/polarToSpecialCartesian";
 import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
-import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import React from "react";
 
@@ -19,7 +17,6 @@ function Labels({
   editorName,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
-  /*radius*/
 }) {
   if (!Object.keys(labels).length) return null;
   outerRadius += 25;
@@ -28,7 +25,6 @@ function Labels({
 
   let fontWidth = 8;
   let fontHeight = fontWidth * 1.5;
-
   let labelPoints = Object.keys(labels)
     .map(function(key) {
       let label = labels[key];
@@ -69,6 +65,7 @@ function Labels({
     })
     .map(function(label) {
       label.labelAndSublabels = [label];
+      label.labelIds = { [label.id]: true };
       return label;
     });
   let groupedLabels = relaxLabelAngles(
@@ -94,20 +91,18 @@ function Labels({
   window.isLabelGroupOpen = false;
   return {
     component: (
-      <g key={"veLabels"} className="veLabels ve-monospace-font">
-        {
-          <DrawGroupedLabels
-            {...{
-              editorName,
-              groupedLabels,
-              circularViewWidthVsHeightRatio,
-              fontWidth,
-              fontHeight,
-              condenseOverflowingXLabels,
-              outerRadius
-            }}
-          />
-        }
+      <g key="veLabels" className="veLabels ve-monospace-font">
+        <DrawGroupedLabels
+          {...{
+            editorName,
+            groupedLabels,
+            circularViewWidthVsHeightRatio,
+            fontWidth,
+            fontHeight,
+            condenseOverflowingXLabels,
+            outerRadius
+          }}
+        />
       </g>
     ),
     //we use the <use> tag to position the hovered label group at the top of the stack
@@ -120,13 +115,16 @@ function Labels({
 export default Labels;
 
 const DrawLabelGroup = withHover(function({
-  hoverActions = {},
-  hoverProps = {},
+  hovered,
+  className,
   label,
   labelAndSublabels,
   fontWidth,
   // fontHeight,
   outerRadius,
+  onMouseLeave,
+  onMouseOver,
+  editorName,
   circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
@@ -136,7 +134,6 @@ const DrawLabelGroup = withHover(function({
 }) {
   let { text = "Unlabeled" } = label;
   let groupLabelXStart;
-  const { hovered, className } = hoverProps;
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
     // if (label.x > 0) {
@@ -159,7 +156,7 @@ const DrawLabelGroup = withHover(function({
   0);
 
   let maxLabelWidth = maxLabelLength * fontWidth;
-  let labelOnLeft = label.x < 0;
+  let labelOnLeft = label.angle > Math.PI;
   let labelXStart = label.x - (labelOnLeft ? labelLength : 0);
   if (condenseOverflowingXLabels) {
     let distancePastBoundary =
@@ -183,7 +180,8 @@ const DrawLabelGroup = withHover(function({
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
 
   let content;
-  const labelClass = " veLabelText veCircularViewLabelText clickable ";
+  const labelClass =
+    " veLabelText veCircularViewLabelText clickable " + label.color;
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
@@ -229,32 +227,40 @@ const DrawLabelGroup = withHover(function({
     );
     content = [
       line,
-      <g zIndex={10} className={className + " topLevelLabelGroup"} key="gGroup">
-        <rect
-          onMouseOver={cancelFn}
-          zIndex={10}
-          x={labelXStart - 4}
-          y={labelYStart - dy / 2}
-          width={maxLabelWidth + 24}
-          height={labelGroupHeight + 4}
-          fill="white"
-          stroke="black"
-        />
-        <text zIndex={11} x={labelXStart} y={labelYStart} style={{}}>
-          {labelAndSublabels.map(function(label, index) {
-            return (
-              <DrawGroupInnerLabel
-                isSubLabel
-                key={"labelItem" + index}
-                doNotTriggerOnMouseOut
-                className={(label.className || "") + labelClass}
-                id={label.id}
-                {...{ labelXStart, label, fontWidth, index, dy }}
-              />
-            );
-          })}
-        </text>
-      </g>
+
+      <PutMyParentOnTop key="gGroup">
+        <g className={className + " topLevelLabelGroup"}>
+          <rect
+            onMouseOver={cancelFn}
+            // zIndex={10}
+            x={labelXStart - 4}
+            y={labelYStart - dy / 2}
+            width={maxLabelWidth + 24}
+            height={labelGroupHeight + 4}
+            fill="white"
+            stroke="black"
+          />
+          <text /* zIndex={11} */ x={labelXStart} y={labelYStart} style={{}}>
+            {labelAndSublabels.map(function(label, index) {
+              return (
+                <DrawGroupInnerLabel
+                  isSubLabel
+                  editorName={editorName}
+                  logHover
+                  key={"labelItem" + index}
+                  className={
+                    (label.className || "") +
+                    labelClass +
+                    " veDrawGroupInnerLabel"
+                  }
+                  id={label.id}
+                  {...{ labelXStart, label, fontWidth, index, dy }}
+                />
+              );
+            })}
+          </text>
+        </g>
+      </PutMyParentOnTop>
     ];
   } else {
     //DRAW A SINGLE LABEL
@@ -278,7 +284,9 @@ const DrawLabelGroup = withHover(function({
       </text>,
       LabelLine(
         [
-          hovered ? label.innerPoint : label.truncatedInnerPoint,
+          hovered || label.annotationType === "part" //because parts live on the outside of the sequence, we don't need to show the truncated point, we can just point to them directly
+            ? label.innerPoint
+            : label.truncatedInnerPoint,
           label.outerPoint,
           label
         ],
@@ -288,7 +296,7 @@ const DrawLabelGroup = withHover(function({
   }
   return (
     <g
-      {...hoverActions}
+      {...{ onMouseLeave, onMouseOver }}
       {...{
         onClick: label.onClick,
         onContextMenu: label.onContextMenu || noop
@@ -302,14 +310,14 @@ const DrawLabelGroup = withHover(function({
 function LabelLine(pointArray, options) {
   let points = "";
   pointArray.forEach(function({ x, y }) {
-    if (!x) return;
+    if (!x && x !== 0) return;
     points += `${x},${y} `;
   });
   return (
-    <React.Fragment>
+    <React.Fragment key="labelLine">
       <polyline
         {...{
-          key: "polyline",
+          key: "polyline-short",
           points,
           stroke: "black",
           fill: "none",
@@ -323,7 +331,7 @@ function LabelLine(pointArray, options) {
       />
       <polyline
         {...{
-          key: "polyline",
+          key: "polyline-long",
           points,
           stroke: "black",
           fill: "none",
@@ -339,95 +347,83 @@ function LabelLine(pointArray, options) {
   );
 }
 
-const DrawGroupInnerLabel = pureNoFunc(
-  withHover(
-    ({
-      hoverActions,
-      hoverProps: { className },
-      labelXStart,
-      label,
-      fontWidth,
-      index,
-      dy
-    }) => {
-      return (
-        <tspan
-          x={labelXStart}
-          textLength={label.text.length * fontWidth}
-          lengthAdjust="spacing"
-          onClick={label.onClick}
-          onContextMenu={label.onContextMenu}
-          dy={index === 0 ? dy / 2 : dy}
-          style={{ fill: label.color ? label.color : "black" }}
-          {...hoverActions}
-          className={className}
-        >
-          {label.text}
-        </tspan>
-      );
-    }
-  )
+const DrawGroupInnerLabel = withHover(
+  ({ className, labelXStart, label, fontWidth, onMouseOver, index, dy }) => {
+    return (
+      <tspan
+        x={labelXStart}
+        textLength={label.text.length * fontWidth}
+        lengthAdjust="spacing"
+        onClick={label.onClick}
+        onContextMenu={label.onContextMenu}
+        dy={index === 0 ? dy / 2 : dy}
+        style={{ fill: label.color ? label.color : "black" }}
+        {...{ onMouseOver }}
+        className={className}
+      >
+        {label.text}
+      </tspan>
+    );
+  }
 );
+
 function noop() {}
 
-const DrawGroupedLabels = pureNoFunc(
-  connect((state, { editorName }) => {
-    let editorState = state.VectorEditor[editorName] || {};
-    let hoveredId = editorState.hoveredAnnotation;
-    return {
-      hoveredId
-    };
-  })(function DrawGroupedLabels({
-    groupedLabels,
-    circularViewWidthVsHeightRatio,
-    fontWidth,
-    fontHeight,
-    condenseOverflowingXLabels,
-    outerRadius,
-    hoveredId
-  }) {
-    const hoveredIndex = groupedLabels.findIndex(
-      l =>
-        l.id === hoveredId ||
-        l.labelAndSublabels.some(l2 => l2.id === hoveredId)
+const DrawGroupedLabels = function DrawGroupedLabelsInner({
+  groupedLabels,
+  circularViewWidthVsHeightRatio,
+  fontWidth,
+  fontHeight,
+  condenseOverflowingXLabels,
+  outerRadius,
+  editorName
+}) {
+  return groupedLabels.map(function(label) {
+    let { labelAndSublabels, labelIds } = label;
+    let multipleLabels = labelAndSublabels.length > 1;
+    return (
+      <DrawLabelGroup
+        key={label.id}
+        id={labelIds}
+        {...{
+          label,
+          passHoveredId: true, //needed to get the hoveredId
+          isLabelGroup: true,
+          className: "DrawLabelGroup",
+          multipleLabels,
+          labelAndSublabels,
+          labelIds,
+          circularViewWidthVsHeightRatio,
+          fontWidth,
+          editorName,
+          fontHeight,
+          condenseOverflowingXLabels,
+          outerRadius
+        }}
+      />
     );
-    if (hoveredIndex !== -1) {
-      const hoveredLabel = groupedLabels[hoveredIndex];
-      groupedLabels.splice(hoveredIndex, 1);
-      groupedLabels.push(hoveredLabel);
-    }
-
-    return groupedLabels.map(function(label) {
-      let { labelAndSublabels } = label;
-      let labelIds = {};
-      labelAndSublabels.forEach(label => {
-        labelIds[label.id] = true;
-      });
-      let multipleLabels = labelAndSublabels.length > 1;
-      return (
-        <DrawLabelGroup
-          key={label.id}
-          id={labelIds}
-          {...{
-            label,
-            isLabelGroup: true,
-            passHoveredId: true,
-            // ...rest,
-            className: "DrawLabelGroup",
-            multipleLabels,
-            labelAndSublabels,
-            labelIds,
-            circularViewWidthVsHeightRatio,
-            fontWidth,
-            fontHeight,
-            condenseOverflowingXLabels,
-            outerRadius
-          }}
-        />
-      );
-    });
-  })
-);
+  });
+};
 function cancelFn(e) {
   e.stopPropagation();
+}
+
+class PutMyParentOnTop extends React.Component {
+  componentDidMount() {
+    //we use this component to re-order the svg groupedLabels because z-index won't work in svgs
+    try {
+      const el = document.querySelector(".topLevelLabelGroup");
+      const parent = el.parentElement.parentElement;
+      const i = Array.prototype.indexOf.call(parent.children, el.parentElement);
+      parent.insertBefore(parent.children[i], null); //insert at the end of the list..
+    } catch (error) {
+      console.warn(
+        "OVE-975239 - hit an error trying to re-order labels:",
+        error
+      );
+    }
+  }
+  render() {
+    return this.props.children;
+  }
 }

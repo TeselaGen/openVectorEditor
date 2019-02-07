@@ -24,23 +24,28 @@ function Translations(props) {
   let maxAnnotationYOffset = 0;
   const annotationsSVG = [];
   annotationRanges.forEach(function(annotationRange) {
+    if (annotationRange.isJoinedLocation) return; //filter out joined locations, just show the overarching translation for CDS features ()
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       //TODO: consider abstracting out the code to calculate the necessary height for the annotation container
       maxAnnotationYOffset = annotationRange.yOffset;
     }
     const annotation = annotationRange.annotation;
+    const { gapsBefore, gapsInside } = getGaps(annotationRange);
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
-      ...getGaps(annotationRange)
+      gapsBefore,
+      gapsInside
     );
     annotationsSVG.push(
       <AnnotationPositioner
         height={annotationHeight}
         width={result.width}
-        className={"veRowViewTranslations"}
-        key={"feature" + annotation.id + "start:" + annotationRange.start}
+        className="veRowViewTranslations"
+        key={
+          "ve-translation-" + annotation.id + "start:" + annotationRange.start
+        }
         top={
           annotationRange.yOffset * (annotationHeight + spaceBetweenAnnotations)
         }

@@ -8,11 +8,15 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
 
+## OVE out in the wild: 
+ - https://j5.jbei.org/VectorEditor/VectorEditor.html
+
 # Table of Contents
 <!-- TOC -->
 
   - [Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor](#issue-tracking-board-httpswaffleioteselagenopenvectoreditor)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
+  - [OVE out in the wild:](#ove-out-in-the-wild)
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Using this module in React](#using-this-module-in-react)
@@ -123,7 +127,7 @@ editor.updateEditor(editorState);
 ```js
 const currentEditorState = editor.getState()
 //you can view various properties of the alignment such as the selection layer using alignment.getState()
-console.log(currentEditorState.selectionLayer)
+console.info(currentEditorState.selectionLayer)
 ```
 
 ## Demo (Universal): http://teselagen.github.io/openVectorEditor/
@@ -376,7 +380,7 @@ const alignment = window.createAlignmentView(this.node, {
 ```js
 const currentAlignmentState = alignment.getState()
 //you can view various properties of the alignment such as the selection layer using alignment.getState()
-console.log(currentAlignmentState.selectionLayer)
+console.info(currentAlignmentState.selectionLayer)
 ```
 
 

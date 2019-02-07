@@ -1,7 +1,8 @@
 import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
 
 import { getRangeLength } from "ve-range-utils";
-import Tether from "tether";
+// import Tether from "tether";
+import Popper from "popper.js";
 
 import { getInsertBetweenVals } from "ve-sequence-utils";
 import React from "react";
@@ -15,9 +16,36 @@ class SequenceInputNoHotkeys extends React.Component {
     bpsToInsert: "",
     hasTempError: false
   };
+  componentDidMount() {
+    document.addEventListener(
+      "mousedown",
+      this.handleUnmountIfClickOustidePopup
+    );
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener(
+      "mousedown",
+      this.handleUnmountIfClickOustidePopup
+    );
+  }
+  handleUnmountIfClickOustidePopup = e => {
+    const n = findDOMNode(this);
+    if (!n) return;
+    const node = n.parentNode;
+    if (!node) return;
+    if (node.contains(e.target)) {
+      return;
+    }
+    this.handleUnmount();
+  };
   handleUnmount = () => {
     setTimeout(() => {
-      unmountComponentAtNode(findDOMNode(this).parentNode);
+      const n = findDOMNode(this);
+      if (!n) return;
+      const node = n.parentNode;
+      if (!node) return;
+      unmountComponentAtNode(node);
       document.getElementById("sequenceInputBubble").outerHTML = "";
     });
   };
@@ -47,7 +75,7 @@ class SequenceInputNoHotkeys extends React.Component {
       selectionLayer,
       sequenceLength,
       caretPosition,
-      acceptedChars = "atgc",
+      acceptedChars = "atgcnkd",
       maxInsertSize
     } = this.props;
     const { bpsToInsert, hasTempError } = this.state;
@@ -75,9 +103,9 @@ class SequenceInputNoHotkeys extends React.Component {
       );
     }
     return (
-      <div onBlur={this.handleUnmount} className={"sequenceInputBubble"}>
+      <div className="sequenceInputBubble">
         <input
-          autoCorrect={"off"}
+          autoCorrect="off"
           onKeyDown={e => {
             if (e.keyCode === 27) {
               this.handleUnmount();
@@ -89,7 +117,7 @@ class SequenceInputNoHotkeys extends React.Component {
           }}
           className={Classes.INPUT}
           value={bpsToInsert}
-          ref={input => input && input.focus()}
+          autoFocus
           style={hasTempError ? { borderColor: "red" } : {}}
           onChange={e => {
             let sanitizedVal = "";
@@ -121,7 +149,8 @@ class SequenceInputNoHotkeys extends React.Component {
         />
         <div style={{ marginTop: 10 }}>{message}</div>
         <div style={{ marginTop: 10 }}>
-          Press <span style={{ fontWeight: "bolder" }}>ESC</span> to cancel
+          Press <span style={{ fontWeight: "bolder" }}>ESC</span> to{" "}
+          <a onClick={this.handleUnmount}>cancel</a>
         </div>
       </div>
     );
@@ -131,42 +160,130 @@ class SequenceInputNoHotkeys extends React.Component {
 const SequenceInput = HotkeysTarget(SequenceInputNoHotkeys);
 
 export default function createSequenceInputPopup(props) {
+  const { useEventPositioning } = props;
+  const innerEl = <SequenceInput {...props} />;
+
+  let caretEl;
+
+  if (useEventPositioning) {
+    //we have to make a fake event here so that popper.js will position on the page correctly
+    const event = useEventPositioning;
+
+    const top = event.clientY;
+    const right = event.clientX;
+    const bottom = event.clientY;
+    const left = event.clientX;
+    caretEl = {
+      getBoundingClientRect: () => ({
+        top,
+        right,
+        bottom,
+        left
+      }),
+      clientWidth: 0,
+      clientHeight: 0
+    };
+  }
+
+  if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
+    const activeEl = getActiveElement();
+    if (activeEl) {
+      caretEl = activeEl.querySelector(".veCaret");
+    }
+  }
+  if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
+    caretEl = getActiveElement();
+  }
+  if (!caretEl || !caretEl === 0 || !isElementInViewport(caretEl)) {
+    caretEl = document.querySelector(".veCaret");
+  }
+  if (document.body.classList.contains("sequenceDragging")) {
+    window.toastr.warning("Can't insert new sequence while dragging");
+    return;
+  } //don't allow
+
   // function closeInput() {
   //   sequenceInputBubble.remove();
   // }
   div = document.createElement("div");
-  div.style.zIndex = "4000";
+  div.style.zIndex = "400000";
   div.id = "sequenceInputBubble";
   document.body.appendChild(div);
 
-  render(<SequenceInput {...props} />, div);
-  let caretEl = document.querySelector(".veRowViewCaret");
+  render(innerEl, div);
 
-  // let body = $(document.body);
-  // let caretEl = body.find(".veRowViewCaret");
-  if (!caretEl === 0) {
-    //todo: eventually we should probably jump to the row view caret if it isn't visible
-    // caretEl = body.find(".veCaretSVG");
-    caretEl = document.querySelector(".veCaretSVG");
-  }
+  // // let body = $(document.body);
+  // // let caretEl = body.find(".veRowViewCaret");
+  // if (!caretEl || !caretEl === 0) {
+  //   //todo: eventually we should probably jump to the row view caret if it isn't visible
+  //   // caretEl = body.find(".veCaretSVG");
+  //   caretEl = document.querySelector(".veCircularView .veCaretSVG");
+  // }
   if (!caretEl) {
     return console.error(
       "there must be a caret element present in order to display the insertSequence popup"
     );
   }
 
-  new Tether({
-    element: div,
-    target: caretEl,
-    attachment: "top left",
-    targetAttachment: "bottom left",
-    offset: "-15px 22px",
-    constraints: [
-      {
-        to: "scrollParent",
-        // pin: true,
-        attachment: "together"
-      }
-    ]
+  new Popper(caretEl, div, {
+    placement: "bottom",
+    modifiers: {
+      offset: { offset: "94" }
+    }
   });
+
+  // new Tether({
+  //   element: div,
+  //   target: caretEl,
+  //   attachment: "top left",
+  //   targetAttachment: "bottom left",
+  //   offset: "-15px 22px",
+  //   constraints: [
+  //     {
+  //       to: "scrollParent",
+  //       // pin: true,
+  //       attachment: "together"
+  //     }
+  //   ]
+  // });
+}
+
+const getActiveElement = function(document) {
+  document = document || window.document;
+
+  // Check if the active element is in the main web or iframe
+  if (
+    document.body === document.activeElement ||
+    /* eslint-disable eqeqeq*/
+
+    document.activeElement.tagName == "IFRAME"
+    /* eslint-enable eqeqeq*/
+  ) {
+    // Get iframes
+    let iframes = document.getElementsByTagName("iframe");
+    for (let i = 0; i < iframes.length; i++) {
+      // Recall
+      let focused = getActiveElement(iframes[i].contentWindow.document);
+      if (focused !== false) {
+        return focused; // The focused
+      }
+    }
+  } else return document.activeElement;
+
+  return false;
+};
+
+function isElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight ||
+        document.documentElement.clientHeight) /*or $(window).height() */ &&
+    rect.right <=
+      (window.innerWidth ||
+        document.documentElement.clientWidth) /*or $(window).width() */
+  );
 }

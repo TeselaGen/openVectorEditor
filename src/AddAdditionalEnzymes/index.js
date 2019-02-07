@@ -94,14 +94,14 @@ let AddYourOwnEnzyme = function(props) {
   }
 
   return (
-    <div className={"createYourOwnEnzyme"}>
+    <div className="createYourOwnEnzyme">
       <h2>Create your own enzyme</h2>
       <CustomInput
         error={errors["name"]}
         value={name}
         onChange={onChange}
         name="name"
-        label={"Name:"}
+        label="Name:"
       />
       <CustomInput
         error={errors["sequence"]}
@@ -111,7 +111,7 @@ let AddYourOwnEnzyme = function(props) {
         label={
           <div className="labelWithIcon">
             <InfoHelper>
-              <div className={"taLineHolder"}>
+              <div className="taLineHolder">
                 <Line> Special Characters: </Line>
                 <Line> R = G A (purine) </Line>
                 <Line> Y = T C (pyrimidine) </Line>
@@ -205,9 +205,9 @@ let AddYourOwnEnzyme = function(props) {
           ? `Cuts more than 10 times in your ${seqName}`
           : `Cuts ${matches.length} times in your ${seqName}`}
       </h3>
-      <div className={"buttonHolder"}>
+      <div className="buttonHolder">
         <Button
-          className={"addYourOwnEnzymeBtn"}
+          className="addYourOwnEnzymeBtn"
           onClick={stopAddingYourOwnEnzyme}
         >
           Back
@@ -255,7 +255,9 @@ let AddYourOwnEnzyme = function(props) {
 
 AddYourOwnEnzyme = connect(
   function(state) {
-    return { addYourOwnEnzyme: state.VectorEditor.addYourOwnEnzyme };
+    return {
+      addYourOwnEnzyme: state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme
+    };
   },
   { addYourOwnEnzymeClose }
 )(AddYourOwnEnzyme);
@@ -290,13 +292,13 @@ class AddAdditionalEnzymes extends React.Component {
     } = this.props;
     const { enzymesToAdd } = this.state;
     return (
-      <div className={"addYourOwnEnzyme"}>
+      <div className="addYourOwnEnzyme">
         <h2>Add additional enzymes</h2>
         <span>
           Our default list contains just the most common enzymes. Search here to
           add less common ones:
         </span>
-        <div className={"filterAndButton"}>
+        <div className="filterAndButton">
           <Select
             multi
             placeholder="Select cut sites..."
@@ -323,7 +325,7 @@ class AddAdditionalEnzymes extends React.Component {
             value={enzymesToAdd}
           />
           <Button
-            className={"addYourOwnEnzymeBtn"}
+            className="addYourOwnEnzymeBtn"
             onClick={function() {
               enzymesToAdd.forEach(function(enzyme) {
                 dispatch({
@@ -349,10 +351,10 @@ class AddAdditionalEnzymes extends React.Component {
             Add Enzyme(s)
           </Button>
         </div>
-        <div className={"createYourOwnButton"}>
+        <div className="createYourOwnButton">
           <span>Still not finding what you want?</span>
           <Button
-            className={"addYourOwnEnzymeBtn"}
+            className="addYourOwnEnzymeBtn"
             onClick={this.startAddingYourOwnEnzyme}
           >
             Create your own enzyme
@@ -401,7 +403,8 @@ AddAdditionalEnzymes = connect(
   function(state) {
     return {
       inputSequenceToTestAgainst:
-        state.VectorEditor.addYourOwnEnzyme.inputSequenceToTestAgainst
+        state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme
+          .inputSequenceToTestAgainst
     };
   },
   { addYourOwnEnzymeClose }
@@ -470,5 +473,5 @@ function CustomInput({ name, value, onChange, onInput, label, error, type }) {
 }
 
 function Line({ children }) {
-  return <div className={"taLine"}> {children}</div>;
+  return <div className="taLine"> {children}</div>;
 }

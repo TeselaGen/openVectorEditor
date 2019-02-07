@@ -1,12 +1,23 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox
+} from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { Popover } from "@blueprintjs/core";
 import ColorPicker from "./ColorPicker";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import commands from "../../commands";
 
 class FeatureProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -21,31 +32,36 @@ class FeatureProperties extends React.Component {
   render() {
     const {
       readOnly,
-      sequenceData = {},
+      features = {},
+      annotationVisibility,
+      sequenceLength,
       featurePropertiesSelectedEntities,
       showAddOrEditFeatureDialog,
       deleteFeature,
       selectedAnnotationId
     } = this.props;
-    const { features } = sequenceData;
     const featuresToUse = map(features, feature => {
       return {
         ...feature,
         ...(feature.strand === undefined && {
           strand: feature.forward ? 1 : -1
         }),
-        size: getRangeLength(feature, sequenceData.sequence.length)
+        size: getRangeLength(feature, sequenceLength)
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <React.Fragment>
         <DataTable
+          topLeftItems={
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleFeatures} />
+          }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
           maxHeight={400}
           selectedIds={selectedAnnotationId}
-          formName={"featureProperties"}
+          formName="featureProperties"
           noRouter
           compact
           isInfinite
@@ -71,11 +87,27 @@ class FeatureProperties extends React.Component {
                 type: "string",
                 render: (val, record) => {
                   const base1Range = convertRangeTo1Based(record);
+                  const hasJoinedLocations =
+                    record.locations && record.locations.length > 1;
+
                   return (
                     <span>
                       {val}{" "}
                       <span style={{ fontSize: 10 }}>
-                        ({base1Range.start}-{base1Range.end})
+                        {hasJoinedLocations ? (
+                          record.locations.map((loc, i) => {
+                            const base1Range = convertRangeTo1Based(loc);
+                            return (
+                              <span key={i}>
+                                ({base1Range.start}-{base1Range.end})
+                              </span>
+                            );
+                          })
+                        ) : (
+                          <span>
+                            ({base1Range.start}-{base1Range.end})
+                          </span>
+                        )}
                       </span>
                     </span>
                   );
@@ -87,7 +119,7 @@ class FeatureProperties extends React.Component {
           entities={featuresToUse}
         />
         {!readOnly && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="vePropertiesFooter">
             <Button
               style={{ marginRight: 15 }}
               onClick={() => {
@@ -118,12 +150,28 @@ class FeatureProperties extends React.Component {
             </Button>
           </div>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default withSelectedEntities("featureProperties")(FeatureProperties);
+export default compose(
+  connectToEditor(
+    ({
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "", features = {} } = {}
+    }) => {
+      return {
+        annotationVisibility,
+        readOnly,
+        features,
+        sequenceLength: sequence.length
+      };
+    }
+  ),
+  withSelectedEntities("featureProperties")
+)(FeatureProperties);
 
 const ColorPickerPopover = ({ readOnly, onColorSelect, children }) => {
   return (

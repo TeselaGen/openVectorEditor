@@ -8,7 +8,6 @@ import getYOffset from "./getYOffset";
 import withHover from "../helperComponents/withHover";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
-import pureNoFunc from "../utils/pureNoFunc";
 import Feature from "./Feature";
 
 function drawAnnotations({
@@ -40,7 +39,13 @@ function drawAnnotations({
     return -getRangeLength(a, sequenceLength);
   })
     .map(annotation => {
-      let { startAngle, endAngle, totalAngle, centerAngle } = getRangeAngles(
+      let {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles
+      } = getRangeAngles(
         positionBy ? positionBy(annotation) : annotation,
         sequenceLength
       );
@@ -50,6 +55,7 @@ function drawAnnotations({
         ...annotation,
         startAngle,
         endAngle,
+        locationAngles,
         totalAngle,
         centerAngle,
         yOffset: 0
@@ -105,12 +111,24 @@ function drawAnnotations({
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
         onClick({ event, annotation });
+        if (annotation.onClick) {
+          annotation.onClick({ event, annotation });
+        }
       }
       function onContextMenu(event) {
         onRightClicked({ event, annotation });
+        if (annotation.onRightClick) {
+          annotation.onRightClick({ event, annotation });
+        }
       }
 
-      const { startAngle, endAngle, totalAngle, centerAngle } = annotation;
+      const {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles
+      } = annotation;
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
@@ -120,6 +138,7 @@ function drawAnnotations({
       if (showLabels) {
         //add labels to the exported label array (to be drawn by the label component)
         labels[annotation.id] = {
+          annotationType,
           annotationCenterAngle: useStartAngle ? startAngle : centerAngle,
           annotationCenterRadius: annotationRadius,
           text: name,
@@ -142,7 +161,7 @@ function drawAnnotations({
 
       /* eslint-disable */
 
-      if (!annotation.id) debugger;
+      if (process.env.NODE_ENV !== "production" && !annotation.id) debugger;
       /* eslint-enable */
       DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
       svgGroup.push(
@@ -155,6 +174,7 @@ function drawAnnotations({
             labelCenter: centerAngle,
             startAngle,
             endAngle,
+            locationAngles,
             reverseAnnotations,
             onClick: _onClick,
             onContextMenu,
@@ -185,47 +205,84 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = pureNoFunc(
-  withHover(function({
-    hoverActions,
-    hoverProps: { className },
-    startAngle,
-    endAngle,
-    onClick,
-    onContextMenu,
-    annotation,
-    reverseAnnotations,
-    Annotation = Feature,
-    annotationType,
-    totalAngle,
-    annotationColor,
-    annotationRadius,
-    annotationHeight
-  }) {
-    return (
+const DrawAnnotation = withHover(function({
+  className,
+  startAngle,
+  endAngle,
+  onClick,
+  onContextMenu,
+  locationAngles,
+  annotation,
+  reverseAnnotations,
+  Annotation = Feature,
+  annotationType,
+  totalAngle,
+  annotationColor,
+  annotationRadius,
+  annotationHeight,
+  onMouseLeave,
+  onMouseOver
+}) {
+  const sharedProps = {
+    style: { cursor: "pointer" },
+    className: className,
+    onContextMenu: onContextMenu,
+    onClick: onClick,
+    onMouseLeave,
+    onMouseOver
+  };
+  const title = (
+    <title>
+      {getAnnotationNameAndStartStopString(annotation, {
+        isPart: annotationType === "part"
+      })}
+    </title>
+  );
+  return (
+    <React.Fragment>
       <g
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,
           eAngle: endAngle,
           forward: reverseAnnotations ? !annotation.forward : annotation.forward
         })}
-        {...hoverActions}
-        className={className}
-        onContextMenu={onContextMenu}
-        onClick={onClick}
+        {...sharedProps}
       >
-        <title>
-          {getAnnotationNameAndStartStopString(annotation, {
-            isPart: annotationType === "part"
-          })}
-        </title>
+        {title}
         <Annotation
+          {...locationAngles &&
+            locationAngles.length && { containsLocations: true }}
           totalAngle={totalAngle}
           color={annotationColor}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
         />
       </g>
-    );
-  })
-);
+      );
+      {locationAngles &&
+        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
+          return (
+            <g
+              key={"location--" + annotation.id + "--" + i}
+              {...PositionAnnotationOnCircle({
+                sAngle: startAngle,
+                eAngle: endAngle,
+                forward: reverseAnnotations
+                  ? !annotation.forward
+                  : annotation.forward
+              })}
+              {...sharedProps}
+            >
+              {title}
+              <Annotation
+                totalAngle={totalAngle}
+                color={annotationColor}
+                radius={annotationRadius}
+                annotationHeight={annotationHeight}
+              />
+            </g>
+          );
+        })}
+    </React.Fragment>
+  );
+});

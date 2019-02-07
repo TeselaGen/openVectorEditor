@@ -1,7 +1,8 @@
-import { onlyUpdateForKeys } from "recompose";
+// import { onlyUpdateForKeys } from "recompose";
 import draggableClassnames from "../../constants/draggableClassnames";
 import React from "react";
 import Caret from "../Caret";
+import pureNoFunc from "../../utils/pureNoFunc";
 
 import "./style.css";
 
@@ -126,10 +127,11 @@ function SelectionLayer(props) {
                       (selectionLayer.end + 1)
                 }
                 onContextMenu={function(event) {
-                  selectionLayerRightClicked && selectionLayerRightClicked({
-                    event,
-                    annotation: selectionLayer
-                  });
+                  selectionLayerRightClicked &&
+                    selectionLayerRightClicked({
+                      event,
+                      annotation: selectionLayer
+                    });
                 }}
                 onClick={
                   onClick
@@ -166,16 +168,4 @@ function SelectionLayer(props) {
   );
 }
 
-export default onlyUpdateForKeys([
-  "charWidth",
-  "bpsPerRow",
-  "isDraggable",
-  "row",
-  "sequenceLength",
-  "regions",
-  "color",
-  "hideCarets",
-  "selectionLayerRightClicked",
-  "className",
-  "height"
-])(SelectionLayer);
+export default pureNoFunc(SelectionLayer);

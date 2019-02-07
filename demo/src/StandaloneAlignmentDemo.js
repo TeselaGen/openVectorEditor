@@ -1,13 +1,29 @@
 import React from "react";
 
 import { Dialog, Button } from "@blueprintjs/core";
+import { times } from "lodash";
+import { generateSequenceData } from "ve-sequence-utils";
+
 // import ab1ParsedGFPuv54 from "../../src/ToolBar/ab1ParsedGFPuv54.json";
-// import ab1ParsedGFPuv58 from "../../src/ToolBar/ab1ParsedGFPuv58.json";
-// import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
-import alignmentDataPairwise from "./exampleData/jbeiPairwiseAlignmnent_23_2018.json";
-// import alignmentDataPairwise from "./exampleData/jbeiPairwiseAlignmnent_29_2018.json";
+// import exampleAlignmentData from "../../src/ToolBar/ab1ParsedGFPuv58.json";
+// import exampleAlignmentData from "./exampleData/alignmentDataPairwise.json";
+// import exampleAlignmentData from "./exampleData/jbeiPairwiseAlignmnent_23_2018.json";
+// import exampleAlignmentData from "./exampleData/jbeiPairwiseAlignmnent_29_2018.json";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
+
+const exampleAlignmentData = {
+  alignmentTracks: times(10).map(() => {
+    return {
+      sequenceData: {
+        ...generateSequenceData(10)
+      },
+      alignmentData: {
+        ...generateSequenceData(10)
+      }
+    };
+  })
+};
 
 export default class StandaloneAlignmentDemo extends React.Component {
   state = {
@@ -15,8 +31,11 @@ export default class StandaloneAlignmentDemo extends React.Component {
   };
   mountEditor = () => {
     const alignment = window.createAlignmentView(this.node, {
-      ...alignmentDataPairwise,
+      ...exampleAlignmentData,
       id: "pairwiseRun1",
+      handleAlignmentRename: () => {
+        console.info("alignment being renamed!");
+      }, //this does nothing right now
       linearViewOptions: () => {
         return {
           selectionLayerRightClicked: ({ event }) => {
@@ -33,9 +52,10 @@ export default class StandaloneAlignmentDemo extends React.Component {
         };
       }
     });
-    setInterval(()=>{
-      console.log('alignment.getState():',alignment.getState())
-    },5000)
+
+    setTimeout(() => {
+      console.info("alignment.getState():", alignment.getState());
+    }, 10000);
   };
   componentDidMount() {
     this.mountEditor();
@@ -43,7 +63,7 @@ export default class StandaloneAlignmentDemo extends React.Component {
   render() {
     const inner = (
       <div
-        className={"standaloneDemoNode"}
+        className="standaloneDemoNode"
         style={{
           width: "100%",
           height: "100%",

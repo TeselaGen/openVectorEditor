@@ -73,10 +73,11 @@ function LineageLines(props) {
 export default lruMemoize(5, undefined, true)(LineageLines);
 
 const DrawLineageLine = withHover(function({
-  hoverProps: { hovered },
-  hoverActions,
-  hoverProps: { className },
+  hovered,
+  className,
   lineageLine,
+  onMouseLeave,
+  onMouseOver,
   path
 }) {
   let colorToUse = hovered
@@ -90,7 +91,7 @@ const DrawLineageLine = withHover(function({
       stroke={colorToUse}
       fill={colorToUse || randomcolor()}
       d={path.print()}
-      {...hoverActions}
+      {...{ onMouseLeave, onMouseOver }}
       className={className}
     />
   );

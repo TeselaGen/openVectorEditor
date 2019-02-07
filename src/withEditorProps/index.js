@@ -1,27 +1,169 @@
+import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
+import FileSaver from "file-saver";
+
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import lruMemoize from "lru-memoize";
-import { compose, withHandlers } from "recompose";
+import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
 import { some, map } from "lodash";
-import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
-import { actions } from "../redux";
-import s from "../selectors";
-import { allTypes } from "../utils/annotationTypes";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
   insertSequenceDataAtPositionOrRange,
-  getReverseComplementSequenceAndAnnotations
+  getReverseComplementSequenceAndAnnotations,
+  rotateSequenceDataToPosition
 } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
-
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
+import { actions } from "../redux";
+import s from "../selectors";
+import { allTypes } from "../utils/annotationTypes";
+
+import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
+
+export const handleSave = props => e => {
+  const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
+  const updateLastSavedIdToCurrent = () => {
+    lastSavedIdUpdate(sequenceData.stateTrackingId);
+  };
+  const promiseOrVal =
+    !readOnly &&
+    onSave &&
+    onSave(
+      e,
+      tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+      props,
+      updateLastSavedIdToCurrent
+    );
+
+  if (promiseOrVal && promiseOrVal.then) {
+    return promiseOrVal.then(updateLastSavedIdToCurrent);
+  }
+};
+
+export const handleInverse = props => () => {
+  const {
+    sequenceLength,
+    selectionLayer,
+    caretPosition,
+    selectionLayerUpdate,
+    caretPositionUpdate
+  } = props;
+
+  if (sequenceLength <= 0) {
+    return false;
+  }
+  if (selectionLayer.start > -1) {
+    if (getRangeLength(selectionLayer, sequenceLength) === sequenceLength) {
+      caretPositionUpdate(selectionLayer.start);
+    } else {
+      selectionLayerUpdate(invertRange(selectionLayer, sequenceLength));
+    }
+  } else {
+    if (caretPosition > -1) {
+      selectionLayerUpdate(
+        normalizeRange(
+          {
+            start: caretPosition,
+            end: caretPosition - 1
+          },
+          sequenceLength
+        )
+      );
+    } else {
+      selectionLayerUpdate({
+        start: 0,
+        end: sequenceLength - 1
+      });
+    }
+  }
+};
+
+export const updateCircular = props => async isCircular => {
+  const { _updateCircular, updateSequenceData, sequenceData } = props;
+  if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
+    const doAction = await showConfirmationDialog({
+      intent: Intent.DANGER, //applied to the right most confirm button
+      confirmButtonText: "Truncate Annotations",
+      canEscapeKeyCancel: true, //this is false by default
+      text:
+        "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+    });
+    if (!doAction) return; //stop early
+    updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
+      batchUndoStart: true
+    });
+  }
+  _updateCircular(isCircular, { batchUndoEnd: true });
+};
+
+export const importSequenceFromFile = props => (file, opts = {}) => {
+  const { updateSequenceData } = props;
+  let reader = new FileReader();
+  reader.readAsText(file, "UTF-8");
+  reader.onload = function(evt) {
+    const content = evt.target.result;
+    anyToJson(
+      content,
+      result => {
+        // TODO maybe handle import errors/warnings better
+        const failed = !result[0].success;
+        const messages = result[0].messages;
+        if (messages && messages.length) {
+          messages.forEach(msg => {
+            const type = msg
+              .substr(0, 20)
+              .toLowerCase()
+              .includes("error")
+              ? failed
+                ? "error"
+                : "warning"
+              : "info";
+            window.toastr[type](msg);
+          });
+        }
+        updateSequenceData(result[0].parsedSequence);
+        if (!failed) {
+          window.toastr.success("Sequence Imported");
+        }
+      },
+      { acceptParts: true, ...opts }
+    );
+  };
+  reader.onerror = function() {
+    window.toastr.error("Could not read file.");
+  };
+};
+
+export const exportSequenceToFile = props => format => {
+  const { sequenceData } = props;
+  let convert, fileExt;
+
+  if (format === "genbank") {
+    convert = jsonToGenbank;
+    fileExt = "gb";
+  } else if (format === "teselagenJson") {
+    convert = JSON.stringify;
+    fileExt = "json";
+  } else if (format === "fasta") {
+    convert = jsonToFasta;
+    fileExt = "fasta";
+  } else {
+    console.error(`Invalid export format: '${format}'`); // dev error
+    return;
+  }
+  const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
+  const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
+  FileSaver.saveAs(blob, filename);
+  window.toastr.success("File Downloaded Successfully");
+};
 
 /**
  * This function basically connects the wrapped component with all of the state stored in a given editor instance
@@ -30,50 +172,15 @@ import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 export default compose(
   connect(
     mapStateToProps,
-    mapDispatchToActions
+    mapDispatchToActions,
+    null,
+    { pure: false }
   ),
   withHandlers({
-    handleSave: props => {
-      return e => {
-        const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
-        const updateLastSavedIdToCurrent = () => {
-          lastSavedIdUpdate(sequenceData.stateTrackingId);
-        };
-        const promiseOrVal =
-          !readOnly &&
-          onSave &&
-          onSave(
-            e,
-            tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-            props,
-            updateLastSavedIdToCurrent
-          );
-
-        if (promiseOrVal && promiseOrVal.then) {
-          return promiseOrVal.then(updateLastSavedIdToCurrent);
-        }
-        // return updateLastSavedIdToCurrent()
-      };
-    },
-    updateCircular: props => {
-      return async isCircular => {
-        const { _updateCircular, updateSequenceData, sequenceData } = props;
-        if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
-          const doAction = await showConfirmationDialog({
-            intent: Intent.DANGER, //applied to the right most confirm button
-            confirmButtonText: "Truncate Annotations",
-            canEscapeKeyCancel: true, //this is false by default
-            text:
-              "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
-          });
-          if (!doAction) return; //stop early
-          updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
-            batchUndoStart: true
-          });
-        }
-        _updateCircular(isCircular, { batchUndoEnd: true });
-      };
-    },
+    handleSave,
+    importSequenceFromFile,
+    exportSequenceToFile,
+    updateCircular,
     upsertTranslation: props => {
       return async translationToUpsert => {
         if (!translationToUpsert) return;
@@ -126,8 +233,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new parts in read-only mode"
@@ -148,8 +255,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new features in read-only mode"
@@ -159,17 +266,29 @@ export default compose(
       }
     },
 
-    /* eslint-disable no-unused-vars */
-    handlePrint: props => () => {
-      // TODO
-      console.warn("TODO: handlePrint");
+    handleRotateToCaretPosition: props => () => {
+      const {
+        caretPosition,
+        readOnly,
+        sequenceData,
+        updateSequenceData,
+        caretPositionUpdate
+      } = props;
+      if (readOnly) {
+        return;
+      }
+      if (caretPosition < 0) return;
+      updateSequenceData(
+        rotateSequenceDataToPosition(sequenceData, caretPosition)
+      );
+      caretPositionUpdate(0);
     },
 
     handleReverseComplementSelection: props => () => {
       const {
         sequenceData,
         updateSequenceData,
-        caretPositionUpdate,
+        // caretPositionUpdate,
         selectionLayerUpdate,
         selectionLayer
       } = props;
@@ -195,7 +314,7 @@ export default compose(
     handleComplementSelection: props => () => {
       const {
         sequenceData,
-        caretPositionUpdate,
+        // caretPositionUpdate,
         updateSequenceData,
         selectionLayerUpdate,
         selectionLayer
@@ -243,8 +362,8 @@ export default compose(
         selectionLayer.start > -1
           ? selectionLayer
           : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : undefined;
+          ? { start: caretPosition, end: caretPosition }
+          : undefined;
       if (readOnly) {
         window.toastr.warning(
           "Sorry, can't create new primers in read-only mode"
@@ -253,43 +372,7 @@ export default compose(
         showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
       }
     },
-
-    handleInverse: props => context => {
-      const {
-        sequenceLength,
-        selectionLayer,
-        caretPosition,
-        selectionLayerUpdate,
-        caretPositionUpdate
-      } = context ? context.props : props;
-      if (sequenceLength <= 0) {
-        return false;
-      }
-      if (selectionLayer.start > -1) {
-        if (getRangeLength(selectionLayer) === sequenceLength) {
-          caretPositionUpdate(selectionLayer.start);
-        } else {
-          selectionLayerUpdate(invertRange(selectionLayer));
-        }
-      } else {
-        if (caretPosition > -1) {
-          selectionLayerUpdate(
-            normalizeRange(
-              {
-                start: caretPosition,
-                end: caretPosition - 1
-              },
-              sequenceLength
-            )
-          );
-        } else {
-          selectionLayerUpdate({
-            start: 0,
-            end: sequenceLength - 1
-          });
-        }
-      }
-    }
+    handleInverse
   })
 );
 
@@ -301,7 +384,8 @@ function mapStateToProps(state, ownProps) {
   } = ownProps;
   let meta = { editorName };
   let { VectorEditor } = state;
-  const { uppercaseSequenceMapFont } = VectorEditor;
+  const { __allEditorsOptions } = VectorEditor;
+  const { uppercaseSequenceMapFont } = __allEditorsOptions;
   let editorState = VectorEditor[editorName];
 
   if (!editorState) {
@@ -370,7 +454,10 @@ function mapStateToProps(state, ownProps) {
     return itemToReturn;
   });
   const matchesTotal = searchLayers.length;
-  if (!findTool.highlightAll && searchLayers[findTool.matchNumber]) {
+  if (
+    (!findTool.highlightAll && searchLayers[findTool.matchNumber]) ||
+    searchLayers.length > MAX_MATCHES_DISPLAYED
+  ) {
     searchLayers = [searchLayers[findTool.matchNumber]];
   }
   this.sequenceData = sequenceData;
@@ -388,11 +475,6 @@ function mapStateToProps(state, ownProps) {
 
   return {
     ...toReturn,
-    ...(ownProps.handleFullscreenClose && {
-      withPreviewMode: true,
-      previewModeFullscreen: true,
-      togglePreviewFullscreen: ownProps.handleFullscreenClose
-    }),
     selectedCutsites,
     sequenceLength,
     allCutsites,
@@ -404,9 +486,6 @@ function mapStateToProps(state, ownProps) {
       ...findTool,
       matchesTotal
     },
-    hasBeenSaved:
-      sequenceData.stateTrackingId === "initialLoadId" ||
-      sequenceData.stateTrackingId === editorState.lastSavedId,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
@@ -415,7 +494,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToActions(dispatch, ownProps) {
+export function mapDispatchToActions(dispatch, ownProps) {
   const { editorName } = ownProps;
 
   let { actionOverrides = fakeActionOverrides } = ownProps;
@@ -434,6 +513,7 @@ function mapDispatchToActions(dispatch, ownProps) {
     dispatch
   };
 }
+
 const defaultOverrides = {};
 export function fakeActionOverrides() {
   return defaultOverrides;
@@ -448,18 +528,24 @@ function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
   // let overrides = addMetaToActionCreators(actionOverrides(metaActions), meta);
   let overrides = {};
   metaActions = {
-    undo: () => ({
-      type: "VE_UNDO",
-      meta: {
-        editorName
-      }
-    }),
-    redo: () => ({
-      type: "VE_REDO",
-      meta: {
-        editorName
-      }
-    }),
+    undo: () => {
+      window.toastr.success("Undo Successful");
+      return {
+        type: "VE_UNDO",
+        meta: {
+          editorName
+        }
+      };
+    },
+    redo: () => {
+      window.toastr.success("Redo Successful");
+      return {
+        type: "VE_REDO",
+        meta: {
+          editorName
+        }
+      };
+    },
     ...metaActions,
     ...overrides
   };
@@ -554,3 +640,52 @@ function doAnySpanOrigin(annotations) {
     if (start > end) return true;
   });
 }
+
+export const connectToEditor = fn => {
+  return connect(
+    (state, ownProps, ...rest) => {
+      return fn
+        ? fn(
+            state.VectorEditor[ownProps.editorName] || {},
+            ownProps,
+            ...rest,
+            state
+          )
+        : {};
+    },
+    mapDispatchToActions
+  );
+};
+
+//this is to enhance non-redux connected views like LinearView, or CircularView or RowView
+//so they can still render things like translations, ..etc
+
+//Currently only supporting translations
+export const withEditorPropsNoRedux = withProps(props => {
+  const {
+    sequenceData,
+    sequenceDataWithRefSeqCdsFeatures,
+    annotationVisibility,
+    annotationVisibilityOverrides
+  } = props;
+  const translations = s.translationsSelector({
+    sequenceData: sequenceDataWithRefSeqCdsFeatures || sequenceData,
+    annotationVisibility: {
+      ...annotationVisibility,
+      ...annotationVisibilityOverrides
+    }
+  });
+  const toReturn = {
+    sequenceData: {
+      ...sequenceData,
+      translations
+    }
+  };
+  return toReturn;
+  // return {
+  //   sequenceData: {
+  //     ...sequenceData,
+  //     translations
+  //   }
+  // };
+});

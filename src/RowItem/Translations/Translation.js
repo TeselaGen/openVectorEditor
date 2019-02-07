@@ -39,7 +39,7 @@ class Translation extends React.Component {
 
     let { annotation } = annotationRange;
     if (!hasMounted) {
-      return <g height={height} className={"translationLayer"} />;
+      return <g height={height} className="translationLayer" />;
     }
     //we have an amino acid representation of our entire annotation, but it is an array
     //starting at 0, even if the annotation starts at some arbitrary point in the sequence
@@ -61,6 +61,10 @@ class Translation extends React.Component {
       index
     ) {
       const { gapsInside, gapsBefore } = getGaps(aminoAcidSliver.codonRange);
+      const gapsInsideFeatureStartToBp = getGaps({
+        start: annotationRange.start,
+        end: aminoAcidSliver.sequenceIndex
+      }).gapsInside;
       // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
       let relativeAAPositionInTranslation = index;
       //get the codonIndices relative to
@@ -95,14 +99,11 @@ class Translation extends React.Component {
           getGaps={getGaps}
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
-          width={
-            charWidth *
-            (getGaps && aminoAcidSliver.positionInCodon === 1
-              ? gapsInside || 1
-              : 1)
-          }
+          width={charWidth}
           height={height}
-          relativeAAPositionInTranslation={relativeAAPositionInTranslation}
+          relativeAAPositionInTranslation={
+            relativeAAPositionInTranslation + gapsInsideFeatureStartToBp
+          }
           letter={aminoAcidSliver.aminoAcid.value}
           color={aminoAcidSliver.aminoAcid.color}
           positionInCodon={aminoAcidSliver.positionInCodon}
@@ -112,7 +113,7 @@ class Translation extends React.Component {
 
     return (
       <g
-        className={"translationLayer"}
+        className="translationLayer"
         // onClick={this.props.translationClicked}
       >
         {translationSVG}

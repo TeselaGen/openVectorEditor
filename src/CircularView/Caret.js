@@ -20,7 +20,7 @@ function Caret({
     console.error("we've got a problem!");
   }
   return (
-    <g className={"ve-caret-holder"}>
+    <g className="ve-caret-holder">
       <title>{"Caret before BP " + (caretPosition + 1)}</title>
       <line
         {...PositionAnnotationOnCircle({
@@ -28,7 +28,7 @@ function Caret({
           eAngle: endAngle,
           height: 0
         })}
-        className={className + " " + draggableClassnames.caret}
+        className={className + " veCaret " + draggableClassnames.caret}
         strokeWidth="2px"
         style={{ opacity: 9, zIndex: 100, cursor: "ew-resize" }} //tnr: the classname needs to be cursor here!
         x1={0}

@@ -24,8 +24,16 @@ class Clipboard extends React.Component {
   }
 
   handleKeyDown = e => {
+    if (
+      document.activeElement &&
+      ["input", "select", "textarea"].indexOf(
+        document.activeElement.tagName.toLowerCase()
+      ) !== -1
+    ) {
+      return; //stop early if we're inside an input
+    }
     let metaKeyIsDown = e.ctrlKey || e.metaKey;
-    if (!metaKeyIsDown || !['x', 'c', 'v'].includes(e.key)) {
+    if (!metaKeyIsDown || !["x", "c", "v"].includes(e.key)) {
       this.origFocusedElement = null;
       return;
     }
@@ -43,8 +51,8 @@ class Clipboard extends React.Component {
     let value = this.props.value;
     let style = {
       position: "fixed",
-      // width: 0, //tnr: commented these out because they seem to be messing thing up if used...
-      // height: 0,
+      width: 1,
+      height: 1,
       opacity: 0,
       left: 0,
       padding: 0,
