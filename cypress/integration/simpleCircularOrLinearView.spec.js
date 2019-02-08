@@ -21,7 +21,7 @@ describe("tabs", function() {
     cy.get(`.veLinearView`);
     //this just tests that this toggle doesn't throw an error
     cy.tgToggle("circular");
-    cy.get(`.veLinearView`);
+    cy.get(`.veCircularView`);
   });
   it("can toggle part colors", function() {
     cy.get(`path[stroke="red"]`).should("not.exist");
