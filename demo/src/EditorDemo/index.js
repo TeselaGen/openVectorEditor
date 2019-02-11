@@ -10,6 +10,8 @@ import renderToggle from "./../utils/renderToggle";
 import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
 import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
+import exampleProteinData from "../exampleData/exampleProteinData";
+
 // import { upsertPart } from "../../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
 
@@ -33,6 +35,7 @@ const defaultState = {
   showOptions: true,
   shouldAutosave: false,
   isFullscreen: false,
+  isProtein: false,
   forceHeightMode: false,
   setDefaultVisibilities: false,
   onNew: true,
@@ -406,6 +409,16 @@ rightClickOverrides: {
               {renderToggle({ that: this, type: "showCircularity" })}
               {renderToggle({ that: this, type: "showAvailability" })}
               {renderToggle({ that: this, type: "isFullscreen" })}
+              {renderToggle({
+                that: this,
+                type: "isProtein",
+                hook: () => {
+                  updateEditor(store, "DemoEditor", {
+                    readOnly: false,
+                    sequenceData: exampleProteinData
+                  });
+                }
+              })}
               <div>Editor Handlers: </div>
               {renderToggle({
                 that: this,
