@@ -56,7 +56,7 @@ export class AddOrEditPrimerDialog extends React.Component {
           inlineLabel
           defaultValue={1}
           min={1}
-          max={sequenceLength}
+          max={sequenceLength || 1}
           name="start"
           label="Start:"
         />
@@ -64,7 +64,7 @@ export class AddOrEditPrimerDialog extends React.Component {
           inlineLabel
           defaultValue={1}
           min={1}
-          max={sequenceLength}
+          max={sequenceLength || 1}
           name="end"
           label="End:"
         />

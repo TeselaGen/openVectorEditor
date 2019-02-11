@@ -3,6 +3,55 @@ describe("menuBar", function() {
     cy.visit("");
   });
 
+  it("should not be able to select a range in a length 0 sequence", function() {
+    function shouldBeDisabled(text) {
+      cy.contains(".bp3-menu-item", text).closest(".bp3-disabled");
+    }
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Select All")
+      .click();
+
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Cut")
+      .click();
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click({ force: true });
+
+    [
+      "Find...",
+      "Cut",
+      "Copy",
+      "Go To",
+      "Select...",
+      "Select All",
+      "Select Inverse",
+      "Complement Selection",
+      "Reverse Complement Selection",
+      "Rotate To Caret Position",
+      "New Feature",
+      "New Part",
+      "Complement Entire Sequence"
+    ].forEach(shouldBeDisabled);
+    // cy.get(`[label="From:"]`)
+    //   .clear()
+    //   .type("10");
+    // cy.get(`[label="To:"]`)
+    //   .clear()
+    //   .type("20");
+    // cy.get(".tg-min-width-dialog")
+    //   .contains("OK")
+    //   .click();
+    // cy.get(".veStatusBarItem")
+    //   .contains("10 to 20")
+    //   .should("be.visible");
+  });
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function() {
     cy.get(".tg-menu-bar")
       .contains("Edit")
