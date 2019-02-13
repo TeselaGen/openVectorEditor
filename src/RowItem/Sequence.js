@@ -136,7 +136,7 @@ class Sequence extends React.Component {
       return (
         <div
           style={style}
-          className={(className ? className : "") + " Sequence"}
+          className={(className ? className : "") + " ve-row-item-sequence"}
         >
           {!hideBps && (
             <svg

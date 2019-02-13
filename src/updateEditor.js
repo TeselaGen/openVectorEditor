@@ -7,8 +7,35 @@ export default function updateEditor(
   initialValues = {},
   extraMeta = {}
 ) {
-  const { sequenceData, ...rest } = initialValues;
+  const {
+    sequenceData,
+    annotationVisibility,
+    annotationsToSupport,
+    ...rest
+  } = initialValues;
+
+  let toSpread = {};
+  if (sequenceData && sequenceData.isProtein) {
+    toSpread = {
+      annotationVisibility: {
+        sequence: false,
+        reverseSequence: false,
+        ...annotationVisibility,
+        translations: false
+      },
+      annotationsToSupport: {
+        features: true,
+        translations: false,
+        parts: true,
+        orfs: false,
+        cutsites: false,
+        primers: true,
+        ...annotationsToSupport
+      }
+    };
+  }
   const initialValuesToUse = {
+    ...toSpread,
     ...rest,
     ...(sequenceData && {
       sequenceData: tidyUpSequenceData(sequenceData, {

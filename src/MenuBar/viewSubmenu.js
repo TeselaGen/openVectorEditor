@@ -130,6 +130,7 @@ export default [
 
   { cmd: "toggleAxis", shouldDismissPopover: false },
   { cmd: "toggleAxisNumbers", shouldDismissPopover: false },
+  { cmd: "toggleSequence", shouldDismissPopover: false },
   { cmd: "toggleReverseSequence", shouldDismissPopover: false },
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
   // { cmd: "toggleLineageLines", shouldDismissPopover: false },

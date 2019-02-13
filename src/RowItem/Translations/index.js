@@ -13,6 +13,7 @@ function Translations(props) {
     annotationRanges,
     bpsPerRow,
     charWidth,
+    isProtein,
     annotationHeight,
     spaceBetweenAnnotations,
     getGaps,
@@ -42,7 +43,10 @@ function Translations(props) {
       <AnnotationPositioner
         height={annotationHeight}
         width={result.width}
-        className="veRowViewTranslations"
+        className={
+          "veRowViewTranslations " +
+          (isProtein ? " primaryProteinSequence" : "")
+        }
         key={
           "ve-translation-" + annotation.id + "start:" + annotationRange.start
         }
@@ -52,6 +56,7 @@ function Translations(props) {
         left={result.xStart}
       >
         <Translation
+          isProtein={isProtein}
           annotationRange={annotationRange}
           rangeType={getAnnotationRangeType(
             annotationRange,

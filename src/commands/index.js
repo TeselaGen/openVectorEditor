@@ -7,6 +7,8 @@ import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 
+const isProtein = props => props.sequenceData.isProtein;
+
 const fileCommandDefs = {
   newSequence: {
     isHidden: props => !props.onNew,
@@ -310,6 +312,7 @@ const editCommandDefs = {
   },
 
   sequenceAA_allFrames: {
+    isHidden: isProtein,
     isActive: props =>
       props.frameTranslations["1"] &&
       props.frameTranslations["2"] &&
@@ -332,6 +335,8 @@ const editCommandDefs = {
     }
   },
   sequenceAAReverse_allFrames: {
+    isHidden: isProtein,
+
     isActive: props =>
       props.frameTranslations["-1"] &&
       props.frameTranslations["-2"] &&
@@ -419,6 +424,8 @@ const editCommandDefs = {
     hotkey: "mod+k"
   },
   useGtgAndCtgAsStartCodons: {
+    isHidden: isProtein,
+
     name: "Use GTG And CTG As Start Codons",
     isActive: props => props.useAdditionalOrfStartCodons,
     handler: props => props.useAdditionalOrfStartCodonsToggle()
@@ -480,7 +487,7 @@ const editCommandDefs = {
 
 const cirularityCommandDefs = {
   circular: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || isProtein(props),
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
@@ -504,6 +511,9 @@ const labelToggleCommandDefs = {};
   labelToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
     handler: props => props.annotationLabelVisibilityToggle(plural),
+    isHidden: props => {
+      return props && props.typesToOmit && props.typesToOmit[plural] === false;
+    },
     isActive: (props, editorState) =>
       editorState && editorState.annotationLabelVisibility[plural]
   };
@@ -518,9 +528,15 @@ const annotationToggleCommandDefs = {};
   { type: "orfs", text: "ORFs" },
   "primers",
   "translations",
+  {
+    type: "sequence",
+    noCount: true,
+    isHidden: props => !props.sequenceData.isProtein
+  },
   { type: "orfTranslations", text: "ORF Translations" },
   { type: "cdsFeatureTranslations", text: "CDS Feature Translations" },
   "axisNumbers",
+
   "reverseSequence",
   "dnaColors",
   "lineageLines"
@@ -535,7 +551,7 @@ const annotationToggleCommandDefs = {};
       let count;
       let hasCount = false;
       const annotations = props[type] || sequenceData[type];
-      if (annotations) {
+      if (annotations && !typeOrObj.noCount) {
         hasCount = true;
         count = annotations.length || Object.keys(annotations).length || 0;
       }
@@ -589,7 +605,10 @@ const annotationToggleCommandDefs = {};
       }
     },
     isHidden: props => {
-      return props && props.typesToOmit && props.typesToOmit[type] === false;
+      return (
+        (props && props.typesToOmit && props.typesToOmit[type] === false) ||
+        (typeOrObj.isHidden && typeOrObj.isHidden(props))
+      );
     }
   };
 });
@@ -597,12 +616,14 @@ const annotationToggleCommandDefs = {};
 const toolCommandDefs = {
   simulateDigestion: {
     handler: props => props.createNewDigest(),
-    hotkey: "mod+shift+d"
+    hotkey: "mod+shift+d",
+    isHidden: props => props.sequenceData.isProtein
   },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
     name: "Restriction Enzymes Manager...",
-    handler: props => props.addYourOwnEnzymeOpen()
+    handler: props => props.addYourOwnEnzymeOpen(),
+    isHidden: props => props.sequenceData.isProtein
   }
 };
 

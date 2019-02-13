@@ -33,12 +33,12 @@ class Translation extends React.Component {
       translationRightClicked,
       translationDoubleClicked,
       sequenceLength,
-      getGaps
+      getGaps,
+      isProtein
     } = this.props;
     const { hasMounted } = this.state;
-
     let { annotation } = annotationRange;
-    if (!hasMounted) {
+    if (!hasMounted && !isProtein) {
       return <g height={height} className="translationLayer" />;
     }
     //we have an amino acid representation of our entire annotation, but it is an array
@@ -60,6 +60,7 @@ class Translation extends React.Component {
       aminoAcidSliver,
       index
     ) {
+      if (aminoAcidSliver.positionInCodon !== 1) return null;
       const { gapsInside, gapsBefore } = getGaps(aminoAcidSliver.codonRange);
       const gapsInsideFeatureStartToBp = getGaps({
         start: annotationRange.start,
@@ -100,6 +101,7 @@ class Translation extends React.Component {
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
           width={charWidth}
+          isProtein={isProtein}
           height={height}
           relativeAAPositionInTranslation={
             relativeAAPositionInTranslation + gapsInsideFeatureStartToBp
@@ -122,12 +124,4 @@ class Translation extends React.Component {
   }
 }
 
-// Translation.propTypes = {
-//   widthInBps: PropTypes.number.isRequired,
-//   charWidth: PropTypes.number.isRequired,
-//   height: PropTypes.number.isRequired,
-//   rangeType: PropTypes.string.isRequired,
-//   translationClicked: PropTypes.func.isRequired
-// };
-// export default Translation
 export default pureNoFunc(Translation);

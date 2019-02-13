@@ -137,6 +137,9 @@ export class RowView extends React.Component {
         nearestCaretPos = 0;
       }
     }
+    if (this.props.sequenceData.isProtein) {
+      nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
+    }
     callback({
       event,
       className: event.target.className,
@@ -333,6 +336,7 @@ export class RowView extends React.Component {
               ...rest,
               rowTopComp,
               rowBottomComp,
+              isProtein: sequenceData.isProtein,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,
               fullSequence: sequenceData.sequence,

@@ -1,6 +1,9 @@
 import { forEach } from "lodash";
 
 const annotationsToCompute = {
+  primaryProteinSequence: {
+    fixedHeight: 19
+  },
   translations: {
     annotationHeight: 19,
     hasYOffset: true

@@ -412,11 +412,12 @@ rightClickOverrides: {
               {renderToggle({
                 that: this,
                 type: "isProtein",
-                hook: () => {
-                  updateEditor(store, "DemoEditor", {
-                    readOnly: false,
-                    sequenceData: exampleProteinData
-                  });
+                hook: shouldFire => {
+                  shouldFire &&
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: exampleProteinData
+                    });
                 }
               })}
               <div>Editor Handlers: </div>

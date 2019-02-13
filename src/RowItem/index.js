@@ -41,6 +41,7 @@ export class RowItem extends React.PureComponent {
       featureHeight = 16,
       partHeight = 12,
       primerHeight = 16,
+      isProtein,
       tickSpacing = 10,
       sequenceHeight = 16,
       spaceBetweenAnnotations = 2,
@@ -80,12 +81,13 @@ export class RowItem extends React.PureComponent {
       selectionLayerRightClicked = noop,
       orfClicked = noop,
       orfRightClicked = noop,
+      primaryProteinSequenceClicked = noop,
+      primaryProteinSequenceRightClicked = noop,
+      primaryProteinSequenceDoubleClicked = noop,
       translationClicked = noop,
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
-
-      // scrollData,
       minHeight = 22,
       bpsPerRow = sequenceLength,
       editorName
@@ -125,6 +127,7 @@ export class RowItem extends React.PureComponent {
       features = [],
       primers = [],
       translations = [],
+      primaryProteinSequence = [],
       parts = [],
       cutsites = [],
       orfs = []
@@ -297,6 +300,17 @@ export class RowItem extends React.PureComponent {
               translationRightClicked={translationRightClicked}
               translationDoubleClicked={translationDoubleClicked}
               annotationRanges={translations}
+              {...annotationCommonProps}
+            />
+          )}
+
+          {isProtein && (
+            <Translations
+              isProtein={true}
+              translationClicked={primaryProteinSequenceClicked}
+              translationRightClicked={primaryProteinSequenceRightClicked}
+              translationDoubleClicked={primaryProteinSequenceDoubleClicked}
+              annotationRanges={primaryProteinSequence}
               {...annotationCommonProps}
             />
           )}
