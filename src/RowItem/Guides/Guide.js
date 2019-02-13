@@ -7,7 +7,7 @@ import React from "react";
 function Guide(props) {
   let {
     hoverActions,
-    hoverProps: { className },
+    className,
     widthInBps,
     charWidth,
     height,

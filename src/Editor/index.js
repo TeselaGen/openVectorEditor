@@ -79,7 +79,10 @@ const panelMap = {
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
-  guideTool: GuideTool,
+  guideTool: {
+    comp: GuideTool,
+    panelSpecificProps: ["clearGuides", "upsertGuides"]
+  },
   properties: {
     comp: Properties,
     panelSpecificPropsToSpread: ["PropertiesProps"]

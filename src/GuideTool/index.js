@@ -22,7 +22,7 @@ class GuideTool extends React.Component {
       clearGuides,
       upsertGuides
     } = this.props;
-    const { guides } = this.props.guideTool || {};
+    const { guides } = this.props.guideToolProps || {};
     let entities = guides ? Object.values(guides) : null;
 
     return (
@@ -34,7 +34,7 @@ class GuideTool extends React.Component {
           maxHeight={400}
           compact
           isInfinite
-          formName={"guideTable"}
+          formName="guideTable"
           schema={schema}
           entities={entities}
         />

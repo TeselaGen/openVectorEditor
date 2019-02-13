@@ -40,14 +40,14 @@ export class FindGuideDialog extends React.Component {
           defaultValue={20}
           min={1}
           max={sequenceLength}
-          name={"guideLength"}
-          label={"Guide Length:"}
+          name="guideLength"
+          label="Guide Length:"
         />
         <SelectField
           inlineLabel
-          defaultValue={"NGG"}
-          name={"pamSite"}
-          label={"PAM site"}
+          defaultValue="NGG"
+          name="pamSite"
+          label="PAM site"
           options={pamSites}
         />
         <NumericInputField
@@ -55,20 +55,20 @@ export class FindGuideDialog extends React.Component {
           defaultValue={1}
           min={1}
           max={sequenceLength}
-          name={"start"}
-          label={"Start:"}
+          name="start"
+          label="Start:"
         />
         <NumericInputField
           inlineLabel
           defaultValue={1}
           min={1}
           max={sequenceLength}
-          name={"end"}
-          label={"End:"}
+          name="end"
+          label="End:"
         />
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
-          className={"width100"}
+          className="width100"
         >
           <Button
             style={{ marginRight: 15 }}
@@ -101,7 +101,7 @@ export class FindGuideDialog extends React.Component {
                 }
               });
               if (guides && guides.length) {
-                createGuideToolTab();
+                createGuideToolTab({ guides });
                 guides.forEach(function(g) {
                   g.target = partName;
                 });
