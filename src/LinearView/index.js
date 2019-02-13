@@ -50,7 +50,8 @@ export class LinearView extends React.Component {
   }
   getMaxLength = () => {
     const { sequenceData = { sequence: "" }, alignmentData } = this.props;
-    return (alignmentData || sequenceData).sequence.length;
+    const data = alignmentData || sequenceData;
+    return data.noSequence ? data.size : data.sequence.length;
   };
 
   getRowData = () => {

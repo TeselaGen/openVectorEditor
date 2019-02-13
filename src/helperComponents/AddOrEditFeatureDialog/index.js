@@ -66,7 +66,7 @@ export class AddOrEditFeatureDialog extends React.Component {
                         inlineLabel
                         tooltipError
                         min={1}
-                        max={sequenceLength}
+                        max={sequenceLength || 1}
                         name={`${member}.start`}
                         label="Start:"
                       />
@@ -75,7 +75,7 @@ export class AddOrEditFeatureDialog extends React.Component {
                         inlineLabel
                         tooltipError
                         min={1}
-                        max={sequenceLength}
+                        max={sequenceLength || 1}
                         name={`${member}.end`}
                         label="End:"
                       />
@@ -203,7 +203,7 @@ export class AddOrEditFeatureDialog extends React.Component {
               tooltipError
               defaultValue={1}
               min={1}
-              max={sequenceLength}
+              max={sequenceLength || 1}
               name="start"
               label="Start:"
             />
@@ -212,7 +212,7 @@ export class AddOrEditFeatureDialog extends React.Component {
               tooltipError
               defaultValue={1}
               min={1}
-              max={sequenceLength}
+              max={sequenceLength || 1}
               name="end"
               label="End:"
             />

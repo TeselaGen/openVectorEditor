@@ -136,13 +136,16 @@ const triggerClipboardCommand = type => {
 
 const editCommandDefs = {
   cut: {
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     isHidden: props => props.readOnly,
     handler: () => triggerClipboardCommand("cut"),
     hotkey: "mod+x"
   },
 
   copy: {
+    isDisabled: props => props.sequenceLength === 0,
+
     handler: () => triggerClipboardCommand("copy"),
     hotkey: "mod+c"
   },
@@ -183,6 +186,7 @@ const editCommandDefs = {
     hotkey: "mod+shift+z"
   },
   find: {
+    isDisabled: props => props.sequenceLength === 0,
     name: "Find...",
     handler: props => props.toggleFindTool(),
     hotkey: "mod+f",
@@ -190,6 +194,7 @@ const editCommandDefs = {
   },
 
   goTo: {
+    isDisabled: props => props.sequenceLength === 0,
     name: "Go To...",
     handler: props => {
       props.showGoToDialog({
@@ -207,13 +212,14 @@ const editCommandDefs = {
   },
 
   select: {
+    isDisabled: props => props.sequenceLength === 0,
     name: "Select...",
     handler: props => {
       const { start, end } = props.selectionLayer;
       props.showSelectDialog({
         extraProps: {
-          from: { min: 1, max: props.sequenceLength },
-          to: { min: 1, max: props.sequenceLength }
+          from: { min: 1, max: props.sequenceLength || 1 },
+          to: { min: 1, max: props.sequenceLength || 1 }
         },
         initialValues: {
           from: start >= 0 ? start : 0,
@@ -231,19 +237,16 @@ const editCommandDefs = {
   },
   selectAll: {
     handler: (props, obj) => {
-      const { event } = obj || {};
-      if (
-        event &&
-        event.target &&
-        (event.target.type === "textarea" || event.target.type === "input")
-      ) {
-        return true; //stop early to allow select all to work in inputs and text areas
+      const { event, viaHotkey } = obj || {};
+      if (viaHotkey) {
+        event.stopPropagation();
+        event.preventDefault();
       }
       props.selectAll();
-      event.stopPropagation();
-      event.preventDefault();
     },
+    isDisabled: props => props.sequenceLength === 0,
     hotkey: "mod+a"
+    //tnr: we can't pass the following because it will block inputs
     // hotkeyProps: { preventDefault: true, stopPropagation: true }
   },
 
@@ -265,7 +268,9 @@ const editCommandDefs = {
   complementEntireSequence: {
     isHidden: props => props.readOnly,
 
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
+
     handler: props => props.handleComplementSequence()
   },
   toggleSequenceMapFontUpper: {
@@ -297,15 +302,14 @@ const editCommandDefs = {
       (props.readOnly && readOnlyDisabledTooltip) ||
       (!hasSelection(props) && "Requires Selection"),
     isHidden: props => props.readOnly,
-
     handler: props => props.handleReverseComplementSelection(),
     hotkey: "mod+e"
   },
 
   reverseComplementEntireSequence: {
     isHidden: props => props.readOnly,
-
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     handler: props => props.handleReverseComplementSequence()
   },
 
@@ -414,8 +418,8 @@ const editCommandDefs = {
       props.handleNewFeature();
     },
     isHidden: props => props.readOnly,
-
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+k"
   },
   useGtgAndCtgAsStartCodons: {
@@ -451,7 +455,8 @@ const editCommandDefs = {
     handler: props => props.handleNewPart(),
     isHidden: props => props.readOnly,
 
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+l",
     hotkeyProps: { preventDefault: true }
   },

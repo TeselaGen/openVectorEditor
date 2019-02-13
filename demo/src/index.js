@@ -45,10 +45,9 @@ const links = [
   { name: "ToolBar", url: "ToolBar" }
 ].map(({ url, name }) => {
   return (
-    <Link key={name} style={{ marginLeft: 10 }} to={url}>
-      {" "}
-      {name}{" "}
-    </Link>
+    <div key={name} style={{ height: 20, marginLeft: 10 }}>
+      <Link to={url}> {name} </Link>
+    </div>
   );
 });
 
@@ -85,7 +84,8 @@ class Demo extends React.Component {
             <div
               style={{
                 display: "flex",
-                flexWrap: "wrap"
+                flexWrap: "wrap",
+                flexShrink: 0
               }}
             >
               {links}{" "}
@@ -188,7 +188,9 @@ class Demo extends React.Component {
               path="/CircularView"
             />
             <Route
-              render={() => <SimpleCircularOrLinearViewDemo />}
+              render={({ history }) => (
+                <SimpleCircularOrLinearViewDemo history={history} />
+              )}
               path="/SimpleCircularOrLinearView"
             />
             <Route

@@ -1,14 +1,27 @@
+import { setupOptions, setParamsIfNecessary } from "./utils/setupOptions";
 import React from "react";
 import { Callout } from "@blueprintjs/core";
 
 import { SimpleCircularOrLinearView } from "../../src";
 import renderToggle from "./utils/renderToggle";
 
+const defaultState = {
+  hoverPart: false,
+  toggleSelection: false,
+  noSequence: false,
+  hideNameAndInfo: false,
+  circular: false,
+  changeSize: false,
+  togglePartColor: false
+};
+
 export default class SimpleCircularOrLinearViewDemo extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    setupOptions({ that: this, defaultState, props });
+  }
+  componentDidUpdate() {
+    setParamsIfNecessary({ that: this, defaultState });
   }
   render() {
     return (
@@ -24,8 +37,18 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             type: "hoverPart",
             label: "Toggle Part 1 Hover"
           })}
+
           {renderToggle({ that: this, type: "toggleSelection" })}
+          {renderToggle({ that: this, type: "limitLengthTo50Bps" })}
+          {renderToggle({
+            that: this,
+            type: "noSequence",
+            label: "Don't pass .sequence, just .size",
+            description:
+              "You can pass sequenceData.noSequence=true if you don't want to have to pass the actual sequence. If you do this you must pass a sequenceData.size property"
+          })}
           {renderToggle({ that: this, type: "hideNameAndInfo" })}
+          {/* {renderToggle({ that: this, type: "showCutsites" })} */}
           {renderToggle({ that: this, type: "circular" })}
           {renderToggle({ that: this, type: "changeSize" })}
           {renderToggle({ that: this, type: "togglePartColor" })}
@@ -40,6 +63,10 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             ...(this.state.hideNameAndInfo && { hideName: true }),
             ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
             ...(this.state.changeSize && { height: 500, width: 500 }),
+            // annotationVisibility: {
+            //   cutsites: this.state.showCutsites
+            // }
+
             ...(this.state.toggleSelection && {
               selectionLayer: { start: 2, end: 30 }
             }),
@@ -60,7 +87,16 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
               // annotationVisibility: {
               //   axis: sequenceData.circular
               // }
-
+              ...(this.state.noSequence
+                ? {
+                    noSequence: true,
+                    size: this.state.limitLengthTo50Bps ? 50 : 164
+                  }
+                : {
+                    sequence: this.state.limitLengthTo50Bps
+                      ? "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAaga"
+                      : "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                  }),
               name: "Test Seq",
               circular: this.state.circular, //toggle to true to change this!
               parts: [
@@ -78,9 +114,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                   end: 30,
                   ...(this.state.togglePartColor && { color: "override_blue" })
                 }
-              ],
-              sequence:
-                "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+              ]
             }
           }}
         />
