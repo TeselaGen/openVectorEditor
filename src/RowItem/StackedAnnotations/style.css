@@ -5,6 +5,6 @@
   stroke-dasharray: 3px;
 }
 
-.veRowViewFeatureContainer > svg {
+.veRowViewFeaturesContainer > svg {
   z-index: 20;
 }

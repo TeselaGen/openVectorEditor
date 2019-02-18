@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import { debounce, get } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import {
@@ -458,7 +458,7 @@ export class Editor extends React.Component {
           {...panelSpecificProps && pick(this.props, panelSpecificProps)}
           {...panelSpecificPropsToSpread &&
             panelSpecificPropsToSpread.reduce((acc, key) => {
-              acc = { ...acc, ...this.props[key] };
+              acc = { ...acc, ...get(this.props, key) };
               return acc;
             }, {})}
           key={activePanelId}
@@ -466,6 +466,7 @@ export class Editor extends React.Component {
           clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}
           editorName={editorName}
+          isProtein={sequenceData.isProtein}
           tabHeight={tabHeight}
           {...editorDimensions}
           isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
@@ -767,6 +768,7 @@ export class Editor extends React.Component {
           handleFullscreenClose={
             handleFullscreenClose || this.togglePreviewFullscreen
           }
+          isProtein={sequenceData.isProtein}
           {...pick(this.props, userDefinedHandlersAndOpts)}
           userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
           onSave={onSave}
@@ -810,7 +812,7 @@ export class Editor extends React.Component {
         <StatusBar
           showAvailability={showAvailability}
           onSave={onSave}
-          showCircularity={showCircularity}
+          showCircularity={showCircularity && !sequenceData.isProtein}
           disableSetReadOnly={disableSetReadOnly}
           showReadOnly={showReadOnly}
           editorName={editorName}

@@ -45,9 +45,12 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     annotationTypes.forEach(function(type) {
       row[type] = rowMap[type][rowNumber] || [];
     });
-    row.primaryProteinSequence =
-      rowMap.primaryProteinSequence &&
-      (rowMap.primaryProteinSequence[rowNumber] || []);
+    if (sequenceData.isProtein) {
+      row.isProtein = true;
+      row.primaryProteinSequence =
+        rowMap.primaryProteinSequence &&
+        (rowMap.primaryProteinSequence[rowNumber] || []);
+    }
     row.sequence = sequenceData.noSequence
       ? {
           length: row.end + 1 - row.start

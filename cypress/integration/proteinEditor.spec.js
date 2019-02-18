@@ -5,11 +5,29 @@ describe("editor", function() {
   });
 
   it(`should 
+  -not show circularity
+  -not show cutsite/orf tools
+  `, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).should("not.exist");
+    cy.get(`[data-test="orfTool"]`).should("not.exist");
+
+    cy.get(".veStatusBar-circularity").should("not.exist");
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="parts"]`);
+    cy.get(`[data-tab-id="orfs"]`).should("not.exist");
+    cy.get(`[data-tab-id="cutsites"]`).should("not.exist");
+    cy.get(`[data-tab-id="translations"]`).should("not.exist");
+    cy.get(".ve-propertiesPanel")
+      .contains("Circular")
+      .should("not.exist");
+  });
+
+  it(`should 
   -show the AA count
   -the protein seq should be the primary sequence displayed
   -not show any dna sequence by default 
   -should not show options to update restriction enzymes or simulate digestion
-  -not show options to view cutsites, orfs, translations 
+  -not show options to view cutsites, orfs, translations, full sequence translations
   -be able to hide/show the underlying dna sequence
   `, function() {
     cy.log("show the AA count");
@@ -44,6 +62,12 @@ describe("editor", function() {
       .should("not.exist");
     cy.get(".bp3-menu")
       .contains("Translations")
+      .should("not.exist");
+    cy.get(".bp3-menu")
+      .contains("Full Sequence Translation")
+      .should("not.exist");
+    cy.get(".bp3-menu")
+      .contains("Sequence Case")
       .should("not.exist");
     cy.get(".bp3-menu")
       .contains("Cutsites")

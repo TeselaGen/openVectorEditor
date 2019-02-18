@@ -17,7 +17,8 @@ export default [
       {
         cmd: "toggleOrfTranslations",
         shouldDismissPopover: false
-      }
+      },
+      { cmd: "toggleAminoAcidNumbers_dna", shouldDismissPopover: false }
     ]
   },
   { cmd: "togglePrimers", shouldDismissPopover: false },
@@ -75,6 +76,7 @@ export default [
   { divider: "" },
   {
     text: "Full Sequence Translation",
+    cmd: "fullSequenceTranslations",
     submenu: [
       {
         shouldDismissPopover: false,
@@ -130,6 +132,10 @@ export default [
 
   { cmd: "toggleAxis", shouldDismissPopover: false },
   { cmd: "toggleAxisNumbers", shouldDismissPopover: false },
+  {
+    cmd: "toggleAminoAcidNumbers_protein",
+    shouldDismissPopover: false
+  },
   { cmd: "toggleSequence", shouldDismissPopover: false },
   { cmd: "toggleReverseSequence", shouldDismissPopover: false },
   { cmd: "toggleDnaColors", shouldDismissPopover: false },

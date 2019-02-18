@@ -20,6 +20,7 @@ class GeneralProperties extends React.Component {
       readOnly,
       showReadOnly = true,
       updateCircular,
+      isProtein,
       disableSetReadOnly,
       updateAvailability,
       name,
@@ -48,23 +49,26 @@ class GeneralProperties extends React.Component {
             />{" "}
           </div>
         </div>
-        <div className="ve-flex-row">
-          <div className="ve-column-left">Circular/Linear:</div>{" "}
-          <div className="ve-column-right">
-            {" "}
-            <BPSelect
-              disabled={readOnly}
-              onChange={val => {
-                updateCircular(val === "circular");
-              }}
-              value={circular ? "circular" : "linear"}
-              options={[
-                { label: "Circular", value: "circular" },
-                { label: "Linear", value: "linear" }
-              ]}
-            />
+        {!isProtein && (
+          <div className="ve-flex-row">
+            <div className="ve-column-left">Circular/Linear:</div>{" "}
+            <div className="ve-column-right">
+              {" "}
+              <BPSelect
+                disabled={readOnly}
+                onChange={val => {
+                  updateCircular(val === "circular");
+                }}
+                value={circular ? "circular" : "linear"}
+                options={[
+                  { label: "Circular", value: "circular" },
+                  { label: "Linear", value: "linear" }
+                ]}
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         {showAvailability && (
           <div className="ve-flex-row">
             <div className="ve-column-left">Material Availability:</div>{" "}

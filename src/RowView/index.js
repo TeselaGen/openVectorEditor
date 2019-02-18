@@ -9,7 +9,7 @@ import RowItem from "../RowItem";
 
 import withEditorInteractions from "../withEditorInteractions";
 import ReactList from "./ReactList";
-import estimateRowHeight from "./estimateRowHeight";
+import estimateRowHeight, { rowHeights } from "./estimateRowHeight";
 import {
   defaultContainerWidth,
   defaultMarginWidth,
@@ -25,6 +25,10 @@ import "./style.css";
 // import Combokeys from "combokeys";
 
 function noop() {}
+
+const rowJumpButtonStyle = {
+  height: rowHeights.rowJumpButtons.height
+};
 
 const bounds = { top: 0, left: 0, right: 0, bottom: 0 };
 export class RowView extends React.Component {
@@ -70,8 +74,10 @@ export class RowView extends React.Component {
     return estimateRowHeight({
       index,
       cache,
+      showJumpButtons: this.showJumpButtons,
       clearCache: this.clearCache,
       row: this.rowData[index],
+      rowCount: this.rowData.length,
       annotationVisibility,
       annotationLabelVisibility
     });
@@ -293,12 +299,12 @@ export class RowView extends React.Component {
     let rowBottomComp;
     const rowData = this.rowData;
     const bpsPerRow = this.bpsPerRow;
-    let showJumpButtons = rowData.length > 15;
 
-    if (showJumpButtons) {
+    this.showJumpButtons = rowData.length > 15;
+    if (this.showJumpButtons) {
       if (index === 0) {
         rowTopComp = (
-          <div>
+          <div style={rowJumpButtonStyle}>
             <Button
               data-test="jumpToEndButton"
               onClick={e => {
@@ -313,7 +319,7 @@ export class RowView extends React.Component {
         );
       } else if (index === rowData.length - 1) {
         rowBottomComp = (
-          <div>
+          <div style={rowJumpButtonStyle}>
             <Button
               data-test="jumpToStartButton"
               onClick={e => {

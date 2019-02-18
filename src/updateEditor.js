@@ -11,6 +11,7 @@ export default function updateEditor(
     sequenceData,
     annotationVisibility,
     annotationsToSupport,
+    panelsShown,
     ...rest
   } = initialValues;
 
@@ -21,11 +22,14 @@ export default function updateEditor(
         sequence: false,
         reverseSequence: false,
         ...annotationVisibility,
-        translations: false
+        translations: false,
+        aminoAcidNumbers: true,
+        primaryProteinSequence: true
       },
       annotationsToSupport: {
         features: true,
         translations: false,
+        primaryProteinSequence: true,
         parts: true,
         orfs: false,
         cutsites: false,

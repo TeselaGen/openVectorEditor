@@ -4,7 +4,7 @@ import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAn
 
 import React from "react";
 
-class Feature extends React.PureComponent {
+class PointedAnnotation extends React.PureComponent {
   render() {
     let {
       className,
@@ -20,8 +20,8 @@ class Feature extends React.PureComponent {
       pointiness = 8,
       fontWidth = 12,
       color = "orange",
-      featureClicked,
-      featureRightClicked,
+      onClick,
+      onRightClick,
       gapsInside,
       gapsBefore,
       annotation
@@ -39,7 +39,7 @@ class Feature extends React.PureComponent {
     }
     let widthMinusOne = width - charWN;
     let path;
-    // starting from the top left of the feature
+    // starting from the top left of the annotation
     if (rangeType === "middle") {
       //draw a rectangle
       path = `
@@ -83,17 +83,16 @@ class Feature extends React.PureComponent {
       textOffset = 0;
       nameToDisplay = "";
     }
-    // path=path.replace(/ /g,'')
-    // path=path.replace(/\n/g,'')
+
     return (
       <g
         {...{ onMouseLeave, onMouseOver }}
-        className={"veRowViewFeature clickable " + className}
+        className={" clickable " + className}
         onClick={function(event) {
-          featureClicked({ annotation, event, gapsBefore, gapsInside });
+          onClick({ annotation, event, gapsBefore, gapsInside });
         }}
         onContextMenu={function(event) {
-          featureRightClicked({ annotation, event, gapsBefore, gapsInside });
+          onRightClick({ annotation, event, gapsBefore, gapsInside });
         }}
       >
         <title>{getAnnotationNameAndStartStopString(annotation)}</title>
@@ -120,4 +119,4 @@ class Feature extends React.PureComponent {
   }
 }
 
-export default withHover(Feature);
+export default withHover(PointedAnnotation);

@@ -38,7 +38,9 @@ const fileCommandDefs = {
 
   deleteSequence: {
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) || !props.onDelete,
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      !hasSelection(props) ||
+      !props.onDelete,
     isHidden: props => !props.onDelete,
     handler: props => props.onDelete(props.sequenceData)
   },
@@ -271,6 +273,7 @@ const editCommandDefs = {
     handler: props => props.handleComplementSequence()
   },
   toggleSequenceMapFontUpper: {
+    isHidden: isProtein,
     isActive: props => props.uppercaseSequenceMapFont === "uppercase",
     handler: props => {
       props.uppercaseSequenceMapFont === "uppercase"
@@ -310,9 +313,11 @@ const editCommandDefs = {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.handleReverseComplementSequence()
   },
-
-  sequenceAA_allFrames: {
+  fullSequenceTranslations: {
     isHidden: isProtein,
+    handler: () => {}
+  },
+  sequenceAA_allFrames: {
     isActive: props =>
       props.frameTranslations["1"] &&
       props.frameTranslations["2"] &&
@@ -528,21 +533,64 @@ const annotationToggleCommandDefs = {};
   { type: "orfs", text: "ORFs" },
   "primers",
   "translations",
+
+  {
+    type: "orfTranslations",
+    text: "ORF Translations",
+    isDisabled: props => {
+      return (
+        (!props.annotationVisibility.orfs &&
+          "ORFs must be visible to view their translations") ||
+        (!props.annotationVisibility.translations &&
+          "Translations must be visible to view ORF translations")
+      );
+    }
+  },
+  {
+    type: "cdsFeatureTranslations",
+    text: "CDS Feature Translations",
+    isDisabled: props => {
+      return (
+        (!props.annotationVisibility.features &&
+          "Features must be visible to view their translations") ||
+        (!props.annotationVisibility.translations &&
+          "Translations must be visible to view CDS feature translations")
+      );
+    }
+  },
+  // {
+  //   type: "aminoAcidNumbers",
+  //   isHidden: (p, c) =>
+  //     (c.isDnaMenu && p.isProtein) || (!c.isDnaMenu && !p.isProtein)
+  // },
+  "aminoAcidNumbers",
+  "axisNumbers",
   {
     type: "sequence",
+    name: "DNA Sequence",
     noCount: true,
     isHidden: props => !props.sequenceData.isProtein
   },
-  { type: "orfTranslations", text: "ORF Translations" },
-  { type: "cdsFeatureTranslations", text: "CDS Feature Translations" },
-  "axisNumbers",
-
-  "reverseSequence",
-  "dnaColors",
+  {
+    type: "reverseSequence",
+    name: props =>
+      props.sequenceData.isProtein ? "DNA Reverse Sequence" : "Reverse Sequence"
+  },
+  {
+    type: "dnaColors",
+    isDisabled: props =>
+      !props.annotationVisibility.sequence &&
+      !props.annotationVisibility.reverseSequence &&
+      "The DNA sequence must be visible in order to color it"
+  },
   "lineageLines"
 ].forEach(typeOrObj => {
-  const type = typeOrObj.type || typeOrObj;
-
+  let type = typeOrObj;
+  let obj = {};
+  if (typeOrObj.type) {
+    type = typeOrObj.type;
+    obj = typeOrObj;
+  }
   const cmdId = `toggle${upperFirst(type)}`;
   annotationToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
@@ -551,7 +599,7 @@ const annotationToggleCommandDefs = {};
       let count;
       let hasCount = false;
       const annotations = props[type] || sequenceData[type];
-      if (annotations && !typeOrObj.noCount) {
+      if (annotations && !obj.noCount) {
         hasCount = true;
         count = annotations.length || Object.keys(annotations).length || 0;
       }
@@ -571,7 +619,7 @@ const annotationToggleCommandDefs = {};
       }
       return (
         <span>
-          {typeOrObj.text || startCase(type)}
+          {obj.text || startCase(type)}
           &nbsp;
           {hasCount && (
             <Tag round style={{ marginLeft: 4 }}>
@@ -587,31 +635,26 @@ const annotationToggleCommandDefs = {};
         props && props.annotationVisibility && props.annotationVisibility[type]
       );
     },
-    isDisabled: props => {
-      if (type === "orfTranslations") {
-        return (
-          (!props.annotationVisibility.orfs &&
-            "ORFs must be visible to view their translations") ||
-          (!props.annotationVisibility.translations &&
-            "Translations must be visible to view ORF translations")
-        );
-      } else if (type === "cdsFeatureTranslations") {
-        return (
-          (!props.annotationVisibility.features &&
-            "Features must be visible to view their translations") ||
-          (!props.annotationVisibility.translations &&
-            "Translations must be visible to view CDS feature translations")
-        );
-      }
-    },
+    ...obj, //spread this here to override the above props if necessary
     isHidden: props => {
       return (
         (props && props.typesToOmit && props.typesToOmit[type] === false) ||
-        (typeOrObj.isHidden && typeOrObj.isHidden(props))
+        (obj.isHidden && obj.isHidden(props))
       );
     }
   };
 });
+
+const additionalAnnotationCommandsDefs = {
+  toggleAminoAcidNumbers_dna: {
+    ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
+    isHidden: props => props.sequenceData.isProtein
+  },
+  toggleAminoAcidNumbers_protein: {
+    ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
+    isHidden: props => !props.sequenceData.isProtein
+  }
+};
 
 const toolCommandDefs = {
   simulateDigestion: {
@@ -628,6 +671,7 @@ const toolCommandDefs = {
 };
 
 const commandDefs = {
+  ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,
   ...cirularityCommandDefs,
   ...annotationToggleCommandDefs,

@@ -47,7 +47,7 @@ export class ToolBar extends React.PureComponent {
       contentLeft,
       showMenuBar,
       displayMenuBarAboveTools,
-
+      isProtein,
       onSave,
       userDefinedHandlersAndOpts,
       editorName,
@@ -90,6 +90,15 @@ export class ToolBar extends React.PureComponent {
               toolName
           );
           return false;
+        }
+        if (isProtein) {
+          if (
+            toolName === "cutsiteTool" ||
+            toolName === "orfTool" ||
+            toolName === "alignmentTool"
+          ) {
+            return false;
+          }
         }
         if (toolName === "saveTool" && !onSave) {
           return false;

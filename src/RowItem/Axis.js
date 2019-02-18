@@ -14,6 +14,7 @@ let Axis = function(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
+    marginTop,
     sequenceLength,
     showAxisNumbers = true,
     getGaps
@@ -93,8 +94,8 @@ let Axis = function(props) {
     <svg
       className="veRowViewAxis veAxis"
       width="100%"
-      height={Math.max(0, annotationHeight * 1.2)}
-      style={{ marginTop: 3, overflow: "visible", display: "block" }}
+      height={annotationHeight}
+      style={{ marginTop, overflow: "visible", display: "block" }}
     >
       {tickMarkSVG}
       <path

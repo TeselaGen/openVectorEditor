@@ -29,7 +29,7 @@ describe("tabs", function() {
   it("can switch between tabs", function() {
     cy.contains("Linear Map").click();
     cy.get(".veLinearView");
-    cy.contains("Plasmid").click();
+    cy.contains("Circular Map").click();
     cy.get(".veCircularView");
   });
   it("can drag tabs", function() {
@@ -37,7 +37,7 @@ describe("tabs", function() {
     cy.get(`[data-test="ve-draggable-tabs1"] .veTabLinearMap`, {
       force: true
     }).should("exist");
-    cy.dragBetween(".veTabPlasmid", ".veTabProperties");
+    cy.dragBetween(".veTabCircularMap", ".veTabProperties");
     cy.get("[data-test=ve-draggable-tabs0] .veTabLinearMap", {
       force: true
     }).should("exist");

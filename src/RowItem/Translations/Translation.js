@@ -7,10 +7,6 @@ import AASliver from "./AASliver";
 import pureNoFunc from "../../utils/pureNoFunc";
 
 class Translation extends React.Component {
-  // shouldComponentUpdate(newProps){
-  //   const eq = (isEqual(newProps, this.props))
-  //   return eq
-  // }
   state = {
     hasMounted: false
   };
@@ -28,10 +24,12 @@ class Translation extends React.Component {
     let {
       annotationRange,
       height,
+      showAminoAcidNumbers,
       charWidth,
-      translationClicked,
-      translationRightClicked,
-      translationDoubleClicked,
+      aminoAcidNumbersHeight,
+      onClick,
+      onRightClick,
+      onDoubleClick,
       sequenceLength,
       getGaps,
       isProtein
@@ -72,7 +70,7 @@ class Translation extends React.Component {
       return (
         <AASliver
           onClick={function(event) {
-            translationClicked({
+            onClick({
               annotation: aminoAcidSliver.codonRange,
               codonRange: aminoAcidSliver.codonRange,
               event,
@@ -81,7 +79,7 @@ class Translation extends React.Component {
             });
           }}
           onContextMenu={function(event) {
-            translationRightClicked({
+            onRightClick({
               annotation,
               codonRange: aminoAcidSliver.codonRange,
               event,
@@ -94,15 +92,18 @@ class Translation extends React.Component {
           } -- Index: ${aminoAcidSliver.aminoAcidIndex + 1} -- Hydrophobicity ${
             aminoAcidSliver.aminoAcid.hydrophobicity
           }`}
+          showAminoAcidNumbers={showAminoAcidNumbers}
+          aminoAcidIndex={aminoAcidSliver.aminoAcidIndex}
           onDoubleClick={function(event) {
-            translationDoubleClicked({ annotation, event });
+            onDoubleClick({ annotation, event });
           }}
           getGaps={getGaps}
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
           width={charWidth}
-          isProtein={isProtein}
-          height={height}
+          height={
+            showAminoAcidNumbers ? height - aminoAcidNumbersHeight : height
+          }
           relativeAAPositionInTranslation={
             relativeAAPositionInTranslation + gapsInsideFeatureStartToBp
           }
@@ -113,14 +114,7 @@ class Translation extends React.Component {
       );
     });
 
-    return (
-      <g
-        className="translationLayer"
-        // onClick={this.props.translationClicked}
-      >
-        {translationSVG}
-      </g>
-    );
+    return <g className="translationLayer">{translationSVG}</g>;
   }
 }
 
