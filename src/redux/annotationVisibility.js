@@ -3,7 +3,7 @@
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
-const visibilityInitialValues = {
+export const visibilityDefaultValues = {
   features: true,
   translations: true,
   parts: true,
@@ -59,7 +59,7 @@ let annotationVisibility = createMergedDefaultStateReducer(
       };
     }
   },
-  visibilityInitialValues
+  visibilityDefaultValues
 );
 
 export default annotationVisibility;

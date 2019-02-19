@@ -60,6 +60,7 @@ export default [
   { divider: "" },
   {
     text: "Sequence Case",
+    cmd: "sequenceCase",
     submenu: [
       {
         cmd: "toggleSequenceMapFontUpper",

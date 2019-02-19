@@ -40,7 +40,9 @@ function getPropsForType(props, type, pluralType) {
     marginBottom:
       props[pluralType + "MarginBottom"] || rowHeights[pluralType].marginBottom,
     annotationRanges: props.row[pluralType],
-    showLabels: props.annotationLabelVisibility[pluralType],
+    showLabels:
+      props.annotationLabelVisibility &&
+      props.annotationLabelVisibility[pluralType],
     onClick: props[type + "Clicked"],
     onRightClick: props[type + "RightClicked"]
   };

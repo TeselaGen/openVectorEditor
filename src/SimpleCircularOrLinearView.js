@@ -2,6 +2,7 @@ import React from "react";
 import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";
 import { HoveredIdContext } from "./helperComponents/withHover";
+import { visibilityDefaultValues } from "./redux/annotationVisibility";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default props => {
@@ -11,7 +12,10 @@ export default props => {
   } = props;
   const Component = _sequenceData.circular ? CircularView : LinearView;
   let sequenceData = _sequenceData;
-  let annotationVisibility = _annotationVisibility;
+  let annotationVisibility = {
+    ...visibilityDefaultValues,
+    ..._annotationVisibility
+  };
 
   //here we're making it possible to not pass a sequenceData.sequence
   //we can just pass a .size property to save having to send the whole sequence if it isn't needed!
@@ -32,6 +36,7 @@ export default props => {
       }
     };
   }
+
   return (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
       <Component
@@ -39,6 +44,7 @@ export default props => {
           width: 300,
           height: 300,
           ...props,
+          annotationVisibility,
           sequenceData
         }}
       />

@@ -272,6 +272,10 @@ const editCommandDefs = {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.handleComplementSequence()
   },
+  sequenceCase: {
+    isHidden: isProtein,
+    handler: () => {}
+  },
   toggleSequenceMapFontUpper: {
     isHidden: isProtein,
     isActive: props => props.uppercaseSequenceMapFont === "uppercase",
