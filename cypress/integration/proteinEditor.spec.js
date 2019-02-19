@@ -4,6 +4,13 @@ describe("editor", function() {
     cy.tgToggle("isProtein");
   });
 
+  it(`can click an AA and have the selecting message display correctly`, () => {
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+    cy.contains("Selecting 1 AAs from 1 to 1");
+    cy.contains("Length: 1384 AAs");
+  });
   it(`should 
   -not show circularity
   -not show cutsite/orf tools
@@ -34,7 +41,7 @@ describe("editor", function() {
     cy.contains("4152 AAs");
 
     cy.log("the protein seq should be the primary sequence displayed");
-    cy.get(".primaryProteinSequence");
+    cy.get(".veRowViewPrimaryProteinSequenceContainer");
 
     cy.log("not show any dna sequence by default ");
     cy.get(".ve-row-item-sequence").should("not.exist");

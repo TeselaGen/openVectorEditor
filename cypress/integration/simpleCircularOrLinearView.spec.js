@@ -5,7 +5,7 @@ describe("tabs", function() {
     cy.visit("/#/SimpleCircularOrLinearView");
   });
   it("can click and right click a part and have the handlers passed on the part be hit!", function() {
-    cy.get(`.veRowViewPart path`)
+    cy.get(`.veRowViewPartsContainer path`)
       .first()
       .click({ force: true })
       .trigger("contextmenu", { force: true });

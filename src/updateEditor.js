@@ -19,6 +19,7 @@ export default function updateEditor(
   if (sequenceData && sequenceData.isProtein) {
     toSpread = {
       annotationVisibility: {
+        caret: true,
         sequence: false,
         reverseSequence: false,
         ...annotationVisibility,

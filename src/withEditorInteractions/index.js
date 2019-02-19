@@ -50,6 +50,7 @@ const annotationClickHandlers = [
   "orfClicked",
   "primerClicked",
   "translationClicked",
+  "primaryProteinSequenceClicked",
   "cutsiteClicked",
   "translationDoubleClicked",
   "deletionLayerClicked",

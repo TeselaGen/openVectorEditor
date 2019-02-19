@@ -12,6 +12,7 @@ const visibilityInitialValues = {
   cdsFeatureTranslations: true,
   axis: true,
   cutsites: true,
+  cutsitesInSequence: true,
   primers: true,
   dnaColors: false,
   sequence: true,

@@ -20,7 +20,11 @@ class PointedAnnotation extends React.PureComponent {
       pointiness = 8,
       fontWidth = 12,
       color = "orange",
+      fill,
+      stroke,
+      opacity,
       onClick,
+      textColor,
       onRightClick,
       gapsInside,
       gapsBefore,
@@ -98,8 +102,9 @@ class PointedAnnotation extends React.PureComponent {
         <title>{getAnnotationNameAndStartStopString(annotation)}</title>
         <path
           strokeWidth="1"
-          stroke="black"
-          fill={color}
+          stroke={stroke || "black"}
+          opacity={opacity}
+          fill={fill || color}
           transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
           d={path}
         />
@@ -107,7 +112,7 @@ class PointedAnnotation extends React.PureComponent {
           <text
             style={{
               fontSize: ".75em",
-              fill: Color(color).isDark() ? "white" : "black"
+              fill: textColor || (Color(color).isDark() ? "white" : "black")
             }}
             transform={`translate(${textOffset},${height - 2})`}
           >

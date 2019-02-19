@@ -467,6 +467,7 @@ export class CircularView extends React.Component {
     function drawAxis() {
       if (showAxis) {
         let axisResult = Axis({
+          isProtein: sequenceData.isProtein,
           showAxisNumbers,
           radius,
           sequenceLength,

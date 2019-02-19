@@ -9,6 +9,7 @@ import {
 } from "../withEditorProps";
 import "./style.css";
 import { withHandlers, compose } from "recompose";
+import { divideBy3 } from "../utils/proteinUtils";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -59,10 +60,9 @@ const ShowSelectionItem = compose(
     selectionLayer = { start: -1, end: -1 },
     caretPosition = -1,
     sequenceLength = 0,
-
+    isProtein,
     handleInverse
   }) => {
-    let length = getRangeLength(selectionLayer, sequenceLength);
     let insertBetween = getInsertBetweenVals(
       caretPosition,
       selectionLayer,
@@ -73,8 +73,7 @@ const ShowSelectionItem = compose(
       <React.Fragment>
         <StatusBarItem dataTest="veStatusBar-selection">
           {isSelecting
-            ? `Selecting ${length} bps from ${selectionLayer.start +
-                1} to ${selectionLayer.end + 1}`
+            ? getSelectionMessage(selectionLayer, sequenceLength, isProtein)
             : caretPosition > -1
             ? `Caret Between Bases ${insertBetween[0]} and ${insertBetween[1]}`
             : "No Selection"}
@@ -97,8 +96,11 @@ const ShowLengthItem = connectToEditor(
   ({ sequenceData = { sequence: "" } }) => ({
     sequenceLength: sequenceData.sequence.length
   })
-)(({ sequenceLength = 0 }) => (
-  <StatusBarItem dataTest="veStatusBar-length">{`Length: ${sequenceLength}`}</StatusBarItem>
+)(({ isProtein, sequenceLength = 0 }) => (
+  <StatusBarItem dataTest="veStatusBar-length">{`Length: ${divideBy3(
+    sequenceLength,
+    isProtein
+  )} ${isProtein ? "AAs" : "bps"}`}</StatusBarItem>
 ));
 
 const EditCircularityItem = compose(
@@ -176,7 +178,8 @@ export function StatusBar({
   editorName,
   showCircularity = true,
   showReadOnly = true,
-  showAvailability = false
+  showAvailability = false,
+  isProtein
 }) {
   return (
     <div className="veStatusBar">
@@ -196,8 +199,8 @@ export function StatusBar({
         editorName={editorName}
         showAvailability={showAvailability}
       />
-      <ShowSelectionItem editorName={editorName} />
-      <ShowLengthItem editorName={editorName} />
+      <ShowSelectionItem editorName={editorName} isProtein={isProtein} />
+      <ShowLengthItem isProtein={isProtein} editorName={editorName} />
     </div>
   );
 }
@@ -215,3 +218,13 @@ function StatusBarItem({ children, dataTest }) {
 
 export default StatusBar;
 // veStatusBarSpacer
+
+function getSelectionMessage(selectionLayer, sequenceLength, isProtein) {
+  let length = getRangeLength(selectionLayer, sequenceLength);
+  return `Selecting ${divideBy3(length, isProtein)} ${
+    isProtein ? "AAs" : "bps"
+  } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
+    selectionLayer.end + 1,
+    isProtein
+  )}`;
+}

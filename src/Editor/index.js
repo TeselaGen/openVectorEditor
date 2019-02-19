@@ -812,6 +812,7 @@ export class Editor extends React.Component {
         <StatusBar
           showAvailability={showAvailability}
           onSave={onSave}
+          isProtein={sequenceData.isProtein}
           showCircularity={showCircularity && !sequenceData.isProtein}
           disableSetReadOnly={disableSetReadOnly}
           showReadOnly={showReadOnly}

@@ -3,7 +3,7 @@ import {
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
 } from "ve-range-utils";
-import { map, camelCase, startCase } from "lodash";
+import { map, camelCase, startCase, startsWith } from "lodash";
 import flatMap from "lodash/flatMap";
 import { getComplementSequenceString } from "ve-sequence-utils";
 import React from "react";
@@ -104,7 +104,6 @@ export class RowItem extends React.PureComponent {
       axis: showAxis,
       axisNumbers: showAxisNumbers,
       // yellowAxis: showYellowAxis,
-      caret: showCaret,
       aminoAcidNumbers: showAminoAcidNumbers,
       dnaColors: showDnaColors,
       reverseSequence: showReverseSequence,
@@ -243,6 +242,21 @@ export class RowItem extends React.PureComponent {
       sequenceLength,
       aminoAcidNumbersHeight
     };
+    const partProps = {
+      getExtraInnerCompProps: function(annotationRange) {
+        const { annotation } = annotationRange;
+        const { color } = annotation;
+        const colorToUse = startsWith(color, "override_")
+          ? color.replace("override_", "")
+          : "purple";
+        return {
+          fill: "white",
+          textColor: "black",
+          stroke: colorToUse,
+          color: colorToUse
+        };
+      }
+    };
     return (
       <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}
@@ -278,7 +292,7 @@ export class RowItem extends React.PureComponent {
             }
             regions={selectionLayers}
           />
-          {drawAnnotations("part")}
+          {drawAnnotations("part", partProps)}
           {drawAnnotations("primer", {
             sequence: fullSequence
           })}
@@ -540,7 +554,7 @@ export class RowItem extends React.PureComponent {
               {...annotationCommonProps}
             />
           )}
-          {caretPosition > -1 && showCaret && (
+          {caretPosition > -1 && (
             <Caret
               caretPosition={caretPosition}
               shouldBlink

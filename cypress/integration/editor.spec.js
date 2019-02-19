@@ -12,7 +12,7 @@ describe("editor", function() {
   it(`should autosave if autosave=true`, function() {
     cy.tgToggle("shouldAutosave");
 
-    cy.get(".veRowViewPart")
+    cy.get(".veRowViewPartsContainer")
       .contains("Part 0")
       .first()
       .click({ force: true });
