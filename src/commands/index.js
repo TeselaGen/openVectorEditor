@@ -258,7 +258,7 @@ const editCommandDefs = {
   },
 
   complementSelection: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
@@ -267,7 +267,7 @@ const editCommandDefs = {
   },
 
   complementEntireSequence: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.handleComplementSequence()
@@ -305,14 +305,14 @@ const editCommandDefs = {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
       (!hasSelection(props) && "Requires Selection"),
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     handler: props => props.handleReverseComplementSelection(),
     hotkey: "mod+e"
   },
 
   reverseComplementEntireSequence: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.handleReverseComplementSequence()
