@@ -1,15 +1,15 @@
 let handleMoves = {
-  moveCaretLeftOne: function({ selectionLayer, shiftHeld }) {
+  moveCaretLeftOne: function({ isProtein, selectionLayer, shiftHeld }) {
     if (selectionLayer.start > -1 && !shiftHeld) {
       return 0;
     }
-    return -1;
+    return isProtein ? -3 : -1;
   },
-  moveCaretRightOne: function({ selectionLayer, shiftHeld }) {
+  moveCaretRightOne: function({ isProtein, selectionLayer, shiftHeld }) {
     if (selectionLayer.start > -1 && !shiftHeld) {
       return 0;
     }
-    return 1;
+    return isProtein ? 3 : 1;
   },
   moveCaretUpARow: function({ bpsPerRow }) {
     return -bpsPerRow;
@@ -18,7 +18,7 @@ let handleMoves = {
     return bpsPerRow;
   },
   moveCaretToEndOfRow: function({ bpsPerRow, caretPosition }) {
-    return bpsPerRow - caretPosition % bpsPerRow;
+    return bpsPerRow - (caretPosition % bpsPerRow);
   },
   moveCaretToStartOfRow: function({ bpsPerRow, caretPosition }) {
     let moveBy = -caretPosition % bpsPerRow;
@@ -41,11 +41,13 @@ function moveCaret({
   caretPosition,
   selectionLayer,
   shiftHeld,
+  isProtein,
   type
 }) {
   let moveBy = handleMoves[type]({
     shiftHeld,
     sequenceLength,
+    isProtein,
     bpsPerRow,
     caretPosition,
     selectionLayer

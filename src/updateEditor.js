@@ -18,13 +18,16 @@ export default function updateEditor(
   let toSpread = {};
   if (sequenceData && sequenceData.isProtein) {
     toSpread = {
+      findTool: {
+        dnaOrAA: "AA"
+      },
       annotationVisibility: {
         caret: true,
         sequence: false,
         reverseSequence: false,
         ...annotationVisibility,
         translations: false,
-        aminoAcidNumbers: true,
+        aminoAcidNumbers: false,
         primaryProteinSequence: true
       },
       annotationsToSupport: {

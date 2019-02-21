@@ -61,7 +61,7 @@ export class RowItem extends React.PureComponent {
       rowTopComp,
       rowBottomComp,
       isProtein,
-      tickSpacing = 10,
+      tickSpacing,
       aminoAcidNumbersHeight = rowHeights.aminoAcidNumbers.height,
       cutsiteLabelHeight = rowHeights.cutsiteLabels.height,
       sequenceHeight = rowHeights.sequence.height,
@@ -165,6 +165,7 @@ export class RowItem extends React.PureComponent {
       charWidth,
       bpsPerRow,
       getGaps,
+      isProtein,
       sequenceLength,
       row: { start: row.start, end: row.end }
     };
@@ -272,6 +273,7 @@ export class RowItem extends React.PureComponent {
           {/* <div className="vespacer" /> */}
 
           <SelectionLayer
+            className="veSearchLayerContainer"
             customTitleStart="Search match"
             color="yellow"
             regions={searchLayers}
@@ -305,13 +307,6 @@ export class RowItem extends React.PureComponent {
           {drawAnnotations("translation", {
             ...translationCommonProps,
             onDoubleClick: translationDoubleClicked
-          })}
-
-          {drawAnnotations("primaryProteinSequence", {
-            ...translationCommonProps,
-            isProtein: true,
-            shouldShow: isProtein,
-            noPlural: true
           })}
 
           {showCutsiteLabels &&
@@ -547,7 +542,13 @@ export class RowItem extends React.PureComponent {
             deletionLayers={deletionLayers}
             {...annotationCommonProps}
           /> */}
-          {showAxis && !isProtein && (
+
+          {drawAnnotations("primaryProteinSequence", {
+            ...translationCommonProps,
+
+            noPlural: true
+          })}
+          {showAxis && (
             <Axis
               tickSpacing={tickSpacing}
               showAxisNumbers={showAxisNumbers}

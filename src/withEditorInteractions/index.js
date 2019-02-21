@@ -162,7 +162,7 @@ function VectorInteractionHOC(Component /* options */) {
             selectionLayer,
             caretPosition,
             sequenceLength,
-            sequenceData: { circular } = {},
+            sequenceData: { isProtein, circular } = {},
             circular: circular2,
             caretPositionUpdate,
             selectionLayerUpdate
@@ -172,6 +172,7 @@ function VectorInteractionHOC(Component /* options */) {
             bpsPerRow,
             caretPosition,
             selectionLayer,
+            isProtein,
             shiftHeld,
             type
           });

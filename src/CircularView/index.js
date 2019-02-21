@@ -164,6 +164,7 @@ export class CircularView extends React.Component {
     let annotationsSvgs = [];
     let labels = {};
 
+    const { isProtein } = sequenceData;
     //RENDERING CONCEPTS:
     //-"Circular" annotations get a radius, and a curvature based on their radius:
     //<CircularFeature>
@@ -467,7 +468,7 @@ export class CircularView extends React.Component {
     function drawAxis() {
       if (showAxis) {
         let axisResult = Axis({
-          isProtein: sequenceData.isProtein,
+          isProtein,
           showAxisNumbers,
           radius,
           sequenceLength,
@@ -547,6 +548,7 @@ export class CircularView extends React.Component {
                 {...{
                   index,
                   isDraggable: true,
+                  isProtein,
                   key: "veCircularViewSelectionLayer" + index,
                   selectionLayer,
                   selectionLayerRightClicked,
@@ -579,6 +581,7 @@ export class CircularView extends React.Component {
             {...{
               caretPosition,
               sequenceLength,
+              isProtein,
               innerRadius,
               outerRadius: radius,
               key: "veCircularViewCaret"
@@ -648,10 +651,7 @@ export class CircularView extends React.Component {
                   <span>{sequenceName} </span>
                   <br />
                   <span style={{ fontSize: 10 }}>
-                    (
-                    {sequenceLength +
-                      (sequenceData.isProtein ? " AAs" : " bps")}
-                    )
+                    ({sequenceLength + (isProtein ? " AAs" : " bps")})
                   </span>
                 </div>
               </div>

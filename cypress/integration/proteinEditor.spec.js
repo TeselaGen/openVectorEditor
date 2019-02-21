@@ -3,18 +3,57 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+  it(`can move the caret around correctly`, () => {
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+    cy.get(".veVectorInteractionWrapper")
+      .first()
+      .type("{rightarrow}{rightarrow}{rightarrow}");
+    cy.contains("Caret Between AAs 3 and 4");
+  });
+  it(`
+  -can find AA's by default in the search bar
+  
+  `, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`)
+      .click()
+      .focused()
+      .type("mmh");
+    cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
 
-  it(`can click an AA and have the selecting message display correctly`, () => {
+    cy.get(`[name="dnaOrAA"]`).select("DNA");
+    cy.get(".veSearchLayerContainer").should("not.exist");
+    cy.get(`[name="dnaOrAA"]`).select("Amino Acids");
+
+    cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
+    cy.contains("Selecting 3 AAs from 1 to 3");
+    cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
+    cy.get(`[name="ambiguousOrLiteral"]`).select("Ambiguous");
+    cy.get(".veFindBar input").type("xx");
+    cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
+    cy.contains("Selecting 5 AAs from 1 to 5");
+  });
+  it(`should 
+  -has 1, 5, 10 AA's in the rowview axis
+  -can click an AA and have the selecting message display correctly
+  -not show circularity/cutsite/orf/translations tools or properties
+  `, () => {
+    cy.log("-has 1, 5, 10 AA's in the rowview axis");
+    cy.contains(".veRowViewAxis", "1");
+    cy.contains(".veRowViewAxis", "5");
+    cy.contains(".veRowViewAxis", "10");
+
+    cy.log("-can click an AA and have the selecting message display correctly");
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
     cy.contains("Selecting 1 AAs from 1 to 1");
     cy.contains("Length: 1384 AAs");
-  });
-  it(`should 
-  -not show circularity
-  -not show cutsite/orf tools
-  `, () => {
+
+    cy.log(
+      "-not show circularity/cutsite/orf/translations tools or properties"
+    );
     cy.get(`[data-test="cutsiteHideShowTool"]`).should("not.exist");
     cy.get(`[data-test="orfTool"]`).should("not.exist");
 

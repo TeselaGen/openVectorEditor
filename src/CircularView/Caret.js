@@ -4,13 +4,16 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 import pureNoFunc from "../utils/pureNoFunc";
+import { getSelectionMessage } from "../utils/editorUtils";
 
 function Caret({
   caretPosition,
   sequenceLength,
   className,
   innerRadius,
-  outerRadius
+  outerRadius,
+  isProtein,
+  selectionMessage
 }) {
   let { startAngle, endAngle } = getRangeAngles(
     { start: caretPosition, end: caretPosition },
@@ -20,8 +23,11 @@ function Caret({
     console.error("we've got a problem!");
   }
   return (
-    <g className={"ve-caret-holder"}>
-      <title>{"Caret before BP " + (caretPosition + 1)}</title>
+    <g className="ve-caret-holder">
+      <title>
+        {selectionMessage ||
+          getSelectionMessage({ caretPosition, isProtein, sequenceLength })}
+      </title>
       <line
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,

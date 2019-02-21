@@ -51,10 +51,6 @@ const annotationsToCompute = {
     height: rowHeights.primers.type,
     hasYOffset: true
   },
-  // cutsites: {
-  //   height: rowHeights.//.type,
-  //   hasYOffset: false
-  // },
   features: {
     height: rowHeights.features.type,
     hasYOffset: true
@@ -70,21 +66,12 @@ const annotationsToCompute = {
     height: rowHeights.reverseSequence.type
   },
   axis: {
-    getHeight: props => {
-      if (props.row.isProtein) {
-        return 0;
-      }
-      return rowHeights.axis.type;
-    }
+    height: rowHeights.axis.type
   },
   cutsiteLabels: {
-    // computeHeight: getCutsiteLabelHeights, //tnr: not actually that necessary
     typeOverride: "cutsites",
     height: rowHeights.cutsiteLabels.type,
     hasYOffset: true
-    // getHeight: props => {
-    //   return props.annotationLabelVisibility.cutsites && props.anno;
-    // }
   }
 };
 

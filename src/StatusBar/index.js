@@ -1,5 +1,3 @@
-import { getInsertBetweenVals } from "ve-sequence-utils";
-import { getRangeLength } from "ve-range-utils";
 import React from "react";
 import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
 import {
@@ -10,6 +8,7 @@ import {
 import "./style.css";
 import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
+import { getSelectionMessage } from "../utils/editorUtils";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -50,6 +49,7 @@ const ShowSelectionItem = compose(
   connectToEditor(
     ({ selectionLayer, caretPosition, sequenceData = { sequence: "" } }) => ({
       selectionLayer,
+      isProtein: sequenceData.isProtein,
       caretPosition,
       sequenceLength: sequenceData.sequence.length
     })
@@ -63,20 +63,16 @@ const ShowSelectionItem = compose(
     isProtein,
     handleInverse
   }) => {
-    let insertBetween = getInsertBetweenVals(
-      caretPosition,
-      selectionLayer,
-      sequenceLength
-    );
-    let isSelecting = selectionLayer.start > -1;
     return (
       <React.Fragment>
         <StatusBarItem dataTest="veStatusBar-selection">
-          {isSelecting
-            ? getSelectionMessage(selectionLayer, sequenceLength, isProtein)
-            : caretPosition > -1
-            ? `Caret Between Bases ${insertBetween[0]} and ${insertBetween[1]}`
-            : "No Selection"}
+          {getSelectionMessage({
+            caretPosition,
+            selectionLayer,
+            sequenceLength,
+            isProtein
+          })}
+
           <Button
             minimal
             disabled={sequenceLength <= 0}
@@ -217,14 +213,3 @@ function StatusBarItem({ children, dataTest }) {
 }
 
 export default StatusBar;
-// veStatusBarSpacer
-
-function getSelectionMessage(selectionLayer, sequenceLength, isProtein) {
-  let length = getRangeLength(selectionLayer, sequenceLength);
-  return `Selecting ${divideBy3(length, isProtein)} ${
-    isProtein ? "AAs" : "bps"
-  } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
-    selectionLayer.end + 1,
-    isProtein
-  )}`;
-}

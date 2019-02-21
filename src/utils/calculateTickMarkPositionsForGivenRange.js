@@ -2,13 +2,17 @@ import { normalizePositionByRangeLength as norm } from "ve-range-utils";
 import { getRangeLength } from "ve-range-utils";
 
 export default function calculateTickMarkPositionsForGivenRange({
-  tickSpacing = 10,
+  tickSpacing: _tickSpacing = 10,
   range,
   sequenceLength,
   isProtein
 }) {
   if (sequenceLength === 0) {
     return [];
+  }
+  let tickSpacing = _tickSpacing;
+  if (isProtein) {
+    tickSpacing = Math.floor((_tickSpacing / 2) * 3);
   }
   let rangeLength = getRangeLength(range, sequenceLength);
 
