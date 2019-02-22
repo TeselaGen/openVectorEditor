@@ -6,6 +6,7 @@ import { oveCommandFactory } from "../utils/commandUtils";
 import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
+import { divideBy3 } from "../utils/proteinUtils";
 
 const isProtein = props => props.sequenceData.isProtein;
 
@@ -198,12 +199,21 @@ const editCommandDefs = {
     handler: props => {
       props.showGoToDialog({
         extraProps: {
-          sequencePosition: { min: 0, max: props.sequenceLength }
+          sequencePosition: {
+            min: 0,
+            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+          }
         },
         initialValues: {
-          sequencePosition: props.caretPosition >= 0 ? props.caretPosition : 0
+          sequencePosition: divideBy3(
+            props.caretPosition >= 0 ? props.caretPosition : 0,
+            props.sequenceData.isProtein
+          )
         },
-        onSubmit: values => props.caretPositionUpdate(values.sequencePosition)
+        onSubmit: values =>
+          props.caretPositionUpdate(
+            values.sequencePosition * (props.sequenceData.isProtein ? 3 : 1)
+          )
       });
     },
     hotkey: "mod+g",
@@ -216,20 +226,32 @@ const editCommandDefs = {
       const { start, end } = props.selectionLayer;
       props.showSelectDialog({
         extraProps: {
-          from: { min: 1, max: props.sequenceLength },
-          to: { min: 1, max: props.sequenceLength }
+          from: {
+            min: 1,
+            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+          },
+          to: {
+            min: 1,
+            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+          }
         },
         initialValues: {
-          from: start >= 0 ? start : 0,
-          to: end >= 0 ? end : 0
+          from: divideBy3(start >= 0 ? start : 0, props.sequenceData.isProtein),
+          to: divideBy3(end >= 0 ? end : 0, props.sequenceData.isProtein)
         },
-        onSubmit: values =>
-          props.selectionLayerUpdate(
-            convertRangeTo0Based({
-              start: values.from,
-              end: values.to
-            })
-          )
+        onSubmit: values => {
+          const newRange = convertRangeTo0Based({
+            start: props.sequenceData.isProtein ? values.from * 3 : values.from,
+            end: props.sequenceData.isProtein ? values.to * 3 : values.to
+          });
+
+          return props.selectionLayerUpdate({
+            start: props.sequenceData.isProtein
+              ? newRange.start - 2
+              : newRange.start,
+            end: newRange.end
+          });
+        }
       });
     }
   },

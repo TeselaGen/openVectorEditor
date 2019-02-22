@@ -3,6 +3,72 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+
+  it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function() {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Select")
+      .click();
+    cy.get(`[label="From:"]`)
+      .clear()
+      .type("10");
+    cy.get(`[label="To:"]`)
+      .clear()
+      .type("20");
+    cy.get(".tg-min-width-dialog")
+      .contains("OK")
+      .click();
+    cy.get(".veStatusBarItem")
+      .contains("Selecting 11 AAs from 10 to 20")
+      .should("be.visible");
+  });
+
+  it(`goTo, rotateTo work
+  -can't go to a position outside of the sequence
+  -can go to a position inside the sequence 
+  -can rotate the sequence to that position`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Go To")
+      .click();
+    cy.focused()
+      .clear()
+      .type("0");
+    cy.get(".bp3-dialog")
+      .contains("OK")
+      .should("be.enabled");
+    cy.focused()
+      .clear()
+      .type("1384");
+    cy.get(".bp3-dialog")
+      .contains("OK")
+      .should("be.enabled");
+    cy.focused()
+      .clear()
+      .type("2000000");
+    cy.get(".bp3-dialog")
+      .contains("OK")
+      .should("be.disabled");
+    cy.focused()
+      .clear()
+      .type("20");
+    cy.get(".bp3-dialog")
+      .contains("OK")
+      .click();
+    cy.contains("Caret Between AAs 20 and 21");
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Rotate To Caret Position")
+      .click();
+    cy.contains("Caret Between AAs 1384 and 1");
+  });
+
   it(`can move the caret around correctly`, () => {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true

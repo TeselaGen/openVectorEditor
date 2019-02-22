@@ -13,13 +13,12 @@ export function getSelectionMessage({
 
   if (isSelecting) {
     let length = getRangeLength(selectionLayer, sequenceLength);
-    return `${customTitle || "Selecting Between"} ${divideBy3(
-      length,
+    return `${customTitle || "Selecting"} ${divideBy3(length, isProtein)} ${
+      isProtein ? "AAs" : "bps"
+    } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
+      selectionLayer.end + 1,
       isProtein
-    )} ${isProtein ? "AAs" : "bps"} from ${divideBy3(
-      selectionLayer.start,
-      isProtein
-    ) + 1} to ${divideBy3(selectionLayer.end + 1, isProtein)}`;
+    )}`;
   } else if (caretPosition > -1) {
     let insertBetween = getInsertBetweenVals(
       caretPosition,
