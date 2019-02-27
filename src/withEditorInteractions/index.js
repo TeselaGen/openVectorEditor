@@ -276,43 +276,15 @@ function VectorInteractionHOC(Component /* options */) {
       e.preventDefault();
     };
 
-    handleCut = e => {
-      window.toastr.success("Selection Cut");
-      const { sequenceData, selectionLayer, copyOptions } = this.props;
-
-      const onCut = this.props.onCut || this.props.onCopy || (() => {});
-
-      const sequenceDataToCopy =
-        this.sequenceDataToCopy ||
-        getSequenceDataBetweenRange(sequenceData, selectionLayer, {
-          excludePartial: {
-            features: !copyOptions.partialFeatures,
-            parts: !copyOptions.partialParts
-          },
-          exclude: {
-            features: !copyOptions.features,
-            parts: !copyOptions.parts
-          }
-        });
-
-      this.handleDnaDelete(false);
-
-      onCut(
-        e,
-        tidyUpSequenceData(sequenceDataToCopy, { annotationsAsObjects: true }),
-        this.props
-      );
-      this.sequenceDataToCopy = undefined;
-      document.body.removeEventListener("cut", this.handleCut);
-    };
-
-    handleCopy = e => {
+    handleCutOrCopy = isCut => e => {
       const {
         onCopy = () => {},
         sequenceData,
         selectionLayer,
         copyOptions
       } = this.props;
+      const onCut = this.props.onCut || this.props.onCopy || (() => {});
+
       const seqData = tidyUpSequenceData(
         this.sequenceDataToCopy ||
           getSequenceDataBetweenRange(sequenceData, selectionLayer, {
@@ -328,13 +300,36 @@ function VectorInteractionHOC(Component /* options */) {
         { annotationsAsObjects: true }
       );
       if (!seqData.sequence.length)
-        return window.toastr.warning("No Sequence Selected To Copy");
-      onCopy(e, seqData, this.props);
+        return window.toastr.warning(
+          `No Sequence Selected To ${isCut ? "Cut" : "Copy"}`
+        );
 
+      const clipboardData = e.clipboardData;
+      clipboardData.setData(
+        "text/plain",
+        seqData.isProtein ? seqData.proteinSequence : seqData.sequence
+      );
+      clipboardData.setData("application/json", JSON.stringify(seqData));
+      e.preventDefault();
+
+      if (isCut) {
+        this.handleDnaDelete(false);
+        onCut(
+          e,
+          tidyUpSequenceData(seqData, { annotationsAsObjects: true }),
+          this.props
+        );
+        document.body.removeEventListener("cut", this.handleCut);
+      } else {
+        onCopy(e, seqData, this.props);
+        document.body.removeEventListener("copy", this.handleCopy);
+      }
+      window.toastr.success(`Selection ${isCut ? "Cut" : "Copied"}`);
       this.sequenceDataToCopy = undefined;
-      document.body.removeEventListener("copy", this.handleCopy);
-      window.toastr.success("Selection Copied");
     };
+    handleCut = this.handleCutOrCopy(true);
+
+    handleCopy = this.handleCutOrCopy();
 
     handleDnaInsert = ({ useEventPositioning }) => {
       let {

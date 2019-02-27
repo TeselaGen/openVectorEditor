@@ -1,5 +1,5 @@
 import { Button, Icon } from "@blueprintjs/core";
-import { generateSequenceData } from "ve-sequence-utils";
+import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 
 import store from "./../store";
@@ -413,10 +413,13 @@ rightClickOverrides: {
                 that: this,
                 type: "isProtein",
                 hook: shouldFire => {
+                  // tidyUpSequenceData({features: [{start: 10, color, end}]}, {additionalValidChars, annotationsAsObjects})
                   shouldFire &&
                     updateEditor(store, "DemoEditor", {
                       readOnly: false,
-                      sequenceData: exampleProteinData
+                      sequenceData: tidyUpSequenceData(exampleProteinData, {
+                        convertAnnotationsFromAAIndices: true
+                      })
                     });
                 }
               })}
@@ -449,6 +452,8 @@ rightClickOverrides: {
                 that: this,
                 type: "onPaste"
               })}
+              <br />
+              <br />
             </div>
           )}
           {/* <div
@@ -504,21 +509,22 @@ rightClickOverrides: {
                 window.toastr.success("onDelete callback triggered")
             }}
             {...this.state.onCopy && {
-              onCopy: function(event, copiedSequenceData, editorState) {
+              onCopy: function(/* event, copiedSequenceData, editorState */) {
                 window.toastr.success("onCopy callback triggered");
-                console.info(editorState);
-                //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-                const clipboardData = event.clipboardData;
-                clipboardData.setData(
-                  "text/plain",
-                  copiedSequenceData.sequence
-                );
-                clipboardData.setData(
-                  "application/json",
-                  //for example here you could change teselagen parts into jbei parts
-                  JSON.stringify(copiedSequenceData)
-                );
-                event.preventDefault();
+
+                // console.info(editorState);
+                // //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
+                // const clipboardData = event.clipboardData;
+                // clipboardData.setData(
+                //   "text/plain",
+                //   copiedSequenceData.sequence
+                // );
+                // clipboardData.setData(
+                //   "application/json",
+                //   //for example here you could change teselagen parts into jbei parts
+                //   JSON.stringify(copiedSequenceData)
+                // );
+                // event.preventDefault();
                 //in onPaste in your app you can do:
                 // e.clipboardData.getData('application/json')
               }

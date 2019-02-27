@@ -3,6 +3,25 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+  it(`should be able to cut /* todo: and paste */ correctly`, () => {
+    cy.get(".veRowViewPartsContainer")
+      .contains("Part 0")
+      .first()
+      .click({ force: true });
+    cy.get(".veRowViewSelectionLayer")
+      .first()
+      .trigger("contextmenu", { force: true });
+    cy.get(".bp3-menu-item")
+      .contains("Cut")
+      .click();
+    cy.get(`[data-test="ve-find-tool-toggle"]`)
+      .click()
+      .focused()
+      // .type("{meta}v")
+      .type("lpl");
+    cy.get(`[title="Selecting 3 AAs from 10 to 12"]`).should("exist");
+    cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
+  });
 
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function() {
     cy.get(".tg-menu-bar")

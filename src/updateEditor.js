@@ -5,7 +5,8 @@ export default function updateEditor(
   store,
   editorName,
   initialValues = {},
-  extraMeta = {}
+  extraMeta = {},
+  convertAnnotationsFromAAIndices
 ) {
   const {
     sequenceData,
@@ -47,6 +48,7 @@ export default function updateEditor(
     ...rest,
     ...(sequenceData && {
       sequenceData: tidyUpSequenceData(sequenceData, {
+        convertAnnotationsFromAAIndices,
         //if we have sequence data coming in make sure to tidy it up for the user :)
         annotationsAsObjects: true
       })
