@@ -3,6 +3,36 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+  it(`should be able to insert AAs correctly via typing in the editor`, () => {
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+    cy.get(".veVectorInteractionWrapper")
+      .first()
+      .type("a");
+    cy.get(".sequenceInputBubble input").type(".*-masd,");
+    cy.contains("to insert 7 AAs after AA 0");
+    cy.get(".sequenceInputBubble input").type("{enter}");
+    // cy.contains("Caret Between AAs 1383 and 1");
+    cy.contains("Length: 1391 AAs");
+    cy.get(`[data-test="ve-find-tool-toggle"]`)
+      .click()
+      .focused()
+      // .type("{meta}v")
+      .type(".*-ma");
+
+    cy.get(`[title="Selecting 5 AAs from 1 to 5"]`).should("exist");
+  });
+  it(`should be able to delete correctly when backspace/del pressed`, () => {
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+    cy.get(".veVectorInteractionWrapper")
+      .first()
+      .type("{rightarrow}{backspace}");
+    cy.contains("Caret Between AAs 1383 and 1");
+    cy.contains("Length: 1383 AAs");
+  });
   it(`should be able to cut /* todo: and paste */ correctly`, () => {
     cy.get(".veRowViewPartsContainer")
       .contains("Part 0")
@@ -20,6 +50,7 @@ describe("editor", function() {
       // .type("{meta}v")
       .type("lpl");
     cy.get(`[title="Selecting 3 AAs from 10 to 12"]`).should("exist");
+
     cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
   });
 

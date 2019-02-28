@@ -13,7 +13,7 @@ let div;
 
 class SequenceInputNoHotkeys extends React.Component {
   state = {
-    bpsToInsert: "",
+    charsToInsert: "",
     hasTempError: false
   };
   componentDidMount() {
@@ -50,11 +50,16 @@ class SequenceInputNoHotkeys extends React.Component {
     });
   };
   handleInsert() {
-    const { handleInsert = () => {} } = this.props;
-    const { bpsToInsert } = this.state;
-    handleInsert({
-      sequence: bpsToInsert
-    });
+    const { handleInsert = () => {}, isProtein } = this.props;
+    const { charsToInsert } = this.state;
+    const seqToInsert = isProtein
+      ? {
+          proteinSequence: charsToInsert
+        }
+      : {
+          sequence: charsToInsert
+        };
+    handleInsert(seqToInsert);
   }
   renderHotkeys() {
     return (
@@ -74,11 +79,12 @@ class SequenceInputNoHotkeys extends React.Component {
       isReplace,
       selectionLayer,
       sequenceLength,
+      isProtein,
       caretPosition,
-      acceptedChars = "atgcnkd",
+      acceptedChars,
       maxInsertSize
     } = this.props;
-    const { bpsToInsert, hasTempError } = this.state;
+    const { charsToInsert, hasTempError } = this.state;
 
     let message;
     if (isReplace) {
@@ -90,15 +96,17 @@ class SequenceInputNoHotkeys extends React.Component {
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}
-          {getRangeLength(selectionLayer, sequenceLength)} base pairs between{" "}
-          {betweenVals[0]} and {betweenVals[1]}
+          {getRangeLength(selectionLayer, sequenceLength)}{" "}
+          {isProtein ? "AAs" : "base pairs"} between {betweenVals[0]} and{" "}
+          {betweenVals[1]}
         </span>
       );
     } else {
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to insert{" "}
-          {bpsToInsert.length} base pairs after base {caretPosition}
+          {charsToInsert.length} {isProtein ? "AAs" : "base pairs"} after{" "}
+          {isProtein ? "AA" : "base"} {caretPosition}
         </span>
       );
     }
@@ -116,7 +124,7 @@ class SequenceInputNoHotkeys extends React.Component {
             }
           }}
           className={Classes.INPUT}
-          value={bpsToInsert}
+          value={charsToInsert}
           autoFocus
           style={hasTempError ? { borderColor: "red" } : {}}
           onChange={e => {
@@ -144,7 +152,7 @@ class SequenceInputNoHotkeys extends React.Component {
             }
             e.target.value = sanitizedVal;
 
-            this.setState({ bpsToInsert: sanitizedVal });
+            this.setState({ charsToInsert: sanitizedVal });
           }}
         />
         <div style={{ marginTop: 10 }}>{message}</div>

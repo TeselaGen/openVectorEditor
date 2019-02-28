@@ -31,6 +31,7 @@ import {
   showConfirmationDialog,
   commandMenuEnhancer
 } from "teselagen-react-components";
+import { bioData } from "ve-sequence-utils";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
@@ -45,6 +46,12 @@ import {
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
+
+function getAcceptedChars(isProtein) {
+  return isProtein
+    ? bioData.extended_protein_letters.toLowerCase()
+    : bioData.ambiguous_dna_letters.toLowerCase();
+}
 
 const annotationClickHandlers = [
   "orfClicked",
@@ -97,34 +104,7 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        [
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f",
-          "g",
-          "h",
-          "i",
-          "j",
-          "k",
-          "l",
-          "m",
-          "n",
-          "o",
-          "p",
-          "q",
-          "r",
-          "s",
-          "t",
-          "u",
-          "v",
-          "w",
-          "x",
-          "y",
-          "z"
-        ],
+        getAcceptedChars(this.props.sequenceData.isProtein).split(""),
         event => {
           this.handleDnaInsert(event);
         }
@@ -348,6 +328,8 @@ function VectorInteractionHOC(Component /* options */) {
         createSequenceInputPopup({
           useEventPositioning,
           isReplace,
+          acceptedChars: getAcceptedChars(sequenceData.isProtein),
+          isProtein: sequenceData.isProtein,
           selectionLayer,
           sequenceLength,
           caretPosition,
@@ -383,7 +365,7 @@ function VectorInteractionHOC(Component /* options */) {
         if (caretPosition > 0) {
           rangeToDelete = {
             start: normalizePositionByRangeLength(
-              caretPosition - 1,
+              caretPosition - (sequenceData.isProtein ? 3 : 1),
               sequenceLength
             ),
             end: normalizePositionByRangeLength(

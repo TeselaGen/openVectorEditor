@@ -36,6 +36,10 @@ const fileCommandDefs = {
     handler: props => props.handleSave(),
     hotkey: "mod+s"
   },
+  toolsCmd: {
+    handler: () => {},
+    isHidden: isProtein
+  },
 
   deleteSequence: {
     isDisabled: props =>
