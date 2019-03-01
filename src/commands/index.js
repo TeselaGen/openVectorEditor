@@ -145,13 +145,16 @@ const triggerClipboardCommand = type => {
 
 const editCommandDefs = {
   cut: {
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     isHidden: props => props.readOnly,
     handler: () => triggerClipboardCommand("cut"),
     hotkey: "mod+x"
   },
 
   copy: {
+    isDisabled: props => props.sequenceLength === 0,
+
     handler: () => triggerClipboardCommand("copy"),
     hotkey: "mod+c"
   },
@@ -192,6 +195,7 @@ const editCommandDefs = {
     hotkey: "mod+shift+z"
   },
   find: {
+    isDisabled: props => props.sequenceLength === 0,
     name: "Find...",
     handler: props => props.toggleFindTool(),
     hotkey: "mod+f",
@@ -199,6 +203,7 @@ const editCommandDefs = {
   },
 
   goTo: {
+    isDisabled: props => props.sequenceLength === 0,
     name: "Go To...",
     handler: props => {
       props.showGoToDialog({
@@ -225,6 +230,7 @@ const editCommandDefs = {
   },
 
   select: {
+    isDisabled: props => props.sequenceLength === 0,
     name: "Select...",
     handler: props => {
       const { start, end } = props.selectionLayer;
@@ -232,11 +238,17 @@ const editCommandDefs = {
         extraProps: {
           from: {
             min: 1,
-            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+            max: divideBy3(
+              props.sequenceLength || 1,
+              props.sequenceData.isProtein || 1
+            )
           },
           to: {
             min: 1,
-            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+            max: divideBy3(
+              props.sequenceLength || 1,
+              props.sequenceData.isProtein || 1
+            )
           }
         },
         initialValues: {
@@ -261,19 +273,16 @@ const editCommandDefs = {
   },
   selectAll: {
     handler: (props, obj) => {
-      const { event } = obj || {};
-      if (
-        event &&
-        event.target &&
-        (event.target.type === "textarea" || event.target.type === "input")
-      ) {
-        return true; //stop early to allow select all to work in inputs and text areas
+      const { event, viaHotkey } = obj || {};
+      if (viaHotkey) {
+        event.stopPropagation();
+        event.preventDefault();
       }
       props.selectAll();
-      event.stopPropagation();
-      event.preventDefault();
     },
+    isDisabled: props => props.sequenceLength === 0,
     hotkey: "mod+a"
+    //tnr: we can't pass the following because it will block inputs
     // hotkeyProps: { preventDefault: true, stopPropagation: true }
   },
 
@@ -295,7 +304,9 @@ const editCommandDefs = {
   complementEntireSequence: {
     isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
+
     handler: props => props.handleComplementSequence()
   },
   sequenceCase: {
@@ -340,7 +351,8 @@ const editCommandDefs = {
   reverseComplementEntireSequence: {
     isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     handler: props => props.handleReverseComplementSequence()
   },
   fullSequenceTranslations: {
@@ -453,8 +465,8 @@ const editCommandDefs = {
       props.handleNewFeature();
     },
     isHidden: props => props.readOnly,
-
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+k"
   },
   useGtgAndCtgAsStartCodons: {
@@ -492,7 +504,8 @@ const editCommandDefs = {
     handler: props => props.handleNewPart(),
     isHidden: props => props.readOnly,
 
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+l",
     hotkeyProps: { preventDefault: true }
   },

@@ -1,8 +1,4 @@
 import React from "react";
-
-// import { NumericInputField } from "teselagen-react-components";
-// import { Button } from "@blueprintjs/core";
-
 import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
