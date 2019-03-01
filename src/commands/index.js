@@ -449,8 +449,7 @@ const editCommandDefs = {
   },
 
   newFeature: {
-    handler: (props, state, ctxInfo) => {
-      console.warn("newFeature ctxInfo", ctxInfo);
+    handler: (props /* state, ctxInfo */) => {
       props.handleNewFeature();
     },
     isHidden: props => props.readOnly,

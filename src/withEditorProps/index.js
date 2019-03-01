@@ -222,49 +222,35 @@ export default compose(
         });
     },
 
-    handleNewPart: props => () => {
-      const {
-        selectionLayer,
-        caretPosition,
-        showAddOrEditPartDialog,
-        readOnly
-      } = props;
-      const rangeToUse =
-        selectionLayer.start > -1
-          ? selectionLayer
-          : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
-      if (readOnly) {
-        window.toastr.warning(
-          "Sorry, can't create new parts in read-only mode"
-        );
-      } else {
-        showAddOrEditPartDialog({ ...rangeToUse, forward: true });
-      }
-    },
+    ...["Part", "Feature", "Primer"].reduce((acc, key) => {
+      acc[`handleNew${key}`] = props => () => {
+        const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
+        const handler = props[`showAddOrEdit${key}Dialog`];
 
-    handleNewFeature: props => () => {
-      const {
-        selectionLayer,
-        caretPosition,
-        showAddOrEditFeatureDialog,
-        readOnly
-      } = props;
-      const rangeToUse =
-        selectionLayer.start > -1
-          ? selectionLayer
-          : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
-      if (readOnly) {
-        window.toastr.warning(
-          "Sorry, can't create new features in read-only mode"
-        );
-      } else {
-        showAddOrEditFeatureDialog({ ...rangeToUse, forward: true });
-      }
-    },
+        if (readOnly) {
+          window.toastr.warning(
+            `Sorry, Can't Create New ${key}s in Read-Only Mode`
+          );
+        } else {
+          const rangeToUse =
+            selectionLayer.start > -1
+              ? selectionLayer
+              : caretPosition > -1
+              ? {
+                  start: caretPosition,
+                  end: sequenceData.isProtein
+                    ? caretPosition + 2
+                    : caretPosition
+                }
+              : {
+                  start: 0,
+                  end: sequenceData.isProtein ? 2 : 0
+                };
+          handler({ ...rangeToUse, forward: true });
+        }
+      };
+      return acc;
+    }, {}),
 
     handleRotateToCaretPosition: props => () => {
       const {
@@ -350,28 +336,28 @@ export default compose(
     },
     /* eslint-enable no-unused-vars */
 
-    handleNewPrimer: props => () => {
-      const {
-        selectionLayer,
-        caretPosition,
-        showAddOrEditPrimerDialog,
-        readOnly
-        // sequenceLength
-      } = props;
-      const rangeToUse =
-        selectionLayer.start > -1
-          ? selectionLayer
-          : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : undefined;
-      if (readOnly) {
-        window.toastr.warning(
-          "Sorry, can't create new primers in read-only mode"
-        );
-      } else {
-        showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
-      }
-    },
+    // handleNewPrimer: props => () => {
+    //   const {
+    //     selectionLayer,
+    //     caretPosition,
+    //     showAddOrEditPrimerDialog,
+    //     readOnly
+    //     // sequenceLength
+    //   } = props;
+    //   const rangeToUse =
+    //     selectionLayer.start > -1
+    //       ? selectionLayer
+    //       : caretPosition > -1
+    //       ? { start: caretPosition, end: caretPosition }
+    //       : undefined;
+    //   if (readOnly) {
+    //     window.toastr.warning(
+    //       "Sorry, can't create new primers in read-only mode"
+    //     );
+    //   } else {
+    //     showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
+    //   }
+    // },
     handleInverse
   })
 );

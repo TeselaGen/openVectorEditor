@@ -3,6 +3,26 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+  it(`feature/part add/edit should be AA indexed`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.contains("New Feature").click();
+    cy.focused().type("NF");
+    cy.get(`.tg-test-start input[value="1"]`);
+    cy.get(`.tg-test-end [value="1"]`);
+    cy.get(`.tg-test-end [icon="chevron-up"]`).click();
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".veRowViewFeature", "NF").click({ force: true });
+    cy.contains("Selecting 2 AAs from 1 to 2");
+
+    cy.get(".veLabelText")
+      .contains("Part 0")
+      .trigger("contextmenu", { force: true });
+    cy.contains("Edit Part").click();
+    cy.get(`.tg-test-start input[value="11"]`);
+    cy.get(`.tg-test-end [value="31"]`);
+  });
   it(`should be able to insert AAs correctly via typing in the editor`, () => {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
@@ -13,12 +33,10 @@ describe("editor", function() {
     cy.get(".sequenceInputBubble input").type(".*-masd,");
     cy.contains("to insert 7 AAs after AA 0");
     cy.get(".sequenceInputBubble input").type("{enter}");
-    // cy.contains("Caret Between AAs 1383 and 1");
     cy.contains("Length: 1391 AAs");
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()
-      // .type("{meta}v")
       .type(".*-ma");
 
     cy.get(`[title="Selecting 5 AAs from 1 to 5"]`).should("exist");
@@ -262,3 +280,10 @@ describe("editor", function() {
 // * [ ]  hide full sequence case
 // * [ ]  hide sequence case
 // * [ ]  saving needs to pass AA sequence as default
+
+// Cypress.on("uncaught:exception", (err, runnable) => {
+//   // returning false here prevents Cypress from
+//   // failing the test
+// console.log(`err.stack:`,err.stack)
+//   return false;
+// });

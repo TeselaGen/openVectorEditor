@@ -79,6 +79,7 @@ export default connect(
           dialogName="AddOrEditFeatureDialog"
           noTarget
         />
+
         <AddOrEditPartDialog
           editorName={editorName}
           dialogName="AddOrEditPartDialog"
