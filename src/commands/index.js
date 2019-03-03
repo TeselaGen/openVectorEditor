@@ -605,7 +605,7 @@ const annotationToggleCommandDefs = {};
   //   isHidden: (p, c) =>
   //     (c.isDnaMenu && p.isProtein) || (!c.isDnaMenu && !p.isProtein)
   // },
-  "aminoAcidNumbers",
+  { type: "aminoAcidNumbers" },
   "axisNumbers",
   {
     type: "sequence",
@@ -694,7 +694,7 @@ const additionalAnnotationCommandsDefs = {
   },
   toggleAminoAcidNumbers_protein: {
     ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
-    isHidden: props => !props.sequenceData.isProtein
+    isHidden: props => props.sequenceData.isProtein
   }
 };
 

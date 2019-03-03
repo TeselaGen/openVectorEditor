@@ -412,15 +412,18 @@ rightClickOverrides: {
               {renderToggle({
                 that: this,
                 type: "isProtein",
-                hook: shouldFire => {
-                  // tidyUpSequenceData({features: [{start: 10, color, end}]}, {additionalValidChars, annotationsAsObjects})
-                  shouldFire &&
-                    updateEditor(store, "DemoEditor", {
-                      readOnly: false,
-                      sequenceData: tidyUpSequenceData(exampleProteinData, {
-                        convertAnnotationsFromAAIndices: true
+                hook: isProtein => {
+                  isProtein
+                    ? updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: tidyUpSequenceData(exampleProteinData, {
+                          convertAnnotationsFromAAIndices: true
+                        })
                       })
-                    });
+                    : updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
                 }
               })}
               <div>Editor Handlers: </div>

@@ -4,8 +4,12 @@ import { getRangeLength } from "ve-range-utils";
 // import Tether from "tether";
 import Popper from "popper.js";
 
-import { getInsertBetweenVals } from "ve-sequence-utils";
+import {
+  getInsertBetweenVals,
+  convertDnaCaretPositionOrRangeToAA
+} from "ve-sequence-utils";
 import React from "react";
+import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";
 import { Hotkey, Hotkeys, HotkeysTarget, Classes } from "@blueprintjs/core";
 
@@ -52,6 +56,9 @@ class SequenceInputNoHotkeys extends React.Component {
   handleInsert() {
     const { handleInsert = () => {}, isProtein } = this.props;
     const { charsToInsert } = this.state;
+    if (!charsToInsert.length) {
+      return;
+    }
     const seqToInsert = isProtein
       ? {
           proteinSequence: charsToInsert
@@ -88,17 +95,28 @@ class SequenceInputNoHotkeys extends React.Component {
 
     let message;
     if (isReplace) {
-      const betweenVals = getInsertBetweenVals(
+      let betweenVals = getInsertBetweenVals(
         -1,
         selectionLayer,
         sequenceLength
       );
+      // if (isProtein) {
+      //   console.log(`betweenVals:`,betweenVals)
+      //   betweenVals = convertDnaCaretPositionOrRangeToAA(betweenVals);
+      //   console.log(`betweenVals:`,betweenVals)
+      // }
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}
-          {getRangeLength(selectionLayer, sequenceLength)}{" "}
-          {isProtein ? "AAs" : "base pairs"} between {betweenVals[0]} and{" "}
-          {betweenVals[1]}
+          {divideBy3(getRangeLength(selectionLayer, sequenceLength), isProtein)}{" "}
+          {isProtein ? "AAs" : "base pairs"} between{" "}
+          {isProtein
+            ? convertDnaCaretPositionOrRangeToAA(betweenVals[0])
+            : betweenVals[0]}{" "}
+          and{" "}
+          {isProtein
+            ? convertDnaCaretPositionOrRangeToAA(betweenVals[1] + 2)
+            : betweenVals[1]}
         </span>
       );
     } else {
@@ -106,7 +124,10 @@ class SequenceInputNoHotkeys extends React.Component {
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to insert{" "}
           {charsToInsert.length} {isProtein ? "AAs" : "base pairs"} after{" "}
-          {isProtein ? "AA" : "base"} {caretPosition}
+          {isProtein ? "AA" : "base"}{" "}
+          {isProtein
+            ? convertDnaCaretPositionOrRangeToAA(caretPosition)
+            : caretPosition}
         </span>
       );
     }

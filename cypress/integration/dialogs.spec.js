@@ -2,6 +2,15 @@ describe("dialogs", function() {
   beforeEach(() => {
     cy.visit("");
   });
+
+  it("right click editing joined feature should work", function() {
+    cy.contains(".veLabelText", "araC").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.get(".tg-test-locations-0-start input").should("have.value", "7");
+    cy.get(".tg-test-locations-0-end input").should("have.value", "25");
+    cy.get(".tg-test-locations-1-start input").should("have.value", "29");
+    cy.get(".tg-test-locations-1-end input").should("have.value", "49");
+  });
   it(`new feature dialog should 
   -not show a warning for a circular feature that fits within the sequence bounds if the sequence is circular
 

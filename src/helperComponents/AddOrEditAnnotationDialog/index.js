@@ -28,24 +28,28 @@ class AddOrEditAnnotationDialog extends React.Component {
     if (isProtein) {
       return (val + 2) / 3;
     }
+    return val;
   };
   formatEnd = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val / 3;
     }
+    return val;
   };
   parseStart = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3 - 2;
     }
+    return val;
   };
   parseEnd = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3;
     }
+    return val;
   };
   renderLocations = props => {
     const { fields } = props;

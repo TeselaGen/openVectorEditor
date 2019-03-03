@@ -3,6 +3,10 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+  it(`should be back to dna mode after toggling protein mode off`, () => {
+    cy.tgToggle("isProtein", false);
+    cy.contains("Length: 5299 bps").should("exist");
+  });
   it(`feature/part add/edit should be AA indexed`, () => {
     cy.get(".tg-menu-bar")
       .contains("Edit")
@@ -29,11 +33,26 @@ describe("editor", function() {
     });
     cy.get(".veVectorInteractionWrapper")
       .first()
-      .type("a");
-    cy.get(".sequenceInputBubble input").type(".*-masd,");
-    cy.contains("to insert 7 AAs after AA 0");
+      .type("{rightarrow}{rightarrow}");
+    cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Insert").click();
+    cy.contains("Press ENTER to insert 0 AAs after AA 2");
     cy.get(".sequenceInputBubble input").type("{enter}");
-    cy.contains("Length: 1391 AAs");
+    //we don't want to see the insert successful message because no bps were entered
+    cy.contains("Sequence Inserted Successfully").should("not.exist", {
+      timeout: 1000
+    });
+
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+    cy.get(".veRowViewSelectionLayer.notCaret").trigger("contextmenu");
+    cy.contains(".bp3-menu-item", "Replace").click();
+
+    cy.get(".sequenceInputBubble input").type(".*-masd,");
+    cy.contains("Press ENTER to replace 1 AAs between 1384 and 2");
+    cy.get(".sequenceInputBubble input").type("{enter}");
+    cy.contains("Length: 1390 AAs");
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()
@@ -200,6 +219,7 @@ describe("editor", function() {
     cy.get(".ve-propertiesPanel")
       .contains("Circular")
       .should("not.exist");
+    cy.get(".ve-propertiesPanel").contains("1384");
   });
 
   it(`should 
@@ -239,6 +259,9 @@ describe("editor", function() {
       .click();
     cy.get(".bp3-menu")
       .contains("ORFs")
+      .should("not.exist");
+    cy.get(".bp3-menu")
+      .contains("Amino Acid Numbers")
       .should("not.exist");
     cy.get(".bp3-menu")
       .contains("Translations")

@@ -120,7 +120,7 @@
     "teselagen-react-components": "24.4.15",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.2",
-    "ve-sequence-utils": "^3.3.25",
+    "ve-sequence-utils": "^3.3.26",
     "why-did-you-update": "^1.0.6"
   },
   "husky": {

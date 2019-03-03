@@ -24,6 +24,7 @@ class GeneralProperties extends React.Component {
       disableSetReadOnly,
       updateAvailability,
       name,
+      proteinSequence,
       sequence,
       circular,
       materiallyAvailable,
@@ -90,7 +91,10 @@ class GeneralProperties extends React.Component {
         )}
         <div className="ve-flex-row">
           <div className="ve-column-left">Length:</div>{" "}
-          <div className="ve-column-right"> {sequence.length}</div>
+          <div className="ve-column-right">
+            {" "}
+            {isProtein ? proteinSequence.length : sequence.length}
+          </div>
         </div>
         {showReadOnly && (
           <div className="ve-flex-row">
@@ -131,6 +135,7 @@ export default compose(
         description,
         name,
         sequence,
+        proteinSequence,
         circular,
         materiallyAvailable
       } = {}
@@ -138,6 +143,7 @@ export default compose(
       return {
         readOnly,
         name,
+        proteinSequence,
         description,
         sequence,
         circular,
