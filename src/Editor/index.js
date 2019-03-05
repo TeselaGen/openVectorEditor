@@ -369,7 +369,6 @@ export class Editor extends React.Component {
               sequenceData={sequenceData}
               tabHeight={tabHeight}
               editorName={editorName}
-              {...editorDimensions}
               annotationLabelVisibility={{
                 features: false,
                 parts: false,
