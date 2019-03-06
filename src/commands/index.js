@@ -2,11 +2,13 @@ import React from "react";
 import { Tag, Classes } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
 import classnames from "classnames";
+import pluralize from "pluralize";
 import { oveCommandFactory } from "../utils/commandUtils";
 import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
+
 
 const isProtein = props => props.sequenceData.isProtein;
 
@@ -330,6 +332,10 @@ const editCommandDefs = {
         : props.updateSequenceCase("lowercase");
     }
   },
+  createMenuHolder: {
+    isHidden: props => isProtein(props) && props.readOnly,
+    handler: () => {},
+  },
   // toggleSequenceMapFontNoPreference: {
   //   isActive: props =>
   //     !props.uppercaseSequenceMapFont ||
@@ -450,6 +456,7 @@ const editCommandDefs = {
       props.frameTranslationToggle("-2");
     }
   },
+
   sequenceAAReverse_frame3: {
     isActive: props => props.frameTranslations["-3"],
     handler: props => {
@@ -459,12 +466,26 @@ const editCommandDefs = {
       props.frameTranslationToggle("-3");
     }
   },
+  newTranslation: {
+    handler: (props, state, ctxInfo) => {
+      const annotation = get(ctxInfo, "context.annotation");
+      props.handleNewTranslation(annotation);
+      props.annotationVisibilityShow("translations");
+    },
+    isHidden: props =>
+      isProtein(props) ||
+      // props.readOnly ||
+      !props.annotationsToSupport.translations,
+    isDisabled: props =>
+      /* (props.readOnly && readOnlyDisabledTooltip) ||  */props.sequenceLength === 0
+
+  },
 
   newFeature: {
     handler: (props /* state, ctxInfo */) => {
       props.handleNewFeature();
     },
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || !props.annotationsToSupport.features,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+k"
@@ -502,12 +523,18 @@ const editCommandDefs = {
 
   newPart: {
     handler: props => props.handleNewPart(),
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || !props.annotationsToSupport.parts,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+l",
     hotkeyProps: { preventDefault: true }
+  },
+  newPrimer: {
+    handler: props => props.handleNewPrimer(),
+    isHidden: props => props.readOnly || !props.annotationsToSupport.primers,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0
   },
 
   rotateToCaretPosition: {
@@ -565,6 +592,21 @@ const labelToggleCommandDefs = {};
       editorState && editorState.annotationLabelVisibility[plural]
   };
 });
+ 
+//  const viewPropertiesCommandDefs = ["general","genbank", "features", "parts", "orfs", "cutsites", "primers", "translations"].reduce((acc,key)=>{
+//   acc[`view${upperFirst(key)}Properties`] = {
+//     name: `View ${upperFirst(pluralize.singular(key))} Properties`,
+// handler: (props, state, ctx) => {
+
+//             props.propertiesViewOpen();
+//             props.propertiesViewTabUpdate(key, annotation);
+          
+// },
+// // isActive: 
+// // isHidden: 
+//   };
+//   return acc;
+// }, {})
 
 const annotationToggleCommandDefs = {};
 [
@@ -591,6 +633,7 @@ const annotationToggleCommandDefs = {};
   {
     type: "cdsFeatureTranslations",
     text: "CDS Feature Translations",
+    isHidden: isProtein,
     isDisabled: props => {
       return (
         (!props.annotationVisibility.features &&

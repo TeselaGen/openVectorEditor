@@ -1,3 +1,57 @@
+export const fullSequenceTranslationMenu = {
+  text: "Full Sequence Translation",
+  cmd: "fullSequenceTranslations",
+  submenu: [
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAA_allFrames",
+      text: "All Frames"
+      // frameNumber: "all" // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAA_frame1",
+      text: "Frame 1"
+      // frameNumber: 1 // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAA_frame2",
+      text: "Frame 2"
+      // frameNumber: 2 // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAA_frame3",
+      text: "Frame 3"
+      // frameNumber: 3 // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAAReverse_allFrames",
+      text: "All Reverse Frames"
+      // frameNumber: "all" // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAAReverse_frame1",
+      text: "Frame -1"
+      // frameNumber: 1 // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAAReverse_frame2",
+      text: "Frame -2"
+      // frameNumber: 2 // TODO ?
+    },
+    {
+      shouldDismissPopover: false,
+      cmd: "sequenceAAReverse_frame3",
+      text: "Frame -3"
+      // frameNumber: 3 // TODO ?
+    }
+  ]
+};
 export default [
   // { cmd: "mapCaret" },
   { cmd: "toggleFeatures", shouldDismissPopover: false },
@@ -75,60 +129,7 @@ export default [
     ]
   },
   { divider: "" },
-  {
-    text: "Full Sequence Translation",
-    cmd: "fullSequenceTranslations",
-    submenu: [
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAA_allFrames",
-        text: "All Frames"
-        // frameNumber: "all" // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAA_frame1",
-        text: "Frame 1"
-        // frameNumber: 1 // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAA_frame2",
-        text: "Frame 2"
-        // frameNumber: 2 // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAA_frame3",
-        text: "Frame 3"
-        // frameNumber: 3 // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAAReverse_allFrames",
-        text: "All Reverse Frames"
-        // frameNumber: "all" // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAAReverse_frame1",
-        text: "Frame -1"
-        // frameNumber: 1 // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAAReverse_frame2",
-        text: "Frame -2"
-        // frameNumber: 2 // TODO ?
-      },
-      {
-        shouldDismissPopover: false,
-        cmd: "sequenceAAReverse_frame3",
-        text: "Frame -3"
-        // frameNumber: 3 // TODO ?
-      }
-    ]
-  },
+  fullSequenceTranslationMenu,
   { divider: "" },
 
   { cmd: "toggleAxis", shouldDismissPopover: false },

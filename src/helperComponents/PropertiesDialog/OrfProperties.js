@@ -7,13 +7,14 @@ import {
 } from "teselagen-react-components";
 import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
 
 import getCommands from "../../commands";
+import { sizeSchema } from "./utils";
 
 class OrfProperties extends React.Component {
   constructor(props) {
@@ -77,21 +78,7 @@ class OrfProperties extends React.Component {
                 displayName: "Size (aa)",
                 type: "string"
               },
-              {
-                path: "size",
-                type: "string",
-                render: (val, record) => {
-                  const base1Range = convertRangeTo1Based(record);
-                  return (
-                    <span>
-                      {val}{" "}
-                      <span style={{ fontSize: 10 }}>
-                        ({base1Range.start}-{base1Range.end})
-                      </span>
-                    </span>
-                  );
-                }
-              },
+              sizeSchema,
               { path: "frame", type: "number" },
               { path: "strand", type: "number" }
             ]

@@ -50,30 +50,31 @@ export default function updateEditor(
       };
     } else if (isAlreadyProteinEditor && !sequenceData.isProtein) {
       //we're editing dna but haven't initialized the dna editor yet
-      // toSpread = {
-      //   findTool: {
-      //     dnaOrAA: "AA"
-      //   },
-      //   annotationVisibility: {
-      //     caret: true,
-      //     sequence: false,
-      //     reverseSequence: false,
-      //     ...annotationVisibility,
-      //     translations: false,
-      //     aminoAcidNumbers: false,
-      //     primaryProteinSequence: true
-      //   },
-      //   annotationsToSupport: {
-      //     features: true,
-      //     translations: false,
-      //     primaryProteinSequence: true,
-      //     parts: true,
-      //     orfs: false,
-      //     cutsites: false,
-      //     primers: true,
-      //     ...annotationsToSupport
-      //   }
-      // };
+      sequenceData.isProtein = false
+      toSpread = {
+        findTool: {
+          dnaOrAA: "DNA"
+        },
+        annotationVisibility: {
+          caret: true,
+          sequence: true,
+          reverseSequence: true,
+          ...annotationVisibility,
+          translations: false,
+          aminoAcidNumbers: false,
+          primaryProteinSequence: false
+        },
+        annotationsToSupport: {
+          features: true,
+          translations: true,
+          primaryProteinSequence: false,
+          parts: true,
+          orfs: true,
+          cutsites: true,
+          primers: true,
+          ...annotationsToSupport
+        }
+      };
     }
   }
   const initialValuesToUse = {

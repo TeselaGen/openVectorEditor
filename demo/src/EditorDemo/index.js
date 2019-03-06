@@ -399,6 +399,17 @@ rightClickOverrides: {
                   });
                 }
               })}
+              {renderToggle({
+                onClick: () => {
+                  updateEditor(store, "DemoEditor", {
+                    selectionLayer: { start: 30, end: 59 }
+                  });
+                },
+                isButton: true,
+                that: this,
+                label: "Set A Selection",
+                type: "setSelection"
+              })}
               {renderToggle({ that: this, type: "withPreviewMode" })}
               {renderToggle({ that: this, type: "shouldAutosave" })}
               {renderToggle({ that: this, type: "showMenuBar" })}

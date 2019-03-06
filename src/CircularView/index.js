@@ -690,7 +690,7 @@ export class CircularView extends React.Component {
                   data-test="ve-warning-circular-to-linear"
                   intent="warning"
                   tooltip={
-                    "Warning! You're viewing a linear sequence in the Plasmid View. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
+                    "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
                   }
                 />
               )}

@@ -46,6 +46,9 @@ import {
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
+import { copyOptionsMenu, createNewAnnotationMenu } from "../MenuBar/defaultConfig";
+import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
+import { createMenu } from "teselagen-react-components/lib/utils/menuUtils";
 
 function getAcceptedChars(isProtein) {
   return isProtein
@@ -177,7 +180,10 @@ function VectorInteractionHOC(Component /* options */) {
         this.handleDnaDelete(event);
       });
 
-      this.commandEnhancer = commandMenuEnhancer(getCommands(this));
+      this.commandEnhancer = commandMenuEnhancer(getCommands(this), {
+        useTicks: true,
+        omitIcons: true
+      });
     }
     updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
       const {
@@ -490,39 +496,14 @@ function VectorInteractionHOC(Component /* options */) {
             }
           ];
     };
-    getCreateItems = range => {
-      const {
-        readOnly,
-        showAddOrEditPrimerDialog,
-        annotationsToSupport: { parts, primers, features } = {},
-        selectionLayer,
-        caretPosition,
-        sequenceLength
-      } = this.props;
-      let rangeToUse =
-        range ||
-        (selectionLayer.start > -1
-          ? selectionLayer
-          : caretPosition > -1
-          ? { start: caretPosition, end: caretPosition }
-          : { start: 0, end: 0 });
-      rangeToUse = { ...rangeToUse, forward: true };
+    getCreateItems = () => {
+      const { readOnly, sequenceLength } = this.props;
       return sequenceLength && readOnly
         ? []
         : [
             {
               text: "Create",
-              submenu: [
-                features && "newFeature",
-                parts && "newPart",
-                primers && {
-                  // TODO migrate this one to a command too
-                  text: "Primer",
-                  onClick: function() {
-                    showAddOrEditPrimerDialog(rangeToUse);
-                  }
-                }
-              ]
+              submenu: ["newFeature", "newPart", "newPrimer"]
             }
           ];
     };
@@ -530,14 +511,16 @@ function VectorInteractionHOC(Component /* options */) {
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
       const {
-        // sequenceData,
+        sequenceData,
         selectionLayer,
         toggleCopyOption,
         editorName,
         store,
         readOnly,
+
         copyOptions
       } = this.props;
+      const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
@@ -605,7 +588,7 @@ function VectorInteractionHOC(Component /* options */) {
           didMount: ({ className }) => {
             this.openVeCopy1 = makeTextCopyable(i => i, className);
           },
-          submenu: [
+          submenu: !isProtein && [
             {
               text: "Copy",
               className: "openVeCopy2",
@@ -616,6 +599,7 @@ function VectorInteractionHOC(Component /* options */) {
                 this.openVeCopy2 = makeTextCopyable(i => i, className);
               }
             },
+
             {
               text: "Copy Complement",
               className: "openVeCopyComplement",
@@ -679,57 +663,19 @@ function VectorInteractionHOC(Component /* options */) {
                 );
               }
             },
-            {
-              text: "Copy Options",
-              submenu: [
-                <MenuItem disabled key="aghah" text="Include:" />
-              ].concat(
-                map(copyOptions, (unused, copyOption) => {
-                  return (
-                    <CopyOptionMenuItem
-                      key={copyOption}
-                      {...{
-                        text: startCase(copyOption),
-                        copyOption,
-                        editorName,
-                        store,
-                        onClick: function(e) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          toggleCopyOption(copyOption);
-                        }
-                      }}
-                    />
-                  );
-                })
-              )
-            }
-          ]
-        }
+            copyOptionsMenu
+          ],
+        },
+        isProtein && copyOptionsMenu
       ];
     };
 
     generateSelectionMenuOptions = annotation => {
-      const {
-        // sequenceData,
-        upsertTranslation,
-        annotationVisibilityShow
-      } = this.props;
+      
 
       let items = [
         ...this.getCopyOptions(annotation),
-        ...this.getCreateItems(annotation),
-        {
-          text: "View Translation",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: true
-            });
-            annotationVisibilityShow("translations");
-          }
-        }
+        createNewAnnotationMenu
       ];
       return items;
     };
@@ -785,23 +731,10 @@ function VectorInteractionHOC(Component /* options */) {
                     this.handleDnaInsert({ useEventPositioning: e });
                   }
                 },
-                {
-                  disabled: !circular,
-                  text: "Rotate To Here",
-                  tooltip: !circular
-                    ? "Disabled because the sequence is linear"
-                    : undefined,
-                  onClick: this.props.handleRotateToCaretPosition
-                }
+                "rotateToCaretPosition"
               ]),
           ...this.getCreateItems(),
-          ...this.getViewFrameTranslationsItems()
-          // {
-          //   text: "Toggle Properties Panel",
-          //   onClick: function() {
-          //     propertiesViewToggle();
-          //   }
-          // }
+          {...fullSequenceTranslationMenu, text: "View Full Sequence Tranlations"}
         ];
         menu._event = event;
         return menu;
@@ -836,9 +769,7 @@ function VectorInteractionHOC(Component /* options */) {
       });
       const {
         readOnly,
-        upsertTranslation,
         deletePart,
-        annotationVisibilityShow,
         showAddOrEditPartDialog,
         propertiesViewOpen,
         propertiesViewTabUpdate
@@ -861,18 +792,7 @@ function VectorInteractionHOC(Component /* options */) {
               }
             ]),
         ...this.getCopyOptions(annotation),
-        {
-          text: "View Translation",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
-            annotationVisibilityShow("translations");
-          }
-        },
+        "newTranslation",
         {
           text: "View Part Properties",
           onClick: function() {
@@ -891,11 +811,8 @@ function VectorInteractionHOC(Component /* options */) {
         event.persist();
         const {
           readOnly,
-          upsertTranslation,
           deleteFeature,
           showMergeFeaturesDialog,
-          annotationVisibilityToggle,
-          annotationVisibilityShow,
           // showAddOrEditFeatureDialog,
           propertiesViewOpen,
           annotationsToSupport: { parts } = {},
@@ -964,24 +881,8 @@ function VectorInteractionHOC(Component /* options */) {
                   }
                 }
               ]),
-          {
-            text: "Toggle CDS Feature Translations",
-            onClick: () => {
-              annotationVisibilityToggle("cdsFeatureTranslations");
-            }
-          },
-          {
-            text: "View Translation",
-            // icon: "ion-plus-round",
-            onClick: function() {
-              upsertTranslation({
-                start: annotation.start,
-                end: annotation.end,
-                forward: annotation.forward
-              });
-              annotationVisibilityShow("translations");
-            }
-          },
+          "toggleCdsFeatureTranslations",
+          "newTranslation",
           {
             text: "View Feature Properties",
             onClick: function() {
@@ -1014,9 +915,7 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         showAddOrEditPrimerDialog,
         readOnly,
-        upsertTranslation,
         propertiesViewOpen,
-        annotationVisibilityShow,
         propertiesViewTabUpdate
       } = this.props;
       return [
@@ -1031,18 +930,7 @@ function VectorInteractionHOC(Component /* options */) {
               }
             ]),
         ...this.getCopyOptions(annotation),
-        {
-          text: "View Translation",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
-            annotationVisibilityShow("translations");
-          }
-        },
+        "newTranslation",
         {
           text: "View Primer Properties",
           onClick: function() {
@@ -1057,27 +945,20 @@ function VectorInteractionHOC(Component /* options */) {
         start: annotation.start,
         end: annotation.end
       });
-      const {
-        // upsertTranslation,
-        propertiesViewOpen,
-        propertiesViewTabUpdate,
-        annotationVisibilityToggle
-      } = this.props;
+      // const {
+        
+      // } = this.props;
       return [
-        {
-          text: "Toggle Orf Translations",
-          onClick: () => {
-            annotationVisibilityToggle("orfTranslations");
-          }
-        },
+        "toggleOrfTranslations",
         ...this.getCopyOptions(annotation),
-        {
-          text: "View Orf Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("orfs", annotation);
-          }
-        }
+        "viewOrfProperties"
+        // {
+        //   text: "View Orf Properties",
+        //   onClick: function() {
+        //     propertiesViewOpen();
+        //     propertiesViewTabUpdate("orfs", annotation);
+        //   }
+        // }
       ];
     }, "orfRightClicked");
     translationRightClicked = this.enhanceRightClickAction(
@@ -1236,12 +1117,3 @@ const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
   return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
 });
 
-const CopyOptionMenuItem = connect((state, { editorName, copyOption }) => {
-  return {
-    isActive: get(state, `VectorEditor[${editorName}].copyOptions`, {})[
-      copyOption
-    ]
-  };
-})(({ isActive, ...rest }) => {
-  return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
-});

@@ -1,34 +1,64 @@
 import React from "react";
-import { Switch } from "@blueprintjs/core";
+import { Switch, Button } from "@blueprintjs/core";
 import { InfoHelper } from "teselagen-react-components";
-import { lifecycle } from "recompose";
+import { lifecycle, mapProps } from "recompose";
+import { omit } from "lodash";
 
+const omitProps = keys => mapProps(props => omit(props, keys));
+const _Switch = omitProps(["didMount"])(Switch);
 const EnhancedSwitch = lifecycle({
   componentDidMount() {
     return this.props.didMount();
   }
-})(Switch);
+})(_Switch);
 
-export default function renderToggle({ that, type, label, description, hook }) {
-  const toggleEl = (
-    <EnhancedSwitch
-      data-test={type}
-      checked={(that.state || {})[type]}
-      label={label ? <span>{label}</span> : type}
-      style={{ margin: "0px 30px", marginTop: 4 }}
-      didMount={() => {
-        hook && hook(!!(that.state || {})[type]);
-      }}
-      onChange={() => {
-        hook && hook(!(that.state || {})[type]);
-        that.setState({
-          [type]: !(that.state || {})[type]
-        });
-      }}
-    />
-  );
+export default function renderToggle({
+  isButton,
+  that,
+  type,
+  label,
+  onClick,
+  description,
+  hook
+}) {
+  let toggleOrButton;
+  const labelOrText = label ? <span>{label}</span> : type;
+  const sharedProps = {
+    "data-test": type,
+    style: { margin: "0px 30px", marginTop: 4 },
+    label: labelOrText,
+    text: labelOrText
+  };
+  if (isButton) {
+    toggleOrButton = (
+      <Button
+        {...{
+          ...sharedProps,
+          onClick: onClick || hook
+        }}
+      />
+    );
+  } else {
+    toggleOrButton = (
+      <EnhancedSwitch
+        {...{
+          ...sharedProps,
+          didMount: () => {
+            hook && hook(!!(that.state || {})[type]);
+          },
+          checked: (that.state || {})[type],
+          onChange: () => {
+            hook && hook(!(that.state || {})[type]);
+            that.setState({
+              [type]: !(that.state || {})[type]
+            });
+          }
+        }}
+      />
+    );
+  }
   return (
-    <div style={{ display: "flex" }} className={"toggle-button-holder"}>
+    <div style={{ display: "flex" }} className="toggle-button-holder">
       {description && (
         <InfoHelper
           popoverProps={{
@@ -45,7 +75,7 @@ export default function renderToggle({ that, type, label, description, hook }) {
           {description}
         </InfoHelper>
       )}
-      {toggleEl}
+      {toggleOrButton}
     </div>
   );
 }

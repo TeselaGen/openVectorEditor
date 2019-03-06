@@ -177,10 +177,6 @@ export default compose(
     { pure: false }
   ),
   withHandlers({
-    handleSave,
-    importSequenceFromFile,
-    exportSequenceToFile,
-    updateCircular,
     upsertTranslation: props => {
       return async translationToUpsert => {
         if (!translationToUpsert) return;
@@ -210,8 +206,13 @@ export default compose(
         }
         _upsertTranslation(translationToUpsert);
       };
-    },
-
+    }
+  }),
+  withHandlers({
+    handleSave,
+    importSequenceFromFile,
+    exportSequenceToFile,
+    updateCircular,
     //add additional "computed handlers here"
     selectAll: props => () => {
       const { sequenceLength, selectionLayerUpdate } = props;
@@ -221,7 +222,14 @@ export default compose(
           end: sequenceLength - 1
         });
     },
-
+    handleNewTranslation: props => annotation => {
+      props.upsertTranslation({
+        start: annotation.start,
+        end: annotation.end,
+        forward: true
+      });
+      props.annotationVisibilityShow("translations");
+    },
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
       acc[`handleNew${key}`] = props => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
@@ -246,6 +254,7 @@ export default compose(
                   start: 0,
                   end: sequenceData.isProtein ? 2 : 0
                 };
+
           handler({ ...rangeToUse, forward: true });
         }
       };
