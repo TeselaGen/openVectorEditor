@@ -9,7 +9,6 @@ import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 
-
 const isProtein = props => props.sequenceData.isProtein;
 
 const fileCommandDefs = {
@@ -334,7 +333,7 @@ const editCommandDefs = {
   },
   createMenuHolder: {
     isHidden: props => isProtein(props) && props.readOnly,
-    handler: () => {},
+    handler: () => {}
   },
   // toggleSequenceMapFontNoPreference: {
   //   isActive: props =>
@@ -477,8 +476,8 @@ const editCommandDefs = {
       // props.readOnly ||
       !props.annotationsToSupport.translations,
     isDisabled: props =>
-      /* (props.readOnly && readOnlyDisabledTooltip) ||  */props.sequenceLength === 0
-
+      /* (props.readOnly && readOnlyDisabledTooltip) ||  */ props.sequenceLength ===
+      0
   },
 
   newFeature: {
@@ -545,17 +544,6 @@ const editCommandDefs = {
     handler: props => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
-
-  editFeature: {
-    isHidden: props => props.readOnly,
-
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
-    handler: (props, state, ctxInfo) => {
-      const annotation = get(ctxInfo, "context.annotation");
-      props.showAddOrEditFeatureDialog(annotation);
-    }
-  },
-
   ...toggleCopyOptionCommandDefs
 };
 
@@ -592,21 +580,60 @@ const labelToggleCommandDefs = {};
       editorState && editorState.annotationLabelVisibility[plural]
   };
 });
- 
-//  const viewPropertiesCommandDefs = ["general","genbank", "features", "parts", "orfs", "cutsites", "primers", "translations"].reduce((acc,key)=>{
-//   acc[`view${upperFirst(key)}Properties`] = {
-//     name: `View ${upperFirst(pluralize.singular(key))} Properties`,
-// handler: (props, state, ctx) => {
 
-//             props.propertiesViewOpen();
-//             props.propertiesViewTabUpdate(key, annotation);
-          
-// },
-// // isActive: 
-// // isHidden: 
-//   };
-//   return acc;
-// }, {})
+const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
+  (acc, key) => {
+    acc[`edit${upperFirst(key)}`] = {
+      name: `Edit ${upperFirst(key)}`,
+      handler: (props, state, ctxInfo) => {
+        const annotation = get(ctxInfo, "context.annotation");
+        props[`showAddOrEdit${upperFirst(key)}Dialog`](annotation);
+      },
+      isHidden: props => props.readOnly
+    };
+    return acc;
+  },
+  {}
+);
+
+const deleteAnnotationCommandDefs = [
+  "feature",
+  "part",
+  "primer",
+  "translation"
+].reduce((acc, key) => {
+  acc[`delete${upperFirst(key)}`] = {
+    name: `Delete ${upperFirst(key)}`,
+    handler: (props, state, ctxInfo) => {
+      const annotation = get(ctxInfo, "context.annotation");
+      props[`delete${upperFirst(key)}`](annotation);
+    },
+    isHidden: props => props.readOnly
+  };
+  return acc;
+}, {});
+
+const viewPropertiesCommandDefs = [
+  "general",
+  "genbank",
+  "features",
+  "parts",
+  "orfs",
+  "cutsites",
+  "primers",
+  "translations"
+].reduce((acc, key) => {
+  const singularKey = pluralize.singular(key);
+  acc[`view${upperFirst(singularKey)}Properties`] = {
+    name: `View ${upperFirst(singularKey)} Properties`,
+    handler: (props, state, ctxInfo) => {
+      const annotation = get(ctxInfo, "context.annotation");
+      props.propertiesViewOpen();
+      props.propertiesViewTabUpdate(key, annotation);
+    }
+  };
+  return acc;
+}, {});
 
 const annotationToggleCommandDefs = {};
 [
@@ -760,6 +787,9 @@ const commandDefs = {
   ...fileCommandDefs,
   ...cirularityCommandDefs,
   ...annotationToggleCommandDefs,
+  ...viewPropertiesCommandDefs,
+  ...editAnnotationCommandDefs,
+  ...deleteAnnotationCommandDefs,
   ...labelToggleCommandDefs,
   ...editCommandDefs,
   ...toolCommandDefs

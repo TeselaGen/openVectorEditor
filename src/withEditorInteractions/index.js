@@ -12,7 +12,7 @@ import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { map, get, startCase, some } from "lodash";
+import { map, get, some } from "lodash";
 import { MenuItem } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import { getContext, branch } from "recompose";
@@ -46,9 +46,11 @@ import {
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
-import { copyOptionsMenu, createNewAnnotationMenu } from "../MenuBar/defaultConfig";
+import {
+  copyOptionsMenu,
+  createNewAnnotationMenu
+} from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
-import { createMenu } from "teselagen-react-components/lib/utils/menuUtils";
 
 function getAcceptedChars(isProtein) {
   return isProtein
@@ -513,12 +515,9 @@ function VectorInteractionHOC(Component /* options */) {
       const {
         sequenceData,
         selectionLayer,
-        toggleCopyOption,
         editorName,
         store,
-        readOnly,
-
-        copyOptions
+        readOnly
       } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
@@ -664,19 +663,14 @@ function VectorInteractionHOC(Component /* options */) {
               }
             },
             copyOptionsMenu
-          ],
+          ]
         },
         isProtein && copyOptionsMenu
       ];
     };
 
     generateSelectionMenuOptions = annotation => {
-      
-
-      let items = [
-        ...this.getCopyOptions(annotation),
-        createNewAnnotationMenu
-      ];
+      let items = [...this.getCopyOptions(annotation), createNewAnnotationMenu];
       return items;
     };
     normalizeAction = ({ event, ...rest }, handler) => {
@@ -718,8 +712,8 @@ function VectorInteractionHOC(Component /* options */) {
       ({ nearestCaretPos, shiftHeld, event }) => {
         this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
         const {
-          readOnly,
-          sequenceData: { circular }
+          readOnly
+          // sequenceData: { circular }
         } = this.props;
         const menu = [
           ...(readOnly
@@ -730,11 +724,14 @@ function VectorInteractionHOC(Component /* options */) {
                   onClick: e => {
                     this.handleDnaInsert({ useEventPositioning: e });
                   }
-                },
-                "rotateToCaretPosition"
+                }
               ]),
+          "rotateToCaretPosition",
           ...this.getCreateItems(),
-          {...fullSequenceTranslationMenu, text: "View Full Sequence Tranlations"}
+          {
+            ...fullSequenceTranslationMenu,
+            text: "View Full Sequence Tranlations"
+          }
         ];
         menu._event = event;
         return menu;
@@ -767,39 +764,12 @@ function VectorInteractionHOC(Component /* options */) {
         start: annotation.start,
         end: annotation.end
       });
-      const {
-        readOnly,
-        deletePart,
-        showAddOrEditPartDialog,
-        propertiesViewOpen,
-        propertiesViewTabUpdate
-      } = this.props;
       return [
-        ...(readOnly
-          ? []
-          : [
-              {
-                text: "Edit Part",
-                onClick: function() {
-                  showAddOrEditPartDialog(annotation);
-                }
-              },
-              {
-                text: "Delete Part",
-                onClick: function() {
-                  deletePart(annotation);
-                }
-              }
-            ]),
+        "editPart",
+        "deletePart",
         ...this.getCopyOptions(annotation),
         "newTranslation",
-        {
-          text: "View Part Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("parts", annotation);
-          }
-        }
+        "viewPartProperties"
       ];
     }, "partRightClicked");
     featureRightClicked = this.enhanceRightClickAction(
@@ -811,32 +781,16 @@ function VectorInteractionHOC(Component /* options */) {
         event.persist();
         const {
           readOnly,
-          deleteFeature,
           showMergeFeaturesDialog,
-          // showAddOrEditFeatureDialog,
-          propertiesViewOpen,
-          annotationsToSupport: { parts } = {},
-          propertiesViewTabUpdate
+          annotationsToSupport: { parts } = {}
         } = this.props;
         return [
+          "editFeature",
+          "deleteFeature",
+          ...this.getCopyOptions(annotation),
           ...(readOnly
             ? []
             : [
-                "editFeature",
-                // {
-                //   text: "Edit Feature",
-                //   onClick: function() {
-                //     showAddOrEditFeatureDialog(annotation);
-                //   }
-                // },
-                // TODO: migrate others as commands too
-                {
-                  text: "Delete Feature",
-                  onClick: function() {
-                    deleteFeature(annotation);
-                  }
-                },
-                ...this.getCopyOptions(annotation),
                 ...(parts && [
                   {
                     text: "Make a Part from Feature",
@@ -883,61 +837,26 @@ function VectorInteractionHOC(Component /* options */) {
               ]),
           "toggleCdsFeatureTranslations",
           "newTranslation",
-          {
-            text: "View Feature Properties",
-            onClick: function() {
-              propertiesViewOpen();
-              propertiesViewTabUpdate("features", annotation);
-            }
-          }
+          "viewFeatureProperties"
         ];
       },
       "featureRightClicked"
     );
 
-    cutsiteRightClicked = this.enhanceRightClickAction(({ annotation }) => {
-      const { propertiesViewOpen, propertiesViewTabUpdate } = this.props;
-      return [
-        {
-          text: "View Cutsite Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("cutsites", annotation);
-          }
-        }
-      ];
-    }, "cutsiteRightClicked");
+    cutsiteRightClicked = this.enhanceRightClickAction(
+      () => ["viewCutsiteProperties"],
+      "cutsiteRightClicked"
+    );
     primerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
         end: annotation.end
       });
-      const {
-        showAddOrEditPrimerDialog,
-        readOnly,
-        propertiesViewOpen,
-        propertiesViewTabUpdate
-      } = this.props;
       return [
-        ...(readOnly
-          ? []
-          : [
-              {
-                text: "Edit Primer",
-                onClick: function() {
-                  showAddOrEditPrimerDialog(annotation);
-                }
-              }
-            ]),
+        "editPrimer",
         ...this.getCopyOptions(annotation),
         "newTranslation",
-        {
-          text: "View Primer Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("primers", annotation);
-          }
-        }
+        "viewPrimerProperties"
       ];
     }, "primerRightClicked");
     orfRightClicked = this.enhanceRightClickAction(({ annotation }) => {
@@ -945,34 +864,17 @@ function VectorInteractionHOC(Component /* options */) {
         start: annotation.start,
         end: annotation.end
       });
-      // const {
-        
-      // } = this.props;
       return [
         "toggleOrfTranslations",
         ...this.getCopyOptions(annotation),
         "viewOrfProperties"
-        // {
-        //   text: "View Orf Properties",
-        //   onClick: function() {
-        //     propertiesViewOpen();
-        //     propertiesViewTabUpdate("orfs", annotation);
-        //   }
-        // }
       ];
     }, "orfRightClicked");
     translationRightClicked = this.enhanceRightClickAction(
       ({ event, annotation }) => {
         event.preventDefault();
         event.stopPropagation();
-        const {
-          // readOnly,
-          deleteTranslation,
-          propertiesViewOpen,
-          selectionLayerUpdate,
-          propertiesViewTabUpdate,
-          annotationVisibilityToggle
-        } = this.props;
+        const { selectionLayerUpdate, annotationVisibilityToggle } = this.props;
         this.props.selectionLayerUpdate({
           start: annotation.start,
           end: annotation.end
@@ -985,22 +887,11 @@ function VectorInteractionHOC(Component /* options */) {
                 annotationVisibilityToggle("orfTranslations");
               }
             },
-            {
-              text: "View Orf Properties",
-              onClick: function() {
-                propertiesViewOpen();
-                propertiesViewTabUpdate("orfs", annotation);
-              }
-            }
+            "viewOrfProperties"
           ];
         }
         return [
-          {
-            text: "Delete Translation",
-            onClick: function() {
-              deleteTranslation(annotation);
-            }
-          },
+          "deleteTranslation",
           {
             text: "Select Translation",
             onClick: function() {
@@ -1011,13 +902,7 @@ function VectorInteractionHOC(Component /* options */) {
             }
           },
           ...this.getCopyOptions(annotation),
-          {
-            text: "View Translation Properties",
-            onClick: function() {
-              propertiesViewOpen();
-              propertiesViewTabUpdate("translations", annotation);
-            }
-          }
+          "viewTranslationProperties"
         ];
       },
       "translationRightClicked"
@@ -1116,4 +1001,3 @@ const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
 })(({ isActive, ...rest }) => {
   return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
 });
-

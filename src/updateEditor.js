@@ -44,13 +44,13 @@ export default function updateEditor(
           parts: true,
           orfs: false,
           cutsites: false,
-          primers: true,
+          primers: false,
           ...annotationsToSupport
         }
       };
     } else if (isAlreadyProteinEditor && !sequenceData.isProtein) {
       //we're editing dna but haven't initialized the dna editor yet
-      sequenceData.isProtein = false
+      sequenceData.isProtein = false;
       toSpread = {
         findTool: {
           dnaOrAA: "DNA"
