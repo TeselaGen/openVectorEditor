@@ -45,13 +45,14 @@ describe("dialogs", function() {
   it(`new part dialog should 
   -show a warning for a circular part that goes beyond the sequence
   -not show a warning for a circular part that fits within the sequence bounds if the sequence is circular
-
   `, () => {
     //open the new feature dialog
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
-    cy.contains("New Part").click();
+
+    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp3-menu-item", "New Part").click();
     //change the start/end inputs to be making an origin spanning feature
     cy.get(".tg-test-name input")
       .clear()
