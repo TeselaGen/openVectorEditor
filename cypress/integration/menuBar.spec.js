@@ -35,8 +35,8 @@ describe("menuBar", function() {
       "Complement Selection",
       "Reverse Complement Selection",
       "Rotate To Caret Position",
-      "New Feature",
-      "New Part",
+      // "New Feature",
+      // "New Part",
       "Complement Entire Sequence"
     ].forEach(shouldBeDisabled);
     // cy.get(`[label="From:"]`)

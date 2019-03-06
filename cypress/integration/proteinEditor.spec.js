@@ -4,7 +4,7 @@ describe("editor", function() {
     cy.tgToggle("isProtein");
   });
   it(`should be able to toggle between protein and dna mode after firing some actions`, () => {
-    cy.contains(".veLabelText", "Part 0").click()
+    cy.contains(".veLabelText", "Part 0").click();
     cy.tgToggle("isProtein", false);
     cy.contains("Length: 5299 bps").should("exist");
   });
@@ -12,7 +12,8 @@ describe("editor", function() {
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
-    cy.contains("New Feature").click();
+    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp3-menu-item", "New Feature").click();
     cy.focused().type("NF");
     cy.get(`.tg-test-start input[value="1"]`);
     cy.get(`.tg-test-end [value="1"]`);
@@ -220,22 +221,20 @@ describe("editor", function() {
     cy.get(".ve-propertiesPanel")
       .contains("Circular")
       .should("not.exist");
-    cy.get(".ve-propertiesPanel").contains("1384"); 
+    cy.get(".ve-propertiesPanel").contains("1384");
     //features and parts are correctly indexed in the properties panel
-    cy.get(`[data-tab-id="features"]`).click()
-    cy.contains(".rt-td", "879")
-    cy.contains(".rt-td", "(7-25)")
-    cy.contains(".rt-td", "(29-49)")
-    cy.contains(".rt-td", "(501-885)")
-    cy.get(`[data-tab-id="parts"]`).click()
-    cy.contains(".rt-td", "21")
-    cy.contains(".rt-td", "(11-31)")
+    cy.get(`[data-tab-id="features"]`).click();
+    cy.contains(".rt-td", "879");
+    cy.contains(".rt-td", "(7-25)");
+    cy.contains(".rt-td", "(29-49)");
+    cy.contains(".rt-td", "(501-885)");
+    cy.get(`[data-tab-id="parts"]`).click();
+    cy.contains(".rt-td", "21");
+    cy.contains(".rt-td", "(11-31)");
 
-    cy.get(`[data-tab-id="genbank"]`).click()
-    cy.contains("protein_bind    1124..1162")
-    cy.contains("complement(join(7..25,29..49,501..885))")
-
-
+    cy.get(`[data-tab-id="genbank"]`).click();
+    cy.contains("protein_bind    1124..1162");
+    cy.contains("complement(join(7..25,29..49,501..885))");
   });
 
   it(`should 

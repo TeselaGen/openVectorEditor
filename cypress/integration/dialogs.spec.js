@@ -19,7 +19,8 @@ describe("dialogs", function() {
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
-    cy.contains("New Feature").click();
+    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp3-menu-item", "New Feature").click();
     //change the start/end inputs to be making an origin spanning feature
     cy.get(".tg-test-name input")
       .clear()

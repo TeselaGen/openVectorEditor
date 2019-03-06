@@ -92,7 +92,8 @@ describe("editor", function() {
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
-    cy.contains("New Feature").click();
+    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp3-menu-item", "New Feature").click();
     cy.contains("I Am Overridden. Any custom React can go here");
   });
 });
