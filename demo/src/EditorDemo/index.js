@@ -167,6 +167,7 @@ export default class EditorDemo extends React.Component {
         "featureTool",
         "oligoTool",
         "orfTool",
+        "versionHistoryTool",
         {
           name: "alignmentTool",
           onIconClick: () => {
