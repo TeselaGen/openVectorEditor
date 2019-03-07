@@ -12,9 +12,7 @@ import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { map, get, some } from "lodash";
-import { MenuItem } from "@blueprintjs/core";
-import { connect } from "react-redux";
+import { some } from "lodash";
 import { getContext, branch } from "recompose";
 
 import {
@@ -464,40 +462,6 @@ function VectorInteractionHOC(Component /* options */) {
       annotationSelect(annotation);
     };
 
-    getViewFrameTranslationsItems = () => {
-      const {
-        frameTranslations,
-        editorName,
-        store,
-        annotationsToSupport: { translations } = {},
-        frameTranslationToggle
-      } = this.props;
-      return !translations
-        ? []
-        : [
-            {
-              text: "View AA Frames",
-              submenu: map(frameTranslations, (unused, frame) => {
-                return (
-                  <FrameTranslationMenuItem
-                    key={frame}
-                    {...{
-                      text: "Frame " + frame,
-                      frame,
-                      editorName,
-                      store,
-                      onClick: function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        frameTranslationToggle(frame);
-                      }
-                    }}
-                  />
-                );
-              })
-            }
-          ];
-    };
     getCreateItems = () => {
       const { readOnly, sequenceLength } = this.props;
       return sequenceLength && readOnly
@@ -991,13 +955,3 @@ export default compose(
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
-
-const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
-  return {
-    isActive: get(state, `VectorEditor[${editorName}].frameTranslations`, {})[
-      frame
-    ]
-  };
-})(({ isActive, ...rest }) => {
-  return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
-});
