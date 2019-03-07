@@ -13,6 +13,7 @@ import {
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
 import { some } from "lodash";
+import { Menu } from "@blueprintjs/core";
 import { getContext, branch } from "recompose";
 
 import {
@@ -87,6 +88,13 @@ function VectorInteractionHOC(Component /* options */) {
           !preventDefault && defaultHandler(...args);
         };
       });
+
+      const ConnectedMenu = withEditorProps(({ children }) => (
+        <Menu>{children}</Menu>
+      ));
+      this.ConnectedMenu = props => (
+        <ConnectedMenu store={this.props.store} {...props} />
+      );
     }
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
@@ -656,7 +664,8 @@ function VectorInteractionHOC(Component /* options */) {
           [this.commandEnhancer],
           e,
           undefined,
-          opts // context here
+          opts, // context here
+          this.ConnectedMenu
         );
       };
     };
