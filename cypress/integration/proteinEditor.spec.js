@@ -9,6 +9,19 @@ describe("editor", function() {
     cy.contains("Length: 5299 bps").should("exist");
   });
   it(`feature/part add/edit should be AA indexed`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.focused().type("NF");
+    cy.get(`.tg-test-start input[value="1"]`);
+    cy.get(`.tg-test-end [value="1"]`);
+    cy.get(`.tg-test-end [icon="chevron-up"]`).click();
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".veRowViewFeature", "NF").click({ force: true });
+    cy.contains("Selecting 2 AAs from 1 to 2");
+
     cy.get(".veLabelText")
       .contains("araC")
       .trigger("contextmenu", { force: true });
@@ -22,19 +35,6 @@ describe("editor", function() {
     cy.contains(".bp3-dialog button", "Save").click();
     cy.get(`.tg-test-locations-3-end .bp3-intent-danger`).should("exist");
     cy.closeDialog();
-
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
-    cy.focused().type("NF");
-    cy.get(`.tg-test-start input[value="1"]`);
-    cy.get(`.tg-test-end [value="1"]`);
-    cy.get(`.tg-test-end [icon="chevron-up"]`).click();
-    cy.contains(".bp3-dialog button", "Save").click();
-    cy.contains(".veRowViewFeature", "NF").click({ force: true });
-    cy.contains("Selecting 2 AAs from 1 to 2");
 
     cy.get(".veLabelText")
       .contains("Part 0")
@@ -131,7 +131,8 @@ describe("editor", function() {
   it(`goTo, rotateTo work
   -can't go to a position outside of the sequence
   -can go to a position inside the sequence 
-  -can rotate the sequence to that position`, () => {
+  // -can rotate the sequence to that position
+  `, () => {
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
@@ -166,10 +167,10 @@ describe("editor", function() {
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Rotate To Caret Position")
-      .click();
-    cy.contains("Caret Between AAs 1384 and 1");
+    // cy.get(".tg-menu-bar-popover")
+    //   .contains("Rotate To Caret Position")
+    //   .click();
+    // cy.contains("Caret Between AAs 1384 and 1");
   });
 
   it(`can move the caret around correctly`, () => {
