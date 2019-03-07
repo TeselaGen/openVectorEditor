@@ -129,7 +129,9 @@ class AddOrEditAnnotationDialog extends React.Component {
             if (locations && locations.length) {
               fields.push({
                 start: locations[locations.length - 1].end + 1,
-                end: locations[locations.length - 1].end + 2
+                end:
+                  locations[locations.length - 1].end +
+                  (sequenceData.isProtein ? 3 : 2)
               });
             } else {
               const end1 = Math.max(start, end - 10);
@@ -336,9 +338,22 @@ export default ({ formName, getProps, dialogProps }) => {
           errors.start = "Range must fit within sequence";
           errors.end = "Range must fit within sequence";
         }
-
-        values.locations &&
-          values.locations.length > 1 &&
+        if (values.locations && values.locations.length > 1) {
+          const entireLocationSpan = {
+            start: values.locations[0].start,
+            end: values.locations[values.locations.length - 1].end
+          };
+          if (entireLocationSpan.start > entireLocationSpan.end && !circular) {
+            errors.locations = errors.locations || {};
+            errors.locations[0] = {
+              start:
+                "In a non-circular sequence, joined spans must be in ascending order"
+            };
+            errors.locations[values.locations.length - 1] = {
+              end:
+                "In a non-circular sequence, joined spans must be in ascending order"
+            };
+          }
           values.locations.forEach((loc, index) => {
             // if (!isRangeWithinRange(loc, values, sequenceLength)) {
             //   errors.locations = errors.locations || {};
@@ -350,14 +365,7 @@ export default ({ formName, getProps, dialogProps }) => {
             if (index !== 0 && index !== values.locations.length - 1) {
               //it is a middle location so it should fit within the parent location
               if (
-                !isRangeWithinRange(
-                  loc,
-                  {
-                    start: values.locations[0].start,
-                    end: values.locations[values.locations.length - 1].end
-                  },
-                  sequenceLength
-                )
+                !isRangeWithinRange(loc, entireLocationSpan, sequenceLength)
               ) {
                 errors.locations = errors.locations || {};
                 errors.locations[index] = {
@@ -381,6 +389,7 @@ export default ({ formName, getProps, dialogProps }) => {
               }
             });
           });
+        }
 
         return errors;
       }

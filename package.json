@@ -115,7 +115,7 @@
     "react-select": "^1.0.0-rc.10",
     "react-table": "^6.9.2",
     "react-transition-group": "^2.6.0",
-    "redux-form": "8.1.0",
+    "redux-form": "7",
     "redux-thunk": "2.3.0",
     "teselagen-react-components": "25.0.8",
     "tg-client-query-builder": "^2.12.2",

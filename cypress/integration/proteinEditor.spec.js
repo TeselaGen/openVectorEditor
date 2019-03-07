@@ -9,6 +9,20 @@ describe("editor", function() {
     cy.contains("Length: 5299 bps").should("exist");
   });
   it(`feature/part add/edit should be AA indexed`, () => {
+    cy.get(".veLabelText")
+      .contains("araC")
+      .trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Edit Feature").click();
+    cy.get(`.tg-test-locations-2-start input[value="501"]`);
+    cy.contains("Add Joined Feature Span").click();
+
+    cy.get(`.tg-test-locations-3-start input[value="886"]`).type(
+      "{selectall}3"
+    );
+    cy.get(`.tg-test-locations-3-end input[value="886"]`).type("{selectall}3");
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.get(`.tg-test-locations-3-end .bp3-intent-danger`).should("exist");
+
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
