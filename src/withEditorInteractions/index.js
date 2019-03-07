@@ -31,6 +31,7 @@ import {
   commandMenuEnhancer
 } from "teselagen-react-components";
 import { bioData } from "ve-sequence-utils";
+import { jsonToGenbank } from "bio-parsers";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
@@ -572,6 +573,20 @@ function VectorInteractionHOC(Component /* options */) {
             },
 
             {
+              text: "Copy Genbank For Selection",
+              className: "openVeCopyGenbankForSelection",
+              willUnmount: () => {
+                this.openVeCopyGenbankForSelection &&
+                  this.openVeCopyGenbankForSelection.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyGenbankForSelection = makeTextCopyable(
+                  getGenbankFromSelection,
+                  className
+                );
+              }
+            },
+            {
               text: "Copy Complement",
               className: "openVeCopyComplement",
               willUnmount: () => {
@@ -964,3 +979,9 @@ export default compose(
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
+
+function getGenbankFromSelection(selectedSeqData) {
+  return {
+    sequence: jsonToGenbank(selectedSeqData)
+  };
+}
