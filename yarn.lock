@@ -11166,10 +11166,10 @@ ve-range-utils@^2.5.2:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^3.3.30:
-  version "3.3.30"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.30.tgz#b003635158cc7891a4f929388fb930fcbd74b403"
-  integrity sha512-JLif+a3IyAolETeOxR5cAfMqhdjcYMRk4QNDBhtPb/FmFhnqH9vxhdI/DOeQxpPuGsZLXAneX+iskOB0FlEGYw==
+ve-sequence-utils@^3.3.31:
+  version "3.3.31"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.31.tgz#61c7bc675ede12f93721e8f95f7412948d4d55c9"
+  integrity sha512-VB6oFXV7jX9CwgIBOgmdmrRUVThlIeP4xTnX52YnYafCnRcWL4XHGrsHfyAF2rXP/xoFAft8o2qDuPeZdotZbg==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
