@@ -51,10 +51,10 @@ describe("editor", function() {
     cy.get(".veRowViewSelectionLayer.notCaret").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
 
-    cy.get(".sequenceInputBubble input").type(".*-masd,");
+    cy.get(".sequenceInputBubble input").type(".*-masdzz,");
     cy.contains("Press ENTER to replace 1 AAs between 1384 and 2");
     cy.get(".sequenceInputBubble input").type("{enter}");
-    cy.contains("Length: 1390 AAs");
+    cy.contains("Length: 1392 AAs");
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()

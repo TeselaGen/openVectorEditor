@@ -13,7 +13,7 @@ export default function getBpsPerRow({
 }) {
   const toRet = Math.floor(
     ((width2 || width) - marginWidth) /
-      (sequenceData.isProtein || true ? charWidth * 3 : charWidth)
+      (sequenceData.isProtein ? charWidth * 3 : charWidth)
   );
-  return sequenceData.isProtein || true ? toRet * 3 : toRet;
+  return sequenceData.isProtein ? toRet * 3 : toRet;
 }
