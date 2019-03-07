@@ -20,9 +20,11 @@ class GeneralProperties extends React.Component {
       readOnly,
       showReadOnly = true,
       updateCircular,
+      isProtein,
       disableSetReadOnly,
       updateAvailability,
       name,
+      proteinSequence,
       sequence,
       circular,
       materiallyAvailable,
@@ -48,23 +50,26 @@ class GeneralProperties extends React.Component {
             />{" "}
           </div>
         </div>
-        <div className="ve-flex-row">
-          <div className="ve-column-left">Circular/Linear:</div>{" "}
-          <div className="ve-column-right">
-            {" "}
-            <BPSelect
-              disabled={readOnly}
-              onChange={val => {
-                updateCircular(val === "circular");
-              }}
-              value={circular ? "circular" : "linear"}
-              options={[
-                { label: "Circular", value: "circular" },
-                { label: "Linear", value: "linear" }
-              ]}
-            />
+        {!isProtein && (
+          <div className="ve-flex-row">
+            <div className="ve-column-left">Circular/Linear:</div>{" "}
+            <div className="ve-column-right">
+              {" "}
+              <BPSelect
+                disabled={readOnly}
+                onChange={val => {
+                  updateCircular(val === "circular");
+                }}
+                value={circular ? "circular" : "linear"}
+                options={[
+                  { label: "Circular", value: "circular" },
+                  { label: "Linear", value: "linear" }
+                ]}
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         {showAvailability && (
           <div className="ve-flex-row">
             <div className="ve-column-left">Material Availability:</div>{" "}
@@ -86,7 +91,10 @@ class GeneralProperties extends React.Component {
         )}
         <div className="ve-flex-row">
           <div className="ve-column-left">Length:</div>{" "}
-          <div className="ve-column-right"> {sequence.length}</div>
+          <div className="ve-column-right">
+            {" "}
+            {isProtein ? proteinSequence.length : sequence.length}
+          </div>
         </div>
         {showReadOnly && (
           <div className="ve-flex-row">
@@ -127,6 +135,7 @@ export default compose(
         description,
         name,
         sequence,
+        proteinSequence,
         circular,
         materiallyAvailable
       } = {}
@@ -134,6 +143,7 @@ export default compose(
       return {
         readOnly,
         name,
+        proteinSequence,
         description,
         sequence,
         circular,

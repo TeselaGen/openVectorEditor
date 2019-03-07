@@ -279,7 +279,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 		[
 			{
 				id: "circular",
-				name: "Plasmid",
+				name: "Circular Map",
 				active: true
 			},
 			{

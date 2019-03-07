@@ -35,7 +35,7 @@ export default class StandaloneDemo extends React.Component {
           shouldAutosave: true,
           showAvailability: true, //set to tru to show the material availabilty status
           rightClickOverrides: {
-            selectionLayerRightClicked: (items, { annotation }, props) => {
+            selectionLayerRightClicked: (items /* { annotation }, props */) => {
               return [
                 ...items,
                 {
@@ -69,7 +69,7 @@ export default class StandaloneDemo extends React.Component {
           onDelete: data => {
             console.warn("would delete", data);
           },
-          onCopy: function(event, copiedSequenceData, editorState) {
+          onCopy: function(event, copiedSequenceData /* , editorState */) {
             //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
             const clipboardData = event.clipboardData;
             clipboardData.setData("text/plain", copiedSequenceData.sequence);
@@ -82,7 +82,7 @@ export default class StandaloneDemo extends React.Component {
             //in onPaste in your app you can do:
             // e.clipboardData.getData('application/json')
           },
-          onPaste: function(event, editorState) {
+          onPaste: function(event /* , editorState */) {
             //the onPaste here must return sequenceData in the teselagen data format
             const clipboardData = event.clipboardData;
             let jsonData = clipboardData.getData("application/json");
@@ -195,7 +195,7 @@ export default class StandaloneDemo extends React.Component {
               // fullScreen: true,
               active: true,
               id: "circular",
-              name: "Plasmid"
+              name: "Circular Map"
             },
             {
               id: "jbeiAlignment1",
@@ -491,7 +491,7 @@ export default class StandaloneDemo extends React.Component {
   render() {
     const inner = (
       <div
-        className={"standaloneDemoNode"}
+        className="standaloneDemoNode"
         style={{
           width: "100%",
           height: "100%",
@@ -505,9 +505,7 @@ export default class StandaloneDemo extends React.Component {
     );
     const { isDialogOpen } = this.state;
     return (
-      <div style={{flexGrow: '1',
-        display: 'flex',
-        flexDirection: 'column',}}>
+      <div style={{ flexGrow: "1", display: "flex", flexDirection: "column" }}>
         <Button
           onClick={() => {
             this.setState({ isDialogOpen: !isDialogOpen });

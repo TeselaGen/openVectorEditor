@@ -1,5 +1,5 @@
 import { Button, Icon } from "@blueprintjs/core";
-import { generateSequenceData } from "ve-sequence-utils";
+import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 
 import store from "./../store";
@@ -10,6 +10,8 @@ import renderToggle from "./../utils/renderToggle";
 import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
 import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
+import exampleProteinData from "../exampleData/exampleProteinData";
+
 // import { upsertPart } from "../../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
 
@@ -33,6 +35,7 @@ const defaultState = {
   showOptions: true,
   shouldAutosave: false,
   isFullscreen: false,
+  isProtein: false,
   forceHeightMode: false,
   setDefaultVisibilities: false,
   onNew: true,
@@ -396,6 +399,17 @@ rightClickOverrides: {
                   });
                 }
               })}
+              {renderToggle({
+                onClick: () => {
+                  updateEditor(store, "DemoEditor", {
+                    selectionLayer: { start: 30, end: 59 }
+                  });
+                },
+                isButton: true,
+                that: this,
+                label: "Set A Selection",
+                type: "setSelection"
+              })}
               {renderToggle({ that: this, type: "withPreviewMode" })}
               {renderToggle({ that: this, type: "shouldAutosave" })}
               {renderToggle({ that: this, type: "showMenuBar" })}
@@ -406,6 +420,23 @@ rightClickOverrides: {
               {renderToggle({ that: this, type: "showCircularity" })}
               {renderToggle({ that: this, type: "showAvailability" })}
               {renderToggle({ that: this, type: "isFullscreen" })}
+              {renderToggle({
+                that: this,
+                type: "isProtein",
+                hook: isProtein => {
+                  isProtein
+                    ? updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: tidyUpSequenceData(exampleProteinData, {
+                          convertAnnotationsFromAAIndices: true
+                        })
+                      })
+                    : updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
+                }
+              })}
               <div>Editor Handlers: </div>
               {renderToggle({
                 that: this,
@@ -435,6 +466,8 @@ rightClickOverrides: {
                 that: this,
                 type: "onPaste"
               })}
+              <br />
+              <br />
             </div>
           )}
           {/* <div
@@ -490,21 +523,22 @@ rightClickOverrides: {
                 window.toastr.success("onDelete callback triggered")
             }}
             {...this.state.onCopy && {
-              onCopy: function(event, copiedSequenceData, editorState) {
+              onCopy: function(/* event, copiedSequenceData, editorState */) {
                 window.toastr.success("onCopy callback triggered");
-                console.info(editorState);
-                //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
-                const clipboardData = event.clipboardData;
-                clipboardData.setData(
-                  "text/plain",
-                  copiedSequenceData.sequence
-                );
-                clipboardData.setData(
-                  "application/json",
-                  //for example here you could change teselagen parts into jbei parts
-                  JSON.stringify(copiedSequenceData)
-                );
-                event.preventDefault();
+
+                // console.info(editorState);
+                // //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
+                // const clipboardData = event.clipboardData;
+                // clipboardData.setData(
+                //   "text/plain",
+                //   copiedSequenceData.sequence
+                // );
+                // clipboardData.setData(
+                //   "application/json",
+                //   //for example here you could change teselagen parts into jbei parts
+                //   JSON.stringify(copiedSequenceData)
+                // );
+                // event.preventDefault();
                 //in onPaste in your app you can do:
                 // e.clipboardData.getData('application/json')
               }

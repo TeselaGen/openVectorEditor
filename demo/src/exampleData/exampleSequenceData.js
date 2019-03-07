@@ -1133,7 +1133,7 @@ export default {
       notes: {},
       type: "promoter",
       strand: -1,
-      name: "araC promoter",
+      name: "araE promoter",
       start: 1035,
       end: 1063
     },
@@ -1145,7 +1145,7 @@ export default {
       },
       type: "misc_feature",
       strand: -1,
-      name: "araC",
+      name: "araD",
       start: 6,
       end: 884
     },

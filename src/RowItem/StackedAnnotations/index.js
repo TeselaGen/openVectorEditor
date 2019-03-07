@@ -1,4 +1,5 @@
 import { featureColors } from "ve-sequence-utils";
+import { camelCase } from "lodash";
 import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
@@ -8,24 +9,31 @@ import React from "react";
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
 import { getAnnotationRangeType } from "ve-range-utils";
-import Feature from "./Feature";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";
+import PointedAnnotation from "./PointedAnnotation";
 
-function Features(props) {
+function StackedAnnotations(props) {
   let {
     annotationRanges = [],
     bpsPerRow,
     charWidth,
-    annotationHeight = 12,
-    spaceBetweenAnnotations = 2,
-    featureClicked,
-    featureRightClicked,
+    containerClassName,
+    annotationHeight,
+    spaceBetweenAnnotations,
+    onClick,
+    disregardLocations,
+    InnerComp,
+    onRightClick,
     editorName,
+    type,
     getGaps,
-    marginTop = 10
+    marginTop,
+    marginBottom,
+    getExtraInnerCompProps
   } = props;
 
+  const InnerCompToUse = InnerComp || PointedAnnotation;
   if (annotationRanges.length === 0) {
     return null;
   }
@@ -48,30 +56,33 @@ function Features(props) {
       gapsBefore,
       gapsInside
     );
+    let top = annotationRange.yOffset * annotationHeight;
+    if (!disregardLocations && annotationRange.containsLocations) {
+      top += annotationHeight / 2 - annotationHeight / 16;
+    }
+    const anotationHeightNoSpace = annotationHeight - spaceBetweenAnnotations;
+
     annotationsSVG.push(
       <AnnotationPositioner
-        height={annotationHeight}
+        height={anotationHeightNoSpace}
         width={result.width}
         key={index}
-        top={
-          annotationRange.yOffset *
-            (annotationHeight + spaceBetweenAnnotations) +
-          (annotationRange.containsLocations
-            ? annotationHeight / 2 - annotationHeight / 16
-            : 0)
-        }
+        top={top}
         left={result.xStart}
       >
-        <Feature
+        <InnerCompToUse
           key={index}
+          className={camelCase("veRowView-" + type)}
           editorName={editorName}
           id={annotation.id}
-          featureClicked={featureClicked}
-          featureRightClicked={featureRightClicked}
+          onClick={onClick}
+          type={type}
+          onRightClick={onRightClick}
           annotation={annotation}
           gapsInside={gapsInside}
           gapsBefore={gapsBefore}
           color={annotationColor}
+          width={result.width}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           forward={annotation.forward}
@@ -81,22 +92,25 @@ function Features(props) {
             annotation.forward
           )}
           height={
-            annotationRange.containsLocations
-              ? annotationHeight / 8
-              : annotationHeight
+            annotationRange.containsLocations && !disregardLocations
+              ? anotationHeightNoSpace / 8
+              : anotationHeightNoSpace
           }
-          hideName={annotationRange.containsLocations}
+          hideName={annotationRange.containsLocations && !disregardLocations}
           name={annotation.name}
+          {...getExtraInnerCompProps &&
+            getExtraInnerCompProps(annotationRange, props)}
         />
       </AnnotationPositioner>
     );
   });
-  let containerHeight =
-    (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+
+  let containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
   return (
     <AnnotationContainerHolder
       marginTop={marginTop}
-      className={"veRowViewFeatureContainer"}
+      marginBottom={marginBottom}
+      className={containerClassName}
       containerHeight={containerHeight}
     >
       {annotationsSVG}
@@ -104,26 +118,4 @@ function Features(props) {
   );
 }
 
-// Features.propTypes = {
-//   annotationRanges: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       start: PropTypes.number.isRequired,
-//       end: PropTypes.number.isRequired,
-//       yOffset: PropTypes.number.isRequired,
-//       annotation: PropTypes.shape({
-//         start: PropTypes.number.isRequired,
-//         end: PropTypes.number.isRequired,
-//         forward: PropTypes.bool,
-//         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-//       })
-//     })
-//   ),
-//   charWidth: PropTypes.number.isRequired,
-//   bpsPerRow: PropTypes.number.isRequired,
-//   annotationHeight: PropTypes.number.isRequired,
-//   spaceBetweenAnnotations: PropTypes.number.isRequired,
-//   sequenceLength: PropTypes.number.isRequired,
-//   featureClicked: PropTypes.func.isRequired
-// };
-
-export default pureNoFunc(Features);
+export default pureNoFunc(StackedAnnotations);

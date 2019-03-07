@@ -5,6 +5,7 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 import pureNoFunc from "../utils/pureNoFunc";
+import { getSelectionMessage } from "../utils/editorUtils";
 
 function SelectionLayer({
   isDraggable,
@@ -14,7 +15,8 @@ function SelectionLayer({
   hideTitle,
   innerRadius,
   selectionLayerRightClicked,
-  index
+  index,
+  isProtein
 }) {
   let { color, start, end, hideCarets = false } = selectionLayer;
   let { startAngle, endAngle, totalAngle } = getRangeAngles(
@@ -30,33 +32,32 @@ function SelectionLayer({
     end: totalAngle
   });
 
-  let section2 = sector({
-    center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
-    r: innerRadius,
-    R: radius,
-    start: 0,
-    end: Math.PI * 2 - totalAngle
+  const selectionMessage = getSelectionMessage({
+    sequenceLength,
+    selectionLayer,
+    isProtein
   });
+  // let section2 = sector({
+  //   center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
+  //   r: innerRadius,
+  //   R: radius,
+  //   start: 0,
+  //   end: Math.PI * 2 - totalAngle
+  // });
 
   return (
     <g
       onContextMenu={event => {
-        selectionLayerRightClicked && selectionLayerRightClicked({
-          annotation: selectionLayer,
-          event
-        });
+        selectionLayerRightClicked &&
+          selectionLayerRightClicked({
+            annotation: selectionLayer,
+            event
+          });
       }}
       key={"veSelectionLayer" + index}
       className="veSelectionLayer"
     >
-      {!hideTitle && (
-        <title>
-          {"Selecting between " +
-            (selectionLayer.start + 1) +
-            " - " +
-            (selectionLayer.end + 1)}
-        </title>
-      )}
+      {!hideTitle && <title>{selectionMessage}</title>}
       <path
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,
@@ -75,6 +76,7 @@ function SelectionLayer({
             "selectionLayerCaret " +
             (isDraggable ? draggableClassnames.selectionStart : "")
           }
+          selectionMessage={selectionMessage}
           caretPosition={start}
           sequenceLength={sequenceLength}
           innerRadius={innerRadius}
@@ -88,6 +90,7 @@ function SelectionLayer({
             "selectionLayerCaret " +
             (isDraggable ? draggableClassnames.selectionEnd : "")
           }
+          selectionMessage={selectionMessage}
           caretPosition={end + 1}
           sequenceLength={sequenceLength}
           innerRadius={innerRadius}

@@ -7,6 +7,22 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
   let totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
   let rows = [];
   let rowMap = {};
+  if (sequenceData.isProtein) {
+    rowMap.primaryProteinSequence = mapAnnotationsToRows(
+      [
+        {
+          id: "primaryProteinSequence",
+          forward: true,
+          start: 0,
+          end: sequenceLength - 1,
+          proteinSequence: sequenceData.proteinSequence,
+          aminoAcids: sequenceData.aminoAcidDataForEachBaseOfDNA
+        }
+      ],
+      sequenceLength,
+      bpsPerRow
+    );
+  }
   annotationTypes.forEach(function(type) {
     rowMap[type] = mapAnnotationsToRows(
       sequenceData[type],
@@ -29,6 +45,12 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     annotationTypes.forEach(function(type) {
       row[type] = rowMap[type][rowNumber] || [];
     });
+    if (sequenceData.isProtein) {
+      row.isProtein = true;
+      row.primaryProteinSequence =
+        rowMap.primaryProteinSequence &&
+        (rowMap.primaryProteinSequence[rowNumber] || []);
+    }
     row.sequence = sequenceData.noSequence
       ? {
           length: row.end + 1 - row.start

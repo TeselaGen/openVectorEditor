@@ -2,10 +2,14 @@ import React from "react";
 import { Tag, Classes } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
 import classnames from "classnames";
+import pluralize from "pluralize";
 import { oveCommandFactory } from "../utils/commandUtils";
 import { upperFirst, startCase, get, filter } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
+import { divideBy3 } from "../utils/proteinUtils";
+
+const isProtein = props => props.sequenceData.isProtein;
 
 const fileCommandDefs = {
   newSequence: {
@@ -33,10 +37,16 @@ const fileCommandDefs = {
     handler: props => props.handleSave(),
     hotkey: "mod+s"
   },
+  toolsCmd: {
+    handler: () => {},
+    isHidden: isProtein
+  },
 
   deleteSequence: {
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) || !props.onDelete,
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      !hasSelection(props) ||
+      !props.onDelete,
     isHidden: props => !props.onDelete,
     handler: props => props.onDelete(props.sequenceData)
   },
@@ -199,12 +209,21 @@ const editCommandDefs = {
     handler: props => {
       props.showGoToDialog({
         extraProps: {
-          sequencePosition: { min: 0, max: props.sequenceLength }
+          sequencePosition: {
+            min: 0,
+            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+          }
         },
         initialValues: {
-          sequencePosition: props.caretPosition >= 0 ? props.caretPosition : 0
+          sequencePosition: divideBy3(
+            props.caretPosition >= 0 ? props.caretPosition : 0,
+            props.sequenceData.isProtein
+          )
         },
-        onSubmit: values => props.caretPositionUpdate(values.sequencePosition)
+        onSubmit: values =>
+          props.caretPositionUpdate(
+            values.sequencePosition * (props.sequenceData.isProtein ? 3 : 1)
+          )
       });
     },
     hotkey: "mod+g",
@@ -218,20 +237,38 @@ const editCommandDefs = {
       const { start, end } = props.selectionLayer;
       props.showSelectDialog({
         extraProps: {
-          from: { min: 1, max: props.sequenceLength || 1 },
-          to: { min: 1, max: props.sequenceLength || 1 }
+          from: {
+            min: 1,
+            max: divideBy3(
+              props.sequenceLength || 1,
+              props.sequenceData.isProtein || 1
+            )
+          },
+          to: {
+            min: 1,
+            max: divideBy3(
+              props.sequenceLength || 1,
+              props.sequenceData.isProtein || 1
+            )
+          }
         },
         initialValues: {
-          from: start >= 0 ? start : 0,
-          to: end >= 0 ? end : 0
+          from: divideBy3(start >= 0 ? start : 0, props.sequenceData.isProtein),
+          to: divideBy3(end >= 0 ? end : 0, props.sequenceData.isProtein)
         },
-        onSubmit: values =>
-          props.selectionLayerUpdate(
-            convertRangeTo0Based({
-              start: values.from,
-              end: values.to
-            })
-          )
+        onSubmit: values => {
+          const newRange = convertRangeTo0Based({
+            start: props.sequenceData.isProtein ? values.from * 3 : values.from,
+            end: props.sequenceData.isProtein ? values.to * 3 : values.to
+          });
+
+          return props.selectionLayerUpdate({
+            start: props.sequenceData.isProtein
+              ? newRange.start - 2
+              : newRange.start,
+            end: newRange.end
+          });
+        }
       });
     }
   },
@@ -257,7 +294,7 @@ const editCommandDefs = {
   },
 
   complementSelection: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
@@ -266,14 +303,19 @@ const editCommandDefs = {
   },
 
   complementEntireSequence: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
 
     handler: props => props.handleComplementSequence()
   },
+  sequenceCase: {
+    isHidden: isProtein,
+    handler: () => {}
+  },
   toggleSequenceMapFontUpper: {
+    isHidden: isProtein,
     isActive: props => props.uppercaseSequenceMapFont === "uppercase",
     handler: props => {
       props.uppercaseSequenceMapFont === "uppercase"
@@ -289,6 +331,10 @@ const editCommandDefs = {
         : props.updateSequenceCase("lowercase");
     }
   },
+  createMenuHolder: {
+    isHidden: props => isProtein(props) && props.readOnly,
+    handler: () => {}
+  },
   // toggleSequenceMapFontNoPreference: {
   //   isActive: props =>
   //     !props.uppercaseSequenceMapFont ||
@@ -301,18 +347,23 @@ const editCommandDefs = {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
       (!hasSelection(props) && "Requires Selection"),
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
+
     handler: props => props.handleReverseComplementSelection(),
     hotkey: "mod+e"
   },
 
   reverseComplementEntireSequence: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.sequenceData.isProtein,
+
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     handler: props => props.handleReverseComplementSequence()
   },
-
+  fullSequenceTranslations: {
+    isHidden: isProtein,
+    handler: () => {}
+  },
   sequenceAA_allFrames: {
     isActive: props =>
       props.frameTranslations["1"] &&
@@ -336,6 +387,8 @@ const editCommandDefs = {
     }
   },
   sequenceAAReverse_allFrames: {
+    isHidden: isProtein,
+
     isActive: props =>
       props.frameTranslations["-1"] &&
       props.frameTranslations["-2"] &&
@@ -402,6 +455,7 @@ const editCommandDefs = {
       props.frameTranslationToggle("-2");
     }
   },
+
   sequenceAAReverse_frame3: {
     isActive: props => props.frameTranslations["-3"],
     handler: props => {
@@ -411,18 +465,33 @@ const editCommandDefs = {
       props.frameTranslationToggle("-3");
     }
   },
+  newTranslation: {
+    handler: (props, state, ctxInfo) => {
+      const annotation = get(ctxInfo, "context.annotation");
+      props.handleNewTranslation(annotation);
+      props.annotationVisibilityShow("translations");
+    },
+    isHidden: props =>
+      isProtein(props) ||
+      // props.readOnly ||
+      !props.annotationsToSupport.translations,
+    isDisabled: props =>
+      /* (props.readOnly && readOnlyDisabledTooltip) ||  */ props.sequenceLength ===
+      0
+  },
 
   newFeature: {
-    handler: (props, state, ctxInfo) => {
-      console.warn("newFeature ctxInfo", ctxInfo);
+    handler: (props /* state, ctxInfo */) => {
       props.handleNewFeature();
     },
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || !props.annotationsToSupport.features,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+k"
   },
   useGtgAndCtgAsStartCodons: {
+    isHidden: isProtein,
+
     name: "Use GTG And CTG As Start Codons",
     isActive: props => props.useAdditionalOrfStartCodons,
     handler: props => props.useAdditionalOrfStartCodonsToggle()
@@ -453,39 +522,35 @@ const editCommandDefs = {
 
   newPart: {
     handler: props => props.handleNewPart(),
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || !props.annotationsToSupport.parts,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+l",
     hotkeyProps: { preventDefault: true }
   },
+  newPrimer: {
+    handler: props => props.handleNewPrimer(),
+    isHidden: props => props.readOnly || !props.annotationsToSupport.primers,
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0
+  },
 
   rotateToCaretPosition: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || isProtein(props),
 
     isDisabled: props =>
-      props.caretPosition === -1 && "You must first place cursor",
+      (props.caretPosition === -1 && "You must first place cursor") ||
+      (!props.sequenceData.circular && "Disabled for Linear Sequences"),
     handler: props => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
-
-  editFeature: {
-    isHidden: props => props.readOnly,
-
-    isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
-    handler: (props, state, ctxInfo) => {
-      const annotation = get(ctxInfo, "context.annotation");
-      props.showAddOrEditFeatureDialog(annotation);
-    }
-  },
-
   ...toggleCopyOptionCommandDefs
 };
 
 const cirularityCommandDefs = {
   circular: {
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || isProtein(props),
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
@@ -509,10 +574,67 @@ const labelToggleCommandDefs = {};
   labelToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
     handler: props => props.annotationLabelVisibilityToggle(plural),
+    isHidden: props => {
+      return props && props.typesToOmit && props.typesToOmit[plural] === false;
+    },
     isActive: (props, editorState) =>
       editorState && editorState.annotationLabelVisibility[plural]
   };
 });
+
+const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
+  (acc, key) => {
+    acc[`edit${upperFirst(key)}`] = {
+      name: `Edit ${upperFirst(key)}`,
+      handler: (props, state, ctxInfo) => {
+        const annotation = get(ctxInfo, "context.annotation");
+        props[`showAddOrEdit${upperFirst(key)}Dialog`](annotation);
+      },
+      isHidden: props => props.readOnly
+    };
+    return acc;
+  },
+  {}
+);
+
+const deleteAnnotationCommandDefs = [
+  "feature",
+  "part",
+  "primer",
+  "translation"
+].reduce((acc, key) => {
+  acc[`delete${upperFirst(key)}`] = {
+    name: `Delete ${upperFirst(key)}`,
+    handler: (props, state, ctxInfo) => {
+      const annotation = get(ctxInfo, "context.annotation");
+      props[`delete${upperFirst(key)}`](annotation);
+    },
+    isHidden: props => props.readOnly
+  };
+  return acc;
+}, {});
+
+const viewPropertiesCommandDefs = [
+  "general",
+  "genbank",
+  "features",
+  "parts",
+  "orfs",
+  "cutsites",
+  "primers",
+  "translations"
+].reduce((acc, key) => {
+  const singularKey = pluralize.singular(key);
+  acc[`view${upperFirst(singularKey)}Properties`] = {
+    name: `View ${upperFirst(singularKey)} Properties`,
+    handler: (props, state, ctxInfo) => {
+      const annotation = get(ctxInfo, "context.annotation");
+      props.propertiesViewOpen();
+      props.propertiesViewTabUpdate(key, annotation);
+    }
+  };
+  return acc;
+}, {});
 
 const annotationToggleCommandDefs = {};
 [
@@ -523,15 +645,65 @@ const annotationToggleCommandDefs = {};
   { type: "orfs", text: "ORFs" },
   "primers",
   "translations",
-  { type: "orfTranslations", text: "ORF Translations" },
-  { type: "cdsFeatureTranslations", text: "CDS Feature Translations" },
+
+  {
+    type: "orfTranslations",
+    text: "ORF Translations",
+    isDisabled: props => {
+      return (
+        (!props.annotationVisibility.orfs &&
+          "ORFs must be visible to view their translations") ||
+        (!props.annotationVisibility.translations &&
+          "Translations must be visible to view ORF translations")
+      );
+    }
+  },
+  {
+    type: "cdsFeatureTranslations",
+    text: "CDS Feature Translations",
+    isHidden: isProtein,
+    isDisabled: props => {
+      return (
+        (!props.annotationVisibility.features &&
+          "Features must be visible to view their translations") ||
+        (!props.annotationVisibility.translations &&
+          "Translations must be visible to view CDS feature translations")
+      );
+    }
+  },
+  // {
+  //   type: "aminoAcidNumbers",
+  //   isHidden: (p, c) =>
+  //     (c.isDnaMenu && p.isProtein) || (!c.isDnaMenu && !p.isProtein)
+  // },
+  { type: "aminoAcidNumbers" },
   "axisNumbers",
-  "reverseSequence",
-  "dnaColors",
+  {
+    type: "sequence",
+    name: "DNA Sequence",
+    noCount: true,
+    isHidden: props => !props.sequenceData.isProtein
+  },
+  {
+    type: "reverseSequence",
+    name: props =>
+      props.sequenceData.isProtein ? "DNA Reverse Sequence" : "Reverse Sequence"
+  },
+  {
+    type: "dnaColors",
+    isDisabled: props =>
+      !props.annotationVisibility.sequence &&
+      !props.annotationVisibility.reverseSequence &&
+      "The DNA sequence must be visible in order to color it"
+  },
   "lineageLines"
 ].forEach(typeOrObj => {
-  const type = typeOrObj.type || typeOrObj;
-
+  let type = typeOrObj;
+  let obj = {};
+  if (typeOrObj.type) {
+    type = typeOrObj.type;
+    obj = typeOrObj;
+  }
   const cmdId = `toggle${upperFirst(type)}`;
   annotationToggleCommandDefs[cmdId] = {
     toggle: ["show", "hide"],
@@ -540,7 +712,7 @@ const annotationToggleCommandDefs = {};
       let count;
       let hasCount = false;
       const annotations = props[type] || sequenceData[type];
-      if (annotations) {
+      if (annotations && !obj.noCount) {
         hasCount = true;
         count = annotations.length || Object.keys(annotations).length || 0;
       }
@@ -560,7 +732,7 @@ const annotationToggleCommandDefs = {};
       }
       return (
         <span>
-          {typeOrObj.text || startCase(type)}
+          {obj.text || startCase(type)}
           &nbsp;
           {hasCount && (
             <Tag round style={{ marginLeft: 4 }}>
@@ -576,45 +748,49 @@ const annotationToggleCommandDefs = {};
         props && props.annotationVisibility && props.annotationVisibility[type]
       );
     },
-    isDisabled: props => {
-      if (type === "orfTranslations") {
-        return (
-          (!props.annotationVisibility.orfs &&
-            "ORFs must be visible to view their translations") ||
-          (!props.annotationVisibility.translations &&
-            "Translations must be visible to view ORF translations")
-        );
-      } else if (type === "cdsFeatureTranslations") {
-        return (
-          (!props.annotationVisibility.features &&
-            "Features must be visible to view their translations") ||
-          (!props.annotationVisibility.translations &&
-            "Translations must be visible to view CDS feature translations")
-        );
-      }
-    },
+    ...obj, //spread this here to override the above props if necessary
     isHidden: props => {
-      return props && props.typesToOmit && props.typesToOmit[type] === false;
+      return (
+        (props && props.typesToOmit && props.typesToOmit[type] === false) ||
+        (obj.isHidden && obj.isHidden(props))
+      );
     }
   };
 });
 
+const additionalAnnotationCommandsDefs = {
+  toggleAminoAcidNumbers_dna: {
+    ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
+    isHidden: props => props.sequenceData.isProtein
+  },
+  toggleAminoAcidNumbers_protein: {
+    ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
+    isHidden: props => props.sequenceData.isProtein
+  }
+};
+
 const toolCommandDefs = {
   simulateDigestion: {
     handler: props => props.createNewDigest(),
-    hotkey: "mod+shift+d"
+    hotkey: "mod+shift+d",
+    isHidden: props => props.sequenceData.isProtein
   },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
     name: "Restriction Enzymes Manager...",
-    handler: props => props.addYourOwnEnzymeOpen()
+    handler: props => props.addYourOwnEnzymeOpen(),
+    isHidden: props => props.sequenceData.isProtein
   }
 };
 
 const commandDefs = {
+  ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,
   ...cirularityCommandDefs,
   ...annotationToggleCommandDefs,
+  ...viewPropertiesCommandDefs,
+  ...editAnnotationCommandDefs,
+  ...deleteAnnotationCommandDefs,
   ...labelToggleCommandDefs,
   ...editCommandDefs,
   ...toolCommandDefs

@@ -116,5 +116,7 @@ export default createSelector(
   state => state.annotationVisibility.features,
   translationsRawSelector,
   state => state.frameTranslations,
+  state => state.sequenceData.isProtein,
+  state => state.sequenceData.proteinSequence,
   translationsSelector
 );

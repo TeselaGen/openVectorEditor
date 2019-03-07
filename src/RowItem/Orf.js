@@ -11,8 +11,8 @@ function Orf(props) {
     frame = 0,
     annotation,
     width,
-    orfClicked,
-    orfRightClicked,
+    onClick,
+    onRightClick,
     charWidth,
     gapsInside,
     gapsBefore
@@ -58,10 +58,10 @@ function Orf(props) {
   return (
     <g
       onClick={function(event) {
-        orfClicked({ annotation, event, gapsInside, gapsBefore });
+        onClick({ annotation, event, gapsInside, gapsBefore });
       }}
       onContextMenu={function(event) {
-        orfRightClicked({ annotation, event, gapsInside, gapsBefore, });
+        onRightClick({ annotation, event, gapsInside, gapsBefore });
       }}
       className={`veRowViewOrf clickable frame${frame}`}
       strokeWidth="1"

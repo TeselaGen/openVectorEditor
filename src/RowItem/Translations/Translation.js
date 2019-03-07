@@ -7,10 +7,6 @@ import AASliver from "./AASliver";
 import pureNoFunc from "../../utils/pureNoFunc";
 
 class Translation extends React.Component {
-  // shouldComponentUpdate(newProps){
-  //   const eq = (isEqual(newProps, this.props))
-  //   return eq
-  // }
   state = {
     hasMounted: false
   };
@@ -28,17 +24,19 @@ class Translation extends React.Component {
     let {
       annotationRange,
       height,
+      showAminoAcidNumbers,
       charWidth,
-      translationClicked,
-      translationRightClicked,
-      translationDoubleClicked,
+      aminoAcidNumbersHeight,
+      onClick,
+      onRightClick,
+      onDoubleClick,
       sequenceLength,
-      getGaps
+      getGaps,
+      isProtein
     } = this.props;
     const { hasMounted } = this.state;
-
     let { annotation } = annotationRange;
-    if (!hasMounted) {
+    if (!hasMounted && !isProtein) {
       return <g height={height} className="translationLayer" />;
     }
     //we have an amino acid representation of our entire annotation, but it is an array
@@ -55,11 +53,36 @@ class Translation extends React.Component {
       subrangeStartRelativeToAnnotationStart,
       aminoAcids
     );
+
     //we then loop over all the amino acids in the sub range and draw them onto the row
     let translationSVG = aminoAcidsForSubrange.map(function(
       aminoAcidSliver,
       index
     ) {
+      const isEndFiller =
+        index === 0 &&
+        aminoAcidSliver.positionInCodon === (annotation.forward ? 2 : 0);
+      // const isStartFiller = false
+      let isTruncatedEnd = index === 0 && aminoAcidSliver.positionInCodon === 1;
+      let isTruncatedStart =
+        index === aminoAcidsForSubrange.length - 1 &&
+        aminoAcidSliver.positionInCodon === 1;
+      if (!annotation.forward) {
+        const holder = isTruncatedEnd;
+        isTruncatedEnd = isTruncatedStart;
+        isTruncatedStart = holder;
+      }
+      const isStartFiller =
+        index === aminoAcidsForSubrange.length - 1 &&
+        aminoAcidSliver.positionInCodon === (annotation.forward ? 0 : 2);
+
+      if (
+        aminoAcidSliver.positionInCodon !== 1 &&
+        !isStartFiller &&
+        !isEndFiller
+      ) {
+        return null;
+      }
       const { gapsInside, gapsBefore } = getGaps(aminoAcidSliver.codonRange);
       const gapsInsideFeatureStartToBp = getGaps({
         start: annotationRange.start,
@@ -67,11 +90,15 @@ class Translation extends React.Component {
       }).gapsInside;
       // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
       let relativeAAPositionInTranslation = index;
+      const aminoAcid = aminoAcidSliver.aminoAcid || {};
       //get the codonIndices relative to
       return (
         <AASliver
+          isFiller={isEndFiller || isStartFiller}
+          isTruncatedEnd={isTruncatedEnd}
+          isTruncatedStart={isTruncatedStart}
           onClick={function(event) {
-            translationClicked({
+            onClick({
               annotation: aminoAcidSliver.codonRange,
               codonRange: aminoAcidSliver.codonRange,
               event,
@@ -80,7 +107,7 @@ class Translation extends React.Component {
             });
           }}
           onContextMenu={function(event) {
-            translationRightClicked({
+            onRightClick({
               annotation,
               codonRange: aminoAcidSliver.codonRange,
               event,
@@ -88,46 +115,32 @@ class Translation extends React.Component {
               gapsBefore
             });
           }}
-          title={`${
-            aminoAcidSliver.aminoAcid.name
-          } -- Index: ${aminoAcidSliver.aminoAcidIndex + 1} -- Hydrophobicity ${
-            aminoAcidSliver.aminoAcid.hydrophobicity
-          }`}
+          title={`${aminoAcid.name} -- Index: ${aminoAcidSliver.aminoAcidIndex +
+            1} -- Hydrophobicity ${aminoAcid.hydrophobicity}`}
+          showAminoAcidNumbers={showAminoAcidNumbers}
+          aminoAcidIndex={aminoAcidSliver.aminoAcidIndex}
           onDoubleClick={function(event) {
-            translationDoubleClicked({ annotation, event });
+            onDoubleClick({ annotation, event });
           }}
           getGaps={getGaps}
           key={annotation.id + aminoAcidSliver.sequenceIndex}
           forward={annotation.forward}
           width={charWidth}
-          height={height}
+          height={
+            showAminoAcidNumbers ? height - aminoAcidNumbersHeight : height
+          }
           relativeAAPositionInTranslation={
             relativeAAPositionInTranslation + gapsInsideFeatureStartToBp
           }
-          letter={aminoAcidSliver.aminoAcid.value}
-          color={aminoAcidSliver.aminoAcid.color}
+          letter={aminoAcid.value}
+          color={aminoAcid.color}
           positionInCodon={aminoAcidSliver.positionInCodon}
         />
       );
     });
 
-    return (
-      <g
-        className="translationLayer"
-        // onClick={this.props.translationClicked}
-      >
-        {translationSVG}
-      </g>
-    );
+    return <g className="translationLayer">{translationSVG}</g>;
   }
 }
 
-// Translation.propTypes = {
-//   widthInBps: PropTypes.number.isRequired,
-//   charWidth: PropTypes.number.isRequired,
-//   height: PropTypes.number.isRequired,
-//   rangeType: PropTypes.string.isRequired,
-//   translationClicked: PropTypes.func.isRequired
-// };
-// export default Translation
 export default pureNoFunc(Translation);

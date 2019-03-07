@@ -12,6 +12,7 @@ import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
+import { sizeSchema } from "./utils";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -86,22 +87,7 @@ class TranslationProperties extends React.Component {
                 displayName: "Size (aa)",
                 type: "string"
               },
-              {
-                path: "sizeBps",
-                displayName: "Size (bps)",
-                type: "string",
-                render: (val, record) => {
-                  const base1Range = convertRangeTo1Based(record);
-                  return (
-                    <span>
-                      {val}{" "}
-                      <span style={{ fontSize: 10 }}>
-                        ({base1Range.start}-{base1Range.end})
-                      </span>
-                    </span>
-                  );
-                }
-              },
+              sizeSchema,
               { path: "strand", type: "number" }
             ]
           }}

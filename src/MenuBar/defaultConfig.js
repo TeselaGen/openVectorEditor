@@ -3,7 +3,20 @@
 //defined in the commands/index.js file
 
 import viewSubmenu from "./viewSubmenu";
-
+export const copyOptionsMenu = {
+  text: "Copy Options",
+  submenu: [
+    { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
+    { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },
+    { cmd: "toggleCopyParts", shouldDismissPopover: false },
+    { cmd: "toggleCopyPartialParts", shouldDismissPopover: false }
+  ]
+};
+export const createNewAnnotationMenu = {
+  text: "Create",
+  cmd: "createMenuHolder",
+  submenu: ["newFeature", "newPart", "newTranslation", "newPrimer"]
+};
 export default [
   {
     text: "File",
@@ -42,17 +55,11 @@ export default [
   {
     text: "Edit",
     submenu: [
+      createNewAnnotationMenu,
+      "--",
       "cut",
       "copy",
-      {
-        text: "Copy Options",
-        submenu: [
-          { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
-          { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },
-          { cmd: "toggleCopyParts", shouldDismissPopover: false },
-          { cmd: "toggleCopyPartialParts", shouldDismissPopover: false }
-        ]
-      },
+      copyOptionsMenu,
       "paste",
       "--",
       "undo",
@@ -69,10 +76,7 @@ export default [
       "complementEntireSequence",
       "reverseComplementSelection",
       "reverseComplementEntireSequence",
-      "rotateToCaretPosition",
-      "--",
-      "newFeature",
-      "newPart"
+      "rotateToCaretPosition"
     ]
   },
   {
@@ -81,6 +85,7 @@ export default [
   },
   {
     text: "Tools",
+    cmd: "toolsCmd",
     submenu: ["restrictionEnzymesManager", "simulateDigestion"]
   }
 ];

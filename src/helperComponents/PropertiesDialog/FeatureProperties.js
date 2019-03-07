@@ -6,12 +6,13 @@ import {
 } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
-import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import { Popover } from "@blueprintjs/core";
 import ColorPicker from "./ColorPicker";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
+import { sizeSchema } from "./utils";
 
 class FeatureProperties extends React.Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class FeatureProperties extends React.Component {
       features = {},
       annotationVisibility,
       sequenceLength,
+      isProtein,
       featurePropertiesSelectedEntities,
       showAddOrEditFeatureDialog,
       deleteFeature,
@@ -64,6 +66,7 @@ class FeatureProperties extends React.Component {
           selectedIds={selectedAnnotationId}
           formName="featureProperties"
           noRouter
+          isProtein={isProtein}
           compact
           isInfinite
           schema={{
@@ -83,37 +86,7 @@ class FeatureProperties extends React.Component {
               },
               { path: "name", type: "string" },
               { path: "type", type: "string" },
-              {
-                path: "size",
-                type: "string",
-                render: (val, record) => {
-                  const base1Range = convertRangeTo1Based(record);
-                  const hasJoinedLocations =
-                    record.locations && record.locations.length > 1;
-
-                  return (
-                    <span>
-                      {val}{" "}
-                      <span style={{ fontSize: 10 }}>
-                        {hasJoinedLocations ? (
-                          record.locations.map((loc, i) => {
-                            const base1Range = convertRangeTo1Based(loc);
-                            return (
-                              <span key={i}>
-                                ({base1Range.start}-{base1Range.end})
-                              </span>
-                            );
-                          })
-                        ) : (
-                          <span>
-                            ({base1Range.start}-{base1Range.end})
-                          </span>
-                        )}
-                      </span>
-                    </span>
-                  );
-                }
-              },
+              sizeSchema,
               { path: "strand", type: "string" }
             ]
           }}

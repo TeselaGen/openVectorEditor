@@ -139,6 +139,9 @@ export class FindBar extends React.Component {
       >
         <Button onClick={toggleFindTool} icon="cross" />
         <InputGroup
+          // inputRef={(n) => {if (n) {
+          //   // debugger
+          //   this.input = n}}}
           autoFocus
           onKeyDown={e => {
             e.persist();
@@ -161,6 +164,13 @@ export class FindBar extends React.Component {
             <span>
               {isInline && (
                 <Popover
+                  // onClose={() => {
+                  //   if (this.input) {
+                  //     console.log(`this.input:`,this.input)
+                  //     debugger
+                  //     this.input.focus()
+                  //   }
+                  // }}
                   autoFocus={false}
                   position={Position.BOTTOM}
                   target={

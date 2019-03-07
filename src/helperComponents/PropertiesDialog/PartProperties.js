@@ -6,10 +6,11 @@ import {
 } from "teselagen-react-components";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
-import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
+import { sizeSchema } from "./utils";
 class PartProperties extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +35,7 @@ class PartProperties extends React.Component {
       partPropertiesSelectedEntities,
       showAddOrEditPartDialog,
       deletePart,
+      isProtein,
       annotationVisibility,
       selectedAnnotationId
     } = this.props;
@@ -61,25 +63,12 @@ class PartProperties extends React.Component {
           formName="partProperties"
           noRouter
           compact
+          isProtein={isProtein}
           isInfinite
           schema={{
             fields: [
               { path: "name", type: "string" },
-              {
-                path: "size",
-                type: "string",
-                render: (val, record) => {
-                  const base1Range = convertRangeTo1Based(record);
-                  return (
-                    <span>
-                      {val}{" "}
-                      <span style={{ fontSize: 10 }}>
-                        ({base1Range.start}-{base1Range.end})
-                      </span>
-                    </span>
-                  );
-                }
-              },
+              sizeSchema,
               { path: "strand", type: "string" }
             ]
           }}

@@ -4,6 +4,7 @@ import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 import React from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
 import pureNoFunc from "../utils/pureNoFunc";
+import { divideBy3 } from "../utils/proteinUtils";
 
 // import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
 
@@ -14,9 +15,11 @@ let Axis = function(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
+    marginTop,
     sequenceLength,
     showAxisNumbers = true,
-    getGaps
+    getGaps,
+    isProtein
   } = props;
   if (row.start === 0 && row.end === 0) {
     return null;
@@ -37,7 +40,8 @@ let Axis = function(props) {
   let tickMarkPositions = calculateTickMarkPositionsForGivenRange({
     tickSpacing,
     range: row,
-    sequenceLength
+    sequenceLength,
+    isProtein
   });
   let tickMarkSVG = [];
 
@@ -47,7 +51,8 @@ let Axis = function(props) {
     //     end: tickMarkPosition
     // }, row, bpsPerRow, charWidth, sequenceLength);
     let xCenter =
-      (tickMarkPosition +
+      (tickMarkPosition -
+        (isProtein ? 1 : 0) +
         (getGaps ? getGaps(tickMarkPosition).gapsBefore : 0)) *
         charWidth +
       charWidth / 2;
@@ -65,7 +70,7 @@ let Axis = function(props) {
         normalizePositionByRangeLength(
           row.start + tickMarkPosition,
           sequenceLength
-        ) + 1;
+        ) + (isProtein ? 0 : 1);
 
       const positionLength = position.toString().length * 4;
 
@@ -83,7 +88,7 @@ let Axis = function(props) {
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
         >
-          {position}
+          {divideBy3(position + (isProtein ? 1 : 0), isProtein)}
         </text>
       );
     }
@@ -93,8 +98,8 @@ let Axis = function(props) {
     <svg
       className="veRowViewAxis veAxis"
       width="100%"
-      height={Math.max(0, annotationHeight * 1.2)}
-      style={{ marginTop: 3, overflow: "visible", display: "block" }}
+      height={annotationHeight}
+      style={{ marginTop, overflow: "visible", display: "block" }}
     >
       {tickMarkSVG}
       <path

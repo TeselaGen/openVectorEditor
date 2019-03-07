@@ -158,8 +158,8 @@ export default createReducer(
               panelId === panel.id
                 ? true
                 : isPanelInGroup
-                  ? false
-                  : panel.active
+                ? false
+                : panel.active
           };
         });
       });
@@ -176,14 +176,14 @@ export default createReducer(
               panelId === panel.id
                 ? true
                 : isPanelInGroup
-                  ? false
-                  : panel.active,
+                ? false
+                : panel.active,
             fullScreen:
               panelId === panel.id
                 ? !panel.fullScreen
                 : isPanelInGroup
-                  ? false
-                  : panel.fullScreen
+                ? false
+                : panel.fullScreen
           };
         });
       });
@@ -208,7 +208,7 @@ export default createReducer(
     [
       {
         id: "circular",
-        name: "Plasmid",
+        name: "Circular Map",
         active: true
       },
       {

@@ -14,7 +14,7 @@
 .bp3-dark .veCaretSVG,
 .bp3-dark .veRowViewAxis path,
 .bp3-dark .veRowViewFeature path,
-.bp3-dark .veRowViewPart path,
+.bp3-dark .veRowViewPartsContainer path,
 .bp3-dark .veLabelLine,
 .bp3-dark .veFeature,
 .bp3-dark .vePart {
@@ -50,7 +50,7 @@
   background: #f5f8fa !important;
 }
 
-.bp3-dark .veRowViewPart text,
+.bp3-dark .veRowViewPartsContainer text,
 .bp3-dark .veLabelText.black {
   fill: #f5f8fa !important;
 }

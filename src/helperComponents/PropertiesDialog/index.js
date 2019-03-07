@@ -44,6 +44,7 @@ export class PropertiesDialog extends React.Component {
       onSave,
       showReadOnly,
       showAvailability,
+      isProtein,
       disableSetReadOnly,
       propertiesList = [
         "general",
@@ -71,6 +72,16 @@ export class PropertiesDialog extends React.Component {
     const propertiesTabs = propertiesList.map(nameOrOverride => {
       const name = nameOrOverride.name || nameOrOverride;
       const Comp = allTabs[name];
+      if (isProtein) {
+        if (
+          name === "translations" ||
+          name === "orfs" ||
+          name === "primers" ||
+          name === "cutsites"
+        ) {
+          return null;
+        }
+      }
       return (
         <Tab
           key={name}
@@ -81,6 +92,7 @@ export class PropertiesDialog extends React.Component {
               {...{
                 editorName,
                 onSave,
+                isProtein,
                 showReadOnly,
                 showAvailability,
                 disableSetReadOnly,

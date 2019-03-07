@@ -3,7 +3,7 @@
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
-const visibilityInitialValues = {
+export const visibilityDefaultValues = {
   features: true,
   translations: true,
   parts: true,
@@ -12,8 +12,10 @@ const visibilityInitialValues = {
   cdsFeatureTranslations: true,
   axis: true,
   cutsites: true,
+  cutsitesInSequence: true,
   primers: true,
   dnaColors: false,
+  sequence: true,
   reverseSequence: true,
   lineageLines: true,
   axisNumbers: true
@@ -57,7 +59,7 @@ let annotationVisibility = createMergedDefaultStateReducer(
       };
     }
   },
-  visibilityInitialValues
+  visibilityDefaultValues
 );
 
 export default annotationVisibility;

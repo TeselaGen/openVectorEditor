@@ -157,3 +157,6 @@ Cypress.Commands.add("selectRange", (start, end) => {
     .contains("OK")
     .click();
 });
+Cypress.Commands.add("closeDialog", () => {
+  cy.get(`.bp3-dialog [aria-label="Close"]`).click();
+});

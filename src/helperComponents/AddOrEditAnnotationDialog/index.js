@@ -6,7 +6,6 @@ import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  ReactSelectField,
   TextareaField,
   withDialog
 } from "teselagen-react-components";
@@ -17,33 +16,54 @@ import {
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap
 } from "ve-range-utils";
-import {
-  featureColors,
-  FeatureTypes as featureTypes,
-  tidyUpAnnotation
-} from "ve-sequence-utils";
+import { tidyUpAnnotation } from "ve-sequence-utils";
 import classNames from "classnames";
 
-import { withEditorProps } from "../../../src";
+import withEditorProps from "../../withEditorProps";
+import { withProps } from "recompose";
 
-export class AddOrEditFeatureDialog extends React.Component {
+class AddOrEditAnnotationDialog extends React.Component {
+  formatStart = val => {
+    const { isProtein } = this.props.sequenceData || {};
+    if (isProtein) {
+      return (val + 2) / 3;
+    }
+    return val;
+  };
+  formatEnd = val => {
+    const { isProtein } = this.props.sequenceData || {};
+    if (isProtein) {
+      return val / 3;
+    }
+    return val;
+  };
+  parseStart = val => {
+    const { isProtein } = this.props.sequenceData || {};
+    if (isProtein) {
+      return val * 3 - 2;
+    }
+    return val;
+  };
+  parseEnd = val => {
+    const { isProtein } = this.props.sequenceData || {};
+    if (isProtein) {
+      return val * 3;
+    }
+    return val;
+  };
   renderLocations = props => {
     const { fields } = props;
     const { sequenceData = { sequence: "" }, start, end } = this.props;
     const sequenceLength = sequenceData.sequence.length;
 
     const locations = fields.getAll() || [];
-    // const locationMax
-    // if (!locations.length) {
-    //   return
-    // }
     return (
       <div>
         {locations.length > 1 && (
           <div>
             <div
               style={{
-                /* fontSize: 16, */ /* fontWeight: "bold",  */ marginBottom: 10,
+                marginBottom: 10,
                 marginTop: 3
               }}
             >
@@ -66,7 +86,9 @@ export class AddOrEditFeatureDialog extends React.Component {
                         inlineLabel
                         tooltipError
                         min={1}
-                        max={sequenceLength || 1}
+                        format={this.formatStart}
+                        parse={this.parseStart}
+                        max={sequenceLength}
                         name={`${member}.start`}
                         label="Start:"
                       />
@@ -75,7 +97,9 @@ export class AddOrEditFeatureDialog extends React.Component {
                         inlineLabel
                         tooltipError
                         min={1}
-                        max={sequenceLength || 1}
+                        format={this.formatEnd}
+                        parse={this.parseEnd}
+                        max={sequenceLength}
                         name={`${member}.end`}
                         label="End:"
                       />
@@ -105,7 +129,9 @@ export class AddOrEditFeatureDialog extends React.Component {
             if (locations && locations.length) {
               fields.push({
                 start: locations[locations.length - 1].end + 1,
-                end: locations[locations.length - 1].end + 2
+                end:
+                  locations[locations.length - 1].end +
+                  (sequenceData.isProtein ? 3 : 2)
               });
             } else {
               const end1 = Math.max(start, end - 10);
@@ -131,8 +157,10 @@ export class AddOrEditFeatureDialog extends React.Component {
       hideModal,
       sequenceData = { sequence: "" },
       handleSubmit,
+      renderTypes,
+      renderLocations,
       locations,
-      upsertFeature
+      upsertAnnotation
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
@@ -143,12 +171,11 @@ export class AddOrEditFeatureDialog extends React.Component {
           "tg-upsert-annotation"
         )}
       >
-        <h5> I Am Overridden. Any custom React can go here</h5>
         <InputField
           inlineLabel
           tooltipError
           autoFocus
-          placeholder="Untitled Feature"
+          placeholder="Untitled Annotation"
           validate={required}
           name="name"
           label="Name:"
@@ -166,60 +193,36 @@ export class AddOrEditFeatureDialog extends React.Component {
           label="Strand:"
           defaultValue={true}
         />
-        <ReactSelectField
-          inlineLabel
-          tooltipError
-          defaultValue="misc_feature"
-          options={featureTypes.map(type => {
-            return {
-              label: (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginRight: 10
-                  }}
-                >
-                  <div
-                    style={{
-                      background: featureColors[type],
-                      height: 15,
-                      width: 15,
-                      marginRight: 5
-                    }}
-                  />
-                  {type}
-                </div>
-              ),
-              value: type
-            };
-          })}
-          name="type"
-          label="Type:"
-        />
-        {(!locations || locations.length < 2) && (
+        {renderTypes || null}
+        {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
             <NumericInputField
               inlineLabel
+              format={this.formatStart}
+              parse={this.parseStart}
               tooltipError
               defaultValue={1}
               min={1}
-              max={sequenceLength || 1}
+              max={sequenceLength}
               name="start"
               label="Start:"
             />
             <NumericInputField
+              format={this.formatEnd}
+              parse={this.parseEnd}
               inlineLabel
               tooltipError
-              defaultValue={1}
+              defaultValue={sequenceData.isProtein ? 3 : 1}
               min={1}
-              max={sequenceLength || 1}
+              max={sequenceLength}
               name="end"
               label="End:"
             />
           </React.Fragment>
-        )}
-        <FieldArray component={this.renderLocations} name="locations" />
+        ) : null}
+        {renderLocations ? (
+          <FieldArray component={this.renderLocations} name="locations" />
+        ) : null}
         <TextareaField
           inlineLabel
           tooltipError
@@ -289,7 +292,7 @@ export class AddOrEditFeatureDialog extends React.Component {
                   annotationType: "features"
                 }
               );
-              upsertFeature(newFeat);
+              upsertAnnotation(newFeat);
               hideModal();
             })}
             intent={Intent.PRIMARY}
@@ -306,75 +309,91 @@ function required(val) {
   if (!val) return "Required";
 }
 
-export default compose(
-  withDialog({
-    isDraggable: true,
-    height: 570,
-    width: 400
-  }),
-  withEditorProps,
-  reduxForm({
-    form: "AddOrEditFeatureDialog",
-    validate: (values, { sequenceLength }) => {
-      let errors = {};
-      if (
-        !isRangeWithinRange(
-          convertRangeTo0Based(values, sequenceLength),
-          { start: 0, end: sequenceLength - 1 },
-          sequenceLength
-        )
-      ) {
-        errors.start = "Range must fit within sequence";
-        errors.end = "Range must fit within sequence";
-      }
-
-      values.locations &&
-        values.locations.length > 1 &&
-        values.locations.forEach((loc, index) => {
-          // if (!isRangeWithinRange(loc, values, sequenceLength)) {
-          //   errors.locations = errors.locations || {};
-          //   errors.locations[index] = {
-          //     start: "Range must fit within feature",
-          //     end: "Range must fit within feature"
-          //   };
-          // }
-          if (index !== 0 && index !== values.locations.length - 1) {
-            //it is a middle location so it should fit within the parent location
-            if (
-              !isRangeWithinRange(
-                loc,
-                {
-                  start: values.locations[0].start,
-                  end: values.locations[values.locations.length - 1].end
-                },
-                sequenceLength
-              )
-            ) {
-              errors.locations = errors.locations || {};
-              errors.locations[index] = {
-                start: "Joined spans must be in ascending order",
-                end: "Joined spans must be in ascending order"
-              };
-            }
+export default ({ formName, getProps, dialogProps }) => {
+  return compose(
+    withDialog({
+      isDraggable: true,
+      height: 430,
+      width: 350,
+      ...dialogProps
+    }),
+    withEditorProps,
+    withProps(getProps),
+    reduxForm({
+      form: formName, // "AddOrEditAnnotationDialog",
+      validate: (values, { sequenceLength, sequenceData }) => {
+        let errors = {};
+        const { circular } = sequenceData || {};
+        if (!circular && values.start > values.end) {
+          errors.start = "Start must be less than End for a linear sequence";
+          errors.end = "Start must be less than End for a linear sequence";
+        }
+        if (
+          !isRangeWithinRange(
+            convertRangeTo0Based(values, sequenceLength),
+            { start: 0, end: sequenceLength - 1 },
+            sequenceLength
+          )
+        ) {
+          errors.start = "Range must fit within sequence";
+          errors.end = "Range must fit within sequence";
+        }
+        if (values.locations && values.locations.length > 1) {
+          const entireLocationSpan = {
+            start: values.locations[0].start,
+            end: values.locations[values.locations.length - 1].end
+          };
+          if (entireLocationSpan.start > entireLocationSpan.end && !circular) {
+            errors.locations = errors.locations || {};
+            errors.locations[0] = {
+              start:
+                "In a non-circular sequence, joined spans must be in ascending order"
+            };
+            errors.locations[values.locations.length - 1] = {
+              end:
+                "In a non-circular sequence, joined spans must be in ascending order"
+            };
           }
-          values.locations.forEach((loc2, index2) => {
-            if (loc2 === loc) return;
-            if (checkIfPotentiallyCircularRangesOverlap(loc, loc2)) {
-              errors.locations = errors.locations || {};
-              errors.locations[index] = {
-                start: "Joined feature spans must not overlap",
-                end: "Joined feature spans must not overlap"
-              };
-              errors.locations[index2] = {
-                start: "Joined feature spans must not overlap",
-                end: "Joined feature spans must not overlap"
-              };
+          values.locations.forEach((loc, index) => {
+            // if (!isRangeWithinRange(loc, values, sequenceLength)) {
+            //   errors.locations = errors.locations || {};
+            //   errors.locations[index] = {
+            //     start: "Range must fit within feature",
+            //     end: "Range must fit within feature"
+            //   };
+            // }
+            if (index !== 0 && index !== values.locations.length - 1) {
+              //it is a middle location so it should fit within the parent location
+              if (
+                !isRangeWithinRange(loc, entireLocationSpan, sequenceLength)
+              ) {
+                errors.locations = errors.locations || {};
+                errors.locations[index] = {
+                  start: "Joined spans must be in ascending order",
+                  end: "Joined spans must be in ascending order"
+                };
+              }
             }
+            values.locations.forEach((loc2, index2) => {
+              if (loc2 === loc) return;
+              if (checkIfPotentiallyCircularRangesOverlap(loc, loc2)) {
+                errors.locations = errors.locations || {};
+                errors.locations[index] = {
+                  start: "Joined spans must not overlap",
+                  end: "Joined spans must not overlap"
+                };
+                errors.locations[index2] = {
+                  start: "Joined spans must not overlap",
+                  end: "Joined spans must not overlap"
+                };
+              }
+            });
           });
-        });
+        }
 
-      return errors;
-    }
-  }),
-  formValues("start", "end", "locations")
-)(AddOrEditFeatureDialog);
+        return errors;
+      }
+    }),
+    formValues("start", "end", "locations")
+  )(AddOrEditAnnotationDialog);
+};

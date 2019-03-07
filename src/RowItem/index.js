@@ -3,27 +3,52 @@ import {
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
 } from "ve-range-utils";
-import map from "lodash/map";
+import { map, camelCase, startCase, startsWith } from "lodash";
 import flatMap from "lodash/flatMap";
 import { getComplementSequenceString } from "ve-sequence-utils";
 import React from "react";
+import pluralize from "pluralize";
 import SelectionLayer from "./SelectionLayer";
 import Sequence from "./Sequence";
 import LineageLines from "./LineageLines";
-import DeletionLayers from "./DeletionLayers";
+// import DeletionLayers from "./DeletionLayers";
 import Axis from "./Axis";
 import Orfs from "./Orfs";
 import Translations from "./Translations";
-import Features from "./Features";
-import Primers from "./Primers";
+
 import CutsiteLabels from "./CutsiteLabels";
 import Cutsites from "./Cutsites";
 import Caret from "./Caret";
-import Parts from "./Parts";
+import StackedAnnotations from "./StackedAnnotations";
 import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
+import { rowHeights } from "../RowView/estimateRowHeight";
 
 function noop() {}
+
+function getPropsForType(props, type, pluralType) {
+  const upperPluralType = startCase(pluralType);
+  const toRet = {
+    annotationColor: props[pluralType + "Color"],
+    annotationHeight:
+      props[pluralType + "Height"] || rowHeights[pluralType].height,
+    spaceBetweenAnnotations:
+      props["spaceBetweenAnnotations" + upperPluralType] ||
+      rowHeights[pluralType].spaceBetweenAnnotations,
+    marginTop:
+      props[pluralType + "MarginTop"] || rowHeights[pluralType].marginTop,
+    marginBottom:
+      props[pluralType + "MarginBottom"] || rowHeights[pluralType].marginBottom,
+    annotationRanges: props.row[pluralType],
+    showLabels:
+      props.annotationLabelVisibility &&
+      props.annotationLabelVisibility[pluralType],
+    onClick: props[type + "Clicked"],
+    onRightClick: props[type + "RightClicked"]
+  };
+
+  return toRet;
+}
 
 export class RowItem extends React.PureComponent {
   render() {
@@ -35,15 +60,13 @@ export class RowItem extends React.PureComponent {
       searchLayers = [],
       rowTopComp,
       rowBottomComp,
-      // setSelectionLayer = noop,
-      // cutsiteLabelSelectionLayer = [{ start: -1, end: -1, color: "black" }],
-      annotationHeight = 14,
-      featureHeight = 16,
-      partHeight = 12,
-      primerHeight = 16,
-      tickSpacing = 10,
-      sequenceHeight = 16,
-      spaceBetweenAnnotations = 2,
+      isProtein,
+      tickSpacing,
+      aminoAcidNumbersHeight = rowHeights.aminoAcidNumbers.height,
+      cutsiteLabelHeight = rowHeights.cutsiteLabels.height,
+      sequenceHeight = rowHeights.sequence.height,
+      axisHeight = rowHeights.axis.height,
+      axisMarginTop = rowHeights.axis.marginTop,
       width,
       uppercaseSequenceMapFont = "noPreference",
       annotationVisibility = {},
@@ -57,78 +80,40 @@ export class RowItem extends React.PureComponent {
         end: 0,
         rowNumber: 0
       },
-      // alignmentData={sequence: row.sequence.shuffle(50, "-")},
       alignmentData,
       sequenceLength = row.sequence.length,
-      // sequenceLength = alignmentData.sequence.length || row.sequence.length,
       chromatogramData,
       fullSequence = "",
-
-      deletionLayerClicked = noop,
-      deletionLayerRightClicked = noop,
       replacementLayerClicked = noop,
       replacementLayerRightClicked = noop,
-      featureClicked = noop,
       searchLayerClicked = noop,
-      featureRightClicked = noop,
-      partClicked = noop,
-      partRightClicked = noop,
-      translationRightClicked = noop,
-      primerClicked = noop,
       backgroundRightClicked = noop,
-      primerRightClicked = noop,
       selectionLayerRightClicked = noop,
-      orfClicked = noop,
-      orfRightClicked = noop,
-      translationClicked = noop,
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
-
-      // scrollData,
       minHeight = 22,
       bpsPerRow = sequenceLength,
       editorName
     } = this.props;
 
-    // let bpsPerRow = bpsPerRow || (alignmentData ? alignmentData.sequence.length : sequenceLength)
-
     let {
-      features: showFeatures = true,
-      primers: showPrimers = true,
-      // featureLabels: showFeatureLabels=true,
-      translations: showTranslations = true,
-      // translationLabels: showTranslationLabels=true,
-      parts: showParts = true,
-      // partLabels: showPartLabels=true,
-      orfs: showOrfs = true,
-      chromatogram: showChromatogram = true,
-      lineageLines: showLineageLines = true,
-      // orfLabels: showOrfLabels=true,
-      cutsites: showCutsites = true,
-      cutsitesInSequence: showCutsitesInSequence = true,
-      axis: showAxis = true,
-      axisNumbers: showAxisNumbers = true,
-      // yellowAxis: showYellowAxis = false,
-      caret: showCaret = true,
-      dnaColors: showDnaColors = false,
-      reverseSequence: showReverseSequence = true,
-      sequence: showSequence = true
+      chromatogram: showChromatogram,
+      lineageLines: showLineageLines,
+      // orfLabels: showOrfLabel,
+      cutsites: showCutsites,
+      cutsitesInSequence: showCutsitesInSequence,
+      axis: showAxis,
+      axisNumbers: showAxisNumbers,
+      // yellowAxis: showYellowAxis,
+      aminoAcidNumbers: showAminoAcidNumbers,
+      dnaColors: showDnaColors,
+      reverseSequence: showReverseSequence,
+      sequence: showSequence
     } = annotationVisibility;
-    let {
-      features: showFeatureLabels = true,
-      parts: showPartLabels = true,
-      cutsites: showCutsiteLabels = true
-    } = annotationLabelVisibility;
-    let {
-      sequence = "",
-      features = [],
-      primers = [],
-      translations = [],
-      parts = [],
-      cutsites = [],
-      orfs = []
-    } = row;
+    let { cutsites: showCutsiteLabels = true } = annotationLabelVisibility;
+    let { sequence = "", cutsites = [] } = row;
+
     let reverseSequence = getComplementSequenceString(
       (alignmentData && alignmentData.sequence) || sequence
     );
@@ -180,10 +165,39 @@ export class RowItem extends React.PureComponent {
       charWidth,
       bpsPerRow,
       getGaps,
+      isProtein,
       sequenceLength,
-      annotationHeight,
-      spaceBetweenAnnotations,
       row: { start: row.start, end: row.end }
+    };
+
+    const drawAnnotations = (type, extraProps = {}) => {
+      const {
+        CompOverride,
+        shouldShow,
+        noPlural,
+        ...otherExtraProps
+      } = extraProps;
+      const pluralType = noPlural ? type : pluralize(type);
+      if (
+        shouldShow !== undefined
+          ? !shouldShow
+          : !annotationVisibility[pluralType] ||
+            Object.keys(row[pluralType]).length <= 0
+      ) {
+        return null;
+      }
+      const CompToUse = CompOverride || StackedAnnotations;
+      return (
+        <CompToUse
+          type={type}
+          containerClassName={camelCase(
+            "veRowView-" + pluralType + "Container"
+          )}
+          {...annotationCommonProps}
+          {...getPropsForType(this.props, type, pluralType)}
+          {...otherExtraProps}
+        />
+      );
     };
 
     // a t g a t c a g g
@@ -224,6 +238,28 @@ export class RowItem extends React.PureComponent {
           );
         })
       : null;
+
+    const translationCommonProps = {
+      CompOverride: Translations,
+      showAminoAcidNumbers: showAminoAcidNumbers,
+      sequenceLength,
+      aminoAcidNumbersHeight
+    };
+    const partProps = {
+      getExtraInnerCompProps: function(annotationRange) {
+        const { annotation } = annotationRange;
+        const { color } = annotation;
+        const colorToUse = startsWith(color, "override_")
+          ? color.replace("override_", "")
+          : "purple";
+        return {
+          fill: "white",
+          textColor: "black",
+          stroke: colorToUse,
+          color: colorToUse
+        };
+      }
+    };
     return (
       <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}
@@ -237,6 +273,7 @@ export class RowItem extends React.PureComponent {
           {/* <div className="vespacer" /> */}
 
           <SelectionLayer
+            className="veSearchLayerContainer"
             customTitleStart="Search match"
             color="yellow"
             regions={searchLayers}
@@ -259,55 +296,28 @@ export class RowItem extends React.PureComponent {
             }
             regions={selectionLayers}
           />
+          {drawAnnotations("part", partProps)}
+          {drawAnnotations("primer", {
+            sequence: fullSequence
+          })}
 
-          {showParts && Object.keys(parts).length > 0 && (
-            <Parts
-              showPartLabels={showPartLabels}
-              partClicked={partClicked}
-              partRightClicked={partRightClicked}
-              annotationRanges={parts}
-              {...annotationCommonProps}
-              annotationHeight={partHeight}
-            />
-          )}
+          {drawAnnotations("orf", {
+            CompOverride: Orfs
+          })}
+          {drawAnnotations("translation", {
+            ...translationCommonProps,
+            onDoubleClick: translationDoubleClicked
+          })}
 
-          {showPrimers && Object.keys(primers).length > 0 && (
-            <Primers
-              sequence={fullSequence}
-              primerClicked={primerClicked}
-              primerRightClicked={primerRightClicked}
-              annotationRanges={primers}
-              {...annotationCommonProps}
-              annotationHeight={primerHeight}
-            />
-          )}
-
-          {showOrfs && Object.keys(orfs).length > 0 && (
-            <Orfs
-              orfClicked={orfClicked}
-              orfRightClicked={orfRightClicked}
-              annotationRanges={orfs}
-              {...annotationCommonProps}
-            />
-          )}
-
-          {showTranslations && Object.keys(translations).length > 0 && (
-            <Translations
-              translationClicked={translationClicked}
-              translationRightClicked={translationRightClicked}
-              translationDoubleClicked={translationDoubleClicked}
-              annotationRanges={translations}
-              {...annotationCommonProps}
-            />
-          )}
           {showCutsiteLabels &&
             showCutsites &&
             Object.keys(cutsites).length > 0 && (
               <CutsiteLabels
-                cutsiteClicked={cutsiteClicked}
-                cutsiteRightClicked={cutsiteRightClicked}
-                annotationRanges={cutsites}
                 {...annotationCommonProps}
+                onClick={cutsiteClicked}
+                onRightClick={cutsiteRightClicked}
+                annotationRanges={cutsites}
+                annotationHeight={cutsiteLabelHeight}
               />
             )}
 
@@ -432,32 +442,7 @@ export class RowItem extends React.PureComponent {
                 );
               })}
           </div>
-
-          {/* {showYellowAxis && (
-            <svg width="100%" height="6px">
-              <rect
-                x="0"
-                y="0"
-                width="100%"
-                height="4px"
-                fill="white"
-                stroke="black"
-                strokeWidth="1"
-              />
-            </svg>
-          )} */}
-
-          {showFeatures && Object.keys(features).length > 0 && (
-            <Features
-              showFeatureLabels={showFeatureLabels}
-              featureClicked={featureClicked}
-              featureRightClicked={featureRightClicked}
-              annotationRanges={features}
-              {...annotationCommonProps}
-              annotationHeight={featureHeight}
-              marginTop={10}
-            />
-          )}
+          {drawAnnotations("feature")}
 
           {showLineageLines && lineageLines.length ? (
             <LineageLines
@@ -511,10 +496,6 @@ export class RowItem extends React.PureComponent {
                   sequence={seqInRow}
                   startOffset={startOffset}
                   height={height}
-                  containerStyle={{
-                    marginTop: 8,
-                    marginBottom: 6
-                  }}
                   length={seqInRow.length}
                   charWidth={charWidth}
                 >
@@ -555,21 +536,28 @@ export class RowItem extends React.PureComponent {
               );
             });
           })}
-          <DeletionLayers
+          {/* <DeletionLayers
             deletionLayerClicked={deletionLayerClicked}
             deletionLayerRightClicked={deletionLayerRightClicked}
             deletionLayers={deletionLayers}
             {...annotationCommonProps}
-          />
+          /> */}
 
+          {drawAnnotations("primaryProteinSequence", {
+            ...translationCommonProps,
+
+            noPlural: true
+          })}
           {showAxis && (
             <Axis
               tickSpacing={tickSpacing}
               showAxisNumbers={showAxisNumbers}
+              annotationHeight={axisHeight}
+              marginTop={axisMarginTop}
               {...annotationCommonProps}
             />
           )}
-          {caretPosition > -1 && showCaret && (
+          {caretPosition > -1 && (
             <Caret
               caretPosition={caretPosition}
               shouldBlink

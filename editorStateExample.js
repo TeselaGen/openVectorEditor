@@ -102,12 +102,12 @@ const exampleEditorState = {
     [
       {
         id: "circular",
-        name: "Plasmid",
+        name: "Circular",
         active: true
       },
       {
         id: "rail",
-        name: "Linear Map",
+        name: "Linear",
         active: false
       },
       {
