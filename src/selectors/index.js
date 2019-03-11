@@ -10,6 +10,7 @@ import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSele
 import filteredCutsitesSelector from "./filteredCutsitesSelector";
 import searchLayersSelector from "./searchLayersSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
+import filteredFeaturesSelector from "./filteredFeaturesSelector";
 
 export default {
   translationsSelector,
@@ -22,6 +23,7 @@ export default {
   searchLayersSelector,
   filteredCutsitesSelector,
   filteredRestrictionEnzymesSelector,
+  filteredFeaturesSelector,
   restrictionEnzymesSelector,
   sequenceSelector
 };

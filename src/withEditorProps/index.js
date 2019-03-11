@@ -432,6 +432,7 @@ function mapStateToProps(state, ownProps) {
   let selectedCutsites = s.selectedCutsitesSelector(editorState);
   let allCutsites = s.cutsitesSelector(editorState);
   let translations = s.translationsSelector(editorState);
+  let filteredFeatures = s.filteredFeaturesSelector(editorState);
   let sequenceLength = s.sequenceLengthSelector(editorState);
 
   let matchedSearchLayer = { start: -1, end: -1 };
@@ -459,6 +460,7 @@ function mapStateToProps(state, ownProps) {
   this.translations = translations;
   let sequenceDataToUse = {
     ...sequenceData,
+    filteredFeatures,
     cutsites,
     orfs,
     translations

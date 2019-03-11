@@ -56,6 +56,9 @@ export default [
   // { cmd: "mapCaret" },
   { cmd: "toggleFeatures", shouldDismissPopover: false },
   {
+    cmd: "featureTypesCmd"
+  },
+  {
     cmd: "toggleTranslations",
     onClick: () => {}, //override this click so that they have to hit the submenu
     shouldDismissPopover: false,

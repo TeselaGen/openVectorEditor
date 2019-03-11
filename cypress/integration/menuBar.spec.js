@@ -2,6 +2,36 @@ describe("menuBar", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`should be able toggle sequence case`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("View")
+      .click();
+    cy.contains(".rowViewTextContainer", "gacgtcttatga");
+    cy.contains(".bp3-menu-item", "Sequence Case").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Upper").click();
+    cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
+    cy.contains(".bp3-menu-item", "Upper").click();
+    cy.contains(".rowViewTextContainer", "gacgtcttatga");
+  });
+
+  it(`should be able to filter by feature`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("View")
+      .click();
+    cy.contains(".bp3-menu-item", "Feature Types")
+      .contains("9/9")
+      .trigger("mouseover");
+    cy.contains(".veLabelText", "araD");
+    cy.contains(".veLabelText", "araC");
+    cy.contains(".bp3-menu-item", "misc_feature").click();
+    cy.contains(".veLabelText", "araD").should("not.exist");
+    cy.contains(".bp3-menu-item", "Feature Types").contains("8/9");
+    cy.contains(".bp3-menu-item", "Uncheck All").click();
+    cy.contains(".bp3-menu-item", "Feature Types").contains("0/9");
+    cy.contains(".veLabelText", "araC").should("not.exist");
+    cy.contains(".bp3-menu-item", "Check All").click({ force: true });
+    cy.contains(".veLabelText", "araC").should("exist");
+  });
 
   it("should not be able to select a range in a length 0 sequence", function() {
     function shouldBeDisabled(text) {

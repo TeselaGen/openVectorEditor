@@ -100,11 +100,7 @@ class SequenceInputNoHotkeys extends React.Component {
         selectionLayer,
         sequenceLength
       );
-      // if (isProtein) {
-      //   console.log(`betweenVals:`,betweenVals)
-      //   betweenVals = convertDnaCaretPositionOrRangeToAA(betweenVals);
-      //   console.log(`betweenVals:`,betweenVals)
-      // }
+
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}

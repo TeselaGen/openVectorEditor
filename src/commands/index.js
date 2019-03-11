@@ -4,7 +4,15 @@ import { convertRangeTo0Based } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
 import { oveCommandFactory } from "../utils/commandUtils";
-import { upperFirst, startCase, get, filter } from "lodash";
+import {
+  upperFirst,
+  map,
+  forEach,
+  reduce,
+  startCase,
+  get,
+  filter
+} from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
@@ -76,6 +84,84 @@ const fileCommandDefs = {
         }
       });
     }
+  },
+  featureTypesCmd: {
+    name: props => {
+      const total = Object.keys(
+        reduce(
+          props.sequenceData.features,
+          (acc, feat) => {
+            acc[feat.type] = true;
+            return acc;
+          },
+          {}
+        )
+      ).length;
+      const toHideCount = Object.keys(
+        props.annotationVisibility.featureTypesToHide
+      ).length;
+      return (
+        <span>
+          Feature Types &nbsp;
+          <Tag round style={{ marginLeft: 4 }}>
+            {total - toHideCount}/{total}
+          </Tag>
+        </span>
+      );
+    },
+    submenu: props => {
+      const types = {};
+      forEach(props.sequenceData.features, feat => {
+        if (!feat.type) return;
+        const checked = !props.annotationVisibility.featureTypesToHide[
+          feat.type
+        ];
+        if (types[feat.type]) {
+          types[feat.type].count++;
+        } else {
+          types[feat.type] = {
+            count: 1,
+            shouldDismissPopover: false,
+            onClick: () =>
+              checked
+                ? props.hideFeatureTypes([feat.type])
+                : props.showFeatureTypes([feat.type]),
+            checked
+          };
+        }
+        types[feat.type].text = (
+          <span>
+            {feat.type} &nbsp;
+            <Tag round style={{ marginLeft: 4 }}>
+              {types[feat.type].count}
+            </Tag>
+          </span>
+        );
+      });
+      const typeMenu = map(types);
+      return [
+        {
+          text: "Uncheck All",
+          onClick: () => props.hideFeatureTypes(Object.keys(types)),
+          shouldDismissPopover: false
+        },
+        {
+          text: "Check All",
+          onClick: () => props.resetFeatureTypesToHide(),
+          shouldDismissPopover: false
+        },
+        "--",
+        ...(typeMenu.length
+          ? typeMenu
+          : [
+              {
+                text: "No Features To Filter",
+                disabled: true
+              }
+            ])
+      ];
+    }
+    // isDisabled:
   },
 
   exportSequenceAsGenbank: {
@@ -311,8 +397,7 @@ const editCommandDefs = {
     handler: props => props.handleComplementSequence()
   },
   sequenceCase: {
-    isHidden: isProtein,
-    handler: () => {}
+    isHidden: isProtein
   },
   toggleSequenceMapFontUpper: {
     isHidden: isProtein,

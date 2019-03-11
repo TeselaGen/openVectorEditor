@@ -1,9 +1,12 @@
+import { omit } from "lodash";
+
 //./caretPosition.js
 
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
 export const visibilityDefaultValues = {
+  featureTypesToHide: {},
   features: true,
   translations: true,
   parts: true,
@@ -34,12 +37,39 @@ export const annotationVisibilityHide = createAction(
 export const annotationVisibilityShow = createAction(
   "annotationVisibilityShow"
 );
+export const hideFeatureTypes = createAction("hideFeatureTypes");
+export const showFeatureTypes = createAction("showFeatureTypes");
+export const resetFeatureTypesToHide = createAction("resetFeatureTypesToHide");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 let annotationVisibility = createMergedDefaultStateReducer(
   {
+    [resetFeatureTypesToHide]: state => {
+      return {
+        ...state,
+        featureTypesToHide: {}
+      };
+    },
+    [showFeatureTypes]: (state, payload) => {
+      return {
+        ...state,
+        featureTypesToHide: omit(state.featureTypesToHide, payload)
+      };
+    },
+    [hideFeatureTypes]: (state, payload) => {
+      return {
+        ...state,
+        featureTypesToHide: {
+          ...state.featureTypesToHide,
+          ...payload.reduce((acc, key) => {
+            acc[key] = true;
+            return acc;
+          }, {})
+        }
+      };
+    },
     [annotationVisibilityToggle]: (state, payload) => {
       return {
         ...state,

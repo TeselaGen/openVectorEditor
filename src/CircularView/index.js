@@ -267,7 +267,7 @@ export class CircularView extends React.Component {
       //DRAW FEATURES
       if (showFeatures && sequenceData.features) {
         let [annotations, paredDown] = pareDownAnnotations(
-          sequenceData.features,
+          sequenceData.filteredFeatures,
           maxFeaturesToDisplay
         );
         paredDownFeatures = paredDown;
