@@ -269,19 +269,18 @@ describe("editor", function() {
     cy.log("not show any dna sequence by default ");
     cy.get(".ve-row-item-sequence").should("not.exist");
 
-    cy.get(".tg-menu-bar")
-      .contains("Tools")
-      .click();
-
     cy.log(
       "should not show options to update restriction enzymes or simulate digestion"
     );
-    cy.get(".bp3-menu")
-      .contains("Restriction Enzymes Manager")
+    cy.get(".tg-menu-bar")
+      .contains("Tools")
       .should("not.exist");
-    cy.get(".bp3-menu")
-      .contains("Simulate Digestion")
-      .should("not.exist");
+
+    //comment this in again once the tools menu exists again
+    // cy.contains(".bp3-menu", "Restriction Enzymes Manager")
+    //   .should("not.exist");
+    // cy.contains(".bp3-menu", "Simulate Digestion")
+    //   .should("not.exist");
 
     cy.log("not show options to view cutsites, orfs, translations ");
     cy.get(".tg-menu-bar")
