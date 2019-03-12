@@ -73,7 +73,8 @@
   "devDependencies": {
     "@blueprintjs/core": "^3.14.1",
     "@blueprintjs/datetime": "^3.7.2",
-    "@types/lodash": "^4.14.122",
+    "@teselagen/apollo-methods": "^1.0.9",
+    "@types/lodash": "^4.14.123",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.5.1",
     "axios": "^0.18.0",
@@ -118,7 +119,7 @@
     "react-transition-group": "^2.6.0",
     "redux-form": "7",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "25.0.9",
+    "teselagen-react-components": "26.0.2",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.2",
     "ve-sequence-utils": "^3.3.31",
