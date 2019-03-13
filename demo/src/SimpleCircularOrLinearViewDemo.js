@@ -99,6 +99,15 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                   }),
               name: "Test Seq",
               circular: this.state.circular, //toggle to true to change this!
+              features: [
+                {
+                  name: "Feat 1",
+                  id: "fakeId2",
+                  color: "green",
+                  start: 1,
+                  end: 20
+                }
+              ],
               parts: [
                 {
                   name: "Part 1",

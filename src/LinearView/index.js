@@ -60,7 +60,10 @@ export class LinearView extends React.Component {
     const { sequenceData = { sequence: "" } } = this.props;
     if (!isEqual(sequenceData, this.oldSeqData)) {
       this.rowData = prepareRowData(
-        { ...sequenceData, features: sequenceData.filteredFeatures },
+        {
+          ...sequenceData,
+          features: sequenceData.filteredFeatures || sequenceData.features
+        },
         sequenceData.sequence ? sequenceData.sequence.length : 0
       );
       this.oldSeqData = sequenceData;

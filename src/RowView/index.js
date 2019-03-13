@@ -270,7 +270,10 @@ export class RowView extends React.Component {
       !isEqual(sequenceData, this.oldSeqData)
     ) {
       this.rowData = prepareRowData(
-        { ...sequenceData, features: sequenceData.filteredFeatures },
+        {
+          ...sequenceData,
+          features: sequenceData.filteredFeatures || sequenceData.features
+        },
         bpsPerRow
       );
       this.oldBpsPerRow = bpsPerRow;
