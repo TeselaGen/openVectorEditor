@@ -16,7 +16,7 @@ export default class DropHandler extends React.Component {
         anyToJson(
           content,
           result => {
-            updateSequenceData(result[0].parsedSequence, "fullSequenceImport");
+            updateSequenceData(result[0].parsedSequence);
           },
           { fileName: file.name, acceptParts: true }
         );

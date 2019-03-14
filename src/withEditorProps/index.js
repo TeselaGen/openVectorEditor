@@ -97,13 +97,9 @@ export const updateCircular = props => async isCircular => {
         "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
     });
     if (!doAction) return; //stop early
-    updateSequenceData(
-      truncateOriginSpanningAnnotations(sequenceData),
-      "updateCircular",
-      {
-        batchUndoStart: true
-      }
-    );
+    updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
+      batchUndoStart: true
+    });
   }
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
@@ -133,7 +129,7 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
             window.toastr[type](msg);
           });
         }
-        updateSequenceData(result[0].parsedSequence, "fullSequenceImport");
+        updateSequenceData(result[0].parsedSequence);
         if (!failed) {
           window.toastr.success("Sequence Imported");
         }
@@ -205,25 +201,6 @@ export default compose(
         );
       };
     },
-
-    // updateSequenceData: props => {
-    //   console.log(`props.beforeSequenceChange:`,props.beforeSequenceChange)
-    //   console.log(`props.onDuplicate:`,props.onDuplicate)
-    //   return async (newSeqData, type, ...rest) => {
-    //     const {
-    //       beforeSequenceChange,
-    //       sequenceData,
-    //       updateSequenceData
-    //     } = props;
-    //     console.log(`beforeSequenceChange:`,beforeSequenceChange)
-    //     const res = beforeSequenceChange
-    //       ? beforeSequenceChange(newSeqData, sequenceData, type, props, ...rest)
-    //       : newSeqData;
-    //     if (res) {
-    //       updateSequenceData(res, type, ...rest);
-    //     }
-    //   };
-    // },
 
     upsertTranslation: props => {
       return async translationToUpsert => {
@@ -322,8 +299,7 @@ export default compose(
       }
       if (caretPosition < 0) return;
       updateSequenceData(
-        rotateSequenceDataToPosition(sequenceData, caretPosition),
-        "rotateToCaretPosition"
+        rotateSequenceDataToPosition(sequenceData, caretPosition)
       );
       caretPositionUpdate(0);
     },
@@ -347,8 +323,7 @@ export default compose(
           }),
           sequenceData,
           selectionLayer
-        ),
-        "reverseComplementSelection"
+        )
       );
       // caretPositionUpdate(0);
       // selectionLayerUpdate(selectionLayer);
@@ -377,7 +352,7 @@ export default compose(
         sequenceData,
         selectionLayer
       );
-      updateSequenceData(newSeqData, "complementSelection");
+      updateSequenceData(newSeqData);
       // caretPositionUpdate(0);
       setTimeout(() => {
         selectionLayerUpdate({ ...selectionLayer, forceUpdate: Math.random() });
@@ -387,17 +362,13 @@ export default compose(
     handleReverseComplementSequence: props => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(
-        getReverseComplementSequenceAndAnnotations(sequenceData),
-        "reverseComplementSequence"
+        getReverseComplementSequenceAndAnnotations(sequenceData)
       );
     },
 
     handleComplementSequence: props => () => {
       const { sequenceData, updateSequenceData } = props;
-      updateSequenceData(
-        getComplementSequenceAndAnnotations(sequenceData),
-        "complementSequence"
-      );
+      updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
     },
     /* eslint-enable no-unused-vars */
 

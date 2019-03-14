@@ -32,7 +32,7 @@ export * from "./translations";
 // ------------------------------------
 
 const _updateSequenceData = createAction("SEQUENCE_DATA_UPDATE");
-export const updateSequenceData = function(seqData, type, ...rest) {
+export const updateSequenceData = function(seqData, ...rest) {
   //tnrtodo: currently we're not using that type variable for anything
   return _updateSequenceData(
     tidyUpSequenceData(seqData, { annotationsAsObjects: true }),

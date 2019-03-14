@@ -257,8 +257,7 @@ function VectorInteractionHOC(Component /* options */) {
           seqDataToInsert,
           sequenceData,
           caretPosition > -1 ? caretPosition : selectionLayer
-        ),
-        "insert"
+        )
       );
       const newSelectionLayerStart =
         caretPosition > -1 ? caretPosition : selectionLayer.start;
@@ -355,8 +354,7 @@ function VectorInteractionHOC(Component /* options */) {
                 seqDataToInsert,
                 sequenceData,
                 caretPosition > -1 ? caretPosition : selectionLayer
-              ),
-              "insert"
+              )
             );
             window.toastr.success("Sequence Inserted Successfully");
           }
@@ -397,7 +395,7 @@ function VectorInteractionHOC(Component /* options */) {
           sequenceData,
           rangeToDelete
         );
-        updateSequenceData(newSeqData, "delete");
+        updateSequenceData(newSeqData);
         caretPositionUpdate(
           normalizePositionByRangeLength(
             rangeToDelete.start,
