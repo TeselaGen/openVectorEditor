@@ -3,6 +3,7 @@ import { Switch, Button } from "@blueprintjs/core";
 import { InfoHelper } from "teselagen-react-components";
 import { lifecycle, mapProps } from "recompose";
 import { omit } from "lodash";
+import ReactMarkdown from "react-markdown";
 
 const omitProps = keys => mapProps(props => omit(props, keys));
 const _Switch = omitProps(["didMount"])(Switch);
@@ -24,7 +25,7 @@ export default function renderToggle({
   let toggleOrButton;
   const labelOrText = label ? <span>{label}</span> : type;
   const sharedProps = {
-    "data-test": type,
+    "data-test": type || label,
     style: { margin: "0px 30px", marginTop: 4 },
     label: labelOrText,
     text: labelOrText
@@ -61,18 +62,21 @@ export default function renderToggle({
     <div style={{ display: "flex" }} className="toggle-button-holder">
       {description && (
         <InfoHelper
+          isPopover
           popoverProps={{
-            preventOverflow: { enabled: false },
-            hide: {
-              enabled: false
-            },
-            flip: {
-              boundariesElement: "viewport"
+            modifiers: {
+              preventOverflow: { enabled: false },
+              hide: {
+                enabled: false
+              },
+              flip: {
+                boundariesElement: "viewport"
+              }
             }
           }}
           style={{ marginRight: -15, marginTop: 5, marginLeft: 5 }}
         >
-          {description}
+          <ReactMarkdown source={description} />
         </InfoHelper>
       )}
       {toggleOrButton}

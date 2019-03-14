@@ -15,3 +15,8 @@ body,
 .toggle-button-holder {
   flex-shrink: 0;
 }
+
+.bp3-popover-content-sizing .bp3-popover-content {
+  overflow: auto;
+  max-height: 350px;
+}

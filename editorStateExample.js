@@ -148,7 +148,7 @@ const exampleEditorState = {
         usReverse: 0,
         color: "#0d994a"
       },
-      ...etc
+      // ...etc
     }
   },
   selectedAnnotations: {

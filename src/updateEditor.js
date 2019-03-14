@@ -16,7 +16,6 @@ export default function updateEditor(
     sequenceData,
     annotationVisibility,
     annotationsToSupport,
-    panelsShown,
     ...rest
   } = initialValues;
 

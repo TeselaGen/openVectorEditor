@@ -3,7 +3,7 @@ import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 
 import store from "./../store";
-import { updateEditor } from "../../../src/";
+import { updateEditor, actions } from "../../../src/";
 
 import Editor from "../../../src/Editor";
 import renderToggle from "./../utils/renderToggle";
@@ -20,8 +20,10 @@ import exampleProteinData from "../exampleData/exampleProteinData";
 const defaultState = {
   readOnly: false,
   showMenuBar: true,
+  customizeTabs: false,
   displayMenuBarAboveTools: true,
   withPreviewMode: false,
+  focusLinearViewByDefault: false,
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
@@ -183,6 +185,12 @@ export default class EditorDemo extends React.Component {
     }
   };
 
+  setLinearPanelAsActive = () => {
+    store.dispatch(
+      actions.setPanelAsActive("rail", { editorName: "DemoEditor" })
+    );
+  };
+
   render() {
     const {
       forceHeightMode,
@@ -244,11 +252,10 @@ export default class EditorDemo extends React.Component {
               Demo Specific options:
               {renderToggle({
                 that: this,
-                label: "Show custom tool overrides example",
+                label: "Customize tool bar",
                 type: "overrideToolbarOptions",
-                description: (
-                  <pre>
-                    {`//This is an example of how to pass tool overrides:
+                description: `//This is an example of how to pass custom tool overrides:
+\`\`\`
 ToolBarProps: {
   toolList: [
     {
@@ -257,21 +264,105 @@ ToolBarProps: {
         window.toastr.success("Download tool hit!")
         }
     },
-    ...etc`
-                      .split("\n")
-                      .map((l, i) => (
-                        <div key={i}>{l}</div>
-                      ))}
-                  </pre>
-                )
+    ...etc
+  }
+\`\`\`
+                  `
               })}
               {renderToggle({
                 that: this,
-                label: "Show custom properties overrides example",
+                label: "Customize tabs",
+                type: "customizeTabs",
+                hook: shouldUpdate => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map",
+                            active: true
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            name: "Sequence Map"
+                          },
+                          {
+                            id: "alignmentTool",
+                            name: "New Alignment",
+                            canClose: true
+                          },
+                          {
+                            id: "digestTool",
+                            name: "New Digest",
+                            canClose: true
+                          },
+                          {
+                            // fullScreen: true,
+                            active: true,
+                            id: "circular",
+                            name: "Circular Map"
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
+                    });
+                },
+                description: `//The positions of the tabs shown in the editor can be changed programatically:
+\`\`\`js
+updateEditor(store, "DemoEditor", {
+  panelsShown: [
+    [
+      {
+        id: "rail",
+        name: "Linear Map",
+        active: true
+      }
+    ],
+    [
+      {
+        id: "sequence",
+        name: "Sequence Map",
+        
+      },
+      {
+        id: "alignmentTool",
+        name: "New Alignment",
+        canClose: true
+      },
+      {
+        id: "digestTool",
+        name: "New Digest",
+        canClose: true
+      },
+      {
+        // fullScreen: true,
+        active: true,
+        id: "circular",
+        name: "Circular Map"
+      },
+      {
+        id: "properties",
+        name: "Properties"
+      }
+    ]
+  ]
+})
+\`\`\`
+`
+              })}
+              {renderToggle({
+                that: this,
+                label: "Customize properties tab",
                 type: "propertiesOverridesExample",
-                description: (
-                  <pre>
-                    {`//This is an example of how to pass Properties overrides
+                description: `//The panels shown in the properties tab can be customized. 
+                Here is an example of how to pass Properties overrides
+\`\`\`js
 PropertiesProps: {
   propertiesList: [
     "general",
@@ -296,59 +387,53 @@ PropertiesProps: {
     "orfs",
     "genbank"
   ]
-}`
-                      .split("\n")
-                      .map((l, i) => (
-                        <div key={i}>{l}</div>
-                      ))}
-                  </pre>
-                )
+}
+\`\`\`
+`
               })}
               {renderToggle({
                 that: this,
-                label: "Show custom menu overrides example",
+                label: "Customize menu bar",
                 type: "menuOverrideExample",
-                description: (
-                  <pre>
-                    {`// Menu customization example
+                description: `The top menu bar can be customized as desired. 
+                Here is an example of how to do that:
+\`\`\`\
 menuFilter:
-menuDef => {
-  menuDef.push({ text: "Custom", submenu: ["copy"] });
-  menuDef[0].submenu
+  menuDef => {
+    menuDef.push({ text: "Custom", submenu: ["copy"] });
+    menuDef[0].submenu
     .find(i => i.text && i.text.includes("Export"))
     .submenu.push({
       text: "Custom export option!",
       onClick: () => alert("Custom export")
     });
-  menuDef[3].submenu.push({
+    menuDef[3].submenu.push({
     text: "My Custom Tool",
     onClick: () => alert("Some custom tool")
   });
   return menuDef;
+\`\`\`
 }`
-                      .split("\n")
-                      .map((l, i) => (
-                        <div key={i}>{l}</div>
-                      ))}
-                  </pre>
-                )
               })}
               {renderToggle({
                 that: this,
-                label: "Override Add/Edit Feature Dialog",
+                label: "Customize Add/Edit Feature Dialog",
                 type: "overrideAddEditFeatureDialog",
                 description: `You'll need to pass an entire component override to the editor like so:
-                  <Editor AddOrEditFeatureDialogOverride={MyCustomComponent}/>
-                  You can override the parts and primers dialog in the same way.
-                  This API is not accessible unless using the React version of the code (UMD does not work)`
+\`\`\`
+<Editor AddOrEditFeatureDialogOverride={MyCustomComponent}/>
+\`\`\`
+-  You can override the parts and primers dialog in the same way.
+-  This API is not accessible unless using the React version of the code (UMD does not work)
+                  `
               })}
               {renderToggle({
                 that: this,
-                label: "Show custom right click override example",
+                label: "Customize Right Click Menus",
                 type: "overrideRightClickExample",
-                description: (
-                  <pre>
-                    {`//This is an example of how to pass rightClick overrides:
+                description: `If enabled, right clicking a part will fire a custom alert. 
+Here is an example of how to pass rightClick overrides:
+\`\`\`
 rightClickOverrides: {
   partRightClicked: (items, { annotation }, props) => {
     return [
@@ -359,20 +444,16 @@ rightClickOverrides: {
       }
     ];
   }
-}`
-                      .split("\n")
-                      .map((l, i) => (
-                        <div key={i}>{l}</div>
-                      ))}
-                  </pre>
-                )
+}
+\`\`\`
+                `
               })}
               {renderToggle({
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
                 description:
-                  "You can force a height for the editor by passing height:500 (same for width) "
+                  "You can force a height for the editor by passing `height:500` (same for width) "
               })}
               {renderToggle({
                 that: this,
@@ -401,6 +482,28 @@ rightClickOverrides: {
                 }
               })}
               {renderToggle({
+                description: `Any panel can be programatically focused from outside the editor. 
+Here is how to do that for the linear view:
+\`\`\`js
+store.dispatch(
+  actions.setPanelAsActive("rail", { editorName: "DemoEditor" })
+); 
+\`\`\`
+other options are: 
+\`\`\`
+"digestTool"
+"circular"
+"rail"
+"sequence"
+"properties"
+\`\`\`
+              `,
+                onClick: this.setLinearPanelAsActive,
+                isButton: true,
+                that: this,
+                label: "Focus Linear View"
+              })}
+              {renderToggle({
                 onClick: () => {
                   updateEditor(store, "DemoEditor", {
                     selectionLayer: { start: 30, end: 59 }
@@ -408,9 +511,9 @@ rightClickOverrides: {
                 },
                 isButton: true,
                 that: this,
-                label: "Set A Selection",
-                type: "setSelection"
+                label: "Set A Selection"
               })}
+              {renderToggle({ that: this, type: "focusLinearViewByDefault" })}
               {renderToggle({ that: this, type: "withPreviewMode" })}
               {renderToggle({ that: this, type: "shouldAutosave" })}
               {renderToggle({ that: this, type: "showMenuBar" })}
@@ -457,7 +560,9 @@ rightClickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                type: "onDelete"
+                type: "onDelete",
+                description:
+                  "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
               })}
               {renderToggle({
                 that: this,

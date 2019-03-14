@@ -96,4 +96,23 @@ describe("editor", function() {
     cy.contains(".bp3-menu-item", "New Feature").click();
     cy.contains("I Am Overridden. Any custom React can go here");
   });
+  it(`should focus the linear view`, () => {
+    cy.get(".veLinearView").should("not.be.visible");
+    cy.contains("Focus Linear View").click();
+    cy.get(".veLinearView").should("be.visible");
+  });
+  it(`should shuffle the tabs programatically`, () => {
+    cy.get(".veLinearView").should("not.be.visible");
+    cy.tgToggle("customizeTabs");
+    cy.get(".veLinearView").should("be.visible");
+    cy.get(".ve-draggable-tabs")
+      .last()
+      .contains("Sequence Map");
+    cy.get(".ve-draggable-tabs")
+      .last()
+      .contains("New Alignment");
+    cy.get(".ve-draggable-tabs")
+      .last()
+      .contains("Circular Map");
+  });
 });
