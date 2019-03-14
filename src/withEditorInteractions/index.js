@@ -7,8 +7,6 @@ import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
-  insertSequenceDataAtPositionOrRange,
-  deleteSequenceDataAtRange,
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
@@ -220,6 +218,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         onPaste,
         updateSequenceData,
+        wrappedInsertSequenceDataAtPositionOrRange,
         selectionLayerUpdate
         // handleInsert
       } = this.props;
@@ -254,11 +253,12 @@ function VectorInteractionHOC(Component /* options */) {
         return window.toastr.warning("Sorry no valid base pairs to paste");
 
       updateSequenceData(
-        insertSequenceDataAtPositionOrRange(
+        wrappedInsertSequenceDataAtPositionOrRange(
           seqDataToInsert,
           sequenceData,
           caretPosition > -1 ? caretPosition : selectionLayer
-        )
+        ),
+        "insert"
       );
       const newSelectionLayerStart =
         caretPosition > -1 ? caretPosition : selectionLayer.start;
@@ -332,7 +332,8 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly,
-        updateSequenceData
+        updateSequenceData,
+        wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
@@ -350,11 +351,12 @@ function VectorInteractionHOC(Component /* options */) {
           caretPosition,
           handleInsert: seqDataToInsert => {
             updateSequenceData(
-              insertSequenceDataAtPositionOrRange(
+              wrappedInsertSequenceDataAtPositionOrRange(
                 seqDataToInsert,
                 sequenceData,
                 caretPosition > -1 ? caretPosition : selectionLayer
-              )
+              ),
+              "insert"
             );
             window.toastr.success("Sequence Inserted Successfully");
           }
@@ -368,6 +370,7 @@ function VectorInteractionHOC(Component /* options */) {
         sequenceData = { sequence: "" },
         readOnly,
         updateSequenceData,
+        wrappedInsertSequenceDataAtPositionOrRange,
         caretPositionUpdate
         // handleInsert
       } = this.props;
@@ -389,11 +392,12 @@ function VectorInteractionHOC(Component /* options */) {
             )
           };
         }
-        const newSeqData = deleteSequenceDataAtRange(
+        const newSeqData = wrappedInsertSequenceDataAtPositionOrRange(
+          {},
           sequenceData,
           rangeToDelete
         );
-        updateSequenceData(newSeqData);
+        updateSequenceData(newSeqData, "delete");
         caretPositionUpdate(
           normalizePositionByRangeLength(
             rangeToDelete.start,

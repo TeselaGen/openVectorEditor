@@ -97,9 +97,13 @@ export const updateCircular = props => async isCircular => {
         "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
     });
     if (!doAction) return; //stop early
-    updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
-      batchUndoStart: true
-    });
+    updateSequenceData(
+      truncateOriginSpanningAnnotations(sequenceData),
+      "updateCircular",
+      {
+        batchUndoStart: true
+      }
+    );
   }
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
@@ -129,7 +133,7 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
             window.toastr[type](msg);
           });
         }
-        updateSequenceData(result[0].parsedSequence);
+        updateSequenceData(result[0].parsedSequence, "fullSequenceImport");
         if (!failed) {
           window.toastr.success("Sequence Imported");
         }
@@ -177,6 +181,50 @@ export default compose(
     { pure: false }
   ),
   withHandlers({
+    wrappedInsertSequenceDataAtPositionOrRange: props => {
+      return (
+        _sequenceDataToInsert,
+        _existingSequenceData,
+        _caretPositionOrRange
+      ) => {
+        const {
+          sequenceDataToInsert,
+          existingSequenceData,
+          caretPositionOrRange
+        } = props.beforeSequenceInsertOrDelete
+          ? props.beforeSequenceInsertOrDelete(
+              tidyUpSequenceData(_sequenceDataToInsert),
+              tidyUpSequenceData(_existingSequenceData),
+              _caretPositionOrRange
+            ) || {}
+          : {};
+        return insertSequenceDataAtPositionOrRange(
+          sequenceDataToInsert || _sequenceDataToInsert,
+          existingSequenceData || _existingSequenceData,
+          caretPositionOrRange || _caretPositionOrRange
+        );
+      };
+    },
+
+    // updateSequenceData: props => {
+    //   console.log(`props.beforeSequenceChange:`,props.beforeSequenceChange)
+    //   console.log(`props.onDuplicate:`,props.onDuplicate)
+    //   return async (newSeqData, type, ...rest) => {
+    //     const {
+    //       beforeSequenceChange,
+    //       sequenceData,
+    //       updateSequenceData
+    //     } = props;
+    //     console.log(`beforeSequenceChange:`,beforeSequenceChange)
+    //     const res = beforeSequenceChange
+    //       ? beforeSequenceChange(newSeqData, sequenceData, type, props, ...rest)
+    //       : newSeqData;
+    //     if (res) {
+    //       updateSequenceData(res, type, ...rest);
+    //     }
+    //   };
+    // },
+
     upsertTranslation: props => {
       return async translationToUpsert => {
         if (!translationToUpsert) return;
@@ -274,7 +322,8 @@ export default compose(
       }
       if (caretPosition < 0) return;
       updateSequenceData(
-        rotateSequenceDataToPosition(sequenceData, caretPosition)
+        rotateSequenceDataToPosition(sequenceData, caretPosition),
+        "rotateToCaretPosition"
       );
       caretPositionUpdate(0);
     },
@@ -285,19 +334,21 @@ export default compose(
         updateSequenceData,
         // caretPositionUpdate,
         selectionLayerUpdate,
+        wrappedInsertSequenceDataAtPositionOrRange,
         selectionLayer
       } = props;
       if (!(selectionLayer.start > -1)) {
         return; //return early
       }
       updateSequenceData(
-        insertSequenceDataAtPositionOrRange(
+        wrappedInsertSequenceDataAtPositionOrRange(
           getReverseComplementSequenceAndAnnotations(sequenceData, {
             range: selectionLayer
           }),
           sequenceData,
           selectionLayer
-        )
+        ),
+        "reverseComplementSelection"
       );
       // caretPositionUpdate(0);
       // selectionLayerUpdate(selectionLayer);
@@ -312,7 +363,8 @@ export default compose(
         // caretPositionUpdate,
         updateSequenceData,
         selectionLayerUpdate,
-        selectionLayer
+        selectionLayer,
+        wrappedInsertSequenceDataAtPositionOrRange
       } = props;
       if (!(selectionLayer.start > -1)) {
         return; //return early
@@ -320,12 +372,12 @@ export default compose(
       const comp = getComplementSequenceAndAnnotations(sequenceData, {
         range: selectionLayer
       });
-      const newSeqData = insertSequenceDataAtPositionOrRange(
+      const newSeqData = wrappedInsertSequenceDataAtPositionOrRange(
         comp,
         sequenceData,
         selectionLayer
       );
-      updateSequenceData(newSeqData);
+      updateSequenceData(newSeqData, "complementSelection");
       // caretPositionUpdate(0);
       setTimeout(() => {
         selectionLayerUpdate({ ...selectionLayer, forceUpdate: Math.random() });
@@ -335,13 +387,17 @@ export default compose(
     handleReverseComplementSequence: props => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(
-        getReverseComplementSequenceAndAnnotations(sequenceData)
+        getReverseComplementSequenceAndAnnotations(sequenceData),
+        "reverseComplementSequence"
       );
     },
 
     handleComplementSequence: props => () => {
       const { sequenceData, updateSequenceData } = props;
-      updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
+      updateSequenceData(
+        getComplementSequenceAndAnnotations(sequenceData),
+        "complementSequence"
+      );
     },
     /* eslint-enable no-unused-vars */
 

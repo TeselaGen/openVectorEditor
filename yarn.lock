@@ -11416,18 +11416,18 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-ve-range-utils@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.2.tgz#b09d27da8f71a6378a300d6af3e4a6e64babe37a"
-  integrity sha512-I6xQTrRVFW8WjbvRVF8qZpRO7I47HnTAMavn6csvTuT1j0yqTaHTC0bfqy5E85SQ4ev2YeX94RhhCbd2d/jUbw==
+ve-range-utils@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.3.tgz#347134da7be3df023d63cc5179a0860f8aa9db64"
+  integrity sha512-c0fj5YrQGVDf19nJt6aUwBIxfAmoQys/OU9i+4V9LUiZmyMKlXmbQhVYl8E3+XhtQFAW17DOfhsFCCI8taHZ5A==
   dependencies:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^3.3.31:
-  version "3.3.31"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.31.tgz#61c7bc675ede12f93721e8f95f7412948d4d55c9"
-  integrity sha512-VB6oFXV7jX9CwgIBOgmdmrRUVThlIeP4xTnX52YnYafCnRcWL4XHGrsHfyAF2rXP/xoFAft8o2qDuPeZdotZbg==
+ve-sequence-utils@^3.3.33:
+  version "3.3.33"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.33.tgz#1e0fab07a7c65754e31a358af0ba7ef796a86428"
+  integrity sha512-VOx2ntStvCv1gA8wFqEy22iUHV9q4hu6Nl51zV0iVXRh9U/3X5BZuIUmxF2UdVmz5/SSiHoGDzb9ZhI4XzT40g==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

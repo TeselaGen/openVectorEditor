@@ -64,6 +64,7 @@ const userDefinedHandlersAndOpts = [
   "onSave",
   "onRename",
   "onDuplicate",
+  "beforeSequenceInsertOrDelete",
   "onDelete",
   "onCopy",
   "onPaste",

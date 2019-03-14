@@ -115,4 +115,12 @@ describe("editor", function() {
       .last()
       .contains("Circular Map");
   });
+  it(`should handle beforeSequenceInsertOrDelete hook correctly`, () => {
+    cy.tgToggle("beforeSequenceInsertOrDelete");
+    cy.contains(".veLabelText", "T0").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Replace").click();
+
+    cy.get(".sequenceInputBubble input").type("tta{enter}");
+    cy.contains(".veLabelText", "CHANGED_SEQ");
+  });
 });

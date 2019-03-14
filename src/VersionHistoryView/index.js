@@ -100,7 +100,7 @@ export class VersionHistoryView extends React.Component {
       annotationsAsObjects: true
     });
     this.props.updateSequenceData &&
-      this.props.updateSequenceData(tidiedActiveData);
+      this.props.updateSequenceData(tidiedActiveData, "versionRevert");
     this.props.caretPositionUpdate && this.props.caretPositionUpdate(0);
     this.props.onSave(
       e,

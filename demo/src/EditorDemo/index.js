@@ -1,6 +1,7 @@
 import { Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
+import { isRangeOrPositionWithinRange } from "ve-range-utils";
 
 import store from "./../store";
 import { updateEditor, actions } from "../../../src/";
@@ -45,6 +46,7 @@ const defaultState = {
   onRename: true,
   onDuplicate: true,
   onDelete: true,
+  beforeSequenceInsertOrDelete: false,
   onCopy: true,
   onPaste: true
 };
@@ -566,6 +568,29 @@ other options are:
               })}
               {renderToggle({
                 that: this,
+                label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
+                type: "beforeSequenceInsertOrDelete",
+                description: `
+The beforeSequenceInsertOrDelete handler can be used to 
+override the values being used in the insertion/deletion
+\`\`\`
+beforeSequenceInsertOrDelete: (
+  sequenceDataToInsert,
+  existingSequenceData,
+  caretPositionOrRange
+) => {
+  return {
+    // you can return one or more of the following to override the values used
+    sequenceDataToInsert: myFilterSequenceDataToInsertFn(sequenceDataToInsert),
+    existingSequenceData: myFilterExistingSeqFn(sequenceDataToInsert,caretPositionOrRange),
+    caretPositionOrRange: myChangeCaretPosFn(caretPositionOrRange)
+  }
+}
+\`\`\`
+`
+              })}
+              {renderToggle({
+                that: this,
                 type: "onCopy"
               })}
               {renderToggle({
@@ -627,6 +652,46 @@ other options are:
             {...this.state.onDelete && {
               onDelete: () =>
                 window.toastr.success("onDelete callback triggered")
+            }}
+            {...this.state.beforeSequenceInsertOrDelete && {
+              beforeSequenceInsertOrDelete: (
+                sequenceDataToInsert,
+                existingSequenceData,
+                caretPositionOrRange
+              ) => {
+                window.toastr.info("beforeSequenceInsertOrDelete triggered");
+                if (!sequenceDataToInsert.size) return;
+                return {
+                  //override the sequenceDataToInsert
+                  sequenceDataToInsert: {
+                    ...sequenceDataToInsert,
+                    parts: [
+                      ...sequenceDataToInsert.parts,
+                      {
+                        name: "CHANGED_SEQUENCE",
+                        start: 0,
+                        end: sequenceDataToInsert.size - 1
+                      }
+                    ]
+                  },
+                  //override the existingSequenceData
+                  existingSequenceData: {
+                    ...existingSequenceData,
+                    ...["parts", "features", "primers"].reduce((acc, key) => {
+                      const annotations = existingSequenceData[key];
+                      acc[key] = annotations.filter(
+                        a =>
+                          !isRangeOrPositionWithinRange(
+                            caretPositionOrRange,
+                            a,
+                            existingSequenceData.size
+                          )
+                      );
+                      return acc;
+                    }, {})
+                  }
+                };
+              }
             }}
             {...this.state.onCopy && {
               onCopy: function(/* event, copiedSequenceData, editorState */) {
