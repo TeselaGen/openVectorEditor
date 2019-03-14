@@ -261,7 +261,7 @@ describe("editor", function() {
   -be able to hide/show the underlying dna sequence
   `, function() {
     cy.log("show the AA count");
-    cy.contains("4152 AAs");
+    cy.contains("1384 AAs");
 
     cy.log("the protein seq should be the primary sequence displayed");
     cy.get(".veRowViewPrimaryProteinSequenceContainer");
