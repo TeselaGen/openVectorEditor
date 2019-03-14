@@ -89,6 +89,7 @@ export class LinearView extends React.Component {
       height,
       charWidth,
       annotationVisibilityOverrides,
+      isProtein,
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
@@ -143,6 +144,7 @@ export class LinearView extends React.Component {
           {!hideName && (
             <SequenceName
               {...{
+                isProtein,
                 sequenceName,
                 sequenceLength: sequenceData.sequence
                   ? sequenceData.sequence.length
@@ -184,12 +186,16 @@ export class LinearView extends React.Component {
   }
 }
 
-function SequenceName({ sequenceName, sequenceLength }) {
+function SequenceName({ sequenceName, sequenceLength, isProtein }) {
   return (
     <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
       <span>{sequenceName} </span>
       <br />
-      <span>{sequenceLength + " bps"}</span>
+      <span>
+        {isProtein
+          ? `${Math.floor(sequenceLength / 3)} AAs`
+          : `${sequenceLength} bps`}
+      </span>
     </div>
   );
 }

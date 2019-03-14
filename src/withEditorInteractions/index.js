@@ -722,7 +722,7 @@ function VectorInteractionHOC(Component /* options */) {
           ...this.getCreateItems(),
           {
             ...fullSequenceTranslationMenu,
-            text: "View Full Sequence Tranlations"
+            text: "View Full Sequence Translations"
           }
         ];
         menu._event = event;

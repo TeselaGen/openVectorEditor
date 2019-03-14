@@ -651,7 +651,9 @@ export class CircularView extends React.Component {
                   <span>{sequenceName} </span>
                   <br />
                   <span style={{ fontSize: 10 }}>
-                    ({sequenceLength + (isProtein ? " AAs" : " bps")})
+                    {isProtein
+                      ? `${Math.floor(sequenceLength / 3)} AAs`
+                      : `${sequenceLength} bps`}
                   </span>
                 </div>
               </div>

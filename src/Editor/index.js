@@ -32,10 +32,8 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 import { flatMap, map, filter, pick, camelCase } from "lodash";
 
 import ToolBar from "../ToolBar";
-import CircularView, {
-  CircularView as CircularViewUnconnected
-} from "../CircularView";
-import LinearView, { LinearView as LinearViewUnconnected } from "../LinearView";
+import CircularView from "../CircularView";
+import LinearView from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import DropHandler from "./DropHandler";
@@ -46,6 +44,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
+import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -360,16 +359,14 @@ export class Editor extends React.Component {
     };
 
     if (withPreviewMode && !previewModeFullscreen) {
-      const Panel = sequenceData.circular
-        ? CircularViewUnconnected
-        : LinearViewUnconnected;
       return (
         <div style={{ ...style }} className="preview-mode-container">
           <div style={{ position: "relative" }}>
-            <Panel
+            <SimpleCircularOrLinearView
               sequenceData={sequenceData}
               tabHeight={tabHeight}
               editorName={editorName}
+              height={null}
               annotationLabelVisibility={{
                 features: false,
                 parts: false,
