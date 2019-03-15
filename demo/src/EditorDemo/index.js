@@ -660,7 +660,7 @@ beforeSequenceInsertOrDelete: (
                 caretPositionOrRange
               ) => {
                 window.toastr.info("beforeSequenceInsertOrDelete triggered");
-                if (!sequenceDataToInsert.size) return;
+                if (!sequenceDataToInsert.size) return; //if it is a delete, just return early
                 return {
                   //override the sequenceDataToInsert
                   sequenceDataToInsert: {

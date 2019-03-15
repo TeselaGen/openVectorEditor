@@ -659,7 +659,11 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     generateSelectionMenuOptions = annotation => {
-      let items = [...this.getCopyOptions(annotation), createNewAnnotationMenu];
+      let items = [
+        ...this.getCopyOptions(annotation),
+        createNewAnnotationMenu,
+        "selectInverse"
+      ];
       return items;
     };
     normalizeAction = ({ event, ...rest }, handler) => {
