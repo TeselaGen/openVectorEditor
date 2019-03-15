@@ -10,7 +10,7 @@ import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { some } from "lodash";
+import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
 import { getContext, branch } from "recompose";
 
@@ -516,7 +516,10 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               }
             );
-            const sequenceDataToCopy = transformFunc(selectedSeqData);
+            const sequenceDataToCopy = transformFunc(
+              selectedSeqData,
+              sequenceData
+            );
 
             this.sequenceDataToCopy = sequenceDataToCopy;
             if (action === "copy") {
@@ -989,8 +992,21 @@ export default compose(
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
 
-function getGenbankFromSelection(selectedSeqData) {
+function getGenbankFromSelection(selectedSeqData, sequenceData) {
+  const spansEntireSeq =
+    sequenceData.sequence.length === selectedSeqData.sequence.length;
+  const feats = map(selectedSeqData.features);
+  const just1Feat = feats.length === 1;
+
   return {
-    sequence: jsonToGenbank(selectedSeqData)
+    sequence: jsonToGenbank({
+      ...selectedSeqData,
+      name: spansEntireSeq
+        ? selectedSeqData.name
+        : just1Feat
+        ? feats[0].name
+        : selectedSeqData.name + "_partial",
+      circular: spansEntireSeq ? selectedSeqData.circular : false
+    })
   };
 }
