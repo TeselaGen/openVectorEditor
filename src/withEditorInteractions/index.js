@@ -763,6 +763,7 @@ function VectorInteractionHOC(Component /* options */) {
         "deletePart",
         ...this.getCopyOptions(annotation),
         "newTranslation",
+        "newReverseTranslation",
         "viewPartProperties"
       ];
     }, "partRightClicked");
@@ -831,6 +832,7 @@ function VectorInteractionHOC(Component /* options */) {
               ]),
           "toggleCdsFeatureTranslations",
           "newTranslation",
+          "newReverseTranslation",
           "viewFeatureProperties"
         ];
       },
@@ -850,6 +852,7 @@ function VectorInteractionHOC(Component /* options */) {
         "editPrimer",
         ...this.getCopyOptions(annotation),
         "newTranslation",
+        "newReverseTranslation",
         "viewPrimerProperties"
       ];
     }, "primerRightClicked");

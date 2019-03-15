@@ -19,6 +19,22 @@ import { divideBy3 } from "../utils/proteinUtils";
 
 const isProtein = props => props.sequenceData.isProtein;
 
+const getNewTranslationHandler = isReverse => ({
+  handler: (props, state, ctxInfo) => {
+    const annotation = get(ctxInfo, "context.annotation");
+    props.handleNewTranslation({ ...annotation, forward: !isReverse });
+    props.annotationVisibilityShow("translations");
+  },
+  isHidden: props =>
+    isProtein(props) ||
+    // props.readOnly ||
+    !props.annotationsToSupport.translations,
+  isDisabled: props =>
+    /* (props.readOnly && readOnlyDisabledTooltip) ||  */ props.sequenceLength ===
+      0 ||
+    (noSelection(props) || "Must have a selection to create a translation")
+});
+
 const fileCommandDefs = {
   newSequence: {
     isHidden: props => !props.onNew,
@@ -53,7 +69,7 @@ const fileCommandDefs = {
   deleteSequence: {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
-      !hasSelection(props) ||
+      noSelection(props) ||
       !props.onDelete,
     isHidden: props => !props.onDelete,
     handler: props => props.onDelete(props.sequenceData)
@@ -205,8 +221,9 @@ Object.keys(defaultCopyOptions).forEach(type => {
 
 const readOnlyDisabledTooltip =
   "Sorry this function is not allowed in Read-Only Mode";
-const hasSelection = ({ selectionLayer = {} }) =>
-  selectionLayer.start > -1 && selectionLayer.end > -1;
+const noSelection = ({ selectionLayer = {} }) =>
+  !(selectionLayer.start > -1 && selectionLayer.end > -1) &&
+  "Selection Required";
 
 const triggerClipboardCommand = type => {
   const wrapper = document.querySelector(".veVectorInteractionWrapper");
@@ -374,7 +391,7 @@ const editCommandDefs = {
   },
 
   selectInverse: {
-    isDisabled: props => !hasSelection(props),
+    isDisabled: props => noSelection(props),
     handler: props => props.handleInverse(),
     hotkey: "mod+i"
   },
@@ -383,8 +400,7 @@ const editCommandDefs = {
     isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) ||
-      (!hasSelection(props) && "Requires Selection"),
+      (props.readOnly && readOnlyDisabledTooltip) || noSelection(props),
     handler: props => props.handleComplementSelection()
   },
 
@@ -430,8 +446,7 @@ const editCommandDefs = {
   // },
   reverseComplementSelection: {
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) ||
-      (!hasSelection(props) && "Requires Selection"),
+      (props.readOnly && readOnlyDisabledTooltip) || noSelection(props),
     isHidden: props => props.readOnly || props.sequenceData.isProtein,
 
     handler: props => props.handleReverseComplementSelection(),
@@ -550,20 +565,8 @@ const editCommandDefs = {
       props.frameTranslationToggle("-3");
     }
   },
-  newTranslation: {
-    handler: (props, state, ctxInfo) => {
-      const annotation = get(ctxInfo, "context.annotation");
-      props.handleNewTranslation(annotation);
-      props.annotationVisibilityShow("translations");
-    },
-    isHidden: props =>
-      isProtein(props) ||
-      // props.readOnly ||
-      !props.annotationsToSupport.translations,
-    isDisabled: props =>
-      /* (props.readOnly && readOnlyDisabledTooltip) ||  */ props.sequenceLength ===
-      0
-  },
+  newTranslation: getNewTranslationHandler(),
+  newReverseTranslation: getNewTranslationHandler(true),
 
   newFeature: {
     handler: (props /* state, ctxInfo */) => {

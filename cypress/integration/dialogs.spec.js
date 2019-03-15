@@ -20,6 +20,14 @@ describe("dialogs", function() {
       .contains("Edit")
       .click();
     cy.contains(".bp3-menu-item", "Create").click();
+    //translation create should be disabled
+    cy.contains(".bp3-menu-item.bp3-disabled", "New Translation").should(
+      "exist"
+    );
+    cy.contains(
+      ".bp3-menu-item.bp3-disabled",
+      "New Reverse Translation"
+    ).should("exist");
     cy.contains(".bp3-menu-item", "New Feature").click();
     //change the start/end inputs to be making an origin spanning feature
     cy.get(".tg-test-name input")

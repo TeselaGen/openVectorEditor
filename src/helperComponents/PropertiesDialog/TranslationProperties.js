@@ -74,8 +74,6 @@ class TranslationProperties extends React.Component {
           isInfinite
           schema={{
             fields: [
-              // { path: "name", type: "string" },
-              // { path: "type", type: "string" },
               {
                 path: "translationType",
                 displayName: "Type",
