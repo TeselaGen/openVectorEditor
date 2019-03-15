@@ -362,33 +362,40 @@ export class Editor extends React.Component {
       return (
         <div style={{ ...style }} className="preview-mode-container">
           <div style={{ position: "relative" }}>
-            <SimpleCircularOrLinearView
-              sequenceData={sequenceData}
-              tabHeight={tabHeight}
-              editorName={editorName}
-              height={null}
-              isProtein={sequenceData.isProtein}
-              annotationLabelVisibility={{
-                features: false,
-                parts: false,
-                cutsites: false,
-                primers: false
-              }}
-            />
-            <ButtonGroup className="preview-mode-view-fullscreen">
-              <Button
-                text="Open Editor"
-                intent={Intent.PRIMARY}
-                onClick={this.togglePreviewFullscreen}
-              />
-              {previewModeButtonMenu && (
+            <div className="preview-mode-buttons">
+              <ButtonGroup className="preview-mode-view-fullscreen">
                 <Button
-                  icon="caret-down"
+                  text="Open Editor"
                   intent={Intent.PRIMARY}
-                  onClick={this.onPreviewModeButtonContextMenu}
+                  onClick={this.togglePreviewFullscreen}
                 />
-              )}
-            </ButtonGroup>
+                {previewModeButtonMenu && (
+                  <Button
+                    icon="caret-down"
+                    intent={Intent.PRIMARY}
+                    onClick={this.onPreviewModeButtonContextMenu}
+                  />
+                )}
+              </ButtonGroup>
+            </div>
+            <div
+              style={{ padding: 40 }}
+              className="preview-mode-simple-sequence-view"
+            >
+              <SimpleCircularOrLinearView
+                sequenceData={sequenceData}
+                tabHeight={tabHeight}
+                editorName={editorName}
+                height={null}
+                isProtein={sequenceData.isProtein}
+                annotationLabelVisibility={{
+                  features: false,
+                  parts: false,
+                  cutsites: false,
+                  primers: false
+                }}
+              />
+            </div>
           </div>
         </div>
       );
