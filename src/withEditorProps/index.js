@@ -251,7 +251,7 @@ export default compose(
       props.upsertTranslation({
         start: annotation.start,
         end: annotation.end,
-        forward: true
+        forward: annotation.forward
       });
       props.annotationVisibilityShow("translations");
     },
