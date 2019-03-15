@@ -8,11 +8,10 @@ import {
 import getCommands from "../../commands";
 import { map } from "lodash";
 import { Button } from "@blueprintjs/core";
-import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
-import { sizeSchema } from "./utils";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -87,7 +86,6 @@ class TranslationProperties extends React.Component {
                 displayName: "Size (aa)",
                 type: "string"
               },
-              sizeSchema,
               { path: "strand", type: "number" }
             ]
           }}
