@@ -25,7 +25,6 @@ export default function relaxLabels(labelPoints) {
       // xRanges.add(point1.x, point1.x + point1.width, undefined, point1)
       // yRanges.add(point1.y, point1.y + point1.height, undefined, point1)
 
-      if (point1.x === null) debugger;
       mutableLabelPoints.forEach(function(point2, index2) {
         // a & b are the same element and don't collide.
         if (index1 === index2) return;

@@ -343,8 +343,5 @@ function checkForIssues(alignmentTracks) {
   });
   if (hasError) {
     return hasError;
-    /* eslint-disable */
-    debugger;
-    /* eslint-enable */
   }
 }

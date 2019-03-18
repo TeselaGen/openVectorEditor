@@ -159,10 +159,6 @@ function drawAnnotations({
         ? getColor(annotation)
         : annotation.color || "purple";
 
-      /* eslint-disable */
-
-      if (process.env.NODE_ENV !== "production" && !annotation.id) debugger;
-      /* eslint-enable */
       DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
       svgGroup.push(
         <DrawAnnotation

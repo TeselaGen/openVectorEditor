@@ -16,25 +16,23 @@ export default function updateEditor(
     sequenceData,
     annotationVisibility,
     annotationsToSupport,
-    ...rest
+    findTool
   } = initialValues;
-
-  let toSpread = {
-    annotationVisibility,
-    annotationsToSupport
-  };
+  let toSpread = {};
   if (sequenceData) {
     if (sequenceData.isProtein && !isAlreadyProteinEditor) {
       //we're editing a protein but haven't initialized the protein editor yet
       toSpread = {
         findTool: {
-          dnaOrAA: "AA"
+          dnaOrAA: "AA",
+          ...findTool //we spread this here to allow the user to override this .. if they must!
         },
+
         annotationVisibility: {
           caret: true,
           sequence: false,
           reverseSequence: false,
-          ...annotationVisibility,
+          ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
           translations: false,
           aminoAcidNumbers: false,
           primaryProteinSequence: true
@@ -55,13 +53,14 @@ export default function updateEditor(
       sequenceData.isProtein = false;
       toSpread = {
         findTool: {
-          dnaOrAA: "DNA"
+          dnaOrAA: "DNA",
+          ...findTool //we spread this here to allow the user to override this .. if they must!
         },
         annotationVisibility: {
           caret: true,
           sequence: true,
           reverseSequence: true,
-          ...annotationVisibility,
+          ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
           translations: false,
           aminoAcidNumbers: false,
           primaryProteinSequence: false
@@ -74,14 +73,14 @@ export default function updateEditor(
           orfs: true,
           cutsites: true,
           primers: true,
-          ...annotationsToSupport
+          ...annotationsToSupport //we spread this here to allow the user to override this .. if they must!
         }
       };
     }
   }
   const initialValuesToUse = {
+    ...initialValues,
     ...toSpread,
-    ...rest,
     ...(sequenceData && {
       sequenceData: tidyUpSequenceData(sequenceData, {
         convertAnnotationsFromAAIndices,

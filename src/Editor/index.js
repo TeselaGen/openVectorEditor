@@ -142,10 +142,6 @@ export class Editor extends React.Component {
     //tnrtodo this will need to be updated once blueprint uses the react 16 api
     return { blueprintPortalClassName: "ove-portal" };
   }
-  // componentDidCatch(error,info) {
-  //   debugger
-  //   console.error("OVE caught this error:", error, info);
-  // }
   componentDidUpdate(prevProps) {
     //autosave if necessary!
     if (

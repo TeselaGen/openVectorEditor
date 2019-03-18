@@ -11,6 +11,11 @@ describe("editor", function() {
     cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("not.exist");
     cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
     cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
+    //toggling the read only toggle should not affect any visibilities
+    cy.tgToggle("readOnly");
+    cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("not.exist");
+    cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
+    cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
   });
   it("can drag the editor", function() {
     cy.contains("No Selection");

@@ -51,10 +51,6 @@ function Cutsites({
         }
       };
     }
-    /* eslint-disable */
-    if (process.env.NODE_ENV !== "production" && !annotation.id) debugger;
-    /* eslint-enable */
-
     svgGroup.push(
       <DrawCutsite
         key={"cutsite" + index}
