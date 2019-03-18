@@ -83,7 +83,7 @@ describe("editor", function() {
       .click();
     cy.get(".bp3-menu-item")
       .contains("Export Sequence")
-      .click();
+      .trigger("mouseover");
     cy.contains("Custom export option!").click();
     cy.get(".bp3-toast").contains("Custom export hit!");
   });
