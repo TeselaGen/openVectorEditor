@@ -8,6 +8,8 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
 
+## Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)
+
 ## OVE out in the wild: 
  - https://j5.jbei.org/VectorEditor/VectorEditor.html
 
@@ -16,6 +18,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
   - [Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor](#issue-tracking-board-httpswaffleioteselagenopenvectoreditor)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
+  - [Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)](#cypress-tests-dashboard-httpsdashboardcypressioprojects1zj5vcruns-youll-need-to-make-a-login-with-cypress)
   - [OVE out in the wild:](#ove-out-in-the-wild)
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
