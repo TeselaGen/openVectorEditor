@@ -43,7 +43,7 @@ class OveMenuBar extends React.Component {
           menu={this.getFilteredMenu(menuFilter, menuDef)}
           enhancers={this.enhancers}
         />
-        <div
+        {/* <div
           className="menuBarDivider"
           style={{
             height: "87%",
@@ -51,7 +51,7 @@ class OveMenuBar extends React.Component {
             margin: 2,
             background: "lightgrey"
           }}
-        />
+        /> */}
       </div>
     );
   }

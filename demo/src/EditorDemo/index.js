@@ -35,7 +35,7 @@ const defaultState = {
   overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
   showAvailability: true,
-  showOptions: true,
+  showDemoOptions: true,
   shouldAutosave: false,
   isFullscreen: false,
   isProtein: false,
@@ -209,7 +209,7 @@ export default class EditorDemo extends React.Component {
           dragMock.dragStart(dragSource).dragEnter(dropTarget).dragOver(dropTarget).delay(500).dragEnd()
         }}>click me!</button> */}
         <div style={{ width: 250 }}>
-          {renderToggle({ that: this, type: "showOptions" })}
+          {renderToggle({ that: this, type: "showDemoOptions" })}
         </div>
 
         <div
@@ -220,7 +220,7 @@ export default class EditorDemo extends React.Component {
             flexGrow: "1"
           }}
         >
-          {this.state.showOptions && (
+          {this.state.showDemoOptions && (
             <div
               data-test="optionContainer"
               style={{
@@ -606,7 +606,7 @@ beforeSequenceInsertOrDelete: (
               display: "flex",
               flexDirection: "column",
               flexGrow: 1,
-              ...(this.state.showOptions && { paddingLeft: 250 })
+              ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
           > */}
           <Editor
@@ -614,7 +614,7 @@ beforeSequenceInsertOrDelete: (
               // display: "flex",
               // flexDirection: "column",
               // flexGrow: 1,
-              ...(this.state.showOptions && { paddingLeft: 250 })
+              ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
             {...this.state.readOnly && { readOnly: true }}
             editorName="DemoEditor"

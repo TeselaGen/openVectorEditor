@@ -5,6 +5,7 @@
 import viewSubmenu from "./viewSubmenu";
 export const copyOptionsMenu = {
   text: "Copy Options",
+  showInSearchMenu: true,
   submenu: [
     { cmd: "toggleCopyFeatures", shouldDismissPopover: false },
     { cmd: "toggleCopyPartialFeatures", shouldDismissPopover: false },
@@ -15,6 +16,7 @@ export const copyOptionsMenu = {
 export const createNewAnnotationMenu = {
   text: "Create",
   cmd: "createMenuHolder",
+  showInSearchMenu: true,
   submenu: [
     "newFeature",
     "newPart",
@@ -42,6 +44,7 @@ export default [
       "importSequence",
       {
         text: "Export Sequence",
+        showInSearchMenu: true,
         submenu: [
           { cmd: "exportSequenceAsGenbank" },
           { cmd: "exportSequenceAsFasta" },
@@ -93,5 +96,10 @@ export default [
     text: "Tools",
     cmd: "toolsCmd",
     submenu: ["restrictionEnzymesManager", "simulateDigestion"]
+  },
+  // { isMenuSearch: true }
+  {
+    text: "Help",
+    submenu: [{ isMenuSearch: true }, "--", "about"]
   }
 ];

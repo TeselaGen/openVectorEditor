@@ -247,14 +247,6 @@ export default compose(
           end: sequenceLength - 1
         });
     },
-    handleNewTranslation: props => annotation => {
-      props.upsertTranslation({
-        start: annotation.start,
-        end: annotation.end,
-        forward: annotation.forward
-      });
-      props.annotationVisibilityShow("translations");
-    },
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
       acc[`handleNew${key}`] = props => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;

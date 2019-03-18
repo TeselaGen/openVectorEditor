@@ -3,6 +3,7 @@ import { Tag, Classes } from "@blueprintjs/core";
 import { convertRangeTo0Based } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
+import { showConfirmationDialog } from "teselagen-react-components";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,
@@ -21,8 +22,16 @@ const isProtein = props => props.sequenceData.isProtein;
 
 const getNewTranslationHandler = isReverse => ({
   handler: (props, state, ctxInfo) => {
-    const annotation = get(ctxInfo, "context.annotation");
-    props.handleNewTranslation({ ...annotation, forward: !isReverse });
+    const annotation =
+      get(ctxInfo, "context.annotation") || props.selectionLayer;
+    if (!(annotation.start > -1)) {
+      return window.toastr.warning("No region found to translate");
+    }
+    props.upsertTranslation({
+      start: annotation.start,
+      end: annotation.end,
+      forward: !isReverse
+    });
     props.annotationVisibilityShow("translations");
   },
   isHidden: props =>
@@ -31,8 +40,7 @@ const getNewTranslationHandler = isReverse => ({
     !props.annotationsToSupport.translations,
   isDisabled: props =>
     /* (props.readOnly && readOnlyDisabledTooltip) ||  */ props.sequenceLength ===
-      0 ||
-    (noSelection(props) || "Must have a selection to create a translation")
+      0 || noSelection(props)
 });
 
 const fileCommandDefs = {
@@ -304,6 +312,26 @@ const editCommandDefs = {
     handler: props => props.toggleFindTool(),
     hotkey: "mod+f",
     hotkeyProps: { preventDefault: true }
+  },
+  about: {
+    isDisabled: props => props.sequenceLength === 0,
+    name: "About",
+    handler: () =>
+      showConfirmationDialog({
+        text: (
+          <div>
+            This editor is made by Teselagen.
+            <br />
+            Issues can be logged here:{" "}
+            <a href="https://github.com/TeselaGen/openVectorEditor/issues">
+              openVectorEditor
+            </a>
+          </div>
+        ),
+        confirmButtonText: "Back",
+        cancelButtonText: null,
+        canEscapeKeyCancel: true //this is false by default
+      })
   },
 
   goTo: {

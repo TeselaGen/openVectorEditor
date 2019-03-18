@@ -2,6 +2,20 @@ describe("menuBar", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`should be able to use the shortcut bar to translate the sequence`, () => {
+    cy.get(".veRowViewTranslationsContainer")
+      .first()
+      .find("svg")
+      .should("have.length", 1);
+    cy.get("body").type("{meta}/");
+    cy.focused().type("selec all{enter}");
+    cy.get("body").type("{meta}/");
+    cy.focused().type("new translation{enter}");
+    cy.get(".veRowViewTranslationsContainer")
+      .first()
+      .find("svg")
+      .should("have.length", 2);
+  });
   it(`should be able toggle sequence case`, () => {
     cy.get(".tg-menu-bar")
       .contains("View")
@@ -124,7 +138,7 @@ describe("menuBar", function() {
   });
 
   it("menubar can be optionally displayed above or on the same line as the shortcuts", function() {
-    cy.tgToggle("showOptions");
+    cy.tgToggle("showDemoOptions");
     cy.tgToggle("displayMenuBarAboveTools");
 
     cy.get(".veTools-displayMenuBarAboveTools").should("exist");

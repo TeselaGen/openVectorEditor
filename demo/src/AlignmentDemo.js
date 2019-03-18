@@ -5,7 +5,7 @@ import msaAlignment from "./exampleData/msaAlignment.json";
 import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import sangerAlignment from "./exampleData/sangerAlignment.json";
 import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
-import { addAlignment, AlignmentView, /* updateEditor */ } from "../../src/";
+import { addAlignment, AlignmentView /* updateEditor */ } from "../../src/";
 // import { selectionLayerUpdate } from "../../src/redux/selectionLayer";
 // import { caretPositionUpdate } from "../../src/redux/caretPosition";
 import renderToggle from "./utils/renderToggle";
@@ -15,13 +15,10 @@ import { BPSelect } from "teselagen-react-components";
 // import { MenuItem } from "@blueprintjs/core";
 
 // Use the line below because using the full 30 sequences murders Redux dev tools.
-msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(
-  0,
-  20
-);
+msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(0, 20);
 const defaultState = {
   alignmentDataId: msaAlignment.id,
-  showOptions: true,
+  showDemoOptions: true,
   forceHeightMode: false,
   isFullyZoomedOut: false,
   setMinimapLaneHeight: false,
@@ -30,7 +27,7 @@ const defaultState = {
   noClickDragHandlers: false,
   hasTemplate: false,
   noVisibilityOptions: false,
-  setTickSpacing: false,
+  setTickSpacing: false
 };
 
 // const basicActions = { selectionLayerUpdate, caretPositionUpdate };
@@ -55,7 +52,7 @@ export default class AlignmentDemo extends React.Component {
     return (
       <div>
         <div style={{ width: 250 }}>
-          {renderToggle({ that: this, type: "showOptions" })}
+          {renderToggle({ that: this, type: "showDemoOptions" })}
         </div>
 
         <div
@@ -66,7 +63,7 @@ export default class AlignmentDemo extends React.Component {
             flexGrow: "1"
           }}
         >
-          {this.state.showOptions && (
+          {this.state.showDemoOptions && (
             <div
               data-test="optionContainer"
               style={{
@@ -88,10 +85,13 @@ export default class AlignmentDemo extends React.Component {
             >
               <BPSelect
                 onChange={val => {
-                  this.setState({ alignmentDataId: val })
+                  this.setState({ alignmentDataId: val });
                 }}
                 options={[
-                  { label: "Multiple Sequence Alignment", value: msaAlignment.id },
+                  {
+                    label: "Multiple Sequence Alignment",
+                    value: msaAlignment.id
+                  },
                   { label: "Pairwise Alignment", value: pairwiseAlignment.id },
                   { label: "Sanger Alignment", value: sangerAlignment.id },
                   { label: "MSA with gaps", value: msaAlignmentWithGaps.id }
@@ -166,15 +166,13 @@ export default class AlignmentDemo extends React.Component {
         </div>
         <AlignmentView
           style={{
-            ...(this.state.showOptions && { paddingLeft: 250 })
+            ...(this.state.showDemoOptions && { paddingLeft: 250 })
           }}
           {...{
             id: this.state.alignmentDataId,
             height: this.state.forceHeightMode ? 500 : undefined,
             isFullyZoomedOut: this.state.isFullyZoomedOut,
-            minimapLaneHeight: this.state.setMinimapLaneHeight
-              ? 13
-              : undefined,
+            minimapLaneHeight: this.state.setMinimapLaneHeight ? 13 : undefined,
             minimapLaneSpacing: this.state.setMinimapLaneSpacing
               ? 3
               : undefined,
