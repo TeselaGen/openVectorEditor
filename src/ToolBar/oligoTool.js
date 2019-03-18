@@ -5,11 +5,13 @@ import { connectToEditor } from "../withEditorProps";
 
 export default connectToEditor(editorState => {
   return {
+    isHidden: editorState.sequenceData && editorState.sequenceData.isProtein,
+
     toggled:
       editorState.annotationVisibility &&
       editorState.annotationVisibility.primers
   };
-})(({ toolbarItemProps, toggled, annotationVisibilityToggle }) => {
+})(({ toolbarItemProps, isHidden, toggled, annotationVisibilityToggle }) => {
   return (
     <ToolbarItem
       {...{
@@ -17,6 +19,7 @@ export default connectToEditor(editorState => {
         onIconClick: function() {
           annotationVisibilityToggle("primers");
         },
+        isHidden,
         toggled,
         tooltip: "Show Primers",
         tooltipToggled: "Hide Primers",

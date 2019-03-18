@@ -31,6 +31,7 @@ class ToolbarItem extends React.Component {
       dropdowntooltip = "",
       Dropdown,
       disabled,
+      isHidden,
       renderIconAbove,
       noDropdownIcon,
       IconWrapper,
@@ -44,6 +45,7 @@ class ToolbarItem extends React.Component {
       ...rest
     } = { ...this.props, ...overrides };
     if (!toolName) console.warn("toolName is required!");
+    if (isHidden) return null;
     let tooltipToDisplay = tooltip;
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;

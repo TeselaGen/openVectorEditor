@@ -189,10 +189,15 @@ const fileCommandDefs = {
   },
 
   exportSequenceAsGenbank: {
-    name: "Download Genbank File",
-    handler: props => props.exportSequenceToFile("genbank")
+    name: props =>
+      props.sequenceData.isProtein
+        ? "Download GenPept File"
+        : "Download Genbank File",
+    handler: props =>
+      props.exportSequenceToFile(
+        props.sequenceData.isProtein ? "genpept" : "genbank"
+      )
   },
-
   exportSequenceAsFasta: {
     name: "Download FASTA File",
     handler: props => props.exportSequenceToFile("fasta")

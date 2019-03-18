@@ -4717,11 +4717,6 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-fuse.js@^3.4.4:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-3.4.4.tgz#f98f55fcb3b595cf6a3e629c5ffaf10982103e95"
-  integrity sha512-pyLQo/1oR5Ywf+a/tY8z4JygnIglmRxVUOiyFAbd11o9keUDpUJSMGRWJngcnkURj30kDHPmhoKY8ChJiz3EpQ==
-
 fuzzysearch@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/fuzzysearch/-/fuzzysearch-1.0.3.tgz#dffc80f6d6b04223f2226aa79dd194231096d008"
@@ -10574,10 +10569,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@26.0.20:
-  version "26.0.20"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.0.20.tgz#87390031d2fbe1322b9344b59883b1923f548648"
-  integrity sha512-xgxbFgsZ4Srh1CwnYv/hsJAyz/lkqaPaWSLj/ykxwT+RQUwrVHZ9s5qHw+elN2tuu8M2+me7RSWTvUryA0If4g==
+teselagen-react-components@26.0.21:
+  version "26.0.21"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.0.21.tgz#2154447f09211632e603ccbafbc4d2427fd69f93"
+  integrity sha512-nzFOsl4Oler0v+ofTX1uLnRecG31Y4EdwnsUvJfMKFqd/rJuD7gXocdzwid/UxllGs2s3K7hvGJnHCn3SWReYg==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -10585,7 +10580,6 @@ teselagen-react-components@26.0.20:
     deep-equal "^1.0.1"
     dom-scroll-into-view "^1.2.1"
     file-saver "^1.3.8"
-    fuse.js "^3.4.4"
     fuzzysearch "^1.0.3"
     json.sortify "^2.2.2"
     lodash "^4.17.11"

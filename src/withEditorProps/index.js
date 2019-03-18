@@ -149,6 +149,9 @@ export const exportSequenceToFile = props => format => {
   if (format === "genbank") {
     convert = jsonToGenbank;
     fileExt = "gb";
+  } else if (format === "genpept") {
+    convert = jsonToGenbank;
+    fileExt = "gp";
   } else if (format === "teselagenJson") {
     convert = JSON.stringify;
     fileExt = "json";
