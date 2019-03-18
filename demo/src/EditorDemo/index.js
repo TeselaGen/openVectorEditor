@@ -466,6 +466,7 @@ rightClickOverrides: {
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
                         features: false,
+                        primers: false,
                         // parts: false,
                         cutsites: false
                         // orfTranslations: false

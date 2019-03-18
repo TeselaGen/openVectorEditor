@@ -19,7 +19,10 @@ export default function updateEditor(
     ...rest
   } = initialValues;
 
-  let toSpread = {};
+  let toSpread = {
+    annotationVisibility,
+    annotationsToSupport
+  };
   if (sequenceData) {
     if (sequenceData.isProtein && !isAlreadyProteinEditor) {
       //we're editing a protein but haven't initialized the protein editor yet

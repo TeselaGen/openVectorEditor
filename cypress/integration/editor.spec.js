@@ -3,6 +3,15 @@ describe("editor", function() {
     cy.visit("");
   });
 
+  it(`should be able to set visibilities!`, () => {
+    cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("exist");
+    cy.get(".ve-tool-container-featureTool .bp3-active").should("exist");
+    cy.get(".ve-tool-container-oligoTool .bp3-active").should("exist");
+    cy.tgToggle("setDefaultVisibilities");
+    cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("not.exist");
+    cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
+    cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
+  });
   it("can drag the editor", function() {
     cy.contains("No Selection");
     cy.dragBetween(`[data-row-number="0"]`, `[data-row-number="1"]`);

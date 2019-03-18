@@ -53,7 +53,12 @@ class ToolbarItem extends React.Component {
     // const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
 
     const buttonTarget = (
-      <div className={"veToolbarItemOuter " + (disabled ? " disabled " : "")}>
+      <div
+        className={
+          `veToolbarItemOuter ve-tool-container-${toolName}` +
+          (disabled ? " disabled " : "")
+        }
+      >
         {renderIconAbove && (
           <div>
             <div className="veToolbarItem">
