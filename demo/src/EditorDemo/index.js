@@ -24,7 +24,6 @@ const defaultState = {
   customizeTabs: false,
   displayMenuBarAboveTools: true,
   withPreviewMode: false,
-  focusLinearViewByDefault: false,
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
@@ -251,7 +250,7 @@ export default class EditorDemo extends React.Component {
                 Change Sequence
               </Button>
               <Button onClick={this.resetDefaultState}>Reset Defaults</Button>
-              Demo Specific options:
+              <strong>Demo Specific options:</strong>
               {renderToggle({
                 that: this,
                 label: "Customize tool bar",
@@ -474,7 +473,7 @@ rightClickOverrides: {
                     });
                 }
               })}
-              Editor Options:
+              <strong>Editor Options:</strong>
               {renderToggle({
                 that: this,
                 type: "readOnly",
@@ -516,7 +515,6 @@ other options are:
                 that: this,
                 label: "Set A Selection"
               })}
-              {renderToggle({ that: this, type: "focusLinearViewByDefault" })}
               {renderToggle({ that: this, type: "withPreviewMode" })}
               {renderToggle({ that: this, type: "shouldAutosave" })}
               {renderToggle({ that: this, type: "showMenuBar" })}
@@ -544,7 +542,7 @@ other options are:
                       });
                 }
               })}
-              <div>Editor Handlers: </div>
+              <strong>Editor Handlers: </strong>
               {renderToggle({
                 that: this,
                 type: "onNew"
