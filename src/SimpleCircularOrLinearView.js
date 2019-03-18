@@ -13,7 +13,11 @@ export default props => {
   const Component = _sequenceData.circular ? CircularView : LinearView;
   const tickSpacing = _sequenceData.circular
     ? undefined
-    : Math.floor(_sequenceData.sequence.length / 5);
+    : Math.floor(
+        (_sequenceData.noSequence
+          ? _sequenceData.size
+          : _sequenceData.sequence.length) / 5
+      );
   let sequenceData = _sequenceData;
   let annotationVisibility = {
     ...visibilityDefaultValues,
