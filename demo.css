@@ -10601,6 +10601,10 @@ span.bp3-popover-target {
   user-select: none;
 }  */
 
+.veLinearView {
+  overflow: visible !important;
+}
+
 .veRowItemSpacer {
   height: 10px;
 }
@@ -10965,10 +10969,6 @@ span.bp3-popover-target {
 .ve-toolbar-item-popover {
   /* the z-index has to be high for it to work with ice */
   z-index: 4000;
-}
-
-.veLinearView {
-  overflow: visible !important;
 }
 
 .ve-print {
