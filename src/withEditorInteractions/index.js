@@ -114,7 +114,9 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        getAcceptedChars(this.props.sequenceData.isProtein).split(""),
+        getAcceptedChars(
+          this.props.sequenceData && this.props.sequenceData.isProtein
+        ).split(""),
         event => {
           this.handleDnaInsert(event);
         }

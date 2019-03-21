@@ -33,7 +33,7 @@ export class LinearView extends React.Component {
         nearestCaretPos = maxEnd + 1;
       }
     }
-    if (this.props.sequenceData.isProtein) {
+    if (this.props.sequenceData && this.props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
     const callbackVals = {

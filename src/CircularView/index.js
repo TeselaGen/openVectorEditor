@@ -51,7 +51,7 @@ export class CircularView extends React.Component {
       getPositionFromAngle(angle, sequenceLength, true),
       sequenceLength
     ); //true because we're in between positions
-    if (this.props.sequenceData.isProtein) {
+    if (this.props.sequenceData && this.props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
     callback({

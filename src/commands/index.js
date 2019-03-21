@@ -18,7 +18,7 @@ import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 
-const isProtein = props => props.sequenceData.isProtein;
+const isProtein = props => props.sequenceData && props.sequenceData.isProtein;
 
 const getNewTranslationHandler = isReverse => ({
   handler: (props, state, ctxInfo) => {
@@ -190,13 +190,9 @@ const fileCommandDefs = {
 
   exportSequenceAsGenbank: {
     name: props =>
-      props.sequenceData.isProtein
-        ? "Download GenPept File"
-        : "Download Genbank File",
+      isProtein(props) ? "Download GenPept File" : "Download Genbank File",
     handler: props =>
-      props.exportSequenceToFile(
-        props.sequenceData.isProtein ? "genpept" : "genbank"
-      )
+      props.exportSequenceToFile(isProtein(props) ? "genpept" : "genbank")
   },
   exportSequenceAsFasta: {
     name: "Download FASTA File",
@@ -347,18 +343,18 @@ const editCommandDefs = {
         extraProps: {
           sequencePosition: {
             min: 0,
-            max: divideBy3(props.sequenceLength, props.sequenceData.isProtein)
+            max: divideBy3(props.sequenceLength, isProtein(props))
           }
         },
         initialValues: {
           sequencePosition: divideBy3(
             props.caretPosition >= 0 ? props.caretPosition : 0,
-            props.sequenceData.isProtein
+            isProtein(props)
           )
         },
         onSubmit: values =>
           props.caretPositionUpdate(
-            values.sequencePosition * (props.sequenceData.isProtein ? 3 : 1)
+            values.sequencePosition * (isProtein(props) ? 3 : 1)
           )
       });
     },
@@ -375,33 +371,25 @@ const editCommandDefs = {
         extraProps: {
           from: {
             min: 1,
-            max: divideBy3(
-              props.sequenceLength || 1,
-              props.sequenceData.isProtein || 1
-            )
+            max: divideBy3(props.sequenceLength || 1, isProtein(props) || 1)
           },
           to: {
             min: 1,
-            max: divideBy3(
-              props.sequenceLength || 1,
-              props.sequenceData.isProtein || 1
-            )
+            max: divideBy3(props.sequenceLength || 1, isProtein(props) || 1)
           }
         },
         initialValues: {
-          from: divideBy3(start >= 0 ? start : 0, props.sequenceData.isProtein),
-          to: divideBy3(end >= 0 ? end : 0, props.sequenceData.isProtein)
+          from: divideBy3(start >= 0 ? start : 0, isProtein(props)),
+          to: divideBy3(end >= 0 ? end : 0, isProtein(props))
         },
         onSubmit: values => {
           const newRange = convertRangeTo0Based({
-            start: props.sequenceData.isProtein ? values.from * 3 : values.from,
-            end: props.sequenceData.isProtein ? values.to * 3 : values.to
+            start: isProtein(props) ? values.from * 3 : values.from,
+            end: isProtein(props) ? values.to * 3 : values.to
           });
 
           return props.selectionLayerUpdate({
-            start: props.sequenceData.isProtein
-              ? newRange.start - 2
-              : newRange.start,
+            start: isProtein(props) ? newRange.start - 2 : newRange.start,
             end: newRange.end
           });
         }
@@ -430,7 +418,7 @@ const editCommandDefs = {
   },
 
   complementSelection: {
-    isHidden: props => props.readOnly || props.sequenceData.isProtein,
+    isHidden: props => props.readOnly || isProtein(props),
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || noSelection(props),
@@ -438,7 +426,7 @@ const editCommandDefs = {
   },
 
   complementEntireSequence: {
-    isHidden: props => props.readOnly || props.sequenceData.isProtein,
+    isHidden: props => props.readOnly || isProtein(props),
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -480,14 +468,14 @@ const editCommandDefs = {
   reverseComplementSelection: {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || noSelection(props),
-    isHidden: props => props.readOnly || props.sequenceData.isProtein,
+    isHidden: props => props.readOnly || isProtein(props),
 
     handler: props => props.handleReverseComplementSelection(),
     hotkey: "mod+e"
   },
 
   reverseComplementEntireSequence: {
-    isHidden: props => props.readOnly || props.sequenceData.isProtein,
+    isHidden: props => props.readOnly || isProtein(props),
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -803,12 +791,12 @@ const annotationToggleCommandDefs = {};
     type: "sequence",
     name: "DNA Sequence",
     noCount: true,
-    isHidden: props => !props.sequenceData.isProtein
+    isHidden: props => !isProtein(props)
   },
   {
     type: "reverseSequence",
     name: props =>
-      props.sequenceData.isProtein ? "DNA Reverse Sequence" : "Reverse Sequence"
+      isProtein(props) ? "DNA Reverse Sequence" : "Reverse Sequence"
   },
   {
     type: "dnaColors",
@@ -882,11 +870,11 @@ const annotationToggleCommandDefs = {};
 const additionalAnnotationCommandsDefs = {
   toggleAminoAcidNumbers_dna: {
     ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
-    isHidden: props => props.sequenceData.isProtein
+    isHidden: props => isProtein(props)
   },
   toggleAminoAcidNumbers_protein: {
     ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
-    isHidden: props => props.sequenceData.isProtein
+    isHidden: props => isProtein(props)
   }
 };
 
@@ -894,13 +882,13 @@ const toolCommandDefs = {
   simulateDigestion: {
     handler: props => props.createNewDigest(),
     hotkey: "mod+shift+d",
-    isHidden: props => props.sequenceData.isProtein
+    isHidden: props => isProtein(props)
   },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
     name: "Restriction Enzymes Manager...",
     handler: props => props.addYourOwnEnzymeOpen(),
-    isHidden: props => props.sequenceData.isProtein
+    isHidden: props => isProtein(props)
   }
 };
 
