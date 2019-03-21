@@ -18,7 +18,7 @@ import {
 import { Intent } from "@blueprintjs/core";
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
-import { actions } from "../redux";
+import { actions, editorReducer } from "../redux";
 import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 
@@ -406,7 +406,7 @@ function mapStateToProps(state, ownProps) {
   let editorState = VectorEditor[editorName];
 
   if (!editorState) {
-    return {};
+    return editorReducer({}, {});
   }
 
   const {

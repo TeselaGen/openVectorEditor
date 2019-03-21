@@ -647,36 +647,38 @@ export class Editor extends React.Component {
                 </div>
               )}
             </Droppable>,
-            ...(panelsToShow.length === 1 && [
-              <Droppable //extra add tab box (only shown when there is 1 tab being shown)!
-                key="extra-drop-box"
-                direction="horizontal"
-                droppableId={"droppable-id-" + (index + 1).toString()}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    style={getSplitScreenListStyle(
-                      snapshot.isDraggingOver,
-                      tabDragging
-                    )}
+            ...(panelsToShow.length === 1
+              ? [
+                  <Droppable //extra add tab box (only shown when there is 1 tab being shown)!
+                    key="extra-drop-box"
+                    direction="horizontal"
+                    droppableId={"droppable-id-" + (index + 1).toString()}
                   >
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "45%",
-                        top: "45%",
-                        fontSize: 26
-                      }}
-                    >
-                      {" "}
-                      + Add Tab
-                    </div>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            ]),
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        style={getSplitScreenListStyle(
+                          snapshot.isDraggingOver,
+                          tabDragging
+                        )}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: "45%",
+                            top: "45%",
+                            fontSize: 26
+                          }}
+                        >
+                          {" "}
+                          + Add Tab
+                        </div>
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                ]
+              : []),
             isFullScreen ? (
               <div
                 key="veWhiteBackground"

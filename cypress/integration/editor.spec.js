@@ -98,7 +98,7 @@ describe("editor", function() {
     cy.get(".bp3-menu-item")
       .contains("Export Sequence")
       .trigger("mouseover");
-    cy.contains("Custom export option!").click();
+    cy.contains(".bp3-menu-item", "Custom export option!").click();
     cy.get(".bp3-toast").contains("Custom export hit!");
   });
   it(`should handle custom dialog overrides correctly`, () => {

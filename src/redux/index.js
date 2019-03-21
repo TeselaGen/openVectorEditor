@@ -92,6 +92,8 @@ let reducers = {
   instantiated: () => true
 };
 
+export const editorReducer = combineReducers(reducers);
+
 export default function reducerFactory(initialState = {}) {
   // if (!initialState || !Object.keys(initialState).length) {
   //   throw new Error(
@@ -118,7 +120,7 @@ export default function reducerFactory(initialState = {}) {
         if (action.type === "VECTOR_EDITOR_CLEAR") {
           currentState = undefined;
         }
-        newState[editorName] = combineReducers(reducers)(currentState, action);
+        newState[editorName] = editorReducer(currentState, action);
       });
       stateToReturn = {
         ...state,
@@ -128,10 +130,7 @@ export default function reducerFactory(initialState = {}) {
       //just a normal action
       Object.keys(state).forEach(function(editorName) {
         if (editorName === "__allEditorsOptions") return; //we deal with __allEditorsOptions below so don't pass it here
-        newState[editorName] = combineReducers(reducers)(
-          state[editorName],
-          action
-        );
+        newState[editorName] = editorReducer(state[editorName], action);
       });
       stateToReturn = newState;
     }

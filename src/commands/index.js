@@ -36,6 +36,7 @@ const getNewTranslationHandler = isReverse => ({
   },
   isHidden: props =>
     isProtein(props) ||
+    !props.annotationsToSupport ||
     // props.readOnly ||
     !props.annotationsToSupport.translations,
   isDisabled: props =>
@@ -63,6 +64,7 @@ const fileCommandDefs = {
   saveSequence: {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
+      !props.sequenceData ||
       (props.sequenceData.stateTrackingId === "initialLoadId" ||
         props.sequenceData.stateTrackingId === props.lastSavedId),
     isHidden: props => props.readOnly || !props.handleSave,
@@ -371,11 +373,11 @@ const editCommandDefs = {
         extraProps: {
           from: {
             min: 1,
-            max: divideBy3(props.sequenceLength || 1, isProtein(props) || 1)
+            max: divideBy3(props.sequenceLength || 1, isProtein(props))
           },
           to: {
             min: 1,
-            max: divideBy3(props.sequenceLength || 1, isProtein(props) || 1)
+            max: divideBy3(props.sequenceLength || 1, isProtein(props))
           }
         },
         initialValues: {
@@ -593,7 +595,10 @@ const editCommandDefs = {
     handler: (props /* state, ctxInfo */) => {
       props.handleNewFeature();
     },
-    isHidden: props => props.readOnly || !props.annotationsToSupport.features,
+    isHidden: props =>
+      props.readOnly ||
+      !props.annotationsToSupport ||
+      !props.annotationsToSupport.features,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     hotkey: "mod+k"
@@ -631,7 +636,10 @@ const editCommandDefs = {
 
   newPart: {
     handler: props => props.handleNewPart(),
-    isHidden: props => props.readOnly || !props.annotationsToSupport.parts,
+    isHidden: props =>
+      props.readOnly ||
+      !props.annotationsToSupport ||
+      !props.annotationsToSupport.parts,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -640,7 +648,10 @@ const editCommandDefs = {
   },
   newPrimer: {
     handler: props => props.handleNewPrimer(),
-    isHidden: props => props.readOnly || !props.annotationsToSupport.primers,
+    isHidden: props =>
+      props.readOnly ||
+      !props.annotationsToSupport ||
+      !props.annotationsToSupport.primers,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0
   },
