@@ -1,4 +1,3 @@
-// const {aliases} = require("@teselagen/webpack-link");
 const path = require("path");
 
 module.exports = {
@@ -12,6 +11,8 @@ module.exports = {
   },
   webpack: {
     aliases: {
+      // **** You can comment these in to override an npm module with a local module. *****
+      // **** Just be sure to comment them back out before committing! *****
       // "ve-range-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve("../../ve-range-utils/src/"),
