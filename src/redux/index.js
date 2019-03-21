@@ -30,7 +30,7 @@ import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
-export vectorEditorMiddleware from "./middleware";
+export { default as vectorEditorMiddleware } from "./middleware";
 
 const subReducers = {
   addYourOwnEnzyme,

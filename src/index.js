@@ -19,7 +19,9 @@ export {
   default as CircularView,
   CircularView as CircularViewUnconnected
 } from "./CircularView";
-export SimpleCircularOrLinearView from "./SimpleCircularOrLinearView";
+export {
+  default as SimpleCircularOrLinearView
+} from "./SimpleCircularOrLinearView";
 export { default as RowView, RowView as RowViewUnconnected } from "./RowView";
 export { default as RowItem, RowItem as RowItemUnconnected } from "./RowItem";
 export { default as Editor, Editor as EditorUnconnected } from "./Editor";
