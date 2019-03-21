@@ -1,6 +1,6 @@
-import { getRangeLength } from "ve-range-utils/lib";
+import { getRangeLength } from "ve-range-utils";
 import { divideBy3 } from "./proteinUtils";
-import { getInsertBetweenVals } from "ve-sequence-utils/lib";
+import { getInsertBetweenVals } from "ve-sequence-utils";
 
 export function getSelectionMessage({
   caretPosition = -1,

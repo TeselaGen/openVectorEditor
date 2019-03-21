@@ -2,10 +2,7 @@
 import withEditorProps from "../withEditorProps";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
-import {
-  normalizePositionByRangeLength,
-  getRangeLength
-} from "ve-range-utils/lib";
+import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
 // import selectionLayer from "../redux/selectionLayer";
 
 export default compose(

@@ -19,8 +19,10 @@ export default function renderToggle({
   type,
   label,
   onClick,
+  info,
   description,
-  hook
+  hook,
+  ...rest
 }) {
   let toggleOrButton;
   const labelOrText = label ? <span>{label}</span> : type;
@@ -28,7 +30,8 @@ export default function renderToggle({
     "data-test": type || label,
     style: { margin: "0px 30px", marginTop: 4 },
     label: labelOrText,
-    text: labelOrText
+    text: labelOrText,
+    ...rest
   };
   if (isButton) {
     toggleOrButton = (
@@ -60,7 +63,7 @@ export default function renderToggle({
   }
   return (
     <div style={{ display: "flex" }} className="toggle-button-holder">
-      {description && (
+      {(description || info) && (
         <InfoHelper
           isPopover
           popoverProps={{
@@ -76,7 +79,7 @@ export default function renderToggle({
           }}
           style={{ marginRight: -15, marginTop: 5, marginLeft: 5 }}
         >
-          <ReactMarkdown source={description} />
+          <ReactMarkdown source={description || info} />
         </InfoHelper>
       )}
       {toggleOrButton}

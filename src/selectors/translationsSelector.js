@@ -8,7 +8,7 @@ import { getAminoAcidDataForEachBaseOfDna } from "ve-sequence-utils";
 import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
-import { normalizePositionByRangeLength } from "ve-range-utils/lib";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 import cdsFeaturesSelector from "./cdsFeaturesSelector";
 
 function translationsSelector(

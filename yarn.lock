@@ -232,6 +232,14 @@
   dependencies:
     pascal-case "^2.0.1"
 
+"@teselagen/webpack-link@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@teselagen/webpack-link/-/webpack-link-1.0.9.tgz#4aca781c8343bc4f896455bacbba3b2b20d680ae"
+  integrity sha512-3VMUANsx6wNc7ujxyGm4JbS0ZhZDzSabWItPm9rHtgVY24BrJ6JUVgT44MrmIqRXVa7lB0ATgkmcopa9JxJxFQ==
+  dependencies:
+    inquirer "^6.2.2"
+    lodash "^4.17.11"
+
 "@types/dom4@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/dom4/-/dom4-2.0.1.tgz#506d5781b9bcab81bd9a878b198aec7dee2a6033"

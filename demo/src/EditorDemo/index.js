@@ -240,22 +240,61 @@ export default class EditorDemo extends React.Component {
               }}
             >
               <Button
-                onClick={() => {
+                icon="refresh"
+                style={{ marginLeft: 10, marginRight: 10 }}
+                onClick={this.resetDefaultState}
+              >
+                Reset Demo Defaults
+              </Button>
+
+              {renderToggle({
+                info: `
+You can change the sequence in a given <Editor/> by calling: 
+\`\`\`js
+updateEditor(store, "DemoEditor", {
+  sequenceDataHistory: {},
+  sequenceData: generateSequenceData() //update with random seq data!
+});
+\`\`\`
+
+              `,
+                onClick: () => {
                   updateEditor(store, "DemoEditor", {
                     sequenceDataHistory: {},
                     sequenceData: generateSequenceData()
                   });
-                }}
-              >
-                Change Sequence
-              </Button>
-              <Button onClick={this.resetDefaultState}>Reset Defaults</Button>
-              <strong>Demo Specific options:</strong>
+                },
+                isButton: true,
+                that: this,
+                label: "Randomize Sequence Data"
+              })}
+              {renderToggle({
+                that: this,
+                type: "isProtein",
+                info: `
+The editor supports Amino Acid sequences as well as DNA sequences!
+Protein sequences are 
+                `,
+                hook: isProtein => {
+                  isProtein
+                    ? updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: tidyUpSequenceData(exampleProteinData, {
+                          convertAnnotationsFromAAIndices: true
+                        })
+                      })
+                    : updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
+                }
+              })}
+
               {renderToggle({
                 that: this,
                 label: "Customize tool bar",
                 type: "overrideToolbarOptions",
-                description: `//This is an example of how to pass custom tool overrides:
+                info: `//This is an example of how to pass custom tool overrides:
 \`\`\`
 ToolBarProps: {
   toolList: [
@@ -314,7 +353,7 @@ ToolBarProps: {
                       ]
                     });
                 },
-                description: `//The positions of the tabs shown in the editor can be changed programatically:
+                info: `//The positions of the tabs shown in the editor can be changed programatically:
 \`\`\`js
 updateEditor(store, "DemoEditor", {
   panelsShown: [
@@ -361,7 +400,7 @@ updateEditor(store, "DemoEditor", {
                 that: this,
                 label: "Customize properties tab",
                 type: "propertiesOverridesExample",
-                description: `//The panels shown in the properties tab can be customized. 
+                info: `//The panels shown in the properties tab can be customized. 
                 Here is an example of how to pass Properties overrides
 \`\`\`js
 PropertiesProps: {
@@ -396,7 +435,7 @@ PropertiesProps: {
                 that: this,
                 label: "Customize menu bar",
                 type: "menuOverrideExample",
-                description: `The top menu bar can be customized as desired. 
+                info: `The top menu bar can be customized as desired. 
                 Here is an example of how to do that:
 \`\`\`\
 menuFilter:
@@ -420,7 +459,7 @@ menuFilter:
                 that: this,
                 label: "Customize Add/Edit Feature Dialog",
                 type: "overrideAddEditFeatureDialog",
-                description: `You'll need to pass an entire component override to the editor like so:
+                info: `You'll need to pass an entire component override to the editor like so:
 \`\`\`
 <Editor AddOrEditFeatureDialogOverride={MyCustomComponent}/>
 \`\`\`
@@ -432,7 +471,7 @@ menuFilter:
                 that: this,
                 label: "Customize Right Click Menus",
                 type: "overrideRightClickExample",
-                description: `If enabled, right clicking a part will fire a custom alert. 
+                info: `If enabled, right clicking a part will fire a custom alert. 
 Here is an example of how to pass rightClick overrides:
 \`\`\`
 rightClickOverrides: {
@@ -453,11 +492,25 @@ rightClickOverrides: {
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
-                description:
+                info:
                   "You can force a height for the editor by passing `height:500` (same for width) "
               })}
               {renderToggle({
                 that: this,
+                info: `
+You can set default visibilities like so: 
+\`\`\
+updateEditor(store, "DemoEditor", {
+  annotationVisibility: {
+    features: false,
+    primers: false,
+    // parts: false,
+    cutsites: false
+    // orfTranslations: false
+  }
+});
+\`\`\`
+                `,
                 type: "setDefaultVisibilities",
                 label: "Set Default Visibilities",
                 hook: shouldUpdate => {
@@ -473,7 +526,6 @@ rightClickOverrides: {
                     });
                 }
               })}
-              <strong>Editor Options:</strong>
               {renderToggle({
                 that: this,
                 type: "readOnly",
@@ -484,7 +536,7 @@ rightClickOverrides: {
                 }
               })}
               {renderToggle({
-                description: `Any panel can be programatically focused from outside the editor. 
+                info: `Any panel can be programatically focused from outside the editor. 
 Here is how to do that for the linear view:
 \`\`\`js
 store.dispatch(
@@ -513,35 +565,91 @@ other options are:
                 },
                 isButton: true,
                 that: this,
-                label: "Set A Selection"
+                label: "Set A Selection",
+                info: `
+You can programatically update the editor like so:                 
+\`\`\`
+updateEditor(store, "DemoEditor", {
+  selectionLayer: { start: 30, end: 59 }
+});
+\`\`\`
+              
+                `
               })}
-              {renderToggle({ that: this, type: "withPreviewMode" })}
-              {renderToggle({ that: this, type: "shouldAutosave" })}
-              {renderToggle({ that: this, type: "showMenuBar" })}
-              {renderToggle({ that: this, type: "displayMenuBarAboveTools" })}
-              {renderToggle({ that: this, type: "disableSetReadOnly" })}
-              {renderToggle({ that: this, type: "showReadOnly" })}
-              {renderToggle({ that: this, type: "clickOverridesExample" })}
-              {renderToggle({ that: this, type: "showCircularity" })}
-              {renderToggle({ that: this, type: "showAvailability" })}
-              {renderToggle({ that: this, type: "isFullscreen" })}
               {renderToggle({
                 that: this,
-                type: "isProtein",
-                hook: isProtein => {
-                  isProtein
-                    ? updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: tidyUpSequenceData(exampleProteinData, {
-                          convertAnnotationsFromAAIndices: true
-                        })
-                      })
-                    : updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: exampleSequenceData
-                      });
-                }
+                type: "withPreviewMode",
+                info: `
+passing withPreviewMode=true to <Editor> causes the editor to first show up as a preview with the option to open the full editor (in fullscreen mode by default)
+            `
               })}
+              {renderToggle({
+                that: this,
+                type: "shouldAutosave",
+                info: `
+passing shouldAutosave=true to <Editor> causes the editor to automatically 
+trigger the onSave() callback without first waiting for the user to hit "Save"
+`
+              })}
+              {renderToggle({
+                that: this,
+                type: "showMenuBar",
+                info: `
+hide or show the menubar (false by default)
+`
+              })}
+              {renderToggle({
+                that: this,
+                type: "displayMenuBarAboveTools",
+                info: `display the menubar above the toolbar or on the same line (true by default)`
+              })}
+              {renderToggle({
+                that: this,
+                type: "disableSetReadOnly",
+                info: `pass disableSetReadOnly=true to the <Editor> to not give users the option to change between read-only <--> editable mode, false by default`
+              })}
+              {renderToggle({
+                that: this,
+                type: "showReadOnly",
+                info: `pass showReadOnly=false to the <Editor> to not display the read-only <--> editable mode toggle, true by default`
+              })}
+              {renderToggle({
+                that: this,
+                type: "clickOverridesExample",
+                info: `
+you can pass clickOverrides to the <Editor> like so:
+\`\`\`
+clickOverrides: {
+  featureClicked: ({ event }) => {
+    //do whatever 
+    window.toastr.success("Feature Click Override Hit!");
+    event.stopPropagation();
+    return true; //returning truthy stops the regular click action from occurring
+  },
+  partClicked: () => {
+    window.toastr.success("Part Click Override Hit!");
+    //by default (aka returning falsy) the usual click action occurs
+  }
+}
+\`\`\`
+`
+              })}
+              {renderToggle({
+                that: this,
+                type: "showCircularity",
+                info: `pass showCircularity=false to the <Editor> to not display the circularity toggle`
+              })}
+              {renderToggle({
+                that: this,
+                type: "showAvailability",
+                info: `pass showAvailability=false to the <Editor> to not display the availability toggle`
+              })}
+              {renderToggle({
+                that: this,
+                type: "isFullscreen",
+                info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
+              })}
+
               <strong>Editor Handlers: </strong>
               {renderToggle({
                 that: this,
@@ -562,14 +670,14 @@ other options are:
               {renderToggle({
                 that: this,
                 type: "onDelete",
-                description:
+                info:
                   "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
               })}
               {renderToggle({
                 that: this,
                 label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
                 type: "beforeSequenceInsertOrDelete",
-                description: `
+                info: `
 The beforeSequenceInsertOrDelete handler can be used to 
 override the values being used in the insertion/deletion
 \`\`\`
