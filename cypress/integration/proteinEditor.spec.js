@@ -3,6 +3,11 @@ describe("editor", function() {
     cy.visit("");
     cy.tgToggle("isProtein");
   });
+  it(`should have non protein actions hidden from the menu search`, () => {
+    cy.get("body").type("{meta}/");
+    cy.focused().type("translation{enter}");
+    cy.contains(".bp3-menu-item", "Translations").should("not.exist");
+  });
   it(`should be able to toggle between protein and dna mode after firing some actions`, () => {
     cy.contains(".veLabelText", "Part 0").click();
     cy.tgToggle("isProtein", false);

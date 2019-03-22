@@ -2,7 +2,7 @@ describe("menuBar", function() {
   beforeEach(() => {
     cy.visit("");
   });
-  it(`should be able to use the shortcut bar to translate the sequence`, () => {
+  it(`should be able to use the search/shortcut bar to translate the sequence`, () => {
     cy.get(".veRowViewTranslationsContainer")
       .first()
       .find("svg")

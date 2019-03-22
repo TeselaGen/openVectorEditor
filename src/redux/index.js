@@ -1,3 +1,4 @@
+import { merge } from "lodash";
 import * as addYourOwnEnzyme from "./addYourOwnEnzyme";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
@@ -80,19 +81,35 @@ export const actions = {
   vectorEditorClear
 };
 
+const mergeDeepKeys = [];
 //define the reducer
 let reducers = {
-  ...Object.keys(subReducers).reduce(
-    (acc, k) => ({
+  ...Object.keys(subReducers).reduce((acc, k) => {
+    if (
+      subReducers[k].default &&
+      subReducers[k].default.__shouldUseMergedState
+    ) {
+      mergeDeepKeys.push(k);
+    }
+    return {
       ...acc,
       [k]: subReducers[k].default
-    }),
-    {}
-  ),
+    };
+  }, {}),
   instantiated: () => true
 };
 
 export const editorReducer = combineReducers(reducers);
+const customDeepMerge = (state = {}, newState = {}) => {
+  return {
+    ...state,
+    ...newState,
+    ...mergeDeepKeys.reduce((acc, key) => {
+      acc[key] = merge(state[key], newState[key]);
+      return acc;
+    }, {})
+  };
+};
 
 export default function reducerFactory(initialState = {}) {
   // if (!initialState || !Object.keys(initialState).length) {
@@ -114,8 +131,9 @@ export default function reducerFactory(initialState = {}) {
       editorNames.forEach(function(editorName) {
         let currentState = state[editorName];
         if (action.type === "VECTOR_EDITOR_UPDATE") {
-          //merge the exisiting state with the new payload of props (if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
-          currentState = { ...state[editorName], ...(action.payload || {}) };
+          //deep merge certain parts of the exisiting state with the new payload of props
+          //(if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
+          currentState = customDeepMerge(state[editorName], action.payload);
         }
         if (action.type === "VECTOR_EDITOR_CLEAR") {
           currentState = undefined;

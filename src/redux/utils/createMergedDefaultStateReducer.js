@@ -6,12 +6,14 @@ import { createReducer } from "redux-act";
 // stateToUse = {features: false, parts: true}
 // instead of
 // stateToUse = {features: false}
+// these will also be handled differently in the reducer. The __shouldUseMergedState
+// attribute will make them not clear unless full overwritten
 export default function createMergedDefaultStateReducer(
   handlers,
   defaultState
 ) {
   const reducer = createReducer(handlers);
-  return function enhancedReducer(newState = {}, action) {
+  function enhancedReducer(newState = {}, action) {
     return reducer(
       {
         ...defaultState,
@@ -19,5 +21,7 @@ export default function createMergedDefaultStateReducer(
       },
       action
     );
-  };
+  }
+  enhancedReducer.__shouldUseMergedState = true;
+  return enhancedReducer;
 }
