@@ -225,10 +225,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@teselagen/apollo-methods@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.0.9.tgz#e2b824d7a9a40f9505a275edd4e5e6c300ea4653"
-  integrity sha512-9HXuThV4fV7bhtC/fgAyWISwe9e94JboAWdT+dxwU4dHb79ci1+ry78GZQgqOJljwkiEcF+SPy5PybKzrvAmwA==
+"@teselagen/apollo-methods@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.0.14.tgz#7cf3d6c7c37a504741044ee44cbdc695948a52ea"
+  integrity sha512-363STwZg0m3uOUTe4RVYTCTytWgAiAvehiZ7Tl6k3DW/6YWp4h1piSH2A1FULrSmPsZmvpWdy9UCSD7SY7nW4w==
   dependencies:
     pascal-case "^2.0.1"
 
@@ -1925,10 +1925,10 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
 
-bio-parsers@5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.4.1.tgz#6d3ae4b839276d6df0dca48087e63613aa06dfb0"
-  integrity sha512-uZTSaIUT+VzS8cDKvV9kgIFPivkjvQFfdTxOh3wGOgpvDK77i8K33usg9xvr+qfLcxAHw5t178Z2nS4ABkdGpQ==
+bio-parsers@5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.5.1.tgz#d393ea76489189e574d9adae7b50944c045528be"
+  integrity sha512-uuTIqnbQGZOe/8Whp6DywoNDfivYRopZHBykgNVi2hE9kVe3D4cpYwU5RpM8h/k1+Rhy90WGTT47fifpH45GjA==
   dependencies:
     "@gmod/gff" "^1.1.2"
     bufferpack "^0.0.6"
@@ -8798,15 +8798,15 @@ react-deep-force-update@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.2.tgz#3d2ae45c2c9040cbb1772be52f8ea1ade6ca2ee1"
   integrity sha512-WUSQJ4P/wWcusaH+zZmbECOk7H5N2pOIl0vzheeornkIMhu+qrNdGFm0bDZLCb0hSF0jf/kH1SgkNGfBdTc4wA==
 
-react-dom@16.8.4:
-  version "16.8.4"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.4.tgz#1061a8e01a2b3b0c8160037441c3bf00a0e3bc48"
-  integrity sha512-Ob2wK7XG2tUDt7ps7LtLzGYYB6DXMCLj0G5fO6WeEICtT4/HdpOi7W/xLzZnR6RCG1tYza60nMdqtxzA8FaPJQ==
+react-dom@16.8.5:
+  version "16.8.5"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.5.tgz#b3e37d152b49e07faaa8de41fdf562be3463335e"
+  integrity sha512-VIEIvZLpFafsfu4kgmftP5L8j7P1f0YThfVTrANMhZUFMDOsA6e0kfR6wxw/8xxKs4NB59TZYbxNdPCDW34x4w==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.13.4"
+    scheduler "^0.13.5"
 
 react-draggable@3.0.5:
   version "3.0.5"
@@ -9082,15 +9082,15 @@ react-virtualized@^9.20.1:
     prop-types "^15.6.0"
     react-lifecycles-compat "^3.0.4"
 
-react@16.8.4:
-  version "16.8.4"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.8.4.tgz#fdf7bd9ae53f03a9c4cd1a371432c206be1c4768"
-  integrity sha512-0GQ6gFXfUH7aZcjGVymlPOASTuSjlQL4ZtVC5YKH+3JL6bBLCVO21DknzmaPlI90LN253ojj02nsapy+j7wIjg==
+react@16.8.5:
+  version "16.8.5"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.8.5.tgz#49be3b655489d74504ad994016407e8a0445de66"
+  integrity sha512-daCb9TD6FZGvJ3sg8da1tRAtIuw29PbKZW++NN4wqkbEvxL+bZpaaYb4xuftW/SpXmgacf1skXl/ddX6CdOlDw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.13.4"
+    scheduler "^0.13.5"
 
 react@^16.2.0:
   version "16.6.0"
@@ -9773,10 +9773,10 @@ scheduler@^0.10.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-scheduler@^0.13.4:
-  version "0.13.4"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.4.tgz#8fef05e7a3580c76c0364d2df5e550e4c9140298"
-  integrity sha512-cvSOlRPxOHs5dAhP9yiS/6IDmVAVxmk33f0CtTJRkmUWcb1Us+t7b1wqdzoC0REw2muC9V5f1L/w5R5uKGaepA==
+scheduler@^0.13.5:
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.5.tgz#b7226625167041298af3b98088a9dbbf6d7733a8"
+  integrity sha512-K98vjkQX9OIt/riLhp6F+XtDPtMQhqNcf045vsh+pcuvHq+PHy1xCrH3pq1P40m6yR46lpVvVhKdEOtnimuUJw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -10569,10 +10569,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@26.0.21:
-  version "26.0.21"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.0.21.tgz#2154447f09211632e603ccbafbc4d2427fd69f93"
-  integrity sha512-nzFOsl4Oler0v+ofTX1uLnRecG31Y4EdwnsUvJfMKFqd/rJuD7gXocdzwid/UxllGs2s3K7hvGJnHCn3SWReYg==
+teselagen-react-components@26.0.27:
+  version "26.0.27"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.0.27.tgz#e34be98e6c9b1ecc2c92334a017f87c65476a575"
+  integrity sha512-CTb1HffeSwTDre0GQYyDkbavA4GQCNU4hfOT+EBpNKwA4nfm6srTQshtGZmNTT53z1Qcx26NEOpOdnSAxF691g==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
