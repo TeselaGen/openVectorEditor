@@ -54,6 +54,7 @@ import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 const userDefinedHandlersAndOpts = [
   "readOnly",
   "shouldAutosave",
+  "hideSingleImport",
   "disableSetReadOnly",
   "showReadOnly",
   "showCircularity",
@@ -285,6 +286,7 @@ export class Editor extends React.Component {
       disableSetReadOnly,
       showCircularity,
       showAvailability,
+      hideSingleImport,
       minHeight = 400,
       showMenuBar,
       displayMenuBarAboveTools = true,
@@ -732,7 +734,7 @@ export class Editor extends React.Component {
     return (
       <DropHandler
         key="dropHandler"
-        disabled={readOnly}
+        disabled={readOnly || hideSingleImport}
         updateSequenceData={updateSequenceData}
         style={{
           width: "100%",

@@ -3,6 +3,22 @@ describe("editor", function() {
     cy.visit("");
   });
 
+  it(`should be able to hide the single import button if necessary!`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Import Sequence")
+      .should("exist");
+    cy.tgToggle("hideSingleImport");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Import Sequence")
+      .should("not.exist");
+  });
+
   it(`should be able to set visibilities!`, () => {
     cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("exist");
     cy.get(".ve-tool-container-featureTool .bp3-active").should("exist");

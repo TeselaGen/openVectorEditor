@@ -19,6 +19,7 @@ import exampleProteinData from "../exampleData/exampleProteinData";
 // Use the line below because using the full 30 sequences murders Redux dev tools.
 
 const defaultState = {
+  hideSingleImport: false,
   readOnly: false,
   showMenuBar: true,
   customizeTabs: false,
@@ -528,12 +529,24 @@ updateEditor(store, "DemoEditor", {
               })}
               {renderToggle({
                 that: this,
+                type: "hideSingleImport",
+                description: `You can hide the option to have single files be imported directly into the editor`
+              })}
+              {renderToggle({
+                that: this,
                 type: "readOnly",
                 hook: readOnly => {
                   updateEditor(store, "DemoEditor", {
                     readOnly
                   });
-                }
+                },
+                description: `The editor can be put into readOnly mode like so: 
+\`\`\`
+                updateEditor(store, "DemoEditor", {
+  readOnly
+});
+\`\`\`
+`
               })}
               {renderToggle({
                 info: `Any panel can be programatically focused from outside the editor. 
@@ -726,6 +739,7 @@ beforeSequenceInsertOrDelete: (
             {...this.state.readOnly && { readOnly: true }}
             editorName="DemoEditor"
             showMenuBar={this.state.showMenuBar}
+            hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             {...this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")

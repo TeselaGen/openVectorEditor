@@ -101,6 +101,7 @@ const fileCommandDefs = {
   },
 
   importSequence: {
+    isHidden: props => props.hideSingleImport,
     isDisabled: props => props.readOnly,
     handler: props => {
       showFileDialog({
