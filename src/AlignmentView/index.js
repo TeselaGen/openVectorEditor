@@ -11,12 +11,14 @@ import {
   MenuItem,
   Tooltip
 } from "@blueprintjs/core";
-import { Loading } from "teselagen-react-components";
+import { Loading, showContextMenu } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
+import PropTypes from "prop-types";
+import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
-import { compose, branch, renderComponent } from "recompose";
+import { getContext, compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
@@ -551,6 +553,46 @@ class AlignmentView extends React.Component {
             featureClicked: this.annotationClicked,
             partClicked: this.annotationClicked,
             searchLayerClicked: this.annotationClicked,
+            selectionLayerRightClicked: ({ event }) => {
+              showContextMenu(
+                [
+                  {
+                    text: "Copy",
+                    onClick: event => {
+                      // console.log("event:", event);
+                      // debugger;
+                      const { alignmentTracks, selectionLayer } =
+                        this.props.store.getState().VectorEditor
+                          .__allEditorsOptions.alignments[this.props.id] || {};
+                      // console.log("alignmentTracks:", alignmentTracks);
+                      let seqDataOfAllTracksToCopy = [];
+                      alignmentTracks.forEach(track => {
+                        const seqDataToCopy = getSequenceDataBetweenRange(
+                          track.alignmentData,
+                          selectionLayer
+                        ).sequence;
+                        seqDataOfAllTracksToCopy.push(
+                          `>${track.alignmentData.name}\n${seqDataToCopy}\n`
+                        );
+                      });
+                      // console.log(
+                      //   "seqDataOfAllTracksToCopy.join(''):",
+                      //   seqDataOfAllTracksToCopy.join("")
+                      // );
+                      const clipboardData = event.clipboardData;
+                      clipboardData.setData(
+                        "text/plain",
+                        seqDataOfAllTracksToCopy.join("")
+                      );
+                      event.preventDefault();
+                    }
+                  },
+                  undefined
+                ],
+                undefined,
+                event
+              );
+            },
             hideName: true,
             sequenceData,
             sequenceDataWithRefSeqCdsFeatures,
@@ -892,6 +934,9 @@ class AlignmentView extends React.Component {
 
 export default compose(
   // export const AlignmentView = withEditorInteractions(_AlignmentView);
+  getContext({
+    store: PropTypes.object
+  }),
   withEditorProps,
   connect(
     (state, ownProps) => {
