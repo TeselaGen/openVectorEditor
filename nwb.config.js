@@ -33,7 +33,7 @@ module.exports = {
       //   path.resolve("../teselagen-common/apollo-methods/src/"),
 
       //don't comment this out!
-      react: path.resolve("node_modules/react")
+      react: path.resolve(__dirname, "node_modules/react")
     },
     uglify: false,
     extra: {
