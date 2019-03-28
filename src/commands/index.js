@@ -259,6 +259,7 @@ const triggerClipboardCommand = type => {
   }
 };
 
+
 const editCommandDefs = {
   cut: {
     isDisabled: props =>

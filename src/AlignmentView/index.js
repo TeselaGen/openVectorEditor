@@ -1,3 +1,4 @@
+import Clipboard from "clipboard";
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -34,7 +35,12 @@ import {
   updateSelectionOrCaret,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
-import { ResizeSensor } from "@blueprintjs/core";
+import {
+  ResizeSensor,
+  Hotkeys,
+  HotkeysTarget,
+  Hotkey
+} from "@blueprintjs/core";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -49,8 +55,52 @@ try {
     e
   );
 }
-
+// @HotkeysTarget
 class AlignmentView extends React.Component {
+  // renderHotkeys() {
+  //   return (
+  //     <Hotkeys>
+  //       <Hotkey
+  //         // global={true}
+  //         combo="cmd+c"
+  //         label="Copy"
+  //         onKeyDown={this.handleUnmount}
+  //       />
+  //     </Hotkeys>
+  //   );
+  // }
+  constructor(props) {
+    super(props);
+    if (this.props.noClickDragHandlers) return;
+    this.onCopy = document.addEventListener("copy", this.handleAlignmentCopy);
+  }
+
+  componentWillUnmount() {
+    this.onCopy && document.removeEventListener("copy", this.onCopy);
+  }
+  handleAlignmentCopy = event => {
+    const clipboardData = event.clipboardData;
+    clipboardData.setData("text/plain", this.getAlignmentFastaText());
+    event.preventDefault();
+  };
+  getAlignmentFastaText = () => {
+    const { alignmentTracks, selectionLayer } =
+      this.props.store.getState().VectorEditor.__allEditorsOptions.alignments[
+        this.props.id
+      ] || {};
+    // console.log("alignmentTracks:", alignmentTracks);
+    let seqDataOfAllTracksToCopy = [];
+    alignmentTracks.forEach(track => {
+      const seqDataToCopy = getSequenceDataBetweenRange(
+        track.alignmentData,
+        selectionLayer
+      ).sequence;
+      seqDataOfAllTracksToCopy.push(
+        `>${track.alignmentData.name}\n${seqDataToCopy}\n`
+      );
+    });
+    return seqDataOfAllTracksToCopy.join("");
+  };
   state = {
     charWidthInLinearView: charWidthInLinearViewDefault,
     scrollAlignmentView: false,
@@ -557,37 +607,64 @@ class AlignmentView extends React.Component {
               showContextMenu(
                 [
                   {
-                    text: "Copy",
-                    onClick: event => {
-                      // console.log("event:", event);
-                      // debugger;
-                      const { alignmentTracks, selectionLayer } =
-                        this.props.store.getState().VectorEditor
-                          .__allEditorsOptions.alignments[this.props.id] || {};
-                      // console.log("alignmentTracks:", alignmentTracks);
-                      let seqDataOfAllTracksToCopy = [];
-                      alignmentTracks.forEach(track => {
-                        const seqDataToCopy = getSequenceDataBetweenRange(
-                          track.alignmentData,
-                          selectionLayer
-                        ).sequence;
-                        seqDataOfAllTracksToCopy.push(
-                          `>${track.alignmentData.name}\n${seqDataToCopy}\n`
-                        );
-                      });
-                      // console.log(
-                      //   "seqDataOfAllTracksToCopy.join(''):",
-                      //   seqDataOfAllTracksToCopy.join("")
-                      // );
-                      const clipboardData = event.clipboardData;
-                      clipboardData.setData(
-                        "text/plain",
-                        seqDataOfAllTracksToCopy.join("")
+                    text: "Copy Alignment Tracks as Fasta",
+                    className: "copyAlignmentFastaClipboardHelper",
+                    hotkey: "cmd+c",
+                    willUnmount: () => {
+                      this.copyAlignmentFastaClipboardHelper &&
+                        this.copyAlignmentFastaClipboardHelper.destroy();
+                    },
+                    didMount: () => {
+                      this.copyAlignmentFastaClipboardHelper = new Clipboard(
+                        `.copyAlignmentFastaClipboardHelper`,
+                        {
+                          action: "copy",
+                          text: () => {
+                            return this.getAlignmentFastaText();
+                          }
+                        }
                       );
-                      event.preventDefault();
                     }
                   },
-                  undefined
+                  {
+                    text: `Copy ${name} Sequence`,
+                    className: "copyAlignmentFastaClipboardHelper",
+                    willUnmount: () => {
+                      this.copyAlignmentFastaClipboardHelper &&
+                        this.copyAlignmentFastaClipboardHelper.destroy();
+                    },
+                    didMount: () => {
+                      this.copyAlignmentFastaClipboardHelper = new Clipboard(
+                        `.copyAlignmentFastaClipboardHelper`,
+                        {
+                          action: "copy",
+                          text: () => {
+                            // const { alignmentTracks, selectionLayer } =
+                            //   this.props.store.getState().VectorEditor
+                            //     .__allEditorsOptions.alignments[
+                            //     this.props.id
+                            //   ] || {};
+                            // // console.log("alignmentTracks:", alignmentTracks);
+                            // let seqDataOfAllTracksToCopy = [];
+                            // alignmentTracks.forEach(track => {
+                            //   const seqDataToCopy = getSequenceDataBetweenRange(
+                            //     track.alignmentData,
+                            //     selectionLayer
+                            //   ).sequence;
+                            //   seqDataOfAllTracksToCopy.push(
+                            //     `>${
+                            //       track.alignmentData.name
+                            //     }\n${seqDataToCopy}\n`
+                            //   );
+                            // });
+
+                            // return seqDataOfAllTracksToCopy.join("");
+                            return name;
+                          }
+                        }
+                      );
+                    }
+                  }
                 ],
                 undefined,
                 event
