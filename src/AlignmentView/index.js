@@ -35,12 +35,7 @@ import {
   updateSelectionOrCaret,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
-import {
-  ResizeSensor,
-  Hotkeys,
-  HotkeysTarget,
-  Hotkey
-} from "@blueprintjs/core";
+import { ResizeSensor } from "@blueprintjs/core";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -57,38 +52,44 @@ try {
 }
 // @HotkeysTarget
 class AlignmentView extends React.Component {
-  // renderHotkeys() {
-  //   return (
-  //     <Hotkeys>
-  //       <Hotkey
-  //         // global={true}
-  //         combo="cmd+c"
-  //         label="Copy"
-  //         onKeyDown={this.handleUnmount}
-  //       />
-  //     </Hotkeys>
-  //   );
-  // }
   constructor(props) {
     super(props);
     if (this.props.noClickDragHandlers) return;
-    this.onCopy = document.addEventListener("copy", this.handleAlignmentCopy);
+    this.onShortcutCopy = document.addEventListener(
+      "keydown",
+      this.handleAlignmentCopy
+    );
   }
 
   componentWillUnmount() {
-    this.onCopy && document.removeEventListener("copy", this.onCopy);
+    this.onShortcutCopy &&
+      document.removeEventListener("keydown", this.onShortcutCopy);
   }
   handleAlignmentCopy = event => {
-    const clipboardData = event.clipboardData;
-    clipboardData.setData("text/plain", this.getAlignmentFastaText());
-    event.preventDefault();
+    if (
+      event.key === "c" &&
+      (event.metaKey === true || event.ctrlKey === true)
+    ) {
+      const input = document.createElement("textarea");
+      document.body.appendChild(input);
+      const seqDataToCopy = this.getAllAlignmentsFastaText();
+      input.value = seqDataToCopy;
+      input.select();
+      const copySuccess = document.execCommand("copy");
+      if (!copySuccess) {
+        window.toastr.error("Selection Not Copied");
+      } else {
+        window.toastr.success("Selection Copied");
+      }
+      document.body.removeChild(input);
+      event.preventDefault();
+    }
   };
-  getAlignmentFastaText = () => {
+  getAllAlignmentsFastaText = () => {
     const { alignmentTracks, selectionLayer } =
       this.props.store.getState().VectorEditor.__allEditorsOptions.alignments[
         this.props.id
       ] || {};
-    // console.log("alignmentTracks:", alignmentTracks);
     let seqDataOfAllTracksToCopy = [];
     alignmentTracks.forEach(track => {
       const seqDataToCopy = getSequenceDataBetweenRange(
@@ -96,7 +97,7 @@ class AlignmentView extends React.Component {
         selectionLayer
       ).sequence;
       seqDataOfAllTracksToCopy.push(
-        `>${track.alignmentData.name}\n${seqDataToCopy}\n`
+        `>${track.alignmentData.name}\r\n${seqDataToCopy}\r\n`
       );
     });
     return seqDataOfAllTracksToCopy.join("");
@@ -607,62 +608,58 @@ class AlignmentView extends React.Component {
               showContextMenu(
                 [
                   {
-                    text: "Copy Alignment Tracks as Fasta",
-                    className: "copyAlignmentFastaClipboardHelper",
+                    text: "Copy Selection of All Alignments as Fasta",
+                    className: "copyAllAlignmentsFastaClipboardHelper",
                     hotkey: "cmd+c",
                     willUnmount: () => {
-                      this.copyAlignmentFastaClipboardHelper &&
-                        this.copyAlignmentFastaClipboardHelper.destroy();
+                      this.copyAllAlignmentsFastaClipboardHelper &&
+                        this.copyAllAlignmentsFastaClipboardHelper.destroy();
                     },
                     didMount: () => {
-                      this.copyAlignmentFastaClipboardHelper = new Clipboard(
-                        `.copyAlignmentFastaClipboardHelper`,
+                      this.copyAllAlignmentsFastaClipboardHelper = new Clipboard(
+                        `.copyAllAlignmentsFastaClipboardHelper`,
                         {
-                          action: "copy",
+                          action: "copyAllAlignmentsFasta",
                           text: () => {
-                            return this.getAlignmentFastaText();
+                            return this.getAllAlignmentsFastaText();
                           }
                         }
                       );
+                    },
+                    onClick: () => {
+                      window.toastr.success("Selection Copied");
                     }
                   },
                   {
-                    text: `Copy ${name} Sequence`,
-                    className: "copyAlignmentFastaClipboardHelper",
+                    text: `Copy Selection of ${name} as Fasta`,
+                    className: "copySpecificAlignmentFastaClipboardHelper",
                     willUnmount: () => {
-                      this.copyAlignmentFastaClipboardHelper &&
-                        this.copyAlignmentFastaClipboardHelper.destroy();
+                      this.copySpecificAlignmentFastaClipboardHelper &&
+                        this.copySpecificAlignmentFastaClipboardHelper.destroy();
                     },
                     didMount: () => {
-                      this.copyAlignmentFastaClipboardHelper = new Clipboard(
-                        `.copyAlignmentFastaClipboardHelper`,
+                      this.copySpecificAlignmentFastaClipboardHelper = new Clipboard(
+                        `.copySpecificAlignmentFastaClipboardHelper`,
                         {
-                          action: "copy",
+                          action: "copySpecificAlignmentFasta",
                           text: () => {
-                            // const { alignmentTracks, selectionLayer } =
-                            //   this.props.store.getState().VectorEditor
-                            //     .__allEditorsOptions.alignments[
-                            //     this.props.id
-                            //   ] || {};
-                            // // console.log("alignmentTracks:", alignmentTracks);
-                            // let seqDataOfAllTracksToCopy = [];
-                            // alignmentTracks.forEach(track => {
-                            //   const seqDataToCopy = getSequenceDataBetweenRange(
-                            //     track.alignmentData,
-                            //     selectionLayer
-                            //   ).sequence;
-                            //   seqDataOfAllTracksToCopy.push(
-                            //     `>${
-                            //       track.alignmentData.name
-                            //     }\n${seqDataToCopy}\n`
-                            //   );
-                            // });
-
-                            // return seqDataOfAllTracksToCopy.join("");
-                            return name;
+                            const { selectionLayer } =
+                              this.props.store.getState().VectorEditor
+                                .__allEditorsOptions.alignments[
+                                this.props.id
+                              ] || {};
+                            const seqDataToCopy = getSequenceDataBetweenRange(
+                              alignmentData,
+                              selectionLayer
+                            ).sequence;
+                            const seqDataToCopyAsFasta = `>${name}\r\n${seqDataToCopy}\r\n`;
+                            return seqDataToCopyAsFasta;
                           }
                         }
                       );
+                    },
+                    onClick: () => {
+                      window.toastr.success("Selection Copied");
                     }
                   }
                 ],
