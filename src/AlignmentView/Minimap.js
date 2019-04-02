@@ -11,6 +11,7 @@ export default class Minimap extends React.Component {
     const { props } = this;
     if (
       [
+        "alignmentTracks",
         "numBpsShownInLinearView",
         "scrollAlignmentView",
         "laneHeight",

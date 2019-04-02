@@ -1,3 +1,4 @@
+import Clipboard from "clipboard";
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -11,12 +12,14 @@ import {
   MenuItem,
   Tooltip
 } from "@blueprintjs/core";
-import { Loading } from "teselagen-react-components";
+import { Loading, showContextMenu } from "teselagen-react-components";
 import { store } from "react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
+import PropTypes from "prop-types";
+import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
-import { compose, branch, renderComponent } from "recompose";
+import { getContext, compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
@@ -47,8 +50,58 @@ try {
     e
   );
 }
-
+// @HotkeysTarget
 class AlignmentView extends React.Component {
+  constructor(props) {
+    super(props);
+    if (this.props.noClickDragHandlers) return;
+    this.onShortcutCopy = document.addEventListener(
+      "keydown",
+      this.handleAlignmentCopy
+    );
+  }
+
+  componentWillUnmount() {
+    this.onShortcutCopy &&
+      document.removeEventListener("keydown", this.onShortcutCopy);
+  }
+  handleAlignmentCopy = event => {
+    if (
+      event.key === "c" &&
+      (event.metaKey === true || event.ctrlKey === true)
+    ) {
+      const input = document.createElement("textarea");
+      document.body.appendChild(input);
+      const seqDataToCopy = this.getAllAlignmentsFastaText();
+      input.value = seqDataToCopy;
+      input.select();
+      const copySuccess = document.execCommand("copy");
+      if (!copySuccess) {
+        window.toastr.error("Selection Not Copied");
+      } else {
+        window.toastr.success("Selection Copied");
+      }
+      document.body.removeChild(input);
+      event.preventDefault();
+    }
+  };
+  getAllAlignmentsFastaText = () => {
+    const { alignmentTracks, selectionLayer } =
+      this.props.store.getState().VectorEditor.__allEditorsOptions.alignments[
+        this.props.id
+      ] || {};
+    let seqDataOfAllTracksToCopy = [];
+    alignmentTracks.forEach(track => {
+      const seqDataToCopy = getSequenceDataBetweenRange(
+        track.alignmentData,
+        selectionLayer
+      ).sequence;
+      seqDataOfAllTracksToCopy.push(
+        `>${track.alignmentData.name}\r\n${seqDataToCopy}\r\n`
+      );
+    });
+    return seqDataOfAllTracksToCopy.join("");
+  };
   state = {
     charWidthInLinearView: charWidthInLinearViewDefault,
     scrollAlignmentView: false,
@@ -551,6 +604,69 @@ class AlignmentView extends React.Component {
             featureClicked: this.annotationClicked,
             partClicked: this.annotationClicked,
             searchLayerClicked: this.annotationClicked,
+            selectionLayerRightClicked: ({ event }) => {
+              showContextMenu(
+                [
+                  {
+                    text: "Copy Selection of All Alignments as Fasta",
+                    className: "copyAllAlignmentsFastaClipboardHelper",
+                    hotkey: "cmd+c",
+                    willUnmount: () => {
+                      this.copyAllAlignmentsFastaClipboardHelper &&
+                        this.copyAllAlignmentsFastaClipboardHelper.destroy();
+                    },
+                    didMount: () => {
+                      this.copyAllAlignmentsFastaClipboardHelper = new Clipboard(
+                        `.copyAllAlignmentsFastaClipboardHelper`,
+                        {
+                          action: "copyAllAlignmentsFasta",
+                          text: () => {
+                            return this.getAllAlignmentsFastaText();
+                          }
+                        }
+                      );
+                    },
+                    onClick: () => {
+                      window.toastr.success("Selection Copied");
+                    }
+                  },
+                  {
+                    text: `Copy Selection of ${name} as Fasta`,
+                    className: "copySpecificAlignmentFastaClipboardHelper",
+                    willUnmount: () => {
+                      this.copySpecificAlignmentFastaClipboardHelper &&
+                        this.copySpecificAlignmentFastaClipboardHelper.destroy();
+                    },
+                    didMount: () => {
+                      this.copySpecificAlignmentFastaClipboardHelper = new Clipboard(
+                        `.copySpecificAlignmentFastaClipboardHelper`,
+                        {
+                          action: "copySpecificAlignmentFasta",
+                          text: () => {
+                            const { selectionLayer } =
+                              this.props.store.getState().VectorEditor
+                                .__allEditorsOptions.alignments[
+                                this.props.id
+                              ] || {};
+                            const seqDataToCopy = getSequenceDataBetweenRange(
+                              alignmentData,
+                              selectionLayer
+                            ).sequence;
+                            const seqDataToCopyAsFasta = `>${name}\r\n${seqDataToCopy}\r\n`;
+                            return seqDataToCopyAsFasta;
+                          }
+                        }
+                      );
+                    },
+                    onClick: () => {
+                      window.toastr.success("Selection Copied");
+                    }
+                  }
+                ],
+                undefined,
+                event
+              );
+            },
             hideName: true,
             sequenceData,
             sequenceDataWithRefSeqCdsFeatures,
@@ -892,6 +1008,9 @@ class AlignmentView extends React.Component {
 
 export default compose(
   // export const AlignmentView = withEditorInteractions(_AlignmentView);
+  getContext({
+    store: PropTypes.object
+  }),
   withEditorProps,
   connect(
     (state, ownProps) => {
