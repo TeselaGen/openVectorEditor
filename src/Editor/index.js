@@ -63,6 +63,8 @@ const userDefinedHandlersAndOpts = [
   "onNew",
   "onSave",
   "onRename",
+  "getVersionList",
+  "getSequenceAtVersion",
   "onDuplicate",
   "beforeSequenceInsertOrDelete",
   "onDelete",
@@ -322,6 +324,7 @@ export class Editor extends React.Component {
             onSave, //we need to pass this user defined handler
             updateSequenceData,
             caretPositionUpdate,
+            editorName,
             sequenceData,
             getVersionList,
             getSequenceAtVersion,

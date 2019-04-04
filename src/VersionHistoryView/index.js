@@ -25,24 +25,18 @@ export class VersionHistoryView extends React.Component {
     selectedVersion: undefined,
     versionList: [currentVersion]
   };
-  static defaultProps = {
-    getVersionList: () => {
-      return [
-        {
-          dateChanged: "Current",
-          editedBy: "n/a",
-          revisionType: "n/a",
-          versionId: 1
-        },
-        {
-          dateChanged: "12/30/2211",
-          editedBy: "thomas",
-          revisionType: "thomas",
-          versionId: 2
-        }
-      ];
-    }
-  };
+  // static defaultProps = {
+  //   getVersionList: () => {
+  //     return [
+  //       {
+  //         dateChanged: "12/30/2211",
+  //         editedBy: "thomas",
+  //         revisionType: "thomas",
+  //         versionId: 2
+  //       }
+  //     ];
+  //   }
+  // };
   updateSeqData = sequenceData => {
     this.activeSeqData = sequenceData;
     this.props.vectorEditorInitialize(

@@ -40,6 +40,7 @@ const defaultState = {
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
+  withVersionHistory: true,
   setDefaultVisibilities: false,
   onNew: true,
   onSave: true,
@@ -196,6 +197,7 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      withVersionHistory,
       shouldAutosave,
       isFullscreen,
       withPreviewMode
@@ -495,6 +497,38 @@ rightClickOverrides: {
                 label: "Force Height 500px",
                 info:
                   "You can force a height for the editor by passing `height:500` (same for width) "
+              })}
+              {renderToggle({
+                that: this,
+                type: "withVersionHistory",
+                label: "Include Revision History Tool",
+                info: `
+To show the version history (File > Revision History), pass two handlers: 
+\`\`\`
+getSequenceAtVersion: async versionId => {
+  //the returned sequenceData should be in Teselagen Json format
+  return await getSequenceFromBackendAtId(versionId)
+},
+getVersionList: async () => {
+  return await getVersionListFromBackend()
+  //this should return an array with this structure: 
+  [
+    {
+      dateChanged: "12/30/2211",
+      editedBy: "Nara",
+      revisionType: "Sequence Deletion",
+      versionId: 2
+    },
+    {
+      dateChanged: "8/30/2211",
+      editedBy: "Ralph",
+      revisionType: "Feature Edit",
+      versionId: 3
+    }
+  ];
+}
+\`\`\`
+                  `
               })}
               {renderToggle({
                 that: this,
@@ -857,8 +891,47 @@ beforeSequenceInsertOrDelete: (
               !withPreviewMode && this.changeFullscreenMode
             } //don't pass this handler if you're also using previewMode
             isFullscreen={isFullscreen}
+            // handleFullscreenClose={() => {
+            //   console.log("ya");
+            // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
             {...forceHeightMode && { height: 500 }}
+            {...withVersionHistory && {
+              getSequenceAtVersion: versionId => {
+                if (versionId === 2) {
+                  return {
+                    sequence: "thomaswashere"
+                  };
+                } else if ((versionId = 3)) {
+                  return {
+                    features: [{ start: 4, end: 6 }],
+                    sequence:
+                      "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                  };
+                } else {
+                  console.error("we shouldn't be here...");
+                  return {
+                    sequence: "taa"
+                  };
+                }
+              },
+              getVersionList: () => {
+                return [
+                  {
+                    dateChanged: "12/30/2211",
+                    editedBy: "Nara",
+                    // revisionType: "Sequence Deletion",
+                    versionId: 2
+                  },
+                  {
+                    dateChanged: "8/30/2211",
+                    editedBy: "Ralph",
+                    // revisionType: "Feature Edit",
+                    versionId: 3
+                  }
+                ];
+              }
+            }}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
             showReadOnly={this.state.showReadOnly}
