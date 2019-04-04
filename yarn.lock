@@ -132,12 +132,12 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/core@^3.14.0", "@blueprintjs/core@^3.14.1":
-  version "3.14.1"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.14.1.tgz#9a0c816bbe6c232d6515361f502506a1fb53acfb"
-  integrity sha512-DlBkztfvk5RgD+MBo22LFxLa7Rz8DVgszNdXF0MY63QGjb1uYwdSJIKXtsN1bn42SRTz24Bzp498VhSJ2+5FuQ==
+"@blueprintjs/core@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.15.0.tgz#49ba1dfee7dcefbb527d27c0f8d6bcf1086209d4"
+  integrity sha512-znXO0UaWBJO7Nm2qEvZzURCDuogsJ9DJlIw3N2XnIi+k/c8mQ1xlvtg0TT2pS88lMG9HUEKky3b0UQaSXBw4LA==
   dependencies:
-    "@blueprintjs/icons" "^3.6.0"
+    "@blueprintjs/icons" "^3.7.0"
     "@types/dom4" "^2.0.1"
     classnames "^2.2"
     dom4 "^2.0.1"
@@ -148,30 +148,30 @@
     resize-observer-polyfill "^1.5.0"
     tslib "^1.9.0"
 
-"@blueprintjs/datetime@^3.7.2":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.7.2.tgz#57b7effa0e8baec8bb9b5a943e601d4e21b7fc7e"
-  integrity sha512-Lkp8sZuI62Z1yG37I9BChdAT6YsosE7ckx7pyD1CwtdtJIHOGsGWlV1C2JzgSSlHnPbnHkhzphzPPLVWdvCSVQ==
+"@blueprintjs/datetime@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.8.0.tgz#abb50f353a175349d80769c91cf5e9d4e028a418"
+  integrity sha512-c4k3nFMsT5DLbdfNimf5CILdXEHkNXuJz2M3ZHrtcwhCFsxR86XLPUPSZg/1k6gf+bdkIXDzmfI/HOaQuaUkFQ==
   dependencies:
-    "@blueprintjs/core" "^3.14.0"
+    "@blueprintjs/core" "^3.15.0"
     classnames "^2.2"
     react-day-picker "^7.1.10"
     tslib "^1.9.0"
 
-"@blueprintjs/icons@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.6.0.tgz#af1d2de091d67927ed61671e6967c43620cb416d"
-  integrity sha512-sgB6rJtMjc2mS4aCS+65gK5DCr8fiWgOYi0buc0ODvGD2fwOtOFZuE4Duuj6/GZnCYj4s7E8NZgYK9Krd7G73Q==
+"@blueprintjs/icons@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.7.0.tgz#2a1907a41913773792c828a6c3ef082a1f1ebb77"
+  integrity sha512-608lQx1okOo85LNp7LyvsXWlgJjoQAiu29wULcktGuAuMmVXgueaGbMEDpuEMbu+uRlg9yqDhmk1eWm7W7R5ag==
   dependencies:
     classnames "^2.2"
     tslib "^1.9.0"
 
-"@blueprintjs/select@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-3.7.0.tgz#a3aadb3f4f8ea48c9ea482666808f2312d581271"
-  integrity sha512-T3mj6h3NjbxsSJlDvkgi0AJYQc/pcxtynV2t0tlTysasOHcw/iQ3+/LKZdhb1UWobttOkpWDKR06NPJWJHLIlw==
+"@blueprintjs/select@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-3.8.0.tgz#903cc9ab50da4cec08f559be27b7fa7f9f1560e5"
+  integrity sha512-sWWGZx/nARtxKfoFODlEQxA7HDpddGDC4uKPNMd1ZQgKazEtMkw0rFVm550K6Aoj0wp82TqqmcxHrb0VL6Epiw==
   dependencies:
-    "@blueprintjs/core" "^3.14.0"
+    "@blueprintjs/core" "^3.15.0"
     classnames "^2.2"
     tslib "^1.9.0"
 
@@ -225,10 +225,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@teselagen/apollo-methods@^1.0.14":
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.0.14.tgz#7cf3d6c7c37a504741044ee44cbdc695948a52ea"
-  integrity sha512-363STwZg0m3uOUTe4RVYTCTytWgAiAvehiZ7Tl6k3DW/6YWp4h1piSH2A1FULrSmPsZmvpWdy9UCSD7SY7nW4w==
+"@teselagen/apollo-methods@^1.0.15":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.0.15.tgz#abc67637444f85890f30c038745e2e8b3cf46794"
+  integrity sha512-88dci7L0PhMfIwtu5OtN9Mi/aoz+UqDaEMF7I1U3lsqqF31XbaVrYQHPlupSzhgPt9Z4FsY1oz23DVw85G1wlQ==
   dependencies:
     pascal-case "^2.0.1"
 
@@ -8798,15 +8798,15 @@ react-deep-force-update@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.2.tgz#3d2ae45c2c9040cbb1772be52f8ea1ade6ca2ee1"
   integrity sha512-WUSQJ4P/wWcusaH+zZmbECOk7H5N2pOIl0vzheeornkIMhu+qrNdGFm0bDZLCb0hSF0jf/kH1SgkNGfBdTc4wA==
 
-react-dom@16.8.5:
-  version "16.8.5"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.5.tgz#b3e37d152b49e07faaa8de41fdf562be3463335e"
-  integrity sha512-VIEIvZLpFafsfu4kgmftP5L8j7P1f0YThfVTrANMhZUFMDOsA6e0kfR6wxw/8xxKs4NB59TZYbxNdPCDW34x4w==
+react-dom@16.8.6:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
+  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.13.5"
+    scheduler "^0.13.6"
 
 react-draggable@3.0.5:
   version "3.0.5"
@@ -9082,15 +9082,15 @@ react-virtualized@^9.20.1:
     prop-types "^15.6.0"
     react-lifecycles-compat "^3.0.4"
 
-react@16.8.5:
-  version "16.8.5"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.8.5.tgz#49be3b655489d74504ad994016407e8a0445de66"
-  integrity sha512-daCb9TD6FZGvJ3sg8da1tRAtIuw29PbKZW++NN4wqkbEvxL+bZpaaYb4xuftW/SpXmgacf1skXl/ddX6CdOlDw==
+react@16.8.6:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
+  integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.13.5"
+    scheduler "^0.13.6"
 
 react@^16.2.0:
   version "16.6.0"
@@ -9773,10 +9773,10 @@ scheduler@^0.10.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-scheduler@^0.13.5:
-  version "0.13.5"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.5.tgz#b7226625167041298af3b98088a9dbbf6d7733a8"
-  integrity sha512-K98vjkQX9OIt/riLhp6F+XtDPtMQhqNcf045vsh+pcuvHq+PHy1xCrH3pq1P40m6yR46lpVvVhKdEOtnimuUJw==
+scheduler@^0.13.6:
+  version "0.13.6"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
+  integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -10569,10 +10569,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@26.0.27:
-  version "26.0.27"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.0.27.tgz#e34be98e6c9b1ecc2c92334a017f87c65476a575"
-  integrity sha512-CTb1HffeSwTDre0GQYyDkbavA4GQCNU4hfOT+EBpNKwA4nfm6srTQshtGZmNTT53z1Qcx26NEOpOdnSAxF691g==
+teselagen-react-components@^26.1.0:
+  version "26.1.0"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.1.0.tgz#84e06b2cd792d42b3f26c57c9bc330a6ebd8c7cf"
+  integrity sha512-BdTgUmd4iyR3ZzsIKA3xtnGpglydqPuuBKzH0laPMPmD1IJ/zK1ycUrhqx5jiJBThCwLSjzSOJIE3LNFeU6weA==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -11278,10 +11278,10 @@ ve-range-utils@^2.5.3:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^3.3.33:
-  version "3.3.33"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.33.tgz#1e0fab07a7c65754e31a358af0ba7ef796a86428"
-  integrity sha512-VOx2ntStvCv1gA8wFqEy22iUHV9q4hu6Nl51zV0iVXRh9U/3X5BZuIUmxF2UdVmz5/SSiHoGDzb9ZhI4XzT40g==
+ve-sequence-utils@^3.3.34:
+  version "3.3.34"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.34.tgz#aa5ba5a6cc9cf2b68739354736c964f41c6857c9"
+  integrity sha512-CznfE5Q0cEll3tuK64yL+8QubDKLAyyMQUC/+4Zr2ZpT9leX8vMJHPL1I6GV61edh3VT7O+WamO3nCGwY5IAew==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

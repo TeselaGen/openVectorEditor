@@ -576,7 +576,7 @@ updateEditor(store, "DemoEditor", {
                 },
                 description: `The editor can be put into readOnly mode like so: 
 \`\`\`
-                updateEditor(store, "DemoEditor", {
+updateEditor(store, "DemoEditor", {
   readOnly
 });
 \`\`\`
