@@ -456,7 +456,7 @@ function VectorInteractionHOC(Component /* options */) {
       ) {
         forceUpdate = selectionLayer.forceUpdate === "end" ? "start" : "end";
       }
-      this.updateSelectionOrCaret(event.shiftKey, {
+      this.updateSelectionOrCaret(event.shiftKey || event.metaKey, {
         ...annotation,
         ...(forceUpdate && { forceUpdate })
       });
