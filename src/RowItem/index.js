@@ -182,7 +182,7 @@ export class RowItem extends React.PureComponent {
         shouldShow !== undefined
           ? !shouldShow
           : !annotationVisibility[pluralType] ||
-            Object.keys(row[pluralType]).length <= 0
+            Object.keys(row[pluralType] || {}).length <= 0
       ) {
         return null;
       }

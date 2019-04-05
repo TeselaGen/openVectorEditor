@@ -117,9 +117,10 @@ export default props => {
       const annotations = row[typeOverride || key];
       if (hasYOffset) {
         let maxYOffset = 0;
-        annotations.forEach(a => {
-          if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
-        });
+        annotations &&
+          annotations.forEach(a => {
+            if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
+          });
         heightToAdd = maxYOffset * annotationHeight;
       }
     }

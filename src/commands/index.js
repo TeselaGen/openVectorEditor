@@ -259,7 +259,6 @@ const triggerClipboardCommand = type => {
   }
 };
 
-
 const editCommandDefs = {
   cut: {
     isDisabled: props =>
@@ -762,15 +761,17 @@ const annotationToggleCommandDefs = {};
 [
   "features",
   "parts",
-  "cutsites",
+  { type: "cutsites", isHidden: isProtein },
   "axis",
-  { type: "orfs", text: "ORFs" },
-  "primers",
+  { type: "orfs", text: "ORFs", isHidden: isProtein },
+  { type: "primers", isHidden: isProtein },
+
   "translations",
 
   {
     type: "orfTranslations",
     text: "ORF Translations",
+    isHidden: isProtein,
     isDisabled: props => {
       return (
         (!props.annotationVisibility.orfs &&

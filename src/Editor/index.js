@@ -12,6 +12,7 @@ import {
 import PropTypes from "prop-types";
 import Dialogs, { dialogOverrides } from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
+import { importSequenceFromFile } from "../withEditorProps";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -737,8 +738,8 @@ export class Editor extends React.Component {
     return (
       <DropHandler
         key="dropHandler"
+        importSequenceFromFile={this.props.importSequenceFromFile}
         disabled={readOnly || hideSingleImport}
-        updateSequenceData={updateSequenceData}
         style={{
           width: "100%",
           maxWidth: "100%",
@@ -844,5 +845,5 @@ export default compose(
       sequenceData
     };
   }),
-  withHandlers({ handleSave })
+  withHandlers({ handleSave, importSequenceFromFile })
 )(Editor);
