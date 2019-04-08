@@ -1,4 +1,4 @@
-import { Tooltip } from "@blueprintjs/core";
+import { Tooltip, AnchorButton } from "@blueprintjs/core";
 import React from "react";
 import {
   DataTable,
@@ -7,7 +7,6 @@ import {
 } from "teselagen-react-components";
 import getCommands from "../../commands";
 import { map } from "lodash";
-import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
@@ -125,7 +124,7 @@ class TranslationProperties extends React.Component {
                   : undefined
               }
             >
-              <Button
+              <AnchorButton
                 onClick={() => {
                   deleteTranslation(translationPropertiesSelectedEntities);
                 }}
@@ -137,7 +136,7 @@ class TranslationProperties extends React.Component {
                 }
               >
                 Delete
-              </Button>
+              </AnchorButton>
             </Tooltip>
           </div>
         )}
