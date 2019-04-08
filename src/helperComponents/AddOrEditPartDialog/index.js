@@ -1,7 +1,7 @@
 import React from "react";
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { ReactSelectField } from "teselagen-react-components";
-import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
+import { FeatureTypes as featureTypes } from "ve-sequence-utils";
 
 const renderTypes = (
   <ReactSelectField
@@ -20,7 +20,7 @@ const renderTypes = (
           >
             <div
               style={{
-                background: featureColors[type],
+                // background: featureColors[type], add back in if we want colors. import from vesequtils
                 height: 15,
                 width: 15,
                 marginRight: 5
