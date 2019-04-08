@@ -814,9 +814,11 @@ function VectorInteractionHOC(Component /* options */) {
                         });
                         if (!doAction) return; //early return
                       }
+                      console.log("annotation:", annotation);
                       upsertPart({
                         start: annotation.start,
                         end: annotation.end,
+                        type: annotation.type,
                         forward: annotation.forward,
                         name: annotation.name
                       });
