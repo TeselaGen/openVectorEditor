@@ -56,7 +56,8 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
-  - [Linking to a project and develop with build-watch](#linking-to-a-project-and-develop-with-build-watch)
+  - [Outside Developer Set Up Steps](#outside-developer-set-up-steps)
+  - [(advanced) Working with locally linked modules](#advanced-working-with-locally-linked-modules)
 
 <!-- /TOC -->
 
@@ -454,29 +455,44 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
  `() => teselagenSequenceData  //called upon initialization  `
 
 
-
+<!-- 
 # Implementing Autosave functionality
-
+ -->
 
 # Development: 
 
 ## Prerequisites
+[Node.js](http://nodejs.org/) >= v8 must be installed.
+download the latest yarn (https://yarnpkg.com/en/)
 
-[Node.js](http://nodejs.org/) >= v4 must be installed.
-
-## Linking to a project and develop with build-watch
+## Outside Developer Set Up Steps
 ```
-//link everything up:
-cd lims/node_modules/react
-yarn link 
+fork your own branch of openVectorEditor from https://github.com/TeselaGen/openVectorEditor
 cd openVectorEditor
-yarn link
-yarn link react
-cd lims
-yarn link openVectorEditor
+yarn
+yarn start
+navigate to http://localhost:3344/ once the demo app has built
+modify the openVectorEditor code base to fix/build whatever it is you're trying to do
+set up a demo for your fix/feature if applicable in demo/src/EditorDemo/index.js
+set up a cypress test for your fix/feature if applicable 
+you can run the cypress dev tool by running `yarn c` and see your tests
+you can view existing cypress tests in the cypress/integration folder
+you can either add your test to an existing cypress file or make a new test file
 
-//start the auto rebuild:
-cd openVectorEditor
-yarn build-watch
-
+once you're satisfied, make a pull request back to openVectorEditor and mention @tnrich
 ```
+
+
+
+## (advanced) Working with locally linked modules 
+Sometimes it can be helpful to debug certain npm modules locally. 
+You can always edit their es5 compiled code within the node_modules folder itself,
+but sometimes it's useful to debug their source code directly. Luckily we can do 
+this using webpack aliases. Here's how:
+```
+open ./nwb.config.js 
+comment in whatever module you want to have linked locally (ve-range-utils, ve-sequence-utils, bio-parsers, teselagen-react-components)
+you'll need to have that module cloned down from github on your machine's file system for this to work
+```
+
+

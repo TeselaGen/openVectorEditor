@@ -25,13 +25,10 @@ module.exports = {
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||
       //   path.resolve("../teselagen-react-components/src/"),
-      // "@teselagen/platform-ux":
-      //   console.log("comment me back out!") ||
-      //   path.resolve("../teselagen-platform-ux/src/"),
       // "@teselagen/apollo-methods":
       //   console.log("comment me back out!") ||
       //   path.resolve("../teselagen-common/apollo-methods/src/"),
-
+      
       //don't comment this out!
       react: path.resolve(__dirname, "node_modules/react")
     },
