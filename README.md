@@ -466,7 +466,9 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
 download the latest yarn (https://yarnpkg.com/en/)
 
 ## Outside Developer Set Up Steps
+
 ```
+IMPORTANT! First make sure you make an issue for whatever it is you'd like to see changed! 
 fork your own branch of openVectorEditor from https://github.com/TeselaGen/openVectorEditor
 cd openVectorEditor
 yarn
