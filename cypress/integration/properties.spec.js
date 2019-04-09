@@ -2,6 +2,11 @@ describe("properties", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`can change to linear mode via the general properties panel and get a warning that annotations will be truncated`, () => {
+    cy.get(".veTabProperties").click();
+    cy.get(".circularLinearSelect select").select("Linear");
+    cy.contains(".bp3-dialog", "Truncate Annotations").should("be.visible");
+  });
   it(`we should be able to view and edit a description in general properties 
   and have that visible within the genbank view as well`, () => {
     cy.get(".veTabProperties").click();

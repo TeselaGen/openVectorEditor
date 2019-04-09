@@ -5,11 +5,8 @@ import {
   TextareaField
 } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
-import { connectToEditor, updateCircular } from "../../withEditorProps";
-import { compose, withHandlers } from "recompose";
-
-// import { map } from "lodash";
-// import { Button, Intent } from "@blueprintjs/core";
+import withEditorProps from "../../withEditorProps";
+import { compose } from "recompose";
 
 class GeneralProperties extends React.Component {
   updateSeqDesc = val => {
@@ -23,17 +20,20 @@ class GeneralProperties extends React.Component {
       isProtein,
       disableSetReadOnly,
       updateAvailability,
-      name,
-      proteinSequence,
-      sequence,
-      circular,
-      materiallyAvailable,
+      sequenceData,
       updateReadOnlyMode,
       onSave,
-      description,
       showAvailability,
       sequenceNameUpdate
     } = this.props;
+    const {
+      description,
+      name,
+      sequence = "",
+      proteinSequence = "",
+      circular,
+      materiallyAvailable
+    } = sequenceData || {};
     return (
       <React.Fragment>
         <div className="ve-flex-row">
@@ -51,7 +51,7 @@ class GeneralProperties extends React.Component {
           </div>
         </div>
         {!isProtein && (
-          <div className="ve-flex-row">
+          <div className="ve-flex-row circularLinearSelect">
             <div className="ve-column-left">Circular/Linear:</div>{" "}
             <div className="ve-column-right">
               {" "}
@@ -128,30 +128,7 @@ class GeneralProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor(
-    ({
-      readOnly,
-      sequenceData: {
-        description,
-        name,
-        sequence,
-        proteinSequence,
-        circular,
-        materiallyAvailable
-      } = {}
-    }) => {
-      return {
-        readOnly,
-        name,
-        proteinSequence,
-        description,
-        sequence,
-        circular,
-        materiallyAvailable
-      };
-    }
-  ),
-  withHandlers({ updateCircular }),
+  withEditorProps,
   reduxForm({
     form: "GeneralProperties"
   })
