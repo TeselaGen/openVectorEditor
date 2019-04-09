@@ -817,6 +817,7 @@ function VectorInteractionHOC(Component /* options */) {
                       upsertPart({
                         start: annotation.start,
                         end: annotation.end,
+                        type: annotation.type,
                         forward: annotation.forward,
                         name: annotation.name
                       });
