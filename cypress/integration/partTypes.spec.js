@@ -29,6 +29,10 @@ describe("partTypes", function() {
     cy.contains(".bp3-menu-item", "New Feature").click();
     cy.get(".tg-test-name input").type("test feature");
     cy.get(".tg-test-end input").type("0");
+    cy.get(".Select-value")
+      .click()
+      .click();
+    cy.contains(".Select-option", "misc_RNA").click();
     cy.get(".bp3-dialog-body")
       .contains("Save")
       .click();
@@ -41,6 +45,6 @@ describe("partTypes", function() {
       force: true
     });
     cy.contains(".bp3-menu-item", "Edit Part").click();
-    cy.get(".bp3-dialog-body").contains("misc_feature");
+    cy.get(".bp3-dialog-body").contains("misc_RNA");
   });
 });
