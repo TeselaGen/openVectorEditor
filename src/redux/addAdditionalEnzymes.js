@@ -3,15 +3,16 @@ import { createReducer, createAction } from "redux-act";
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const addYourOwnEnzymeUpdate = createAction(
-  "ADD_YOUR_OWN_ENZYME_UPDATE"
+export const addAdditionalEnzymesUpdate = createAction(
+  "ADD_ADDITIONAL_ENZYMES_UPDATE"
 );
-export const addYourOwnEnzymeReset = createAction("ADD_YOUR_OWN_ENZYME_RESET");
-export const addYourOwnEnzymeClose = createAction(
-  "ADD_YOUR_OWN_ENZYME_CLOSE",
+export const addAdditionalEnzymesReset = createAction(
+  "ADD_ADDITIONAL_ENZYMES_RESET"
+);
+export const addAdditionalEnzymesClose = createAction(
+  "ADD_ADDITIONAL_ENZYMES_CLOSE",
   () => {}
 );
-export const addYourOwnEnzymeOpen = createAction("ADD_YOUR_OWN_ENZYME_OPEN");
 
 // ------------------------------------
 // Reducer
@@ -26,16 +27,13 @@ const initialValues = {
 };
 export default createReducer(
   {
-    [addYourOwnEnzymeClose]: state => {
+    [addAdditionalEnzymesClose]: state => {
       return { ...state, isOpen: false };
     },
-    [addYourOwnEnzymeOpen]: state => {
-      return { ...state, isOpen: true };
-    },
-    [addYourOwnEnzymeReset]: (state, payload = {}) => {
+    [addAdditionalEnzymesReset]: (state, payload = {}) => {
       return { ...initialValues, ...payload };
     },
-    [addYourOwnEnzymeUpdate]: (state, payload) => {
+    [addAdditionalEnzymesUpdate]: (state, payload) => {
       return payload;
     }
   },

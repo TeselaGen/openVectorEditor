@@ -900,8 +900,14 @@ const toolCommandDefs = {
   },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
-    name: "Restriction Enzymes Manager...",
-    handler: props => props.addYourOwnEnzymeOpen(),
+    name: "Add Additional Enzymes",
+    handler: props =>
+      props.addAdditionalEnzymesReset({
+        inputSequenceToTestAgainst: props.sequenceData
+          ? props.sequenceData.sequence
+          : "",
+        isOpen: true
+      }),
     isHidden: props => isProtein(props)
   }
 };

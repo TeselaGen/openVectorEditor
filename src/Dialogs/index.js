@@ -11,7 +11,7 @@ import GoToDialog from "../helperComponents/GoToDialog";
 import SelectDialog from "../helperComponents/SelectDialog";
 import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
 import { withDialog } from "teselagen-react-components";
-import { addYourOwnEnzymeClose } from "../redux/addYourOwnEnzyme";
+import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
 
@@ -32,18 +32,18 @@ export const dialogOverrides = [
 export default connect(
   state => {
     return {
-      addYourOwnEnzymeIsOpen:
-        state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme.isOpen
+      addAdditionalEnzymesOpen:
+        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes.isOpen
     };
   },
   {
-    addYourOwnEnzymeClose
+    addAdditionalEnzymesClose
   }
 )(
   ({
     editorName,
-    addYourOwnEnzymeIsOpen,
-    addYourOwnEnzymeClose,
+    addAdditionalEnzymesOpen,
+    addAdditionalEnzymesClose,
     AddOrEditFeatureDialogOverride,
     AddOrEditPartDialogOverride,
     AddOrEditPrimerDialogOverride
@@ -59,8 +59,8 @@ export default connect(
         <AddAdditionalEnzymes
           noTarget
           dialogProps={{
-            isOpen: addYourOwnEnzymeIsOpen,
-            onClose: addYourOwnEnzymeClose
+            isOpen: addAdditionalEnzymesOpen,
+            onClose: addAdditionalEnzymesClose
           }}
         />
         <CreateAlignmentDialog
