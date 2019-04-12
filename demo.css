@@ -10922,12 +10922,12 @@ li.bp3-menu-divider:last-child {
   text-align: right;
 }
 
-.addYourOwnEnzymeBtn {
+.addAdditionalEnzymeBtn {
   width: 120px !important;
   margin: 10px;
 }
 
-.addYourOwnEnzyme {
+.addAdditionalEnzyme {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -10943,16 +10943,16 @@ li.bp3-menu-divider:last-child {
           justify-content: center;
   padding: 20px;
 }
-.addYourOwnEnzyme > span {
+.addAdditionalEnzyme > span {
   max-width: 350px;
 }
-.addYourOwnEnzyme .Select {
+.addAdditionalEnzyme .Select {
   width: 250px;
 }
-.addYourOwnEnzyme .Select-control {
+.addAdditionalEnzyme .Select-control {
   border-color: black;
 }
-.addYourOwnEnzyme .Select-placeholder {
+.addAdditionalEnzyme .Select-placeholder {
   color: black;
 }
 
