@@ -49,7 +49,7 @@ describe("addAdditionalEnzymes", function() {
     cy.contains("AaaI (Cuts 0 times)").should("be.visible");
     cy.contains("button", "Add Enzyme").click();
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
-    cy.contains("AaaI (Cuts 0 times)").should("be.visible");
+    cy.contains("(0 cuts)").should("be.visible");
   });
   it("can open the create a new enzyme dialog from the cutsite filter dropdown", function() {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();

@@ -83,17 +83,18 @@ export class CutsiteFilter extends React.Component {
             filteredRestrictionEnzymesUpdate(filteredRestrictionEnzymes);
           }}
           value={filteredRestrictionEnzymes.map(filteredOpt => {
-            if (cutsitesByName[filteredOpt.value]) {
-              const label = getLabel(
-                cutsitesByName[filteredOpt.value],
-                filteredOpt.value
-              );
-              return {
-                ...filteredOpt,
-                label
-              };
+            if (filteredOpt.cutsThisManyTimes) {
+              return filteredOpt;
             }
-            return filteredOpt;
+
+            const label = getLabel(
+              cutsitesByName[filteredOpt.value],
+              filteredOpt.value
+            );
+            return {
+              ...filteredOpt,
+              label
+            };
           })}
         />
       </div>
@@ -121,8 +122,9 @@ function AddAdditionalEnzymeLink({ onClick }) {
   );
 }
 
-const getLabel = (cutsite, val) => {
-  const cutNumber = cutsite.length;
+const getLabel = (maybeCutsites = [], val) => {
+  const cutNumber = maybeCutsites.length;
+
   return (
     <div
       style={{
@@ -134,7 +136,7 @@ const getLabel = (cutsite, val) => {
       {" "}
       <div>{val}</div>{" "}
       <div style={{ fontSize: 12 }}>
-        &nbsp;({cutNumber} cut{cutNumber > 1 && "s"}){" "}
+        &nbsp;({cutNumber} cut{cutNumber === 1 ? "" : "s"})
       </div>
     </div>
   );
