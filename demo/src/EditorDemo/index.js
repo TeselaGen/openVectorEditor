@@ -696,7 +696,7 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "showGCContent",
-                info: `pass showGCContent=true to the <Editor> to display the %GC content`
+                info: `pass showGCContent=true to the <Editor> to display the %GC content. You'll need to select some DNA bps to see it in the status bar!`
               })}
               {renderToggle({
                 that: this,
