@@ -301,7 +301,7 @@ the protein sequenceData object should look like so
 	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices . 
 	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has 
 	//features/parts coming in as AA-indexed
-	features: [{name: "testFeature1, 
+	features: [{name: "testFeature1", 
 		start: 3, //start on AA 1
 		end: 5 //end on AA 1 
 	}],
