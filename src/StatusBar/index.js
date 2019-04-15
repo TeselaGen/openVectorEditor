@@ -51,7 +51,8 @@ const ShowSelectionItem = compose(
       selectionLayer,
       isProtein: sequenceData.isProtein,
       caretPosition,
-      sequenceLength: sequenceData.sequence.length
+      sequenceLength: sequenceData.sequence.length,
+      sequenceData
     })
   ),
   withHandlers({ handleInverse })
@@ -61,6 +62,9 @@ const ShowSelectionItem = compose(
     caretPosition = -1,
     sequenceLength = 0,
     isProtein,
+    sequenceData = { sequence: "" },
+    showGCContent,
+    GCDecimalDigits,
     handleInverse
   }) => {
     return (
@@ -70,6 +74,9 @@ const ShowSelectionItem = compose(
             caretPosition,
             selectionLayer,
             sequenceLength,
+            sequenceData,
+            showGCContent,
+            GCDecimalDigits,
             isProtein
           })}
 
@@ -175,6 +182,8 @@ export function StatusBar({
   showCircularity = true,
   showReadOnly = true,
   showAvailability = false,
+  showGCContent = false,
+  GCDecimalDigits = 1,
   isProtein
 }) {
   return (
@@ -195,7 +204,12 @@ export function StatusBar({
         editorName={editorName}
         showAvailability={showAvailability}
       />
-      <ShowSelectionItem editorName={editorName} isProtein={isProtein} />
+      <ShowSelectionItem
+        editorName={editorName}
+        isProtein={isProtein}
+        showGCContent={showGCContent}
+        GCDecimalDigits={GCDecimalDigits}
+      />
       <ShowLengthItem isProtein={isProtein} editorName={editorName} />
     </div>
   );

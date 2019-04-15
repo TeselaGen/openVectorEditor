@@ -60,6 +60,8 @@ const userDefinedHandlersAndOpts = [
   "showReadOnly",
   "showCircularity",
   "showAvailability",
+  "showGCContent",
+  "GCDecimalDigits",
   "fullscreenMode",
   "onNew",
   "onSave",
@@ -289,6 +291,8 @@ export class Editor extends React.Component {
       disableSetReadOnly,
       showCircularity,
       showAvailability,
+      showGCContent,
+      GCDecimalDigits,
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
@@ -781,6 +785,8 @@ export class Editor extends React.Component {
           {...pick(this.props, userDefinedHandlersAndOpts)}
           userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
           onSave={onSave}
+          showGCContent={showGCContent}
+          GCDecimalDigits={GCDecimalDigits}
           closeFullscreen={
             !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
           }
@@ -820,6 +826,8 @@ export class Editor extends React.Component {
 
         <StatusBar
           showAvailability={showAvailability}
+          showGCContent={showGCContent}
+          GCDecimalDigits={GCDecimalDigits}
           onSave={onSave}
           isProtein={sequenceData.isProtein}
           showCircularity={showCircularity && !sequenceData.isProtein}

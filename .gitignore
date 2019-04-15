@@ -8,3 +8,4 @@ npm-debug.log*
 /.cache
 /cypress/videos
 .linkEnv
+.idea

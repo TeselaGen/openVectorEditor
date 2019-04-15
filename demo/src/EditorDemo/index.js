@@ -28,6 +28,8 @@ const defaultState = {
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
+  showGCContent: false,
+  GCDecimalDigits: 1,
   overrideToolbarOptions: false,
   menuOverrideExample: false,
   propertiesOverridesExample: false,
@@ -693,6 +695,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "showGCContent",
+                info: `pass showGCContent=true to the <Editor> to display the %GC content`
+              })}
+              {renderToggle({
+                that: this,
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
@@ -936,6 +943,8 @@ beforeSequenceInsertOrDelete: (
             disableSetReadOnly={this.state.disableSetReadOnly}
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
+            showGCContent={this.state.showGCContent}
+            GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}

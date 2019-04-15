@@ -19,4 +19,26 @@ describe("statusBar", function() {
     cy.contains("Truncate Annotations").click();
     cy.get(`[data-test="ve-warning-circular-to-linear"]`);
   });
+  it(`should display optional gc content`, function() {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Select...")
+      .click();
+    cy.focused()
+      .type("1")
+      .get("div.tg-test-to .bp3-input")
+      .type("100")
+      .get(".bp3-intent-primary")
+      .contains("OK")
+      .click();
+    cy.get(`[data-test="veStatusBar-selection"]`).contains(
+      "Selecting 100 bps from 1 to 100"
+    );
+    cy.get(`[data-test="showGCContent"]`).click({ force: true });
+    cy.get(`[data-test="veStatusBar-selection"]`)
+      .contains("Selecting 100 bps from 1 to 100 (")
+      .contains("% GC)");
+  });
 });
