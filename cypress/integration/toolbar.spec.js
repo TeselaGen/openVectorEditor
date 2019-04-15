@@ -122,7 +122,7 @@ describe("toolbar", function() {
     cy.contains("AanI").click();
     cy.contains("Cuts 2 times").click();
     cy.contains("Add Enzyme").click();
-    cy.get(".ve-toolbar-dropdown").contains("Cuts 2 times");
+    cy.get(".ve-toolbar-dropdown").contains("2 cuts");
   });
 
   it("you should be able to undo and redo the deletion of several features", function() {
