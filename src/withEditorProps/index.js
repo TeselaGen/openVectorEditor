@@ -3,7 +3,6 @@ import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import lruMemoize from "lru-memoize";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
@@ -480,6 +479,7 @@ function mapStateToProps(state, ownProps) {
   this.cutsites = cutsites;
   this.orfs = orfs;
   this.translations = translations;
+
   let sequenceDataToUse = {
     ...sequenceData,
     filteredFeatures,
@@ -487,7 +487,6 @@ function mapStateToProps(state, ownProps) {
     orfs,
     translations
   };
-
   return {
     ...toReturn,
     selectedCutsites,
@@ -534,9 +533,12 @@ export function fakeActionOverrides() {
   return defaultOverrides;
 }
 
-export const getCombinedActions = lruMemoize()(_getCombinedActions);
-
-function _getCombinedActions(editorName, actions, actionOverrides, dispatch) {
+export function getCombinedActions(
+  editorName,
+  actions,
+  actionOverrides,
+  dispatch
+) {
   let meta = { editorName };
 
   let metaActions = addMetaToActionCreators(actions, meta);
@@ -587,24 +589,26 @@ const getTypesToOmit = annotationsToSupport => {
   return typesToOmit;
 };
 
-const getVisibilities = lruMemoize(1, undefined, true)(
-  (annotationVisibility, annotationLabelVisibility, annotationsToSupport) => {
-    const typesToOmit = getTypesToOmit(annotationsToSupport);
-    const annotationVisibilityToUse = {
-      ...annotationVisibility,
-      ...typesToOmit
-    };
-    const annotationLabelVisibilityToUse = {
-      ...annotationLabelVisibility,
-      ...typesToOmit
-    };
-    return {
-      annotationVisibilityToUse,
-      annotationLabelVisibilityToUse,
-      typesToOmit
-    };
-  }
-);
+const getVisibilities = (
+  annotationVisibility,
+  annotationLabelVisibility,
+  annotationsToSupport
+) => {
+  const typesToOmit = getTypesToOmit(annotationsToSupport);
+  const annotationVisibilityToUse = {
+    ...annotationVisibility,
+    ...typesToOmit
+  };
+  const annotationLabelVisibilityToUse = {
+    ...annotationLabelVisibility,
+    ...typesToOmit
+  };
+  return {
+    annotationVisibilityToUse,
+    annotationLabelVisibilityToUse,
+    typesToOmit
+  };
+};
 
 function truncateOriginSpanningAnnotations(seqData) {
   const {

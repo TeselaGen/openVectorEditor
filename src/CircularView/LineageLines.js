@@ -2,7 +2,6 @@ import color from "color";
 import randomcolor from "randomcolor";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 import getRangeAngles from "./getRangeAnglesSpecial";
-import lruMemoize from "lru-memoize";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import withHover from "../helperComponents/withHover";
@@ -70,7 +69,7 @@ function LineageLines(props) {
   };
 }
 
-export default lruMemoize(5, undefined, true)(LineageLines);
+export default LineageLines;
 
 const DrawLineageLine = withHover(function({
   hovered,

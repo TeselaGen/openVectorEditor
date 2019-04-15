@@ -5,7 +5,6 @@ import { memoize } from "lodash";
 import withEditorProps from "../withEditorProps";
 import menuDef from "./defaultConfig";
 import getCommands from "../commands";
-import pureNoFunc from "../utils/pureNoFunc";
 
 const ident = x => x;
 
@@ -57,4 +56,4 @@ class OveMenuBar extends React.Component {
   }
 }
 
-export default compose(withEditorProps)(pureNoFunc(OveMenuBar));
+export default compose(withEditorProps)(OveMenuBar);
