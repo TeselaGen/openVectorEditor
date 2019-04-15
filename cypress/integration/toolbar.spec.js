@@ -110,6 +110,7 @@ describe("toolbar", function() {
     // cy.contains("Sequence Imported").should("exist")
     // cy.contains("Parsed using Genbank Parser").should("exist")
   });
+  
 
   it("can open the cutsite dropdown and add an additional enzyme", function() {
     cy.get("[data-test=cutsiteToolDropdown]").click();
