@@ -25,7 +25,7 @@
     "fontopen": "make fontopen",
     "fontsave": "make fontsave",
     "c": "yarn cypress open",
-    "test-e2e": "yarn cypress run --record --key 5d118c91-6b05-4e6f-899b-17783d834bf5"
+    "test-e2e": "yarn cypress run --record --key 0dcf0c08-68ce-4547-aaaa-ac33af76e4a9"
   },
   "dependencies": {
     "classnames": "^2.2.6",
