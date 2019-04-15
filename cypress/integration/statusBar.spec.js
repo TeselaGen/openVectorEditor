@@ -39,6 +39,6 @@ describe("statusBar", function() {
     cy.get(`[data-test="showGCContent"]`).click({ force: true });
     cy.get(`[data-test="veStatusBar-selection"]`)
       .contains("Selecting 100 bps from 1 to 100 (")
-      .contains("% GC)");
+      .contains("(51.0% GC)");
   });
 });
