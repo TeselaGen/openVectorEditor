@@ -278,7 +278,53 @@ updateEditor(store, "DemoEditor", {
                 type: "isProtein",
                 info: `
 The editor supports Amino Acid sequences as well as DNA sequences!
-Protein sequences are 
+Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
+\`\`\`
+updateEditor(store, "DemoEditor", {
+  readOnly: false,
+  sequenceData: tidyUpSequenceData(exampleProteinData, {
+    convertAnnotationsFromAAIndices: true
+  })
+})
+\`\`\`
+the protein sequenceData object should look like so
+\`\`\`
+{
+	isProtein: true
+	//either or both .proteinSequence (aa string) or .sequence (dna string) must be provided if isProtein: true
+	//if only .sequence is provided, OVE will automatically compute the amino acids from the provided dna sequence
+	//if only .proteinSequence is provided, OVE will automatically compute the degenerate DNA sequence from the provided aa string
+	//if both .proteinSequence and .sequence are provided, then OVE will assume that the underlying 
+	//dna sequence maps to the provided aa string as long as sequence.length === 3 * proteinSequence.length
+	proteinSequence: "mmhlrlfcillaavs...etc"
+	sequence: "gtagagagagcca...etc" //optional!
+	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices . 
+	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has 
+	//features/parts coming in as AA-indexed
+	features: [{name: "testFeature1, 
+		start: 3, //start on AA 1
+		end: 5 //end on AA 1 
+	}],
+	parts: [{
+		name: "myFakePart"
+		start: 0, //start on AA 0
+		end: 11 //end on AA 3 
+	}]
+}
+\`\`\`
+
+The usual onSave, onCopy, onCut handlers will now come back with a .proteinSequence field. 
+You'll need to save/manipulate the protein sequence data however you do for dna sequences.
+
+certain dna specific tools and annotations are automatically disabled when isProtein=true :
+ - primers
+ - orfs
+ - translations 
+ - cutsites
+ - sequence digestions 
+ - ...etc
+
+
                 `,
                 hook: isProtein => {
                   isProtein
