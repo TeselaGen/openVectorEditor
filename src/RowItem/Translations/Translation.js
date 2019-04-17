@@ -107,13 +107,14 @@ class Translation extends React.Component {
             });
           }}
           onContextMenu={function(event) {
-            onRightClick({
-              annotation,
-              codonRange: aminoAcidSliver.codonRange,
-              event,
-              gapsInside,
-              gapsBefore
-            });
+            onRightClick &&
+              onRightClick({
+                annotation,
+                codonRange: aminoAcidSliver.codonRange,
+                event,
+                gapsInside,
+                gapsBefore
+              });
           }}
           title={`${aminoAcid.name} -- Index: ${aminoAcidSliver.aminoAcidIndex +
             1} -- Hydrophobicity ${aminoAcid.hydrophobicity}`}
