@@ -54,7 +54,6 @@ try {
 class AlignmentView extends React.Component {
   constructor(props) {
     super(props);
-    if (this.props.noClickDragHandlers) return;
     this.onShortcutCopy = document.addEventListener(
       "keydown",
       this.handleAlignmentCopy
@@ -63,7 +62,7 @@ class AlignmentView extends React.Component {
 
   componentWillUnmount() {
     this.onShortcutCopy &&
-      document.removeEventListener("keydown", this.onShortcutCopy);
+      document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
   handleAlignmentCopy = event => {
     if (
