@@ -96,6 +96,9 @@ export class RowItem extends React.PureComponent {
       bpsPerRow = sequenceLength,
       editorName
     } = this.props;
+    if (alignmentData) {
+      uppercaseSequenceMapFont = "uppercase";
+    }
 
     let {
       chromatogram: showChromatogram,

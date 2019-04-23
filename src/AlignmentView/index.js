@@ -86,10 +86,11 @@ class AlignmentView extends React.Component {
     }
   };
   getAllAlignmentsFastaText = () => {
-    const { alignmentTracks, selectionLayer } =
+    const selectionLayer =
       this.props.store.getState().VectorEditor.__allEditorsOptions.alignments[
         this.props.id
-      ] || {};
+      ].selectionLayer || {};
+    const { alignmentTracks } = this.props;
     let seqDataOfAllTracksToCopy = [];
     alignmentTracks.forEach(track => {
       const seqDataToCopy = getSequenceDataBetweenRange(
@@ -345,22 +346,12 @@ class AlignmentView extends React.Component {
     const track = alignmentTracks[i];
 
     const {
-      // sequenceData,
-      // alignmentData,
+      sequenceData,
+      alignmentData,
       additionalSelectionLayers,
       chromatogramData
       // mismatches
     } = track;
-    const rawSequenceData = track.sequenceData;
-    const sequenceData = {
-      ...rawSequenceData,
-      sequence: rawSequenceData.sequence.toUpperCase()
-    };
-    const rawAlignmentData = track.alignmentData;
-    const alignmentData = {
-      ...rawAlignmentData,
-      sequence: rawAlignmentData.sequence.toUpperCase()
-    };
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
