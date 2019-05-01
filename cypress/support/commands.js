@@ -36,6 +36,7 @@ function getCenter(el) {
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
 
+  cy.clock();
   getOrWrap(dragSelector).then(el => {
     let dragSelectDomEl = el.get(0);
     getOrWrap(dropSelector).then(el2 => {
@@ -53,7 +54,7 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
           },
           { force: true }
         )
-        .wait(10);
+        .tick(1000);
       // drag events test for button: 0 and also use the clientX and clientY values - the clientX and clientY values will be specific to your system
       getOrWrap(dragSelector)
         .trigger(
@@ -66,7 +67,7 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
           },
           { force: true }
         ) // We perform a small move event of > 5 pixels this means we don't get dismissed by the sloppy click detection
-        .wait(150); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
+        .tick(5000); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
 
       cy.get("html") // now we perform drags on the whole screen, not just the draggable
         .trigger(
@@ -79,7 +80,7 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
           },
           { force: true }
         )
-        .wait(10);
+        .tick(5000);
       cy.get("html").trigger(
         "mouseup",
         {
