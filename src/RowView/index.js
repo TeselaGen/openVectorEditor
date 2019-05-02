@@ -229,7 +229,6 @@ export class RowView extends React.Component {
     }
 
     let bpsPerRow = getBpsPerRow(newProps);
-
     if (
       scrollToBp > -1 &&
       this.InfiniteScroller &&
@@ -241,23 +240,28 @@ export class RowView extends React.Component {
       // const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
         this.InfiniteScroller.scrollTo(rowToScrollTo);
-        clearTimeout(this.jumpTimeoutId);
-        this.jumpTimeoutId = setTimeout(() => {
-          if (!this.InfiniteScroller) return; //this might be undefined if we've already unmounted
-          const [el] = this.InfiniteScroller.items.querySelectorAll(
-            `[data-row-number="${rowToScrollTo}"]`
-          );
-          if (!el) {
-            //sometimes the el isn't on the page even after the jump because of drawing issues, so we'll try the scroll one more time
-            this.InfiniteScroller.scrollTo(rowToScrollTo);
-            return;
-          }
-          //tnr: we can't use the following because it messes up the scroll of the Reflex panels
-          //causing the tabs to not be shown
-          // el.scrollIntoView && el.scrollIntoView();
-        }, 1);
-        //   Math.max(rowToScrollTo + (rowToScrollTo < start ? 2 : -2), 0)
-        // );
+        clearInterval(this.jumpIntervalId);
+        //this will try to run the following logic at most 10 times with a 100ms pause between each
+        this.jumpIntervalId = setIntervalX(
+          () => {
+            if (!this.InfiniteScroller) return; //this might be undefined if we've already unmounted
+            const [el] = this.InfiniteScroller.items.querySelectorAll(
+              `[data-row-number="${rowToScrollTo}"]`
+            );
+            if (!el) {
+              //sometimes the el isn't on the page even after the jump because of drawing issues, so we'll try the scroll one more time
+              this.InfiniteScroller.scrollTo(rowToScrollTo);
+              return;
+            } else {
+              clearInterval(this.jumpIntervalId);
+            }
+            //tnr: we can't use the following because it messes up the scroll of the Reflex panels
+            //causing the tabs to not be shown
+            // el.scrollIntoView && el.scrollIntoView();
+          },
+          100,
+          10 //tnr: we could run this more than 5 times.. doesn't really matter
+        );
       }
     }
   };
@@ -517,3 +521,15 @@ function onScroll() {
 const endScroll = debounce(() => {
   window.__veScrolling = false;
 }, 100);
+
+function setIntervalX(callback, delay, repetitions) {
+  let x = 0;
+  let intervalID = window.setInterval(function() {
+    callback();
+
+    if (++x === repetitions) {
+      window.clearInterval(intervalID);
+    }
+  }, delay);
+  return intervalID;
+}
