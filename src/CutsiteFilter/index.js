@@ -7,7 +7,7 @@ import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOption
 
 import React from "react";
 import "./style.css";
-import Select from "react-select";
+import { MultiSelect as Select } from "teselagen-react-components";
 
 import map from "lodash/map";
 

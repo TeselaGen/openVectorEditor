@@ -4,10 +4,8 @@ describe("addAdditionalEnzymes", function() {
   });
   it(`cutsite cut numbers should update as cutsites are added`, () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
-    cy.get(`.veToolbarCutsiteFilterHolder .Select`)
-      .click()
-      .click();
-    cy.contains(".Select-option", "AatII").click();
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-multi-select-wrapper`).click();
+    cy.contains(".tg-multi-select-option", "AatII").click();
     cy.contains("(2 cuts)").should("not.exist");
     cy.contains("(1 cut)");
     cy.contains(".veLabelText", "araD").trigger("contextmenu");
@@ -53,9 +51,7 @@ describe("addAdditionalEnzymes", function() {
   });
   it("can open the create a new enzyme dialog from the cutsite filter dropdown", function() {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
-    cy.get(`.veToolbarCutsiteFilterHolder .Select`)
-      .click()
-      .click();
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-multi-select-wrapper`).click();
     cy.get(`[aria-label="Add additional enzyme"]`).click();
     cy.contains(".bp3-heading", "Add Additional Enzymes");
 

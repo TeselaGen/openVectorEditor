@@ -37,7 +37,7 @@
 .addAdditionalEnzyme > span {
   max-width: 350px;
 }
-.addAdditionalEnzyme .Select {
+/* .addAdditionalEnzyme .Select {
   width: 250px;
 }
 .addAdditionalEnzyme .Select-control {
@@ -45,7 +45,7 @@
 }
 .addAdditionalEnzyme .Select-placeholder {
   color: black;
-}
+} */
 
 .createYourOwnEnzyme {
   display: flex;
