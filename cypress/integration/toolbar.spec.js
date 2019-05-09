@@ -114,7 +114,7 @@ describe("toolbar", function() {
   it("can open the cutsite dropdown and add an additional enzyme", function() {
     cy.get("[data-test=cutsiteToolDropdown]").click();
     cy.contains("Single cutters");
-    cy.get(".tg-multi-select-wrapper").click();
+    cy.get(".tg-select").click();
     cy.contains("Add additional enzymes").click();
     cy.contains("Select cut sites").click(); //click twice because of react dropdown weirdness
     cy.contains("Select cut sites").click();
