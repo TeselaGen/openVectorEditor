@@ -22,9 +22,9 @@ module.exports = {
       // "bio-parsers":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-sequence-parsers/src/parsers/"),
-      "teselagen-react-components":
-        console.log("comment me back out!") ||
-        path.resolve("../teselagen-react-components/src/"),
+      // "teselagen-react-components":
+      //   console.log("comment me back out!") ||
+      //   path.resolve("../teselagen-react-components/src/"),
       // "@teselagen/apollo-methods":
       //   console.log("comment me back out!") ||
       //   path.resolve("../teselagen-common/apollo-methods/src/"),
