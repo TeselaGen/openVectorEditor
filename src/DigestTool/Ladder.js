@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import React from "react";
-import { MultiSelect as Select } from "teselagen-react-components";
+import { TgSelect } from "teselagen-react-components";
 
 import "./Ladder.css";
 import { Tooltip } from "@blueprintjs/core";
@@ -84,7 +84,7 @@ export default class Ladder extends React.Component {
     return (
       <div>
         Ladder:
-        <Select
+        <TgSelect
           value={selectedLadder}
           onChange={this.handleChange}
           options={ladders}

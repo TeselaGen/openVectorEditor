@@ -7,7 +7,7 @@ import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOption
 
 import React from "react";
 import "./style.css";
-import { MultiSelect as Select } from "teselagen-react-components";
+import { TgSelect } from "teselagen-react-components";
 
 import map from "lodash/map";
 
@@ -56,7 +56,7 @@ export class CutsiteFilter extends React.Component {
     }
     return (
       <div style={style}>
-        <Select
+        <TgSelect
           multi
           allowCreate
           wrapperStyle={{ zIndex: 11 }}

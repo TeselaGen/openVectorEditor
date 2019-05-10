@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
 import { Button } from "@blueprintjs/core";
-import { InfoHelper, MultiSelect as Select } from "teselagen-react-components";
+import { InfoHelper, TgSelect } from "teselagen-react-components";
 
 import enzymeListFull from "../redux/utils/expandedEnzymeList.json";
 import defaultEnzymeList from "../redux/utils/defaultEnzymeList.json";
@@ -301,7 +301,7 @@ class AddAdditionalEnzymes extends React.Component {
           add less common ones:
         </span>
         <div className="filterAndButton">
-          <Select
+          <TgSelect
             multi
             placeholder="Select cut sites..."
             options={map(enzymeListFull, function(enzyme) {
