@@ -1056,8 +1056,15 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
       : selectionLayer.start > selectionLayer.end
       ? 0
       : selectionLayer.start;
+
   selectionLayerUpdate({
     start: newSelectionLayerStart,
-    end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+    end:
+      newSelectionLayerStart +
+      (seqDataToInsert.sequence
+        ? seqDataToInsert.sequence.length - 1
+        : seqDataToInsert.proteinSequence
+        ? seqDataToInsert.proteinSequence.length * 3 - 1
+        : 0)
   });
 };

@@ -73,6 +73,7 @@ describe("editor", function() {
     cy.get(".sequenceInputBubble input").type(".*-masdzz,");
     cy.contains("Press ENTER to replace 1 AAs between 1384 and 2");
     cy.get(".sequenceInputBubble input").type("{enter}");
+    cy.contains("Selecting 9 AAs from 1 to 9");
     cy.contains("Length: 1392 AAs");
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
@@ -126,7 +127,7 @@ describe("editor", function() {
       .clear()
       .type("20");
     cy.get(".tg-min-width-dialog")
-      .contains("OK")
+      .contains("Select 11 AAs")
       .click();
     cy.get(".veStatusBarItem")
       .contains("Selecting 11 AAs from 10 to 20")
