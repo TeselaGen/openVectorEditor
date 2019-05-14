@@ -369,9 +369,14 @@ const editCommandDefs = {
     isDisabled: props => props.sequenceLength === 0,
     name: "Select...",
     handler: props => {
-      const { start, end } = props.selectionLayer;
+      let { start, end } = props.selectionLayer;
+      if (!(start > -1)) {
+        start = props.caretPosition;
+        end = props.caretPosition;
+      }
       props.showSelectDialog({
         extraProps: {
+          circular: props.sequenceData && props.sequenceData.circular,
           from: {
             min: 1,
             max: divideBy3(props.sequenceLength || 1, isProtein(props))
@@ -381,10 +386,18 @@ const editCommandDefs = {
             max: divideBy3(props.sequenceLength || 1, isProtein(props))
           }
         },
+        selectionLayerUpdate: props.selectionLayerUpdate,
+        caretPositionUpdate: props.caretPositionUpdate,
+        initialCaretPosition: props.caretPosition,
         initialValues: {
-          from: divideBy3(start >= 0 ? start : 0, isProtein(props)),
-          to: divideBy3(end >= 0 ? end : 0, isProtein(props))
+          from: Math.max(
+            1,
+            1 + divideBy3(start >= 0 ? start : 0, isProtein(props))
+          ),
+          to: Math.max(1, 1 + divideBy3(end >= 0 ? end : 0, isProtein(props)))
         },
+        isProtein: isProtein(props),
+        sequenceLength: divideBy3(props.sequenceLength || 1, isProtein(props)),
         onSubmit: values => {
           const newRange = convertRangeTo0Based({
             start: isProtein(props) ? values.from * 3 : values.from,

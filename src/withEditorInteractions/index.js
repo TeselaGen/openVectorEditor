@@ -216,13 +216,8 @@ function VectorInteractionHOC(Component /* options */) {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
-        sequenceData = { sequence: "" },
         readOnly,
-        onPaste,
-        updateSequenceData,
-        wrappedInsertSequenceDataAtPositionOrRange,
-        selectionLayerUpdate
-        // handleInsert
+        onPaste
       } = this.props;
 
       if (readOnly) {
@@ -254,18 +249,9 @@ function VectorInteractionHOC(Component /* options */) {
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");
 
-      updateSequenceData(
-        wrappedInsertSequenceDataAtPositionOrRange(
-          seqDataToInsert,
-          sequenceData,
-          caretPosition > -1 ? caretPosition : selectionLayer
-        )
-      );
-      const newSelectionLayerStart =
-        caretPosition > -1 ? caretPosition : selectionLayer.start;
-      selectionLayerUpdate({
-        start: newSelectionLayerStart,
-        end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+      insertAndSelectHelper({
+        seqDataToInsert,
+        props: this.props
       });
 
       window.toastr.success("Sequence Pasted Successfully");
@@ -332,9 +318,9 @@ function VectorInteractionHOC(Component /* options */) {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        readOnly,
-        updateSequenceData,
-        wrappedInsertSequenceDataAtPositionOrRange
+        readOnly
+        // updateSequenceData,
+        // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
@@ -351,18 +337,17 @@ function VectorInteractionHOC(Component /* options */) {
           sequenceLength,
           caretPosition,
           handleInsert: seqDataToInsert => {
-            updateSequenceData(
-              wrappedInsertSequenceDataAtPositionOrRange(
-                seqDataToInsert,
-                sequenceData,
-                caretPosition > -1 ? caretPosition : selectionLayer
-              )
-            );
+            insertAndSelectHelper({
+              props: this.props,
+              seqDataToInsert
+            });
+
             window.toastr.success("Sequence Inserted Successfully");
           }
         });
       }
     };
+
     handleDnaDelete = (showToast = true) => {
       let {
         caretPosition = -1,
@@ -399,10 +384,13 @@ function VectorInteractionHOC(Component /* options */) {
         );
         updateSequenceData(newSeqData);
         caretPositionUpdate(
-          normalizePositionByRangeLength(
-            rangeToDelete.start,
-            newSeqData.sequence.length
-          )
+          rangeToDelete.start > newSeqData.sequence.length
+            ? //we're deleting around the origin so set the cursor to the 0 position
+              0
+            : normalizePositionByRangeLength(
+                rangeToDelete.start,
+                newSeqData.sequence.length
+              )
         );
         if (showToast) window.toastr.success("Sequence Deleted Successfully");
       }
@@ -667,7 +655,11 @@ function VectorInteractionHOC(Component /* options */) {
       let items = [
         ...this.getCopyOptions(annotation),
         createNewAnnotationMenu,
-        "selectInverse"
+        "--",
+        "selectInverse",
+        "--",
+        "reverseComplementSelection",
+        "complementSelection"
       ];
       return items;
     };
@@ -766,9 +758,12 @@ function VectorInteractionHOC(Component /* options */) {
       return [
         "editPart",
         "deletePart",
+        "--",
         ...this.getCopyOptions(annotation),
+        "--",
         "newTranslation",
         "newReverseTranslation",
+        "--",
         "viewPartProperties"
       ];
     }, "partRightClicked");
@@ -792,6 +787,7 @@ function VectorInteractionHOC(Component /* options */) {
             ? []
             : [
                 ...(parts && [
+                  "--",
                   {
                     text: "Make a Part from Feature",
                     onClick: async () => {
@@ -834,11 +830,14 @@ function VectorInteractionHOC(Component /* options */) {
                     // annotationSelect(annotation)
                     showMergeFeaturesDialog(annotation);
                   }
-                }
+                },
+                "--"
               ]),
           "toggleCdsFeatureTranslations",
+          "--",
           "newTranslation",
           "newReverseTranslation",
+          "--",
           "viewFeatureProperties"
         ];
       },
@@ -1013,3 +1012,52 @@ function getGenbankFromSelection(selectedSeqData, sequenceData) {
     })
   };
 }
+
+const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
+  const {
+    updateSequenceData,
+    wrappedInsertSequenceDataAtPositionOrRange,
+    sequenceData,
+    selectionLayerUpdate,
+    caretPosition,
+    selectionLayer
+  } = props;
+
+  // sequenceData,
+  //             caretPosition,
+  //             selectionLayer
+
+  // updateSequenceData(
+  //   wrappedInsertSequenceDataAtPositionOrRange(
+  //     seqDataToInsert,
+  //     sequenceData,
+  //     caretPosition > -1 ? caretPosition : selectionLayer
+  //   )
+  // );
+
+  // const newSelectionLayerStart =
+  //   caretPosition > -1 ? caretPosition : (selectionLayer.start > selectionLayer.end ? 0 : selectionLayer.start);
+  // selectionLayerUpdate({
+  //   start: newSelectionLayerStart,
+  //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+  // });
+
+  updateSequenceData(
+    wrappedInsertSequenceDataAtPositionOrRange(
+      seqDataToInsert,
+      sequenceData,
+      caretPosition > -1 ? caretPosition : selectionLayer
+    )
+  );
+
+  const newSelectionLayerStart =
+    caretPosition > -1
+      ? caretPosition
+      : selectionLayer.start > selectionLayer.end
+      ? 0
+      : selectionLayer.start;
+  selectionLayerUpdate({
+    start: newSelectionLayerStart,
+    end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+  });
+};

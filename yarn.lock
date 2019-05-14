@@ -148,20 +148,44 @@
     resize-observer-polyfill "^1.5.0"
     tslib "^1.9.0"
 
-"@blueprintjs/datetime@^3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.8.0.tgz#abb50f353a175349d80769c91cf5e9d4e028a418"
-  integrity sha512-c4k3nFMsT5DLbdfNimf5CILdXEHkNXuJz2M3ZHrtcwhCFsxR86XLPUPSZg/1k6gf+bdkIXDzmfI/HOaQuaUkFQ==
+"@blueprintjs/core@^3.15.1":
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.15.1.tgz#9792e9fb7e2e066dd5339fadeaf2f85b1485832a"
+  integrity sha512-M8ltbqqlMZuZ6SEuqo/3Fr59ZcUfd8Er7ocbm7EACVfRW7dRhOCd/TKkf2kfICNtCDwznwXk0iAePLXZhUGtQg==
   dependencies:
-    "@blueprintjs/core" "^3.15.0"
+    "@blueprintjs/icons" "^3.8.0"
+    "@types/dom4" "^2.0.1"
     classnames "^2.2"
-    react-day-picker "^7.1.10"
+    dom4 "^2.0.1"
+    normalize.css "^8.0.0"
+    popper.js "^1.14.1"
+    react-popper "^1.0.0"
+    react-transition-group "^2.2.1"
+    resize-observer-polyfill "^1.5.0"
+    tslib "^1.9.0"
+
+"@blueprintjs/datetime@^3.9.0":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.9.0.tgz#86813be32fc87d9f2a875634549f18c709b85757"
+  integrity sha512-yhacQOfuqUwMs7Gk/vy9JYN1bag6KfRh4++0Fw923gLHR7cueX1gRFhmHeQ4JkqIKaAOL9Jvv0EhfpvX/48IIA==
+  dependencies:
+    "@blueprintjs/core" "^3.15.1"
+    classnames "^2.2"
+    react-day-picker "^7.3.0"
     tslib "^1.9.0"
 
 "@blueprintjs/icons@^3.7.0":
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.7.0.tgz#2a1907a41913773792c828a6c3ef082a1f1ebb77"
   integrity sha512-608lQx1okOo85LNp7LyvsXWlgJjoQAiu29wULcktGuAuMmVXgueaGbMEDpuEMbu+uRlg9yqDhmk1eWm7W7R5ag==
+  dependencies:
+    classnames "^2.2"
+    tslib "^1.9.0"
+
+"@blueprintjs/icons@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.8.0.tgz#7c77c67e4a241740f803f05e4f6e3ce43c6d6560"
+  integrity sha512-yHaRQ3vfV9Gf3foZ4ONtxddz+u5ufkHqHj8Ia5VhPbFgG4el+cPdmsGGIIM72rgKS1KQa5Ay+ggjpByUlXvrKg==
   dependencies:
     classnames "^2.2"
     tslib "^1.9.0"
@@ -225,10 +249,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@teselagen/apollo-methods@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.0.15.tgz#abc67637444f85890f30c038745e2e8b3cf46794"
-  integrity sha512-88dci7L0PhMfIwtu5OtN9Mi/aoz+UqDaEMF7I1U3lsqqF31XbaVrYQHPlupSzhgPt9Z4FsY1oz23DVw85G1wlQ==
+"@teselagen/apollo-methods@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.1.0.tgz#9760777ea69838b3c5354ea4f1924e0b09306446"
+  integrity sha512-sGu8JhHK1kTUwfFU0zld3KBfdsMqVmXCXSC21LKVaPhUDZoQPG0g3Qw8+dY482pH//rFsCeKm9OaY2zkeh4ifg==
   dependencies:
     pascal-case "^2.0.1"
 
@@ -237,10 +261,10 @@
   resolved "https://registry.yarnpkg.com/@types/dom4/-/dom4-2.0.1.tgz#506d5781b9bcab81bd9a878b198aec7dee2a6033"
   integrity sha512-kSkVAvWmMZiCYtvqjqQEwOmvKwcH+V4uiv3qPQ8pAh1Xl39xggGEo8gHUqV4waYGHezdFw0rKBR8Jt0CrQSDZA==
 
-"@types/lodash@^4.14.123":
-  version "4.14.123"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
-  integrity sha512-pQvPkc4Nltyx7G1Ww45OjVqUsJP4UsZm+GWJpigXgkikZqJgRm4c48g027o6tdgubWHwFRF15iFd+Y4Pmqv6+Q==
+"@types/lodash@^4.14.125":
+  version "4.14.125"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.125.tgz#b5fa71f3080a2136ba2702c390ffe528ec1e3980"
+  integrity sha512-s29jU/MIOSddXeji0TSZPJjf0agnfJYpWeKlr79BbtXlfuYamGVyCNQA2IRi5/plaQiNSxMmNGdvFbdtMMJ3nw==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
@@ -1925,10 +1949,10 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
 
-bio-parsers@5.5.1:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.5.1.tgz#d393ea76489189e574d9adae7b50944c045528be"
-  integrity sha512-uuTIqnbQGZOe/8Whp6DywoNDfivYRopZHBykgNVi2hE9kVe3D4cpYwU5RpM8h/k1+Rhy90WGTT47fifpH45GjA==
+bio-parsers@5.5.17:
+  version "5.5.17"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.5.17.tgz#42f0b7cf5f736107b0f12ceef2a45152220eec4a"
+  integrity sha512-4+qkwlQcg3xxQCnMKs8htL/iKZ5dpVIpFv++K5uKEQ4MKVz+Njbr0sM+HCbmFFu8cEqRNhzBlYEdANEFlaOYqg==
   dependencies:
     "@gmod/gff" "^1.1.2"
     bufferpack "^0.0.6"
@@ -2628,10 +2652,10 @@ color-string@^1.5.2:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
-color@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/color/-/color-3.1.0.tgz#d8e9fb096732875774c84bf922815df0308d0ffc"
-  integrity sha512-CwyopLkuRYO5ei2EpzpIh6LqJMt6Mt+jZhO5VI5f/wJLZriXQE32/SSqzmrh+QB+AZT81Cj8yv+7zwToW8ahZg==
+color@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/color/-/color-3.1.1.tgz#7abf5c0d38e89378284e873c207ae2172dcc8a61"
+  integrity sha512-PvUltIXRjehRKPSy89VnDWFKY58xyhTLyxIg21vwQBI6qLwZNPmC8k3C1uytIgFKEpOIzN4y32iPm8231zFHIg==
   dependencies:
     color-convert "^1.9.1"
     color-string "^1.5.2"
@@ -8300,10 +8324,10 @@ popper.js@^1.14.1:
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.4.tgz#8eec1d8ff02a5a3a152dd43414a15c7b79fd69b6"
   integrity sha1-juwdj/AqWjoVLdQ0FKFce3n9abY=
 
-popper.js@^1.14.7:
-  version "1.14.7"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
-  integrity sha512-4q1hNvoUre/8srWsH7hnoSJ5xVmIL4qgz+s4qf2TnJIMyZFUFMGH+9vE7mXynAlHSZ/NdTmmow86muD0myUkVQ==
+popper.js@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
+  integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
 
 portfinder@^1.0.9:
   version "1.0.19"
@@ -8781,10 +8805,10 @@ react-color@^2.14.1:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
-react-day-picker@^7.1.10:
-  version "7.2.4"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.2.4.tgz#3c3bea7aa1910bef7bad17f25ff15cd26a7d1848"
-  integrity sha512-LaePKijvAdXTrQhTyU7XfxxD5NQIFb4FH4vr1T862xNtmncoS8jZLliyHieMHNhZZ8RJU1pruqoQzkZQ05646w==
+react-day-picker@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.3.0.tgz#59b6d4e19d274650c79dcf49fbcce2637313467d"
+  integrity sha512-t2kz0Zy4P5U4qwU5YhsBq2QGmypP8L/u+89TSnuD0h4dYKSEDQArFPWfin9gv8erV1ciR1Wzr485TMaYnI7FTw==
   dependencies:
     prop-types "^15.6.2"
 
@@ -10564,10 +10588,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@^26.1.0:
-  version "26.1.0"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.1.0.tgz#84e06b2cd792d42b3f26c57c9bc330a6ebd8c7cf"
-  integrity sha512-BdTgUmd4iyR3ZzsIKA3xtnGpglydqPuuBKzH0laPMPmD1IJ/zK1ycUrhqx5jiJBThCwLSjzSOJIE3LNFeU6weA==
+teselagen-react-components@^26.3.3:
+  version "26.3.3"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-26.3.3.tgz#8aba9de6a342afa9f08a7a2b9f47b18f39bfa302"
+  integrity sha512-GflaIsRWgEQlQBKZXej3W4DU9Gg88kqvqv9GJCLcYzr3dJGMphye13y8shvsIzwojF5my4dUVt5YZnL4CYf/PA==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -11273,10 +11297,10 @@ ve-range-utils@^2.5.3:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^3.3.34:
-  version "3.3.34"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.34.tgz#aa5ba5a6cc9cf2b68739354736c964f41c6857c9"
-  integrity sha512-CznfE5Q0cEll3tuK64yL+8QubDKLAyyMQUC/+4Zr2ZpT9leX8vMJHPL1I6GV61edh3VT7O+WamO3nCGwY5IAew==
+ve-sequence-utils@^3.3.39:
+  version "3.3.39"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.39.tgz#31b2892a25e5cc2d282da2e699f834c0d188a668"
+  integrity sha512-p+oC8O8f9t/ARywKiS8f/MKtgzJUDPOFgr2/cSf0pg+nESaT8NwWCbvG8Z4vOWeQqAP796eU/feVMFnNTjz3jQ==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
