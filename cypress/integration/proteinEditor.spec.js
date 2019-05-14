@@ -224,7 +224,7 @@ describe("editor", function() {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
-    cy.contains("Selecting 1 AAs from 1 to 1");
+    cy.contains("Selecting 1 AA from 1 to 1");
     cy.contains("Length: 1384 AAs");
 
     cy.log(

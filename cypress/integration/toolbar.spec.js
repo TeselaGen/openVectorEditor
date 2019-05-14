@@ -110,16 +110,13 @@ describe("toolbar", function() {
     // cy.contains("Sequence Imported").should("exist")
     // cy.contains("Parsed using Genbank Parser").should("exist")
   });
-  
 
   it("can open the cutsite dropdown and add an additional enzyme", function() {
     cy.get("[data-test=cutsiteToolDropdown]").click();
     cy.contains("Single cutters");
-    cy.get(".Select-control").click();
-    cy.get(".Select-control").click();
+    cy.get(".tg-select").click();
     cy.contains("Add additional enzymes").click();
-    cy.contains("Select cut sites").click(); //click twice because of react dropdown weirdness
-    cy.contains("Select cut sites").click();
+    cy.get(`input[placeholder="Select cut sites..."]`);
     cy.contains("AanI").click();
     cy.contains("Cuts 2 times").click();
     cy.contains("Add Enzyme").click();
