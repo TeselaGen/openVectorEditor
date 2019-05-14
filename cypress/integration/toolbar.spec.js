@@ -116,8 +116,7 @@ describe("toolbar", function() {
     cy.contains("Single cutters");
     cy.get(".tg-select").click();
     cy.contains("Add additional enzymes").click();
-    cy.contains("Select cut sites").click(); //click twice because of react dropdown weirdness
-    cy.contains("Select cut sites").click();
+    cy.get(`input[placeholder="Select cut sites..."]`);
     cy.contains("AanI").click();
     cy.contains("Cuts 2 times").click();
     cy.contains("Add Enzyme").click();

@@ -27,11 +27,11 @@ describe("statusBar", function() {
       .contains("Select...")
       .click();
     cy.focused()
-      .type("1")
+      .type("{selectall}1")
       .get("div.tg-test-to .bp3-input")
-      .type("100")
+      .type("{selectall}100")
       .get(".bp3-intent-primary")
-      .contains("OK")
+      .contains("Select 100 BPs")
       .click();
     cy.get(`[data-test="veStatusBar-selection"]`).contains(
       "Selecting 100 bps from 1 to 100"

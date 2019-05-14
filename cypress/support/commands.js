@@ -154,9 +154,22 @@ Cypress.Commands.add("selectRange", (start, end) => {
     .clear()
     .type(end);
   cy.get(".tg-min-width-dialog")
-    .contains("OK")
+    .contains("Select")
     .click();
 });
 Cypress.Commands.add("closeDialog", () => {
   cy.get(`.bp3-dialog [aria-label="Close"]`).click();
+});
+Cypress.Commands.add("replaceSelection", sequenceString => {
+  cy.get(".veRowViewSelectionLayer")
+    .first()
+    .trigger("contextmenu", { force: true });
+  cy.contains(".bp3-menu-item", "Replace").click();
+  cy.get(".sequenceInputBubble input").type(`${sequenceString}{enter}`);
+});
+Cypress.Commands.add("deleteSelection", () => {
+  cy.get(".veRowViewSelectionLayer")
+    .first()
+    .trigger("contextmenu", { force: true });
+  cy.contains(".bp3-menu-item", "Cut").click();
 });

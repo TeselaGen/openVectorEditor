@@ -6,7 +6,7 @@ describe("addAdditionalEnzymes", function() {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.contains(".tg-select-option", "AatII").click();
-    cy.get(".tg-select-option bp3-icon-caret-up").click();
+    cy.get(".tg-select .bp3-icon-caret-up").click();
     cy.contains("(2 cuts)").should("not.exist");
     cy.contains("(1 cut)");
     cy.contains(".veLabelText", "araD").trigger("contextmenu");
@@ -41,9 +41,7 @@ describe("addAdditionalEnzymes", function() {
     cy.get(".bp3-menu-item")
       .contains("Add Additional Enzymes")
       .click();
-    cy.contains("Select cut sites...")
-      .click()
-      .click();
+    cy.get(`input[placeholder="Select cut sites..."]`).click();
     cy.contains("AaaI").click();
     cy.contains("AaaI (Cuts 0 times)").should("be.visible");
     cy.contains("button", "Add Enzyme").click();

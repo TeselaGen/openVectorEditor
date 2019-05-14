@@ -23,12 +23,13 @@ export function getSelectionMessage({
       calculatePercentGC(
         getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence
       ).toFixed(numDecimalDigits);
-    return `${customTitle || "Selecting"} ${divideBy3(length, isProtein)} ${
-      isProtein ? "AAs" : "bps"
-    } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
-      selectionLayer.end + 1,
+    const seqLen = divideBy3(length, isProtein);
+    return `${customTitle || "Selecting"} ${seqLen} ${(isProtein
+      ? "AA"
+      : "bp") + (seqLen === 1 ? "" : "s")} from ${divideBy3(
+      selectionLayer.start,
       isProtein
-    )}${
+    ) + 1} to ${divideBy3(selectionLayer.end + 1, isProtein)}${
       showGCContent && !isProtein ? ` (${GCContent(GCDecimalDigits)}% GC)` : ""
     }`;
   } else if (caretPosition > -1) {
