@@ -89,6 +89,7 @@ export class RowItem extends React.PureComponent {
       searchLayerClicked = noop,
       backgroundRightClicked = noop,
       selectionLayerRightClicked = noop,
+      searchLayerRightClicked = noop,
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
@@ -281,6 +282,7 @@ export class RowItem extends React.PureComponent {
             color="yellow"
             regions={searchLayers}
             {...annotationCommonProps}
+            selectionLayerRightClicked={searchLayerRightClicked}
             row={
               alignmentData
                 ? { start: 0, end: alignmentData.sequence.length - 1 }

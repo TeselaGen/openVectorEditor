@@ -98,6 +98,7 @@ export class CircularView extends React.Component {
       primerClicked = noop,
       primerRightClicked = noop,
       selectionLayerRightClicked = noop,
+      searchLayerRightClicked = noop,
       backgroundRightClicked = noop,
       deletionLayerClicked = noop,
       replacementLayerClicked = noop,
@@ -551,7 +552,9 @@ export class CircularView extends React.Component {
                   isProtein,
                   key: "veCircularViewSelectionLayer" + index,
                   selectionLayer,
-                  selectionLayerRightClicked,
+                  selectionLayerRightClicked: selectionLayer.isSearchLayer
+                    ? searchLayerRightClicked
+                    : selectionLayerRightClicked,
                   sequenceLength,
                   baseRadius,
                   radius,

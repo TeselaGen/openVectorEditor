@@ -698,6 +698,17 @@ function VectorInteractionHOC(Component /* options */) {
       },
       "selectionLayerRightClicked"
     );
+    searchLayerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return this.generateSelectionMenuOptions({
+        //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
+        start: annotation.start,
+        end: annotation.end
+      });
+    }, "searchLayerRightClicked");
 
     backgroundRightClicked = this.enhanceRightClickAction(
       ({ nearestCaretPos, shiftHeld, event }) => {
@@ -938,6 +949,7 @@ function VectorInteractionHOC(Component /* options */) {
         propsToPass = {
           ...propsToPass,
           selectionLayerRightClicked: this.selectionLayerRightClicked,
+          searchLayerRightClicked: this.searchLayerRightClicked,
           backgroundRightClicked: this.backgroundRightClicked,
           featureRightClicked: this.featureRightClicked,
           partRightClicked: this.partRightClicked,
