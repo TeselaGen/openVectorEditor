@@ -61,10 +61,7 @@ class ToolbarItem extends React.Component {
       >
         {renderIconAbove && (
           <div>
-            <div className="veToolbarItem">
-              {index !== 0 && <div className="veToolbarSpacer" />}
-              {Icon}
-            </div>
+            <div className="veToolbarItem">{Icon}</div>
           </div>
         )}
 
