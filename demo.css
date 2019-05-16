@@ -9610,11 +9610,22 @@ span.bp3-popover-target {
   color: #f5f8fa;
 }
 
-/* .tg-multi-select-wrapper {
-  display: flex;
-} */
 .tg-select {
   min-width: 170px;
+}
+.tg-select input {
+  font-size: 14px;
+}
+.tg-single-select input {
+  position: absolute;
+  top: 5px;
+}
+.tg-single-select .bp3-tag {
+  background-color: initial !important;
+  font-size: 14px;
+}
+.tg-single-select .bp3-popover-open .bp3-tag {
+  opacity: 0.6;
 }
 .bp3-multi-select-popover .bp3-menu {
   max-width: 400px;
