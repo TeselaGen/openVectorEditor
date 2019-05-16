@@ -19,7 +19,7 @@ describe("partTypes", function() {
       force: true
     });
     cy.contains(".bp3-menu-item", "Edit Part").click();
-    cy.get(".bp3-dialog-body").find(`input[value="misc_RNA"]`);
+    cy.get(".bp3-dialog-body").contains(".tg-select", "misc_RNA");
   });
 
   it("should be able to make a part from feature", () => {
@@ -42,6 +42,6 @@ describe("partTypes", function() {
       force: true
     });
     cy.contains(".bp3-menu-item", "Edit Part").click();
-    cy.get(".bp3-dialog-body").find(`input[value="misc_RNA"]`);
+    cy.get(".bp3-dialog-body").contains(".tg-select", "misc_RNA");
   });
 });

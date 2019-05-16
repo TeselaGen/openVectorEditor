@@ -111,15 +111,21 @@ describe("toolbar", function() {
     // cy.contains("Parsed using Genbank Parser").should("exist")
   });
 
+  it("can search the cutsites and not find any and have the add additional enzymes option pop up", function() {
+    cy.get("[data-test=cutsiteToolDropdown]").click();
+    cy.get(".tg-select input").type("random 123");
+    cy.get(".tg-select").contains("Add additional enzymes");
+  });
   it("can open the cutsite dropdown and add an additional enzyme", function() {
     cy.get("[data-test=cutsiteToolDropdown]").click();
     cy.contains("Single cutters");
     cy.get(".tg-select").click();
     cy.contains("Add additional enzymes").click();
-    cy.get(`input[placeholder="Select cut sites..."]`);
+    cy.get(`input[placeholder="Select cut sites..."]`).click();
     cy.contains("AanI").click();
     cy.contains("Cuts 2 times").click();
     cy.contains("Add Enzyme").click();
+    cy.get("[data-test=cutsiteToolDropdown]").click();
     cy.get(".ve-toolbar-dropdown").contains("2 cuts");
   });
 
