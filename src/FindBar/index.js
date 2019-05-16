@@ -18,6 +18,11 @@ const opts = [
   { label: "Amino Acids", value: "AA" }
 ];
 export class FindBar extends React.Component {
+  componentDidMount() {
+    if (this.inputEl) {
+      this.inputEl.select();
+    }
+  }
   render() {
     const {
       toggleFindTool,
@@ -140,6 +145,9 @@ export class FindBar extends React.Component {
         <Button onClick={toggleFindTool} icon="cross" />
         <InputGroup
           autoFocus
+          inputRef={n => {
+            if (n) this.inputEl = n;
+          }}
           onKeyDown={e => {
             e.persist();
             if (e.metaKey && e.keyCode === 70) {
