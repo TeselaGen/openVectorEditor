@@ -25,7 +25,6 @@ describe("editor", function() {
     cy.selectRange(5297, 3);
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", /Complement Selection/).click();
-    cy.contains("button", "Jump to end").click();
     cy.contains(".ve-row-item-sequence", /gattag$/);
 
     cy.contains("button", "Edit").click();
