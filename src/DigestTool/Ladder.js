@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import React from "react";
-import Select from "react-select";
+import { TgSelect } from "teselagen-react-components";
+
 import "./Ladder.css";
 import { Tooltip } from "@blueprintjs/core";
 
@@ -83,7 +84,7 @@ export default class Ladder extends React.Component {
     return (
       <div>
         Ladder:
-        <Select
+        <TgSelect
           value={selectedLadder}
           onChange={this.handleChange}
           options={ladders}
@@ -232,7 +233,7 @@ function Lane({
             }}
           >
             <Tooltip
-              className={"ve-digest-fragment-tooltip"}
+              className="ve-digest-fragment-tooltip"
               content={
                 <div>
                   {fragment.cut1.restrictionEnzyme.name} &nbsp; -- &nbsp;
@@ -256,5 +257,5 @@ function Lane({
 }
 
 function calculateOffset(boxHeight, size, upperBoundary) {
-  return boxHeight * Math.log(size) / Math.log(upperBoundary) - 55;
+  return (boxHeight * Math.log(size)) / Math.log(upperBoundary) - 55;
 }

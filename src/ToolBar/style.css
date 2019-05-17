@@ -1,4 +1,3 @@
-/* Popover */
 .Popover-body {
   display: inline-flex;
   flex-direction: column;
@@ -21,8 +20,6 @@
 .veToolbar .veToolbarItemOuter {
   display: flex;
   height: 32px;
-  margin-bottom: -2px;
-  margin-top: 2px;
 }
 .veToolbar .veToolbarItemOuter .veToolbarItem {
   display: flex;
@@ -34,11 +31,9 @@
   width: 1px;
   margin-left: 10px;
   margin-right: 10px;
-  /* background: lightgrey; */
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon {
   padding: 3px;
-  padding-bottom: 2px;
   border-radius: 3px;
   height: 32px;
   width: 30px;
@@ -64,8 +59,6 @@
 .veToolbar .veToolbarItemOuter .veToolbarIcon img,
 .veToolbar .veToolbarItemOuter .veToolbarIcon svg,
 .veToolbar .veToolbarItemOuter .veToolbarIcon object {
-  /* height: 24px;
-  width: 24px; */
   cursor: pointer;
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon img svg,
@@ -143,5 +136,3 @@
   /* the z-index has to be high for it to work with ice */
   z-index: 4000;
 }
-
-/*# sourceMappingURL=style.css.map */

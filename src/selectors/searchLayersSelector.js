@@ -6,13 +6,14 @@ import circularSelector from "./circularSelector";
 function searchLayersSelector(
   sequence,
   isCircular,
+  isOpen,
   searchString,
   ambiguousOrLiteral,
   dnaOrAA,
   isProtein,
   proteinSequence
 ) {
-  if (!searchString) {
+  if (!searchString || !isOpen) {
     return [];
   }
   if (isProtein) {
@@ -34,6 +35,7 @@ function searchLayersSelector(
       ? matches
       : matches.map(({ start, end, ...rest }) => ({
           ...rest,
+          isSearchLayer: true,
           start: start * 3,
           end: end * 3 + 2
         }));
@@ -46,13 +48,14 @@ function searchLayersSelector(
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });
-  return matches;
+  return matches.map(match => ({ ...match, isSearchLayer: true }));
   // return matches.map(m => ({ ...m, hideCarets: true, color: "yellow" }));
 }
 
 export default createSelector(
   sequenceSelector,
   circularSelector,
+  state => state.findTool && state.findTool.isOpen,
   state => state.findTool && state.findTool.searchText,
   state => state.findTool && state.findTool.ambiguousOrLiteral,
   state => state.findTool && state.findTool.dnaOrAA,

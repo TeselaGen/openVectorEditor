@@ -96,6 +96,39 @@ describe("menuBar", function() {
     //   .contains("10 to 20")
     //   .should("be.visible");
   });
+  it("should have the select range tool initialized correctly", function() {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Select")
+      .click();
+    cy.get(`.tg-test-from input`).should("have.value", "1");
+    cy.get(`.tg-test-to input`).should("have.value", "1");
+    cy.contains("Selecting 1 bp from 1 to 1").should("exist");
+  });
+  it(`select range should be initialized from a previous selection or caret pos correctly`, function() {
+    cy.contains(".veRowViewPart", "Part 0").click({ force: true });
+    cy.contains(".veStatusBarItem", "11 to 31");
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Select")
+      .click();
+    cy.get(`[label="From:"]`)
+      .should("have.value", "11")
+      .clear()
+      .type("10");
+    cy.get(`[label="To:"]`)
+      .should("have.value", "31")
+      .clear()
+      .type("20");
+    cy.get(".tg-min-width-dialog")
+      .contains("Select 11 BPs")
+      .click();
+    cy.contains(".veStatusBarItem", "10 to 20").should("be.visible");
+  });
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function() {
     cy.get(".tg-menu-bar")
       .contains("Edit")
@@ -110,7 +143,7 @@ describe("menuBar", function() {
       .clear()
       .type("20");
     cy.get(".tg-min-width-dialog")
-      .contains("OK")
+      .contains("Select 11 BPs")
       .click();
     cy.get(".veStatusBarItem")
       .contains("10 to 20")
@@ -210,20 +243,20 @@ describe("menuBar", function() {
 
     cy.get(`[label="To:"]`).clear();
     cy.get(`.dialog-buttons`)
-      .contains("OK")
+      .contains("Select 0 BPs")
       .should("be.disabled");
     cy.get(`[label="To:"]`)
       .clear()
       .type("20000000");
     cy.get(`.dialog-buttons`)
-      .contains("OK")
+      .contains("Select 0 BPs")
       .should("be.disabled");
 
     cy.get(`[label="To:"]`)
       .clear()
       .type("20");
     cy.get(`.dialog-buttons`)
-      .contains("OK")
+      .contains("Select 11 BPs")
       .click();
     cy.get(".veStatusBar").contains(`10 to 20`);
 

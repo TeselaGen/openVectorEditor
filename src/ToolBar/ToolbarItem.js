@@ -61,10 +61,7 @@ class ToolbarItem extends React.Component {
       >
         {renderIconAbove && (
           <div>
-            <div className="veToolbarItem">
-              {index !== 0 && <div className="veToolbarSpacer" />}
-              {Icon}
-            </div>
+            <div className="veToolbarItem">{Icon}</div>
           </div>
         )}
 
@@ -156,12 +153,16 @@ class ToolbarItem extends React.Component {
           disabled={popoverDisabled}
           isOpen={!!Dropdown && isOpen}
           onClose={e => {
+            let srcElement;
+            if (e) {
+              srcElement = e.srcElement || e.target;
+            }
             if (
               e &&
-              e.srcElement &&
+              srcElement &&
               this.dropdownNode &&
-              (this.dropdownNode.contains(e.srcElement) ||
-                !document.body.contains(e.srcElement))
+              (this.dropdownNode.contains(srcElement) ||
+                !document.body.contains(srcElement))
             ) {
               return;
             }

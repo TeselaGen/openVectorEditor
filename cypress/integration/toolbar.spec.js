@@ -18,6 +18,20 @@ describe("toolbar", function() {
       .parent()
       .should("not.have.class", "bp3-disabled");
   });
+
+  it(`find tool should clear search layers when closed and 
+  but retain the previous search and be selected when re-opened`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gattac"); //this should cause 1 region to be selected
+    cy.get(".veSearchLayerContainer").should("exist");
+    cy.get(".veFindBar .bp3-icon-cross").click();
+    cy.get(".veSearchLayerContainer").should("not.exist");
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.get(".veSearchLayerContainer").should("exist"); //test that the search didn't get cleared
+    cy.focused().type("gattac"); //this should override the existing search because the existing search should already be highlighted
+    cy.get(".veSearchLayerContainer").should("exist"); //asserts that there is at least 1 valid search found
+  });
+
   it(`find tool should be working as expected
   -it starts with nothing selected
   -it can find dna letters
@@ -110,19 +124,22 @@ describe("toolbar", function() {
     // cy.contains("Sequence Imported").should("exist")
     // cy.contains("Parsed using Genbank Parser").should("exist")
   });
-  
 
+  it("can search the cutsites and not find any and have the add additional enzymes option pop up", function() {
+    cy.get("[data-test=cutsiteToolDropdown]").click();
+    cy.get(".tg-select input").type("random 123");
+    cy.get(".tg-select").contains("Add additional enzymes");
+  });
   it("can open the cutsite dropdown and add an additional enzyme", function() {
     cy.get("[data-test=cutsiteToolDropdown]").click();
     cy.contains("Single cutters");
-    cy.get(".Select-control").click();
-    cy.get(".Select-control").click();
+    cy.get(".tg-select").click();
     cy.contains("Add additional enzymes").click();
-    cy.contains("Select cut sites").click(); //click twice because of react dropdown weirdness
-    cy.contains("Select cut sites").click();
+    cy.get(`input[placeholder="Select cut sites..."]`).click();
     cy.contains("AanI").click();
     cy.contains("Cuts 2 times").click();
     cy.contains("Add Enzyme").click();
+    cy.get("[data-test=cutsiteToolDropdown]").click();
     cy.get(".ve-toolbar-dropdown").contains("2 cuts");
   });
 
