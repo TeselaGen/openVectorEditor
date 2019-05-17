@@ -651,7 +651,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
-    generateSelectionMenuOptions = annotation => {
+    getSelectionMenuOptions = annotation => {
       let items = [
         ...this.getCopyOptions(annotation),
         createNewAnnotationMenu,
@@ -659,7 +659,16 @@ function VectorInteractionHOC(Component /* options */) {
         "selectInverse",
         "--",
         "reverseComplementSelection",
-        "complementSelection"
+        "complementSelection",
+        {
+          text: "Change Case",
+          submenu: [
+            // "upperCaseSequence",
+            // "lowerCaseSequence",
+            "upperCaseSelection",
+            "lowerCaseSelection"
+          ]
+        }
       ];
       return items;
     };
@@ -690,7 +699,7 @@ function VectorInteractionHOC(Component /* options */) {
 
     selectionLayerRightClicked = this.enhanceRightClickAction(
       ({ annotation }) => {
-        return this.generateSelectionMenuOptions({
+        return this.getSelectionMenuOptions({
           //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
           start: annotation.start,
           end: annotation.end
@@ -703,7 +712,7 @@ function VectorInteractionHOC(Component /* options */) {
         start: annotation.start,
         end: annotation.end
       });
-      return this.generateSelectionMenuOptions({
+      return this.getSelectionMenuOptions({
         //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
         start: annotation.start,
         end: annotation.end
@@ -770,7 +779,7 @@ function VectorInteractionHOC(Component /* options */) {
         "editPart",
         "deletePart",
         "--",
-        ...this.getCopyOptions(annotation),
+        ...this.getSelectionMenuOptions(annotation),
         "--",
         "newTranslation",
         "newReverseTranslation",
@@ -793,7 +802,7 @@ function VectorInteractionHOC(Component /* options */) {
         return [
           "editFeature",
           "deleteFeature",
-          ...this.getCopyOptions(annotation),
+          ...this.getSelectionMenuOptions(annotation),
           ...(readOnly
             ? []
             : [
@@ -866,7 +875,7 @@ function VectorInteractionHOC(Component /* options */) {
       });
       return [
         "editPrimer",
-        ...this.getCopyOptions(annotation),
+        ...this.getSelectionMenuOptions(annotation),
         "newTranslation",
         "newReverseTranslation",
         "viewPrimerProperties"
@@ -879,7 +888,7 @@ function VectorInteractionHOC(Component /* options */) {
       });
       return [
         "toggleOrfTranslations",
-        ...this.getCopyOptions(annotation),
+        ...this.getSelectionMenuOptions(annotation),
         "viewOrfProperties"
       ];
     }, "orfRightClicked");
@@ -914,7 +923,7 @@ function VectorInteractionHOC(Component /* options */) {
               });
             }
           },
-          ...this.getCopyOptions(annotation),
+          ...this.getSelectionMenuOptions(annotation),
           "viewTranslationProperties"
         ];
       },

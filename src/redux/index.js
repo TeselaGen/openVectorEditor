@@ -26,7 +26,7 @@ import * as selectionLayer from "./selectionLayer";
 import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
-import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
+// import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
@@ -59,8 +59,8 @@ const subReducers = {
   selectionLayer,
   sequenceDataHistory,
   sequenceData,
-  useAdditionalOrfStartCodons,
-  uppercaseSequenceMapFont
+  useAdditionalOrfStartCodons
+  // uppercaseSequenceMapFont
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
@@ -162,12 +162,12 @@ export default function reducerFactory(initialState = {}) {
             : state.__allEditorsOptions.addAdditionalEnzymes,
           action
         ),
-        uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.uppercaseSequenceMapFont,
-          action
-        ),
+        // uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
+        //   !state.__allEditorsOptions
+        //     ? undefined
+        //     : state.__allEditorsOptions.uppercaseSequenceMapFont,
+        //   action
+        // ),
         alignments: alignments.default(
           !state.__allEditorsOptions
             ? undefined

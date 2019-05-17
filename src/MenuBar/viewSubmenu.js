@@ -115,22 +115,22 @@ export default [
   // { cmd: "complementary" },
   // { cmd: "spaces" },
   { divider: "" },
-  {
-    text: "Sequence Case",
-    cmd: "sequenceCase",
-    submenu: [
-      {
-        cmd: "toggleSequenceMapFontUpper",
-        text: "Upper Case",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontLower",
-        text: "Lower Case",
-        shouldDismissPopover: false
-      }
-    ]
-  },
+  // {
+  //   text: "Sequence Case",
+  //   cmd: "sequenceCase",
+  //   submenu: [
+  //     {
+  //       cmd: "toggleSequenceMapFontUpper",
+  //       text: "Upper Case",
+  //       shouldDismissPopover: false
+  //     },
+  //     {
+  //       cmd: "toggleSequenceMapFontLower",
+  //       text: "Lower Case",
+  //       shouldDismissPopover: false
+  //     }
+  //   ]
+  // },
   { divider: "" },
   fullSequenceTranslationMenu,
   { divider: "" },

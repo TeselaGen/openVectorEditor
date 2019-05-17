@@ -1,9 +1,10 @@
 import React from "react";
 import { Tag, Classes } from "@blueprintjs/core";
-import { convertRangeTo0Based } from "ve-range-utils";
+import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
 import { showConfirmationDialog } from "teselagen-react-components";
+import { adjustBpsToReplaceOrInsert } from "ve-sequence-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,
@@ -452,23 +453,58 @@ const editCommandDefs = {
   sequenceCase: {
     isHidden: isProtein
   },
-  toggleSequenceMapFontUpper: {
-    isHidden: isProtein,
-    isActive: props => props.uppercaseSequenceMapFont === "uppercase",
-    handler: props => {
-      props.uppercaseSequenceMapFont === "uppercase"
-        ? props.updateSequenceCase("noPreference")
-        : props.updateSequenceCase("uppercase");
-    }
-  },
-  toggleSequenceMapFontLower: {
-    isActive: props => props.uppercaseSequenceMapFont === "lowercase",
-    handler: props => {
-      props.uppercaseSequenceMapFont === "lowercase"
-        ? props.updateSequenceCase("noPreference")
-        : props.updateSequenceCase("lowercase");
-    }
-  },
+  ...[
+    "upperCaseSequence",
+    "lowerCaseSequence",
+    "upperCaseSelection",
+    "lowerCaseSelection"
+  ].reduce((acc, type) => {
+    const isSelection = type.includes("Selection");
+
+    acc[type] = {
+      isHidden: isProtein,
+      isDisabled: props => {
+        if (isSelection && !(props.selectionLayer.start > -1)) {
+          return "No Selection to Replace";
+        }
+      },
+      name: startCase(type),
+      handler: props => {
+        const { sequence } = props.sequenceData;
+        const { selectionLayer } = props;
+
+        const func = type.includes("lower") ? "toLowerCase" : "toUpperCase";
+        props.updateSequenceData({
+          ...props.sequenceData,
+          sequence: isSelection
+            ? adjustBpsToReplaceOrInsert(
+                sequence,
+                getSequenceWithinRange(selectionLayer, sequence)[func](),
+                selectionLayer,
+                false
+              )
+            : sequence[func]()
+        });
+      }
+    };
+    return acc;
+  }, {}),
+  // upperCaseSequence: {
+  //   // isActive: props => props.uppercaseSequenceMapFont === "uppercase",
+
+  //     // props.uppercaseSequenceMapFont === "uppercase"
+  //     //   ? props.updateSequenceCase("noPreference")
+  //     //   : props.updateSequenceCase("uppercase");
+  //   }
+  // },
+  // toggleSequenceMapFontLower: {
+  //   isActive: props => props.uppercaseSequenceMapFont === "lowercase",
+  //   handler: props => {
+  //     props.uppercaseSequenceMapFont === "lowercase"
+  //       ? props.updateSequenceCase("noPreference")
+  //       : props.updateSequenceCase("lowercase");
+  //   }
+  // },
   createMenuHolder: {
     isHidden: props => isProtein(props) && props.readOnly,
     handler: () => {}

@@ -5,6 +5,6 @@
   stroke-dasharray: 3px;
 }
 
-.veRowViewFeaturesContainer > svg {
+.veRowViewAnnotationPosition {
   z-index: 20;
 }

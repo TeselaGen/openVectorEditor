@@ -81,23 +81,19 @@ export default [
       "selectAll",
       "selectInverse",
       {
-        text: "Change Entire Sequence Case",
+        text: "Change Case",
         submenu: [
-          {
-            text: "Upper Case"
-          },
-          { text: "Lower Case" }
+          "upperCaseSequence",
+          "lowerCaseSequence",
+          "upperCaseSelection",
+          "lowerCaseSelection"
         ]
       },
-      {
-        text: "Change Sequence Case For Selection",
-        submenu: [
-          {
-            text: "Upper Case"
-          },
-          { text: "Lower Case" }
-        ]
-      },
+      // {
+      //   text: "Change Sequence Case For Selection",
+      //   submenu: [
+      //   ]
+      // },
       "--",
       "complementSelection",
       "complementEntireSequence",

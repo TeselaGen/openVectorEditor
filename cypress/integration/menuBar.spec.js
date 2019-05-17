@@ -16,17 +16,41 @@ describe("menuBar", function() {
       .find("svg")
       .should("have.length", 2);
   });
-  it(`should be able toggle sequence case`, () => {
+  it(`should be able permanently change sequence case`, () => {
     cy.get(".tg-menu-bar")
-      .contains("View")
+      .contains("Edit")
       .click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
-    cy.contains(".bp3-menu-item", "Sequence Case").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Upper").click();
+    cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Upper Case Sequence").click();
     cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
-    cy.contains(".bp3-menu-item", "Upper").click();
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Lower Case Sequence").click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
   });
+  it(`should be able permanently change selected sequence case`, () => {
+    cy.contains(".veRowViewFeature", "araD").trigger("contextmenu", {
+      force: true
+    });
+    cy.contains(".rowViewTextContainer", "gacgtcttatgacaacttgacgg");
+    cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Upper Case Selection").click();
+    cy.contains(".rowViewTextContainer", "gacgtcTTATGACAACTTGACGG");
+  });
+  // it(`should be able toggle sequence case`, () => {
+  //   cy.get(".tg-menu-bar")
+  //     .contains("View")
+  //     .click();
+  //   cy.contains(".rowViewTextContainer", "gacgtcttatga");
+  //   cy.contains(".bp3-menu-item", "Sequence Case").trigger("mouseover");
+  //   cy.contains(".bp3-menu-item", "Upper").click();
+  //   cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
+  //   cy.contains(".bp3-menu-item", "Upper").click();
+  //   cy.contains(".rowViewTextContainer", "gacgtcttatga");
+  // });
 
   it(`should be able to filter by feature`, () => {
     cy.get(".tg-menu-bar")
