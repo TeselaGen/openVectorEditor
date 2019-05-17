@@ -10381,7 +10381,7 @@ li.bp3-menu-divider:last-child {
   stroke-dasharray: 3px;
 }
 
-.veRowViewFeaturesContainer > svg {
+.veRowViewAnnotationPosition {
   z-index: 20;
 }
 
@@ -10621,7 +10621,6 @@ li.bp3-menu-divider:last-child {
   width: 100%;
 }
 
-/* Popover */
 .Popover-body {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -10652,8 +10651,6 @@ li.bp3-menu-divider:last-child {
   display: -ms-flexbox;
   display: flex;
   height: 32px;
-  margin-bottom: -2px;
-  margin-top: 2px;
 }
 .veToolbar .veToolbarItemOuter .veToolbarItem {
   display: -webkit-box;
@@ -10669,11 +10666,9 @@ li.bp3-menu-divider:last-child {
   width: 1px;
   margin-left: 10px;
   margin-right: 10px;
-  /* background: lightgrey; */
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon {
   padding: 3px;
-  padding-bottom: 2px;
   border-radius: 3px;
   height: 32px;
   width: 30px;
@@ -10705,8 +10700,6 @@ li.bp3-menu-divider:last-child {
 .veToolbar .veToolbarItemOuter .veToolbarIcon img,
 .veToolbar .veToolbarItemOuter .veToolbarIcon svg,
 .veToolbar .veToolbarItemOuter .veToolbarIcon object {
-  /* height: 24px;
-  width: 24px; */
   cursor: pointer;
 }
 .veToolbar .veToolbarItemOuter .veToolbarIcon img svg,
