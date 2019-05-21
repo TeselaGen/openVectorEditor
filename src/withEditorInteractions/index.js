@@ -377,7 +377,12 @@ function VectorInteractionHOC(Component /* options */) {
             )
           };
         }
-        const newSeqData = wrappedInsertSequenceDataAtPositionOrRange(
+        const [
+          newSeqData,
+          {
+            maintainOriginSplit /* todoericsturman use this var to determine how to correctly update the selection  */
+          }
+        ] = wrappedInsertSequenceDataAtPositionOrRange(
           {},
           sequenceData,
           rangeToDelete
@@ -1062,14 +1067,18 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   //   start: newSelectionLayerStart,
   //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
   // });
-
-  updateSequenceData(
-    wrappedInsertSequenceDataAtPositionOrRange(
-      seqDataToInsert,
-      sequenceData,
-      caretPosition > -1 ? caretPosition : selectionLayer
-    )
+  const [
+    newSeqData,
+    {
+      maintainOriginSplit
+    } /* todoericsturman use this var to determine how to correctly update the selection  */
+  ] = wrappedInsertSequenceDataAtPositionOrRange(
+    seqDataToInsert,
+    sequenceData,
+    caretPosition > -1 ? caretPosition : selectionLayer
   );
+
+  updateSequenceData(newSeqData);
 
   const newSelectionLayerStart =
     caretPosition > -1

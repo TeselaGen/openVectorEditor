@@ -199,12 +199,15 @@ export default compose(
               _options
             ) || {}
           : {};
-        return insertSequenceDataAtPositionOrRange(
-          sequenceDataToInsert || _sequenceDataToInsert,
-          existingSequenceData || _existingSequenceData,
-          caretPositionOrRange || _caretPositionOrRange,
-          options || _options
-        );
+        return [
+          insertSequenceDataAtPositionOrRange(
+            sequenceDataToInsert || _sequenceDataToInsert,
+            existingSequenceData || _existingSequenceData,
+            caretPositionOrRange || _caretPositionOrRange,
+            options || _options
+          ),
+          options || _options || {}
+        ];
       };
     },
 
@@ -318,7 +321,7 @@ export default compose(
           range: selectionLayer
         }
       );
-      const newSeqData = wrappedInsertSequenceDataAtPositionOrRange(
+      const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
         reversedSeqData,
         sequenceData,
         selectionLayer,
@@ -342,7 +345,7 @@ export default compose(
       const comp = getComplementSequenceAndAnnotations(sequenceData, {
         range: selectionLayer
       });
-      const newSeqData = wrappedInsertSequenceDataAtPositionOrRange(
+      const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
         comp,
         sequenceData,
         selectionLayer,
