@@ -15,7 +15,7 @@ function normalizeAngle(angle) {
 //this pure function allows the labels to spread out around the circle
 //and groups overlapping labels together if necessary
 function relaxLabelAngles(_labelPoints, spacing, maxradius) {
-  spacing = 18;
+  // spacing = 18;
   let maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
   let labels = cloneDeep(_labelPoints);
   if (labels.length > maxLabelsPerQuadrant * 4) {
