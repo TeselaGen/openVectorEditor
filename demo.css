@@ -8285,8 +8285,6 @@ Licensed under the Apache License, Version 2.0.
   font-weight:normal;
   font-style:normal;
   src:url(icons-20.e666d692.eot?#iefix) format("embedded-opentype"), url(icons-20.058e48cb.woff) format("woff"), url(icons-20.aa8f3ca0.ttf) format("truetype"); }
-/* @import url(~react-select/dist/react-select.css); */
-
 .bp3-dark .tg-card {
   background: #394b59 !important;
 }
@@ -9615,6 +9613,9 @@ span.bp3-popover-target {
 }
 .tg-select input {
   font-size: 14px;
+}
+.tg-select-option {
+  max-width: 400px;
 }
 .tg-single-select input {
   position: absolute;
