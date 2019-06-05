@@ -791,6 +791,7 @@ class AlignmentView extends React.Component {
             flexDirection: "column",
             justifyContent: "space-between",
             position: "relative",
+            overflowY: "scroll",
             ...this.props.style
             // borderTop: "1px solid black"
           }}
