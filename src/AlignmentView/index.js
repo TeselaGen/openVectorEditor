@@ -786,12 +786,12 @@ class AlignmentView extends React.Component {
       <ResizeSensor onResize={this.handleResize}>
         <div
           style={{
-            height: height || (isPairwise ? "auto" : viewportHeight * 0.85),
+            height: height || (isPairwise ? "auto" : viewportHeight * 0.88),
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             position: "relative",
-            overflowY: "scroll",
+            overflowY: "auto",
             ...this.props.style
             // borderTop: "1px solid black"
           }}
@@ -801,7 +801,8 @@ class AlignmentView extends React.Component {
             style={{
               display: "flex",
               flexDirection: "column",
-              position: "relative"
+              position: "relative",
+              overflowY: "auto"
             }}
             className="alignmentView-top-container"
           >
