@@ -82,7 +82,7 @@
     "babel-eslint": "8.2.6",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "bio-parsers": "5.5.17",
+    "bio-parsers": "5.5.19",
     "chance": "^1.0.18",
     "cross-env": "^5.1.6",
     "cypress": "^3.3.1",
@@ -124,8 +124,8 @@
     "redux-thunk": "2.3.0",
     "teselagen-react-components": "^27.0.17",
     "tg-client-query-builder": "^2.12.2",
-    "ve-range-utils": "^2.5.3",
-    "ve-sequence-utils": "^3.3.40",
+    "ve-range-utils": "^2.5.5",
+    "ve-sequence-utils": "^3.3.41",
     "why-did-you-update": "^1.0.6"
   },
   "husky": {

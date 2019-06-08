@@ -2044,10 +2044,10 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
 
-bio-parsers@5.5.17:
-  version "5.5.17"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.5.17.tgz#42f0b7cf5f736107b0f12ceef2a45152220eec4a"
-  integrity sha512-4+qkwlQcg3xxQCnMKs8htL/iKZ5dpVIpFv++K5uKEQ4MKVz+Njbr0sM+HCbmFFu8cEqRNhzBlYEdANEFlaOYqg==
+bio-parsers@5.5.19:
+  version "5.5.19"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-5.5.19.tgz#7d0a2a2ee5d5536026f8d81772542f75f04e7186"
+  integrity sha512-6a93mG//MDEqllJWuykCYN9npB7RyFBZVOSMGHkYVNMGVijXhpjHd5AJschHKSvCzMYT65ignBXj87szmxyrGw==
   dependencies:
     "@gmod/gff" "^1.1.2"
     bufferpack "^0.0.6"
@@ -11493,18 +11493,18 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-ve-range-utils@^2.5.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.3.tgz#347134da7be3df023d63cc5179a0860f8aa9db64"
-  integrity sha512-c0fj5YrQGVDf19nJt6aUwBIxfAmoQys/OU9i+4V9LUiZmyMKlXmbQhVYl8E3+XhtQFAW17DOfhsFCCI8taHZ5A==
+ve-range-utils@^2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.5.5.tgz#54d8bb442666b10b4cfe9bfef457c3f6cbd7a1a0"
+  integrity sha512-rxdps7rO3WO0btj5zrR34aPTolYxSHxAPNkX+AyuufaaiggAoinRcsu9Xx1sTmVa7uwQuLeTKr8U7j9VhZAPZw==
   dependencies:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^3.3.40:
-  version "3.3.40"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.40.tgz#ea589142a4c8b93205010135361650f230d649ee"
-  integrity sha512-MZgMbcfqQHhxqN8IPvs4zDHA+/n9lDhX0rx+QNVUwM521PVduxXmc/CqxwWAZvOf95qs7rPDqL2QMWYl1KLUQQ==
+ve-sequence-utils@^3.3.41:
+  version "3.3.41"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.41.tgz#e6561c83431b21938bc9e9a74dcf779404dad1d8"
+  integrity sha512-b3yhKGZOWFvR/a7x2Zk/Ccpxok/eCN9BohsO1tKUe51oAjyq5EDdH1IqoXVKyH2IKaIqgVZWvso9HlSMyx2zzQ==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
