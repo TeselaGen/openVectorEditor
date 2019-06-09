@@ -50,6 +50,7 @@ const defaultState = {
   onDuplicate: true,
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
+  maintainOriginSplit: false,
   onCopy: true,
   onPaste: true
 };
@@ -802,6 +803,34 @@ beforeSequenceInsertOrDelete: (
               })}
               {renderToggle({
                 that: this,
+                disabled: !this.state.beforeSequenceInsertOrDelete,
+                type: "maintainOriginSplit",
+                label: "maintainOriginSplit (when pasting text)",
+                info: `
+The beforeSequenceInsertOrDelete handler can be used to 
+override the values being used in the insertion/deletion
+\`\`\`
+beforeSequenceInsertOrDelete: (
+  sequenceDataToInsert,
+  existingSequenceData,
+  caretPositionOrRange,
+  // the maintainOriginSplit option will be passed in as TRUE on complement/revComp actions (delete --> insert at start of selection and wrap around origin)
+  // and FALSE on replace actions (delete --> insert at end of selection)
+  options // {maintainOriginSplit: true} 
+) => {
+  return {
+    // you can return one or more of the following to override the values used
+    sequenceDataToInsert: myFilterSequenceDataToInsertFn(sequenceDataToInsert),
+    existingSequenceData: myFilterExistingSeqFn(sequenceDataToInsert,caretPositionOrRange),
+    caretPositionOrRange: myChangeCaretPosFn(caretPositionOrRange),
+    options
+  }
+}
+\`\`\`
+`
+              })}
+              {renderToggle({
+                that: this,
                 type: "onCopy"
               })}
               {renderToggle({
@@ -869,7 +898,10 @@ beforeSequenceInsertOrDelete: (
               beforeSequenceInsertOrDelete: (
                 sequenceDataToInsert,
                 existingSequenceData,
-                caretPositionOrRange
+                caretPositionOrRange,
+                options = {
+                  maintainOriginSplit: this.state.maintainOriginSplit
+                }
               ) => {
                 window.toastr.info("beforeSequenceInsertOrDelete triggered");
                 if (!sequenceDataToInsert.size) return; //if it is a delete, just return early
@@ -901,7 +933,8 @@ beforeSequenceInsertOrDelete: (
                       );
                       return acc;
                     }, {})
-                  }
+                  },
+                  options
                 };
               }
             }}
@@ -996,6 +1029,11 @@ beforeSequenceInsertOrDelete: (
             showGCContent={this.state.showGCContent}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
+            maintainOriginSplit={
+              this.state.beforeSequenceInsertOrDelete
+                ? this.state.maintainOriginSplit
+                : false
+            }
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}
             {...this.state.overrideAddEditFeatureDialog &&
