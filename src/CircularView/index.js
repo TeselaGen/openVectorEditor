@@ -598,6 +598,7 @@ export class CircularView extends React.Component {
         editorName,
         circularViewWidthVsHeightRatio: width / height,
         labels,
+        textScalingFactor: 700 / Math.min(width, height),
         outerRadius: radius
       });
       if (!results) return null;

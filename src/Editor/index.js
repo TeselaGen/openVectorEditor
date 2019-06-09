@@ -311,6 +311,7 @@ export class Editor extends React.Component {
       getSequenceAtVersion,
       VersionHistoryViewProps,
       sequenceData = {},
+      fullScreenOffsets,
       withPreviewMode,
       isFullscreen,
       handleFullscreenClose,
@@ -408,6 +409,12 @@ export class Editor extends React.Component {
     }
 
     const { tabDragging } = this.state;
+    let xOffset = 0;
+    let yOffset = 0;
+    if (fullScreenOffsets) {
+      xOffset = fullScreenOffsets.xOffset || 0;
+      yOffset = fullScreenOffsets.yOffset || 0;
+    }
     let w = window,
       d = document,
       e = d.documentElement,
@@ -415,8 +422,8 @@ export class Editor extends React.Component {
       x = w.innerWidth || e.clientWidth || g.clientWidth,
       y = w.innerHeight || e.clientHeight || g.clientHeight;
     const windowDimensions = {
-      width: x,
-      height: Math.max(y, minHeight)
+      width: x - xOffset,
+      height: Math.max(y, minHeight) - yOffset
       //  document.body.getBoundingClientRect().height
     };
 
@@ -762,8 +769,8 @@ export class Editor extends React.Component {
             zIndex: 15000,
             position: "fixed",
             // paddingTop: 20,
-            top: 0,
-            left: 0,
+            top: yOffset || 0,
+            left: xOffset || 0,
             ...windowDimensions
           }),
           ...style
