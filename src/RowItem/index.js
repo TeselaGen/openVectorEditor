@@ -80,6 +80,7 @@ export class RowItem extends React.PureComponent {
         end: 0,
         rowNumber: 0
       },
+      alignmentType,
       alignmentData,
       sequenceLength = row.sequence.length,
       chromatogramData,
@@ -179,6 +180,7 @@ export class RowItem extends React.PureComponent {
         CompOverride,
         shouldShow,
         noPlural,
+        alignmentType,
         ...otherExtraProps
       } = extraProps;
       const pluralType = noPlural ? type : pluralize(type);
@@ -197,6 +199,7 @@ export class RowItem extends React.PureComponent {
           containerClassName={camelCase(
             "veRowView-" + pluralType + "Container"
           )}
+          alignmentType={alignmentType}
           {...annotationCommonProps}
           {...getPropsForType(this.props, type, pluralType)}
           {...otherExtraProps}
@@ -262,7 +265,8 @@ export class RowItem extends React.PureComponent {
           stroke: colorToUse,
           color: colorToUse
         };
-      }
+      },
+      alignmentType
     };
     return (
       <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
