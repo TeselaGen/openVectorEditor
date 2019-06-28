@@ -1072,7 +1072,10 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   );
   updateSequenceData(newSeqData);
   const selectionStartDistanceFromEnd =
-    sequenceData.size - selectionLayer.start;
+    Math.min(
+      sequenceData.size - selectionLayer.start,
+      seqDataToInsert.sequence.length
+    ) || seqDataToInsert.sequence.length;
   const newSelectionLayerStart =
     caretPosition > -1
       ? caretPosition
@@ -1081,7 +1084,6 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
         ? newSeqData.size - selectionStartDistanceFromEnd
         : 0
       : selectionLayer.start;
-
   const newSelectionLayerEnd =
     newSelectionLayerStart +
     (seqDataToInsert.sequence
@@ -1089,12 +1091,8 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
       : seqDataToInsert.proteinSequence
       ? seqDataToInsert.proteinSequence.length * 3 - 1
       : 0);
-
   selectionLayerUpdate({
     start: newSelectionLayerStart,
-    end:
-      selectionLayer.start > selectionLayer.end && maintainOriginSplit
-        ? seqDataToInsert.sequence.length - selectionStartDistanceFromEnd - 1
-        : newSelectionLayerEnd
+    end: newSelectionLayerEnd % newSeqData.size
   });
 };
