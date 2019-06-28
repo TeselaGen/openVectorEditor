@@ -22,6 +22,7 @@ export default function renderToggle({
   info,
   description,
   hook,
+  disabled = false,
   ...rest
 }) {
   let toggleOrButton;
@@ -51,6 +52,7 @@ export default function renderToggle({
             hook && hook(!!(that.state || {})[type]);
           },
           checked: (that.state || {})[type],
+          disabled: disabled,
           onChange: () => {
             hook && hook(!(that.state || {})[type]);
             that.setState({

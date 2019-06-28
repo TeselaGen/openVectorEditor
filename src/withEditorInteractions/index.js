@@ -377,12 +377,7 @@ function VectorInteractionHOC(Component /* options */) {
             )
           };
         }
-        const [
-          newSeqData,
-          {
-            maintainOriginSplit /* todoericsturman use this var to determine how to correctly update the selection  */
-          }
-        ] = wrappedInsertSequenceDataAtPositionOrRange(
+        const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
           {},
           sequenceData,
           rangeToDelete
@@ -1069,32 +1064,36 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   // });
   const [
     newSeqData,
-    {
-      maintainOriginSplit
-    } /* todoericsturman use this var to determine how to correctly update the selection  */
+    { maintainOriginSplit }
   ] = wrappedInsertSequenceDataAtPositionOrRange(
     seqDataToInsert,
     sequenceData,
     caretPosition > -1 ? caretPosition : selectionLayer
   );
-
   updateSequenceData(newSeqData);
-
+  const seqDataInsertLength = seqDataToInsert.sequence
+    ? seqDataToInsert.sequence.length
+    : null;
+  const selectionStartDistanceFromEnd =
+    Math.min(sequenceData.size - selectionLayer.start, seqDataInsertLength) ||
+    seqDataInsertLength;
   const newSelectionLayerStart =
     caretPosition > -1
       ? caretPosition
       : selectionLayer.start > selectionLayer.end
-      ? 0
+      ? maintainOriginSplit
+        ? newSeqData.size - selectionStartDistanceFromEnd
+        : 0
       : selectionLayer.start;
-
+  const newSelectionLayerEnd =
+    newSelectionLayerStart +
+    (seqDataToInsert.sequence
+      ? seqDataToInsert.sequence.length - 1
+      : seqDataToInsert.proteinSequence
+      ? seqDataToInsert.proteinSequence.length * 3 - 1
+      : 0);
   selectionLayerUpdate({
     start: newSelectionLayerStart,
-    end:
-      newSelectionLayerStart +
-      (seqDataToInsert.sequence
-        ? seqDataToInsert.sequence.length - 1
-        : seqDataToInsert.proteinSequence
-        ? seqDataToInsert.proteinSequence.length * 3 - 1
-        : 0)
+    end: newSelectionLayerEnd % newSeqData.size
   });
 };

@@ -227,7 +227,10 @@ export default (state = {}, { payload = {}, type }) => {
       );
     }
     //check for issues
-    let hasError = checkForIssues(payloadToUse.alignmentTracks);
+    let hasError = checkForIssues(
+      payloadToUse.alignmentTracks,
+      payload.alignmentType
+    );
     (payloadToUse.pairwiseAlignments || []).forEach(alignment => {
       const error = alignment;
       if (error) {
@@ -283,7 +286,7 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   return ranges;
 }
 
-function checkForIssues(alignmentTracks) {
+function checkForIssues(alignmentTracks, alignmentType) {
   if (
     !alignmentTracks ||
     !alignmentTracks[0] ||
@@ -310,8 +313,9 @@ function checkForIssues(alignmentTracks) {
       return "incorrect chromatogram length";
     }
     if (
+      alignmentType !== "Parallel Part Creation" &&
       track.sequenceData.sequence.length !==
-      track.alignmentData.sequence.replace(/-/g, "").length
+        track.alignmentData.sequence.replace(/-/g, "").length
     ) {
       console.error(
         "sequence data length does not match alignment data w/o gaps"

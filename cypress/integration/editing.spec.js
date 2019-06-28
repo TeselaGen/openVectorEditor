@@ -25,12 +25,12 @@ describe("editor", function() {
     cy.selectRange(5297, 3);
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", /Complement Selection/).click();
-    cy.contains(".ve-row-item-sequence", /gattag$/);
+    cy.contains(".ve-row-item-sequence", /^ctggtcttat/);
 
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", "Reverse Complement Selection").click();
 
     cy.contains("Selecting 6 bps from 5297 to 3");
-    cy.contains(".ve-row-item-sequence", /gatcag$/);
+    cy.contains(".ve-row-item-sequence", /^ctagtcttatg/);
   });
 });

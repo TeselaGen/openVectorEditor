@@ -50,6 +50,7 @@ const defaultState = {
   onDuplicate: true,
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
+  maintainOriginSplit: false,
   onCopy: true,
   onPaste: true
 };
@@ -802,6 +803,16 @@ beforeSequenceInsertOrDelete: (
               })}
               {renderToggle({
                 that: this,
+                disabled: !this.state.beforeSequenceInsertOrDelete,
+                type: "maintainOriginSplit",
+                label: "maintainOriginSplit (when pasting text)",
+                info: `
+This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabled.  See the description and code example for beforeSequenceInsertOrDelete to use this feature.
+\`\`\`
+`
+              })}
+              {renderToggle({
+                that: this,
                 type: "onCopy"
               })}
               {renderToggle({
@@ -869,7 +880,10 @@ beforeSequenceInsertOrDelete: (
               beforeSequenceInsertOrDelete: (
                 sequenceDataToInsert,
                 existingSequenceData,
-                caretPositionOrRange
+                caretPositionOrRange,
+                options = {
+                  maintainOriginSplit: this.state.maintainOriginSplit
+                }
               ) => {
                 window.toastr.info("beforeSequenceInsertOrDelete triggered");
                 if (!sequenceDataToInsert.size) return; //if it is a delete, just return early
@@ -901,7 +915,8 @@ beforeSequenceInsertOrDelete: (
                       );
                       return acc;
                     }, {})
-                  }
+                  },
+                  options
                 };
               }
             }}
@@ -996,6 +1011,11 @@ beforeSequenceInsertOrDelete: (
             showGCContent={this.state.showGCContent}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
+            maintainOriginSplit={
+              this.state.beforeSequenceInsertOrDelete
+                ? this.state.maintainOriginSplit
+                : false
+            }
             {...this.state.overrideRightClickExample &&
               this.rightClickOverridesExample}
             {...this.state.overrideAddEditFeatureDialog &&

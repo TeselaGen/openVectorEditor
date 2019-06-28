@@ -4,17 +4,14 @@ import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import React from "react";
 
-function getHeightAndWidthOfLabel(text, fontWidth, fontHeight) {
-  return {
-    height: fontHeight,
-    width: text.length * fontWidth
-  };
-}
+const defaultFontWidth = 8;
+const fontWidthToFontSize = 1.75;
 
 function Labels({
   labels = {},
   outerRadius,
   editorName,
+  textScalingFactor,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
@@ -22,20 +19,19 @@ function Labels({
   outerRadius += 25;
   let radius = outerRadius;
   let outerPointRadius = outerRadius - 35;
+  //we don't want the labels to grow too large on large screen devices,
+  //so we start to decrease the fontWidth if the textScalingFactor is less than 1
+  let fontWidth =
+    defaultFontWidth * (textScalingFactor < 1 ? textScalingFactor : 1);
 
-  let fontWidth = 8;
-  let fontHeight = fontWidth * 1.5;
+  let fontHeight = fontWidth * 2.4;
   let labelPoints = Object.keys(labels)
     .map(function(key) {
       let label = labels[key];
       let { annotationCenterAngle, annotationCenterRadius } = label;
       return {
         ...label,
-        ...getHeightAndWidthOfLabel(
-          label.text || "Unlabeled",
-          fontWidth,
-          fontHeight
-        ),
+        width: (label.text || "Unlabeled").length * fontWidth,
         //three points define the label:
         innerPoint: {
           ...polarToSpecialCartesian(
@@ -120,7 +116,7 @@ const DrawLabelGroup = withHover(function({
   label,
   labelAndSublabels,
   fontWidth,
-  // fontHeight,
+  fontHeight,
   outerRadius,
   onMouseLeave,
   onMouseOver,
@@ -174,7 +170,7 @@ const DrawLabelGroup = withHover(function({
       labelXStart += labelOnLeft ? distancePastBoundary : 0;
     }
   }
-  let dy = 20;
+  let dy = fontHeight;
   let textYStart = label.y + dy / 2;
 
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
@@ -240,7 +236,12 @@ const DrawLabelGroup = withHover(function({
             fill="white"
             stroke="black"
           />
-          <text /* zIndex={11} */ x={labelXStart} y={labelYStart} style={{}}>
+
+          <text
+            /* zIndex={11} */ x={labelXStart}
+            y={labelYStart}
+            style={{ fontSize: fontWidth * fontWidthToFontSize }}
+          >
             {labelAndSublabels.map(function(label, index) {
               return (
                 <DrawGroupInnerLabel
@@ -276,6 +277,7 @@ const DrawLabelGroup = withHover(function({
         }
         y={textYStart}
         style={{
+          fontSize: fontWidth * fontWidthToFontSize,
           fill: label.color || "black"
           // stroke: label.color ? label.color : "black"
         }}
