@@ -155,4 +155,36 @@ describe("editor", function() {
     cy.get(".sequenceInputBubble input").type("tta{enter}");
     cy.contains(".veLabelText", "CHANGED_SEQ");
   });
+  it(`should handle beforeSequenceInsertOrDelete hook correctly while crossing the origin`, () => {
+    cy.tgToggle("beforeSequenceInsertOrDelete");
+    cy.contains(".veLabelText", "pS8c-vector..").trigger("contextmenu", {
+      force: true
+    });
+    cy.contains(".bp3-menu-item", "Replace").click();
+
+    cy.get(".sequenceInputBubble input").type("tta{enter}");
+    cy.contains(".veLabelText", "CHANGED_SEQ");
+    cy.contains("Selecting 3 bps from 1 to 3");
+  });
+  it(`should handle maintainOriginSplit flag correctly when pasted text is shorter than pre origin selection`, () => {
+    cy.tgToggle("beforeSequenceInsertOrDelete");
+    cy.tgToggle("maintainOriginSplit");
+    cy.contains(".veLabelText", "pS8c-vector..").trigger("contextmenu", {
+      force: true
+    });
+    cy.contains(".bp3-menu-item", "Replace").click();
+
+    cy.get(".sequenceInputBubble input").type("tta{enter}");
+    cy.contains(".veLabelText", "CHANGED_SEQ");
+    cy.contains("Selecting 3 bps from 778 to 780");
+  });
+  it(`should handle maintainOriginSplit flag correctly when pasted text is longer than pre origin selection`, () => {
+    cy.tgToggle("beforeSequenceInsertOrDelete");
+    cy.tgToggle("maintainOriginSplit");
+    cy.selectRange(5297, 3);
+
+    cy.replaceSelection("ttaa");
+    cy.contains(".veLabelText", "CHANGED_SEQ");
+    cy.contains("Selecting 4 bps from 5295 to 1");
+  });
 });

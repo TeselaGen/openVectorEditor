@@ -1071,11 +1071,12 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     caretPosition > -1 ? caretPosition : selectionLayer
   );
   updateSequenceData(newSeqData);
+  const seqDataInsertLength = seqDataToInsert.sequence
+    ? seqDataToInsert.sequence.length
+    : null;
   const selectionStartDistanceFromEnd =
-    Math.min(
-      sequenceData.size - selectionLayer.start,
-      seqDataToInsert.sequence.length
-    ) || seqDataToInsert.sequence.length;
+    Math.min(sequenceData.size - selectionLayer.start, seqDataInsertLength) ||
+    seqDataInsertLength;
   const newSelectionLayerStart =
     caretPosition > -1
       ? caretPosition
