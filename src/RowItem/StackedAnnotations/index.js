@@ -27,6 +27,7 @@ function StackedAnnotations(props) {
     onRightClick,
     editorName,
     type,
+    alignmentType,
     getGaps,
     marginTop,
     marginBottom,
@@ -43,7 +44,11 @@ function StackedAnnotations(props) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
-    const { gapsBefore, gapsInside } = getGaps(annotationRange);
+    let { gapsBefore, gapsInside } = getGaps(annotationRange);
+    if (alignmentType === "Parallel Part Creation") {
+      gapsBefore = 0;
+      gapsInside = 0;
+    }
     let annotation = annotationRange.annotation;
     let annotationColor =
       (annotation.type && featureColors[annotation.type]) ||
