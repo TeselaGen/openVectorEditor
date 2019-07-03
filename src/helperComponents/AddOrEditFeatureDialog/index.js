@@ -41,7 +41,7 @@ const renderTypes = (
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditFeatureDialog",
   dialogProps: {
-    height: 570,
+    height: 500,
     width: 400
   },
   getProps: props => ({

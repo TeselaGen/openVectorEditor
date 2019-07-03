@@ -313,7 +313,6 @@ export default ({ formName, getProps, dialogProps }) => {
   return compose(
     withDialog({
       isDraggable: true,
-      height: 450,
       width: 350,
       ...dialogProps
     }),
