@@ -4,7 +4,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  - Built for easy extensibility + embed-ibility
  - Customize the views to suit your needs
 
-## Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor 
+## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
 
@@ -16,7 +16,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 # Table of Contents
 <!-- TOC -->
 
-  - [Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor](#issue-tracking-board-httpswaffleioteselagenopenvectoreditor)
+  - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
   - [Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)](#cypress-tests-dashboard-httpsdashboardcypressioprojects1zj5vcruns-youll-need-to-make-a-login-with-cypress)
   - [OVE out in the wild:](#ove-out-in-the-wild)
