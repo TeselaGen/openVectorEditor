@@ -10,6 +10,7 @@ function Caret({
   caretPosition,
   sequenceLength,
   className,
+  onClick,
   innerRadius,
   outerRadius,
   isProtein,
@@ -23,7 +24,7 @@ function Caret({
     console.error("we've got a problem!");
   }
   return (
-    <g className="ve-caret-holder">
+    <g onClick={onClick} className="ve-caret-holder">
       <title>
         {selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })}

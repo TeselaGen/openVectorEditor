@@ -8,7 +8,10 @@ import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
-import { getSelectionMessage } from "../../utils/editorUtils";
+import {
+  getSelectionMessage,
+  preventDefaultStopPropagation
+} from "../../utils/editorUtils";
 
 function SelectionLayer(props) {
   let {
@@ -25,22 +28,22 @@ function SelectionLayer(props) {
     color: topLevelColor,
     hideCarets: topLevelHideCarets = false,
     selectionLayerRightClicked,
-    className: globalClassname = "",
-    onClick
+    className: globalClassname = ""
+    // onClick
   } = props;
   let hasSelection = false;
 
   const toReturn = (
     <React.Fragment>
       {regions.map(function(selectionLayer, topIndex) {
-        const _onClick = onClick
-          ? function(event) {
-              onClick({
-                event,
-                annotation: selectionLayer
-              });
-            }
-          : () => {};
+        // const _onClick = onClick
+        //   ? function(event) {
+        //       onClick({
+        //         event,
+        //         annotation: selectionLayer
+        //       });
+        //     }
+        //   : () => {};
         let {
           className = "",
           style = {},
@@ -98,7 +101,7 @@ function SelectionLayer(props) {
                 overlap.start === start && (
                   <Caret
                     {...{
-                      onClick: _onClick,
+                      onClick: preventDefaultStopPropagation,
                       charWidth,
                       row,
                       getGaps,
@@ -116,7 +119,7 @@ function SelectionLayer(props) {
                 overlap.end === end && (
                   <Caret
                     {...{
-                      onClick: _onClick,
+                      onClick: preventDefaultStopPropagation,
                       charWidth,
                       row,
                       getGaps,
@@ -143,7 +146,6 @@ function SelectionLayer(props) {
                       annotation: selectionLayer
                     });
                 }}
-                onClick={_onClick}
                 key={key}
                 className={
                   classNameToPass +

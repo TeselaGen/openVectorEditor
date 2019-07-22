@@ -5,7 +5,10 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 import pureNoFunc from "../utils/pureNoFunc";
-import { getSelectionMessage } from "../utils/editorUtils";
+import {
+  getSelectionMessage,
+  preventDefaultStopPropagation
+} from "../utils/editorUtils";
 
 function SelectionLayer({
   isDraggable,
@@ -76,6 +79,7 @@ function SelectionLayer({
             "selectionLayerCaret " +
             (isDraggable ? draggableClassnames.selectionStart : "")
           }
+          onClick={preventDefaultStopPropagation}
           selectionMessage={selectionMessage}
           caretPosition={start}
           sequenceLength={sequenceLength}
@@ -90,6 +94,7 @@ function SelectionLayer({
             "selectionLayerCaret " +
             (isDraggable ? draggableClassnames.selectionEnd : "")
           }
+          onClick={preventDefaultStopPropagation}
           selectionMessage={selectionMessage}
           caretPosition={end + 1}
           sequenceLength={sequenceLength}

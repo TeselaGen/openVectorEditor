@@ -50,6 +50,17 @@ class SequenceInputNoHotkeys extends React.Component {
       const node = n.parentNode;
       if (!node) return;
       unmountComponentAtNode(node);
+      for (const view of [
+        ".veRowView",
+        ".veCircularView",
+        ".veVectorInteractionWrapper"
+      ]) {
+        //return focus to the previously focused view before the sequence input window stole the focus
+        if (this.props.caretEl && this.props.caretEl.closest(view)) {
+          this.props.caretEl.closest(view).focus();
+          break;
+        }
+      }
       document.getElementById("sequenceInputBubble").outerHTML = "";
     });
   };
@@ -186,7 +197,6 @@ const SequenceInput = HotkeysTarget(SequenceInputNoHotkeys);
 
 export default function createSequenceInputPopup(props) {
   const { useEventPositioning } = props;
-  const innerEl = <SequenceInput {...props} />;
 
   let caretEl;
 
@@ -235,15 +245,10 @@ export default function createSequenceInputPopup(props) {
   div.id = "sequenceInputBubble";
   document.body.appendChild(div);
 
+  const innerEl = <SequenceInput caretEl={caretEl} {...props} />;
+
   render(innerEl, div);
 
-  // // let body = $(document.body);
-  // // let caretEl = body.find(".veRowViewCaret");
-  // if (!caretEl || !caretEl === 0) {
-  //   //todo: eventually we should probably jump to the row view caret if it isn't visible
-  //   // caretEl = body.find(".veCaretSVG");
-  //   caretEl = document.querySelector(".veCircularView .veCaretSVG");
-  // }
   if (!caretEl) {
     return console.error(
       "there must be a caret element present in order to display the insertSequence popup"
@@ -256,21 +261,6 @@ export default function createSequenceInputPopup(props) {
       offset: { offset: "94" }
     }
   });
-
-  // new Tether({
-  //   element: div,
-  //   target: caretEl,
-  //   attachment: "top left",
-  //   targetAttachment: "bottom left",
-  //   offset: "-15px 22px",
-  //   constraints: [
-  //     {
-  //       to: "scrollParent",
-  //       // pin: true,
-  //       attachment: "together"
-  //     }
-  //   ]
-  // });
 }
 
 const getActiveElement = function(document) {

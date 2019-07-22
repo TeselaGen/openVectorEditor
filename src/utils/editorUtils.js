@@ -51,3 +51,10 @@ export function getSelectionMessage({
     return "No Selection";
   }
 }
+
+export function preventDefaultStopPropagation(e) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+}

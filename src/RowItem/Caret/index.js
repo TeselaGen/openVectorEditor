@@ -11,6 +11,7 @@ function Caret(props) {
     sequenceLength,
     caretPosition,
     isProtein,
+    onClick,
     selectionMessage,
     className = ""
     // getGaps,
@@ -26,6 +27,7 @@ function Caret(props) {
     //the second logical operator catches the special case where we're at the very end of the sequence..
     let cursorEl = (
       <div
+        onClick={onClick}
         title={
           selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })
