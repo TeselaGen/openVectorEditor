@@ -12,7 +12,7 @@ require("typeface-ubuntu-mono");
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-export { default as withEditorProps } from "./withEditorProps";
+export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
 //export components
 export {

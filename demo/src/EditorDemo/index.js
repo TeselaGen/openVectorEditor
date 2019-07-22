@@ -12,11 +12,22 @@ import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
 import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
+import { connectToEditor } from "../../../src";
 
-// import { upsertPart } from "../../../src/redux/sequenceData";
-// import { MenuItem } from "@blueprintjs/core";
-
-// Use the line below because using the full 30 sequences murders Redux dev tools.
+const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
+  //you can optionally grab additional editor data using the exported connectToEditor function
+  return {
+    sequenceData
+  };
+})(function(props) {
+  console.info("These are the props passed to our Custom Tab:", props);
+  return (
+    <div>
+      <h3>Hello World, I am a Custom Tab</h3>
+      <h4>sequenceLength: {props.sequenceData.sequence.length}</h4>
+    </div>
+  );
+});
 
 const defaultState = {
   hideSingleImport: false,
@@ -81,6 +92,7 @@ export default class EditorDemo extends React.Component {
   propertiesOverridesExample = {
     PropertiesProps: {
       propertiesList: [
+        { name: "Custom", Comp: MyCustomTab },
         "general",
         "features",
         {
@@ -374,6 +386,10 @@ ToolBarProps: {
                             id: "rail",
                             name: "Linear Map",
                             active: true
+                          },
+                          {
+                            id: "myCustomTab",
+                            name: "My Custom Tab"
                           }
                         ],
                         [
@@ -414,6 +430,10 @@ updateEditor(store, "DemoEditor", {
         id: "rail",
         name: "Linear Map",
         active: true
+      },
+      {
+        id: "myCustomTab",
+        name: "My Custom Tab"
       }
     ],
     [
@@ -445,18 +465,40 @@ updateEditor(store, "DemoEditor", {
     ]
   ]
 })
+
+//you need to pass any custom panels to the panel map such that the key matches the panel id:
+<Editor panelMap={{ 
+  myCustomTab: MyCustomTab
+}} />
+
+const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
+  //you can optionally grab additional editor data using the exported connectToEditor function 
+  return {
+    sequenceData
+  };
+})(function(props) {
+  console.info("These are the props passed to our Custom Tab:", props);
+  return (
+    <div>
+      <h3>Hello World, I am a Custom Tab</h3>
+      <h4>sequenceLength: {props.sequenceData.sequence.length}</h4>
+    </div>
+  );
+});
 \`\`\`
 `
               })}
               {renderToggle({
                 that: this,
-                label: "Customize properties tab",
+                label: "Customize property tabs",
                 type: "propertiesOverridesExample",
                 info: `//The panels shown in the properties tab can be customized. 
                 Here is an example of how to pass Properties overrides
 \`\`\`js
+
 PropertiesProps: {
   propertiesList: [
+    {name: "Custom", Comp: MyCustomTab},
     "general",
     "features",
     {
@@ -480,6 +522,22 @@ PropertiesProps: {
     "genbank"
   ]
 }
+
+const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
+  //you can optionally grab additional editor data using the exported connectToEditor function 
+  return {
+    sequenceData
+  };
+})(function(props) {
+  console.info("These are the props passed to our Custom Tab:", props);
+  return (
+    <div>
+      <h3>Hello World, I am a Custom Tab</h3>
+      <h4>sequenceLength: {props.sequenceData.sequence.length}</h4>
+    </div>
+  );
+});
+
 \`\`\`
 `
               })}
@@ -832,6 +890,9 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             }}
           > */}
           <Editor
+            panelMap={{
+              myCustomTab: MyCustomTab
+            }}
             style={{
               // display: "flex",
               // flexDirection: "column",

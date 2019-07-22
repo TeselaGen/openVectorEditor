@@ -71,7 +71,7 @@ export class PropertiesDialog extends React.Component {
     }
     const propertiesTabs = propertiesList.map(nameOrOverride => {
       const name = nameOrOverride.name || nameOrOverride;
-      const Comp = allTabs[name];
+      const Comp = nameOrOverride.Comp || allTabs[name];
       if (isProtein) {
         if (
           name === "translations" ||
@@ -85,7 +85,13 @@ export class PropertiesDialog extends React.Component {
       return (
         <Tab
           key={name}
-          title={name === "orfs" ? "ORFs" : startCase(name)}
+          title={
+            nameOrOverride.Comp
+              ? name //just use the user supplied name because this is a custom panel
+              : name === "orfs"
+              ? "ORFs"
+              : startCase(name)
+          }
           id={name}
           panel={
             <Comp

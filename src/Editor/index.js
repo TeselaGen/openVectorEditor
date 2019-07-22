@@ -76,7 +76,7 @@ const userDefinedHandlersAndOpts = [
   "menuFilter"
 ];
 
-const panelMap = {
+const _panelMap = {
   circular: CircularView,
   sequence: RowView,
   rail: LinearView,
@@ -460,6 +460,10 @@ export class Editor extends React.Component {
           dimensions: windowDimensions
         };
       }
+      const panelMap = {
+        ..._panelMap,
+        ...this.props.panelMap
+      };
 
       const Panel =
         (panelMap[activePanelType] && panelMap[activePanelType].comp) ||

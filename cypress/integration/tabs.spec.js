@@ -4,6 +4,14 @@ describe("tabs", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`a custom tab should be able to be added`, () => {
+    cy.tgToggle("customizeTabs");
+    cy.get(".veTabMyCustomTab").click();
+    // cy.get(`[data-tab-id="Custom"]`).click()
+    cy.contains(".tg-editor-container", "Hello World, I am a Custom Tab");
+    cy.contains(".tg-editor-container", "sequenceLength: 5299");
+  });
+
   it("can open the new part window via hotkey and add a new part", function() {
     if (Cypress.browser.isHeadless) return true; //stop early because this test fails currently in headless mode
     // cy.get('body').trigger('keydown', { keyCode: 114, which: 114 })

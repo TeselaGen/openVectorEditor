@@ -2,6 +2,13 @@ describe("properties", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`a custom properties tab should be able to be added`, () => {
+    cy.tgToggle("propertiesOverridesExample");
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="Custom"]`).click();
+    cy.contains(".ve-propertiesPanel", "Hello World, I am a Custom Tab");
+    cy.contains(".ve-propertiesPanel", "sequenceLength: 5299");
+  });
   it(`can change to linear mode via the general properties panel and get a warning that annotations will be truncated`, () => {
     cy.get(".veTabProperties").click();
     cy.get(".circularLinearSelect select").select("Linear");
