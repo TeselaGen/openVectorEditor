@@ -423,37 +423,27 @@ ToolBarProps: {
                 },
                 info: `//The positions of the tabs shown in the editor can be changed programatically:
 \`\`\`js
+//override the panelsShown redux state adding your custom tab wherever you see fit:
 updateEditor(store, "DemoEditor", {
-  panelsShown: [
-    [
+  panelsShown: [ 
+    [ //the first row of tabs
       {
         id: "rail",
         name: "Linear Map",
         active: true
       },
       {
-        id: "myCustomTab",
-        name: "My Custom Tab"
+        id: "myCustomTabId",
+        name: "My Custom Tab",
+        //canClose: true //optionally make it closeable
       }
     ],
-    [
+    [ //the second row of tabs
       {
         id: "sequence",
         name: "Sequence Map",
-        
       },
       {
-        id: "alignmentTool",
-        name: "New Alignment",
-        canClose: true
-      },
-      {
-        id: "digestTool",
-        name: "New Digest",
-        canClose: true
-      },
-      {
-        // fullScreen: true,
         active: true,
         id: "circular",
         name: "Circular Map"
@@ -466,11 +456,7 @@ updateEditor(store, "DemoEditor", {
   ]
 })
 
-//you need to pass any custom panels to the panel map such that the key matches the panel id:
-<Editor panelMap={{ 
-  myCustomTab: MyCustomTab
-}} />
-
+//create the custom tab component:
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function 
   return {
@@ -485,6 +471,11 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
     </div>
   );
 });
+
+//and pass the custom tab component to the editor via the panelMap prop such that the key matches the panel id:
+<Editor panelMap={{ 
+  myCustomTabId: MyCustomTab
+}} />
 \`\`\`
 `
               })}
