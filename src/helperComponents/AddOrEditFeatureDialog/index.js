@@ -47,6 +47,7 @@ export default AddOrEditAnnotationDialog({
   getProps: props => ({
     upsertAnnotation: props.upsertFeature,
     renderLocations: true,
-    renderTypes
+    renderTypes,
+    annotationTypePlural: "features"
   })
 });

@@ -41,6 +41,7 @@ export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPartDialog",
   getProps: props => ({
     upsertAnnotation: props.upsertPart,
-    renderTypes
+    renderTypes,
+    annotationTypePlural: "parts"
   })
 });

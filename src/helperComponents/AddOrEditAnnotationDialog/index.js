@@ -158,6 +158,8 @@ class AddOrEditAnnotationDialog extends React.Component {
       sequenceData = { sequence: "" },
       handleSubmit,
       renderTypes,
+      annotationTypePlural,
+      annotationVisibilityShow,
       renderLocations,
       locations,
       upsertAnnotation
@@ -293,6 +295,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                 }
               );
               upsertAnnotation(newFeat);
+              annotationVisibilityShow(annotationTypePlural);
               hideModal();
             })}
             intent={Intent.PRIMARY}
