@@ -2,6 +2,61 @@ describe("properties", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`creating a primer should create a primer in the genbank`, () => {
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="primers"]`).click();
+    cy.contains(".vePropertiesFooter button", "New").click();
+    cy.focused()
+      .type("fakeprimer")
+      .closest(".bp3-dialog")
+      .contains("Save")
+      .click();
+    cy.get(`[data-tab-id="genbank"]`).click();
+    cy.contains("textarea", `primer          complement(1..1)`);
+    cy.contains("textarea", `/label="fakeprimer"`);
+  });
+  it(`should be able to delete a feature from the properties tab and not have the delete button still enabled; 
+   - have the number of features correctly displayed
+   -not be able to create a new feature if sequenceLength === 0`, () => {
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="features"]`).click();
+    cy.contains(".data-table-title-and-buttons", "Show Features");
+    cy.contains(".data-table-title-and-buttons", "22");
+    cy.contains(".ve-propertiesPanel button", "Delete").should(
+      "have.class",
+      "bp3-disabled"
+    );
+    cy.contains(".ReactTable", "araC").click();
+    cy.contains(".ve-propertiesPanel button", "Delete")
+      .should("not.have.class", "bp3-disabled")
+      .click();
+
+    cy.contains(".ve-propertiesPanel button", "Delete").should(
+      "have.class",
+      "bp3-disabled"
+    );
+
+    cy.contains(".vePropertiesFooter button", "New").should(
+      "not.have.class",
+      "bp3-disabled"
+    );
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Select All")
+      .click();
+    cy.get(".veSelectionLayer")
+      .first()
+      .trigger("contextmenu", { force: true });
+    cy.get(".bp3-menu-item")
+      .contains("Cut")
+      .click();
+    cy.contains(".vePropertiesFooter button", "New").should(
+      "have.class",
+      "bp3-disabled"
+    );
+  });
   it(`a custom properties tab should be able to be added`, () => {
     cy.tgToggle("propertiesOverridesExample");
     cy.get(".veTabProperties").click();

@@ -1016,7 +1016,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             } //don't pass this handler if you're also using previewMode
             isFullscreen={isFullscreen}
             // handleFullscreenClose={() => {
-            //   console.log("ya");
+            //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
             {...forceHeightMode && { height: 500 }}

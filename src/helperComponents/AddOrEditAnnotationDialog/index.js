@@ -279,6 +279,9 @@ class AddOrEditAnnotationDialog extends React.Component {
               const newFeat = tidyUpAnnotation(
                 convertRangeTo0Based({
                   ...updatedData,
+                  ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
+                    ? { type: "primer" }
+                    : {}),
                   locations: undefined, //by default clear locations
                   ...(hasJoinedLocations && {
                     //only add locations if there are locations

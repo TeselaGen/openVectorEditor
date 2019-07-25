@@ -6858,10 +6858,10 @@ lodash@4.17.11, lodash@^4.0.0, lodash@^4.0.1, lodash@^4.12.0, lodash@^4.13.1, lo
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
-lodash@^4.17.14:
-  version "4.17.14"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
-  integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
+lodash@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 log-symbols@2.2.0, log-symbols@^2.1.0, log-symbols@^2.2.0:
   version "2.2.0"
@@ -10777,10 +10777,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@^27.0.39:
-  version "27.0.39"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-27.0.39.tgz#121e2a87463b5fb70ec509f45cc67ffb11a02257"
-  integrity sha512-nCR4e6ua6dkoZA9Zdrqxk6ccWAy+LNhPoAYpM9Z82Ko8HqmimYsneQgncLEOqalT+god3HDsZebAe+epNGeDOg==
+teselagen-react-components@^27.1.1:
+  version "27.1.1"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-27.1.1.tgz#4bf1891bb32af8cad62587f1493f0a8da6a5f980"
+  integrity sha512-T9xNtr4VXpcOJTY5suPNvPqGzpM/kXh9W4T/ADEwA3aW0eQCMdE3h8kvOxrIUJqtS46xbsraSe/KTrsC/gPrNw==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
@@ -11495,10 +11495,10 @@ ve-range-utils@^2.5.5:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^3.3.41:
-  version "3.3.41"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.41.tgz#e6561c83431b21938bc9e9a74dcf779404dad1d8"
-  integrity sha512-b3yhKGZOWFvR/a7x2Zk/Ccpxok/eCN9BohsO1tKUe51oAjyq5EDdH1IqoXVKyH2IKaIqgVZWvso9HlSMyx2zzQ==
+ve-sequence-utils@^3.3.44:
+  version "3.3.44"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-3.3.44.tgz#c2a02cfe788e27dfbc6fead8c632b66c3e337da5"
+  integrity sha512-hhKNnErkyXlJ1A9aB54mjrmZCIO7dYx0Sn8yttNZIy27RDU8LQzG+vGcJlzXMhbnUuiMbDjd1L5M1zFPsMomcQ==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

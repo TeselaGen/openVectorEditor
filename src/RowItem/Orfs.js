@@ -4,16 +4,21 @@ import StackedAnnotations from "./StackedAnnotations";
 
 function getExtraInnerCompProps(annotationRange, props) {
   const { row } = props;
-  let { annotation } = annotationRange;
+  let { annotation, start, end } = annotationRange;
   let { frame, internalStartCodonIndices = [] } = annotation;
   let normalizedInternalStartCodonIndices = internalStartCodonIndices
     .filter(function(position) {
-      if (position >= row.start && position <= row.end) {
+      if (
+        position >= row.start &&
+        position >= start &&
+        position <= end &&
+        position <= row.end
+      ) {
         return true;
       } else return false;
     })
     .map(function(position) {
-      return position - row.start;
+      return position - start;
     });
 
   return { normalizedInternalStartCodonIndices, frame };
