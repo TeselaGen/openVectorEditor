@@ -58,3 +58,18 @@ export function preventDefaultStopPropagation(e) {
     e.preventDefault();
   }
 }
+
+export function getNodeToRefocus(caretEl) {
+  let nodeToReFocus;
+  for (const view of [
+    ".veRowView",
+    ".veCircularView",
+    ".veVectorInteractionWrapper"
+  ]) {
+    if (caretEl && caretEl.closest && caretEl.closest(view)) {
+      nodeToReFocus = caretEl.closest(view);
+      break;
+    }
+  }
+  return nodeToReFocus;
+}

@@ -265,7 +265,9 @@ const editCommandDefs = {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
     isHidden: props => props.readOnly,
-    handler: () => triggerClipboardCommand("cut"),
+    handler: () => {
+      triggerClipboardCommand("cut");
+    },
     hotkey: "mod+x"
   },
 

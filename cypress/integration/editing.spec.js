@@ -2,6 +2,11 @@ describe("editor", function() {
   beforeEach(() => {
     cy.visit("");
   });
+  // it.only(`should handle focus correctly while editing`, ()=> {
+  //   cy.selectRange(5297, 3);
+  //   cy.deleteSelection();
+  //   // cy.window()
+  // })
 
   it(`should be able to delete data around the origin correctly
   - the cursor should be place at the origin`, () => {

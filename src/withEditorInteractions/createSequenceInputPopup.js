@@ -12,6 +12,7 @@ import React from "react";
 import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";
 import { Hotkey, Hotkeys, HotkeysTarget, Classes } from "@blueprintjs/core";
+import { getNodeToRefocus } from "../utils/editorUtils";
 
 let div;
 
@@ -50,17 +51,7 @@ class SequenceInputNoHotkeys extends React.Component {
       const node = n.parentNode;
       if (!node) return;
       unmountComponentAtNode(node);
-      for (const view of [
-        ".veRowView",
-        ".veCircularView",
-        ".veVectorInteractionWrapper"
-      ]) {
-        //return focus to the previously focused view before the sequence input window stole the focus
-        if (this.props.caretEl && this.props.caretEl.closest(view)) {
-          this.props.caretEl.closest(view).focus();
-          break;
-        }
-      }
+      this.props.nodeToReFocus && this.props.nodeToReFocus.focus();
       document.getElementById("sequenceInputBubble").outerHTML = "";
     });
   };
@@ -199,16 +190,16 @@ export default function createSequenceInputPopup(props) {
   const { useEventPositioning } = props;
 
   let caretEl;
-
   if (useEventPositioning) {
     //we have to make a fake event here so that popper.js will position on the page correctly
-    const event = useEventPositioning;
-
-    const top = event.clientY;
-    const right = event.clientX;
-    const bottom = event.clientY;
-    const left = event.clientX;
+    const { e, nodeToReFocus } = useEventPositioning;
+    // e.persist();
+    const top = e.clientY;
+    const right = e.clientX;
+    const bottom = e.clientY;
+    const left = e.clientX;
     caretEl = {
+      nodeToRefocus: nodeToReFocus,
       getBoundingClientRect: () => ({
         top,
         right,
@@ -234,8 +225,9 @@ export default function createSequenceInputPopup(props) {
   }
   if (document.body.classList.contains("sequenceDragging")) {
     window.toastr.warning("Can't insert new sequence while dragging");
+    //don't allow this
     return;
-  } //don't allow
+  }
 
   // function closeInput() {
   //   sequenceInputBubble.remove();
@@ -245,7 +237,12 @@ export default function createSequenceInputPopup(props) {
   div.id = "sequenceInputBubble";
   document.body.appendChild(div);
 
-  const innerEl = <SequenceInput caretEl={caretEl} {...props} />;
+  const innerEl = (
+    <SequenceInput
+      nodeToReFocus={caretEl.nodeToRefocus || getNodeToRefocus(caretEl)}
+      {...props}
+    />
+  );
 
   render(innerEl, div);
 

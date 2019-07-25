@@ -49,6 +49,7 @@ import {
   createNewAnnotationMenu
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
+import { getNodeToRefocus } from "../utils/editorUtils";
 
 function getAcceptedChars(isProtein) {
   return isProtein
@@ -474,6 +475,16 @@ function VectorInteractionHOC(Component /* options */) {
             }
           ];
     };
+    insertHelper = {
+      onClick: (e, ctxInfo) => {
+        this.handleDnaInsert({
+          useEventPositioning: {
+            e,
+            nodeToReFocus: getNodeToRefocus(ctxInfo.event.target)
+          }
+        });
+      }
+    };
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
@@ -530,9 +541,7 @@ function VectorInteractionHOC(Component /* options */) {
           : [
               {
                 text: "Replace",
-                onClick: e => {
-                  this.handleDnaInsert({ useEventPositioning: e });
-                }
+                ...this.insertHelper
               },
               {
                 text: "Cut",
@@ -679,6 +688,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
     enhanceRightClickAction = (action, key) => {
       return opts => {
+        const lastFocusedEl = document.activeElement;
         const { rightClickOverrides = {} } = this.props;
         const items = action(opts);
         const e = (items && items._event) || opts.event || opts;
@@ -690,7 +700,19 @@ function VectorInteractionHOC(Component /* options */) {
           override ? override(items, opts, this.props) : items,
           [this.commandEnhancer],
           e,
-          undefined,
+          () => {
+            if (
+              lastFocusedEl &&
+              document.activeElement &&
+              (document.activeElement.classList.contains(
+                "bp3-popover-enter-done"
+              ) ||
+                (document.activeElement.type === "textarea" && //this is the clipboard textarea created by clipboardjs
+                  document.activeElement.offsetLeft === -9999))
+            ) {
+              lastFocusedEl.focus();
+            }
+          },
           opts, // context here
           this.ConnectedMenu
         );
@@ -732,9 +754,7 @@ function VectorInteractionHOC(Component /* options */) {
             : [
                 {
                   text: "Insert",
-                  onClick: e => {
-                    this.handleDnaInsert({ useEventPositioning: e });
-                  }
+                  ...this.insertHelper
                 }
               ]),
           "rotateToCaretPosition",

@@ -16,6 +16,16 @@
 .veRowView:focus .veRowViewSelectionLayer:not(.veRowViewCaret) {
   background: #0099ff;
 }
+.veRowView:focus .veCaret.veRowViewCaret:not(.veRowViewSelectionLayer) {
+  animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 .veVectorInteractionWrapper .veRowViewSelectionLayer:not(.veRowViewCaret) {
   background: gray;
 }
@@ -23,12 +33,19 @@
   .veRowViewSelectionLayer:not(.veRowViewCaret) {
   background: #0099ff;
 }
+.veVectorInteractionWrapper:focus
+  .veRowViewCaret:not(.veRowViewSelectionLayer) {
+  animation: blinker 1s step-start infinite;
+}
 
 .veCircularView .selectionLayer {
   fill: gray;
 }
 .veCircularView:focus .selectionLayer {
   fill: #0099ff;
+}
+.veCircularView:focus .veCaret:not(.selectionLayerCaret) {
+  animation: blinker 1s step-start infinite;
 }
 
 /* selectionLayerCaret */

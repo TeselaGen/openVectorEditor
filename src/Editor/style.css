@@ -2,9 +2,6 @@
   position: relative;
   flex-grow: 1;
 }
-.veVectorInteractionWrapper:focus {
-  box-shadow: 0 4px 2px -2px #9ecaed !important;
-}
 
 .taProductViewer {
   display: flex;
