@@ -9620,9 +9620,7 @@ span.bp3-popover-target {
 }
 
 .tg-no-fill-field {
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
-  display: flex !important;
+  display: table !important;
 }
 
 .item-upload-container {
@@ -10515,6 +10513,23 @@ li.bp3-menu-divider:last-child {
 .veRowView:focus .veRowViewSelectionLayer:not(.veRowViewCaret) {
   background: #0099ff;
 }
+.veRowView:focus .veCaret.veRowViewCaret:not(.veRowViewSelectionLayer) {
+  -webkit-animation: blinker 1s step-start infinite;
+          animation: blinker 1s step-start infinite;
+}
+
+@-webkit-keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 .veVectorInteractionWrapper .veRowViewSelectionLayer:not(.veRowViewCaret) {
   background: gray;
 }
@@ -10522,12 +10537,21 @@ li.bp3-menu-divider:last-child {
   .veRowViewSelectionLayer:not(.veRowViewCaret) {
   background: #0099ff;
 }
+.veVectorInteractionWrapper:focus
+  .veRowViewCaret:not(.veRowViewSelectionLayer) {
+  -webkit-animation: blinker 1s step-start infinite;
+          animation: blinker 1s step-start infinite;
+}
 
 .veCircularView .selectionLayer {
   fill: gray;
 }
 .veCircularView:focus .selectionLayer {
   fill: #0099ff;
+}
+.veCircularView:focus .veCaret:not(.selectionLayerCaret) {
+  -webkit-animation: blinker 1s step-start infinite;
+          animation: blinker 1s step-start infinite;
 }
 
 /* selectionLayerCaret */
@@ -11330,10 +11354,6 @@ li.bp3-menu-divider:last-child {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-}
-.veVectorInteractionWrapper:focus {
-  -webkit-box-shadow: 0 4px 2px -2px #9ecaed !important;
-          box-shadow: 0 4px 2px -2px #9ecaed !important;
 }
 
 .taProductViewer {
