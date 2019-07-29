@@ -86,6 +86,7 @@ export class FindBar extends React.Component {
                 <div>B: CGT</div>
                 <div>X: GATC</div>
                 <div>N: GATC</div>
+                <div>*: any</div>
               </div>
               <div>
                 <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
