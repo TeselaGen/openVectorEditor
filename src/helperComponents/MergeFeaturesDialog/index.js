@@ -237,7 +237,17 @@ export default compose(
   }),
   withEditorProps,
   reduxForm({
-    form: "MergeFeaturesDialog"
+    form: "MergeFeaturesDialog",
+    validate: ({ id1, id2 }) => {
+      const errors = {};
+      if (!id1 || Array.isArray(id1)) {
+        errors.id1 = "Please select a feature";
+      }
+      if (!id2 || Array.isArray(id2)) {
+        errors.id2 = "Please select a feature";
+      }
+      return errors;
+    }
   }),
   formValues("id1", "id2")
 )(MergeFeaturesDialog);
