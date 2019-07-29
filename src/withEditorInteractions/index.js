@@ -895,6 +895,7 @@ function VectorInteractionHOC(Component /* options */) {
       });
       return [
         "editPrimer",
+        "deletePrimer",
         ...this.getSelectionMenuOptions(annotation),
         "newTranslation",
         "newReverseTranslation",
