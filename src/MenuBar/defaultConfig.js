@@ -114,6 +114,6 @@ export default [
   // { isMenuSearch: true }
   {
     text: "Help",
-    submenu: [{ isMenuSearch: true }, "--", "about"]
+    submenu: [{ isMenuSearch: true }, "--", "about", "hotkeyDialog"]
   }
 ];

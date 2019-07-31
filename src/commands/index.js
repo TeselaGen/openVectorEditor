@@ -685,6 +685,10 @@ const editCommandDefs = {
     // isActive: (props) => props.useAdditionalOrfStartCodons,
     handler: () => {}
   },
+  hotkeyDialog: {
+    name: "View Hotkeys",
+    handler: props => props.openHotkeyDialog()
+  },
 
   newPart: {
     handler: props => props.handleNewPart(),

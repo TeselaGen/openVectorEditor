@@ -136,6 +136,7 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
 
 export class Editor extends React.Component {
   state = {
+    isHotkeyDialogOpen: false,
     tabDragging: false,
     previewModeFullscreen: false
   };
@@ -265,6 +266,13 @@ export class Editor extends React.Component {
         top: e.clientY
       });
     }
+  };
+
+  closeHotkeyDialog = () => {
+    this.setState({ isHotkeyDialogOpen: false });
+  };
+  openHotkeyDialog = () => {
+    this.setState({ isHotkeyDialogOpen: true });
   };
 
   togglePreviewFullscreen = () => {
@@ -786,6 +794,7 @@ export class Editor extends React.Component {
           {...pick(this.props, dialogOverrides)}
         />
         <ToolBar
+          openHotkeyDialog={this.openHotkeyDialog}
           key="toolbar"
           showMenuBar={showMenuBar}
           displayMenuBarAboveTools={displayMenuBarAboveTools}
@@ -810,7 +819,13 @@ export class Editor extends React.Component {
           withDigestTool
           {...ToolBarProps}
         />
+
         <CommandHotkeyHandler
+          menuSearchHotkey={this.props.menuSearchHotkey}
+          hotkeyDialogProps={{
+            isOpen: this.state.isHotkeyDialogOpen,
+            onClose: this.closeHotkeyDialog
+          }}
           {...pick(this.props, userDefinedHandlersAndOpts)}
           editorName={editorName}
         />

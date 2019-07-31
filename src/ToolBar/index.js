@@ -48,6 +48,7 @@ export class ToolBar extends React.PureComponent {
       showMenuBar,
       displayMenuBarAboveTools,
       isProtein,
+      openHotkeyDialog,
       onSave,
       userDefinedHandlersAndOpts,
       editorName,
@@ -142,6 +143,7 @@ export class ToolBar extends React.PureComponent {
         >
           {showMenuBar && (
             <MenuBar
+              openHotkeyDialog={openHotkeyDialog}
               {...pick(this.props, userDefinedHandlersAndOpts)}
               onSave={onSave} //needs to be passed so that editor commands will have it
               style={{ marginLeft: 0 }}

@@ -5,7 +5,8 @@ import { withHotkeys } from "teselagen-react-components";
 import getCommands from "../commands";
 import {
   getCommandHotkeys,
-  getCommandHotkeyHandlers
+  getCommandHotkeyHandlers,
+  HotkeysDialog
 } from "teselagen-react-components";
 
 class CommandHotkeyHandler extends React.Component {
@@ -21,7 +22,21 @@ class CommandHotkeyHandler extends React.Component {
   }
 
   render() {
-    return <this.Handler />;
+    return (
+      <React.Fragment>
+        <this.Handler key="handla" />
+        <HotkeysDialog
+          key="hotkeyDialog"
+          hotkeySets={{
+            Editor: {
+              "Search File Menu": this.props.menuSearchHotkey || "cmd+/",
+              ...this.hotkeyDefs
+            }
+          }}
+          {...this.props.hotkeyDialogProps}
+        />
+      </React.Fragment>
+    );
   }
 }
 
