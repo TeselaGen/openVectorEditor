@@ -347,6 +347,7 @@ export class RowView extends React.Component {
       let rowItem = (
         <div data-row-number={index} key={index}>
           <div className="veRowItemSpacer" />
+
           <RowItem
             {...{
               ...rest,
@@ -355,6 +356,10 @@ export class RowView extends React.Component {
               isProtein: sequenceData.isProtein,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,
+              emptyText:
+                sequenceData.sequence.length === 0 ? (
+                  <div className="veEmptySeqText">Insert Sequence Here</div>
+                ) : null,
               fullSequence: sequenceData.sequence,
               ...RowItemProps
             }}

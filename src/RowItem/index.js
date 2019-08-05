@@ -80,6 +80,7 @@ export class RowItem extends React.PureComponent {
         end: 0,
         rowNumber: 0
       },
+      emptyText,
       alignmentType,
       alignmentData,
       sequenceLength = row.sequence.length,
@@ -372,6 +373,7 @@ export class RowItem extends React.PureComponent {
                 {deletionLayerStrikeThrough}
               </Sequence>
             )}
+            {emptyText}
 
             {showReverseSequence && (
               <Sequence

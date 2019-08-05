@@ -161,6 +161,10 @@ export class LinearView extends React.Component {
               sequenceLength: this.getMaxLength(),
               width: innerWidth,
               bpsPerRow,
+              emptyText:
+                sequenceData.sequence.length === 0 ? (
+                  <div className="veEmptySeqText">Insert Sequence Here</div>
+                ) : null,
               tickSpacing:
                 tickSpacing ||
                 Math.floor(
