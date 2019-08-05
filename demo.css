@@ -10114,10 +10114,17 @@ li.bp3-menu-divider:last-child {
   margin-top: 5px;
   padding: 10px;
 }
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* even columns width , fix width of table too*/
+}
 
-.tg-hotkeys-dialog .tg-table-wrapper {
-  height: 60vh;
-  overflow: auto;
+.tg-hotkeys-dialog .tg-table-wrapper tbody {
+  display: block;
+  max-height: 55vh;
+  overflow-y: auto;
 }
 
 .tg-hotkeys-dialog th {
@@ -10366,6 +10373,9 @@ li.bp3-menu-divider:last-child {
 .bp3-dark .veLabels .veAnnotationHovered rect {
   fill: rgb(64, 64, 92) !important;
 }
+.veLabelLine {
+  opacity: 0.1;
+}
 
 .veCircularViewMiddleOfVectorText {
   position: absolute;
@@ -10397,13 +10407,14 @@ li.bp3-menu-divider:last-child {
 }
 
 .veRowViewCaret {
-  height: 98%;
-  background: black;
+  height: 102%;
+  /* background: black; */
   position: absolute;
-  top: 0;
+  top: -5px;
   width: 2px;
-  cursor: ew-resize;
+  /* cursor: ew-resize; */
 }
+
 .veRowViewSelectionLayer {
   height: 100%;
   border: none;
@@ -10414,13 +10425,15 @@ li.bp3-menu-divider:last-child {
   z-index: 10;
 }
 
-.veRowViewCaret.veRowViewSelectionLayer {
+.veCaret {
   background: black;
+  stroke: black;
   opacity: 1;
   cursor: ew-resize;
+  z-index: 10;
 }
 
-.veRowViewCaret.veRowViewSelectionLayer.cutsiteLabelSelectionLayer {
+.veCaret.veSelectionLayer.cutsiteLabelSelectionLayer {
   display: none !important;
 }
 
@@ -10502,59 +10515,6 @@ li.bp3-menu-divider:last-child {
 .veRowItem svg:not(:root) {
   overflow: visible;
 }
-
-.veRowView,
-.veCircularView {
-  outline: none;
-}
-.veRowView .veRowViewSelectionLayer:not(.veRowViewCaret) {
-  background: gray;
-}
-.veRowView:focus .veRowViewSelectionLayer:not(.veRowViewCaret) {
-  background: #0099ff;
-}
-.veRowView:focus .veCaret.veRowViewCaret:not(.veRowViewSelectionLayer) {
-  -webkit-animation: blinker 1s step-start infinite;
-          animation: blinker 1s step-start infinite;
-}
-
-@-webkit-keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-
-.veVectorInteractionWrapper .veRowViewSelectionLayer:not(.veRowViewCaret) {
-  background: gray;
-}
-.veVectorInteractionWrapper:focus
-  .veRowViewSelectionLayer:not(.veRowViewCaret) {
-  background: #0099ff;
-}
-.veVectorInteractionWrapper:focus
-  .veRowViewCaret:not(.veRowViewSelectionLayer) {
-  -webkit-animation: blinker 1s step-start infinite;
-          animation: blinker 1s step-start infinite;
-}
-
-.veCircularView .selectionLayer {
-  fill: gray;
-}
-.veCircularView:focus .selectionLayer {
-  fill: #0099ff;
-}
-.veCircularView:focus .veCaret:not(.selectionLayerCaret) {
-  -webkit-animation: blinker 1s step-start infinite;
-          animation: blinker 1s step-start infinite;
-}
-
-/* selectionLayerCaret */
 
 .veMergeFeaturesDialog .bp3-form-content {
   -webkit-box-flex: 1;
@@ -11453,6 +11413,74 @@ li.bp3-menu-divider:last-child {
   -webkit-transform: scale(0.8);
       -ms-transform: scale(0.8);
           transform: scale(0.8);
+}
+
+.veSearchLayer {
+  cursor: pointer;
+
+  stroke: gold !important;
+  fill: gold !important;
+  background: gold !important;
+}
+.veSearchLayerActive {
+  stroke: red !important;
+  fill: red !important;
+  background: red !important;
+}
+
+.veSearchLayer.veCaret {
+  cursor: pointer;
+}
+
+.veRowView,
+.veCircularView {
+  outline: none;
+}
+
+@-webkit-keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.veVectorInteractionWrapper .veSelectionLayer:not(.veCaret) {
+  background: gray;
+  fill: gray;
+}
+.veVectorInteractionWrapper:focus .veSelectionLayer:not(.veCaret) {
+  fill: #0099ff;
+  background: #0099ff;
+}
+.veVectorInteractionWrapper:focus .veCaret:not(.selectionLayerCaret) {
+  -webkit-animation: blinker 1s step-start infinite;
+          animation: blinker 1s step-start infinite;
+}
+/* this is the little handles above the selection carets */
+.veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid black;
+  position: absolute;
+  z-index: 1000;
+  top: -7px;
+  left: -4px;
+}
+.vePolygonCaretHandle,
+.veEditor .veSearchLayer .vePolygonCaretHandle {
+  display: none;
+}
+.veEditor .vePolygonCaretHandle {
+  display: inherit;
 }
 
 .ve-digest-markings {
