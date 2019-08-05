@@ -1,3 +1,4 @@
+import { noop } from "teselagen-react-components";
 import Caret from "./Caret";
 import sector from "paths-js/sector";
 import getRangeAngles from "./getRangeAnglesSpecial";
@@ -17,11 +18,19 @@ function SelectionLayer({
   radius,
   hideTitle,
   innerRadius,
-  selectionLayerRightClicked,
+  onRightClicked,
+  onClick,
   index,
   isProtein
 }) {
-  let { color, start, end, hideCarets = false } = selectionLayer;
+  let {
+    color,
+    start,
+    end,
+    hideCarets = false,
+    style,
+    className
+  } = selectionLayer;
   let { startAngle, endAngle, totalAngle } = getRangeAngles(
     selectionLayer,
     sequenceLength
@@ -47,18 +56,27 @@ function SelectionLayer({
   //   start: 0,
   //   end: Math.PI * 2 - totalAngle
   // });
-
   return (
     <g
       onContextMenu={event => {
-        selectionLayerRightClicked &&
-          selectionLayerRightClicked({
+        onRightClicked &&
+          onRightClicked({
             annotation: selectionLayer,
             event
           });
       }}
+      onClick={
+        onClick
+          ? event => {
+              onClick({
+                annotation: selectionLayer,
+                event
+              });
+            }
+          : undefined
+      }
       key={"veSelectionLayer" + index}
-      className="veSelectionLayer"
+      className={"veSelectionLayer " + className}
     >
       {!hideTitle && <title>{selectionMessage}</title>}
       <path
@@ -68,18 +86,20 @@ function SelectionLayer({
           height: 0
         })}
         className="selectionLayer"
-        style={{ opacity: 0.3 }}
+        style={{ opacity: 0.3, ...style }}
         d={section.path.print()}
-        fill={color || "rgb(0, 153, 255)"}
+        fill={color}
       />
       {!hideCarets && (
         <Caret
           key="caret1"
           className={
-            "selectionLayerCaret " +
+            className +
+            " selectionLayerCaret " +
             (isDraggable ? draggableClassnames.selectionStart : "")
           }
-          onClick={preventDefaultStopPropagation}
+          isSelection
+          onClick={onClick ? noop : preventDefaultStopPropagation}
           selectionMessage={selectionMessage}
           caretPosition={start}
           sequenceLength={sequenceLength}
@@ -91,10 +111,12 @@ function SelectionLayer({
         <Caret
           key="caret2"
           className={
-            "selectionLayerCaret " +
+            className +
+            " selectionLayerCaret " +
             (isDraggable ? draggableClassnames.selectionEnd : "")
           }
-          onClick={preventDefaultStopPropagation}
+          isSelection
+          onClick={onClick ? noop : preventDefaultStopPropagation}
           selectionMessage={selectionMessage}
           caretPosition={end + 1}
           sequenceLength={sequenceLength}

@@ -70,6 +70,13 @@ describe("menuBar", function() {
     cy.contains(".bp3-menu-item", "Check All").click({ force: true });
     cy.contains(".veLabelText", "araC").should("exist");
   });
+  it(`should be able to open the hotkeys dialog`, () => {
+    cy.get("body").type("{meta}/");
+    cy.focused().type("hotkeys{enter}");
+    cy.contains(".bp3-dialog", "Editor Hotkeys");
+    cy.focused().type("{esc}");
+    cy.contains(".bp3-dialog", "Editor Hotkeys").should("not.exist");
+  });
 
   it("should not be able to select a range in a length 0 sequence", function() {
     function shouldBeDisabled(text) {

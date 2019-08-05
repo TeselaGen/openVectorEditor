@@ -19,6 +19,21 @@ describe("toolbar", function() {
       .should("not.have.class", "bp3-disabled");
   });
 
+  it(`find tool should have clickable find layers with no carets`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gattac"); //this should cause 1 region to be selected
+    cy.get(".selectionLayerCaret polygon").should("not.be.visible"); //no polygon handle should exist on the search highlight layer
+    cy.get(
+      ".veSelectionLayer:not(.veSearchLayer):not(.cutsiteLabelSelectionLayer)"
+    ).should("not.exist"); //no pure selection layer should exist
+    cy.get(".veSearchLayer.veRowViewSelectionLayer")
+      .should("be.visible")
+      .click(); //click the search layer
+    cy.get(".selectionLayerCaret polygon").should("be.visible"); //a selection layer should now exist
+    cy.get(
+      ".veSelectionLayer:not(.veSearchLayer):not(.cutsiteLabelSelectionLayer)"
+    ).should("be.visible");
+  });
   it(`find tool should clear search layers when closed and 
   but retain the previous search and be selected when re-opened`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();

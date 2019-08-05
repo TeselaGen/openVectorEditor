@@ -283,7 +283,8 @@ export class RowItem extends React.PureComponent {
           <SelectionLayer
             className="veSearchLayerContainer"
             customTitleStart="Search match"
-            color="yellow"
+            // color="yellow"
+            // hideCarets
             regions={searchLayers}
             {...annotationCommonProps}
             selectionLayerRightClicked={searchLayerRightClicked}

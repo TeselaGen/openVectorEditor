@@ -26,6 +26,7 @@ class CommandHotkeyHandler extends React.Component {
       <React.Fragment>
         <this.Handler key="handla" />
         <HotkeysDialog
+          dialogTitle="Editor Hotkeys"
           key="hotkeyDialog"
           hotkeySets={{
             Editor: {

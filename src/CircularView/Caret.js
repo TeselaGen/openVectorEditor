@@ -11,6 +11,7 @@ function Caret({
   sequenceLength,
   className,
   onClick,
+  isSelection,
   innerRadius,
   outerRadius,
   isProtein,
@@ -24,26 +25,35 @@ function Caret({
     console.error("we've got a problem!");
   }
   return (
-    <g onClick={onClick} className="ve-caret-holder">
+    <g
+      {...PositionAnnotationOnCircle({
+        sAngle: startAngle,
+        eAngle: endAngle,
+        height: 0
+      })}
+      onClick={onClick}
+      className={className + " veCaret " + draggableClassnames.caret}
+    >
       <title>
         {selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })}
       </title>
       <line
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          height: 0
-        })}
-        className={className + " veCaret " + draggableClassnames.caret}
         strokeWidth="2px"
-        style={{ opacity: 9, zIndex: 100, cursor: "ew-resize" }} //tnr: the classname needs to be cursor here!
         x1={0}
         y1={-innerRadius}
         x2={0}
         y2={-outerRadius}
-        stroke="black"
+        // stroke="black"
       />
+      {isSelection ? (
+        <polygon
+          className="vePolygonCaretHandle"
+          fill="black"
+          points={`0,${-outerRadius + 2} 5,${-outerRadius -
+            10} -5,${-outerRadius - 10}`}
+        />
+      ) : null}
     </g>
   );
 }

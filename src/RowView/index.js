@@ -457,7 +457,7 @@ export class RowView extends React.Component {
         onStop={this.onStop}
       >
         <div
-          tabIndex="0"
+          // tabIndex="0"
           ref={this.getRef}
           className="veRowView"
           style={{

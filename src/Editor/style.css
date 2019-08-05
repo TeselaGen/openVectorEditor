@@ -83,3 +83,64 @@
 }
 
 @import url(darkmode.css);
+
+.veSearchLayer {
+  cursor: pointer;
+
+  stroke: gold !important;
+  fill: gold !important;
+  background: gold !important;
+}
+.veSearchLayerActive {
+  stroke: red !important;
+  fill: red !important;
+  background: red !important;
+}
+
+.veSearchLayer.veCaret {
+  cursor: pointer;
+}
+
+.veRowView,
+.veCircularView {
+  outline: none;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.veVectorInteractionWrapper .veSelectionLayer:not(.veCaret) {
+  background: gray;
+  fill: gray;
+}
+.veVectorInteractionWrapper:focus .veSelectionLayer:not(.veCaret) {
+  fill: #0099ff;
+  background: #0099ff;
+}
+.veVectorInteractionWrapper:focus .veCaret:not(.selectionLayerCaret) {
+  animation: blinker 1s step-start infinite;
+}
+/* this is the little handles above the selection carets */
+.veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid black;
+  position: absolute;
+  z-index: 1000;
+  top: -7px;
+  left: -4px;
+}
+.vePolygonCaretHandle,
+.veEditor .veSearchLayer .vePolygonCaretHandle {
+  display: none;
+}
+.veEditor .vePolygonCaretHandle {
+  display: inherit;
+}

@@ -467,7 +467,7 @@ function mapStateToProps(state, ownProps) {
     if (index === findTool.matchNumber) {
       itemToReturn = {
         ...item,
-        color: "red"
+        className: item.className + " veSearchLayerActive"
       };
       matchedSearchLayer = itemToReturn;
     }

@@ -56,13 +56,13 @@ export class CircularView extends React.Component {
     }
     callback({
       event,
-      className: event.target.className.animVal,
+      className: event.target.parentNode.className.animVal,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
-      selectionStartGrabbed: event.target.classList.contains(
+      selectionStartGrabbed: event.target.parentNode.classList.contains(
         draggableClassnames.selectionStart
       ),
-      selectionEndGrabbed: event.target.classList.contains(
+      selectionEndGrabbed: event.target.parentNode.classList.contains(
         draggableClassnames.selectionEnd
       )
     });
@@ -99,6 +99,7 @@ export class CircularView extends React.Component {
       primerRightClicked = noop,
       selectionLayerRightClicked = noop,
       searchLayerRightClicked = noop,
+      searchLayerClicked = noop,
       backgroundRightClicked = noop,
       deletionLayerClicked = noop,
       replacementLayerClicked = noop,
@@ -552,9 +553,12 @@ export class CircularView extends React.Component {
                   isProtein,
                   key: "veCircularViewSelectionLayer" + index,
                   selectionLayer,
-                  selectionLayerRightClicked: selectionLayer.isSearchLayer
+                  onRightClicked: selectionLayer.isSearchLayer
                     ? searchLayerRightClicked
                     : selectionLayerRightClicked,
+                  onClick: selectionLayer.isSearchLayer
+                    ? searchLayerClicked
+                    : undefined,
                   sequenceLength,
                   baseRadius,
                   radius,
@@ -615,7 +619,7 @@ export class CircularView extends React.Component {
           width: widthToUse,
           height: heightToUse
         }}
-        tabIndex="0"
+        // tabIndex="0"
         className="veCircularView"
       >
         <Draggable

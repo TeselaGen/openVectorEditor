@@ -686,7 +686,7 @@ const editCommandDefs = {
     handler: () => {}
   },
   hotkeyDialog: {
-    name: "View Hotkeys",
+    name: "View Editor Hotkeys",
     handler: props => props.openHotkeyDialog()
   },
 

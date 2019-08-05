@@ -48,8 +48,11 @@ function searchLayersSelector(
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });
-  return matches.map(match => ({ ...match, isSearchLayer: true }));
-  // return matches.map(m => ({ ...m, hideCarets: true, color: "yellow" }));
+  return matches.map(match => ({
+    ...match,
+    className: "veSearchLayer",
+    isSearchLayer: true
+  }));
 }
 
 export default createSelector(
