@@ -7,6 +7,7 @@ import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
 import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
+import { getEmptyText } from "../utils/editorUtils";
 
 let defaultMarginWidth = 10;
 
@@ -36,6 +37,7 @@ export class LinearView extends React.Component {
     if (this.props.sequenceData && this.props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
+    if (this.props.sequenceLength === 0) nearestCaretPos = 0;
     const callbackVals = {
       event,
       shiftHeld: event.shiftKey,
@@ -83,6 +85,7 @@ export class LinearView extends React.Component {
       editorDragStopped = noop,
       width = 400,
       tickSpacing,
+      caretPosition,
       backgroundRightClicked = noop,
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
@@ -156,15 +159,13 @@ export class LinearView extends React.Component {
             {...{
               ...rest,
               charWidth,
+              caretPosition,
               isProtein: sequenceData.isProtein,
               alignmentData,
               sequenceLength: this.getMaxLength(),
               width: innerWidth,
               bpsPerRow,
-              emptyText:
-                sequenceData.sequence.length === 0 ? (
-                  <div className="veEmptySeqText">Insert Sequence Here</div>
-                ) : null,
+              emptyText: getEmptyText({ sequenceData, caretPosition }),
               tickSpacing:
                 tickSpacing ||
                 Math.floor(

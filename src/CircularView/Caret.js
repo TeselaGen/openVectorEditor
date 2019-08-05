@@ -19,7 +19,7 @@ function Caret({
 }) {
   let { startAngle, endAngle } = getRangeAngles(
     { start: caretPosition, end: caretPosition },
-    sequenceLength
+    sequenceLength || 1
   );
   if (!isNumber(startAngle)) {
     console.error("we've got a problem!");
@@ -39,7 +39,7 @@ function Caret({
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })}
       </title>
       <line
-        strokeWidth="2px"
+        strokeWidth="1.5px"
         x1={0}
         y1={-innerRadius}
         x2={0}

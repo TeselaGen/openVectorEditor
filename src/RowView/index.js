@@ -21,6 +21,7 @@ import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 
 // import ReactList from './ReactVariable';
 import "./style.css";
+import { getEmptyText } from "../utils/editorUtils";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
@@ -83,12 +84,13 @@ export class RowView extends React.Component {
     });
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
-    let { charWidth = defaultCharWidth } = this.props;
+    let { charWidth = defaultCharWidth, sequenceLength } = this.props;
     let rowNotFound = true;
     let visibleRowsContainer =
       this.InfiniteScroller && this.InfiniteScroller.items;
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
+
     some(visibleRowsContainer.childNodes, function(rowDomNode) {
       let boundingRowRect = rowDomNode.getBoundingClientRect();
       if (
@@ -146,6 +148,7 @@ export class RowView extends React.Component {
     if (this.props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
+    if (sequenceLength === 0) nearestCaretPos = 0;
     callback({
       event,
       className: event.target.className,
@@ -295,6 +298,7 @@ export class RowView extends React.Component {
       editorDragged,
       editorDragStarted,
       editorClicked,
+      caretPosition,
       backgroundRightClicked,
       editorDragStopped,
       // onScroll,
@@ -356,10 +360,8 @@ export class RowView extends React.Component {
               isProtein: sequenceData.isProtein,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,
-              emptyText:
-                sequenceData.sequence.length === 0 ? (
-                  <div className="veEmptySeqText">Insert Sequence Here</div>
-                ) : null,
+              caretPosition,
+              emptyText: getEmptyText({ sequenceData, caretPosition }),
               fullSequence: sequenceData.sequence,
               ...RowItemProps
             }}

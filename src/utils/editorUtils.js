@@ -1,4 +1,5 @@
 import { getRangeLength } from "ve-range-utils";
+import React from "react";
 import { divideBy3 } from "./proteinUtils";
 import {
   getInsertBetweenVals,
@@ -72,4 +73,10 @@ export function getNodeToRefocus(caretEl) {
     }
   }
   return nodeToReFocus;
+}
+
+export function getEmptyText({ sequenceData, caretPosition }) {
+  return sequenceData.sequence.length === 0 && caretPosition === -1 ? (
+    <div className="veEmptySeqText">Insert Sequence Here</div>
+  ) : null;
 }

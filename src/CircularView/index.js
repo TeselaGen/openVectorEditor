@@ -47,10 +47,13 @@ export class CircularView extends React.Component {
     //get angle
     let angle = Math.atan2(clickY, clickX) + Math.PI / 2;
     if (angle < 0) angle += Math.PI * 2; //normalize the angle if necessary
-    let nearestCaretPos = normalizePositionByRangeLength(
-      getPositionFromAngle(angle, sequenceLength, true),
-      sequenceLength
-    ); //true because we're in between positions
+    let nearestCaretPos =
+      sequenceLength === 0
+        ? 0
+        : normalizePositionByRangeLength(
+            getPositionFromAngle(angle, sequenceLength, true),
+            sequenceLength
+          ); //true because we're in between positions
     if (this.props.sequenceData && this.props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
@@ -580,7 +583,7 @@ export class CircularView extends React.Component {
       if (
         caretPosition !== -1 &&
         selectionLayer.start < 0 &&
-        sequenceLength > 0
+        sequenceLength >= 0
       ) {
         //only render if there is no selection layer
         return (
