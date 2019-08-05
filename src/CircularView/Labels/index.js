@@ -18,7 +18,7 @@ function Labels({
   if (!Object.keys(labels).length) return null;
   outerRadius += 25;
   let radius = outerRadius;
-  let outerPointRadius = outerRadius - 35;
+  let outerPointRadius = outerRadius - 15;
   //we don't want the labels to grow too large on large screen devices,
   //so we start to decrease the fontWidth if the textScalingFactor is less than 1
   let fontWidth =
@@ -213,10 +213,10 @@ const DrawLabelGroup = withHover(function({
     let line = LabelLine(
       [
         hoveredLabel.innerPoint,
-        hoveredLabel.labelAndSublabels &&
-        hoveredLabel.labelAndSublabels.length > 0
-          ? hoveredLabel.outerPoint
-          : {},
+        // hoveredLabel.labelAndSublabels &&
+        // hoveredLabel.labelAndSublabels.length > 0
+        //   ? hoveredLabel.outerPoint
+        //   : {},
         label
       ],
       { style: { opacity: 1 } }
@@ -286,9 +286,10 @@ const DrawLabelGroup = withHover(function({
       </text>,
       LabelLine(
         [
-          hovered || label.annotationType === "part" //because parts live on the outside of the sequence, we don't need to show the truncated point, we can just point to them directly
-            ? label.innerPoint
-            : label.truncatedInnerPoint,
+          label.innerPoint,
+          // hovered || label.annotationType === "part" //because parts live on the outside of the sequence, we don't need to show the truncated point, we can just point to them directly
+          //   ? label.innerPoint
+          //   : label.truncatedInnerPoint,
           label.outerPoint,
           label
         ],
@@ -317,20 +318,20 @@ function LabelLine(pointArray, options) {
   });
   return (
     <React.Fragment key="labelLine">
-      <polyline
+      {/* <polyline
         {...{
           key: "polyline-short",
           points,
           stroke: "black",
           fill: "none",
           strokeWidth: 1,
-          style: {
-            opacity: 0.2
-          },
+          // style: {
+          //   opacity: 0.2
+          // },
           className: "veLabelLine",
           ...options
         }}
-      />
+      /> */}
       <polyline
         {...{
           key: "polyline-long",
@@ -338,9 +339,9 @@ function LabelLine(pointArray, options) {
           stroke: "black",
           fill: "none",
           strokeWidth: 1,
-          style: {
-            opacity: 0.2
-          },
+          // style: {
+          //   opacity: 0.2
+          // },
           className: "veLabelLine",
           ...options
         }}

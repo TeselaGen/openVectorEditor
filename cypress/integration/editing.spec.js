@@ -8,6 +8,30 @@ describe("editor", function() {
   //   // cy.window()
   // })
 
+  it(`should return focus correctly after typing in chars in circular view`, () => {
+    cy.contains(".veCircularView text", "Part 0")
+      .click({ force: true })
+      .closest(".veVectorInteractionWrapper")
+      .type("t");
+    cy.focused().type("ttaaa{enter}");
+    cy.contains("Selecting 5 bps from 11 to 15");
+    cy.focused().type("t");
+    cy.focused().type("ccccttaaa{enter}");
+    cy.contains("Selecting 9 bps from 11 to 19");
+    cy.focused().find(".veCircularView"); //the circular view should still be focused
+  });
+  it(`should return focus correctly after typing in chars in row view`, () => {
+    cy.contains(".veRowView text", "Part 0")
+      .click({ force: true })
+      .closest(".veVectorInteractionWrapper")
+      .type("t");
+    cy.focused().type("ttaaa{enter}");
+    cy.contains("Selecting 5 bps from 11 to 15");
+    cy.focused().type("t");
+    cy.focused().type("ccccttaaa{enter}");
+    cy.contains("Selecting 9 bps from 11 to 19");
+    cy.focused().find(".veRowView"); //the row view should still be focused
+  });
   it(`should be able to delete data around the origin correctly
   - the cursor should be place at the origin`, () => {
     cy.selectRange(5297, 3);

@@ -62,8 +62,8 @@ export function preventDefaultStopPropagation(e) {
 export function getNodeToRefocus(caretEl) {
   let nodeToReFocus;
   for (const view of [
-    ".veRowView",
-    ".veCircularView",
+    // ".veRowView",
+    // ".veCircularView",
     ".veVectorInteractionWrapper"
   ]) {
     if (caretEl && caretEl.closest && caretEl.closest(view)) {

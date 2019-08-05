@@ -951,6 +951,7 @@ const toolCommandDefs = {
   simulateDigestion: {
     handler: props => props.createNewDigest(),
     hotkey: "mod+shift+d",
+    hotkeyProps: { preventDefault: true },
     isHidden: props => isProtein(props)
   },
   // TODO: enzyme manager (?)
