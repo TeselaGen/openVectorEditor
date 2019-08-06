@@ -10515,6 +10515,11 @@ tbody tr {
 .veRowItem svg:not(:root) {
   overflow: visible;
 }
+.veEmptySeqText {
+  margin-left: 13px;
+  font-size: 20px;
+  color: gray;
+}
 
 .veMergeFeaturesDialog .bp3-form-content {
   -webkit-box-flex: 1;
