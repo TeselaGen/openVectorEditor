@@ -10081,6 +10081,10 @@ span.bp3-popover-target {
 .tg-menu-search-suggestions .bp3-popover-wrapper {
   display: inline;
 } */
+/* add a fix here that applies the above logic to only the first child of the menu */
+.tg-menu-search-suggestions .bp3-menu > .bp3-popover-wrapper {
+  display: inline;
+}
 
 li.bp3-menu-divider + li.bp3-menu-divider,
 li.bp3-menu-divider:first-child,
