@@ -3,6 +3,9 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility
  - Customize the views to suit your needs
+ 
+ ![image](https://user-images.githubusercontent.com/2730609/62503453-220acd00-b7a9-11e9-87f3-19e3b1119e6e.png)
+
 
 ## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
