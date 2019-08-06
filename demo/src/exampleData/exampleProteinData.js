@@ -141,7 +141,6 @@ export default {
     },
     {
       notes: {
-        pragma: ["Teselagen_Part"],
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""]
       },
@@ -153,7 +152,6 @@ export default {
     },
     {
       notes: {
-        pragma: ["Teselagen_Part"],
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""],
         tag: ["terminator"]
@@ -166,7 +164,6 @@ export default {
     },
     {
       notes: {
-        pragma: ["Teselagen_Part"],
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""]
       },
@@ -178,7 +175,6 @@ export default {
     },
     {
       notes: {
-        pragma: ["Teselagen_Part"],
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""],
         tag: ["cds"]
@@ -191,7 +187,6 @@ export default {
     },
     {
       notes: {
-        pragma: ["Teselagen_Part"],
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""]
       },
@@ -203,7 +198,6 @@ export default {
     },
     {
       notes: {
-        pragma: ["Teselagen_Part"],
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""]
       },

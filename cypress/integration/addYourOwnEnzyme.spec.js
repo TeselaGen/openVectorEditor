@@ -9,6 +9,8 @@ describe("addAdditionalEnzymes", function() {
     cy.get(".tg-select .bp3-icon-caret-up").click();
     cy.contains("(2 cuts)").should("not.exist");
     cy.contains("(1 cut)");
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+
     cy.contains(".veLabelText", "araD").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
     cy.focused().type("gacgtc{enter}");

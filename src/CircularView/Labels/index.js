@@ -18,7 +18,7 @@ function Labels({
   if (!Object.keys(labels).length) return null;
   outerRadius += 25;
   let radius = outerRadius;
-  let outerPointRadius = outerRadius - 15;
+  let outerPointRadius = outerRadius - 20;
   //we don't want the labels to grow too large on large screen devices,
   //so we start to decrease the fontWidth if the textScalingFactor is less than 1
   let fontWidth =

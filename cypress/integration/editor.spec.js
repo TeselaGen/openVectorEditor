@@ -157,7 +157,7 @@ describe("editor", function() {
   });
   it(`should handle beforeSequenceInsertOrDelete hook correctly while crossing the origin`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
-    cy.contains(".veLabelText", "pS8c-vector..").trigger("contextmenu", {
+    cy.contains(".veLabelText", "pS8c-vecto..").trigger("contextmenu", {
       force: true
     });
     cy.contains(".bp3-menu-item", "Replace").click();
@@ -169,7 +169,7 @@ describe("editor", function() {
   it(`should handle maintainOriginSplit flag correctly when pasted text is shorter than pre origin selection`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.tgToggle("maintainOriginSplit");
-    cy.contains(".veLabelText", "pS8c-vector..").trigger("contextmenu", {
+    cy.contains(".veLabelText", "pS8c-vecto..").trigger("contextmenu", {
       force: true
     });
     cy.contains(".bp3-menu-item", "Replace").click();

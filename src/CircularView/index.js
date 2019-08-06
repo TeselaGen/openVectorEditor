@@ -215,7 +215,7 @@ export class CircularView extends React.Component {
         layer: drawParts,
         zIndex: 20,
         layerName: "Parts",
-        spaceBefore: 10
+        spaceBefore: 5
       },
       { layer: drawLabels, zIndex: 30, layerName: "Labels" }
     ];

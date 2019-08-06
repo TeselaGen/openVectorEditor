@@ -123,7 +123,7 @@
     "redux-form": "7",
     "redux-thunk": "2.3.0",
     "rxjs-compat": "^6.5.2",
-    "teselagen-react-components": "^27.1.9",
+    "teselagen-react-components": "^27.1.10",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.5",
     "ve-sequence-utils": "^3.3.44",

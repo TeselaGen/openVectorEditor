@@ -10774,10 +10774,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@^27.1.9:
-  version "27.1.9"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-27.1.9.tgz#036feb93d7a907476998a372ef2450c37c3c31b0"
-  integrity sha512-WRC2goM5ViRUqEnhCpwcsIBgr9omYew0FTID5filmXJElhLscY+dPbXWFoP0N1OE1Ch9A62h+m6AZSKyP4fapg==
+teselagen-react-components@^27.1.10:
+  version "27.1.10"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-27.1.10.tgz#c8311537ff028d320df02848101559f15c1d9645"
+  integrity sha512-j2nq7eaS2jRSMddiuPLfHy57ZPFrASqBoqs6N1rlUPUCFx1PrU1tULsaM5ejgEiQDfIEnO10o0YfPX+cOQPkpQ==
   dependencies:
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
