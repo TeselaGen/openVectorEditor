@@ -434,6 +434,13 @@ export class Editor extends React.Component {
       height: Math.max(y, minHeight) - yOffset
       //  document.body.getBoundingClientRect().height
     };
+    const reflexElementProps = {
+      propagateDimensions: true,
+      resizeHeight: true,
+      renderOnResizeRate: 50,
+      renderOnResize: true,
+      className: "ve-panel"
+    };
 
     const panelsToShow = this.getPanelsToShow();
     this.hasFullscreenPanel = false;
@@ -547,21 +554,13 @@ export class Editor extends React.Component {
           />
         );
       }
+
       toReturn.push(
         <ReflexElement
           key={activePanelId}
           activePanelId={activePanelId}
           minSize="200"
-          propagateDimensions={true}
-          // resizeWidth={false}
-          // resizeWidth={fitWidth}
-          // resizeWidth
-          resizeHeight
-          //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
-          // } //use the !! to force a boolean
-          renderOnResizeRate={50}
-          renderOnResize={true}
-          className="ve-panel"
+          {...reflexElementProps}
         >
           {[
             <Droppable //the tab holder
@@ -740,18 +739,13 @@ export class Editor extends React.Component {
           propagate
         />
       );
+
       panels.push(
         <ReflexElement
           key="extraRightSidePanel"
           minSize="350"
           maxSize="350"
-          propagateDimensions={true}
-          resizeHeight
-          //   fitHeight || !!(withPreviewMode && previewModeFullscreen)
-          // }
-          renderOnResizeRate={50}
-          renderOnResize={true}
-          className="ve-panel"
+          {...reflexElementProps}
         >
           {extraRightSidePanel}
         </ReflexElement>

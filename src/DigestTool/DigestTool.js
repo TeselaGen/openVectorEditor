@@ -1,9 +1,14 @@
+// import uniqid from "uniqid";
+import withEditorProps from "../withEditorProps";
+// import Ladder from "./Ladder";
+import { compose, withProps } from "recompose";
+import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
+// import selectionLayer from "../redux/selectionLayer";
 import React from "react";
 import { DataTable } from "teselagen-react-components";
 import { getCutsiteType } from "ve-sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
-import DigestContainer from "./DigestContainer";
 // import getCutsiteType from "./getCutsiteType";
 import { Tabs, Tab, Button, InputGroup, Intent } from "@blueprintjs/core";
 
@@ -12,17 +17,26 @@ export class DigestTool extends React.Component {
   render() {
     const {
       editorName,
-      height = "100%",
+      // height = 100,
+      dimensions = {},
       lanes,
       digestTool: { selectedFragment },
       onDigestSave
     } = this.props;
     const { selectedTab } = this.state;
+    // console.log(`height, dimensions.height:`,height, dimensions.height)
     return (
-      <div style={{ height, overflow: "auto", padding: 10 }}>
+      <div
+        style={{
+          height:
+            typeof dimensions.height === "string" ? 100 : dimensions.height,
+          overflowY: "auto",
+          padding: 10
+        }}
+      >
         {onDigestSave && (
           <div style={{ display: "flex", marginBottom: 10 }}>
-            <InputGroup placeholder={"My Digest"} />
+            <InputGroup placeholder="My Digest" />
             <Button
               intent={Intent.PRIMARY}
               onClick={() => {
@@ -45,13 +59,13 @@ export class DigestTool extends React.Component {
           }}
         >
           <Tab
-            title={"Virtual Digest"}
-            id={"virtualDigest"}
+            title="Virtual Digest"
+            id="virtualDigest"
             panel={<Ladder {...this.props} editorName={editorName} />}
           />
           <Tab
-            title={"Digest Info"}
-            id={"table"}
+            title="Digest Info"
+            id="table"
             panel={
               <DataTable
                 noRouter
@@ -70,7 +84,7 @@ export class DigestTool extends React.Component {
                     onChange: () => {}
                   }
                 }}
-                formName={"digestInfoTable"}
+                formName="digestInfoTable"
                 entities={lanes[0].map(
                   ({ id, cut1, cut2, start, end, size, ...rest }) => {
                     return {
@@ -108,6 +122,72 @@ const schema = {
   ]
 };
 
-export default DigestContainer(DigestTool);
+export default compose(
+  withEditorProps,
+  withProps(props => {
+    const {
+      sequenceData,
+      sequenceLength,
+      selectionLayerUpdate,
+      updateSelectedFragment
+    } = props;
+    const fragments = [];
+    const overlappingEnzymes = [];
+    const pairs = [];
+    const sortedCutsites = sequenceData.cutsites.sort((a, b) => {
+      return a.topSnipPosition - b.topSnipPosition;
+    });
 
-//Component Development Overseen by Patrick Michelson
+    sortedCutsites.forEach((cutsite1, index) => {
+      pairs.push([
+        cutsite1,
+        sortedCutsites[index + 1]
+          ? sortedCutsites[index + 1]
+          : sortedCutsites[0]
+      ]);
+    });
+
+    pairs.forEach(([cut1, cut2]) => {
+      const start = normalizePositionByRangeLength(
+        cut1.topSnipPosition,
+        sequenceLength
+      );
+      const end = normalizePositionByRangeLength(
+        cut2.topSnipPosition - 1,
+        sequenceLength
+      );
+      const size = getRangeLength({ start, end }, sequenceLength);
+
+      // const id = uniqid()
+      const id = start + "-" + end + "-" + size + "-";
+      getRangeLength({ start, end }, sequenceLength);
+      fragments.push({
+        cut1,
+        cut2,
+        start,
+        end,
+        size,
+        id,
+        onFragmentSelect: () => {
+          selectionLayerUpdate({
+            start,
+            end
+          });
+          updateSelectedFragment(id);
+        }
+      });
+    });
+
+    fragments.filter(fragment => {
+      if (!fragment.size) {
+        overlappingEnzymes.push(fragment);
+        return false;
+      }
+      return true;
+    });
+    return {
+      lanes: [fragments],
+      overlappingEnzymes
+    };
+  })
+)(DigestTool);
