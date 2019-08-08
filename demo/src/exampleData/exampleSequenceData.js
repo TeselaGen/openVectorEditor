@@ -1010,6 +1010,15 @@ export default {
       id: "0"
     }
   ],
+  primers: [
+    {
+      name: "Example Primer 1",
+      start: 280,
+      end: 300,
+      type: "primer",
+      forward: true
+    }
+  ],
   features: [
     {
       notes: {},

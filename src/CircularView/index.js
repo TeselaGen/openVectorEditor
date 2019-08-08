@@ -185,7 +185,6 @@ export class CircularView extends React.Component {
         // spaceBefore: 10,
         spaceAfter: 5
       },
-      { layer: drawPrimers, zIndex: 20, layerName: "Primers" },
       {
         layer: drawAxis,
         zIndex: 0,
@@ -211,6 +210,13 @@ export class CircularView extends React.Component {
       { layer: drawLineageLines, zIndex: 0, layerName: "LineageLines" },
       { layer: drawCutsites, zIndex: 10, layerName: "Cutsites" },
       { layer: drawOrfs, zIndex: 20, layerName: "Orfs", spaceBefore: 10 },
+      {
+        layer: drawPrimers,
+        spaceBefore: 5,
+        spaceAfter: 5,
+        zIndex: 20,
+        layerName: "Primers"
+      },
       {
         layer: drawParts,
         zIndex: 20,
