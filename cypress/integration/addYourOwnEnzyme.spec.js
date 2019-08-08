@@ -14,6 +14,8 @@ describe("addAdditionalEnzymes", function() {
     cy.contains(".veLabelText", "araD").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
     cy.focused().type("gacgtc{enter}");
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+
     cy.contains("(2 cuts)");
   });
 
