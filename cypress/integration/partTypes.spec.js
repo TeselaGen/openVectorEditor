@@ -41,7 +41,7 @@ describe("partTypes", function() {
     cy.contains(".veRowViewPart title", "test feature").trigger("contextmenu", {
       force: true
     });
-    cy.contains(".bp3-menu-item", "Edit Part").click();
+    cy.contains(".bp3-menu-item", "Edit Part", { timeout: 15000 }).click();
     cy.get(".bp3-dialog-body").contains(".tg-select", "misc_RNA");
   });
 });
