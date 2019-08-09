@@ -9,6 +9,7 @@ import selectedCutsitesSelector from "./selectedCutsitesSelector";
 import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import filteredCutsitesSelector from "./filteredCutsitesSelector";
 import searchLayersSelector from "./searchLayersSelector";
+import annotationSearchSelector from "./annotationSearchSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import filteredFeaturesSelector from "./filteredFeaturesSelector";
 
@@ -20,6 +21,7 @@ export default {
   selectedCutsitesSelector,
   orfsSelector,
   circularSelector,
+  annotationSearchSelector,
   searchLayersSelector,
   filteredCutsitesSelector,
   filteredRestrictionEnzymesSelector,

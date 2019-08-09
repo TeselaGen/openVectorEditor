@@ -12,6 +12,9 @@ import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
+import { searchableTypes } from "../selectors/annotationSearchSelector";
+import { getSingular } from "../utils/annotationTypes";
+import { featureColors } from "ve-sequence-utils/lib";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -29,10 +32,13 @@ export class FindBar extends React.Component {
       toggleHighlightAll,
       // highlightAll,
       updateSearchText,
+      annotationVisibilityShow,
       updateAmbiguousOrLiteral,
       updateDnaOrAA,
       updateMatchNumber,
       isInline,
+      selectionLayerUpdate,
+      annotationSearchMatches,
       findTool = {}
     } = this.props;
 
@@ -144,100 +150,184 @@ export class FindBar extends React.Component {
         className="veFindBar"
       >
         <Button onClick={toggleFindTool} icon="cross" />
-        <InputGroup
-          autoFocus
-          inputRef={n => {
-            if (n) this.inputEl = n;
-          }}
-          onKeyDown={e => {
-            e.persist();
-            if (e.metaKey && e.keyCode === 70) {
-              //cmd-f
-              toggleFindTool();
-              e.preventDefault();
-              e.stopPropagation();
-            } else if (e.keyCode === 13) {
-              //enter key!
-              updateMatchNumber(
-                matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
-              );
-            } else if (e.keyCode === 27) {
-              //esc key!
-              toggleFindTool();
-            }
-          }}
-          rightElement={
-            <span>
-              {isInline && (
-                <Popover
-                  autoFocus={false}
-                  position={Position.BOTTOM}
-                  target={
-                    <Button
-                      data-test="veFindBarOptionsToggle"
-                      minimal
-                      icon="wrench"
-                    />
-                  }
-                  content={
-                    <div
-                      className="ve-find-options-popover"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        paddingLeft: 20,
-                        paddingBottom: 10,
-                        paddingTop: 10,
-                        paddingRight: 20
-                      }}
-                    >
-                      {findOptionsEls}
-                    </div>
-                  }
-                />
-              )}
-              <span style={{ marginRight: 3, color: "lightgrey" }}>
-                {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
-              </span>
-              <Button
-                data-test="veFindPreviousMatchButton"
-                minimal
-                disabled={matchesTotal <= 0}
-                onClick={() => {
-                  updateMatchNumber(
-                    matchesTotal <= 0 ? 0 : mod(matchNumber - 1, matchesTotal)
-                  );
-                }}
-                icon="caret-up"
-              />
-              <Button
-                data-test="veFindNextMatchButton"
-                minimal
-                disabled={matchesTotal <= 0}
-                onClick={() => {
+        <Popover
+          target={
+            <InputGroup
+              autoFocus
+              inputRef={n => {
+                if (n) this.inputEl = n;
+              }}
+              onKeyDown={e => {
+                e.persist();
+                if (e.metaKey && e.keyCode === 70) {
+                  //cmd-f
+                  toggleFindTool();
+                  e.preventDefault();
+                  e.stopPropagation();
+                } else if (e.keyCode === 13) {
+                  //enter key!
                   updateMatchNumber(
                     matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
                   );
-                }}
-                icon="caret-down"
-              />
-            </span>
+                } else if (e.keyCode === 27) {
+                  //esc key!
+                  toggleFindTool();
+                }
+              }}
+              rightElement={
+                <span>
+                  {isInline && (
+                    <Popover
+                      autoFocus={false}
+                      position={Position.BOTTOM}
+                      target={
+                        <Button
+                          data-test="veFindBarOptionsToggle"
+                          minimal
+                          icon="wrench"
+                        />
+                      }
+                      content={
+                        <div
+                          className="ve-find-options-popover"
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            paddingLeft: 20,
+                            paddingBottom: 10,
+                            paddingTop: 10,
+                            paddingRight: 20
+                          }}
+                        >
+                          {findOptionsEls}
+                        </div>
+                      }
+                    />
+                  )}
+                  <span style={{ marginRight: 3, color: "lightgrey" }}>
+                    {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
+                  </span>
+                  <Button
+                    data-test="veFindPreviousMatchButton"
+                    minimal
+                    disabled={matchesTotal <= 0}
+                    onClick={() => {
+                      updateMatchNumber(
+                        matchesTotal <= 0
+                          ? 0
+                          : mod(matchNumber - 1, matchesTotal)
+                      );
+                    }}
+                    icon="caret-up"
+                  />
+                  <Button
+                    data-test="veFindNextMatchButton"
+                    minimal
+                    disabled={matchesTotal <= 0}
+                    onClick={() => {
+                      updateMatchNumber(
+                        matchesTotal <= 0
+                          ? 0
+                          : mod(matchNumber + 1, matchesTotal)
+                      );
+                    }}
+                    icon="caret-down"
+                  />
+                </span>
+              }
+              onChange={e => {
+                return updateSearchText(e.target.value);
+              }}
+              value={searchText}
+              leftIcon="search"
+            />
           }
-          onChange={e => {
-            return updateSearchText(e.target.value);
-          }}
-          value={searchText}
-          leftIcon="search"
+          position="bottom"
+          minimal
+          isOpen={
+            annotationSearchMatches &&
+            annotationSearchMatches.filter(m => m.length).length
+          }
+          content={
+            <AnnotationSearchMatchComp
+              annotationVisibilityShow={annotationVisibilityShow}
+              toggleFindTool={toggleFindTool}
+              selectionLayerUpdate={selectionLayerUpdate}
+              annotationSearchMatches={annotationSearchMatches}
+            />
+          }
         />
+
         {!isInline && findOptionsEls}
       </div>
     );
   }
 }
 
-const wrapped = onlyUpdateForKeysDeep(["findTool"])(FindBar);
+const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
+  FindBar
+);
 export default withEditorProps(wrapped);
 
 function mod(n, m) {
   return ((n % m) + m) % m;
+}
+
+function AnnotationSearchMatchComp({
+  annotationSearchMatches,
+  selectionLayerUpdate,
+  annotationVisibilityShow,
+  toggleFindTool
+}) {
+  let toReturn = (
+    <div className="veAnnotationFindMatches">
+      {searchableTypes.map((type, i) => {
+        const annotationsFound = annotationSearchMatches[i];
+        if (!annotationsFound) return null;
+        return annotationsFound.length ? (
+          <div>
+            <div className="veAnnotationFoundType">
+              {annotationsFound.length} {getSingular(type)} match
+              {annotationsFound.length > 1 ? "es" : null}
+              {annotationsFound.length <= 10 ? null : ` (only showing 10)`}:
+            </div>
+            <div>
+              {annotationsFound.slice(0, 10).map((ann, i) => {
+                return (
+                  <div
+                    onClick={() => {
+                      annotationVisibilityShow(type);
+                      selectionLayerUpdate(ann);
+                      toggleFindTool();
+                    }}
+                    className="veAnnotationFoundResult"
+                    key={i}
+                  >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <div
+                        style={{
+                          background:
+                            type === "parts"
+                              ? "purple"
+                              : ann.color || featureColors[ann.type],
+                          height: 15,
+                          width: 15,
+                          marginRight: 3
+                        }}
+                      />
+                      {ann.name}
+                    </div>
+                    <div className="veAnnotationFoundResultRange">
+                      {ann.start}-{ann.end}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : null;
+      })}
+    </div>
+  );
+  return toReturn;
 }

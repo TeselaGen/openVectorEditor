@@ -34,6 +34,7 @@
     "combokeys": "^3.0.1",
     "deep-equal": "^1.0.1",
     "file-saver": "^1.3.8",
+    "inferno-compat": "^7.2.1",
     "json.sortify": "^2.2.2",
     "node-interval-tree": "^1.3.3",
     "paths-js": "^0.4.5",

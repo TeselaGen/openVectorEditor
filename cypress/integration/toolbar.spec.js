@@ -19,6 +19,17 @@ describe("toolbar", function() {
       .should("not.have.class", "bp3-disabled");
   });
 
+  it(`find tool should be able to find parts/primers/features`, () => {
+    cy.get(".ve-tool-container-featureTool").click();
+    cy.get(".ve-tool-container-oligoTool").click();
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("p"); //this should cause 1 region to be selected
+    cy.contains(".veAnnotationFoundResult", "Operator I2").click();
+    cy.contains(".veRowViewFeature", "Operator I2");
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.contains(".veAnnotationFoundResult", "Part 0").click();
+    cy.contains(".veRowViewPart", "Part 0");
+  });
   it(`find tool should have clickable find layers with no carets`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gattac"); //this should cause 1 region to be selected
