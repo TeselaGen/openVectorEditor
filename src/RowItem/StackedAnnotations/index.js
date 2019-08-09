@@ -51,8 +51,8 @@ function StackedAnnotations(props) {
     }
     let annotation = annotationRange.annotation;
     let annotationColor =
-      (annotation.type && featureColors[annotation.type]) ||
       annotation.color ||
+      (annotation.type && featureColors[annotation.type]) ||
       "#BBBBBB";
     let result = getXStartAndWidthOfRowAnnotation(
       annotationRange,

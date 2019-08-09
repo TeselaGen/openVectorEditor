@@ -94,6 +94,8 @@ export class CircularView extends React.Component {
       editorDragStopped = noop,
       featureClicked = noop,
       featureRightClicked = noop,
+      warningClicked = noop,
+      warningRightClicked = noop,
       partClicked = noop,
       partRightClicked = noop,
       orfClicked = noop,
@@ -109,6 +111,7 @@ export class CircularView extends React.Component {
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
       featureOptions = {},
+      warningOptions = {},
       additionalSelectionLayers = [],
       maxAnnotationsToDisplay = {},
       lineageLines = [],
@@ -131,6 +134,7 @@ export class CircularView extends React.Component {
         : Math.ceil(sequenceLength / 100) * 10);
     let {
       features: showFeatures = true,
+      warnings: showWarnings = true,
       primers: showPrimers = true,
       // translations: showTranslations = true,
       parts: showParts = true,
@@ -223,6 +227,13 @@ export class CircularView extends React.Component {
         layerName: "Parts",
         spaceBefore: 5
       },
+      {
+        layer: drawWarnings,
+        zIndex: 20,
+        layerName: "warnings",
+        spaceBefore: 10,
+        spaceAfter: 5
+      },
       { layer: drawLabels, zIndex: 30, layerName: "Labels" }
     ];
 
@@ -274,6 +285,34 @@ export class CircularView extends React.Component {
     //     return <text key={pos} transform={`translate(0,${-pos})`}>{pos}</text>
     // }))
 
+    function drawWarnings() {
+      //DRAW FEATURES
+      if (showWarnings && sequenceData.warnings) {
+        const results = drawAnnotations({
+          Annotation: Feature,
+          annotationType: "warning",
+          radius,
+          reverseAnnotations: true,
+          showLabels: true,
+          annotationProps: {
+            arrowheadLength: 0
+          },
+          onClick: warningClicked,
+          onRightClicked: warningRightClicked,
+          annotations: sequenceData.warnings,
+          annotationHeight,
+          spaceBetweenAnnotations,
+          sequenceLength,
+          editorName,
+          ...warningOptions
+        });
+        if (!results) return null;
+        //update the radius, labels, and svg
+        radius += results.height;
+        labels = { ...labels, ...results.labels };
+        return results.component;
+      }
+    }
     function drawFeatures() {
       //DRAW FEATURES
       if (showFeatures && sequenceData.features) {
@@ -731,7 +770,6 @@ export class CircularView extends React.Component {
                   tooltip={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
                 />
               )}
-
               {paredDownParts && (
                 <VeWarning
                   data-test="ve-warning-maxPartsToDisplay"

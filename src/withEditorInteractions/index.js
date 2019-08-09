@@ -67,6 +67,7 @@ const annotationClickHandlers = [
   "deletionLayerClicked",
   "replacementLayerClicked",
   "featureClicked",
+  "warningClicked",
   "partClicked",
   "searchLayerClicked"
 ];
@@ -460,6 +461,29 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
       this.updateSelectionOrCaret(event.shiftKey, annotation.topSnipPosition);
+      annotationDeselectAll(undefined);
+      annotationSelect(annotation);
+    };
+    warningClicked_localOverride = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { annotationSelect, annotationDeselectAll } = this.props;
+      showConfirmationDialog({
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Okay",
+
+        canEscapeKeyCancel: true,
+        // intent: Intent.NONE,
+
+        // onCancel: undefined,
+        text: (
+          <React.Fragment>
+            <h3>{annotation.name}:</h3>
+            {annotation.message}
+          </React.Fragment>
+        )
+      });
+      this.updateSelectionOrCaret(event.shiftKey, annotation);
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };

@@ -661,6 +661,68 @@ updateEditor(store, "DemoEditor", {
               })}
               {renderToggle({
                 that: this,
+                type: "showWarningFeature",
+                label: "Show Warnings/Errors in Editor",
+                description: `
+Warnings can be displayed directly in the editor like so: 
+\`\`\`
+sequenceData: {
+  ...allTheNormalThings,
+  warnings: [
+    {
+      id: "error1",
+      name: "J5 Error",
+      message: "I'm a fake error!",
+      start: 10,
+      end: 400,
+      labelColor: "red",
+      color: "red"
+    },
+    {
+      id: "error2",
+      name: "J5 Warning",
+      message: "I'm a fake warning!",
+      start: 600,
+      end: 950,
+      labelColor: "gold",
+      color: "yellow"
+    }
+  ]
+}
+\`\`\`
+`,
+                hook: shouldUpdate => {
+                  updateEditor(store, "DemoEditor", {
+                    sequenceData: {
+                      ...exampleSequenceData,
+                      warnings: shouldUpdate
+                        ? [
+                            {
+                              id: "error1",
+                              name: "J5 Error",
+                              message: "I'm a fake error!",
+                              start: 10,
+                              end: 400,
+                              labelColor: "red",
+                              color: "red"
+                            },
+                            {
+                              id: "error2",
+                              name: "J5 Warning",
+                              message: "I'm a fake warning!",
+                              start: 600,
+                              end: 950,
+                              labelColor: "gold",
+                              color: "yellow"
+                            }
+                          ]
+                        : []
+                    }
+                  });
+                }
+              })}
+              {renderToggle({
+                that: this,
                 type: "hideSingleImport",
                 description: `You can hide the option to have single files be imported directly into the editor`
               })}

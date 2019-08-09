@@ -307,6 +307,13 @@ export class RowItem extends React.PureComponent {
             }
             regions={selectionLayers}
           />
+          {drawAnnotations("warning", {
+            getExtraInnerCompProps: () => ({
+              pointiness: 0,
+              rangeType: "middle"
+            })
+          })}
+
           {drawAnnotations("part", partProps)}
           {drawAnnotations("primer", {
             sequence: fullSequence

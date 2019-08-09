@@ -10,6 +10,7 @@ export const rowHeights = {
   parts: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   primers: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   features: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
+  warnings: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   orfs: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   cutsiteLabels: { spaceBetweenAnnotations: 0, height: 15 },
   sequence: { height: 15 },
@@ -53,6 +54,10 @@ const annotationsToCompute = {
   },
   features: {
     height: rowHeights.features.type,
+    hasYOffset: true
+  },
+  warnings: {
+    height: rowHeights.warnings.type,
     hasYOffset: true
   },
   orfs: {

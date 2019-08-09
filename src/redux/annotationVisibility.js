@@ -8,6 +8,7 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 export const visibilityDefaultValues = {
   featureTypesToHide: {},
   features: true,
+  warnings: true,
   translations: true,
   parts: true,
   orfs: false,
