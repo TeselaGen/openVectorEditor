@@ -50,7 +50,6 @@ export default class StandaloneDemo extends React.Component {
           // },
           onRename: () => {}, //this option should be shown by default
           onNew: () => {}, //unless this callback is defined, don't show the option to create a new seq
-          // onImport: () => {}, //unless... todo: fill out
           onDuplicate: () => {}, //unless this callback is defined, don't show the option to create a new seq
           onSave: function(
             event,
