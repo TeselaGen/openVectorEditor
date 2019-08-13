@@ -104,7 +104,7 @@ export const updateCircular = props => async isCircular => {
 };
 
 export const importSequenceFromFile = props => (file, opts = {}) => {
-  const { updateSequenceData } = props;
+  const { updateSequenceData, onImport } = props;
   let reader = new FileReader();
   reader.readAsText(file, "UTF-8");
   reader.onload = function(evt) {
@@ -131,6 +131,7 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
         updateSequenceData(result[0].parsedSequence);
         if (!failed) {
           window.toastr.success("Sequence Imported");
+          if (onImport) onImport();
         }
       },
       { acceptParts: true, ...opts }

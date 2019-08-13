@@ -64,6 +64,7 @@ const userDefinedHandlersAndOpts = [
   "GCDecimalDigits",
   "fullscreenMode",
   "onNew",
+  "onImport",
   "onSave",
   "onRename",
   "getVersionList",
