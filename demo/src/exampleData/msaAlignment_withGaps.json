@@ -116,7 +116,6 @@
     "cdsFeatureTranslations": true,
     "cutsites": false,
     "primers": false,
-    "lineageLines": false,
     "chromatogram": false,
     "sequence": true,
     "reverseSequence": false

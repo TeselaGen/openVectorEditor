@@ -54,6 +54,11 @@ export const fullSequenceTranslationMenu = {
 };
 export default [
   // { cmd: "mapCaret" },
+  { cmd: "showAll", shouldDismissPopover: false },
+  { cmd: "hideAll", shouldDismissPopover: false },
+  { cmd: "toggleWarnings", shouldDismissPopover: false },
+  { cmd: "toggleAssemblyPieces", shouldDismissPopover: false },
+  { cmd: "toggleLineageAnnotations", shouldDismissPopover: false },
   { cmd: "toggleFeatures", shouldDismissPopover: false },
   {
     cmd: "featureTypesCmd"
@@ -144,7 +149,6 @@ export default [
   { cmd: "toggleSequence", shouldDismissPopover: false },
   { cmd: "toggleReverseSequence", shouldDismissPopover: false },
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
-  // { cmd: "toggleLineageLines", shouldDismissPopover: false },
 
   { divider: "" },
 

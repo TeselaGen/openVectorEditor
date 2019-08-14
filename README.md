@@ -423,7 +423,6 @@ const alignment = window.createAlignmentView(this.node, {
         "cutsites": false,
         "primers": true,
         "reverseSequence": false,
-        "lineageLines": true,
         "axisNumbers": true
     },
     "alignmentAnnotationLabelVisibility": {

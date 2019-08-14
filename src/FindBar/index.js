@@ -14,7 +14,7 @@ import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
-import { featureColors } from "ve-sequence-utils/lib";
+import { featureColors } from "ve-sequence-utils";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -318,7 +318,7 @@ function AnnotationSearchMatchComp({
                       {ann.name}
                     </div>
                     <div className="veAnnotationFoundResultRange">
-                      {ann.start}-{ann.end}
+                      {ann.start + 1}-{ann.end + 1}
                     </div>
                   </div>
                 );

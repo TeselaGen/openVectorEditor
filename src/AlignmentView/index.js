@@ -1307,7 +1307,6 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
         sequence: false,
         dnaColors: false,
         reverseSequence: false,
-        lineageLines: false,
         axisNumbers: false
       }
     };
@@ -1324,7 +1323,6 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
       //   cutsites: false,
       //   primers: false,
       //   reverseSequence: false,
-      //   lineageLines: false,
       //   axisNumbers: false
       // }
     };

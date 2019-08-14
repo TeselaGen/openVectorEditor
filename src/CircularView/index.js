@@ -4,7 +4,6 @@ import Labels from "./Labels";
 import SelectionLayer from "./SelectionLayer";
 import Caret from "./Caret";
 import Axis from "./Axis";
-import LineageLines from "./LineageLines";
 import Orf from "./Orf";
 import Feature from "./Feature";
 import Primer from "./Primer";
@@ -114,7 +113,6 @@ export class CircularView extends React.Component {
       warningOptions = {},
       additionalSelectionLayers = [],
       maxAnnotationsToDisplay = {},
-      lineageLines = [],
       deletionLayers = {},
       replacementLayers = {},
       instantiated
@@ -142,7 +140,6 @@ export class CircularView extends React.Component {
       cutsites: showCutsites = true,
       // firstCut: showFirstCut = true,
       axis: showAxis = true,
-      lineageLines: showLineageLines = true,
       axisNumbers: showAxisNumbers = true
       // sequence: showSequence = true,
       // reverseSequence: showReverseSequence = true,
@@ -211,7 +208,6 @@ export class CircularView extends React.Component {
         layerName: "DeletionLayers",
         spaceAfter: 20
       },
-      { layer: drawLineageLines, zIndex: 0, layerName: "LineageLines" },
       { layer: drawCutsites, zIndex: 10, layerName: "Cutsites" },
       { layer: drawOrfs, zIndex: 20, layerName: "Orfs", spaceBefore: 10 },
       {
@@ -527,23 +523,6 @@ export class CircularView extends React.Component {
         //update the radius, and svg
         radius += axisResult.height;
         return axisResult.component;
-      }
-    }
-
-    function drawLineageLines() {
-      if (showLineageLines && lineageLines && lineageLines.length) {
-        let results = LineageLines({
-          radius,
-          sequenceLength,
-          annotationHeight: 6,
-          editorName,
-          lineageLines
-          // lineageLines: [{start: 10, end:2000,},{start: 201, end:9,}],
-        });
-        if (!results) return null;
-        //update the radius, and svg
-        radius += results.height;
-        return results.component;
       }
     }
 

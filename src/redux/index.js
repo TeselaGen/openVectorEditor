@@ -11,7 +11,6 @@ import * as findTool from "./findTool";
 import * as toolBar from "./toolBar";
 import * as frameTranslations from "./frameTranslations";
 import * as hoveredAnnotation from "./hoveredAnnotation";
-import * as lineageLines from "./lineageLines";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as alignments from "./alignments";
 import * as panelsShown from "./panelsShown";
@@ -46,7 +45,6 @@ const subReducers = {
   findTool,
   frameTranslations,
   hoveredAnnotation,
-  lineageLines,
   minimumOrfSize,
   panelsShown,
   propertiesTool,

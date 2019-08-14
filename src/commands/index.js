@@ -4,7 +4,7 @@ import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { adjustBpsToReplaceOrInsert } from "ve-sequence-utils";
+import { adjustBpsToReplaceOrInsert, annotationTypes } from "ve-sequence-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,
@@ -816,6 +816,25 @@ const annotationToggleCommandDefs = {};
 [
   "features",
   "parts",
+
+  {
+    type: "warnings",
+    isHidden: p => {
+      return !map(p.sequenceData["warnings"]).length;
+    }
+  },
+  {
+    type: "assemblyPieces",
+    isHidden: p => {
+      return !map(p.sequenceData["assemblyPieces"]).length;
+    }
+  },
+  {
+    type: "lineageAnnotations",
+    isHidden: p => {
+      return !map(p.sequenceData["lineageAnnotations"]).length;
+    }
+  },
   { type: "cutsites", isHidden: isProtein },
   "axis",
   { type: "orfs", text: "ORFs", isHidden: isProtein },
@@ -873,8 +892,7 @@ const annotationToggleCommandDefs = {};
       !props.annotationVisibility.sequence &&
       !props.annotationVisibility.reverseSequence &&
       "The DNA sequence must be visible in order to color it"
-  },
-  "lineageLines"
+  }
 ].forEach(typeOrObj => {
   let type = typeOrObj;
   let obj = {};
@@ -937,6 +955,20 @@ const annotationToggleCommandDefs = {};
 });
 
 const additionalAnnotationCommandsDefs = {
+  showAll: {
+    handler: props => {
+      annotationTypes.forEach(type => {
+        props.annotationVisibilityShow(type);
+      });
+    }
+  },
+  hideAll: {
+    handler: props => {
+      annotationTypes.forEach(type => {
+        props.annotationVisibilityHide(type);
+      });
+    }
+  },
   toggleAminoAcidNumbers_dna: {
     ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
     isHidden: props => isProtein(props)

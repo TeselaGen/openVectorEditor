@@ -162,7 +162,6 @@ const exampleEditorState = {
     start: -1,
     end: -1
   },
-  lineageLines: [],
   readOnly: false,
   findTool: {
     isOpen: false,

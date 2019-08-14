@@ -10,8 +10,6 @@ import React from "react";
 import pluralize from "pluralize";
 import SelectionLayer from "./SelectionLayer";
 import Sequence from "./Sequence";
-import LineageLines from "./LineageLines";
-// import DeletionLayers from "./DeletionLayers";
 import Axis from "./Axis";
 import Orfs from "./Orfs";
 import Translations from "./Translations";
@@ -72,7 +70,6 @@ export class RowItem extends React.PureComponent {
       annotationVisibility = {},
       annotationLabelVisibility = {},
       additionalSelectionLayers = [],
-      lineageLines = [],
       caretPosition = -1,
       row = {
         sequence: "",
@@ -105,7 +102,6 @@ export class RowItem extends React.PureComponent {
 
     let {
       chromatogram: showChromatogram,
-      lineageLines: showLineageLines,
       // orfLabels: showOrfLabel,
       cutsites: showCutsites,
       cutsitesInSequence: showCutsitesInSequence,
@@ -313,6 +309,18 @@ export class RowItem extends React.PureComponent {
               rangeType: "middle"
             })
           })}
+          {drawAnnotations("assemblyPiece", {
+            getExtraInnerCompProps: () => ({
+              pointiness: 0,
+              rangeType: "middle"
+            })
+          })}
+          {drawAnnotations("lineageAnnotation", {
+            getExtraInnerCompProps: () => ({
+              pointiness: 0,
+              rangeType: "middle"
+            })
+          })}
 
           {drawAnnotations("part", partProps)}
           {drawAnnotations("primer", {
@@ -462,13 +470,6 @@ export class RowItem extends React.PureComponent {
               })}
           </div>
           {drawAnnotations("feature")}
-
-          {showLineageLines && lineageLines.length ? (
-            <LineageLines
-              lineageLines={lineageLines}
-              {...annotationCommonProps}
-            />
-          ) : null}
 
           {map(replacementLayers, function(replacementLayer) {
             if (!replacementLayer) return null;
