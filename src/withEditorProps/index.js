@@ -131,7 +131,9 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
         updateSequenceData(result[0].parsedSequence);
         if (!failed) {
           window.toastr.success("Sequence Imported");
-          if (onImport) onImport();
+          if (onImport){ 
+            onImport();
+          }
         }
       },
       { acceptParts: true, ...opts }
