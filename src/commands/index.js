@@ -18,6 +18,7 @@ import {
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
+import packageJson from "../../package.json";
 
 const isProtein = props => props.sequenceData && props.sequenceData.isProtein;
 
@@ -327,11 +328,13 @@ const editCommandDefs = {
       showConfirmationDialog({
         text: (
           <div>
+            <h5>Open Vector Editor Version: {packageJson.version}</h5>
             This editor is made by Teselagen.
+            <br />
             <br />
             Issues can be logged here:{" "}
             <a href="https://github.com/TeselaGen/openVectorEditor/issues">
-              openVectorEditor
+              Open Vector Editor
             </a>
           </div>
         ),
@@ -339,6 +342,9 @@ const editCommandDefs = {
         cancelButtonText: null,
         canEscapeKeyCancel: true //this is false by default
       })
+  },
+  versionNumber: {
+    name: "OVE Version:  " + packageJson.version,
   },
 
   goTo: {
