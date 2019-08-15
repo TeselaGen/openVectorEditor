@@ -723,6 +723,124 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "showLineageAnnotations",
+                label: "Show Lineage Annotations in Editor",
+                description: `
+Warnings can be displayed directly in the editor like so: 
+\`\`\`
+sequenceData: {
+  ...allTheNormalThings,
+  lineageAnnotations: [
+    {
+      id: "22oing211",
+      name: "Lineage Annotation 1",
+      start: 900,
+      end: 400,
+      labelColor: "green",
+      color: "green"
+    },
+    {
+      id: "18711jja1",
+      name: "Lineage Annotation 2",
+      start: 401,
+      end: 899,
+      labelColor: "blue",
+      color: "blue"
+    }
+  ]
+}
+\`\`\`
+`,
+
+                hook: shouldUpdate => {
+                  updateEditor(store, "DemoEditor", {
+                    sequenceData: {
+                      ...exampleSequenceData,
+                      lineageAnnotations: shouldUpdate
+                        ? [
+                            {
+                              id: "22oing211",
+                              name: "Lineage Annotation 1",
+                              start: 900,
+                              end: 400,
+                              labelColor: "green",
+                              color: "green"
+                            },
+                            {
+                              id: "18711jja1",
+                              name: "Lineage Annotation 2",
+                              start: 401,
+                              end: 899,
+                              labelColor: "blue",
+                              color: "blue"
+                            }
+                          ]
+                        : []
+                    }
+                  });
+                }
+              })}
+              {renderToggle({
+                that: this,
+                type: "showAssemblyPieces",
+                label: "Show AssemblyPieces  in Editor",
+                description: `
+Warnings can be displayed directly in the editor like so: 
+\`\`\`
+sequenceData: {
+  ...allTheNormalThings,
+  assemblyPieces: [
+    {
+      id: "22oing211",
+      name: "Assembly Piece 1",
+      start: 900,
+      end: 400,
+      labelColor: "green",
+      color: "green"
+    },
+    {
+      id: "18711jja1",
+      name: "Assembly Piece 2",
+      start: 401,
+      end: 899,
+      labelColor: "blue",
+      color: "blue"
+    }
+  ]
+}
+\`\`\`
+`,
+
+                hook: shouldUpdate => {
+                  updateEditor(store, "DemoEditor", {
+                    sequenceData: {
+                      ...exampleSequenceData,
+                      assemblyPieces: shouldUpdate
+                        ? [
+                            {
+                              id: "22oing211",
+                              name: "Assembly Piece 1",
+                              start: 900,
+                              end: 400,
+                              labelColor: "darkorange",
+                              color: "darkorange"
+                            },
+                            {
+                              id: "18711jja1",
+                              name: "Assembly Piece 2",
+                              start: 401,
+                              end: 899,
+                              labelColor: "darkblue",
+                              color: "darkblue"
+                            }
+                          ]
+                        : []
+                    }
+                  });
+                }
+              })}
+              {renderToggle({
+                that: this,
                 type: "hideSingleImport",
                 description: `You can hide the option to have single files be imported directly into the editor`
               })}

@@ -9,7 +9,7 @@ const fontWidthToFontSize = 1.75;
 
 function Labels({
   labels = {},
-  outerRadius,
+  radius: outerRadius,
   editorName,
   textScalingFactor,
   circularViewWidthVsHeightRatio, //width of the circular view

@@ -342,6 +342,6 @@ describe("editor", function() {
 // Cypress.on("uncaught:exception", (err, runnable) => {
 //   // returning false here prevents Cypress from
 //   // failing the test
-// console.log(`err.stack:`,err.stack)
+// console.error(`err.stack:`,err.stack)
 //   return false;
 // });

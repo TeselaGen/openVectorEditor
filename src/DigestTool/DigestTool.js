@@ -24,7 +24,6 @@ export class DigestTool extends React.Component {
       onDigestSave
     } = this.props;
     const { selectedTab } = this.state;
-    // console.log(`height, dimensions.height:`,height, dimensions.height)
     return (
       <div
         style={{

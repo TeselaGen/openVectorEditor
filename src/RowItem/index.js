@@ -309,24 +309,12 @@ export class RowItem extends React.PureComponent {
               rangeType: "middle"
             })
           })}
-          {drawAnnotations("assemblyPiece", {
-            getExtraInnerCompProps: () => ({
-              pointiness: 0,
-              rangeType: "middle"
-            })
-          })}
-          {drawAnnotations("lineageAnnotation", {
-            getExtraInnerCompProps: () => ({
-              pointiness: 0,
-              rangeType: "middle"
-            })
-          })}
-
+          {drawAnnotations("assemblyPiece")}
+          {drawAnnotations("lineageAnnotation")}
           {drawAnnotations("part", partProps)}
           {drawAnnotations("primer", {
             sequence: fullSequence
           })}
-
           {drawAnnotations("orf", {
             CompOverride: Orfs
           })}

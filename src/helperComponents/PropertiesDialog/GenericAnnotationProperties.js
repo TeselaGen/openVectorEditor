@@ -4,7 +4,7 @@ import {
   withSelectedEntities,
   CmdCheckbox
 } from "teselagen-react-components";
-import { map } from "lodash";
+import { map, upperFirst } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 import { Popover } from "@blueprintjs/core";
@@ -13,7 +13,6 @@ import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
-import upperCaseFirst from "upper-case-first";
 
 const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
   const schema = {
@@ -39,7 +38,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
       { path: "strand", type: "string" }
     ]
   };
-  const annotationTypeUpper = upperCaseFirst(annotationType);
+  const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
     constructor(props) {
       super(props);
@@ -69,8 +68,6 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
       const annotationPropertiesSelectedEntities = _annotationPropertiesSelectedEntities.filter(
         a => annotations[a.id]
       );
-      // console.log(`annotations:`,annotations)
-      // console.log(`annotationPropertiesSelectedEntities:`,annotationPropertiesSelectedEntities)
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
       const showAddOrEditAnnotationDialog = this.props[

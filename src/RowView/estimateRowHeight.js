@@ -11,6 +11,8 @@ export const rowHeights = {
   primers: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   features: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   warnings: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
+  assemblyPieces: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
+  lineageAnnotations: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   orfs: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   cutsiteLabels: { spaceBetweenAnnotations: 0, height: 15 },
   sequence: { height: 15 },

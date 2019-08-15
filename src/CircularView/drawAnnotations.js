@@ -2,7 +2,6 @@ import React from "react";
 import IntervalTree from "node-interval-tree";
 import { sortBy, noop } from "lodash";
 import { getRangeLength } from "ve-range-utils";
-import { startCase } from "lodash";
 import getRangeAngles from "./getRangeAnglesSpecial";
 import getYOffset from "./getYOffset";
 import withHover from "../helperComponents/withHover";
@@ -132,6 +131,8 @@ function drawAnnotations({
         locationAngles
       } = annotation;
 
+      const titleText = getAnnotationNameAndStartStopString(annotation);
+
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
       const name =
@@ -145,9 +146,7 @@ function drawAnnotations({
           annotationCenterRadius: annotationRadius,
           text: name,
           id: annotation.id,
-          title: `${startCase(annotationType)} ${name}  ${annotation.start} - ${
-            annotation.end
-          }`,
+          title: titleText,
           className: annotation.labelClassName || "",
           onClick: _onClick,
           color:
@@ -166,6 +165,7 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            titleText,
             editorName,
             annotationType,
             showLabels,
@@ -211,11 +211,11 @@ const DrawAnnotation = withHover(function({
   endAngle,
   onClick,
   onContextMenu,
+  titleText,
   locationAngles,
   annotation,
   reverseAnnotations,
   Annotation = Feature,
-  annotationType,
   totalAngle,
   annotationColor,
   annotationRadius,
@@ -232,13 +232,7 @@ const DrawAnnotation = withHover(function({
     onMouseLeave,
     onMouseOver
   };
-  const title = (
-    <title>
-      {getAnnotationNameAndStartStopString(annotation, {
-        isPart: annotationType === "part"
-      })}
-    </title>
-  );
+  const title = <title>{titleText}</title>;
   return (
     <React.Fragment>
       <g
