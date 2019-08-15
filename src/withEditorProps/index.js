@@ -128,13 +128,14 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
             window.toastr[type](msg);
           });
         }
-        updateSequenceData(result[0].parsedSequence);
-        if (!failed) {
-          window.toastr.success("Sequence Imported");
-          if (onImport){ 
-            onImport();
-          }
+        if (failed) {
+          window.toastr.error("Error importing sequence");
         }
+        updateSequenceData(result[0].parsedSequence);
+        if (onImport) {
+          onImport(result[0].parsedSequence);
+        }
+        window.toastr.success("Sequence Imported");
       },
       { acceptParts: true, ...opts }
     );
