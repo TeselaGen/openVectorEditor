@@ -56,6 +56,7 @@ const defaultState = {
   withVersionHistory: true,
   setDefaultVisibilities: false,
   onNew: true,
+  onImport: true,
   onSave: true,
   onRename: true,
   onDuplicate: true,
@@ -869,6 +870,10 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "onImport"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onSave"
               })}
               {renderToggle({
@@ -959,6 +964,12 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             {...this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
+            }}
+            {...this.state.onImport && {
+              onImport: sequence =>
+                window.toastr.success(
+                  `onImport callback triggered for sequence: ${sequence.name}`
+                )
             }}
             {...this.state.onSave && {
               onSave: function(
