@@ -10118,8 +10118,8 @@ li.bp3-menu-divider:last-child {
   margin-top: 5px;
   padding: 10px;
 }
-thead,
-tbody tr {
+.tg-hotkeys-dialog thead,
+.tg-hotkeys-dialog tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed; /* even columns width , fix width of table too*/
