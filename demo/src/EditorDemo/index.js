@@ -1084,10 +1084,12 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               onNew: () => window.toastr.success("onNew callback triggered")
             }}
             {...this.state.onImport && {
-              onImport: sequence =>
+              onImport: sequence => {
                 window.toastr.success(
                   `onImport callback triggered for sequence: ${sequence.name}`
-                )
+                );
+                return sequence;
+              }
             }}
             {...this.state.onSave && {
               onSave: function(

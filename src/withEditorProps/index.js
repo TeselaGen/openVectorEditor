@@ -111,7 +111,7 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
     const content = evt.target.result;
     anyToJson(
       content,
-      result => {
+      async result => {
         // TODO maybe handle import errors/warnings better
         const failed = !result[0].success;
         const messages = result[0].messages;
@@ -131,11 +131,16 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
         if (failed) {
           window.toastr.error("Error importing sequence");
         }
-        updateSequenceData(result[0].parsedSequence);
+        let seqData = result[0].parsedSequence;
+
         if (onImport) {
-          onImport(result[0].parsedSequence);
+          seqData = await onImport(seqData);
         }
-        window.toastr.success("Sequence Imported");
+
+        if (seqData) {
+          updateSequenceData(seqData);
+          window.toastr.success("Sequence Imported");
+        }
       },
       { acceptParts: true, ...opts }
     );
