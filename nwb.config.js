@@ -16,12 +16,12 @@ module.exports = {
       // "ve-range-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-range-utils/src/"),
-      "ve-sequence-utils":
-        console.log("comment me back out!") ||
-        path.resolve("../ve-sequence-utils/src/"),
-      "bio-parsers":
-        console.log("comment me back out!") ||
-        path.resolve("../ve-sequence-parsers/src/parsers/"),
+      // "ve-sequence-utils":
+      //   console.log("comment me back out!") ||
+      //   path.resolve("../ve-sequence-utils/src/"),
+      // "bio-parsers":
+      //   console.log("comment me back out!") ||
+      //   path.resolve("../ve-sequence-parsers/src/parsers/"),
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||
       //   path.resolve("../teselagen-react-components/src/"),
