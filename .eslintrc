@@ -1,7 +1,0 @@
-{
-	"extends": "teselagen/react",
-	"rules": {
-		"react/jsx-no-bind": 0,
-		"jsx-a11y/href-no-hash": 0
-	}
-}
