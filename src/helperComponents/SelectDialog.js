@@ -10,6 +10,7 @@ import { Button, Intent, Classes } from "@blueprintjs/core";
 import { NumericInputField } from "teselagen-react-components";
 import { get } from "lodash";
 import { getRangeLength } from "ve-range-utils";
+import { tryToRefocusEditor } from "../utils/editorUtils";
 
 // Single validation function - from & to have the same range
 const validate = (val, vals, props) => {
@@ -28,7 +29,8 @@ export default compose(
     isDraggable: true,
     width: 400,
     title: "Select Range",
-    height: 270
+    height: 270,
+    onCloseHook: tryToRefocusEditor
   }),
   reduxForm({
     form: "selectDialog"
@@ -115,6 +117,7 @@ export default compose(
                   });
                 }
                 hideModal();
+                tryToRefocusEditor()
               }}
               text="Cancel"
             />
@@ -122,6 +125,7 @@ export default compose(
               onClick={handleSubmit(data => {
                 if (onSubmit) onSubmit(data);
                 hideModal();
+                tryToRefocusEditor()
               })}
               intent={Intent.PRIMARY}
               text={`Select ${invalid ? 0 : selectionLength} ${

@@ -194,3 +194,4 @@ const CloseFullscreenButton = props => {
     </Tooltip>
   );
 };
+

@@ -254,6 +254,42 @@ describe("menuBar", function() {
       .click();
     cy.contains("Caret Between Bases 5299 and 1");
   });
+
+  it(`you can go to a position or a range and then directly type in bps
+  `, () => {
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Go To")
+      .click();
+    cy.focused()
+      .clear()
+      .type("10");
+    cy.get(".bp3-dialog")
+      .contains("OK")
+      .click()
+    cy.focused().type("a")
+    cy.contains(".sequenceInputBubble", "Press ENTER to insert")
+    cy.get(".tg-menu-bar")
+      .contains("Edit")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Select")
+      .click();
+    cy.get(`[label="From:"]`)
+      .clear()
+      .type("10");
+    cy.get(`[label="To:"]`)
+      .clear()
+      .type("20");
+    cy.get(`.dialog-buttons`)
+      .contains("Select 11 BPs")
+      .click();
+    cy.focused().type("a")
+
+    cy.contains(".sequenceInputBubble", "Press ENTER to replace")
+  });
   it(`
   select range, copy, cut works
     -cannot select range outside of sequence //TODO

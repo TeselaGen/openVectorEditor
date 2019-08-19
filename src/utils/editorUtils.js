@@ -62,15 +62,8 @@ export function preventDefaultStopPropagation(e) {
 
 export function getNodeToRefocus(caretEl) {
   let nodeToReFocus;
-  for (const view of [
-    // ".veRowView",
-    // ".veCircularView",
-    ".veVectorInteractionWrapper"
-  ]) {
-    if (caretEl && caretEl.closest && caretEl.closest(view)) {
-      nodeToReFocus = caretEl.closest(view);
-      break;
-    }
+  if (caretEl && caretEl.closest && caretEl.closest(".veVectorInteractionWrapper")) {
+    nodeToReFocus = caretEl.closest(".veVectorInteractionWrapper");
   }
   return nodeToReFocus;
 }
@@ -79,4 +72,9 @@ export function getEmptyText({ sequenceData, caretPosition }) {
   return sequenceData.sequence.length === 0 && caretPosition === -1 ? (
     <div className="veEmptySeqText">Insert Sequence Here</div>
   ) : null;
+}
+
+export function tryToRefocusEditor() {
+  const ed = document.querySelector(".veVectorInteractionWrapper")
+  ed && ed.focus()
 }

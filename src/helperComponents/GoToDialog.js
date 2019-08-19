@@ -1,6 +1,7 @@
 import createSimpleDialog from "./createSimpleDialog";
 import { NumericInputField } from "teselagen-react-components";
 import { get } from "lodash";
+import { tryToRefocusEditor } from "../utils/editorUtils";
 
 export default createSimpleDialog({
   formName: "goToDialog",
@@ -16,5 +17,5 @@ export default createSimpleDialog({
       }
     }
   ],
-  dialogProps: { title: "Go To", height: 190 }
+  withDialogProps: { title: "Go To", height: 190, onCloseHook: tryToRefocusEditor }
 });

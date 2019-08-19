@@ -8,6 +8,7 @@ import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import "./simpleDialog.css";
+import { tryToRefocusEditor } from "../utils/editorUtils";
 
 // TODO: move to TRC
 export class SimpleGenericDialogForm extends React.Component {
@@ -43,11 +44,15 @@ export class SimpleGenericDialogForm extends React.Component {
           return <FieldComp key={field.name} {...fieldProps} />;
         })}
         <div className="dialog-buttons">
-          {showCancel && <Button onClick={hideModal} text="Cancel" />}
+          {showCancel && <Button onClick={() => {
+            hideModal()
+            tryToRefocusEditor()
+          }} text="Cancel" />}
           <Button
             onClick={handleSubmit(data => {
               if (onSubmit) onSubmit(data);
               hideModal();
+              tryToRefocusEditor()
             })}
             intent={Intent.PRIMARY}
             text={buttonText}
@@ -68,7 +73,7 @@ export default function createSimpleDialog(props) {
     withDialog({
       isDraggable: true,
       width: 400,
-      ...props.dialogProps
+      ...props.withDialogProps
     }),
     reduxForm({
       form: props.formName
