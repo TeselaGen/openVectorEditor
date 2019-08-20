@@ -60,6 +60,7 @@ const defaultState = {
   onSave: true,
   onRename: true,
   onDuplicate: true,
+  onCreateNewFromSubsequence: false,
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
@@ -1004,6 +1005,12 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "onCreateNewFromSubsequence",
+                info:
+                  "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onDelete",
                 info:
                   "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
@@ -1116,6 +1123,14 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             {...this.state.onDuplicate && {
               onDuplicate: () =>
                 window.toastr.success("onDuplicate callback triggered")
+            }}
+            {...this.state.onCreateNewFromSubsequence && {
+              onCreateNewFromSubsequence: (selectedSeqData, props) => {
+                console.info(selectedSeqData, props);
+                window.toastr.success(
+                  "onCreateNewFromSubsequence callback triggered"
+                );
+              }
             }}
             {...this.state.onDelete && {
               onDelete: () =>

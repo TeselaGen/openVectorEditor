@@ -73,6 +73,7 @@ const userDefinedHandlersAndOpts = [
   "beforeSequenceInsertOrDelete",
   "onDelete",
   "onCopy",
+  "onCreateNewFromSubsequence",
   "onPaste",
   "menuFilter"
 ];

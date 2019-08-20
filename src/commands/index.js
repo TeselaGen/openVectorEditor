@@ -4,7 +4,11 @@ import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { adjustBpsToReplaceOrInsert, annotationTypes } from "ve-sequence-utils";
+import {
+  adjustBpsToReplaceOrInsert,
+  annotationTypes,
+  getSequenceDataBetweenRange
+} from "ve-sequence-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,
@@ -271,6 +275,19 @@ const editCommandDefs = {
     },
     hotkey: "mod+x"
   },
+  createNewFromSubsequence: {
+    name: "New Sequence From Selected Range",
+    isDisabled: props =>
+      props.sequenceLength === 0 || props.selectionLayer.start === -1,
+    isHidden: props => !props.onCreateNewFromSubsequence,
+    handler: props => {
+      props.onCreateNewFromSubsequence(
+        getSequenceDataBetweenRange(props.sequenceData, props.selectionLayer),
+        props
+      );
+    }
+    // hotkey: "mod+x"
+  },
 
   copy: {
     isDisabled: props => props.sequenceLength === 0,
@@ -344,7 +361,7 @@ const editCommandDefs = {
       })
   },
   versionNumber: {
-    name: "OVE Version:  " + packageJson.version,
+    name: "OVE Version:  " + packageJson.version
   },
 
   goTo: {

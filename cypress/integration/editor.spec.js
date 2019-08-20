@@ -56,6 +56,19 @@ describe("editor", function() {
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
   });
+  it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function() {
+    cy.tgToggle("onCreateNewFromSubsequence");
+
+    cy.get(".veLabelText")
+      .contains("Part 0")
+      .trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "New Sequence From Selected Range").click();
+
+    cy.contains("onCreateNewFromSubsequence callback triggered").should(
+      "be.visible"
+    );
+  });
   it(`should handle rightClickOverrides correctly if they are passed`, function() {
     cy.tgToggle("overrideRightClickExample");
 

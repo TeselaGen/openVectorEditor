@@ -22,7 +22,8 @@ export const createNewAnnotationMenu = {
     "newPart",
     "newTranslation",
     "newReverseTranslation",
-    "newPrimer"
+    "newPrimer",
+    "createNewFromSubsequence"
   ]
 };
 export default [
