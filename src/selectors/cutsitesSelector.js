@@ -1,6 +1,7 @@
 import circularSelector from "./circularSelector";
 import sequenceSelector from "./sequenceSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
+import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 import { createSelector } from "reselect";
 import bsonObjectid from "bson-objectid";
 import { flatMap as flatmap } from "lodash";
@@ -15,7 +16,7 @@ import { getCutsitesFromSequence } from "ve-sequence-utils";
 //   });
 // })
 
-function cutsitesSelector(sequence, circular, enzymeList) {
+function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
   //get the cutsites grouped by enzyme
   let cutsitesByName = getCutsitesFromSequence(
     sequence,
@@ -36,14 +37,18 @@ function cutsitesSelector(sequence, circular, enzymeList) {
       cutsite.numberOfCuts = numberOfCuts;
       cutsite.annotationType = "cutsite";
       cutsitesById[uniqueId] = cutsite;
+      const mergedCutsiteColors = Object.assign(
+        { single: "salmon", double: "lightblue", multi: "lightgrey" },
+        cutsiteLabelColors
+      );
       if (numberOfCuts === 1) {
-        cutsite.labelColor = "salmon";
+        cutsite.labelColor = mergedCutsiteColors.single;
         cutsite.labelClassname = "singleCutter";
       } else if (numberOfCuts === 2) {
-        cutsite.labelColor = "lightblue";
+        cutsite.labelColor = mergedCutsiteColors.double;
         cutsite.labelClassname = "doubleCutter";
       } else {
-        cutsite.labelColor = "lightgrey";
+        cutsite.labelColor = mergedCutsiteColors.multi;
         cutsite.labelClassname = "multiCutter";
       }
     });
@@ -63,6 +68,7 @@ export default createSelector(
   sequenceSelector,
   circularSelector,
   restrictionEnzymesSelector,
+  cutsiteLabelColorSelector,
   function() {
     return cutsitesSelector(...arguments);
   }
