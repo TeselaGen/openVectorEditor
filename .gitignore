@@ -7,5 +7,6 @@
 npm-debug.log*
 /.cache
 /cypress/videos
+/cypress/screenshots
 .linkEnv
 .idea
