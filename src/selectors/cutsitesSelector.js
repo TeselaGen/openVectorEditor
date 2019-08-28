@@ -37,23 +37,18 @@ function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
       cutsite.numberOfCuts = numberOfCuts;
       cutsite.annotationType = "cutsite";
       cutsitesById[uniqueId] = cutsite;
+      const mergedCutsiteColors = Object.assign(
+        { single: "salmon", double: "lightblue", multi: "lightgrey" },
+        cutsiteLabelColors
+      );
       if (numberOfCuts === 1) {
-        cutsite.labelColor =
-          cutsiteLabelColors && cutsiteLabelColors.single
-            ? cutsiteLabelColors.single
-            : "salmon";
+        cutsite.labelColor = mergedCutsiteColors.single;
         cutsite.labelClassname = "singleCutter";
       } else if (numberOfCuts === 2) {
-        cutsite.labelColor =
-          cutsiteLabelColors && cutsiteLabelColors.double
-            ? cutsiteLabelColors.double
-            : "lightblue";
+        cutsite.labelColor = mergedCutsiteColors.double;
         cutsite.labelClassname = "doubleCutter";
       } else {
-        cutsite.labelColor =
-          cutsiteLabelColors && cutsiteLabelColors.multi
-            ? cutsiteLabelColors.multi
-            : "lightgrey";
+        cutsite.labelColor = mergedCutsiteColors.multi;
         cutsite.labelClassname = "multiCutter";
       }
     });
