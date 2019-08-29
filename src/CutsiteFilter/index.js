@@ -62,7 +62,7 @@ export class CutsiteFilter extends React.Component {
           wrapperStyle={{ zIndex: 11 }}
           noResultsText={
             <div className="noResultsTextPlusButton">
-              No results found.{" "}
+              No matching enzymes found that cut in the sequence.{" "}
               <AddAdditionalEnzymeLink onClick={openAddYourOwn} />{" "}
             </div>
           }

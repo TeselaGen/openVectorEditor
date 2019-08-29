@@ -11,7 +11,8 @@ import {
   RowView,
   LinearView,
   DigestTool,
-  updateEditor
+  updateEditor,
+  EnzymeViewer
 } from "../../src";
 
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
@@ -39,6 +40,7 @@ const links = [
   { name: "Alignment", url: "Alignment" },
   { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
   { name: "DigestTool", url: "DigestTool" },
+  { name: "EnzymeViewer", url: "EnzymeViewer" },
   { name: "CircularView", url: "CircularView" },
   { name: "RowView", url: "RowView" },
   { name: "LinearView", url: "LinearView" },
@@ -207,6 +209,30 @@ class Demo extends React.Component {
                 );
               }}
               path="/DigestTool"
+            />
+            <Route
+              render={() => {
+                const enzyme = {
+                  name: "BsaI",
+                  site: "ggtctc",
+                  forwardRegex: "g{2}tctc",
+                  reverseRegex: "gagac{2}",
+                  topSnipOffset: 7,
+                  bottomSnipOffset: 11
+                };
+                return (
+                  <WrapSimpleDemo>
+                    <EnzymeViewer
+                      {...{
+                        sequence: enzyme.site,
+                        reverseSnipPosition: enzyme.bottomSnipOffset,
+                        forwardSnipPosition: enzyme.topSnipOffset
+                      }}
+                    />
+                  </WrapSimpleDemo>
+                );
+              }}
+              path="/EnzymeViewer"
             />
             <Route
               render={() => {
