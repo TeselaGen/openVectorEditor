@@ -28,7 +28,8 @@ export const editorDragged = function({ nearestCaretPos }) {
     //we're starting the drag, so update the caret position!
     if (!selectionStartGrabbed && !selectionEndGrabbed) {
       //we're not dragging the caret or selection handles
-      this.caretPositionUpdate(nearestCaretPos);
+      this.caretPositionOnDragStart = nearestCaretPos;
+      // this.caretPositionUpdate(nearestCaretPos);
     }
     dragInProgress = true;
     return;
@@ -61,13 +62,19 @@ export const editorDragged = function({ nearestCaretPos }) {
     // }
     //dragging somewhere within the sequence
     //pass the caret position of the drag start
+
     handleCaretDrag({
       caretPosition: caretPositionOnDragStart,
-      selectionLayer,
+      selectionLayer: this.caretPositionOnDragStart
+        ? { start: -1, end: -1 }
+        : selectionLayer,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength
     });
+    if (this.caretPositionOnDragStart !== null) {
+      this.caretPositionOnDragStart = null;
+    }
   }
 };
 
