@@ -4,7 +4,6 @@ import Labels from "./Labels";
 import SelectionLayer from "./SelectionLayer";
 import Caret from "./Caret";
 import Axis from "./Axis";
-import LineageLines from "./LineageLines";
 import Orf from "./Orf";
 import Feature from "./Feature";
 import Primer from "./Primer";
@@ -12,8 +11,8 @@ import Primer from "./Primer";
 // import ReplacementLayer from "./ReplacementLayer";
 import Cutsite from "./Cutsite";
 import sortBy from "lodash/sortBy";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
+// import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
+// import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import {
   normalizePositionByRangeLength,
   getPositionFromAngle,
@@ -27,6 +26,9 @@ import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
+import { getSingular } from "../utils/annotationTypes";
+import { upperFirst, map } from "lodash";
+
 function noop() {}
 
 // function toDegrees(radians) {
@@ -46,20 +48,25 @@ export class CircularView extends React.Component {
     //get angle
     let angle = Math.atan2(clickY, clickX) + Math.PI / 2;
     if (angle < 0) angle += Math.PI * 2; //normalize the angle if necessary
-    let nearestCaretPos = normalizePositionByRangeLength(
-      getPositionFromAngle(angle, sequenceLength, true),
-      sequenceLength
-    ); //true because we're in between positions
-
+    let nearestCaretPos =
+      sequenceLength === 0
+        ? 0
+        : normalizePositionByRangeLength(
+            getPositionFromAngle(angle, sequenceLength, true),
+            sequenceLength
+          ); //true because we're in between positions
+    if (this.props.sequenceData && this.props.sequenceData.isProtein) {
+      nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
+    }
     callback({
       event,
-      className: event.target.className.animVal,
+      className: event.target.parentNode.className.animVal,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
-      selectionStartGrabbed: event.target.classList.contains(
+      selectionStartGrabbed: event.target.parentNode.classList.contains(
         draggableClassnames.selectionStart
       ),
-      selectionEndGrabbed: event.target.classList.contains(
+      selectionEndGrabbed: event.target.parentNode.classList.contains(
         draggableClassnames.selectionEnd
       )
     });
@@ -84,34 +91,17 @@ export class CircularView extends React.Component {
       editorDragged = noop,
       editorDragStarted = noop,
       editorClicked = noop,
+      backgroundRightClicked = noop,
       searchLayers = [],
       editorDragStopped = noop,
-      featureClicked = noop,
-      featureRightClicked = noop,
-      partClicked = noop,
-      partRightClicked = noop,
-      orfClicked = noop,
-      orfRightClicked = noop,
-      primerClicked = noop,
-      primerRightClicked = noop,
-      selectionLayerRightClicked = noop,
-      backgroundRightClicked = noop,
-      deletionLayerClicked = noop,
-      replacementLayerClicked = noop,
-      cutsiteClicked = noop,
-      cutsiteRightClicked = noop,
-      featureOptions = {},
       additionalSelectionLayers = [],
       maxAnnotationsToDisplay = {},
-      lineageLines = [],
-      deletionLayers = {},
-      replacementLayers = {},
+      searchLayerRightClicked = noop,
+      selectionLayerRightClicked = noop,
+      searchLayerClicked = noop,
       instantiated
-      // modifyLayers = function (layers) {
-      //   return layers
-      // },
     } = this.props;
-    let { sequence = "atgc" } = sequenceData;
+    let { sequence = "atgc", circular } = sequenceData;
     let sequenceLength = sequence.length;
     let sequenceName = hideName ? "" : sequenceData.name || "";
     circularAndLinearTickSpacing =
@@ -119,41 +109,8 @@ export class CircularView extends React.Component {
       (sequenceLength < 10
         ? 1
         : sequenceLength < 50
-          ? Math.ceil(sequenceLength / 5)
-          : Math.ceil(sequenceLength / 100) * 10);
-    let {
-      features: showFeatures = true,
-      primers: showPrimers = true,
-      // translations: showTranslations = true,
-      parts: showParts = true,
-      orfs: showOrfs = true,
-      cutsites: showCutsites = true,
-      // firstCut: showFirstCut = true,
-      axis: showAxis = true,
-      lineageLines: showLineageLines = true,
-      axisNumbers: showAxisNumbers = true
-      // sequence: showSequence = true,
-      // reverseSequence: showReverseSequence = true,
-    } = annotationVisibility;
-    let {
-      features: showFeatureLabels = true,
-      parts: showPartLabels = true,
-      cutsites: showCutsiteLabels = true,
-      primers: showPrimerLabels = true
-    } = annotationLabelVisibility;
-    let {
-      features: maxFeaturesToDisplay = 50,
-      primers: maxPrimersToDisplay = 50,
-      // translations: maxTranslationsToDisplay = 50,
-      parts: maxPartsToDisplay = 50,
-      orfs: maxOrfsToDisplay = 50,
-      cutsites: maxCutsitesToDisplay = 100
-    } = maxAnnotationsToDisplay;
-    let paredDownOrfs;
-    let paredDownCutsites;
-    let paredDownFeatures;
-    let paredDownPrimers;
-    let paredDownParts;
+        ? Math.ceil(sequenceLength / 5)
+        : Math.ceil(sequenceLength / 100) * 10);
 
     const baseRadius = 80;
     let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
@@ -161,6 +118,7 @@ export class CircularView extends React.Component {
     let annotationsSvgs = [];
     let labels = {};
 
+    const { isProtein } = sequenceData;
     //RENDERING CONCEPTS:
     //-"Circular" annotations get a radius, and a curvature based on their radius:
     //<CircularFeature>
@@ -168,77 +126,198 @@ export class CircularView extends React.Component {
     //<PositionAnnotationOnCircle>
 
     let layersToDraw = [
-      { layer: drawSequenceChars, zIndex: 10, layerName: "SequenceChars" },
+      { zIndex: 10, layerName: "sequenceChars" },
       {
-        layer: drawFeatures,
         zIndex: 20,
-        layerName: "Features",
+        layerName: "features",
+        isAnnotation: true,
         // spaceBefore: 10,
         spaceAfter: 5
       },
-      { layer: drawPrimers, zIndex: 20, layerName: "Primers" },
       {
-        layer: drawAxis,
         zIndex: 0,
-        layerName: "Axis",
+        layerName: "axis",
+        Comp: Axis,
+        showAxisNumbers: !(annotationVisibility.axisNumbers === false),
+        circularAndLinearTickSpacing,
         spaceBefore: 0,
         spaceAfter: 0
       },
 
-      { layer: drawCaret, zIndex: 15, layerName: "Caret" },
-      { layer: drawSelectionLayer, zIndex: 10, layerName: "SelectionLayer" },
+      { zIndex: 15, alwaysShow: true, layerName: "caret", Comp: drawCaret },
+
       {
-        layer: drawReplacementLayers,
+        zIndex: 10,
+        alwaysShow: true,
+        layerName: "selectionLayer",
+        Comp: drawSelectionLayer
+      },
+      {
         zIndex: 20,
-        layerName: "ReplacementLayers",
+        layerName: "replacementLayers",
+        isAnnotation: true,
         spaceAfter: 20
       },
       {
-        layer: drawDeletionLayers,
         zIndex: 20,
-        layerName: "DeletionLayers",
+        layerName: "deletionLayers",
+        isAnnotation: true,
         spaceAfter: 20
       },
-      { layer: drawLineageLines, zIndex: 0, layerName: "LineageLines" },
-      { layer: drawCutsites, zIndex: 10, layerName: "Cutsites" },
-      { layer: drawOrfs, zIndex: 20, layerName: "Orfs", spaceBefore: 10 },
       {
-        layer: drawParts,
-        zIndex: 20,
-        layerName: "Parts",
-        spaceBefore: 20
+        zIndex: 10,
+        layerName: "cutsites",
+        Comp: Cutsite,
+        useStartAngle: true,
+        allOnSameLevel: true,
+        positionBy: positionCutsites,
+        isAnnotation: true,
+        maxToDisplay: 100
       },
-      { layer: drawLabels, zIndex: 30, layerName: "Labels" }
+
+      {
+        zIndex: 20,
+        Comp: Orf,
+        showLabels: false,
+        getColor: getOrfColor,
+        layerName: "orfs",
+        isAnnotation: true,
+        spaceBefore: 10
+      },
+      {
+        spaceBefore: 5,
+        spaceAfter: 5,
+        zIndex: 20,
+        Comp: Primer,
+        isAnnotation: true,
+        layerName: "primers"
+      },
+      {
+        zIndex: 20,
+        Comp: Part,
+        layerName: "parts",
+        isAnnotation: true,
+        spaceBefore: 5
+      },
+      {
+        zIndex: 20,
+        layerName: "lineageAnnotations",
+        isAnnotation: true,
+        spaceBefore: 10,
+        spaceAfter: 5
+      },
+      {
+        zIndex: 20,
+        layerName: "assemblyPieces",
+        isAnnotation: true,
+        spaceBefore: 10,
+        spaceAfter: 5
+      },
+      {
+        zIndex: 20,
+        arrowheadLength: 0,
+        layerName: "warnings",
+        isAnnotation: true,
+        spaceBefore: 10,
+        spaceAfter: 5
+      },
+      {
+        zIndex: 30,
+        alwaysShow: true,
+        layerName: "labels",
+        Comp: Labels,
+        circularViewWidthVsHeightRatio: width / height,
+        passLabels: true,
+        textScalingFactor: 700 / Math.min(width, height)
+      }
     ];
+    const paredDownMessages = [];
 
     let output = layersToDraw
-      .map(function({
-        layer,
-        // layerName,
-        spaceBefore = 0,
-        spaceAfter = 0,
-        zIndex
-      }) {
-        //   console.warn('-------------------------------------')
-        //   console.warn('layerName:',JSON.stringify(layerName,null,4))
-        //   console.warn('radius before draw:',JSON.stringify(radius,null,4))
-        radius += spaceBefore;
-        let result = layer();
-        if (!result) {
-          radius -= spaceBefore;
+      .map(opts => {
+        const {
+          layerName,
+          maxToDisplay,
+          Comp,
+          alwaysShow,
+          isAnnotation,
+          spaceBefore = 0,
+          spaceAfter = 0,
+          zIndex,
+          passLabels,
+          ...rest
+        } = opts;
+        if (!(alwaysShow || annotationVisibility[layerName])) {
           return null;
+        }
+        //DRAW FEATURES
+        let comp;
+        let results;
+
+        const singularName = getSingular(layerName);
+        const nameUpper = upperFirst(layerName);
+        radius += spaceBefore;
+        const sharedProps = {
+          radius,
+          onClick: this.props[singularName + "Clicked"],
+          onRightClicked: this.props[singularName + "RightClicked"],
+          sequenceLength,
+          editorName,
+          ...rest
+        };
+        if (isAnnotation) {
+          //we're drawing features/cutsites/primers/orfs/etc (something that lives on the seqData)
+          if (!map(sequenceData[layerName]).length) {
+            radius -= spaceBefore;
+            return null;
+          }
+
+          const maxToShow =
+            maxAnnotationsToDisplay[layerName] || maxToDisplay || 50;
+          let [annotations, paredDown] = isAnnotation
+            ? pareDownAnnotations(
+                sequenceData["filtered" + nameUpper] || sequenceData[layerName],
+                maxToShow
+              )
+            : [];
+
+          if (paredDown) {
+            paredDownMessages.push(
+              <VeWarning
+                data-test={`ve-warning-max${nameUpper}ToDisplay`}
+                tooltip={`Warning: More than ${maxToShow} ${nameUpper}. Only displaying ${maxToShow}`}
+              />
+            );
+          }
+          results = drawAnnotations({
+            isProtein,
+            Annotation: Comp || Feature,
+            annotationType: singularName,
+            reverseAnnotations: true,
+            showLabels: !(annotationLabelVisibility[layerName] === false),
+            annotations,
+            annotationHeight,
+            spaceBetweenAnnotations,
+            ...sharedProps,
+            ...this.props[singularName + "Options"]
+          });
+        } else {
+          //we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
+          results = Comp({
+            ...(passLabels && { labels }),
+            ...sharedProps
+          });
+        }
+        if (results) {
+          // //update the radius, labels, and svg
+          radius += results.height || 0;
+          labels = { ...labels, ...(results.labels || {}) };
+          comp = results.component || results;
         }
         radius += spaceAfter;
         // console.warn('radius after draw:',JSON.stringify(radius,null,4))
         return {
-          result,
-          // layer({
-          //   radius,
-          //   baseRadius,
-          //   innerRadius,
-          //   labels,
-          //   annotationsSvgs,
-          // }),
+          result: comp,
           zIndex
         };
       })
@@ -259,267 +338,6 @@ export class CircularView extends React.Component {
     //     return <text key={pos} transform={`translate(0,${-pos})`}>{pos}</text>
     // }))
 
-    function drawFeatures() {
-      //DRAW FEATURES
-      if (showFeatures && sequenceData.features) {
-        let [annotations, paredDown] = pareDownAnnotations(
-          sequenceData.features,
-          maxFeaturesToDisplay
-        );
-        paredDownFeatures = paredDown;
-        const results = drawAnnotations({
-          Annotation: Feature,
-          annotationType: "feature",
-          radius,
-          reverseAnnotations: true,
-          showLabels: showFeatureLabels,
-          onClick: featureClicked,
-          onRightClicked: featureRightClicked,
-          annotations,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          sequenceLength,
-          editorName,
-          ...featureOptions
-        });
-        if (!results) return null;
-        //update the radius, labels, and svg
-        radius += results.height;
-        labels = { ...labels, ...results.labels };
-        return results.component;
-      }
-    }
-
-    function drawParts() {
-      if (showParts && sequenceData.parts) {
-        const [annotations, paredDown] = pareDownAnnotations(
-          sequenceData.parts,
-          maxPartsToDisplay
-        );
-        paredDownParts = paredDown;
-
-        const results = drawAnnotations({
-          Annotation: Part,
-          annotationType: "part",
-          radius,
-          reverseAnnotations: true,
-          showLabels: showPartLabels,
-          onClick: partClicked,
-          onRightClicked: partRightClicked,
-          annotations,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          sequenceLength,
-          editorName
-        });
-        if (!results) return null;
-        //update the radius, labels, and svg
-        radius += results.height;
-        labels = { ...labels, ...results.labels };
-        return results.component;
-      }
-    }
-
-    function drawPrimers() {
-      //DRAW FEATURES
-      if (showPrimers && sequenceData.primers) {
-        let [annotations, paredDown] = pareDownAnnotations(
-          sequenceData.primers,
-          maxPrimersToDisplay
-        );
-        paredDownPrimers = paredDown;
-        const results = drawAnnotations({
-          Annotation: Primer,
-          annotationType: "primer",
-          radius,
-          reverseAnnotations: true,
-          showLabels: showPrimerLabels,
-          onClick: primerClicked,
-          onRightClicked: primerRightClicked,
-          annotations,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          sequenceLength,
-          editorName
-        });
-        if (!results) return null;
-
-        //update the radius, labels, and svg
-        radius += results.height;
-        labels = { ...labels, ...results.labels };
-        return results.component;
-      }
-    }
-
-    function drawDeletionLayers() {
-      if (!deletionLayers || !deletionLayers.length) return null;
-      const results = drawAnnotations({
-        // Annotation: DeletionLayer,
-        annotationType: "deletionLayer",
-        radius,
-        reverseAnnotations: true,
-        onClick: deletionLayerClicked,
-        // showLabels: showDeletionLayerLabels,
-        // onRightClicked: deletionLayerRightClicked,
-        annotations: deletionLayers,
-        annotationHeight,
-        spaceBetweenAnnotations,
-        sequenceLength,
-        editorName
-      });
-      if (!results) return null;
-      //update the radius, labels, and svg
-      radius += results.height;
-      labels = { ...labels, ...results.labels };
-      return results.component;
-    }
-
-    function drawReplacementLayers() {
-      if (!replacementLayers || !replacementLayers.length) return null;
-      const results = drawAnnotations({
-        // Annotation: ReplacementLayer,
-        annotationType: "replacementLayer",
-        radius,
-        reverseAnnotations: true,
-        // showLabels: showReplacementLayerLabels,
-        onClick: replacementLayerClicked,
-        // onRightClicked: replacementLayerRightClicked,
-        annotations: replacementLayers,
-        annotationHeight,
-        spaceBetweenAnnotations,
-        sequenceLength,
-        editorName
-      });
-      if (!results) return null;
-      //update the radius, labels, and svg
-      radius += results.height;
-      labels = { ...labels, ...results.labels };
-      return results.component;
-    }
-
-    function drawOrfs() {
-      //DRAW FEATURES
-      if (showOrfs && sequenceData.orfs) {
-        let [annotations, paredDown] = pareDownAnnotations(
-          sequenceData.orfs,
-          maxOrfsToDisplay
-        );
-        paredDownOrfs = paredDown;
-        const results = drawAnnotations({
-          Annotation: Orf,
-          annotationType: "orf",
-          radius,
-          getColor: getOrfColor,
-          reverseAnnotations: true,
-          // showLabels: showOrfLabels,
-          onClick: orfClicked,
-          onRightClicked: orfRightClicked,
-          annotations,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          sequenceLength,
-          editorName
-        });
-        if (!results) return null;
-
-        //update the radius, labels, and svg
-        radius += results.height;
-        labels = { ...labels, ...results.labels };
-        return results.component;
-      }
-    }
-
-    function drawSequenceChars() {
-      //DRAW CHARS (only if there are fewer than 85 of them)
-      if (sequenceLength < 85 && sequenceData.sequence) {
-        radius += 25;
-        sequenceData.sequence.split("").forEach(function(bp, index) {
-          let tickAngle = getAngleForPositionMidpoint(index, sequenceLength);
-          return (
-            <text
-              {...PositionAnnotationOnCircle({
-                sAngle: tickAngle,
-                eAngle: tickAngle,
-                height: radius
-              })}
-              key={index}
-              transform={`rotate(180)`}
-              style={{
-                textAnchor: "middle",
-                dominantBaseline: "central",
-                fontSize: "small"
-              }}
-            >
-              {bp}
-            </text>
-          );
-        });
-      }
-    }
-
-    function drawAxis() {
-      if (showAxis) {
-        let axisResult = Axis({
-          showAxisNumbers,
-          radius,
-          sequenceLength,
-          circularAndLinearTickSpacing
-        });
-        //update the radius, and svg
-        radius += axisResult.height;
-        return axisResult.component;
-      }
-    }
-
-    function drawLineageLines() {
-      if (showLineageLines && lineageLines && lineageLines.length) {
-        let results = LineageLines({
-          radius,
-          sequenceLength,
-          annotationHeight: 6,
-          editorName,
-          lineageLines
-          // lineageLines: [{start: 10, end:2000,},{start: 201, end:9,}],
-        });
-        if (!results) return null;
-        //update the radius, and svg
-        radius += results.height;
-        return results.component;
-      }
-    }
-
-    function drawCutsites() {
-      //DRAW CUTSITES
-      if (showCutsites && sequenceData.cutsites) {
-        let [annotations, paredDown] = pareDownAnnotations(
-          sequenceData.cutsites,
-          maxCutsitesToDisplay
-        );
-        paredDownCutsites = paredDown;
-        const results = drawAnnotations({
-          Annotation: Cutsite,
-          useStartAngle: true,
-          annotationType: "cutsite",
-          radius,
-          allOnSameLevel: true,
-          positionBy: positionCutsites,
-          showLabels: showCutsiteLabels,
-          onClick: cutsiteClicked,
-          onRightClicked: cutsiteRightClicked,
-          annotations,
-          annotationHeight,
-          spaceBetweenAnnotations,
-          sequenceLength,
-          editorName
-        });
-        if (!results) return null;
-        //update the radius, labels, and svg
-        radius += results.height;
-        labels = { ...labels, ...results.labels };
-        return results.component;
-      }
-    }
-
     function drawSelectionLayer() {
       //DRAW SELECTION LAYER
       let selectionLayers = [
@@ -539,9 +357,15 @@ export class CircularView extends React.Component {
                 {...{
                   index,
                   isDraggable: true,
+                  isProtein,
                   key: "veCircularViewSelectionLayer" + index,
                   selectionLayer,
-                  selectionLayerRightClicked,
+                  onRightClicked: selectionLayer.isSearchLayer
+                    ? searchLayerRightClicked
+                    : selectionLayerRightClicked,
+                  onClick: selectionLayer.isSearchLayer
+                    ? searchLayerClicked
+                    : undefined,
                   sequenceLength,
                   baseRadius,
                   radius,
@@ -563,7 +387,7 @@ export class CircularView extends React.Component {
       if (
         caretPosition !== -1 &&
         selectionLayer.start < 0 &&
-        sequenceLength > 0
+        sequenceLength >= 0
       ) {
         //only render if there is no selection layer
         return (
@@ -571,6 +395,7 @@ export class CircularView extends React.Component {
             {...{
               caretPosition,
               sequenceLength,
+              isProtein,
               innerRadius,
               outerRadius: radius,
               key: "veCircularViewCaret"
@@ -579,22 +404,22 @@ export class CircularView extends React.Component {
         );
       }
     }
-    function drawLabels() {
-      let results = Labels({
-        editorName,
-        circularViewWidthVsHeightRatio: width / height,
-        labels,
-        outerRadius: radius
-      });
-      if (!results) return null;
-      radius += results.height;
-      return results.component;
-    }
+
     //tnr: Make the radius have a minimum so the empty yellow axis circle doesn't take up the entire screen
     if (radius < 150) radius = 150;
+    const widthToUse = Math.max(Number(width) || 300);
+    const heightToUse = Math.max(Number(height) || 300);
     return (
-      <div tabIndex="0" className={"veCircularView"}>
+      <div
+        style={{
+          width: widthToUse,
+          height: heightToUse
+        }}
+        // tabIndex="0"
+        className="veCircularView"
+      >
         <Draggable
+          // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
           onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(
@@ -617,20 +442,22 @@ export class CircularView extends React.Component {
               <div
                 style={{
                   position: "absolute",
-                  width,
-                  height,
+                  width: "100%",
+                  height: "100%",
                   pointerEvents: "none"
                 }}
               >
                 <div
                   key="circViewSvgCenterText"
-                  className={"veCircularViewMiddleOfVectorText"}
+                  className="veCircularViewMiddleOfVectorText"
                   style={{ width: innerRadius, textAlign: "center" }}
                 >
                   <span>{sequenceName} </span>
                   <br />
                   <span style={{ fontSize: 10 }}>
-                    ({sequenceLength + " bps"})
+                    {isProtein
+                      ? `${Math.floor(sequenceLength / 3)} AAs`
+                      : `${sequenceLength} bps`}
                   </span>
                 </div>
               </div>
@@ -653,43 +480,27 @@ export class CircularView extends React.Component {
                 );
               }}
               style={{ overflow: "visible", display: "block" }}
-              width={width}
-              height={height}
+              width={widthToUse}
+              height={heightToUse}
               ref="circularView"
-              className={"circularViewSvg"}
+              className="circularViewSvg"
               viewBox={`-${radius * scale} -${radius * scale} ${radius *
                 2 *
                 scale} ${radius * 2 * scale}`}
             >
               {annotationsSvgs}
             </svg>
-            <div className={"veCircularViewWarningContainer"}>
-              {paredDownOrfs && (
+            <div className="veCircularViewWarningContainer">
+              {!circular && (
                 <VeWarning
-                  message={`Warning: More than ${maxOrfsToDisplay} Open Reading Frames. Displaying only the largest ${maxOrfsToDisplay}`}
+                  data-test="ve-warning-circular-to-linear"
+                  intent="warning"
+                  tooltip={
+                    "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
+                  }
                 />
               )}
-              {paredDownCutsites && (
-                <VeWarning
-                  message={`Only the first ${maxCutsitesToDisplay} cut sites will be displayed. Filter the display by cut site by selecting your desired Restriction Enzyme type `}
-                />
-              )}
-              {paredDownFeatures && (
-                <VeWarning
-                  message={`Warning: More than ${maxFeaturesToDisplay} Features. Displaying only the largest ${maxFeaturesToDisplay}`}
-                />
-              )}
-
-              {paredDownParts && (
-                <VeWarning
-                  message={`Warning: More than ${maxPartsToDisplay} Parts. Displaying only the largest ${maxPartsToDisplay}`}
-                />
-              )}
-              {paredDownPrimers && (
-                <VeWarning
-                  message={`Warning: More than ${maxPrimersToDisplay} Primers. Displaying only the largest ${maxPrimersToDisplay}`}
-                />
-              )}
+              {paredDownMessages}
             </div>
           </div>
         </Draggable>
@@ -716,12 +527,6 @@ function pareDownAnnotations(annotations, max) {
   return [annotationsToPass, paredDown];
 }
 
-// function (messages) {
-//   messages.forEach(function ([displayMessage, message]) {
-//     displayMessage &&
-//   })
-// }
-
 export default withEditorInteractions(CircularView);
 
 function positionCutsites(annotation) {
@@ -730,3 +535,35 @@ function positionCutsites(annotation) {
     end: annotation.topSnipPosition
   };
 }
+
+// function drawSequenceChars() {
+//   //DRAW CHARS (only if there are fewer than 85 of them)
+//   if (
+//     sequenceLength < 85 &&
+//     sequenceData.sequence &&
+//     !sequenceData.noSequence
+//   ) {
+//     radius += 25;
+//     sequenceData.sequence.split("").forEach(function(bp, index) {
+//       let tickAngle = getAngleForPositionMidpoint(index, sequenceLength);
+//       return (
+//         <text
+//           {...PositionAnnotationOnCircle({
+//             sAngle: tickAngle,
+//             eAngle: tickAngle,
+//             height: radius
+//           })}
+//           key={index}
+//           transform="rotate(180)"
+//           style={{
+//             textAnchor: "middle",
+//             dominantBaseline: "central",
+//             fontSize: "small"
+//           }}
+//         >
+//           {bp}
+//         </text>
+//       );
+//     });
+//   }
+// }

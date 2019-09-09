@@ -10,26 +10,42 @@ import GenbankView from "./GenbankView";
 import TranslationProperties from "./TranslationProperties";
 import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
-
+import { connectToEditor } from "../../withEditorProps";
 import "./style.css";
-import { withProps } from "recompose";
-const allTabs = {
-  general: GeneralProperties,
-  features: FeatureProperties,
-  parts: PartProperties,
-  primers: PrimerProperties,
-  translations: TranslationProperties,
-  cutsites: CutsiteProperties,
-  orfs: OrfProperties,
-  genbank: GenbankView
+
+const PropertiesContainer = Comp => props => {
+  const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
+  return (
+    <React.Fragment>
+      {additionalHeaderEls}
+      <Comp {...rest} />
+      {additionalFooterEls}
+    </React.Fragment>
+  );
 };
-export class PropertiesInner extends React.Component {
+const allTabs = {
+  general: PropertiesContainer(GeneralProperties),
+  features: PropertiesContainer(FeatureProperties),
+  parts: PropertiesContainer(PartProperties),
+  primers: PropertiesContainer(PrimerProperties),
+  translations: PropertiesContainer(TranslationProperties),
+  cutsites: PropertiesContainer(CutsiteProperties),
+  orfs: PropertiesContainer(OrfProperties),
+  genbank: PropertiesContainer(GenbankView)
+};
+export class PropertiesDialog extends React.Component {
   render() {
     const {
       propertiesTool = {},
       propertiesViewTabUpdate,
       dimensions = {},
       height,
+      editorName,
+      onSave,
+      showReadOnly,
+      showAvailability,
+      isProtein,
+      disableSetReadOnly,
       propertiesList = [
         "general",
         "features",
@@ -41,22 +57,56 @@ export class PropertiesInner extends React.Component {
         "genbank"
       ],
       closePanelButton
-    } = this.props;
+    } = { ...this.props, ...this.props.PropertiesProps };
 
-    const { width } = dimensions;
+    const { width, height: heightFromDim } = dimensions;
 
     let { tabId, selectedAnnotationId } = propertiesTool;
-    if (propertiesList.indexOf(tabId) === -1) {
-      tabId = propertiesList[0];
+    if (
+      propertiesList
+        .map(nameOrOverride => nameOrOverride.name || nameOrOverride)
+        .indexOf(tabId) === -1
+    ) {
+      tabId = propertiesList[0].name || propertiesList[0];
     }
-    const propertiesTabs = propertiesList.map(name => {
-      const Comp = allTabs[name];
+    const propertiesTabs = propertiesList.map(nameOrOverride => {
+      const name = nameOrOverride.name || nameOrOverride;
+      const Comp = nameOrOverride.Comp || allTabs[name];
+      if (isProtein) {
+        if (
+          name === "translations" ||
+          name === "orfs" ||
+          name === "primers" ||
+          name === "cutsites"
+        ) {
+          return null;
+        }
+      }
       return (
         <Tab
           key={name}
-          title={startCase(name)}
+          title={
+            nameOrOverride.Comp
+              ? name //just use the user supplied name because this is a custom panel
+              : name === "orfs"
+              ? "ORFs"
+              : startCase(name)
+          }
           id={name}
-          panel={<Comp {...{ ...this.props, selectedAnnotationId }} />}
+          panel={
+            <Comp
+              {...{
+                editorName,
+                onSave,
+                isProtein,
+                showReadOnly,
+                showAvailability,
+                disableSetReadOnly,
+                selectedAnnotationId,
+                ...(nameOrOverride.name && nameOrOverride)
+              }}
+            />
+          }
         />
       );
     });
@@ -69,13 +119,14 @@ export class PropertiesInner extends React.Component {
       >
         {closePanelButton}
         <div
-          className={"ve-propertiesPanel"}
+          className="ve-propertiesPanel"
           style={{
             display: "flex",
             width,
-            height,
+            height: Math.max(0, Number((heightFromDim || height) - 30)),
             zIndex: 10,
             padding: 10
+            // paddingBottom: '31px',
           }}
         >
           {propertiesTabs.length ? (
@@ -101,7 +152,7 @@ export class PropertiesInner extends React.Component {
 }
 
 export default compose(
-  withProps(({ PropertiesProps }) => {
-    return { ...PropertiesProps };
+  connectToEditor(({ propertiesTool }) => {
+    return { propertiesTool };
   })
-)(PropertiesInner);
+)(PropertiesDialog);

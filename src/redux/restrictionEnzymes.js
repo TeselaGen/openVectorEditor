@@ -27,14 +27,9 @@ export default combineReducers({
   //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
   filteredRestrictionEnzymes: createReducer(
     {
-      [filteredRestrictionEnzymesReset]: (state, payload) => initialState,
+      [filteredRestrictionEnzymesReset]: () => initialState,
       [filteredRestrictionEnzymesUpdate]: (state, payload) => payload,
       [filteredRestrictionEnzymesAdd]: function(state, payload) {
-        /* eslint-disable */
-
-        if (!payload.value || !payload.label) debugger; //tnr: it must have these things
-        /* eslint-enable */
-
         return [...state, payload];
       }
     },
@@ -44,19 +39,6 @@ export default combineReducers({
   allRestrictionEnzymes: createReducer(
     {
       [addRestrictionEnzyme]: function(state, payload) {
-        if (
-          !payload.name ||
-          !payload.site ||
-          !payload.forwardRegex ||
-          !payload.reverseRegex ||
-          (!payload.topSnipOffset && payload.topSnipOffset !== 0) ||
-          (!payload.bottomSnipOffset && payload.bottomSnipOffset !== 0)
-        )
-          /* eslint-disable */
-
-          debugger; //tnr: it should have all these properties
-        /* eslint-enable */
-
         return {
           ...state,
           [payload.name]: payload

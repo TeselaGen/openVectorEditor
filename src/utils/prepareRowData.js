@@ -1,11 +1,28 @@
 import { mapAnnotationsToRows } from "ve-sequence-utils";
 import { annotationTypes } from "ve-sequence-utils";
 export default function prepareRowData(sequenceData, bpsPerRow) {
-  // ac.throw([ac.sequenceData, ac.posInt], arguments);
-  let sequenceLength = sequenceData.sequence.length;
+  let sequenceLength = sequenceData.noSequence
+    ? sequenceData.size
+    : sequenceData.sequence.length;
   let totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
   let rows = [];
   let rowMap = {};
+  if (sequenceData.isProtein) {
+    rowMap.primaryProteinSequence = mapAnnotationsToRows(
+      [
+        {
+          id: "primaryProteinSequence",
+          forward: true,
+          start: 0,
+          end: sequenceLength - 1,
+          proteinSequence: sequenceData.proteinSequence,
+          aminoAcids: sequenceData.aminoAcidDataForEachBaseOfDNA
+        }
+      ],
+      sequenceLength,
+      bpsPerRow
+    );
+  }
   annotationTypes.forEach(function(type) {
     rowMap[type] = mapAnnotationsToRows(
       sequenceData[type],
@@ -28,7 +45,17 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     annotationTypes.forEach(function(type) {
       row[type] = rowMap[type][rowNumber] || [];
     });
-    row.sequence = sequenceData.sequence.slice(row.start, row.end + 1);
+    if (sequenceData.isProtein) {
+      row.isProtein = true;
+      row.primaryProteinSequence =
+        rowMap.primaryProteinSequence &&
+        (rowMap.primaryProteinSequence[rowNumber] || []);
+    }
+    row.sequence = sequenceData.noSequence
+      ? {
+          length: row.end + 1 - row.start
+        }
+      : sequenceData.sequence.slice(row.start, row.end + 1);
 
     rows[rowNumber] = row;
   }

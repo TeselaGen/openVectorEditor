@@ -1,11 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import {
-  HashRouter as Router,
-  Route,
-  Link,
-  Redirect
-} from "react-router-dom";
+import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { Switch } from "@blueprintjs/core";
 
 import store from "./store";
@@ -14,21 +9,21 @@ import { render } from "react-dom";
 import {
   CircularView,
   RowView,
-  // RowItem,
-  ToolBar,
-  // CutsiteFilter,
   LinearView,
   DigestTool,
-  Editor,
-  updateEditor
+  updateEditor,
+  EnzymeViewer
 } from "../../src";
 
 // import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
+import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
+import pjson from "../../package.json";
+import EditorDemo from "./EditorDemo";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -43,22 +38,19 @@ const links = [
   { name: "VersionHistoryView", url: "VersionHistoryView" },
   { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
-  { name: "CircularView", url: "CircularView" },
+  { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
   { name: "DigestTool", url: "DigestTool" },
+  { name: "EnzymeViewer", url: "EnzymeViewer" },
+  { name: "CircularView", url: "CircularView" },
   { name: "RowView", url: "RowView" },
   { name: "LinearView", url: "LinearView" },
   { name: "ToolBar", url: "ToolBar" }
 ].map(({ url, name }) => {
   return (
-    <Link key={name} style={{ marginLeft: 10 }} to={url}>
-      {" "}
-      {name}{" "}
-    </Link>
+    <div key={name} style={{ height: 20, marginLeft: 10 }}>
+      <Link to={url}> {name} </Link>
+    </div>
   );
-});
-
-updateEditor(store, "DemoEditor", {
-  sequenceData: exampleSequenceData
 });
 
 class Demo extends React.Component {
@@ -66,15 +58,9 @@ class Demo extends React.Component {
     super(props);
 
     this.state = {
-      previewMode: false,
       darkMode: document.body.className.includes("bp3-dark")
     };
   }
-
-  changePreviewMode = e =>
-    this.setState({
-      previewMode: e.target.checked
-    });
 
   changeDarkMode = () => {
     this.setState({
@@ -84,60 +70,39 @@ class Demo extends React.Component {
   };
 
   render() {
-    const { previewMode, darkMode } = this.state;
+    const { darkMode } = this.state;
 
     return (
       <Provider store={store}>
         <Router>
-          <div style={{height: "100%"}}>
-            {/* <GenbankView editorName={"DemoEditor"} /> */}
-            {/* <OrfProperties editorName={"DemoEditor"} /> */}
-            {/* <CutsiteProperties editorName={"DemoEditor"}></CutsiteProperties> */}
-            {links}
+          <div
+            style={{
+              height: "100%",
+              display: "flex",
+              flexGrow: 1,
+              flexDirection: "column"
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                flexShrink: 0
+              }}
+            >
+              {links}{" "}
+              <span style={{ marginLeft: 10 }}>Version: {pjson.version}</span>{" "}
+              <Switch
+                label="Dark Mode"
+                checked={darkMode}
+                onChange={this.changeDarkMode}
+                style={{ margin: "0px 30px", marginTop: 4 }}
+              />
+            </div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
-              render={() => {
-                return (
-                  <div>
-                    <Switch
-                      checked={previewMode}
-                      label="Preview Mode"
-                      onChange={this.changePreviewMode}
-                      style={{ margin: 30 }}
-                    />
-                    <Switch
-                      label="Dark Mode"
-                      checked={darkMode}
-                      onChange={this.changeDarkMode}
-                      style={{ margin: 30 }}
-                    />
-                    <div
-                      style={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: 40
-                      }}
-                    >
-                      <div
-                        style={{
-                        height: "100%",
-
-                          display: "flex",
-                          flexDirection: "column",
-                          flexWrap: "wrap",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <Editor
-                          editorName="DemoEditor"
-                          withPreviewMode={previewMode}
-                        />
-                      </div>
-                      <div style={{ display: "flex", margin: 20 }} />
-                    </div>
-                  </div>
-                );
+              render={({ history }) => {
+                return <EditorDemo history={history} />;
               }}
               path="/Editor"
             />
@@ -146,13 +111,17 @@ class Demo extends React.Component {
                 return (
                   <div>
                     <VersionHistoryView
-                      onSave={(...args) => {
-                        console.info("onSave triggered:", args);
+                      onSave={() => {
+                        window.alert("onSave triggered!");
+                        // console.info("onSave triggered:", args);
                       }}
                       exitVersionHistoryView={() => {
-                        window.alert('exit requested!')
+                        window.alert("exit requested!");
                       }}
                       getSequenceAtVersion={versionId => {
+                        // in a real version we'd go to server and get a real sequence based on the version id
+                        // const seq = await api.getSeqAtVersion()
+                        // return seq
                         if (versionId === 2) {
                           return {
                             sequence: "thomaswashere"
@@ -171,20 +140,25 @@ class Demo extends React.Component {
                         }
                       }}
                       getVersionList={() => {
-                        return [
-                          {
-                            dateChanged: "12/30/2211",
-                            editedBy: "Nara",
-                            // revisionType: "Sequence Deletion",
-                            versionId: 2
-                          },
-                          {
-                            dateChanged: "8/30/2211",
-                            editedBy: "Ralph",
-                            // revisionType: "Feature Edit",
-                            versionId: 3
-                          }
-                        ];
+                        //fake talking to some api
+                        return new Promise(resolve => {
+                          setTimeout(() => {
+                            resolve([
+                              {
+                                dateChanged: "12/30/2211",
+                                editedBy: "Nara",
+                                // revisionType: "Sequence Deletion",
+                                versionId: 2
+                              },
+                              {
+                                dateChanged: "8/30/2211",
+                                editedBy: "Ralph",
+                                // revisionType: "Feature Edit",
+                                versionId: 3
+                              }
+                            ]);
+                          }, 100);
+                        });
                       }}
                     />
                   </div>
@@ -205,45 +179,98 @@ class Demo extends React.Component {
               path="/StandaloneAlignment"
             />
             <Route
-              render={() => {
-                return <AlignmentDemo />;
+              render={({ history }) => {
+                return <AlignmentDemo history={history} />;
               }}
               path="/Alignment"
             />
             <Route
               render={() => {
-                return <CircularView editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <CircularView editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/CircularView"
             />
             <Route
+              render={({ history }) => (
+                <SimpleCircularOrLinearViewDemo history={history} />
+              )}
+              path="/SimpleCircularOrLinearView"
+            />
+            <Route
               render={() => {
-                return <DigestTool editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <DigestTool editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/DigestTool"
             />
             <Route
               render={() => {
-                return <RowView editorName="DemoEditor" />;
+                const enzyme = {
+                  name: "BsaI",
+                  site: "ggtctc",
+                  forwardRegex: "g{2}tctc",
+                  reverseRegex: "gagac{2}",
+                  topSnipOffset: 7,
+                  bottomSnipOffset: 11
+                };
+                return (
+                  <WrapSimpleDemo>
+                    <EnzymeViewer
+                      {...{
+                        sequence: enzyme.site,
+                        reverseSnipPosition: enzyme.bottomSnipOffset,
+                        forwardSnipPosition: enzyme.topSnipOffset
+                      }}
+                    />
+                  </WrapSimpleDemo>
+                );
+              }}
+              path="/EnzymeViewer"
+            />
+            <Route
+              render={() => {
+                return (
+                  <WrapSimpleDemo>
+                    <RowView editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/RowView"
             />
             <Route
               render={() => {
-                return <LinearView editorName="DemoEditor" />;
+                return (
+                  <WrapSimpleDemo>
+                    <LinearView editorName="DemoEditor" />
+                  </WrapSimpleDemo>
+                );
               }}
               path="/LinearView"
-            />
-            <Route
-              render={() => {
-                return <ToolBar editorName="DemoEditor" />;
-              }}
-              path="/ToolBar"
             />
           </div>
         </Router>
       </Provider>
     );
+  }
+}
+
+class WrapSimpleDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    updateEditor(store, "DemoEditor", {
+      readOnly: false,
+      sequenceData: exampleSequenceData
+    });
+  }
+  render() {
+    return this.props.children;
   }
 }
 

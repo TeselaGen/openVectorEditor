@@ -4,6 +4,7 @@ import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 import React from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
 import pureNoFunc from "../utils/pureNoFunc";
+import { divideBy3 } from "../utils/proteinUtils";
 
 // import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
 
@@ -14,9 +15,11 @@ let Axis = function(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
+    marginTop,
     sequenceLength,
     showAxisNumbers = true,
-    getGaps
+    getGaps,
+    isProtein
   } = props;
   if (row.start === 0 && row.end === 0) {
     return null;
@@ -37,7 +40,8 @@ let Axis = function(props) {
   let tickMarkPositions = calculateTickMarkPositionsForGivenRange({
     tickSpacing,
     range: row,
-    sequenceLength
+    sequenceLength,
+    isProtein
   });
   let tickMarkSVG = [];
 
@@ -47,7 +51,8 @@ let Axis = function(props) {
     //     end: tickMarkPosition
     // }, row, bpsPerRow, charWidth, sequenceLength);
     let xCenter =
-      (tickMarkPosition +
+      (tickMarkPosition -
+        (isProtein ? 1 : 0) +
         (getGaps ? getGaps(tickMarkPosition).gapsBefore : 0)) *
         charWidth +
       charWidth / 2;
@@ -57,7 +62,7 @@ let Axis = function(props) {
       <path
         key={"axisTickMarkPath " + i + " " + tickMarkPosition}
         d={"M" + xCenter + "," + yStart + " L" + xCenter + "," + yEnd}
-        stroke={"black"}
+        stroke="black"
       />
     );
     if (showAxisNumbers) {
@@ -65,25 +70,25 @@ let Axis = function(props) {
         normalizePositionByRangeLength(
           row.start + tickMarkPosition,
           sequenceLength
-        ) + 1;
+        ) + (isProtein ? 0 : 1);
 
       const positionLength = position.toString().length * 4;
 
       tickMarkSVG.push(
         <text
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
-          stroke={"black"}
+          stroke="black"
           x={
             i === 0 //if first label in row, or last label in row, we add checks to make sure the axis number labels don't go outside of the width of the row
               ? Math.max(positionLength, xCenter)
               : i === tickMarkPositions.length - 1
-                ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
-                : xCenter
+              ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
+              : xCenter
           }
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
         >
-          {position}
+          {divideBy3(position + (isProtein ? 1 : 0), isProtein)}
         </text>
       );
     }
@@ -93,13 +98,13 @@ let Axis = function(props) {
     <svg
       className="veRowViewAxis veAxis"
       width="100%"
-      height={annotationHeight * 1.2}
-      style={{ marginTop: 3, overflow: "visible", display: "block" }}
+      height={annotationHeight}
+      style={{ marginTop, overflow: "visible", display: "block" }}
     >
       {tickMarkSVG}
       <path
         d={"M" + xStart + "," + yStart + " L" + xEnd + "," + yStart}
-        stroke={"black"}
+        stroke="black"
       />
     </svg>
   );

@@ -1,11 +1,147 @@
-import createSimpleDialog from "./createSimpleDialog";
-import { NumericInputField } from "teselagen-react-components";
+import { convertRangeTo0Based } from "ve-range-utils";
+import classNames from "classnames";
+import React from "react";
 
-export default createSimpleDialog({
-  formName: "selectDialog",
-  fields: [
-    { name: "from", component: NumericInputField },
-    { name: "to", component: NumericInputField },
-  ],
-  dialogProps: { title: "Select Range", height: 250 }
-});
+import { reduxForm, formValues } from "redux-form";
+import { withDialog } from "teselagen-react-components";
+import { compose } from "redux";
+import { Button, Intent, Classes } from "@blueprintjs/core";
+
+import { NumericInputField } from "teselagen-react-components";
+import { get } from "lodash";
+import { getRangeLength } from "ve-range-utils";
+import { tryToRefocusEditor } from "../utils/editorUtils";
+
+// Single validation function - from & to have the same range
+const validate = (val, vals, props) => {
+  const { min, max } = get(props, "extraProps.from", {});
+  const circular = get(props, "extraProps.circular");
+  if ((min && val < min) || (max && val > max)) {
+    return "Invalid position";
+  }
+  if (!circular && vals.from > vals.to) {
+    return "Wrong from/to order";
+  }
+};
+
+export default compose(
+  withDialog({
+    isDraggable: true,
+    width: 400,
+    title: "Select Range",
+    height: 270,
+    onCloseHook: tryToRefocusEditor
+  }),
+  reduxForm({
+    form: "selectDialog"
+  }),
+  formValues("from", "to")
+)(
+  class SelectDialog extends React.Component {
+    updateTempHighlight = ({ isStart, isEnd } = {}) => val => {
+      const { selectionLayerUpdate, from, to, invalid } = this.props;
+      if (invalid) return;
+      selectionLayerUpdate(
+        convertRangeTo0Based({
+          start: isStart ? Math.round(val) : from,
+          end: isEnd ? Math.round(val) : to
+        })
+      );
+    };
+    componentDidMount() {
+      const { from, to, initialCaretPosition } = this.props;
+      this.initialSelection = { from, to, initialCaretPosition };
+      this.updateTempHighlight()();
+    }
+    render() {
+      const {
+        hideModal,
+        onSubmit,
+        selectionLayerUpdate,
+        from,
+        to,
+        initialCaretPosition,
+        caretPositionUpdate,
+        sequenceLength,
+        extraProps,
+        isProtein,
+        invalid,
+        handleSubmit
+      } = this.props;
+      const selectionLength = getRangeLength(
+        {
+          start: from,
+          end: to
+        },
+        sequenceLength
+      );
+
+      return (
+        <div
+          className={classNames(
+            Classes.DIALOG_BODY,
+            "tg-min-width-dialog simple-dialog"
+          )}
+        >
+          <NumericInputField
+            autoFocus
+            minorStepSize={1}
+            label="From:"
+            clampValueOnBlur
+            {...extraProps.to}
+            validate={validate}
+            //tnrtodo this normalization will actually work when https://github.com/palantir/blueprint/issues/3553 gets resolved
+            normalize={normalizeToInt}
+            onAnyNumberChange={this.updateTempHighlight({ isStart: true })}
+            name="from"
+          />
+          <NumericInputField
+            label="To:"
+            clampValueOnBlur
+            minorStepSize={1}
+            {...extraProps.from}
+            validate={validate}
+            normalize={normalizeToInt}
+            onAnyNumberChange={this.updateTempHighlight({ isEnd: true })}
+            name="to"
+          />
+          <div className="dialog-buttons">
+            <Button
+              onClick={() => {
+                if (initialCaretPosition > -1) {
+                  caretPositionUpdate(initialCaretPosition);
+                } else {
+                  selectionLayerUpdate({
+                    start: this.initialSelection.from,
+                    end: this.initialSelection.to
+                  });
+                }
+                hideModal();
+                tryToRefocusEditor()
+              }}
+              text="Cancel"
+            />
+            <Button
+              onClick={handleSubmit(data => {
+                if (onSubmit) onSubmit(data);
+                hideModal();
+                tryToRefocusEditor()
+              })}
+              intent={Intent.PRIMARY}
+              text={`Select ${invalid ? 0 : selectionLength} ${
+                isProtein ? "AA" : "BP"
+              }${selectionLength === 1 ? "" : "s"}`}
+              disabled={invalid}
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+);
+
+const normalizeToInt = val => {
+  const int = Math.round(val);
+  const normalizedVal = `${int >= 0 ? int : 1}`;
+  return normalizedVal;
+};

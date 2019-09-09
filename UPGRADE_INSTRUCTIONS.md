@@ -40,7 +40,7 @@ panelsShown: [
     [
       {
         id: "circular",
-        name: "Plasmid",
+        name: "Circular Map",
         active: true
       },
       {

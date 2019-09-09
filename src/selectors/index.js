@@ -9,7 +9,10 @@ import selectedCutsitesSelector from "./selectedCutsitesSelector";
 import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import filteredCutsitesSelector from "./filteredCutsitesSelector";
 import searchLayersSelector from "./searchLayersSelector";
+import annotationSearchSelector from "./annotationSearchSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
+import filteredFeaturesSelector from "./filteredFeaturesSelector";
+import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 
 export default {
   translationsSelector,
@@ -19,9 +22,12 @@ export default {
   selectedCutsitesSelector,
   orfsSelector,
   circularSelector,
+  annotationSearchSelector,
   searchLayersSelector,
   filteredCutsitesSelector,
   filteredRestrictionEnzymesSelector,
+  filteredFeaturesSelector,
   restrictionEnzymesSelector,
-  sequenceSelector
+  sequenceSelector,
+  cutsiteLabelColorSelector
 };

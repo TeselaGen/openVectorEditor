@@ -28,7 +28,8 @@ export const editorDragged = function({ nearestCaretPos }) {
     //we're starting the drag, so update the caret position!
     if (!selectionStartGrabbed && !selectionEndGrabbed) {
       //we're not dragging the caret or selection handles
-      this.caretPositionUpdate(nearestCaretPos);
+      this.caretPositionOnDragStart = nearestCaretPos;
+      // this.caretPositionUpdate(nearestCaretPos);
     }
     dragInProgress = true;
     return;
@@ -61,13 +62,19 @@ export const editorDragged = function({ nearestCaretPos }) {
     // }
     //dragging somewhere within the sequence
     //pass the caret position of the drag start
+
     handleCaretDrag({
       caretPosition: caretPositionOnDragStart,
-      selectionLayer,
+      selectionLayer: this.caretPositionOnDragStart
+        ? { start: -1, end: -1 }
+        : selectionLayer,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength
     });
+    if (this.caretPositionOnDragStart !== null) {
+      this.caretPositionOnDragStart = null;
+    }
   }
 };
 
@@ -79,17 +86,77 @@ export const editorClicked = function({ nearestCaretPos, shiftHeld }) {
 };
 
 export const editorDragStarted = function(opts) {
+  document.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
   caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
   selectionStartGrabbed = opts.selectionStartGrabbed;
   selectionEndGrabbed = opts.selectionEndGrabbed;
+
+  // let styleEl = document.getElementById("react-draggable-style-el");
+  // if (!styleEl) {
+  //   styleEl = document.createElement("style");
+  //   styleEl.type = "text/css";
+  //   styleEl.id = "react-draggable-style-el";
+  //   styleEl.innerHTML =
+  //     ".react-draggable-transparent-selection *::-moz-selection {background: transparent;}\n";
+  //   styleEl.innerHTML +=
+  //     ".react-draggable-transparent-selection *::selection {background: transparent;}\n";
+  //   document.getElementsByTagName("head")[0].appendChild(styleEl);
+  // }
+  // if (document.body)
+  //   addClassName(document.body, "react-draggable-transparent-selection");
 };
 export const editorDragStopped = function() {
+  document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = false;
   setTimeout(function() {
     dragInProgress = false;
   });
+
+  // //
+  // try {
+  //   if (document && document.body)
+  //     removeClassName(document.body, "react-draggable-transparent-selection");
+  //   // $FlowIgnore: IE
+  //   if (document.selection) {
+  //     // $FlowIgnore: IE
+  //     document.selection.empty();
+  //   } else {
+  //     const selection = window.getSelection();
+
+  //     if (
+  //       selection.focusNode &&
+  //       selection.focusNode.classList.contains("sequenceInputBubble")
+  //     ) {
+  //       return; //don't remove the selection if we're focused in the sequenceInputBubble!
+  //     }
+  //     selection.removeAllRanges(); // remove selection caused by scroll
+  //   }
+  // } catch (e) {
+  //   // probably IE
+  // }
 };
+
+// function addClassName(el: HTMLElement, className: string) {
+//   if (el.classList) {
+//     el.classList.add(className);
+//   } else {
+//     if (!el.className.match(new RegExp(`(?:^|\\s)${className}(?!\\S)`))) {
+//       el.className += ` ${className}`;
+//     }
+//   }
+// }
+
+// function removeClassName(el: HTMLElement, className: string) {
+//   if (el.classList) {
+//     el.classList.remove(className);
+//   } else {
+//     el.className = el.className.replace(
+//       new RegExp(`(?:^|\\s)${className}(?!\\S)`, "g"),
+//       ""
+//     );
+//   }
+// }
 
 export function handleCaretMoved({
   moveBy,
@@ -421,7 +488,11 @@ export function updateSelectionOrCaret({
   if (typeof newRangeOrCaret !== "object") {
     newCaret = newRangeOrCaret;
   } else {
-    newRange = newRangeOrCaret;
+    newRange = {
+      start: newRangeOrCaret.start,
+      end: newRangeOrCaret.end,
+      forceUpdate: newRangeOrCaret.forceUpdate
+    };
   }
   if (shiftHeld) {
     if (caretPosition > 0) {
@@ -445,7 +516,7 @@ export function updateSelectionOrCaret({
       } else {
         simpleUpdate();
       }
-    } else if (selectionLayer.start > 0) {
+    } else if (selectionLayer.start > -1) {
       //there is already a selection layer
       if (newCaret > -1) {
         //new caret passed

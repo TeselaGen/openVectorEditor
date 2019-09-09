@@ -6,36 +6,37 @@ import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
 import { Button } from "@blueprintjs/core";
-import { InfoHelper } from "teselagen-react-components";
+import { InfoHelper, TgSelect } from "teselagen-react-components";
 
 import enzymeListFull from "../redux/utils/expandedEnzymeList.json";
 import defaultEnzymeList from "../redux/utils/defaultEnzymeList.json";
 // import './style.css';
-import Select from "react-select";
 import { cutSequenceByRestrictionEnzyme } from "ve-sequence-utils";
 // import QuestionTooltip from '../../components/QuestionTooltip';
 import "./style.css";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
-import { addYourOwnEnzymeClose } from "../redux/addYourOwnEnzyme";
-let AddYourOwnEnzyme = function(props) {
+import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
+let AddAdditionalEnzyme = function(props) {
   const paddingStart = "-------";
   const paddingEnd = "-------";
   const {
     // filteredRestrictionEnzymesAdd,
     // addRestrictionEnzyme,
     inputSequenceToTestAgainst = "", //pass this prop in!
-    addYourOwnEnzymeClose: hideModal,
+    addAdditionalEnzymesClose: hideModal,
     seqName = "Destination Vector",
-    addYourOwnEnzyme,
+    addAdditionalEnzymes,
     dispatch,
     editorName,
     stopAddingYourOwnEnzyme
   } = props;
 
-  addYourOwnEnzyme.chop_top_index = Number(addYourOwnEnzyme.chop_top_index);
-  addYourOwnEnzyme.chop_bottom_index = Number(
-    addYourOwnEnzyme.chop_bottom_index
+  addAdditionalEnzymes.chop_top_index = Number(
+    addAdditionalEnzymes.chop_top_index
+  );
+  addAdditionalEnzymes.chop_bottom_index = Number(
+    addAdditionalEnzymes.chop_bottom_index
   );
 
   const {
@@ -43,7 +44,7 @@ let AddYourOwnEnzyme = function(props) {
     chop_top_index = 0,
     chop_bottom_index = 0,
     name = ""
-  } = addYourOwnEnzyme;
+  } = addAdditionalEnzymes;
   const regexString = bpsToRegexString(sequence);
   const enzyme = {
     name: name,
@@ -79,29 +80,29 @@ let AddYourOwnEnzyme = function(props) {
     );
   }
 
-  const errors = validate(addYourOwnEnzyme);
+  const errors = validate(addAdditionalEnzymes);
   if (Object.keys(errors || {}).length) {
     invalid = true;
   }
   function onChange(updatedVal) {
     dispatch({
-      type: "ADD_YOUR_OWN_ENZYME_UPDATE",
+      type: "ADD_ADDITIONAL_ENZYMES_UPDATE",
       payload: {
-        ...addYourOwnEnzyme,
+        ...addAdditionalEnzymes,
         ...updatedVal
       }
     });
   }
 
   return (
-    <div className={"createYourOwnEnzyme"}>
+    <div className="createYourOwnEnzyme">
       <h2>Create your own enzyme</h2>
       <CustomInput
         error={errors["name"]}
         value={name}
         onChange={onChange}
         name="name"
-        label={"Name:"}
+        label="Name:"
       />
       <CustomInput
         error={errors["sequence"]}
@@ -111,7 +112,7 @@ let AddYourOwnEnzyme = function(props) {
         label={
           <div className="labelWithIcon">
             <InfoHelper>
-              <div className={"taLineHolder"}>
+              <div className="taLineHolder">
                 <Line> Special Characters: </Line>
                 <Line> R = G A (purine) </Line>
                 <Line> Y = T C (pyrimidine) </Line>
@@ -203,18 +204,20 @@ let AddYourOwnEnzyme = function(props) {
       <h3 className={"cutnumber " + (matches.length === 0 && "invalid")}>
         {matches.length > 10
           ? `Cuts more than 10 times in your ${seqName}`
-          : `Cuts ${matches.length} times in your ${seqName}`}
+          : `Cuts ${matches.length} time${
+              matches.length === 1 ? "" : "s"
+            } in your ${seqName}`}
       </h3>
-      <div className={"buttonHolder"}>
+      <div className="buttonHolder">
         <Button
-          className={"addYourOwnEnzymeBtn"}
+          className="addAdditionalEnzymeBtn"
           onClick={stopAddingYourOwnEnzyme}
         >
           Back
         </Button>
         <Button
           className={
-            " ta_useCutsite addYourOwnEnzymeBtn " + (invalid && "disabled")
+            " ta_useCutsite addAdditionalEnzymeBtn " + (invalid && "disabled")
           }
           onClick={function() {
             if (invalid) {
@@ -230,7 +233,6 @@ let AddYourOwnEnzyme = function(props) {
             dispatch({
               type: "FILTERED_RESTRICTION_ENZYMES_ADD",
               payload: {
-                label: name,
                 value: name
               },
               meta: {
@@ -245,7 +247,6 @@ let AddYourOwnEnzyme = function(props) {
             hideModal && hideModal();
           }}
         >
-          {" "}
           Use Enzyme
         </Button>
       </div>
@@ -253,33 +254,34 @@ let AddYourOwnEnzyme = function(props) {
   );
 };
 
-AddYourOwnEnzyme = connect(
+AddAdditionalEnzyme = connect(
   function(state) {
     return {
-      addYourOwnEnzyme: state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme
+      addAdditionalEnzymes:
+        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes
     };
   },
-  { addYourOwnEnzymeClose }
-)(AddYourOwnEnzyme);
+  { addAdditionalEnzymesClose }
+)(AddAdditionalEnzyme);
 
 class AddAdditionalEnzymes extends React.Component {
   state = {
-    addYourOwnEnzyme: false,
+    addAdditionalEnzymes: false,
     enzymesToAdd: []
   };
 
   startAddingYourOwnEnzyme = () => {
-    this.setState({ addYourOwnEnzyme: true });
+    this.setState({ addAdditionalEnzymes: true });
   };
 
   stopAddingYourOwnEnzyme = () => {
-    this.setState({ addYourOwnEnzyme: false });
+    this.setState({ addAdditionalEnzymes: false });
   };
 
   render() {
-    if (this.state.addYourOwnEnzyme) {
+    if (this.state.addAdditionalEnzymes) {
       return (
-        <AddYourOwnEnzyme
+        <AddAdditionalEnzyme
           {...this.props}
           stopAddingYourOwnEnzyme={this.stopAddingYourOwnEnzyme}
         />
@@ -287,19 +289,19 @@ class AddAdditionalEnzymes extends React.Component {
     }
     const {
       dispatch,
-      addYourOwnEnzymeClose: hideModal,
+      addAdditionalEnzymesClose: hideModal,
       inputSequenceToTestAgainst = ""
     } = this.props;
     const { enzymesToAdd } = this.state;
     return (
-      <div className={"addYourOwnEnzyme"}>
+      <div className="addAdditionalEnzyme">
         <h2>Add additional enzymes</h2>
         <span>
           Our default list contains just the most common enzymes. Search here to
           add less common ones:
         </span>
-        <div className={"filterAndButton"}>
-          <Select
+        <div className="filterAndButton">
+          <TgSelect
             multi
             placeholder="Select cut sites..."
             options={map(enzymeListFull, function(enzyme) {
@@ -325,7 +327,7 @@ class AddAdditionalEnzymes extends React.Component {
             value={enzymesToAdd}
           />
           <Button
-            className={"addYourOwnEnzymeBtn"}
+            className="addAdditionalEnzymeBtn"
             onClick={function() {
               enzymesToAdd.forEach(function(enzyme) {
                 dispatch({
@@ -336,7 +338,6 @@ class AddAdditionalEnzymes extends React.Component {
                 dispatch({
                   type: "FILTERED_RESTRICTION_ENZYMES_ADD",
                   payload: {
-                    label: enzyme.label,
                     value: enzyme.value.name
                   }
                   // meta: {}
@@ -348,13 +349,16 @@ class AddAdditionalEnzymes extends React.Component {
               this.state.enzymesToAdd && this.state.enzymesToAdd.length < 1
             }
           >
-            Add Enzyme(s)
+            Add Enzyme
+            {this.state.enzymesToAdd && this.state.enzymesToAdd.length > 1
+              ? "s"
+              : ""}
           </Button>
         </div>
-        <div className={"createYourOwnButton"}>
+        <div className="createYourOwnButton">
           <span>Still not finding what you want?</span>
           <Button
-            className={"addYourOwnEnzymeBtn"}
+            className="addAdditionalEnzymeBtn"
             onClick={this.startAddingYourOwnEnzyme}
           >
             Create your own enzyme
@@ -403,11 +407,11 @@ AddAdditionalEnzymes = connect(
   function(state) {
     return {
       inputSequenceToTestAgainst:
-        state.VectorEditor.__allEditorsOptions.addYourOwnEnzyme
+        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes
           .inputSequenceToTestAgainst
     };
   },
-  { addYourOwnEnzymeClose }
+  { addAdditionalEnzymesClose }
 )(AddAdditionalEnzymes);
 
 export default AddAdditionalEnzymes;
@@ -473,5 +477,5 @@ function CustomInput({ name, value, onChange, onInput, label, error, type }) {
 }
 
 function Line({ children }) {
-  return <div className={"taLine"}> {children}</div>;
+  return <div className="taLine"> {children}</div>;
 }

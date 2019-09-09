@@ -1,4 +1,3 @@
-import { rotateSequenceDataToPosition } from "ve-sequence-utils";
 import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
@@ -8,29 +7,19 @@ import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
-  insertSequenceDataAtPositionOrRange,
-  deleteSequenceDataAtRange,
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { map, get, startCase, some } from "lodash";
-import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
-import { MenuItem } from "@blueprintjs/core";
-import { connect } from "react-redux";
-import { getContext } from "recompose";
-import FileSaver from "file-saver";
-import Keyboard from "./Keyboard";
-import getCommands from "../commands";
+import { some, map } from "lodash";
+import { Menu } from "@blueprintjs/core";
+import { getContext, branch } from "recompose";
 
-import withEditorProps from "../withEditorProps";
 import {
   normalizePositionByRangeLength
   // convertRangeTo1Based
 } from "ve-range-utils";
 import React from "react";
-import createSequenceInputPopup from "./createSequenceInputPopup";
 
-import moveCaret from "./moveCaret";
 // import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
@@ -39,6 +28,13 @@ import {
   showConfirmationDialog,
   commandMenuEnhancer
 } from "teselagen-react-components";
+import { bioData } from "ve-sequence-utils";
+import { jsonToGenbank } from "bio-parsers";
+import withEditorProps from "../withEditorProps";
+import getCommands from "../commands";
+import moveCaret from "./moveCaret";
+import createSequenceInputPopup from "./createSequenceInputPopup";
+import Keyboard from "./Keyboard";
 import {
   handleCaretMoved,
   editorDragged,
@@ -48,13 +44,59 @@ import {
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
+import {
+  copyOptionsMenu,
+  createNewAnnotationMenu
+} from "../MenuBar/defaultConfig";
+import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
+import { getNodeToRefocus } from "../utils/editorUtils";
 
-// TODO: maybe assign ids to nodes and store this info in the redux store
-const _lastFocusedWrapper = {};
+function getAcceptedChars(isProtein) {
+  return isProtein
+    ? bioData.extended_protein_letters.toLowerCase()
+    : bioData.ambiguous_dna_letters.toLowerCase();
+}
 
+const annotationClickHandlers = [
+  "orfClicked",
+  "primerClicked",
+  "translationClicked",
+  "primaryProteinSequenceClicked",
+  "cutsiteClicked",
+  "translationDoubleClicked",
+  "deletionLayerClicked",
+  "replacementLayerClicked",
+  "featureClicked",
+  "warningClicked",
+  "partClicked",
+  "searchLayerClicked"
+];
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
+    constructor(props) {
+      super(props);
+      annotationClickHandlers.forEach(handler => {
+        this[handler] = (...args) => {
+          const { clickOverrides = {} } = this.props;
+          let preventDefault;
+          const defaultHandler = this[handler + "_localOverride"]
+            ? this[handler + "_localOverride"]
+            : this.annotationClicked;
+          if (clickOverrides[handler]) {
+            preventDefault = clickOverrides[handler](...args);
+          }
+          !preventDefault && defaultHandler(...args);
+        };
+      });
+
+      const ConnectedMenu = withEditorProps(({ children }) => (
+        <Menu>{children}</Menu>
+      ));
+      this.ConnectedMenu = props => (
+        <ConnectedMenu store={this.props.store} {...props} />
+      );
+    }
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
@@ -74,34 +116,9 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        [
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f",
-          "g",
-          "h",
-          "i",
-          "j",
-          "k",
-          "l",
-          "m",
-          "n",
-          "o",
-          "p",
-          "q",
-          "r",
-          "s",
-          "t",
-          "u",
-          "v",
-          "w",
-          "x",
-          "y",
-          "z"
-        ],
+        getAcceptedChars(
+          this.props.sequenceData && this.props.sequenceData.isProtein
+        ).split(""),
         event => {
           this.handleDnaInsert(event);
         }
@@ -139,7 +156,7 @@ function VectorInteractionHOC(Component /* options */) {
             selectionLayer,
             caretPosition,
             sequenceLength,
-            sequenceData: { circular } = {},
+            sequenceData: { isProtein, circular } = {},
             circular: circular2,
             caretPositionUpdate,
             selectionLayerUpdate
@@ -149,6 +166,7 @@ function VectorInteractionHOC(Component /* options */) {
             bpsPerRow,
             caretPosition,
             selectionLayer,
+            isProtein,
             shiftHeld,
             type
           });
@@ -173,7 +191,10 @@ function VectorInteractionHOC(Component /* options */) {
         this.handleDnaDelete(event);
       });
 
-      this.commandEnhancer = commandMenuEnhancer(getCommands(this));
+      this.commandEnhancer = commandMenuEnhancer(getCommands(this), {
+        useTicks: true,
+        omitIcons: true
+      });
     }
     updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
       const {
@@ -197,16 +218,15 @@ function VectorInteractionHOC(Component /* options */) {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
-        sequenceData = { sequence: "" },
         readOnly,
-        onPaste,
-        updateSequenceData,
-        selectionLayerUpdate
-        // handleInsert
+        onPaste
       } = this.props;
 
       if (readOnly) {
         return window.toastr.warning("Sorry the sequence is Read-Only");
+      }
+      if (!(caretPosition > -1 || selectionLayer.start > -1)) {
+        return window.toastr.warning("Please place the cursor before pasting");
       }
 
       let seqDataToInsert;
@@ -231,92 +251,78 @@ function VectorInteractionHOC(Component /* options */) {
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");
 
-      updateSequenceData(
-        insertSequenceDataAtPositionOrRange(
-          seqDataToInsert,
-          sequenceData,
-          caretPosition > -1 ? caretPosition : selectionLayer
-        )
-      );
-      const newSelectionLayerStart =
-        caretPosition > -1 ? caretPosition : selectionLayer.start;
-      selectionLayerUpdate({
-        start: newSelectionLayerStart,
-        end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+      insertAndSelectHelper({
+        seqDataToInsert,
+        props: this.props
       });
 
       window.toastr.success("Sequence Pasted Successfully");
       e.preventDefault();
     };
 
-    handleCut = e => {
-      window.toastr.success("Selection Cut");
-      const { sequenceData, selectionLayer, copyOptions } = this.props;
-
-      const onCut = this.props.onCut || this.props.onCopy || (() => {});
-
-      const sequenceDataToCopy =
-        this.sequenceDataToCopy ||
-        getSequenceDataBetweenRange(sequenceData, selectionLayer, {
-          excludePartial: {
-            features: !copyOptions.partialFeatures,
-            parts: !copyOptions.partialParts
-          },
-          exclude: {
-            features: !copyOptions.features,
-            parts: !copyOptions.parts
-          }
-        });
-
-      this.handleDnaDelete(false);
-
-      onCut(
-        e,
-        tidyUpSequenceData(sequenceDataToCopy, { annotationsAsObjects: true }),
-        this.props
-      );
-      this.sequenceDataToCopy = undefined;
-      document.body.removeEventListener("cut", this.handleCut);
-    };
-
-    handleCopy = e => {
-      window.toastr.success("Selection Copied");
+    handleCutOrCopy = isCut => e => {
       const {
         onCopy = () => {},
         sequenceData,
         selectionLayer,
         copyOptions
       } = this.props;
+      const onCut = this.props.onCut || this.props.onCopy || (() => {});
 
-      onCopy(
-        e,
-        tidyUpSequenceData(
-          this.sequenceDataToCopy ||
-            getSequenceDataBetweenRange(sequenceData, selectionLayer, {
-              excludePartial: {
-                features: !copyOptions.partialFeatures,
-                parts: !copyOptions.partialParts
-              },
-              exclude: {
-                features: !copyOptions.features,
-                parts: !copyOptions.parts
-              }
-            }),
-          { annotationsAsObjects: true }
-        ),
-        this.props
+      const seqData = tidyUpSequenceData(
+        this.sequenceDataToCopy ||
+          getSequenceDataBetweenRange(sequenceData, selectionLayer, {
+            excludePartial: {
+              features: !copyOptions.partialFeatures,
+              parts: !copyOptions.partialParts
+            },
+            exclude: {
+              features: !copyOptions.features,
+              parts: !copyOptions.parts
+            }
+          }),
+        { annotationsAsObjects: true }
       );
-      this.sequenceDataToCopy = undefined;
-      document.body.removeEventListener("copy", this.handleCopy);
-    };
+      if (!seqData.sequence.length)
+        return window.toastr.warning(
+          `No Sequence Selected To ${isCut ? "Cut" : "Copy"}`
+        );
 
-    handleDnaInsert() {
+      const clipboardData = e.clipboardData;
+      clipboardData.setData(
+        "text/plain",
+        seqData.isProtein ? seqData.proteinSequence : seqData.sequence
+      );
+      clipboardData.setData("application/json", JSON.stringify(seqData));
+      e.preventDefault();
+
+      if (isCut) {
+        this.handleDnaDelete(false);
+        onCut(
+          e,
+          tidyUpSequenceData(seqData, { annotationsAsObjects: true }),
+          this.props
+        );
+        document.body.removeEventListener("cut", this.handleCut);
+      } else {
+        onCopy(e, seqData, this.props);
+        document.body.removeEventListener("copy", this.handleCopy);
+      }
+      window.toastr.success(`Selection ${isCut ? "Cut" : "Copied"}`);
+      this.sequenceDataToCopy = undefined;
+    };
+    handleCut = this.handleCutOrCopy(true);
+
+    handleCopy = this.handleCutOrCopy();
+
+    handleDnaInsert = ({ useEventPositioning }) => {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        readOnly,
-        updateSequenceData
+        readOnly
+        // updateSequenceData,
+        // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
@@ -325,30 +331,33 @@ function VectorInteractionHOC(Component /* options */) {
         window.toastr.warning("Sorry the sequence is Read-Only");
       } else {
         createSequenceInputPopup({
+          useEventPositioning,
           isReplace,
+          acceptedChars: getAcceptedChars(sequenceData.isProtein),
+          isProtein: sequenceData.isProtein,
           selectionLayer,
           sequenceLength,
           caretPosition,
           handleInsert: seqDataToInsert => {
-            updateSequenceData(
-              insertSequenceDataAtPositionOrRange(
-                seqDataToInsert,
-                sequenceData,
-                caretPosition > -1 ? caretPosition : selectionLayer
-              )
-            );
-            window.toastr.success("Sequence Updated Successfully");
+            insertAndSelectHelper({
+              props: this.props,
+              seqDataToInsert
+            });
+
+            window.toastr.success("Sequence Inserted Successfully");
           }
         });
       }
-    }
-    handleDnaDelete(showToast = true) {
+    };
+
+    handleDnaDelete = (showToast = true) => {
       let {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly,
         updateSequenceData,
+        wrappedInsertSequenceDataAtPositionOrRange,
         caretPositionUpdate
         // handleInsert
       } = this.props;
@@ -361,7 +370,7 @@ function VectorInteractionHOC(Component /* options */) {
         if (caretPosition > 0) {
           rangeToDelete = {
             start: normalizePositionByRangeLength(
-              caretPosition - 1,
+              caretPosition - (sequenceData.isProtein ? 3 : 1),
               sequenceLength
             ),
             end: normalizePositionByRangeLength(
@@ -370,20 +379,24 @@ function VectorInteractionHOC(Component /* options */) {
             )
           };
         }
-        const newSeqData = deleteSequenceDataAtRange(
+        const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
+          {},
           sequenceData,
           rangeToDelete
         );
         updateSequenceData(newSeqData);
         caretPositionUpdate(
-          normalizePositionByRangeLength(
-            rangeToDelete.start,
-            newSeqData.sequence.length
-          )
+          rangeToDelete.start > newSeqData.sequence.length
+            ? //we're deleting around the origin so set the cursor to the 0 position
+              0
+            : normalizePositionByRangeLength(
+                rangeToDelete.start,
+                newSeqData.sequence.length
+              )
         );
         if (showToast) window.toastr.success("Sequence Deleted Successfully");
       }
-    }
+    };
 
     caretPositionUpdate = position => {
       let { caretPosition = -1 } = this.props;
@@ -399,8 +412,12 @@ function VectorInteractionHOC(Component /* options */) {
         ignoreGapsOnHighlight
       } = this.props;
       if (!newSelection) return;
-      const { start, end } = newSelection;
-      if (selectionLayer.start === start && selectionLayer.end === end) {
+      const { start, end, forceUpdate } = newSelection;
+      if (
+        selectionLayer.start === start &&
+        selectionLayer.end === end &&
+        selectionLayer.forceUpdate === forceUpdate
+      ) {
         return;
       }
       //we only call selectionLayerUpdate if we're actually changing something
@@ -417,17 +434,29 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation && event.stopPropagation();
       const {
         annotationSelect,
+        selectionLayer,
         annotationDeselectAll,
         propertiesViewTabUpdate
       } = this.props;
-      this.updateSelectionOrCaret(event.shiftKey, annotation);
+      let forceUpdate;
+      if (
+        annotation.start > -1 &&
+        selectionLayer.start === annotation.start &&
+        selectionLayer.end === annotation.end
+      ) {
+        forceUpdate = selectionLayer.forceUpdate === "end" ? "start" : "end";
+      }
+      this.updateSelectionOrCaret(event.shiftKey || event.metaKey, {
+        ...annotation,
+        ...(forceUpdate && { forceUpdate })
+      });
       !event.shiftKey && annotationDeselectAll(undefined);
       annotation.id && annotationSelect(annotation);
       annotation.annotationTypePlural &&
         propertiesViewTabUpdate(annotation.annotationTypePlural, annotation);
     };
 
-    cutsiteClicked = ({ event, annotation }) => {
+    cutsiteClicked_localOverride = ({ event, annotation }) => {
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
@@ -435,88 +464,62 @@ function VectorInteractionHOC(Component /* options */) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
+    warningClicked_localOverride = ({ event, annotation }) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { annotationSelect, annotationDeselectAll } = this.props;
+      showConfirmationDialog({
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Okay",
 
-    getViewFrameTranslationsItems = () => {
-      const {
-        frameTranslations,
-        editorName,
-        store,
-        annotationsToSupport: { translations } = {},
-        frameTranslationToggle
-      } = this.props;
-      return !translations
-        ? []
-        : [
-            {
-              text: "View AA Frames",
-              submenu: map(frameTranslations, (unused, frame) => {
-                return (
-                  <FrameTranslationMenuItem
-                    key={frame}
-                    {...{
-                      text: "Frame " + frame,
-                      frame,
-                      editorName,
-                      store,
-                      onClick: function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        frameTranslationToggle(frame);
-                      }
-                    }}
-                  />
-                );
-              })
-            }
-          ];
+        canEscapeKeyCancel: true,
+        // intent: Intent.NONE,
+
+        // onCancel: undefined,
+        text: (
+          <React.Fragment>
+            <h3>{annotation.name}:</h3>
+            {annotation.message}
+          </React.Fragment>
+        )
+      });
+      this.updateSelectionOrCaret(event.shiftKey, annotation);
+      annotationDeselectAll(undefined);
+      annotationSelect(annotation);
     };
-    getCreateItems = range => {
-      const {
-        readOnly,
-        showAddOrEditPrimerDialog,
-        annotationsToSupport: { parts, primers, features } = {},
-        selectionLayer,
-        caretPosition,
-        sequenceLength
-      } = this.props;
-      let rangeToUse =
-        range ||
-        (selectionLayer.start > -1
-          ? selectionLayer
-          : caretPosition > -1
-            ? { start: caretPosition, end: caretPosition }
-            : { start: 0, end: 0 });
-      rangeToUse = { ...rangeToUse, forward: true };
+
+    getCreateItems = () => {
+      const { readOnly, sequenceLength } = this.props;
       return sequenceLength && readOnly
         ? []
         : [
             {
               text: "Create",
-              submenu: [
-                features && "newFeature",
-                parts && "newPart",
-                primers && {
-                  // TODO migrate this one to a command too
-                  text: "Primer",
-                  onClick: function() {
-                    showAddOrEditPrimerDialog(rangeToUse);
-                  }
-                }
-              ]
+              submenu: ["newFeature", "newPart", "newPrimer"]
             }
           ];
+    };
+    insertHelper = {
+      onClick: (e, ctxInfo) => {
+        this.handleDnaInsert({
+          useEventPositioning: {
+            e,
+            nodeToReFocus: getNodeToRefocus(ctxInfo.event.target)
+          }
+        });
+      }
     };
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
       const {
-        // sequenceData,
+        sequenceData,
         selectionLayer,
-        toggleCopyOption,
         editorName,
         store,
-        copyOptions
+        readOnly
       } = this.props;
+      const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
@@ -538,7 +541,10 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               }
             );
-            const sequenceDataToCopy = transformFunc(selectedSeqData);
+            const sequenceDataToCopy = transformFunc(
+              selectedSeqData,
+              sequenceData
+            );
 
             this.sequenceDataToCopy = sequenceDataToCopy;
             if (action === "copy") {
@@ -554,17 +560,25 @@ function VectorInteractionHOC(Component /* options */) {
       // TODO: maybe stop using Clipboard.js and unify clipboard handling with
       // a more versatile approach
       return [
-        {
-          text: "Cut",
-          className: "openVeCut",
-          willUnmount: () => {
-            this.openVeCut && this.openVeCut.destroy();
-          },
-          didMount: ({ className }) => {
-            // TODO: Maybe use a cut action instead
-            this.openVeCut = makeTextCopyable(i => i, className, "cut");
-          }
-        },
+        ...(readOnly
+          ? []
+          : [
+              {
+                text: "Replace",
+                ...this.insertHelper
+              },
+              {
+                text: "Cut",
+                className: "openVeCut",
+                willUnmount: () => {
+                  this.openVeCut && this.openVeCut.destroy();
+                },
+                didMount: ({ className }) => {
+                  // TODO: Maybe use a cut action instead
+                  this.openVeCut = makeTextCopyable(i => i, className, "cut");
+                }
+              }
+            ]),
         {
           text: "Copy",
           className: "openVeCopy1",
@@ -574,7 +588,7 @@ function VectorInteractionHOC(Component /* options */) {
           didMount: ({ className }) => {
             this.openVeCopy1 = makeTextCopyable(i => i, className);
           },
-          submenu: [
+          submenu: !isProtein && [
             {
               text: "Copy",
               className: "openVeCopy2",
@@ -583,6 +597,21 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopy2 = makeTextCopyable(i => i, className);
+              }
+            },
+
+            {
+              text: "Copy Genbank For Selection",
+              className: "openVeCopyGenbankForSelection",
+              willUnmount: () => {
+                this.openVeCopyGenbankForSelection &&
+                  this.openVeCopyGenbankForSelection.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyGenbankForSelection = makeTextCopyable(
+                  getGenbankFromSelection,
+                  className
+                );
               }
             },
             {
@@ -620,13 +649,11 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAA = makeTextCopyable(
-                  {
-                    sequence: selectedSeqData => {
-                      return getAminoAcidStringFromSequenceString(
-                        selectedSeqData.sequence
-                      );
-                    }
-                  },
+                  selectedSeqData => ({
+                    sequence: getAminoAcidStringFromSequenceString(
+                      selectedSeqData.sequence
+                    )
+                  }),
                   className
                 );
               }
@@ -639,67 +666,41 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
-                  {
-                    sequence: selectedSeqData => {
-                      return getAminoAcidStringFromSequenceString(
-                        getReverseComplementSequenceAndAnnotations(
-                          selectedSeqData
-                        ).sequence
-                      );
-                    }
-                  },
+                  selectedSeqData => ({
+                    sequence: getAminoAcidStringFromSequenceString(
+                      getReverseComplementSequenceAndAnnotations(
+                        selectedSeqData
+                      ).sequence
+                    )
+                  }),
                   className
                 );
               }
             },
-            {
-              text: "Copy Options",
-              submenu: [
-                <MenuItem disabled key={"aghah"} text={"Include:"} />
-              ].concat(
-                map(copyOptions, (unused, copyOption) => {
-                  return (
-                    <CopyOptionMenuItem
-                      key={copyOption}
-                      {...{
-                        text: startCase(copyOption),
-                        copyOption,
-                        editorName,
-                        store,
-                        onClick: function(e) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          toggleCopyOption(copyOption);
-                        }
-                      }}
-                    />
-                  );
-                })
-              )
-            }
+            copyOptionsMenu
           ]
-        }
+        },
+        isProtein && copyOptionsMenu
       ];
     };
 
-    generateSelectionMenuOptions = annotation => {
-      const {
-        // sequenceData,
-        upsertTranslation
-      } = this.props;
-
+    getSelectionMenuOptions = annotation => {
       let items = [
         ...this.getCopyOptions(annotation),
-        ...this.getCreateItems(annotation),
+        createNewAnnotationMenu,
+        "--",
+        "selectInverse",
+        "--",
+        "reverseComplementSelection",
+        "complementSelection",
         {
-          text: "View Translation",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: true
-            });
-          }
+          text: "Change Case",
+          submenu: [
+            // "upperCaseSequence",
+            // "lowerCaseSequence",
+            "upperCaseSelection",
+            "lowerCaseSelection"
+          ]
         }
       ];
       return items;
@@ -709,475 +710,278 @@ function VectorInteractionHOC(Component /* options */) {
       event.stopPropagation();
       return handler({ event, ...rest }, this.props);
     };
-    enhanceRightClickActions = actions => {
-      const normalizedActions = {};
-      const { rightClickOverrides = {} } = this.props;
-      Object.keys(actions).forEach(key => {
-        const action = actions[key];
-        normalizedActions[key] = opts => {
-          const items = action(opts);
-          const e = (items && items._event) || opts.event || opts;
-          e.preventDefault && e.preventDefault();
-          e.stopPropagation && e.stopPropagation();
-          //override hook here
-          const override = rightClickOverrides[key];
-          showContextMenu(
-            override ? override(items, opts, this.props) : items,
-            [this.commandEnhancer],
-            e,
-            undefined,
-            opts // context here
-          );
-        };
-      });
-      return normalizedActions;
+    enhanceRightClickAction = (action, key) => {
+      return opts => {
+        const lastFocusedEl = document.activeElement;
+        const { rightClickOverrides = {} } = this.props;
+        const items = action(opts);
+        const e = (items && items._event) || opts.event || opts;
+        e.preventDefault && e.preventDefault();
+        e.stopPropagation && e.stopPropagation();
+        //override hook here
+        const override = rightClickOverrides[key];
+        showContextMenu(
+          override ? override(items, opts, this.props) : items,
+          [this.commandEnhancer],
+          e,
+          () => {
+            if (
+              lastFocusedEl &&
+              document.activeElement &&
+              (document.activeElement.classList.contains(
+                "bp3-popover-enter-done"
+              ) ||
+                (document.activeElement.type === "textarea" && //this is the clipboard textarea created by clipboardjs
+                  document.activeElement.offsetLeft === -9999))
+            ) {
+              lastFocusedEl.focus();
+            }
+          },
+          opts, // context here
+          this.ConnectedMenu
+        );
+      };
     };
 
-    selectionLayerRightClicked = ({ annotation }) => {
-      return this.generateSelectionMenuOptions({
+    selectionLayerRightClicked = this.enhanceRightClickAction(
+      ({ annotation }) => {
+        return this.getSelectionMenuOptions({
+          //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
+          start: annotation.start,
+          end: annotation.end
+        });
+      },
+      "selectionLayerRightClicked"
+    );
+    searchLayerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return this.getSelectionMenuOptions({
         //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
         start: annotation.start,
         end: annotation.end
       });
-    };
+    }, "searchLayerRightClicked");
 
-    handleRotateToCaretPosition = () => {
-      const {
-        caretPosition,
-        readOnly,
-        sequenceData,
-        updateSequenceData,
-        caretPositionUpdate
-      } = this.props;
-      if (readOnly) {
-        return;
-      }
-      if (caretPosition < 0) return;
-      updateSequenceData(
-        rotateSequenceDataToPosition(sequenceData, caretPosition)
-      );
-      caretPositionUpdate(0);
-    };
-
-    backgroundRightClicked = ({ nearestCaretPos, shiftHeld, event }) => {
-      this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
-      const {
-        readOnly,
-        sequenceData: { circular }
-      } = this.props;
-      const menu = [
-        ...(readOnly
-          ? []
-          : [
-              {
-                disabled: !circular,
-                text: "Rotate To Here",
-                tooltip: !circular
-                  ? "Disabled because the sequence is linear"
-                  : undefined,
-                onClick: this.handleRotateToCaretPosition
-              }
-            ]),
-        ...this.getCreateItems(),
-        ...this.getViewFrameTranslationsItems()
-        // {
-        //   text: "Toggle Properties Panel",
-        //   onClick: function() {
-        //     propertiesViewToggle();
-        //   }
-        // }
-      ];
-      menu._event = event;
-      return menu;
-    };
-
-    deletionLayerRightClicked = ({ annotation }) => {
-      const { editorName, dispatch } = this.props;
-      return [
-        {
-          text: "Remove Deletion",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            dispatch({
-              type: "DELETION_LAYER_DELETE",
-              meta: { editorName },
-              payload: { ...annotation }
-            });
-          }
-        }
-      ];
-    };
-
-    partRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation);
-      const {
-        readOnly,
-        upsertTranslation,
-        deletePart,
-        showAddOrEditPartDialog,
-        propertiesViewOpen,
-        propertiesViewTabUpdate
-      } = this.props;
-      return [
-        ...(readOnly
-          ? []
-          : [
-              {
-                text: "Edit Part",
-                onClick: function() {
-                  showAddOrEditPartDialog(annotation);
-                }
-              },
-              {
-                text: "Delete Part",
-                onClick: function() {
-                  deletePart(annotation);
-                }
-              }
-            ]),
-        ...this.getCopyOptions(annotation),
-        {
-          text: "View Translation",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
-          }
-        },
-        {
-          text: "View Part Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("parts", annotation);
-          }
-        }
-      ];
-    };
-    featureRightClicked = ({ annotation, event }) => {
-      this.props.selectionLayerUpdate(annotation);
-      event.persist();
-      const {
-        readOnly,
-        upsertTranslation,
-        deleteFeature,
-        showMergeFeaturesDialog,
-        annotationVisibilityToggle,
-        // showAddOrEditFeatureDialog,
-        propertiesViewOpen,
-        annotationsToSupport: { parts } = {},
-        propertiesViewTabUpdate
-      } = this.props;
-      return [
-        ...(readOnly
-          ? []
-          : [
-              "editFeature",
-              // {
-              //   text: "Edit Feature",
-              //   onClick: function() {
-              //     showAddOrEditFeatureDialog(annotation);
-              //   }
-              // },
-              // TODO: migrate others as commands too
-              {
-                text: "Delete Feature",
-                onClick: function() {
-                  deleteFeature(annotation);
-                }
-              },
-              ...this.getCopyOptions(annotation),
-              ...(parts && [
+    backgroundRightClicked = this.enhanceRightClickAction(
+      ({ nearestCaretPos, shiftHeld, event }) => {
+        this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
+        const {
+          readOnly
+          // sequenceData: { circular }
+        } = this.props;
+        const menu = [
+          ...(readOnly
+            ? []
+            : [
                 {
-                  text: "Make a Part from Feature",
-                  onClick: async () => {
-                    const { sequenceData, upsertPart } = this.props;
-                    if (
-                      some(sequenceData.parts, part => {
-                        if (
-                          part.start === annotation.start &&
-                          part.end === annotation.end
-                        ) {
-                          return true;
-                        }
-                      })
-                    ) {
-                      const doAction = await showConfirmationDialog({
-                        text:
-                          "A part already exists that matches this feature's range. Do you want to make one anyways?",
-                        confirmButtonText: "Create Part",
-                        canEscapeKeyCancel: true //this is false by default
-                      });
-                      if (!doAction) return; //early return
-                    }
-                    upsertPart({
-                      start: annotation.start,
-                      end: annotation.end,
-                      forward: annotation.forward,
-                      name: annotation.name
-                    });
-                  }
+                  text: "Insert",
+                  ...this.insertHelper
                 }
               ]),
-              {
-                text: "Merge With Another Feature",
-                onClick: () => {
-                  this.annotationClicked({
-                    annotation,
-                    event: { ...event, shiftHeld: true }
-                  });
-                  // annotationSelect(annotation)
-                  showMergeFeaturesDialog(annotation);
-                }
-              }
-            ]),
-        {
-          text: "Toggle CDS Feature Translations",
-          onClick: () => {
-            annotationVisibilityToggle("cdsFeatureTranslations");
+          "rotateToCaretPosition",
+          ...this.getCreateItems(),
+          {
+            ...fullSequenceTranslationMenu,
+            text: "View Full Sequence Translations"
           }
-        },
-        {
-          text: "View Translation",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
-          }
-        },
-        {
-          text: "View Feature Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("features", annotation);
-          }
-        }
-      ];
-    };
+        ];
+        menu._event = event;
+        return menu;
+      },
+      "backgroundRightClicked"
+    );
 
-    cutsiteRightClicked = ({ annotation }) => {
-      const { propertiesViewOpen, propertiesViewTabUpdate } = this.props;
-      return [
-        {
-          text: "View Cutsite Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("cutsites", annotation);
-          }
-        }
-      ];
-    };
-    primerRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation);
-      const {
-        showAddOrEditPrimerDialog,
-        readOnly,
-        upsertTranslation,
-        propertiesViewOpen,
-        propertiesViewTabUpdate
-      } = this.props;
-      return [
-        ...(readOnly
-          ? []
-          : [
-              {
-                text: "Edit Primer",
-                onClick: function() {
-                  showAddOrEditPrimerDialog(annotation);
-                }
-              }
-            ]),
-        ...this.getCopyOptions(annotation),
-        {
-          text: "View Translation",
-          // icon: "ion-plus-round",
-          onClick: function() {
-            upsertTranslation({
-              start: annotation.start,
-              end: annotation.end,
-              forward: annotation.forward
-            });
-          }
-        },
-        {
-          text: "View Primer Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("primers", annotation);
-          }
-        }
-      ];
-    };
-    orfRightClicked = ({ annotation }) => {
-      this.props.selectionLayerUpdate(annotation);
-      const {
-        // upsertTranslation,
-        propertiesViewOpen,
-        propertiesViewTabUpdate,
-        annotationVisibilityToggle
-      } = this.props;
-      return [
-        {
-          text: "Toggle Orf Translations",
-          onClick: () => {
-            annotationVisibilityToggle("orfTranslations");
-          }
-        },
-        ...this.getCopyOptions(annotation),
-        {
-          text: "View Orf Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("orfs", annotation);
-          }
-        }
-      ];
-    };
-    translationRightClicked = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const {
-        // readOnly,
-        deleteTranslation,
-        propertiesViewOpen,
-        selectionLayerUpdate,
-        propertiesViewTabUpdate,
-        annotationVisibilityToggle
-      } = this.props;
-      this.props.selectionLayerUpdate(annotation);
-      if (annotation.isOrf) {
+    deletionLayerRightClicked = this.enhanceRightClickAction(
+      ({ annotation }) => {
+        const { editorName, dispatch } = this.props;
         return [
           {
-            text: "Hide Orf Translations",
-            onClick: () => {
-              annotationVisibilityToggle("orfTranslations");
-            }
-          },
-          {
-            text: "View Orf Properties",
+            text: "Remove Deletion",
+            // icon: "ion-plus-round",
             onClick: function() {
-              propertiesViewOpen();
-              propertiesViewTabUpdate("orfs", annotation);
+              dispatch({
+                type: "DELETION_LAYER_DELETE",
+                meta: { editorName },
+                payload: { ...annotation }
+              });
             }
           }
         ];
-      }
-      return [
-        {
-          text: "Delete Translation",
-          onClick: function() {
-            deleteTranslation(annotation);
-          }
-        },
-        {
-          text: "Select Translation",
-          onClick: function() {
-            selectionLayerUpdate(annotation);
-          }
-        },
-        ...this.getCopyOptions(annotation),
-        {
-          text: "View Translation Properties",
-          onClick: function() {
-            propertiesViewOpen();
-            propertiesViewTabUpdate("translations", annotation);
-          }
-        }
-      ];
-    };
+      },
+      "deletionLayerRightClicked"
+    );
 
-    importSequenceFromFile = (file, opts = {}) => {
-      const { updateSequenceData } = this.props;
-      let reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
-      reader.onload = function(evt) {
-        const content = evt.target.result;
-        anyToJson(
-          content,
-          result => {
-            // TODO maybe handle import errors/warnings better
-            const failed = !result[0].success;
-            const messages = result[0].messages;
-            if (messages && messages.length) {
-              messages.forEach(msg => {
-                const type = msg
-                  .substr(0, 20)
-                  .toLowerCase()
-                  .includes("error")
-                  ? failed
-                    ? "error"
-                    : "warning"
-                  : "info";
-                window.toastr[type](msg);
+    partRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return [
+        "editPart",
+        "deletePart",
+        "--",
+        ...this.getSelectionMenuOptions(annotation),
+        "--",
+        "newTranslation",
+        "newReverseTranslation",
+        "--",
+        "viewPartProperties"
+      ];
+    }, "partRightClicked");
+    featureRightClicked = this.enhanceRightClickAction(
+      ({ annotation, event }) => {
+        this.props.selectionLayerUpdate({
+          start: annotation.start,
+          end: annotation.end
+        });
+        event.persist();
+        const {
+          readOnly,
+          showMergeFeaturesDialog,
+          annotationsToSupport: { parts } = {}
+        } = this.props;
+        return [
+          "editFeature",
+          "deleteFeature",
+          ...this.getSelectionMenuOptions(annotation),
+          ...(readOnly
+            ? []
+            : [
+                ...(parts && [
+                  "--",
+                  {
+                    text: "Make a Part from Feature",
+                    onClick: async () => {
+                      const { sequenceData, upsertPart } = this.props;
+                      if (
+                        some(sequenceData.parts, part => {
+                          if (
+                            part.start === annotation.start &&
+                            part.end === annotation.end
+                          ) {
+                            return true;
+                          }
+                        })
+                      ) {
+                        const doAction = await showConfirmationDialog({
+                          text:
+                            "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                          confirmButtonText: "Create Part",
+                          canEscapeKeyCancel: true //this is false by default
+                        });
+                        if (!doAction) return; //early return
+                      }
+                      upsertPart({
+                        start: annotation.start,
+                        end: annotation.end,
+                        type: annotation.type,
+                        forward: annotation.forward,
+                        name: annotation.name
+                      });
+                    }
+                  }
+                ]),
+                {
+                  text: "Merge With Another Feature",
+                  onClick: () => {
+                    this.annotationClicked({
+                      annotation,
+                      event: { ...event, shiftHeld: true }
+                    });
+                    // annotationSelect(annotation)
+                    showMergeFeaturesDialog(annotation);
+                  }
+                },
+                "--"
+              ]),
+          "toggleCdsFeatureTranslations",
+          "--",
+          "newTranslation",
+          "newReverseTranslation",
+          "--",
+          "viewFeatureProperties"
+        ];
+      },
+      "featureRightClicked"
+    );
+
+    cutsiteRightClicked = this.enhanceRightClickAction(
+      () => ["viewCutsiteProperties"],
+      "cutsiteRightClicked"
+    );
+    primerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return [
+        "editPrimer",
+        "deletePrimer",
+        ...this.getSelectionMenuOptions(annotation),
+        "newTranslation",
+        "newReverseTranslation",
+        "viewPrimerProperties"
+      ];
+    }, "primerRightClicked");
+    orfRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return [
+        "toggleOrfTranslations",
+        ...this.getSelectionMenuOptions(annotation),
+        "viewOrfProperties"
+      ];
+    }, "orfRightClicked");
+    translationRightClicked = this.enhanceRightClickAction(
+      ({ event, annotation }) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const { selectionLayerUpdate, annotationVisibilityToggle } = this.props;
+        this.props.selectionLayerUpdate({
+          start: annotation.start,
+          end: annotation.end
+        });
+        if (annotation.isOrf) {
+          return [
+            {
+              text: "Hide Orf Translations",
+              onClick: () => {
+                annotationVisibilityToggle("orfTranslations");
+              }
+            },
+            "viewOrfProperties"
+          ];
+        }
+        return [
+          "deleteTranslation",
+          {
+            text: "Select Translation",
+            onClick: function() {
+              selectionLayerUpdate({
+                start: annotation.start,
+                end: annotation.end
               });
             }
-            updateSequenceData(result[0].parsedSequence);
-            if (!failed) {
-              window.toastr.success("Sequenced imported");
-            }
           },
-          { acceptParts: true, ...opts }
-        );
-      };
-      reader.onerror = function() {
-        window.toastr.error("Could not read file.");
-      };
-    };
-
-    exportSequenceToFile = format => {
-      const { sequenceData } = this.props;
-      let convert, fileExt;
-
-      if (format === "genbank") {
-        convert = jsonToGenbank;
-        fileExt = "gb";
-      } else if (format === "fasta") {
-        convert = jsonToFasta;
-        fileExt = "fasta";
-      } else {
-        console.error(`Invalid export format: '${format}'`); // dev error
-        return;
-      }
-      const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
-      const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
-      FileSaver.saveAs(blob, filename);
-    };
-
-    handleWrapperFocus = () => {
-      if (this.props.trackFocus === false) return;
-      _lastFocusedWrapper[this.props.editorName] = this.node;
-    };
-
-    triggerClipboardCommand = type => {
-      const wrapper = _lastFocusedWrapper[this.props.editorName];
-      if (!wrapper) {
-        return;
-      }
-      const hiddenInput = wrapper.querySelector("input.clipboard");
-      hiddenInput.focus();
-      const worked = document.execCommand(type);
-      wrapper.focus();
-      if (!worked) {
-        const keys = { paste: "Cmd/Ctrl+V" };
-        if (keys[type]) {
-          // TODO maybe improve msg with HTML
-          window.toastr.info(`Press ${keys[type]} to ${type}`);
-        }
-      }
-    };
+          ...this.getSelectionMenuOptions(annotation),
+          "viewTranslationProperties"
+        ];
+      },
+      "translationRightClicked"
+    );
 
     render() {
       const {
         closePanelButton,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        tabHeight, //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
-        fitHeight //used to allow the editor to expand to fill the height of its containing component
+        tabHeight //height of the little clickable tabs (passed because they are measured together with the editor panels and thus need to be subtracted)
+        // fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
       //do this in two steps to determine propsToPass
       let {
@@ -1188,9 +992,9 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const { width, height } = this.props.dimensions || {};
       propsToPass.width = width;
-      if (fitHeight) {
-        propsToPass.height = height - tabHeight;
-      }
+      propsToPass.height = height - tabHeight;
+      // if (fitHeight) {
+      // }
       let selectedBps = getSequenceWithinRange(
         selectionLayer,
         sequenceData.sequence
@@ -1198,45 +1002,33 @@ function VectorInteractionHOC(Component /* options */) {
       if (!disableEditorClickAndDrag) {
         propsToPass = {
           ...propsToPass,
-          ...this.enhanceRightClickActions({
-            selectionLayerRightClicked: this.selectionLayerRightClicked,
-            backgroundRightClicked: this.backgroundRightClicked,
-            featureRightClicked: this.featureRightClicked,
-            partRightClicked: this.partRightClicked,
-            orfRightClicked: this.orfRightClicked,
-            deletionLayerRightClicked: this.deletionLayerRightClicked,
-            cutsiteRightClicked: this.cutsiteRightClicked,
-            translationRightClicked: this.translationRightClicked,
-            primerRightClicked: this.primerRightClicked
-          }),
-          handleRotateToCaretPosition: this.handleRotateToCaretPosition,
-          orfClicked: this.annotationClicked,
-          primerClicked: this.annotationClicked,
-          translationClicked: this.annotationClicked,
-          cutsiteClicked: this.cutsiteClicked,
-          translationDoubleClicked: this.annotationClicked,
-          deletionLayerClicked: this.annotationClicked,
-          replacementLayerClicked: this.annotationClicked,
-          featureClicked: this.annotationClicked,
-          partClicked: this.annotationClicked,
-          searchLayerClicked: this.annotationClicked,
-
+          selectionLayerRightClicked: this.selectionLayerRightClicked,
+          searchLayerRightClicked: this.searchLayerRightClicked,
+          backgroundRightClicked: this.backgroundRightClicked,
+          featureRightClicked: this.featureRightClicked,
+          partRightClicked: this.partRightClicked,
+          orfRightClicked: this.orfRightClicked,
+          deletionLayerRightClicked: this.deletionLayerRightClicked,
+          cutsiteRightClicked: this.cutsiteRightClicked,
+          translationRightClicked: this.translationRightClicked,
+          primerRightClicked: this.primerRightClicked,
+          ...annotationClickHandlers.reduce((acc, handler) => {
+            acc[handler] = this[handler];
+            return acc;
+          }, {}),
           editorDragged: this.editorDragged,
           editorDragStarted: this.editorDragStarted,
           editorClicked: this.editorClicked,
           editorDragStopped: this.editorDragStopped
         };
       }
-
-      propsToPass.importSequenceFromFile = this.importSequenceFromFile;
-      propsToPass.exportSequenceToFile = this.exportSequenceToFile;
-      propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;
+      // propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;
 
       return (
         <div
-          tabIndex={-1} //this helps with focusing using Keyboard's parentElement.focus()
+          tabIndex={0} //this helps with focusing using Keyboard's parentElement.focus()
           ref={c => (this.node = c)}
-          className={"veVectorInteractionWrapper"}
+          className="veVectorInteractionWrapper"
           style={{ position: "relative", ...vectorInteractionWrapperStyle }}
           onFocus={this.handleWrapperFocus}
         >
@@ -1265,25 +1057,88 @@ export default compose(
     store: PropTypes.object
   }),
   withEditorProps,
-  VectorInteractionHOC
+  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
 
-const FrameTranslationMenuItem = connect((state, { editorName, frame }) => {
-  return {
-    isActive: get(state, `VectorEditor[${editorName}].frameTranslations`, {})[
-      frame
-    ]
-  };
-})(({ isActive, ...rest }) => {
-  return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
-});
+function getGenbankFromSelection(selectedSeqData, sequenceData) {
+  const spansEntireSeq =
+    sequenceData.sequence.length === selectedSeqData.sequence.length;
+  const feats = map(selectedSeqData.features);
+  const just1Feat = feats.length === 1;
 
-const CopyOptionMenuItem = connect((state, { editorName, copyOption }) => {
   return {
-    isActive: get(state, `VectorEditor[${editorName}].copyOptions`, {})[
-      copyOption
-    ]
+    sequence: jsonToGenbank({
+      ...selectedSeqData,
+      name: spansEntireSeq
+        ? selectedSeqData.name
+        : just1Feat
+        ? feats[0].name
+        : selectedSeqData.name + "_partial",
+      circular: spansEntireSeq ? selectedSeqData.circular : false
+    })
   };
-})(({ isActive, ...rest }) => {
-  return <MenuItem {...{ label: isActive ? "✓" : undefined, ...rest }} />;
-});
+}
+
+const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
+  const {
+    updateSequenceData,
+    wrappedInsertSequenceDataAtPositionOrRange,
+    sequenceData,
+    selectionLayerUpdate,
+    caretPosition,
+    selectionLayer
+  } = props;
+
+  // sequenceData,
+  //             caretPosition,
+  //             selectionLayer
+
+  // updateSequenceData(
+  //   wrappedInsertSequenceDataAtPositionOrRange(
+  //     seqDataToInsert,
+  //     sequenceData,
+  //     caretPosition > -1 ? caretPosition : selectionLayer
+  //   )
+  // );
+
+  // const newSelectionLayerStart =
+  //   caretPosition > -1 ? caretPosition : (selectionLayer.start > selectionLayer.end ? 0 : selectionLayer.start);
+  // selectionLayerUpdate({
+  //   start: newSelectionLayerStart,
+  //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
+  // });
+  const [
+    newSeqData,
+    { maintainOriginSplit }
+  ] = wrappedInsertSequenceDataAtPositionOrRange(
+    seqDataToInsert,
+    sequenceData,
+    caretPosition > -1 ? caretPosition : selectionLayer
+  );
+  updateSequenceData(newSeqData);
+  const seqDataInsertLength = seqDataToInsert.sequence
+    ? seqDataToInsert.sequence.length
+    : null;
+  const selectionStartDistanceFromEnd =
+    Math.min(sequenceData.size - selectionLayer.start, seqDataInsertLength) ||
+    seqDataInsertLength;
+  const newSelectionLayerStart =
+    caretPosition > -1
+      ? caretPosition
+      : selectionLayer.start > selectionLayer.end
+      ? maintainOriginSplit
+        ? newSeqData.size - selectionStartDistanceFromEnd
+        : 0
+      : selectionLayer.start;
+  const newSelectionLayerEnd =
+    newSelectionLayerStart +
+    (seqDataToInsert.sequence
+      ? seqDataToInsert.sequence.length - 1
+      : seqDataToInsert.proteinSequence
+      ? seqDataToInsert.proteinSequence.length * 3 - 1
+      : 0);
+  selectionLayerUpdate({
+    start: newSelectionLayerStart,
+    end: newSelectionLayerEnd % newSeqData.size
+  });
+};

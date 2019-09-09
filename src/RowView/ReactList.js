@@ -6,7 +6,7 @@
 /* eslint-disable no-cond-assign */
 // import module from 'module';
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React from "react";
 
 const CLIENT_SIZE_KEYS = { x: "clientWidth", y: "clientHeight" };
 const CLIENT_START_KEYS = { x: "clientTop", y: "clientLeft" };
@@ -48,7 +48,7 @@ const isEqualSubset = (a, b) => {
   return true;
 };
 
-export default class ReactList extends Component {
+export default class ReactList extends React.Component {
   static displayName = "ReactList";
 
   static propTypes = {
@@ -414,6 +414,7 @@ export default class ReactList extends Component {
   cacheSizes() {
     const { cache } = this;
     const { from } = this.state;
+    if (!this.items) return;
     const itemEls = this.items.children;
     const sizeKey = OFFSET_SIZE_KEYS[this.props.axis];
     for (let i = 0, l = itemEls.length; i < l; ++i) {
@@ -550,18 +551,14 @@ export default class ReactList extends Component {
       left: x
     };
     return (
-      <div style={style} ref={c => (this.el = c)}>
-        <div onScroll={onScroll} style={listStyle}>
-          {items}
-        </div>
+      <div
+        style={style}
+        ref={c => {
+          if (c) this.el = c;
+        }}
+      >
+        <div style={listStyle}>{items}</div>
       </div>
     );
   }
-}
-
-function onScroll() {
-  window.__veScrolling = true;
-  setTimeout(() => {
-    window.__veScrolling = false;
-  });
 }

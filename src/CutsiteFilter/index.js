@@ -7,7 +7,7 @@ import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOption
 
 import React from "react";
 import "./style.css";
-import Select from "react-select";
+import { TgSelect } from "teselagen-react-components";
 
 import map from "lodash/map";
 
@@ -26,7 +26,7 @@ export class CutsiteFilter extends React.Component {
   render() {
     let {
       onChangeHook,
-      style={},
+      style = {},
       filteredRestrictionEnzymes,
       filteredRestrictionEnzymesUpdate,
       allCutsites: { cutsitesByName },
@@ -38,31 +38,16 @@ export class CutsiteFilter extends React.Component {
     let options = [
       ...map(specialCutsiteFilterOptions, opt => opt),
       ...Object.keys(cutsitesByName).map(function(key) {
-        const cutNumber = cutsitesByName[key].length;
+        const label = getLabel(cutsitesByName[key], key);
         return {
-          label: (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                
-              }}
-            >
-              {" "}
-              <div>{key}</div>{" "}
-              <div style={{ fontSize: 12 }}>
-                &nbsp;({cutNumber} cut{cutNumber > 1 && "s"}){" "}
-              </div>
-            </div>
-          ),
+          label,
           value: key
         };
       })
     ];
     function openAddYourOwn() {
       dispatch({
-        type: "ADD_YOUR_OWN_ENZYME_RESET",
+        type: "ADD_ADDITIONAL_ENZYMES_RESET",
         payload: {
           inputSequenceToTestAgainst,
           isOpen: true
@@ -71,13 +56,13 @@ export class CutsiteFilter extends React.Component {
     }
     return (
       <div style={style}>
-        <Select
+        <TgSelect
           multi
           allowCreate
-          wrapperStyle={{zIndex: 11}}
+          wrapperStyle={{ zIndex: 11 }}
           noResultsText={
-            <div className={"noResultsTextPlusButton"}>
-              No results found.{" "}
+            <div className="noResultsTextPlusButton">
+              No matching enzymes found that cut in the sequence.{" "}
               <AddAdditionalEnzymeLink onClick={openAddYourOwn} />{" "}
             </div>
           }
@@ -97,14 +82,30 @@ export class CutsiteFilter extends React.Component {
             onChangeHook && onChangeHook(filteredRestrictionEnzymes);
             filteredRestrictionEnzymesUpdate(filteredRestrictionEnzymes);
           }}
-          value={filteredRestrictionEnzymes}
+          value={filteredRestrictionEnzymes.map(filteredOpt => {
+            if (filteredOpt.cutsThisManyTimes) {
+              return filteredOpt;
+            }
+
+            const label = getLabel(
+              cutsitesByName[filteredOpt.value],
+              filteredOpt.value
+            );
+            return {
+              ...filteredOpt,
+              label
+            };
+          })}
         />
       </div>
     );
   }
 }
 
-export default compose(withEditorProps, connect())(CutsiteFilter);
+export default compose(
+  withEditorProps,
+  connect()
+)(CutsiteFilter);
 function renderOptions({ label, value }) {
   if (value === "addYourOwn") {
     return <AddAdditionalEnzymeLink />;
@@ -115,8 +116,28 @@ function renderOptions({ label, value }) {
 
 function AddAdditionalEnzymeLink({ onClick }) {
   return (
-    <span onClick={onClick} className={"ta_link"}>
-      Add additional enzymes <Icon small icon="plus" />
+    <span onClick={onClick} className="ta_link">
+      Add additional enzymes <Icon iconSize={14} icon="plus" />
     </span>
   );
 }
+
+const getLabel = (maybeCutsites = [], val) => {
+  const cutNumber = maybeCutsites.length;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}
+    >
+      {" "}
+      <div>{val}</div>{" "}
+      <div style={{ fontSize: 12 }}>
+        &nbsp;({cutNumber} cut{cutNumber === 1 ? "" : "s"})
+      </div>
+    </div>
+  );
+};

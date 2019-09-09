@@ -25,24 +25,18 @@ export class VersionHistoryView extends React.Component {
     selectedVersion: undefined,
     versionList: [currentVersion]
   };
-  static defaultProps = {
-    getVersionList: () => {
-      return [
-        {
-          dateChanged: "Current",
-          editedBy: "n/a",
-          revisionType: "n/a",
-          versionId: 1
-        },
-        {
-          dateChanged: "12/30/2211",
-          editedBy: "thomas",
-          revisionType: "thomas",
-          versionId: 2
-        }
-      ];
-    }
-  };
+  // static defaultProps = {
+  //   getVersionList: () => {
+  //     return [
+  //       {
+  //         dateChanged: "12/30/2211",
+  //         editedBy: "thomas",
+  //         revisionType: "thomas",
+  //         versionId: 2
+  //       }
+  //     ];
+  //   }
+  // };
   updateSeqData = sequenceData => {
     this.activeSeqData = sequenceData;
     this.props.vectorEditorInitialize(
@@ -71,7 +65,7 @@ export class VersionHistoryView extends React.Component {
   };
   onRowSelect = async ([row]) => {
     // const close = showLoadingMask();
-    if (!row) return
+    if (!row) return;
     if (row.id === "__current__") {
       this.updateSeqData(await this.getCurrentSeqData());
       this.setState({ selectedVersion: null });
@@ -84,7 +78,12 @@ export class VersionHistoryView extends React.Component {
   _getVersionList = async () => {
     const versionList = await this.props.getVersionList();
     this.setState({
-      versionList: [currentVersion, ...versionList.map((r) => {return {...r, id: r.versionId}})] //currentVersion should always come first
+      versionList: [
+        currentVersion,
+        ...versionList.map(r => {
+          return { ...r, id: r.versionId };
+        })
+      ] //currentVersion should always come first
     });
   };
   revertToSelectedVersion = e => {
@@ -111,12 +110,15 @@ export class VersionHistoryView extends React.Component {
   };
   render() {
     return (
-      <FillWindow>
+      <FillWindow
+        style={{ zIndex: 15000 }}
+        className="tgFillWindow veVersionHistoryViewContainer"
+      >
         {({ width, height }) => {
           return (
             <div
               style={{ width, height, display: "flex" }}
-              className={"veVersionHistoryView"}
+              className="veVersionHistoryView"
             >
               <Editor
                 style={{
@@ -126,21 +128,21 @@ export class VersionHistoryView extends React.Component {
                   width: width - SIDE_PANEL_WIDTH
                 }}
                 noVersionHistory
-                fitHeight={true}
+                // fitHeight={true}
                 ToolBarProps={{
                   toolList: [
                     "cutsiteTool",
                     "featureTool",
                     "orfTool",
                     "alignmentTool",
-                    "inlineFindTool",
+                    "findTool",
                     "visibilityTool"
                   ],
                   contentLeft: (
                     <Button
                       onClick={this.goBack}
                       icon="arrow-left"
-                      style={{ marginLeft: 5 }}
+                      style={{ marginLeft: 5, marginRight: 5 }}
                     >
                       Back
                     </Button>
@@ -162,7 +164,7 @@ export class VersionHistoryView extends React.Component {
                   display: "flex",
                   flexDirection: "column"
                 }}
-                className={"veVersionHistoryViewSidePanel"}
+                className="veVersionHistoryViewSidePanel"
               >
                 <h2 style={{ width: "100%", textAlign: "center" }}>
                   {" "}
@@ -171,11 +173,11 @@ export class VersionHistoryView extends React.Component {
                 <DataTable
                   noPadding
                   isSingleSelect
-                  noDeselectAll 
+                  noDeselectAll
                   noFullscreenButton
                   onRowSelect={this.onRowSelect}
                   maxHeight={400}
-                  formName={"featureProperties"}
+                  formName="featureProperties"
                   noRouter
                   compact
                   selectedIds={["__current__"]}
@@ -212,5 +214,4 @@ export class VersionHistoryView extends React.Component {
   }
 }
 
-// export default VersionHistoryView;
 export default withEditorProps(VersionHistoryView);

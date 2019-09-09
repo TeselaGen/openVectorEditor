@@ -1,14 +1,15 @@
 import React from "react";
 // import { Button } from "@blueprintjs/core";
 import { jsonToGenbank } from "bio-parsers";
-import withEditorProps from "../../withEditorProps";
-
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
 class GenbankView extends React.Component {
   render() {
     const { sequenceData = {} } = this.props;
     const genbankString = jsonToGenbank(sequenceData);
     return (
       <textarea
+        data-test="ve-genbank-text"
         readOnly
         // wrap="soft"
         style={{
@@ -26,4 +27,10 @@ class GenbankView extends React.Component {
   }
 }
 
-export default withEditorProps(GenbankView);
+export default compose(
+  connectToEditor(({ sequenceData = {} }) => {
+    return {
+      sequenceData
+    };
+  })
+)(GenbankView);

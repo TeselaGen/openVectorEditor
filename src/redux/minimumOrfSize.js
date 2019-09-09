@@ -13,7 +13,6 @@ export const minimumOrfSizeUpdate = createAction("minimumOrfSizeUpdate");
 export default createReducer(
   {
     [minimumOrfSizeUpdate]: (state, payload) => {
-      if (payload === undefined) debugger;
       return payload;
     }
   },

@@ -8,6 +8,10 @@ import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
+import {
+  getSelectionMessage,
+  preventDefaultStopPropagation
+} from "../../utils/editorUtils";
 
 function SelectionLayer(props) {
   let {
@@ -17,6 +21,7 @@ function SelectionLayer(props) {
     row,
     sequenceLength,
     regions,
+    isProtein,
     getGaps,
     hideTitle: topLevelHideTitle,
     customTitle: topLevelCustomTitle,
@@ -26,9 +31,19 @@ function SelectionLayer(props) {
     className: globalClassname = "",
     onClick
   } = props;
-  return (
-    <div>
+  let hasSelection = false;
+
+  const toReturn = (
+    <React.Fragment>
       {regions.map(function(selectionLayer, topIndex) {
+        const _onClick = onClick
+          ? function(event) {
+              onClick({
+                event,
+                annotation: selectionLayer
+              });
+            }
+          : undefined;
         let {
           className = "",
           style = {},
@@ -41,13 +56,17 @@ function SelectionLayer(props) {
           ignoreGaps,
           height
         } = selectionLayer;
-        let classNameToPass =
-          "veRowViewSelectionLayer " +
-          className +
-          " " +
-          className +
-          " " +
-          globalClassname;
+        const selectionMessage =
+          hideTitle || topLevelHideTitle
+            ? ""
+            : getSelectionMessage({
+                selectionLayer,
+                customTitle: customTitle || topLevelCustomTitle,
+                sequenceLength,
+                isProtein
+              });
+
+        let classNameToPass = className + " " + globalClassname;
         if (start > -1) {
           let overlaps = getOverlapsOfPotentiallyCircularRanges(
             selectionLayer,
@@ -55,7 +74,7 @@ function SelectionLayer(props) {
             sequenceLength
           );
           //DRAW SELECTION LAYER
-
+          if (overlaps.length) hasSelection = true;
           return overlaps.map(function(overlap, index) {
             const key = topIndex + "-" + index;
             let isTrueStart = false;
@@ -81,6 +100,7 @@ function SelectionLayer(props) {
                 overlap.start === start && (
                   <Caret
                     {...{
+                      onClick: _onClick || preventDefaultStopPropagation,
                       charWidth,
                       row,
                       getGaps,
@@ -89,7 +109,7 @@ function SelectionLayer(props) {
                       sequenceLength,
                       className:
                         classNameToPass +
-                        " " +
+                        " selectionLayerCaret " +
                         (isDraggable ? draggableClassnames.selectionStart : ""),
                       caretPosition: overlap.start
                     }}
@@ -98,6 +118,7 @@ function SelectionLayer(props) {
                 overlap.end === end && (
                   <Caret
                     {...{
+                      onClick: _onClick || preventDefaultStopPropagation,
                       charWidth,
                       row,
                       getGaps,
@@ -106,7 +127,7 @@ function SelectionLayer(props) {
                       sequenceLength,
                       className:
                         classNameToPass +
-                        " " +
+                        " selectionLayerCaret " +
                         (isDraggable ? draggableClassnames.selectionEnd : ""),
                       caretPosition: overlap.end + 1
                     }}
@@ -116,16 +137,8 @@ function SelectionLayer(props) {
             }
             return [
               <div
-                title={
-                  hideTitle || topLevelHideTitle
-                    ? ""
-                    : `${customTitle ||
-                        topLevelCustomTitle ||
-                        "Selecting"} between ` +
-                      (selectionLayer.start + 1) +
-                      " - " +
-                      (selectionLayer.end + 1)
-                }
+                onClick={_onClick}
+                title={selectionMessage}
                 onContextMenu={function(event) {
                   selectionLayerRightClicked &&
                     selectionLayerRightClicked({
@@ -133,19 +146,10 @@ function SelectionLayer(props) {
                       annotation: selectionLayer
                     });
                 }}
-                onClick={
-                  onClick
-                    ? function(event) {
-                        onClick({
-                          event,
-                          annotation: selectionLayer
-                        });
-                      }
-                    : () => {}
-                }
                 key={key}
                 className={
                   classNameToPass +
+                  " veSelectionLayer veRowViewSelectionLayer notCaret " +
                   (isTrueStart ? " isTrueStart " : "") +
                   (isTrueEnd ? " isTrueEnd " : "")
                 }
@@ -164,8 +168,9 @@ function SelectionLayer(props) {
           return null;
         }
       })}
-    </div>
+    </React.Fragment>
   );
+  return hasSelection ? toReturn : null;
 }
 
 export default pureNoFunc(SelectionLayer);

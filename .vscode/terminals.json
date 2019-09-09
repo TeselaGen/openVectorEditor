@@ -1,0 +1,18 @@
+{
+  "autorun": false,
+  "terminals": [
+    {
+      "name": "demoPage",
+      "description": "Run the demo page",
+      "commands": ["yarn", "yarn start"]
+    },
+    {
+      "name": "cypress",
+      "focus": true,
+      "description": "Run cypress devtools",
+      "execute": true,
+      "//persistent": "cypress_persistent",
+      "commands": ["yarn c;"]
+    }
+  ]
+}

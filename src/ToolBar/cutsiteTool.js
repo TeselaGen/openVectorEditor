@@ -1,29 +1,36 @@
 import { Icon, Button, KeyCombo } from "@blueprintjs/core";
 import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
+import ToolbarItem from "./ToolbarItem";
+import { connectToEditor } from "../withEditorProps";
 
-// import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
-
-export default {
-  updateKeys: ["annotationVisibilityToggle", "annotationVisibility", "isOpen"],
-  itemProps: function CutsiteTool({
-    annotationVisibilityToggle,
-    annotationVisibility = {},
-    isOpen
-  }) {
+export default connectToEditor(
+  ({ readOnly, annotationVisibility = {}, toolBar = {} }) => {
     return {
-      Icon: <Icon icon="cut" />,
-      onIconClick: function() {
-        annotationVisibilityToggle("cutsites");
-      },
+      readOnly,
       toggled: annotationVisibility.cutsites,
-      tooltip: "Show cut sites",
-      tooltipToggled: "Hide cut sites",
-      Dropdown: CutsiteToolDropDown,
-      dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options"
+      isOpen: toolBar.openItem === "cutsiteTool"
     };
   }
-};
+)(({ toolbarItemProps, toggled, isOpen, annotationVisibilityToggle }) => {
+  return (
+    <ToolbarItem
+      {...{
+        Icon: <Icon data-test="cutsiteHideShowTool" icon="cut" />,
+        onIconClick: function() {
+          annotationVisibilityToggle("cutsites");
+        },
+        toggled,
+        tooltip: "Show cut sites",
+        tooltipToggled: "Hide cut sites",
+        Dropdown: CutsiteToolDropDown,
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Cut Site Options",
+        ...toolbarItemProps
+      }}
+    />
+  );
+});
+// import show_cut_sites_img from "./veToolbarIcons/show_cut_sites.png";
 
 // function CutsiteToolIcon({ annotationVisibilityToggle }) {
 //   return (
@@ -45,7 +52,7 @@ function CutsiteToolDropDown({
   createNewDigest
 }) {
   return (
-    <div className={"veToolbarCutsiteFilterHolder"}>
+    <div className="veToolbarCutsiteFilterHolder">
       <h6>Filter Cut Sites:</h6>
       <CutsiteFilter
         editorName={editorName}
@@ -60,8 +67,9 @@ function CutsiteToolDropDown({
             toggleDropdown();
           }}
         >
-          {" "}
-          Run Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+          <span style={{ display: "flex" }}>
+            Virtual Digest &nbsp; <KeyCombo minimal combo="mod+shift+d" />
+          </span>
         </Button>
       )}
 

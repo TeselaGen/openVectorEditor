@@ -5,8 +5,8 @@
 .veRowItem svg:not(:root) {
   overflow: visible;
 }
-
-.veRowView,
-.veCircularView {
-  outline: none;
+.veEmptySeqText {
+  margin-left: 13px;
+  font-size: 20px;
+  color: gray;
 }

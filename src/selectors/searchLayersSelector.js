@@ -6,12 +6,39 @@ import circularSelector from "./circularSelector";
 function searchLayersSelector(
   sequence,
   isCircular,
+  isOpen,
   searchString,
   ambiguousOrLiteral,
-  dnaOrAA
+  dnaOrAA,
+  isProtein,
+  proteinSequence
 ) {
-  if (!searchString) {
+  if (!searchString || !isOpen) {
     return [];
+  }
+  if (isProtein) {
+    const searchingDna = dnaOrAA === "DNA";
+    const matches = findSequenceMatches(
+      searchingDna ? sequence : proteinSequence,
+      searchString,
+      {
+        isCircular: false,
+        isProteinSequence: true,
+        isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
+        // isProteinSearch: dnaOrAA !== "DNA",
+        searchReverseStrand: false
+      }
+    ).sort(({ start }, { start: start2 }) => {
+      return start - start2;
+    });
+    return searchingDna
+      ? matches
+      : matches.map(({ start, end, ...rest }) => ({
+          ...rest,
+          isSearchLayer: true,
+          start: start * 3,
+          end: end * 3 + 2
+        }));
   }
   const matches = findSequenceMatches(sequence, searchString, {
     isCircular,
@@ -21,15 +48,21 @@ function searchLayersSelector(
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });
-  return matches;
-  // return matches.map(m => ({ ...m, hideCarets: true, color: "yellow" }));
+  return matches.map(match => ({
+    ...match,
+    className: "veSearchLayer",
+    isSearchLayer: true
+  }));
 }
 
 export default createSelector(
   sequenceSelector,
   circularSelector,
-  state => state.findTool.searchText,
-  state => state.findTool.ambiguousOrLiteral,
-  state => state.findTool.dnaOrAA,
+  state => state.findTool && state.findTool.isOpen,
+  state => state.findTool && state.findTool.searchText,
+  state => state.findTool && state.findTool.ambiguousOrLiteral,
+  state => state.findTool && state.findTool.dnaOrAA,
+  state => state.sequenceData.isProtein,
+  state => state.sequenceData.proteinSequence,
   searchLayersSelector
 );

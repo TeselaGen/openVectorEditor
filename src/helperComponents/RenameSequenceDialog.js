@@ -2,6 +2,6 @@ import createSimpleDialog from "./createSimpleDialog";
 
 export default createSimpleDialog({
   formName: "renameSequenceDialog",
-  fields: [{ name: "newName" }],
-  dialogProps: { title: "Rename Sequence", height: 180 }
+  fields: [{ name: "newName", isRequired: true }],
+  withDialogProps: { title: "Rename Sequence", height: 190 }
 });

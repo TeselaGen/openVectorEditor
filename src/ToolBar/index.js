@@ -1,15 +1,10 @@
 import React from "react";
-import { withProps, withHandlers, onlyUpdateForKeys } from "recompose";
-import { compose } from "redux";
-
-// import withEditorProps from "../withEditorProps";
-import ToolbarItem from "./ToolbarItem";
-import withEditorProps from "../withEditorProps";
+import { pick } from "lodash";
 import versionHistoryTool from "./versionHistoryTool";
-
-import withEditorInteractions from "../withEditorInteractions";
-// import onlyUpdateForKeysDeepEqual from "../utils/onlyUpdateForKeysDeepEqual";
+// import {connectToEditor} from "../withEditorProps";
+import MenuBar from "../MenuBar";
 import "./style.css";
+import { Button, Tooltip } from "@blueprintjs/core";
 
 import downloadTool from "./downloadTool";
 import importTool from "./importTool";
@@ -17,18 +12,15 @@ import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
 import oligoTool from "./oligoTool";
 import orfTool from "./orfTool";
-// import viewTool from "./viewTool";
 import editTool from "./editTool";
 import findTool from "./findTool";
 import inlineFindTool from "./inlineFindTool";
 import alignmentTool from "./alignmentTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
-// import propertiesTool from "./propertiesTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 import { isString } from "util";
-// import fullScreenTool from "./fullScreenTool";
 
 const allTools = {
   downloadTool,
@@ -38,42 +30,30 @@ const allTools = {
   featureTool,
   oligoTool,
   orfTool,
-  // viewTool,
   editTool,
   findTool,
   inlineFindTool,
   versionHistoryTool,
   saveTool,
   visibilityTool,
-  // propertiesTool,
   undoTool,
   redoTool
-  // fullScreenTool
 };
 
-// import get from 'lodash/get'
-
 export class ToolBar extends React.PureComponent {
-  state = {
-    openItem: -1
-  };
-
-  toggleOpen = index => {
-    if (this.state.openItem === index) {
-      this.setState({
-        openItem: -1
-      });
-    } else {
-      this.setState({
-        openItem: index
-      });
-    }
-  };
-
   render() {
     const {
       modifyTools,
       contentLeft,
+      showMenuBar,
+      displayMenuBarAboveTools,
+      isProtein,
+      openHotkeyDialog,
+      onSave,
+      userDefinedHandlersAndOpts,
+      editorName,
+      handleFullscreenClose,
+      closeFullscreen,
       toolList = [
         "saveTool",
         "downloadTool",
@@ -82,88 +62,136 @@ export class ToolBar extends React.PureComponent {
         "redoTool",
         "cutsiteTool",
         "featureTool",
-        // "oligoTool",
+        "oligoTool",
         "orfTool",
         "alignmentTool",
-        // "viewTool",
         "editTool",
-        // "findTool",
-        "inlineFindTool",
+        "findTool",
         "visibilityTool"
-        // "fullScreenTool"
-        // "propertiesTool"
       ],
       ...rest
     } = this.props;
-
     let items = toolList
-      .map(toolNameOrOverrides => {
+      .map((toolNameOrOverrides, index) => {
         let toolName;
         let toolOverride;
         if (isString(toolNameOrOverrides)) {
           toolName = toolNameOrOverrides;
         } else {
           toolOverride = toolNameOrOverrides;
+          toolName = toolNameOrOverrides.name;
         }
 
-        const tool = toolOverride
-          ? { ...allTools[toolOverride.name], overrides: toolOverride } //add any overrides here
+        const Tool = toolOverride
+          ? allTools[toolOverride.name]
           : allTools[toolName];
-        if (!tool) {
+        if (!Tool) {
           console.error(
             "You're trying to load a tool that doesn't appear to exist: " +
               toolName
           );
           return false;
         }
-        return tool;
+        if (isProtein) {
+          if (
+            toolName === "cutsiteTool" ||
+            toolName === "orfTool" ||
+            toolName === "alignmentTool"
+          ) {
+            return false;
+          }
+        }
+        if (toolName === "saveTool" && !onSave) {
+          return false;
+        } //don't show the option to save if no onSave handler is passed
+        return (
+          <Tool
+            {...rest}
+            onSave={onSave}
+            toolbarItemProps={{ index, toolName, editorName, ...toolOverride }}
+            editorName={editorName}
+            key={toolName}
+          />
+        );
       })
-      .filter(tool => tool);
+      .filter(tool => !!tool);
 
     if (modifyTools) {
       items = modifyTools(items);
     }
 
-    let content = items.map((item, index) => {
-      const updateKeys = item.updateKeys || [];
-      const itemProps = item.itemProps || item;
-      const WrappedItem = compose(
-        withProps({
-          ...rest,
-          isOpen: index === this.state.openItem,
-          toggleOpen: this.toggleOpen,
-          index,
-          overrides: item.overrides //spread any overrides here
-        }),
-        withHandlers({
-          toggleDropdown: () => () => {
-            this.toggleOpen(index);
-          }
-        }),
-        withEditorInteractions,
-        onlyUpdateForKeys([
-          ...updateKeys,
-          "isOpen",
-          "toggleOpen",
-          "editorName"
-        ]),
-        withProps(itemProps)
-      )(ToolbarItem);
-      WrappedItem.displayName = toolList[index];
-      return <WrappedItem key={index} />;
-    });
-
-    return <div style={{display: 'flex'}}>
-      {contentLeft}
-      <div className={"veToolbar"}>{content}</div>
-
-    </div>
-
+    return (
+      <div style={{ display: "flex" }}>
+        {contentLeft}
+        <div
+          style={{
+            ...(displayMenuBarAboveTools && showMenuBar
+              ? {
+                  display: "flex",
+                  width: "100%",
+                  flexDirection: "column",
+                  alignItems: "flex-start"
+                }
+              : {
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                  flexWrap: "wrap"
+                })
+          }}
+          className="veToolbar"
+        >
+          {showMenuBar && (
+            <MenuBar
+              openHotkeyDialog={openHotkeyDialog}
+              {...pick(this.props, userDefinedHandlersAndOpts)}
+              onSave={onSave} //needs to be passed so that editor commands will have it
+              style={{ marginLeft: 0 }}
+              editorName={editorName}
+            />
+          )}
+          {displayMenuBarAboveTools && showMenuBar ? (
+            <div
+              className="veTools-displayMenuBarAboveTools"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginLeft: 15,
+                flexWrap: "wrap"
+                // width: "100%"
+              }}
+            >
+              {items}
+            </div>
+          ) : (
+            items
+          )}
+        </div>
+        {closeFullscreen && (
+          <CloseFullscreenButton onClick={handleFullscreenClose} />
+        )}
+      </div>
+    );
   }
 }
 
-export default withEditorProps(
-  //only re-render the toolbar for these keys (important because we don't want to re-initialize all the toolbar items unecessarily):
-  //also Toolbar must be a PureComponent so as not to re-render unecessarily
-  onlyUpdateForKeys(["modifyTools", "toolList"])(ToolBar)
-);
+export default ToolBar;
+// export default connectToEditor()  ToolBar
+
+const CloseFullscreenButton = props => {
+  return (
+    <Tooltip content="Close Fullscreen Mode">
+      <Button
+        minimal
+        style={{
+          marginTop: 2,
+          marginRight: 2
+        }}
+        onClick={props.onClick}
+        className="ve-close-fullscreen-button"
+        icon="minimize"
+      />
+    </Tooltip>
+  );
+};
+

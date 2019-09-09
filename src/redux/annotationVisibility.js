@@ -1,10 +1,16 @@
+import { omit } from "lodash";
+
 //./caretPosition.js
 
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 
-const visibilityInitialValues = {
+export const visibilityDefaultValues = {
+  featureTypesToHide: {},
   features: true,
+  warnings: true,
+  assemblyPieces: true,
+  lineageAnnotations: true,
   translations: true,
   parts: true,
   orfs: false,
@@ -12,10 +18,11 @@ const visibilityInitialValues = {
   cdsFeatureTranslations: true,
   axis: true,
   cutsites: true,
+  cutsitesInSequence: true,
   primers: true,
   dnaColors: false,
+  sequence: true,
   reverseSequence: true,
-  lineageLines: true,
   axisNumbers: true
 };
 
@@ -32,12 +39,39 @@ export const annotationVisibilityHide = createAction(
 export const annotationVisibilityShow = createAction(
   "annotationVisibilityShow"
 );
+export const hideFeatureTypes = createAction("hideFeatureTypes");
+export const showFeatureTypes = createAction("showFeatureTypes");
+export const resetFeatureTypesToHide = createAction("resetFeatureTypesToHide");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 let annotationVisibility = createMergedDefaultStateReducer(
   {
+    [resetFeatureTypesToHide]: state => {
+      return {
+        ...state,
+        featureTypesToHide: {}
+      };
+    },
+    [showFeatureTypes]: (state, payload) => {
+      return {
+        ...state,
+        featureTypesToHide: omit(state.featureTypesToHide, payload)
+      };
+    },
+    [hideFeatureTypes]: (state, payload) => {
+      return {
+        ...state,
+        featureTypesToHide: {
+          ...state.featureTypesToHide,
+          ...payload.reduce((acc, key) => {
+            acc[key] = true;
+            return acc;
+          }, {})
+        }
+      };
+    },
     [annotationVisibilityToggle]: (state, payload) => {
       return {
         ...state,
@@ -57,7 +91,7 @@ let annotationVisibility = createMergedDefaultStateReducer(
       };
     }
   },
-  visibilityInitialValues
+  visibilityDefaultValues
 );
 
 export default annotationVisibility;

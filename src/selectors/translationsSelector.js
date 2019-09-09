@@ -8,7 +8,7 @@ import { getAminoAcidDataForEachBaseOfDna } from "ve-sequence-utils";
 import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
-import { normalizePositionByRangeLength } from "ve-range-utils/lib";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 import cdsFeaturesSelector from "./cdsFeaturesSelector";
 
 function translationsSelector(
@@ -40,22 +40,34 @@ function translationsSelector(
       translations,
       (acc, translation) => {
         if (!translation.isOrf) {
-          acc[translation.id] = {...translation, translationType: "User Created"};
+          acc[translation.id] = {
+            ...translation,
+            translationType: "User Created"
+          };
         }
         return acc;
       },
       {}
     ),
-    ...(showOrfTranslations && showOrfs ? reduce(orfs, (acc,orf)=>{
-      acc[orf.id] = {...orf, translationType: "ORF"};
-      return acc;
-    }, {}) : {}),
+    ...(showOrfTranslations && showOrfs
+      ? reduce(
+          orfs,
+          (acc, orf) => {
+            acc[orf.id] = { ...orf, translationType: "ORF" };
+            return acc;
+          },
+          {}
+        )
+      : {}),
     ...(showCdsFeatureTranslations &&
       showFeatures &&
       reduce(
         cdsFeatures,
         (acc, cdsFeature) => {
-          acc[cdsFeature.id] = {...cdsFeature, translationType: "CDS Feature"};
+          acc[cdsFeature.id] = {
+            ...cdsFeature,
+            translationType: "CDS Feature"
+          };
           return acc;
         },
         {}
@@ -104,5 +116,7 @@ export default createSelector(
   state => state.annotationVisibility.features,
   translationsRawSelector,
   state => state.frameTranslations,
+  state => state.sequenceData.isProtein,
+  state => state.sequenceData.proteinSequence,
   translationsSelector
 );

@@ -12,13 +12,16 @@ require("typeface-ubuntu-mono");
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-export { default as withEditorProps } from "./withEditorProps";
+export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
 //export components
 export {
   default as CircularView,
   CircularView as CircularViewUnconnected
 } from "./CircularView";
+export {
+  default as SimpleCircularOrLinearView
+} from "./SimpleCircularOrLinearView";
 export { default as RowView, RowView as RowViewUnconnected } from "./RowView";
 export { default as RowItem, RowItem as RowItemUnconnected } from "./RowItem";
 export { default as Editor, Editor as EditorUnconnected } from "./Editor";

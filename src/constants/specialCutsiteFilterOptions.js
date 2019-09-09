@@ -1,7 +1,7 @@
 export default {
   addYourOwn: {
     value: "addYourOwn",
-    label: "Add additional enzyme"
+    label: "Add additional enzymes"
   },
   single: {
     value: "single",

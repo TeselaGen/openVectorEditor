@@ -1,4 +1,11 @@
-import { Button, Checkbox, Popover } from "@blueprintjs/core";
+import {
+  Button,
+  Checkbox,
+  Popover,
+  Intent,
+  Tooltip,
+  Tag
+} from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
 import pureNoFunc from "../utils/pureNoFunc";
@@ -10,36 +17,41 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
       position="bottom"
       content={<VisibilityOptions {...props} />}
       target={
-        <Button
-          small
-          text={"Visibility"}
-          rightIcon="caret-down"
-          icon={"eye-open"}
-        />
+        <Tooltip content="Visibility Options">
+          <Button
+            small
+            rightIcon="caret-down"
+            intent={Intent.PRIMARY}
+            minimal
+            icon="eye-open"
+          />
+        </Tooltip>
       }
     />
   );
 });
 
 function VisibilityOptions({
-  alignmentAnnotationVisibility = {},
-  typesToOmit = {},
+  // alignmentAnnotationVisibility = {},
   alignmentAnnotationVisibilityToggle,
-  alignmentAnnotationLabelVisibility = {},
-  alignmentAnnotationLabelVisibilityToggle
+  togglableAlignmentAnnotationSettings = {},
+  // alignmentAnnotationLabelVisibility = {},
+  // alignmentAnnotationLabelVisibilityToggle
+  annotationsWithCounts,
+  currentPairwiseAlignmentIndex
 }) {
+  let annotationCountToUse = {};
+  if (currentPairwiseAlignmentIndex) {
+    annotationCountToUse = annotationsWithCounts[currentPairwiseAlignmentIndex];
+  } else {
+    annotationCountToUse = annotationsWithCounts[0];
+  }
   return (
     <div
       style={{ padding: 10 }}
-      className={"alignmentAnnotationVisibilityToolInner"}
+      className="alignmentAnnotationVisibilityToolInner"
     >
-      <h6>View:</h6>
-      {map(alignmentAnnotationVisibility, (visible, annotationName) => {
-        if (
-          typesToOmit[annotationName] !== undefined &&
-          !typesToOmit[annotationName]
-        )
-          return null;
+      {map(togglableAlignmentAnnotationSettings, (visible, annotationName) => {
         return (
           <div key={annotationName}>
             <Checkbox
@@ -48,26 +60,15 @@ function VisibilityOptions({
               }}
               checked={visible}
               label={startCase(annotationName)}
-            />
-          </div>
-        );
-      })}
-      <h6>View Labels:</h6>
-      {map(alignmentAnnotationLabelVisibility, (visible, annotationName) => {
-        if (
-          typesToOmit[annotationName] !== undefined &&
-          !typesToOmit[annotationName]
-        )
-          return null;
-        return (
-          <div key={annotationName}>
-            <Checkbox
-              onChange={() => {
-                alignmentAnnotationLabelVisibilityToggle(annotationName);
-              }}
-              checked={visible}
-              label={startCase(annotationName)}
-            />
+            >
+              {annotationName in annotationCountToUse ? (
+                <Tag round style={{ marginLeft: 7 }}>
+                  {annotationCountToUse[annotationName]}
+                </Tag>
+              ) : (
+                ""
+              )}
+            </Checkbox>
           </div>
         );
       })}

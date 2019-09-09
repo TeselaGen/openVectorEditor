@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import * as addYourOwnEnzyme from "./addYourOwnEnzyme";
+import { merge } from "lodash";
+import * as addAdditionalEnzymes from "./addAdditionalEnzymes";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
@@ -8,12 +8,11 @@ import * as copyOptions from "./copyOptions";
 import * as deletionLayers from "./deletionLayers";
 import * as digestTool from "./digestTool";
 import * as findTool from "./findTool";
+import * as toolBar from "./toolBar";
 import * as frameTranslations from "./frameTranslations";
 import * as hoveredAnnotation from "./hoveredAnnotation";
-import * as lineageLines from "./lineageLines";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as alignments from "./alignments";
-import * as modalActions from "./modalActions";
 import * as panelsShown from "./panelsShown";
 import * as propertiesTool from "./propertiesTool";
 import * as lastSavedId from "./lastSavedId";
@@ -26,76 +25,88 @@ import * as selectionLayer from "./selectionLayer";
 import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
-import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
+// import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 
+import * as modalActions from "./modalActions";
+import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
+export { default as vectorEditorMiddleware } from "./middleware";
 
-export vectorEditorMiddleware from "./middleware";
+const subReducers = {
+  addAdditionalEnzymes,
+  annotationLabelVisibility,
+  annotationsToSupport,
+  annotationVisibility,
+  caretPosition,
+  copyOptions,
+  deletionLayers,
+  digestTool,
+  toolBar,
+  findTool,
+  frameTranslations,
+  hoveredAnnotation,
+  minimumOrfSize,
+  panelsShown,
+  propertiesTool,
+  lastSavedId,
+  readOnly,
+  versionHistory,
+  replacementLayers,
+  restrictionEnzymes,
+  selectedAnnotations,
+  selectionLayer,
+  sequenceDataHistory,
+  sequenceData,
+  useAdditionalOrfStartCodons
+  // uppercaseSequenceMapFont
+};
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
 const vectorEditorClear = createAction("VECTOR_EDITOR_CLEAR");
 
 //export the actions for use elsewhere
 export const actions = {
-  ...selectionLayer,
-  ...caretPosition,
-  ...restrictionEnzymes,
-  ...selectedAnnotations,
-  ...annotationLabelVisibility,
-  ...annotationVisibility,
-  ...annotationsToSupport,
-  ...sequenceData,
-  ...useAdditionalOrfStartCodons,
-  ...minimumOrfSize,
-  ...hoveredAnnotation,
-  ...deletionLayers,
-  ...replacementLayers,
-  ...copyOptions,
-  ...lineageLines,
-  ...alignments,
-  ...uppercaseSequenceMapFont,
-  ...digestTool,
-  ...frameTranslations,
-  ...lastSavedId,
-  ...versionHistory,
-  ...readOnly,
-  ...panelsShown,
-  ...findTool,
+  ...Object.keys(subReducers).reduce(
+    (acc, k) => ({
+      ...acc,
+      ...subReducers[k]
+    }),
+    {}
+  ),
   ...modalActions,
-  ...propertiesTool,
-  ...addYourOwnEnzyme,
+  ...alignments,
   vectorEditorInitialize,
   vectorEditorClear
 };
 
+const mergeDeepKeys = [];
 //define the reducer
 let reducers = {
-  restrictionEnzymes: restrictionEnzymes.default,
-  selectedAnnotations: selectedAnnotations.default,
-  annotationLabelVisibility: annotationLabelVisibility.default,
-  annotationVisibility: annotationVisibility.default,
-  annotationsToSupport: annotationsToSupport.default,
-  sequenceData: sequenceData.default,
-  useAdditionalOrfStartCodons: useAdditionalOrfStartCodons.default,
-  minimumOrfSize: minimumOrfSize.default,
-  sequenceDataHistory: sequenceDataHistory.default,
-  hoveredAnnotation: hoveredAnnotation.default,
-  caretPosition: caretPosition.default,
-  selectionLayer: selectionLayer.default,
-  copyOptions: copyOptions.default,
-  lineageLines: lineageLines.default,
-  digestTool: digestTool.default,
-  frameTranslations: frameTranslations.default,
-  versionHistory: versionHistory.default,
-  readOnly: readOnly.default,
-  lastSavedId: lastSavedId.default,
-  findTool: findTool.default,
-  propertiesTool: propertiesTool.default,
-  panelsShown: panelsShown.default,
-  alignments: alignments.default,
-  deletionLayers: deletionLayers.default,
-  replacementLayers: replacementLayers.default,
+  ...Object.keys(subReducers).reduce((acc, k) => {
+    if (
+      subReducers[k].default &&
+      subReducers[k].default.__shouldUseMergedState
+    ) {
+      mergeDeepKeys.push(k);
+    }
+    return {
+      ...acc,
+      [k]: subReducers[k].default
+    };
+  }, {}),
   instantiated: () => true
+};
+
+export const editorReducer = combineReducers(reducers);
+const customDeepMerge = (state = {}, newState = {}) => {
+  return {
+    ...state,
+    ...newState,
+    ...mergeDeepKeys.reduce((acc, key) => {
+      acc[key] = merge(state[key], newState[key]);
+      return acc;
+    }, {})
+  };
 };
 
 export default function reducerFactory(initialState = {}) {
@@ -118,13 +129,14 @@ export default function reducerFactory(initialState = {}) {
       editorNames.forEach(function(editorName) {
         let currentState = state[editorName];
         if (action.type === "VECTOR_EDITOR_UPDATE") {
-          //merge the exisiting state with the new payload of props (if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
-          currentState = { ...state[editorName], ...(action.payload || {}) };
+          //deep merge certain parts of the exisiting state with the new payload of props
+          //(if you want to do a clean wipe, use VECTOR_EDITOR_CLEAR)
+          currentState = customDeepMerge(state[editorName], action.payload);
         }
         if (action.type === "VECTOR_EDITOR_CLEAR") {
           currentState = undefined;
         }
-        newState[editorName] = combineReducers(reducers)(currentState, action);
+        newState[editorName] = editorReducer(currentState, action);
       });
       stateToReturn = {
         ...state,
@@ -134,10 +146,7 @@ export default function reducerFactory(initialState = {}) {
       //just a normal action
       Object.keys(state).forEach(function(editorName) {
         if (editorName === "__allEditorsOptions") return; //we deal with __allEditorsOptions below so don't pass it here
-        newState[editorName] = combineReducers(reducers)(
-          state[editorName],
-          action
-        );
+        newState[editorName] = editorReducer(state[editorName], action);
       });
       stateToReturn = newState;
     }
@@ -145,18 +154,18 @@ export default function reducerFactory(initialState = {}) {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
       __allEditorsOptions: {
-        addYourOwnEnzyme: addYourOwnEnzyme.default(
+        addAdditionalEnzymes: addAdditionalEnzymes.default(
           !state.__allEditorsOptions
             ? undefined
-            : state.__allEditorsOptions.addYourOwnEnzyme,
+            : state.__allEditorsOptions.addAdditionalEnzymes,
           action
         ),
-        uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.uppercaseSequenceMapFont,
-          action
-        ),
+        // uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
+        //   !state.__allEditorsOptions
+        //     ? undefined
+        //     : state.__allEditorsOptions.uppercaseSequenceMapFont,
+        //   action
+        // ),
         alignments: alignments.default(
           !state.__allEditorsOptions
             ? undefined
@@ -170,3 +179,9 @@ export default function reducerFactory(initialState = {}) {
 
 // export const getBlankEditor = (state) => (state.blankEditor)
 export const getEditorByName = (state, editorName) => state[editorName];
+
+// export default connect((state, ownProps) => {
+//   return {
+//     toggled: state.VectorEditor[ownProps.editorName].annotationVisibility.features
+//   }
+// })()

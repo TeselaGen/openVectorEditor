@@ -102,12 +102,12 @@ const exampleEditorState = {
     [
       {
         id: "circular",
-        name: "Plasmid",
+        name: "Circular",
         active: true
       },
       {
         id: "rail",
-        name: "Linear Map",
+        name: "Linear",
         active: false
       },
       {
@@ -148,7 +148,7 @@ const exampleEditorState = {
         usReverse: 0,
         color: "#0d994a"
       },
-      ...etc
+      // ...etc
     }
   },
   selectedAnnotations: {
@@ -162,7 +162,6 @@ const exampleEditorState = {
     start: -1,
     end: -1
   },
-  lineageLines: [],
   readOnly: false,
   findTool: {
     isOpen: false,

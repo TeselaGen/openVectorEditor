@@ -14,7 +14,8 @@ import { Button, Intent, Classes } from "@blueprintjs/core";
 import { flatMap } from "lodash";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
-import { CheckboxField } from "teselagen-react-components/lib/FormComponents";
+import { CheckboxField } from "teselagen-react-components";
+import "./style.css";
 
 export class MergeFeaturesDialog extends React.Component {
   render() {
@@ -45,7 +46,13 @@ export class MergeFeaturesDialog extends React.Component {
       }
     );
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog", "tg-upsert-Primer")}>
+      <div
+        className={classNames(
+          Classes.DIALOG_BODY,
+          "tg-min-width-dialog",
+          "veMergeFeaturesDialog"
+        )}
+      >
         <InfoHelper displayToSide>
           <span style={{ fontStyle: "italic", fontSize: 11, marginTop: -8 }}>
             Choose features in the dropdown or shift click directly on the
@@ -60,7 +67,7 @@ export class MergeFeaturesDialog extends React.Component {
           enableReinitialize
           name="id1"
           label={
-            <div style={{ display: "flex", alignItems: "top" }}>
+            <div style={{ display: "flex", width: "100%", alignItems: "top" }}>
               <InfoHelper
                 {...{
                   popoverProps: {
@@ -104,7 +111,7 @@ export class MergeFeaturesDialog extends React.Component {
               change("id1", id2);
               change("id2", id1Holder);
             }}
-            icon={"swap-vertical"}
+            icon="swap-vertical"
           >
             {" "}
             Swap{" "}
@@ -118,7 +125,7 @@ export class MergeFeaturesDialog extends React.Component {
           enableReinitialize
           name="id2"
           label={
-            <div style={{ display: "flex", alignItems: "top" }}>
+            <div style={{ display: "flex", width: "100%", alignItems: "top" }}>
               <InfoHelper
                 onClick={() => {
                   feat2 && change("name", feat2.name);
@@ -148,8 +155,8 @@ export class MergeFeaturesDialog extends React.Component {
           enableReinitialize
           defaultValue={feat1 && feat1.name}
           validate={required}
-          name={"name"}
-          label={"New Name:"}
+          name="name"
+          label="New Name:"
         />
         <div style={{ display: "flex" }}>
           <InputField
@@ -158,8 +165,8 @@ export class MergeFeaturesDialog extends React.Component {
             enableReinitialize
             defaultValue={!feat1 ? "" : feat1.start + 1}
             validate={required}
-            name={"start"}
-            label={"New Start:"}
+            name="start"
+            label="New Start:"
           />
           &nbsp; &nbsp; &nbsp;
           <InputField
@@ -168,21 +175,19 @@ export class MergeFeaturesDialog extends React.Component {
             enableReinitialize
             defaultValue={!feat2 ? "" : feat2.end + 1}
             validate={required}
-            name={"end"}
-            label={"New End:"}
+            name="end"
+            label="New End:"
           />
         </div>
         <CheckboxField
-          name={"preserveFeatures"}
+          name="preserveFeatures"
           defaultValue={false}
-          label={
-            "Preserve features (by default they will be removed once merged)"
-          }
+          label="Preserve features (by default they will be removed once merged)"
         />
 
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
-          className={"width100"}
+          className="width100"
         >
           <Button
             onClick={handleSubmit(
@@ -232,7 +237,17 @@ export default compose(
   }),
   withEditorProps,
   reduxForm({
-    form: "MergeFeaturesDialog"
+    form: "MergeFeaturesDialog",
+    validate: ({ id1, id2 }) => {
+      const errors = {};
+      if (!id1 || Array.isArray(id1)) {
+        errors.id1 = "Please select a feature";
+      }
+      if (!id2 || Array.isArray(id2)) {
+        errors.id2 = "Please select a feature";
+      }
+      return errors;
+    }
   }),
   formValues("id1", "id2")
 )(MergeFeaturesDialog);

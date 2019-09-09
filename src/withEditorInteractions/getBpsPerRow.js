@@ -8,7 +8,12 @@ export default function getBpsPerRow({
   charWidth = defaultCharWidth,
   width = defaultContainerWidth,
   dimensions: { width: width2 } = {},
-  marginWidth = defaultMarginWidth
+  marginWidth = defaultMarginWidth,
+  sequenceData
 }) {
-  return Math.floor(((width2 || width) - marginWidth) / charWidth);
+  const toRet = Math.floor(
+    ((width2 || width) - marginWidth) /
+      (sequenceData.isProtein ? charWidth * 3 : charWidth)
+  );
+  return sequenceData.isProtein ? toRet * 3 : toRet;
 }

@@ -14,47 +14,34 @@ import { /* createReducer, */ createAction } from "redux-act";
 // import ab1ParsedGFPvv60 from "../ToolBar/ab1ParsedGFPvv60.json";
 // import { magicDownload } from "teselagen-react-components";
 
+const alignmentAnnotationSettings = {
+  axis: true,
+  axisNumbers: true,
+  chromatogram: false,
+  dnaColors: false,
+  features: false,
+  parts: false,
+  reverseSequence: false,
+  sequence: true,
+  translations: true,
+  orfs: false,
+  orfTranslations: false,
+  cdsFeatureTranslations: false,
+  cutsites: false,
+  primers: false
+};
+
 let defaultVisibilities = {
-  alignmentAnnotationVisibility: {
-    features: false,
-    translations: false,
-    parts: false,
-    orfs: false,
-    orfTranslations: false,
-    cdsFeatureTranslations: false,
-    axis: true,
-    cutsites: false,
-    primers: false,
-    reverseSequence: false,
-    lineageLines: false,
-    dnaColors: false,
-    sequence: true,
-    axisNumbers: true
-  },
-  pairwise_alignmentAnnotationVisibility: {
-    features: true,
-    translations: false,
-    parts: true,
-    orfs: true,
-    orfTranslations: false,
-    cdsFeatureTranslations: false,
-    axis: true,
-    cutsites: false,
-    dnaColors: false,
-    sequence: true,
-    primers: true,
-    reverseSequence: false,
-    lineageLines: true,
-    axisNumbers: true
-  },
+  alignmentAnnotationVisibility: alignmentAnnotationSettings,
+  pairwise_alignmentAnnotationVisibility: alignmentAnnotationSettings,
   alignmentAnnotationLabelVisibility: {
     features: false,
     parts: false,
     cutsites: false
   },
   pairwise_alignmentAnnotationLabelVisibility: {
-    features: true,
-    parts: true,
+    features: false,
+    parts: false,
     cutsites: false
   }
 };
@@ -135,6 +122,11 @@ export default (state = {}, { payload = {}, type }) => {
         (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
         (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
       ) {
+        defaultVisibilities[type] = {
+          ...defaultVisibilities[type],
+          ...payload[type.replace("pairwise_", "")]
+        };
+
         localStorage.setItem(
           type,
           JSON.stringify({
@@ -179,6 +171,7 @@ export default (state = {}, { payload = {}, type }) => {
         {
           //add the template seq as the first track in the Pairwise Alignment Overview
           ...templateSeq,
+          sequenceData: tidyUpSequenceData(templateSeq.sequenceData),
           alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
         }
       ]; // start with just the template seq in there!
@@ -212,7 +205,7 @@ export default (state = {}, { payload = {}, type }) => {
         const alignedSeqMinusInserts = {
           ...alignedSeq,
           sequenceData: {
-            ...alignedSeq.sequenceData,
+            ...tidyUpSequenceData(alignedSeq.sequenceData),
             sequence: template.sequenceData.sequence
           },
           additionalSelectionLayers,
@@ -228,16 +221,15 @@ export default (state = {}, { payload = {}, type }) => {
       );
     }
     if (payloadToUse.alignmentTracks) {
-      //tnr: the following is commented out because it is not yet ready
-      // payloadToUse.alignmentTracks = addDashesForMatchStartAndEndForTracks(
-      //   payloadToUse.alignmentTracks
-      // );
       payloadToUse.alignmentTracks = addHighlightedDifferences(
         payloadToUse.alignmentTracks
       );
     }
     //check for issues
-    let hasError = checkForIssues(payloadToUse.alignmentTracks);
+    let hasError = checkForIssues(
+      payloadToUse.alignmentTracks,
+      payload.alignmentType
+    );
     (payloadToUse.pairwiseAlignments || []).forEach(alignment => {
       const error = alignment;
       if (error) {
@@ -293,7 +285,7 @@ function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   return ranges;
 }
 
-function checkForIssues(alignmentTracks) {
+function checkForIssues(alignmentTracks, alignmentType) {
   if (
     !alignmentTracks ||
     !alignmentTracks[0] ||
@@ -320,8 +312,9 @@ function checkForIssues(alignmentTracks) {
       return "incorrect chromatogram length";
     }
     if (
+      alignmentType !== "Parallel Part Creation" &&
       track.sequenceData.sequence.length !==
-      track.alignmentData.sequence.replace(/-/g, "").length
+        track.alignmentData.sequence.replace(/-/g, "").length
     ) {
       console.error(
         "sequence data length does not match alignment data w/o gaps"
@@ -353,8 +346,5 @@ function checkForIssues(alignmentTracks) {
   });
   if (hasError) {
     return hasError;
-    /* eslint-disable */
-    debugger;
-    /* eslint-enable */
   }
 }

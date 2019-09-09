@@ -12,9 +12,8 @@ function CutsiteLabels(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
-    spaceBetweenAnnotations,
-    cutsiteClicked,
-    cutsiteRightClicked,
+    onClick,
+    onRightClick,
     textWidth = 10,
     editorName
   } = props;
@@ -67,7 +66,7 @@ function CutsiteLabels(props) {
     if (yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = yOffset;
     }
-    let height = yOffset * (annotationHeight + spaceBetweenAnnotations);
+    let height = yOffset * annotationHeight;
     annotationsSVG.push(
       <DrawCutsiteLabel
         id={annotation.id}
@@ -76,30 +75,27 @@ function CutsiteLabels(props) {
           editorName,
           annotation,
           xStartOriginal,
-          cutsiteClicked,
-          cutsiteRightClicked,
+          onClick,
+          onRightClick,
           height,
           xStart
         }}
       />
     );
   });
-  let containerHeight =
-    (maxAnnotationYOffset + 1) * (annotationHeight + spaceBetweenAnnotations);
+  let containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
   return (
-    <div>
+    <div
+      width="100%"
+      style={{
+        position: "relative",
+        height: containerHeight,
+        display: "block"
+      }}
+      className="veRowViewCutsiteLabelsContainer"
+    >
+      {annotationsSVG}
       {warningMessage}
-      <div
-        width="100%"
-        style={{
-          position: "relative",
-          height: containerHeight,
-          display: "block"
-        }}
-        className="cutsiteContainer"
-      >
-        {annotationsSVG}
-      </div>
     </div>
   );
 }
@@ -110,33 +106,35 @@ export default onlyUpdateForKeys([
   "charWidth",
   "annotationHeight",
   "spaceBetweenAnnotations",
-  "cutsiteClicked",
+  "onClick",
   "textWidth",
   "editorName"
 ])(CutsiteLabels);
 
 const DrawCutsiteLabel = withHover(
   ({
-    hoverActions,
-    hoverProps: { hovered, className },
+    hovered,
+    className,
     annotation,
-    cutsiteClicked,
-    cutsiteRightClicked,
+    onClick,
+    onRightClick,
     height,
     xStartOriginal,
+    onMouseLeave,
+    onMouseOver,
     xStart
   }) => {
     return (
       <div>
         <div
-          {...hoverActions}
+          {...{ onMouseLeave, onMouseOver }}
           className={className + " veCutsiteLabel ve-monospace-font"}
           onClick={function(event) {
-            cutsiteClicked({ event, annotation });
+            onClick({ event, annotation });
             event.stopPropagation();
           }}
           onContextMenu={function(event) {
-            cutsiteRightClicked({ event, annotation });
+            onRightClick({ event, annotation });
             event.stopPropagation();
           }}
           style={{

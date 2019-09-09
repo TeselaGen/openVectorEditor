@@ -1,0 +1,1 @@
+export const MAX_MATCHES_DISPLAYED = 1000;

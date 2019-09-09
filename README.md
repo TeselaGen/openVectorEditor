@@ -3,16 +3,26 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  - Built With React & Redux
  - Built for easy extensibility + embed-ibility
  - Customize the views to suit your needs
+ 
+ ![image](https://user-images.githubusercontent.com/2730609/62503453-220acd00-b7a9-11e9-87f3-19e3b1119e6e.png)
 
-## Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor 
+
+## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
+
+## Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)
+
+## OVE out in the wild: 
+ - https://j5.jbei.org/VectorEditor/VectorEditor.html
 
 # Table of Contents
 <!-- TOC -->
 
-  - [Issue Tracking Board: https://waffle.io/TeselaGen/openVectorEditor](#issue-tracking-board-httpswaffleioteselagenopenvectoreditor)
+  - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
+  - [Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)](#cypress-tests-dashboard-httpsdashboardcypressioprojects1zj5vcruns-youll-need-to-make-a-login-with-cypress)
+  - [OVE out in the wild:](#ove-out-in-the-wild)
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Using this module in React](#using-this-module-in-react)
@@ -33,6 +43,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
 - [Data Model](#data-model)
+- [Protein Editor](#protein-editor)
 - [Alignments](#alignments)
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
     - [Accessing the alignment state:](#accessing-the-alignment-state)
@@ -49,7 +60,8 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
-  - [Linking to a project and develop with build-watch](#linking-to-a-project-and-develop-with-build-watch)
+  - [Outside Developer Set Up Steps](#outside-developer-set-up-steps)
+  - [(advanced) Working with locally linked modules](#advanced-working-with-locally-linked-modules)
 
 <!-- /TOC -->
 
@@ -123,7 +135,7 @@ editor.updateEditor(editorState);
 ```js
 const currentEditorState = editor.getState()
 //you can view various properties of the alignment such as the selection layer using alignment.getState()
-console.log(currentEditorState.selectionLayer)
+console.info(currentEditorState.selectionLayer)
 ```
 
 ## Demo (Universal): http://teselagen.github.io/openVectorEditor/
@@ -275,7 +287,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 		[
 			{
 				id: "circular",
-				name: "Plasmid",
+				name: "Circular Map",
 				active: true
 			},
 			{
@@ -299,6 +311,57 @@ These are the options to the `updateEditor()` action (the most generic redux act
 The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
+
+# Protein Editor
+OVE can be set up to view and edit proteins (Amino Acid sequences) as first class citizens. 
+The protein editor can be seen here: http://teselagen.github.io/openVectorEditor/#/Editor?isProtein=true 
+
+The editor supports Amino Acid sequences as well as DNA sequences!
+Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
+```js
+updateEditor(store, "DemoEditor", {
+  sequenceData: tidyUpSequenceData(exampleProteinData, {
+    convertAnnotationsFromAAIndices: true
+  })
+})
+```
+the protein sequenceData object should look like so
+```js
+{
+	isProtein: true
+	//either or both .proteinSequence (aa string) or .sequence (dna string) must be provided if isProtein: true
+	//if only .sequence is provided, OVE will automatically compute the amino acids from the provided dna sequence
+	//if only .proteinSequence is provided, OVE will automatically compute the degenerate DNA sequence from the provided aa string
+	//if both .proteinSequence and .sequence are provided, then OVE will assume that the underlying 
+	//dna sequence maps to the provided aa string as long as sequence.length === 3 * proteinSequence.length
+	proteinSequence: "mmhlrlfcillaavs...etc"
+	sequence: "gtagagagagcca...etc" //optional!
+	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices . 
+	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has 
+	//features/parts coming in as AA-indexed
+	features: [{name: "testFeature1", 
+		start: 3, //start on AA 1
+		end: 5 //end on AA 1 
+	}],
+	parts: [{
+		name: "myFakePart"
+		start: 0, //start on AA 0
+		end: 11 //end on AA 3 
+	}]
+}
+```
+
+The usual onSave, onCopy, onCut handlers will now come back with a .proteinSequence field. 
+You'll need to save/manipulate the protein sequence data however you do for dna sequences.
+
+certain dna specific tools and annotations are automatically disabled when isProtein=true :
+ - primers
+ - orfs
+ - translations 
+ - cutsites
+ - sequence digestions 
+ - ...etc
+
 
 # Alignments
 
@@ -360,7 +423,6 @@ const alignment = window.createAlignmentView(this.node, {
         "cutsites": false,
         "primers": true,
         "reverseSequence": false,
-        "lineageLines": true,
         "axisNumbers": true
     },
     "alignmentAnnotationLabelVisibility": {
@@ -376,7 +438,7 @@ const alignment = window.createAlignmentView(this.node, {
 ```js
 const currentAlignmentState = alignment.getState()
 //you can view various properties of the alignment such as the selection layer using alignment.getState()
-console.log(currentAlignmentState.selectionLayer)
+console.info(currentAlignmentState.selectionLayer)
 ```
 
 
@@ -447,29 +509,46 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
  `() => teselagenSequenceData  //called upon initialization  `
 
 
-
+<!-- 
 # Implementing Autosave functionality
-
+ -->
 
 # Development: 
 
 ## Prerequisites
+[Node.js](http://nodejs.org/) >= v8 must be installed.
+download the latest yarn (https://yarnpkg.com/en/)
 
-[Node.js](http://nodejs.org/) >= v4 must be installed.
-
-## Linking to a project and develop with build-watch
-```
-//link everything up:
-cd lims/node_modules/react
-yarn link 
-cd openVectorEditor
-yarn link
-yarn link react
-cd lims
-yarn link openVectorEditor
-
-//start the auto rebuild:
-cd openVectorEditor
-yarn build-watch
+## Outside Developer Set Up Steps
 
 ```
+IMPORTANT! First make sure you make an issue for whatever it is you'd like to see changed! 
+fork your own branch of openVectorEditor from https://github.com/TeselaGen/openVectorEditor
+cd openVectorEditor
+yarn
+yarn start
+navigate to http://localhost:3344/ once the demo app has built
+modify the openVectorEditor code base to fix/build whatever it is you're trying to do
+set up a demo for your fix/feature if applicable in demo/src/EditorDemo/index.js
+set up a cypress test for your fix/feature if applicable 
+you can run the cypress dev tool by running `yarn c` and see your tests
+you can view existing cypress tests in the cypress/integration folder
+you can either add your test to an existing cypress file or make a new test file
+
+once you're satisfied, make a pull request back to openVectorEditor and mention @tnrich
+```
+
+
+
+## (advanced) Working with locally linked modules 
+Sometimes it can be helpful to debug certain npm modules locally. 
+You can always edit their es5 compiled code within the node_modules folder itself,
+but sometimes it's useful to debug their source code directly. Luckily we can do 
+this using webpack aliases. Here's how:
+```
+open ./nwb.config.js 
+comment in whatever module you want to have linked locally (ve-range-utils, ve-sequence-utils, bio-parsers, teselagen-react-components)
+you'll need to have that module cloned down from github on your machine's file system for this to work
+```
+
+

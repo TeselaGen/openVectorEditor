@@ -1,11 +1,12 @@
 import React from "react";
 import { compose } from "redux";
-import withEditorInteractions from "../withEditorInteractions";
+import withEditorProps from "../withEditorProps";
 import { withHotkeys } from "teselagen-react-components";
 import getCommands from "../commands";
 import {
   getCommandHotkeys,
-  getCommandHotkeyHandlers
+  getCommandHotkeyHandlers,
+  HotkeysDialog
 } from "teselagen-react-components";
 
 class CommandHotkeyHandler extends React.Component {
@@ -21,8 +22,23 @@ class CommandHotkeyHandler extends React.Component {
   }
 
   render() {
-    return <this.Handler />;
+    return (
+      <React.Fragment>
+        <this.Handler key="handla" />
+        <HotkeysDialog
+          dialogTitle="Editor Hotkeys"
+          key="hotkeyDialog"
+          hotkeySets={{
+            Editor: {
+              "Search File Menu": this.props.menuSearchHotkey || "cmd+/",
+              ...this.hotkeyDefs
+            }
+          }}
+          {...this.props.hotkeyDialogProps}
+        />
+      </React.Fragment>
+    );
   }
 }
 
-export default compose(withEditorInteractions)(CommandHotkeyHandler);
+export default compose(withEditorProps)(CommandHotkeyHandler);

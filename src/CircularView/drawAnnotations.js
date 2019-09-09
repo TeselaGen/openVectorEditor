@@ -2,13 +2,11 @@ import React from "react";
 import IntervalTree from "node-interval-tree";
 import { sortBy, noop } from "lodash";
 import { getRangeLength } from "ve-range-utils";
-import { startCase } from "lodash";
 import getRangeAngles from "./getRangeAnglesSpecial";
 import getYOffset from "./getYOffset";
 import withHover from "../helperComponents/withHover";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
-import pureNoFunc from "../utils/pureNoFunc";
 import Feature from "./Feature";
 
 function drawAnnotations({
@@ -27,7 +25,9 @@ function drawAnnotations({
   positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
   allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
   onRightClicked = noop,
-  showLabels
+  showLabels,
+  labelOptions,
+  annotationProps
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -40,7 +40,13 @@ function drawAnnotations({
     return -getRangeLength(a, sequenceLength);
   })
     .map(annotation => {
-      let { startAngle, endAngle, totalAngle, centerAngle } = getRangeAngles(
+      let {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles
+      } = getRangeAngles(
         positionBy ? positionBy(annotation) : annotation,
         sequenceLength
       );
@@ -50,6 +56,7 @@ function drawAnnotations({
         ...annotation,
         startAngle,
         endAngle,
+        locationAngles,
         totalAngle,
         centerAngle,
         yOffset: 0
@@ -105,12 +112,26 @@ function drawAnnotations({
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
         onClick({ event, annotation });
+        if (annotation.onClick) {
+          annotation.onClick({ event, annotation });
+        }
       }
       function onContextMenu(event) {
         onRightClicked({ event, annotation });
+        if (annotation.onRightClick) {
+          annotation.onRightClick({ event, annotation });
+        }
       }
 
-      const { startAngle, endAngle, totalAngle, centerAngle } = annotation;
+      const {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles
+      } = annotation;
+
+      const titleText = getAnnotationNameAndStartStopString(annotation);
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
@@ -120,19 +141,19 @@ function drawAnnotations({
       if (showLabels) {
         //add labels to the exported label array (to be drawn by the label component)
         labels[annotation.id] = {
+          annotationType,
           annotationCenterAngle: useStartAngle ? startAngle : centerAngle,
           annotationCenterRadius: annotationRadius,
           text: name,
           id: annotation.id,
-          title: `${startCase(annotationType)} ${name}  ${annotation.start} - ${
-            annotation.end
-          }`,
+          title: titleText,
           className: annotation.labelClassName || "",
           onClick: _onClick,
           color:
             annotation.labelColor ||
             (annotationType === "part" ? "purple" : "black"),
-          onContextMenu
+          onContextMenu,
+          ...labelOptions
         };
       }
 
@@ -140,14 +161,11 @@ function drawAnnotations({
         ? getColor(annotation)
         : annotation.color || "purple";
 
-      /* eslint-disable */
-
-      if (!annotation.id) debugger;
-      /* eslint-enable */
       DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
       svgGroup.push(
         <DrawAnnotation
           {...{
+            titleText,
             editorName,
             annotationType,
             showLabels,
@@ -155,6 +173,7 @@ function drawAnnotations({
             labelCenter: centerAngle,
             startAngle,
             endAngle,
+            locationAngles,
             reverseAnnotations,
             onClick: _onClick,
             onContextMenu,
@@ -162,7 +181,8 @@ function drawAnnotations({
             totalAngle,
             annotationColor,
             annotationRadius,
-            annotationHeight
+            annotationHeight,
+            annotationProps
           }}
           id={annotation.id}
           key={"veAnnotation-" + annotationType + index}
@@ -185,47 +205,80 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = pureNoFunc(
-  withHover(function({
-    hoverActions,
-    hoverProps: { className },
-    startAngle,
-    endAngle,
-    onClick,
-    onContextMenu,
-    annotation,
-    reverseAnnotations,
-    Annotation = Feature,
-    annotationType,
-    totalAngle,
-    annotationColor,
-    annotationRadius,
-    annotationHeight
-  }) {
-    return (
+const DrawAnnotation = withHover(function({
+  className,
+  startAngle,
+  endAngle,
+  onClick,
+  onContextMenu,
+  titleText,
+  locationAngles,
+  annotation,
+  reverseAnnotations,
+  Annotation = Feature,
+  totalAngle,
+  annotationColor,
+  annotationRadius,
+  annotationHeight,
+  onMouseLeave,
+  onMouseOver,
+  annotationProps
+}) {
+  const sharedProps = {
+    style: { cursor: "pointer" },
+    className: className,
+    onContextMenu: onContextMenu,
+    onClick: onClick,
+    onMouseLeave,
+    onMouseOver
+  };
+  const title = <title>{titleText}</title>;
+  return (
+    <React.Fragment>
       <g
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,
           eAngle: endAngle,
           forward: reverseAnnotations ? !annotation.forward : annotation.forward
         })}
-        {...hoverActions}
-        className={className}
-        onContextMenu={onContextMenu}
-        onClick={onClick}
+        {...sharedProps}
       >
-        <title>
-          {getAnnotationNameAndStartStopString(annotation, {
-            isPart: annotationType === "part"
-          })}
-        </title>
+        {title}
         <Annotation
+          {...locationAngles &&
+            locationAngles.length && { containsLocations: true }}
           totalAngle={totalAngle}
           color={annotationColor}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
+          {...annotationProps}
         />
       </g>
-    );
-  })
-);
+      );
+      {locationAngles &&
+        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
+          return (
+            <g
+              key={"location--" + annotation.id + "--" + i}
+              {...PositionAnnotationOnCircle({
+                sAngle: startAngle,
+                eAngle: endAngle,
+                forward: reverseAnnotations
+                  ? !annotation.forward
+                  : annotation.forward
+              })}
+              {...sharedProps}
+            >
+              {title}
+              <Annotation
+                totalAngle={totalAngle}
+                color={annotationColor}
+                radius={annotationRadius}
+                annotationHeight={annotationHeight}
+              />
+            </g>
+          );
+        })}
+    </React.Fragment>
+  );
+});

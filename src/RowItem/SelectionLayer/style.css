@@ -8,14 +8,14 @@
   z-index: 10;
 }
 
-.veRowViewCaret.veRowViewSelectionLayer {
+.veCaret {
   background: black;
+  stroke: black;
   opacity: 1;
   cursor: ew-resize;
+  z-index: 10;
 }
 
-.veRowViewCaret.veRowViewSelectionLayer.cutsiteLabelSelectionLayer {
+.veCaret.veSelectionLayer.cutsiteLabelSelectionLayer {
   display: none !important;
 }
-
-/*# sourceMappingURL= style.css.map */

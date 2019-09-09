@@ -4,39 +4,56 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 import pureNoFunc from "../utils/pureNoFunc";
+import { getSelectionMessage } from "../utils/editorUtils";
 
 function Caret({
   caretPosition,
   sequenceLength,
   className,
+  onClick,
+  isSelection,
   innerRadius,
-  outerRadius
+  outerRadius,
+  isProtein,
+  selectionMessage
 }) {
   let { startAngle, endAngle } = getRangeAngles(
     { start: caretPosition, end: caretPosition },
-    sequenceLength
+    sequenceLength || 1
   );
   if (!isNumber(startAngle)) {
     console.error("we've got a problem!");
   }
   return (
-    <g className={"ve-caret-holder"}>
-      <title>{"Caret before BP " + (caretPosition + 1)}</title>
+    <g
+      {...PositionAnnotationOnCircle({
+        sAngle: startAngle,
+        eAngle: endAngle,
+        height: 0
+      })}
+      onClick={onClick}
+      className={className + " veCaret " + draggableClassnames.caret}
+    >
+      <title>
+        {selectionMessage ||
+          getSelectionMessage({ caretPosition, isProtein, sequenceLength })}
+      </title>
       <line
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          height: 0
-        })}
-        className={className + " " + draggableClassnames.caret}
-        strokeWidth="2px"
-        style={{ opacity: 9, zIndex: 100, cursor: "ew-resize" }} //tnr: the classname needs to be cursor here!
+        strokeWidth="1.5px"
         x1={0}
         y1={-innerRadius}
         x2={0}
         y2={-outerRadius}
-        stroke="black"
+        // stroke="black"
       />
+      {isSelection ? (
+        <polygon
+          className="vePolygonCaretHandle"
+          fill="black"
+          points={`0,${-outerRadius + 2} 5,${-outerRadius -
+            10} -5,${-outerRadius - 10}`}
+        />
+      ) : null}
     </g>
   );
 }

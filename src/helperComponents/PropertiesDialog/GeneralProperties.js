@@ -1,34 +1,41 @@
 import React from "react";
-import { InputField, BPSelect } from "teselagen-react-components";
+import {
+  InputField,
+  BPSelect,
+  TextareaField
+} from "teselagen-react-components";
 import { reduxForm } from "redux-form";
-// import { map } from "lodash";
-// import { Button, Intent } from "@blueprintjs/core";
+import withEditorProps from "../../withEditorProps";
+import { compose } from "recompose";
 
 class GeneralProperties extends React.Component {
+  updateSeqDesc = val => {
+    return this.props.sequenceDescriptionUpdate(val);
+  };
   render() {
     const {
       readOnly,
       showReadOnly = true,
       updateCircular,
+      isProtein,
       disableSetReadOnly,
       updateAvailability,
-      sequenceData: { name, sequence, circular, materiallyAvailable },
+      sequenceData,
       updateReadOnlyMode,
       onSave,
       showAvailability,
       sequenceNameUpdate
     } = this.props;
+    const {
+      description,
+      name,
+      sequence = "",
+      proteinSequence = "",
+      circular,
+      materiallyAvailable
+    } = sequenceData || {};
     return (
-      <div
-        style={{
-          maxWidth: 500,
-          flexGrow: 1,
-          alignSelf: "center",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
+      <React.Fragment>
         <div className="ve-flex-row">
           <div className="ve-column-left">Name:</div>{" "}
           <div className="ve-column-right">
@@ -43,23 +50,26 @@ class GeneralProperties extends React.Component {
             />{" "}
           </div>
         </div>
-        <div className="ve-flex-row">
-          <div className="ve-column-left">Circular/Linear:</div>{" "}
-          <div className="ve-column-right">
-            {" "}
-            <BPSelect
-              disabled={readOnly}
-              onChange={val => {
-                updateCircular(val === "circular");
-              }}
-              value={circular ? "circular" : "linear"}
-              options={[
-                { label: "Circular", value: "circular" },
-                { label: "Linear", value: "linear" }
-              ]}
-            />
+        {!isProtein && (
+          <div className="ve-flex-row circularLinearSelect">
+            <div className="ve-column-left">Circular/Linear:</div>{" "}
+            <div className="ve-column-right">
+              {" "}
+              <BPSelect
+                disabled={readOnly}
+                onChange={val => {
+                  updateCircular(val === "circular");
+                }}
+                value={circular ? "circular" : "linear"}
+                options={[
+                  { label: "Circular", value: "circular" },
+                  { label: "Linear", value: "linear" }
+                ]}
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         {showAvailability && (
           <div className="ve-flex-row">
             <div className="ve-column-left">Material Availability:</div>{" "}
@@ -81,7 +91,10 @@ class GeneralProperties extends React.Component {
         )}
         <div className="ve-flex-row">
           <div className="ve-column-left">Length:</div>{" "}
-          <div className="ve-column-right"> {sequence.length}</div>
+          <div className="ve-column-right">
+            {" "}
+            {isProtein ? proteinSequence.length : sequence.length}
+          </div>
         </div>
         {showReadOnly && (
           <div className="ve-flex-row">
@@ -102,11 +115,21 @@ class GeneralProperties extends React.Component {
             </div>
           </div>
         )}
-      </div>
+        <div>Description:</div>
+        <TextareaField
+          clickToEdit
+          name="description"
+          onFieldSubmit={this.updateSeqDesc}
+          defaultValue={description}
+        />
+      </React.Fragment>
     );
   }
 }
 
-export default reduxForm({
-  form: "GeneralProperties"
-})(GeneralProperties);
+export default compose(
+  withEditorProps,
+  reduxForm({
+    form: "GeneralProperties"
+  })
+)(GeneralProperties);

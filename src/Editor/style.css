@@ -1,8 +1,6 @@
 .veEditor {
   position: relative;
-}
-.veVectorInteractionWrapper:focus {
-  box-shadow: 0 4px 2px -2px #9ecaed;
+  flex-grow: 1;
 }
 .veVectorInteractionWrapper {
   overflow-x: hidden;
@@ -33,12 +31,6 @@
 .ve-clickable-black:hover {
   color: black;
 }
-.ve-close-panel-button {
-  z-index: 400;
-  color: grey;
-  height: 25px;
-  width: 35px;
-}
 
 .veRightClickTabMenu {
   opacity: 0.4;
@@ -48,7 +40,7 @@
 }
 
 .reflex-layout > .reflex-element {
-  overflow-y: hidden !important;
+  overflow: hidden !important;
 }
 .reflex-layout.reflex-container {
   height: inherit !important;
@@ -58,19 +50,32 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  flex-grow: 1;
+  width: fit-content;
+  height: fit-content;
+
+  /* border: 1px solid black; */
+}
+.preview-mode-container > div {
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
+  padding: 2px;
 }
 
 .preview-mode-view-fullscreen {
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  top: 1%;
+  left: 1%;
+  /* transform: translateX(-50%) translateY(-50%); */
   position: absolute;
-  display: none;
+  display: flex;
+
+  /* opacity: .9; */
 }
 
-.preview-mode-container:hover .preview-mode-view-fullscreen {
-  display: flex;
-}
+/* .preview-mode-container>div:hover .preview-mode-view-fullscreen {
+ opacity: 1;
+} */
 
 .preview-mode-view-fullscreen:hover {
   background: #0e5a8a;
@@ -81,3 +86,64 @@
 }
 
 @import url(darkmode.css);
+
+.veSearchLayer {
+  cursor: pointer;
+
+  stroke: gold !important;
+  fill: gold !important;
+  background: gold !important;
+}
+.veSearchLayerActive {
+  stroke: red !important;
+  fill: red !important;
+  background: red !important;
+}
+
+.veSearchLayer.veCaret {
+  cursor: pointer;
+}
+
+.veRowView,
+.veCircularView {
+  outline: none;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.veVectorInteractionWrapper .veSelectionLayer:not(.veCaret) {
+  background: gray;
+  fill: gray;
+}
+.veVectorInteractionWrapper:focus .veSelectionLayer:not(.veCaret) {
+  fill: #0099ff;
+  background: #0099ff;
+}
+.veVectorInteractionWrapper:focus .veCaret:not(.selectionLayerCaret) {
+  animation: blinker 1s step-start infinite;
+}
+/* this is the little handles above the selection carets */
+.veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid black;
+  position: absolute;
+  z-index: 1000;
+  top: -7px;
+  left: -4px;
+}
+.vePolygonCaretHandle,
+.veEditor .veSearchLayer .vePolygonCaretHandle {
+  display: none;
+}
+.veEditor .vePolygonCaretHandle {
+  display: inherit;
+}

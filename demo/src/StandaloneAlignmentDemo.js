@@ -12,13 +12,13 @@ import {generateSequenceData} from "ve-sequence-utils";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
-const exampleAlignmentData = {alignmentTracks: times(100).map(() => {
+const exampleAlignmentData = {alignmentTracks: times(10).map(() => {
   return {
     sequenceData: {
-      ...generateSequenceData(100)
+      ...generateSequenceData(10)
     },
     alignmentData: {
-      ...generateSequenceData(100)
+      ...generateSequenceData(10)
     }
   }
 })}
@@ -61,7 +61,7 @@ export default class StandaloneAlignmentDemo extends React.Component {
   render() {
     const inner = (
       <div
-        className={"standaloneDemoNode"}
+        className="standaloneDemoNode"
         style={{
           width: "100%",
           height: "100%",

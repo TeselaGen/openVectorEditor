@@ -1,9 +1,13 @@
-.dialog-buttons {
+.simple-dialog .dialog-buttons {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
 
-.dialog-buttons > * {
+.simple-dialog .dialog-buttons > * {
   margin-left: 10px;
+}
+
+.simple-dialog .bp3-form-content {
+  height: 40px;
 }

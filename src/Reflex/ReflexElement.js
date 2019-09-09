@@ -7,7 +7,6 @@
 import throttle from "lodash.throttle";
 import Measure from "react-measure";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import Browser from "./Browser";
 import React from "react";
 

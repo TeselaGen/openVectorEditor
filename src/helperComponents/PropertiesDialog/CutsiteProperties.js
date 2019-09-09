@@ -1,15 +1,27 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  CmdCheckbox,
+  DataTable,
+  withSelectedEntities
+} from "teselagen-react-components";
 import { map } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button, KeyCombo } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import selectors from "../../selectors";
+import commands from "../../commands";
 
 // import { Button } from "@blueprintjs/core";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
 
 class CutsiteProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = commands(this);
+  }
   onRowSelect = ([record]) => {
     if (!record) return;
     const { dispatch, editorName } = this.props;
@@ -41,8 +53,8 @@ class CutsiteProperties extends React.Component {
             forwardRegex === reverseRegex
               ? "Palindromic"
               : forward
-                ? "1"
-                : "-1forward"
+              ? "1"
+              : "-1forward"
         };
       }
     );
@@ -57,20 +69,23 @@ class CutsiteProperties extends React.Component {
             justifyContent: "space-around"
           }}
         >
-          <EnzymeViewer
-            {...{
-              sequence: enzyme.site,
-              reverseSnipPosition: enzyme.bottomSnipOffset,
-              forwardSnipPosition: enzyme.topSnipOffset
-            }}
-          />
+          {enzyme && (
+            <EnzymeViewer
+              {...{
+                sequence: enzyme.site,
+                reverseSnipPosition: enzyme.bottomSnipOffset,
+                forwardSnipPosition: enzyme.topSnipOffset
+              }}
+            />
+          )}
           <div style={{ width: 300 }}>
             <h3>Cuts At: </h3>
             <DataTable
               //defaults={{order: ["numberOfCuts"]}}
+
               maxHeight={300}
               onRowSelect={this.onRowSelect}
-              formName={"cutLocations"}
+              formName="cutLocations"
               isSingleSelect
               compact
               noRouter
@@ -103,21 +118,15 @@ class CutsiteProperties extends React.Component {
     ]
   };
 
+  onChangeHook = () => {
+    this.props.annotationVisibilityShow("cutsites");
+  };
   render() {
     const {
-      // sequenceData = {},
-      // allCutsites,
       editorName,
-      annotationVisibilityShow,
       createNewDigest,
       filteredCutsites: allCutsites
-      // sequenceData: {cutsites: {cutsitesByName}}={}
-      // cutsitePropertiesSelectedEntities
     } = this.props;
-    /* eslint-disable */
-
-    // if (!allCutsites) debugger;
-    /* eslint-enable */
 
     const { cutsitesByName } = allCutsites;
 
@@ -132,14 +141,25 @@ class CutsiteProperties extends React.Component {
     });
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex" }}>
-          <Button style={{ cursor: "auto" }} disabled minimal icon="filter" />
+        <div
+          style={{
+            marginBottom: 10,
+            paddingTop: 10,
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
+          <CmdCheckbox prefix="Show " cmd={this.commands.toggleCutsites} />
+          <Button
+            style={{ marginLeft: 10, cursor: "auto" }}
+            disabled
+            minimal
+            icon="filter"
+          />
           <CutsiteFilter
-            style={{ flexGrow: 1 }}
+            style={{ flexGrow: 2 }}
             editorName={editorName}
-            onChangeHook={function() {
-              annotationVisibilityShow("cutsites");
-            }}
+            onChangeHook={this.onChangeHook}
           />
 
           <Button
@@ -148,19 +168,20 @@ class CutsiteProperties extends React.Component {
               createNewDigest();
             }}
           >
-            {" "}
-            Run Virtual Digest &nbsp; <KeyCombo minimal combo={"mod+shift+d"} />
+            Virtual Digest
           </Button>
         </div>
         <DataTable
           compact
           noSelect
+          noHeader
+          noFooter
           withExpandAndCollapseAllButton
           noFullscreenButton
           noPadding
           defaults={{ order: ["numberOfCuts"] }}
           maxHeight={400}
-          formName={"cutsiteProperties"}
+          formName="cutsiteProperties"
           noRouter
           withSearch={false}
           SubComponent={this.SubComponent}
@@ -173,4 +194,14 @@ class CutsiteProperties extends React.Component {
   }
 }
 
-export default withSelectedEntities("cutsiteProperties")(CutsiteProperties);
+export default compose(
+  connectToEditor(editorState => {
+    const cutsites = selectors.filteredCutsitesSelector(editorState);
+    return {
+      annotationVisibility: editorState.annotationVisibility || {},
+      filteredCutsites: cutsites,
+      cutsites: cutsites.cutsitesArray
+    };
+  }),
+  withSelectedEntities("cutsiteProperties")
+)(CutsiteProperties);

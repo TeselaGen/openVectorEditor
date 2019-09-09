@@ -1,0 +1,123 @@
+{
+  "id": "msaAlignment_2",
+  "alignmentTracks": [
+    {
+      "sequenceData": {
+        "features": [{
+          "start": 2,
+          "end": 8,
+          "name": "cds feature",
+          "type": "CDS",
+          "id": "5ac3f0a199aae6653c0e7d40",
+          "forward": true,
+          "notes": {},
+          "strand": 1,
+          "color": "#006FEF"
+      },
+      {
+          "start": 22,
+          "end": 55,
+          "name": "cds feature",
+          "type": "CDS",
+          "id": "5ac3f0a199aae6653c0e7d41",
+          "forward": true,
+          "notes": {},
+          "strand": 1,
+          "color": "#006FEF"
+      },
+      {
+        "start": 78,
+        "end": 88,
+        "name": "cds feature",
+        "type": "CDS",
+        "id": "5ac3f0a199aae6653c0e7d42",
+        "forward": true,
+        "notes": {},
+        "strand": 1,
+        "color": "#006FEF"
+      }],
+        "name": "F08889",
+        "sequence": "GTCCGTAGCCTCGCATTACTCGCATCCATTCTCAGGCTGTCTCGTCTCGTCTCGCGCTAGCGGAGTGTATACTGGCTTACTATGTTGGCA",
+        "extraLines": [],
+        "comments": [],
+        "type": "DNA",
+        "size": 90,
+        "circular": false
+      },
+      "alignmentData": {
+        "name": "F08889",
+        "sequence": "------gtccgtagcctcgcattactcgcatccattctcaggctgtctcgtctcgtc-------tcgcgctagcggagtgtatactggcttactatgttggca---------------"
+      }
+    },
+    {
+      "sequenceData": {
+        "features": [],
+        "name": "F08887",
+        "sequence": "CGGCTGAAAGCGAAACGTTCCTTATCATCTGGCGAATCGGACCCACAAGAGCACTGCTGATCCTTCAACTCAGCAAAAGTTCGATTTATT",
+        "extraLines": [],
+        "comments": [],
+        "type": "DNA",
+        "size": 90,
+        "circular": false
+      },
+      "alignmentData": {
+        "name": "F08887",
+        "sequence": "----------------cggctgaaagcgaaacgttcctta------------tcatctggcgaatcggacccacaagagcactgctgatccttcaactcagcaaaagttcgatttatt"
+      }
+    },
+    {
+      "sequenceData": {
+        "features": [{
+          "start": 22,
+          "end": 44,
+          "name": "cds feature",
+          "type": "CDS",
+          "id": "5ac3f0a199aae6653c0e7d43",
+          "forward": true,
+          "notes": {},
+          "strand": 1,
+          "color": "#006FEF"
+      },
+      {
+        "start": 49,
+        "end": 55,
+        "name": "misc_feature",
+        "type": "misc_feature",
+        "id": "5ac3f0a199aae6653c0e7d44",
+        "forward": true,
+        "notes": {},
+        "strand": 1,
+        "color": "#006FEF"
+    }],
+        "name": "F08888",
+        "sequence": "GAGCCCTTCCACCTAGCGGCGTAAATCGTAGAGTCCCTCAATAAGTTCGTCCGTTCCCAGCACTTCAGCCAAGGAAGCTACCAATTTTTA",
+        "extraLines": [],
+        "comments": [],
+        "type": "DNA",
+        "size": 90,
+        "circular": false
+      },
+      "alignmentData": {
+        "name": "F08888",
+        "sequence": "gagcccttccacctagcggcgtaaatcgtagagtccctcaa------taagttcgtc----------------------cgttcccagcacttcagccaaggaagctaccaattttta"
+      }
+    }
+  ],
+  "alignmentType": "MULTIPLE SEQUENCE ALIGNMENT",
+  "alignmentAnnotationVisibility": {
+    "features": true,
+    "parts": true,
+    "axis": true,
+    "axisNumbers": true,
+    "dnaColors": false,
+    "translations": true,
+    "orfs": false,
+    "orfTranslations": false,
+    "cdsFeatureTranslations": true,
+    "cutsites": false,
+    "primers": false,
+    "chromatogram": false,
+    "sequence": true,
+    "reverseSequence": false
+  }
+}

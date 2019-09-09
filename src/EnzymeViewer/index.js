@@ -19,7 +19,9 @@ export default ({
           annotationVisibility: {
             cutsites: true,
             cutsiteLabels: false,
-            axis: false
+            axis: false,
+            reverseSequence: true,
+            sequence: true
           },
           annotationLabelVisibility: {
             cutsites: false

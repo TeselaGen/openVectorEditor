@@ -1,13 +1,28 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "teselagen-react-components";
+import {
+  DataTable,
+  withSelectedEntities,
+  CmdCheckbox,
+  CmdDiv
+} from "teselagen-react-components";
 import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { getRangeLength } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
+import { connectToEditor } from "../../withEditorProps";
+import { compose } from "recompose";
+import selectors from "../../selectors";
+
+import getCommands from "../../commands";
+import { sizeSchema } from "./utils";
 
 class OrfProperties extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = getCommands(this);
+  }
   onRowSelect = ([record]) => {
-    if (!record) return
+    if (!record) return;
     const { dispatch, editorName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
@@ -18,8 +33,7 @@ class OrfProperties extends React.Component {
     });
   };
   render() {
-    const { sequenceData = {} } = this.props;
-    const { orfs } = sequenceData;
+    const { orfs, sequenceLength, annotationVisibility } = this.props;
     const orfsToUse = map(orfs, orf => {
       return {
         ...orf,
@@ -28,21 +42,23 @@ class OrfProperties extends React.Component {
         ...(orf.strand === undefined && {
           strand: orf.forward ? 1 : -1
         }),
-        size: getRangeLength(orf, sequenceData.sequence.length),
-        sizeAa: Math.floor(
-          getRangeLength(orf, sequenceData.sequence.length) / 3
-        )
+        size: getRangeLength(orf, sequenceLength),
+        sizeAa: Math.floor(getRangeLength(orf, sequenceLength) / 3)
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <React.Fragment>
         <DataTable
+          topLeftItems={
+            <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfs} />
+          }
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
           withSearch={false}
           maxHeight={400}
-          formName={"orfProperties"}
+          formName="orfProperties"
           noRouter
           compact
           isInfinite
@@ -62,30 +78,39 @@ class OrfProperties extends React.Component {
                 displayName: "Size (aa)",
                 type: "string"
               },
-              {
-                path: "size",
-                type: "string",
-                render: (val, record) => {
-                  const base1Range = convertRangeTo1Based(record);
-                  return (
-                    <span>
-                      {val}{" "}
-                      <span style={{ fontSize: 10 }}>
-                        ({base1Range.start}-{base1Range.end})
-                      </span>
-                    </span>
-                  );
-                }
-              },
+              sizeSchema,
               { path: "frame", type: "number" },
               { path: "strand", type: "number" }
             ]
           }}
           entities={orfsToUse}
         />
-      </div>
+        <br />
+        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
+        <CmdCheckbox cmd={this.commands.useGtgAndCtgAsStartCodons} />
+        <CmdDiv cmd={this.commands.minOrfSizeCmd} />
+      </React.Fragment>
     );
   }
 }
 
-export default withSelectedEntities("orfProperties")(OrfProperties);
+export default compose(
+  connectToEditor(editorState => {
+    const {
+      readOnly,
+      annotationVisibility = {},
+      sequenceData: { sequence = "" } = {},
+      sequenceData,
+      minimumOrfSize
+    } = editorState;
+    return {
+      readOnly,
+      annotationVisibility,
+      orfs: selectors.orfsSelector(editorState),
+      sequenceLength: sequence.length,
+      sequenceData,
+      minimumOrfSize
+    };
+  }),
+  withSelectedEntities("orfProperties")
+)(OrfProperties);

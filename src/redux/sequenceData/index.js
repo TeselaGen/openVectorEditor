@@ -1,4 +1,3 @@
-import { cloneDeep } from "lodash";
 import deepEqual from "deep-equal";
 import { tidyUpSequenceData } from "ve-sequence-utils";
 import uuid from "uniqid";
@@ -7,6 +6,7 @@ import createAction from "../utils/createMetaAction";
 import features from "./features";
 import parts from "./parts";
 import name from "./name";
+import description from "./description";
 import primers from "./primers";
 import sequence from "./sequence";
 import circular from "./circular";
@@ -21,6 +21,7 @@ export * from "./primers";
 export * from "./features";
 export * from "./parts";
 export * from "./name";
+export * from "./description";
 // export * from './sequence';
 export * from "./circular";
 export * from "./materiallyAvailable";
@@ -32,6 +33,7 @@ export * from "./translations";
 
 const _updateSequenceData = createAction("SEQUENCE_DATA_UPDATE");
 export const updateSequenceData = function(seqData, ...rest) {
+  //tnrtodo: currently we're not using that type variable for anything
   return _updateSequenceData(
     tidyUpSequenceData(seqData, { annotationsAsObjects: true }),
     ...rest
@@ -52,6 +54,7 @@ const coreReducer = combineReducersDontIgnoreKeys({
   circular,
   materiallyAvailable,
   name,
+  description,
   fromFileUpload: createReducer({}, false)
 });
 

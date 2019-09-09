@@ -3,6 +3,7 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import shouldFlipText from "./shouldFlipText";
 import React from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
+import { divideBy3 } from "../utils/proteinUtils";
 
 function Axis({
   radius,
@@ -12,7 +13,8 @@ function Axis({
   tickMarkHeight = 5,
   tickMarkWidth = 1,
   textOffset = 15,
-  ringThickness = 4
+  ringThickness = 4,
+  isProtein
 }) {
   let height =
     ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
@@ -25,7 +27,8 @@ function Axis({
       end: sequenceLength
     },
     tickSpacing: circularAndLinearTickSpacing,
-    sequenceLength
+    sequenceLength,
+    isProtein
   });
   let tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function(tickPosition, index) {
@@ -55,7 +58,7 @@ function Axis({
                 fontSize: "small"
               }}
             >
-              {tickPosition + 1 + ""}
+              {divideBy3(tickPosition + 1, isProtein) + ""}
             </text>
             <rect width={tickMarkWidth} height={tickMarkHeight} />
           </g>

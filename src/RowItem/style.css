@@ -31,11 +31,7 @@
   background: black !important;
 }
 
-/* .veRowItemSequenceContainer {
-  height: 80%;
-} */
-
-.veRowViewOrfs {
+.veRowViewOrfsContainer {
   z-index: 20;
 }
 /* TNR: ENABLING THIS WILL BREAK SMOOTH SCROLLING FOR THE ROW VIEW

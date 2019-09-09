@@ -13,6 +13,7 @@ class Sequence extends React.Component {
         "hideBps",
         "cutsites",
         "sequence",
+        "showCutsites",
         "charWidth",
         "length",
         "height",
@@ -94,7 +95,7 @@ class Sequence extends React.Component {
             }}
             ref="rowViewTextContainer"
             className="rowViewTextContainer"
-            height={height}
+            height={Math.max(0, Number(height))}
           >
             {times(numChunks, i => {
               const seqChunk = getChunk(sequence, chunkSize, i);
@@ -122,8 +123,8 @@ class Sequence extends React.Component {
                   {uppercaseSequenceMapFont === "uppercase"
                     ? seqChunk.toUpperCase()
                     : uppercaseSequenceMapFont === "lowercase"
-                      ? seqChunk.toLowerCase()
-                      : seqChunk}
+                    ? seqChunk.toLowerCase()
+                    : seqChunk}
                 </text>
               );
             })}
@@ -135,9 +136,8 @@ class Sequence extends React.Component {
       return (
         <div
           style={style}
-          className={(className ? className : "") + " Sequence"}
+          className={(className ? className : "") + " ve-row-item-sequence"}
         >
-          {coloredRects}
           {!hideBps && (
             <svg
               style={{
@@ -148,7 +148,7 @@ class Sequence extends React.Component {
               }}
               ref="rowViewTextContainer"
               className="rowViewTextContainer"
-              height={height}
+              height={Math.max(0, Number(height))}
             >
               <text
                 className={
@@ -165,11 +165,12 @@ class Sequence extends React.Component {
                 {uppercaseSequenceMapFont === "uppercase"
                   ? sequence.toUpperCase()
                   : uppercaseSequenceMapFont === "lowercase"
-                    ? sequence.toLowerCase()
-                    : sequence}
+                  ? sequence.toLowerCase()
+                  : sequence}
               </text>
             </svg>
           )}
+          {coloredRects}
           {children}
         </div>
       );
@@ -180,7 +181,7 @@ class Sequence extends React.Component {
 export default Sequence;
 const dnaToColor = {
   a: "lightgreen",
-  c: "#96B1FA",
+  c: "#658fff",
   g: "yellow",
   t: "#EE6262"
 };
@@ -237,7 +238,7 @@ class ColoredSequence extends React.Component {
     const { height } = this.props;
     // if (sequence.length > 100000) return null
     return (
-      <svg style={{ display: "block" }} height={height}>
+      <svg style={{ display: "block" }} height={Math.max(0, Number(height))}>
         {this.drawRects()}
       </svg>
     );
