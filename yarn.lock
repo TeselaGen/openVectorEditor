@@ -9433,9 +9433,9 @@ react-table@^6.9.2:
     classnames "^2.2.5"
 
 react-to-print@^2.0.0-alpha-4:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.3.2.tgz#7690bd50c5286c4e5a3010bf48adc14c4e1a5926"
-  integrity sha512-6hG1WQPKB9UaIKLTV7eAOU4lMdIrd4bqwkJwRWIP0VgCTh2eYDE0L/hSLfyVffoN82yqmsJBQI2ui+7KQFLiAw==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.4.0.tgz#8f33c9627536501035fc7557d3ad0272df1bcb6b"
+  integrity sha512-ER6r7ezKkFzAq6VMes9BVdPbE5xzL8kIJyhS8nQj6y0Z/0qoWsOGZ5Y6b0dq8XUuVTSqbdGu9DswtI76nIkdXQ==
   dependencies:
     prop-types "^15.7.2"
 
