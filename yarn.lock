@@ -121,7 +121,7 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/core@^3.15.1", "@blueprintjs/core@^3.18.0":
+"@blueprintjs/core@^3.18.0", "@blueprintjs/core@^3.18.1":
   version "3.18.1"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.18.1.tgz#cf180d470710a0e9123fb2449113be06cf0d81ce"
   integrity sha512-G+IhJsN006Mb32NLOrne5TLScxyyd3Id9g2MvfYFq9zuyBcBA5+V/uQy3pTO9vkmuKEz0GLLy8ZbrQ7Us/+zTw==
@@ -138,14 +138,14 @@
     tslib "~1.9.0"
 
 "@blueprintjs/datetime@^3.9.2":
-  version "3.9.2"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.9.2.tgz#f750f5ac440038c7845c12aa75eb50e8d95975c4"
-  integrity sha512-qHZySOLB7hOAB0gWmT6Yz2q25ufUyGiRAHNXB6Ol3INkOrXhz7qhbK9EDEq1fbRDw7wVg52zh3WNoHX9Lw23zQ==
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.13.0.tgz#ba511a32870b1af82f49d06f8631cfb5995cdcc3"
+  integrity sha512-0MShc0IJo4rSdhzKkVS+tKGIV9d4ZS/hh4jAtxCsAC7/fBFJ++rUZ+1QpWeRzG9yXi52pNLBXZyx+xxN/Vptsw==
   dependencies:
-    "@blueprintjs/core" "^3.15.1"
+    "@blueprintjs/core" "^3.18.1"
     classnames "^2.2"
-    react-day-picker "^7.3.0"
-    tslib "^1.9.0"
+    react-day-picker "^7.3.2"
+    tslib "~1.9.0"
 
 "@blueprintjs/icons@^3.10.0":
   version "3.10.0"
@@ -9215,10 +9215,10 @@ react-color@^2.14.1:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
-react-day-picker@^7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.3.0.tgz#59b6d4e19d274650c79dcf49fbcce2637313467d"
-  integrity sha512-t2kz0Zy4P5U4qwU5YhsBq2QGmypP8L/u+89TSnuD0h4dYKSEDQArFPWfin9gv8erV1ciR1Wzr485TMaYnI7FTw==
+react-day-picker@^7.3.2:
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.3.2.tgz#b9b9b0000ba53b2c9df9bccb79664862aba6b60a"
+  integrity sha512-mij2j2Un/v2V2ow+hf/hFBMdl6Eis/C/YhBtlI6Xpbvh3Q6WMix78zEkCdw6i9GldafOrpnupWKofv/h5oSI4g==
   dependencies:
     prop-types "^15.6.2"
 
