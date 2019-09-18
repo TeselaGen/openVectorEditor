@@ -38,6 +38,13 @@ describe("editor", function() {
     cy.dragBetween(`[data-row-number="0"]`, `[data-row-number="1"]`);
     cy.contains("No Selection").should("not.exist");
   });
+  it("should fire the rename handler", function() {
+    cy.get("body").type("{meta}/");
+    cy.focused().type("rename{enter}");
+    cy.focused().type("renamed seq");
+    cy.contains(".bp3-dialog button", "OK").click();
+    cy.contains("onRename callback triggered: pj5_00001renamed seq");
+  });
 
   it(`should autosave if autosave=true`, function() {
     cy.tgToggle("shouldAutosave");

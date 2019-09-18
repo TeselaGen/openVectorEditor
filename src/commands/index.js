@@ -62,7 +62,10 @@ const fileCommandDefs = {
     handler: props => {
       props.showRenameSequenceDialog({
         initialValues: { newName: props.sequenceData.name },
-        onSubmit: values => props.sequenceNameUpdate(values.newName)
+        onSubmit: values => {
+          props.sequenceNameUpdate(values.newName);
+          props.onRename && props.onRename(values.newName, props);
+        }
       });
     }
   },

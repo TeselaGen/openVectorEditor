@@ -1117,8 +1117,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             }}
             {...this.state.onRename && {
-              onRename: () =>
-                window.toastr.success("onRename callback triggered")
+              onRename: newName =>
+                window.toastr.success("onRename callback triggered: " + newName)
             }}
             {...this.state.onDuplicate && {
               onDuplicate: () =>
