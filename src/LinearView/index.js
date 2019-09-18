@@ -8,6 +8,7 @@ import withEditorInteractions from "../withEditorInteractions";
 import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
 import { getEmptyText } from "../utils/editorUtils";
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 
 let defaultMarginWidth = 10;
 
@@ -72,6 +73,9 @@ export class LinearView extends React.Component {
     }
     return this.rowData;
   };
+  state = {
+    zoomLevel: 1
+  };
 
   render() {
     let {
@@ -96,97 +100,134 @@ export class LinearView extends React.Component {
       ...rest
     } = this.props;
     let innerWidth = Math.max(width - marginWidth, 0);
-    this.charWidth = charWidth || innerWidth / this.getMaxLength();
+    this.charWidth =
+      (charWidth || innerWidth / this.getMaxLength()) * this.state.zoomLevel;
     const bpsPerRow = this.getMaxLength();
     let sequenceName = hideName ? "" : sequenceData.name || "";
     let rowData = this.getRowData();
+    // width = innerWidth * this.state.zoomLevel
+    // maxWidth = this.getMaxLength() * 12
+    
+    // maxzoomLevel = this.getMaxLength() * 12 /innerWidth
 
+const maxZoom = this.getMaxLength() * 11 /innerWidth
     return (
-      <Draggable
-        // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
-        bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={event => {
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragged
-          );
-        }}
-        onStart={event => {
-          this.getNearestCursorPositionToMouseEvent(
-            rowData,
-            event,
-            editorDragStarted
-          );
-        }}
-        onStop={editorDragStopped}
-      >
-        <div
-          ref={ref => (this.linearView = ref)}
-          className="veLinearView"
-          style={{
-            width,
-            ...(height && { height }),
-            paddingLeft: marginWidth / 2
+      <React.Fragment>
+        <UncontrolledSliderWithPlusMinusBtns
+          onChange={val => {
+            this.setState({
+              zoomLevel: val
+            });
+            setTimeout(() => {
+              (
+                document.querySelector(".veLinearView .veSelectionLayer") ||
+                document.querySelector(".veLinearView .veCaret")
+              ).scrollIntoView({ inline: "center" });
+            }, 0);
           }}
-          onContextMenu={event => {
+          onRelease={val => {
+            this.setState({
+              zoomLevel: val
+            });
+          }}
+          title="Adjust Zoom Level"
+          style={{ paddingTop: "4px", width: 100 }}
+          className="alignment-zoom-slider"
+          labelRenderer={false}
+          stepSize={1}
+          initialValue={1}
+          max={maxZoom}
+          min={1}
+        />
+        <Draggable
+          // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
+          bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
+          onDrag={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
-              backgroundRightClicked
+              editorDragged
             );
           }}
-          onClick={event => {
+          onStart={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
-              editorClicked
+              editorDragStarted
             );
           }}
+          onStop={editorDragStopped}
         >
-          {!hideName && (
-            <SequenceName
-              {...{
-                isProtein,
-                sequenceName,
-                sequenceLength: sequenceData.sequence
-                  ? sequenceData.sequence.length
-                  : 0
-              }}
-            />
-          )}
-          <RowItem
-            {...{
-              ...rest,
-              charWidth,
-              caretPosition,
-              isProtein: sequenceData.isProtein,
-              alignmentData,
-              sequenceLength: this.getMaxLength(),
-              width: innerWidth,
-              bpsPerRow,
-              emptyText: getEmptyText({ sequenceData, caretPosition }),
-              tickSpacing:
-                tickSpacing ||
-                Math.floor(
-                  this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)
-                ),
-              annotationVisibility: {
-                ...rest.annotationVisibility,
-                // yellowAxis: true,
-                translations: false,
-                primaryProteinSequence: false,
-                reverseSequence: false,
-                sequence: false,
-                cutsitesInSequence: false,
-                ...annotationVisibilityOverrides
-              },
-              ...RowItemProps
+          <div
+            ref={ref => (this.linearView = ref)}
+            className="veLinearView"
+            style={{
+              width,
+              ...(height && { height }),
+              paddingLeft: marginWidth / 2
             }}
-            row={rowData[0]}
-          />
-        </div>
-      </Draggable>
+            onContextMenu={event => {
+              this.getNearestCursorPositionToMouseEvent(
+                rowData,
+                event,
+                backgroundRightClicked
+              );
+            }}
+            onClick={event => {
+              console.log(`onClick`);
+              this.getNearestCursorPositionToMouseEvent(
+                rowData,
+                event,
+                editorClicked
+              );
+            }}
+          >
+            {!hideName && (
+              <SequenceName
+                {...{
+                  isProtein,
+                  sequenceName,
+                  sequenceLength: sequenceData.sequence
+                    ? sequenceData.sequence.length
+                    : 0
+                }}
+              />
+            )}
+            <div style={{ overflow: "auto" }}>
+              <RowItem
+                {...{
+                  ...rest,
+                  charWidth: this.charWidth,
+                  caretPosition,
+                  isProtein: sequenceData.isProtein,
+                  alignmentData,
+                  sequenceLength: this.getMaxLength(),
+                  width: innerWidth * this.state.zoomLevel,
+                  bpsPerRow,
+                  emptyText: getEmptyText({ sequenceData, caretPosition }),
+                  tickSpacing:
+                    tickSpacing ||
+                    Math.floor(
+                      this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)
+                    ),
+                  annotationVisibility: {
+                    ...rest.annotationVisibility,
+                    // yellowAxis: true,
+                    translations: false,
+                    primaryProteinSequence: false,
+                    reverseSequence: false,
+                    sequence: this.charWidth < 12,
+                    cutsitesInSequence: false,
+                    ...annotationVisibilityOverrides
+                  },
+                  ...RowItemProps
+                }}
+                row={rowData[0]}
+              />
+            </div>
+          </div>
+        </Draggable>
+      </React.Fragment>
     );
   }
 }

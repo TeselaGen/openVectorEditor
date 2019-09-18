@@ -23,6 +23,7 @@ import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";
 import Part from "./Part";
 import drawAnnotations from "./drawAnnotations";
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
@@ -71,13 +72,13 @@ export class CircularView extends React.Component {
       )
     });
   }
+  state = {};
 
   render() {
     let {
       //set defaults for all of these vars
       width = 400,
       height = 400,
-      scale = 1,
       sequenceData = {},
       hideName = false,
       editorName,
@@ -112,7 +113,10 @@ export class CircularView extends React.Component {
         ? Math.ceil(sequenceLength / 5)
         : Math.ceil(sequenceLength / 100) * 10);
 
-    const baseRadius = 80;
+    const zoomLevel = this.state.zoomLevel || this.props.zoomLevel;
+    const rotationDegrees =
+      this.state.rotationDegrees || this.props.rotationDegrees || 0;
+    const baseRadius = 80 * zoomLevel;
     let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
     let radius = baseRadius;
     let annotationsSvgs = [];
@@ -259,6 +263,9 @@ export class CircularView extends React.Component {
         radius += spaceBefore;
         const sharedProps = {
           radius,
+          zoomLevel,
+          rotationDegrees,
+          rotation: rotationDegrees * 0.0174533, //get radians
           onClick: this.props[singularName + "Clicked"],
           onRightClicked: this.props[singularName + "RightClicked"],
           sequenceLength,
@@ -418,6 +425,50 @@ export class CircularView extends React.Component {
         // tabIndex="0"
         className="veCircularView"
       >
+        <UncontrolledSliderWithPlusMinusBtns
+          onChange={val => {
+            console.log(`val:`, val);
+            this.setState({
+              zoomLevel: val === 3 ? 1 : val
+            });
+          }}
+          onRelease={val => {
+            console.log(`val:`, val);
+            this.setState({
+              zoomLevel: val === 3 ? 1 : val
+            });
+          }}
+          title="Adjust Zoom Level"
+          style={{ paddingTop: "4px", width: 100 }}
+          className="alignment-zoom-slider"
+          labelRenderer={false}
+          stepSize={1}
+          initialValue={3}
+          max={14}
+          min={3}
+        />
+        <UncontrolledSliderWithPlusMinusBtns
+          onChange={val => {
+            this.setState({
+              rotationDegrees: val
+            });
+          }}
+          onRelease={val => {
+            this.setState({
+              rotationDegrees: val
+            });
+          }}
+          leftIcon="arrow-left"
+          rightIcon="arrow-right"
+          title="Adjust Zoom Level"
+          style={{ paddingTop: "4px", width: 100 }}
+          className="alignment-zoom-slider"
+          labelRenderer={false}
+          stepSize={3}
+          initialValue={0}
+          max={360}
+          min={0}
+        />
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -479,16 +530,21 @@ export class CircularView extends React.Component {
                   backgroundRightClicked
                 );
               }}
-              style={{ overflow: "visible", display: "block" }}
+              style={{
+                overflow: zoomLevel !== 1 ? "hidden" : "visible",
+                display: "block"
+              }}
               width={widthToUse}
               height={heightToUse}
               ref="circularView"
               className="circularViewSvg"
-              viewBox={`-${radius * scale} -${radius * scale} ${radius *
-                2 *
-                scale} ${radius * 2 * scale}`}
+              viewBox={`-${radius / zoomLevel} -${
+                zoomLevel === 1 ? radius : radius - radius / zoomLevel
+              } ${(radius / zoomLevel) * 2} ${(radius / zoomLevel) * 2}`}
             >
-              {annotationsSvgs}
+              <g transform={`rotate(${-this.state.rotationDegrees || 0})`}>
+                {annotationsSvgs}
+              </g>
             </svg>
             <div className="veCircularViewWarningContainer">
               {!circular && (

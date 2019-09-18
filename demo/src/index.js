@@ -24,6 +24,7 @@ import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
 import pjson from "../../package.json";
 import EditorDemo from "./EditorDemo";
+import SimpleCircularZoomDemo from "../../src/SimpleCircularZoomDemo";
 
 // import GenbankView from "../../src/helperComponents/PropertiesDialog/GenbankView";
 
@@ -41,6 +42,7 @@ const links = [
   { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
   { name: "DigestTool", url: "DigestTool" },
   { name: "EnzymeViewer", url: "EnzymeViewer" },
+  { name: "SimpleCircularZoomDemo", url: "SimpleCircularZoomDemo" },
   { name: "CircularView", url: "CircularView" },
   { name: "RowView", url: "RowView" },
   { name: "LinearView", url: "LinearView" },
@@ -233,6 +235,16 @@ class Demo extends React.Component {
                 );
               }}
               path="/EnzymeViewer"
+            />
+            <Route
+              render={() => {
+                return (
+                  <WrapSimpleDemo>
+                    <SimpleCircularZoomDemo></SimpleCircularZoomDemo>
+                  </WrapSimpleDemo>
+                );
+              }}
+              path="/SimpleCircularZoomDemo"
             />
             <Route
               render={() => {

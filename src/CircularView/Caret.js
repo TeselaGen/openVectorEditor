@@ -29,7 +29,7 @@ function Caret({
       {...PositionAnnotationOnCircle({
         sAngle: startAngle,
         eAngle: endAngle,
-        height: 0
+        height: 0,
       })}
       onClick={onClick}
       className={className + " veCaret " + draggableClassnames.caret}
