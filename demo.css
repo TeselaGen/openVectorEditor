@@ -10446,6 +10446,12 @@ span.bp3-popover-target {
 .sequenceInputBubble input.focus {
   border: solid 1px #1585c5;
 }
+.bp3-dark .sequenceInputBubble {
+  background: #394b59;
+}
+.bp3-dark .sequenceInputBubble:after {
+  border-color: #394b59 transparent;
+}
 
 .veWarningMessage {
   /* color: red; */
@@ -11637,6 +11643,10 @@ span.bp3-popover-target {
 }
 .veEditor .vePolygonCaretHandle {
   display: inherit;
+}
+.bp3-dark .veTabActive {
+  color: #48aff0 !important;
+  border-bottom-color: #48aff0 !important;
 }
 
 .ve-digest-markings {
