@@ -494,12 +494,12 @@ export class Editor extends React.Component {
       let panel = Panel ? (
         <Panel
           {...pick(this.props, userDefinedHandlersAndOpts)}
-          {...panelSpecificProps && pick(this.props, panelSpecificProps)}
-          {...panelSpecificPropsToSpread &&
+          {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
+          {...(panelSpecificPropsToSpread &&
             panelSpecificPropsToSpread.reduce((acc, key) => {
               acc = { ...acc, ...get(this.props, key) };
               return acc;
-            }, {})}
+            }, {}))}
           key={activePanelId}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
@@ -629,7 +629,10 @@ export class Editor extends React.Component {
                                   marginLeft: 13,
                                   marginRight: 13
                                 }}
-                                className={camelCase("veTab-" + (name || id))}
+                                className={
+                                  (id === activePanelId ? "veTabActive " : "") +
+                                  camelCase("veTab-" + (name || id))
+                                }
                               >
                                 {isFullScreen && (
                                   <div //we need this div to wrap the tooltip to help the tooltip stay in the correct position https://github.com/TeselaGen/openVectorEditor/issues/436
