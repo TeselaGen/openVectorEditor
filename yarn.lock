@@ -9289,9 +9289,9 @@ react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
 react-list@^0.8.11:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/react-list/-/react-list-0.8.11.tgz#2eb508e28e97c1f0387311b94e16362b213fb661"
-  integrity sha512-iD55dpe4rbdK4GMO+1nZUa801//qPFt8A1m6qjSasWs56jgS31L1XAmpSVug2mre4e9DZdJhnszxOCNfxD8VFg==
+  version "0.8.13"
+  resolved "https://registry.yarnpkg.com/react-list/-/react-list-0.8.13.tgz#6947d41cccbcca5a8399d5f7822e2a9796f85b70"
+  integrity sha512-6iY1JdlfHNF7tTuDZMcDf1cQZv5IuLkYJraiEY11CbTi/zASUxmVA8ClCNjuY1gA2l6+g6CNel031BhuXCN0uA==
   dependencies:
     prop-types "15"
 
