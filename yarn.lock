@@ -236,9 +236,9 @@
     any-observable "^0.3.0"
 
 "@teselagen/apollo-methods@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.2.1.tgz#6117fcda1ec6714a15077d05cec33a7252b25ba8"
-  integrity sha512-xFTGF9qADsMhONGJ+iuA15R+rxhDXIOAy9jf+1srRVj2dkWGcPxouQ+3B4TFeKtrLNN5g4frFbGZWzUsBgqf7Q==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@teselagen/apollo-methods/-/apollo-methods-1.2.2.tgz#4e4f83d23040a1dc47edc0f6a29eade2daf986b6"
+  integrity sha512-dadcgeHaMB2oba/cTOnqR7wod4lHRI4SXn/bBovtKQGGA6VIbtnTW1ZR92ml8391+z/3KrlrqBiD+fRFgkz31A==
   dependencies:
     pascal-case "^2.0.1"
 
