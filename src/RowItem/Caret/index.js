@@ -29,9 +29,13 @@ function Caret(props) {
     let cursorEl = (
       <div
         onClick={onClick}
-        onContextMenu={e => {
-          onRightClick(e);
-        }}
+        onContextMenu={
+          onRightClick
+            ? e => {
+                onRightClick(e);
+              }
+            : undefined
+        }
         title={
           selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })
