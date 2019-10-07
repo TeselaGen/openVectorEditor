@@ -61,6 +61,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
         annotations = {},
         annotationVisibility,
         sequenceLength,
+        selectionLayer,
         isProtein,
         annotationPropertiesSelectedEntities: _annotationPropertiesSelectedEntities,
         selectedAnnotationId
@@ -70,6 +71,9 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
       );
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
+      // showAddOrEditFeatureDialog()
+      // showAddOrEditPartDialog()
+      // showAddOrEditPrimerDialog()
       const showAddOrEditAnnotationDialog = this.props[
         `showAddOrEdit${annotationTypeUpper}Dialog`
       ];
@@ -112,7 +116,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 disabled={!sequenceLength}
                 style={{ marginRight: 15 }}
                 onClick={() => {
-                  showAddOrEditAnnotationDialog();
+                  showAddOrEditAnnotationDialog(selectionLayer);
                 }}
               >
                 New
@@ -145,15 +149,23 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
   }
 
   return compose(
-    connectToEditor(({ readOnly, annotationVisibility = {}, sequenceData }) => {
-      return {
-        annotationVisibility,
+    connectToEditor(
+      ({
         readOnly,
-        annotations: sequenceData[annotationType + "s"],
-        [annotationType + "s"]: sequenceData[annotationType + "s"],
-        sequenceLength: sequenceData.sequence.length
-      };
-    }),
+        annotationVisibility = {},
+        sequenceData,
+        selectionLayer
+      }) => {
+        return {
+          annotationVisibility,
+          selectionLayer,
+          readOnly,
+          annotations: sequenceData[annotationType + "s"],
+          [annotationType + "s"]: sequenceData[annotationType + "s"],
+          sequenceLength: sequenceData.sequence.length
+        };
+      }
+    ),
     withSelectedEntities("annotationProperties")
   )(AnnotationProperties);
 };
