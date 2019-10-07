@@ -12,6 +12,7 @@ function Caret(props) {
     caretPosition,
     isProtein,
     onClick,
+    onRightClick,
     selectionMessage,
     className = ""
     // getGaps,
@@ -28,6 +29,9 @@ function Caret(props) {
     let cursorEl = (
       <div
         onClick={onClick}
+        onContextMenu={e => {
+          onRightClick(e);
+        }}
         title={
           selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })

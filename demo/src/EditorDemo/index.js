@@ -72,7 +72,9 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-
+    window.ove_updateEditor = vals => {
+      updateEditor(store, "DemoEditor", vals);
+    };
     updateEditor(store, "DemoEditor", {
       readOnly: false,
       sequenceData: exampleSequenceData
@@ -1082,23 +1084,23 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               // flexGrow: 1,
               ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
-            {...this.state.readOnly && { readOnly: true }}
+            {...(this.state.readOnly && { readOnly: true })}
             editorName="DemoEditor"
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
-            {...this.state.onNew && {
+            {...(this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
-            }}
-            {...this.state.onImport && {
+            })}
+            {...(this.state.onImport && {
               onImport: sequence => {
                 window.toastr.success(
                   `onImport callback triggered for sequence: ${sequence.name}`
                 );
                 return sequence;
               }
-            }}
-            {...this.state.onSave && {
+            })}
+            {...(this.state.onSave && {
               onSave: function(
                 event,
                 sequenceDataToSave,
@@ -1115,28 +1117,28 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 //or
                 // return myPromiseBasedApiCall()
               }
-            }}
-            {...this.state.onRename && {
+            })}
+            {...(this.state.onRename && {
               onRename: newName =>
                 window.toastr.success("onRename callback triggered: " + newName)
-            }}
-            {...this.state.onDuplicate && {
+            })}
+            {...(this.state.onDuplicate && {
               onDuplicate: () =>
                 window.toastr.success("onDuplicate callback triggered")
-            }}
-            {...this.state.onCreateNewFromSubsequence && {
+            })}
+            {...(this.state.onCreateNewFromSubsequence && {
               onCreateNewFromSubsequence: (selectedSeqData, props) => {
                 console.info(selectedSeqData, props);
                 window.toastr.success(
                   "onCreateNewFromSubsequence callback triggered"
                 );
               }
-            }}
-            {...this.state.onDelete && {
+            })}
+            {...(this.state.onDelete && {
               onDelete: () =>
                 window.toastr.success("onDelete callback triggered")
-            }}
-            {...this.state.beforeSequenceInsertOrDelete && {
+            })}
+            {...(this.state.beforeSequenceInsertOrDelete && {
               beforeSequenceInsertOrDelete: (
                 sequenceDataToInsert,
                 existingSequenceData,
@@ -1179,8 +1181,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                   options
                 };
               }
-            }}
-            {...this.state.onCopy && {
+            })}
+            {...(this.state.onCopy && {
               onCopy: function(/* event, copiedSequenceData, editorState */) {
                 window.toastr.success("onCopy callback triggered");
 
@@ -1200,8 +1202,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 //in onPaste in your app you can do:
                 // e.clipboardData.getData('application/json')
               }
-            }}
-            {...this.state.onPaste && {
+            })}
+            {...(this.state.onPaste && {
               onPaste: function(event /* editorState */) {
                 //the onPaste here must return sequenceData in the teselagen data format
                 window.toastr.success("onPaste callback triggered");
@@ -1218,7 +1220,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 };
                 return sequenceData;
               }
-            }}
+            })}
             handleFullscreenClose={
               !withPreviewMode && this.changeFullscreenMode
             } //don't pass this handler if you're also using previewMode
@@ -1227,8 +1229,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
-            {...forceHeightMode && { height: 500 }}
-            {...withVersionHistory && {
+            {...(forceHeightMode && { height: 500 })}
+            {...(withVersionHistory && {
               getSequenceAtVersion: versionId => {
                 if (versionId === 2) {
                   return {
@@ -1263,7 +1265,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                   }
                 ];
               }
-            }}
+            })}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
             showReadOnly={this.state.showReadOnly}
@@ -1276,16 +1278,17 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 ? this.state.maintainOriginSplit
                 : false
             }
-            {...this.state.overrideRightClickExample &&
-              this.rightClickOverridesExample}
-            {...this.state.overrideAddEditFeatureDialog &&
-              this.overrideAddEditFeatureDialogExample}
-            {...this.state.clickOverridesExample && this.clickOverridesExample}
-            {...this.state.propertiesOverridesExample &&
-              this.propertiesOverridesExample}
-            {...this.state.overrideToolbarOptions &&
-              this.toolbarOverridesExample}
-            {...this.state.menuOverrideExample && this.menuOverrideExample}
+            {...(this.state.overrideRightClickExample &&
+              this.rightClickOverridesExample)}
+            {...(this.state.overrideAddEditFeatureDialog &&
+              this.overrideAddEditFeatureDialogExample)}
+            {...(this.state.clickOverridesExample &&
+              this.clickOverridesExample)}
+            {...(this.state.propertiesOverridesExample &&
+              this.propertiesOverridesExample)}
+            {...(this.state.overrideToolbarOptions &&
+              this.toolbarOverridesExample)}
+            {...(this.state.menuOverrideExample && this.menuOverrideExample)}
           />
           {/* </div> */}
         </div>
