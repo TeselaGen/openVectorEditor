@@ -100,7 +100,7 @@
     "moment": "2.24.0",
     "nwb": "0.23.0",
     "prettier": "1.18.2",
-    "react": "16.9.0",
+    "react": "16.10.2",
     "react-addons-perf": "^15.4.2",
     "react-apollo": "^2.5.8",
     "react-dom": "16.9.0",
