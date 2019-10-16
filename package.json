@@ -111,10 +111,10 @@
     "react-transition-group": "^4.2.2",
     "redux-form": "7",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "^27.1.35",
+    "teselagen-react-components": "^27.1.41",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.5",
-    "ve-sequence-utils": "^3.3.50",
+    "ve-sequence-utils": "^3.3.53",
     "why-did-you-update": "^1.0.6"
   },
   "resolutions": {
