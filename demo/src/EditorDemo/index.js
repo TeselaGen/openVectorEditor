@@ -60,6 +60,7 @@ const defaultState = {
   onSave: true,
   onRename: true,
   onDuplicate: true,
+  onSelectionOrCaretChanged: false,
   onCreateNewFromSubsequence: false,
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
@@ -1007,6 +1008,10 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "onSelectionOrCaretChanged"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onCreateNewFromSubsequence",
                 info:
                   "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
@@ -1125,6 +1130,12 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             {...(this.state.onDuplicate && {
               onDuplicate: () =>
                 window.toastr.success("onDuplicate callback triggered")
+            })}
+            {...(this.state.onSelectionOrCaretChanged && {
+              onSelectionOrCaretChanged: ({ caretPosition, selectionLayer }) =>
+                window.toastr.success(
+                  `onSelectionOrCaretChanged callback triggered caretPosition:${caretPosition}    selectionLayer: start: ${selectionLayer.start} end:  ${selectionLayer.end} `
+                )
             })}
             {...(this.state.onCreateNewFromSubsequence && {
               onCreateNewFromSubsequence: (selectedSeqData, props) => {

@@ -70,6 +70,7 @@ const userDefinedHandlersAndOpts = [
   "getVersionList",
   "getSequenceAtVersion",
   "onDuplicate",
+  "onSelectionOrCaretChanged",
   "beforeSequenceInsertOrDelete",
   "onDelete",
   "onCopy",
