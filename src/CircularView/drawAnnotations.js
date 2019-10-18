@@ -212,7 +212,6 @@ const DrawAnnotation = withHover(function(props) {
     onMouseOver,
     annotationProps
   } = props;
-  console.log(`props:`, props);
 
   const sharedProps = {
     style: { cursor: "pointer" },

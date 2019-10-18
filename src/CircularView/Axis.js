@@ -37,7 +37,6 @@ function Axis({
     sequenceLength,
     isProtein
   });
-  console.log(`rotation:`,rotation)
 
   let tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function(tickPosition, index) {

@@ -427,13 +427,11 @@ export class CircularView extends React.Component {
       >
         <UncontrolledSliderWithPlusMinusBtns
           onChange={val => {
-            console.log(`val:`, val);
             this.setState({
               zoomLevel: val === 3 ? 1 : val
             });
           }}
           onRelease={val => {
-            console.log(`val:`, val);
             this.setState({
               zoomLevel: val === 3 ? 1 : val
             });
