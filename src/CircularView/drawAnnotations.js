@@ -9,16 +9,17 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import Feature from "./Feature";
 
+//annotations coming ine can be positioned either by caretPosition or range
 function drawAnnotations({
-  Annotation,
+  // Annotation,
   annotationType,
   radius,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
   sequenceLength,
-  reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
-  editorName,
+  // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
+  // editorName,
   getColor,
   useStartAngle, //use the startAngle instead of the centerAngle to position the labels
   onClick = noop,
@@ -27,7 +28,7 @@ function drawAnnotations({
   onRightClicked = noop,
   showLabels,
   labelOptions,
-  annotationProps
+  ...rest
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -123,13 +124,7 @@ function drawAnnotations({
         }
       }
 
-      const {
-        startAngle,
-        endAngle,
-        totalAngle,
-        centerAngle,
-        locationAngles
-      } = annotation;
+      const { startAngle, centerAngle } = annotation;
 
       const titleText = getAnnotationNameAndStartStopString(annotation);
 
@@ -165,24 +160,15 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            ...rest,
+            ...annotation,
+            annotationHeight,
+            annotationRadius,
             titleText,
-            editorName,
-            annotationType,
-            showLabels,
-            Annotation,
-            labelCenter: centerAngle,
-            startAngle,
-            endAngle,
-            locationAngles,
-            reverseAnnotations,
             onClick: _onClick,
             onContextMenu,
             annotation,
-            totalAngle,
-            annotationColor,
-            annotationRadius,
-            annotationHeight,
-            annotationProps
+            annotationColor
           }}
           id={annotation.id}
           key={"veAnnotation-" + annotationType + index}
@@ -205,25 +191,29 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = withHover(function({
-  className,
-  startAngle,
-  endAngle,
-  onClick,
-  onContextMenu,
-  titleText,
-  locationAngles,
-  annotation,
-  reverseAnnotations,
-  Annotation = Feature,
-  totalAngle,
-  annotationColor,
-  annotationRadius,
-  annotationHeight,
-  onMouseLeave,
-  onMouseOver,
-  annotationProps
-}) {
+const DrawAnnotation = withHover(function(props) {
+  const {
+    className,
+    startAngle,
+    endAngle,
+    onClick,
+    onContextMenu,
+    titleText,
+    locationAngles,
+    annotation,
+    reverseAnnotations,
+    Annotation = Feature,
+    totalAngle,
+    addHeight,
+    annotationColor,
+    annotationRadius,
+    annotationHeight,
+    onMouseLeave,
+    onMouseOver,
+    annotationProps
+  } = props;
+  console.log(`props:`, props);
+
   const sharedProps = {
     style: { cursor: "pointer" },
     className: className,
@@ -239,14 +229,17 @@ const DrawAnnotation = withHover(function({
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,
           eAngle: endAngle,
-          forward: reverseAnnotations ? !annotation.forward : annotation.forward
+          forward: reverseAnnotations
+            ? !annotation.forward
+            : annotation.forward,
+          height: addHeight ? annotationRadius : undefined
         })}
         {...sharedProps}
       >
         {title}
         <Annotation
-          {...locationAngles &&
-            locationAngles.length && { containsLocations: true }}
+          {...(locationAngles &&
+            locationAngles.length && { containsLocations: true })}
           totalAngle={totalAngle}
           color={annotationColor}
           radius={annotationRadius}

@@ -28,7 +28,7 @@ export default function calculateTickMarkPositionsForGivenRange({
   if (range.start === 0) tickMarks.push(isProtein ? 2 : 0);
   for (
     let tick = firstTickOffsetFromRangeStart - 1;
-    tick < rangeLength;
+    tick < range.start + rangeLength;
     tick += tickSpacing
   ) {
     tickMarks.push(norm(tick, sequenceLength));

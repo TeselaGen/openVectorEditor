@@ -1,36 +1,58 @@
 import React from "react";
-import Axis from "../CircularView/Axis";
-import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
-import { range } from "rxjs";
 import {
   getPositionFromAngle,
-  modulatePositionByRange,
   normalizePositionByRangeLength,
-  trimRangeByAnotherRange,
-  getRangeAngles,
-  adjustRangeToRotation,
-  adjustRangeToDeletionOfAnotherRange,
-  invertRange
-} from "ve-range-utils/lib";
-import getAngleForPositionMidpoint from "../CircularView/getAngleForPositionMidpoint";
+  // invertRange,
+  getOverlapsOfPotentiallyCircularRanges,
+  isPositionWithinRange,
+  getRangeLength
+} from "ve-range-utils";
 import drawAnnotations from "../CircularView/drawAnnotations";
+import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
+// import drawDirectedPiePiece from "../CircularView/drawDirectedPiePiece";
+// import PositionAnnotationOnCircle from "../CircularView/PositionAnnotationOnCircle";
 
 export default class SimpleCircZoom extends React.Component {
-  state = {};
+  state = {
+    svgWidth: 400
+  };
   render() {
     // const {} = this.props
-    const { component } = Axis({
-      radius: 100,
-      sequenceLength: 100,
-      showAxisNumbers: true,
-      circularAndLinearTickSpacing: 10
-    });
+    // const { component } = Axis({
+    //   radius: 100,
+    //   sequenceLength: 100,
+    //   showAxisNumbers: true,
+    //   circularAndLinearTickSpacing: 10
+    // });
     return (
       <div>
         hello werld
         <h1>yooooo</h1>
-        <svg>{component}</svg>
+        <UncontrolledSliderWithPlusMinusBtns
+          onChange={val => {
+            // console.log(`val:`, val);
+            this.setState({
+              svgWidth: val
+            });
+          }}
+          onRelease={val => {
+            // console.log(`val:`, val);
+            this.setState({
+              svgWidth: val
+            });
+          }}
+          title="Adjust Zoom Level"
+          style={{ paddingTop: "4px", width: 100 }}
+          className="alignment-zoom-slider"
+          labelRenderer={false}
+          stepSize={1}
+          initialValue={400}
+          max={800}
+          min={300}
+        />
+        {/* <svg>{component}</svg> */}
+        {/* <EvenSimplerFeature></EvenSimplerFeature> */}
         <CircularViewWithZoom
           {...{
             ...(this.state.hideNameAndInfo && { hideName: true }),
@@ -43,6 +65,8 @@ export default class SimpleCircZoom extends React.Component {
             ...(this.state.toggleSelection && {
               selectionLayer: { start: 2, end: 30 }
             }),
+            svgWidth: this.state.svgWidth,
+            svgHeight: this.state.svgWidth,
             partClicked: () => {
               window.toastr.success("Part Clicked!");
             },
@@ -107,10 +131,10 @@ export default class SimpleCircZoom extends React.Component {
 }
 const BASE_RADIUS = 50;
 
-const VIEW_WIDTH = 400;
+// const VIEW_WIDTH = 400;
 class CircularViewWithZoom extends React.Component {
   state = {
-    zoomLevel: 1,
+    zoomLevel: 3,
     rotationDegrees: 0
   };
   render() {
@@ -120,116 +144,131 @@ class CircularViewWithZoom extends React.Component {
       sequenceLength = 100,
       editorName,
       annotationHeight = 15,
-      spaceBetweenAnnotations = 2
+      spaceBetweenAnnotations = 2,
+      isProtein
     } = this.props;
-
     const percentOfCircle = 1 / this.state.zoomLevel;
 
-    const numBpsToShow = Math.ceil(sequenceLength / this.state.zoomLevel);
-    const angle = 2 * Math.PI * percentOfCircle;
+    // if (percentOfCircle === 1) {
+    //   return "normal"
+    // }
 
-    let radius = Math.max(BASE_RADIUS, VIEW_WIDTH / Math.sin(angle / 2) / 2);
+    // console.log(`percentOfCircle:`, percentOfCircle);
+    // const numBpsToShow = Math.ceil(sequenceLength / this.state.zoomLevel);
+    const angle = 2 * Math.PI * percentOfCircle;
+    // console.log(`angle:`, angle);
+    // console.log(`Math.sin(angle / 2):`, Math.sin(angle / 2));
+
+    let radius =
+      this.state.zoomLevel === 1
+        ? BASE_RADIUS
+        : Math.max(BASE_RADIUS, svgWidth / Math.sin(angle / 2) / 2);
 
     // const saggitaLength = r	±	 √	  r	2 	−	 l	2
-    const saggitaLength =
-      radius + Math.sqrt(radius * radius - ((VIEW_WIDTH / 2) * VIEW_WIDTH) / 2);
+    // const saggitaLength =
+    //   radius + Math.sqrt(radius * radius - ((VIEW_WIDTH / 2) * VIEW_WIDTH) / 2);
 
     const rotation = this.state.rotationDegrees * 0.0174533; //get radians
-console.log(`rotation - angle/2, rotation + angle/2:`,rotation - angle/2, rotation + angle/2)
-    const rangeToShowStart = getPositionFromAngle(rotation - angle/2, sequenceLength);
-    const rangeToShowEnd = getPositionFromAngle(rotation + angle/2, sequenceLength);
+
+    const rangeToShowStart = getPositionFromAngle(
+      rotation - angle / 2,
+      sequenceLength
+    );
+    const rangeToShowEnd = getPositionFromAngle(
+      rotation + angle / 2,
+      sequenceLength
+    );
     // console.log(`numBpsToShow:`, numBpsToShow);
     // console.log(`rangeToShowStart:`, rangeToShowStart);
 
-    const rangeToShow = {
-      // start: rangeToShowStart,
-      // end: getPositionFromAngle(rotation + angle/2, sequenceLength)
-      // end: normalizePositionByRangeLength(
-      //   rangeToShowStart + numBpsToShow,
-      //   sequenceLength
-      // )
-      start: normalizePositionByRangeLength(
-        rangeToShowStart,
-        sequenceLength
-      ),
-      end: normalizePositionByRangeLength(
-        rangeToShowEnd,
-        sequenceLength
-      )
-    };
-    // console.log(`rangeToShow:`,rangeToShow)
-    //   VIEW_WIDTH /
-    // we have a circle
-    // we want to fit a subsection of that circle into the view window
-    // % of circle =  numBpsToShow / sequenceLength * 100 = 1/zoomLevel  * 100
-    // const percentOfCircle =  numBpsToShow / sequenceLength * 100
-    //angle = 2pi/percent
-    // to see .5 of circle, radius = .5 * window width,
-    // to see .1 of circle, radius =
-    // chord length = 2rsinθ/2
-    // window length = 2rsinθ/2 (where θ = % of circle * 2pi)
-    // window length / sinθ/2 (where θ = % of circle * 2pi) / 2= r
-
-    const rangeToShowInverted = invertRange(rangeToShow, sequenceLength);
+    const rangeToShow =
+      this.state.zoomLevel === 1
+        ? { start: 0, end: Math.max(sequenceLength - 1, 0) }
+        : {
+            // start: rangeToShowStart,
+            // end: getPositionFromAngle(rotation + angle/2, sequenceLength)
+            // end: normalizePositionByRangeLength(
+            //   rangeToShowStart + numBpsToShow,
+            //   sequenceLength
+            // )
+            start: normalizePositionByRangeLength(
+              rangeToShowStart,
+              sequenceLength
+            ),
+            end: normalizePositionByRangeLength(rangeToShowEnd, sequenceLength)
+          };
 
     const allLabels = [];
+    const rangeToShowLength = getRangeLength(rangeToShow, sequenceLength)
     const layers = [
       {
-        name: "axis",
-        annotations: [{ start: 0, end: sequenceLength - 1 }]
+        annotations: [rangeToShow],
+        annotationType: "axis",
+        // Annotation:
+        // allOnSameLevel: false,
+        annotationProps: {
+          color: "white",
+          stroke: "black",
+          arrowheadLength: 0,
+          annotationHeight: 5
+        },
+        showLabels: false
+      },
+      {
+        annotations: calculateTickMarkPositionsForGivenRange({
+          range: rangeToShow,
+          tickSpacing:
+            rangeToShowLength < 10
+              ? 1
+              : rangeToShowLength < 50
+              ? Math.ceil(rangeToShowLength / 5)
+              : Math.ceil(rangeToShowLength / 100) * 10,
+          sequenceLength,
+          isProtein
+        }).map(pos => {
+          return {
+            start: pos,
+            end: pos,
+          };
+        }),
+        annotationType: "axisNumbers",
+        Annotation: AxisNumbers,
+        // positionBy: positionAxisNumbers,
+        allOnSameLevel: true,
+        addHeight: true,
+        showLabels: false
+      },
+      {
+        annotations: [
+          { start: 10, end: 20, name: "thomas" },
+          { start: 10, end: 20, name: "thomas" }
+        ],
+        annotationType: "feature",
+        // allOnSameLevel: true,
+        showLabels: true
       }
-    ].map((layer, i) => {
-      const {
-        annotationType,
-        getColor,
-        useStartAngle,
-        positionBy,
-        allOnSameLevel,
-        showLabels,
-        reverseAnnotations,
-        labelOptions,
-        annotationProps
-      } = layer;
-
-      const trimmedAnnotations = layer.annotations.flatMap((range, i) => {
+    ].map(layer => {
+      const trimmedAnnotations = layer.annotations.flatMap((range) => {
         // console.log(`rangeToShowInverted:`, rangeToShowInverted);
-        const trimmedRange = adjustRangeToDeletionOfAnotherRange(
+        const trimmedRange = getOverlapsOfPotentiallyCircularRanges(
           range,
-          rangeToShowInverted,
-          sequenceLength
+          rangeToShow,
+          sequenceLength,
+          true
         );
-        //         console.log(`range,
-        // // rangeToShow,
-        // // sequenceLength,:`,range,
-        // rangeToShow,
-        // sequenceLength,)
-        // console.log(`trimmedRange:`, trimmedRange);
         if (!trimmedRange) return [];
-
-        // const adjustedRange = adjustRangeToRotation(
-        //   trimmedRange,
-        //   rangeToShowStart,
-        //   sequenceLength
-        // );
         return trimmedRange;
       });
-      // console.log(`trimmedAnnotations:`, trimmedAnnotations);
+
       const returnVal = drawAnnotations({
-        annotationType,
+        ...layer,
         radius,
         annotations: trimmedAnnotations,
         annotationHeight,
         spaceBetweenAnnotations,
         sequenceLength,
-        reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
         editorName,
-        getColor,
-        useStartAngle, //use the startAngle instead of the centerAngle to position the labels
-        positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
-        allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
-        showLabels,
-        labelOptions,
-        annotationProps
+        arrowheadLength: 10
       });
       if (!returnVal) return null;
       const { component, height, labels } = returnVal;
@@ -285,31 +324,77 @@ console.log(`rotation - angle/2, rotation + angle/2:`,rotation - angle/2, rotati
           min={0}
         />
         <svg
-          viewBox={`${svgWidth / 2 +
-            +radius},${-radius}, ${svgHeight},${svgWidth}`}
+          viewBox={`${-svgWidth / 2},${-svgHeight / 2 -
+            (this.state.zoomLevel === 1
+              ? 0
+              : radius)},${svgWidth},${svgHeight}`}
           width={svgHeight}
           height={svgWidth}
         >
-          {layers}
+          <g transform={`rotate(${-this.state.rotationDegrees})`}>{layers}</g>
         </svg>
       </div>
     );
   }
 }
 
-function getAnnotationRotationAndHeightTransform({
-  height = 0,
-  sAngle = 0,
-  eAngle = 0,
-  forward = true
-}) {
-  const sAngleDegs = (sAngle * 360) / Math.PI / 2;
-  const eAngleDegs = (eAngle * 360) / Math.PI / 2;
-  let transform;
-  if (forward) {
-    transform = `translate(0,${-height}) rotate(${sAngleDegs},0,${height})`;
-  } else {
-    transform = `scale(-1,1) translate(0,${-height}) rotate(${-eAngleDegs},0,${height}) `;
-  }
-  return transform;
+// class EvenSimplerFeature extends React.Component {
+//   render() {
+//     const { svgWidth = 400, svgHeight = 400 } = this.props;
+//     return (
+//       <svg
+//         viewBox={`${-svgWidth / 2},${-svgHeight / 2},${svgWidth},${svgHeight}`}
+//         width={svgWidth}
+//         height={svgHeight}
+//       >
+//         <rect fill="black" width="5" height="5"></rect>
+//         <path
+//           //use PositionAnnotationOnCircle to move the feature back into view via tuckInHeight
+//           {...PositionAnnotationOnCircle({
+//             sAngle: -1
+//             // tuckInHeight: 100
+//           })}
+//           stroke={"black"}
+//           //draw the feature with the exagerated radius
+//           d={drawDirectedPiePiece({
+//             viewHeight: svgHeight,
+//             svgWidth: svgWidth,
+//             radius: 100,
+//             annotationHeight: 4,
+//             totalAngle: 1
+//           }).print()}
+//         ></path>
+//       </svg>
+//     );
+//   }
+// }
+
+function positionCutsites(annotation) {
+  return {
+    start: annotation.topSnipPosition,
+    end: annotation.topSnipPosition
+  };
+}
+function positionAxisNumbers(annotation) {
+  return {
+    start: annotation.caretPosition,
+    end: annotation.caretPosition
+  };
+}
+// function positionCutsites(annotation) {
+//   return {
+//     start: annotation.topSnipPosition,
+//     end: annotation.topSnipPosition
+//   };
+// }
+
+function AxisNumbers(props) {
+  console.log(`props:`,props)
+  console.log(`axisnumbas:`);
+  return (
+    <g>
+      <rect width={3} height={7} fill="black"></rect>
+      <text>  </text>
+    </g>
+  );
 }

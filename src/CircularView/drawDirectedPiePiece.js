@@ -10,7 +10,7 @@ function polarToSpecialCartesian(radius, angleInRadians) {
 // draws a directed piece of the pie with an arrowhead, starts at 0 angle, only draws in one direction (use transforms to move it around the )
 export default function drawDirectedPiePiece({
   tailThickness = 0.6,
-  arrowheadLength = 1,
+  arrowheadLength = .1,
   radius,
   annotationHeight,
   totalAngle
