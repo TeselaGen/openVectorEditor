@@ -8586,12 +8586,12 @@ span.bp3-popover-target {
   position: absolute;
 }
 
-.nucleobase:nth-child(1) {
+.nucleobase:nth-child(10) {
   -webkit-animation-delay: -1.869s;
           animation-delay: -1.869s;
 }
 
-.nucleobase:nth-child(1):before {
+.nucleobase:nth-child(10):before {
   -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
           animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   -webkit-animation-delay: -1.869s;
@@ -8599,188 +8599,188 @@ span.bp3-popover-target {
   background-color: #339bb9;
 }
 
-.nucleobase:nth-child(1):after {
+.nucleobase:nth-child(10):after {
   -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
           animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   -webkit-animation-delay: -1.869s;
           animation-delay: -1.869s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(2) {
-  -webkit-animation-delay: -3.738s;
-          animation-delay: -3.738s;
-}
-
-.nucleobase:nth-child(2):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -3.738s;
-          animation-delay: -3.738s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(2):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -3.738s;
-          animation-delay: -3.738s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(3) {
-  -webkit-animation-delay: -5.607s;
-          animation-delay: -5.607s;
-}
-
-.nucleobase:nth-child(3):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -5.607s;
-          animation-delay: -5.607s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(3):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -5.607s;
-          animation-delay: -5.607s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(4) {
-  -webkit-animation-delay: -7.476s;
-          animation-delay: -7.476s;
-}
-
-.nucleobase:nth-child(4):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -7.476s;
-          animation-delay: -7.476s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(4):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -7.476s;
-          animation-delay: -7.476s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(5) {
-  -webkit-animation-delay: -9.345s;
-          animation-delay: -9.345s;
-}
-
-.nucleobase:nth-child(5):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -9.345s;
-          animation-delay: -9.345s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(5):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -9.345s;
-          animation-delay: -9.345s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(6) {
-  -webkit-animation-delay: -11.214s;
-          animation-delay: -11.214s;
-}
-
-.nucleobase:nth-child(6):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -11.214s;
-          animation-delay: -11.214s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(6):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -11.214s;
-          animation-delay: -11.214s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(7) {
-  -webkit-animation-delay: -13.083s;
-          animation-delay: -13.083s;
-}
-
-.nucleobase:nth-child(7):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -13.083s;
-          animation-delay: -13.083s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(7):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -13.083s;
-          animation-delay: -13.083s;
-  background-color: #006cab;
-}
-
-.nucleobase:nth-child(8) {
-  -webkit-animation-delay: -14.952s;
-          animation-delay: -14.952s;
-}
-
-.nucleobase:nth-child(8):before {
-  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -14.952s;
-          animation-delay: -14.952s;
-  background-color: #339bb9;
-}
-
-.nucleobase:nth-child(8):after {
-  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -14.952s;
-          animation-delay: -14.952s;
   background-color: #006cab;
 }
 
 .nucleobase:nth-child(9) {
-  -webkit-animation-delay: -16.821s;
-          animation-delay: -16.821s;
+  -webkit-animation-delay: -3.738s;
+          animation-delay: -3.738s;
 }
 
 .nucleobase:nth-child(9):before {
   -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
           animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  -webkit-animation-delay: -16.821s;
-          animation-delay: -16.821s;
+  -webkit-animation-delay: -3.738s;
+          animation-delay: -3.738s;
   background-color: #339bb9;
 }
 
 .nucleobase:nth-child(9):after {
   -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
           animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -3.738s;
+          animation-delay: -3.738s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(8) {
+  -webkit-animation-delay: -5.607s;
+          animation-delay: -5.607s;
+}
+
+.nucleobase:nth-child(8):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -5.607s;
+          animation-delay: -5.607s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(8):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -5.607s;
+          animation-delay: -5.607s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(7) {
+  -webkit-animation-delay: -7.476s;
+          animation-delay: -7.476s;
+}
+
+.nucleobase:nth-child(7):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -7.476s;
+          animation-delay: -7.476s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(7):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -7.476s;
+          animation-delay: -7.476s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(6) {
+  -webkit-animation-delay: -9.345s;
+          animation-delay: -9.345s;
+}
+
+.nucleobase:nth-child(6):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -9.345s;
+          animation-delay: -9.345s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(6):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -9.345s;
+          animation-delay: -9.345s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(5) {
+  -webkit-animation-delay: -11.214s;
+          animation-delay: -11.214s;
+}
+
+.nucleobase:nth-child(5):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -11.214s;
+          animation-delay: -11.214s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(5):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -11.214s;
+          animation-delay: -11.214s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(4) {
+  -webkit-animation-delay: -13.083s;
+          animation-delay: -13.083s;
+}
+
+.nucleobase:nth-child(4):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -13.083s;
+          animation-delay: -13.083s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(4):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -13.083s;
+          animation-delay: -13.083s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(3) {
+  -webkit-animation-delay: -14.952s;
+          animation-delay: -14.952s;
+}
+
+.nucleobase:nth-child(3):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -14.952s;
+          animation-delay: -14.952s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(3):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -14.952s;
+          animation-delay: -14.952s;
+  background-color: #006cab;
+}
+
+.nucleobase:nth-child(2) {
+  -webkit-animation-delay: -16.821s;
+          animation-delay: -16.821s;
+}
+
+.nucleobase:nth-child(2):before {
+  -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  -webkit-animation-delay: -16.821s;
+          animation-delay: -16.821s;
+  background-color: #339bb9;
+}
+
+.nucleobase:nth-child(2):after {
+  -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+          animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   -webkit-animation-delay: -16.821s;
           animation-delay: -16.821s;
   background-color: #006cab;
 }
 
-.nucleobase:nth-child(10) {
+.nucleobase:nth-child(1) {
   -webkit-animation-delay: -18.69s;
           animation-delay: -18.69s;
 }
 
-.nucleobase:nth-child(10):before {
+.nucleobase:nth-child(1):before {
   -webkit-animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
           animation: animBefore 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   -webkit-animation-delay: -18.69s;
@@ -8788,7 +8788,7 @@ span.bp3-popover-target {
   background-color: #339bb9;
 }
 
-.nucleobase:nth-child(10):after {
+.nucleobase:nth-child(1):after {
   -webkit-animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
           animation: animAfter 2.1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   -webkit-animation-delay: -18.69s;
