@@ -15,6 +15,7 @@ import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { featureColors } from "ve-sequence-utils";
+import { mod } from "../utils/editorUtils";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -269,9 +270,7 @@ const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
 );
 export default withEditorProps(wrapped);
 
-function mod(n, m) {
-  return ((n % m) + m) % m;
-}
+
 
 function AnnotationSearchMatchComp({
   annotationSearchMatches,

@@ -5,11 +5,13 @@ import {
   normalizePositionByRangeLength,
   // invertRange,
   getOverlapsOfPotentiallyCircularRanges,
-  isPositionWithinRange,
   getRangeLength
 } from "ve-range-utils";
 import drawAnnotations from "../CircularView/drawAnnotations";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
+import shouldFlipText from "../CircularView/shouldFlipText";
+import { divideBy3 } from "../utils/proteinUtils";
+import { flatMap } from "lodash";
 // import drawDirectedPiePiece from "../CircularView/drawDirectedPiePiece";
 // import PositionAnnotationOnCircle from "../CircularView/PositionAnnotationOnCircle";
 
@@ -100,11 +102,39 @@ export default class SimpleCircZoom extends React.Component {
               features: [
                 {
                   name: "Feat 1",
+                  id: "fakeId1",
+                  color: "green",
+                  start: 1,
+                  end: 20
+                },
+                {
+                  name: "Feat 1",
                   id: "fakeId2",
                   color: "green",
                   start: 1,
                   end: 20
-                }
+                },
+                {
+                  name: "Feat 1",
+                  id: "fakeId3",
+                  color: "green",
+                  start: 1,
+                  end: 20
+                },
+                {
+                  name: "Feat 1",
+                  id: "fakeId4",
+                  color: "green",
+                  start: 1,
+                  end: 20
+                },
+                {
+                  name: "Feat 1",
+                  id: "fakeId5",
+                  color: "green",
+                  start: 1,
+                  end: 20
+                },
               ],
               parts: [
                 {
@@ -129,7 +159,7 @@ export default class SimpleCircZoom extends React.Component {
     );
   }
 }
-const BASE_RADIUS = 50;
+const BASE_RADIUS = 100;
 
 // const VIEW_WIDTH = 400;
 class CircularViewWithZoom extends React.Component {
@@ -143,6 +173,7 @@ class CircularViewWithZoom extends React.Component {
       svgHeight = 400,
       sequenceLength = 100,
       editorName,
+      sequenceData,
       annotationHeight = 15,
       spaceBetweenAnnotations = 2,
       isProtein
@@ -164,12 +195,7 @@ class CircularViewWithZoom extends React.Component {
         ? BASE_RADIUS
         : Math.max(BASE_RADIUS, svgWidth / Math.sin(angle / 2) / 2);
 
-    // const saggitaLength = r	±	 √	  r	2 	−	 l	2
-    // const saggitaLength =
-    //   radius + Math.sqrt(radius * radius - ((VIEW_WIDTH / 2) * VIEW_WIDTH) / 2);
-
     const rotation = this.state.rotationDegrees * 0.0174533; //get radians
-
     const rangeToShowStart = getPositionFromAngle(
       rotation - angle / 2,
       sequenceLength
@@ -178,19 +204,10 @@ class CircularViewWithZoom extends React.Component {
       rotation + angle / 2,
       sequenceLength
     );
-    // console.log(`numBpsToShow:`, numBpsToShow);
-    // console.log(`rangeToShowStart:`, rangeToShowStart);
-
     const rangeToShow =
       this.state.zoomLevel === 1
         ? { start: 0, end: Math.max(sequenceLength - 1, 0) }
         : {
-            // start: rangeToShowStart,
-            // end: getPositionFromAngle(rotation + angle/2, sequenceLength)
-            // end: normalizePositionByRangeLength(
-            //   rangeToShowStart + numBpsToShow,
-            //   sequenceLength
-            // )
             start: normalizePositionByRangeLength(
               rangeToShowStart,
               sequenceLength
@@ -199,21 +216,8 @@ class CircularViewWithZoom extends React.Component {
           };
 
     const allLabels = [];
-    const rangeToShowLength = getRangeLength(rangeToShow, sequenceLength)
+    const rangeToShowLength = getRangeLength(rangeToShow, sequenceLength);
     const layers = [
-      {
-        annotations: [rangeToShow],
-        annotationType: "axis",
-        // Annotation:
-        // allOnSameLevel: false,
-        annotationProps: {
-          color: "white",
-          stroke: "black",
-          arrowheadLength: 0,
-          annotationHeight: 5
-        },
-        showLabels: false
-      },
       {
         annotations: calculateTickMarkPositionsForGivenRange({
           range: rangeToShow,
@@ -227,52 +231,80 @@ class CircularViewWithZoom extends React.Component {
           isProtein
         }).map(pos => {
           return {
+            tickPosition: pos,
             start: pos,
-            end: pos,
+            end: pos
           };
         }),
         annotationType: "axisNumbers",
         Annotation: AxisNumbers,
-        // positionBy: positionAxisNumbers,
+        passAnnotation: true,
         allOnSameLevel: true,
         addHeight: true,
-        showLabels: false
+        showLabels: false,
+        spaceAfter: -5
       },
       {
-        annotations: [
-          { start: 10, end: 20, name: "thomas" },
-          { start: 10, end: 20, name: "thomas" }
-        ],
-        annotationType: "feature",
-        // allOnSameLevel: true,
-        showLabels: true
-      }
-    ].map(layer => {
-      const trimmedAnnotations = layer.annotations.flatMap((range) => {
-        // console.log(`rangeToShowInverted:`, rangeToShowInverted);
-        const trimmedRange = getOverlapsOfPotentiallyCircularRanges(
-          range,
-          rangeToShow,
-          sequenceLength,
-          true
-        );
-        if (!trimmedRange) return [];
-        return trimmedRange;
-      });
+        annotations: [rangeToShow],
+        annotationType: "axis",
+        annotationProps: {
+          color: "white",
+          stroke: "black",
+          arrowheadLength: 0
+        },
+        annotationHeight: 5,
+        spaceAfter: 10,
+        showLabels: false
+      },
 
+      {
+        annotationType: "feature",
+        showLabels: true,
+        spaceAfter: 10
+      },
+      {
+        annotationType: "part",
+        showLabels: true,
+        spaceAfter: 10
+      },
+      {
+        annotationType: "orf"
+      }
+    ].map(({ spaceAfter = 0, spaceBefore = 0, ...layer }) => {
+      const trimmedAnnotations = flatMap(
+        layer.annotations || sequenceData[layer.annotationType + "s"] || [],
+        range => {
+          // console.log(`rangeToShowInverted:`, rangeToShowInverted);
+          const trimmedRange = getOverlapsOfPotentiallyCircularRanges(
+            range,
+            rangeToShow,
+            sequenceLength,
+            true
+          );
+          if (!trimmedRange) return [];
+          return { ...range, ...trimmedRange };
+        }
+      );
+      radius += spaceBefore;
       const returnVal = drawAnnotations({
-        ...layer,
+        annotationProps: {
+          ...layer.annotationProps,
+          isProtein
+        },
+        rotation,
         radius,
         annotations: trimmedAnnotations,
         annotationHeight,
         spaceBetweenAnnotations,
         sequenceLength,
         editorName,
-        arrowheadLength: 10
+        arrowheadLength: 10,
+        ...layer
       });
       if (!returnVal) return null;
       const { component, height, labels } = returnVal;
       radius += height;
+      radius += spaceAfter;
       allLabels.push(labels);
 
       return component;
@@ -369,18 +401,18 @@ class CircularViewWithZoom extends React.Component {
 //   }
 // }
 
-function positionCutsites(annotation) {
-  return {
-    start: annotation.topSnipPosition,
-    end: annotation.topSnipPosition
-  };
-}
-function positionAxisNumbers(annotation) {
-  return {
-    start: annotation.caretPosition,
-    end: annotation.caretPosition
-  };
-}
+// function positionCutsites(annotation) {
+//   return {
+//     start: annotation.topSnipPosition,
+//     end: annotation.topSnipPosition
+//   };
+// }
+// function positionAxisNumbers(annotation) {
+//   return {
+//     start: annotation.caretPosition,
+//     end: annotation.caretPosition
+//   };
+// }
 // function positionCutsites(annotation) {
 //   return {
 //     start: annotation.topSnipPosition,
@@ -388,13 +420,24 @@ function positionAxisNumbers(annotation) {
 //   };
 // }
 
-function AxisNumbers(props) {
-  console.log(`props:`,props)
-  console.log(`axisnumbas:`);
+function AxisNumbers({ rotation, textOffset = 15, annotation, isProtein }) {
+  const shouldFlip = shouldFlipText(annotation.startAngle - rotation);
   return (
     <g>
-      <rect width={3} height={7} fill="black"></rect>
-      <text>  </text>
+      <rect width={1} height={10} fill="black"></rect>
+      <text
+        transform={
+          (shouldFlip ? "rotate(180)" : "") +
+          ` translate(0, ${shouldFlip ? -textOffset : textOffset})`
+        }
+        style={{
+          textAnchor: "middle",
+          dominantBaseline: "central",
+          fontSize: "small"
+        }}
+      >
+        {divideBy3(annotation.tickPosition + 1, isProtein) + ""}
+      </text>
     </g>
   );
 }

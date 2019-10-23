@@ -78,3 +78,6 @@ export function tryToRefocusEditor() {
   const ed = document.querySelector(".veVectorInteractionWrapper")
   ed && ed.focus()
 }
+export function mod(n, m) {
+  return ((n % m) + m) % m;
+}

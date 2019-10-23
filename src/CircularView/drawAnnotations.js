@@ -201,6 +201,7 @@ const DrawAnnotation = withHover(function(props) {
     titleText,
     locationAngles,
     annotation,
+    isProtein,
     reverseAnnotations,
     Annotation = Feature,
     totalAngle,
@@ -209,6 +210,8 @@ const DrawAnnotation = withHover(function(props) {
     annotationRadius,
     annotationHeight,
     onMouseLeave,
+    passAnnotation,
+    rotation,
     onMouseOver,
     annotationProps
   } = props;
@@ -222,9 +225,14 @@ const DrawAnnotation = withHover(function(props) {
     onMouseOver
   };
   const title = <title>{titleText}</title>;
-  return (
-    <React.Fragment>
+  function getInner({ startAngle, endAngle, totalAngle, isNotLocation }, i) {
+    return (
       <g
+        key={
+          isNotLocation
+            ? "notLocation"
+            : "location--" + annotation.id + "--" + i
+        }
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,
           eAngle: endAngle,
@@ -239,38 +247,27 @@ const DrawAnnotation = withHover(function(props) {
         <Annotation
           {...(locationAngles &&
             locationAngles.length && { containsLocations: true })}
+          {...(passAnnotation && { annotation })}
           totalAngle={totalAngle}
+          isProtein={isProtein}
           color={annotationColor}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
+          rotation={rotation}
           {...annotationProps}
         />
       </g>
-      );
-      {locationAngles &&
-        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
-          return (
-            <g
-              key={"location--" + annotation.id + "--" + i}
-              {...PositionAnnotationOnCircle({
-                sAngle: startAngle,
-                eAngle: endAngle,
-                forward: reverseAnnotations
-                  ? !annotation.forward
-                  : annotation.forward
-              })}
-              {...sharedProps}
-            >
-              {title}
-              <Annotation
-                totalAngle={totalAngle}
-                color={annotationColor}
-                radius={annotationRadius}
-                annotationHeight={annotationHeight}
-              />
-            </g>
-          );
-        })}
+    );
+  }
+  return (
+    <React.Fragment>
+      {getInner({
+        startAngle,
+        endAngle,
+        totalAngle,
+        i: 0
+      })}
+      {locationAngles && locationAngles.map(getInner)}
     </React.Fragment>
   );
 });

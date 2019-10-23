@@ -8,9 +8,7 @@ import { divideBy3 } from "../utils/proteinUtils";
 function Axis({
   radius,
   sequenceLength,
-  zoomLevel,
   rotation,
-  // zoomLevel,
   showAxisNumbers,
   circularAndLinearTickSpacing,
   tickMarkHeight = 5,
