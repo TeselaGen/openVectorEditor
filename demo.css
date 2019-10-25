@@ -4787,6 +4787,9 @@ span.bp3-icon:empty{
 .bp3-icon-layout-sorted-clusters::before{
   content:"\E6D4"; }
 
+.bp3-icon-learning::before{
+  content:"\E904"; }
+
 .bp3-icon-left-join::before{
   content:"\E7A4"; }
 
@@ -4897,6 +4900,12 @@ span.bp3-icon:empty{
 
 .bp3-icon-new-grid-item::before{
   content:"\E747"; }
+
+.bp3-icon-new-layer::before{
+  content:"\E902"; }
+
+.bp3-icon-new-layers::before{
+  content:"\E903"; }
 
 .bp3-icon-new-link::before{
   content:"\E65C"; }
@@ -5230,6 +5239,9 @@ span.bp3-icon:empty{
 
 .bp3-icon-stop::before{
   content:"\E6AA"; }
+
+.bp3-icon-stopwatch::before{
+  content:"\E901"; }
 
 .bp3-icon-strikethrough::before{
   content:"\E7A6"; }
@@ -8004,446 +8016,444 @@ Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
 Licensed under the Apache License, Version 2.0.
 
 */
-/*
-A mixin to generate the classes for a React CSSTransition which animates any number of CSS
-properties at once.
+.bp3-datepicker{
+  position:relative;
+  border-radius:3px;
+  background:#ffffff;
+  padding:5px;
+  -webkit-user-select:none;
+     -moz-user-select:none;
+      -ms-user-select:none;
+          user-select:none; }
+  .bp3-datepicker .DayPicker{
+    display:inline-block;
+    position:relative;
+    min-width:210px;
+    vertical-align:top; }
+    .bp3-datepicker .DayPicker:focus{
+      outline:none; }
+  .bp3-datepicker .bp3-datepicker-day-wrapper{
+    border-radius:3px;
+    padding:7px; }
+  .bp3-datepicker .DayPicker-Month{
+    display:inline-table;
+    margin:0 5px 5px;
+    border-collapse:collapse;
+    border-spacing:0;
+    -webkit-user-select:none;
+       -moz-user-select:none;
+        -ms-user-select:none;
+            user-select:none; }
+    .bp3-datepicker .DayPicker-Month + .bp3-datepicker .DayPicker-Month{
+      margin-left:10px; }
+  .bp3-datepicker .DayPicker-Caption{
+    display:table-caption; }
+  .bp3-datepicker .DayPicker-Weekdays{
+    display:table-header-group; }
+  .bp3-datepicker .DayPicker-WeekdaysRow{
+    display:table-row; }
+  .bp3-datepicker .DayPicker-Weekday{
+    display:table-cell;
+    width:30px;
+    height:30px;
+    vertical-align:middle;
+    text-align:center;
+    line-height:1;
+    padding-top:5px;
+    font-weight:600; }
+    .bp3-datepicker .DayPicker-Weekday abbr[title]{
+      text-decoration:none; }
+  .bp3-datepicker .DayPicker-Body{
+    display:table-row-group; }
+  .bp3-datepicker .DayPicker-Week{
+    display:table-row; }
+  .bp3-datepicker .DayPicker-WeekNumber{
+    display:table-cell;
+    width:30px;
+    height:30px;
+    vertical-align:middle;
+    text-align:center;
+    line-height:1;
+    color:rgba(92, 112, 128, 0.6);
+    font-size:14px; }
+  .bp3-datepicker .DayPicker-Day{
+    display:table-cell;
+    width:30px;
+    height:30px;
+    vertical-align:middle;
+    text-align:center;
+    line-height:1;
+    border-radius:3px;
+    cursor:pointer; }
+    .bp3-datepicker .DayPicker-Day.DayPicker-Day--outside{
+      color:rgba(92, 112, 128, 0.6); }
+    .bp3-datepicker .DayPicker-Day.DayPicker-Day--isToday .bp3-datepicker-day-wrapper{
+      border:1px solid rgba(16, 22, 26, 0.15); }
+    .bp3-datepicker .DayPicker-Day:hover, .bp3-datepicker .DayPicker-Day:focus{
+      background:#d8e1e8;
+      color:#182026; }
+    .bp3-datepicker .DayPicker-Day:active{
+      background:#ced9e0; }
+    .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected{
+      border-radius:3px;
+      background-color:#137cbd;
+      color:#ffffff; }
+      .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected:hover{
+        background-color:#106ba3; }
+    .bp3-datepicker .DayPicker-Day.DayPicker-Day--disabled{
+      background:none;
+      cursor:not-allowed;
+      color:rgba(92, 112, 128, 0.6); }
 
-Transitioned properties are specificed as a map of property names to lists of (inital value, final
-value). For enter & appear transitions, each property will transition from its initial to its final
-value. For exit transitions, each property will transition in reverse, from final to initial.
+.bp3-datepicker-navbar{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center;
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  height:30px; }
+  .bp3-datepicker-navbar > .DayPicker-NavButton--prev{
+    margin-right:auto; }
+  .bp3-datepicker-navbar > .DayPicker-NavButton--next{
+    margin-left:auto; }
 
-**Simple example:**
-`@include react-transition("popover", (opacity: 0 1), $before: "&");`
-Transition named "popover" moves opacity from 0 to 1. `"&"` indicates that the
-Transition classes are expected to be applied to this element, where the mixin is invoked.
+.bp3-datepicker-caption{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-orient:horizontal;
+  -webkit-box-direction:normal;
+      -ms-flex-direction:row;
+          flex-direction:row;
+  -webkit-box-pack:justify;
+      -ms-flex-pack:justify;
+          justify-content:space-between;
+  margin:0 25px 5px; }
+  .bp3-datepicker-caption > *{
+    -webkit-box-flex:0;
+        -ms-flex-positive:0;
+            flex-grow:0;
+    -ms-flex-negative:0;
+        flex-shrink:0; }
+  .bp3-datepicker-caption > :first-child{
+    -webkit-box-flex:1;
+        -ms-flex-positive:1;
+            flex-grow:1;
+    -ms-flex-negative:1;
+        flex-shrink:1; }
+  .bp3-datepicker-caption select{
+    padding-right:16px;
+    padding-left:5px;
+    font-weight:600; }
+    .bp3-datepicker-caption select + .bp3-icon{
+      right:2px; }
+  .bp3-datepicker-caption + .bp3-divider{
+    margin:0; }
 
-**Params:**
-$name: React transitionName prop
-$properties: map of CSS property to (initial, final) values
-$duration: transition duration
-$easing: transition easing function
-$delay: transition delay
-$before: selector text to insert before transition name (often to select self: &)
-$after: selector text to insert after transiton name (to select children)
-*/
-/*
-A mixin to generate the classes for one phase of a React CSSTransition.
-`$phase` must be `appear` or `enter` or `exit`.
-If `enter` phase is given then `appear` phase will be generated at the same time.
-If `exit` phase is given then property values are animated in reverse, from final to initial.
+.bp3-datepicker-month-select{
+  -ms-flex-negative:1;
+      flex-shrink:1; }
 
-**Example:**
-@include react-transition-phase(toast, enter, $enter-translate, $before: "&");
-@include react-transition-phase(toast, leave, $leave-blur, $pt-transition-duration * 3, $before: "&");
-*/
-/*
-Given map of properties to values, set each property to the value at the given index.
-(remember that sass indices are 1-based).
+.bp3-datepicker-year-select{
+  -ms-flex-negative:1;
+      flex-shrink:1;
+  min-width:60px; }
 
-Example: `each-prop((opacity: 0 1), 2)` will print "opacity: 1"
-*/
-/*
-Format transition class name with all the bits.
-"enter" phase will include "appear" phase in returned name.
-*/
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-.bp3-datepicker {
-  position: relative;
-  border-radius: 3px;
-  background: #ffffff;
-  padding: 5px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
-  .bp3-datepicker .DayPicker {
-    display: inline-block;
-    position: relative;
-    min-width: 210px;
-    vertical-align: top; }
-    .bp3-datepicker .DayPicker:focus {
-      outline: none; }
-  .bp3-datepicker .DayPicker-Month {
-    display: inline-table;
-    margin: 0 5px 5px;
-    border-collapse: collapse;
-    border-spacing: 0;
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none; }
-    .bp3-datepicker .DayPicker-Month + .bp3-datepicker .DayPicker-Month {
-      margin-left: 10px; }
-  .bp3-datepicker .DayPicker-Caption {
-    display: table-caption; }
-  .bp3-datepicker .DayPicker-Weekdays {
-    display: table-header-group; }
-  .bp3-datepicker .DayPicker-WeekdaysRow {
-    display: table-row; }
-  .bp3-datepicker .DayPicker-Weekday {
-    display: table-cell;
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
-    padding-top: 5px;
-    font-weight: 600; }
-    .bp3-datepicker .DayPicker-Weekday abbr[title] {
-      text-decoration: none; }
-  .bp3-datepicker .DayPicker-Body {
-    display: table-row-group; }
-  .bp3-datepicker .DayPicker-Week {
-    display: table-row; }
-  .bp3-datepicker .DayPicker-WeekNumber {
-    display: table-cell;
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
-    color: rgba(92, 112, 128, 0.5);
-    font-size: 14px; }
-  .bp3-datepicker .DayPicker-Day {
-    display: table-cell;
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
-    border-radius: 3px;
-    cursor: pointer; }
-    .bp3-datepicker .DayPicker-Day.DayPicker-Day--outside {
-      color: rgba(92, 112, 128, 0.5); }
-    .bp3-datepicker .DayPicker-Day:hover, .bp3-datepicker .DayPicker-Day:focus {
-      background: #d8e1e8;
-      color: #182026; }
-    .bp3-datepicker .DayPicker-Day:active {
-      background: #ced9e0; }
-    .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected {
-      border-radius: 3px;
-      background-color: #137cbd;
-      color: #ffffff; }
-      .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected:hover {
-        background-color: #106ba3; }
-    .bp3-datepicker .DayPicker-Day.DayPicker-Day--disabled {
-      background: none;
-      cursor: not-allowed;
-      color: rgba(92, 112, 128, 0.5); }
+.bp3-datepicker-caption-measure{
+  padding-left:5px;
+  font-weight:600; }
 
-.bp3-datepicker-navbar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 30px; }
-  .bp3-datepicker-navbar > .DayPicker-NavButton--prev {
-    margin-right: auto; }
-  .bp3-datepicker-navbar > .DayPicker-NavButton--next {
-    margin-left: auto; }
+.bp3-datepicker-footer{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-pack:justify;
+      -ms-flex-pack:justify;
+          justify-content:space-between; }
 
-.bp3-datepicker-caption {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  margin: 0 25px 5px; }
-  .bp3-datepicker-caption > * {
-    -webkit-box-flex: 0;
-        -ms-flex-positive: 0;
-            flex-grow: 0;
-    -ms-flex-negative: 0;
-        flex-shrink: 0; }
-  .bp3-datepicker-caption > :first-child {
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    -ms-flex-negative: 1;
-        flex-shrink: 1; }
-  .bp3-datepicker-caption select {
-    padding-right: 16px;
-    padding-left: 5px;
-    font-weight: 600; }
-    .bp3-datepicker-caption select + .bp3-icon {
-      right: 2px; }
-  .bp3-datepicker-caption + .bp3-divider {
-    margin: 0; }
+.bp3-dark .bp3-datepicker{
+  background:#30404d; }
+  .bp3-dark .bp3-datepicker .DayPicker-WeekNumber{
+    color:rgba(167, 182, 194, 0.6); }
+  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--outside{
+    color:rgba(167, 182, 194, 0.6); }
+  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--isToday .bp3-datepicker-day-wrapper{
+    border:1px solid rgba(255, 255, 255, 0.15); }
+  .bp3-dark .bp3-datepicker .DayPicker-Day:hover, .bp3-dark .bp3-datepicker .DayPicker-Day:focus{
+    background:#5c7080;
+    color:#ffffff; }
+  .bp3-dark .bp3-datepicker .DayPicker-Day:active{
+    background:#738694; }
+  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected{
+    background-color:#137cbd; }
+    .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected:hover{
+      background-color:#2b95d6; }
+  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--disabled{
+    background:none;
+    color:rgba(167, 182, 194, 0.6); }
+  .bp3-dark .bp3-datepicker .bp3-datepicker-footer{
+    border-top-color:rgba(16, 22, 26, 0.4); }
+.bp3-daterangepicker{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  white-space:nowrap; }
+  .bp3-daterangepicker .DayPicker:first-of-type .bp3-datepicker-navbar{
+    left:5px; }
+  .bp3-daterangepicker .DayPicker-NavButton--interactionDisabled{
+    display:none; }
+  .bp3-daterangepicker .bp3-daterangepicker-timepickers{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-pack:distribute;
+        justify-content:space-around; }
+  .bp3-daterangepicker.bp3-daterangepicker-contiguous .DayPicker{
+    min-width:220px; }
+  .bp3-daterangepicker.bp3-daterangepicker-single-month .DayPicker{
+    min-width:210px; }
+  .bp3-daterangepicker .DayPicker-Day--outside{
+    visibility:hidden; }
+  .bp3-daterangepicker .DayPicker-Day--hovered-range{
+    border-radius:0; }
+    .bp3-daterangepicker .DayPicker-Day--hovered-range:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end){
+      background-color:#ebf1f5; }
+  .bp3-daterangepicker .DayPicker-Day--selected-range{
+    border-radius:0;
+    background-color:#ebf1f5; }
+    .bp3-daterangepicker .DayPicker-Day--selected-range:hover{
+      background-color:#ced9e0; }
+  .bp3-daterangepicker .DayPicker-Day--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end){
+    border-top-right-radius:0;
+    border-bottom-right-radius:0; }
+  .bp3-daterangepicker .DayPicker-Day--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start){
+    border-top-left-radius:0;
+    border-bottom-left-radius:0; }
+  .bp3-daterangepicker .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--hovered-range-end){
+    border-top-right-radius:0;
+    border-bottom-right-radius:0; }
+  .bp3-daterangepicker .DayPicker-Day--hovered-range-end:not(.DayPicker-Day--hovered-range-start){
+    border-top-left-radius:0;
+    border-bottom-left-radius:0; }
+  .bp3-dark .bp3-daterangepicker .DayPicker-Day--hovered-range:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end){
+    background-color:#394b59; }
+  .bp3-dark .bp3-daterangepicker .DayPicker-Day--selected-range{
+    background-color:#394b59; }
+    .bp3-dark .bp3-daterangepicker .DayPicker-Day--selected-range:hover{
+      background-color:#5c7080; }
 
-.bp3-datepicker-month-select {
-  -ms-flex-negative: 1;
-      flex-shrink: 1; }
-
-.bp3-datepicker-year-select {
-  -ms-flex-negative: 1;
-      flex-shrink: 1;
-  min-width: 60px; }
-
-.bp3-datepicker-caption-measure {
-  padding-left: 5px;
-  font-weight: 600; }
-
-.bp3-datepicker-footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-.bp3-dark .bp3-datepicker {
-  background: #30404d; }
-  .bp3-dark .bp3-datepicker .DayPicker-WeekNumber {
-    color: rgba(191, 204, 214, 0.5); }
-  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--outside {
-    color: rgba(191, 204, 214, 0.5); }
-  .bp3-dark .bp3-datepicker .DayPicker-Day:hover, .bp3-dark .bp3-datepicker .DayPicker-Day:focus {
-    background: #5c7080;
-    color: #ffffff; }
-  .bp3-dark .bp3-datepicker .DayPicker-Day:active {
-    background: #738694; }
-  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected {
-    background-color: #137cbd; }
-    .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--selected:hover {
-      background-color: #2b95d6; }
-  .bp3-dark .bp3-datepicker .DayPicker-Day.DayPicker-Day--disabled {
-    background: none;
-    color: rgba(191, 204, 214, 0.5); }
-  .bp3-dark .bp3-datepicker .bp3-datepicker-footer {
-    border-top-color: rgba(16, 22, 26, 0.4); }
-
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-.bp3-daterangepicker {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  white-space: nowrap; }
-  .bp3-daterangepicker .DayPicker:first-of-type .bp3-datepicker-navbar {
-    left: 5px; }
-  .bp3-daterangepicker .DayPicker-NavButton--interactionDisabled {
-    display: none; }
-  .bp3-daterangepicker .bp3-daterangepicker-timepickers {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: distribute;
-        justify-content: space-around; }
-  .bp3-daterangepicker.bp3-daterangepicker-contiguous .DayPicker {
-    min-width: 220px; }
-  .bp3-daterangepicker.bp3-daterangepicker-single-month .DayPicker {
-    min-width: 210px; }
-  .bp3-daterangepicker .DayPicker-Day--outside {
-    visibility: hidden; }
-  .bp3-daterangepicker .DayPicker-Day--hovered-range {
-    border-radius: 0; }
-    .bp3-daterangepicker .DayPicker-Day--hovered-range:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
-      background-color: #ebf1f5; }
-  .bp3-daterangepicker .DayPicker-Day--selected-range {
-    border-radius: 0;
-    background-color: #ebf1f5; }
-    .bp3-daterangepicker .DayPicker-Day--selected-range:hover {
-      background-color: #ced9e0; }
-  .bp3-daterangepicker .DayPicker-Day--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0; }
-  .bp3-daterangepicker .DayPicker-Day--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0; }
-  .bp3-daterangepicker .DayPicker-Day--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0; }
-  .bp3-daterangepicker .DayPicker-Day--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0; }
-  .bp3-dark .bp3-daterangepicker .DayPicker-Day--hovered-range:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
-    background-color: #394b59; }
-  .bp3-dark .bp3-daterangepicker .DayPicker-Day--selected-range {
-    background-color: #394b59; }
-    .bp3-dark .bp3-daterangepicker .DayPicker-Day--selected-range:hover {
-      background-color: #5c7080; }
-
-.bp3-menu.bp3-daterangepicker-shortcuts {
-  min-width: 120px;
-  padding: 0; }
-
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
-CSS `border` property issues:
-- An element can only have one border.
-- Borders can't stack with shadows.
-- Borders modify the size of the element they're applied to.
-- Border positioning requires the extra `box-sizing` property.
-
-`box-shadow` doesn't have these issues, we're using it instead of `border`.
-*/
-/*
-Overlay shadows are used for default buttons
-floating on top of other elements. This way, the
-shadows blend with the colors beneath it.
-Switches and slider handles both use these variables.
-*/
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-.bp3-timepicker {
-  white-space: nowrap; }
-  .bp3-timepicker .bp3-timepicker-arrow-row {
-    padding: 0 1px; }
-  .bp3-timepicker .bp3-timepicker-arrow-button {
-    color: #5c7080;
-    display: inline-block;
-    width: 33px;
-    padding: 4px 0;
-    text-align: center; }
-    .bp3-timepicker .bp3-timepicker-arrow-button:hover {
-      color: #182026; }
-    .bp3-dark .bp3-timepicker .bp3-timepicker-arrow-button {
-      color: #bfccd6; }
-      .bp3-dark .bp3-timepicker .bp3-timepicker-arrow-button:hover {
-        color: #f5f8fa; }
-    .bp3-timepicker .bp3-timepicker-arrow-button + .bp3-timepicker-arrow-button {
-      margin-left: 11px; }
-    .bp3-timepicker .bp3-timepicker-arrow-button:hover {
-      cursor: pointer; }
-  .bp3-timepicker .bp3-timepicker-input-row {
-    display: inline-block;
-    border-radius: 3px;
-    -webkit-box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
-            box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
-    background: #ffffff;
-    height: 30px;
-    padding: 0 1px;
-    vertical-align: middle;
-    line-height: 28px; }
-  .bp3-timepicker .bp3-timepicker-divider-text {
-    display: inline-block;
-    width: 11px;
-    text-align: center;
-    color: #5c7080;
-    font-size: 16px; }
-  .bp3-timepicker .bp3-timepicker-input {
-    outline: 0;
-    border: 0;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0);
-            box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0);
-    background: transparent;
-    width: 33px;
-    height: 28px;
-    padding: 0;
-    text-align: center;
-    color: #182026;
-    -webkit-transition: -webkit-box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
-    transition: -webkit-box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
-    -o-transition: box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
-    transition: box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
-    transition: box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9), -webkit-box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
-    .bp3-timepicker .bp3-timepicker-input:focus {
-      -webkit-box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3);
-              box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3); }
-  .bp3-timepicker .bp3-timepicker-ampm-select {
-    margin-left: 5px; }
-  .bp3-timepicker.bp3-disabled .bp3-timepicker-input-row {
-    -webkit-box-shadow: none;
-            box-shadow: none;
-    background: rgba(206, 217, 224, 0.5);
-    cursor: not-allowed;
-    color: rgba(92, 112, 128, 0.5);
-    resize: none; }
+.bp3-menu.bp3-daterangepicker-shortcuts{
+  min-width:120px;
+  padding:0; }
+.bp3-timepicker{
+  white-space:nowrap; }
+  .bp3-timepicker .bp3-timepicker-arrow-row{
+    padding:0 1px; }
+  .bp3-timepicker .bp3-timepicker-arrow-button{
+    color:#5c7080;
+    display:inline-block;
+    width:33px;
+    padding:4px 0;
+    text-align:center; }
+    .bp3-timepicker .bp3-timepicker-arrow-button:hover{
+      color:#182026; }
+    .bp3-dark .bp3-timepicker .bp3-timepicker-arrow-button{
+      color:#a7b6c2; }
+      .bp3-dark .bp3-timepicker .bp3-timepicker-arrow-button:hover{
+        color:#f5f8fa; }
+    .bp3-timepicker .bp3-timepicker-arrow-button + .bp3-timepicker-arrow-button{
+      margin-left:11px; }
+    .bp3-timepicker .bp3-timepicker-arrow-button:hover{
+      cursor:pointer; }
+  .bp3-timepicker .bp3-timepicker-input-row{
+    display:inline-block;
+    border-radius:3px;
+    -webkit-box-shadow:inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+            box-shadow:inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+    background:#ffffff;
+    height:30px;
+    padding:0 1px;
+    vertical-align:middle;
+    line-height:28px; }
+  .bp3-timepicker .bp3-timepicker-divider-text{
+    display:inline-block;
+    width:11px;
+    text-align:center;
+    color:#5c7080;
+    font-size:16px; }
+  .bp3-timepicker .bp3-timepicker-input{
+    outline:0;
+    border:0;
+    border-radius:3px;
+    -webkit-box-shadow:0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0);
+            box-shadow:0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0);
+    background:transparent;
+    width:33px;
+    height:28px;
+    padding:0;
+    text-align:center;
+    color:#182026;
+    -webkit-transition:-webkit-box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
+    transition:-webkit-box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
+    -o-transition:box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
+    transition:box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9);
+    transition:box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9), -webkit-box-shadow 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
+    .bp3-timepicker .bp3-timepicker-input:focus{
+      -webkit-box-shadow:0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3);
+              box-shadow:0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3); }
+    .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary{
+      -webkit-box-shadow:0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px #137cbd, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+              box-shadow:0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px #137cbd, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary:focus{
+        -webkit-box-shadow:0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+                box-shadow:0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary[readonly]{
+        -webkit-box-shadow:inset 0 0 0 1px #137cbd;
+                box-shadow:inset 0 0 0 1px #137cbd; }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary:disabled, .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary.bp3-disabled{
+        -webkit-box-shadow:none;
+                box-shadow:none; }
+      .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary{
+        -webkit-box-shadow:0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px #137cbd, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                box-shadow:0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px #137cbd, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary:focus{
+          -webkit-box-shadow:0 0 0 1px #137cbd, 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                  box-shadow:0 0 0 1px #137cbd, 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary[readonly]{
+          -webkit-box-shadow:inset 0 0 0 1px #137cbd;
+                  box-shadow:inset 0 0 0 1px #137cbd; }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary:disabled, .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-primary.bp3-disabled{
+          -webkit-box-shadow:none;
+                  box-shadow:none; }
+    .bp3-timepicker .bp3-timepicker-input.bp3-intent-success{
+      -webkit-box-shadow:0 0 0 0 rgba(15, 153, 96, 0), 0 0 0 0 rgba(15, 153, 96, 0), inset 0 0 0 1px #0f9960, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+              box-shadow:0 0 0 0 rgba(15, 153, 96, 0), 0 0 0 0 rgba(15, 153, 96, 0), inset 0 0 0 1px #0f9960, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-success:focus{
+        -webkit-box-shadow:0 0 0 1px #0f9960, 0 0 0 3px rgba(15, 153, 96, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+                box-shadow:0 0 0 1px #0f9960, 0 0 0 3px rgba(15, 153, 96, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-success[readonly]{
+        -webkit-box-shadow:inset 0 0 0 1px #0f9960;
+                box-shadow:inset 0 0 0 1px #0f9960; }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-success:disabled, .bp3-timepicker .bp3-timepicker-input.bp3-intent-success.bp3-disabled{
+        -webkit-box-shadow:none;
+                box-shadow:none; }
+      .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-success{
+        -webkit-box-shadow:0 0 0 0 rgba(15, 153, 96, 0), 0 0 0 0 rgba(15, 153, 96, 0), 0 0 0 0 rgba(15, 153, 96, 0), inset 0 0 0 1px #0f9960, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                box-shadow:0 0 0 0 rgba(15, 153, 96, 0), 0 0 0 0 rgba(15, 153, 96, 0), 0 0 0 0 rgba(15, 153, 96, 0), inset 0 0 0 1px #0f9960, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-success:focus{
+          -webkit-box-shadow:0 0 0 1px #0f9960, 0 0 0 1px #0f9960, 0 0 0 3px rgba(15, 153, 96, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                  box-shadow:0 0 0 1px #0f9960, 0 0 0 1px #0f9960, 0 0 0 3px rgba(15, 153, 96, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-success[readonly]{
+          -webkit-box-shadow:inset 0 0 0 1px #0f9960;
+                  box-shadow:inset 0 0 0 1px #0f9960; }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-success:disabled, .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-success.bp3-disabled{
+          -webkit-box-shadow:none;
+                  box-shadow:none; }
+    .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning{
+      -webkit-box-shadow:0 0 0 0 rgba(217, 130, 43, 0), 0 0 0 0 rgba(217, 130, 43, 0), inset 0 0 0 1px #d9822b, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+              box-shadow:0 0 0 0 rgba(217, 130, 43, 0), 0 0 0 0 rgba(217, 130, 43, 0), inset 0 0 0 1px #d9822b, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning:focus{
+        -webkit-box-shadow:0 0 0 1px #d9822b, 0 0 0 3px rgba(217, 130, 43, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+                box-shadow:0 0 0 1px #d9822b, 0 0 0 3px rgba(217, 130, 43, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning[readonly]{
+        -webkit-box-shadow:inset 0 0 0 1px #d9822b;
+                box-shadow:inset 0 0 0 1px #d9822b; }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning:disabled, .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning.bp3-disabled{
+        -webkit-box-shadow:none;
+                box-shadow:none; }
+      .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning{
+        -webkit-box-shadow:0 0 0 0 rgba(217, 130, 43, 0), 0 0 0 0 rgba(217, 130, 43, 0), 0 0 0 0 rgba(217, 130, 43, 0), inset 0 0 0 1px #d9822b, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                box-shadow:0 0 0 0 rgba(217, 130, 43, 0), 0 0 0 0 rgba(217, 130, 43, 0), 0 0 0 0 rgba(217, 130, 43, 0), inset 0 0 0 1px #d9822b, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning:focus{
+          -webkit-box-shadow:0 0 0 1px #d9822b, 0 0 0 1px #d9822b, 0 0 0 3px rgba(217, 130, 43, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                  box-shadow:0 0 0 1px #d9822b, 0 0 0 1px #d9822b, 0 0 0 3px rgba(217, 130, 43, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning[readonly]{
+          -webkit-box-shadow:inset 0 0 0 1px #d9822b;
+                  box-shadow:inset 0 0 0 1px #d9822b; }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning:disabled, .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-warning.bp3-disabled{
+          -webkit-box-shadow:none;
+                  box-shadow:none; }
+    .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger{
+      -webkit-box-shadow:0 0 0 0 rgba(219, 55, 55, 0), 0 0 0 0 rgba(219, 55, 55, 0), inset 0 0 0 1px #db3737, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+              box-shadow:0 0 0 0 rgba(219, 55, 55, 0), 0 0 0 0 rgba(219, 55, 55, 0), inset 0 0 0 1px #db3737, inset 0 0 0 1px rgba(16, 22, 26, 0.15), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger:focus{
+        -webkit-box-shadow:0 0 0 1px #db3737, 0 0 0 3px rgba(219, 55, 55, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+                box-shadow:0 0 0 1px #db3737, 0 0 0 3px rgba(219, 55, 55, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger[readonly]{
+        -webkit-box-shadow:inset 0 0 0 1px #db3737;
+                box-shadow:inset 0 0 0 1px #db3737; }
+      .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger:disabled, .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger.bp3-disabled{
+        -webkit-box-shadow:none;
+                box-shadow:none; }
+      .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger{
+        -webkit-box-shadow:0 0 0 0 rgba(219, 55, 55, 0), 0 0 0 0 rgba(219, 55, 55, 0), 0 0 0 0 rgba(219, 55, 55, 0), inset 0 0 0 1px #db3737, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                box-shadow:0 0 0 0 rgba(219, 55, 55, 0), 0 0 0 0 rgba(219, 55, 55, 0), 0 0 0 0 rgba(219, 55, 55, 0), inset 0 0 0 1px #db3737, inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger:focus{
+          -webkit-box-shadow:0 0 0 1px #db3737, 0 0 0 1px #db3737, 0 0 0 3px rgba(219, 55, 55, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+                  box-shadow:0 0 0 1px #db3737, 0 0 0 1px #db3737, 0 0 0 3px rgba(219, 55, 55, 0.3), inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4); }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger[readonly]{
+          -webkit-box-shadow:inset 0 0 0 1px #db3737;
+                  box-shadow:inset 0 0 0 1px #db3737; }
+        .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger:disabled, .bp3-dark .bp3-timepicker .bp3-timepicker-input.bp3-intent-danger.bp3-disabled{
+          -webkit-box-shadow:none;
+                  box-shadow:none; }
+  .bp3-timepicker .bp3-timepicker-ampm-select{
+    margin-left:5px; }
+  .bp3-timepicker.bp3-disabled .bp3-timepicker-input-row{
+    -webkit-box-shadow:none;
+            box-shadow:none;
+    background:rgba(206, 217, 224, 0.5);
+    cursor:not-allowed;
+    color:rgba(92, 112, 128, 0.6);
+    resize:none; }
   .bp3-timepicker.bp3-disabled .bp3-timepicker-input,
-  .bp3-timepicker.bp3-disabled .bp3-timepicker-divider-text {
-    cursor: not-allowed;
-    color: rgba(92, 112, 128, 0.5); }
+  .bp3-timepicker.bp3-disabled .bp3-timepicker-divider-text{
+    cursor:not-allowed;
+    color:rgba(92, 112, 128, 0.6); }
   .bp3-timepicker.bp3-disabled .bp3-timepicker-arrow-button,
-  .bp3-timepicker.bp3-disabled .bp3-timepicker-arrow-button:hover {
-    cursor: not-allowed;
-    color: rgba(92, 112, 128, 0.5); }
+  .bp3-timepicker.bp3-disabled .bp3-timepicker-arrow-button:hover{
+    cursor:not-allowed;
+    color:rgba(92, 112, 128, 0.6); }
 
-.bp3-dark .bp3-timepicker .bp3-timepicker-input-row {
-  -webkit-box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
-          box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
-  background: rgba(16, 22, 26, 0.3); }
+.bp3-dark .bp3-timepicker .bp3-timepicker-input-row{
+  -webkit-box-shadow:inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+          box-shadow:inset 0 0 0 1px rgba(16, 22, 26, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.4);
+  background:rgba(16, 22, 26, 0.3); }
 
-.bp3-dark .bp3-timepicker .bp3-timepicker-divider-text {
-  color: #bfccd6; }
+.bp3-dark .bp3-timepicker .bp3-timepicker-divider-text{
+  color:#a7b6c2; }
 
-.bp3-dark .bp3-timepicker .bp3-timepicker-input {
-  color: #f5f8fa; }
+.bp3-dark .bp3-timepicker .bp3-timepicker-input{
+  color:#f5f8fa; }
 
-.bp3-datepicker .bp3-timepicker {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  text-align: center; }
-  .bp3-datepicker .bp3-timepicker:last-child {
-    margin-bottom: 5px; }
+.bp3-datepicker .bp3-timepicker{
+  margin-top:5px;
+  margin-bottom:10px;
+  text-align:center; }
+  .bp3-datepicker .bp3-timepicker:last-child{
+    margin-bottom:5px; }
+.bp3-datetimepicker{
+  border-radius:3px;
+  background-color:#ffffff;
+  padding:10px;
+  text-align:center; }
+  .bp3-dark .bp3-datetimepicker{
+    background:#30404d; }
+    .bp3-dark .bp3-datetimepicker .bp3-datepicker{
+      border-bottom:1px solid rgba(16, 22, 26, 0.4); }
+  .bp3-datetimepicker .bp3-datepicker{
+    border-bottom:1px solid rgba(16, 22, 26, 0.15);
+    padding:0 0 10px; }
+  .bp3-datetimepicker .bp3-timepicker{
+    margin-top:10px; }
 
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-/*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- */
-.bp3-datetimepicker {
-  border-radius: 3px;
-  background-color: #ffffff;
-  padding: 10px;
-  text-align: center; }
-  .bp3-dark .bp3-datetimepicker {
-    background: #30404d; }
-    .bp3-dark .bp3-datetimepicker .bp3-datepicker {
-      border-bottom: 1px solid rgba(16, 22, 26, 0.4); }
-  .bp3-datetimepicker .bp3-datepicker {
-    border-bottom: 1px solid rgba(16, 22, 26, 0.15);
-    padding: 0 0 10px; }
-  .bp3-datetimepicker .bp3-timepicker {
-    margin-top: 10px; }
-
-.bp3-dateinput-popover {
-  padding: 0; }
+.bp3-dateinput-popover{
+  padding:0; }
 /*!
 
 Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
@@ -8454,13 +8464,13 @@ Licensed under the Apache License, Version 2.0.
   font-family:"Icons16";
   font-weight:normal;
   font-style:normal;
-  src:url(icons-16.6fdb722c.eot?#iefix) format("embedded-opentype"), url(icons-16.cd1a2669.woff) format("woff"), url(icons-16.5fa1b8f2.ttf) format("truetype"); }
+  src:url(icons-16.b62ce831.eot?#iefix) format("embedded-opentype"), url(icons-16.e2458cd5.woff) format("woff"), url(icons-16.e0aef47b.ttf) format("truetype"); }
 
 @font-face{
   font-family:"Icons20";
   font-weight:normal;
   font-style:normal;
-  src:url(icons-20.14279fa7.eot?#iefix) format("embedded-opentype"), url(icons-20.657723dc.woff) format("woff"), url(icons-20.90247cfd.ttf) format("truetype"); }
+  src:url(icons-20.95f6660e.eot?#iefix) format("embedded-opentype"), url(icons-20.9f1e6164.woff) format("woff"), url(icons-20.748778e0.ttf) format("truetype"); }
 .bp3-dark .tg-card {
   background: #394b59 !important;
 }
