@@ -28,7 +28,7 @@
     "test-e2e": "yarn cypress run --record --key 0dcf0c08-68ce-4547-aaaa-ac33af76e4a9"
   },
   "dependencies": {
-    "@teselagen/react-list": "^0.8.16",
+    "@teselagen/react-list": "^0.8.17",
     "classnames": "^2.2.6",
     "clipboard": "^2.0.4",
     "color": "^3.1.2",
@@ -75,7 +75,7 @@
     "@blueprintjs/datetime": "^3.14.0",
     "@blueprintjs/select": "^3.11.1",
     "@teselagen/apollo-methods": "^1.2.1",
-    "@teselagen/react-table": "^6.10.3",
+    "@teselagen/react-table": "^6.10.7",
     "@types/lodash": "npm:@types/lodash-es",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.5.1",

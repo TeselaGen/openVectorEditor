@@ -243,19 +243,34 @@
   dependencies:
     pascal-case "^2.0.1"
 
-"@teselagen/react-list@0.8.16", "@teselagen/react-list@^0.8.16":
+"@teselagen/react-list@0.8.16":
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/@teselagen/react-list/-/react-list-0.8.16.tgz#27bd62a714c20c418d14b58225cef47473064c2c"
   integrity sha512-ooXRYIRaQN0QE7QV2U2/FZ2SACVAXHACfCFJqckeLauaqv7tgUBX95aV9NlPNtVwODmOMoaHXDVla/4fFgWVoQ==
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@^6.10.1", "@teselagen/react-table@^6.10.3":
+"@teselagen/react-list@0.8.17", "@teselagen/react-list@^0.8.17":
+  version "0.8.17"
+  resolved "https://registry.yarnpkg.com/@teselagen/react-list/-/react-list-0.8.17.tgz#b4f5053b3ee0bd6769535e0b753f579aa0361ede"
+  integrity sha512-t/laZUKpDjdxFPtHY2++IysxC8qUFxCjwBpz/3yXFgru3n49fVdZvK0lXJ9wxOsEfhh4Mpy4euAp3EaoZ48jJw==
+  dependencies:
+    prop-types "15"
+
+"@teselagen/react-table@^6.10.1":
   version "6.10.3"
   resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.3.tgz#9357100f45b83f486117214c806f64d20f993132"
   integrity sha512-lxgOwTF0cYQQI1sdRVGviXPjf5hX9SbEpTtg4rPOWBZaD07whAf08XlabEBRa92PcbcEPOs2B/Dh8wbdfBV1HQ==
   dependencies:
     "@teselagen/react-list" "0.8.16"
+    classnames "^2.2.5"
+
+"@teselagen/react-table@^6.10.7":
+  version "6.10.7"
+  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.7.tgz#a5fbd3f4932c3fe37c7b445bf7a3fe2c666b3c1a"
+  integrity sha512-Tv5ZNTL38uO+xUAO+P/HJY01QvkSl529YEtYZoxo1UCgC4yw727XqM/K9uk9LALrxpyUSWPP6ni1CrHYMNIEDQ==
+  dependencies:
+    "@teselagen/react-list" "0.8.17"
     classnames "^2.2.5"
 
 "@types/dom4@^2.0.1":
