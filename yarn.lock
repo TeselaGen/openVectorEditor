@@ -243,27 +243,12 @@
   dependencies:
     pascal-case "^2.0.1"
 
-"@teselagen/react-list@0.8.16":
-  version "0.8.16"
-  resolved "https://registry.yarnpkg.com/@teselagen/react-list/-/react-list-0.8.16.tgz#27bd62a714c20c418d14b58225cef47473064c2c"
-  integrity sha512-ooXRYIRaQN0QE7QV2U2/FZ2SACVAXHACfCFJqckeLauaqv7tgUBX95aV9NlPNtVwODmOMoaHXDVla/4fFgWVoQ==
-  dependencies:
-    prop-types "15"
-
 "@teselagen/react-list@0.8.18", "@teselagen/react-list@^0.8.18":
   version "0.8.18"
   resolved "https://registry.yarnpkg.com/@teselagen/react-list/-/react-list-0.8.18.tgz#f8ad4dbd37c4e20c721688fdfff55c3f58ce35a6"
   integrity sha512-uikPANwTL+vRV2p6RetBpNx6sFZll9/YAyPlC/5IX+BBxatgAn7LNVqkaraiLP7UIWZs6RB7oWy1ZFzFVD79Gw==
   dependencies:
     prop-types "15"
-
-"@teselagen/react-table@^6.10.1":
-  version "6.10.3"
-  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.3.tgz#9357100f45b83f486117214c806f64d20f993132"
-  integrity sha512-lxgOwTF0cYQQI1sdRVGviXPjf5hX9SbEpTtg4rPOWBZaD07whAf08XlabEBRa92PcbcEPOs2B/Dh8wbdfBV1HQ==
-  dependencies:
-    "@teselagen/react-list" "0.8.16"
-    classnames "^2.2.5"
 
 "@teselagen/react-table@^6.10.8":
   version "6.10.8"
@@ -11027,12 +11012,11 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@^28.0.2:
-  version "28.0.2"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-28.0.2.tgz#feca15504330d47e93b34170fcf52b333ad16b09"
-  integrity sha512-oSB4PQck1WFmsDQB1eWhyHsSdh+5pSYGzeYMHOntb56I4y+USin78McDDsaHIP9n+1tIfNnXVJ+tjap6XD9rYQ==
+teselagen-react-components@^28.0.3:
+  version "28.0.3"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-28.0.3.tgz#0a787b89c4d8e6eaa9bf699858a5eadc484f87e1"
+  integrity sha512-zMyA/HwXg2B4iGZvc7aPooFK3lzbWf3L90KXfZqD0DYROx0v22oiDeQl1WGdzcNJ4o7N5UGk9HmJSsVuXlm2GA==
   dependencies:
-    "@teselagen/react-table" "^6.10.1"
     classnames "^2.2.6"
     copy-to-clipboard "^3.0.8"
     cross-env "^5.2.0"
