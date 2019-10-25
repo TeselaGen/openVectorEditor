@@ -828,6 +828,7 @@ function VectorInteractionHOC(Component /* options */) {
         "newTranslation",
         "newReverseTranslation",
         "--",
+        "showRemoveDuplicatesDialogParts",
         "viewPartProperties"
       ];
     }, "partRightClicked");
@@ -895,6 +896,7 @@ function VectorInteractionHOC(Component /* options */) {
                     showMergeFeaturesDialog(annotation);
                   }
                 },
+                "showRemoveDuplicatesDialogFeatures",
                 "--"
               ]),
           "toggleCdsFeatureTranslations",
@@ -923,6 +925,7 @@ function VectorInteractionHOC(Component /* options */) {
         ...this.getSelectionMenuOptions(annotation),
         "newTranslation",
         "newReverseTranslation",
+        "showRemoveDuplicatesDialogPrimers",
         "viewPrimerProperties"
       ];
     }, "primerRightClicked");

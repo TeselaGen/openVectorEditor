@@ -4,7 +4,7 @@ import {
   withSelectedEntities,
   CmdCheckbox
 } from "teselagen-react-components";
-import { map, upperFirst } from "lodash";
+import { map, upperFirst, pick } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 import { Popover } from "@blueprintjs/core";
@@ -116,7 +116,9 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 disabled={!sequenceLength}
                 style={{ marginRight: 15 }}
                 onClick={() => {
-                  showAddOrEditAnnotationDialog(selectionLayer);
+                  showAddOrEditAnnotationDialog({
+                    ...pick(selectionLayer, "start", "end")
+                  });
                 }}
               >
                 New
@@ -141,6 +143,18 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
               >
                 Delete
               </Button>
+              {["part", "primer", "feature"].includes(annotationType) && (
+                <Button
+                  onClick={() => {
+                    this.commands[
+                      `showRemoveDuplicatesDialog${annotationTypeUpper + "s"}`
+                    ].execute();
+                  }}
+                  style={{ marginRight: 15 }}
+                >
+                  Open Remove Duplicates Tool
+                </Button>
+              )}
             </div>
           )}
         </React.Fragment>

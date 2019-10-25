@@ -17,7 +17,8 @@ import {
   reduce,
   startCase,
   get,
-  filter
+  filter,
+  camelCase
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
@@ -227,7 +228,22 @@ const fileCommandDefs = {
     hotkeyProps: { preventDefault: true },
     handler: props => props.showPrintDialog(),
     hotkey: "mod+p"
-  }
+  },
+  ...["Parts", "Features", "Primers"].reduce((acc, type) => {
+    //showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
+    acc[`showRemoveDuplicatesDialog${type}`] = {
+      name: `Remove Duplicate ${startCase(type)}`,
+      handler: props =>
+        props.showRemoveDuplicatesDialog({
+          type: camelCase(type),
+          editorName: props.editorName,
+          dialogProps: {
+            title: `Remove Duplicate ${type}`
+          }
+        })
+    };
+    return acc;
+  }, {})
 };
 //copy options
 const toggleCopyOptionCommandDefs = {};
