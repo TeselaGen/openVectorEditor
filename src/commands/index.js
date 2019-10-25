@@ -233,6 +233,7 @@ const fileCommandDefs = {
     //showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
     acc[`showRemoveDuplicatesDialog${type}`] = {
       name: `Remove Duplicate ${startCase(type)}`,
+      isDisabled: props => props.readOnly,
       handler: props =>
         props.showRemoveDuplicatesDialog({
           type: camelCase(type),

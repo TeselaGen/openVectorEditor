@@ -2,7 +2,8 @@ import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  CmdCheckbox
+  CmdCheckbox,
+  CmdButton
 } from "teselagen-react-components";
 import { map, upperFirst, pick } from "lodash";
 import { Button } from "@blueprintjs/core";
@@ -144,16 +145,14 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 Delete
               </Button>
               {["part", "primer", "feature"].includes(annotationType) && (
-                <Button
-                  onClick={() => {
+                <CmdButton
+                  cmd={
                     this.commands[
                       `showRemoveDuplicatesDialog${annotationTypeUpper + "s"}`
-                    ].execute();
-                  }}
+                    ]
+                  }
                   style={{ marginRight: 15 }}
-                >
-                  Open Remove Duplicates Tool
-                </Button>
+                />
               )}
             </div>
           )}
