@@ -19,7 +19,7 @@ export default createReducer(
     [caretPositionClear]: () => {
       return -1;
     },
-    [caretPositionUpdate]: ({ start }, payload) => {
+    [caretPositionUpdate]: (unused, payload) => {
       return typeof payload === "string" ? parseInt(payload, 10) : payload;
     }
   },

@@ -77,6 +77,18 @@ describe("menuBar", function() {
     cy.focused().type("{esc}");
     cy.contains(".bp3-dialog", "Editor Hotkeys").should("not.exist");
   });
+  it(`should be able to remove duplicate features`, () => {
+    cy.get("body").type("{meta}/");
+    cy.focused().type("remove duplicate feature{enter}");
+    cy.get(".bp3-dialog .bp3-icon-settings").click();
+    cy.contains("araD").should("exist");
+    cy.contains(".bp3-dialog button", "Remove 3 Duplicates");
+    cy.get(".tg-test-ignore-name .tg-no-fill-field").click();
+    cy.get(".tg-test-ignore-strand .tg-no-fill-field").click();
+    cy.get(".tg-test-ignore-start-and-end .tg-no-fill-field").click();
+    cy.contains(".bp3-dialog button", "Remove 21 Duplicates").click();
+    cy.contains("araD").should("not.exist");
+  });
 
   it("should not be able to select a range in a length 0 sequence", function() {
     function shouldBeDisabled(text) {
@@ -268,9 +280,9 @@ describe("menuBar", function() {
       .type("10");
     cy.get(".bp3-dialog")
       .contains("OK")
-      .click()
-    cy.focused().type("a")
-    cy.contains(".sequenceInputBubble", "Press ENTER to insert")
+      .click();
+    cy.focused().type("a");
+    cy.contains(".sequenceInputBubble", "Press ENTER to insert");
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
@@ -286,9 +298,9 @@ describe("menuBar", function() {
     cy.get(`.dialog-buttons`)
       .contains("Select 11 BPs")
       .click();
-    cy.focused().type("a")
+    cy.focused().type("a");
 
-    cy.contains(".sequenceInputBubble", "Press ENTER to replace")
+    cy.contains(".sequenceInputBubble", "Press ENTER to replace");
   });
   it(`
   select range, copy, cut works

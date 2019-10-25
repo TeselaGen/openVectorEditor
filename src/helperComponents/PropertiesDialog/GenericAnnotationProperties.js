@@ -2,9 +2,10 @@ import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  CmdCheckbox
+  CmdCheckbox,
+  CmdButton
 } from "teselagen-react-components";
-import { map, upperFirst } from "lodash";
+import { map, upperFirst, pick } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 import { Popover } from "@blueprintjs/core";
@@ -61,6 +62,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
         annotations = {},
         annotationVisibility,
         sequenceLength,
+        selectionLayer,
         isProtein,
         annotationPropertiesSelectedEntities: _annotationPropertiesSelectedEntities,
         selectedAnnotationId
@@ -70,6 +72,9 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
       );
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
+      // showAddOrEditFeatureDialog()
+      // showAddOrEditPartDialog()
+      // showAddOrEditPrimerDialog()
       const showAddOrEditAnnotationDialog = this.props[
         `showAddOrEdit${annotationTypeUpper}Dialog`
       ];
@@ -112,7 +117,9 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 disabled={!sequenceLength}
                 style={{ marginRight: 15 }}
                 onClick={() => {
-                  showAddOrEditAnnotationDialog();
+                  showAddOrEditAnnotationDialog({
+                    ...pick(selectionLayer, "start", "end")
+                  });
                 }}
               >
                 New
@@ -137,6 +144,16 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
               >
                 Delete
               </Button>
+              {["part", "primer", "feature"].includes(annotationType) && (
+                <CmdButton
+                  cmd={
+                    this.commands[
+                      `showRemoveDuplicatesDialog${annotationTypeUpper + "s"}`
+                    ]
+                  }
+                  style={{ marginRight: 15 }}
+                />
+              )}
             </div>
           )}
         </React.Fragment>
@@ -145,15 +162,23 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
   }
 
   return compose(
-    connectToEditor(({ readOnly, annotationVisibility = {}, sequenceData }) => {
-      return {
-        annotationVisibility,
+    connectToEditor(
+      ({
         readOnly,
-        annotations: sequenceData[annotationType + "s"],
-        [annotationType + "s"]: sequenceData[annotationType + "s"],
-        sequenceLength: sequenceData.sequence.length
-      };
-    }),
+        annotationVisibility = {},
+        sequenceData,
+        selectionLayer
+      }) => {
+        return {
+          annotationVisibility,
+          selectionLayer,
+          readOnly,
+          annotations: sequenceData[annotationType + "s"],
+          [annotationType + "s"]: sequenceData[annotationType + "s"],
+          sequenceLength: sequenceData.sequence.length
+        };
+      }
+    ),
     withSelectedEntities("annotationProperties")
   )(AnnotationProperties);
 };

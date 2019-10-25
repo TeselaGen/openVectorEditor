@@ -45,6 +45,16 @@ describe("editor", function() {
     cy.contains(".bp3-dialog button", "OK").click();
     cy.contains("onRename callback triggered: pj5_00001renamed seq");
   });
+  it("should fire the onSelectionOrCaretChanged handler", function() {
+    cy.tgToggle("onSelectionOrCaretChanged");
+
+    cy.get(".veLabelText")
+      .contains("Part 0")
+      .click({ force: true });
+    cy.contains(
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+    );
+  });
 
   it(`should autosave if autosave=true`, function() {
     cy.tgToggle("shouldAutosave");

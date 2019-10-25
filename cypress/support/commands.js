@@ -141,21 +141,14 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
 });
 
 Cypress.Commands.add("selectRange", (start, end) => {
-  cy.get(".tg-menu-bar")
-    .contains("Edit")
-    .click();
-  cy.get(".tg-menu-bar-popover")
-    .contains("Select")
-    .click();
-  cy.get(`[label="From:"]`)
-    .clear()
-    .type(start);
-  cy.get(`[label="To:"]`)
-    .clear()
-    .type(end);
-  cy.get(".tg-min-width-dialog")
-    .contains("Select")
-    .click();
+  cy.window().then(win => {
+    win.ove_updateEditor({
+      selectionLayer: {
+        start: start - 1,
+        end: end - 1
+      }
+    });
+  });
 });
 Cypress.Commands.add("closeDialog", () => {
   cy.get(`.bp3-dialog [aria-label="Close"]`).click();

@@ -534,12 +534,31 @@ export function mapDispatchToActions(dispatch, ownProps) {
     actionOverrides,
     dispatch
   );
+  const updateSel =
+    ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate;
+  const updateCar =
+    ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate;
   return {
     ...actionsToPass,
-    selectionLayerUpdate:
-      ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate,
-    caretPositionUpdate:
-      ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate,
+    selectionLayerUpdate: ownProps.onSelectionOrCaretChanged
+      ? selectionLayer => {
+          ownProps.onSelectionOrCaretChanged({
+            selectionLayer,
+            caretPosition: -1
+          });
+          updateSel(selectionLayer);
+        }
+      : updateSel,
+    caretPositionUpdate: ownProps.onSelectionOrCaretChanged
+      ? caretPosition => {
+          ownProps.onSelectionOrCaretChanged({
+            caretPosition,
+            selectionLayer: { start: -1, end: -1 }
+          });
+          updateCar(caretPosition);
+        }
+      : updateCar,
+
     dispatch
   };
 }

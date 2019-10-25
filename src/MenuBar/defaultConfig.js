@@ -110,7 +110,18 @@ export default [
   {
     text: "Tools",
     cmd: "toolsCmd",
-    submenu: ["restrictionEnzymesManager", "simulateDigestion"]
+    submenu: [
+      "restrictionEnzymesManager",
+      "simulateDigestion",
+      {
+        text: "Remove Duplicates",
+        submenu: [
+          "showRemoveDuplicatesDialogFeatures",
+          "showRemoveDuplicatesDialogParts",
+          "showRemoveDuplicatesDialogPrimers"
+        ]
+      }
+    ]
   },
   // { isMenuSearch: true }
   {

@@ -828,6 +828,7 @@ function VectorInteractionHOC(Component /* options */) {
         "newTranslation",
         "newReverseTranslation",
         "--",
+        "showRemoveDuplicatesDialogParts",
         "viewPartProperties"
       ];
     }, "partRightClicked");
@@ -895,6 +896,7 @@ function VectorInteractionHOC(Component /* options */) {
                     showMergeFeaturesDialog(annotation);
                   }
                 },
+                "showRemoveDuplicatesDialogFeatures",
                 "--"
               ]),
           "toggleCdsFeatureTranslations",
@@ -923,6 +925,7 @@ function VectorInteractionHOC(Component /* options */) {
         ...this.getSelectionMenuOptions(annotation),
         "newTranslation",
         "newReverseTranslation",
+        "showRemoveDuplicatesDialogPrimers",
         "viewPrimerProperties"
       ];
     }, "primerRightClicked");
@@ -1122,6 +1125,7 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   const selectionStartDistanceFromEnd =
     Math.min(sequenceData.size - selectionLayer.start, seqDataInsertLength) ||
     seqDataInsertLength;
+
   const newSelectionLayerStart =
     caretPosition > -1
       ? caretPosition
@@ -1139,6 +1143,6 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
       : 0);
   selectionLayerUpdate({
     start: newSelectionLayerStart,
-    end: newSelectionLayerEnd % newSeqData.size
+    end: newSelectionLayerEnd % newSeqData.sequence.length
   });
 };

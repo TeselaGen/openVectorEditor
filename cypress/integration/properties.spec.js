@@ -2,17 +2,20 @@ describe("properties", function() {
   beforeEach(() => {
     cy.visit("");
   });
-  it(`creating a primer should create a primer in the genbank`, () => {
+  it(`creating a primer should create a primer in the genbank at the selected range`, () => {
+    cy.selectRange(10, 20);
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="primers"]`).click();
     cy.contains(".vePropertiesFooter button", "New").click();
+    cy.get(`input[value="10"]`); //by default we should be selecting from 10 to 20
+    cy.get(`input[value="20"]`);
     cy.focused()
       .type("fakeprimer")
       .closest(".bp3-dialog")
       .contains("Save")
       .click();
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("textarea", `primer          complement(1..1)`);
+    cy.contains("textarea", `primer          complement(10..20)`);
     cy.contains("textarea", `/label="fakeprimer"`);
   });
   it(`should be able to delete a feature from the properties tab and not have the delete button still enabled; 

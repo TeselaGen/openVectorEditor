@@ -15,6 +15,7 @@ import { store } from "react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
 import PropTypes from "prop-types";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
+import ReactList from "@teselagen/react-list";
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { getContext, compose, branch, renderComponent } from "recompose";
@@ -23,8 +24,8 @@ import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
 import withEditorProps from "../withEditorProps";
-import ReactList from "../RowView/ReactList";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
+
 import "./style.css";
 import { isFunction } from "util";
 import {
@@ -1162,8 +1163,6 @@ export default compose(
     })
   )
 )(AlignmentView);
-
-
 
 //this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {
