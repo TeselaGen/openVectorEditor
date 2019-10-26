@@ -21,6 +21,19 @@ declare namespace Cypress {
      */
     selectRange(start, end): void;
 
+    
+
+    /**
+     * tgToggle
+     * toggle a demo switch
+     * @example
+     * cy.tgToggle("propertiesOverridesExample")  //defaults to true
+     * cy.tgToggle("propertiesOverridesExample", false) 
+     * 
+     */
+    tgToggle(toggleId: string, toggleOnOrOff: boolean): void;
+
+    
     // /**
     //  * chainable waitForBackendCalls
     //  * waits for backend xhr requests to complete
