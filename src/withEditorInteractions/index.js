@@ -60,6 +60,8 @@ function getAcceptedChars(isProtein) {
 const annotationClickHandlers = [
   "orfClicked",
   "primerClicked",
+  "lineageAnnotationClicked",
+  "assemblyPieceClicked",
   "translationClicked",
   "primaryProteinSequenceClicked",
   "cutsiteClicked",
