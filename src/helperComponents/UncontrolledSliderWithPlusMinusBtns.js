@@ -18,7 +18,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
 
   render() {
     const { value } = this.state;
-    const { title, initialValue, style, ...rest } = this.props;
+    const { title, initialValue,label, style, ...rest } = this.props;
 
     const stepSize =
       this.props.stepSize || (this.props.max - this.props.min) / 10;
@@ -26,11 +26,11 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     return (
       <div
         onClick={preventDefaultStopPropagation}
-        // onDrag={preventDefaultStopPropagation}
-        // onDragStart={preventDefaultStopPropagation}
-        // onDragEnd={preventDefaultStopPropagation}
+        onDrag={preventDefaultStopPropagation}
+        onDragStart={preventDefaultStopPropagation}
+        onDragEnd={preventDefaultStopPropagation}
         onMouseDown={preventDefaultStopPropagation}
-        // onMouseUp={preventDefaultStopPropagation}
+        onMouseUp={preventDefaultStopPropagation}
         title={title}
         style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
       >

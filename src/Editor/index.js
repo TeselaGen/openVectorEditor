@@ -33,7 +33,8 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 import { flatMap, map, filter, pick, camelCase } from "lodash";
 
 import ToolBar from "../ToolBar";
-import CircularView from "../CircularView";
+// import CircularView from "../CircularView";
+import CircularView from "../CircularView/CircularViewWithZoom";
 import LinearView from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";

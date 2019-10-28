@@ -151,7 +151,6 @@ function drawAnnotations({
           ...labelOptions
         };
       }
-
       let annotationColor = getColor
         ? getColor(annotation)
         : annotation.color || "purple";
@@ -209,6 +208,7 @@ const DrawAnnotation = withHover(function(props) {
     annotationColor,
     annotationRadius,
     annotationHeight,
+    perAnnotationProps,
     onMouseLeave,
     passAnnotation,
     rotation,
@@ -255,6 +255,7 @@ const DrawAnnotation = withHover(function(props) {
           annotationHeight={annotationHeight}
           rotation={rotation}
           {...annotationProps}
+          {...perAnnotationProps && perAnnotationProps(annotation)}
         />
       </g>
     );

@@ -7,26 +7,27 @@ export default function Feature({
   containsLocations,
   arrowheadLength,
   annotationHeight,
+  strokeColor,
+  tailThickness=1,
   totalAngle,
   ...rest
 }) {
-  let path = drawDirectedPiePiece({
-    radius,
-    annotationHeight: containsLocations
-      ? annotationHeight / 8
-      : annotationHeight,
-    totalAngle,
-    arrowheadLength:
-      arrowheadLength !== undefined ? arrowheadLength : 80 / radius,
-    tailThickness: 1 //feature specific
-  });
   return (
     <path
       className="veFeature veCircularViewFeature"
       strokeWidth=".5"
-      stroke="black"
+      stroke={strokeColor || "black"}
       fill={color}
-      d={path.print()}
+      d={drawDirectedPiePiece({
+        radius,
+        annotationHeight: containsLocations
+          ? annotationHeight / 8
+          : annotationHeight,
+        totalAngle,
+        arrowheadLength:
+          arrowheadLength !== undefined ? arrowheadLength : 80 / radius,
+        tailThickness,
+      }).print()}
       {...rest}
     />
   );

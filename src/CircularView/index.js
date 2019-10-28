@@ -23,7 +23,6 @@ import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";
 import Part from "./Part";
 import drawAnnotations from "./drawAnnotations";
-import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
@@ -425,48 +424,6 @@ export class CircularView extends React.Component {
         // tabIndex="0"
         className="veCircularView"
       >
-        <UncontrolledSliderWithPlusMinusBtns
-          onChange={val => {
-            this.setState({
-              zoomLevel: val === 3 ? 1 : val
-            });
-          }}
-          onRelease={val => {
-            this.setState({
-              zoomLevel: val === 3 ? 1 : val
-            });
-          }}
-          title="Adjust Zoom Level"
-          style={{ paddingTop: "4px", width: 100 }}
-          className="alignment-zoom-slider"
-          labelRenderer={false}
-          stepSize={1}
-          initialValue={3}
-          max={14}
-          min={3}
-        />
-        <UncontrolledSliderWithPlusMinusBtns
-          onChange={val => {
-            this.setState({
-              rotationDegrees: val
-            });
-          }}
-          onRelease={val => {
-            this.setState({
-              rotationDegrees: val
-            });
-          }}
-          leftIcon="arrow-left"
-          rightIcon="arrow-right"
-          title="Adjust Zoom Level"
-          style={{ paddingTop: "4px", width: 100 }}
-          className="alignment-zoom-slider"
-          labelRenderer={false}
-          stepSize={3}
-          initialValue={0}
-          max={360}
-          min={0}
-        />
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -487,30 +444,7 @@ export class CircularView extends React.Component {
           onStop={editorDragStopped}
         >
           <div>
-            {!hideName && (
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none"
-                }}
-              >
-                <div
-                  key="circViewSvgCenterText"
-                  className="veCircularViewMiddleOfVectorText"
-                  style={{ width: innerRadius, textAlign: "center" }}
-                >
-                  <span>{sequenceName} </span>
-                  <br />
-                  <span style={{ fontSize: 10 }}>
-                    {isProtein
-                      ? `${Math.floor(sequenceLength / 3)} AAs`
-                      : `${sequenceLength} bps`}
-                  </span>
-                </div>
-              </div>
-            )}
+            
             <svg
               key="circViewSvg"
               onClick={event => {
@@ -544,43 +478,13 @@ export class CircularView extends React.Component {
                 {annotationsSvgs}
               </g>
             </svg>
-            <div className="veCircularViewWarningContainer">
-              {!circular && (
-                <VeWarning
-                  data-test="ve-warning-circular-to-linear"
-                  intent="warning"
-                  tooltip={
-                    "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
-                  }
-                />
-              )}
-              {paredDownMessages}
-            </div>
+            
           </div>
         </Draggable>
       </div>
     );
   }
 }
-
-function pareDownAnnotations(annotations, max) {
-  let annotationsToPass = annotations;
-  let paredDown = false;
-  if (Object.keys(annotations).length > max) {
-    paredDown = true;
-    let sortedAnnotations = sortBy(annotations, function(annotation) {
-      return -getRangeLength(annotation);
-    });
-    annotationsToPass = sortedAnnotations
-      .slice(0, max)
-      .reduce(function(obj, item) {
-        obj[item.id] = item;
-        return obj;
-      }, {});
-  }
-  return [annotationsToPass, paredDown];
-}
-
 export default withEditorInteractions(CircularView);
 
 function positionCutsites(annotation) {

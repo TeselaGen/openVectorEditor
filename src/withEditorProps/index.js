@@ -504,6 +504,7 @@ function mapStateToProps(state, ownProps) {
   };
   return {
     ...toReturn,
+    selectionLayer: (Array.isArray(toReturn.selectionLayer) ? toReturn.selectionLayer : [toReturn.selectionLayer]).map((s) => ({...s, color: s.color || "#0099ff"})),
     selectedCutsites,
     sequenceLength,
     allCutsites,

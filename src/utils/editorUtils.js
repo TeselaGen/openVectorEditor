@@ -6,6 +6,7 @@ import {
   calculatePercentGC,
   getSequenceDataBetweenRange
 } from "ve-sequence-utils";
+import { sortBy } from "lodash";
 
 export function getSelectionMessage({
   caretPosition = -1,
@@ -80,4 +81,22 @@ export function tryToRefocusEditor() {
 }
 export function mod(n, m) {
   return ((n % m) + m) % m;
+}
+
+export function pareDownAnnotations(annotations, max) {
+  let annotationsToPass = annotations;
+  let paredDown = false;
+  if (Object.keys(annotations).length > max) {
+    paredDown = true;
+    let sortedAnnotations = sortBy(annotations, function(annotation) {
+      return -getRangeLength(annotation);
+    });
+    annotationsToPass = sortedAnnotations
+      .slice(0, max)
+      .reduce(function(obj, item) {
+        obj[item.id] = item;
+        return obj;
+      }, {});
+  }
+  return [annotationsToPass, paredDown];
 }
