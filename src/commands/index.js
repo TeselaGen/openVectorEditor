@@ -696,7 +696,8 @@ const editCommandDefs = {
       !props.annotationsToSupport.features,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
-    hotkey: "mod+k"
+    hotkey: "mod+k",
+    hotkeyProps: { preventDefault: true }
   },
   useGtgAndCtgAsStartCodons: {
     isHidden: isProtein,
