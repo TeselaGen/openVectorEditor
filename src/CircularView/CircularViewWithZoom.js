@@ -432,7 +432,7 @@ class CircularViewWithZoom extends React.Component {
             viewBox={`${-svgWidth / 2},${-svgHeight / 2 -
               (this.state.zoomLevel === 1
                 ? 0
-                : radius)},${svgWidth},${svgHeight}`}
+                : initialRadius + BASE_RADIUS * 2)},${svgWidth},${svgHeight}`}
             width={svgHeight}
             height={svgWidth}
           >
