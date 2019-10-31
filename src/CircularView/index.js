@@ -259,6 +259,7 @@ export class CircularView extends React.Component {
         radius += spaceBefore;
         const sharedProps = {
           radius,
+          isProtein,
           onClick: this.props[singularName + "Clicked"],
           onRightClicked: this.props[singularName + "RightClicked"],
           sequenceLength,
@@ -290,7 +291,6 @@ export class CircularView extends React.Component {
             );
           }
           results = drawAnnotations({
-            isProtein,
             Annotation: Comp || Feature,
             annotationType: singularName,
             reverseAnnotations: true,

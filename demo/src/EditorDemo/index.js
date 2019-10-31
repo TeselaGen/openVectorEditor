@@ -758,31 +758,32 @@ sequenceData: {
 `,
 
                 hook: shouldUpdate => {
-                  updateEditor(store, "DemoEditor", {
-                    sequenceData: {
-                      ...exampleSequenceData,
-                      lineageAnnotations: shouldUpdate
-                        ? [
-                            {
-                              id: "22oing211",
-                              name: "Lineage Annotation 1",
-                              start: 900,
-                              end: 400,
-                              labelColor: "green",
-                              color: "green"
-                            },
-                            {
-                              id: "18711jja1",
-                              name: "Lineage Annotation 2",
-                              start: 401,
-                              end: 899,
-                              labelColor: "blue",
-                              color: "blue"
-                            }
-                          ]
-                        : []
-                    }
-                  });
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      sequenceData: {
+                        ...exampleSequenceData,
+                        lineageAnnotations: shouldUpdate
+                          ? [
+                              {
+                                id: "22oing211",
+                                name: "Lineage Annotation 1",
+                                start: 900,
+                                end: 400,
+                                labelColor: "green",
+                                color: "green"
+                              },
+                              {
+                                id: "18711jja1",
+                                name: "Lineage Annotation 2",
+                                start: 401,
+                                end: 899,
+                                labelColor: "blue",
+                                color: "blue"
+                              }
+                            ]
+                          : []
+                      }
+                    });
                 }
               })}
               {renderToggle({

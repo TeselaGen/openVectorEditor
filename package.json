@@ -60,7 +60,6 @@
     "uniqid": "^5.0.3"
   },
   "peerDependencies": {
-    "@teselagen/react-table": "^6.10.3",
     "apollo-cache-invalidation": "^0.0.3",
     "bio-parsers": "^4.2.2",
     "react-redux": "^5.0.4",
@@ -75,7 +74,6 @@
     "@blueprintjs/datetime": "^3.14.0",
     "@blueprintjs/select": "^3.11.1",
     "@teselagen/apollo-methods": "^1.2.1",
-    "@teselagen/react-table": "^6.10.8",
     "@types/lodash": "npm:@types/lodash-es",
     "apollo-cache-invalidation": "^0.0.3",
     "apollo-client": "2.5.1",
@@ -85,7 +83,7 @@
     "bio-parsers": "6.0.0",
     "chance": "^1.0.18",
     "cross-env": "^5.1.6",
-    "cypress": "^3.4.1",
+    "cypress": "^3.5.0",
     "drag-mock": "^1.4.0",
     "eslint": "^6.4.0",
     "eslint-config-teselagen": "^5.0.5",
@@ -111,7 +109,7 @@
     "react-transition-group": "^4.2.2",
     "redux-form": "7",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "^28.0.3",
+    "teselagen-react-components": "^28.0.7",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.7",
     "ve-sequence-utils": "^3.3.53",
