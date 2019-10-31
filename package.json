@@ -76,7 +76,7 @@
     "@teselagen/apollo-methods": "^1.2.1",
     "@types/lodash": "npm:@types/lodash-es",
     "apollo-cache-invalidation": "^0.0.3",
-    "apollo-client": "2.5.1",
+    "apollo-client": "2.6.4",
     "axios": "^0.18.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
