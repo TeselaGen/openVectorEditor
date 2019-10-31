@@ -194,15 +194,13 @@ describe("menuBar", function() {
   });
 
   it(`save tool should be disabled initially and then enabled after an edit is made`, () => {
-    cy.get(".tg-menu-bar")
-      .contains("File")
-      .click();
+    cy.contains(".tg-menu-bar button", "File").click();
     cy.get(`[cmd="saveSequence"]`).should("have.class", "bp3-disabled");
 
     cy.selectRange(2, 5);
     cy.get(".tg-menu-bar")
       .contains("Edit")
-      .click();
+      .trigger("mouseover");
     cy.get(".tg-menu-bar-popover")
       .contains("Cut")
       .click();
@@ -309,7 +307,6 @@ describe("menuBar", function() {
     -can copy the select bps
     -can cut the selected bps
   `, function() {
-    cy.clock();
     cy.get(".tg-menu-bar")
       .contains("Edit")
       .click();
@@ -342,8 +339,7 @@ describe("menuBar", function() {
     cy.get(".veStatusBar").contains(`5299`);
     cy.get(".tg-menu-bar")
       .contains("Edit")
-      .click()
-      .tick(200);
+      .click();
     cy.get(".tg-menu-bar-popover")
       .contains("Copy")
       .click();

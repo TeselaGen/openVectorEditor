@@ -103,6 +103,9 @@ describe("editor", function() {
     cy.get(".bp3-menu-item")
       .contains("Cut")
       .click();
+    cy.get(".bp3-toast .bp3-icon-cross")
+      .first()
+      .click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()

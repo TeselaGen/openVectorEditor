@@ -9,27 +9,27 @@ describe("editor", function() {
   // })
 
   it(`should return focus correctly after typing in chars in circular view`, () => {
+    cy.contains(".veCircularView text", "Part 0").click();
     cy.contains(".veCircularView text", "Part 0")
-      .click({ force: true })
       .closest(".veVectorInteractionWrapper")
       .type("t");
     cy.focused().type("ttaaa{enter}");
-    cy.contains("Selecting 5 bps from 11 to 15");
+    cy.contains("Selecting 6 bps from 11 to 16");
     cy.focused().type("t");
     cy.focused().type("ccccttaaa{enter}");
-    cy.contains("Selecting 9 bps from 11 to 19");
+    cy.contains("Selecting 10 bps from 11 to 20");
     cy.focused().find(".veCircularView"); //the circular view should still be focused
   });
   it(`should return focus correctly after typing in chars in row view`, () => {
     cy.contains(".veRowView text", "Part 0")
-      .click({ force: true })
+      .click()
       .closest(".veVectorInteractionWrapper")
       .type("t");
     cy.focused().type("ttaaa{enter}");
-    cy.contains("Selecting 5 bps from 11 to 15");
+    cy.contains("Selecting 6 bps from 11 to 16");
     cy.focused().type("t");
     cy.focused().type("ccccttaaa{enter}");
-    cy.contains("Selecting 9 bps from 11 to 19");
+    cy.contains("Selecting 10 bps from 11 to 20");
     cy.focused().find(".veRowView"); //the row view should still be focused
   });
   it(`should be able to delete data around the origin correctly
