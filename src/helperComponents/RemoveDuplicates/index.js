@@ -15,7 +15,7 @@ import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash";
 import { sizeSchema } from "../PropertiesDialog/utils";
-import { getRangeLength } from "ve-range-utils/lib";
+import { getRangeLength } from "ve-range-utils";
 
 const schema = {
   fields: [

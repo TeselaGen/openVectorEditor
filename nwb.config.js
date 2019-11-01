@@ -13,9 +13,9 @@ module.exports = {
     aliases: {
       // **** You can comment one or more of these in to override an npm module with a local module. *****
       // **** Just be sure to comment them back out before committing! *****
-      "ve-range-utils":
-        console.log("comment me back out!") ||
-        path.resolve("../ve-range-utils/src/"),
+      // "ve-range-utils":
+      //   console.log("comment me back out!") ||
+      //   path.resolve("../ve-range-utils/src/"),
       // "ve-sequence-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-sequence-utils/src/"),

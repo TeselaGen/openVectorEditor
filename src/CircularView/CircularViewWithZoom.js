@@ -333,6 +333,72 @@ class CircularViewWithZoom extends React.Component {
     );
     return (
       <div>
+        <div>
+          <DrawName
+            {...{
+              isZoomed: this.state.zoomLevel !== 1,
+              sequenceName: sequenceData.name,
+              isProtein,
+              sequenceLength,
+              innerRadius: BASE_RADIUS
+            }}
+          />
+          <Warnings
+            {...{
+              circular: sequenceData.circular,
+              paredDownMessages
+            }}
+          />
+          <Draggable
+            // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
+            bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
+            onDrag={event => {
+              this.getNearestCursorPositionToMouseEvent(
+                event,
+                sequenceLength,
+                editorDragged
+              );
+            }}
+            onStart={event => {
+              this.getNearestCursorPositionToMouseEvent(
+                event,
+                sequenceLength,
+                editorDragStarted
+              );
+            }}
+            onStop={editorDragStopped}
+          >
+            <svg
+              onClick={event => {
+                instantiated &&
+                  this.getNearestCursorPositionToMouseEvent(
+                    event,
+                    sequenceLength,
+                    editorClicked
+                  );
+              }}
+              onContextMenu={e => {
+                this.getNearestCursorPositionToMouseEvent(
+                  e,
+                  sequenceLength,
+                  backgroundRightClicked
+                );
+              }}
+              ref="circularView"
+              className="circularViewSvg"
+              viewBox={`${-svgWidth / 2},${-svgHeight / 2 -
+                (this.state.zoomLevel === 1
+                  ? 0
+                  : initialRadius + BASE_RADIUS * 2)},${svgWidth},${svgHeight}`}
+              width={svgHeight}
+              height={svgWidth}
+            >
+              <g transform={`rotate(${-this.state.rotationDegrees})`}>
+                {layers}
+              </g>
+            </svg>
+          </Draggable>
+        </div>
         <div style={{ position: "absolute", left: 10, top: 5 }}>
           <UncontrolledSliderWithPlusMinusBtns
             onChange={val => {
@@ -377,68 +443,6 @@ class CircularViewWithZoom extends React.Component {
             min={0}
           />
         </div>
-        <DrawName
-          {...{
-            isZoomed: this.state.zoomLevel !== 1,
-            sequenceName: sequenceData.name,
-            isProtein,
-            sequenceLength,
-            innerRadius: BASE_RADIUS
-          }}
-        />
-        <Warnings
-          {...{
-            circular: sequenceData.circular,
-            paredDownMessages
-          }}
-        />
-        <Draggable
-          // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
-          bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          onDrag={event => {
-            this.getNearestCursorPositionToMouseEvent(
-              event,
-              sequenceLength,
-              editorDragged
-            );
-          }}
-          onStart={event => {
-            this.getNearestCursorPositionToMouseEvent(
-              event,
-              sequenceLength,
-              editorDragStarted
-            );
-          }}
-          onStop={editorDragStopped}
-        >
-          <svg
-            onClick={event => {
-              instantiated &&
-                this.getNearestCursorPositionToMouseEvent(
-                  event,
-                  sequenceLength,
-                  editorClicked
-                );
-            }}
-            onContextMenu={e => {
-              this.getNearestCursorPositionToMouseEvent(
-                e,
-                sequenceLength,
-                backgroundRightClicked
-              );
-            }}
-            ref="circularView"
-            className="circularViewSvg"
-            viewBox={`${-svgWidth / 2},${-svgHeight / 2 -
-              (this.state.zoomLevel === 1
-                ? 0
-                : initialRadius + BASE_RADIUS * 2)},${svgWidth},${svgHeight}`}
-            width={svgHeight}
-            height={svgWidth}
-          >
-            <g transform={`rotate(${-this.state.rotationDegrees})`}>{layers}</g>
-          </svg>
-        </Draggable>
       </div>
     );
   }
