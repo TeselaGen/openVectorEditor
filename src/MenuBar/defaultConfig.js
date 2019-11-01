@@ -84,6 +84,7 @@ export default [
       {
         text: "Change Case",
         submenu: [
+          "flipCaseSequence",
           "upperCaseSequence",
           "lowerCaseSequence",
           "upperCaseSelection",

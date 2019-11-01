@@ -499,57 +499,94 @@ const editCommandDefs = {
     isHidden: isProtein
   },
   ...[
-    "upperCaseSequence",
-    "lowerCaseSequence",
-    "upperCaseSelection",
-    "lowerCaseSelection"
-  ].reduce((acc, type) => {
+    { hotkey: "option + =", type: "flipCaseSequence" },
+    { hotkey: "option + plus", type: "upperCaseSequence" },
+    { hotkey: "option + -", type: "lowerCaseSequence" },
+    { /* hotkey: "option+-", */ type: "upperCaseSelection" },
+    { /* hotkey: "option+-", */ type: "lowerCaseSelection" }
+  ].reduce((acc, { type, hotkey }) => {
     const isSelection = type.includes("Selection");
 
     acc[type] = {
       isHidden: isProtein,
       isDisabled: props => {
+        if (props.readOnly) {
+          return "The sequence is read only. Try changing 'View > Sequence Case'";
+        }
         if (isSelection && !(props.selectionLayer.start > -1)) {
           return "No Selection to Replace";
         }
       },
       name: startCase(type),
+      hotkey,
       handler: props => {
         const { sequence } = props.sequenceData;
         const { selectionLayer } = props;
-
+        let toastFired;
+        if (props.uppercaseSequenceMapFont !== "noPreference") {
+          toastFired = true;
+          props.updateSequenceCase("noPreference");
+          window.toastr.success(
+            `Sequence Case Edited Successfully. To avoid confusion we set: 'View > Sequence Case' to 'No Preference'`,
+            {
+              timeout: 10000
+            }
+          );
+        }
         const func = type.includes("lower") ? "toLowerCase" : "toUpperCase";
-        props.updateSequenceData({
-          ...props.sequenceData,
-          sequence: isSelection
-            ? adjustBpsToReplaceOrInsert(
-                sequence,
-                getSequenceWithinRange(selectionLayer, sequence)[func](),
-                selectionLayer,
-                false
-              )
-            : sequence[func]()
-        });
+        let newSeq;
+        let orginalSeq = isSelection
+          ? getSequenceWithinRange(selectionLayer, sequence)
+          : sequence;
+        if (type.includes("flip")) {
+          newSeq = invertString(orginalSeq);
+        } else {
+          newSeq = orginalSeq[func]();
+        }
+        if (newSeq !== orginalSeq) {
+          !toastFired &&
+            window.toastr.success(`Sequence Case Edited Successfully`);
+          //don't trigger a mutation unless something has actually changed
+          props.updateSequenceData({
+            ...props.sequenceData,
+            sequence: isSelection
+              ? adjustBpsToReplaceOrInsert(
+                  sequence,
+                  newSeq,
+                  selectionLayer,
+                  false
+                )
+              : newSeq
+          });
+        }
       }
     };
     return acc;
   }, {}),
-  // upperCaseSequence: {
-  //   // isActive: props => props.uppercaseSequenceMapFont === "uppercase",
-
-  //     // props.uppercaseSequenceMapFont === "uppercase"
-  //     //   ? props.updateSequenceCase("noPreference")
-  //     //   : props.updateSequenceCase("uppercase");
-  //   }
-  // },
-  // toggleSequenceMapFontLower: {
-  //   isActive: props => props.uppercaseSequenceMapFont === "lowercase",
-  //   handler: props => {
-  //     props.uppercaseSequenceMapFont === "lowercase"
-  //       ? props.updateSequenceCase("noPreference")
-  //       : props.updateSequenceCase("lowercase");
-  //   }
-  // },
+  toggleSequenceMapFontUpper: {
+    isActive: props => props.uppercaseSequenceMapFont === "uppercase",
+    handler: props => {
+      props.updateSequenceCase("uppercase");
+      window.toastr.success(`Sequence Case View Changed`);
+    },
+    hotkey: "ctrl+option+plus"
+  },
+  toggleSequenceMapFontRaw: {
+    isActive: props => props.uppercaseSequenceMapFont === "noPreference",
+    handler: props => {
+      props.updateSequenceCase("noPreference");
+      window.toastr.success(`Sequence Case View Changed`);
+    },
+    hotkey: "ctrl+option+="
+  },
+  toggleSequenceMapFontLower: {
+    isActive: props => props.uppercaseSequenceMapFont === "lowercase",
+    handler: props => {
+      props.updateSequenceCase("lowercase");
+      window.toastr.success(`Sequence Case View Changed`);
+    },
+    hotkey: "ctrl+option+-"
+  },
   createMenuHolder: {
     isHidden: props => isProtein(props) && props.readOnly,
     handler: () => {}
@@ -1058,3 +1095,22 @@ const commandDefs = {
 };
 
 export default instance => oveCommandFactory(instance, commandDefs);
+
+const invertString = function(str) {
+  let s = "";
+  let i = 0;
+  while (i < str.length) {
+    let n = str.charAt(i);
+    if (n === n.toUpperCase()) {
+      // *Call* toLowerCase
+      n = n.toLowerCase();
+    } else {
+      // *Call* toUpperCase
+      n = n.toUpperCase();
+    }
+
+    i += 1;
+    s += n;
+  }
+  return s;
+};
