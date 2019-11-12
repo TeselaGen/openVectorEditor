@@ -547,6 +547,7 @@ export function updateSelectionOrCaret({
         }
       } else {
         //new range passed
+        // return selectionLayerUpdate(newRange);
         let selectionFullyContained = !trimRangeByAnotherRange(
           selectionLayer,
           newRange
@@ -570,16 +571,19 @@ export function updateSelectionOrCaret({
           newRange.end + 1,
           sequenceLength
         ); //+1 to go from range end to position
-        let range1Shorter = getRangeLength(range1) < getRangeLength(range2);
+        let range1Shorter =
+          getRangeLength(range1, sequenceLength) <
+          getRangeLength(range2, sequenceLength);
 
         if (newRangeFullyContained) {
           range1Shorter
             ? selectionLayerUpdate(range1)
             : selectionLayerUpdate(range2);
         } else {
-          range1Shorter
-            ? selectionLayerUpdate(range2)
-            : selectionLayerUpdate(range1);
+          selectionLayerUpdate({
+            start: selectionLayer.start,
+            end: newRange.end
+          });
         }
       }
     } else {

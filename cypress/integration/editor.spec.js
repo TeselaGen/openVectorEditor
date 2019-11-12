@@ -45,17 +45,23 @@ describe("editor", function() {
     cy.contains(".bp3-dialog button", "OK").click();
     cy.contains("onRename callback triggered: pj5_00001renamed seq");
   });
+  it("should fire the onSelectionOrCaretChanged handler", function() {
+    cy.tgToggle("onSelectionOrCaretChanged");
+
+    cy.contains(".veLabelText", "Part 0").click();
+    cy.contains(
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+    );
+  });
 
   it(`should autosave if autosave=true`, function() {
     cy.tgToggle("shouldAutosave");
-
-    cy.get(".veRowViewPartsContainer")
-      .contains("Part 0")
+    cy.contains(".veRowViewPart", "Part 0")
       .first()
-      .click({ force: true });
+      .click();
     cy.get(".veRowViewSelectionLayer")
       .first()
-      .trigger("contextmenu", { force: true });
+      .trigger("contextmenu");
     cy.get(".bp3-menu-item")
       .contains("Cut")
       .click();
@@ -66,9 +72,7 @@ describe("editor", function() {
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function() {
     cy.tgToggle("onCreateNewFromSubsequence");
 
-    cy.get(".veLabelText")
-      .contains("Part 0")
-      .trigger("contextmenu", { force: true });
+    cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
     cy.contains(".bp3-menu-item", "New Sequence From Selected Range").click();
 
@@ -79,9 +83,7 @@ describe("editor", function() {
   it(`should handle rightClickOverrides correctly if they are passed`, function() {
     cy.tgToggle("overrideRightClickExample");
 
-    cy.get(".veLabelText")
-      .contains("Part 0")
-      .trigger("contextmenu", { force: true });
+    cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
     cy.get(".bp3-menu")
       .contains("My Part Override")
       .click();
@@ -90,9 +92,7 @@ describe("editor", function() {
   it(`should handle clickOverrides correctly if they are passed`, function() {
     cy.tgToggle("clickOverridesExample");
 
-    cy.get(".veLabelText")
-      .contains("Part 0")
-      .click({ force: true });
+    cy.contains(".veLabelText", "Part 0").click();
 
     cy.contains("Part Click Override Hit!").should("be.visible");
     //clicking the part SHOULD change the selection because in this demo the default part click is not
@@ -100,7 +100,7 @@ describe("editor", function() {
 
     cy.get(".veLabelText")
       .contains("araC")
-      .click({ force: true });
+      .click();
 
     cy.contains("Feature Click Override Hit!").should("be.visible");
     //clicking the feature SHOULD NOT change the selection because in this demo the default feature click is overridden
@@ -134,9 +134,7 @@ describe("editor", function() {
     cy.get(".bp3-menu-item")
       .contains("Export Sequence")
       .trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Custom export option!").click({
-      force: true
-    });
+    cy.contains(".bp3-menu-item", "Custom export option!").click();
     cy.get(".bp3-toast").contains("Custom export hit!");
   });
   it(`should handle custom dialog overrides correctly`, () => {
@@ -169,7 +167,7 @@ describe("editor", function() {
   });
   it(`should handle beforeSequenceInsertOrDelete hook correctly`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
-    cy.contains(".veLabelText", "T0").trigger("contextmenu", { force: true });
+    cy.contains(".veLabelText", "T0").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
 
     cy.get(".sequenceInputBubble input").type("tta{enter}");
@@ -177,9 +175,7 @@ describe("editor", function() {
   });
   it(`should handle beforeSequenceInsertOrDelete hook correctly while crossing the origin`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
-    cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu", {
-      force: true
-    });
+    cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
 
     cy.get(".sequenceInputBubble input").type("tta{enter}");
@@ -189,9 +185,7 @@ describe("editor", function() {
   it(`should handle maintainOriginSplit flag correctly when pasted text is shorter than pre origin selection`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.tgToggle("maintainOriginSplit");
-    cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu", {
-      force: true
-    });
+    cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
 
     cy.get(".sequenceInputBubble input").type("tta{enter}");

@@ -13,6 +13,7 @@ function drawAnnotations({
   Annotation,
   annotationType,
   radius,
+  isProtein,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
@@ -165,6 +166,7 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            isProtein,
             titleText,
             editorName,
             annotationType,
@@ -218,6 +220,7 @@ const DrawAnnotation = withHover(function({
   Annotation = Feature,
   totalAngle,
   annotationColor,
+  isProtein,
   annotationRadius,
   annotationHeight,
   onMouseLeave,
@@ -245,10 +248,11 @@ const DrawAnnotation = withHover(function({
       >
         {title}
         <Annotation
-          {...locationAngles &&
-            locationAngles.length && { containsLocations: true }}
+          {...(locationAngles &&
+            locationAngles.length && { containsLocations: true })}
           totalAngle={totalAngle}
           color={annotationColor}
+          isProtein={isProtein}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
           {...annotationProps}

@@ -65,6 +65,13 @@ function SelectionLayer(props) {
                 sequenceLength,
                 isProtein
               });
+        const onSelectionContextMenu = function(event) {
+          selectionLayerRightClicked &&
+            selectionLayerRightClicked({
+              event,
+              annotation: selectionLayer
+            });
+        };
 
         let classNameToPass = className + " " + globalClassname;
         if (start > -1) {
@@ -101,6 +108,7 @@ function SelectionLayer(props) {
                   <Caret
                     {...{
                       onClick: _onClick || preventDefaultStopPropagation,
+                      onRightClick: onSelectionContextMenu,
                       charWidth,
                       row,
                       getGaps,
@@ -119,6 +127,7 @@ function SelectionLayer(props) {
                   <Caret
                     {...{
                       onClick: _onClick || preventDefaultStopPropagation,
+                      onRightClick: onSelectionContextMenu,
                       charWidth,
                       row,
                       getGaps,
@@ -139,13 +148,7 @@ function SelectionLayer(props) {
               <div
                 onClick={_onClick}
                 title={selectionMessage}
-                onContextMenu={function(event) {
-                  selectionLayerRightClicked &&
-                    selectionLayerRightClicked({
-                      event,
-                      annotation: selectionLayer
-                    });
-                }}
+                onContextMenu={onSelectionContextMenu}
                 key={key}
                 className={
                   classNameToPass +

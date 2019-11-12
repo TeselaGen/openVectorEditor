@@ -22,6 +22,7 @@ import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
+import { defaultMemoize } from "reselect";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
@@ -497,6 +498,10 @@ function mapStateToProps(state, ownProps) {
 
   let sequenceDataToUse = {
     ...sequenceData,
+    sequence: getUpperOrLowerSeq(
+      uppercaseSequenceMapFont,
+      sequenceData.sequence
+    ),
     filteredFeatures,
     cutsites,
     orfs,
@@ -534,12 +539,31 @@ export function mapDispatchToActions(dispatch, ownProps) {
     actionOverrides,
     dispatch
   );
+  const updateSel =
+    ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate;
+  const updateCar =
+    ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate;
   return {
     ...actionsToPass,
-    selectionLayerUpdate:
-      ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate,
-    caretPositionUpdate:
-      ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate,
+    selectionLayerUpdate: ownProps.onSelectionOrCaretChanged
+      ? selectionLayer => {
+          ownProps.onSelectionOrCaretChanged({
+            selectionLayer,
+            caretPosition: -1
+          });
+          updateSel(selectionLayer);
+        }
+      : updateSel,
+    caretPositionUpdate: ownProps.onSelectionOrCaretChanged
+      ? caretPosition => {
+          ownProps.onSelectionOrCaretChanged({
+            caretPosition,
+            selectionLayer: { start: -1, end: -1 }
+          });
+          updateCar(caretPosition);
+        }
+      : updateCar,
+
     dispatch
   };
 }
@@ -679,14 +703,14 @@ function doAnySpanOrigin(annotations) {
 export const connectToEditor = fn => {
   return connect(
     (state, ownProps, ...rest) => {
-      return fn
-        ? fn(
-            state.VectorEditor[ownProps.editorName] || {},
-            ownProps,
-            ...rest,
-            state
-          )
-        : {};
+      const editor = state.VectorEditor[ownProps.editorName] || {};
+      editor.sequenceData = editor.sequenceData || {};
+      editor.sequenceData.sequence = getUpperOrLowerSeq(
+        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+        editor.sequenceData.sequence
+      );
+
+      return fn ? fn(editor, ownProps, ...rest, state) : {};
     },
     mapDispatchToActions
   );
@@ -724,3 +748,12 @@ export const withEditorPropsNoRedux = withProps(props => {
   //   }
   // };
 });
+
+const getUpperOrLowerSeq = defaultMemoize(
+  (uppercaseSequenceMapFont, sequence = "") =>
+    uppercaseSequenceMapFont === "uppercase"
+      ? sequence.toUpperCase()
+      : uppercaseSequenceMapFont === "lowercase"
+      ? sequence.toLowerCase()
+      : sequence
+);

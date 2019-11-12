@@ -14,6 +14,7 @@ import { withDialog } from "teselagen-react-components";
 import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
+import RemoveDuplicatesDialog from "../helperComponents/RemoveDuplicates";
 
 const AddAdditionalEnzymes = withDialog({
   title: "Add Additional Enzymes"
@@ -71,6 +72,11 @@ export default connect(
         <PrintDialog
           editorName={editorName}
           dialogName="PrintDialog"
+          noTarget
+        />
+        <RemoveDuplicatesDialog
+          editorName={editorName}
+          dialogName="RemoveDuplicatesDialog"
           noTarget
         />
 

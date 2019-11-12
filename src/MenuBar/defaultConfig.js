@@ -84,6 +84,7 @@ export default [
       {
         text: "Change Case",
         submenu: [
+          "flipCaseSequence",
           "upperCaseSequence",
           "lowerCaseSequence",
           "upperCaseSelection",
@@ -110,7 +111,18 @@ export default [
   {
     text: "Tools",
     cmd: "toolsCmd",
-    submenu: ["restrictionEnzymesManager", "simulateDigestion"]
+    submenu: [
+      "restrictionEnzymesManager",
+      "simulateDigestion",
+      {
+        text: "Remove Duplicates",
+        submenu: [
+          "showRemoveDuplicatesDialogFeatures",
+          "showRemoveDuplicatesDialogParts",
+          "showRemoveDuplicatesDialogPrimers"
+        ]
+      }
+    ]
   },
   // { isMenuSearch: true }
   {

@@ -66,7 +66,6 @@ export class RowItem extends React.PureComponent {
       axisHeight = rowHeights.axis.height,
       axisMarginTop = rowHeights.axis.marginTop,
       width,
-      uppercaseSequenceMapFont = "noPreference",
       annotationVisibility = {},
       annotationLabelVisibility = {},
       additionalSelectionLayers = [],
@@ -96,9 +95,6 @@ export class RowItem extends React.PureComponent {
       bpsPerRow = sequenceLength,
       editorName
     } = this.props;
-    if (alignmentData) {
-      uppercaseSequenceMapFont = "uppercase";
-    }
 
     let {
       chromatogram: showChromatogram,
@@ -349,7 +345,6 @@ export class RowItem extends React.PureComponent {
           >
             {showSequence && (
               <Sequence
-                uppercaseSequenceMapFont={uppercaseSequenceMapFont}
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
                 showDnaColors={showDnaColors}
                 hideBps={charWidth < 7}
@@ -380,7 +375,6 @@ export class RowItem extends React.PureComponent {
 
             {showReverseSequence && (
               <Sequence
-                uppercaseSequenceMapFont={uppercaseSequenceMapFont}
                 isReverse
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
                 showDnaColors={showDnaColors}

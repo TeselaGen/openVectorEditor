@@ -26,9 +26,8 @@ describe("statusBar", function() {
     cy.get(".bp3-menu-item")
       .contains("Select...")
       .click();
-    cy.focused()
-      .type("{selectall}1")
-      .get("div.tg-test-to .bp3-input")
+    cy.focused().type("{selectall}1");
+    cy.get("div.tg-test-to .bp3-input")
       .type("{selectall}100")
       .get(".bp3-intent-primary")
       .contains("Select 100 BPs")
