@@ -14,13 +14,9 @@ import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
 import { getContext, branch } from "recompose";
 
-import {
-  normalizePositionByRangeLength
-  // convertRangeTo1Based
-} from "ve-range-utils";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
 
-// import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
 import {
@@ -514,18 +510,13 @@ function VectorInteractionHOC(Component /* options */) {
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
-      const {
-        sequenceData,
-        selectionLayer,
-        editorName,
-        store,
-        readOnly
-      } = this.props;
+      const { sequenceData, readOnly } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
+            const { selectionLayer, editorName, store } = this.props;
             const { sequenceData, copyOptions } = store.getState().VectorEditor[
               editorName
             ];
@@ -554,7 +545,9 @@ function VectorInteractionHOC(Component /* options */) {
             } else {
               document.body.addEventListener("cut", this.handleCut);
             }
-
+            if (window.Cypress) {
+              window.__tg_copiedSeqData = sequenceDataToCopy;
+            }
             return sequenceDataToCopy.sequence;
           }
         });
@@ -1061,6 +1054,7 @@ export default compose(
   getContext({
     store: PropTypes.object
   }),
+  // connect(),
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
