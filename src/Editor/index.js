@@ -312,6 +312,7 @@ export class Editor extends React.Component {
       readOnly,
       setPanelAsActive,
       style = {},
+      maxAnnotationsToDisplay = {},
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
@@ -501,6 +502,7 @@ export class Editor extends React.Component {
               acc = { ...acc, ...get(this.props, key) };
               return acc;
             }, {}))}
+          maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}

@@ -102,7 +102,12 @@ class Demo extends React.Component {
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
               render={({ history }) => {
-                return <EditorDemo history={history} />;
+                return (
+                  <EditorDemo
+                    history={history}
+                    maxAnnotationsToDisplay={{ features: 5 }}
+                  />
+                );
               }}
               path="/Editor"
             />
