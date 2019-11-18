@@ -65,6 +65,7 @@ const defaultState = {
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
+  maxAnnotationsToDisplayAdjustment: false,
   onCopy: true,
   onPaste: true
 };
@@ -982,6 +983,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "maxAnnotationsToDisplayAdjustment",
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximimum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+              })}
+              {renderToggle({
+                that: this,
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
@@ -1092,6 +1098,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             }}
             {...(this.state.readOnly && { readOnly: true })}
             editorName="DemoEditor"
+            maxAnnotationsToDisplay={
+              this.state.maxAnnotationsToDisplayAdjustment
+                ? { features: 5 }
+                : {}
+            }
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
