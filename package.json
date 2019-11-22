@@ -44,7 +44,7 @@
     "prop-types": "^15.7.2",
     "randomcolor": "^0.5.4",
     "react-beautiful-dnd": "^10.1.0",
-    "react-draggable": "^3.2.1",
+    "react-draggable": "^4.1.0",
     "react-dropzone": "^4.2.11",
     "react-easy-state": "^5.1.0",
     "react-measure": "^2.2.4",
