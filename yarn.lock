@@ -9327,9 +9327,9 @@ react-router@^4.3.1:
     warning "^4.0.1"
 
 react-sizeme@^2.5.2:
-  version "2.6.8"
-  resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-2.6.8.tgz#a9d7062bca3c309649cb8b09bb1ef2480592b332"
-  integrity sha512-eJKHV226d/S3st2He7bLIlY7FAmi2ItvZmUCmLLNjIvYjtiv58BksuFhTBQmvAxWaXZGb3Ao/44wfAS1voRdjA==
+  version "2.6.10"
+  resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-2.6.10.tgz#9993dcb5e67fab94a8e5d078a0d3820609010f17"
+  integrity sha512-OJAPQxSqbcpbsXFD+fr5ARw4hNSAOimWcaTOLcRkIqnTp9+IFWY0w3Qdw1sMez6Ao378aimVL/sW6TTsgigdOA==
   dependencies:
     element-resize-detector "^1.1.15"
     invariant "^2.2.4"
