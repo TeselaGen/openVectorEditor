@@ -11501,11 +11501,6 @@ li.bp3-menu-divider:last-child {
 .CircularViewSide {
   width: 100%;
 }
-.tg-editor-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
 .ve-clickable {
   cursor: pointer;
   opacity: 0.7;
