@@ -240,7 +240,8 @@ export default class EditorDemo extends React.Component {
             display: "flex",
             position: "relative",
             // flexDirection: "column",
-            flexGrow: "1"
+            flexGrow: "1",
+            minHeight: 0
           }}
         >
           {this.state.showDemoOptions && (

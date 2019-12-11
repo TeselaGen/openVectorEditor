@@ -440,7 +440,7 @@ export class Editor extends React.Component {
     };
     const reflexElementProps = {
       propagateDimensions: true,
-      resizeHeight: true,
+      // resizeHeight: true,
       renderOnResizeRate: 50,
       renderOnResize: true,
       className: "ve-panel"
@@ -559,7 +559,6 @@ export class Editor extends React.Component {
           />
         );
       }
-
       toReturn.push(
         <ReflexElement
           key={activePanelId}
@@ -833,7 +832,12 @@ export class Editor extends React.Component {
         />
 
         <div
-          style={{ position: "relative", flexGrow: "1" }}
+          style={{
+            position: "relative",
+            flexGrow: "1",
+            minHeight: 0,
+            display: "flex"
+          }}
           className="tg-editor-container"
           id="section-to-print"
         >
