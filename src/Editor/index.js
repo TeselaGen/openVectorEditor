@@ -67,6 +67,7 @@ const userDefinedHandlersAndOpts = [
   "onImport",
   "onSave",
   "onSaveAs",
+  "alwaysAllowSave",
   "onRename",
   "getVersionList",
   "getSequenceAtVersion",

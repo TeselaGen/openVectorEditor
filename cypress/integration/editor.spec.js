@@ -86,6 +86,16 @@ describe("editor", function() {
       .contains("Save As")
       .click();
   });
+  it(`settings alwaysAllowSave=true should allow for saves to happen even when there are no file changes`, function() {
+    cy.tgToggle("alwaysAllowSave");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Save")
+      .click();
+    cy.contains("onSave callback triggered");
+  });
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function() {
     cy.tgToggle("onCreateNewFromSubsequence");
 
