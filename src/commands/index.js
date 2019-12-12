@@ -89,7 +89,7 @@ const fileCommandDefs = {
       !props.sequenceData ||
       (props.sequenceData.stateTrackingId === "initialLoadId" ||
         props.sequenceData.stateTrackingId === props.lastSavedId),
-    isHidden: props => props.readOnly || !props.handleSaveAs,
+    isHidden: props => props.readOnly || !props.onSaveAs,
     handler: props => props.handleSave({ isSaveAs: true }),
     hotkey: "mod+shift+s"
   },

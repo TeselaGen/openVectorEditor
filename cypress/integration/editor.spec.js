@@ -69,6 +69,23 @@ describe("editor", function() {
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
   });
+  it(`should trigger the onSaveAs callback if that handler is passed`, function() {
+    cy.tgToggle("onSaveAs");
+    cy.selectRange(10, 20);
+    cy.get(".veRowViewSelectionLayer")
+      .first()
+      .trigger("contextmenu");
+    cy.get(".bp3-menu-item")
+      .contains("Cut")
+      .click();
+    cy.contains("Selection Cut");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Save As")
+      .click();
+  });
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function() {
     cy.tgToggle("onCreateNewFromSubsequence");
 
