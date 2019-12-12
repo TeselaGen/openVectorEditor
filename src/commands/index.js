@@ -72,6 +72,7 @@ const fileCommandDefs = {
   },
 
   saveSequence: {
+    name: "Save",
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
       !props.sequenceData ||
@@ -80,6 +81,17 @@ const fileCommandDefs = {
     isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"
+  },
+  saveSequenceAs: {
+    name: "Save As",
+    isDisabled: props =>
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      !props.sequenceData ||
+      (props.sequenceData.stateTrackingId === "initialLoadId" ||
+        props.sequenceData.stateTrackingId === props.lastSavedId),
+    isHidden: props => props.readOnly || !props.handleSaveAs,
+    handler: props => props.handleSave({ isSaveAs: true }),
+    hotkey: "mod+shift+s"
   },
   toolsCmd: {
     handler: () => {},

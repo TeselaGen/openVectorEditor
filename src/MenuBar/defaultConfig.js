@@ -37,6 +37,7 @@ export default [
       },
       "renameSequence",
       "saveSequence",
+      "saveSequenceAs",
       "deleteSequence",
       "duplicateSequence",
       "--",

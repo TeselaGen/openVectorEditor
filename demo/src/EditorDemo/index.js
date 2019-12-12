@@ -1120,13 +1120,13 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             })}
             {...(this.state.onSave && {
               onSave: function(
-                event,
+                opts,
                 sequenceDataToSave,
                 editorState,
                 onSuccessCallback
               ) {
                 window.toastr.success("onSave callback triggered");
-                console.info("event:", event);
+                console.info("opts:", opts);
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
                 // To disable the save button after successful saving

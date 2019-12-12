@@ -86,7 +86,7 @@ export class VersionHistoryView extends React.Component {
       ] //currentVersion should always come first
     });
   };
-  revertToSelectedVersion = e => {
+  revertToSelectedVersion = () => {
     if (!this.props.onSave) {
       return console.error("props.onSave must be passed to VersionHistoryView");
     }
@@ -97,7 +97,7 @@ export class VersionHistoryView extends React.Component {
       this.props.updateSequenceData(tidiedActiveData);
     this.props.caretPositionUpdate && this.props.caretPositionUpdate(0);
     this.props.onSave(
-      e,
+      {},
       tidiedActiveData,
       {}, //empty editor props
       () => {} //empty unSuccessCallback
