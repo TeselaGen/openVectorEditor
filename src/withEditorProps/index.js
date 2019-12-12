@@ -29,14 +29,21 @@ import { defaultMemoize } from "reselect";
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
 export const handleSave = props => (opts = {}) => {
-  const { onSave, onSaveAs, readOnly, sequenceData, lastSavedIdUpdate } = props;
+  const {
+    onSave,
+    onSaveAs,
+    readOnly,
+    alwaysAllowSave,
+    sequenceData,
+    lastSavedIdUpdate
+  } = props;
   const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
 
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
   const promiseOrVal =
-    !readOnly &&
+    (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
     saveHandler &&
     saveHandler(
       opts,

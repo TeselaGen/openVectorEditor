@@ -1145,6 +1145,24 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 // return myPromiseBasedApiCall()
               }
             })}
+            {...(this.state.onSaveAs && {
+              onSaveAs: function(
+                opts,
+                sequenceDataToSave,
+                editorState,
+                onSuccessCallback
+              ) {
+                window.toastr.success("onSaveAs callback triggered");
+                console.info("opts:", opts);
+                console.info("sequenceData:", sequenceDataToSave);
+                console.info("editorState:", editorState);
+                // To disable the save button after successful saving
+                // either call the onSuccessCallback or return a successful promise :)
+                onSuccessCallback();
+                //or
+                // return myPromiseBasedApiCall()
+              }
+            })}
             {...(this.state.alwaysAllowSave && {
               alwaysAllowSave: true
             })}

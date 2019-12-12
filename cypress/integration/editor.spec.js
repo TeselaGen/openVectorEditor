@@ -69,7 +69,9 @@ describe("editor", function() {
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
   });
-  it(`should trigger the onSaveAs callback if that handler is passed`, function() {
+  it(`should 
+  -trigger the onSaveAs callback if that handler is passed
+  -allow saveAs when in read only mode `, function() {
     cy.tgToggle("onSaveAs");
     cy.selectRange(10, 20);
     cy.get(".veRowViewSelectionLayer")
@@ -85,6 +87,16 @@ describe("editor", function() {
     cy.get(".bp3-menu-item")
       .contains("Save As")
       .click();
+    cy.contains("onSaveAs callback triggered");
+
+    cy.tgToggle("readOnly");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Save As")
+      .click();
+    cy.contains("onSaveAs callback triggered");
   });
   it(`settings alwaysAllowSave=true should allow for saves to happen even when there are no file changes`, function() {
     cy.tgToggle("alwaysAllowSave");
