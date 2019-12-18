@@ -26,90 +26,89 @@ const { isString } = require("lodash");
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-// function getCenter(el) {
-//   const b = el.getBoundingClientRect();
-//   const x = (b.right - b.left) / 2 + b.left;
-//   const y = (b.bottom - b.top) / 2 + b.top;
-//   return [x, y];
-// }
-
-// Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
-//   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
-// console.log(isString(dragSelector))
-//   cy.clock();
-//   getOrWrap(dragSelector).then(el => {
-//     let dragSelectDomEl = el.get(0);
-//     getOrWrap(dropSelector).then(el2 => {
-//       let dropSelectDomEl = el2.get(0);
-//       const [x, y] = getCenter(dragSelectDomEl);
-//       const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
-//       getOrWrap(dragSelector)
-//         .trigger(
-//           "mousedown",
-//           {
-//             button: 0,
-//             clientX: x,
-//             clientY: y,
-//             force: true
-//           },
-//           { force: true }
-//         )
-//         .tick(1000);
-//       // drag events test for button: 0 and also use the clientX and clientY values - the clientX and clientY values will be specific to your system
-//       getOrWrap(dragSelector)
-//         .trigger(
-//           "mousemove",
-//           {
-//             button: 0,
-//             clientX: x + 10,
-//             clientY: y + 10,
-//             force: true
-//           },
-//           { force: true }
-//         ) // We perform a small move event of > 5 pixels this means we don't get dismissed by the sloppy click detection
-//         .tick(5000); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
-
-//       cy.get("html") // now we perform drags on the whole screen, not just the draggable
-//         .trigger(
-//           "mousemove",
-//           {
-//             button: 0,
-//             clientX: xCenterDrop,
-//             clientY: yCenterDrop,
-//             force: true
-//           },
-//           { force: true }
-//         )
-//         .tick(5000);
-//       cy.get("html").trigger(
-//         "mouseup",
-//         {
-//           // Causes the drop to be run
-//           button: 0,
-//           clientX: xCenterDrop,
-//           clientY: yCenterDrop,
-//           force: true
-//         },
-//         { force: true }
-//       );
-//       getOrWrap(dragSelector).trigger(
-//         "mouseup",
-//         {
-//           // Causes the drop to be run
-//           button: 0,
-//           clientX: xCenterDrop,
-//           clientY: yCenterDrop,
-//           force: true
-//         },
-//         { force: true }
-//       );
-
-//       // Can now test the application's post DROP state
-//     });
-//   });
-// });
+function getCenter(el) {
+  const b = el.getBoundingClientRect();
+  const x = (b.right - b.left) / 2 + b.left;
+  const y = (b.bottom - b.top) / 2 + b.top;
+  return [x, y];
+}
 
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
+  const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
+  cy.clock();
+  getOrWrap(dragSelector).then(el => {
+    let dragSelectDomEl = el.get(0);
+    getOrWrap(dropSelector).then(el2 => {
+      let dropSelectDomEl = el2.get(0);
+      const [x, y] = getCenter(dragSelectDomEl);
+      const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
+      getOrWrap(dragSelector)
+        .trigger(
+          "mousedown",
+          {
+            button: 0,
+            clientX: x,
+            clientY: y,
+            force: true
+          },
+          { force: true }
+        )
+        .tick(1000);
+      // drag events test for button: 0 and also use the clientX and clientY values - the clientX and clientY values will be specific to your system
+      getOrWrap(dragSelector)
+        .trigger(
+          "mousemove",
+          {
+            button: 0,
+            clientX: x + 10,
+            clientY: y + 10,
+            force: true
+          },
+          { force: true }
+        ) // We perform a small move event of > 5 pixels this means we don't get dismissed by the sloppy click detection
+        .tick(5000); // react-beautiful-dnd has a minimum 150ms timeout before starting a drag operation, so wait at least this long.
+
+      cy.get("html") // now we perform drags on the whole screen, not just the draggable
+        .trigger(
+          "mousemove",
+          {
+            button: 0,
+            clientX: xCenterDrop,
+            clientY: yCenterDrop,
+            force: true
+          },
+          { force: true }
+        )
+        .tick(5000);
+      cy.get("html").trigger(
+        "mouseup",
+        {
+          // Causes the drop to be run
+          button: 0,
+          clientX: xCenterDrop,
+          clientY: yCenterDrop,
+          force: true
+        },
+        { force: true }
+      );
+      getOrWrap(dragSelector).trigger(
+        "mouseup",
+        {
+          // Causes the drop to be run
+          button: 0,
+          clientX: xCenterDrop,
+          clientY: yCenterDrop,
+          force: true
+        },
+        { force: true }
+      );
+
+      // Can now test the application's post DROP state
+    });
+  });
+});
+
+Cypress.Commands.add("dragBetweenSimple", (dragSelector, dropSelector) => {
   const getOrWrap = selector =>
     isString(selector)
       ? cy.get(selector).then(el => {

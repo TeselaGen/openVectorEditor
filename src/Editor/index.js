@@ -300,12 +300,7 @@ export class Editor extends React.Component {
       extraRightSidePanel,
       editorName,
       height: _height,
-      showReadOnly,
-      disableSetReadOnly,
       showCircularity,
-      showAvailability,
-      showGCContent,
-      GCDecimalDigits,
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
@@ -455,6 +450,10 @@ export class Editor extends React.Component {
         if (fullScreen) this.hasFullscreenPanel = true;
       });
     });
+    const pickedUserDefinedHandlersAndOpts = pick(
+      this.props,
+      userDefinedHandlersAndOpts
+    );
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
       // let activePanelId
       let activePanelId;
@@ -497,7 +496,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
-          {...pick(this.props, userDefinedHandlersAndOpts)}
+          {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&
             panelSpecificPropsToSpread.reduce((acc, key) => {
@@ -797,6 +796,7 @@ export class Editor extends React.Component {
           {...pick(this.props, dialogOverrides)}
         />
         <ToolBar
+          {...pickedUserDefinedHandlersAndOpts}
           openHotkeyDialog={this.openHotkeyDialog}
           key="toolbar"
           showMenuBar={showMenuBar}
@@ -805,11 +805,7 @@ export class Editor extends React.Component {
             handleFullscreenClose || this.togglePreviewFullscreen
           }
           isProtein={sequenceData.isProtein}
-          {...pick(this.props, userDefinedHandlersAndOpts)}
           userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
-          onSave={onSave}
-          showGCContent={showGCContent}
-          GCDecimalDigits={GCDecimalDigits}
           closeFullscreen={
             !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
           }
@@ -829,7 +825,7 @@ export class Editor extends React.Component {
             isOpen: this.state.isHotkeyDialogOpen,
             onClose: this.closeHotkeyDialog
           }}
-          {...pick(this.props, userDefinedHandlersAndOpts)}
+          {...pickedUserDefinedHandlersAndOpts}
           editorName={editorName}
         />
 
@@ -859,14 +855,9 @@ export class Editor extends React.Component {
         </div>
 
         <StatusBar
-          showAvailability={showAvailability}
-          showGCContent={showGCContent}
-          GCDecimalDigits={GCDecimalDigits}
-          onSave={onSave}
+          {...pickedUserDefinedHandlersAndOpts}
           isProtein={sequenceData.isProtein}
           showCircularity={showCircularity && !sequenceData.isProtein}
-          disableSetReadOnly={disableSetReadOnly}
-          showReadOnly={showReadOnly}
           editorName={editorName}
           {...StatusBarProps}
         />

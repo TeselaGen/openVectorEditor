@@ -48,12 +48,18 @@ describe("editor", function() {
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
     );
+    cy.get(".bp3-toast .bp3-icon-cross").click();
     cy.get("body")
       .type("{meta}/")
       .focused()
       .type("select inverse{enter}");
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 31 end:  9"
+    );
+    cy.get(".bp3-toast .bp3-icon-cross").click();
+    cy.contains("button", "Select Inverse").click();
+    cy.contains(
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
     );
   });
 
