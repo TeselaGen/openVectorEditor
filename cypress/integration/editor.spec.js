@@ -33,11 +33,7 @@ describe("editor", function() {
     cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
     cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
   });
-  it("can drag the editor", function() {
-    cy.contains("No Selection");
-    cy.dragBetween(`[data-row-number="0"]`, `[data-row-number="1"]`);
-    cy.contains("No Selection").should("not.exist");
-  });
+
   it("should fire the rename handler", function() {
     cy.get("body").type("{meta}/");
     cy.focused().type("rename{enter}");
@@ -51,6 +47,13 @@ describe("editor", function() {
     cy.contains(".veLabelText", "Part 0").click();
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+    );
+    cy.get("body")
+      .type("{meta}/")
+      .focused()
+      .type("select inverse{enter}");
+    cy.contains(
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 31 end:  9"
     );
   });
 
