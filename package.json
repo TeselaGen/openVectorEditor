@@ -109,7 +109,7 @@
     "react-transition-group": "^4.2.2",
     "redux-form": "7",
     "redux-thunk": "2.3.0",
-    "teselagen-react-components": "^28.0.7",
+    "teselagen-react-components": "28.0.34",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.7",
     "ve-sequence-utils": "^3.3.53",
