@@ -47,10 +47,12 @@ export class CutsiteFilter extends React.Component {
     ];
     function openAddYourOwn() {
       dispatch({
-        type: "ADD_ADDITIONAL_ENZYMES_RESET",
+        type: "CREATE_YOUR_OWN_ENZYME_RESET"
+      });
+      dispatch({
+        type: "CREATE_YOUR_OWN_ENZYME_RESET",
         payload: {
-          inputSequenceToTestAgainst,
-          isOpen: true
+          inputSequenceToTestAgainst
         }
       });
     }

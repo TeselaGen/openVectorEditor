@@ -1,4 +1,4 @@
-import map from "lodash/map";
+import { map } from "lodash";
 
 // import enzymeListFull from '../../../enzymeListFull.json';
 import { connect } from "react-redux";
@@ -6,37 +6,39 @@ import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
 import { Button } from "@blueprintjs/core";
-import { InfoHelper, TgSelect } from "teselagen-react-components";
+import { InfoHelper, MultiSelectSideBySide } from "teselagen-react-components";
 
 import enzymeListFull from "../redux/utils/expandedEnzymeList.json";
 import defaultEnzymeList from "../redux/utils/defaultEnzymeList.json";
 // import './style.css';
 import { cutSequenceByRestrictionEnzyme } from "ve-sequence-utils";
 // import QuestionTooltip from '../../components/QuestionTooltip';
-import "./style.css";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
-import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
-let AddAdditionalEnzyme = function(props) {
+import { createYourOwnEnzymeClose } from "../redux/createYourOwnEnzyme";
+import s from "../selectors";
+import "./style.css"
+
+let CreateYouOwnEnzyme = function(props) {
   const paddingStart = "-------";
   const paddingEnd = "-------";
   const {
     // filteredRestrictionEnzymesAdd,
     // addRestrictionEnzyme,
     inputSequenceToTestAgainst = "", //pass this prop in!
-    addAdditionalEnzymesClose: hideModal,
+    createYourOwnEnzymeClose: hideModal,
     seqName = "Destination Vector",
-    addAdditionalEnzymes,
+    createYourOwnEnzyme,
     dispatch,
     editorName,
-    stopAddingYourOwnEnzyme
+    stopCreatingYourOwnEnzyme
   } = props;
 
-  addAdditionalEnzymes.chop_top_index = Number(
-    addAdditionalEnzymes.chop_top_index
+  createYourOwnEnzyme.chop_top_index = Number(
+    createYourOwnEnzyme.chop_top_index
   );
-  addAdditionalEnzymes.chop_bottom_index = Number(
-    addAdditionalEnzymes.chop_bottom_index
+  createYourOwnEnzyme.chop_bottom_index = Number(
+    createYourOwnEnzyme.chop_bottom_index
   );
 
   const {
@@ -44,7 +46,7 @@ let AddAdditionalEnzyme = function(props) {
     chop_top_index = 0,
     chop_bottom_index = 0,
     name = ""
-  } = addAdditionalEnzymes;
+  } = createYourOwnEnzyme;
   const regexString = bpsToRegexString(sequence);
   const enzyme = {
     name: name,
@@ -80,15 +82,15 @@ let AddAdditionalEnzyme = function(props) {
     );
   }
 
-  const errors = validate(addAdditionalEnzymes);
+  const errors = validate(createYourOwnEnzyme);
   if (Object.keys(errors || {}).length) {
     invalid = true;
   }
   function onChange(updatedVal) {
     dispatch({
-      type: "ADD_ADDITIONAL_ENZYMES_UPDATE",
+      type: "CREATE_YOUR_OWN_ENZYME_UPDATE",
       payload: {
-        ...addAdditionalEnzymes,
+        ...createYourOwnEnzyme,
         ...updatedVal
       }
     });
@@ -211,7 +213,7 @@ let AddAdditionalEnzyme = function(props) {
       <div className="buttonHolder">
         <Button
           className="addAdditionalEnzymeBtn"
-          onClick={stopAddingYourOwnEnzyme}
+          onClick={stopCreatingYourOwnEnzyme}
         >
           Back
         </Button>
@@ -254,59 +256,80 @@ let AddAdditionalEnzyme = function(props) {
   );
 };
 
-AddAdditionalEnzyme = connect(
+CreateYouOwnEnzyme = connect(
   function(state) {
     return {
-      addAdditionalEnzymes:
-        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes
+      createYourOwnEnzyme:
+        state.VectorEditor.__allEditorsOptions.createYourOwnEnzyme
     };
   },
-  { addAdditionalEnzymesClose }
-)(AddAdditionalEnzyme);
+  { createYourOwnEnzymeClose }
+)(CreateYouOwnEnzyme);
 
-class AddAdditionalEnzymes extends React.Component {
+class ManageEnzymes extends React.Component {
   state = {
-    addAdditionalEnzymes: false,
+    createYourOwnEnzyme: false,
     enzymesToAdd: []
   };
+  handleChange = () => {};
 
   startAddingYourOwnEnzyme = () => {
-    this.setState({ addAdditionalEnzymes: true });
+    this.setState({ createYourOwnEnzyme: true });
   };
 
-  stopAddingYourOwnEnzyme = () => {
-    this.setState({ addAdditionalEnzymes: false });
+  stopCreatingYourOwnEnzyme = () => {
+    this.setState({ createYourOwnEnzyme: false });
   };
 
   render() {
-    if (this.state.addAdditionalEnzymes) {
+    if (this.state.createYourOwnEnzyme) {
       return (
-        <AddAdditionalEnzyme
+        <CreateYouOwnEnzyme
           {...this.props}
-          stopAddingYourOwnEnzyme={this.stopAddingYourOwnEnzyme}
+          stopCreatingYourOwnEnzyme={this.stopCreatingYourOwnEnzyme}
         />
       );
     }
     const {
       dispatch,
-      addAdditionalEnzymesClose: hideModal,
-      inputSequenceToTestAgainst = ""
+      createYourOwnEnzymeClose: hideModal,
+      inputSequenceToTestAgainst = "",
+      selectedEnzymes
     } = this.props;
+
+    const selectedItems = [];
+     const allEnzymes = map(enzymeListFull, function(enzyme) {
+      const inList = selectedEnzymes[enzyme.name.toLowerCase()];
+      const o = {
+        label: enzyme.name,
+        id: enzyme
+      };
+      if (inList) {
+        selectedItems.push(o);
+      }
+
+      return o;
+    });
+
     const { enzymesToAdd } = this.state;
     return (
       <div className="addAdditionalEnzyme">
-        <h2>Add additional enzymes</h2>
+        <h2>Manage enzymes</h2>
         <span>
           Our default list contains just the most common enzymes. Search here to
           add less common ones:
         </span>
         <div className="filterAndButton">
-          <TgSelect
+          <MultiSelectSideBySide
+            items={allEnzymes}
+            showSelectedItems={false}
+            selectedItems={selectedItems}
+            onChange={this.handleChange}
+          />
+          {/* <TgSelect
             multi
             placeholder="Select cut sites..."
-            options={map(enzymeListFull, function(enzyme) {
-              return { label: enzyme.name, value: enzyme };
-            })}
+            options={}
             onChange={enzymesToAdd => {
               this.setState({
                 enzymesToAdd: enzymesToAdd.map(function({ value }) {
@@ -325,7 +348,7 @@ class AddAdditionalEnzymes extends React.Component {
               });
             }}
             value={enzymesToAdd}
-          />
+          /> */}
           <Button
             className="addAdditionalEnzymeBtn"
             onClick={function() {
@@ -403,18 +426,18 @@ function validate(values) {
   return errors;
 }
 
-AddAdditionalEnzymes = connect(
-  function(state) {
+ManageEnzymes = connect(
+  function(state, props) {
+    const editorState = state.VectorEditor[props.editorName];
+    let selectedEnzymes = s.restrictionEnzymesSelector(editorState);
     return {
-      inputSequenceToTestAgainst:
-        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes
-          .inputSequenceToTestAgainst
+      selectedEnzymes
     };
   },
-  { addAdditionalEnzymesClose }
-)(AddAdditionalEnzymes);
+  { createYourOwnEnzymeClose }
+)(ManageEnzymes);
 
-export default AddAdditionalEnzymes;
+export default ManageEnzymes;
 
 function bpsToRegexString(bps) {
   let regexString = "";

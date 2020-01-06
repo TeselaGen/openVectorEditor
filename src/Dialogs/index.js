@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-
 import AddOrEditPrimerDialogDefault from "../helperComponents/AddOrEditPrimerDialog";
 import AddOrEditFeatureDialogDefault from "../helperComponents/AddOrEditFeatureDialog";
 import AddOrEditPartDialogDefault from "../helperComponents/AddOrEditPartDialog";
@@ -9,16 +7,16 @@ import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 import RenameSequenceDialog from "../helperComponents/RenameSequenceDialog";
 import GoToDialog from "../helperComponents/GoToDialog";
 import SelectDialog from "../helperComponents/SelectDialog";
-import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
+import _ManageEnzymes from "../ManageEnzymes";
 import { withDialog } from "teselagen-react-components";
-import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
 import RemoveDuplicatesDialog from "../helperComponents/RemoveDuplicates";
 
-const AddAdditionalEnzymes = withDialog({
-  title: "Add Additional Enzymes"
-})(_AddAdditionalEnzymes);
+
+const ManageEnzymes = withDialog({
+  title: "Manage Enzymes"
+})(_ManageEnzymes);
 
 const CreateAlignmentDialog = withDialog({
   title: "Create New Alignment"
@@ -30,21 +28,9 @@ export const dialogOverrides = [
   "AddOrEditPrimerDialogOverride"
 ];
 
-export default connect(
-  state => {
-    return {
-      addAdditionalEnzymesOpen:
-        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes.isOpen
-    };
-  },
-  {
-    addAdditionalEnzymesClose
-  }
-)(
+export default (
   ({
     editorName,
-    addAdditionalEnzymesOpen,
-    addAdditionalEnzymesClose,
     AddOrEditFeatureDialogOverride,
     AddOrEditPartDialogOverride,
     AddOrEditPrimerDialogOverride
@@ -57,12 +43,10 @@ export default connect(
       AddOrEditPrimerDialogOverride || AddOrEditPrimerDialogDefault;
     return (
       <div>
-        <AddAdditionalEnzymes
+        <ManageEnzymes
           noTarget
-          dialogProps={{
-            isOpen: addAdditionalEnzymesOpen,
-            onClose: addAdditionalEnzymesClose
-          }}
+          editorName={editorName}
+          dialogName="ManageEnzymesDialog"
         />
         <CreateAlignmentDialog
           editorName={editorName}

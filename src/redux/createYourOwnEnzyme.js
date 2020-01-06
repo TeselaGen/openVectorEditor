@@ -3,15 +3,14 @@ import { createReducer, createAction } from "redux-act";
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const addAdditionalEnzymesUpdate = createAction(
-  "ADD_ADDITIONAL_ENZYMES_UPDATE"
+export const createYourOwnEnzymeUpdate = createAction(
+  "CREATE_YOUR_OWN_ENZYME_UPDATE"
 );
-export const addAdditionalEnzymesReset = createAction(
-  "ADD_ADDITIONAL_ENZYMES_RESET"
+export const createYourOwnEnzymeReset = createAction(
+  "CREATE_YOUR_OWN_ENZYME_RESET"
 );
-export const addAdditionalEnzymesClose = createAction(
-  "ADD_ADDITIONAL_ENZYMES_CLOSE",
-  () => {}
+export const createYourOwnEnzymeClose = createAction(
+  "CREATE_YOUR_OWN_ENZYME_CLOSE"
 );
 
 // ------------------------------------
@@ -22,18 +21,17 @@ const initialValues = {
   sequence: "ggatcc",
   chop_top_index: 1,
   chop_bottom_index: 5,
-  inputSequenceToTestAgainst: "",
   isOpen: false
 };
 export default createReducer(
   {
-    [addAdditionalEnzymesClose]: state => {
-      return { ...state, isOpen: false };
+    [createYourOwnEnzymeClose]: (state, payload = {}) => {
+      return { ...initialValues, isOpen: false };
     },
-    [addAdditionalEnzymesReset]: (state, payload = {}) => {
+    [createYourOwnEnzymeReset]: (state, payload = {}) => {
       return { ...initialValues, ...payload };
     },
-    [addAdditionalEnzymesUpdate]: (state, payload) => {
+    [createYourOwnEnzymeUpdate]: (state, payload) => {
       return payload;
     }
   },
