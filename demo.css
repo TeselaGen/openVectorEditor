@@ -9185,11 +9185,11 @@ span.bp3-popover-target {
 }
 
 .ReactTable.ReactTable .rt-tbody .rt-tr-group {
-  border: none;
+  border-bottom: 1px solid rgb(233, 233, 233);
 }
 
 .ReactTable.ReactTable .rt-tbody .rt-tr {
-  border-bottom: 1px solid rgb(233, 233, 233);
+  border: none;
 }
 
 .bp3-dark .ReactTable.ReactTable .rt-tbody .rt-tr {
@@ -9553,6 +9553,24 @@ span.bp3-popover-target {
 }
 .vertical-scrollbar-present {
   width: calc(100% - 15px) !important;
+}
+.bp3-dark .dt-minimalStyle .ReactTable {
+  background: transparent !important;
+}
+.bp3-dark .dt-minimalStyle .ReactTable {
+  border-color: transparent !important;
+}
+.bp3-dark .dt-minimalStyle .ReactTable * {
+  border-color: transparent !important ;
+}
+.dt-minimalStyle .ReactTable {
+  background: transparent !important;
+}
+.dt-minimalStyle .ReactTable {
+  border-color: transparent !important;
+}
+.dt-minimalStyle .ReactTable * {
+  border-color: transparent !important ;
 }
 
 .error-popover {
