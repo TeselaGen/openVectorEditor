@@ -16,7 +16,7 @@ import {
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap
 } from "ve-range-utils";
-import { tidyUpAnnotation } from "ve-sequence-utils";
+import { tidyUpAnnotation, featureColors } from "ve-sequence-utils";
 import classNames from "classnames";
 
 import withEditorProps from "../../withEditorProps";
@@ -272,6 +272,9 @@ class AddOrEditAnnotationDialog extends React.Component {
                 updatedData = { ...data, strand: -1 };
               } else {
                 updatedData = data;
+              }
+              if (annotationTypePlural === "features") {
+                updatedData.color = featureColors[updatedData.type];
               }
               const hasJoinedLocations =
                 updatedData.locations && updatedData.locations.length > 1;

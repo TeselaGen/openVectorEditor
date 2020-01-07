@@ -10886,10 +10886,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@28.0.41:
-  version "28.0.41"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-28.0.41.tgz#70aadb320fd2bf2fe6d37e0f494b04440cfbe1d5"
-  integrity sha512-rK/svJmGU01d83xVyL/xivWhweC+hRmvpo+yjqrHDboAiTeuhPJmTKhQkrAhvBrZ4w5BQbscpqStURzMowM8wg==
+teselagen-react-components@28.0.42:
+  version "28.0.42"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-28.0.42.tgz#79647624e49b25fd15de88a7cccf3bedb523a062"
+  integrity sha512-hAES0n77tHI5Hs8rA41XMKzfZbPZMURoGDiJWtpGscm1FNsonN1rwPRLSneyvW4LVxgPfVkYHOTNhN/slX0H4w==
   dependencies:
     "@teselagen/react-list" "^0.8.18"
     "@teselagen/react-table" "^6.10.9"

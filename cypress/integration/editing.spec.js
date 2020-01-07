@@ -14,7 +14,7 @@ describe("editor", function() {
       .closest(".veVectorInteractionWrapper")
       .type("t");
     cy.focused().type("ttaaa{enter}");
-    cy.contains("Selecting 6 bps from 11 to 16");
+    cy.contains("Selecting 5 bps from 11 to 15");
     cy.focused().type("t");
     cy.focused().type("ccccttaaa{enter}");
     cy.contains("Selecting 10 bps from 11 to 20");
@@ -26,7 +26,7 @@ describe("editor", function() {
       .closest(".veVectorInteractionWrapper")
       .type("t");
     cy.focused().type("ttaaa{enter}");
-    cy.contains("Selecting 6 bps from 11 to 16");
+    cy.contains("Selecting 5 bps from 11 to 15");
     cy.focused().type("t");
     cy.focused().type("ccccttaaa{enter}");
     cy.contains("Selecting 10 bps from 11 to 20");
@@ -62,5 +62,16 @@ describe("editor", function() {
 
     cy.contains("Selecting 6 bps from 5297 to 3");
     cy.contains(".ve-row-item-sequence", /^ctagtcttatg/);
+  });
+  it("should be able to change the color of features by changing the feature type", () => {
+    cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
+    cy.contains(".veLabelText", "araD").rightclick();
+    cy.contains(".bp3-menu-item", "Edit Feature").click();
+    cy.get(".tg-test-type input").click();
+    cy.contains(".tg-select-option", "3'UTR").click();
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".veRowViewFeature", "araD")
+      .find(`path[fill="#006FEF"]`)
+      .should("not.exist");
   });
 });
