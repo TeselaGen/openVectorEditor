@@ -88,7 +88,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                         min={1}
                         format={this.formatStart}
                         parse={this.parseStart}
-                        max={sequenceLength}
+                        max={sequenceLength || 1}
                         name={`${member}.start`}
                         label="Start:"
                       />
@@ -99,7 +99,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                         min={1}
                         format={this.formatEnd}
                         parse={this.parseEnd}
-                        max={sequenceLength}
+                        max={sequenceLength || 1}
                         name={`${member}.end`}
                         label="End:"
                       />
@@ -205,7 +205,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               tooltipError
               defaultValue={1}
               min={1}
-              max={sequenceLength}
+              max={sequenceLength || 1}
               name="start"
               label="Start:"
             />
@@ -216,7 +216,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               tooltipError
               defaultValue={sequenceData.isProtein ? 3 : 1}
               min={1}
-              max={sequenceLength}
+              max={sequenceLength || 1}
               name="end"
               label="End:"
             />
