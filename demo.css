@@ -11379,6 +11379,17 @@ li.bp3-menu-divider:last-child {
   margin-bottom: 5px;
 }
 
+.ve-enzymeSubrow .data-table-container {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  min-height: 0px;
+}
+
+.ve-enzymeSubrow .ReactTable .rt-tr-group:last-child {
+  margin-bottom: 0px;
+}
+
 .bp3-dark #circularViewAxis:not(.veAxisFill) {
   fill: #293742 !important;
   stroke: #f5f8fa !important;
