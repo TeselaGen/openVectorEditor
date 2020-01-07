@@ -3184,10 +3184,10 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-cypress@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.6.0.tgz#b7c88c169970aeb74a00182a1e8dc43a355d9eea"
-  integrity sha512-ODhbOrH1XZx0DUoYmJSvOSbEQjycNOpFYe7jOnHkT1+sdsn2+uqwAjZ1x982q3H4R/5iZjpSd50gd/iw2bofzg==
+cypress@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.8.1.tgz#7821084e0ead81d35ffa29f2141c977dfdfc2343"
+  integrity sha512-eLk5OpL/ZMDfQx9t7ZaDUAGVcvSOPTi7CG1tiUnu9BGk7caBiDhuFi3Tz/D5vWqH/Dl6Uh4X+Au4W+zh0xzbXw==
   dependencies:
     "@cypress/listr-verbose-renderer" "0.4.1"
     "@cypress/xvfb" "1.2.4"
@@ -10886,10 +10886,10 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-teselagen-react-components@28.0.34:
-  version "28.0.34"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-28.0.34.tgz#70de701e9dd8a7a2d9897af4b854670f87c0bb6b"
-  integrity sha512-LOpNSXxhyk2Im27ngdOgp3IpxwY4wpUXlz/RYlq5ZMcYg7YAMzsc4LkZNKvqYp60eW1XLUW/RRsSAsL2g6XY8Q==
+teselagen-react-components@28.0.41:
+  version "28.0.41"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-28.0.41.tgz#70aadb320fd2bf2fe6d37e0f494b04440cfbe1d5"
+  integrity sha512-rK/svJmGU01d83xVyL/xivWhweC+hRmvpo+yjqrHDboAiTeuhPJmTKhQkrAhvBrZ4w5BQbscpqStURzMowM8wg==
   dependencies:
     "@teselagen/react-list" "^0.8.18"
     "@teselagen/react-table" "^6.10.9"

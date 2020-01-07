@@ -901,7 +901,12 @@ const viewPropertiesCommandDefs = [
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
-      props.propertiesViewTabUpdate(key, annotation);
+      //we need to clear the properties tab first in case the same item has already been selected
+      props.propertiesViewTabUpdate(key, undefined);
+      setTimeout(() => {
+        //then shortly after we can update it with the correct annotation
+        props.propertiesViewTabUpdate(key, annotation);
+      }, 0);
     }
   };
   return acc;
