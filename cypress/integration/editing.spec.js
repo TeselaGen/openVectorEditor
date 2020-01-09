@@ -17,7 +17,7 @@ describe("editor", function() {
     cy.contains("Selecting 5 bps from 11 to 15");
     cy.focused().type("t");
     cy.focused().type("ccccttaaa{enter}");
-    cy.contains("Selecting 10 bps from 11 to 20");
+    cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veCircularView"); //the circular view should still be focused
   });
   it(`should return focus correctly after typing in chars in row view`, () => {
@@ -29,7 +29,7 @@ describe("editor", function() {
     cy.contains("Selecting 5 bps from 11 to 15");
     cy.focused().type("t");
     cy.focused().type("ccccttaaa{enter}");
-    cy.contains("Selecting 10 bps from 11 to 20");
+    cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veRowView"); //the row view should still be focused
   });
   it(`should be able to delete data around the origin correctly
