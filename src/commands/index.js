@@ -300,6 +300,10 @@ const triggerClipboardCommand = type => {
 };
 
 const editCommandDefs = {
+  changeCaseCmd: {
+    isHidden: isProtein,
+    handler: () => {}
+  },
   cut: {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
