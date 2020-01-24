@@ -986,7 +986,7 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "maxAnnotationsToDisplayAdjustment",
-                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximimum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
               })}
               {renderToggle({
                 that: this,
