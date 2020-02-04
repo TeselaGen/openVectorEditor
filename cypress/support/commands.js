@@ -133,6 +133,19 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
 });
 
 /**
+ * Triggers a cmd using the Help menu search
+ * @memberOf Cypress.Chainable#
+ * @name triggerFileCmd
+ * @function
+ * @param {String} text - the file cmd to trigger
+ */
+
+Cypress.Commands.add("triggerFileCmd", text => {
+  cy.get("body").type("{meta}/");
+  cy.focused().type(`${text}{enter}`);
+});
+
+/**
  * Uploads a file to an input
  * @memberOf Cypress.Chainable#
  * @name upload_file
