@@ -60,3 +60,4 @@ export {
 } from "./CircularView/PositionAnnotationOnCircle";
 export { default as EnzymeViewer } from "./EnzymeViewer";
 export { default as AlignmentView } from "./AlignmentView";
+export { default as getOveHotkeyDefs } from "./commands/getOveHotkeyDefs";

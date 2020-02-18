@@ -46,7 +46,7 @@ describe("editor", function() {
 
     cy.contains(".veLabelText", "Part 0").click();
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30"
     );
     cy.get(".bp3-toast .bp3-icon-cross").click();
     cy.get("body")
@@ -54,16 +54,17 @@ describe("editor", function() {
       .focused()
       .type("select inverse{enter}");
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 31 end:  9"
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 31 end: 9"
     );
     cy.get(".bp3-toast .bp3-icon-cross").click();
     cy.contains("button", "Select Inverse").click();
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30 "
     );
   });
 
   it(`should autosave if autosave=true`, function() {
+    //tnrnote: cut in cypress only works on electron, not firefox or chrome
     cy.tgToggle("shouldAutosave");
     cy.contains(".veRowViewPart", "Part 0")
       .first()
@@ -86,6 +87,8 @@ describe("editor", function() {
     cy.get(".veRowViewSelectionLayer")
       .first()
       .trigger("contextmenu");
+    //tnrnote: cut in cypress only works on electron, not firefox or chrome
+
     cy.get(".bp3-menu-item")
       .contains("Cut")
       .click();
@@ -168,6 +171,7 @@ describe("editor", function() {
       .should("be.visible");
   });
   it(`should handle custom menu filters correctly`, () => {
+    // if (Cypress.browser !== "")
     cy.tgToggle("menuOverrideExample");
     cy.get(".tg-menu-bar")
       .contains("Custom")
