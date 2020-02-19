@@ -829,16 +829,14 @@ const cirularityCommandDefs = {
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
-    isActive: (props, editorState) =>
-      editorState && editorState.sequenceData.circular
+    isActive: props => props && props.sequenceData.circular
   },
   linear: {
     isHidden: props => props.readOnly,
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(false),
-    isActive: (props, editorState) =>
-      editorState && !editorState.sequenceData.circular
+    isActive: props => props && !props.sequenceData.circular
   }
 };
 
@@ -852,8 +850,9 @@ const labelToggleCommandDefs = {};
     isHidden: props => {
       return props && props.typesToOmit && props.typesToOmit[plural] === false;
     },
-    isActive: (props, editorState) =>
-      editorState && editorState.annotationLabelVisibility[plural]
+    isActive: props => {
+      return props && props.annotationLabelVisibility[plural];
+    }
   };
 });
 
