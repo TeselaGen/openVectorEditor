@@ -58,6 +58,7 @@ const defaultState = {
   onNew: true,
   onImport: true,
   onSave: true,
+  onSaveAs: false,
   onRename: true,
   onDuplicate: true,
   onSelectionOrCaretChanged: false,
@@ -65,6 +66,7 @@ const defaultState = {
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
+  maxAnnotationsToDisplayAdjustment: false,
   onCopy: true,
   onPaste: true
 };
@@ -239,7 +241,8 @@ export default class EditorDemo extends React.Component {
             display: "flex",
             position: "relative",
             // flexDirection: "column",
-            flexGrow: "1"
+            flexGrow: "1",
+            minHeight: 0
           }}
         >
           {this.state.showDemoOptions && (
@@ -982,6 +985,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "maxAnnotationsToDisplayAdjustment",
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+              })}
+              {renderToggle({
+                that: this,
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
@@ -998,6 +1006,14 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "onSave"
+              })}
+              {renderToggle({
+                that: this,
+                type: "onSaveAs"
+              })}
+              {renderToggle({
+                that: this,
+                type: "alwaysAllowSave"
               })}
               {renderToggle({
                 that: this,
@@ -1092,6 +1108,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             }}
             {...(this.state.readOnly && { readOnly: true })}
             editorName="DemoEditor"
+            maxAnnotationsToDisplay={
+              this.state.maxAnnotationsToDisplayAdjustment
+                ? { features: 5 }
+                : {}
+            }
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
@@ -1108,13 +1129,13 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             })}
             {...(this.state.onSave && {
               onSave: function(
-                event,
+                opts,
                 sequenceDataToSave,
                 editorState,
                 onSuccessCallback
               ) {
                 window.toastr.success("onSave callback triggered");
-                console.info("event:", event);
+                console.info("opts:", opts);
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
                 // To disable the save button after successful saving
@@ -1123,6 +1144,27 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 //or
                 // return myPromiseBasedApiCall()
               }
+            })}
+            {...(this.state.onSaveAs && {
+              onSaveAs: function(
+                opts,
+                sequenceDataToSave,
+                editorState,
+                onSuccessCallback
+              ) {
+                window.toastr.success("onSaveAs callback triggered");
+                console.info("opts:", opts);
+                console.info("sequenceData:", sequenceDataToSave);
+                console.info("editorState:", editorState);
+                // To disable the save button after successful saving
+                // either call the onSuccessCallback or return a successful promise :)
+                onSuccessCallback();
+                //or
+                // return myPromiseBasedApiCall()
+              }
+            })}
+            {...(this.state.alwaysAllowSave && {
+              alwaysAllowSave: true
             })}
             {...(this.state.onRename && {
               onRename: newName =>

@@ -689,6 +689,7 @@ function VectorInteractionHOC(Component /* options */) {
         "reverseComplementSelection",
         "complementSelection",
         {
+          cmd: "changeCaseCmd",
           text: "Change Case",
           submenu: [
             // "upperCaseSequence",

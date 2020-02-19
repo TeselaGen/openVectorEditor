@@ -35,7 +35,6 @@ function getCenter(el) {
 
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
-
   cy.clock();
   getOrWrap(dragSelector).then(el => {
     let dragSelectDomEl = el.get(0);
@@ -109,6 +108,21 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   });
 });
 
+Cypress.Commands.add("dragBetweenSimple", (dragSelector, dropSelector) => {
+  const getOrWrap = selector =>
+    isString(selector)
+      ? cy.get(selector).then(el => {
+          return el.first();
+        })
+      : cy.wrap(selector);
+  getOrWrap(dragSelector)
+    .trigger("mousedown", { force: true })
+    .trigger("mousemove", 10, 10, { force: true });
+  getOrWrap(dropSelector)
+    .trigger("mousemove", { force: true })
+    .trigger("mouseup", { force: true });
+});
+
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
   /* eslint-disable no-unexpected-multiline*/
 
@@ -116,6 +130,19 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
     .get(`[data-test="${type}"]`)
     [onOrOff ? "check" : "uncheck"]({ force: true });
   /* eslint-enable no-unexpected-multiline*/
+});
+
+/**
+ * Triggers a cmd using the Help menu search
+ * @memberOf Cypress.Chainable#
+ * @name triggerFileCmd
+ * @function
+ * @param {String} text - the file cmd to trigger
+ */
+
+Cypress.Commands.add("triggerFileCmd", text => {
+  cy.get("body").type("{meta}/");
+  cy.focused().type(`${text}{enter}`);
 });
 
 /**

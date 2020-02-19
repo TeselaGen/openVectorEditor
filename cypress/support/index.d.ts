@@ -13,6 +13,15 @@ declare namespace Cypress {
     // login(): void;
 
     /**
+     * triggerFileCmd
+     * Triggers a cmd using the Help menu search
+     * @example
+     * cy.triggerFileCmd("Select All")
+     * cy.triggerFileCmd("Digest")
+     */
+    triggerFileCmd(text: string): void;
+    
+    /**
      * selectRange
      * selects a 1 based range of the sequence
      * @example

@@ -70,8 +70,8 @@ export default compose(
       } = this.props;
       const selectionLength = getRangeLength(
         {
-          start: from,
-          end: to
+          start: Number(from),
+          end: Number(to)
         },
         sequenceLength
       );
@@ -117,7 +117,7 @@ export default compose(
                   });
                 }
                 hideModal();
-                tryToRefocusEditor()
+                tryToRefocusEditor();
               }}
               text="Cancel"
             />
@@ -125,7 +125,7 @@ export default compose(
               onClick={handleSubmit(data => {
                 if (onSubmit) onSubmit(data);
                 hideModal();
-                tryToRefocusEditor()
+                tryToRefocusEditor();
               })}
               intent={Intent.PRIMARY}
               text={`Select ${invalid ? 0 : selectionLength} ${
