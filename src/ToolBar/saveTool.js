@@ -18,20 +18,31 @@ export default compose(
     }
   ),
   withHandlers({ handleSave })
-)(({ toolbarItemProps, handleSave, readOnly, hasBeenSaved, onSave }) => {
-  return (
-    <ToolbarItem
-      {...{
-        Icon: <Icon data-test="saveTool" icon="floppy-disk" />,
-        onIconClick: handleSave,
-        disabled: !onSave || hasBeenSaved || readOnly,
-        tooltip: (
-          <span>
-            Save <span style={{ fontSize: 10 }}>(Cmd/Ctrl+S)</span>
-          </span>
-        ),
-        ...toolbarItemProps
-      }}
-    />
-  );
-});
+)(
+  ({
+    toolbarItemProps,
+    alwaysAllowSave,
+    handleSave,
+    readOnly,
+    hasBeenSaved,
+    onSave
+  }) => {
+    return (
+      <ToolbarItem
+        {...{
+          Icon: <Icon data-test="saveTool" icon="floppy-disk" />,
+          onIconClick: handleSave,
+          disabled: alwaysAllowSave
+            ? false
+            : !onSave || hasBeenSaved || readOnly,
+          tooltip: (
+            <span>
+              Save <span style={{ fontSize: 10 }}>(Cmd/Ctrl+S)</span>
+            </span>
+          ),
+          ...toolbarItemProps
+        }}
+      />
+    );
+  }
+);

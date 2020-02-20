@@ -5,6 +5,9 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 // Actions
 // ------------------------------------
 export const updateSelectedFragment = createAction("updateSelectedFragment");
+export const updateComputePartialDigest = createAction(
+  "updateComputePartialDigest"
+);
 
 // ------------------------------------
 // Reducer
@@ -16,9 +19,16 @@ export default createMergedDefaultStateReducer(
         ...state,
         selectedFragment: payload
       };
+    },
+    [updateComputePartialDigest]: (state, payload) => {
+      return {
+        ...state,
+        computePartialDigest: payload
+      };
     }
   },
   {
-    selectedFragment: undefined
+    selectedFragment: undefined,
+    computePartialDigest: false
   }
 );

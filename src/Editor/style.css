@@ -11,9 +11,6 @@
 .CircularViewSide {
   width: 100%;
 }
-.tg-editor-container {
-  display: flex;
-}
 .ve-clickable {
   cursor: pointer;
   opacity: 0.7;

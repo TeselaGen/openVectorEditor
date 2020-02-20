@@ -63,3 +63,12 @@
   width: fit-content;
   margin-bottom: 5px;
 }
+
+.ve-enzymeSubrow .data-table-container {
+  height: fit-content;
+  min-height: 0px;
+}
+
+.ve-enzymeSubrow .ReactTable .rt-tr-group:last-child {
+  margin-bottom: 0px;
+}

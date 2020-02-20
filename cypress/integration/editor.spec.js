@@ -33,11 +33,7 @@ describe("editor", function() {
     cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
     cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
   });
-  it("can drag the editor", function() {
-    cy.contains("No Selection");
-    cy.dragBetween(`[data-row-number="0"]`, `[data-row-number="1"]`);
-    cy.contains("No Selection").should("not.exist");
-  });
+
   it("should fire the rename handler", function() {
     cy.get("body").type("{meta}/");
     cy.focused().type("rename{enter}");
@@ -50,11 +46,25 @@ describe("editor", function() {
 
     cy.contains(".veLabelText", "Part 0").click();
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30"
+    );
+    cy.get(".bp3-toast .bp3-icon-cross").click();
+    cy.get("body")
+      .type("{meta}/")
+      .focused()
+      .type("select inverse{enter}");
+    cy.contains(
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 31 end: 9"
+    );
+    cy.get(".bp3-toast .bp3-icon-cross").click();
+    cy.contains("button", "Select Inverse").click();
+    cy.contains(
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30 "
     );
   });
 
   it(`should autosave if autosave=true`, function() {
+    //tnrnote: cut in cypress only works on electron, not firefox or chrome
     cy.tgToggle("shouldAutosave");
     cy.contains(".veRowViewPart", "Part 0")
       .first()
@@ -68,6 +78,47 @@ describe("editor", function() {
     cy.contains("onCopy callback triggered");
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
+  });
+  it(`should 
+  -trigger the onSaveAs callback if that handler is passed
+  -allow saveAs when in read only mode `, function() {
+    cy.tgToggle("onSaveAs");
+    cy.selectRange(10, 20);
+    cy.get(".veRowViewSelectionLayer")
+      .first()
+      .trigger("contextmenu");
+    //tnrnote: cut in cypress only works on electron, not firefox or chrome
+
+    cy.get(".bp3-menu-item")
+      .contains("Cut")
+      .click();
+    cy.contains("Selection Cut");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Save As")
+      .click();
+    cy.contains("onSaveAs callback triggered");
+
+    cy.tgToggle("readOnly");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Save As")
+      .click();
+    cy.contains("onSaveAs callback triggered");
+  });
+  it(`settings alwaysAllowSave=true should allow for saves to happen even when there are no file changes`, function() {
+    cy.tgToggle("alwaysAllowSave");
+    cy.get(".tg-menu-bar")
+      .contains("File")
+      .click();
+    cy.get(".bp3-menu-item")
+      .contains("Save")
+      .click();
+    cy.contains("onSave callback triggered");
   });
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function() {
     cy.tgToggle("onCreateNewFromSubsequence");
@@ -119,7 +170,20 @@ describe("editor", function() {
       .contains("properties overrides successfull")
       .should("be.visible");
   });
+  it(`should show/hide a checkmark when toggling feature label visibility`, function() {
+    cy.get("body").type("{meta}/");
+    cy.focused().type(`Feature Labels`);
+    cy.contains(".bp3-menu-item", "Feature Labels")
+      .find(".bp3-icon-small-tick")
+      .should("exist");
+    cy.focused().type(`{enter}`);
+    cy.contains(".bp3-menu-item", "Feature Labels")
+      .find(".bp3-icon-small-tick")
+      .should("not.exist");
+  });
+
   it(`should handle custom menu filters correctly`, () => {
+    // if (Cypress.browser !== "")
     cy.tgToggle("menuOverrideExample");
     cy.get(".tg-menu-bar")
       .contains("Custom")
