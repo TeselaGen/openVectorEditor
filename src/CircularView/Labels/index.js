@@ -8,14 +8,14 @@ const defaultFontWidth = 8;
 const fontWidthToFontSize = 1.75;
 
 function Labels({
-  labels = {},
+  labels = [],
   radius: outerRadius,
   editorName,
   textScalingFactor,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
-  if (!Object.keys(labels).length) return null;
+  if (!labels.length) return null;
   outerRadius += 25;
   let radius = outerRadius;
   let outerPointRadius = outerRadius - 20;
@@ -25,9 +25,8 @@ function Labels({
     defaultFontWidth * (textScalingFactor < 1 ? textScalingFactor : 1);
 
   let fontHeight = fontWidth * 2.4;
-  let labelPoints = Object.keys(labels)
-    .map(function(key) {
-      let label = labels[key];
+  let labelPoints = labels
+    .map(function(label) {
       let { annotationCenterAngle, annotationCenterRadius } = label;
       return {
         ...label,
