@@ -3,8 +3,7 @@ import {
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
 } from "ve-range-utils";
-import { map, camelCase, startCase, startsWith } from "lodash";
-import flatMap from "lodash/flatMap";
+import { map, camelCase, startCase, startsWith, flatMap, assign } from "lodash";
 import { getComplementSequenceString } from "ve-sequence-utils";
 import React from "react";
 import pluralize from "pluralize";
@@ -14,7 +13,7 @@ import Axis from "./Axis";
 import Orfs from "./Orfs";
 import Translations from "./Translations";
 
-import CutsiteLabels from "./CutsiteLabels";
+import Labels from "./Labels";
 import Cutsites from "./Cutsites";
 import Caret from "./Caret";
 import StackedAnnotations from "./StackedAnnotations";
@@ -91,6 +90,10 @@ export class RowItem extends React.PureComponent {
       translationDoubleClicked = noop,
       cutsiteClicked = noop,
       cutsiteRightClicked = noop,
+      featureClicked = noop,
+      featureRightClicked = noop,
+      partClicked = noop,
+      partRightClicked = noop,
       minHeight = 22,
       bpsPerRow = sequenceLength,
       editorName
@@ -100,6 +103,8 @@ export class RowItem extends React.PureComponent {
       chromatogram: showChromatogram,
       // orfLabels: showOrfLabel,
       cutsites: showCutsites,
+      features: showFeatures,
+      parts: showParts,
       cutsitesInSequence: showCutsitesInSequence,
       axis: showAxis,
       axisNumbers: showAxisNumbers,
@@ -109,8 +114,12 @@ export class RowItem extends React.PureComponent {
       reverseSequence: showReverseSequence,
       sequence: showSequence
     } = annotationVisibility;
-    let { cutsites: showCutsiteLabels = true } = annotationLabelVisibility;
-    let { sequence = "", cutsites = [] } = row;
+    let {
+      cutsites: showCutsiteLabels = true,
+      features: showFeatureLabels = true,
+      parts: showPartLabels = true
+    } = annotationLabelVisibility;
+    let { sequence = "", cutsites = [], features = [], parts = [] } = row;
 
     let reverseSequence = getComplementSequenceString(
       (alignmentData && alignmentData.sequence) || sequence
@@ -319,17 +328,40 @@ export class RowItem extends React.PureComponent {
             onDoubleClick: translationDoubleClicked
           })}
 
-          {showCutsiteLabels &&
-            showCutsites &&
+          <Labels
+            {...annotationCommonProps}
+            annotationRanges={[
+              ...(showCutsiteLabels && showCutsites
+                ? map(cutsites, a =>
+                    assign(a, {
+                      onClick: cutsiteClicked,
+                      onRightClick: cutsiteRightClicked
+                    })
+                  )
+                : []),
+              ...(showFeatureLabels && showFeatures
+                ? map(features, a =>
+                    assign(a, {
+                      onClick: featureClicked,
+                      onRightClick: featureRightClicked
+                    })
+                  )
+                : []),
+              ...(showPartLabels && showParts
+                ? map(parts, a =>
+                    assign(a, {
+                      onClick: partClicked,
+                      onRightClick: partRightClicked
+                    })
+                  )
+                : [])
+            ]}
+            annotationHeight={cutsiteLabelHeight}
+          />
+
+          {/* { &&
             Object.keys(cutsites).length > 0 && (
-              <CutsiteLabels
-                {...annotationCommonProps}
-                onClick={cutsiteClicked}
-                onRightClick={cutsiteRightClicked}
-                annotationRanges={cutsites}
-                annotationHeight={cutsiteLabelHeight}
-              />
-            )}
+            )} */}
 
           {showChromatogram && chromatogramData && (
             <Chromatogram

@@ -6,14 +6,14 @@ import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import forEach from "lodash/forEach";
 
-function CutsiteLabels(props) {
+function Labels(props) {
   let {
     annotationRanges = {},
     bpsPerRow,
     charWidth,
     annotationHeight,
-    onClick,
-    onRightClick,
+    // onClick,
+    // onRightClick,
     textWidth = 10,
     editorName
   } = props;
@@ -21,15 +21,16 @@ function CutsiteLabels(props) {
     return null;
   }
   let warningMessage = null;
-  if (Object.keys(annotationRanges).length > 50) {
-    warningMessage = (
-      <span style={{ color: "red" }}>
-        <br />
-        Warning: Only the first 50 cutsites will be displayed. Filter the
-        cutsites you wish to see using the filter tool <br />
-      </span>
-    );
-  }
+  // if (Object.keys(annotationRanges).length > 50) {
+  //   warningMessage = (
+  //     <span style={{ color: "red" }}>
+  //       <br />
+  //       Warning: Only the first 50 cutsites will be displayed. Filter the
+  //       cutsites you wish to see using the filter tool <br />
+  //     </span>
+  //   );
+  // }
+
   let rowLength = bpsPerRow * charWidth;
   let counter = 0;
   let maxAnnotationYOffset = 0;
@@ -43,7 +44,8 @@ function CutsiteLabels(props) {
     if (!annotation) {
       annotation = annotationRange;
     }
-    let annotationLength = annotation.restrictionEnzyme.name.length * textWidth;
+    let annotationLength =
+      (annotation.name || annotation.restrictionEnzyme.name).length * textWidth;
     let { xStart } = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
@@ -68,15 +70,15 @@ function CutsiteLabels(props) {
     }
     let height = yOffset * annotationHeight;
     annotationsSVG.push(
-      <DrawCutsiteLabel
+      <DrawLabel
         id={annotation.id}
         key={"cutsiteLabel" + index}
         {...{
           editorName,
           annotation,
           xStartOriginal,
-          onClick,
-          onRightClick,
+          onClick: annotationRange.onClick,
+          onRightClick: annotationRange.onRightClick,
           height,
           xStart
         }}
@@ -109,9 +111,9 @@ export default onlyUpdateForKeys([
   "onClick",
   "textWidth",
   "editorName"
-])(CutsiteLabels);
+])(Labels);
 
-const DrawCutsiteLabel = withHover(
+const DrawLabel = withHover(
   ({
     hovered,
     className,
@@ -151,7 +153,7 @@ const DrawCutsiteLabel = withHover(
             // left: '100 % ',
           }}
         >
-          {annotation.restrictionEnzyme.name}
+          {annotation.name || annotation.restrictionEnzyme.name}
         </div>
         {hovered && (
           <div
