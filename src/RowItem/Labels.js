@@ -5,6 +5,8 @@ import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import forEach from "lodash/forEach";
+import reduce from "lodash/reduce";
+import values from "lodash/values";
 
 function Labels(props) {
   let {
@@ -12,10 +14,12 @@ function Labels(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
+    annotationWidth,
     // onClick,
     // onRightClick,
     textWidth = 10,
-    editorName
+    editorName,
+    externalLabels
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -37,6 +41,27 @@ function Labels(props) {
   let annotationsSVG = [];
   let rowCenter = rowLength / 2;
   let iTree = new IntervalTree(rowCenter);
+
+  annotationRanges = values(
+    reduce(
+      annotationRanges,
+      (accum, annotationRange) => {
+        if (
+          annotationRange.annotation.annotationTypePlural === "parts" ||
+          !accum[annotationRange.id] ||
+          accum[annotationRange.id].end - accum[annotationRange.id].start <
+            annotationRange.end - annotationRange.start
+        ) {
+          accum[annotationRange.id] = annotationRange;
+          return accum;
+        } else {
+          return accum;
+        }
+      },
+      {}
+    )
+  );
+
   forEach(annotationRanges, function(annotationRange, index) {
     counter++;
     if (counter > 50) return;
@@ -46,7 +71,7 @@ function Labels(props) {
     }
     let annotationLength =
       (annotation.name || annotation.restrictionEnzyme.name).length * textWidth;
-    let { xStart } = getXStartAndWidthOfRowAnnotation(
+    let { xStart, width } = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth
@@ -77,10 +102,14 @@ function Labels(props) {
           editorName,
           annotation,
           xStartOriginal,
+          annotationWidth,
           onClick: annotationRange.onClick,
           onRightClick: annotationRange.onRightClick,
           height,
-          xStart
+          width,
+          xStart,
+          xEnd,
+          externalLabels
         }}
       />
     );
@@ -122,9 +151,11 @@ const DrawLabel = withHover(
     onRightClick,
     height,
     xStartOriginal,
+    width,
     onMouseLeave,
     onMouseOver,
-    xStart
+    xStart,
+    externalLabels
   }) => {
     return (
       <div>
@@ -148,25 +179,33 @@ const DrawLabel = withHover(
             // display: 'inline-block',
             // position: (relative) ? 'relative' : 'absolute',
             // // float: 'left',
-            left: xStart,
+            left:
+              annotation.annotationTypePlural === "cutsites"
+                ? xStart
+                : xStart + width / 2,
+            color: annotation.labelColor, //annotation.annotationTypePlural === "parts" ? "purple" : annotation.annotationTypePlural === "cutsites" ? annotation.restrictionEnzyme.color : "black",
             zIndex: 10
             // left: '100 % ',
           }}
         >
           {annotation.name || annotation.restrictionEnzyme.name}
         </div>
-        {hovered && (
+        {
           <div
             style={{
               position: "absolute",
-              left: xStartOriginal,
+              left:
+                annotation.annotationTypePlural === "cutsites"
+                  ? xStartOriginal
+                  : xStartOriginal + width / 2,
               bottom: 0,
               height: Math.max(height, 3),
-              width: 2,
+              width: hovered ? 2 : externalLabels ? 1 : 0,
+              opacity: hovered ? 1 : externalLabels ? 0.3 : 0,
               background: "black"
             }}
           />
-        )}
+        }
       </div>
     );
   }

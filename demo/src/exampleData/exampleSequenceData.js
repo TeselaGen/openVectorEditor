@@ -1189,6 +1189,8 @@ export default {
       type: "misc_feature",
       strand: 1,
       name: "GFPuv",
+      color: "green",
+      labelColor: "green",
       start: 1241,
       end: 1951
     },

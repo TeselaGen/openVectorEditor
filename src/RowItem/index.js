@@ -96,9 +96,9 @@ export class RowItem extends React.PureComponent {
       partRightClicked = noop,
       minHeight = 22,
       bpsPerRow = sequenceLength,
-      editorName
+      editorName,
+      externalLabels
     } = this.props;
-
     let {
       chromatogram: showChromatogram,
       // orfLabels: showOrfLabel,
@@ -197,6 +197,7 @@ export class RowItem extends React.PureComponent {
       const CompToUse = CompOverride || StackedAnnotations;
       return (
         <CompToUse
+          externalLabels={externalLabels}
           type={type}
           containerClassName={camelCase(
             "veRowView-" + pluralType + "Container"
@@ -316,7 +317,7 @@ export class RowItem extends React.PureComponent {
           })}
           {drawAnnotations("assemblyPiece")}
           {drawAnnotations("lineageAnnotation")}
-          {drawAnnotations("part", partProps)}
+          {!externalLabels && drawAnnotations("part", partProps)}
           {drawAnnotations("primer", {
             sequence: fullSequence
           })}
@@ -339,7 +340,7 @@ export class RowItem extends React.PureComponent {
                     })
                   )
                 : []),
-              ...(showFeatureLabels && showFeatures
+              ...(showFeatureLabels && showFeatures && externalLabels
                 ? map(features, a =>
                     assign(a, {
                       onClick: featureClicked,
@@ -347,7 +348,7 @@ export class RowItem extends React.PureComponent {
                     })
                   )
                 : []),
-              ...(showPartLabels && showParts
+              ...(showPartLabels && showParts && externalLabels
                 ? map(parts, a =>
                     assign(a, {
                       onClick: partClicked,
@@ -356,6 +357,8 @@ export class RowItem extends React.PureComponent {
                   )
                 : [])
             ]}
+            externalLabels={externalLabels}
+            annotationWidth={width}
             annotationHeight={cutsiteLabelHeight}
           />
 
@@ -483,6 +486,7 @@ export class RowItem extends React.PureComponent {
                 );
               })}
           </div>
+          {externalLabels && drawAnnotations("part", partProps)}
           {drawAnnotations("feature")}
 
           {map(replacementLayers, function(replacementLayer) {

@@ -40,6 +40,8 @@ const defaultState = {
   showReadOnly: true,
   showCircularity: true,
   showGCContent: false,
+  externalLabelsLinearMap: false,
+  externalLabelsSequenceMap: false,
   GCDecimalDigits: 1,
   overrideToolbarOptions: false,
   menuOverrideExample: false,
@@ -985,6 +987,16 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "externalLabelsLinearMap",
+                info: `pass externalLabels object externalLabelsLinearMap=true to show labels outside of features in the Linear Map but the default view for the Sequence Map`
+              })}
+              {renderToggle({
+                that: this,
+                type: "externalLabelsSequenceMap",
+                info: `pass externalLabels object externalLabelsSequenceMap=true to show labels outside of features in the Sequence Map but the default view for the Linear Map`
+              })}
+              {renderToggle({
+                that: this,
                 type: "maxAnnotationsToDisplayAdjustment",
                 info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
               })}
@@ -1325,6 +1337,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showGCContent={this.state.showGCContent}
+            externalLabelsLinearMap={this.state.externalLabelsLinearMap}
+            externalLabelsSequenceMap={this.state.externalLabelsSequenceMap}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={
