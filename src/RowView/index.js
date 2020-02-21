@@ -312,6 +312,7 @@ export class RowView extends React.Component {
     let rowBottomComp;
     const rowData = this.rowData;
     const bpsPerRow = this.bpsPerRow;
+
     const externalLabelsSequenceMap =
       externalLabels && externalLabels.sequenceMap;
     this.showJumpButtons = rowData.length > 15;

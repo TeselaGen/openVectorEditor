@@ -31,6 +31,7 @@ class PointedAnnotation extends React.PureComponent {
       annotation,
       externalLabels
     } = this.props;
+
     let width = (widthInBps + gapsInside) * charWidth;
     let charWN = charWidth; //charWN is normalized
     if (charWidth < 15) {

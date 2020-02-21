@@ -326,10 +326,9 @@ export class Editor extends React.Component {
       isFullscreen,
       handleFullscreenClose,
       previewModeFullscreen: controlledPreviewModeFullscreen,
-      previewModeButtonMenu,
-      externalLabelsLinearMap,
-      externalLabelsSequenceMap
+      previewModeButtonMenu
     } = this.props;
+
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&
@@ -375,8 +374,6 @@ export class Editor extends React.Component {
         height
       }
     };
-
-    console.info("FLAGS", externalLabelsSequenceMap, externalLabelsLinearMap);
 
     if (withPreviewMode && !previewModeFullscreen) {
       return (
@@ -498,7 +495,6 @@ export class Editor extends React.Component {
       const panelSpecificPropsToSpread =
         panelMap[activePanelType] &&
         panelMap[activePanelType].panelSpecificPropsToSpread;
-
       let panel = Panel ? (
         <Panel
           {...pickedUserDefinedHandlersAndOpts}

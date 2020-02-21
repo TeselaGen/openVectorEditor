@@ -14,7 +14,6 @@ function Labels(props) {
     bpsPerRow,
     charWidth,
     annotationHeight,
-    annotationWidth,
     // onClick,
     // onRightClick,
     textWidth = 10,
@@ -102,7 +101,6 @@ function Labels(props) {
           editorName,
           annotation,
           xStartOriginal,
-          annotationWidth,
           onClick: annotationRange.onClick,
           onRightClick: annotationRange.onRightClick,
           height,
@@ -187,7 +185,11 @@ const DrawLabel = withHover(
               annotation.annotationTypePlural === "cutsites"
                 ? xStart
                 : xStart + width / 2,
-            color: hovered ? "black" : annotation.labelColor, //annotation.annotationTypePlural === "parts" ? "purple" : annotation.annotationTypePlural === "cutsites" ? annotation.restrictionEnzyme.color : "black",
+            color: hovered
+              ? "black"
+              : annotation.annotationTypePlural === "parts"
+              ? "purple"
+              : annotation.labelColor,
             zIndex: 10
             // left: '100 % ',
           }}

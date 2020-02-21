@@ -99,6 +99,7 @@ export class RowItem extends React.PureComponent {
       editorName,
       externalLabels
     } = this.props;
+
     let {
       chromatogram: showChromatogram,
       // orfLabels: showOrfLabel,
@@ -358,7 +359,6 @@ export class RowItem extends React.PureComponent {
                 : [])
             ]}
             externalLabels={externalLabels}
-            annotationWidth={width}
             annotationHeight={cutsiteLabelHeight}
           />
 
