@@ -1014,7 +1014,7 @@ export default {
     {
       name: "Example Primer 1",
       start: 280,
-      end: 300,
+      end: 380,
       type: "primer",
       forward: true
     }

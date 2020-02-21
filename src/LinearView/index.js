@@ -93,10 +93,10 @@ export class LinearView extends React.Component {
       charWidth,
       annotationVisibilityOverrides,
       isProtein,
-      externalLabelsLinearMap,
+      externalLabels,
       ...rest
     } = this.props;
-    const externalLabels = externalLabelsLinearMap;
+    const externalLabelsLinearMap = externalLabels && externalLabels.linearMap;
     let innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = charWidth || innerWidth / this.getMaxLength();
     const bpsPerRow = this.getMaxLength();
@@ -168,7 +168,7 @@ export class LinearView extends React.Component {
               width: innerWidth,
               bpsPerRow,
               emptyText: getEmptyText({ sequenceData, caretPosition }),
-              externalLabels,
+              externalLabels: externalLabelsLinearMap,
               tickSpacing:
                 tickSpacing ||
                 Math.floor(

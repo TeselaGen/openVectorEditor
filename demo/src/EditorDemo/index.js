@@ -1337,8 +1337,10 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showGCContent={this.state.showGCContent}
-            externalLabelsLinearMap={this.state.externalLabelsLinearMap}
-            externalLabelsSequenceMap={this.state.externalLabelsSequenceMap}
+            externalLabels={{
+              sequenceMap: this.state.externalLabelsSequenceMap,
+              linearMap: this.state.externalLabelsLinearMap
+            }}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={

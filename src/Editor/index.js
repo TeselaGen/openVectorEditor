@@ -79,8 +79,7 @@ const userDefinedHandlersAndOpts = [
   "onCreateNewFromSubsequence",
   "onPaste",
   "menuFilter",
-  "externalLabelsLinearMap",
-  "externalLabelsSequenceMap"
+  "externalLabels"
 ];
 
 const _panelMap = {
