@@ -176,6 +176,10 @@ const DrawLabel = withHover(
             position: "absolute",
             bottom: height,
             ...(hovered && { fontWeight: "bold" }),
+            ...(externalLabels &&
+              annotation.annotationTypePlural !== "cutsites" && {
+                fontStyle: "normal"
+              }),
             // display: 'inline-block',
             // position: (relative) ? 'relative' : 'absolute',
             // // float: 'left',
@@ -183,7 +187,7 @@ const DrawLabel = withHover(
               annotation.annotationTypePlural === "cutsites"
                 ? xStart
                 : xStart + width / 2,
-            color: annotation.labelColor, //annotation.annotationTypePlural === "parts" ? "purple" : annotation.annotationTypePlural === "cutsites" ? annotation.restrictionEnzyme.color : "black",
+            color: hovered ? "black" : annotation.labelColor, //annotation.annotationTypePlural === "parts" ? "purple" : annotation.annotationTypePlural === "cutsites" ? annotation.restrictionEnzyme.color : "black",
             zIndex: 10
             // left: '100 % ',
           }}
