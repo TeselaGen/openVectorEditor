@@ -275,8 +275,8 @@ describe("editor", function() {
     cy.contains("text", "pSC101**");
     cy.contains("text", "pj5_00001");
     cy.tgToggle("externalLabelsLinearMap");
-    cy.contains(".veCutsiteLabel", "pj5_00001");
-    cy.contains(".veCutsiteLabel", "pSC101**");
+    cy.contains(".vePartLabel", "pj5_00001");
+    cy.contains(".veFeatureLabel", "pSC101**");
   });
   it(`should handle externalLabelsSequenceMap by putting feature labels outside the feature (with restriction enzymes)`, () => {
     cy.get(".veTabCircularMap")
@@ -288,7 +288,7 @@ describe("editor", function() {
     cy.contains("text", "araD");
     cy.contains("text", "pj5_00001");
     cy.tgToggle("externalLabelsSequenceMap");
-    cy.contains(".veCutsiteLabel", "pj5_00001");
-    cy.contains(".veCutsiteLabel", "araD");
+    cy.contains(".vePartLabel", "pj5_00001");
+    cy.contains(".veFeatureLabel", "araD");
   });
 });

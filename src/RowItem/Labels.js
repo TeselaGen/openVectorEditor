@@ -1,24 +1,25 @@
 import React from "react";
 import { onlyUpdateForKeys } from "recompose";
 import withHover from "../helperComponents/withHover";
-import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
+import getXStartAndWidthOfRowAnnotation, {
+  getWidth
+} from "./getXStartAndWidthOfRowAnnotation";
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
-import forEach from "lodash/forEach";
-import reduce from "lodash/reduce";
-import values from "lodash/values";
+import { reduce, values, startCase, filter } from "lodash";
+import { getRangeLength } from "ve-range-utils/lib";
 
 function Labels(props) {
   let {
     annotationRanges = {},
     bpsPerRow,
     charWidth,
+    rangeMax,
+    onlyShowLabelsThatDoNotFit = true,
+    fontWidth = 12,
     annotationHeight,
-    // onClick,
-    // onRightClick,
     textWidth = 10,
-    editorName,
-    externalLabels
+    editorName
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -35,7 +36,7 @@ function Labels(props) {
   // }
 
   let rowLength = bpsPerRow * charWidth;
-  let counter = 0;
+  // let counter = 0;
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
   let rowCenter = rowLength / 2;
@@ -45,13 +46,17 @@ function Labels(props) {
     reduce(
       annotationRanges,
       (accum, annotationRange) => {
+        const identifier =
+          annotationRange.annotation.annotationTypePlural +
+          "--" +
+          annotationRange.id;
         if (
-          annotationRange.annotation.annotationTypePlural === "parts" ||
-          !accum[annotationRange.id] ||
-          accum[annotationRange.id].end - accum[annotationRange.id].start <
-            annotationRange.end - annotationRange.start
+          // annotationRange.annotation.annotationTypePlural === "parts" ||
+          !accum[identifier] ||
+          getRangeLength(accum[identifier], rangeMax) <
+            getRangeLength(annotationRange, rangeMax)
         ) {
-          accum[annotationRange.id] = annotationRange;
+          accum[identifier] = annotationRange;
           return accum;
         } else {
           return accum;
@@ -61,9 +66,20 @@ function Labels(props) {
     )
   );
 
-  forEach(annotationRanges, function(annotationRange, index) {
-    counter++;
-    if (counter > 50) return;
+  filter(annotationRanges, r => {
+    if (onlyShowLabelsThatDoNotFit) {
+      //tnrtodo: more work needs to be done here to make this actually configurable
+      //check if annotation name will fit
+      let textLength = r.annotation.name.length * fontWidth;
+      let widthMinusOne = getWidth(r, charWidth, 0) - charWidth;
+      const doesItFit = widthMinusOne > textLength;
+      if (doesItFit) {
+        return false;
+      }
+    }
+    return true;
+  }).forEach(function(annotationRange, index) {
+    const pluralType = annotationRange.annotation.annotationTypePlural;
     let annotation = annotationRange.annotation;
     if (!annotation) {
       annotation = annotationRange;
@@ -75,8 +91,13 @@ function Labels(props) {
       bpsPerRow,
       charWidth
     );
-    const xStartOriginal = xStart;
 
+    xStart =
+      annotation.annotationTypePlural === "cutsites"
+        ? xStart
+        : xStart + width / 2;
+
+    const left = xStart;
     let xEnd = xStart + annotationLength;
 
     if (xEnd > rowLength) {
@@ -100,14 +121,15 @@ function Labels(props) {
         {...{
           editorName,
           annotation,
-          xStartOriginal,
+          className: `${annotationRange.annotation.labelClassName || ""} ${
+            labelClassNames[pluralType]
+          } veLabel `,
+          left,
           onClick: annotationRange.onClick,
           onRightClick: annotationRange.onRightClick,
           height,
-          width,
           xStart,
-          xEnd,
-          externalLabels
+          xEnd
         }}
       />
     );
@@ -121,7 +143,7 @@ function Labels(props) {
         height: containerHeight,
         display: "block"
       }}
-      className="veRowViewCutsiteLabelsContainer"
+      className="veRowViewLabelsContainer"
     >
       {annotationsSVG}
       {warningMessage}
@@ -141,78 +163,104 @@ export default onlyUpdateForKeys([
 ])(Labels);
 
 const DrawLabel = withHover(
-  ({
-    hovered,
-    className,
-    annotation,
-    onClick,
-    onRightClick,
-    height,
-    xStartOriginal,
-    width,
-    onMouseLeave,
-    onMouseOver,
-    xStart,
-    externalLabels
-  }) => {
-    return (
-      <div>
-        <div
-          {...{ onMouseLeave, onMouseOver }}
-          className={className + " veCutsiteLabel ve-monospace-font"}
-          onClick={function(event) {
-            onClick({ event, annotation });
-            event.stopPropagation();
-          }}
-          onContextMenu={function(event) {
-            onRightClick({ event, annotation });
-            event.stopPropagation();
-          }}
-          style={{
-            cursor: "pointer",
-            // left: xStart,
-            position: "absolute",
-            bottom: height,
-            ...(hovered && { fontWeight: "bold" }),
-            ...(externalLabels &&
-              annotation.annotationTypePlural !== "cutsites" && {
+  class DrawLabelInner extends React.Component {
+    render() {
+      const {
+        hovered,
+        className,
+        annotation,
+        onClick,
+        onRightClick,
+        height,
+        left,
+        onMouseLeave,
+        onMouseOver
+      } = this.props;
+      let heightToUse = height;
+      let bottom = 0;
+      if (hovered) {
+        try {
+          const line = this.n;
+          const isRowView = document.querySelector(".veRowView").contains(line);
+
+          const el = line
+            .closest(".veRowItem")
+
+            .querySelector(
+              annotation.annotationTypePlural === "cutsites"
+                ? isRowView
+                  ? ".cutsiteLabelSelectionLayer"
+                  : ".veRowViewAxis"
+                : `[dataId="${annotation.id}"].veRowView${startCase(
+                    annotation.annotationTypePlural.slice(0, -1)
+                  )}`
+            );
+          const annDims = el.getBoundingClientRect();
+          const lineDims = line.getBoundingClientRect();
+          const heightDiff =
+            annDims.bottom - lineDims.bottom - annDims.height / 2;
+          heightToUse = height + heightDiff;
+          bottom = -heightDiff;
+        } catch (e) {
+          window.veDebugLabels && console.error(`err computing label line:`, e);
+        }
+      }
+      return (
+        <div>
+          <div
+            {...{ onMouseLeave, onMouseOver }}
+            className={className + " ve-monospace-font"}
+            onClick={function(event) {
+              onClick({ event, annotation });
+              event.stopPropagation();
+            }}
+            onContextMenu={function(event) {
+              onRightClick({ event, annotation });
+              event.stopPropagation();
+            }}
+            style={{
+              cursor: "pointer",
+              position: "absolute",
+              bottom: height,
+              ...(hovered && { fontWeight: "bold" }),
+              ...(annotation.annotationTypePlural !== "cutsites" && {
                 fontStyle: "normal"
               }),
-            // display: 'inline-block',
-            // position: (relative) ? 'relative' : 'absolute',
-            // // float: 'left',
-            left:
-              annotation.annotationTypePlural === "cutsites"
-                ? xStart
-                : xStart + width / 2,
-            color: hovered
-              ? "black"
-              : annotation.annotationTypePlural === "parts"
-              ? "purple"
-              : annotation.labelColor,
-            zIndex: 10
-            // left: '100 % ',
-          }}
-        >
-          {annotation.name || annotation.restrictionEnzyme.name}
-        </div>
-        {
+              left,
+              color: hovered
+                ? "black"
+                : annotation.annotationTypePlural === "parts"
+                ? "purple"
+                : annotation.labelColor,
+              zIndex: 10
+            }}
+          >
+            {annotation.name || annotation.restrictionEnzyme.name}
+          </div>
+
           <div
+            ref={n => {
+              if (n) this.n = n;
+            }}
             style={{
+              zIndex: 50,
               position: "absolute",
-              left:
-                annotation.annotationTypePlural === "cutsites"
-                  ? xStartOriginal
-                  : xStartOriginal + width / 2,
-              bottom: 0,
-              height: Math.max(height, 3),
-              width: hovered ? 2 : externalLabels ? 1 : 0,
-              opacity: hovered ? 1 : externalLabels ? 0.3 : 0,
-              background: "black"
+              left,
+              bottom,
+              height: Math.max(heightToUse, 3),
+              width: hovered ? 2 : 1,
+              opacity: hovered ? 1 : 0.2,
+              background: hovered ? "black" : "grey"
             }}
           />
-        }
-      </div>
-    );
+        </div>
+      );
+    }
   }
 );
+
+const labelClassNames = {
+  cutsites: "veCutsiteLabel",
+  parts: "vePartLabel",
+  features: "veFeatureLabel"
+};

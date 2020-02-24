@@ -79,7 +79,7 @@ function StackedAnnotations(props) {
         <InnerCompToUse
           externalLabels={externalLabels}
           key={index}
-          className={camelCase("veRowView-" + type)}
+          className={`${camelCase("veRowView-" + type)}`}
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}

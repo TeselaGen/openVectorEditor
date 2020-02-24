@@ -14,6 +14,7 @@ export const rowHeights = {
   assemblyPieces: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   lineageAnnotations: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
   orfs: { spaceBetweenAnnotations: 2, marginTop: 5, height: 15 },
+  //tnrtodo -- we should estimate label height for parts/features/primers if externalLabels is true
   cutsiteLabels: { spaceBetweenAnnotations: 0, height: 15 },
   sequence: { height: 15 },
   reverseSequence: { height: 15 },

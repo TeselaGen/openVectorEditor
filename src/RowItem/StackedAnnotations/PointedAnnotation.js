@@ -16,6 +16,7 @@ class PointedAnnotation extends React.PureComponent {
       name = "",
       onMouseLeave,
       onMouseOver,
+      id,
       hideName,
       pointiness = 8,
       fontWidth = 12,
@@ -97,6 +98,7 @@ class PointedAnnotation extends React.PureComponent {
       <g
         {...{ onMouseLeave, onMouseOver }}
         className={" clickable " + className}
+        dataId={id}
         onClick={function(event) {
           onClick({ annotation, event, gapsBefore, gapsInside });
         }}

@@ -48,6 +48,7 @@ function getPropsForType(props, type, pluralType) {
 }
 
 export class RowItem extends React.PureComponent {
+  const;
   render() {
     let {
       charWidth = 12,
@@ -75,6 +76,7 @@ export class RowItem extends React.PureComponent {
         end: 0,
         rowNumber: 0
       },
+      isRowView,
       emptyText,
       alignmentType,
       alignmentData,
@@ -88,12 +90,6 @@ export class RowItem extends React.PureComponent {
       selectionLayerRightClicked = noop,
       searchLayerRightClicked = noop,
       translationDoubleClicked = noop,
-      cutsiteClicked = noop,
-      cutsiteRightClicked = noop,
-      featureClicked = noop,
-      featureRightClicked = noop,
-      partClicked = noop,
-      partRightClicked = noop,
       minHeight = 22,
       bpsPerRow = sequenceLength,
       editorName,
@@ -104,8 +100,6 @@ export class RowItem extends React.PureComponent {
       chromatogram: showChromatogram,
       // orfLabels: showOrfLabel,
       cutsites: showCutsites,
-      features: showFeatures,
-      parts: showParts,
       cutsitesInSequence: showCutsitesInSequence,
       axis: showAxis,
       axisNumbers: showAxisNumbers,
@@ -115,12 +109,8 @@ export class RowItem extends React.PureComponent {
       reverseSequence: showReverseSequence,
       sequence: showSequence
     } = annotationVisibility;
-    let {
-      cutsites: showCutsiteLabels = true,
-      features: showFeatureLabels = true,
-      parts: showPartLabels = true
-    } = annotationLabelVisibility;
-    let { sequence = "", cutsites = [], features = [], parts = [] } = row;
+
+    let { sequence = "", cutsites = [] } = row;
 
     let reverseSequence = getComplementSequenceString(
       (alignmentData && alignmentData.sequence) || sequence
@@ -176,6 +166,31 @@ export class RowItem extends React.PureComponent {
       isProtein,
       sequenceLength,
       row: { start: row.start, end: row.end }
+    };
+
+    const drawLabels = (type, noDraw) => {
+      if (noDraw) {
+        return null;
+      }
+      const pluralType = pluralize(type);
+      const ranges =
+        annotationLabelVisibility[pluralType] &&
+        annotationVisibility[pluralType]
+          ? map(row[pluralType], a =>
+              assign(a, {
+                onClick: this.props[type + "Clicked"],
+                onRightClick: this.props[type + "RightClicked"]
+              })
+            )
+          : [];
+      return (
+        <Labels
+          {...annotationCommonProps}
+          rangeMax={bpsPerRow}
+          annotationRanges={ranges}
+          annotationHeight={cutsiteLabelHeight}
+        />
+      );
     };
 
     const drawAnnotations = (type, extraProps = {}) => {
@@ -272,6 +287,7 @@ export class RowItem extends React.PureComponent {
       },
       alignmentType
     };
+
     return (
       <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
         {rowTopComp && rowTopComp}
@@ -310,27 +326,7 @@ export class RowItem extends React.PureComponent {
             }
             regions={selectionLayers}
           />
-          {drawAnnotations("warning", {
-            getExtraInnerCompProps: () => ({
-              pointiness: 0,
-              rangeType: "middle"
-            })
-          })}
-          {drawAnnotations("assemblyPiece")}
-          {drawAnnotations("lineageAnnotation")}
-          {!externalLabels && drawAnnotations("part", partProps)}
-          {drawAnnotations("primer", {
-            sequence: fullSequence
-          })}
-          {drawAnnotations("orf", {
-            CompOverride: Orfs
-          })}
-          {drawAnnotations("translation", {
-            ...translationCommonProps,
-            onDoubleClick: translationDoubleClicked
-          })}
-
-          <Labels
+          {/* <Labels
             {...annotationCommonProps}
             annotationRanges={[
               ...(showCutsiteLabels && showCutsites
@@ -358,9 +354,31 @@ export class RowItem extends React.PureComponent {
                   )
                 : [])
             ]}
-            externalLabels={externalLabels}
             annotationHeight={cutsiteLabelHeight}
-          />
+          /> */}
+          {drawAnnotations("warning", {
+            getExtraInnerCompProps: () => ({
+              pointiness: 0,
+              rangeType: "middle"
+            })
+          })}
+          {drawAnnotations("assemblyPiece")}
+          {drawAnnotations("lineageAnnotation")}
+          {drawLabels("part", !externalLabels)}
+          {drawAnnotations("part", partProps)}
+          {/* {!externalLabels && drawAnnotations("part", partProps)} */}
+          {drawLabels("primer", !externalLabels)}
+
+          {drawAnnotations("primer", {
+            sequence: fullSequence
+          })}
+          {drawAnnotations("orf", {
+            CompOverride: Orfs
+          })}
+          {drawAnnotations("translation", {
+            ...translationCommonProps,
+            onDoubleClick: translationDoubleClicked
+          })}
 
           {/* { &&
             Object.keys(cutsites).length > 0 && (
@@ -373,6 +391,7 @@ export class RowItem extends React.PureComponent {
               {...annotationCommonProps}
             />
           )}
+          {drawLabels("cutsite", !isRowView)}
 
           <div
             className="veRowItemSequenceContainer"
@@ -486,7 +505,8 @@ export class RowItem extends React.PureComponent {
                 );
               })}
           </div>
-          {externalLabels && drawAnnotations("part", partProps)}
+          {drawLabels("feature", !externalLabels)}
+          {/* {externalLabels && drawAnnotations("part", partProps)} */}
           {drawAnnotations("feature")}
 
           {map(replacementLayers, function(replacementLayer) {
@@ -583,9 +603,9 @@ export class RowItem extends React.PureComponent {
 
           {drawAnnotations("primaryProteinSequence", {
             ...translationCommonProps,
-
             noPlural: true
           })}
+          {drawLabels("cutsite", isRowView)}
           {showAxis && (
             <Axis
               tickSpacing={tickSpacing}
