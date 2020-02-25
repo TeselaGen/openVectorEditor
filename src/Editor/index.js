@@ -78,7 +78,8 @@ const userDefinedHandlersAndOpts = [
   "onCopy",
   "onCreateNewFromSubsequence",
   "onPaste",
-  "menuFilter"
+  "menuFilter",
+  "externalLabels"
 ];
 
 const _panelMap = {

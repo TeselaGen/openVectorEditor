@@ -311,7 +311,8 @@ export class CircularView extends React.Component {
         if (results) {
           // //update the radius, labels, and svg
           radius += results.height || 0;
-          labels = { ...labels, ...(results.labels || {}) };
+          //tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
+          labels = [...map(labels), ...map(results.labels || {})];
           comp = results.component || results;
         }
         radius += spaceAfter;
