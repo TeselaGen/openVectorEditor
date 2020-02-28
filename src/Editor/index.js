@@ -326,6 +326,7 @@ export class Editor extends React.Component {
       withPreviewMode,
       isFullscreen,
       handleFullscreenClose,
+      onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu
     } = this.props;
@@ -512,6 +513,7 @@ export class Editor extends React.Component {
           {...panelPropsToSpread}
           editorName={editorName}
           isProtein={sequenceData.isProtein}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
           {...editorDimensions}
           isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab

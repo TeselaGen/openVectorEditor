@@ -32,7 +32,7 @@ function StackedAnnotations(props) {
     marginTop,
     marginBottom,
     getExtraInnerCompProps,
-    onlyShowLabelsThatDoNotFit = true,
+    onlyShowLabelsThatDoNotFit,
     externalLabels
   } = props;
 
