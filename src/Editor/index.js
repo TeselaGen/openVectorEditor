@@ -62,6 +62,7 @@ const userDefinedHandlersAndOpts = [
   "showAvailability",
   "showGCContent",
   "GCDecimalDigits",
+  "onlyShowLabelsThatDoNotFit",
   "fullscreenMode",
   "onNew",
   "onImport",

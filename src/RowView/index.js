@@ -303,7 +303,6 @@ export class RowView extends React.Component {
       width,
       marginWidth,
       height,
-      externalLabels,
       RowItemProps,
       ...rest
     } = this.props;
@@ -313,8 +312,6 @@ export class RowView extends React.Component {
     const rowData = this.rowData;
     const bpsPerRow = this.bpsPerRow;
 
-    const externalLabelsSequenceMap =
-      externalLabels && externalLabels.sequenceMap;
     this.showJumpButtons = rowData.length > 15;
     if (this.showJumpButtons) {
       if (index === 0) {
@@ -364,7 +361,6 @@ export class RowView extends React.Component {
               caretPosition,
               emptyText: getEmptyText({ sequenceData, caretPosition }),
               fullSequence: sequenceData.sequence,
-              externalLabels: externalLabelsSequenceMap,
               ...RowItemProps
             }}
             row={rowData[index]}

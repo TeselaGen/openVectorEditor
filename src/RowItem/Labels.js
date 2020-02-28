@@ -15,7 +15,7 @@ function Labels(props) {
     bpsPerRow,
     charWidth,
     rangeMax,
-    onlyShowLabelsThatDoNotFit = true,
+    onlyShowLabelsThatDoNotFit,
     fontWidth = 12,
     annotationHeight,
     textWidth = 10,
