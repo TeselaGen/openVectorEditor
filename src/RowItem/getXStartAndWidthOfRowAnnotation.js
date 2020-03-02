@@ -10,7 +10,11 @@ export default function getXStartAndWidthOfRowAnnotation(
     startOffset,
     // xStart: startOffset * charWidth,
     xStart: (startOffset + gapsBefore) * charWidth,
-    width: (range.end + 1 - range.start + gapsInside) * charWidth
+    width: getWidth(range, charWidth, gapsInside)
   };
   return toReturn;
+}
+
+export function getWidth(range, charWidth, gapsInside = 0) {
+  return (range.end + 1 - range.start + gapsInside) * charWidth;
 }

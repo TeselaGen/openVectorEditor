@@ -1103,6 +1103,20 @@ const toolCommandDefs = {
   }
 };
 
+const labelCommandDefs = {
+  toggleExternalLabels: {
+    name: "External Labels",
+    isActive: props => props.externalLabels === "true",
+    handler: props => {
+      if (props.externalLabels === "true") {
+        props.toggleExternalLabels("false");
+      } else {
+        props.toggleExternalLabels("true");
+      }
+    }
+  }
+};
+
 const commandDefs = {
   ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,
@@ -1113,7 +1127,8 @@ const commandDefs = {
   ...deleteAnnotationCommandDefs,
   ...labelToggleCommandDefs,
   ...editCommandDefs,
-  ...toolCommandDefs
+  ...toolCommandDefs,
+  ...labelCommandDefs
 };
 
 export default instance => oveCommandFactory(instance, commandDefs);

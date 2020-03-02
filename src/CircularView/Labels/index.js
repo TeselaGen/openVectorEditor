@@ -239,7 +239,10 @@ const DrawLabelGroup = withHover(function({
           <text
             /* zIndex={11} */ x={labelXStart}
             y={labelYStart}
-            style={{ fontSize: fontWidth * fontWidthToFontSize }}
+            style={{
+              fontSize: fontWidth * fontWidthToFontSize,
+              fontStyle: label.fontStyle
+            }}
           >
             {labelAndSublabels.map(function(label, index) {
               return (
@@ -277,6 +280,7 @@ const DrawLabelGroup = withHover(function({
         y={textYStart}
         style={{
           fontSize: fontWidth * fontWidthToFontSize,
+          fontStyle: label.fontStyle,
           fill: label.color || "black"
           // stroke: label.color ? label.color : "black"
         }}
@@ -359,7 +363,10 @@ const DrawGroupInnerLabel = withHover(
         onClick={label.onClick}
         onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
-        style={{ fill: label.color ? label.color : "black" }}
+        style={{
+          fill: label.color ? label.color : "black",
+          fontStyle: label.fontStyle
+        }}
         {...{ onMouseOver }}
         className={className}
       >

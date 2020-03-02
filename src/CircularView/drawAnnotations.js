@@ -28,7 +28,8 @@ function drawAnnotations({
   onRightClicked = noop,
   showLabels,
   labelOptions,
-  annotationProps
+  annotationProps,
+  fontStyle
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -150,6 +151,7 @@ function drawAnnotations({
           title: titleText,
           className: annotation.labelClassName || "",
           onClick: _onClick,
+          fontStyle: fontStyle || "normal",
           color:
             annotation.labelColor ||
             (annotationType === "part" ? "purple" : "black"),

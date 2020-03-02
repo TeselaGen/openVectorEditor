@@ -3,6 +3,7 @@ import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
 import React from "react";
+import { doesLabelFitInAnnotation } from "../utils";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -16,9 +17,9 @@ class PointedAnnotation extends React.PureComponent {
       name = "",
       onMouseLeave,
       onMouseOver,
+      id,
       hideName,
       pointiness = 8,
-      fontWidth = 12,
       color = "orange",
       fill,
       stroke,
@@ -28,7 +29,9 @@ class PointedAnnotation extends React.PureComponent {
       onRightClick,
       gapsInside,
       gapsBefore,
-      annotation
+      annotation,
+      externalLabels,
+      onlyShowLabelsThatDoNotFit
     } = this.props;
 
     let width = (widthInBps + gapsInside) * charWidth;
@@ -43,6 +46,7 @@ class PointedAnnotation extends React.PureComponent {
     }
     let widthMinusOne = width - charWN;
     let path;
+    let hasAPoint = false;
     // starting from the top left of the annotation
     if (rangeType === "middle") {
       //draw a rectangle
@@ -63,6 +67,7 @@ class PointedAnnotation extends React.PureComponent {
           L 0,${height} 
           z`;
     } else if (rangeType === "beginningAndEnd") {
+      hasAPoint = true;
       path = `
           M 0,0 
           L ${widthMinusOne},0 
@@ -71,6 +76,7 @@ class PointedAnnotation extends React.PureComponent {
           L 0,${height} 
           z`;
     } else {
+      hasAPoint = true;
       path = `
         M 0,0 
         L ${widthMinusOne},0 
@@ -81,9 +87,16 @@ class PointedAnnotation extends React.PureComponent {
         z`;
     }
     let nameToDisplay = name;
-    let textLength = name.length * fontWidth;
-    let textOffset = widthMinusOne / 2;
-    if (textLength > widthMinusOne) {
+    let textOffset =
+      width / 2 -
+      (name.length * 5) / 2 -
+      (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0);
+    if (
+      !doesLabelFitInAnnotation(name, { width }, charWidth) ||
+      (externalLabels &&
+        !onlyShowLabelsThatDoNotFit &&
+        ["parts", "features"].includes(annotation.annotationTypePlural))
+    ) {
       textOffset = 0;
       nameToDisplay = "";
     }
@@ -92,6 +105,7 @@ class PointedAnnotation extends React.PureComponent {
       <g
         {...{ onMouseLeave, onMouseOver }}
         className={" clickable " + className}
+        dataId={id}
         onClick={function(event) {
           onClick({ annotation, event, gapsBefore, gapsInside });
         }}
@@ -110,8 +124,9 @@ class PointedAnnotation extends React.PureComponent {
         />
         {!hideName && nameToDisplay && (
           <text
+            className="ve-monospace-font"
             style={{
-              fontSize: ".75em",
+              fontSize: ".9em",
               fill: textColor || (Color(color).isDark() ? "white" : "black")
             }}
             transform={`translate(${textOffset},${height - 2})`}
