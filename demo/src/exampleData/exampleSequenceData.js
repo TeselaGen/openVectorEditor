@@ -1177,7 +1177,7 @@ export default {
       },
       type: "misc_feature",
       strand: -1,
-      name: "CmR",
+      name: "CmR I'm a real long label",
       start: 4513,
       end: 5172
     },

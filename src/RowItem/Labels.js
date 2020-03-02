@@ -1,13 +1,14 @@
 import React from "react";
 import { onlyUpdateForKeys } from "recompose";
 import withHover from "../helperComponents/withHover";
-import getXStartAndWidthOfRowAnnotation, {
-  getWidth
-} from "./getXStartAndWidthOfRowAnnotation";
+import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import { reduce, values, startCase, filter } from "lodash";
 import { getRangeLength } from "ve-range-utils/lib";
+import { doesLabelFitInAnnotation } from "./utils";
+
+const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line
 
 function Labels(props) {
   let {
@@ -16,9 +17,8 @@ function Labels(props) {
     charWidth,
     rangeMax,
     onlyShowLabelsThatDoNotFit,
-    fontWidth = 12,
     annotationHeight,
-    textWidth = 10,
+    textWidth = 6,
     editorName
   } = props;
   if (annotationRanges.length === 0) {
@@ -70,12 +70,11 @@ function Labels(props) {
     if (onlyShowLabelsThatDoNotFit) {
       //tnrtodo: more work needs to be done here to make this actually configurable
       //check if annotation name will fit
-      let textLength = r.annotation.name.length * fontWidth;
-      let widthMinusOne = getWidth(r, charWidth, 0) - charWidth;
-      const doesItFit = widthMinusOne > textLength;
-      if (doesItFit) {
-        return false;
-      }
+      return !doesLabelFitInAnnotation(
+        r.annotation.name,
+        { range: r },
+        charWidth
+      );
     }
     return true;
   }).forEach(function(annotationRange, index) {
@@ -97,13 +96,15 @@ function Labels(props) {
         ? xStart
         : xStart + width / 2;
 
-    const left = xStart;
+    const xStartOriginal = xStart;
+    // if (annotation.name.includes("CmR I'm")) debugger
     let xEnd = xStart + annotationLength;
 
     if (xEnd > rowLength) {
       xStart = xStart - (xEnd - rowLength);
       xEnd = rowLength;
     }
+    xEnd += BUFFER_WIDTH;
     let yOffset = getYOffset(iTree, xStart, xEnd);
     iTree.insert(xStart, xEnd, {
       ...annotationRange,
@@ -124,7 +125,7 @@ function Labels(props) {
           className: `${annotationRange.annotation.labelClassName || ""} ${
             labelClassNames[pluralType]
           } veLabel `,
-          left,
+          xStartOriginal,
           onClick: annotationRange.onClick,
           onRightClick: annotationRange.onRightClick,
           height,
@@ -134,6 +135,7 @@ function Labels(props) {
       />
     );
   });
+  if (!annotationsSVG.length) return null;
   let containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
   return (
     <div
@@ -172,7 +174,8 @@ const DrawLabel = withHover(
         onClick,
         onRightClick,
         height,
-        left,
+        xStartOriginal,
+        xStart,
         onMouseLeave,
         onMouseOver
       } = this.props;
@@ -226,7 +229,7 @@ const DrawLabel = withHover(
               ...(annotation.annotationTypePlural !== "cutsites" && {
                 fontStyle: "normal"
               }),
-              left,
+              left: xStart,
               color: hovered
                 ? "black"
                 : annotation.annotationTypePlural === "parts"
@@ -245,7 +248,7 @@ const DrawLabel = withHover(
             style={{
               zIndex: 50,
               position: "absolute",
-              left,
+              left: xStartOriginal,
               bottom,
               height: Math.max(heightToUse, 3),
               width: hovered ? 2 : 1,

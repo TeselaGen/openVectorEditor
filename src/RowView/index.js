@@ -355,6 +355,7 @@ export class RowView extends React.Component {
               ...rest,
               rowTopComp,
               rowBottomComp,
+              isRowView: true,
               isProtein: sequenceData.isProtein,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,
