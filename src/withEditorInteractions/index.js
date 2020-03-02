@@ -752,12 +752,14 @@ function VectorInteractionHOC(Component /* options */) {
     searchLayerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        forward: !annotation.bottomStrand
       });
       return this.getSelectionMenuOptions({
         //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        forward: !annotation.bottomStrand
       });
     }, "searchLayerRightClicked");
 
