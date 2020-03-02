@@ -93,7 +93,8 @@ export class RowItem extends React.PureComponent {
       minHeight = 22,
       bpsPerRow = sequenceLength,
       editorName,
-      externalLabels
+      externalLabels,
+      onlyShowLabelsThatDoNotFit
     } = this.props;
 
     let {
@@ -186,6 +187,7 @@ export class RowItem extends React.PureComponent {
       return (
         <Labels
           {...annotationCommonProps}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           rangeMax={bpsPerRow}
           annotationRanges={ranges}
           annotationHeight={cutsiteLabelHeight}
@@ -213,7 +215,8 @@ export class RowItem extends React.PureComponent {
       const CompToUse = CompOverride || StackedAnnotations;
       return (
         <CompToUse
-          externalLabels={externalLabels}
+          externalLabels={externalLabels === "true"}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           type={type}
           containerClassName={camelCase(
             "veRowView-" + pluralType + "Container"
@@ -364,10 +367,10 @@ export class RowItem extends React.PureComponent {
           })}
           {drawAnnotations("assemblyPiece")}
           {drawAnnotations("lineageAnnotation")}
-          {drawLabels("part", !externalLabels)}
+          {drawLabels("part", externalLabels !== "true")}
           {drawAnnotations("part", partProps)}
           {/* {!externalLabels && drawAnnotations("part", partProps)} */}
-          {drawLabels("primer", !externalLabels)}
+          {drawLabels("primer", externalLabels !== "true")}
 
           {drawAnnotations("primer", {
             sequence: fullSequence
@@ -505,7 +508,7 @@ export class RowItem extends React.PureComponent {
                 );
               })}
           </div>
-          {drawLabels("feature", !externalLabels)}
+          {drawLabels("feature", externalLabels !== "true")}
           {/* {externalLabels && drawAnnotations("part", partProps)} */}
           {drawAnnotations("feature")}
 

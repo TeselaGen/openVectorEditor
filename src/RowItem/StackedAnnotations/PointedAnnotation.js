@@ -30,7 +30,8 @@ class PointedAnnotation extends React.PureComponent {
       gapsInside,
       gapsBefore,
       annotation,
-      externalLabels
+      externalLabels,
+      onlyShowLabelsThatDoNotFit
     } = this.props;
 
     let width = (widthInBps + gapsInside) * charWidth;
@@ -88,6 +89,7 @@ class PointedAnnotation extends React.PureComponent {
     if (
       textLength > widthMinusOne ||
       (externalLabels &&
+        !onlyShowLabelsThatDoNotFit &&
         ["parts", "features"].includes(annotation.annotationTypePlural))
     ) {
       textOffset = 0;

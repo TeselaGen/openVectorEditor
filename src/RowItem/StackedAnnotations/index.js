@@ -32,6 +32,7 @@ function StackedAnnotations(props) {
     marginTop,
     marginBottom,
     getExtraInnerCompProps,
+    onlyShowLabelsThatDoNotFit,
     externalLabels
   } = props;
 
@@ -93,6 +94,7 @@ function StackedAnnotations(props) {
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           forward={annotation.forward}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           rangeType={getAnnotationRangeType(
             annotationRange,
             annotation,
