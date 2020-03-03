@@ -49,7 +49,7 @@ export class RemoveDuplicatesDialog extends React.Component {
     this.recomputeDups();
   }
 
-  checkboxStyle = { marginBottom: 0 };
+  checkboxStyle = { marginTop: 0, marginBottom: 0 };
 
   delayedRecomputeDups = () => {
     setTimeout(() => {
@@ -125,28 +125,33 @@ export class RemoveDuplicatesDialog extends React.Component {
           }}
         >
           <InfoHelper isButton isPopover icon="settings">
-            <h5>Ignore These Fields While Finding Duplicates:</h5>
-            <SwitchField
-              //delay the call to recompute dups until redux has had time to update
-              onFieldSubmit={this.delayedRecomputeDups}
-              style={this.checkboxStyle}
-              name="ignoreName"
-              label="Name"
-            ></SwitchField>
-            <SwitchField
-              //delay the call to recompute dups until redux has had time to update
-              onFieldSubmit={this.delayedRecomputeDups}
-              style={this.checkboxStyle}
-              name="ignoreStrand"
-              label="Strand"
-            ></SwitchField>
-            <SwitchField
-              //delay the call to recompute dups until redux has had time to update
-              onFieldSubmit={this.delayedRecomputeDups}
-              style={this.checkboxStyle}
-              name="ignoreStartAndEnd"
-              label="Start and End"
-            ></SwitchField>
+            <div style={{ maxWidth: 200 }}>
+              <h5>Ignore These Fields While Finding Duplicates:</h5>
+              <SwitchField
+                containerStyle={{ marginBottom: 2 }}
+                //delay the call to recompute dups until redux has had time to update
+                onFieldSubmit={this.delayedRecomputeDups}
+                style={this.checkboxStyle}
+                name="ignoreName"
+                label="Name"
+              ></SwitchField>
+              <SwitchField
+                containerStyle={{ marginBottom: 2 }}
+                //delay the call to recompute dups until redux has had time to update
+                onFieldSubmit={this.delayedRecomputeDups}
+                style={this.checkboxStyle}
+                name="ignoreStrand"
+                label="Strand"
+              ></SwitchField>
+              <SwitchField
+                containerStyle={{ marginBottom: 2 }}
+                //delay the call to recompute dups until redux has had time to update
+                onFieldSubmit={this.delayedRecomputeDups}
+                style={this.checkboxStyle}
+                name="ignoreStartAndEnd"
+                label="Start and End"
+              ></SwitchField>
+            </div>
           </InfoHelper>
           <Button
             intent="primary"
