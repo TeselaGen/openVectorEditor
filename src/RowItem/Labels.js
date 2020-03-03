@@ -70,6 +70,10 @@ function Labels(props) {
     if (onlyShowLabelsThatDoNotFit) {
       //tnrtodo: more work needs to be done here to make this actually configurable
       //check if annotation name will fit
+      if (r.annotation.annotationTypePlural === "cutsites") {
+        //we don't want to filter out any cutsite labels
+        return true;
+      }
       return !doesLabelFitInAnnotation(
         r.annotation.name,
         { range: r },
