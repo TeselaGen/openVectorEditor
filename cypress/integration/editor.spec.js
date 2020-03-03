@@ -46,7 +46,7 @@ describe("editor", function() {
 
     cy.contains(".veLabelText", "Part 0").click();
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30"
     );
     cy.get(".bp3-toast .bp3-icon-cross").click();
     cy.get("body")
@@ -54,16 +54,17 @@ describe("editor", function() {
       .focused()
       .type("select inverse{enter}");
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 31 end:  9"
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 31 end: 9"
     );
     cy.get(".bp3-toast .bp3-icon-cross").click();
     cy.contains("button", "Select Inverse").click();
     cy.contains(
-      "onSelectionOrCaretChanged callback triggered caretPosition:-1    selectionLayer: start: 10 end:  30 "
+      "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30 "
     );
   });
 
   it(`should autosave if autosave=true`, function() {
+    //tnrnote: cut in cypress only works on electron, not firefox or chrome
     cy.tgToggle("shouldAutosave");
     cy.contains(".veRowViewPart", "Part 0")
       .first()
@@ -86,6 +87,8 @@ describe("editor", function() {
     cy.get(".veRowViewSelectionLayer")
       .first()
       .trigger("contextmenu");
+    //tnrnote: cut in cypress only works on electron, not firefox or chrome
+
     cy.get(".bp3-menu-item")
       .contains("Cut")
       .click();
@@ -167,7 +170,20 @@ describe("editor", function() {
       .contains("properties overrides successfull")
       .should("be.visible");
   });
+  it(`should show/hide a checkmark when toggling feature label visibility`, function() {
+    cy.get("body").type("{meta}/");
+    cy.focused().type(`Feature Labels`);
+    cy.contains(".bp3-menu-item", "Feature Labels")
+      .find(".bp3-icon-small-tick")
+      .should("exist");
+    cy.focused().type(`{enter}`);
+    cy.contains(".bp3-menu-item", "Feature Labels")
+      .find(".bp3-icon-small-tick")
+      .should("not.exist");
+  });
+
   it(`should handle custom menu filters correctly`, () => {
+    // if (Cypress.browser !== "")
     cy.tgToggle("menuOverrideExample");
     cy.get(".tg-menu-bar")
       .contains("Custom")
@@ -248,5 +264,24 @@ describe("editor", function() {
     cy.replaceSelection("ttaa");
     cy.contains(".veLabelText", "CHANGED_SEQ");
     cy.contains("Selecting 4 bps from 5295 to 1");
+  });
+  it(`should handle enabling external labels and then only showing labels that don't fit`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("View")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("External Labels")
+      .click();
+    cy.get(".veTabProperties")
+      .contains("Properties")
+      .click();
+    cy.get(".veTabLinearMap")
+      .contains("Linear Map")
+      .click();
+    cy.contains("text", "pSC101**");
+    cy.contains("text", "pj5_00001");
+    cy.get(`[data-test="onlyShowLabelsThatDoNotFit"]`).click({ force: true });
+    cy.contains(".vePartLabel", "pj5_00001");
+    cy.contains(".veFeatureLabel", "pSC101**");
   });
 });

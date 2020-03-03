@@ -62,6 +62,7 @@ const userDefinedHandlersAndOpts = [
   "showAvailability",
   "showGCContent",
   "GCDecimalDigits",
+  "onlyShowLabelsThatDoNotFit",
   "fullscreenMode",
   "onNew",
   "onImport",
@@ -78,7 +79,8 @@ const userDefinedHandlersAndOpts = [
   "onCopy",
   "onCreateNewFromSubsequence",
   "onPaste",
-  "menuFilter"
+  "menuFilter",
+  "externalLabels"
 ];
 
 const _panelMap = {
@@ -112,7 +114,7 @@ const getListStyle = (isDraggingOver /* isDragging */) => {
     alignItems: "flex-end",
     flex: "0 0 auto",
     flexDirection: "row",
-    overflowX: "scroll",
+    overflowX: "auto", //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
     borderBottom: "1px solid lightgray",
     borderTop: "1px solid lightgray",
     paddingTop: 3,
@@ -324,6 +326,7 @@ export class Editor extends React.Component {
       withPreviewMode,
       isFullscreen,
       handleFullscreenClose,
+      onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu
     } = this.props;
@@ -510,6 +513,7 @@ export class Editor extends React.Component {
           {...panelPropsToSpread}
           editorName={editorName}
           isProtein={sequenceData.isProtein}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
           {...editorDimensions}
           isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab

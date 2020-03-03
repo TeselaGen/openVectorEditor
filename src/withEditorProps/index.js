@@ -191,12 +191,7 @@ export const exportSequenceToFile = props => format => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToActions,
-    null,
-    { pure: false }
-  ),
+  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: props => {
       return (
@@ -300,7 +295,10 @@ export default compose(
                   end: sequenceData.isProtein ? 2 : 0
                 };
 
-          handler({ ...rangeToUse, forward: true });
+          handler({
+            ...rangeToUse,
+            forward: !(selectionLayer.forward === false)
+          });
         }
       };
       return acc;
@@ -710,19 +708,16 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = fn => {
-  return connect(
-    (state, ownProps, ...rest) => {
-      const editor = state.VectorEditor[ownProps.editorName] || {};
-      editor.sequenceData = editor.sequenceData || {};
-      editor.sequenceData.sequence = getUpperOrLowerSeq(
-        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
-        editor.sequenceData.sequence
-      );
+  return connect((state, ownProps, ...rest) => {
+    const editor = state.VectorEditor[ownProps.editorName] || {};
+    editor.sequenceData = editor.sequenceData || {};
+    editor.sequenceData.sequence = getUpperOrLowerSeq(
+      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+      editor.sequenceData.sequence
+    );
 
-      return fn ? fn(editor, ownProps, ...rest, state) : {};
-    },
-    mapDispatchToActions
-  );
+    return fn ? fn(editor, ownProps, ...rest, state) : {};
+  }, mapDispatchToActions);
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView

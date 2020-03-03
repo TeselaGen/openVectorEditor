@@ -84,6 +84,7 @@ export default [
       "selectInverse",
       {
         text: "Change Case",
+        cmd: "changeCaseCmd",
         submenu: [
           "flipCaseSequence",
           "upperCaseSequence",

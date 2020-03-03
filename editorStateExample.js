@@ -38,6 +38,7 @@ const exampleEditorState = {
         id: "55a4a061f0c5b50asd00a8bfaf5",
         start: 4,
         end: 20,
+        locations: [{start: 4, end: 6}, {start: 15, end: 20}],
         strand: 1,
         notes: [],
         color: "#BBBBBB",

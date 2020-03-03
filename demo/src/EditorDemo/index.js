@@ -41,6 +41,7 @@ const defaultState = {
   showCircularity: true,
   showGCContent: false,
   GCDecimalDigits: 1,
+  onlyShowLabelsThatDoNotFit: true,
   overrideToolbarOptions: false,
   menuOverrideExample: false,
   propertiesOverridesExample: false,
@@ -985,8 +986,13 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                info: `When enabled AND the user has selected View -> External Labels, only labels that can't fit in a pointed annotation will be external.`,
+                type: "onlyShowLabelsThatDoNotFit"
+              })}
+              {renderToggle({
+                that: this,
                 type: "maxAnnotationsToDisplayAdjustment",
-                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximimum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
               })}
               {renderToggle({
                 that: this,
@@ -1325,6 +1331,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showGCContent={this.state.showGCContent}
+            onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={

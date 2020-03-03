@@ -78,8 +78,8 @@ const fileCommandDefs = {
         ? false
         : (props.readOnly && readOnlyDisabledTooltip) ||
           !props.sequenceData ||
-          (props.sequenceData.stateTrackingId === "initialLoadId" ||
-            props.sequenceData.stateTrackingId === props.lastSavedId),
+          props.sequenceData.stateTrackingId === "initialLoadId" ||
+            props.sequenceData.stateTrackingId === props.lastSavedId,
     isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"
@@ -300,6 +300,10 @@ const triggerClipboardCommand = type => {
 };
 
 const editCommandDefs = {
+  changeCaseCmd: {
+    isHidden: isProtein,
+    handler: () => {}
+  },
   cut: {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -825,16 +829,14 @@ const cirularityCommandDefs = {
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
-    isActive: (props, editorState) =>
-      editorState && editorState.sequenceData.circular
+    isActive: props => props && props.sequenceData.circular
   },
   linear: {
     isHidden: props => props.readOnly,
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(false),
-    isActive: (props, editorState) =>
-      editorState && !editorState.sequenceData.circular
+    isActive: props => props && !props.sequenceData.circular
   }
 };
 
@@ -848,8 +850,9 @@ const labelToggleCommandDefs = {};
     isHidden: props => {
       return props && props.typesToOmit && props.typesToOmit[plural] === false;
     },
-    isActive: (props, editorState) =>
-      editorState && editorState.annotationLabelVisibility[plural]
+    isActive: props => {
+      return props && props.annotationLabelVisibility[plural];
+    }
   };
 });
 
@@ -901,7 +904,12 @@ const viewPropertiesCommandDefs = [
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
-      props.propertiesViewTabUpdate(key, annotation);
+      //we need to clear the properties tab first in case the same item has already been selected
+      props.propertiesViewTabUpdate(key, undefined);
+      setTimeout(() => {
+        //then shortly after we can update it with the correct annotation
+        props.propertiesViewTabUpdate(key, annotation);
+      }, 0);
     }
   };
   return acc;
@@ -1096,6 +1104,20 @@ const toolCommandDefs = {
   }
 };
 
+const labelCommandDefs = {
+  toggleExternalLabels: {
+    name: "External Labels",
+    isActive: props => props.externalLabels === "true",
+    handler: props => {
+      if (props.externalLabels === "true") {
+        props.toggleExternalLabels("false");
+      } else {
+        props.toggleExternalLabels("true");
+      }
+    }
+  }
+};
+
 const commandDefs = {
   ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,
@@ -1106,7 +1128,8 @@ const commandDefs = {
   ...deleteAnnotationCommandDefs,
   ...labelToggleCommandDefs,
   ...editCommandDefs,
-  ...toolCommandDefs
+  ...toolCommandDefs,
+  ...labelCommandDefs
 };
 
 export default instance => oveCommandFactory(instance, commandDefs);

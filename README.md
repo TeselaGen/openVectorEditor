@@ -46,6 +46,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
 - [Data Model](#data-model)
+  - [Feature Locations (aka Feature Joins)](#feature-locations-aka-feature-joins)
 - [Protein Editor](#protein-editor)
 - [Alignments](#alignments)
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
@@ -259,7 +260,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 ```js
 {
 
-	//note, sequence data passed here will be coerced to fit the Teselagen data model
+	//note, sequence data passed here will be coerced to fit the Teselagen data model (Teselagen JSON)
 	sequenceData: { Open Vector Editor data model
 		sequence: "atagatagagaggcccg",
 		features: [
@@ -314,6 +315,28 @@ These are the options to the `updateEditor()` action (the most generic redux act
 The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
+## Feature Locations (aka Feature Joins)
+Features can have multiple internal locations. You can see an example of a joined feature in the ./editorStateExample.js file linked above. 
+They look like this: 
+```js
+{
+	name: "GFP_with_locations"
+	start: 10,
+	end: 40,
+	locations: [{
+		start: 10, //this must match the .start property of the feature,
+		end: 15
+	}, 
+	{
+		start: 18, end: 19
+	},
+	{
+		start: 35,
+		end: 40 //this must match the .end property of the feature,
+	}
+	]
+}
+```
 
 # Protein Editor
 OVE can be set up to view and edit proteins (Amino Acid sequences) as first class citizens. 
