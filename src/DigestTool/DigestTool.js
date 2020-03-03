@@ -1,5 +1,4 @@
 // import uniqid from "uniqid";
-import withEditorProps from "../withEditorProps";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
 import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
@@ -18,6 +17,7 @@ import {
   Intent,
   Checkbox
 } from "@blueprintjs/core";
+import withEditorInteractions from "../withEditorInteractions";
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
@@ -165,7 +165,7 @@ const schema = {
 };
 
 export default compose(
-  withEditorProps,
+  withEditorInteractions,
   withProps(props => {
     const {
       sequenceData,
@@ -217,6 +217,7 @@ export default compose(
 
       // const id = uniqid()
       const id = start + "-" + end + "-" + size + "-";
+      const name = `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps`;
       getRangeLength({ start, end }, sequenceLength);
       fragments.push({
         cut1,
@@ -225,10 +226,12 @@ export default compose(
         end,
         size,
         id,
+        name,
         onFragmentSelect: () => {
           selectionLayerUpdate({
             start,
-            end
+            end,
+            name
           });
           updateSelectedFragment(id);
         }

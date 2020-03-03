@@ -749,6 +749,9 @@ function VectorInteractionHOC(Component /* options */) {
       },
       "selectionLayerRightClicked"
     );
+    digestLaneRightClicked = this.enhanceRightClickAction(() => {
+      return ["newFeature", "newPart"];
+    }, "digestLaneRightClicked");
     searchLayerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
@@ -1004,6 +1007,7 @@ function VectorInteractionHOC(Component /* options */) {
         propsToPass = {
           ...propsToPass,
           selectionLayerRightClicked: this.selectionLayerRightClicked,
+          digestLaneRightClicked: this.digestLaneRightClicked,
           searchLayerRightClicked: this.searchLayerRightClicked,
           backgroundRightClicked: this.backgroundRightClicked,
           featureRightClicked: this.featureRightClicked,
