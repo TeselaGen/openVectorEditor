@@ -78,8 +78,8 @@ const fileCommandDefs = {
         ? false
         : (props.readOnly && readOnlyDisabledTooltip) ||
           !props.sequenceData ||
-          (props.sequenceData.stateTrackingId === "initialLoadId" ||
-            props.sequenceData.stateTrackingId === props.lastSavedId),
+          props.sequenceData.stateTrackingId === "initialLoadId" ||
+          props.sequenceData.stateTrackingId === props.lastSavedId,
     isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"
@@ -399,7 +399,14 @@ const editCommandDefs = {
       })
   },
   versionNumber: {
-    name: "OVE Version:  " + packageJson.version
+    name: "OVE Version:  " + packageJson.version,
+    handler: () => {
+      const win = window.open(
+        "https://github.com/TeselaGen/openVectorEditor/commits/master",
+        "_blank"
+      );
+      win.focus();
+    }
   },
 
   goTo: {
