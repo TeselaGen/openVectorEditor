@@ -12,7 +12,7 @@ import React from "react";
 import "./style.css";
 
 class ToolbarItem extends React.Component {
-  toggleDropdown = ({ forceClose }) => {
+  toggleDropdown = ({ forceClose } = {}) => {
     const { toolName, isOpen } = this.props;
 
     this.props.openToolbarItemUpdate(isOpen || forceClose ? "" : toolName);

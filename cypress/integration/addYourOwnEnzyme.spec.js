@@ -55,7 +55,7 @@ describe("addAdditionalEnzymes", function() {
   it("can open the create a new enzyme dialog from the cutsite filter dropdown", function() {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.contains(".bp3-menu-item", `Add additional enzyme`).click();
+    cy.contains(".bp3-menu-item", `Manage Enzymes`).click();
     cy.contains(".bp3-heading", "Manage Enzymes");
 
     // cy.get(`[data-test="veStatusBar-circularity"]`)

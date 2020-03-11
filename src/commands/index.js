@@ -79,7 +79,7 @@ const fileCommandDefs = {
         : (props.readOnly && readOnlyDisabledTooltip) ||
           !props.sequenceData ||
           props.sequenceData.stateTrackingId === "initialLoadId" ||
-            props.sequenceData.stateTrackingId === props.lastSavedId,
+          props.sequenceData.stateTrackingId === props.lastSavedId,
     isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"
@@ -1099,6 +1099,13 @@ const toolCommandDefs = {
           ? props.sequenceData.sequence
           : ""
       });
+    },
+    isHidden: props => isProtein(props)
+  },
+  openFilterCutsites: {
+    name: "Filter Cutsites",
+    handler: props => {
+      props.openToolbarItemUpdate("cutsiteTool");
     },
     isHidden: props => isProtein(props)
   }

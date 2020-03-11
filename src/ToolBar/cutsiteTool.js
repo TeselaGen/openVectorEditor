@@ -53,12 +53,18 @@ function CutsiteToolDropDown({
 }) {
   return (
     <div className="veToolbarCutsiteFilterHolder">
-      <h6>Filter Cut Sites:</h6>
+      <h6>
+        Filter Cut Sites{" "}
+        <span style={{ fontSize: 12, color: "grey" }}>
+          (Search by name or number of cuts)
+        </span>
+      </h6>
       <CutsiteFilter
         editorName={editorName}
         onChangeHook={function() {
           annotationVisibilityShow("cutsites");
         }}
+        closeDropDown={toggleDropdown}
       />
       {withDigestTool && (
         <Button

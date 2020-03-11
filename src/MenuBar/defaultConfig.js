@@ -114,6 +114,7 @@ export default [
     text: "Tools",
     cmd: "toolsCmd",
     submenu: [
+      "openFilterCutsites",
       "restrictionEnzymesManager",
       "simulateDigestion",
       {
