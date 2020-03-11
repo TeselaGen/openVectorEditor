@@ -610,20 +610,6 @@ function VectorInteractionHOC(Component /* options */) {
               }
             },
             {
-              text: "Copy Complement",
-              className: "openVeCopyComplement",
-              willUnmount: () => {
-                this.openVeCopyComplement &&
-                  this.openVeCopyComplement.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyComplement = makeTextCopyable(
-                  getComplementSequenceAndAnnotations,
-                  className
-                );
-              }
-            },
-            {
               text: "Copy Reverse Complement",
               className: "openVeCopyReverse",
               willUnmount: () => {
@@ -668,6 +654,20 @@ function VectorInteractionHOC(Component /* options */) {
                       ).sequence
                     )
                   }),
+                  className
+                );
+              }
+            },
+            {
+              text: "Copy Complement",
+              className: "openVeCopyComplement",
+              willUnmount: () => {
+                this.openVeCopyComplement &&
+                  this.openVeCopyComplement.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyComplement = makeTextCopyable(
+                  getComplementSequenceAndAnnotations,
                   className
                 );
               }
