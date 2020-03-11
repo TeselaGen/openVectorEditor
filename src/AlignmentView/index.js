@@ -650,6 +650,37 @@ class AlignmentView extends React.Component {
                       );
                     },
                     onClick: () => {
+                      window.toastr.success("Selection Copied As Fasta");
+                    }
+                  },
+                  {
+                    text: `Copy Selection of ${name}`,
+                    className: "copySpecificAlignmentAsPlainClipboardHelper",
+                    willUnmount: () => {
+                      this.copySpecificAlignmentAsPlainClipboardHelper &&
+                        this.copySpecificAlignmentAsPlainClipboardHelper.destroy();
+                    },
+                    didMount: () => {
+                      this.copySpecificAlignmentAsPlainClipboardHelper = new Clipboard(
+                        `.copySpecificAlignmentAsPlainClipboardHelper`,
+                        {
+                          action: "copySpecificAlignmentFasta",
+                          text: () => {
+                            const { selectionLayer } =
+                              this.props.store.getState().VectorEditor
+                                .__allEditorsOptions.alignments[
+                                this.props.id
+                              ] || {};
+                            const seqDataToCopy = getSequenceDataBetweenRange(
+                              alignmentData,
+                              selectionLayer
+                            ).sequence;
+                            return seqDataToCopy;
+                          }
+                        }
+                      );
+                    },
+                    onClick: () => {
                       window.toastr.success("Selection Copied");
                     }
                   }
