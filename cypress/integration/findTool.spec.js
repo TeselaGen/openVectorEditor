@@ -3,6 +3,13 @@ describe("find tool", function() {
     cy.visit("");
   });
 
+  it(`can be expanded and should have full functionality as such`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gataca", { delay: 1 }); //this should cause 1 region to be selected
+    cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
+    cy.contains(".ve-find-options-popover .bp3-switch", "Expanded").click();
+    cy.get(".veFindBar textarea").should("have.value", "gataca");
+  });
   it(`find parts/primers/features`, () => {
     cy.get(".ve-tool-container-featureTool").click();
     cy.get(".ve-tool-container-oligoTool").click();
