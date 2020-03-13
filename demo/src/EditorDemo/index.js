@@ -40,9 +40,8 @@ const defaultState = {
   showReadOnly: true,
   showCircularity: true,
   showGCContent: false,
-  externalLabelsLinearMap: false,
-  externalLabelsSequenceMap: false,
   GCDecimalDigits: 1,
+  onlyShowLabelsThatDoNotFit: true,
   overrideToolbarOptions: false,
   menuOverrideExample: false,
   propertiesOverridesExample: false,
@@ -987,13 +986,8 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                type: "externalLabelsLinearMap",
-                info: `pass externalLabels object externalLabelsLinearMap=true to show labels outside of features in the Linear Map but the default view for the Sequence Map`
-              })}
-              {renderToggle({
-                that: this,
-                type: "externalLabelsSequenceMap",
-                info: `pass externalLabels object externalLabelsSequenceMap=true to show labels outside of features in the Sequence Map but the default view for the Linear Map`
+                info: `When enabled AND the user has selected View -> External Labels, only labels that can't fit in a pointed annotation will be external.`,
+                type: "onlyShowLabelsThatDoNotFit"
               })}
               {renderToggle({
                 that: this,
@@ -1337,10 +1331,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showGCContent={this.state.showGCContent}
-            externalLabels={{
-              sequenceMap: this.state.externalLabelsSequenceMap,
-              linearMap: this.state.externalLabelsLinearMap
-            }}
+            onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={

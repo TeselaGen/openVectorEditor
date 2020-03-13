@@ -265,7 +265,13 @@ describe("editor", function() {
     cy.contains(".veLabelText", "CHANGED_SEQ");
     cy.contains("Selecting 4 bps from 5295 to 1");
   });
-  it(`should handle externalLabelsLinearMap by putting feature labels outside the feature (with restriction enzymes)`, () => {
+  it(`should handle enabling external labels and then only showing labels that don't fit`, () => {
+    cy.get(".tg-menu-bar")
+      .contains("View")
+      .click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("External Labels")
+      .click();
     cy.get(".veTabProperties")
       .contains("Properties")
       .click();
@@ -274,21 +280,8 @@ describe("editor", function() {
       .click();
     cy.contains("text", "pSC101**");
     cy.contains("text", "pj5_00001");
-    cy.tgToggle("externalLabelsLinearMap");
+    cy.get(`[data-test="onlyShowLabelsThatDoNotFit"]`).click({ force: true });
     cy.contains(".vePartLabel", "pj5_00001");
     cy.contains(".veFeatureLabel", "pSC101**");
-  });
-  it(`should handle externalLabelsSequenceMap by putting feature labels outside the feature (with restriction enzymes)`, () => {
-    cy.get(".veTabCircularMap")
-      .contains("Circular Map")
-      .click();
-    cy.get(".veTabSequenceMap")
-      .contains("Sequence Map")
-      .click();
-    cy.contains("text", "araD");
-    cy.contains("text", "pj5_00001");
-    cy.tgToggle("externalLabelsSequenceMap");
-    cy.contains(".vePartLabel", "pj5_00001");
-    cy.contains(".veFeatureLabel", "araD");
   });
 });

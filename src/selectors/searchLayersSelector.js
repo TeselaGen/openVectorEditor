@@ -50,7 +50,9 @@ function searchLayersSelector(
   });
   return matches.map(match => ({
     ...match,
-    className: "veSearchLayer",
+    className:
+      "veSearchLayer " +
+      (match.bottomStrand ? " veSearchLayerBottomStrand" : ""),
     isSearchLayer: true
   }));
 }

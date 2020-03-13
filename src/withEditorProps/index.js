@@ -300,7 +300,10 @@ export default compose(
                   end: sequenceData.isProtein ? 2 : 0
                 };
 
-          handler({ ...rangeToUse, forward: true });
+          handler({
+            ...rangeToUse,
+            forward: !(selectionLayer.forward === false)
+          });
         }
       };
       return acc;

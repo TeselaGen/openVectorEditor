@@ -167,6 +167,7 @@ export class CircularView extends React.Component {
       {
         zIndex: 10,
         layerName: "cutsites",
+        fontStyle: "italic",
         Comp: Cutsite,
         useStartAngle: true,
         allOnSameLevel: true,
@@ -239,6 +240,7 @@ export class CircularView extends React.Component {
           layerName,
           maxToDisplay,
           Comp,
+          fontStyle,
           alwaysShow,
           isAnnotation,
           spaceBefore = 0,
@@ -292,6 +294,7 @@ export class CircularView extends React.Component {
           }
           results = drawAnnotations({
             Annotation: Comp || Feature,
+            fontStyle: fontStyle,
             annotationType: singularName,
             reverseAnnotations: true,
             showLabels: !(annotationLabelVisibility[layerName] === false),

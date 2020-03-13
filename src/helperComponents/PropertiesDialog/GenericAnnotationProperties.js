@@ -119,7 +119,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 style={{ marginRight: 15 }}
                 onClick={() => {
                   showAddOrEditAnnotationDialog({
-                    ...pick(selectionLayer, "start", "end")
+                    ...pick(selectionLayer, "start", "end", "forward")
                   });
                 }}
               >
