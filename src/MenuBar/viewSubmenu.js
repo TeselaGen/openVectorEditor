@@ -163,5 +163,6 @@ export default [
 
   { divider: "" },
 
-  { cmd: "toggleExternalLabels", shouldDismissPopover: false }
+  { cmd: "toggleExternalLabels", shouldDismissPopover: false },
+  { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false }
 ];

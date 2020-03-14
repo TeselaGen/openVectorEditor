@@ -181,7 +181,8 @@ const DrawLabel = withHover(
         xStartOriginal,
         xStart,
         onMouseLeave,
-        onMouseOver
+        onMouseOver,
+        lineLabelInstensity
       } = this.props;
       let heightToUse = height;
       let bottom = 0;
@@ -256,7 +257,7 @@ const DrawLabel = withHover(
               bottom,
               height: Math.max(heightToUse, 3),
               width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : 0.2,
+              opacity: hovered ? 1 : lineLabelInstensity,
               background: hovered ? "black" : "grey"
             }}
           />

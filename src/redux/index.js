@@ -27,6 +27,7 @@ import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as externalLabels from "./externalLabels";
+import * as labelLineIntensity from "./labelLineIntensity";
 
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
@@ -60,7 +61,8 @@ const subReducers = {
   sequenceData,
   useAdditionalOrfStartCodons,
   uppercaseSequenceMapFont,
-  externalLabels
+  externalLabels,
+  labelLineIntensity
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
@@ -172,6 +174,12 @@ export default function reducerFactory(initialState = {}) {
           !state.__allEditorsOptions
             ? undefined
             : state.__allEditorsOptions.externalLabels,
+          action
+        ),
+        labelLineIntensity: labelLineIntensity.default(
+          !state.__allEditorsOptions
+            ? undefined
+            : state.__allEditorsOptions.labelLineIntensity,
           action
         ),
         alignments: alignments.default(
