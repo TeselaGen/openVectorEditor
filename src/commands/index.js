@@ -1109,6 +1109,12 @@ const toolCommandDefs = {
     isHidden: props => isProtein(props)
   }
 };
+
+const labelIntensities = {
+  Low: 0.1,
+  Medium: 0.4,
+  High: 0.9
+};
 const labelCommandDefs = {
   toggleExternalLabels: {
     name: "External Labels",
@@ -1123,28 +1129,12 @@ const labelCommandDefs = {
   },
   adjustLabelLineIntensity: {
     name: "Label Line Intensity",
-    submenu: props => [
-      {
-        text: "Low",
-        checked: props.labelLineIntensity === 0.1,
-        onClick: () => props.changeLabelLineIntensity(0.1)
-      },
-      {
-        text: "Medium",
-        checked: props.labelLineIntensity === 0.4,
-        onClick: () => props.changeLabelLineIntensity(0.4)
-      },
-      {
-        text: "High",
-        checked: props.labelLineIntensity === 0.7,
-        onClick: () => props.changeLabelLineIntensity(0.7)
-      },
-      {
-        text: "Full",
-        checked: props.labelLineIntensity === 1.0,
-        onClick: () => props.changeLabelLineIntensity(1.0)
-      }
-    ]
+    submenu: props =>
+      map(Object.keys(labelIntensities), key => ({
+        text: key,
+        checked: props.labelLineIntensity === labelIntensities[key],
+        onClick: () => props.changeLabelLineIntensity(labelIntensities[key])
+      }))
   }
 };
 

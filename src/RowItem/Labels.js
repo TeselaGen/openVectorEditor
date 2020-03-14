@@ -258,7 +258,7 @@ const DrawLabel = withHover(
               left: xStartOriginal,
               bottom,
               height: Math.max(heightToUse, 3),
-              width: hovered ? 2 : 1,
+              width: 2,
               opacity: hovered ? 1 : labelLineIntensity,
               background: "black"
             }}
