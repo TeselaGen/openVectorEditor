@@ -221,7 +221,7 @@ const DrawLabelGroup = withHover(function({
         //   : {},
         label
       ],
-      { style: { opacity: 1 } }
+      { style: { opacity: 1 }, strokeWidth: 2 }
     );
     content = [
       line,
@@ -300,7 +300,7 @@ const DrawLabelGroup = withHover(function({
           label
         ],
         hovered
-          ? { style: { opacity: 1 } }
+          ? { style: { opacity: 1 }, strokeWidth: 2 }
           : { style: { opacity: labelLineIntensity } }
       )
     ];
@@ -347,9 +347,6 @@ function LabelLine(pointArray, options) {
           stroke: "black",
           fill: "none",
           strokeWidth: 1,
-          style: {
-            opacity: options.labelLineIntensity
-          },
           className: "veLabelLine",
           ...options
         }}
