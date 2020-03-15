@@ -10827,9 +10827,9 @@ li.bp3-menu-divider:last-child {
 .bp3-dark .veLabels .veAnnotationHovered rect {
   fill: rgb(64, 64, 92) !important;
 }
-.veLabelLine {
+/* .veLabelLine {
   opacity: 0.1;
-}
+} */
 
 .veCircularViewMiddleOfVectorText {
   position: absolute;
