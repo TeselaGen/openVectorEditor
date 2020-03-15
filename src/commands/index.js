@@ -1110,6 +1110,11 @@ const toolCommandDefs = {
   }
 };
 
+const labelIntensities = {
+  Low: 0.1,
+  Medium: 0.4,
+  High: 0.9
+};
 const labelCommandDefs = {
   toggleExternalLabels: {
     name: "External Labels",
@@ -1121,6 +1126,15 @@ const labelCommandDefs = {
         props.toggleExternalLabels("true");
       }
     }
+  },
+  adjustLabelLineIntensity: {
+    name: "Label Line Intensity",
+    submenu: props =>
+      map(Object.keys(labelIntensities), key => ({
+        text: key,
+        checked: props.labelLineIntensity === labelIntensities[key],
+        onClick: () => props.changeLabelLineIntensity(labelIntensities[key])
+      }))
   }
 };
 

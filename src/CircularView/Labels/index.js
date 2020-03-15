@@ -12,6 +12,7 @@ function Labels({
   radius: outerRadius,
   editorName,
   textScalingFactor,
+  labelLineIntensity,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
@@ -95,7 +96,8 @@ function Labels({
             fontWidth,
             fontHeight,
             condenseOverflowingXLabels,
-            outerRadius
+            outerRadius,
+            labelLineIntensity
           }}
         />
       </g>
@@ -123,6 +125,7 @@ const DrawLabelGroup = withHover(function({
   circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
+  labelLineIntensity,
   // labelIds,
   multipleLabels
   // isIdHashmap,
@@ -296,7 +299,9 @@ const DrawLabelGroup = withHover(function({
           label.outerPoint,
           label
         ],
-        hovered ? { style: { opacity: 1 } } : {}
+        hovered
+          ? { style: { opacity: 1 } }
+          : { style: { opacity: labelLineIntensity } }
       )
     ];
   }
@@ -342,9 +347,9 @@ function LabelLine(pointArray, options) {
           stroke: "black",
           fill: "none",
           strokeWidth: 1,
-          // style: {
-          //   opacity: 0.2
-          // },
+          style: {
+            opacity: options.labelLineIntensity
+          },
           className: "veLabelLine",
           ...options
         }}
@@ -385,7 +390,8 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   fontHeight,
   condenseOverflowingXLabels,
   outerRadius,
-  editorName
+  editorName,
+  labelLineIntensity
 }) {
   return groupedLabels.map(function(label) {
     let { labelAndSublabels, labelIds } = label;
@@ -407,7 +413,8 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
           editorName,
           fontHeight,
           condenseOverflowingXLabels,
-          outerRadius
+          outerRadius,
+          labelLineIntensity
         }}
       />
     );

@@ -19,7 +19,8 @@ function Labels(props) {
     onlyShowLabelsThatDoNotFit,
     annotationHeight,
     textWidth = 6,
-    editorName
+    editorName,
+    labelLineIntensity
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -134,7 +135,8 @@ function Labels(props) {
           onRightClick: annotationRange.onRightClick,
           height,
           xStart,
-          xEnd
+          xEnd,
+          labelLineIntensity
         }}
       />
     );
@@ -181,7 +183,8 @@ const DrawLabel = withHover(
         xStartOriginal,
         xStart,
         onMouseLeave,
-        onMouseOver
+        onMouseOver,
+        labelLineIntensity
       } = this.props;
       let heightToUse = height;
       let bottom = 0;
@@ -255,9 +258,9 @@ const DrawLabel = withHover(
               left: xStartOriginal,
               bottom,
               height: Math.max(heightToUse, 3),
-              width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : 0.2,
-              background: hovered ? "black" : "grey"
+              width: 2,
+              opacity: hovered ? 1 : labelLineIntensity,
+              background: "black"
             }}
           />
         </div>

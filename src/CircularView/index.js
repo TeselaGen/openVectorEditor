@@ -99,7 +99,8 @@ export class CircularView extends React.Component {
       searchLayerRightClicked = noop,
       selectionLayerRightClicked = noop,
       searchLayerClicked = noop,
-      instantiated
+      instantiated,
+      labelLineIntensity
     } = this.props;
     let { sequence = "atgc", circular } = sequenceData;
     let sequenceLength = sequence.length;
@@ -229,6 +230,7 @@ export class CircularView extends React.Component {
         Comp: Labels,
         circularViewWidthVsHeightRatio: width / height,
         passLabels: true,
+        labelLineIntensity: labelLineIntensity,
         textScalingFactor: 700 / Math.min(width, height)
       }
     ];

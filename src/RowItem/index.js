@@ -94,7 +94,8 @@ export class RowItem extends React.PureComponent {
       bpsPerRow = sequenceLength,
       editorName,
       externalLabels,
-      onlyShowLabelsThatDoNotFit
+      onlyShowLabelsThatDoNotFit,
+      labelLineIntensity
     } = this.props;
 
     let {
@@ -188,6 +189,7 @@ export class RowItem extends React.PureComponent {
         <Labels
           {...annotationCommonProps}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
+          labelLineIntensity={labelLineIntensity}
           rangeMax={bpsPerRow}
           annotationRanges={ranges}
           annotationHeight={cutsiteLabelHeight}
