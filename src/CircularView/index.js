@@ -99,7 +99,8 @@ export class CircularView extends React.Component {
       searchLayerRightClicked = noop,
       selectionLayerRightClicked = noop,
       searchLayerClicked = noop,
-      instantiated
+      instantiated,
+      labelLineIntensity
     } = this.props;
     let { sequence = "atgc", circular } = sequenceData;
     let sequenceLength = sequence.length;
@@ -167,6 +168,7 @@ export class CircularView extends React.Component {
       {
         zIndex: 10,
         layerName: "cutsites",
+        fontStyle: "italic",
         Comp: Cutsite,
         useStartAngle: true,
         allOnSameLevel: true,
@@ -228,6 +230,7 @@ export class CircularView extends React.Component {
         Comp: Labels,
         circularViewWidthVsHeightRatio: width / height,
         passLabels: true,
+        labelLineIntensity: labelLineIntensity,
         textScalingFactor: 700 / Math.min(width, height)
       }
     ];
@@ -239,6 +242,7 @@ export class CircularView extends React.Component {
           layerName,
           maxToDisplay,
           Comp,
+          fontStyle,
           alwaysShow,
           isAnnotation,
           spaceBefore = 0,
@@ -259,6 +263,7 @@ export class CircularView extends React.Component {
         radius += spaceBefore;
         const sharedProps = {
           radius,
+          isProtein,
           onClick: this.props[singularName + "Clicked"],
           onRightClicked: this.props[singularName + "RightClicked"],
           sequenceLength,
@@ -290,8 +295,8 @@ export class CircularView extends React.Component {
             );
           }
           results = drawAnnotations({
-            isProtein,
             Annotation: Comp || Feature,
+            fontStyle: fontStyle,
             annotationType: singularName,
             reverseAnnotations: true,
             showLabels: !(annotationLabelVisibility[layerName] === false),
@@ -311,7 +316,8 @@ export class CircularView extends React.Component {
         if (results) {
           // //update the radius, labels, and svg
           radius += results.height || 0;
-          labels = { ...labels, ...(results.labels || {}) };
+          //tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
+          labels = [...map(labels), ...map(results.labels || {})];
           comp = results.component || results;
         }
         radius += spaceAfter;

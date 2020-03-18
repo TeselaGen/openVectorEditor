@@ -6,6 +6,7 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 // ------------------------------------
 export const toggleFindTool = createAction("TOGGLE_FIND_TOOL", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
 export const toggleHighlightAll = createAction("toggleHighlightAll", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
+export const toggleIsInline = createAction("toggleIsInline", () => {}); //NOTE!!:: second argument sanitizes actions so no payload is passed!
 export const updateSearchText = createAction("updateSearchText");
 export const updateAmbiguousOrLiteral = createAction(
   "updateAmbiguousOrLiteral"
@@ -28,6 +29,13 @@ export default createMergedDefaultStateReducer(
       return {
         ...state,
         highlightAll: !state.highlightAll
+      };
+    },
+    [toggleIsInline]: state => {
+      localStorage.setItem("veFindBarIsExpanded", state.isInline);
+      return {
+        ...state,
+        isInline: !state.isInline
       };
     },
     [updateAmbiguousOrLiteral]: (state, payload) => {
@@ -60,6 +68,7 @@ export default createMergedDefaultStateReducer(
   },
   {
     isOpen: false,
+    isInline: !localStorage.getItem("veFindBarIsExpanded"),
     searchText: "",
     dnaOrAA: "DNA",
     ambiguousOrLiteral: "LITERAL",

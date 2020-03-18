@@ -15,7 +15,7 @@ export default connectToEditor(({ findTool = {} }) => {
         Icon: !isOpen ? (
           <Icon data-test="ve-find-tool-toggle" icon="search" />
         ) : (
-          <FindBar editorName={editorName} isInline />
+          <FindBar editorName={editorName} />
         ),
         renderIconAbove: isOpen,
         onIconClick: toggleFindTool,

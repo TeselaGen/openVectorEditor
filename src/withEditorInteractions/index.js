@@ -14,13 +14,9 @@ import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
 import { getContext, branch } from "recompose";
 
-import {
-  normalizePositionByRangeLength
-  // convertRangeTo1Based
-} from "ve-range-utils";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
 
-// import handleCaretMoved from "./handleCaretMoved";
 import Combokeys from "combokeys";
 import PropTypes from "prop-types";
 import {
@@ -60,6 +56,8 @@ function getAcceptedChars(isProtein) {
 const annotationClickHandlers = [
   "orfClicked",
   "primerClicked",
+  "lineageAnnotationClicked",
+  "assemblyPieceClicked",
   "translationClicked",
   "primaryProteinSequenceClicked",
   "cutsiteClicked",
@@ -512,18 +510,13 @@ function VectorInteractionHOC(Component /* options */) {
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
-      const {
-        sequenceData,
-        selectionLayer,
-        editorName,
-        store,
-        readOnly
-      } = this.props;
+      const { sequenceData, readOnly } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
+            const { selectionLayer, editorName, store } = this.props;
             const { sequenceData, copyOptions } = store.getState().VectorEditor[
               editorName
             ];
@@ -552,7 +545,9 @@ function VectorInteractionHOC(Component /* options */) {
             } else {
               document.body.addEventListener("cut", this.handleCut);
             }
-
+            if (window.Cypress) {
+              window.__tg_copiedSeqData = sequenceDataToCopy;
+            }
             return sequenceDataToCopy.sequence;
           }
         });
@@ -615,20 +610,6 @@ function VectorInteractionHOC(Component /* options */) {
               }
             },
             {
-              text: "Copy Complement",
-              className: "openVeCopyComplement",
-              willUnmount: () => {
-                this.openVeCopyComplement &&
-                  this.openVeCopyComplement.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyComplement = makeTextCopyable(
-                  getComplementSequenceAndAnnotations,
-                  className
-                );
-              }
-            },
-            {
               text: "Copy Reverse Complement",
               className: "openVeCopyReverse",
               willUnmount: () => {
@@ -677,6 +658,20 @@ function VectorInteractionHOC(Component /* options */) {
                 );
               }
             },
+            {
+              text: "Copy Complement",
+              className: "openVeCopyComplement",
+              willUnmount: () => {
+                this.openVeCopyComplement &&
+                  this.openVeCopyComplement.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyComplement = makeTextCopyable(
+                  getComplementSequenceAndAnnotations,
+                  className
+                );
+              }
+            },
             copyOptionsMenu
           ]
         },
@@ -694,6 +689,7 @@ function VectorInteractionHOC(Component /* options */) {
         "reverseComplementSelection",
         "complementSelection",
         {
+          cmd: "changeCaseCmd",
           text: "Change Case",
           submenu: [
             // "upperCaseSequence",
@@ -753,15 +749,20 @@ function VectorInteractionHOC(Component /* options */) {
       },
       "selectionLayerRightClicked"
     );
+    digestLaneRightClicked = this.enhanceRightClickAction(() => {
+      return ["newFeature", "newPart"];
+    }, "digestLaneRightClicked");
     searchLayerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        forward: !annotation.bottomStrand
       });
       return this.getSelectionMenuOptions({
         //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        forward: !annotation.bottomStrand
       });
     }, "searchLayerRightClicked");
 
@@ -828,6 +829,7 @@ function VectorInteractionHOC(Component /* options */) {
         "newTranslation",
         "newReverseTranslation",
         "--",
+        "showRemoveDuplicatesDialogParts",
         "viewPartProperties"
       ];
     }, "partRightClicked");
@@ -895,6 +897,7 @@ function VectorInteractionHOC(Component /* options */) {
                     showMergeFeaturesDialog(annotation);
                   }
                 },
+                "showRemoveDuplicatesDialogFeatures",
                 "--"
               ]),
           "toggleCdsFeatureTranslations",
@@ -923,6 +926,7 @@ function VectorInteractionHOC(Component /* options */) {
         ...this.getSelectionMenuOptions(annotation),
         "newTranslation",
         "newReverseTranslation",
+        "showRemoveDuplicatesDialogPrimers",
         "viewPrimerProperties"
       ];
     }, "primerRightClicked");
@@ -1003,6 +1007,7 @@ function VectorInteractionHOC(Component /* options */) {
         propsToPass = {
           ...propsToPass,
           selectionLayerRightClicked: this.selectionLayerRightClicked,
+          digestLaneRightClicked: this.digestLaneRightClicked,
           searchLayerRightClicked: this.searchLayerRightClicked,
           backgroundRightClicked: this.backgroundRightClicked,
           featureRightClicked: this.featureRightClicked,
@@ -1056,6 +1061,7 @@ export default compose(
   getContext({
     store: PropTypes.object
   }),
+  // connect(),
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );

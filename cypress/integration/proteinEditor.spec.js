@@ -103,6 +103,9 @@ describe("editor", function() {
     cy.get(".bp3-menu-item")
       .contains("Cut")
       .click();
+    cy.get(".bp3-toast .bp3-icon-cross")
+      .first()
+      .click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()
@@ -254,7 +257,7 @@ describe("editor", function() {
     cy.contains(".rt-td", "(11-31)");
 
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("protein_bind    1124..1162");
+    cy.contains("protein_bind 1124..1162");
     cy.contains("complement(join(7..25,29..49,501..885))");
   });
 

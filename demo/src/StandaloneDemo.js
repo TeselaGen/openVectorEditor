@@ -52,12 +52,12 @@ export default class StandaloneDemo extends React.Component {
           onNew: () => {}, //unless this callback is defined, don't show the option to create a new seq
           onDuplicate: () => {}, //unless this callback is defined, don't show the option to create a new seq
           onSave: function(
-            event,
+            opts = {},
             sequenceDataToSave,
             editorState,
             onSuccessCallback
           ) {
-            console.info("event:", event);
+            console.info("opts:", opts);
             console.info("sequenceData:", sequenceDataToSave);
             console.info("editorState:", editorState);
             // To disable the save button after successful saving

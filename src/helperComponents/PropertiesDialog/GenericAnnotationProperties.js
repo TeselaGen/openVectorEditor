@@ -2,13 +2,14 @@ import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  CmdCheckbox
+  CmdCheckbox,
+  CmdButton
 } from "teselagen-react-components";
-import { map, upperFirst } from "lodash";
+import { map, upperFirst, pick } from "lodash";
 import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
-import { Popover } from "@blueprintjs/core";
-import ColorPicker from "./ColorPicker";
+// import { Popover } from "@blueprintjs/core";
+// import ColorPicker from "./ColorPicker";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
@@ -25,9 +26,10 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
               type: "string",
               render: color => {
                 return (
-                  <ColorPickerPopover>
-                    <div style={{ height: 20, width: 20, background: color }} />
-                  </ColorPickerPopover>
+                  <div style={{ height: 20, width: 20, background: color }} />
+                  // <ColorPickerPopover>
+                  //   <div style={{ height: 20, width: 20, background: color }} />
+                  // </ColorPickerPopover>
                 );
               }
             }
@@ -116,7 +118,9 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 disabled={!sequenceLength}
                 style={{ marginRight: 15 }}
                 onClick={() => {
-                  showAddOrEditAnnotationDialog(selectionLayer);
+                  showAddOrEditAnnotationDialog({
+                    ...pick(selectionLayer, "start", "end", "forward")
+                  });
                 }}
               >
                 New
@@ -141,6 +145,16 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
               >
                 Delete
               </Button>
+              {["part", "primer", "feature"].includes(annotationType) && (
+                <CmdButton
+                  cmd={
+                    this.commands[
+                      `showRemoveDuplicatesDialog${annotationTypeUpper + "s"}`
+                    ]
+                  }
+                  style={{ marginRight: 15 }}
+                />
+              )}
             </div>
           )}
         </React.Fragment>
@@ -172,13 +186,13 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
 
 export default genericAnnotationProperties;
 
-const ColorPickerPopover = ({ readOnly, onColorSelect, children }) => {
-  return (
-    <Popover
-      disabled={readOnly}
-      content={<ColorPicker onColorSelect={onColorSelect} />}
-    >
-      {children}
-    </Popover>
-  );
-};
+// const ColorPickerPopover = ({ readOnly, onColorSelect, children }) => {
+//   return (
+//     <Popover
+//       disabled={readOnly}
+//       content={<ColorPicker onColorSelect={onColorSelect} />}
+//     >
+//       {children}
+//     </Popover>
+//   );
+// };

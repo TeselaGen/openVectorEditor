@@ -49,6 +49,14 @@ export function showPrintDialog() {
     name: "PrintDialog" //you'll need to pass a unique dialogName prop to the compoennt
   };
 }
+export function showRemoveDuplicatesDialog(props) {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "RemoveDuplicatesDialog",
+    props //you'll need to pass a unique dialogName prop to the compoennt
+  };
+}
+
 export function showAddOrEditPrimerDialog(annotation, { editorName }) {
   return {
     type: "TG_SHOW_MODAL",

@@ -17,7 +17,8 @@ import {
   reduce,
   startCase,
   get,
-  filter
+  filter,
+  camelCase
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
@@ -71,14 +72,28 @@ const fileCommandDefs = {
   },
 
   saveSequence: {
+    name: "Save",
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) ||
-      !props.sequenceData ||
-      (props.sequenceData.stateTrackingId === "initialLoadId" ||
-        props.sequenceData.stateTrackingId === props.lastSavedId),
+      props.alwaysAllowSave
+        ? false
+        : (props.readOnly && readOnlyDisabledTooltip) ||
+          !props.sequenceData ||
+          props.sequenceData.stateTrackingId === "initialLoadId" ||
+          props.sequenceData.stateTrackingId === props.lastSavedId,
     isHidden: props => props.readOnly || !props.handleSave,
     handler: props => props.handleSave(),
     hotkey: "mod+s"
+  },
+  saveSequenceAs: {
+    name: "Save As",
+    // isDisabled: props =>
+    //   (props.readOnly && readOnlyDisabledTooltip) ||
+    //   !props.sequenceData ||
+    //   (props.sequenceData.stateTrackingId === "initialLoadId" ||
+    //     props.sequenceData.stateTrackingId === props.lastSavedId),
+    isHidden: props => !props.onSaveAs,
+    handler: props => props.handleSave({ isSaveAs: true }),
+    hotkey: "mod+shift+s"
   },
   toolsCmd: {
     handler: () => {},
@@ -227,7 +242,23 @@ const fileCommandDefs = {
     hotkeyProps: { preventDefault: true },
     handler: props => props.showPrintDialog(),
     hotkey: "mod+p"
-  }
+  },
+  ...["Parts", "Features", "Primers"].reduce((acc, type) => {
+    //showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
+    acc[`showRemoveDuplicatesDialog${type}`] = {
+      name: `Remove Duplicate ${startCase(type)}`,
+      isDisabled: props => props.readOnly,
+      handler: props =>
+        props.showRemoveDuplicatesDialog({
+          type: camelCase(type),
+          editorName: props.editorName,
+          dialogProps: {
+            title: `Remove Duplicate ${type}`
+          }
+        })
+    };
+    return acc;
+  }, {})
 };
 //copy options
 const toggleCopyOptionCommandDefs = {};
@@ -269,6 +300,10 @@ const triggerClipboardCommand = type => {
 };
 
 const editCommandDefs = {
+  changeCaseCmd: {
+    isHidden: isProtein,
+    handler: () => {}
+  },
   cut: {
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -364,7 +399,14 @@ const editCommandDefs = {
       })
   },
   versionNumber: {
-    name: "OVE Version:  " + packageJson.version
+    name: "OVE Version:  " + packageJson.version,
+    handler: () => {
+      const win = window.open(
+        "https://github.com/TeselaGen/openVectorEditor/commits/master",
+        "_blank"
+      );
+      win.focus();
+    }
   },
 
   goTo: {
@@ -482,57 +524,94 @@ const editCommandDefs = {
     isHidden: isProtein
   },
   ...[
-    "upperCaseSequence",
-    "lowerCaseSequence",
-    "upperCaseSelection",
-    "lowerCaseSelection"
-  ].reduce((acc, type) => {
+    { hotkey: "option + =", type: "flipCaseSequence" },
+    { hotkey: "option + plus", type: "upperCaseSequence" },
+    { hotkey: "option + -", type: "lowerCaseSequence" },
+    { /* hotkey: "option+-", */ type: "upperCaseSelection" },
+    { /* hotkey: "option+-", */ type: "lowerCaseSelection" }
+  ].reduce((acc, { type, hotkey }) => {
     const isSelection = type.includes("Selection");
 
     acc[type] = {
       isHidden: isProtein,
       isDisabled: props => {
+        if (props.readOnly) {
+          return "The sequence is read only. Try changing 'View > Sequence Case'";
+        }
         if (isSelection && !(props.selectionLayer.start > -1)) {
           return "No Selection to Replace";
         }
       },
       name: startCase(type),
+      hotkey,
       handler: props => {
         const { sequence } = props.sequenceData;
         const { selectionLayer } = props;
-
+        let toastFired;
+        if (props.uppercaseSequenceMapFont !== "noPreference") {
+          toastFired = true;
+          props.updateSequenceCase("noPreference");
+          window.toastr.success(
+            `Sequence Case Edited Successfully. To avoid confusion we set: 'View > Sequence Case' to 'No Preference'`,
+            {
+              timeout: 10000
+            }
+          );
+        }
         const func = type.includes("lower") ? "toLowerCase" : "toUpperCase";
-        props.updateSequenceData({
-          ...props.sequenceData,
-          sequence: isSelection
-            ? adjustBpsToReplaceOrInsert(
-                sequence,
-                getSequenceWithinRange(selectionLayer, sequence)[func](),
-                selectionLayer,
-                false
-              )
-            : sequence[func]()
-        });
+        let newSeq;
+        let orginalSeq = isSelection
+          ? getSequenceWithinRange(selectionLayer, sequence)
+          : sequence;
+        if (type.includes("flip")) {
+          newSeq = invertString(orginalSeq);
+        } else {
+          newSeq = orginalSeq[func]();
+        }
+        if (newSeq !== orginalSeq) {
+          !toastFired &&
+            window.toastr.success(`Sequence Case Edited Successfully`);
+          //don't trigger a mutation unless something has actually changed
+          props.updateSequenceData({
+            ...props.sequenceData,
+            sequence: isSelection
+              ? adjustBpsToReplaceOrInsert(
+                  sequence,
+                  newSeq,
+                  selectionLayer,
+                  false
+                )
+              : newSeq
+          });
+        }
       }
     };
     return acc;
   }, {}),
-  // upperCaseSequence: {
-  //   // isActive: props => props.uppercaseSequenceMapFont === "uppercase",
-
-  //     // props.uppercaseSequenceMapFont === "uppercase"
-  //     //   ? props.updateSequenceCase("noPreference")
-  //     //   : props.updateSequenceCase("uppercase");
-  //   }
-  // },
-  // toggleSequenceMapFontLower: {
-  //   isActive: props => props.uppercaseSequenceMapFont === "lowercase",
-  //   handler: props => {
-  //     props.uppercaseSequenceMapFont === "lowercase"
-  //       ? props.updateSequenceCase("noPreference")
-  //       : props.updateSequenceCase("lowercase");
-  //   }
-  // },
+  toggleSequenceMapFontUpper: {
+    isActive: props => props.uppercaseSequenceMapFont === "uppercase",
+    handler: props => {
+      props.updateSequenceCase("uppercase");
+      window.toastr.success(`Sequence Case View Changed`);
+    },
+    hotkey: "ctrl+option+plus"
+  },
+  toggleSequenceMapFontRaw: {
+    isActive: props => props.uppercaseSequenceMapFont === "noPreference",
+    handler: props => {
+      props.updateSequenceCase("noPreference");
+      window.toastr.success(`Sequence Case View Changed`);
+    },
+    hotkey: "ctrl+option+="
+  },
+  toggleSequenceMapFontLower: {
+    isActive: props => props.uppercaseSequenceMapFont === "lowercase",
+    handler: props => {
+      props.updateSequenceCase("lowercase");
+      window.toastr.success(`Sequence Case View Changed`);
+    },
+    hotkey: "ctrl+option+-"
+  },
   createMenuHolder: {
     isHidden: props => isProtein(props) && props.readOnly,
     handler: () => {}
@@ -679,7 +758,8 @@ const editCommandDefs = {
       !props.annotationsToSupport.features,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
-    hotkey: "mod+k"
+    hotkey: "mod+k",
+    hotkeyProps: { preventDefault: true }
   },
   useGtgAndCtgAsStartCodons: {
     isHidden: isProtein,
@@ -756,16 +836,14 @@ const cirularityCommandDefs = {
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
-    isActive: (props, editorState) =>
-      editorState && editorState.sequenceData.circular
+    isActive: props => props && props.sequenceData.circular
   },
   linear: {
     isHidden: props => props.readOnly,
 
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(false),
-    isActive: (props, editorState) =>
-      editorState && !editorState.sequenceData.circular
+    isActive: props => props && !props.sequenceData.circular
   }
 };
 
@@ -779,8 +857,9 @@ const labelToggleCommandDefs = {};
     isHidden: props => {
       return props && props.typesToOmit && props.typesToOmit[plural] === false;
     },
-    isActive: (props, editorState) =>
-      editorState && editorState.annotationLabelVisibility[plural]
+    isActive: props => {
+      return props && props.annotationLabelVisibility[plural];
+    }
   };
 });
 
@@ -832,7 +911,12 @@ const viewPropertiesCommandDefs = [
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
-      props.propertiesViewTabUpdate(key, annotation);
+      //we need to clear the properties tab first in case the same item has already been selected
+      props.propertiesViewTabUpdate(key, undefined);
+      setTimeout(() => {
+        //then shortly after we can update it with the correct annotation
+        props.propertiesViewTabUpdate(key, annotation);
+      }, 0);
     }
   };
   return acc;
@@ -1026,6 +1110,34 @@ const toolCommandDefs = {
   }
 };
 
+const labelIntensities = {
+  Low: 0.1,
+  Medium: 0.4,
+  High: 0.9
+};
+const labelCommandDefs = {
+  toggleExternalLabels: {
+    name: "External Labels",
+    isActive: props => props.externalLabels === "true",
+    handler: props => {
+      if (props.externalLabels === "true") {
+        props.toggleExternalLabels("false");
+      } else {
+        props.toggleExternalLabels("true");
+      }
+    }
+  },
+  adjustLabelLineIntensity: {
+    name: "Label Line Intensity",
+    submenu: props =>
+      map(Object.keys(labelIntensities), key => ({
+        text: key,
+        checked: props.labelLineIntensity === labelIntensities[key],
+        onClick: () => props.changeLabelLineIntensity(labelIntensities[key])
+      }))
+  }
+};
+
 const commandDefs = {
   ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,
@@ -1036,7 +1148,27 @@ const commandDefs = {
   ...deleteAnnotationCommandDefs,
   ...labelToggleCommandDefs,
   ...editCommandDefs,
-  ...toolCommandDefs
+  ...toolCommandDefs,
+  ...labelCommandDefs
 };
 
 export default instance => oveCommandFactory(instance, commandDefs);
+
+const invertString = function(str) {
+  let s = "";
+  let i = 0;
+  while (i < str.length) {
+    let n = str.charAt(i);
+    if (n === n.toUpperCase()) {
+      // *Call* toLowerCase
+      n = n.toLowerCase();
+    } else {
+      // *Call* toUpperCase
+      n = n.toUpperCase();
+    }
+
+    i += 1;
+    s += n;
+  }
+  return s;
+};

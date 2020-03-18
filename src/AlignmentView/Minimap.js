@@ -1,10 +1,9 @@
 import React from "react";
 import Draggable from "react-draggable";
-// import ReactList from "react-list";
+import ReactList from "@teselagen/react-list";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "react-easy-state";
-import ReactList from "../RowView/ReactList";
 
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {

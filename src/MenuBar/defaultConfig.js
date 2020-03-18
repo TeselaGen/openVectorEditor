@@ -37,6 +37,7 @@ export default [
       },
       "renameSequence",
       "saveSequence",
+      "saveSequenceAs",
       "deleteSequence",
       "duplicateSequence",
       "--",
@@ -83,7 +84,9 @@ export default [
       "selectInverse",
       {
         text: "Change Case",
+        cmd: "changeCaseCmd",
         submenu: [
+          "flipCaseSequence",
           "upperCaseSequence",
           "lowerCaseSequence",
           "upperCaseSelection",
@@ -110,7 +113,18 @@ export default [
   {
     text: "Tools",
     cmd: "toolsCmd",
-    submenu: ["restrictionEnzymesManager", "simulateDigestion"]
+    submenu: [
+      "restrictionEnzymesManager",
+      "simulateDigestion",
+      {
+        text: "Remove Duplicates",
+        submenu: [
+          "showRemoveDuplicatesDialogFeatures",
+          "showRemoveDuplicatesDialogParts",
+          "showRemoveDuplicatesDialogPrimers"
+        ]
+      }
+    ]
   },
   // { isMenuSearch: true }
   {

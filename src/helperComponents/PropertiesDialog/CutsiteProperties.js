@@ -4,7 +4,7 @@ import {
   DataTable,
   withSelectedEntities
 } from "teselagen-react-components";
-import { map } from "lodash";
+import { map, get } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
 import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
@@ -36,37 +36,40 @@ class CutsiteProperties extends React.Component {
   SubComponent = row => {
     // const { selectionLayerUpdate } = this.props;
     const { name, cutsiteGroup } = row.original;
-    const entities = cutsiteGroup.map(
-      ({
-        restrictionEnzyme: { forwardRegex, reverseRegex } = {},
-        forward,
-        topSnipBeforeBottom,
-        topSnipPosition,
-        bottomSnipPosition
-      }) => {
-        return {
+    const entities = cutsiteGroup
+      .sort((a, b) => a.topSnipPosition - b.topSnipPosition)
+      .map(
+        ({
+          restrictionEnzyme: { forwardRegex, reverseRegex } = {},
+          forward,
+          id,
+          topSnipBeforeBottom,
           topSnipPosition,
-          position: topSnipBeforeBottom
-            ? topSnipPosition + " - " + bottomSnipPosition
-            : bottomSnipPosition + " - " + topSnipPosition,
-          strand:
-            forwardRegex === reverseRegex
-              ? "Palindromic"
-              : forward
-              ? "1"
-              : "-1forward"
-        };
-      }
-    );
+          bottomSnipPosition
+        }) => {
+          return {
+            id,
+            topSnipPosition,
+            position: topSnipBeforeBottom
+              ? topSnipPosition + " - " + bottomSnipPosition
+              : bottomSnipPosition + " - " + topSnipPosition,
+            strand:
+              forwardRegex === reverseRegex
+                ? "Palindromic"
+                : forward
+                ? "1"
+                : "-1"
+          };
+        }
+      );
     const enzyme = enzymeList[name.toLowerCase()];
     // return <div>yooo</div>
     return (
       <div>
         <div
+          className="ve-enzymeSubrow"
           style={{
-            margin: 10,
-            display: "flex",
-            justifyContent: "space-around"
+            margin: 10
           }}
         >
           {enzyme && (
@@ -78,17 +81,18 @@ class CutsiteProperties extends React.Component {
               }}
             />
           )}
-          <div style={{ width: 300 }}>
-            <h3>Cuts At: </h3>
+          <div>
             <DataTable
-              //defaults={{order: ["numberOfCuts"]}}
-
+              style={{ minHeight: 0, maxHeight: 200 }}
+              selectedIds={this.props.selectedAnnotationId}
               maxHeight={300}
               onRowSelect={this.onRowSelect}
               formName="cutLocations"
               isSingleSelect
               compact
               noRouter
+              minimalStyle
+              scrollToSelectedRowRelativeToDom
               noHeader
               isSimple
               noFullscreenButton
@@ -106,6 +110,7 @@ class CutsiteProperties extends React.Component {
 
   subComponentSchemna = {
     fields: [
+      { path: "topSnipPosition", label: "Top Snip", type: "string" },
       { path: "position", type: "string" },
       { path: "strand", type: "string" }
     ]
@@ -125,10 +130,11 @@ class CutsiteProperties extends React.Component {
     const {
       editorName,
       createNewDigest,
-      filteredCutsites: allCutsites
+      filteredCutsites: allCutsites,
+      selectedAnnotationId
     } = this.props;
 
-    const { cutsitesByName } = allCutsites;
+    const { cutsitesByName, cutsitesById } = allCutsites;
 
     const cutsitesToUse = map(cutsitesByName, (cutsiteGroup, name) => {
       return {
@@ -172,6 +178,10 @@ class CutsiteProperties extends React.Component {
           </Button>
         </div>
         <DataTable
+          selectedIds={get(
+            cutsitesById[selectedAnnotationId],
+            "restrictionEnzyme.name"
+          )}
           compact
           noSelect
           noHeader

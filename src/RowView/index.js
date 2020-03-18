@@ -5,10 +5,8 @@ import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
-// import ReactList from "react-list";
-
+import ReactList from "@teselagen/react-list";
 import withEditorInteractions from "../withEditorInteractions";
-import ReactList from "./ReactList";
 import estimateRowHeight, { rowHeights } from "./estimateRowHeight";
 import {
   defaultContainerWidth,
@@ -357,6 +355,7 @@ export class RowView extends React.Component {
               ...rest,
               rowTopComp,
               rowBottomComp,
+              isRowView: true,
               isProtein: sequenceData.isProtein,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,

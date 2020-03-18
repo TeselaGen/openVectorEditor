@@ -13,6 +13,7 @@ function drawAnnotations({
   Annotation,
   annotationType,
   radius,
+  isProtein,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
@@ -27,7 +28,8 @@ function drawAnnotations({
   onRightClicked = noop,
   showLabels,
   labelOptions,
-  annotationProps
+  annotationProps,
+  fontStyle
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -149,6 +151,7 @@ function drawAnnotations({
           title: titleText,
           className: annotation.labelClassName || "",
           onClick: _onClick,
+          fontStyle: fontStyle || "normal",
           color:
             annotation.labelColor ||
             (annotationType === "part" ? "purple" : "black"),
@@ -165,6 +168,7 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            isProtein,
             titleText,
             editorName,
             annotationType,
@@ -218,6 +222,7 @@ const DrawAnnotation = withHover(function({
   Annotation = Feature,
   totalAngle,
   annotationColor,
+  isProtein,
   annotationRadius,
   annotationHeight,
   onMouseLeave,
@@ -245,10 +250,11 @@ const DrawAnnotation = withHover(function({
       >
         {title}
         <Annotation
-          {...locationAngles &&
-            locationAngles.length && { containsLocations: true }}
+          {...(locationAngles &&
+            locationAngles.length && { containsLocations: true })}
           totalAngle={totalAngle}
           color={annotationColor}
+          isProtein={isProtein}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
           {...annotationProps}

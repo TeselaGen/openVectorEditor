@@ -9,8 +9,8 @@ describe("editor", function() {
   // })
 
   it(`should return focus correctly after typing in chars in circular view`, () => {
+    cy.contains(".veCircularView text", "Part 0").click();
     cy.contains(".veCircularView text", "Part 0")
-      .click({ force: true })
       .closest(".veVectorInteractionWrapper")
       .type("t");
     cy.focused().type("ttaaa{enter}");
@@ -22,7 +22,7 @@ describe("editor", function() {
   });
   it(`should return focus correctly after typing in chars in row view`, () => {
     cy.contains(".veRowView text", "Part 0")
-      .click({ force: true })
+      .click()
       .closest(".veVectorInteractionWrapper")
       .type("t");
     cy.focused().type("ttaaa{enter}");
@@ -53,6 +53,7 @@ describe("editor", function() {
   - new sequence should be inserted after the origin`, () => {
     cy.selectRange(5297, 3);
     cy.contains("Jump to start").click();
+    cy.contains("button", "Jump to end").should("exist");
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", /Complement Selection/).click();
     cy.contains(".ve-row-item-sequence", /^ctggtcttat/);
@@ -62,5 +63,16 @@ describe("editor", function() {
 
     cy.contains("Selecting 6 bps from 5297 to 3");
     cy.contains(".ve-row-item-sequence", /^ctagtcttatg/);
+  });
+  it("should be able to change the color of features by changing the feature type", () => {
+    cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
+    cy.contains(".veLabelText", "araD").rightclick();
+    cy.contains(".bp3-menu-item", "Edit Feature").click();
+    cy.get(".tg-test-type input").click();
+    cy.contains(".tg-select-option", "3'UTR").click();
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".veRowViewFeature", "araD")
+      .find(`path[fill="#006FEF"]`)
+      .should("not.exist");
   });
 });

@@ -1,5 +1,4 @@
 // import uniqid from "uniqid";
-import withEditorProps from "../withEditorProps";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
 import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
@@ -10,8 +9,18 @@ import { getCutsiteType } from "ve-sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
 // import getCutsiteType from "./getCutsiteType";
-import { Tabs, Tab, Button, InputGroup, Intent } from "@blueprintjs/core";
+import {
+  Tabs,
+  Tab,
+  Button,
+  InputGroup,
+  Intent,
+  Checkbox
+} from "@blueprintjs/core";
+import withEditorInteractions from "../withEditorInteractions";
 
+const MAX_DIGEST_CUTSITES = 50;
+const MAX_PARTIAL_DIGEST_CUTSITES = 10;
 export class DigestTool extends React.Component {
   state = { selectedTab: "virtualDigest" };
   render() {
@@ -20,8 +29,11 @@ export class DigestTool extends React.Component {
       // height = 100,
       dimensions = {},
       lanes,
-      digestTool: { selectedFragment },
-      onDigestSave
+      digestTool: { selectedFragment, computePartialDigest },
+      onDigestSave,
+      computePartialDigestDisabled,
+      computeDigestDisabled,
+      updateComputePartialDigest
     } = this.props;
     const { selectedTab } = this.state;
     return (
@@ -48,9 +60,40 @@ export class DigestTool extends React.Component {
             </Button>
           </div>
         )}
+        <Checkbox
+          onChange={() => {
+            updateComputePartialDigest(!computePartialDigest);
+          }}
+          checked={computePartialDigest}
+          label={
+            <span>
+              Show Partial Digests{" "}
+              {computePartialDigestDisabled ? (
+                <span style={{ fontSize: 10 }}>
+                  {" "}
+                  -- Disabled (only supports {MAX_PARTIAL_DIGEST_CUTSITES} or
+                  fewer cutsites){" "}
+                </span>
+              ) : null}
+            </span>
+          }
+          disabled={computePartialDigestDisabled}
+        ></Checkbox>
         Choose your enzymes:
         <CutsiteFilter editorName={editorName} />
         <br />
+        {computeDigestDisabled && (
+          <div
+            style={{
+              color: "red",
+              marginBottom: "6px",
+              fontSize: "15px"
+            }}
+          >
+            >{MAX_DIGEST_CUTSITES} cutsites detected. Filter out additional
+            restriction enzymes to visualize digest results
+          </div>
+        )}
         <Tabs
           selectedTabId={selectedTab}
           onChange={id => {
@@ -122,28 +165,43 @@ const schema = {
 };
 
 export default compose(
-  withEditorProps,
+  withEditorInteractions,
   withProps(props => {
     const {
       sequenceData,
       sequenceLength,
       selectionLayerUpdate,
-      updateSelectedFragment
+      updateSelectedFragment,
+      digestTool: { computePartialDigest }
     } = props;
     const fragments = [];
     const overlappingEnzymes = [];
     const pairs = [];
+    const computePartialDigestDisabled =
+      sequenceData.cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
+    const computeDigestDisabled =
+      sequenceData.cutsites.length > MAX_DIGEST_CUTSITES;
     const sortedCutsites = sequenceData.cutsites.sort((a, b) => {
       return a.topSnipPosition - b.topSnipPosition;
     });
 
     sortedCutsites.forEach((cutsite1, index) => {
-      pairs.push([
-        cutsite1,
-        sortedCutsites[index + 1]
-          ? sortedCutsites[index + 1]
-          : sortedCutsites[0]
-      ]);
+      if (computePartialDigest && !computePartialDigestDisabled) {
+        sortedCutsites.forEach((cs, index2) => {
+          if (index2 === index + 1 || index2 === 0) {
+            return;
+          }
+          pairs.push([cutsite1, sortedCutsites[index2]]);
+        });
+      }
+      if (!computeDigestDisabled) {
+        pairs.push([
+          cutsite1,
+          sortedCutsites[index + 1]
+            ? sortedCutsites[index + 1]
+            : sortedCutsites[0]
+        ]);
+      }
     });
 
     pairs.forEach(([cut1, cut2]) => {
@@ -159,6 +217,7 @@ export default compose(
 
       // const id = uniqid()
       const id = start + "-" + end + "-" + size + "-";
+      const name = `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps`;
       getRangeLength({ start, end }, sequenceLength);
       fragments.push({
         cut1,
@@ -167,10 +226,12 @@ export default compose(
         end,
         size,
         id,
+        name,
         onFragmentSelect: () => {
           selectionLayerUpdate({
             start,
-            end
+            end,
+            name
           });
           updateSelectedFragment(id);
         }
@@ -185,6 +246,8 @@ export default compose(
       return true;
     });
     return {
+      computePartialDigestDisabled,
+      computeDigestDisabled,
       lanes: [fragments],
       overlappingEnzymes
     };

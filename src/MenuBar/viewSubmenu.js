@@ -120,22 +120,27 @@ export default [
   // { cmd: "complementary" },
   // { cmd: "spaces" },
   { divider: "" },
-  // {
-  //   text: "Sequence Case",
-  //   cmd: "sequenceCase",
-  //   submenu: [
-  //     {
-  //       cmd: "toggleSequenceMapFontUpper",
-  //       text: "Upper Case",
-  //       shouldDismissPopover: false
-  //     },
-  //     {
-  //       cmd: "toggleSequenceMapFontLower",
-  //       text: "Lower Case",
-  //       shouldDismissPopover: false
-  //     }
-  //   ]
-  // },
+  {
+    text: "Sequence Case",
+    cmd: "sequenceCase",
+    submenu: [
+      {
+        cmd: "toggleSequenceMapFontUpper",
+        text: "Upper Case",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleSequenceMapFontRaw",
+        text: "No Preference",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "toggleSequenceMapFontLower",
+        text: "Lower Case",
+        shouldDismissPopover: false
+      }
+    ]
+  },
   { divider: "" },
   fullSequenceTranslationMenu,
   { divider: "" },
@@ -154,5 +159,10 @@ export default [
 
   { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
   { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false }
+  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+
+  { divider: "" },
+
+  { cmd: "toggleExternalLabels", shouldDismissPopover: false },
+  { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false }
 ];

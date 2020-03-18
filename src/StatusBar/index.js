@@ -183,6 +183,7 @@ export function StatusBar({
   showReadOnly = true,
   showAvailability = false,
   showGCContent = false,
+  onSelectionOrCaretChanged,
   GCDecimalDigits = 1,
   isProtein
 }) {
@@ -208,6 +209,7 @@ export function StatusBar({
         editorName={editorName}
         isProtein={isProtein}
         showGCContent={showGCContent}
+        onSelectionOrCaretChanged={onSelectionOrCaretChanged}
         GCDecimalDigits={GCDecimalDigits}
       />
       <ShowLengthItem isProtein={isProtein} editorName={editorName} />

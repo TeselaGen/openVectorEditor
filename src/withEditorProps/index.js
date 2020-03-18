@@ -22,21 +22,31 @@ import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
+import { defaultMemoize } from "reselect";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
-export const handleSave = props => e => {
-  const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
+export const handleSave = props => (opts = {}) => {
+  const {
+    onSave,
+    onSaveAs,
+    readOnly,
+    alwaysAllowSave,
+    sequenceData,
+    lastSavedIdUpdate
+  } = props;
+  const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
+
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
   const promiseOrVal =
-    !readOnly &&
-    onSave &&
-    onSave(
-      e,
+    (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
+    saveHandler &&
+    saveHandler(
+      opts,
       tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
       props,
       updateLastSavedIdToCurrent
@@ -181,12 +191,7 @@ export const exportSequenceToFile = props => format => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToActions,
-    null,
-    { pure: false }
-  ),
+  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: props => {
       return (
@@ -290,7 +295,10 @@ export default compose(
                   end: sequenceData.isProtein ? 2 : 0
                 };
 
-          handler({ ...rangeToUse, forward: true });
+          handler({
+            ...rangeToUse,
+            forward: !(selectionLayer.forward === false)
+          });
         }
       };
       return acc;
@@ -497,6 +505,10 @@ function mapStateToProps(state, ownProps) {
 
   let sequenceDataToUse = {
     ...sequenceData,
+    sequence: getUpperOrLowerSeq(
+      uppercaseSequenceMapFont,
+      sequenceData.sequence
+    ),
     filteredFeatures,
     cutsites,
     orfs,
@@ -534,12 +546,31 @@ export function mapDispatchToActions(dispatch, ownProps) {
     actionOverrides,
     dispatch
   );
+  const updateSel =
+    ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate;
+  const updateCar =
+    ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate;
   return {
     ...actionsToPass,
-    selectionLayerUpdate:
-      ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate,
-    caretPositionUpdate:
-      ownProps.caretPositionUpdate || actionsToPass.caretPositionUpdate,
+    selectionLayerUpdate: ownProps.onSelectionOrCaretChanged
+      ? selectionLayer => {
+          ownProps.onSelectionOrCaretChanged({
+            selectionLayer,
+            caretPosition: -1
+          });
+          updateSel(selectionLayer);
+        }
+      : updateSel,
+    caretPositionUpdate: ownProps.onSelectionOrCaretChanged
+      ? caretPosition => {
+          ownProps.onSelectionOrCaretChanged({
+            caretPosition,
+            selectionLayer: { start: -1, end: -1 }
+          });
+          updateCar(caretPosition);
+        }
+      : updateCar,
+
     dispatch
   };
 }
@@ -677,19 +708,16 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = fn => {
-  return connect(
-    (state, ownProps, ...rest) => {
-      return fn
-        ? fn(
-            state.VectorEditor[ownProps.editorName] || {},
-            ownProps,
-            ...rest,
-            state
-          )
-        : {};
-    },
-    mapDispatchToActions
-  );
+  return connect((state, ownProps, ...rest) => {
+    const editor = state.VectorEditor[ownProps.editorName] || {};
+    editor.sequenceData = editor.sequenceData || {};
+    editor.sequenceData.sequence = getUpperOrLowerSeq(
+      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+      editor.sequenceData.sequence
+    );
+
+    return fn ? fn(editor, ownProps, ...rest, state) : {};
+  }, mapDispatchToActions);
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView
@@ -724,3 +752,12 @@ export const withEditorPropsNoRedux = withProps(props => {
   //   }
   // };
 });
+
+const getUpperOrLowerSeq = defaultMemoize(
+  (uppercaseSequenceMapFont, sequence = "") =>
+    uppercaseSequenceMapFont === "uppercase"
+      ? sequence.toUpperCase()
+      : uppercaseSequenceMapFont === "lowercase"
+      ? sequence.toLowerCase()
+      : sequence
+);

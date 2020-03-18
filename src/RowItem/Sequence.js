@@ -19,7 +19,6 @@ class Sequence extends React.Component {
         "height",
         "width",
         "isReverse",
-        "uppercaseSequenceMapFont",
         "scrollData",
         "showDnaColors"
       ].some(key => props[key] !== newProps[key])
@@ -39,7 +38,6 @@ class Sequence extends React.Component {
       length,
       height,
       className,
-      uppercaseSequenceMapFont,
       startOffset = 0,
       chunkSize = 100,
       scrollData,
@@ -120,11 +118,7 @@ class Sequence extends React.Component {
                     lengthAdjust: "spacing"
                   }}
                 >
-                  {uppercaseSequenceMapFont === "uppercase"
-                    ? seqChunk.toUpperCase()
-                    : uppercaseSequenceMapFont === "lowercase"
-                    ? seqChunk.toLowerCase()
-                    : seqChunk}
+                  {seqChunk}
                 </text>
               );
             })}
@@ -162,11 +156,7 @@ class Sequence extends React.Component {
                   lengthAdjust: "spacing"
                 }}
               >
-                {uppercaseSequenceMapFont === "uppercase"
-                  ? sequence.toUpperCase()
-                  : uppercaseSequenceMapFont === "lowercase"
-                  ? sequence.toLowerCase()
-                  : sequence}
+                {sequence}
               </text>
             </svg>
           )}

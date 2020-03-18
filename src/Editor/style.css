@@ -11,9 +11,6 @@
 .CircularViewSide {
   width: 100%;
 }
-.tg-editor-container {
-  display: flex;
-}
 .ve-clickable {
   cursor: pointer;
   opacity: 0.7;
@@ -90,11 +87,44 @@
   stroke: gold !important;
   fill: gold !important;
   background: gold !important;
+  border-right-color: yellow !important;
 }
 .veSearchLayerActive {
   stroke: red !important;
   fill: red !important;
   background: red !important;
+}
+.notCaret.veSearchLayerBottomStrand:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 0px;
+  bottom: -15px;
+  opacity: 1 !important;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 15px solid gold;
+}
+.veSearchLayerActive.veSearchLayerBottomStrand:after {
+  border-right-color: red !important;
+}
+.notCaret.veSearchLayerBottomStrand:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 1px;
+  bottom: -15px;
+  opacity: 1 !important;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 15px solid gold;
+}
+.veSearchLayerActive.veSearchLayerBottomStrand:before {
+  border-right-color: red !important;
 }
 
 .veSearchLayer.veCaret {
