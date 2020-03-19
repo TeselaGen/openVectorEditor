@@ -39,15 +39,16 @@ export default store => next => action => {
       editorState.sequenceDataHistory[
         action.type === "VE_UNDO" ? "past" : "future"
       ] || [];
-    const stateToUse = stack[stack.length - 1];
+    const stackItem = stack[stack.length - 1];
     const newSeqData = patchSeqWithDiff(
       editorState.sequenceData,
-      stateToUse.sequenceDataDiff
+      stackItem.sequenceDataDiff
     );
-    const sequenceDataDiff = reverseSeqDiff(stateToUse.sequenceDataDiff);
+    const sequenceDataDiff = reverseSeqDiff(stackItem.sequenceDataDiff);
     store.dispatch({
       type: action.type === "VE_UNDO" ? "VE_UNDO_META" : "VE_REDO_META",
       payload: {
+        ...stackItem, 
         sequenceDataDiff,
         selectionLayer: editorState.selectionLayer,
         caretPosition: editorState.caretPosition
@@ -59,23 +60,23 @@ export default store => next => action => {
       payload: newSeqData,
       meta: { editorName, disregardUndo }
     });
-    if (stateToUse.caretPosition > -1) {
+    if (stackItem.caretPosition > -1) {
       store.dispatch({
         type: "CARET_POSITION_UPDATE",
-        payload: stateToUse.caretPosition,
+        payload: stackItem.caretPosition,
         meta: { editorName, disregardUndo }
       });
     } else {
       store.dispatch({
         type: "SELECTION_LAYER_UPDATE",
-        payload: { ...stateToUse.selectionLayer, forceUpdate: Math.random() },
+        payload: { ...stackItem.selectionLayer, forceUpdate: Math.random() },
         meta: { editorName, disregardUndo }
       });
     }
     store.dispatch({
       type: "VE_SEQUENCE_CHANGED", //used for external autosave functionality
       payload: {
-        sequenceData: stateToUse.sequenceData,
+        sequenceData: stackItem.sequenceData, //tnrtodo is this working?
         editorName
       },
       meta: { editorName, disregardUndo: true }
@@ -96,7 +97,7 @@ export default store => next => action => {
         oldEditorState.sequenceData &&
         oldEditorState.sequenceData !== newEditorState.sequenceData
       ) {
-        const { sequenceData, selectionLayer, caretPosition } = oldEditorState;
+        const { sequenceData, selectionLayer, caretPosition,  } = oldEditorState;
         const sequenceDataDiff = getDiffFromSeqs(
           newEditorState.sequenceData,
           sequenceData
@@ -108,7 +109,8 @@ export default store => next => action => {
             payload: {
               selectionLayer,
               sequenceDataDiff,
-              caretPosition
+              caretPosition,
+              stateTrackingId: sequenceData.stateTrackingId
             },
             meta: { editorName, disregardUndo }
           });

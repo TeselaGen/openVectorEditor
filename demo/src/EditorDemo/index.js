@@ -2,6 +2,7 @@ import { Button, Icon } from "@blueprintjs/core";
 import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 import { isRangeOrPositionWithinRange } from "ve-range-utils";
+import { diffUtils } from "ve-sequence-utils";
 
 import store from "./../store";
 import { updateEditor, actions } from "../../../src/";
@@ -9,10 +10,13 @@ import { updateEditor, actions } from "../../../src/";
 import Editor from "../../../src/Editor";
 import renderToggle from "./../utils/renderToggle";
 import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
-import exampleSequenceData from "./../exampleData/exampleSequenceData";
+import _exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
+const exampleSequenceData = tidyUpSequenceData(_exampleSequenceData, {
+  annotationsAsObjects: true
+});
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -1138,12 +1142,33 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 opts,
                 sequenceDataToSave,
                 editorState,
-                onSuccessCallback
+                onSuccessCallback,
+                diffToUse
               ) {
+                window.diffUtils = diffUtils;
+                window.initialSeqData = tidyUpSequenceData(
+                  exampleSequenceData,
+                  { annotationsAsObjects: true }
+                );
+                window.currentSeqData = sequenceDataToSave;
+                window.diffToUse = diffToUse;
+                // window.diffToUse.forEach(d => {
+                //   console.log(`window.initialSeqData:`, window.initialSeqData);
+                //   console.log(`d:`, d);
+                //   window.initialSeqData = window.diffUtils.patchSeqWithDiff(
+                //     window.initialSeqData,
+                //     d
+                //   );
+                // });
+
                 window.toastr.success("onSave callback triggered");
-                console.info("opts:", opts);
-                console.info("sequenceData:", sequenceDataToSave);
-                console.info("editorState:", editorState);
+                // console.info("opts:", opts);
+                // console.info("sequenceData:", sequenceDataToSave);
+                // console.info("editorState:", editorState);
+                console.info(
+                  `editorState.sequenceDataHistory:`,
+                  editorState.sequenceDataHistory
+                );
                 // To disable the save button after successful saving
                 // either call the onSuccessCallback or return a successful promise :)
                 onSuccessCallback();

@@ -131,6 +131,13 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
     [onOrOff ? "check" : "uncheck"]({ force: true });
   /* eslint-enable no-unexpected-multiline*/
 });
+Cypress.Commands.add("clearToasts", () => {
+  cy.window().then(win => {
+    win.document.querySelectorAll(".bp3-toast").forEach(e => {
+      e.remove();
+    });
+  });
+});
 
 /**
  * Triggers a cmd using the Help menu search

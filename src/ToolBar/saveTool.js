@@ -7,8 +7,18 @@ import { compose } from "redux";
 
 export default compose(
   connectToEditor(
-    ({ readOnly, sequenceData = {}, lastSavedId = "134%!@#%!@#%!@%" }) => {
+    ({
+      sequenceData = {},
+      lastSavedId,
+      readOnly,
+      alwaysAllowSave,
+      sequenceDataHistory = {},
+      lastSavedIdUpdate
+    }) => {
       return {
+        alwaysAllowSave,
+        sequenceDataHistory,
+        lastSavedIdUpdate,
         readOnly: readOnly,
         sequenceData: sequenceData,
         hasBeenSaved:

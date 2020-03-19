@@ -875,12 +875,28 @@ Editor.childContextTypes = {
 };
 
 export default compose(
-  connectToEditor(({ panelsShown, versionHistory, sequenceData = {} }) => {
-    return {
+  connectToEditor(
+    ({
       panelsShown,
       versionHistory,
-      sequenceData
-    };
-  }),
+      readOnly,
+      alwaysAllowSave,
+      lastSavedId,
+      lastSavedIdUpdate,
+      sequenceDataHistory={},
+      sequenceData = {}
+    }) => {
+      return {
+        panelsShown,
+        versionHistory,
+        sequenceData,
+        sequenceDataHistory,
+        readOnly,
+        alwaysAllowSave,
+        lastSavedId,
+        lastSavedIdUpdate
+      };
+    }
+  ),
   withHandlers({ handleSave, importSequenceFromFile })
 )(Editor);
