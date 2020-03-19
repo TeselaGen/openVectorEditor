@@ -16,9 +16,9 @@ module.exports = {
       // "ve-range-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-range-utils/src/"),
-      "ve-sequence-utils":
-        console.log("comment me back out!") ||
-        path.resolve("../ve-sequence-utils/src/"),
+      // "ve-sequence-utils":
+      //   console.log("comment me back out!") ||
+      //   path.resolve("../ve-sequence-utils/src/"),
       // "bio-parsers":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-sequence-parsers/src/parsers/"),

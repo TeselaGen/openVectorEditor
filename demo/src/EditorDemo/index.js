@@ -1152,14 +1152,6 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 );
                 window.currentSeqData = sequenceDataToSave;
                 window.diffToUse = diffToUse;
-                // window.diffToUse.forEach(d => {
-                //   console.log(`window.initialSeqData:`, window.initialSeqData);
-                //   console.log(`d:`, d);
-                //   window.initialSeqData = window.diffUtils.patchSeqWithDiff(
-                //     window.initialSeqData,
-                //     d
-                //   );
-                // });
 
                 window.toastr.success("onSave callback triggered");
                 // console.info("opts:", opts);

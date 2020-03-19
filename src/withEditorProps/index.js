@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { some, map, forEach, findIndex, forEachRight, reverse } from "lodash";
+import { some, map, findIndex, forEachRight, reverse } from "lodash";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
@@ -49,21 +49,20 @@ export const handleSave = props => (opts = {}) => {
   const diffToPass = [];
   const futureIndex = findIndex(
     sequenceDataHistory.future,
-    s => s.stateTrackingId === _lastSavedId
+    s => s.sequenceDataDiff.stateTrackingId[1] === _lastSavedId
   );
-
   if (futureIndex > -1) {
     // the last save point has been undone from here
     forEachRight(sequenceDataHistory.future, (s, i) => {
-      if (i > futureIndex) {
+      if (i >= sequenceDataHistory.future.length - futureIndex) {
         return;
       }
-      diffToPass.push(s.sequenceDataDiff);
+      diffToPass.push(reverseSeqDiff(s.sequenceDataDiff));
     });
   } else {
     const pastIndex = findIndex(
       sequenceDataHistory.past,
-      s => s.stateTrackingId === _lastSavedId
+      s => s.sequenceDataDiff.stateTrackingId[1] === _lastSavedId
     );
     if (pastIndex === -1) {
       console.warn("No past index found... strange", pastIndex);

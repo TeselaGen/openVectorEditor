@@ -48,7 +48,7 @@ export default store => next => action => {
     store.dispatch({
       type: action.type === "VE_UNDO" ? "VE_UNDO_META" : "VE_REDO_META",
       payload: {
-        ...stackItem, 
+        ...stackItem,
         sequenceDataDiff,
         selectionLayer: editorState.selectionLayer,
         caretPosition: editorState.caretPosition
@@ -97,7 +97,7 @@ export default store => next => action => {
         oldEditorState.sequenceData &&
         oldEditorState.sequenceData !== newEditorState.sequenceData
       ) {
-        const { sequenceData, selectionLayer, caretPosition,  } = oldEditorState;
+        const { sequenceData, selectionLayer, caretPosition } = oldEditorState;
         const sequenceDataDiff = getDiffFromSeqs(
           newEditorState.sequenceData,
           sequenceData
@@ -109,8 +109,7 @@ export default store => next => action => {
             payload: {
               selectionLayer,
               sequenceDataDiff,
-              caretPosition,
-              stateTrackingId: sequenceData.stateTrackingId
+              caretPosition
             },
             meta: { editorName, disregardUndo }
           });

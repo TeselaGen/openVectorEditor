@@ -131,10 +131,15 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
     [onOrOff ? "check" : "uncheck"]({ force: true });
   /* eslint-enable no-unexpected-multiline*/
 });
-Cypress.Commands.add("clearToasts", () => {
+
+Cypress.Commands.add("hideToasts", () => {
   cy.window().then(win => {
     win.document.querySelectorAll(".bp3-toast").forEach(e => {
-      e.remove();
+      e.style.height = 0;
+      e.style.width = 0;
+      e.style.opacity = 0;
+      e.style.position = "absolute";
+      e.style.top = "-10000px";
     });
   });
 });

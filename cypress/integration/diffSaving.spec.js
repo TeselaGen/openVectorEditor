@@ -12,51 +12,76 @@ describe("diffSaving", function() {
     cy.contains("Selecting 2 bps from 3 to 4");
     cy.get(`.ve-tool-container-saveTool:not(.disabled)`).click();
     cy.window().then(win => {
-      console.log(`win.diffUtils:`, win.diffUtils);
-      console.log(`win.initialSeqData:`, win.initialSeqData);
-      console.log(`win.currentSeqData:`, win.currentSeqData);
-      console.log(`win.diffToUse:`, win.diffToUse);
+      win.lastSavedSeqData = win.currentSeqData;
 
       win.diffToUse.forEach(d => {
-        console.log(`win.initialSeqData:`, win.initialSeqData);
-        console.log(`d:`, d);
         win.initialSeqData = win.diffUtils.patchSeqWithDiff(
           win.initialSeqData,
-          d
+          d,
+          { ignoreKeys: ["stateTrackingId"] }
         );
       });
+
       expect(
         win.diffUtils.getDiffFromSeqs(win.initialSeqData, win.currentSeqData)
       ).to.eq(undefined);
-      console.log(`win.initialSeqData_updated_from_diff:`, win.initialSeqData);
 
       expect(win.diffToUse.length).to.eql(2);
     });
-    cy.clearToasts()
+
+    cy.hideToasts();
     cy.get(`.ve-tool-container-undoTool:not(.disabled)`).click();
     cy.get(`.ve-tool-container-undoTool:not(.disabled)`).click();
     cy.get(`.ve-tool-container-saveTool:not(.disabled)`).click();
-    
-    cy.window().then(win => {
-      console.log(`win.diffUtils:`, win.diffUtils);
-      console.log(`win.initialSeqData:`, win.initialSeqData);
-      console.log(`win.currentSeqData:`, win.currentSeqData);
-      console.log(`win.diffToUse:`, win.diffToUse);
 
+    cy.window().then(win => {
       win.diffToUse.forEach(d => {
-        console.log(`win.initialSeqData:`, win.initialSeqData);
-        console.log(`d:`, d);
-        win.initialSeqData = win.diffUtils.patchSeqWithDiff(
-          win.initialSeqData,
-          d
+        win.lastSavedSeqData = win.diffUtils.patchSeqWithDiff(
+          win.lastSavedSeqData,
+          d,
+          { ignoreKeys: ["stateTrackingId"] }
         );
       });
-      expect(
-        win.diffUtils.getDiffFromSeqs(win.initialSeqData, win.currentSeqData)
-      ).to.eq(undefined);
-      console.log(`win.initialSeqData_updated_from_diff:`, win.initialSeqData);
+      const diffBetweenUpdatedSeqDataAndCurrentSeqData = win.diffUtils.getDiffFromSeqs(
+        win.lastSavedSeqData,
+        win.currentSeqData,
+        { ignoreKeys: ["stateTrackingId"] }
+      );
+
+      expect(diffBetweenUpdatedSeqDataAndCurrentSeqData).to.eq(undefined);
 
       expect(win.diffToUse.length).to.eql(2);
+    });
+  });
+  it("the diff being passed is correct when undo's and redos have been done", function() {
+    cy.contains(".veLabelText", "araD").rightclick();
+    cy.contains(".bp3-menu-item", "Delete Feature").click();
+
+    cy.selectRange(3, 5);
+    cy.replaceSelection("tt");
+    cy.contains("Selecting 2 bps from 3 to 4");
+    cy.hideToasts();
+
+    cy.get(`.ve-tool-container-undoTool:not(.disabled)`).click();
+    cy.hideToasts();
+
+    cy.get(`.ve-tool-container-saveTool:not(.disabled)`).click();
+    cy.window().then(win => {
+      win.diffToUse.forEach(d => {
+        win.initialSeqData = win.diffUtils.patchSeqWithDiff(
+          win.initialSeqData,
+          d,
+          { ignoreKeys: ["stateTrackingId"] }
+        );
+      });
+
+      expect(
+        win.diffUtils.getDiffFromSeqs(win.initialSeqData, win.currentSeqData, {
+          ignoreKeys: ["stateTrackingId"]
+        })
+      ).to.eq(undefined);
+
+      expect(win.diffToUse.length).to.eql(1);
     });
   });
 });

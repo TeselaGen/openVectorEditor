@@ -19,6 +19,7 @@ export default compose(
         alwaysAllowSave,
         sequenceDataHistory,
         lastSavedIdUpdate,
+        lastSavedId,
         readOnly: readOnly,
         sequenceData: sequenceData,
         hasBeenSaved:
