@@ -3,6 +3,7 @@ describe("diffSaving", function() {
     cy.visit("");
   });
   it("passes an optional diff that can be used to save instead of saving the whole seq info", function() {
+    //make several edits
     cy.selectRange(5297, 3);
     cy.replaceSelection("aaaaaa");
     cy.contains("Selecting 6 bps from 1 to 6");
@@ -14,10 +15,10 @@ describe("diffSaving", function() {
     cy.window().then(win => {
       win.lastSavedSeqData = win.currentSeqData;
 
-      win.diffToUse.forEach(d => {
+      win.onSaveDiff.forEach(({ diff }) => {
         win.initialSeqData = win.diffUtils.patchSeqWithDiff(
           win.initialSeqData,
-          d,
+          diff,
           { ignoreKeys: ["stateTrackingId"] }
         );
       });
@@ -28,19 +29,20 @@ describe("diffSaving", function() {
         })
       ).to.eq(undefined);
 
-      expect(win.diffToUse.length).to.eql(2);
+      expect(win.onSaveDiff.length).to.eql(2);
     });
 
     cy.hideToasts();
     cy.get(`.ve-tool-container-undoTool:not(.disabled)`).click();
     cy.get(`.ve-tool-container-undoTool:not(.disabled)`).click();
     cy.get(`.ve-tool-container-saveTool:not(.disabled)`).click();
-
+    //I've added several diff utils to the window to facilitate testing.
+    //in most cases these diffs will be getting applied on the backend and you'll be pulling these diffUtils from ve-sequence-utils
     cy.window().then(win => {
-      win.diffToUse.forEach(d => {
+      win.onSaveDiff.forEach(({ diff }) => {
         win.lastSavedSeqData = win.diffUtils.patchSeqWithDiff(
           win.lastSavedSeqData,
-          d,
+          diff,
           { ignoreKeys: ["stateTrackingId"] }
         );
       });
@@ -49,10 +51,8 @@ describe("diffSaving", function() {
         win.currentSeqData,
         { ignoreKeys: ["stateTrackingId"] }
       );
-
       expect(diffBetweenUpdatedSeqDataAndCurrentSeqData).to.eq(undefined);
-
-      expect(win.diffToUse.length).to.eql(2);
+      expect(win.onSaveDiff.length).to.eql(2);
     });
   });
   it("the diff being passed is correct when undo's and redos have been done", function() {
@@ -69,10 +69,10 @@ describe("diffSaving", function() {
 
     cy.get(`.ve-tool-container-saveTool:not(.disabled)`).click();
     cy.window().then(win => {
-      win.diffToUse.forEach(d => {
+      win.onSaveDiff.forEach(({ diff }) => {
         win.initialSeqData = win.diffUtils.patchSeqWithDiff(
           win.initialSeqData,
-          d,
+          diff,
           { ignoreKeys: ["stateTrackingId"] }
         );
       });
@@ -83,7 +83,7 @@ describe("diffSaving", function() {
         })
       ).to.eq(undefined);
 
-      expect(win.diffToUse.length).to.eql(1);
+      expect(win.onSaveDiff.length).to.eql(1);
     });
   });
 });

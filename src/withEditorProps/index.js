@@ -46,7 +46,7 @@ export const handleSave = props => (opts = {}) => {
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
-  const diffToPass = [];
+  const onSaveDiff = [];
   const futureIndex = findIndex(
     sequenceDataHistory.future,
     s => s.sequenceDataDiff.stateTrackingId[1] === _lastSavedId
@@ -57,7 +57,7 @@ export const handleSave = props => (opts = {}) => {
       if (i >= sequenceDataHistory.future.length - futureIndex) {
         return;
       }
-      diffToPass.push(reverseSeqDiff(s.sequenceDataDiff));
+      onSaveDiff.push({ diff: reverseSeqDiff(s.sequenceDataDiff) });
     });
   } else {
     const pastIndex = findIndex(
@@ -71,7 +71,7 @@ export const handleSave = props => (opts = {}) => {
         if (i >= sequenceDataHistory.past.length - pastIndex) {
           return;
         }
-        diffToPass.push(reverseSeqDiff(s.sequenceDataDiff));
+        onSaveDiff.push({ diff: reverseSeqDiff(s.sequenceDataDiff) });
       });
     }
   }
@@ -84,7 +84,7 @@ export const handleSave = props => (opts = {}) => {
       tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
       props,
       updateLastSavedIdToCurrent,
-      reverse(diffToPass)
+      reverse(onSaveDiff)
     );
 
   if (promiseOrVal && promiseOrVal.then) {

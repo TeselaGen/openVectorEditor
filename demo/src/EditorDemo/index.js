@@ -1143,7 +1143,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 sequenceDataToSave,
                 editorState,
                 onSuccessCallback,
-                diffToUse
+                onSaveDiff
               ) {
                 window.diffUtils = diffUtils;
                 window.initialSeqData = tidyUpSequenceData(
@@ -1151,7 +1151,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                   { annotationsAsObjects: true }
                 );
                 window.currentSeqData = sequenceDataToSave;
-                window.diffToUse = diffToUse;
+                window.onSaveDiff = onSaveDiff;
 
                 window.toastr.success("onSave callback triggered");
                 // console.info("opts:", opts);
