@@ -880,10 +880,9 @@ export default compose(
       panelsShown,
       versionHistory,
       readOnly,
-      alwaysAllowSave,
       lastSavedId,
       lastSavedIdUpdate,
-      sequenceDataHistory={},
+      sequenceDataHistory = {},
       sequenceData = {}
     }) => {
       return {
@@ -892,7 +891,6 @@ export default compose(
         sequenceData,
         sequenceDataHistory,
         readOnly,
-        alwaysAllowSave,
         lastSavedId,
         lastSavedIdUpdate
       };

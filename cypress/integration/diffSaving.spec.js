@@ -23,7 +23,9 @@ describe("diffSaving", function() {
       });
 
       expect(
-        win.diffUtils.getDiffFromSeqs(win.initialSeqData, win.currentSeqData)
+        win.diffUtils.getDiffFromSeqs(win.initialSeqData, win.currentSeqData, {
+          ignoreKeys: ["stateTrackingId"]
+        })
       ).to.eq(undefined);
 
       expect(win.diffToUse.length).to.eql(2);

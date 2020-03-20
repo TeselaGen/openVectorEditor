@@ -11,12 +11,10 @@ export default compose(
       sequenceData = {},
       lastSavedId,
       readOnly,
-      alwaysAllowSave,
       sequenceDataHistory = {},
       lastSavedIdUpdate
     }) => {
       return {
-        alwaysAllowSave,
         sequenceDataHistory,
         lastSavedIdUpdate,
         lastSavedId,
