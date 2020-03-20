@@ -132,6 +132,18 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
   /* eslint-enable no-unexpected-multiline*/
 });
 
+Cypress.Commands.add("hideToasts", () => {
+  cy.window().then(win => {
+    win.document.querySelectorAll(".bp3-toast").forEach(e => {
+      e.style.height = 0;
+      e.style.width = 0;
+      e.style.opacity = 0;
+      e.style.position = "absolute";
+      e.style.top = "-10000px";
+    });
+  });
+});
+
 /**
  * Triggers a cmd using the Help menu search
  * @memberOf Cypress.Chainable#

@@ -6,13 +6,14 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { some, map } from "lodash";
+import { some, map, findIndex, forEachRight, reverse } from "lodash";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
   insertSequenceDataAtPositionOrRange,
   getReverseComplementSequenceAndAnnotations,
-  rotateSequenceDataToPosition
+  rotateSequenceDataToPosition,
+  reverseSeqDiff
 } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
 import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
@@ -35,13 +36,46 @@ export const handleSave = props => (opts = {}) => {
     readOnly,
     alwaysAllowSave,
     sequenceData,
+    lastSavedId,
+    sequenceDataHistory,
     lastSavedIdUpdate
   } = props;
+  const _lastSavedId = lastSavedId || "initialLoadId";
   const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
 
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
+  const onSaveDiff = [];
+  const futureIndex = findIndex(
+    sequenceDataHistory.future,
+    s => s.sequenceDataDiff.stateTrackingId[1] === _lastSavedId
+  );
+  if (futureIndex > -1) {
+    // the last save point has been undone from here
+    forEachRight(sequenceDataHistory.future, (s, i) => {
+      if (i >= sequenceDataHistory.future.length - futureIndex) {
+        return;
+      }
+      onSaveDiff.push({ diff: reverseSeqDiff(s.sequenceDataDiff) });
+    });
+  } else {
+    const pastIndex = findIndex(
+      sequenceDataHistory.past,
+      s => s.sequenceDataDiff.stateTrackingId[1] === _lastSavedId
+    );
+    if (pastIndex === -1) {
+      console.warn("No past index found... strange", pastIndex);
+    } else {
+      forEachRight(sequenceDataHistory.past, (s, i) => {
+        if (i >= sequenceDataHistory.past.length - pastIndex) {
+          return;
+        }
+        onSaveDiff.push({ diff: reverseSeqDiff(s.sequenceDataDiff) });
+      });
+    }
+  }
+
   const promiseOrVal =
     (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
     saveHandler &&
@@ -49,7 +83,8 @@ export const handleSave = props => (opts = {}) => {
       opts,
       tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
       props,
-      updateLastSavedIdToCurrent
+      updateLastSavedIdToCurrent,
+      reverse(onSaveDiff)
     );
 
   if (promiseOrVal && promiseOrVal.then) {
@@ -191,12 +226,7 @@ export const exportSequenceToFile = props => format => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToActions,
-    null,
-    { pure: false }
-  ),
+  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: props => {
       return (
@@ -441,6 +471,7 @@ function mapStateToProps(state, ownProps) {
     annotationLabelVisibility,
     annotationsToSupport = {}
   } = editorState;
+
   let visibilities = getVisibilities(
     annotationVisibility,
     annotationLabelVisibility,
@@ -713,19 +744,16 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = fn => {
-  return connect(
-    (state, ownProps, ...rest) => {
-      const editor = state.VectorEditor[ownProps.editorName] || {};
-      editor.sequenceData = editor.sequenceData || {};
-      editor.sequenceData.sequence = getUpperOrLowerSeq(
-        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
-        editor.sequenceData.sequence
-      );
+  return connect((state, ownProps, ...rest) => {
+    const editor = state.VectorEditor[ownProps.editorName] || {};
+    editor.sequenceData = editor.sequenceData || {};
+    editor.sequenceData.sequence = getUpperOrLowerSeq(
+      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+      editor.sequenceData.sequence
+    );
 
-      return fn ? fn(editor, ownProps, ...rest, state) : {};
-    },
-    mapDispatchToActions
-  );
+    return fn ? fn(editor, ownProps, ...rest, state) : {};
+  }, mapDispatchToActions);
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView

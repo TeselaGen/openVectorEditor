@@ -105,40 +105,44 @@ export default props => {
   if (showJumpButtons && (index === 0 || index === rowCount - 1)) {
     totalHeight += rowHeights.rowJumpButtons.height;
   }
-  forEach(annotationsToCompute, (
-    { height: _height, alwaysVisible, getHeight, hasYOffset, typeOverride },
-    key
-    // i
-  ) => {
-    const heightKeys = getHeight ? getHeight(props) : _height;
-    const [annotationHeight, marginHeight] = getSummedHeights(
-      heightKeys,
-      props
-    );
+  forEach(
+    annotationsToCompute,
+    (
+      { height: _height, alwaysVisible, getHeight, hasYOffset, typeOverride },
+      key
+      // i
+    ) => {
+      const heightKeys = getHeight ? getHeight(props) : _height;
+      const [annotationHeight, marginHeight] = getSummedHeights(
+        heightKeys,
+        props
+      );
 
-    const shouldShow =
-      alwaysVisible || annotationVisibility[typeOverride || key];
+      const shouldShow =
+        alwaysVisible || annotationVisibility[typeOverride || key];
 
-    if (!shouldShow) return;
-    let heightToAdd = annotationHeight;
-    if (hasYOffset) {
-      const annotations = row[typeOverride || key];
+      if (!shouldShow) return;
+      let heightToAdd = annotationHeight;
       if (hasYOffset) {
-        let maxYOffset = 0;
-        annotations &&
-          annotations.forEach(a => {
-            if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
-          });
-        heightToAdd = maxYOffset * annotationHeight;
+        const annotations = row[typeOverride || key];
+        if (hasYOffset) {
+          let maxYOffset = 0;
+          annotations &&
+            annotations.forEach(a => {
+              if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
+            });
+          heightToAdd = maxYOffset * annotationHeight;
+        }
       }
-    }
-    if (heightToAdd > 0) heightToAdd += marginHeight;
+      if (heightToAdd > 0) heightToAdd += marginHeight;
 
-    if (debug) {
-      heightToAdd !== 0 && console.info(`heightToAdd, key:`, heightToAdd, key);
+      if (debug) {
+        heightToAdd !== 0 &&
+          console.info(`heightToAdd, key:`, heightToAdd, key);
+      }
+      totalHeight += heightToAdd;
     }
-    totalHeight += heightToAdd;
-  });
+  );
   if (debug) {
     console.info(`totalHeight:`, totalHeight);
   }

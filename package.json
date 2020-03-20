@@ -43,7 +43,7 @@
     "popper.js": "^1.15.0",
     "prop-types": "^15.7.2",
     "randomcolor": "^0.5.4",
-    "react-beautiful-dnd": "^10.1.0",
+    "react-beautiful-dnd": "^13.0.0",
     "react-draggable": "^3.2.1",
     "react-dropzone": "^4.2.11",
     "react-easy-state": "^5.1.0",
@@ -112,7 +112,7 @@
     "teselagen-react-components": "28.0.55",
     "tg-client-query-builder": "^2.12.2",
     "ve-range-utils": "^2.5.8",
-    "ve-sequence-utils": "^3.3.53",
+    "ve-sequence-utils": "^3.3.54",
     "why-did-you-update": "^1.0.6"
   },
   "resolutions": {
