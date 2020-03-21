@@ -157,6 +157,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       hideModal,
       sequenceData = { sequence: "" },
       handleSubmit,
+      beforeAnnotationCreate,
       renderTypes,
       annotationTypePlural,
       annotationVisibilityShow,
@@ -300,6 +301,12 @@ class AddOrEditAnnotationDialog extends React.Component {
                   annotationType: "features"
                 }
               );
+              beforeAnnotationCreate &&
+                beforeAnnotationCreate({
+                  annotationTypePlural,
+                  annotation: newFeat,
+                  props: this.props
+                });
               upsertAnnotation(newFeat);
               annotationVisibilityShow(annotationTypePlural);
               hideModal();

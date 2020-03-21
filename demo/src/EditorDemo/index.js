@@ -58,6 +58,7 @@ const defaultState = {
   setDefaultVisibilities: false,
   onNew: true,
   onImport: true,
+  beforeAnnotationCreate: true,
   onSave: true,
   onSaveAs: false,
   onRename: true,
@@ -1011,6 +1012,10 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "beforeAnnotationCreate"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onSave"
               })}
               {renderToggle({
@@ -1131,6 +1136,23 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                   `onImport callback triggered for sequence: ${sequence.name}`
                 );
                 return sequence;
+              }
+            })}
+            {...(this.state.beforeAnnotationCreate && {
+              beforeAnnotationCreate: ({
+                props,
+                annotationTypePlural,
+                annotation
+              }) => {
+                console.info(
+                  `props, annotation, annotationTypePlural`,
+                  props,
+                  annotation,
+                  annotationTypePlural
+                );
+                window.toastr.success(
+                  `beforeAnnotationCreate callback triggered for ${annotationTypePlural}`
+                );
               }
             })}
             {...(this.state.onSave && {
