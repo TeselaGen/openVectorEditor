@@ -82,9 +82,9 @@ Upgrade instructions for any major or minor change can be found here:
 # Using this module in React
 ## Installation (react)
 ```
-yarn add install-peerdeps open-vector-editor
+yarn add open-vector-editor
 ```
-Add peer-dependencies: 
+Copy the peerDependencies from the OVE package.json to your dependencies field in your package.json: 
 ```
 install-peerdeps open-vector-editor --dev --only-peers
 ```
@@ -92,9 +92,12 @@ install-peerdeps open-vector-editor --dev --only-peers
 ## Code (react)
 Require the following components like: 
 ```
-import {Editor, RowView} from "open-vector-editor
+import {Editor, RowView} from "open-vector-editor"
 ```
+
 ### Editor
+To use the <Editor> component, you'll need to do a bit more work to set up a redux store. 
+You can see an example repo where this works here: TNRTODO add link here :)
 The `<Editor {...editorProps}/>` component gives you a full blown editor.
 It takes in a list of editorProps as detailed below. 
 ### CircularView/CircularViewUnconnected
