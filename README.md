@@ -29,6 +29,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Using this module in React](#using-this-module-in-react)
+  - [Example CRA repo with OVE](#example-cra-repo-with-ove)
   - [Installation (react)](#installation-react)
   - [Code (react)](#code-react)
     - [Editor](#editor)
@@ -80,13 +81,18 @@ Upgrade instructions for any major or minor change can be found here:
 [Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
 
 # Using this module in React
+## Example CRA repo with OVE 
+Here is where you can see how to run the `<Editor/>` in a Create-React-App environment: https://github.com/tnrich/ove-react-demo-repo
+
+If you clone that repo you can see it working and see how to set up the redux store/provider and initialize the editor. You should just clone it and run:
+```
+yarn
+yarn start
+```
+
 ## Installation (react)
 ```
 yarn add open-vector-editor
-```
-Copy the peerDependencies from the OVE package.json to your dependencies field in your package.json: 
-```
-install-peerdeps open-vector-editor --dev --only-peers
 ```
 
 ## Code (react)
@@ -97,7 +103,8 @@ import {Editor, RowView} from "open-vector-editor"
 
 ### Editor
 To use the <Editor> component, you'll need to do a bit more work to set up a redux store. 
-You can see an example repo where this works here: TNRTODO add link here :)
+You can see an example repo where this works here: https://github.com/tnrich/ove-react-demo-repo
+
 The `<Editor {...editorProps}/>` component gives you a full blown editor.
 It takes in a list of editorProps as detailed below. 
 ### CircularView/CircularViewUnconnected
