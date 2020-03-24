@@ -41,6 +41,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Installation (Universal)](#installation-universal)
     - [via npm:](#via-npm)
     - [Or via CDN:](#or-via-cdn)
+    - [Full Example:](#full-example)
   - [Code (Universal)](#code-universal)
     - [Accessing the editor state:](#accessing-the-editor-state)
   - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
@@ -135,6 +136,10 @@ then add the links
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/open-vector-editor/umd/main.css"> 
 <script type="text/javascript" src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
 ```
+
+### Full Example: 
+A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/openVectorEditor/blob/master/demo/src/UMDDemo.html
+Demo here http://teselagen.github.io/openVectorEditor/UMDDemo.html
 
 ## Code (Universal)
 
