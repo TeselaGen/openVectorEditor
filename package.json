@@ -59,7 +59,7 @@
     "react-apollo": "^2.5.8",
     "react-beautiful-dnd": "^10.1.0",
     "react-draggable": "^3.2.1",
-    "react-dropzone": "^4.2.11",
+    "react-dropzone": "^10.2.1",
     "react-easy-state": "^5.1.0",
     "react-markdown": "^4.0.6",
     "react-measure": "^2.2.4",
