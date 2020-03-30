@@ -21,6 +21,8 @@ export class PrintDialog extends React.Component {
   render() {
     const {
       hideModal,
+      hideLinearCircularToggle,
+      hidePrintButton,
       // sequenceData = { sequence: "" },
       // handleSubmit,
       editorName
@@ -31,7 +33,7 @@ export class PrintDialog extends React.Component {
     const isCirc = (this.state || {}).circular;
     return (
       <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        {!hideLinearCircularToggle && <div style={{ display: "flex", justifyContent: "center" }}>
           <ButtonGroup>
             <Button
               onClick={() => {
@@ -50,7 +52,7 @@ export class PrintDialog extends React.Component {
               Linear
             </Button>
           </ButtonGroup>
-        </div>
+        </div>}
         <br />
         <ComponentToPrint
           fullscreen={this.state && this.state.fullscreen}
@@ -59,7 +61,7 @@ export class PrintDialog extends React.Component {
           ref={el => (this.componentRef = el)}
         />
         <br />
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        {!hidePrintButton && <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <ReactToPrint
             trigger={() => <Button intent="primary">Print</Button>}
             content={() => this.componentRef}
@@ -78,7 +80,7 @@ export class PrintDialog extends React.Component {
               hideModal();
             }}
           />
-        </div>
+        </div>}
       </div>
     );
   }
