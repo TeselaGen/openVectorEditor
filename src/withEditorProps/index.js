@@ -1,8 +1,10 @@
+// import React from 'react';
 import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+// import { render } from "react-dom";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
@@ -23,10 +25,56 @@ import { allTypes } from "../utils/annotationTypes";
 
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { defaultMemoize } from "reselect";
+import domtoimage from "dom-to-image";
+// TODO: Fix import
+// -> error Uncaught TypeError: Cannot read property 'apply' of undefined (redux)
+// import { ComponentToPrint } from '../helperComponents/PrintDialog';
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
+
+/**
+ * Adds a div in the dom and
+ * renders ComponentToPrint inside
+ *
+ * @return {object} - div element
+ */
+const generateComponentToPrint = () => {
+  const componentToPrint = document
+    .querySelector("div.veVectorInteractionWrapper")
+    .cloneNode(true);
+  // const componentToPrint = <ComponentToPrint editorName="" circular />; // TODO: Pass correct editorName
+
+  const componentToPrintElement = document.createElement("div");
+  componentToPrintElement.setAttribute("id", "print-preview");
+  componentToPrintElement.style.width = "min-content";
+
+  // Making overflow hidden so a scrollbar doesn't appear
+  document.body.style.overflow = "hidden";
+
+  document.body.appendChild(componentToPrintElement);
+  // render(componentToPrint, componentToPrintElement);
+
+  componentToPrintElement.appendChild(componentToPrint);
+
+  // Setting print dimensions
+  const linearView = document.querySelector("#print-preview .veLinearView");
+  if (linearView) {
+    linearView.style.width = "400px";
+    const { children } = linearView;
+    let height = 25;
+    for (let i = 0; i < children.length; i++) {
+      height += children[i].offsetHeight;
+    }
+    linearView.style.height = `${height}px`;
+  } else {
+    componentToPrintElement.style.width = "400px";
+    componentToPrintElement.style.height = "400px";
+  }
+
+  return componentToPrintElement;
+};
 
 export const handleSave = props => (opts = {}) => {
   const {
@@ -42,19 +90,51 @@ export const handleSave = props => (opts = {}) => {
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
-  const promiseOrVal =
-    (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
-    saveHandler &&
-    saveHandler(
-      opts,
-      tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-      props,
-      updateLastSavedIdToCurrent
-    );
 
-  if (promiseOrVal && promiseOrVal.then) {
-    return promiseOrVal.then(updateLastSavedIdToCurrent);
-  }
+  const save = () => {
+    // TODO: pass additionalProps (blob or error) to the user
+    const promiseOrVal =
+      (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
+      saveHandler &&
+      saveHandler(
+        opts,
+        tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+        props,
+        updateLastSavedIdToCurrent
+      );
+
+    if (promiseOrVal && promiseOrVal.then) {
+      return promiseOrVal.then(updateLastSavedIdToCurrent);
+    }
+  };
+
+  // We don't want to make save slower for users that don't want
+  // a png as output
+  // if (pngNotRequired) {
+  //   save();
+  // }
+
+  // Generate image component
+  const componentToPrintElement = generateComponentToPrint();
+
+  const saveAndRemovePrintElement = additionalProps => {
+    // Remove temporary div from dom and reset body's overflow
+    componentToPrintElement.parentNode.removeChild(componentToPrintElement);
+    document.body.style.overflow = null;
+
+    save(additionalProps);
+  };
+
+  domtoimage
+    .toBlob(componentToPrintElement)
+    .then(blob => {
+      // TODO: Remove once PR is ready
+      window.saveAs(blob, "my-node.png");
+      saveAndRemovePrintElement(blob);
+    })
+    .catch(error => {
+      saveAndRemovePrintElement(error);
+    });
 };
 
 export const handleInverse = props => () => {
@@ -191,12 +271,7 @@ export const exportSequenceToFile = props => format => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToActions,
-    null,
-    { pure: false }
-  ),
+  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: props => {
       return (
@@ -713,19 +788,16 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = fn => {
-  return connect(
-    (state, ownProps, ...rest) => {
-      const editor = state.VectorEditor[ownProps.editorName] || {};
-      editor.sequenceData = editor.sequenceData || {};
-      editor.sequenceData.sequence = getUpperOrLowerSeq(
-        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
-        editor.sequenceData.sequence
-      );
+  return connect((state, ownProps, ...rest) => {
+    const editor = state.VectorEditor[ownProps.editorName] || {};
+    editor.sequenceData = editor.sequenceData || {};
+    editor.sequenceData.sequence = getUpperOrLowerSeq(
+      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+      editor.sequenceData.sequence
+    );
 
-      return fn ? fn(editor, ownProps, ...rest, state) : {};
-    },
-    mapDispatchToActions
-  );
+    return fn ? fn(editor, ownProps, ...rest, state) : {};
+  }, mapDispatchToActions);
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView

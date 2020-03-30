@@ -43,6 +43,7 @@
     "color": "^3.1.2",
     "combokeys": "^3.0.1",
     "deep-equal": "^1.0.1",
+    "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.2",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
