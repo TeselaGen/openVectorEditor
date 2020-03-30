@@ -110,7 +110,7 @@ export const handleSave = props => (opts = {}) => {
 
   // We don't want to make save slower for users that don't want
   // a png as output
-  // if (pngNotRequired) {
+  // if (!generatePng) {
   //   save();
   // }
 
