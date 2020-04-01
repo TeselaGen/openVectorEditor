@@ -36,6 +36,7 @@ async function getSaveDialogEl(props) {
         title: "Generating Image to Save...",
         isCloseButtonShown: false
       },
+      addPaddingBottom: true,
       hideLinearCircularToggle: true,
       hidePrintButton: true
     });
@@ -58,7 +59,6 @@ const generatePngFromPrintDialog = async props => {
   const saveDialog = await getSaveDialogEl(props);
 
   const printArea = saveDialog.querySelector(".bp3-dialog-body");
-  printArea.style.paddingBottom = "20px";
 
   const result = await domtoimage
     .toBlob(printArea)

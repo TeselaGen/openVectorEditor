@@ -23,6 +23,7 @@ export class PrintDialog extends React.Component {
       hideModal,
       hideLinearCircularToggle,
       hidePrintButton,
+      addPaddingBottom,
       // sequenceData = { sequence: "" },
       // handleSubmit,
       editorName
@@ -32,27 +33,32 @@ export class PrintDialog extends React.Component {
     // const sequenceLength = sequenceData.sequence.length;
     const isCirc = (this.state || {}).circular;
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}>
-        {!hideLinearCircularToggle && <div style={{ display: "flex", justifyContent: "center" }}>
-          <ButtonGroup>
-            <Button
-              onClick={() => {
-                this.setState({ circular: true });
-              }}
-              active={isCirc}
-            >
-              Circular
-            </Button>
-            <Button
-              onClick={() => {
-                this.setState({ circular: false });
-              }}
-              active={!isCirc}
-            >
-              Linear
-            </Button>
-          </ButtonGroup>
-        </div>}
+      <div
+        style={addPaddingBottom ? { paddingBottom: 20 } : {}}
+        className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}
+      >
+        {!hideLinearCircularToggle && (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ButtonGroup>
+              <Button
+                onClick={() => {
+                  this.setState({ circular: true });
+                }}
+                active={isCirc}
+              >
+                Circular
+              </Button>
+              <Button
+                onClick={() => {
+                  this.setState({ circular: false });
+                }}
+                active={!isCirc}
+              >
+                Linear
+              </Button>
+            </ButtonGroup>
+          </div>
+        )}
         <br />
         <ComponentToPrint
           fullscreen={this.state && this.state.fullscreen}
@@ -61,26 +67,28 @@ export class PrintDialog extends React.Component {
           ref={el => (this.componentRef = el)}
         />
         <br />
-        {!hidePrintButton && <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <ReactToPrint
-            trigger={() => <Button intent="primary">Print</Button>}
-            content={() => this.componentRef}
-            onBeforePrint={() => {
-              this.setState({ fullscreen: true });
-            }}
-            bodyClass="ve-print"
-            // printPreview
-            pageStyle={`@page { size: auto;  margin: 0mm; } @media print { 
+        {!hidePrintButton && (
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <ReactToPrint
+              trigger={() => <Button intent="primary">Print</Button>}
+              content={() => this.componentRef}
+              onBeforePrint={() => {
+                this.setState({ fullscreen: true });
+              }}
+              bodyClass="ve-print"
+              // printPreview
+              pageStyle={`@page { size: auto;  margin: 0mm; } @media print { 
               body { 
                  -webkit-print-color-adjust: exact; page-break-after: always; 
               } }`}
-            ignoreLinks //needed because some css is linked to but is not loading..
-            onAfterPrint={() => {
-              this.setState({ fullscreen: false });
-              hideModal();
-            }}
-          />
-        </div>}
+              ignoreLinks //needed because some css is linked to but is not loading..
+              onAfterPrint={() => {
+                this.setState({ fullscreen: false });
+                hideModal();
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   }
