@@ -16,6 +16,7 @@ export const userDefinedHandlersAndOpts = [
   "onSave",
   "onSaveAs",
   "alwaysAllowSave",
+  "generatePng",
   "onRename",
   "getVersionList",
   "getSequenceAtVersion",

@@ -51,6 +51,7 @@ const defaultState = {
   showAvailability: true,
   showDemoOptions: true,
   shouldAutosave: false,
+  generatePng: false,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
@@ -223,6 +224,7 @@ export default class EditorDemo extends React.Component {
       forceHeightMode,
       withVersionHistory,
       shouldAutosave,
+      generatePng,
       isFullscreen,
       withPreviewMode
     } = this.state;
@@ -1028,6 +1030,10 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "generatePng"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onRename"
               })}
               {renderToggle({
@@ -1311,6 +1317,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
+            generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(withVersionHistory && {
               getSequenceAtVersion: versionId => {
