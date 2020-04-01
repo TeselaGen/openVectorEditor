@@ -1,10 +1,8 @@
-// import React from 'react';
 import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-// import { render } from "react-dom";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
@@ -26,9 +24,6 @@ import { allTypes } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
-// TODO: Fix import
-// -> error Uncaught TypeError: Cannot read property 'apply' of undefined (redux)
-// import { ComponentToPrint } from "../helperComponents/PrintDialog";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
@@ -55,85 +50,26 @@ async function getSaveDialogEl(props) {
   });
 }
 /**
- * Adds a div in the dom and
- * renders ComponentToPrint inside
+ * Function to generate a png
  *
- * @return {object} - div element
+ * @return {object} - Blob (png) | Error
  */
-const generateComponentToPrint = async props => {
+const generatePngFromPrintDialog = async props => {
   const saveDialog = await getSaveDialogEl(props);
 
-  console.log(`saveDialog:`, saveDialog);
+  const printArea = saveDialog.querySelector(".bp3-dialog-body");
+  printArea.style.paddingBottom = "20px";
 
-  //save the PNG here 
-  // and then call:
-  // props.hidePrintDialog()
-
-  // const componentToPrint = document
-  //   .querySelector("div.veVectorInteractionWrapper")
-  //   .cloneNode(true);
-  // // const componentToPrint = <ComponentToPrint editorName="" circular />; // TODO: Pass correct editorName
-
-  // const componentToPrintElement = document.createElement("div");
-  // componentToPrintElement.setAttribute("id", "print-preview");
-  // componentToPrintElement.style.width = "min-content";
-
-  // // Making overflow hidden so a scrollbar doesn't appear
-  // document.body.style.overflow = "hidden";
-
-  // document.body.appendChild(componentToPrintElement);
-  // // render(componentToPrint, componentToPrintElement);
-
-  // componentToPrintElement.appendChild(componentToPrint);
-
-  // // Setting print dimensions
-  // const linearView = document.querySelector("#print-preview .veLinearView");
-  // if (linearView) {
-  //   linearView.style.width = "400px";
-  //   const { children } = linearView;
-  //   let height = 25;
-  //   for (let i = 0; i < children.length; i++) {
-  //     height += children[i].offsetHeight;
-  //   }
-  //   linearView.style.height = `${height}px`;
-  // } else {
-  //   componentToPrintElement.style.width = "400px";
-  //   componentToPrintElement.style.height = "400px";
-  // }
-
-  // // renderOnDocSimple(<div>
-  // //   <Provider store={store}>
-
-  // //   </Provider>
-  // // </div>)
-
-  // //   <ComponentToPrint
-  // //   fullscreen={this.state && this.state.fullscreen}
-  // //   circular={isCirc}
-  // //   editorName={editorName || "StandaloneEditor"}
-  // //   ref={el => (this.componentRef = el)}
-  // // />
-
-  // // Generate image component
-
-  // const saveAndRemovePrintElement = additionalProps => {
-  //   // Remove temporary div from dom and reset body's overflow
-  //   componentToPrintElement.parentNode.removeChild(componentToPrintElement);
-  //   document.body.style.overflow = null;
-  // };
-
-  // domtoimage
-  //   .toBlob(componentToPrintElement)
-  //   .then(blob => {
-  //     // TODO: Remove once PR is ready
-  //     window.saveAs(blob, "my-node.png");
-  //     saveAndRemovePrintElement(blob);
-  //   })
-  //   .catch(error => {
-  //     saveAndRemovePrintElement(error);
-  //   });
-
-  // return componentToPrintElement;
+  const result = await domtoimage
+    .toBlob(printArea)
+    .then(blob => {
+      return blob;
+    })
+    .catch(error => {
+      return error;
+    });
+  props.hidePrintDialog();
+  return result;
 };
 
 export const handleSave = props => async (opts = {}) => {
@@ -151,10 +87,10 @@ export const handleSave = props => async (opts = {}) => {
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
-  // We don't want to make save slower for users that don't want
-  // a png as output
-  if (!generatePng) {
-    opts.pngFile = await generateComponentToPrint(props);
+
+  // Optionally generate png
+  if (generatePng) {
+    opts.pngFile = await generatePngFromPrintDialog(props);
   }
 
   // TODO: pass additionalProps (blob or error) to the user
@@ -165,8 +101,7 @@ export const handleSave = props => async (opts = {}) => {
       opts,
       tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
       props,
-      updateLastSavedIdToCurrent,
-      
+      updateLastSavedIdToCurrent
     );
 
   if (promiseOrVal && promiseOrVal.then) {
