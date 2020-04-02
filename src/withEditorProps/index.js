@@ -23,15 +23,60 @@ import { allTypes } from "../utils/annotationTypes";
 
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { defaultMemoize } from "reselect";
+import domtoimage from "dom-to-image";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
-export const handleSave = props => (opts = {}) => {
+async function getSaveDialogEl(props) {
+  return new Promise(resolve => {
+    props.showPrintDialog({
+      dialogProps: {
+        title: "Generating Image to Save...",
+        isCloseButtonShown: false
+      },
+      addPaddingBottom: true,
+      hideLinearCircularToggle: true,
+      hidePrintButton: true
+    });
+
+    const id = setInterval(() => {
+      const componentToPrint = document.querySelector(".bp3-dialog");
+      if (componentToPrint) {
+        clearInterval(id);
+        resolve(componentToPrint);
+      }
+    }, 1000);
+  });
+}
+/**
+ * Function to generate a png
+ *
+ * @return {object} - Blob (png) | Error
+ */
+const generatePngFromPrintDialog = async props => {
+  const saveDialog = await getSaveDialogEl(props);
+
+  const printArea = saveDialog.querySelector(".bp3-dialog-body");
+
+  const result = await domtoimage
+    .toBlob(printArea)
+    .then(blob => {
+      return blob;
+    })
+    .catch(error => {
+      return error;
+    });
+  props.hidePrintDialog();
+  return result;
+};
+
+export const handleSave = props => async (opts = {}) => {
   const {
     onSave,
     onSaveAs,
+    generatePng,
     readOnly,
     alwaysAllowSave,
     sequenceData,
@@ -42,6 +87,13 @@ export const handleSave = props => (opts = {}) => {
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
+
+  // Optionally generate png
+  if (generatePng) {
+    opts.pngFile = await generatePngFromPrintDialog(props);
+  }
+
+  // TODO: pass additionalProps (blob or error) to the user
   const promiseOrVal =
     (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
     saveHandler &&
@@ -191,12 +243,7 @@ export const exportSequenceToFile = props => format => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToActions,
-    null,
-    { pure: false }
-  ),
+  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: props => {
       return (
@@ -713,19 +760,16 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = fn => {
-  return connect(
-    (state, ownProps, ...rest) => {
-      const editor = state.VectorEditor[ownProps.editorName] || {};
-      editor.sequenceData = editor.sequenceData || {};
-      editor.sequenceData.sequence = getUpperOrLowerSeq(
-        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
-        editor.sequenceData.sequence
-      );
+  return connect((state, ownProps, ...rest) => {
+    const editor = state.VectorEditor[ownProps.editorName] || {};
+    editor.sequenceData = editor.sequenceData || {};
+    editor.sequenceData.sequence = getUpperOrLowerSeq(
+      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+      editor.sequenceData.sequence
+    );
 
-      return fn ? fn(editor, ownProps, ...rest, state) : {};
-    },
-    mapDispatchToActions
-  );
+    return fn ? fn(editor, ownProps, ...rest, state) : {};
+  }, mapDispatchToActions);
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView

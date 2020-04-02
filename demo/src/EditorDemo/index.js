@@ -51,6 +51,7 @@ const defaultState = {
   showAvailability: true,
   showDemoOptions: true,
   shouldAutosave: false,
+  generatePng: false,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
@@ -223,6 +224,7 @@ export default class EditorDemo extends React.Component {
       forceHeightMode,
       withVersionHistory,
       shouldAutosave,
+      generatePng,
       isFullscreen,
       withPreviewMode
     } = this.state;
@@ -1028,6 +1030,12 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "generatePng",
+                info:
+                  "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
+              })}
+              {renderToggle({
+                that: this,
                 type: "onRename"
               })}
               {renderToggle({
@@ -1162,10 +1170,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 editorState,
                 onSuccessCallback
               ) {
-                window.toastr.success("onSave callback triggered");
                 console.info("opts:", opts);
+                if (window.Cypress) window.Cypress.pngFile = opts.pngFile;
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
+                window.toastr.success("onSave callback triggered");
                 // To disable the save button after successful saving
                 // either call the onSuccessCallback or return a successful promise :)
                 onSuccessCallback();
@@ -1311,6 +1320,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
+            generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(withVersionHistory && {
               getSequenceAtVersion: versionId => {
