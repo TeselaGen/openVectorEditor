@@ -1030,7 +1030,9 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                type: "generatePng"
+                type: "generatePng",
+                info:
+                  "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
               })}
               {renderToggle({
                 that: this,
