@@ -1170,10 +1170,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 editorState,
                 onSuccessCallback
               ) {
-                window.toastr.success("onSave callback triggered");
                 console.info("opts:", opts);
+                if (window.Cypress) window.Cypress.pngFile = opts.pngFile;
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
+                window.toastr.success("onSave callback triggered");
                 // To disable the save button after successful saving
                 // either call the onSuccessCallback or return a successful promise :)
                 onSuccessCallback();

@@ -16,7 +16,7 @@ import "./style.css";
 
 export class PrintDialog extends React.Component {
   state = {
-    circular: false
+    circular: null
   };
   render() {
     const {
@@ -24,14 +24,18 @@ export class PrintDialog extends React.Component {
       hideLinearCircularToggle,
       hidePrintButton,
       addPaddingBottom,
-      // sequenceData = { sequence: "" },
+      sequenceData,
       // handleSubmit,
       editorName
       // circular,
       // upsertFeature
     } = this.props;
     // const sequenceLength = sequenceData.sequence.length;
-    const isCirc = (this.state || {}).circular;
+    let isCirc = sequenceData.circular;
+
+    if (this.state.circular !== null) {
+      isCirc = this.state.circular;
+    }
     return (
       <div
         style={addPaddingBottom ? { paddingBottom: 20 } : {}}
