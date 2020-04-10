@@ -217,10 +217,17 @@
     "@nodelib/fs.scandir" "2.1.1"
     fastq "^1.6.0"
 
-"@nx-js/observer-util@^4.1.1":
+"@nx-js/observer-util@^4.1.1", "@nx-js/observer-util@^4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@nx-js/observer-util/-/observer-util-4.2.2.tgz#faea1bc61936653486d1b5dec7485220991e628d"
   integrity sha512-9OayX1xkdGjdnsDiO2YdaYJ6aMyCF7/NY4QWVgIgjSAZJ4OX2fD766Ts79hEzBscenQy2DCaSoY8VkguIMB1ZA==
+
+"@risingstack/react-easy-state@^6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@risingstack/react-easy-state/-/react-easy-state-6.2.1.tgz#2548311292c9301829c8b61ca7583b63be8c76ef"
+  integrity sha512-ijMWbU/GD+t3vTZ24y5DCCWK0c06Tcn3am8gmJOb3LJHtrS/uXsBfPuh8wCZ7KFq+aV7R0pnczr2rg8v0t055Q==
+  dependencies:
+    "@nx-js/observer-util" "^4.2.2"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"

@@ -3,6 +3,20 @@ describe("dialogs", function() {
     cy.visit("");
   });
 
+  it("editing notes should work", function() {
+    cy.contains(".veLabelText", "araD").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.contains("Add Note").click();
+    cy.contains(`[data-test="note-2"] .addAnnNoteKey`, "note");
+    cy.get(`[data-test="note-2"] .addAnnNoteValue`).click();
+    cy.focused().type("I'm a description");
+    cy.get(`[data-test="note-0"] .bp3-icon-trash`).click();
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".veLabelText", "araD").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.get(".addAnnNoteValue").should("have.length", 2);
+    cy.contains(".addAnnNoteValue", "I'm a description");
+  });
   it("right click editing joined feature should work", function() {
     cy.contains(".veLabelText", "araC").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
