@@ -266,10 +266,10 @@ class AddOrEditAnnotationDialog extends React.Component {
               } else {
                 updatedData = data;
               }
-              data.notes = {};
+              updatedData.notes = {};
               this.notes.forEach(({ key, value }) => {
-                if (!data.notes[key]) data.notes[key] = [];
-                data.notes[key].push(value || "");
+                if (!updatedData.notes[key]) updatedData.notes[key] = [];
+                updatedData.notes[key].push(value || "");
               });
               if (annotationTypePlural === "features") {
                 updatedData.color = featureColors[updatedData.type];

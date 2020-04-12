@@ -17,6 +17,25 @@ describe("dialogs", function() {
     cy.get(".addAnnNoteValue").should("have.length", 2);
     cy.contains(".addAnnNoteValue", "I'm a description");
   });
+  it("adding notes on a new feature should save", function() {
+    cy.contains(".veLabelText", "araD").rightclick();
+    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.focused().type("new feat");
+
+    cy.contains("Add Note").click();
+    cy.contains(`.addAnnNoteKey`, "note");
+    cy.get(`.addAnnNoteValue`).click();
+    cy.focused().type("I'm a description");
+
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".veLabelText", "new feat").trigger("contextmenu", {
+      force: true
+    });
+    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.get(".addAnnNoteValue").should("have.length", 1);
+    cy.contains(".addAnnNoteValue", "I'm a description");
+  });
   it("right click editing joined feature should work", function() {
     cy.contains(".veLabelText", "araC").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
