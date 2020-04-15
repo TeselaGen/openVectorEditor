@@ -94,7 +94,7 @@
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.1.6",
-    "cypress": "^4.1.0",
+    "cypress": "^4.4.0",
     "drag-mock": "^1.4.0",
     "eslint": "^6.8.0",
     "eslint-config-teselagen": "^5.0.5",
