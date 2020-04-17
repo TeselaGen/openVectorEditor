@@ -132,6 +132,7 @@ function Labels(props) {
           } veLabel `,
           xStartOriginal,
           onClick: annotationRange.onClick,
+          onDoubleClick: annotationRange.onDoubleClick,
           onRightClick: annotationRange.onRightClick,
           height,
           xStart,
@@ -166,6 +167,8 @@ export default onlyUpdateForKeys([
   "annotationHeight",
   "spaceBetweenAnnotations",
   "onClick",
+  "onRightClick",
+  "onDoubleClick",
   "textWidth",
   "editorName"
 ])(Labels);
@@ -178,6 +181,7 @@ const DrawLabel = withHover(
         className,
         annotation,
         onClick,
+        onDoubleClick,
         onRightClick,
         height,
         xStartOriginal,
@@ -223,6 +227,12 @@ const DrawLabel = withHover(
             onClick={function(event) {
               onClick({ event, annotation });
               event.stopPropagation();
+            }}
+            onDoubleClick={function(event) {
+              if (onDoubleClick) {
+                onDoubleClick({ event, annotation });
+                event.stopPropagation();
+              }
             }}
             onContextMenu={function(event) {
               onRightClick({ event, annotation });

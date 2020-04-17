@@ -265,6 +265,7 @@ export class CircularView extends React.Component {
           radius,
           isProtein,
           onClick: this.props[singularName + "Clicked"],
+          onDoubleClick: this.props[singularName + "DoubleClicked"],
           onRightClicked: this.props[singularName + "RightClicked"],
           sequenceLength,
           editorName,

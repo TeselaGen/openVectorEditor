@@ -181,7 +181,6 @@ export class RowView extends React.Component {
       selectionLayer = {},
       matchedSearchLayer = {}
     } = newProps;
-
     let {
       caretPosition: caretPositionOld = -1,
       selectionLayer: selectionLayerOld = {},
@@ -240,7 +239,10 @@ export class RowView extends React.Component {
       let [start, end] = this.InfiniteScroller.getVisibleRange();
       // const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
-        this.InfiniteScroller.scrollTo(rowToScrollTo);
+        //wrap this in a set timeout to give onDoubleClick enough time to fire before jumping the rowview around
+        setTimeout(() => {
+          this.InfiniteScroller.scrollTo(rowToScrollTo);
+        }, 0);
         clearInterval(this.jumpIntervalId);
         //this will try to run the following logic at most 10 times with a 100ms pause between each
         this.jumpIntervalId = setIntervalX(

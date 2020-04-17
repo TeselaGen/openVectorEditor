@@ -310,6 +310,7 @@ const DrawLabelGroup = withHover(function({
       {...{ onMouseLeave, onMouseOver }}
       {...{
         onClick: label.onClick,
+        onDoubleClick: label.onDoubleClick,
         onContextMenu: label.onContextMenu || noop
       }}
     >
@@ -363,6 +364,7 @@ const DrawGroupInnerLabel = withHover(
         textLength={label.text.length * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
+        onDoubleClick={label.onDoubleClick}
         onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
         style={{

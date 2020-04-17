@@ -22,6 +22,7 @@ function StackedAnnotations(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     onClick,
+    onDoubleClick,
     disregardLocations,
     InnerComp,
     onRightClick,
@@ -84,6 +85,7 @@ function StackedAnnotations(props) {
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
+          onDoubleClick={onDoubleClick}
           type={type}
           onRightClick={onRightClick}
           annotation={annotation}

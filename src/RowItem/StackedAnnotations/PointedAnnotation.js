@@ -4,6 +4,7 @@ import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAn
 
 import React from "react";
 import { doesLabelFitInAnnotation } from "../utils";
+import { noop } from "lodash";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -25,6 +26,7 @@ class PointedAnnotation extends React.PureComponent {
       stroke,
       opacity,
       onClick,
+      onDoubleClick = noop,
       textColor,
       onRightClick,
       gapsInside,
@@ -108,6 +110,10 @@ class PointedAnnotation extends React.PureComponent {
         dataId={id}
         onClick={function(event) {
           onClick({ annotation, event, gapsBefore, gapsInside });
+        }}
+        onDoubleClick={function(event) {
+          onDoubleClick &&
+            onDoubleClick({ annotation, event, gapsBefore, gapsInside });
         }}
         onContextMenu={function(event) {
           onRightClick({ annotation, event, gapsBefore, gapsInside });
