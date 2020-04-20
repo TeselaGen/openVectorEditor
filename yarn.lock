@@ -248,10 +248,10 @@
   resolved "https://registry.yarnpkg.com/@nx-js/observer-util/-/observer-util-4.2.2.tgz#faea1bc61936653486d1b5dec7485220991e628d"
   integrity sha512-9OayX1xkdGjdnsDiO2YdaYJ6aMyCF7/NY4QWVgIgjSAZJ4OX2fD766Ts79hEzBscenQy2DCaSoY8VkguIMB1ZA==
 
-"@risingstack/react-easy-state@^6.2.3":
-  version "6.2.3"
-  resolved "https://registry.yarnpkg.com/@risingstack/react-easy-state/-/react-easy-state-6.2.3.tgz#061bc04aa1b3e1767ea264ba2144dc75ddcbefa8"
-  integrity sha512-v1F5LnlG+RJAqwReWWYWclo6A1kqNx66AK0e4AXRjpHAL/RBuSLT8PX6nVOAJqgCD94iYfpMwfxOaW1i8VU3hQ==
+"@risingstack/react-easy-state@^6.2.4":
+  version "6.2.4"
+  resolved "https://registry.yarnpkg.com/@risingstack/react-easy-state/-/react-easy-state-6.2.4.tgz#458328f3fca77bc12dfbc44a77ed88e66ef8dfc6"
+  integrity sha512-a0SKhrsVy3+GDch+j7xKidEXPzc6RVpfS1eCs/dWZn6r808H3tCeOYjj3kiDyd8I3b7meVskGhC1XjW05Y3rgw==
   dependencies:
     "@nx-js/observer-util" "^4.2.2"
 
@@ -8701,10 +8701,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-paths-js@^0.4.5:
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/paths-js/-/paths-js-0.4.7.tgz#2e1d4e4a5a8e57e15c16bd29051d3f8be237e194"
-  integrity sha512-a6pYqToBgB/V7YUHHviYdRq41IcijUjY9XJ1NKu2COrR5eLhrx+HPZ/VL6vC3vyg3z4T6K00wsVMAqTzSR3ppg==
+paths-js@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/paths-js/-/paths-js-0.4.10.tgz#a3575f409b4a36f8aa795ba4d051989021be58c7"
+  integrity sha512-JZoqlRSHtx+bc+xKI9o4bropEbqZBF4ZfYImiB1T9RYpHB73h5I8XZ7FfSBbHbBMtdD1c04ujjAPH8wUuu4+Gw==
 
 pbkdf2@^3.0.3:
   version "3.0.17"
@@ -11057,6 +11057,13 @@ text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+
+tg-client-query-builder@^2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/tg-client-query-builder/-/tg-client-query-builder-2.12.2.tgz#81f211103c87b36d1287cbee57d949a99d965754"
+  integrity sha512-eUc3n3yOIPIMqBUgYcwlqABxbI9E60xgkIhc0QxFgy09YT++jOnKQvA+9OmK/45Zula1CH1UEARyHkM/bbkXUQ==
+  dependencies:
+    lodash "^4.17.4"
 
 tg-react-reflex@^2.0.10:
   version "2.0.10"
