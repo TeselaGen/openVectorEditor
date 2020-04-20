@@ -22,8 +22,11 @@ describe("dialogs", function() {
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Feature").click();
     cy.focused().type("new feat");
+    cy.screenshot();
 
     cy.contains("Add Note").click();
+    cy.screenshot();
+
     cy.contains(`.addAnnNoteKey`, "note");
     cy.get(`.addAnnNoteValue`).click();
     cy.focused().type("I'm a description");
